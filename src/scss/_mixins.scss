@@ -1,0 +1,78 @@
+@mixin for-phone-xs-only {
+    @media (max-width: 360px) { @content; }
+  }
+  @mixin for-phone-sm-only {
+    @media (max-width: 420px) { @content; }
+  }
+  @mixin for-phone-only {
+    @media (max-width: 599px) { @content; }
+  }
+  @mixin for-phone-only-landscape {
+    @media (orientation: landscape) { @content; }
+  }
+  @mixin for-tablet-portrait-down {
+    @media (max-width: 767px) { @content; }
+  }
+  @mixin for-tablet-portrait-up {
+    @media (min-width: 768px) and (max-width: 900px) { @content; }
+  }
+  @mixin for-tablet-landscape-up {
+    @media (min-width: 900px) { @content; }
+  }
+  @mixin for-desktop-up {
+    @media (min-width: 1200px) { @content; }
+  }
+  @mixin for-lg-desktop-up {
+    @media (min-width: 1400px) { @content; }
+  }
+  @mixin for-big-desktop-up {
+    @media (min-width: 1900px) { @content; }
+  }
+
+  // example
+  
+  // @include for-phone-only{
+  // }
+  // @include for-tablet-portrait-down{
+  // }
+  // @include for-tablet-portrait-up{
+  // }
+  // @include for-tablet-landscape-up{
+  // }
+  // @include for-desktop-up{
+  // }
+  // @include for-lg-desktop-up{
+  // }
+  // @include for-big-desktop-up{
+  // }
+  
+ 
+
+// Keyframe animation 
+  @mixin keyframes ($animation_name) {
+      @-webkit-keyframes #{$animation_name} {
+          @content;
+      }
+
+      @-moz-keyframes #{$animation_name} {
+          @content;
+      }
+
+      @-o-keyframes #{$animation_name} {
+          @content;
+      }
+
+      @keyframes #{$animation_name} {
+          @content;
+      }
+  }
+
+@mixin animation ($str) {
+    -webkit-animation: #{$str};
+    -moz-animation: #{$str};
+    -o-animation: #{$str};
+    animation: #{$str};
+}
+
+
+
