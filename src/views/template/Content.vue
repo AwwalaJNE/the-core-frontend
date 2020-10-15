@@ -1,10 +1,12 @@
 <template>
     <div class="Content">
-        <mainHeader :clickProps="sidabarAction"/>
+        <MainHeader :clickProps="sidabarAction"/>
         <Sidebar :expand="active" :actionSidebar="sidabarAction"/>
         <div class="main-container">
             <div class="marginHeader"></div>
-            ini content
+            <div class="container">
+                <router-view></router-view>
+            </div>
         </div>
     </div>
 </template>
@@ -14,7 +16,7 @@ import Sidebar from './sidebar'
 export default {
     name:"Content",
     components: {
-        mainHeader: Header,
+        MainHeader: Header,
         Sidebar: Sidebar
     },
     data() {

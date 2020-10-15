@@ -135,7 +135,8 @@
             </vs-avatar>
 
             <vs-avatar>
-              <img src="/avatars/avatar-5.png" alt="">
+              <!-- <img src="/avatars/avatar-5.png" alt=""> -->
+              <i class='bx bx-user'></i>
             </vs-avatar>
           </vs-row>
         </template>

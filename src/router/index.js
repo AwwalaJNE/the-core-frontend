@@ -5,6 +5,9 @@ import Content from '@/views/template/Content.vue'
 
 import NotFound from '@/components/NotFound.vue'
 
+// === USERS ===
+import Users from '@/views/settings/users'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -17,9 +20,14 @@ const routes = [
     path: '/',
     name: 'main',
     component: Content,
-    meta: {
-      auth: false,
-    },
+    children: [
+      {
+        path: "/settings/users",
+        name: "users",
+        component: Users,
+        meta: { requiresAuth: true }
+      },
+    ]
   },
 ]
 

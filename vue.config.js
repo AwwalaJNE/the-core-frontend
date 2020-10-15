@@ -4,6 +4,7 @@ const path = require("path");
 module.exports = {
   devServer: {
     port: "8080",
+    proxy: 'http://147.139.179.214/'
   },
   runtimeCompiler: true,
   chainWebpack: (config) => {
