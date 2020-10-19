@@ -1,10 +1,23 @@
 const ExtractTextPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
+const host = '0.0.0.0'
+const port = 8080
+
 module.exports = {
+  lintOnSave: false,
   devServer: {
-    port: "8080",
-    proxy: 'http://147.139.179.214/'
+    port,
+    host,
+    hotOnly: true,
+    disableHostCheck: true,
+    clientLogLevel: 'warning',
+    inline: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+    },
   },
   runtimeCompiler: true,
   chainWebpack: (config) => {
@@ -30,7 +43,6 @@ module.exports = {
       extensions: [".js", ".vue", ".json"],
     },
   },
-  lintOnSave: true,
   css: {
     loaderOptions: {
       sass: {

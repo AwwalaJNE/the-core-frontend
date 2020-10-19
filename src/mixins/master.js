@@ -15,6 +15,17 @@ const Master = {
             Helper: null
         }
     },
+    methods: {
+        openNotification(type = null, title,msg) {
+            // type success, danger, warn
+            const noti = this.$vs.notification({
+              color: type,
+              position: 'top-right',
+              title: title,
+              text: msg
+            })
+        }
+    },
     created() {
         this.URL = URL
         this.Helper = helper

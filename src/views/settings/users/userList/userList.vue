@@ -11,6 +11,10 @@
         :dataTable="datadata" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"
+        :pageSize="pagination.page_size"
+        :page="pagination.page"
+        @actionLimit="actionLimit"
+        @actionPagination="actionPagination"
         />
     </div>
 </template>
@@ -26,21 +30,7 @@ export default {
     },
     data() {
         return {
-            datadata: [
-                {
-                    "user_id": 1,
-                    "user_name": "ANGGA GITA",
-                    "user_email": "A_GITA@JNE.CO.ID",
-                    "user_login": "A_GITA",
-                    "email_verified_at": null,
-                    "user_role_id": 1,
-                    "last_password_updated_at": "2020-10-15 08:35:49",
-                    "locked_at": null,
-                    "is_active": 0,
-                    "created_at": "2020-10-15 08:35:49",
-                    "updated_at": "2020-10-15 08:35:49"
-                }
-            ],
+            datadata: [],
             datacolumn: [
                 {
                     label: "Username",
@@ -57,34 +47,51 @@ export default {
                 {
                     label: "Roles",
                     key: "user_role"
-                },
-                {
-                    label: "Roles",
-                    key: "user_role"
                 }
             ],
             loading: false,
-            tempSearch: ""
+            tempSearch: "",
+            pagination: {
+                limit:5,
+                page_size: 1,
+                page: 1
+            }
         }
     },
     methods: {
-        async getTableData(q) {
+        async getTableData(limit,page,q) {
             console.log(this.Helper.header())
             this.loading = true
-            let queryS = "";
+            let query = "";
             if(q !== undefined) {
                 this.tempSearch = q
-                queryS = q
+                query = q
             }
             await axios
-                .get(this.URL.userList + `?n=1&sort_by=created_at=&sort_order=desc&limit=3&page=1`, this.Helper.header())
+                .get(
+                    this.URL.user + 
+                    `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                    this.Helper.header())
                 .then(res => {
                     console.log('res', res)
+                    this.datadata = res.data.data
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to collect users list', err)
                 })
+        },
+        actionLimit(val){
+            this.pagination.limit = val
+            this.getTableData(this.pagination.limit,this.pagination.page)
+        },
+        actionPagination(val) {
+            this.pagination.page = val
+            this.getTableData(this.pagination.limit,this.pagination.page)
         }
     },
     mounted() {
-        // this.getTableData()
+        this.getTableData(this.pagination.limit,this.pagination.page)
     },
 }
 </script>

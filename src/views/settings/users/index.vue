@@ -1,28 +1,64 @@
 <template>
     <div>
         <h3 style="text-align:left">[Breadcrumb Component]</h3>
-        <section class="box users">
-            <div class="view">
-                <div class="nav-box">
-                    <nav-item :navItem="navItemm" @activeTab="activeTab" />
-                </div>
-                
-                <transition name="slide-fade">
-                    <div v-if="navActive === 'k-USER'"><user-list /></div>
-                </transition>
-            </div>
-            <div class="view hide"></div>
+        <vs-button
+            flat
+            :active="dialogUser == true"
+            @click="openDialogUser"
+        >
+            Active
+        </vs-button>
+        <section class="users">
+            <vs-row justify="space-around">
+                <vs-col vs-type="flex" vs-justify="center" vs-align="center" :w="`${navActive === 'k-PERMISSIONS'?'4':'12'}`">
+                    <div class="box view">
+                        <div class="nav-box">
+                            <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                        </div>
+                        <template v-if="navActive === 'k-USER'">
+                            <transition name="slide-fade">
+                                <user-list />
+                            </transition>
+                        </template>
+                        <template v-if="navActive === 'k-ROLES'">
+                            <transition name="slide-fade">
+                                <role-list />
+                            </transition>
+                        </template>
+                    </div>
+                </vs-col>
+                <template v-if="navActive === 'k-PERMISSIONS'">
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="8">
+                       <div class="box">[content]</div>
+                    </vs-col>
+                </template>
+            </vs-row>
         </section>
+
+        <!--Create Edit User Dialog-->
+            <dialog-create-edit-user 
+            :active="dialogUser" 
+            :closeDialogUser="closeDialogUser"
+            title="New users"
+            />
+        <!--Create Edit User Dialog end-->
     </div>
 </template>
 <script>
-import NavItem from "@/components/navbar/navTab.vue"
-import UserList from '@/views/settings/users/userList.vue'
+import NavItem from "@/components/navbar/navTab"
+// users
+import UserList from "@/views/settings/users/userList/userList"
+import DialogCreateEditUser from "@/views/settings/users/userList/dialogCreateEditUser"
+// role
+import RoleList from "@/views/settings/users/roleList"
+
 export default {
     name:"Users",
     components: {
         "nav-item": NavItem,
-        "user-list" : UserList
+        "user-list": UserList,
+        "role-list": RoleList,
+        "dialog-create-edit-user": DialogCreateEditUser
     },
     data() {
         return {
@@ -40,12 +76,19 @@ export default {
                     key: "k-PERMISSIONS"
                 },
             ],
-            navActive: "k-USER"
+            navActive: "k-USER",
+            dialogUser: false
         }
     },
     methods: {
         activeTab(val) {
             this.navActive = val
+        },
+        openDialogUser(){
+            this.dialogUser = true
+        },
+        closeDialogUser() {
+            this.dialogUser = false
         }
     },
 }
@@ -54,15 +97,7 @@ export default {
     .users{
         min-height: 50vh;
         .view{
-            position: relative;
-            display: block;
-            visibility: visible;
-            width: 100%;
-            transition: all .3 ease-in;
-            &.hide{
-                visibility: hidden;
-                width: 0;
-            }
+            min-height: 400px;
         }
         .nav-box{
             position: relative;
@@ -72,15 +107,4 @@ export default {
             max-width: 350px;
         }
     }
-    .slide-fade-enter-active {
-  transition: all .3s ease;
-}
-.slide-fade-leave-active {
-  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
-}
 </style>
