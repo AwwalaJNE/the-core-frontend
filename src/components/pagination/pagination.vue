@@ -17,7 +17,7 @@
             </div>
             <div class="col">
                 <vs-pagination 
-                v-model="listenPage" 
+                v-model="current_page" 
                 :dotted-number="listenPageLimit"
                 :length="listenPageSize" 
                 @input="actionPagination" />
@@ -35,7 +35,7 @@ export default {
     },
     data() {
         return {
-            current_page:1,
+            current_page: this.page ? this.page : 1,
             page_size:1,
             limit_page:5,
             limitSelector: [5,10,20],
@@ -49,9 +49,9 @@ export default {
         listenPageLimit() {
             return this.limit
         },
-        listenPage() {
-            return this.page <= this.pageSize ? this.page : this.pageSize
-        },
+        // listenPage() {
+        //     return this.page <= this.pageSize ? this.page : this.pageSize
+        // },
     },
     methods: {
         actionLimit(val) {

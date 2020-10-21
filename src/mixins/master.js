@@ -19,12 +19,15 @@ const Master = {
         openNotification(type = null, title,msg) {
             // type success, danger, warn
             const noti = this.$vs.notification({
-              color: type,
-              position: 'top-right',
-              title: title,
-              text: msg
+                duration: 6000,
+                progress: 'auto',
+                color: type,
+                position: 'top-right',
+                title: title,
+                text: msg,
+                icon: `<i class="bx ${type == 'success' ? 'bx-select-multiple':'bx-error'}" ></i>`
             })
-        }
+        },
     },
     created() {
         this.URL = URL

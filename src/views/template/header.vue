@@ -1,6 +1,6 @@
 <template>
     
-        <header class="shadoww">
+        <header class="header shadoww">
             <div class="container">
                 <vs-row justify="space-between">
                     <vs-col vs-type="flex" vs-justify="end" vs-align="center" xs="3" sm="3" lg="3">
@@ -45,7 +45,7 @@ export default {
 }
 </script>
 <style lang="scss">
-    header{
+    .header{
         position: absolute;
         width: 100%;
         left: 0;
@@ -54,6 +54,10 @@ export default {
         min-height: 1.5em;
         padding: .5em 0;
         background-color: $bgWhite;
+        .vs-col{
+            padding-left: 0;
+            padding-right: 0;
+        }
         .vs-button--icon i{
             font-size: 1.5rem;
         }

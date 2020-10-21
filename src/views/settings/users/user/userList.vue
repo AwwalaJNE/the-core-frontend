@@ -23,7 +23,7 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 export default {
-    name:"listUser",
+    name:"list-user",
     mixins: [master],
     components: {
         "table-master" : TableMaster
@@ -34,20 +34,24 @@ export default {
             datacolumn: [
                 {
                     label: "Username",
-                    key: "user_name"
+                    key: "user_name",
+                    width: "xs"
                 },
                 {
                     label: "Email",
-                    key: "user_email"
+                    key: "user_email",
+                    width: "md"
                 },
                 {
                     label: "Node",
-                    key: "user_node"
+                    key: "user_node",
+                    width: "sm"
                 },
                 {
                     label: "Roles",
-                    key: "user_role"
-                }
+                    key: "user_role",
+                    width: "sm"
+                },
             ],
             loading: false,
             tempSearch: "",
@@ -73,7 +77,6 @@ export default {
                     `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.datadata = res.data.data
                     this.loading = false
                 }).catch(err => {

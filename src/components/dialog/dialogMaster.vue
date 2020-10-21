@@ -1,5 +1,8 @@
 <template>
-    <vs-dialog v-model="active" @close="handleClose">
+    <vs-dialog 
+    v-model="modalActive" 
+    prevent-close 
+    @close="closeDialog">
         <template>
           <h4 class="not-margin">
             <slot name='header'></slot>
@@ -22,11 +25,19 @@
 export default {
     name:"dialog-master",
     props: {
-        active: Boolean,
+        actived: Boolean,
         closeDialog: Function
     },
     data() {
         return {
+            modalActive: false
+        }
+    },
+    watch: {
+        actived: function(val) {
+            if(val !== undefined) {
+                this.modalActive = val || false
+            }
         }
     },
     methods: {

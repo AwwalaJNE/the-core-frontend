@@ -1,6 +1,6 @@
 <template>
     <dialog-master 
-    :active="listenActive" 
+    :actived="listenActive" 
     :closeDialog="closeDialogUser">
 
         <template v-slot:header>

@@ -9,6 +9,7 @@ module.exports = {
   devServer: {
     port,
     host,
+    public: `${host}:${port}`,
     hotOnly: true,
     disableHostCheck: true,
     clientLogLevel: 'warning',

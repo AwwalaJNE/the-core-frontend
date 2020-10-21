@@ -25,7 +25,10 @@ const routes = [
         path: "/settings/users",
         name: "users",
         component: Users,
-        meta: { requiresAuth: true }
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Users"
+        }
       },
     ]
   },

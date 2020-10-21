@@ -12,118 +12,44 @@
               <Logo />
           </div>
         </template>
-        <vs-sidebar-item id="home">
-          <template #icon>
-            <i class='bx bx-home'></i>
-          </template>
-          Home
-        </vs-sidebar-item>
-        <vs-sidebar-item id="market">
-          <template #icon>
-            <i class='bx bx-grid-alt'></i>
-          </template>
-          Market Overview
-        </vs-sidebar-item>
-        <vs-sidebar-item id="Music">
-          <template #icon>
-            <i class='bx bxs-music'></i>
-          </template>
-          Music
-        </vs-sidebar-item>
-        <vs-sidebar-group>
-          <template #header>
-            <vs-sidebar-item arrow>
-              <template #icon>
-                <i class='bx bx-group'></i>
-              </template>
-              Social media
-            </vs-sidebar-item>
-          </template>
 
-          <vs-sidebar-item id="Instagram">
-            <template #icon>
-              <i class='bx bxl-instagram'></i>
-            </template>
-            Instagram
-          </vs-sidebar-item>
-          <vs-sidebar-item id="twitter">
-            <template #icon>
-              <i class='bx bxl-twitter' ></i>
-            </template>
-            Twitter
-          </vs-sidebar-item>
-          <vs-sidebar-item id="Facebook">
-            <template #icon>
-              <i class='bx bxl-facebook' ></i>
-            </template>
-            Facebook
-          </vs-sidebar-item>
-        </vs-sidebar-group>
-        <vs-sidebar-group>
-          <template #header>
-            <vs-sidebar-item arrow>
-              <template #icon>
-                <i class='bx bx-code-alt' ></i>
-              </template>
-              Coding
-            </vs-sidebar-item>
-          </template>
+        <template v-for="(item,key) in menus">
+            <template v-if="item.children.length > 0">
+                <vs-sidebar-group :key="key">
+                  <template #header>
+                    <vs-sidebar-item arrow>
+                      <template #icon>
+                        <i :class="`bx ${item.icon !== null ? item.icon:''}`"></i>
+                      </template>
+                      {{item.label}}
+                    </vs-sidebar-item>
+                  </template>
 
-          <vs-sidebar-item id="github">
-            <template #icon>
-              <i class='bx bxl-github' ></i>
+                  <template v-for="(child, i) in item.children">
+                    <router-link :to="child.url">
+                      <vs-sidebar-item :id="child.label.trim()" :key="i">
+                        <template #icon>
+                          <i :class="`bx ${child.icon}`"></i>
+                        </template>
+                        {{child.label}}
+                      </vs-sidebar-item>
+                    </router-link>
+                  </template>
+
+                </vs-sidebar-group>
             </template>
-            Github
-          </vs-sidebar-item>
-          <vs-sidebar-item id="codepen">
-            <template #icon>
-              <i class='bx bxl-codepen'></i>
+            <template v-else>
+              <router-link :to="item.url">
+                <vs-sidebar-item :id="item.label.trim()" :key="key">
+                  <template #icon>
+                    <i :class="`bx ${item.icon !== null ? item.icon:''}`"></i>
+                  </template>
+                  {{item.label}}
+                </vs-sidebar-item>
+              </router-link>
             </template>
-            Codepen
-          </vs-sidebar-item>
-          <vs-sidebar-item id="discord">
-            <template #icon>
-              <i class='bx bxl-discord'></i>
-            </template>
-            Discord
-          </vs-sidebar-item>
-          <vs-sidebar-item id="Javascript">
-            <template #icon>
-              <i class='bx bxl-javascript' ></i>
-            </template>
-            Javascript
-          </vs-sidebar-item>
-          <vs-sidebar-item id="git">
-            <template #icon>
-              <i class='bx bxl-git' ></i>
-            </template>
-            Git
-          </vs-sidebar-item>
-        </vs-sidebar-group>
-        <vs-sidebar-item id="donate">
-          <template #icon>
-            <i class='bx bxs-donate-heart' ></i>
-          </template>
-          Donate
-        </vs-sidebar-item>
-        <vs-sidebar-item id="drink">
-          <template #icon>
-            <i class='bx bx-drink'></i>
-          </template>
-          Drink
-        </vs-sidebar-item>
-        <vs-sidebar-item id="shopping">
-          <template #icon>
-            <i class='bx bxs-shopping-bags'></i>
-          </template>
-          Shopping
-        </vs-sidebar-item>
-        <vs-sidebar-item id="chat">
-          <template #icon>
-            <i class='bx bx-chat' ></i>
-          </template>
-          Chat
-        </vs-sidebar-item>
+        </template>
+
         <template #footer>
           <vs-row justify="space-between">
             <vs-avatar badge-color="danger" badge-position="top-right">
@@ -187,7 +113,240 @@ export default {
                             icon: 'bx-upload'
                         },
                     ]
-                }
+                },
+                {
+                    label: 'Pick Up',
+                    url: null,
+                    icon: '',
+                    children: [
+                        {
+                            label: 'Pickup Request',
+                            url: '/pickup/request',
+                            icon: ''
+                        },
+                        {
+                            label: 'Pickup Schedule',
+                            url: '/pickup/schedule',
+                            icon: ''
+                        },
+                        {
+                            label: 'Pickup List',
+                            url: '/pickup/list',
+                            icon: ''
+                        },
+                    ]
+                },
+                {
+                    label: 'Inventory',
+                    url: null,
+                    icon: '',
+                    children: [
+                        {
+                            label: 'Inventory Item',
+                            url: '/inventory/item/list',
+                            icon: ''
+                        },
+                        {
+                            label: 'Inventory Bagging',
+                            url: '/inventory/bagging',
+                            icon: ''
+                        },
+                        {
+                            label: 'Inventory Unbagging',
+                            url: '/inventory/unbagging',
+                            icon: ''
+                        },
+                    ]
+                },
+                {
+                    label: 'Transport',
+                    url: null,
+                    icon: '',
+                    children: [
+                        {
+                            label: 'Transport Packing Kayu',
+                            url: '/transport/packingkayu',
+                            icon: ''
+                        },
+                        {
+                            label: 'Transport Booking',
+                            url: '/transport/booking',
+                            icon: ''
+                        },
+                        {
+                            label: 'Transport Manifest',
+                            url: '/transport/manifest',
+                            icon: ''
+                        },
+                        {
+                            label: 'Transport Manifest Pickup',
+                            url: '/transport/manifest_pickup',
+                            icon: ''
+                        },
+                        {
+                            label: 'Surat Jalan',
+                            url: '/transport/manifest-jalan',
+                            icon: ''
+                        },
+                        {
+                            label: 'Surat Muatan',
+                            url: '/transport/manifest-new',
+                            icon: ''
+                        },
+                    ]
+                },
+                {
+                    label: 'Inbound',
+                    url: null,
+                    icon: '',
+                    children: [
+                        {
+                            label: 'Inbound Incoming',
+                            url: '/inbound/prealert',
+                            icon: ''
+                        },
+                    ]
+                },
+                {
+                    label: 'Delivery',
+                    url: null,
+                    icon: '',
+                    children: [
+                        {
+                            label: 'Delivery Runsheet',
+                            url: '/delivery/runsheet',
+                            icon: ''
+                        },
+                        {
+                            label: 'Cod',
+                            url: '/delivery/cod_collect',
+                            icon: ''
+                        },
+                        {
+                            label: 'Undelivery',
+                            url: '/undelivered',
+                            icon: ''
+                        },
+                    ]
+                },
+                {
+                    label: 'Settings',
+                    url: null,
+                    icon: '',
+                    children: [
+                        {
+                            label: 'Settings Tariff',
+                            url: '/settings/tariff',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Geolocation',
+                            url: '/settings/geolocation',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Nodes',
+                            url: '/settings/nodes',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Links',
+                            url: '/settings/links',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Vehicles',
+                            url: '/settings/vehicles',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Users',
+                            url: '/settings/users',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Employee',
+                            url: '/settings/employee',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Customer',
+                            url: '/settings/customer',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Exchange Rate',
+                            url: '/settings/exchangerate',
+                            icon: ''
+                        },
+                    ]
+                },
+                {
+                    label: 'Report',
+                    url: null,
+                    icon: '',
+                    children: [
+                        {
+                            label: 'Packing List',
+                            url: '/report/packinglist',
+                            icon: ''
+                        },
+                        {
+                            label: 'Cashless',
+                            url: '/report/cashless',
+                            icon: ''
+                        },
+                    ]
+                },
+                {
+                    label: 'Irreguralities',
+                    url: null,
+                    icon: '',
+                    children: [
+                        {
+                            label: 'Irreguralities - Cancel',
+                            url: '/irreguralities/cancel',
+                            icon: ''
+                        },
+                        {
+                            label: 'Irreguralities - Return',
+                            url: '/irreguralities/return',
+                            icon: ''
+                        },
+                        {
+                            label: 'Irreguralities - Problem',
+                            url: '/irreguralities/problem',
+                            icon: ''
+                        },
+                        {
+                            label: 'Irreguralities - Hold',
+                            url: '/irreguralities/hold',
+                            icon: ''
+                        },
+                    ]
+                },
+                {
+                    label: 'Cost To Cost',
+                    url: null,
+                    icon: '',
+                    children: [
+                        {
+                            label: 'Settings',
+                            url: '/costing/list',
+                            icon: ''
+                        },
+                        {
+                            label: 'Report',
+                            url: '/costing/report',
+                            icon: ''
+                        },
+                        {
+                            label: 'Summary',
+                            url: '/costing/summary',
+                            icon: ''
+                        },
+                    ]
+                },
             ]
         }
     },
