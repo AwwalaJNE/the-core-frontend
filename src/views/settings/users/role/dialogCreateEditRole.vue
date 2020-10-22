@@ -33,6 +33,7 @@
             <vs-row justify="flex-end">
                 <vs-col w="3">
                     <vs-button
+                    transparent
                     block
                     danger
                     flat
@@ -44,6 +45,7 @@
                 </vs-col>
                 <vs-col w="3">
                     <vs-button
+                    transparent
                     block
                     flat
                     :active="true"
@@ -76,6 +78,7 @@ export default {
     },
     props: {
        closeDialogRole: Function, 
+       refresh: Function,
        active: Boolean,
        title: String,
        dataItem: Object
@@ -129,9 +132,11 @@ export default {
 
                 console.log('this.user_role_id',this.user_role_id)
                 if(this.user_role_id !== undefined && this.user_role_id !== '') {
+                    console.log('update')
                     this.updateData()
                 } else {
-                    // this.addData()
+                    console.log('create new')
+                    this.addData()
                 }
 
                 // Wait until the models are updated in the UI
@@ -152,10 +157,12 @@ export default {
                     this.form.user_role_code = ''
                     this.user_role_id = ''
                     this.closeDialogRole()
+                    this.refresh()
                     this.openNotification(null, 'Success', 'Update role is success')
                 }).catch(err => {
                     this.loading = false
                     this.closeDialogRole()
+                    this.refresh()
                     this.openNotification('danger', 'Update role is failed', err)
                 })
         },
@@ -171,10 +178,12 @@ export default {
                     this.form.user_role_name = ''
                     this.form.user_role_code = ''
                     this.closeDialogRole()
+                    this.refresh()
                     this.openNotification(null, 'Success', 'Create new role is success')
                 }).catch(err => {
                     this.loading = false
                     this.closeDialogRole()
+                    this.refresh()
                     this.openNotification('danger', 'Create new role is failed', err)
                 })
         },

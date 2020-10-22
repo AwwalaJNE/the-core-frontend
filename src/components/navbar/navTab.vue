@@ -19,14 +19,16 @@
 <template>
     <div class="left">
         <vs-navbar left-collapsed v-model="active" @input="activeTab">
-            <vs-navbar-item 
-            v-for="(item,key) in listenNavItem"
-            :key="key"
-            :active="active == item.key" 
-            :id="item.key"
-            >
-            {{item.label}}
-            </vs-navbar-item>
+            <template #left>
+                <vs-navbar-item 
+                v-for="(item,key) in listenNavItem"
+                :key="key"
+                :active="active == item.key" 
+                :id="item.key"
+                >
+                {{item.label}}
+                </vs-navbar-item>
+            </template>
         </vs-navbar>
     </div>
 </template>

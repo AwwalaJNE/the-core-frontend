@@ -27,7 +27,7 @@
                             {{ item.label }}
                         </vs-th>
                         <template v-if="hasAction == true">
-                            <vs-th class="sm action">
+                            <vs-th class="action" style="width:200px !important;">
                                 Action
                             </vs-th>
                         </template>
@@ -42,12 +42,34 @@
                         :data="item"
                     >
                         <template v-for="(column, key) of listenColumn">
-                            <vs-td :key="key" :class="column.width ? column.width : ''">
-                                {{ item[column.key] ? item[column.key] : '' }}
-                            </vs-td>
+                            <template v-if="column.type !== undefined && column.type.toLowerCase() === 'text'">
+                                <vs-td :key="key" :class="column.width ? column.width : ''">
+                                    <template v-if="split(column.key).length == 2">
+                                        {{ item.hasOwnProperty(split(column.key)[0]) ? item[split(column.key)[0]][split(column.key)[1]] : '' }}
+                                    </template>
+                                    <template v-else>
+                                        {{ item[column.key] ? item[column.key] : '' }}
+                                    </template>
+                                </vs-td>
+                            </template>
+                            <template v-else-if="column.type !== undefined && column.type.toLowerCase() === 'boolean'">
+                                <vs-td :key="key" :class="column.width ? column.width : ''">
+                                    <checkbox :isChecked="item['selected']"/>
+                                </vs-td>
+                            </template>
+                            <template v-else>
+                                <vs-td :key="key" :class="column.width ? column.width : ''">
+                                    <template v-if="split(column.key).length == 2">
+                                        {{ item.hasOwnProperty(split(column.key)[0]) ? item[split(column.key)[0]][split(column.key)[1]] : '' }}
+                                    </template>
+                                    <template v-else>
+                                        {{ item[column.key] ? item[column.key] : '' }}
+                                    </template>
+                                </vs-td>
+                            </template>
                         </template>
                         <template v-if="hasAction == true">
-                            <vs-td class="sm">
+                            <vs-td class="action" style="width:200px !important;">
                                 <vs-row justify="center">
                                     <vs-col w="4">
                                         <vs-button
@@ -78,24 +100,29 @@
             </template>
         </vs-table>
     
-        <vs-row class="mt-2" justify="flex-end">
-            <vs-col w="8">
-                <pagination 
-                :page ="pagination.current_page" 
-                :limit="pagination.limit" 
-                :pageSize="pagination.page_size"
-                @actionLimit="actionLimit"
-                @actionPagination="actionPagination"/>
-            </vs-col>
-        </vs-row>
+        <template v-if="hasPagination == true">
+            <vs-row class="mt-2" justify="flex-end">
+                <vs-col w="8">
+                    <pagination-master
+                    :page ="pagination.page" 
+                    :limit="pagination.limit" 
+                    :pageSize="pagination.page_size"
+                    @actionLimit="actionLimit"
+                    @actionPagination="actionPagination"/>
+                </vs-col>
+            </vs-row>
+        </template>
+        
     </div>
 </template>
 <script>
 import Pagination from "@/components/pagination/pagination.vue"
+import Checkbox from "@/components/input/checkbox.vue"
 export default {
     name:"tabelMaster",
     components: {
-        "pagination" : Pagination
+        "pagination-master" : Pagination,
+        "checkbox" : Checkbox
     },
     props: {
         dataTable: Array,
@@ -104,16 +131,17 @@ export default {
         pageSize: Number,
         page: Number,
         limit: Number,
-        hasAction: Boolean
+        hasAction: Boolean,
+        hasPagination: Boolean
     },
     data() {
         return {
             tableHeader: [],
-            tableBody: [],
+            tableBody: this.dataTable ? this.dataTable : [],
             pagination: {
                 limit: 5,
                 page_size: 1,
-                current_page: 1
+                page: 1
             },
             loading: false,
             refloading: null
@@ -124,11 +152,13 @@ export default {
             return this.dataColumn
         },
         listenDataTable() {
+            console.log('computed master table data', this.dataTable)
+            console.log("-----------------")
             return this.dataTable
         },
         listenTableLoading() {
             return this.tableLoading
-        }
+        },
     },
     watch: {
         tableLoading: function(val) {
@@ -149,7 +179,7 @@ export default {
         },
         page: function(val) {
             if(val !== undefined) {
-                this.pagination.current_page = val
+                this.pagination.page = val
             }
         },
         limit: function(val) {
@@ -159,6 +189,9 @@ export default {
         }
     },
     methods: {
+        split(arr){
+            return arr.split(".")
+        },
         loadingHandler(){
             this.refloading = this.$vs.loading({
                 target: this.$refs.tablee,
@@ -209,6 +242,12 @@ export default {
                 width: auto;
             }
             .action{
+                &.vs-table__th{
+                    width: 280px !important;
+                }
+                &.vs-table__td{
+                    width: 280px !important;
+                }
                 .vs-table__th__content{
                     text-align: center;
                     justify-content: center;

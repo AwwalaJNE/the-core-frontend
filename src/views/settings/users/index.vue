@@ -28,9 +28,7 @@
             <vs-row justify="space-around">
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center" :w="`${navActive === 'k-PERMISSIONS'?'4':'12'}`">
                     <div class="box view">
-                        <div class="nav-box">
-                            <nav-item :navItem="navItemm" @activeTab="activeTab" />
-                        </div>
+                        <nav-item :navItem="navItemm" @activeTab="activeTab" />
                         <template v-if="navActive === 'k-USER'">
                             <transition name="slide-fade">
                                 <user-list />
@@ -43,7 +41,13 @@
                         </template>
                         <template v-if="navActive === 'k-PERMISSIONS'">
                             <transition name="slide-fade">
-                                
+                                <div class="dataRole">
+                                    <ul>
+                                       <template v-for="(item,key) in dataRole">
+                                           <li :key="key" @click="getRolePermission(item.user_role_id)">{{item.user_role_name}}</li>
+                                       </template> 
+                                    </ul>
+                                </div>
                             </transition>
                         </template>
                     </div>
@@ -52,15 +56,13 @@
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="8">
                        <div class="box">
                            <table-master 
-                                :dataTable="dataTable" 
+                                :dataTable="permissionDisplay" 
                                 :dataColumn="datacolumn" 
-                                :tableLoading="loading"
+                                :tableLoading="loadingPermission"
                                 :pageSize="pagination.page_size"
                                 :page="pagination.page"
                                 :limit="pagination.limit"
                                 :hasAction="false"
-                                @actionLimit="actionLimit"
-                                @actionPagination="actionPagination"
                                 />
                        </div>
                     </vs-col>
@@ -85,6 +87,8 @@
     </div>
 </template>
 <script>
+import axios from "axios";
+import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
@@ -97,6 +101,7 @@ import DialogCreateEditRole from "@/views/settings/users/role/dialogCreateEditRo
 
 export default {
     name:"Users",
+    mixins: [master],
     components: {
         "table-master" : TableMaster,
         "nav-item": NavItem,
@@ -129,36 +134,29 @@ export default {
             dialogUser: false,
             dialogRole: false,
             title: "User List",
-            dataTable: [],
+            dataRole: [],
+            loadingDataRole: false,
+            permission: [],
+            loadingPermission: false,
+            permissionDisplay: [],
+            keysPermission: {},
             datacolumn: [
                 {
                     label: "Menu",
-                    key: "permission_menu",
+                    key: "user_permission_name",
+                    type: "text",
                     width: "sm"
                 },
                 {
-                    label: "View",
-                    key: "permission_view",
-                    width: "auto"
-                },
-                {
-                    label: "Add",
-                    key: "permission_add",
-                    width: "auto"
-                },
-                {
-                    label: "Edit",
-                    key: "permission_edit",
-                    width: "auto"
-                },
-                {
-                    label: "All",
-                    key: "permission_all",
-                    width: "auto"
+                    label: "Select",
+                    key: "selected",
+                    type: "boolean",
+                    width: "xs"
                 },
                 {
                     label: "Access Data",
                     key: "permission_access_data",
+                    type: "selector",
                     width: "auto"
                 }
             ],
@@ -180,6 +178,11 @@ export default {
                 return item.key == val
             })
             this.title = item[0].title
+
+            if(this.navActive === "k-PERMISSIONS") {
+                this.getDataRole()
+                this.getDataPermission()
+            }
         },
         openDialog(){
             switch(this.navActive) {
@@ -206,6 +209,98 @@ export default {
         actionPagination(val) {
             this.pagination.page = val
         },
+
+        async getDataRole(){
+            this.loadingDataRole = true
+            await axios
+                .get(this.URL.role + 
+                `?n=1&sort_order=desc&&limit=1000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log(res)
+                    if(res.data.data.length > 0) {
+                        this.dataRole = res.data.data
+                    } else {
+                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                    this.loadingDataRole = false
+                }).catch(err => {
+                    this.loadingDataRole = false
+                    this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataPermission(){
+            this.loadingPermission = true
+            await axios
+                .get(this.URL.permission + 
+                `?n=1&sort_order=desc&&limit=1000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log('getDataPermission',res.data.data)
+                    if(res.data.data.length > 0) {
+                        let data = res.data.data
+                        data.map(item => {
+                            item["selected"] = false
+                        })
+                        this.permission = data
+                        this.permissionDisplay = data
+                        console.log('meong 1 ', this.permission)
+                    } else {
+                        this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
+                    }
+                    
+                    this.loadingPermission = false
+                }).catch(err => {
+                    this.loadingPermission = false
+                    this.openNotification('danger', 'Failed to populate permission data', err)
+                })
+        },
+
+        async getRolePermission(val){
+            console.log("user_role_id = ", val)
+            await this.getDataPermission()
+            this.permissionDisplay = []
+            this.keysPermission = {}
+            console.log('this.keysPermission meong', this.keysPermission)
+            await axios
+                .get(this.URL.role + `/${val}/permission`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log('getRolePermission',res.data.data)
+                    let temp = {}
+                    let data = res.data.data.permission
+                    if(data.length > 0) {
+                        // meanwhile we create keys object of role permission to reduce time complexity 
+                        // when comparing between permission and role permission data itself
+                        data.map(item => {
+                            temp[item.pivot.user_permission_id] = item.user_permission_name
+                        })
+                        this.keysPermission = temp
+                    } else {
+                        this.keysPermission = {}
+                    }
+                    this.filterNow()
+                })
+                .catch(err => {
+                    // this.loadingDataRole = false
+                    this.openNotification('danger', 'Failed to populate role permission data', err)
+                })
+                
+                console.log('filtered permission ', this.permission)
+        },
+        filterNow(){
+            if(this.permission.length > 0) {
+                console.log('this.keysPermission before filter', this.keysPermission)
+                this.permission.map(item => {
+                    if(this.keysPermission.hasOwnProperty(item.user_permission_id)) {
+                        item["selected"] = true
+                    } 
+                })
+                this.permissionDisplay = this.permission
+                console.log('this.keysPermission after filter', this.keysPermission)
+            }
+        }
     },
 }
 </script>
@@ -221,6 +316,29 @@ export default {
             left: 0;
             width: auto;
             max-width: 350px;
+        }
+        .dataRole{
+            position: relative;
+            width: 100%;
+            padding: 15px;
+            ul{
+                position: relative;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                li{
+                    text-align: left;
+                    cursor: pointer;
+                    padding: 1em;
+                    border-bottom: 1px solid #eee;
+                    background-color: white;
+                    transition: all .2s ease;
+                    &:hover{
+                        background-color: #f1f1f1;
+                        transition: all .3s ease-in;
+                    }
+                }
+            }
         }
     }
 </style>

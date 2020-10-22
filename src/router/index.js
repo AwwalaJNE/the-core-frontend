@@ -8,6 +8,15 @@ import NotFound from '@/components/NotFound.vue'
 // === USERS ===
 import Users from '@/views/settings/users'
 
+// === GEOLOCATION ===
+import Geolocation from '@/views/settings/geolocation'
+
+// === NODES ===
+import Nodes from '@/views/settings/nodes'
+
+// === TARIFF ===
+import Tariff from '@/views/settings/tariff'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -28,6 +37,33 @@ const routes = [
         meta: { 
           requiresAuth: true,
           breadCrumb: "Users"
+        }
+      },
+      {
+        path: "/settings/geolocation",
+        name: "Geolocation",
+        component: Geolocation,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Geolocation"
+        }
+      },
+      {
+        path: "/settings/nodes",
+        name: "Nodes",
+        component: Nodes,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Nodes"
+        }
+      },
+      {
+        path: "/settings/tariff",
+        name: "Tariff",
+        component: Tariff,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Tariff"
         }
       },
     ]

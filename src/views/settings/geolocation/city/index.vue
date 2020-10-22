@@ -1,10 +1,3 @@
-<!--
-    - @desc component yang handle crud frontend user role
-    - @param -
-    - @emit -
-    - @props -
--->
-
 <template>
     <div>
         <table-master 
@@ -23,26 +16,25 @@
         />
 
         <!--Create User Dialog end-->
-            <dialog-create-edit-role 
+            <!-- <dialog-create-edit-role 
             :active="dialogRole" 
             :closeDialogRole="closeDialogRole"
             :refresh="refresh"
             title="Edit role"
             :dataItem="dataItem"
-            />
+            /> -->
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
-import DialogCreateEditRole from "@/views/settings/users/role/dialogCreateEditRole"
 export default {
-    name:"Role-list",
+    name:"city-list",
     mixins: [master],
     components: {
         "table-master" : TableMaster,
-        "dialog-create-edit-role": DialogCreateEditRole
+        // "dialog-create-edit-role": DialogCreateEditRole
     },
     data() {
         return {
@@ -50,19 +42,29 @@ export default {
             datacolumn: [
                 {
                     label: "ID",
-                    key: "user_role_id",
-                    width: "xxs"
+                    key: "geolocation_city_id",
+                    width: "xs"
                 },
                 {
-                    label: "Roles",
-                    key: "user_role_name",
+                    label: "Province",
+                    key: "geolocation_province",
                     width: "auto"
-                }
+                },
+                {
+                    label: "Name",
+                    key: "geolocation_city_name",
+                    width: "auto"
+                },
+                {
+                    label: "Timezone",
+                    key: "geolocation_timezone",
+                    width: "auto"
+                },
             ],
             loading: false,
             dataItem: {},
             tempSearch: "",
-            dialogRole: false,
+            dialogGeolocation: false,
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -79,7 +81,7 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.role + 
+                .get(this.URL.geolocation_city + 
                 `?n=1&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
@@ -91,39 +93,20 @@ export default {
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
-                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        this.openNotification('warn', 'City data is empty!', ' Please create a new city data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate role list', err)
+                    this.openNotification('danger', 'Failed to populate city list', err)
                 })
         },
-        actionUpdate(val){
-            if(this.dataTable.length > 0) {
-                let obj = this.dataTable.filter(item => {
-                    return item.user_role_id === val
-                })
-                this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
-                this.$nextTick(() => {
-                    this.dialogRole = true
-                });
-            }
+        actionUpdate(){
+
         },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.role + `/${this.user_role_id}`,
-                    this.Helper.header())
-                .then(res => {
-                    console.log('res', res)
-                    this.openNotification(null, 'Success', 'Update role is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Update role is failed', err)
-                })
+        actionRemove(){
+
         },
         actionLimit(val){
             this.pagination.limit = val
@@ -134,12 +117,6 @@ export default {
             this.pagination.page = val
             this.getTableData(this.pagination.limit,this.pagination.page)
         },
-        refresh(){
-            this.getTableData(this.pagination.limit,this.pagination.page)
-        },
-        closeDialogRole() {
-            this.dialogRole = false
-        }
     },
     mounted() {
         this.getTableData(this.pagination.limit,this.pagination.page)

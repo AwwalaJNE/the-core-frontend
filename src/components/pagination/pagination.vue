@@ -18,8 +18,8 @@
             <div class="col">
                 <vs-pagination 
                 v-model="current_page" 
-                :dotted-number="listenPageLimit"
-                :length="listenPageSize" 
+                :dotted-number="limit_page"
+                :length="page_size" 
                 @input="actionPagination" />
             </div>
         </div>
@@ -42,16 +42,22 @@ export default {
             value:''
         }
     },
-    computed: {
-        listenPageSize() {
-            return this.pageSize
+    watch: {
+        page: function(val) {
+            if(val !== undefined) {
+                this.current_page = val
+            }
         },
-        listenPageLimit() {
-            return this.limit
+        pageSize: function(val) {
+            if(val !== undefined) {
+                this.page_size = val
+            }
         },
-        // listenPage() {
-        //     return this.page <= this.pageSize ? this.page : this.pageSize
-        // },
+        limit: function(val) {
+            if(val !== undefined) {
+                this.limit_page = val
+            }
+        }
     },
     methods: {
         actionLimit(val) {
