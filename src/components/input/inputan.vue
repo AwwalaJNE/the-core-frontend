@@ -5,9 +5,9 @@
 -->
 
 <template>
-    <ValidationProvider :name="name" :rules="rules" v-slot="{ errors }">
+    <ValidationProvider class="validation" :name="name" :rules="rules" v-slot="{ errors }">
         <slot name='inputan' v-bind:err="errors[0]"></slot>
-        <span>{{ errors[0] }}</span>
+        <p class="err-message">{{ errors[0] }}</p>
     </ValidationProvider>
 </template>
 <script>
@@ -24,3 +24,13 @@ export default {
     }
 }
 </script>
+<style lang="scss">
+    .validation{
+        text-align: left;
+        .err-message{
+            margin: 0;
+            padding: 0;
+            font-size: .8em;
+        }
+    }
+</style>

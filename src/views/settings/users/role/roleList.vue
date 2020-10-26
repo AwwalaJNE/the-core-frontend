@@ -40,9 +40,22 @@ import DialogCreateEditRole from "@/views/settings/users/role/dialogCreateEditRo
 export default {
     name:"Role-list",
     mixins: [master],
+    props: {
+        query: String
+    },
     components: {
         "table-master" : TableMaster,
         "dialog-create-edit-role": DialogCreateEditRole
+    },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
+            }
+        }
     },
     data() {
         return {
@@ -61,7 +74,7 @@ export default {
             ],
             loading: false,
             dataItem: {},
-            tempSearch: "",
+            tempSearch: this.query ? this.query : "",
             dialogRole: false,
             pagination: {
                 limit:5,
@@ -75,23 +88,21 @@ export default {
             this.loading = true
             let query = "";
             if(q !== undefined) {
-                this.tempSearch = q
                 query = q
             }
             await axios
                 .get(this.URL.role + 
-                `?n=1&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
-                    if(res.data.data.length > 0) {
-                        this.dataTable = res.data.data
+                    this.dataTable = res.data.data
 
-                        this.pagination.page = res.data.meta.current_page
-                        this.pagination.limit = parseInt(res.data.meta.per_page)
-                        this.pagination.page_size = res.data.meta.last_page
-                    } else {
-                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    this.pagination.page = res.data.meta.current_page
+                    this.pagination.limit = parseInt(res.data.meta.per_page)
+                    this.pagination.page_size = res.data.meta.last_page
+                    if(res.data.data.length == 0) {
+                        this.openNotification('warn', 'Failed to populate roles data', ' data is empty or not found, please check your keyword in the input search')
                     }
                     
                     this.loading = false
@@ -103,7 +114,7 @@ export default {
         actionUpdate(val){
             if(this.dataTable.length > 0) {
                 let obj = this.dataTable.filter(item => {
-                    return item.user_role_id === val
+                    return item.user_role_id === val.user_role_id
                 })
                 this.dataItem = obj[0]
                 console.log(this.dataItem, 'nihh val', val)
@@ -128,21 +139,21 @@ export default {
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         refresh(){
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogRole() {
             this.dialogRole = false
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
     },
 }
 </script>

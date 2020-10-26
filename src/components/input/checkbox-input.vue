@@ -1,14 +1,25 @@
 <template>
     <div class="checkbox-inp">
-      <vs-checkbox v-model="option1" @change="changed" />
+        <inputan :name="name" :rules="rules">
+            <template v-slot:inputan="props">
+                <vs-checkbox 
+                v-model="option1" 
+                @change="changed" 
+                :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"/>
+            </template>
+        </inputan>
     </div>
 </template>
 <script>
+import Inputan from "@/components/input/inputan"
 export default {
     name:"checkbox",
     props: {
         isChecked: Boolean,
         formKey: String
+    },
+    components: {
+        "inputan": Inputan
     },
     data() {
         return {

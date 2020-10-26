@@ -6,6 +6,7 @@ export default {
     permission: api + "permission",
 
     // geolocation
+    geolocation: api + "geolocation",
     geolocation_country: api + "geolocation-country",
     geolocation_city: api + "geolocation-city",
     geolocation_district: api + "geolocation-district",
@@ -17,4 +18,7 @@ export default {
     node_commission: api + "node-commission",
     node_link: api + "node-link",
     node_type: api + "node-type",
+
+    // employee
+    employee: api + "employee",
 }

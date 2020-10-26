@@ -28,19 +28,14 @@
                 <div class="nav-box">
                     <nav-item :navItem="navItemm" @activeTab="activeTab" />
                 </div>
-                <template v-if="navActive === 'k-BASE-TARIFF'">
+                <template v-if="navActive === 'k-CUSTOMER-LIST'">
                     <transition name="slide-fade">
-                        <base-tariff />
+                        <customer-list />
                     </transition>
                 </template>
-                <template v-else-if="navActive === 'k-SPECIAL-TARIFF'">
+                <template v-else-if="navActive === 'k-CUSTOMER-TYPE'">
                     <transition name="slide-fade">
-                        <special-tariff />
-                    </transition>
-                </template>
-                <template v-else-if="navActive === 'k-SURCHARGE'">
-                    <transition name="slide-fade">
-                        <surcharge />
+                        <customer-type />
                     </transition>
                 </template>
 
@@ -52,19 +47,17 @@
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 
-import BaseTariff from "@/views/settings/tariff/baseTariff"
-import SpecialTariff from "@/views/settings/tariff/specialTariff"
-import Surcharge from "@/views/settings/tariff/surcharge"
+import CustomerList from "@/views/settings/customer/customerList"
+import CustomerType from "@/views/settings/customer/customerType"
 
 
 export default {
-    name:"tariff-index",
+    name:"customer-index",
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
-        "base-tariff": BaseTariff,
-        "special-tariff": SpecialTariff,
-        "surcharge": Surcharge,
+        "customer-list": CustomerList,
+        "customer-type": CustomerType,
         // "role-list": RoleList,
         // "dialog-create-edit-user": DialogCreateEditUser,
         // "dialog-create-edit-role": DialogCreateEditRole
@@ -73,23 +66,18 @@ export default {
         return {
             navItemm: [
                 {
-                    label: "BASE TARIFF",
-                    key: "k-BASE-TARIFF",
-                    title: "Base Tariff List"
+                    label: "CUSTOMER",
+                    key: "k-CUSTOMER-LIST",
+                    title: "Customer List"
                 },
                 {
-                    label: "SPECIAL TARIFF",
-                    key: "k-SPECIAL-TARIFF",
-                    title: "Special Tariff List"
-                },
-                {
-                    label: "SURCHARGE",
-                    key: "k-SURCHARGE",
-                    title: "Surcharge List"
+                    label: "CUSTOMER TYPE",
+                    key: "k-CUSTOMER-TYPE",
+                    title: "Customer Type"
                 },
             ],
-            title:"Nodes",
-            navActive: "k-BASE-TARIFF"
+            title:"Customer List",
+            navActive: "k-CUSTOMER-LIST"
         }
     },
     methods: {

@@ -76,7 +76,7 @@
                                             block
                                             flat
                                             :active="true"
-                                            @click="actionUpdate(item.user_role_id)"
+                                            @click="actionUpdate(item)"
                                         >
                                             Edit
                                         </vs-button>
@@ -87,7 +87,7 @@
                                             flat
                                             :active="true"
                                             type="submit"
-                                            @click="actionRemove(item.user_role_id)"
+                                            @click="actionRemove(item)"
                                         >
                                             Remove
                                         </vs-button>
@@ -252,6 +252,10 @@ export default {
                     text-align: center;
                     justify-content: center;
                 }
+            }
+            .checkbox-inp .vs-icon-check span {
+                width: 8px;
+                margin-left: 0px;
             }
         }
     }

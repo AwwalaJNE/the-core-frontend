@@ -133,7 +133,7 @@ export default {
         updateValue(type, val) {
             let err = this.form[`${type}`] !== undefined ? this.form[type] = val : true
             if(err == true) {
-                console.log(`error this.form[${type}] undefined | val ` + val + this.form[`${type}`])
+                console.log(`error this.form[${type}] | val ` + val + this.form[`${type}`])
             }
         },
         handleSubmit(){

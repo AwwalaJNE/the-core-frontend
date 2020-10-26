@@ -26,56 +26,77 @@
         <section class="geolocation">
             <div class="box view">
                 <div class="nav-box">
-                    <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                    <vs-row justify="space-between">
+                        <vs-col xs="6" sm="9" lg="9">
+                            <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                        </vs-col>
+                        <vs-col xs="6" sm="3" lg="3">
+                            <search-input ref="searchInput" @searchValue="searchValue"/>
+                        </vs-col>
+                    </vs-row>
                 </div>
                 <template v-if="navActive === 'k-GEOLOCATION'">
-                    <transition name="slide-fade">
+                    <transition name="slide-fade" :query="tempSearch">
                         <geo-location />
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-CITY'">
                     <transition name="slide-fade">
-                        <city />
+                        <city :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-COUNTRY'">
                     <transition name="slide-fade">
-                        <country />
+                        <country :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-PROVINCE'">
                     <transition name="slide-fade">
-                        <province />
+                        <province :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-DISTRICT'">
                     <transition name="slide-fade">
-                        <district />
+                        <district :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-SUBDISTRICT'">
                     <transition name="slide-fade">
-                        <subdistrict />
+                        <subdistrict :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-TIMEZONE'">
                     <transition name="slide-fade">
-                        <timezone />
+                        <timezone :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-ZIPCODE'">
                     <transition name="slide-fade">
-                        <zipcode />
+                        <zipcode :query="tempSearch"/>
                     </transition>
                 </template>
 
             </div>
         </section>
+
+        <!--Create Country-->
+            <dialog-create-edit-country 
+            :active="dialogGeolocationCountry" 
+            :closeDialog="closeDialogCountry"
+            title="Create Country"
+            />
+        <!--Create Country-->
+            <dialog-create-edit-province 
+            :active="dialogGeolocationProvince" 
+            :closeDialog="closeDialogProvince"
+            title="Create Province"
+            />
     </div>
 </template>
 <script>
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
+import SearchInput from "@/components/search/searchInput"
 
 import Geolocation from "@/views/settings/geolocation/geolocation"
 import City from "@/views/settings/geolocation/city"
@@ -86,11 +107,15 @@ import Subdistrict from "@/views/settings/geolocation/subdistrict"
 import Timezone from "@/views/settings/geolocation/timezone"
 import Zipcode from "@/views/settings/geolocation/zipcode"
 
+import DialogCreateEditCountry from "@/views/settings/geolocation/country/dialogCreateEditCountry"
+import DialogCreateEditProvince from "@/views/settings/geolocation/province/dialogCreateEditProvince.vue"
+
 export default {
     name:"geolocation-index",
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
+        "search-input": SearchInput,
         "geo-location": Geolocation,
         "city": City,
         "country": Country,
@@ -99,6 +124,8 @@ export default {
         "subdistrict": Subdistrict,
         "timezone": Timezone,
         "zipcode": Zipcode,
+        "dialog-create-edit-country": DialogCreateEditCountry,
+        "dialog-create-edit-province": DialogCreateEditProvince,
         // "role-list": RoleList,
         // "dialog-create-edit-user": DialogCreateEditUser,
         // "dialog-create-edit-role": DialogCreateEditRole
@@ -148,12 +175,24 @@ export default {
                 },
             ],
             title:"Geolocation List",
-            navActive: "k-GEOLOCATION"
+            navActive: "k-GEOLOCATION",
+            tempSearch: "",
+            dialogGeolocation: false,
+            dialogGeolocationCountry: false,
+            dialogGeolocationProvince: false,
         }
     },
     methods: {
+        searchValue (val) {
+            this.tempSearch = val
+            console.log("this.tempSearch = ",this.tempSearch)
+        },
+        clearSearch() {
+            this.$refs.searchInput.clear()
+        },
         activeTab(val) {
             this.navActive = val
+            this.clearSearch()
             console.log(this.navActive)
             let item = this.navItemm.filter(item => {
                 return item.key == val
@@ -161,8 +200,27 @@ export default {
             this.title = item[0].title
         },
         openDialog(){
-
+            switch(this.navActive) {
+                case "k-GEOLOCATION":
+                    this.dialogGeolocation = true
+                    break;
+                case "k-COUNTRY":
+                    this.dialogGeolocationCountry = true
+                    break;
+                case "k-PROVINCE":
+                    this.dialogGeolocationProvince = true
+                    break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
         },
+        closeDialogCountry() {
+            this.dialogGeolocationCountry = false
+        },
+        closeDialogProvince() {
+            this.dialogGeolocationProvince = false
+        }
     },
 }
 </script>

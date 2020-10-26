@@ -14,8 +14,8 @@
                         <input-general 
                         name="Role" 
                         rules="required" 
-                        formKey="user_role_name"
-                        :valueData="form.user_role_name"
+                        formKey="geolocation_city_name"
+                        :valueData="form.geolocation_city_name"
                         @updateValue="updateValue" />
 
                         <input-general 

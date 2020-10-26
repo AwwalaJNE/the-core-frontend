@@ -15,26 +15,40 @@
         @actionPagination="actionPagination"
         />
 
-        <!--Create User Dialog end-->
-            <!-- <dialog-create-edit-role 
-            :active="dialogRole" 
-            :closeDialogRole="closeDialogRole"
+        <!--Update User Country-->
+            <dialog-create-edit-country 
+            :active="dialogGeolocationCountry" 
+            :closeDialog="closeDialogCountry"
             :refresh="refresh"
-            title="Edit role"
+            title="Update Country"
             :dataItem="dataItem"
-            /> -->
+            />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogCreateEditCountry from "@/views/settings/geolocation/country/dialogCreateEditCountry"
 export default {
     name:"country-list",
     mixins: [master],
     components: {
         "table-master" : TableMaster,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-create-edit-country": DialogCreateEditCountry
+    },
+    props: {
+        query: String
+    },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
+            }
+        }
     },
     data() {
         return {
@@ -58,8 +72,8 @@ export default {
             ],
             loading: false,
             dataItem: {},
-            tempSearch: "",
-            dialogGeolocation: false,
+            tempSearch: this.query ? this.query : "",
+            dialogGeolocationCountry: false,
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -72,7 +86,6 @@ export default {
             this.loading = true
             let query = "";
             if(q !== undefined) {
-                this.tempSearch = q
                 query = q
             }
             await axios
@@ -80,15 +93,13 @@ export default {
                 `?n=1&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
-                    if(res.data.data.length > 0) {
-                        this.dataTable = res.data.data
+                    this.dataTable = res.data.data
 
-                        this.pagination.page = res.data.meta.current_page
-                        this.pagination.limit = parseInt(res.data.meta.per_page)
-                        this.pagination.page_size = res.data.meta.last_page
-                    } else {
-                        this.openNotification('warn', 'Country data is empty!', ' Please create a new country data')
+                    this.pagination.page = res.data.meta.current_page
+                    this.pagination.limit = parseInt(res.data.meta.per_page)
+                    this.pagination.page_size = res.data.meta.last_page
+                    if(res.data.data.length == 0) {
+                        this.openNotification('warn', 'Failed to populate country data', ' data is empty or not found, please check your keyword in the input search')
                     }
                     
                     this.loading = false
@@ -97,8 +108,17 @@ export default {
                     this.openNotification('danger', 'Failed to populate country list', err)
                 })
         },
-        actionUpdate(){
-
+        actionUpdate(val){
+            if(this.dataTable.length > 0) {
+                let obj = this.dataTable.filter(item => {
+                    return item.user_role_id === val
+                })
+                this.dataItem = obj[0]
+                console.log(this.dataItem, 'nihh val', val)
+                this.$nextTick(() => {
+                    this.dialogGeolocationCountry = true
+                });
+            }
         },
         actionRemove(){
 
@@ -106,15 +126,21 @@ export default {
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
+        refresh(){
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        },
+        closeDialogCountry() {
+            this.dialogGeolocationCountry = false
+        }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
     },
 }
 </script>

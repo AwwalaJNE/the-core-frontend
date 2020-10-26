@@ -22,21 +22,30 @@
                 </div>
             </vs-col>
         </vs-row>
-        
+
         
         <section class="users">
             <vs-row justify="space-around">
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center" :w="`${navActive === 'k-PERMISSIONS'?'4':'12'}`">
                     <div class="box view">
-                        <nav-item :navItem="navItemm" @activeTab="activeTab" />
+
+                        <vs-row justify="space-between">
+                            <vs-col xs="6" sm="9" lg="9">
+                                <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                            </vs-col>
+                            <vs-col xs="6" sm="3" lg="3">
+                                <search-input ref="searchInput" @searchValue="searchValue"/>
+                            </vs-col>
+                        </vs-row>
+
                         <template v-if="navActive === 'k-USER'">
                             <transition name="slide-fade">
-                                <user-list />
+                                <user-list :query="tempSearch"/>
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-ROLES'">
                             <transition name="slide-fade">
-                                <role-list />
+                                <role-list :query="tempSearch"/>
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-PERMISSIONS'">
@@ -92,6 +101,7 @@ import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
+import SearchInput from "@/components/search/searchInput"
 // users
 import UserList from "@/views/settings/users/user/userList"
 import DialogCreateEditUser from "@/views/settings/users/user/dialogCreateEditUser"
@@ -106,6 +116,7 @@ export default {
         "table-master" : TableMaster,
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
+        "search-input": SearchInput,
         "user-list": UserList,
         "role-list": RoleList,
         "dialog-create-edit-user": DialogCreateEditUser,
@@ -172,8 +183,16 @@ export default {
         }
     },
     methods: {
+        searchValue (val) {
+            this.tempSearch = val
+            console.log("this.tempSearch = ",this.tempSearch)
+        },
+        clearSearch() {
+            this.$refs.searchInput.clear()
+        },
         activeTab(val) {
             this.navActive = val
+            this.clearSearch()
             let item = this.navItemm.filter(item => {
                 return item.key == val
             })
@@ -214,7 +233,7 @@ export default {
             this.loadingDataRole = true
             await axios
                 .get(this.URL.role + 
-                `?n=1&sort_order=desc&&limit=1000&page=1`, 
+                `?n=1&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)

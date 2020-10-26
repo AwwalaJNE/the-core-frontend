@@ -17,6 +17,15 @@ import Nodes from '@/views/settings/nodes'
 // === TARIFF ===
 import Tariff from '@/views/settings/tariff'
 
+// === Employee ===
+import Employee from "@/views/settings/employee"
+
+// === Vehicles ===
+import Vehicles from "@/views/settings/vehicles"
+
+// === Customer ===
+import Customer from "@/views/settings/customer"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -64,6 +73,33 @@ const routes = [
         meta: { 
           requiresAuth: true,
           breadCrumb: "Tariff"
+        }
+      },
+      {
+        path: "/settings/employee",
+        name: "Employee",
+        component: Employee,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Employee"
+        }
+      },
+      {
+        path: "/settings/vehicles",
+        name: "Vehicles",
+        component: Vehicles,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Vehicles"
+        }
+      },
+      {
+        path: "/settings/customer",
+        name: "Customer",
+        component: Customer,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Customer"
         }
       },
     ]
