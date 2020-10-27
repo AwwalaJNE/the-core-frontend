@@ -55,47 +55,47 @@ export default {
             datacolumn: [
                 {
                     label: "ID",
-                    key: "user_role_id",
+                    key: "geolocation_id",
                     width: "xs"
                 },
                 {
                     label: "Geolocation",
-                    key: "user_role_name1",
+                    key: "geolocation_location_name",
                     width: "auto"
                 },
                 {
                     label: "Province",
-                    key: "user_role_name2",
+                    key: "geolocation_province_name",
                     width: "auto"
                 },
                 {
                     label: "City",
-                    key: "user_role_name3",
+                    key: "geolocation_city_name",
                     width: "auto"
                 },
                 {
                     label: "District",
-                    key: "user_role_name4",
+                    key: "geolocation_district_name",
                     width: "auto"
                 },
                 {
-                    label: "SubDistrict",
-                    key: "user_role_name5",
+                    label: "Subdistrict",
+                    key: "geolocation_subdistrict_name",
                     width: "auto"
                 },
                 {
                     label: "Zip Code",
-                    key: "user_role_name6",
+                    key: "geolocation_subdistrict_zip_code",
                     width: "auto"
                 },
                 {
                     label: "Tariff Code",
-                    key: "user_role_name7",
+                    key: "geolocation_subdistrict_tarif_code",
                     width: "auto"
                 },
                 {
                     label: "Timezone",
-                    key: "user_role_name8",
+                    key: "geolocation_province_time_zone",
                     width: "auto"
                 },
             ],

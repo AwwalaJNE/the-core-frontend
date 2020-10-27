@@ -18,7 +18,7 @@
                     <vs-col vs-type="flex" vs-justify="end" vs-align="center" xs="9" sm="6" lg="6">
                         <vs-row justify="flex-end">
                             <vs-col vs-type="flex" vs-justify="end" vs-align="center" w="4">
-                                [component]
+                                
                             </vs-col>
                         </vs-row>
                     </vs-col>
