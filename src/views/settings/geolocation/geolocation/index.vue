@@ -7,10 +7,9 @@
         :pageSize="pagination.page_size"
         :page="pagination.page"
         :limit="pagination.limit"
-        :hasAction="true"
+        :hasAction="false"
         :hasPagination="true"
-        @actionUpdate="actionUpdate"
-        @actionRemove="actionRemove"
+        
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         />
@@ -53,11 +52,6 @@ export default {
         return {
             dataTable: [],
             datacolumn: [
-                {
-                    label: "ID",
-                    key: "geolocation_id",
-                    width: "xs"
-                },
                 {
                     label: "Geolocation",
                     key: "geolocation_location_name",

@@ -30,7 +30,13 @@ export default {
         .err-message{
             margin: 0;
             padding: 0;
+            margin-bottom: .5em;
+            margin-left: .7em;
             font-size: .8em;
+            color: rgba(var(--vs-danger), 1);
+        }
+        .con-form .vs-input-content{
+            margin: 10px 0px 5px;
         }
     }
 </style>

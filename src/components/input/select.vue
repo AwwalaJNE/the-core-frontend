@@ -6,6 +6,7 @@
                 filter
                 :multiple="listenIsMultiple"
                 :placeholder="name"
+                :label="name"
                 v-model="value"
                 @change="updateValue"
                 :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
@@ -36,16 +37,18 @@ export default {
         name: String,
         rules: String,
         valueData: Array,
+        // loadingData: Boolean,
         selectedValue: [Array, String, Number],
         formKey: String,
         isMultiple: Boolean
     },
     data() {
         return {
-            DataArr: this.valueData,
+            DataArr: this.valueData !== null ? this.valueData : [],
             value: this.selectedValue ? this.selectedValue :"",
             arrValue: this.selectedValue ? this.selectedValue : [],
-            ooo: ""
+            // loading: true,
+            // loadingInjector : null
         }
     },
     computed: {
@@ -60,6 +63,7 @@ export default {
         valueData: function (val) {
             if (val != undefined) {
                 this.DataArr = val
+                // this.DataArr.length > 0 ? this.loading = false : this.loading = true
             }
         },
         selectedValue: function (val) {
@@ -70,9 +74,28 @@ export default {
                     this.arrValue = val
                 }
             }
-        }
+        },
+        // loadingData: function (val) {
+        //     if(val != undefined) {
+        //         this.loading = val || false
+        //     }
+        // },
+        // loading : function (val) {
+        //     val == true ? this.loadingHandler() : this.closeLoading()
+        // }
     },
     methods: {
+        // loadingHandler(){
+        //     let ref = `${this.name}`
+        //     console.log('this.$refs.ref', this.$refs.nameah, this.name)
+        //     this.loadingInjector = this.$vs.loading({
+        //         target: this.$refs.nameah,
+        //         color: '#333'
+        //     })
+        // },
+        // closeLoading(){
+        //     this.loadingInjector !== null ? this.loadingInjector.close() : null
+        // },
         updateValue(val){
             if(this.isMultiple == false) {
                 this.$emit("updateValue", this.listenFormKey, val)
@@ -83,3 +106,17 @@ export default {
     },
 }
 </script>
+<style lang="scss">
+    .m-select{
+        &.vs-select-content{
+            max-width: unset;
+            margin: 10px 0;
+        }
+        .vs-select__label--label{
+            transform: translate(-3px, -28px) !important;
+        }
+        .vs-select.activeOptions .vs-select__input:focus ~ .vs-select__label--label {
+            transform: translate(-3%, -28px) !important;
+        }
+    }
+</style>

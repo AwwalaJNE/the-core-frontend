@@ -6,6 +6,7 @@
         v-model="active"
         :open="expand"
         @update:open="actionSidebar"
+        @input="redirect"
         >
         <template>
           <div class="box-logo">
@@ -26,21 +27,35 @@
                   </template>
 
                   <template v-for="(child, i) in item.children">
-                    <router-link :to="child.url">
-                      <vs-sidebar-item :id="child.label.trim()" :key="i">
+                    <!-- <router-link :to="child.url" :key="i">
+                      <vs-sidebar-item :id="child.label.trim()">
                         <template #icon>
                           <i :class="`bx ${child.icon}`"></i>
                         </template>
                         {{child.label}}
                       </vs-sidebar-item>
-                    </router-link>
+                    </router-link> -->
+                    <vs-sidebar-item :id="child.label.trim()" :key="i">
+                        <template #icon>
+                            <i :class="`bx ${child.icon}`"></i>
+                        </template>
+                        <router-link :to="child.url" :key="i">
+                            <p>{{child.label}}</p>
+                        </router-link>
+                    </vs-sidebar-item>
+                    <!-- <vs-sidebar-item :id="child.label.trim()" :key="i" @input="redirect(child.url)">
+                        <template #icon>
+                          <i :class="`bx ${child.icon}`"></i>
+                        </template>
+                        {{child.label}}
+                    </vs-sidebar-item> -->
                   </template>
 
                 </vs-sidebar-group>
             </template>
             <template v-else>
-              <router-link :to="item.url">
-                <vs-sidebar-item :id="item.label.trim()" :key="key">
+              <router-link :to="item.url" :key="key">
+                <vs-sidebar-item :id="item.label.trim()">
                   <template #icon>
                     <i :class="`bx ${item.icon !== null ? item.icon:''}`"></i>
                   </template>
@@ -351,8 +366,9 @@ export default {
         }
     },
     methods: {
-        meong(val){
+        redirect(val){
             console.log('meong', val)
+            // this.$router.push(`${val}`)
         }
     },
 }
@@ -367,9 +383,34 @@ export default {
             width: 100%;
             margin: 2em 0;
         }
+        .vs-sidebar__group__content{
+            .v-enter-to{}
+            .vs-sidebar__item__text{
+                position: relative;
+                width: 100%;
+                height: 47px;
+                p{
+                    margin: 0;
+                    height: 100%;
+                    line-height: 47px;
+                }
+            }
+        }
+        
         &.reduce{
             .box-logo{
                 margin: 1em 0;
+            }
+        }
+        a{
+            color: rgba(var(--vs-text), 1);
+            &.router-link-exact-active, 
+            &.router-link-active,
+            &.focus,
+            &.active,
+            &.visited,
+            &.hover{
+                color: rgba(var(--vs-text), 1);
             }
         }
     }

@@ -21,4 +21,8 @@ export default {
 
     // employee
     employee: api + "employee",
+
+    // customer
+    customer: api + "customer",
+    customer_type: api + "customer-type",
 }

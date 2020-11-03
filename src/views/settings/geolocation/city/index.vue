@@ -55,11 +55,6 @@ export default {
                     key: "geolocation_city_name",
                     width: "auto"
                 },
-                {
-                    label: "Timezone",
-                    key: "geolocation_timezone",
-                    width: "auto"
-                },
             ],
             loading: false,
             dataItem: {},

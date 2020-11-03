@@ -56,6 +56,11 @@ export default {
                     key: "geolocation_province_name",
                     width: "auto"
                 },
+                {
+                    label: "Timezone",
+                    key: "geolocation_timezone",
+                    width: "auto"
+                },
             ],
             loading: false,
             dataItem: {},

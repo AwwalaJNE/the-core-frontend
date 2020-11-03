@@ -5,4 +5,7 @@ export default {
   [SET_NAME]({ commit }, payload) {
     commit(ADD_NAME, payload)
   },
+  setKucingName({ commit }, payload) {
+    commit(ADD_NAME, payload)
+  },
 }

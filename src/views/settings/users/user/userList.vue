@@ -7,7 +7,7 @@
 
 <template>
     <div>
-        <table-master 
+        <table-master
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"
@@ -27,7 +27,8 @@
             :active="dialogUser" 
             :closeDialogUser="closeDialogUser"
             :refresh="refresh"
-            title="Edit role"
+            btnBlue="Edit"
+            title="Edit User"
             :dataItem="dataItem"
             />
     </div>
@@ -73,12 +74,12 @@ export default {
                 },
                 {
                     label: "Node",
-                    key: "user_node",
+                    key: "user_nodes",
                     width: "auto"
                 },
                 {
                     label: "Roles",
-                    key: "user_role",
+                    key: "user_role_name",
                     width: "auto"
                 },
             ],
@@ -106,18 +107,22 @@ export default {
                     `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                     this.Helper.header())
                 .then(res => {
-                    this.dataTable = res.data.data
+                    let arr = res.data.data
+                    arr.map(item => {
+                        item["user_nodes"] = item.user_nodes.toString()
+                    })
+                    this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
-                    if(res.data.data.length == 0) {
-                        this.openNotification('warn', 'Failed to populate User data', ' data is empty or not found, please check your keyword in the input search')
-                    }
+                    // if(res.data.data.length == 0) {
+                    //     this.openNotification('warn', 'Failed to populate User data', )
+                    // }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate users list', err)
+                    this.openNotification('danger', 'Failed to populate users list', err.response.data.message)
                 })
         },
         actionUpdate(val){
@@ -128,31 +133,32 @@ export default {
                 this.dataItem = obj[0]
                 console.log(this.dataItem, 'nihh val', val)
                 this.$nextTick(() => {
-                    this.dialogRole = true
+                    this.dialogUser = true
                 });
             }
         },
         async actionRemove(val){
             await axios
                 .delete(
-                    this.URL.user + `/${this.user_role_id}`,
+                    this.URL.user + `/${val.user_id}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
-                    this.openNotification(null, 'Success', 'Update role is success')
+                    this.refresh()
+                    this.openNotification(null, 'Romove success', 'Romove role is success')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Update role is failed', err)
+                    this.openNotification('danger', 'Romove role is failed', err)
                 })
         },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.refresh()
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.refresh()
         },
         refresh(){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)

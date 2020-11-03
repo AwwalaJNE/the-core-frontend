@@ -41,7 +41,22 @@ export default {
         return {
             activeSidebar: false
         }
-    }
+    },
+    computed: {
+        // getUser() {
+        //     console.log(this.$store)
+        //     console.log(this.$store.getters.getUser)
+        //     return this.$store.getters.getUser.name
+        // },
+        // getLabaLaba() {
+        //     return this.$store.getters.getLABA
+        // },
+    },
+    created() {
+        // this.$store.dispatch('SET_NAME', 'Laba-laba 2 biji')
+        // this.$store.dispatch('setLabaLabaName', 'iis')
+        // this.$store.dispatch('setUmurLabaLaba', 20)
+    },
 }
 </script>
 <style lang="scss">

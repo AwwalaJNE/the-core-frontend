@@ -9,6 +9,10 @@ html,body{
 }
 a{
     text-decoration: none;
+    &:focus{
+        text-decoration: none;
+        color: inherit;
+    }
 }
 .main-container{
     position: relative;
@@ -54,10 +58,6 @@ ul{
 
 .mt-input{
     margin-top: .5em;
-}
-.m-select{
-    margin-top: .5em;
-    margin-bottom: 1.2em;
 }
 .mt-2{
     margin-top: 2em;

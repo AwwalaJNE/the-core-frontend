@@ -9,16 +9,18 @@
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
                 <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
-                        <vs-button
-                        flat
-                        block
-                        :active="true"
-                        @click="openDialog"
-                        > 
-                            <i class="bx bx-plus"></i> New
-                        </vs-button>
-                    </div>
+                    <template v-if="navActive !== 'k-GEOLOCATION' && navActive !== 'k-TIMEZONE'">
+                        <div style="width: 100px;padding-right: 5px;">
+                            <vs-button
+                            flat
+                            block
+                            :active="true"
+                            @click="openDialog"
+                            > 
+                                <i class="bx bx-plus"></i> New
+                            </vs-button>
+                        </div>
+                    </template>
                 </div>
             </vs-col>
         </vs-row>
@@ -36,8 +38,8 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'k-GEOLOCATION'">
-                    <transition name="slide-fade" :query="tempSearch">
-                        <geo-location />
+                    <transition name="slide-fade">
+                        <geo-location :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-CITY'">
@@ -70,11 +72,6 @@
                         <timezone :query="tempSearch"/>
                     </transition>
                 </template>
-                <template v-else-if="navActive === 'k-ZIPCODE'">
-                    <transition name="slide-fade">
-                        <zipcode :query="tempSearch"/>
-                    </transition>
-                </template>
 
             </div>
         </section>
@@ -105,7 +102,6 @@ import District from "@/views/settings/geolocation/district"
 import Province from "@/views/settings/geolocation/province"
 import Subdistrict from "@/views/settings/geolocation/subdistrict"
 import Timezone from "@/views/settings/geolocation/timezone"
-import Zipcode from "@/views/settings/geolocation/zipcode"
 
 import DialogCreateEditCountry from "@/views/settings/geolocation/country/dialogCreateEditCountry"
 import DialogCreateEditProvince from "@/views/settings/geolocation/province/dialogCreateEditProvince.vue"
@@ -123,7 +119,6 @@ export default {
         "province": Province,
         "subdistrict": Subdistrict,
         "timezone": Timezone,
-        "zipcode": Zipcode,
         "dialog-create-edit-country": DialogCreateEditCountry,
         "dialog-create-edit-province": DialogCreateEditProvince,
         // "role-list": RoleList,
@@ -162,11 +157,6 @@ export default {
                     label: "SUBDISTRICT",
                     key: "k-SUBDISTRICT",
                     title: "SubDistrict List"
-                },
-                {
-                    label: "ZIP CODE",
-                    key: "k-ZIPCODE",
-                    title: "ZIP CODE List"
                 },
                 {
                     label: "TIME ZONE",

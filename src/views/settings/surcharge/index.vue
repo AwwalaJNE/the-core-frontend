@@ -28,17 +28,11 @@
                 <div class="nav-box">
                     <nav-item :navItem="navItemm" @activeTab="activeTab" />
                 </div>
-                <template v-if="navActive === 'k-BASE-TARIFF'">
+                <template v-else-if="navActive === 'k-SURCHARGE'">
                     <transition name="slide-fade">
-                        <base-tariff />
+                        <surcharge-list />
                     </transition>
                 </template>
-                <template v-else-if="navActive === 'k-SPECIAL-TARIFF'">
-                    <transition name="slide-fade">
-                        <special-tariff />
-                    </transition>
-                </template>
-
             </div>
         </section>
     </div>
@@ -47,17 +41,16 @@
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 
-import BaseTariff from "@/views/settings/tariff/baseTariff"
-import SpecialTariff from "@/views/settings/tariff/specialTariff"
+import SurchargeList from "@/views/settings/surcharge/surchargeList"
+// import surchargeType from "@/views/settings/surcharge/surchargeType"
 
 
 export default {
-    name:"tariff-index",
+    name:"surcharge-index",
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
-        "base-tariff": BaseTariff,
-        "special-tariff": SpecialTariff,
+        "surcharge-list": SurchargeList,
         // "role-list": RoleList,
         // "dialog-create-edit-user": DialogCreateEditUser,
         // "dialog-create-edit-role": DialogCreateEditRole
@@ -66,18 +59,18 @@ export default {
         return {
             navItemm: [
                 {
-                    label: "BASE TARIFF",
-                    key: "k-BASE-TARIFF",
-                    title: "Base Tariff List"
+                    label: "SURCHARGE",
+                    key: "k-SURCHARGE",
+                    title: "Surcharge List"
                 },
                 {
-                    label: "SPECIAL TARIFF",
-                    key: "k-SPECIAL-TARIFF",
-                    title: "Special Tariff List"
+                    label: "SURCHARGE TYPE",
+                    key: "k-SURCHARGE-TYPE",
+                    title: "Surcharge Type"
                 },
             ],
             title:"Nodes",
-            navActive: "k-BASE-TARIFF"
+            navActive: "k-SURCHARGE"
         }
     },
     methods: {
