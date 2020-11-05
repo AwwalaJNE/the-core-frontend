@@ -1,6 +1,7 @@
 <template>
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
+            {{value}}
             <vs-select
                 class="m-select"
                 filter

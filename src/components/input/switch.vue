@@ -1,36 +1,50 @@
 <template>
-    <vs-switch v-model="active" @change="updateValue">
-        <template #on>
-            {{ listenLabel[0] }}
-        </template>
-        <template #off>
-            {{ listenLabel[1] }}
-        </template>
-    </vs-switch>
+    <div>
+        <vs-switch class="switch-Cus" v-model="active" @change="updateValue">
+            <template #on>
+                {{ listenName[0] }}
+            </template>
+            <template #off>
+                {{ listenName[1] }}
+            </template>
+        </vs-switch>
+    </div>
 </template>
 <script>
 export default {
     name:"switch-input",
     props: {
         name: String,
-        label: Array,
         valueData: Boolean,
         formKey: String
     },
     computed: {
-        listenLabel(){
-            return this.label()
-        }
+        listenName(){
+            return this.name.split("|")
+        },
+        listenFormKey(){
+            return this.formKey
+        },
     },
     data() {
         return {
-            active: this.valueData ? this.valueData : false
+            active: this.valueData
+        }
+    },
+    watch: {
+        valueData: function(val) {
+            this.active = val
         }
     },
     methods: {
         updateValue(){
-            this.$emit("updateValue", this.active)
+            this.$emit("updateValue", this.listenFormKey, this.active)
         }
     },
 }
 </script>
+<style lang="scss">
+    .switch-Cus{
+        max-width:100px !important;
+    }
+</style>

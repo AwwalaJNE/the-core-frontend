@@ -15,26 +15,31 @@
         @actionPagination="actionPagination"
         />
 
-        <!--Create User Dialog end-->
-            <!-- <dialog-create-edit-role 
-            :active="dialogRole" 
-            :closeDialogRole="closeDialogRole"
-            :refresh="refresh"
-            title="Edit role"
+        <!--Create District Dialog end-->
+            <dialog-create-edit-district
+            :active="dialogGeolocationDistrict" 
+            :closeDialog="closeDialogGeolocationDistrict"
+            @refresh="refresh"
+            btnBlue="Edit"
+            title="Edit district"
             :dataItem="dataItem"
-            /> -->
+            />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogCreateEditDistrict from "@/views/settings/geolocation/district/dialogCreateEditDistrict"
 export default {
     name:"district-list",
     mixins: [master],
+    props: {
+        query: String
+    },
     components: {
         "table-master" : TableMaster,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-create-edit-district": DialogCreateEditDistrict
     },
     data() {
         return {
@@ -46,24 +51,35 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "City",
-                    key: "city.geolocation_city_name",
-                    width: "auto"
-                },
-                {
                     label: "Name",
                     key: "geolocation_district_name",
                     width: "auto"
                 },
+                {
+                    label: "City",
+                    key: "geolocation_city_name",
+                    width: "auto"
+                },
+                
             ],
             loading: false,
             dataItem: {},
-            tempSearch: "",
-            dialogGeolocation: false,
+            tempSearch: this.query ? this.query : "",
+            dialogGeolocationDistrict: false,
             pagination: {
                 limit:5,
                 page_size: 1,
                 page: 1
+            }
+        }
+    },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
             }
         }
     },
@@ -72,7 +88,6 @@ export default {
             this.loading = true
             let query = "";
             if(q !== undefined) {
-                this.tempSearch = q
                 query = q
             }
             await axios
@@ -81,40 +96,68 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
-                    if(res.data.data.length > 0) {
-                        this.dataTable = res.data.data
+                    this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
+                    if(res.data.data.length > 0) {
+                        
                     } else {
-                        this.openNotification('warn', 'district data is empty!', ' Please create a new district data')
+                        // this.openNotification('warn', 'district data is empty!', ' Please create a new district data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate district list', err)
+                    this.openNotification('danger', 'Failed to populate district list', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
-        actionUpdate(){
-
+        actionUpdate(val){
+            if(this.dataTable.length > 0) {
+                let obj = this.dataTable.filter(item => {
+                    return item.geolocation_district_id === val.geolocation_district_id
+                })
+                this.dataItem = obj[0]
+                console.log(this.dataItem, 'nihh val', val)
+                this.$nextTick(() => {
+                    this.dialogGeolocationDistrict = true
+                });
+            }
         },
-        actionRemove(){
-
+        async actionRemove(val){
+            await axios
+                .delete(
+                    this.URL.geolocation_district + `/${val.geolocation_district_id}`,
+                    this.Helper.header())
+                .then(res => {
+                    console.log('res', res)
+                    this.refresh()
+                    this.openNotification(null, 'Delete success', 'Delete district is success')
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
+                })
         },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.refresh()
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.refresh()
         },
+        refresh(){
+            console.log("refresh")
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        },
+        closeDialogGeolocationDistrict() {
+            this.dialogGeolocationDistrict = false
+        }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page)
+        this.refresh()
     },
 }
 </script>

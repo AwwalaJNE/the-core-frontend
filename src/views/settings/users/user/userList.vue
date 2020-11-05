@@ -26,7 +26,7 @@
             <dialog-create-edit-user
             :active="dialogUser" 
             :closeDialogUser="closeDialogUser"
-            :refresh="refresh"
+            @refresh="refresh"
             btnBlue="Edit"
             title="Edit User"
             :dataItem="dataItem"
@@ -160,7 +160,7 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-        refresh(){
+        refresh(val){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogUser(){

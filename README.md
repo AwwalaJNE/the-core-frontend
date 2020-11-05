@@ -37,3 +37,5 @@ npm run build
 
 ## Versioning
 
+## PERTAHANKAN BUDAYA REUSABLE COMPONENT
+

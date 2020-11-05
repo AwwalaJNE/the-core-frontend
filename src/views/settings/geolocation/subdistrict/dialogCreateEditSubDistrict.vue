@@ -74,6 +74,7 @@ export default {
     data() {
         return {
             form: {},
+            formRole: this.$store.getters.getInputs.user_role ? this.$store.getters.getInputs.user_role : {},
             user_role_id: ''
         }
     },

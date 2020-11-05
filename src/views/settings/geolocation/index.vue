@@ -39,37 +39,37 @@
                 </div>
                 <template v-if="navActive === 'k-GEOLOCATION'">
                     <transition name="slide-fade">
-                        <geo-location :query="tempSearch"/>
+                        <geo-location :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-CITY'">
                     <transition name="slide-fade">
-                        <city :query="tempSearch"/>
+                        <city :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-COUNTRY'">
                     <transition name="slide-fade">
-                        <country :query="tempSearch"/>
+                        <country :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-PROVINCE'">
                     <transition name="slide-fade">
-                        <province :query="tempSearch"/>
+                        <province :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-DISTRICT'">
                     <transition name="slide-fade">
-                        <district :query="tempSearch"/>
+                        <district :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-SUBDISTRICT'">
                     <transition name="slide-fade">
-                        <subdistrict :query="tempSearch"/>
+                        <subdistrict :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-TIMEZONE'">
                     <transition name="slide-fade">
-                        <timezone :query="tempSearch"/>
+                        <timezone :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
 
@@ -79,14 +79,37 @@
         <!--Create Country-->
             <dialog-create-edit-country 
             :active="dialogGeolocationCountry" 
+            @refresh="refresh"
             :closeDialog="closeDialogCountry"
             title="Create Country"
             />
-        <!--Create Country-->
+        <!--Create province-->
             <dialog-create-edit-province 
             :active="dialogGeolocationProvince" 
+            @refresh="refresh"
             :closeDialog="closeDialogProvince"
             title="Create Province"
+            />
+        <!--Create city-->
+            <dialog-create-edit-city
+            :active="dialogGeolocationCity" 
+            @refresh="refresh"
+            :closeDialog="closeDialogCity"
+            title="Create City"
+            />
+        <!--Create district-->
+            <dialog-create-edit-district
+            :active="dialogGeolocationDistrict" 
+            @refresh="refresh"
+            :closeDialog="closeDialogDistrict"
+            title="Create District"
+            />
+        <!--Create subdistrict-->
+            <dialog-create-edit-subdistrict
+            :active="dialogGeolocationSubDistrict" 
+            @refresh="refresh"
+            :closeDialog="closeDialogSubDistrict"
+            title="Create Subdistrict"
             />
     </div>
 </template>
@@ -105,6 +128,9 @@ import Timezone from "@/views/settings/geolocation/timezone"
 
 import DialogCreateEditCountry from "@/views/settings/geolocation/country/dialogCreateEditCountry"
 import DialogCreateEditProvince from "@/views/settings/geolocation/province/dialogCreateEditProvince.vue"
+import DialogCreateEditCity from "@/views/settings/geolocation/city/dialogCreateEditCity.vue"
+import DialogCreateEditDistrict from "@/views/settings/geolocation/district/dialogCreateEditDistrict.vue"
+import DialogCreateEditSubDistrict from "@/views/settings/geolocation/subdistrict/dialogCreateEditSubDistrict.vue"
 
 export default {
     name:"geolocation-index",
@@ -121,9 +147,9 @@ export default {
         "timezone": Timezone,
         "dialog-create-edit-country": DialogCreateEditCountry,
         "dialog-create-edit-province": DialogCreateEditProvince,
-        // "role-list": RoleList,
-        // "dialog-create-edit-user": DialogCreateEditUser,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-create-edit-city": DialogCreateEditCity,
+        "dialog-create-edit-district": DialogCreateEditDistrict,
+        "dialog-create-edit-subdistrict": DialogCreateEditSubDistrict,
     },
     data() {
         return {
@@ -170,9 +196,17 @@ export default {
             dialogGeolocation: false,
             dialogGeolocationCountry: false,
             dialogGeolocationProvince: false,
+            dialogGeolocationCity: false,
+            dialogGeolocationDistrict: false,
+            dialogGeolocationSubDistrict: false,
+            refreshInject:""
         }
     },
     methods: {
+        refresh(){
+            let el = this.refreshInject
+            this.$refs[el].refresh() // trigger function refresh form dari luar component list
+        },
         searchValue (val) {
             this.tempSearch = val
             console.log("this.tempSearch = ",this.tempSearch)
@@ -191,25 +225,41 @@ export default {
         },
         openDialog(){
             switch(this.navActive) {
-                case "k-GEOLOCATION":
-                    this.dialogGeolocation = true
-                    break;
                 case "k-COUNTRY":
                     this.dialogGeolocationCountry = true
                     break;
                 case "k-PROVINCE":
                     this.dialogGeolocationProvince = true
                     break;
+                case "k-CITY":
+                    this.dialogGeolocationCity = true
+                    break;
+                case "k-DISTRICT":
+                    this.dialogGeolocationDistrict = true
+                    break;
+                case "k-SUBDISTRICT":
+                    this.dialogGeolocationSubDistrict = true
+                    break;
                 default:
                     console.log('meong')
                     // code block
             }
+            this.refreshInject = this.navActive
         },
         closeDialogCountry() {
             this.dialogGeolocationCountry = false
         },
         closeDialogProvince() {
             this.dialogGeolocationProvince = false
+        },
+        closeDialogCity() {
+            this.dialogGeolocationCity = false
+        },
+        closeDialogDistrict() {
+            this.dialogGeolocationDistrict = false
+        },
+        closeDialogSubDistrict() {
+            this.dialogGeolocationSubDistrict = false
         }
     },
 }

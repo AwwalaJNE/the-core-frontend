@@ -9,35 +9,12 @@
 
         <template v-slot:content>
             <div>
-                <form-master ref="formMaster" @onSubmit="onSubmit">
-                    <template v-slot:inputValidator>
-                        <template >
-                                <vs-row v-for="(item, keys) in Object.keys(formUser)" :key="keys">
-                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
-                                        <template v-if="formUser[item].typeInput.split('|')[0].toLowerCase() == 'text'">
-                                            <input-general 
-                                            :name="formUser[item].label" 
-                                            :rules="formUser[item].rule" 
-                                            :formKey="formUser[item].key"
-                                            :valueData="formUser[item].value"
-                                            @updateValue="updateValue" />
-                                        </template>
-                                        <template v-else-if="formUser[item].typeInput.toLowerCase() == 'select'">
-                                            <selector 
-                                            :ref="formUser[item].key"
-                                            :name="formUser[item].label" 
-                                            :rules="formUser[item].rule" 
-                                            :formKey="formUser[item].key"
-                                            :valueData="formUser[item].arrData"
-                                            :selectedValue="formUser[item].value"
-                                            :isMultiple="false"
-                                            @updateValue="updateValue" />
-                                        </template>
-                                    </vs-col>
-                                </vs-row>
-                        </template>
-                    </template>
-                </form-master>
+                <form-input-controller 
+                    ref="formUserController"
+                    @formData="formData"
+                    :dataItem="listenDataItem"
+                    typeForm="user"
+                />
             </div>
         </template>
 
@@ -72,18 +49,14 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import FormMaster from "@/components/form/formMaster"
-import InputGeneral from "@/components/input/general"
 import DialogMaster from "@/components/dialog/dialogMaster"
-import Selector from "@/components/input/select"
+import FormInputController from "@/components/form/formInputController"
 export default {
     name:"dialog-create-edit-user",
     mixins: [master],
     components: {
-        'dialog-master': DialogMaster,
-        "form-master": FormMaster,
-        "input-general": InputGeneral,
-        "selector": Selector,
+        "dialog-master": DialogMaster,
+        "form-input-controller": FormInputController,
     },
     props: {
        closeDialogUser: Function, 
@@ -109,28 +82,37 @@ export default {
         },
         listenTitle(){
             return this.title
+        },
+        listenDataItem() {
+            return this.dataItem
         }
     },
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                
-                Object.keys(this.formUser).map(item => {
-                    let action = item.toUpperCase()
-                    if(val.hasOwnProperty(item)) {
-                        this.$store.dispatch(`SET_USER_${action}`, val[item])
-                        this.form[item] = val[item]
-                    }
-                })
-
                 this.user_id = val.user_id
-                console.log(this.dataItem, 'nihh watch')
-                console.log(this.form, 'formaahh')
-                
             }
         },
     },
     methods: {
+        formData(form){
+            this.form = form
+            if(this.user_id !== undefined && this.user_id !== '') {
+                    console.log('update')
+                    this.updateData()
+            } else {
+                    console.log('create new')
+                    this.addData()
+            }
+        },
+        handleSubmit(){
+            this.$refs.formUserController.handleSubmit() // trigger function submit form dari luar component formInputController
+        },
+        handleClearForm(){
+            this.$refs.formUserController.handleClearForm()
+            this.form = {}
+            this.user_id = ""
+        },
         async getDataRole(){
             this.loadingDataRole = true
             await axios
@@ -138,7 +120,6 @@ export default {
                 `?n=1&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
@@ -160,42 +141,6 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-        updateValue(type, val) {
-            let action = type.toUpperCase()
-            // let err = this.form[`${type}`] !== undefined ? this.form[type] = val : true
-            let err = this.formUser[`${type}`] !== undefined ? this.$store.dispatch(`SET_USER_${action}`, val !== undefined && val !== '' ? val : '') : true
-            if(err == true) {
-                console.log(`error dispatch SET_USER_${action} | val ` + val)
-            }
-        },
-        handleSubmit(){
-            this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster
-        },
-        onSubmit(refs){
-            console.log('onsubmit', refs)
-                refs.form.validate().then(success => {
-                if (!success) {
-                    console.log('err niih')
-                return;
-                }
-                
-                Object.keys(this.formUser).map(item => {
-                    this.form[item] = this.formUser[item].value
-                })
-                if(this.user_id !== undefined && this.user_id !== '') {
-                    console.log('update')
-                    this.updateData()
-                } else {
-                    console.log('create new')
-                    this.addData()
-                }
-
-                // Wait until the models are updated in the UI
-                this.$nextTick(() => {
-                    refs.form.reset();
-                });
-            });
-        },
         async updateData() {
             await axios
                 .put(
@@ -203,14 +148,13 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.handleClearForm()
                     this.closeDialogUser()
-                    this.refresh()
+                    this.$emit("refresh")
                     this.openNotification(null, 'Success', 'Update user is success')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed', err.response.data.message)
+                    this.openNotification('danger', 'Failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         async addData() {
@@ -220,26 +164,14 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.handleClearForm()
                     this.closeDialogUser()
-                    this.refresh()
+                    this.$emit("refresh")
                     this.openNotification(null, 'Success', 'Create user is success')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed add data', err.response.data.message)
+                    this.openNotification('danger', 'Failed add data', err.response ? err.response.data.message : 'something went wrong')
                 })
-        },
-        handleClearForm(){
-            Object.keys(this.formUser).map(item => {
-                let action = item.toUpperCase()
-                this.$store.dispatch(`SET_USER_${action}`, '')
-                this.$store.dispatch(`SET_USER_${action}_ValueData`, '')
-                if(item.hasOwnProperty('arrData')) {
-                    this.$store.dispatch(`SET_USER_${action}_ArrData`, '')
-                }
-            })
-            this.form = {}
         },
         cancel() {
             this.handleClearForm()

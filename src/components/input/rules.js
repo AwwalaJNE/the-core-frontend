@@ -1,5 +1,5 @@
 import { extend } from 'vee-validate';
-import { required, email } from 'vee-validate/dist/rules';
+import { required, email, min } from 'vee-validate/dist/rules';
 
 // No message specified.
 extend('email', email);
@@ -9,3 +9,7 @@ extend('required', {
   ...required,
   message: '{_field_} is required'
 });
+
+// Override the default message.
+extend('min_value', min);
+

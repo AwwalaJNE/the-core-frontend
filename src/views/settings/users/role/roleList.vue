@@ -26,7 +26,8 @@
             <dialog-create-edit-role 
             :active="dialogRole" 
             :closeDialogRole="closeDialogRole"
-            :refresh="refresh"
+            @refresh="refresh"
+            btnBlue="Edit"
             title="Edit role"
             :dataItem="dataItem"
             />
@@ -126,10 +127,11 @@ export default {
         async actionRemove(val){
             await axios
                 .delete(
-                    this.URL.role + `/${this.user_role_id}`,
+                    this.URL.role + `/${val.user_role_id}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
+                    this.refresh()
                     this.openNotification(null, 'Success', 'Update role is success')
                 }).catch(err => {
                     this.loading = false
@@ -139,13 +141,14 @@ export default {
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.refresh()
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.refresh()
         },
         refresh(){
+            console.log("refresh")
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogRole() {

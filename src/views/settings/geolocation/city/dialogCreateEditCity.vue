@@ -1,7 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
-    :closeDialog="closeDialogRole">
+    :closeDialog="cancel">
 
         <template v-slot:header>
             {{listenTitle}}
@@ -9,23 +9,12 @@
 
         <template v-slot:content>
             <div>
-                <form-master ref="formMaster" @onSubmit="onSubmit">
-                    <template v-slot:inputValidator>
-                        <input-general 
-                        name="Role" 
-                        rules="required" 
-                        formKey="geolocation_city_name"
-                        :valueData="form.geolocation_city_name"
-                        @updateValue="updateValue" />
-
-                        <input-general 
-                        name="Role code" 
-                        rules="required" 
-                        formKey="user_role_code"
-                        :valueData="form.user_role_code"
-                        @updateValue="updateValue" />
-                    </template>
-                </form-master>
+                <form-input-controller 
+                    ref="formGeoLocationCityController"
+                    @formData="formData"
+                    :dataItem="listenDataItem"
+                    typeForm="geolocation_city"
+                />
             </div>
         </template>
 
@@ -52,7 +41,7 @@
                     type="submit"
                     @click="handleSubmit"
                     >
-                        Add
+                        {{btnBlue || 'Add'}}
                     </vs-button>
                 </vs-col>
             </vs-row>
@@ -65,23 +54,29 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import FormMaster from "@/components/form/formMaster"
-import InputGeneral from "@/components/input/general"
+import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-role",
+    name:"dialog-create-edit-geo-city",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
-        "form-master": FormMaster,
-        "input-general": InputGeneral     
+        "form-input-controller": FormInputController,   
     },
     props: {
-       closeDialogRole: Function, 
-       refresh: Function,
+       closeDialog: Function, 
        active: Boolean,
        title: String,
-       dataItem: Object
+       dataItem: Object,
+       btnRed: String,
+       btnBlue: String
+    },
+    data() {
+        return {
+            form: {},
+            formRole: this.$store.getters.getInputs.geolocation_city ? this.$store.getters.getInputs.geolocation_city : {},
+            geolocation_city_id: ''
+        }
     },
     computed: {
         listenActive(){
@@ -89,111 +84,109 @@ export default {
         },
         listenTitle(){
             return this.title
-        }
-    },
-    data() {
-        return {
-            form: {
-                user_role_name:'',
-                user_role_code:''
-            },
-            user_role_id: ''
+        },
+        listenDataItem() {
+            return this.dataItem
         }
     },
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.form.user_role_name = val.user_role_name
-                this.form.user_role_code = val.user_role_code
-                this.user_role_id = val.user_role_id
-                console.log(this.dataItem, 'nihh watch')
-                console.log(this.form, 'form')
-                
+                this.geolocation_city_id = val.geolocation_city_id
             }
         }
     },
     methods: {
-        updateValue(type, val) {
-            let err = this.form[`${type}`] !== undefined ? this.form[type] = val : true
-            if(err == true) {
-                console.log(`error this.form[${type}] | val ` + val + this.form[`${type}`])
+        formData(form){
+            this.form = form
+            if(this.geolocation_city_id !== undefined && this.geolocation_city_id !== '') {
+                    console.log('update')
+                    this.updateData()
+            } else {
+                    this.addData()
             }
         },
         handleSubmit(){
-            this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster
+            this.$refs.formGeoLocationCityController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
-        onSubmit(refs){
-            console.log('onsubmit', refs)
-                refs.form.validate().then(success => {
-                if (!success) {
-                    console.log('err niih')
-                return;
-                }
+        handleClearForm(){
+            this.$refs.formGeoLocationCityController.handleClearForm()
+            this.form = {}
+            this.geolocation_city_id = ""
+        },
+        async getDataProvince(){
+            await axios
+                .get(this.URL.geolocation_province + 
+                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.geolocation_province_name
+                            obj["value"] = item.geolocation_province_id
 
-                console.log('this.user_role_id',this.user_role_id)
-                if(this.user_role_id !== undefined && this.user_role_id !== '') {
-                    console.log('update')
-                    this.updateData()
-                } else {
-                    console.log('create new')
-                    this.addData()
-                }
+                            arr.push(obj)
+                        })
 
-                // Wait until the models are updated in the UI
-                this.$nextTick(() => {
-                    refs.form.reset();
-                });
-            });
+                        this.$store.dispatch("SET_GEOLOCATION_CITY_GEOLOCATION_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
         },
         async updateData(){
             await axios
                 .put(
-                    this.URL.role + `/${this.user_role_id}?n=1`,
+                    this.URL.geolocation_city + `/${this.geolocation_city_id}?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
-                    this.form.user_role_name = ''
-                    this.form.user_role_code = ''
-                    this.user_role_id = ''
-                    this.closeDialogRole()
-                    this.refresh()
+                    this.handleClearForm()
+                    this.closeDialog()
+                    this.$emit("refresh")
                     this.openNotification(null, 'Success', 'Update role is success')
                 }).catch(err => {
                     this.loading = false
-                    this.closeDialogRole()
-                    this.refresh()
-                    this.openNotification('danger', 'Update role is failed', err)
+                    this.handleClearForm()
+                    this.closeDialog()
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Update role is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         async addData() {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.role + `?n=1`,
+                    this.URL.geolocation_city + `?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
-                    this.form.user_role_name = ''
-                    this.form.user_role_code = ''
-                    this.closeDialogRole()
-                    this.refresh()
+                    this.handleClearForm()
+                    this.closeDialog()
+                    this.$emit("refresh")
                     this.openNotification(null, 'Success', 'Create new role is success')
                 }).catch(err => {
                     this.loading = false
-                    this.closeDialogRole()
-                    this.refresh()
-                    this.openNotification('danger', 'Create new role is failed', err)
+                    this.handleClearForm()
+                    this.closeDialog()
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Create new role is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {
-            
-            this.form.user_role_name = ''
-            this.form.user_role_code = ''
-            
-            this.closeDialogRole()
+            this.handleClearForm()
+            this.closeDialog()
         }
+    },
+    mounted() {
+        this.getDataProvince()
     },
 }
 </script>

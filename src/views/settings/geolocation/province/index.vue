@@ -19,7 +19,8 @@
             <dialog-create-edit-province 
             :active="dialogGeolocationProvince" 
             :closeDialog="closeDialogProvince"
-            :refresh="refresh"
+            @refresh="refresh"
+            btnBlue="Edit"
             title="Edit province"
             :dataItem="dataItem"
             />
@@ -33,6 +34,9 @@ import DialogCreateEditProvince from "@/views/settings/geolocation/province/dial
 export default {
     name:"province-list",
     mixins: [master],
+    props: {
+        query: String
+    },
     components: {
         "table-master" : TableMaster,
         "dialog-create-edit-province": DialogCreateEditProvince
@@ -47,24 +51,24 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Country",
-                    key: "geolocation_province_time_zone",
-                    width: "auto"
-                },
-                {
                     label: "Name",
                     key: "geolocation_province_name",
                     width: "auto"
                 },
                 {
+                    label: "Country",
+                    key: "geolocation_province_country_name",
+                    width: "auto"
+                },
+                {
                     label: "Timezone",
-                    key: "geolocation_timezone",
+                    key: "geolocation_province_time_zone",
                     width: "auto"
                 },
             ],
             loading: false,
             dataItem: {},
-            tempSearch: "",
+            tempSearch: this.query ? this.query : "",
             dialogGeolocationProvince: false,
             pagination: {
                 limit:5,
@@ -73,12 +77,21 @@ export default {
             }
         }
     },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
+            }
+        }
+    },
     methods: {
         async getTableData(limit,page,q) {
             this.loading = true
             let query = "";
             if(q !== undefined) {
-                this.tempSearch = q
                 query = q
             }
             await axios
@@ -87,12 +100,13 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
-                    if(res.data.data.length > 0) {
-                        this.dataTable = res.data.data
+                    this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
+                    if(res.data.data.length > 0) {
+                        
                     } else {
                         this.openNotification('warn', 'provinces data is empty!', ' Please create a new province data')
                     }
@@ -115,8 +129,19 @@ export default {
                 });
             }
         },
-        actionRemove(){
-
+        async actionRemove(val){
+            await axios
+                .delete(
+                    this.URL.geolocation_province + `/${val.geolocation_province_id}`,
+                    this.Helper.header())
+                .then(res => {
+                    console.log('res', res)
+                    this.refresh()
+                    this.openNotification(null, 'Romove success', 'Romove role is success')
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Romove role is failed', err)
+                })
         },
         actionLimit(val){
             this.pagination.limit = val

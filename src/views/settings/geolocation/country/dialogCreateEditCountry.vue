@@ -1,7 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
-    :closeDialog="closeDialog">
+    :closeDialog="cancel">
 
         <template v-slot:header>
             {{listenTitle}}
@@ -9,35 +9,12 @@
 
         <template v-slot:content>
             <div>
-                
-                <form-master ref="formMaster" @onSubmit="onSubmit">
-                    <template v-slot:inputValidator>
-                        
-                        <input-general 
-                        name="Country Name" 
-                        rules="required" 
-                        formKey="geolocation_country_name"
-                        :valueData="form.geolocation_country_name"
-                        @updateValue="updateValue" />
-
-                        <input-general 
-                        name="Country Code" 
-                        rules="required" 
-                        formKey="geolocation_country_code"
-                        :valueData="form.geolocation_country_code"
-                        @updateValue="updateValue" />
-
-                        <input-general 
-                        name="Currency Code" 
-                        rules="required" 
-                        formKey="tariff_currency_code"
-                        :valueData="form.tariff_currency_code"
-                        @updateValue="updateValue" />
-
-                        <Checkbox :isChecked="false" @changed="changed"/>
-                        
-                    </template>
-                </form-master>
+                <form-input-controller 
+                    ref="formGeoLocationCountryController"
+                    @formData="formData"
+                    :dataItem="listenDataItem"
+                    typeForm="geolocation_country"
+                />
             </div>
         </template>
 
@@ -64,7 +41,7 @@
                     type="submit"
                     @click="handleSubmit"
                     >
-                        Add
+                        {{btnBlue || 'Add'}}
                     </vs-button>
                 </vs-col>
             </vs-row>
@@ -77,27 +54,28 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import FormMaster from "@/components/form/formMaster"
-import InputGeneral from "@/components/input/general"
-import Selector from "@/components/input/select"
-import Checkbox from "@/components/input/checkbox"
+import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-geolocation-country",
+    name:"dialog-create-edit-geo-country",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
-        "form-master": FormMaster,
-        "input-general": InputGeneral,
-        "selector": Selector,
-        "Checkbox": Checkbox
+        "form-input-controller": FormInputController,   
     },
     props: {
        closeDialog: Function, 
-       refresh: Function,
        active: Boolean,
        title: String,
-       dataItem: Object
+       dataItem: Object,
+       btnRed: String,
+       btnBlue: String
+    },
+    data() {
+        return {
+            form: {},
+            geolocation_country_id: ''
+        }
     },
     computed: {
         listenActive(){
@@ -105,130 +83,108 @@ export default {
         },
         listenTitle(){
             return this.title
-        }
-    },
-    data() {
-        return {
-            form: {
-                geolocation_country_name:'',
-                geolocation_country_code:'',
-                tariff_currency_code:'',
-                is_active: false
-            },
-            geolocation_country_id: '',
-            dataCountry: [],
-            loadingDataCountry: null
+        },
+        listenDataItem() {
+            return this.dataItem
         }
     },
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.form.geolocation_country_name = val.geolocation_country_name
-                this.form.geolocation_country_code = val.geolocation_country_code
-                this.form.tariff_currency_code = val.tariff_currency_code
-                this.form.is_active = val.is_active
                 this.geolocation_country_id = val.geolocation_country_id
-                console.log(this.dataItem, 'nihh watch')
-                console.log(this.form, 'form')
-                
             }
         }
     },
     methods: {
-        changed(val){
-            if(val !== undefined) {
-                this.form.is_active = val
-            }
-        },
-        updateValue(type, val) {
-            let err = this.form[`${type}`] !== undefined ? this.form[type] = val : true
-            if(err == true) {
-                console.log(`error this.form[${type}] | val ` + val + this.form[`${type}`])
+        formData(form){
+            this.form = form
+            if(this.geolocation_country_id !== undefined && this.geolocation_country_id !== '') {
+                    this.updateData()
+            } else {
+                    this.addData()
             }
         },
         handleSubmit(){
-            this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster
+            this.$refs.formGeoLocationCountryController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
-        onSubmit(refs){
-            console.log('onsubmit', refs)
-                refs.form.validate().then(success => {
-                if (!success) {
-                    console.log('err niih')
-                return;
-                }
-
-                console.log('this.user_role_id',this.user_role_id)
-                if(this.geolocation_country_id !== undefined && this.geolocation_country_id !== '') {
-                    console.log('update')
-                    this.updateData()
-                } else {
-                    console.log('create new')
-                    this.addData()
-                }
-
-                // Wait until the models are updated in the UI
-                this.$nextTick(() => {
-                    refs.form.reset();
-                });
-            });
+        handleClearForm(){
+            this.$refs.formGeoLocationCountryController.handleClearForm()
+            this.form = {}
+            this.geolocation_country_id = ""
         },
+        // async getDataTariffCode(){
+        //     await axios
+        //         .get(this.URL.tariff + 
+        //         `?n=1&sort_order=desc&limit=2000&page=1`, 
+        //         this.Helper.header())
+        //         .then(res => {
+        //             if(res.data.data.length > 0) {
+        //                 let arr = []
+        //                 res.data.data.map(item => {
+        //                     let obj = {}
+        //                     obj["label"] = item.tariff_currency
+        //                     obj["value"] = item.tariff_id
+
+        //                     arr.push(obj)
+        //                 })
+
+        //                 this.$store.dispatch("SET_GEOLOCATION_COUNTRY_TARIFF_CURRENCY_CODE_ArrData", arr.length > 0 ? arr : null)
+        //             } else {
+        //                 // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+        //             }
+                    
+        //         }).catch(err => {
+        //             // this.openNotification('danger', 'Failed to collect role list', err)
+        //         })
+        // },
         async updateData(){
             await axios
                 .put(
-                    this.URL.geolocation_country + `/${this.geolocation_country_id}`,
+                    this.URL.geolocation_country + `/${this.geolocation_country_id}?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
-                    this.form.geolocation_country_name = ""
-                    this.form.geolocation_country_code = ""
-                    this.form.tariff_currency_code = ""
-                    this.form.is_active = false
-                    this.geolocation_country_id = ""
+                    this.handleClearForm()
                     this.closeDialog()
-                    this.refresh()
-                    this.openNotification(null, 'Success', 'Update role is success')
+                    this.$emit("refresh")
+                    this.openNotification(null, 'Update Success', 'Update country is success')
                 }).catch(err => {
                     this.loading = false
+                    this.handleClearForm()
                     this.closeDialog()
-                    this.refresh()
-                    this.openNotification('danger', 'Update role is failed', err)
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Update Failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         async addData() {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.geolocation_country,
+                    this.URL.geolocation_country + `?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
-                    this.form.geolocation_country_name = ""
-                    this.form.geolocation_country_code = ""
-                    this.form.tariff_currency_code = ""
-                    this.form.is_active = false
-                    this.geolocation_country_id = ""
+                    this.handleClearForm()
                     this.closeDialog()
-                    this.refresh()
-                    this.openNotification(null, 'Success', 'Create new role is success')
+                    this.$emit("refresh")
+                    this.openNotification(null, 'Create success', 'Create new country is success')
                 }).catch(err => {
                     this.loading = false
+                    this.handleClearForm()
                     this.closeDialog()
-                    this.refresh()
-                    this.openNotification('danger', 'Create new role is failed', err)
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Create failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {
-            
-            this.form.geolocation_country_name = ""
-            this.form.geolocation_country_code = ""
-            this.form.tariff_currency_code = ""
-            this.form.is_active = false
-            this.geolocation_country_id = ""
-            
+            this.handleClearForm()
             this.closeDialog()
         }
+    },
+    mounted() {
+        // this.getDataTariffCode()
     },
 }
 </script>

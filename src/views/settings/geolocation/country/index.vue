@@ -19,7 +19,8 @@
             <dialog-create-edit-country 
             :active="dialogGeolocationCountry" 
             :closeDialog="closeDialogCountry"
-            :refresh="refresh"
+            @refresh="refresh"
+            btnBlue="Edit"
             title="Update Country"
             :dataItem="dataItem"
             />
@@ -111,7 +112,7 @@ export default {
         actionUpdate(val){
             if(this.dataTable.length > 0) {
                 let obj = this.dataTable.filter(item => {
-                    return item.user_role_id === val
+                    return item.geolocation_country_id === val.geolocation_country_id
                 })
                 this.dataItem = obj[0]
                 console.log(this.dataItem, 'nihh val', val)
@@ -120,17 +121,28 @@ export default {
                 });
             }
         },
-        actionRemove(){
-
+        async actionRemove(val){
+            await axios
+                .delete(
+                    this.URL.geolocation_country + `/${val.geolocation_country_id}`,
+                    this.Helper.header())
+                .then(res => {
+                    console.log('res', res)
+                    this.refresh()
+                    this.openNotification(null, 'Success', 'Update role is success')
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Update role is failed', err)
+                })
         },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.refresh()
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.refresh()
         },
         refresh(){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
@@ -140,7 +152,7 @@ export default {
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        this.refresh()
     },
 }
 </script>

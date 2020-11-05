@@ -3,6 +3,7 @@
         <template v-slot:inputan="props">
             <vs-input
                 class="mt-input"
+                :label="name"
                 :label-placeholder="name"
                 v-model="value"
                 @input="updateValue"

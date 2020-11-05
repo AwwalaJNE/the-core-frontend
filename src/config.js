@@ -12,6 +12,7 @@ export default {
     geolocation_district: api + "geolocation-district",
     geolocation_subdistrict: api + "geolocation-subdistrict",
     geolocation_province: api + "geolocation-province",
+    geolocation_timezone: api + "geolocation-timezone",
 
     // node
     node: api + "node",
@@ -25,4 +26,7 @@ export default {
     // customer
     customer: api + "customer",
     customer_type: api + "customer-type",
+
+    // tariff
+    tariff: api + "tariff",
 }

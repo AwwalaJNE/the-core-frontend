@@ -10,10 +10,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formGeoLocationProvinceController"
+                    ref="formGeoLocationDistrictController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="geolocation_province"
+                    typeForm="geolocation_district"
                 />
             </div>
         </template>
@@ -57,7 +57,7 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-geo-province",
+    name:"dialog-create-edit-geo-district",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
@@ -75,7 +75,7 @@ export default {
         return {
             form: {},
             formRole: this.$store.getters.getInputs.geolocation_city ? this.$store.getters.getInputs.geolocation_city : {},
-            geolocation_province_id: ''
+            geolocation_district_id: ''
         }
     },
     computed: {
@@ -92,14 +92,14 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.geolocation_province_id = val.geolocation_province_id
+                this.geolocation_district_id = val.geolocation_district_id
             }
         }
     },
     methods: {
         formData(form){
             this.form = form
-            if(this.geolocation_province_id !== undefined && this.geolocation_province_id !== '') {
+            if(this.geolocation_district_id !== undefined && this.geolocation_district_id !== '') {
                     console.log('update')
                     this.updateData()
             } else {
@@ -107,16 +107,16 @@ export default {
             }
         },
         handleSubmit(){
-            this.$refs.formGeoLocationProvinceController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formGeoLocationDistrictController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formGeoLocationProvinceController.handleClearForm()
+            this.$refs.formGeoLocationDistrictController.handleClearForm()
             this.form = {}
-            this.geolocation_province_id = ""
+            this.geolocation_district_id = ""
         },
-        async getDataCountry(){
+        async getDataCity(){
             await axios
-                .get(this.URL.geolocation_country + 
+                .get(this.URL.geolocation_city + 
                 `?n=1&sort_order=desc&limit=2000&page=1`, 
                 this.Helper.header())
                 .then(res => {
@@ -124,41 +124,13 @@ export default {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.geolocation_country_name
-                            obj["value"] = item.geolocation_country_id
+                            obj["label"] = item.geolocation_city_name
+                            obj["value"] = item.geolocation_city_id
 
                             arr.push(obj)
                         })
 
-                        this.$store.dispatch("SET_GEOLOCATION_PROVINCE_GEOLOCATION_COUNTRY_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
-                    
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
-        async getDataTimezone(){
-            await axios
-                .get(this.URL.geolocation_timezone + 
-                `?n=1&sort_order=desc&limit=2000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.name.toString()
-                            obj["value"] = item.code.toString()
-
-                            arr.push(obj)
-                        })
-
-                        console.log('timezone', arr)
-
-                        this.$store.dispatch("SET_GEOLOCATION_PROVINCE_GEOLOCATION_PROVINCE_TIME_ZONE_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_GEOLOCATION_DISTRICT_GEOLOCATION_CITY_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -170,7 +142,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.geolocation_province + `/${this.geolocation_province_id}?n=1`,
+                    this.URL.geolocation_district + `/${this.geolocation_district_id}?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -191,7 +163,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.geolocation_province + `?n=1`,
+                    this.URL.geolocation_district + `?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -214,8 +186,7 @@ export default {
         }
     },
     mounted() {
-        this.getDataCountry()
-        this.getDataTimezone()
+        this.getDataCity()
     },
 }
 </script>

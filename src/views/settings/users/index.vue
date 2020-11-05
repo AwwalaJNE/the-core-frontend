@@ -40,12 +40,12 @@
 
                         <template v-if="navActive === 'k-USER'">
                             <transition name="slide-fade">
-                                <user-list :query="tempSearch"/>
+                                <user-list :ref="navActive" :query="tempSearch"/>
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-ROLES'">
                             <transition name="slide-fade">
-                                <role-list :query="tempSearch"/>
+                                <role-list :ref="navActive" :query="tempSearch"/>
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-PERMISSIONS'">
@@ -82,12 +82,14 @@
         <!--Create Edit User Dialog-->
             <dialog-create-edit-user 
             :active="dialogUser" 
+            @refresh="refresh"
             :closeDialogUser="closeDialogUser"
             title="New user"
             />
         <!--Create User Dialog end-->
             <dialog-create-edit-role 
             :active="dialogRole" 
+            @refresh="refresh"
             :closeDialogRole="closeDialogRole"
             title="New role"
             />
@@ -179,10 +181,15 @@ export default {
                 limit:5,
                 page_size: 1,
                 page: 1
-            }
+            },
+            refreshInject:""
         }
     },
     methods: {
+        refresh(){
+            let el = this.refreshInject
+            this.$refs[el].refresh() // trigger function refresh form dari luar component list
+        },
         searchValue (val) {
             this.tempSearch = val
             console.log("this.tempSearch = ",this.tempSearch)
@@ -215,6 +222,7 @@ export default {
                     console.log('meong')
                     // code block
             }
+            this.refreshInject = this.navActive
         },
         closeDialogUser() {
             this.dialogUser = false
