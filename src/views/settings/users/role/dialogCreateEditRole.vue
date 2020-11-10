@@ -13,7 +13,7 @@
                     ref="formUserRoleController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="user_role"
+                    typeForm="role"
                 />
             </div>
         </template>

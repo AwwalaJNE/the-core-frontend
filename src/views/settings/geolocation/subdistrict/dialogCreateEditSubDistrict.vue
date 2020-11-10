@@ -1,7 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
-    :closeDialog="closeDialogRole">
+    :closeDialog="cancel">
 
         <template v-slot:header>
             {{listenTitle}}
@@ -10,10 +10,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formUserRoleController"
+                    ref="formGeoLocationSubDistrictController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="user_role"
+                    typeForm="geolocation_subdistrict"
                 />
             </div>
         </template>
@@ -57,14 +57,14 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-role",
+    name:"dialog-create-edit-geo-district",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,    
+        "form-input-controller": FormInputController,   
     },
     props: {
-       closeDialogRole: Function,
+       closeDialog: Function, 
        active: Boolean,
        title: String,
        dataItem: Object,
@@ -74,8 +74,8 @@ export default {
     data() {
         return {
             form: {},
-            formRole: this.$store.getters.getInputs.user_role ? this.$store.getters.getInputs.user_role : {},
-            user_role_id: ''
+            formRole: this.$store.getters.getInputs.geolocation_city ? this.$store.getters.getInputs.geolocation_city : {},
+            geolocation_subdistrict_id: ''
         }
     },
     computed: {
@@ -92,70 +92,101 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.user_role_id = val.user_role_id
+                this.geolocation_subdistrict_id = val.geolocation_subdistrict_id
             }
         }
     },
     methods: {
         formData(form){
             this.form = form
-            if(this.user_role_id !== undefined && this.user_role_id !== '') {
+            if(this.geolocation_subdistrict_id !== undefined && this.geolocation_subdistrict_id !== '') {
                     console.log('update')
                     this.updateData()
             } else {
-                    console.log('create new')
                     this.addData()
             }
         },
         handleSubmit(){
-            this.$refs.formUserRoleController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formGeoLocationSubDistrictController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formUserRoleController.handleClearForm()
+            this.$refs.formGeoLocationSubDistrictController.handleClearForm()
             this.form = {}
-            this.user_role_id = ""
+            this.geolocation_subdistrict_id = ""
+        },
+        async getDataCity(){
+            await axios
+                .get(this.URL.geolocation_district + 
+                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.geolocation_district_name
+                            obj["value"] = item.geolocation_district_id
+
+                            arr.push(obj)
+                        })
+
+                        this.$store.dispatch("SET_GEOLOCATION_SUBDISTRICT_GEOLOCATION_DISTRICT_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
         },
         async updateData(){
             await axios
                 .put(
-                    this.URL.role + `/${this.user_role_id}?n=1`,
+                    this.URL.geolocation_subdistrict + `/${this.geolocation_subdistrict_id}?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
+                    console.log('res', res)
                     this.handleClearForm()
-                    this.closeDialogRole()
+                    this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Update role is success')
+                    this.openNotification(null, 'Update success', 'Update subdistrict is success')
                 }).catch(err => {
                     this.loading = false
-                    this.closeDialogRole()
+                    this.handleClearForm()
+                    this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update role is failed', err)
+                    this.openNotification('danger', 'Update failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         async addData() {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.role + `?n=1`,
+                    this.URL.geolocation_subdistrict + `?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
+                    console.log('res', res)
                     this.handleClearForm()
-                    this.closeDialogRole()
+                    this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Create new role is success')
+                    this.openNotification(null, 'Create success', 'Create new subdistrict is success')
                 }).catch(err => {
                     this.loading = false
-                    this.closeDialogRole()
+                    this.handleClearForm()
+                    this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create new role is failed', err)
+                    this.openNotification('danger', 'Create failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {
             this.handleClearForm()
-            this.closeDialogRole()
+            this.closeDialog()
         }
+    },
+    mounted() {
+        this.getDataCity()
     },
 }
 </script>

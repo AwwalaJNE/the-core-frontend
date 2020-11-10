@@ -36,18 +36,18 @@ export default {
   },
 
   // ==== user role ====
-  SET_USER_ROLE_USER_ROLE_NAME({ commit }, payload) {
-      commit('SET_USER_ROLE_USER_ROLE_NAME', payload)
+  SET_ROLE_USER_ROLE_NAME({ commit }, payload) {
+      commit('SET_ROLE_USER_ROLE_NAME', payload)
   },
-  SET_USER_ROLE_USER_ROLE_NAME_ValueData({ commit }, payload) {
-    commit('SET_USER_ROLE_USER_ROLE_NAME_ValueData', payload)
+  SET_ROLE_USER_ROLE_NAME_ValueData({ commit }, payload) {
+    commit('SET_ROLE_USER_ROLE_NAME_ValueData', payload)
   },
 
-  SET_USER_ROLE_USER_ROLE_CODE({ commit }, payload) {
-    commit('SET_USER_ROLE_USER_ROLE_CODE', payload)
+  SET_ROLE_USER_ROLE_CODE({ commit }, payload) {
+    commit('SET_ROLE_USER_ROLE_CODE', payload)
   },
-  SET_USER_ROLE_USER_ROLE_CODE_ValueData({ commit }, payload) {
-    commit('SET_USER_ROLE_USER_ROLE_CODE_ValueData', payload)
+  SET_ROLE_USER_ROLE_CODE_ValueData({ commit }, payload) {
+    commit('SET_ROLE_USER_ROLE_CODE_ValueData', payload)
   },
 
 
@@ -223,10 +223,10 @@ export default {
     commit('SET_GEOLOCATION_SUBDISTRICT_GEOLOCATION_SUBDISTRICT_KODE_ROUTING_ValueData', payload)
   },
 
-  SET_GEOLOCATION_DISTRICT_IS_ACTIVE({ commit }, payload) {
-    commit('SET_GEOLOCATION_DISTRICT_IS_ACTIVE', payload)
+  SET_GEOLOCATION_SUBDISTRICT_IS_ACTIVE({ commit }, payload) {
+    commit('SET_GEOLOCATION_SUBDISTRICT_IS_ACTIVE', payload)
   },
-  SET_GEOLOCATION_DISTRICT_IS_ACTIVE_ValueData({ commit }, payload) {
-    commit('SET_GEOLOCATION_DISTRICT_IS_ACTIVE_ValueData', payload)
+  SET_GEOLOCATION_SUBDISTRICT_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_GEOLOCATION_SUBDISTRICT_IS_ACTIVE_ValueData', payload)
   },
 }

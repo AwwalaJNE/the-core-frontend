@@ -7,10 +7,8 @@
         :pageSize="pagination.page_size"
         :page="pagination.page"
         :limit="pagination.limit"
-        :hasAction="true"
-        :hasPagination="true"
-        @actionUpdate="actionUpdate"
-        @actionRemove="actionRemove"
+        :hasAction="false"
+        :hasPagination="false"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         />
@@ -32,6 +30,9 @@ import TableMaster from "@/components/table/tableMaster.vue"
 export default {
     name:"timezone-list",
     mixins: [master],
+    props: {
+        query: String
+    },
     components: {
         "table-master" : TableMaster,
         // "dialog-create-edit-role": DialogCreateEditRole
@@ -41,24 +42,19 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "ID",
-                    key: "timezone_id",
-                    width: "xs"
-                },
-                {
-                    label: "District",
-                    key: "timezone_district",
+                    label: "Name",
+                    key: "name",
                     width: "auto"
                 },
                 {
-                    label: "Name",
-                    key: "timezone_name",
+                    label: "Code",
+                    key: "code",
                     width: "auto"
                 },
             ],
             loading: false,
             dataItem: {},
-            tempSearch: "",
+            tempSearch: this.query ? this.query : "",
             dialogGeolocation: false,
             pagination: {
                 limit:5,
@@ -67,19 +63,68 @@ export default {
             }
         }
     },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
+            }
+        }
+    },
     methods: {
+        async getTableData(limit,page,q) {
+            this.loading = true
+            let query = "";
+            if(q !== undefined) {
+                query = q
+            }
+            await axios
+                .get(this.URL.geolocation_timezone + 
+                `?n=1&sort_order=desc&limit=${1000}&page=${1}&s=${query}`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log(res)
+                    this.dataTable = res.data.data
+
+                        this.pagination.page = res.data.meta.current_page
+                        this.pagination.limit = parseInt(res.data.meta.per_page)
+                        this.pagination.page_size = res.data.meta.last_page
+                    if(res.data.data.length > 0) {
+                        
+                    } else {
+                        this.openNotification('warn', 'provinces data is empty!', ' Please create a new province data')
+                    }
+                    
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to populate province list', err)
+                })
+        },
         actionUpdate(){
 
         },
         actionRemove(){
 
         },
-        actionLimit(){
-
+        actionLimit(val){
+            this.pagination.limit = val
+            this.pagination.page = 1
+            this.refresh()
         },
-        actionPagination(){
-
+        actionPagination(val) {
+            this.pagination.page = val
+            this.refresh()
         },
+        refresh(){
+            console.log("refresh")
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        },
+    },
+    mounted() {
+        this.refresh()
     },
 }
 </script>

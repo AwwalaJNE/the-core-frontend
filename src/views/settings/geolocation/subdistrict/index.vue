@@ -15,26 +15,31 @@
         @actionPagination="actionPagination"
         />
 
-        <!--Create User Dialog end-->
-            <!-- <dialog-create-edit-role 
-            :active="dialogRole" 
-            :closeDialogRole="closeDialogRole"
-            :refresh="refresh"
-            title="Edit role"
+        <!--Edit District Dialog end-->
+            <dialog-create-edit-subdistrict
+            :active="dialogGeolocationSubDistrict" 
+            :closeDialog="closeDialogGeolocationSubDistrict"
+            @refresh="refresh"
+            btnBlue="Edit"
+            title="Edit district"
             :dataItem="dataItem"
-            /> -->
+            />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogCreateEditSubDistrict from "@/views/settings/geolocation/subdistrict/dialogCreateEditSubDistrict"
 export default {
     name:"subdistrict-list",
     mixins: [master],
+    props: {
+        query: String
+    },
     components: {
         "table-master" : TableMaster,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-create-edit-subdistrict": DialogCreateEditSubDistrict
     },
     data() {
         return {
@@ -55,15 +60,46 @@ export default {
                     key: "geolocation_subdistrict_name",
                     width: "auto"
                 },
+                {
+                    label: "Zip Code",
+                    key: "geolocation_subdistrict_zip_code",
+                    width: "auto"
+                },
+                {
+                    label: "Tariff Code",
+                    key: "geolocation_subdistrict_tarif_code",
+                    width: "auto"
+                },
+                {
+                    label: "Zona Wilayah",
+                    key: "geolocation_subdistrict_zona_wilayah",
+                    width: "auto"
+                },
+                {
+                    label: "Kode Routing",
+                    key: "geolocation_subdistrict_kode_routing",
+                    width: "auto"
+                },
+                
             ],
             loading: false,
             dataItem: {},
-            tempSearch: "",
-            dialogGeolocation: false,
+            tempSearch: this.query ? this.query : "",
+            dialogGeolocationSubDistrict: false,
             pagination: {
                 limit:5,
                 page_size: 1,
                 page: 1
+            }
+        }
+    },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
             }
         }
     },
@@ -72,7 +108,6 @@ export default {
             this.loading = true
             let query = "";
             if(q !== undefined) {
-                this.tempSearch = q
                 query = q
             }
             await axios
@@ -81,40 +116,68 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
-                    if(res.data.data.length > 0) {
-                        this.dataTable = res.data.data
+                    this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
+                    if(res.data.data.length > 0) {
+                        
                     } else {
-                        this.openNotification('warn', 'Subdistrict data is empty!', ' Please create a new subdistrict data')
+                        // this.openNotification('warn', 'district data is empty!', ' Please create a new district data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate subdistrict list', err)
+                    this.openNotification('danger', 'Failed to populate district list', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
-        actionUpdate(){
-
+        actionUpdate(val){
+            if(this.dataTable.length > 0) {
+                let obj = this.dataTable.filter(item => {
+                    return item.geolocation_subdistrict_id === val.geolocation_subdistrict_id
+                })
+                this.dataItem = obj[0]
+                console.log(this.dataItem, 'nihh val', val)
+                this.$nextTick(() => {
+                    this.dialogGeolocationSubDistrict = true
+                });
+            }
         },
-        actionRemove(){
-
+        async actionRemove(val){
+            await axios
+                .delete(
+                    this.URL.geolocation_subdistrict + `/${val.geolocation_subdistrict_id}`,
+                    this.Helper.header())
+                .then(res => {
+                    console.log('res', res)
+                    this.refresh()
+                    this.openNotification(null, 'Delete success', 'Delete subdistrict is success')
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
+                })
         },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.refresh()
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.refresh()
         },
+        refresh(){
+            console.log("refresh")
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        },
+        closeDialogGeolocationSubDistrict() {
+            this.dialogGeolocationSubDistrict = false
+        }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page)
+        this.refresh()
     },
 }
 </script>

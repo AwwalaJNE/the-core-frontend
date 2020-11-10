@@ -41,17 +41,17 @@ export default {
   },
 
   // ==== user role ====
-  SET_USER_ROLE_USER_ROLE_NAME(state, payload) {
-    state.user_role.user_role_name.value = payload
+  SET_ROLE_USER_ROLE_NAME(state, payload) {
+    state.role.user_role_name.value = payload
   },
-  SET_USER_ROLE_USER_ROLE_CODE(state, payload) {
-    state.user_role.user_role_code.value = payload
+  SET_ROLE_USER_ROLE_CODE(state, payload) {
+    state.role.user_role_code.value = payload
   },
-  SET_USER_ROLE_USER_ROLE_NAME_ValueData(state, payload) {
-    state.user_role.user_role_name.valueData = payload
+  SET_ROLE_USER_ROLE_NAME_ValueData(state, payload) {
+    state.role.user_role_name.valueData = payload
   },
-  SET_USER_ROLE_USER_ROLE_CODE_ValueData(state, payload) {
-    state.user_role.user_role_code.valueData = payload
+  SET_ROLE_USER_ROLE_CODE_ValueData(state, payload) {
+    state.role.user_role_code.valueData = payload
   },
 
   // ==== geolocation country ====

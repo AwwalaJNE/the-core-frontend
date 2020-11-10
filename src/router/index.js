@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 
 import Content from '@/views/template/Content.vue'
 
+import Upload from '@/views/upload/index.vue'
+
 import NotFound from '@/components/NotFound.vue'
 
 // === USERS ===
@@ -100,6 +102,15 @@ const routes = [
         meta: { 
           requiresAuth: true,
           breadCrumb: "Customer"
+        }
+      },
+      {
+        path: "/upload",
+        name: "Upload",
+        component: Upload,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Upload"
         }
       },
     ]

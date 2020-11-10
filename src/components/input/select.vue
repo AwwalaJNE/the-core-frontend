@@ -1,7 +1,6 @@
 <template>
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
-            {{value}}
             <vs-select
                 class="m-select"
                 filter
@@ -54,7 +53,7 @@ export default {
     },
     computed: {
         listenFormKey(){
-            return this.formKey
+            return this.formKey || ''
         },
         listenIsMultiple(){
             return this.isMultiple ? this.isMultiple : false
