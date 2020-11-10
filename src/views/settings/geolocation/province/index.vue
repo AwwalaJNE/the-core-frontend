@@ -57,7 +57,7 @@ export default {
                 },
                 {
                     label: "Country",
-                    key: "geolocation_province_country_name",
+                    key: "geolocation_country_name",
                     width: "auto"
                 },
                 {

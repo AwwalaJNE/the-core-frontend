@@ -10,10 +10,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formGeoLocationProvinceController"
+                    ref="formUserCustomerController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="geolocation_province"
+                    typeForm="customer"
                 />
             </div>
         </template>
@@ -57,14 +57,14 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-geo-province",
+    name:"dialog-create-edit-customer",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,   
+        "form-input-controller": FormInputController,    
     },
     props: {
-       closeDialog: Function, 
+       closeDialog: Function,
        active: Boolean,
        title: String,
        dataItem: Object,
@@ -74,8 +74,7 @@ export default {
     data() {
         return {
             form: {},
-            formRole: this.$store.getters.getInputs.geolocation_city ? this.$store.getters.getInputs.geolocation_city : {},
-            geolocation_province_id: ''
+            customer_id: ''
         }
     },
     computed: {
@@ -86,137 +85,154 @@ export default {
             return this.title
         },
         listenDataItem() {
-            let obj = this.dataItem || {}
-            if(obj != undefined) {
-                obj.hasOwnProperty('geolocation_province_time_zone') ? 
-                obj['geolocation_province_time_zone'] = obj['geolocation_province_time_zone'].replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "_").toLowerCase() : 
-                obj['geolocation_province_time_zone']
-            }
-            
-            return obj
+            return this.dataItem
         }
     },
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.geolocation_province_id = val.geolocation_province_id
+                this.customer_id = val.customer_id
             }
         }
     },
     methods: {
         formData(form){
-            let obj = form
-            obj.hasOwnProperty('geolocation_province_time_zone') ? 
-                obj['geolocation_province_time_zone'] = obj['geolocation_province_time_zone'].replace(/[&\/\\#,+()$~%._'":*?<>{}]/g, "/").toUpperCase() : 
-                obj['geolocation_province_time_zone']
-            this.form = obj
-            if(this.geolocation_province_id !== undefined && this.geolocation_province_id !== '') {
+            this.form = form
+            if(this.customer_id !== undefined && this.customer_id !== '') {
                     console.log('update')
                     this.updateData()
             } else {
+                    console.log('create new')
                     this.addData()
             }
         },
         handleSubmit(){
-            this.$refs.formGeoLocationProvinceController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formUserCustomerController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formGeoLocationProvinceController.handleClearForm()
+            this.$refs.formUserCustomerController.handleClearForm()
             this.form = {}
-            this.geolocation_province_id = ""
+            this.customer_id = ""
         },
-        async getDataCountry(){
+        async getDataSubdistrict(){
+            this.loadingDataRole = true
             await axios
-                .get(this.URL.geolocation_country + 
-                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                .get(this.URL.geolocation_subdistrict + 
+                `?n=1&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.geolocation_country_name
-                            obj["value"] = item.geolocation_country_id
+                            obj["label"] = item.geolocation_subdistrict_name
+                            obj["value"] = item.geolocation_subdistrict_id
 
                             arr.push(obj)
                         })
-
-                        this.$store.dispatch("SET_GEOLOCATION_PROVINCE_GEOLOCATION_COUNTRY_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.dataRole = arr
+                        this.$store.dispatch("SET_CUSTOMER_CUSTOMER_SUBDISTRICT_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
+                    this.loadingDataRole = false
                 }).catch(err => {
+                    this.loadingDataRole = false
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-        async getDataTimezone(){
+        async getDataCustomerType(){
+            this.loadingDataRole = true
             await axios
-                .get(this.URL.geolocation_timezone + 
-                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                .get(this.URL.customer_type + 
+                `?n=1&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
-                        // replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "_") /
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.name.toString()
-                            obj["value"] = item.code.toString().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "_").toLowerCase();
+                            obj["label"] = item.customer_type_name
+                            obj["value"] = item.customer_type_id
 
                             arr.push(obj)
                         })
-
-                        console.log('timezone', arr)
-
-                        this.$store.dispatch("SET_GEOLOCATION_PROVINCE_GEOLOCATION_PROVINCE_TIME_ZONE_ArrData", arr.length > 0 ? arr : null)
+                        this.dataRole = arr
+                        this.$store.dispatch("SET_CUSTOMER_CUSTOMER_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
+                    this.loadingDataRole = false
                 }).catch(err => {
+                    this.loadingDataRole = false
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataNodeId(){
+            this.loadingDataRole = true
+            await axios
+                .get(this.URL.node + 
+                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.node_name
+                            obj["value"] = item.default_node_link_id
+
+                            arr.push(obj)
+                        })
+                        this.dataRole = arr
+                        this.$store.dispatch("SET_CUSTOMER_CUSTOMER_DEFAULT_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                    this.loadingDataRole = false
+                }).catch(err => {
+                    this.loadingDataRole = false
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
         async updateData(){
             await axios
                 .put(
-                    this.URL.geolocation_province + `/${this.geolocation_province_id}?n=1`,
+                    this.URL.customer + `/${this.customer_id}?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Update success', 'Update district is success')
+                    this.openNotification(null, 'Update success', 'Update customer is success')
                 }).catch(err => {
                     this.loading = false
-                    this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', 'Update failed', err)
                 })
         },
         async addData() {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.geolocation_province + `?n=1`,
+                    this.URL.customer + `?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Create success', 'Create new district is success')
+                    this.openNotification(null, 'Create Success', 'Create new customer is success')
                 }).catch(err => {
                     this.loading = false
-                    this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', 'Create failed', err)
                 })
         },
         cancel() {
@@ -225,8 +241,9 @@ export default {
         }
     },
     mounted() {
-        this.getDataCountry()
-        this.getDataTimezone()
+        this.getDataNodeId()
+        this.getDataCustomerType()
+        this.getDataSubdistrict()
     },
 }
 </script>

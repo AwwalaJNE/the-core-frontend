@@ -15,7 +15,7 @@
         @actionPagination="actionPagination"
         />
 
-        <!--Create District Dialog end-->
+        <!--Edit District Dialog end-->
             <dialog-create-edit-district
             :active="dialogGeolocationDistrict" 
             :closeDialog="closeDialogGeolocationDistrict"

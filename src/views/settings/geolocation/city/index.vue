@@ -15,6 +15,14 @@
         @actionPagination="actionPagination"
         />
 
+        <dialog-confirm
+            :active="confirmDialog"
+            :closeDialog="closeDialogConfirm"
+            title="Delete"
+            message=""
+            @confirm="confirm"
+        />
+
         <!--Create User Dialog end-->
             <dialog-create-edit-city 
             :active="dialogGeolocationCity" 
@@ -31,6 +39,7 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import DialogCreateEditCity from "@/views/settings/geolocation/city/dialogCreateEditCity"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 export default {
     name:"city-list",
     mixins: [master],
@@ -39,7 +48,8 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
-        "dialog-create-edit-city": DialogCreateEditCity
+        "dialog-create-edit-city": DialogCreateEditCity,
+        "dialog-confirm": DialogConfirm
     },
     data() {
         return {
@@ -69,7 +79,8 @@ export default {
                 limit:5,
                 page_size: 1,
                 page: 1
-            }
+            },
+            confirmDialog: false
         }
     },
     watch: {
@@ -124,7 +135,16 @@ export default {
                 });
             }
         },
+        closeDialogConfirm(){
+            this.confirmDialog = false
+        },
+        confirm(val) {
+            if(val) {
+
+            }
+        },
         async actionRemove(val){
+            // this.confirmDialog = true
             await axios
                 .delete(
                     this.URL.geolocation_city + `/${val.geolocation_city_id}`,

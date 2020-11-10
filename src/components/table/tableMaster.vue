@@ -44,7 +44,7 @@
                         <template v-for="(column, key) of listenColumn">
                             <template v-if="column.type !== undefined && column.type.toLowerCase() === 'text'">
                                 <vs-td :key="key" :class="column.width ? column.width : ''">
-                                    <template v-if="split(column.key).length == 2">
+                                    <template v-if="split(column.key).length == 2 && item.hasOwnProperty(split(column.key)[0])">
                                         {{ item.hasOwnProperty(split(column.key)[0]) ? item[split(column.key)[0]][split(column.key)[1]] : '' }}
                                     </template>
                                     <template v-else>
@@ -57,9 +57,25 @@
                                     <checkbox :isChecked="item['selected']"/>
                                 </vs-td>
                             </template>
+                            <template v-else-if="column.type !== undefined && column.type.toLowerCase() === 'status'">
+                                <vs-td :key="key" :class="column.width ? column.width : ''">
+                                    <template v-if="item[column.key] !== undefined">
+                                        <vs-button
+                                            circle
+                                            icon
+                                            border
+                                            disabled
+                                            :danger="item[column.key] == false ? true : false"
+                                            :active="false"
+                                        >
+                                            <i :class="`bx bx-${item[column.key] == false ? 'x' : 'check'}`"></i>
+                                        </vs-button>
+                                    </template>
+                                </vs-td>
+                            </template>
                             <template v-else>
                                 <vs-td :key="key" :class="column.width ? column.width : ''">
-                                    <template v-if="split(column.key).length == 2">
+                                    <template v-if="split(column.key).length == 2 && item.hasOwnProperty(split(column.key)[0])">
                                         {{ item.hasOwnProperty(split(column.key)[0]) ? item[split(column.key)[0]][split(column.key)[1]] : '' }}
                                     </template>
                                     <template v-else>

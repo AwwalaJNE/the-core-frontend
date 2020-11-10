@@ -49,7 +49,7 @@ export default {
       value: ''
     },
   },
-  user_role: {
+  role: {
     user_role_name: {
       label: "Role*",
       key: "user_role_name",
@@ -105,8 +105,8 @@ export default {
       rule: "",
       typeInput: "Boolean",
       typeData: "Boolean",
-      valueData: false,
-      value: false
+      valueData: true,
+      value: true
     },
   },
 
@@ -146,8 +146,8 @@ export default {
       rule: "",
       typeInput: "Boolean",
       typeData: "Boolean",
-      valueData: false,
-      value: false
+      valueData: true,
+      value: true
     },
   },
 
@@ -177,8 +177,8 @@ export default {
       rule: "",
       typeInput: "Boolean",
       typeData: "Boolean",
-      valueData: false,
-      value: false
+      valueData: true,
+      value: true
     },
   },
 
@@ -208,8 +208,8 @@ export default {
       rule: "",
       typeInput: "Boolean",
       typeData: "Boolean",
-      valueData: false,
-      value: false
+      valueData: true,
+      value: true
     },
   },
 
@@ -275,10 +275,40 @@ export default {
       rule: "",
       typeInput: "Boolean",
       typeData: "Boolean",
-      valueData: false,
-      value: false
+      valueData: true,
+      value: true
     },
   },
 
+
+  customer: {
+    n: {
+      label: "number*",
+      key: "n",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    customer_name: {
+      label: "Customer name*",
+      key: "customer_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    customer_code: {
+      label: "Customer code*",
+      key: "customer_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+  },
   
 }
