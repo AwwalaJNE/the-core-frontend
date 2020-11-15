@@ -26,41 +26,57 @@
         <section class="nodes">
             <div class="box view">
                 <div class="nav-box">
-                    <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                    <vs-row justify="space-between">
+                        <vs-col xs="6" sm="9" lg="9">
+                            <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                        </vs-col>
+                        <vs-col xs="6" sm="3" lg="3">
+                            <search-input ref="searchInput" @searchValue="searchValue"/>
+                        </vs-col>
+                    </vs-row>
                 </div>
                 <template v-if="navActive === 'k-ALTERNATE-ADDRESS'">
                     <transition name="slide-fade">
-                        <alternate-address />
+                        <alternate-address :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-NODES'">
                     <transition name="slide-fade">
-                        <nodes />
+                        <nodes :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-NODES-COMMISION'">
                     <transition name="slide-fade">
-                        <nodes-commision />
+                        <nodes-commision :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-TYPES'">
                     <transition name="slide-fade">
-                        <types />
+                        <types :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
 
             </div>
         </section>
+
+        <dialog-create-edit-node 
+            :active="dialogNode" 
+            @refresh="refresh"
+            :closeDialog="closeDialogNode"
+            title="Create Node"
+            />
     </div>
 </template>
 <script>
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
+import SearchInput from "@/components/search/searchInput"
 
 import AlternateAddress from "@/views/settings/nodes/alternateAddress"
 import Nodes from "@/views/settings/nodes/nodes"
 import NodesCommision from "@/views/settings/nodes/nodesCommision"
 import Types from "@/views/settings/nodes/types"
+import DialogCreateEditNode from "@/views/settings/nodes/nodes/dialogCreateEditNode"
 
 
 export default {
@@ -68,10 +84,12 @@ export default {
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
+        "search-input": SearchInput,
         "alternate-address": AlternateAddress,
         "nodes": Nodes,
         "nodes-commision": NodesCommision,
         "types": Types,
+        "dialog-create-edit-node": DialogCreateEditNode,
         // "role-list": RoleList,
         // "dialog-create-edit-user": DialogCreateEditUser,
         // "dialog-create-edit-role": DialogCreateEditRole
@@ -101,12 +119,29 @@ export default {
                 },
             ],
             title:"Nodes",
-            navActive: "k-NODES"
+            navActive: "k-NODES",
+            tempSearch: "",
+            dialogNode: false,
+            dialogALTERNATEADDRESS: false,
+            dialogNODESCOMMISION: false,
+            dialogNodeType: false
         }
     },
     methods: {
+        refresh(){
+            let el = this.refreshInject
+            this.$refs[el].refresh() // trigger function refresh form dari luar component list
+        },
+        searchValue (val) {
+            this.tempSearch = val
+            console.log("this.tempSearch = ",this.tempSearch)
+        },
+        clearSearch() {
+            this.$refs.searchInput.clear()
+        },
         activeTab(val) {
             this.navActive = val
+            this.clearSearch()
             console.log(this.navActive)
             let item = this.navItemm.filter(item => {
                 return item.key == val
@@ -114,7 +149,27 @@ export default {
             this.title = item[0].title
         },
         openDialog(){
-
+            switch(this.navActive) {
+                case "k-NODES":
+                    this.dialogNode = true
+                    break;
+                case "k-TYPES":
+                    this.dialogNodeType = true
+                    break;
+                case "k-NODES-COMMISION":
+                    this.dialogNODESCOMMISION = true
+                    break;
+                case "k-ALTERNATE-ADDRESS":
+                    this.dialogALTERNATEADDRESS = true
+                    break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
+            this.refreshInject = this.navActive
+        },
+        closeDialogNode() {
+            this.dialogNode = false
         },
     },
 }

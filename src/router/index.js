@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import Login from '@/views/auth'
+
 import Content from '@/views/template/Content.vue'
 
 import Upload from '@/views/upload/index.vue'
@@ -113,7 +115,16 @@ const routes = [
           breadCrumb: "Upload"
         }
       },
-    ]
+    ],
+    meta: { 
+      requiresAuth: true,
+      breadCrumb: "main"
+    }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   },
 ]
 
@@ -121,6 +132,31 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  let path = to.path;
+  let token = localStorage.getItem("tokenBearer")
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if(token == null) {
+      next({
+        path: "/login",
+        params: { nextUrl: to.fullPath }
+      });
+    } else {
+      next();
+    }
+  } else {
+    if (path.includes("login") && token !== null) {
+      next({
+        path: "/",
+        params: { nextUrl: to.fullPath }
+      });
+    }
+    else{
+      next();
+    }
+  }
 })
 
 export default router

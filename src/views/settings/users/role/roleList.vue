@@ -132,10 +132,10 @@ export default {
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
-                    this.openNotification(null, 'Success', 'Update role is success')
+                    this.openNotification(null, 'Success', 'Delete role is success')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Update role is failed', err)
+                    this.openNotification('danger', 'Delete role is failed', err)
                 })
         },
         actionLimit(val){

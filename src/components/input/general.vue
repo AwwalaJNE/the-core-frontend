@@ -3,6 +3,7 @@
         <template v-slot:inputan="props">
             <vs-input
                 class="mt-input"
+                :type="listenTypeInput.includes('password') == true ? 'password' : 'text'"
                 :label="name"
                 :label-placeholder="name"
                 v-model="value"
@@ -20,7 +21,8 @@ export default {
         name: String,
         rules: String,
         valueData: [String, Number],
-        formKey: String
+        formKey: String,
+        typeInput: String
     },
     components: {
         "inputan": Inputan
@@ -34,6 +36,9 @@ export default {
         listenFormKey(){
             return this.formKey
         },
+        listenTypeInput() {
+            return this.typeInput || 'text'
+        }
     },
     watch: {
         valueData: function(val){

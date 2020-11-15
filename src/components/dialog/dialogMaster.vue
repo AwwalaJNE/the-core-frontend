@@ -2,7 +2,8 @@
     <vs-dialog 
     v-model="modalActive" 
     prevent-close 
-    @close="closeDialog">
+    @close="closeDialog"
+    :class="width">
         <template>
           <h4 class="not-margin">
             <slot name='header'></slot>
@@ -26,7 +27,8 @@ export default {
     name:"dialog-master",
     props: {
         actived: Boolean,
-        closeDialog: Function
+        closeDialog: Function,
+        width: String
     },
     data() {
         return {
@@ -49,56 +51,47 @@ export default {
 </script>
 <style lang="scss">
     .not-margin {
-	margin: 0px;
-	font-weight: normal;
-	padding: 10px;
-}
-.con-form {
-	width: 100%;
-	.flex {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		a {
-			font-size: 0.8rem;
-			opacity: 0.7;
-			&:hover {
-				opacity: 1;
-			}
-		}
-	}
-	.vs-checkbox-label {
-		font-size: 0.8rem;
-	}
-	.vs-input-content {
-		margin: 10px 0px;
-		width: calc(100%);
-		.vs-input {
-			width: 100%;
-		}
-	}
-}
-.footer-dialog {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	width: calc(100%);
-	.new {
-		margin: 0px;
-		margin-top: 20px;
-		padding: 0px;
-		font-size: 0.7rem;
-		a {
-			color: getColor('primary') !important;
-			margin-left: 6px;
-			&:hover {
-				text-decoration: underline;
-			}
-		}
-	}
-	.vs-button {
-		margin: 0px;
-	}
-}
+        margin: 0px;
+        font-weight: normal;
+        padding: 10px;
+    }
+
+    .vs-dialog-content{
+        &.lg{
+            @include for-phone-only{
+                // .vs-dialog {
+                //     min-width: 100%;
+                // }
+            }
+            @include for-desktop-up{
+                .vs-dialog {
+                    min-width: 600px;
+                }
+            }
+        }
+    }
+
+    .footer-dialog {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: calc(100%);
+        .new {
+            margin: 0px;
+            margin-top: 20px;
+            padding: 0px;
+            font-size: 0.7rem;
+            a {
+                color: getColor('primary') !important;
+                margin-left: 6px;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+        .vs-button {
+            margin: 0px;
+        }
+    }
 </style>
