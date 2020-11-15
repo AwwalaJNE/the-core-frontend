@@ -1,7 +1,8 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
-    :closeDialog="closeDialogUser">
+    width="lg"
+    :closeDialog="cancel">
 
         <template v-slot:header>
             {{listenTitle}}
@@ -10,10 +11,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formUserController"
+                    ref="formUserNodeController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="user"
+                    typeForm="node"
                 />
             </div>
         </template>
@@ -22,6 +23,7 @@
             <vs-row justify="flex-end">
                 <vs-col w="3">
                     <vs-button
+                    transparent
                     block
                     danger
                     flat
@@ -33,15 +35,19 @@
                 </vs-col>
                 <vs-col w="3">
                     <vs-button
+                    transparent
                     block
                     flat
                     :active="true"
+                    type="submit"
                     @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}
                     </vs-button>
                 </vs-col>
             </vs-row>
+                
+                
         </template>
 
     </dialog-master>
@@ -49,18 +55,17 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import DialogMaster from "@/components/dialog/dialogMaster"
 import FormInputController from "@/components/form/formInputController"
+import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-user",
+    name:"dialog-create-edit-node",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,
+        "form-input-controller": FormInputController,    
     },
     props: {
-       closeDialogUser: Function, 
-       refresh: Function,
+       closeDialog: Function,
        active: Boolean,
        title: String,
        dataItem: Object,
@@ -70,10 +75,7 @@ export default {
     data() {
         return {
             form: {},
-            formUser: this.$store.getters.getInputs.user ? this.$store.getters.getInputs.user : {},
-            user_id: '',
-            dataRole: [],
-            loadingDataRole: false
+            node_id: ''
         }
     },
     computed: {
@@ -90,40 +92,32 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.user_id = val.user_id
+                this.node_id = val.node_id
             }
-        },
+        }
     },
     methods: {
         formData(form){
-            
-
-            if(this.user_id !== undefined && this.user_id !== '') {
+            this.form = form
+            if(this.node_id !== undefined && this.node_id !== '') {
                     console.log('update')
-                    let obj = form
-                    if(obj["password"] == '') {
-                        delete obj.password
-                    }
-                    this.form = obj
                     this.updateData()
             } else {
                     console.log('create new')
-                    this.form = form
                     this.addData()
             }
         },
         handleSubmit(){
-            this.$refs.formUserController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formUserNodeController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formUserController.handleClearForm()
+            this.$refs.formUserNodeController.handleClearForm()
             this.form = {}
-            this.user_id = ""
+            this.node_id = ""
         },
-        async getDataRole(){
-            this.loadingDataRole = true
+        async getDataTariff(){
             await axios
-                .get(this.URL.role + 
+                .get(this.URL.tariff + 
                 `?n=1&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
@@ -131,62 +125,90 @@ export default {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.user_role_name
-                            obj["value"] = item.user_role_id
+                            obj["label"] = item.tariff_origin
+                            obj["value"] = item.tariff_origin
 
                             arr.push(obj)
                         })
-                        this.dataRole = arr
-                        this.$store.dispatch("SET_USER_USER_ROLE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_NODE_NODE_TARIFF_CODE_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
-                    this.loadingDataRole = false
                 }).catch(err => {
-                    this.loadingDataRole = false
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-        async updateData() {
+        async getDataNodeType(){
+            await axios
+                .get(this.URL.node_type + 
+                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.node_type_name
+                            obj["value"] = item.node_type_id
+
+                            arr.push(obj)
+                        })
+                        // this.dataNodeType = arr
+                        this.$store.dispatch("SET_NODE_NODE_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async updateData(){
             await axios
                 .put(
-                    this.URL.user + `/${this.user_id}?n=1`,
+                    this.URL.node + `/${this.node_id}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
-                    this.closeDialogUser()
+                    this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Update user is success')
+                    this.openNotification(null, 'Update success', 'Update node is success')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.closeDialog()
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Update failed', err)
                 })
         },
         async addData() {
+            console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.user + `?n=1`,
+                    this.URL.node,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
-                    this.closeDialogUser()
+                    this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Create user is success')
+                    this.openNotification(null, 'Create Success', 'Create new node is success')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed add data', err.response ? err.response.data.message : 'something went wrong')
+                    this.closeDialog()
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Create failed', err)
                 })
         },
         cancel() {
             this.handleClearForm()
-            this.closeDialogUser()
+            this.closeDialog()
         }
     },
     mounted() {
-        this.getDataRole()
+        this.getDataNodeType()
+        this.getDataTariff()
     },
 }
 </script>

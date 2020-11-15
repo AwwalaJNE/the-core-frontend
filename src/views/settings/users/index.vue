@@ -206,6 +206,7 @@ export default {
             this.title = item[0].title
 
             if(this.navActive === "k-PERMISSIONS") {
+                console.log('ini permission page')
                 this.getDataRole()
                 this.getDataPermission()
             }

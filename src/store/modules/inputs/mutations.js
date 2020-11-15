@@ -237,5 +237,273 @@ export default {
   SET_GEOLOCATION_SUBDISTRICT_IS_ACTIVE_ValueData(state, payload) {
     state.geolocation_subdistrict.is_active.valueData = payload || false
   },
+
+  // ==== Customer ====
+  SET_CUSTOMER_N(state, payload) {
+    state.customer.n.value = payload
+  },
+  SET_CUSTOMER_N_ValueData(state, payload) {
+    state.customer.n.valueData = payload
+  },
+  SET_CUSTOMER_N_ArrData(state, payload) {
+    state.customer.n.hasOwnProperty('arrData') ?
+    state.customer.n.arrData = payload :
+    state.customer.n.arrData = []
+  },
+
+  SET_CUSTOMER_CUSTOMER_NAME(state, payload) {
+    state.customer.customer_name.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_NAME_ValueData(state, payload) {
+    state.customer.customer_name.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_CODE(state, payload) {
+    state.customer.customer_code.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_CODE_ValueData(state, payload) {
+    state.customer.customer_code.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_DATE_OF_BIRTH(state, payload) {
+    state.customer.customer_date_of_birth.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_DATE_OF_BIRTH_ValueData(state, payload) {
+    state.customer.customer_date_of_birth.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_ADDRESS(state, payload) {
+    state.customer.customer_address.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_ADDRESS_ValueData(state, payload) {
+    state.customer.customer_address.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_SUBDISTRICT_ID(state, payload) {
+    state.customer.customer_subdistrict_id.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_SUBDISTRICT_ID_ValueData(state, payload) {
+    state.customer.customer_subdistrict_id.valueData = payload
+  },
+  SET_CUSTOMER_CUSTOMER_SUBDISTRICT_ID_ArrData(state, payload) {
+    state.customer.customer_subdistrict_id.hasOwnProperty('arrData') ?
+    state.customer.customer_subdistrict_id.arrData = payload :
+    state.customer.customer_subdistrict_id.arrData = []
+  },
+
+  SET_CUSTOMER_CUSTOMER_EMAIL(state, payload) {
+    state.customer.customer_email.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_EMAIL_ValueData(state, payload) {
+    state.customer.customer_email.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_PHONE(state, payload) {
+    state.customer.customer_phone.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_PHONE_ValueData(state, payload) {
+    state.customer.customer_phone.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_TYPE_ID(state, payload) {
+    state.customer.customer_type_id.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_TYPE_ID_ValueData(state, payload) {
+    state.customer.customer_type_id.valueData = payload
+  },
+  SET_CUSTOMER_CUSTOMER_TYPE_ID_ArrData(state, payload) {
+    state.customer.customer_type_id.hasOwnProperty('arrData') ?
+    state.customer.customer_type_id.arrData = payload :
+    state.customer.customer_type_id.arrData = []
+  },
+
+  SET_CUSTOMER_CUSTOMER_FAX(state, payload) {
+    state.customer.customer_fax.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_FAX_ValueData(state, payload) {
+    state.customer.customer_fax.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_IDENTITY_CARD_NUMBER(state, payload) {
+    state.customer.customer_identity_card_number.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_IDENTITY_CARD_NUMBER_ValueData(state, payload) {
+    state.customer.customer_identity_card_number.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_TAX_NUMBER(state, payload) {
+    state.customer.customer_tax_number.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_TAX_NUMBER_ValueData(state, payload) {
+    state.customer.customer_tax_number.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_TAX_NUMBER_ADDRESS(state, payload) {
+    state.customer.customer_tax_number_address.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_TAX_NUMBER_ADDRESS_ValueData(state, payload) {
+    state.customer.customer_tax_number_address.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_COMMODITY(state, payload) {
+    state.customer.customer_commodity.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_COMMODITY_ValueData(state, payload) {
+    state.customer.customer_commodity.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_DEFAULT_NODE_ID(state, payload) {
+    state.customer.customer_default_node_id.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_DEFAULT_NODE_ID_ValueData(state, payload) {
+    state.customer.customer_default_node_id.valueData = payload
+  },
+  SET_CUSTOMER_CUSTOMER_DEFAULT_NODE_ID_ArrData(state, payload) {
+    state.customer.customer_default_node_id.hasOwnProperty('arrData') ?
+    state.customer.customer_default_node_id.arrData = payload :
+    state.customer.customer_default_node_id.arrData = []
+  },
+
+  SET_CUSTOMER_CUSTOMER_LATITUDE(state, payload) {
+    state.customer.customer_latitude.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_LATITUDE_ValueData(state, payload) {
+    state.customer.customer_latitude.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_LONGITUDE(state, payload) {
+    state.customer.customer_longitude.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_LONGITUDE_ValueData(state, payload) {
+    state.customer.customer_longitude.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_ADDRESS_TYPE(state, payload) {
+    state.customer.customer_address_type.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_ADDRESS_TYPE_ValueData(state, payload) {
+    state.customer.customer_address_type.valueData = payload
+  },
+
+  SET_CUSTOMER_CUSTOMER_CORPORATE_CREDIT(state, payload) {
+    state.customer.customer_corporate_credit.value = payload
+  },
+  SET_CUSTOMER_CUSTOMER_CORPORATE_CREDIT_ValueData(state, payload) {
+    state.customer.customer_corporate_credit.valueData = payload
+  },
  
+
+  // ==== Node ====
+  SET_NODE_NODE_NAME(state, payload) {
+    state.node.node_name.value = payload
+  },
+  SET_NODE_NODE_NAME_ValueData(state, payload) {
+    state.node.node_name.valueData = payload
+  },
+
+  SET_NODE_NODE_TYPE_ID(state, payload) {
+    state.node.node_type_id.value = payload
+  },
+  SET_NODE_NODE_TYPE_ID_ValueData(state, payload) {
+    state.node.node_type_id.valueData = payload
+  },
+  SET_NODE_NODE_TYPE_ID_ArrData(state, payload) {
+    state.node.node_type_id.hasOwnProperty('arrData') ?
+    state.node.node_type_id.arrData = payload :
+    state.node.node_type_id.arrData = []
+  },
+
+  SET_NODE_NODE_PHONE(state, payload) {
+    state.node.node_phone.value = payload
+  },
+  SET_NODE_NODE_PHONE_ValueData(state, payload) {
+    state.node.node_phone.valueData = payload
+  },
+
+  SET_NODE_NODE_NPWP(state, payload) {
+    state.node.node_npwp.value = payload
+  },
+  SET_NODE_NODE_NPWP_ValueData(state, payload) {
+    state.node.node_npwp.valueData = payload
+  },
+
+  SET_NODE_NODE_CODE(state, payload) {
+    state.node.node_code.value = payload
+  },
+  SET_NODE_NODE_CODE_ValueData(state, payload) {
+    state.node.node_code.valueData = payload
+  },
+
+  SET_NODE_NODE_TARIFF_CODE(state, payload) {
+    state.node.node_tariff_code.value = payload
+  },
+  SET_NODE_NODE_TARIFF_CODE_ValueData(state, payload) {
+    state.node.node_tariff_code.valueData = payload
+  },
+  SET_NODE_NODE_TARIFF_CODE_ArrData(state, payload) {
+    state.node.node_tariff_code.hasOwnProperty('arrData') ?
+    state.node.node_tariff_code.arrData = payload :
+    state.node.node_tariff_code.arrData = []
+  },
+
+  SET_NODE_NODE_LAT(state, payload) {
+    state.node.node_lat.value = payload
+  },
+  SET_NODE_NODE_LAT_ValueData(state, payload) {
+    state.node.node_lat.valueData = payload
+  },
+
+  SET_NODE_NODE_LON(state, payload) {
+    state.node.node_lon.value = payload
+  },
+  SET_NODE_NODE_LON_ValueData(state, payload) {
+    state.node.node_lon.valueData = payload
+  },
+
+  SET_NODE_DEFAULT_NODE_LINK_ID(state, payload) {
+    state.node.default_node_link_id.value = payload
+  },
+  SET_NODE_DEFAULT_NODE_LINK_ID_ValueData(state, payload) {
+    state.node.default_node_link_id.valueData = payload
+  },
+
+  SET_NODE_DEFAULT_NODE_ALTERNATE_ADDRESS_ID(state, payload) {
+    state.node.default_node_alternate_address_id.value = payload
+  },
+  SET_NODE_DEFAULT_NODE_ALTERNATE_ADDRESS_ID_ValueData(state, payload) {
+    state.node.default_node_alternate_address_id.valueData = payload
+  },
+  SET_NODE_DEFAULT_NODE_ALTERNATE_ADDRESS_ID_ArrData(state, payload) {
+    state.node.default_node_alternate_address_id.hasOwnProperty('arrData') ?
+    state.node.default_node_alternate_address_id.arrData = payload :
+    state.node.default_node_alternate_address_id.arrData = []
+  },
+
+  SET_NODE_NODE_ALLOW_SPECIAL_CARGO(state, payload) {
+    state.node.node_allow_special_cargo.value = payload
+  },
+  SET_NODE_NODE_ALLOW_SPECIAL_CARGO_ValueData(state, payload) {
+    state.node.node_allow_special_cargo.valueData = payload
+  },
+
+  SET_NODE_NODE_ALLOW_CORPORATE_TRANSACTION(state, payload) {
+    state.node.node_allow_corporate_transaction.value = payload
+  },
+  SET_NODE_NODE_ALLOW_CORPORATE_TRANSACTION_ValueData(state, payload) {
+    state.node.node_allow_corporate_transaction.valueData = payload
+  },
+
+  SET_NODE_NODE_IS_EXTERNAL(state, payload) {
+    state.node.node_is_external.value = payload
+  },
+  SET_NODE_NODE_IS_EXTERNAL_ValueData(state, payload) {
+    state.node.node_is_external.valueData = payload
+  },
+
+  SET_NODE_IS_ACTIVE(state, payload) {
+    state.node.is_active.value = payload
+  },
+  SET_NODE_IS_ACTIVE_ValueData(state, payload) {
+    state.node.is_active.valueData = payload
+  },
 }

@@ -4,7 +4,7 @@ import 'vuesax/dist/vuesax.css' //Vuesax styles
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { Upload } from 'element-ui';
+import { Upload, Autocomplete } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 
@@ -13,6 +13,7 @@ import Storage from 'vue-ls'
 Vue.use(Vuesax)
 
 Vue.use(Upload)
+Vue.use(Autocomplete)
 
 let options = {
     namespace: 'vuejs__', // key prefix

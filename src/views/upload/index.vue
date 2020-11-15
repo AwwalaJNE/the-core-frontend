@@ -169,6 +169,8 @@ export default {
                             this.Helper.header())
                         .then(res => {
                             console.log('res ', res)
+                            item["status"] = true
+                            item["message"] = 'success'
                             if (this.progress <= 100) {
                                 loading.changeProgress(this.progress++)
                             }
@@ -311,7 +313,7 @@ export default {
         rowValidation(item) {
             let obj = {
                 "status": true,
-                "message": 'success'
+                "message": 'valid'
             }
             let keys = Object.keys(this.InputObject)
             let rule = ''
@@ -322,13 +324,13 @@ export default {
                     case rule.includes("required"):
                         if(item.hasOwnProperty(inp) == false) {
                             obj["status"] = false
-                            obj["message"] = `${obj["message"].replace(/success/g, " ")} ${inp} required,`
+                            obj["message"] = `${obj["message"].replace(/valid/g, " ")} ${inp} required,`
                         }
                     case rule.includes("email"):
                         if(item.hasOwnProperty(inp)) {
                             // let emailValidate = email.validate(item["email"])
                             // obj["status"] = emailValidate || false
-                            // obj["message"] = emailValidate == false ? `${inp} is not valid` : 'success' 
+                            // obj["message"] = emailValidate == false ? `${inp} is not valid` : 'valid' 
                             
                             // console.log(item, emailValidate, obj)
                         } 

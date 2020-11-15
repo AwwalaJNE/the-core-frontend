@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="com_switch">
+        <small>{{listenLabel}}</small>
         <vs-switch class="switch-Cus" v-model="active" @change="updateValue">
             <template #on>
                 {{ listenName[0] }}
@@ -15,12 +16,16 @@ export default {
     name:"switch-input",
     props: {
         name: String,
+        titleLabel: String,
         valueData: Boolean,
         formKey: String
     },
     computed: {
         listenName(){
             return this.name.split("|")
+        },
+        listenLabel(){
+            return this.titleLabel || ''
         },
         listenFormKey(){
             return this.formKey
@@ -44,7 +49,14 @@ export default {
 }
 </script>
 <style lang="scss">
-    .switch-Cus{
-        max-width:100px !important;
+    .com_switch{
+        text-align: left;
+        margin-bottom: 1em;
+        small{
+        }
+        .switch-Cus{
+            margin-top: .5em;
+            max-width:100px !important;
+        }
     }
 </style>
