@@ -551,8 +551,9 @@ export default {
       label: "Default node link*",
       key: "default_node_link_id",
       rule: "required",
-      typeInput: "text",
+      typeInput: "select",
       typeData: "String",
+      arrData: [],
       valueData: null,
       value: ''
     },

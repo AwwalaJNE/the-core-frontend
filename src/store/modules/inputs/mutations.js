@@ -466,6 +466,11 @@ export default {
   SET_NODE_DEFAULT_NODE_LINK_ID_ValueData(state, payload) {
     state.node.default_node_link_id.valueData = payload
   },
+  SET_NODE_DEFAULT_NODE_LINK_ID_ArrData(state, payload) {
+    state.node.default_node_link_id.hasOwnProperty('arrData') ?
+    state.node.default_node_link_id.arrData = payload :
+    state.node.default_node_link_id.arrData = []
+  },
 
   SET_NODE_DEFAULT_NODE_ALTERNATE_ADDRESS_ID(state, payload) {
     state.node.default_node_alternate_address_id.value = payload

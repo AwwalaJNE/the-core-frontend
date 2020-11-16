@@ -20,6 +20,7 @@ export default {
     node_commission: api + "node-commission",
     node_link: api + "node-link",
     node_type: api + "node-type",
+    node_alternate_address: api + "node-alternate-address",
 
     // employee
     employee: api + "employee",

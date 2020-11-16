@@ -9,6 +9,8 @@ import Upload from '@/views/upload/index.vue'
 
 import NotFound from '@/components/NotFound.vue'
 
+import Transaction from '@/views/transaction'
+
 // === USERS ===
 import Users from '@/views/settings/users'
 
@@ -104,6 +106,15 @@ const routes = [
         meta: { 
           requiresAuth: true,
           breadCrumb: "Customer"
+        }
+      },
+      {
+        path: "/new-transactions",
+        name: "Transaction",
+        component: Transaction,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Transaction"
         }
       },
       {

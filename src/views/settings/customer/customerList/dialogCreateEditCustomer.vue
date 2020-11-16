@@ -1,6 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
+    width="lg"
     :closeDialog="cancel">
 
         <template v-slot:header>
