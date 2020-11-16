@@ -7,6 +7,7 @@
                 :label="name"
                 :label-placeholder="name"
                 v-model="value"
+                :disabled="isDisabled"
                 @input="updateValue"
                 :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
             />
@@ -38,6 +39,9 @@ export default {
         },
         listenTypeInput() {
             return this.typeInput || 'text'
+        },
+        isDisabled() {
+            return this.typeInput.includes('disabled')
         }
     },
     watch: {

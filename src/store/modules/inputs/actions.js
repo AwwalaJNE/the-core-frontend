@@ -453,6 +453,10 @@ export default {
   SET_NODE_DEFAULT_NODE_LINK_ID_ValueData({ commit }, payload) {
     commit('SET_NODE_DEFAULT_NODE_LINK_ID_ValueData', payload)
   },
+  // type select perlu data array
+  SET_NODE_DEFAULT_NODE_LINK_ID_ArrData({ commit }, payload) {
+    commit('SET_NODE_DEFAULT_NODE_LINK_ID_ArrData', payload)
+  },
 
   SET_NODE_DEFAULT_NODE_ALTERNATE_ADDRESS_ID({ commit }, payload) {
     commit('SET_NODE_DEFAULT_NODE_ALTERNATE_ADDRESS_ID', payload)

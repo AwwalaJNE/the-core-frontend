@@ -13,6 +13,21 @@
                             :typeInput="InputObject[item].typeInput"
                             @updateValue="updateValue" />
                         </template>
+                        <template v-if="InputObject[item].typeInput.toLowerCase().includes('row')">
+                            <vs-row justify="center">
+                                <template v-if="InputObject[item].input.length > 0">
+                                    <vs-col xs="12" :w="InputObject[item]['col']" v-for="(inp, i) in InputObject[item].input" :key="i">
+                                        <input-general 
+                                        :name="inp.label" 
+                                        :rules="inp.rule" 
+                                        :formKey="inp.key"
+                                        :valueData="inp.value"
+                                        :typeInput="inp.typeInput"
+                                        @updateValue="updateValue" />
+                                    </vs-col>
+                                </template>
+                            </vs-row>
+                        </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
                             <selector 
                             :ref="InputObject[item].key"
@@ -23,13 +38,6 @@
                             :selectedValue="InputObject[item].value"
                             :isMultiple="false"
                             @updateValue="updateValue" />
-                        </template>
-                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('mappicker')">
-                            <map-picker 
-                                :lat="listenLatitude"
-                                :lon="listenLongitude"
-                                @pickLocation="pickLocation"
-                            />
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('boolean')">
                             <switchNih
@@ -51,15 +59,13 @@ import FormMaster from "@/components/form/formMaster"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 import Switch from "@/components/input/switch"
-import MapPicker from "@/components/map"
 export default {
-    name:"input-controller",
+    name:"input-controller-transaction",
     components: {
         "form-master": FormMaster,
         "input-general": InputGeneral,
         "selector": Selector,
         "switchNih": Switch,
-        "map-picker": MapPicker
     },
     props: {
         arrData: Array,
@@ -71,11 +77,7 @@ export default {
         return {
             Keys: [],
             InputObject: {},
-            form: {},
-            latlon:[0,0],
-            latitude: 0,
-            longitude: 0,
-            hasMapPicker: false
+            form: {}
         }
     },
     computed: {
@@ -86,14 +88,8 @@ export default {
             return this.dataItem || null
         },
         listenGettersPrefix() {
-            return this.getters || 'getInputs' // defaultnya akan mengarah ke global input getters
+            return this.getters || 'getTransaction' // defaultnya akan mengarah ke transaction getters
         },
-        listenLatitude() {
-            return this.latitude
-        },
-        listenLongitude() {
-            return this.longitude
-        }
     },
     methods: {
         initialize() {
@@ -108,43 +104,18 @@ export default {
                 }
         },
         initializeDataItem() {
-            let obj = this.listenDataItem
-            let prefix = this.listenTypeForm.toUpperCase()
-            if(obj != null && Object.keys(this.InputObject).length > 0) {
-                this.Keys.map(item => {
-                    let action = item.toUpperCase()
-                    if(this.listenDataItem.hasOwnProperty(item)) {
-                        this.$store.dispatch(`SET_${prefix}_${action}`, this.listenDataItem[item])
+            // let obj = this.listenDataItem
+            // let prefix = this.listenTypeForm.toUpperCase()
+            // if(obj != null && Object.keys(this.InputObject).length > 0) {
+            //     this.Keys.map(item => {
+            //         let action = item.toUpperCase()
+            //         if(this.listenDataItem.hasOwnProperty(item)) {
+            //             this.$store.dispatch(`SET_${prefix}_${action}`, this.listenDataItem[item])
+            //         }
+            //     })
+            // }
+            // console.log('initilize data', this.latitude, this.longitude)
 
-                        if(this.InputObject[item].hasOwnProperty('mapPicker')) {
-                            if(this.InputObject[item]['typeInput'].toLowerCase().includes('latitude')){
-                                this.latitude = parseFloat(this.listenDataItem[item])
-                            } else if(this.InputObject[item]['typeInput'].toLowerCase().includes('longitude')){
-                                this.longitude = parseFloat(this.listenDataItem[item])
-                            }
-                        }
-                    }
-                })
-            }
-            console.log('initilize data', this.latitude, this.longitude)
-
-        },
-        pickLocation(item){
-            let prefix = this.listenTypeForm.toUpperCase()
-            this.Keys.map(key => {
-                let action = key.toUpperCase()
-                if(this.InputObject[key].hasOwnProperty('mapPicker')) {
-                    console.log(`this.InputObject['typeInput']`,this.InputObject[key]['typeInput'])
-                    if(this.InputObject[key]['typeInput'].toLowerCase().includes('latitude')){
-                        this.$store.dispatch(`SET_${prefix}_${action}`, item['latitude'])
-                        // this.latitude = item['latitude']
-                    } else if(this.InputObject[key]['typeInput'].toLowerCase().includes('longitude')){
-                        this.$store.dispatch(`SET_${prefix}_${action}`, item['longitude'])
-                        // this.longitude = item['longitude']
-                    }
-                }
-
-            })
         },
         updateValue(type, val) {
             let action = type.toUpperCase()
@@ -165,8 +136,7 @@ export default {
                         return;
                     }
                     this.InputObject = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm]
-                    let tempKey = this.Keys.filter(item => !item.includes('mapPicker'))
-                    tempKey.map(item => {
+                    this.Keys.map(item => {
                         // yg diambil key input
                         this.form[this.InputObject[item].key] = this.InputObject[item].value
                     })
@@ -180,8 +150,7 @@ export default {
         },
         handleClearForm(){
             let prefix = this.listenTypeForm.toUpperCase()
-            let tempKey = this.Keys.filter(item => !item.includes('mapPicker'))
-            tempKey.map(item => {
+            this.Keys.map(item => {
                 let action = item.toUpperCase()
                 this.$store.dispatch(`SET_${prefix}_${action}`, '')
                 this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
@@ -199,7 +168,7 @@ export default {
             this.initializeDataItem()
         });
         
-        console.log('form controller')
+        console.log('form controller transaction')
     },
 }
 </script>
