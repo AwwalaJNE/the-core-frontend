@@ -6,13 +6,36 @@
                     <vs-row justify="center">
                         <vs-col xs="12" md="6" lg="6">
                             <div>
-                                <input-general 
-                                :name="InputObject[item].label" 
-                                :rules="InputObject[item].rule" 
-                                :formKey="InputObject[item].key"
-                                :valueData="InputObject[item].value"
-                                :typeInput="InputObject[item].typeInput"
-                                @updateValue="updateValue" />
+                                <vs-row v-for="(item, keys) in keysLeft" :key="keys">
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
+                                        <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
+                                            <input-general 
+                                            :name="InputObject[item].label" 
+                                            :rules="InputObject[item].rule" 
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].value"
+                                            :typeInput="InputObject[item].typeInput"
+                                            @updateValue="updateValue" />
+                                        </template>
+                                    </vs-col>
+                                </vs-row>
+                            </div>
+                        </vs-col>
+                        <vs-col xs="12" md="6" lg="6">
+                            <div>
+                                <vs-row v-for="(item, keys) in keysRight" :key="keys">
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
+                                        <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
+                                            <input-general 
+                                            :name="InputObject[item].label" 
+                                            :rules="InputObject[item].rule" 
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].value"
+                                            :typeInput="InputObject[item].typeInput"
+                                            @updateValue="updateValue" />
+                                        </template>
+                                    </vs-col>
+                                </vs-row>
                             </div>
                         </vs-col>
                     </vs-row>
@@ -42,9 +65,14 @@ export default {
             form: {}
         }
     },
+    computed: {
+        listen_package_category_arrData() {
+            return this.$store.getters['getTransaction']['package']
+        }
+    },
     methods: {
         initialize() {
-            let obj = this.$store.getters['getTransaction'][package] || {}
+            let obj = this.$store.getters['getTransaction']['package'] || {}
                 if (Object.keys(obj).length > 0) {
                     let keys = Object.keys(obj)
                     keys.map(item => {
@@ -62,6 +90,9 @@ export default {
                     this.InputObject = {}
                 }
         },
+    },
+    mounted() {
+        this.initialize()
     },
 }
 </script>

@@ -279,6 +279,8 @@ export default {
     },
   },
   
-  calculator: {}
+  calculator: {
+    
+  }
 
 }

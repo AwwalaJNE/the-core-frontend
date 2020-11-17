@@ -15,11 +15,13 @@
         @actionPagination="actionPagination"
         />
 
-        <dialog-create-edit-Tariff
-            :active="dialogTariffSpecial" 
-            :closeDialog="closeDialogTariffSpecial"
-            :refresh="refresh"
-            title="Edit Tariff"
+        
+            <dialog-create-SurchargeType
+            :active="SurchargeType" 
+            :closeDialog="closeSurchargeType"
+            @refresh="refresh"
+            btnBlue="Edit"
+            title="Edit surcharge_type"
             :dataItem="dataItem"
             />
     </div>
@@ -28,16 +30,16 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
-import dialogCreateEditTariff from "@/views/settings/tariff/baseTariff/dialogCreateEditTariff"
+import DialogCreateEditSurchargeType from "@/views/settings/surcharge/surchargeType/dialogCreateEditSurchargeType"
 export default {
-    name:"base-tariff-special",
+    name:"surcharge-type",
     mixins: [master],
     props: {
         query: String
     },
     components: {
         "table-master" : TableMaster,
-        "dialog-create-edit-Tariff": dialogCreateEditTariff
+        "dialog-create-SurchargeType": DialogCreateEditSurchargeType
     },
     data() {
         return {
@@ -45,34 +47,25 @@ export default {
             datacolumn: [
                 {
                     label: "ID",
-                    key: "tariff_special_id",
+                    key: "surcharge_type_id",
                     width: "xs"
                 },
                 {
-                    label: "Tariff special name",
-                    key: "tariff_special_name",
-                    width: "auto"
+                    label: "Name",
+                    key: "surcharge_type_name",
+                    width: "xs"
                 },
                 {
-                    label: "Tariff special condition service code",
-                    key: "Tariff_special_condition_service_code",
-                    width: "auto"
-                },
-                {
-                    label: "Tariff special start date",
-                    key: "tariff_special_start_date",
-                    width: "auto"
-                },
-                {
-                    label: "Tariff special expiry date",
-                    key: "tariff_special_expiry_date",
-                    width: "auto"
+                    label: "Status",
+                    key: "is_active",
+                    width: "auto",
+                    type: "boolean",
                 },
             ],
             loading: false,
             dataItem: {},
-            tempSearch: "",
-            dialogTariffSpecial: false,
+            tempSearch: this.query ? this.query : "",
+            dialogSurchargeType: false,
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -98,7 +91,7 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.tariff_special + 
+                .get(this.URL.surcharge_type + 
                 `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
@@ -111,24 +104,24 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'tariff special data is empty!', ' Please create a new tariff special data')
+                        this.openNotification('warn', 'surcharge type data is empty!', ' Please create a new surcharge type data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff special list', err)
+                    this.openNotification('danger', 'Failed to populate surcharge type list', err)
                 })
         },
         actionUpdate(val){
             if(this.dataTable.length > 0) {
                 let obj = this.dataTable.filter(item => {
-                    return item.tariff_special_id === val.tariff_special_id
+                    return item.surcharge_type_id === val.surcharge_type_id
                 })
                 this.dataItem = obj[0]
                 console.log(this.dataItem, 'nihh val', val)
                 this.$nextTick(() => {
-                    this.dialogTariffSpecial = true
+                    this.dialogSurchargeType = true
                 });
             }
         },
@@ -144,12 +137,12 @@ export default {
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.tariff_special + `/${val.tariff_special_id}`,
+                    this.URL.surcharge_type + `/${val.surcharge_type_id}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
-                    this.openNotification(null, 'Delete success', 'Delete tariff special is success')
+                    this.openNotification(null, 'Delete success', 'Delete surcharge type is success')
                 }).catch(err => {
                     this.loading = false
                     this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
@@ -168,12 +161,9 @@ export default {
             console.log("refresh")
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
-        closeDialogTariffSpecial() {
-            this.dialogTariffSpecial = false
+        closeSurchargeType() {
+            this.dialogSurchargeType = false
         }
     },
-    mounted() {
-        this.refresh()
-    }
 }
 </script>

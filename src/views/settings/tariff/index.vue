@@ -26,21 +26,43 @@
         <section class="nodes">
             <div class="box view">
                 <div class="nav-box">
-                    <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                    <vs-row justify="space-between">
+                        <vs-col xs="6" sm="9" lg="9">
+                            <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                        </vs-col>
+                        <vs-col xs="6" sm="3" lg="3">
+                            <search-input ref="searchInput" @searchValue="searchValue"/>
+                        </vs-col>
+                    </vs-row>
                 </div>
                 <template v-if="navActive === 'k-BASE-TARIFF'">
                     <transition name="slide-fade">
-                        <base-tariff />
+                        <base-tariff :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'k-SPECIAL-TARIFF'">
                     <transition name="slide-fade">
-                        <special-tariff />
+                        <special-tariff :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
 
             </div>
         </section>
+
+        <!--Create Country-->
+            <!-- <dialog-create-edit-country 
+            :active="dialogGeolocationCountry" 
+            @refresh="refresh"
+            :closeDialog="closeDialogCountry"
+            title="Create Country"
+            /> -->
+        <!--Create province-->
+            <!-- <dialog-create-edit-province 
+            :active="dialogGeolocationProvince" 
+            @refresh="refresh"
+            :closeDialog="closeDialogProvince"
+            title="Create Province"
+            /> -->
     </div>
 </template>
 <script>
@@ -50,6 +72,8 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import BaseTariff from "@/views/settings/tariff/baseTariff"
 import SpecialTariff from "@/views/settings/tariff/specialTariff"
 
+import dialogCreateEditTariff from "@/views/settings/tariff/baseTariff/dialogCreateEditTariff"
+import dialogCreateEditSpecialTariff from "@/views/settings/tariff/specialTariff/dialogCreateEditSpecialTariff"
 
 export default {
     name:"tariff-index",
@@ -59,8 +83,8 @@ export default {
         "base-tariff": BaseTariff,
         "special-tariff": SpecialTariff,
         // "role-list": RoleList,
-        // "dialog-create-edit-user": DialogCreateEditUser,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-create-edit-Tariff": dialogCreateEditTariff,
+        "dialog-create-edit-SpecialTariff": dialogCreateEditSpecialTariff
     },
     data() {
         return {

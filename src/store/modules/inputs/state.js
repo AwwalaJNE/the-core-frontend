@@ -606,6 +606,435 @@ export default {
       valueData: true,
       value: true
     },
+  },
+
+  tariff: {
+    tariff_origin: {
+      label: "Tariff origin*",
+      key: "tariff_origin",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_destination: {
+      label: "Tariff destination*",
+      key: "tariff_destination",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_start_date: {
+      label: "Tariff start date*",
+      key: "tariff_start_date",
+      rule: "required",
+      typeInput: "date",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_expiry_date: {
+      label: "Tariff expiry date*",
+      key: "tariff_expiry_date",
+      rule: "required",
+      typeInput: "date",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_service_code: {
+      label: "Tariff service code*",
+      key: "tariff_service_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_currency: {
+      label: "Tariff currency*",
+      key: "tariff_currency",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_vehicle_mode_id: {
+      label: "Tariff vehicle mode*",
+      key: "tariff_vehicle_mode_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    tariff_amount_1: {
+      label: "Tariff amount 1*",
+      key: "tariff_amount_1",
+      rule: "required",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_weight_1: {
+      label: "Tariff weight 1*",
+      key: "tariff_weight_1",
+      rule: "required",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
+
+  tariff_special: {
+    tariff_special_name: {
+      label: "Tariff special name*",
+      key: "tariff_special_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_service_code: {
+      label: "Tariff special condition service code*",
+      key: "tariff_special_condition_service_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_start_date: {
+      label: "Tariff special start date*",
+      key: "tariff_special_start_date",
+      rule: "required",
+      typeInput: "date",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_expiry_date: {
+      label: "Tariff special expiry date*",
+      key: "tariff_special_expiry_date",
+      rule: "required",
+      typeInput: "date",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_type: {
+      label: "Tariff special type*",
+      key: "tariff_special_type",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_amount: {
+      label: "Tariff special amount*",
+      key: "tariff_special_amount",
+      rule: "required",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_max_amount: {
+      label: "Tariff special max amount",
+      key: "tariff_special_max_amount",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_from_country: {
+      label: "Tariff special condition from country",
+      key: "tariff_special_condition_from_country",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_from_province: {
+      label: "Tariff special condition from province",
+      key: "tariff_special_condition_from_province",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_from_city: {
+      label: "Tariff special condition from city",
+      key: "tariff_special_condition_from_city",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_from_district: {
+      label: "Tariff special condition from district",
+      key: "tariff_special_condition_from_district",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_from_subdistrict: {
+      label: "Tariff special condition from subdistrict",
+      key: "tariff_special_condition_from_subdistrict",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_from_zip_code: {
+      label: "Tariff special condition from zip code",
+      key: "tariff_special_condition_from_zip_code",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_from_tariff_code: {
+      label: "Tariff special condition from tariff code",
+      key: "tariff_special_condition_from_tariff_code",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_to_country: {
+      label: "Tariff special condition to country",
+      key: "tariff_special_condition_to_country",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_to_province: {
+      label: "Tariff special condition to province",
+      key: "tariff_special_condition_to_province",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_to_city: {
+      label: "Tariff special condition to city",
+      key: "tariff_special_condition_to_city",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_to_district: {
+      label: "Tariff special condition to district",
+      key: "tariff_special_condition_to_district",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_to_subdistrict: {
+      label: "Tariff special condition to subdistrict",
+      key: "tariff_special_condition_to_subdistrict",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_to_zip_code: {
+      label: "Tariff special condition to zip code",
+      key: "tariff_special_condition_to_zip_code",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_to_tariff_code: {
+      label: "Tariff special condition to tariff code",
+      key: "tariff_special_condition_to_tariff_code",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_min_koli: {
+      label: "Tariff special condition min koli",
+      key: "tariff_special_condition_min_koli",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_max_koli: {
+      label: "Tariff special condition max koli",
+      key: "tariff_special_condition_max_koli",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_min_weight: {
+      label: "Tariff special condition min weight",
+      key: "tariff_special_condition_min_weight",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_max_weight: {
+      label: "Tariff special condition max weight",
+      key: "tariff_special_condition_max_weight",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_min_volume: {
+      label: "tariff special condition min volume",
+      key: "tariff_special_condition_min_volume",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    tariff_special_condition_max_volume: {
+      label: "tariff special condition max volume",
+      key: "tariff_special_condition_max_volume",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
+
+  surcharge: {
+    surcharge_name: {
+      label: "Surcharge name*",
+      key: "surcharge_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    surcharge_type_id: {
+      label: "Surcharge type",
+      key: "surcharge_type_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    surcharge_condition: {
+      label: "Surcharge condition*",
+      key: "surcharge_condition",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    surcharge_formula: {
+      label: "Surcharge formula*",
+      key: "surcharge_formula",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    auto_apply: {
+      titleLabel: "auto apply",
+      label: "True|False",
+      key: "auto_apply",
+      rule: "required",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
+
+  surcharge_type: {
+    surcharge_type_name: {
+      label: "Surcharge type name*",
+      key: "surcharge_type_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
   }
   
 }

@@ -31,4 +31,13 @@ export default {
 
     // tariff
     tariff: api + "tariff",
+    tariff_special: api + "tariff-special",
+
+    //surcharge
+    surcharge: api + "surcharge",
+    surcharge_type: api + "surcharge-type",
+
+    //vehicle
+    vehicle: api + "vehicle",
+    vehicle_mode: api + "vehicle-mode",
 }

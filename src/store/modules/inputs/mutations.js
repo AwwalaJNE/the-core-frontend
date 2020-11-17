@@ -511,4 +511,340 @@ export default {
   SET_NODE_IS_ACTIVE_ValueData(state, payload) {
     state.node.is_active.valueData = payload
   },
+
+  // tariff
+  SET_TARIFF_TARIFF_ORIGIN(state, payload) {
+    state.tariff.tariff_origin.value = payload
+  },
+  SET_TARIFF_TARIFF_ORIGIN_ValueData(state, payload) {
+    state.tariff.tariff_origin.valueData = payload
+  },
+    
+  SET_TARIFF_TARIFF_DESTINATION(state, payload) {
+    state.tariff.tariff_destination.value = payload
+  },
+  SET_TARIFF_TARIFF_DESTINATION_ValueData(state, payload) {
+    state.tariff.tariff_destination.valueData = payload
+  },
+    
+  SET_TARIFF_TARIFF_START_DATE(state, payload) {
+    state.tariff.tariff_start_date.value = payload
+  },
+  SET_TARIFF_TARIFF_START_DATE_ValueData(state, payload) {
+    state.tariff.tariff_start_date.valueData = payload
+  },
+    
+  SET_TARIFF_TARIFF_EXPIRY_DATE(state, payload) {
+    state.tariff.tariff_expiry_date.value = payload
+  },
+  SET_TARIFF_TARIFF_EXPIRY_DATE_ValueData(state, payload) {
+    state.tariff.tariff_expiry_date.valueData = payload
+  },
+    
+  SET_TARIFF_TARIFF_SERVICE_CODE(state, payload) {
+    state.tariff.tariff_service_code.value = payload
+  },
+  SET_TARIFF_TARIFF_SERVICE_CODE_ValueData(state, payload) {
+    state.tariff.tariff_service_code.valueData = payload
+  },
+    
+  SET_TARIFF_TARIFF_CURRENCY(state, payload) {
+    state.tariff.tariff_currency.value = payload
+  },
+  SET_TARIFF_TARIFF_CURRENCY_ValueData(state, payload) {
+    state.tariff.tariff_currency.valueData = payload
+  },
+    
+  SET_TARIFF_TARIFF_VEHICLE_MODE_ID(state, payload) {
+    state.tariff.tariff_vehicle_mode_id.value = payload
+  },
+  SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ValueData(state, payload) {
+    state.tariff.tariff_vehicle_mode_id.valueData = payload
+  },
+  SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ArrData(state, payload) {
+    state.tariff.tariff_vehicle_mode_id.hasOwnProperty('arrData') ?
+    state.tariff.tariff_vehicle_mode_id.arrData = payload :
+    state.tariff.tariff_vehicle_mode_id.arrData = []
+  },
+    
+  SET_TARIFF_TARIFF_AMOUNT_1(state, payload) {
+    state.tariff.tariff_amount_1.value = payload
+  },
+  SET_TARIFF_TARIFF_AMOUNT_1_ValueData(state, payload) {
+    state.tariff.tariff_amount_1.valueData = payload
+  },
+    
+  SET_TARIFF_TARIFF_WEIGHT_1(state, payload) {
+    state.tariff.tariff_weight_1.value = payload
+  },
+  SET_TARIFF_TARIFF_WEIGHT_1_ValueData(state, payload) {
+    state.tariff.tariff_weight_1.valueData = payload
+  },
+    
+  SET_TARIFF_IS_ACTIVE(state, payload) {
+    state.tariff.is_active.value = payload
+  },
+  SET_TARIFF_IS_ACTIVE_ValueData(state, payload) {
+    state.tariff.is_active.valueData = payload
+  },
+
+  // tariff special
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_NAME(state, payload) {
+    state.tariff_special.tariff_special_name.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_NAME_ValueData(state, payload) {
+    state.tariff_special.tariff_special_name.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_SERVICE_CODE(state, payload) {
+    state.tariff_special.tariff_special_condition_service_code.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_SERVICE_CODE_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_service_code.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_START_DATE(state, payload) {
+    state.tariff_special.tariff_special_start_date.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_START_DATE_ValueData(state, payload) {
+    state.tariff_special.tariff_special_start_date.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_EXPIRY_DATE(state, payload) {
+    state.tariff_special.tariff_special_expiry_date.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_EXPIRY_DATE_ValueData(state, payload) {
+    state.tariff_special.tariff_special_expiry_date.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_TYPE(state, payload) {
+    state.tariff_special.tariff_special_type.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_TYPE_ValueData(state, payload) {
+    state.tariff_special.tariff_special_type.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_AMOUNT(state, payload) {
+    state.tariff_special.tariff_special_amount.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_AMOUNT_ValueData(state, payload) {
+    state.tariff_special.tariff_special_amount.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_MAX_AMOUNT(state, payload) {
+    state.tariff_special.tariff_special_max_amount.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_MAX_AMOUNT_ValueData(state, payload) {
+    state.tariff_special.tariff_special_max_amount.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_COUNTRY(state, payload) {
+    state.tariff_special.tariff_special_condition_from_country.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_COUNTRY_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_from_country.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_PROVINCE(state, payload) {
+    state.tariff_special.tariff_special_condition_from_province.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_PROVINCE_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_from_province.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_CITY(state, payload) {
+    state.tariff_special.tariff_special_condition_from_city.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_CITY_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_from_city.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_DISTRICT(state, payload) {
+    state.tariff_special.tariff_special_condition_from_district.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_DISTRICT_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_from_district.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_SUBDISTRICT(state, payload) {
+    state.tariff_special.tariff_special_condition_from_subdistrict.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_SUBDISTRICT_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_from_subdistrict.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_ZIP_CODE(state, payload) {
+    state.tariff_special.tariff_special_condition_from_zip_code.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_ZIP_CODE_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_from_zip_code.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_TARIFF_CODE(state, payload) {
+    state.tariff_special.tariff_special_condition_from_tariff_code.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_TARIFF_CODE_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_from_tariff_code.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_COUNTRY(state, payload) {
+    state.tariff_special.tariff_special_condition_to_country.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_COUNTRY_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_to_country.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_PROVINCE(state, payload) {
+    state.tariff_special.tariff_special_condition_to_province.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_PROVINCE_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_to_province.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_CITY(state, payload) {
+    state.tariff_special.tariff_special_condition_to_city.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_CITY_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_to_city.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_DISTRICT(state, payload) {
+    state.tariff_special.tariff_special_condition_to_district.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_DISTRICT_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_to_district.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_SUBDISTRICT(state, payload) {
+    state.tariff_special.tariff_special_condition_to_subdistrict.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_SUBDISTRICT_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_to_subdistrict.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_ZIP_CODE(state, payload) {
+    state.tariff_special.tariff_special_condition_to_zip_code.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_ZIP_CODE_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_to_zip_code.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_TARIFF_CODE(state, payload) {
+    state.tariff_special.tariff_special_condition_to_tariff_code.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_TARIFF_CODE_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_to_tariff_code.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_KOLI(state, payload) {
+    state.tariff_special.tariff_special_condition_min_koli.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_KOLI_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_min_koli.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_KOLI(state, payload) {
+    state.tariff_special.tariff_special_condition_max_koli.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_KOLI_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_max_koli.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_WEIGHT(state, payload) {
+    state.tariff_special.tariff_special_condition_min_weight.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_WEIGHT_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_min_weight.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_WEIGHT(state, payload) {
+    state.tariff_special.tariff_special_condition_max_weight.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_WEIGHT_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_max_weight.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_VOLUME(state, payload) {
+    state.tariff_special.tariff_special_condition_min_volume.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_VOLUME_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_min_volume.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_VOLUME(state, payload) {
+    state.tariff_special.tariff_special_condition_max_volume.value = payload
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_VOLUME_ValueData(state, payload) {
+    state.tariff_special.tariff_special_condition_max_volume.valueData = payload
+  },
+    
+  SET_TARIFF_SPECIAL_IS_ACTIVE(state, payload) {
+    state.tariff_special.is_active.value = payload
+  },
+  SET_TARIFF_SPECIAL_IS_ACTIVE_ValueData(state, payload) {
+    state.tariff_special.is_active.valueData = payload
+  },
+
+  // SURCHARGE
+  SET_SURCHARGE_SURCHARGE_NAME(state, payload) {
+    state.surcharge.surcharge_name.value = payload
+  },
+  SET_SURCHARGE_SURCHARGE_NAME_ValueData(state, payload) {
+    state.surcharge.surcharge_name.valueData = payload
+  },
+    
+  SET_SURCHARGE_SURCHARGE_TYPE_ID(state, payload) {
+    state.surcharge.surcharge_type_id.value = payload
+  },
+  SET_SURCHARGE_SURCHARGE_TYPE_ID_ValueData(state, payload) {
+    state.surcharge.surcharge_type_id.valueData = payload
+  },
+  SET_SURCHARGE_SURCHARGE_TYPE_ID_ArrData(state, payload) {
+    state.surcharge.surcharge_type_id.hasOwnProperty('arrData') ?
+    state.surcharge.surcharge_type_id.arrData = payload :
+    state.surcharge.surcharge_type_id.arrData = []
+  },
+    
+  SET_SURCHARGE_SURCHARGE_CONDITION(state, payload) {
+    state.surcharge.surcharge_condition.value = payload
+  },
+  SET_SURCHARGE_SURCHARGE_CONDITION_ValueData(state, payload) {
+    state.surcharge.surcharge_condition.valueData = payload
+  },
+    
+  SET_SURCHARGE_SURCHARGE_FORMULA(state, payload) {
+    state.surcharge.surcharge_formula.value = payload
+  },
+  SET_SURCHARGE_SURCHARGE_FORMULA_ValueData(state, payload) {
+    state.surcharge.surcharge_formula.valueData = payload
+  },
+    
+  SET_SURCHARGE_AUTO_APPLY(state, payload) {
+    state.surcharge.auto_apply.value = payload
+  },
+  SET_SURCHARGE_AUTO_APPLY_ValueData(state, payload) {
+    state.surcharge.auto_apply.valueData = payload
+  },
+    
+  SET_SURCHARGE_IS_ACTIVE(state, payload) {
+    state.surcharge.is_active.value = payload
+  },
+  SET_SURCHARGE_IS_ACTIVE_ValueData(state, payload) {
+    state.surcharge.is_active.valueData = payload
+  },
+
+
+  SET_SURCHARGE_TYPE_SURCHARGE_TYPE_NAME(state, payload) {
+    state.surcharge_type.surcharge_type_name.value = payload
+  },
+  SET_SURCHARGE_TYPE_SURCHARGE_TYPE_NAME_ValueData(state, payload) {
+    state.surcharge_type.surcharge_type_name.valueData = payload
+  },
+    
+  SET_SURCHARGE_TYPE_IS_ACTIVE(state, payload) {
+    state.surcharge_type.is_active.value = payload
+  },
+  SET_SURCHARGE_TYPE_IS_ACTIVE_ValueData(state, payload) {
+    state.surcharge_type.is_active.valueData = payload
+  },
 }
