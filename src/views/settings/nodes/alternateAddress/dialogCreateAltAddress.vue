@@ -10,10 +10,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formGeoLocationCityController"
+                    ref="formNodeAlternateAddressController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="geolocation_city"
+                    typeForm="node_alternate_address"
                 />
             </div>
         </template>
@@ -57,7 +57,7 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-geo-city",
+    name:"dialog-create-edit-altAddress",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
@@ -74,8 +74,7 @@ export default {
     data() {
         return {
             form: {},
-            formRole: this.$store.getters.getInputs.geolocation_city ? this.$store.getters.getInputs.geolocation_city : {},
-            geolocation_city_id: ''
+            node_alternate_address_id: ''
         }
     },
     computed: {
@@ -92,14 +91,28 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.geolocation_city_id = val.geolocation_city_id
+                this.node_alternate_address_id = val.node_alternate_address_id
+            }
+        },
+        active: function (val) {
+            if (val == true) {
+                this.getDataProvince()
+                this.getDataCity()
+                this.getDataDistrict()
+                this.getDataSubDistrict()
+                this.getDataTimezone()
+                this.getDataTariffCode()
             }
         }
     },
     methods: {
         formData(form){
-            this.form = form
-            if(this.geolocation_city_id !== undefined && this.geolocation_city_id !== '') {
+            let obj = form
+            obj.hasOwnProperty('node_alternate_address_time_zone_id') ? 
+                obj['node_alternate_address_time_zone_id'] = obj['node_alternate_address_time_zone_id'].replace(/[&\/\\#,+()$~%._'":*?<>{}]/g, "/").toUpperCase() : 
+                obj['node_alternate_address_time_zone_id']
+            this.form = obj
+            if(this.node_alternate_address_id !== undefined && this.node_alternate_address_id !== '') {
                     console.log('update')
                     this.updateData()
             } else {
@@ -107,12 +120,12 @@ export default {
             }
         },
         handleSubmit(){
-            this.$refs.formGeoLocationCityController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formNodeAlternateAddressController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formGeoLocationCityController.handleClearForm()
+            this.$refs.formNodeAlternateAddressController.handleClearForm()
             this.form = {}
-            this.geolocation_city_id = ""
+            this.node_alternate_address_id = ""
         },
         async getDataProvince(){
             await axios
@@ -130,7 +143,135 @@ export default {
                             arr.push(obj)
                         })
 
-                        this.$store.dispatch("SET_GEOLOCATION_CITY_GEOLOCATION_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataCity(){
+            await axios
+                .get(this.URL.geolocation_city + 
+                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.geolocation_city_name
+                            obj["value"] = item.node_alternate_address_id
+
+                            arr.push(obj)
+                        })
+
+                        this.$store.dispatch("SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_CITY_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataDistrict(){
+            await axios
+                .get(this.URL.geolocation_district + 
+                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.geolocation_district_name
+                            obj["value"] = item.geolocation_district_id
+
+                            arr.push(obj)
+                        })
+
+                        this.$store.dispatch("SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_DISTRICT_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataSubDistrict(){
+            await axios
+                .get(this.URL.geolocation_subdistrict + 
+                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.geolocation_subdistrict_name
+                            obj["value"] = item.geolocation_subdistrict_id
+
+                            arr.push(obj)
+                        })
+
+                        this.$store.dispatch("SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataTimezone(){
+            await axios
+                .get(this.URL.geolocation_timezone + 
+                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        // replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "_") /
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.name.toString()
+                            obj["value"] = item.code.toString().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "_").toLowerCase();
+
+                            arr.push(obj)
+                        })
+
+                        console.log('timezone', arr)
+
+                        this.$store.dispatch("SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_TIME_ZONE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataTariffCode(){
+            await axios
+                .get(this.URL.tariff + 
+                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.tariff_origin
+                            obj["value"] = item.tariff_origin
+
+                            arr.push(obj)
+                        })
+
+                        this.$store.dispatch("SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_TARIFF_CODE_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -142,7 +283,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.geolocation_city + `/${this.geolocation_city_id}?n=1`,
+                    this.URL.node_alternate_address + `/${this.node_alternate_address_id}?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -163,7 +304,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.geolocation_city + `?n=1`,
+                    this.URL.node_alternate_address,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -186,7 +327,6 @@ export default {
         }
     },
     mounted() {
-        this.getDataProvince()
     },
 }
 </script>

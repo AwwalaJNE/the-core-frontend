@@ -2,7 +2,7 @@
     <vs-row justify="center">
         <vs-col xs="12" sm="12" lg="12">
             <div class="map_picker">
-                <!-- <div class="query_map">
+                <div class="query_map">
                     <div>Search desired location</div>
                     <el-autocomplete
                     class="inline-input"
@@ -12,7 +12,8 @@
                     :trigger-on-focus="false"
                     @select="handleSelect"
                     ></el-autocomplete>
-                </div> -->
+                </div>
+                {{latitude+','+longitude}}
                 
                 <div ref="map_general" id="map_general" style="width: 100%; height: 250px;z-index:1;position:relative; display:block; overflow:hidden;"></div>
             </div>
@@ -119,7 +120,7 @@ export default {
                 .update();
                 self.latitude = position.lat;
                 self.longitude = position.lng;
-                // self.getCoordinates();
+                self.getCoordinates();
 
                 self.emitThem()
             });

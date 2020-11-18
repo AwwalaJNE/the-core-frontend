@@ -512,6 +512,147 @@ export default {
     state.node.is_active.valueData = payload
   },
 
+  // node alt address
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ID(state, payload) {
+    state.node_alternate_address.node_id.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ID_ValueData(state, payload) {
+    state.node_alternate_address.node_id.valueData = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ID_ArrData(state, payload) {
+    state.node_alternate_address.node_id.hasOwnProperty('arrData') ?
+    state.node_alternate_address.node_id.arrData = payload :
+    state.node_alternate_address.node_id.arrData = []
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_NAME(state, payload) {
+    state.node_alternate_address.node_alternate_address_name.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_NAME_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_name.valueData = payload
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ADDRESS(state, payload) {
+    state.node_alternate_address.node_alternate_address_address.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ADDRESS_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_address.valueData = payload
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ZIP_CODE(state, payload) {
+    state.node_alternate_address.node_alternate_address_zip_code.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ZIP_CODE_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_zip_code.valueData = payload
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID(state, payload) {
+    state.node_alternate_address.node_alternate_address_subdistrict_id.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_subdistrict_id.valueData = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ArrData(state, payload) {
+    state.node_alternate_address.node_alternate_address_subdistrict_id.hasOwnProperty('arrData') ?
+    state.node_alternate_address.node_alternate_address_subdistrict_id.arrData = payload :
+    state.node_alternate_address.node_alternate_address_subdistrict_id.arrData = []
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_DISTRICT_ID(state, payload) {
+    state.node_alternate_address.node_alternate_address_district_id.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_DISTRICT_ID_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_district_id.valueData = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_DISTRICT_ID_ArrData(state, payload) {
+    state.node_alternate_address.node_alternate_address_district_id.hasOwnProperty('arrData') ?
+    state.node_alternate_address.node_alternate_address_district_id.arrData = payload :
+    state.node_alternate_address.node_alternate_address_district_id.arrData = []
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_CITY_ID(state, payload) {
+    state.node_alternate_address.node_alternate_address_city_id.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_CITY_ID_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_city_id.valueData = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_CITY_ID_ArrData(state, payload) {
+    state.node_alternate_address.node_alternate_address_city_id.hasOwnProperty('arrData') ?
+    state.node_alternate_address.node_alternate_address_city_id.arrData = payload :
+    state.node_alternate_address.node_alternate_address_city_id.arrData = []
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PROVINCE_ID(state, payload) {
+    state.node_alternate_address.node_alternate_address_province_id.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PROVINCE_ID_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_province_id.valueData = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PROVINCE_ID_ArrData(state, payload) {
+    state.node_alternate_address.node_alternate_address_province_id.hasOwnProperty('arrData') ?
+    state.node_alternate_address.node_alternate_address_province_id.arrData = payload :
+    state.node_alternate_address.node_alternate_address_province_id.arrData = []
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_TIME_ZONE_ID(state, payload) {
+    state.node_alternate_address.node_alternate_address_time_zone_id.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_TIME_ZONE_ID_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_time_zone_id.valueData = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_TIME_ZONE_ID_ArrData(state, payload) {
+    state.node_alternate_address.node_alternate_address_time_zone_id.hasOwnProperty('arrData') ?
+    state.node_alternate_address.node_alternate_address_time_zone_id.arrData = payload :
+    state.node_alternate_address.node_alternate_address_time_zone_id.arrData = []
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_TARIFF_CODE(state, payload) {
+    state.node_alternate_address.node_alternate_address_tariff_code.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_TARIFF_CODE_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_tariff_code.valueData = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_TARIFF_CODE_ArrData(state, payload) {
+    state.node_alternate_address.node_alternate_address_tariff_code.hasOwnProperty('arrData') ?
+    state.node_alternate_address.node_alternate_address_tariff_code.arrData = payload :
+    state.node_alternate_address.node_alternate_address_tariff_code.arrData = []
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LATITUDE(state, payload) {
+    state.node_alternate_address.node_alternate_address_latitude.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LATITUDE_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_latitude.valueData = payload
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LONGITUDE(state, payload) {
+    state.node_alternate_address.node_alternate_address_longitude.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LONGITUDE_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_longitude.valueData = payload
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ZONE_CODE(state, payload) {
+    state.node_alternate_address.node_alternate_address_zone_code.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ZONE_CODE_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_zone_code.valueData = payload
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PHONE(state, payload) {
+    state.node_alternate_address.node_alternate_address_phone.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PHONE_ValueData(state, payload) {
+    state.node_alternate_address.node_alternate_address_phone.valueData = payload
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_IS_ACTIVE(state, payload) {
+    state.node_alternate_address.is_active.value = payload
+  },
+  SET_NODE_ALTERNATE_ADDRESS_IS_ACTIVE_ValueData(state, payload) {
+    state.node_alternate_address.is_active.valueData = payload
+  },
+
   // tariff
   SET_TARIFF_TARIFF_ORIGIN(state, payload) {
     state.tariff.tariff_origin.value = payload

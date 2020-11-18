@@ -608,6 +608,158 @@ export default {
     },
   },
 
+  node_alternate_address: {
+    node_id: {
+      label: "Node",
+      key: "node_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_alternate_address_name: {
+      label: "Node alternate address name*",
+      key: "node_alternate_address_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    node_alternate_address_address: {
+      label: "Node alternate address address*",
+      key: "node_alternate_address_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    node_alternate_address_zip_code: {
+      label: "Node alternate address zip code*",
+      key: "node_alternate_address_zip_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    node_alternate_address_subdistrict_id: {
+      label: "Node alternate address subdistrict*",
+      key: "node_alternate_address_subdistrict_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_alternate_address_district_id: {
+      label: "Node alternate address district*",
+      key: "node_alternate_address_district_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_alternate_address_city_id: {
+      label: "Node alternate address city*",
+      key: "node_alternate_address_city_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_alternate_address_province_id: {
+      label: "Node alternate address province*",
+      key: "node_alternate_address_province_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    
+    node_alternate_address_time_zone_id: {
+      label: "Node alternate address time zone id*",
+      key: "node_alternate_address_time_zone_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_alternate_address_tariff_code: {
+      label: "Node alternate address tariff code*",
+      key: "node_alternate_address_tariff_code",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    mapPicker:{
+      // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
+      typeInput: "mapPicker",
+    },
+    node_alternate_address_latitude: {
+      label: "Node alternate address latitude*",
+      key: "node_alternate_address_latitude",
+      rule: "required",
+      mapPicker: true,
+      typeInput: "text|latitude",
+      typeData: "Number",
+      valueData: 0,
+      value: 0
+    },
+    node_alternate_address_longitude: {
+      label: "Node alternate address longitude*",
+      key: "node_alternate_address_longitude",
+      rule: "required",
+      mapPicker: true,
+      typeInput: "text|longitude",
+      typeData: "Number",
+      valueData: 0,
+      value: 0
+    },
+    node_alternate_address_zone_code: {
+      label: "Node alternate address zone code*",
+      key: "node_alternate_address_zone_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    node_alternate_address_phone: {
+      label: "Node_alternate_address_phone*",
+      key: "node_alternate_address_phone",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
+
   tariff: {
     tariff_origin: {
       label: "Tariff origin*",
