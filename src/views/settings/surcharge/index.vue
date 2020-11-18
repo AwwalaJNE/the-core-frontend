@@ -40,7 +40,7 @@
                         <surcharge-list :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
-                <template v-else-if="navActive === 'k-SURCHARGE'">
+                <template v-else-if="navActive === 'k-SURCHARGE-TYPE'">
                     <transition name="slide-fade">
                         <surcharge-type :ref="navActive" :query="tempSearch"/>
                     </transition>

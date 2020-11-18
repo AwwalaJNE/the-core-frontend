@@ -14,15 +14,17 @@
                             @updateValue="updateValue" />
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
-                            <selector 
-                            :ref="InputObject[item].key"
-                            :name="InputObject[item].label" 
-                            :rules="InputObject[item].rule" 
-                            :formKey="InputObject[item].key"
-                            :valueData="InputObject[item].arrData"
-                            :selectedValue="InputObject[item].value"
-                            :isMultiple="false"
-                            @updateValue="updateValue" />
+                            <template v-if="InputObject[item].arrData.length > 0">
+                                <selector 
+                                :ref="InputObject[item].key"
+                                :name="InputObject[item].label" 
+                                :rules="InputObject[item].rule" 
+                                :formKey="InputObject[item].key"
+                                :valueData="InputObject[item].arrData"
+                                :selectedValue="InputObject[item].value"
+                                :isMultiple="false"
+                                @updateValue="updateValue" />
+                            </template>
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('mappicker')">
                             <map-picker 

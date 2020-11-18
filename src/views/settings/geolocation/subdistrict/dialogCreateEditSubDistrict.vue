@@ -94,6 +94,11 @@ export default {
             if(val !== undefined) {
                 this.geolocation_subdistrict_id = val.geolocation_subdistrict_id
             }
+        },
+        active: function (val) {
+            if (val == true) {
+                this.getDataCity()
+            }
         }
     },
     methods: {
@@ -186,7 +191,7 @@ export default {
         }
     },
     mounted() {
-        this.getDataCity()
+        
     },
 }
 </script>

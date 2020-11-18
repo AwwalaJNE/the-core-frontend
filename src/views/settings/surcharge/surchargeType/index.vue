@@ -17,11 +17,11 @@
 
         
             <dialog-create-SurchargeType
-            :active="SurchargeType" 
-            :closeDialog="closeSurchargeType"
+            :active="dialogSurchargeType" 
+            :closeDialog="closeDialogSurchargeType"
             @refresh="refresh"
             btnBlue="Edit"
-            title="Edit surcharge_type"
+            title="Edit surcharge type"
             :dataItem="dataItem"
             />
     </div>
@@ -54,13 +54,7 @@ export default {
                     label: "Name",
                     key: "surcharge_type_name",
                     width: "xs"
-                },
-                {
-                    label: "Status",
-                    key: "is_active",
-                    width: "auto",
-                    type: "boolean",
-                },
+                }
             ],
             loading: false,
             dataItem: {},
@@ -97,6 +91,9 @@ export default {
                 .then(res => {
                     console.log(res)
                     this.dataTable = res.data.data
+                    this.dataTable.map(item => {
+                        item["selected"] = item.is_active
+                    })
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -161,9 +158,12 @@ export default {
             console.log("refresh")
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
-        closeSurchargeType() {
+        closeDialogSurchargeType() {
             this.dialogSurchargeType = false
         }
     },
+    mounted() {
+        this.refresh()
+    }
 }
 </script>

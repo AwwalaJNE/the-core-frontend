@@ -15,11 +15,11 @@
         @actionPagination="actionPagination"
         />
 
-        <dialog-create-edit-VehicleType
-            :active="dialogVehicleType" 
-            :closeDialog="closeDialogVehicleType"
+        <dialog-create-edit-VehicleMode
+            :active="dialogVehicleMode" 
+            :closeDialog="closeDialogVehicleMode"
             :refresh="refresh"
-            title="Edit Vehicle Type"
+            title="Edit Vehicle Mode"
             :dataItem="dataItem"
             />
     </div>
@@ -28,16 +28,16 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
-import dialogCreateEditVehicleType from "@/views/settings/vehicles/vehicleType/dialogCreateEditVehicleType"
+import dialogCreateEditVehicleMode from "@/views/settings/vehicles/vehicleMode/dialogCreateEditVehicleMode"
 export default {
-    name:"vehicle-type",
+    name:"vehicle-mode",
     mixins: [master],
     props: {
         query: String
     },
     components: {
         "table-master" : TableMaster,
-        "dialog-create-edit-VehicleType": dialogCreateEditVehicleType
+        "dialog-create-edit-VehicleMode": dialogCreateEditVehicleMode
     },
     data() {
         return {
@@ -45,19 +45,19 @@ export default {
             datacolumn: [
                 {
                     label: "ID",
-                    key: "vehicle_type_id",
+                    key: "vehicle_mode_id",
                     width: "xs"
                 },
                 {
-                    label: "Vehicle type name",
-                    key: "vehicle_type_name",
-                    width: "md"
+                    label: "Vehicle mode name",
+                    key: "vehicle_mode_name",
+                    width: "xs"
                 },
             ],
             loading: false,
             dataItem: {},
             tempSearch: "",
-            dialogVehicleType: false,
+            dialogVehicleMode: false,
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -83,7 +83,7 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.vehicle_type + 
+                .get(this.URL.vehicle_mode + 
                 `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
@@ -108,12 +108,12 @@ export default {
         actionUpdate(val){
             if(this.dataTable.length > 0) {
                 let obj = this.dataTable.filter(item => {
-                    return item.vehicle_type_id === val.vehicle_type_id
+                    return item.vehicle_mode_id === val.vehicle_mode_id
                 })
                 this.dataItem = obj[0]
                 console.log(this.dataItem, 'nihh val', val)
                 this.$nextTick(() => {
-                    this.dialogVehicleType = true
+                    this.dialogVehicleMode = true
                 });
             }
         },
@@ -129,7 +129,7 @@ export default {
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.vehicle_type + `/${val.vehicle_type_id}`,
+                    this.URL.vehicle_mode + `/${val.vehicle_mode_id}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
@@ -153,8 +153,8 @@ export default {
             console.log("refresh")
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
-        closeDialogVehicleType() {
-            this.dialogVehicleType = false
+        closeDialogVehicleMode() {
+            this.dialogVehicleMode = false
         }
     },
     mounted() {

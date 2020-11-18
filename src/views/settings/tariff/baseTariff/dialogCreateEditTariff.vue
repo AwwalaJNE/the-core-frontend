@@ -94,6 +94,11 @@ export default {
             if(val !== undefined) {
                 this.tariff_id = val.tariff_id
             }
+        },
+        active: function (val) {
+            if (val == true) {
+                this.getDataVehicleMode()
+            }
         }
     },
     methods: {
@@ -130,7 +135,7 @@ export default {
                             arr.push(obj)
                         })
 
-                        this.$store.dispatch("SET_GEOLOCATION_CITY_GEOLOCATION_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -186,7 +191,7 @@ export default {
         }
     },
     mounted() {
-        this.getDataVehicleMode()
+        
     },
 }
 </script>

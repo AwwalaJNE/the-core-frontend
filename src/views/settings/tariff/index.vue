@@ -49,25 +49,26 @@
             </div>
         </section>
 
-        <!--Create Country-->
-            <!-- <dialog-create-edit-country 
-            :active="dialogGeolocationCountry" 
+        <!--Create Tariff-->
+            <dialog-create-edit-Tariff
+            :active="dialogTariff" 
             @refresh="refresh"
-            :closeDialog="closeDialogCountry"
-            title="Create Country"
-            /> -->
-        <!--Create province-->
-            <!-- <dialog-create-edit-province 
-            :active="dialogGeolocationProvince" 
+            :closeDialog="closeDialogTariff"
+            title="Create Tariff"
+            />
+        <!--Create SpecialTariff-->
+            <dialog-create-edit-SpecialTariff
+            :active="dialogTariffSpecial" 
             @refresh="refresh"
-            :closeDialog="closeDialogProvince"
-            title="Create Province"
-            /> -->
+            :closeDialog="closeDialogTariffSpecial"
+            title="Create Tariff Special"
+            />
     </div>
 </template>
 <script>
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
+import SearchInput from "@/components/search/searchInput"
 
 import BaseTariff from "@/views/settings/tariff/baseTariff"
 import SpecialTariff from "@/views/settings/tariff/specialTariff"
@@ -80,6 +81,7 @@ export default {
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
+        "search-input": SearchInput,
         "base-tariff": BaseTariff,
         "special-tariff": SpecialTariff,
         // "role-list": RoleList,
@@ -101,12 +103,27 @@ export default {
                 },
             ],
             title:"Nodes",
-            navActive: "k-BASE-TARIFF"
+            navActive: "k-BASE-TARIFF",
+            tempSearch: "",
+            dialogTariff: false,
+            dialogTariffSpecial: false
         }
     },
     methods: {
+        refresh(){
+            let el = this.refreshInject
+            this.$refs[el].refresh() // trigger function refresh form dari luar component list
+        },
+        searchValue (val) {
+            this.tempSearch = val
+            console.log("this.tempSearch = ",this.tempSearch)
+        },
+        clearSearch() {
+            this.$refs.searchInput.clear()
+        },
         activeTab(val) {
             this.navActive = val
+            this.clearSearch()
             console.log(this.navActive)
             let item = this.navItemm.filter(item => {
                 return item.key == val
@@ -114,7 +131,24 @@ export default {
             this.title = item[0].title
         },
         openDialog(){
-
+            switch(this.navActive) {
+                case "k-BASE-TARIFF":
+                    this.dialogTariff = true
+                    break;
+                case "k-SPECIAL-TARIFF":
+                    this.dialogTariffSpecial = true
+                    break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
+            this.refreshInject = this.navActive
+        },
+        closeDialogTariff() {
+            this.dialogTariff = false
+        },
+        closeDialogTariffSpecial() {
+            this.dialogTariffSpecial = false
         },
     },
 }

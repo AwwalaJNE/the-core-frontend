@@ -93,6 +93,11 @@ export default {
                 this.user_id = val.user_id
             }
         },
+        active: function (val) {
+            if (val == true) {
+                this.getDataRole()
+            }
+        }
     },
     methods: {
         formData(form){
@@ -186,7 +191,7 @@ export default {
         }
     },
     mounted() {
-        this.getDataRole()
+        
     },
 }
 </script>

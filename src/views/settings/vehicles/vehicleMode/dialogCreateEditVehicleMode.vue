@@ -10,10 +10,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formVehicleTypeController"
+                    ref="formVehicleModeController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="vehicle_type"
+                    typeForm="vehicle_mode"
                 />
             </div>
         </template>
@@ -57,7 +57,7 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-vehicle-type",
+    name:"dialog-create-vehicle-mode",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
@@ -74,7 +74,8 @@ export default {
     data() {
         return {
             form: {},
-            vehicle_type_id: ''
+            formRole: this.$store.getters.getInputs.geolocation_city ? this.$store.getters.getInputs.geolocation_city : {},
+            vehicle_mode_id: ''
         }
     },
     computed: {
@@ -91,14 +92,14 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.vehicle_type_id = val.vehicle_type_id
+                this.vehicle_mode_id = val.vehicle_mode_id
             }
-        }
+        },
     },
     methods: {
         formData(form){
             this.form = form
-            if(this.vehicle_type_id !== undefined && this.vehicle_type_id !== '') {
+            if(this.vehicle_mode_id !== undefined && this.vehicle_mode_id !== '') {
                     console.log('update')
                     this.updateData()
             } else {
@@ -106,17 +107,17 @@ export default {
             }
         },
         handleSubmit(){
-            this.$refs.formVehicleTypeController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formVehicleModeController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formVehicleTypeController.handleClearForm()
+            this.$refs.formVehicleModeController.handleClearForm()
             this.form = {}
-            this.vehicle_type_id = ""
+            this.vehicle_mode_id = ""
         },
         async updateData(){
             await axios
                 .put(
-                    this.URL.vehicle_type + `/${this.vehicle_type_id}?n=1`,
+                    this.URL.vehicle_mode + `/${this.vehicle_mode_id}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -137,7 +138,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.vehicle_type,
+                    this.URL.vehicle_mode,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -160,6 +161,7 @@ export default {
         }
     },
     mounted() {
+        
     },
 }
 </script>

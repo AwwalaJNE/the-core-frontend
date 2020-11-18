@@ -27,7 +27,7 @@
                             {{ item.label }}
                         </vs-th>
                         <template v-if="hasAction == true">
-                            <vs-th class="action" style="width:200px !important;">
+                            <vs-th class="action">
                                 Action
                             </vs-th>
                         </template>
@@ -85,8 +85,8 @@
                             </template>
                         </template>
                         <template v-if="hasAction == true">
-                            <vs-td class="action" style="width:200px !important;">
-                                <vs-row justify="center">
+                            <vs-td class="action">
+                                <vs-row justify="center" class="btn_action">
                                     <vs-col w="4">
                                         <vs-button
                                             block
@@ -259,10 +259,26 @@ export default {
             }
             .action{
                 &.vs-table__th{
+                    position: relative;
                     width: 280px !important;
+                    min-width: 280px;
+                    max-width: 300px;
+                    .vs-table__th__content{
+                        float: right;
+                        width: 280px;
+                        position: relative;
+                        // max-width: 280px !important;
+                    }
                 }
                 &.vs-table__td{
-                    width: 280px !important;
+                    position: relative;
+                    display: flex;
+                    justify-content: flex-end;
+                    .btn_action{
+                        max-width: 280px;
+                        position: relative;
+                        justify-content: flex-end;
+                    }
                 }
                 .vs-table__th__content{
                     text-align: center;

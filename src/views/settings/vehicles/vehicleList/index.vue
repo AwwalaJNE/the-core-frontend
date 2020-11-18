@@ -15,76 +15,69 @@
         @actionPagination="actionPagination"
         />
 
-        <!--Create User Dialog end-->
-            <!-- <dialog-create-edit-role 
-            :active="dialogRole" 
-            :closeDialogRole="closeDialogRole"
+        <dialog-create-edit-Vehicle
+            :active="dialogVehicle" 
+            :closeDialog="closeDialogVehicle"
             :refresh="refresh"
-            title="Edit role"
+            title="Edit Vehicle"
             :dataItem="dataItem"
-            /> -->
+            />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import dialogCreateEditVehicle from "@/views/settings/vehicles/vehicleList/dialogCreateEditVehicle"
 export default {
     name:"vehicle-list",
     mixins: [master],
+    props: {
+        query: String
+    },
     components: {
         "table-master" : TableMaster,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-create-edit-Vehicle": dialogCreateEditVehicle
     },
     data() {
         return {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Type",
-                    key: "base_tariff_id",
+                    label: "ID",
+                    key: "vehicle_id",
                     width: "xs"
                 },
                 {
-                    label: "Owned By",
-                    key: "base_tariff_origin",
+                    label: "Vehicle name",
+                    key: "vehicle_name",
+                    width: "xs"
+                },
+                {
+                    label: "Vehicle police no",
+                    key: "vehicle_police_no",
                     width: "auto"
                 },
                 {
-                    label: "Name",
-                    key: "base_tariff_destination",
-                    width: "auto"
-                },
-                {
-                    label: "Registration No.",
-                    key: "base_tariff_service",
+                    label: "Vehicle owned by",
+                    key: "vehicle_owned_by",
                     width: "auto"
                 },
                 {
                     label: "Max Weight",
-                    key: "base_tariff_tariff",
+                    key: "vehicle_max_weight",
                     width: "auto"
                 },
                 {
                     label: "Max Volume",
-                    key: "base_tariff_min_weight",
-                    width: "auto"
-                },
-                {
-                    label: "Expire Date",
-                    key: "base_tariff_max_weight",
-                    width: "auto"
-                },
-                {
-                    label: "Current Location",
-                    key: "base_tariff_max_weight",
+                    key: "vehicle_max_volume",
                     width: "auto"
                 },
             ],
             loading: false,
             dataItem: {},
             tempSearch: "",
-            dialogGeolocation: false,
+            dialogVehicle: false,
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -92,19 +85,100 @@ export default {
             }
         }
     },
-    methods: {
-        actionUpdate(){
-
-        },
-        actionRemove(){
-
-        },
-        actionLimit(){
-
-        },
-        actionPagination(){
-
-        },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
+            }
+        }
     },
+    methods: {
+        async getTableData(limit,page,q) {
+            this.loading = true
+            let query = "";
+            if(q !== undefined) {
+                query = q
+            }
+            await axios
+                .get(this.URL.vehicle + 
+                `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log(res)
+                    this.dataTable = res.data.data
+
+                        this.pagination.page = res.data.meta.current_page
+                        this.pagination.limit = parseInt(res.data.meta.per_page)
+                        this.pagination.page_size = res.data.meta.last_page
+                    if(res.data.data.length > 0) {
+                        
+                    } else {
+                        this.openNotification('warn', 'Vehicle data is empty!', ' Please create a new Vehicle data')
+                    }
+                    
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to populate Vehicle list', err)
+                })
+        },
+        actionUpdate(val){
+            if(this.dataTable.length > 0) {
+                let obj = this.dataTable.filter(item => {
+                    return item.vehicle_id === val.vehicle_id
+                })
+                this.dataItem = obj[0]
+                console.log(this.dataItem, 'nihh val', val)
+                this.$nextTick(() => {
+                    this.dialogVehicle = true
+                });
+            }
+        },
+        closeDialogConfirm(){
+            this.confirmDialog = false
+        },
+        confirm(val) {
+            if(val) {
+
+            }
+        },
+        async actionRemove(val){
+            // this.confirmDialog = true
+            await axios
+                .delete(
+                    this.URL.vehicle + `/${val.vehicle_id}`,
+                    this.Helper.header())
+                .then(res => {
+                    console.log('res', res)
+                    this.refresh()
+                    this.openNotification(null, 'Delete success', 'Delete Vehicle is success')
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+        },
+        actionLimit(val){
+            this.pagination.limit = val
+            this.pagination.page = 1
+            this.refresh()
+        },
+        actionPagination(val) {
+            this.pagination.page = val
+            this.refresh()
+        },
+        refresh(){
+            console.log("refresh")
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        },
+        closeDialogVehicle() {
+            this.dialogVehicle = false
+        }
+    },
+    mounted() {
+        this.refresh()
+    }
 }
 </script>

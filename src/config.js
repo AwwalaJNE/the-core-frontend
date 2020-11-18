@@ -40,4 +40,5 @@ export default {
     //vehicle
     vehicle: api + "vehicle",
     vehicle_mode: api + "vehicle-mode",
+    vehicle_type: api + "vehicle-type",
 }

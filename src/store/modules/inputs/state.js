@@ -1035,6 +1035,125 @@ export default {
       valueData: true,
       value: true
     },
-  }
+  },
+
+  vehicle: {
+    vehicle_name: {
+      label: "vehicle name*",
+      key: "vehicle_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    vehicle_police_no: {
+      label: "Vehicle police no*",
+      key: "vehicle_police_no",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    vehicle_owned_by: {
+      label: "Vehicle owned by",
+      key: "vehicle_owned_by",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    vehicle_max_weight: {
+      label: "Vehicle max weight",
+      key: "vehicle_max_weight",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    vehicle_max_volume: {
+      label: "Vehicle max volume",
+      key: "vehicle_max_volume",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    vehicle_type_id: {
+      label: "Vehicle type",
+      key: "vehicle_type_id",
+      rule: "",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    vehicle_node_id: {
+      label: "vehicle node",
+      key: "vehicle_node_id",
+      rule: "",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
+
+  vehicle_mode: {
+    vehicle_mode_name: {
+      label: "Vehicle mode name*",
+      key: "vehicle_mode_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
+
+  vehicle_type: {
+    vehicle_type_name: {
+      label: "Vehicle type name*",
+      key: "vehicle_type_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
   
 }

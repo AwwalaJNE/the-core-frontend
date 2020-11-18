@@ -830,4 +830,99 @@ export default {
   SET_SURCHARGE_TYPE_IS_ACTIVE_ValueData({ commit }, payload) {
     commit('SET_SURCHARGE_TYPE_IS_ACTIVE_ValueData', payload)
   },
+
+  // vehicle
+  SET_VEHICLE_VEHICLE_NAME({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_NAME', payload)
+  },
+  SET_VEHICLE_VEHICLE_NAME_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_NAME_ValueData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_POLICE_NO({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_POLICE_NO', payload)
+  },
+  SET_VEHICLE_VEHICLE_POLICE_NO_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_POLICE_NO_ValueData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_OWNED_BY({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_OWNED_BY', payload)
+  },
+  SET_VEHICLE_VEHICLE_OWNED_BY_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_OWNED_BY_ValueData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_MAX_WEIGHT({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_MAX_WEIGHT', payload)
+  },
+  SET_VEHICLE_VEHICLE_MAX_WEIGHT_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_MAX_WEIGHT_ValueData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_MAX_VOLUME({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_MAX_VOLUME', payload)
+  },
+  SET_VEHICLE_VEHICLE_MAX_VOLUME_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_MAX_VOLUME_ValueData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_TYPE_ID({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_TYPE_ID', payload)
+  },
+  SET_VEHICLE_VEHICLE_TYPE_ID_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_TYPE_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_VEHICLE_VEHICLE_TYPE_ID_ArrData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_TYPE_ID_ArrData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_NODE_ID({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_NODE_ID', payload)
+  },
+  SET_VEHICLE_VEHICLE_NODE_ID_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_NODE_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_VEHICLE_VEHICLE_NODE_ID_ArrData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_NODE_ID_ArrData', payload)
+  },
+    
+  SET_VEHICLE_IS_ACTIVE({ commit }, payload) {
+    commit('SET_VEHICLE_IS_ACTIVE', payload)
+  },
+  SET_VEHICLE_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_IS_ACTIVE_ValueData', payload)
+  },
+
+  //vehicle mode
+  SET_VEHICLE_MODE_VEHICLE_MODE_NAME({ commit }, payload) {
+    commit('SET_VEHICLE_MODE_VEHICLE_MODE_NAME', payload)
+  },
+  SET_VEHICLE_MODE_VEHICLE_MODE_NAME_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_MODE_VEHICLE_MODE_NAME_ValueData', payload)
+  },
+    
+  SET_VEHICLE_MODE_IS_ACTIVE({ commit }, payload) {
+    commit('SET_VEHICLE_MODE_IS_ACTIVE', payload)
+  },
+  SET_VEHICLE_MODE_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_MODE_IS_ACTIVE_ValueData', payload)
+  },
+
+  // vehicle type
+  SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME({ commit }, payload) {
+    commit('SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME', payload)
+  },
+  SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME_ValueData', payload)
+  },
+    
+  SET_VEHICLE_TYPE_IS_ACTIVE({ commit }, payload) {
+    commit('SET_VEHICLE_TYPE_IS_ACTIVE', payload)
+  },
+  SET_VEHICLE_TYPE_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_TYPE_IS_ACTIVE_ValueData', payload)
+  },
 }

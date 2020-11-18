@@ -847,4 +847,101 @@ export default {
   SET_SURCHARGE_TYPE_IS_ACTIVE_ValueData(state, payload) {
     state.surcharge_type.is_active.valueData = payload
   },
+
+  // vehicle
+  SET_VEHICLE_VEHICLE_NAME(state, payload) {
+    state.vehicle.vehicle_name.value = payload
+  },
+  SET_VEHICLE_VEHICLE_NAME_ValueData(state, payload) {
+    state.vehicle.vehicle_name.valueData = payload
+  },
+    
+  SET_VEHICLE_VEHICLE_POLICE_NO(state, payload) {
+    state.vehicle.vehicle_police_no.value = payload
+  },
+  SET_VEHICLE_VEHICLE_POLICE_NO_ValueData(state, payload) {
+    state.vehicle.vehicle_police_no.valueData = payload
+  },
+    
+  SET_VEHICLE_VEHICLE_OWNED_BY(state, payload) {
+    state.vehicle.vehicle_owned_by.value = payload
+  },
+  SET_VEHICLE_VEHICLE_OWNED_BY_ValueData(state, payload) {
+    state.vehicle.vehicle_owned_by.valueData = payload
+  },
+    
+  SET_VEHICLE_VEHICLE_MAX_WEIGHT(state, payload) {
+    state.vehicle.vehicle_max_weight.value = payload
+  },
+  SET_VEHICLE_VEHICLE_MAX_WEIGHT_ValueData(state, payload) {
+    state.vehicle.vehicle_max_weight.valueData = payload
+  },
+    
+  SET_VEHICLE_VEHICLE_MAX_VOLUME(state, payload) {
+    state.vehicle.vehicle_max_volume.value = payload
+  },
+  SET_VEHICLE_VEHICLE_MAX_VOLUME_ValueData(state, payload) {
+    state.vehicle.vehicle_max_volume.valueData = payload
+  },
+    
+  SET_VEHICLE_VEHICLE_TYPE_ID(state, payload) {
+    state.vehicle.vehicle_type_id.value = payload
+  },
+  SET_VEHICLE_VEHICLE_TYPE_ID_ValueData(state, payload) {
+    state.vehicle.vehicle_type_id.valueData = payload
+  },
+  SET_VEHICLE_VEHICLE_TYPE_ID_ArrData(state, payload) {
+    state.vehicle.vehicle_type_id.hasOwnProperty('arrData') ?
+    state.vehicle.vehicle_type_id.arrData = payload :
+    state.vehicle.vehicle_type_id.arrData = []
+  },
+    
+  SET_VEHICLE_VEHICLE_NODE_ID(state, payload) {
+    state.vehicle.vehicle_node_id.value = payload
+  },
+  SET_VEHICLE_VEHICLE_NODE_ID_ValueData(state, payload) {
+    state.vehicle.vehicle_node_id.valueData = payload
+  },
+  SET_VEHICLE_VEHICLE_NODE_ID_ArrData(state, payload) {
+    state.vehicle.vehicle_node_id.hasOwnProperty('arrData') ?
+    state.vehicle.vehicle_node_id.arrData = payload :
+    state.vehicle.vehicle_node_id.arrData = []
+  },
+    
+  SET_VEHICLE_IS_ACTIVE(state, payload) {
+    state.vehicle.is_active.value = payload
+  },
+  SET_VEHICLE_IS_ACTIVE_ValueData(state, payload) {
+    state.vehicle.is_active.valueData = payload
+  },
+
+  // vehicle mode
+  SET_VEHICLE_MODE_VEHICLE_MODE_NAME(state, payload) {
+    state.vehicle_mode.vehicle_mode_name.value = payload
+  },
+  SET_VEHICLE_MODE_VEHICLE_MODE_NAME_ValueData(state, payload) {
+    state.vehicle_mode.vehicle_mode_name.valueData = payload
+  },
+    
+  SET_VEHICLE_MODE_IS_ACTIVE(state, payload) {
+    state.vehicle_mode.is_active.value = payload
+  },
+  SET_VEHICLE_MODE_IS_ACTIVE_ValueData(state, payload) {
+    state.vehicle_mode.is_active.valueData = payload
+  },
+
+  // vehicle type
+  SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME(state, payload) {
+    state.vehicle_type.vehicle_type_name.value = payload
+  },
+  SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME_ValueData(state, payload) {
+    state.vehicle_type.vehicle_type_name.valueData = payload
+  },
+    
+  SET_VEHICLE_TYPE_IS_ACTIVE(state, payload) {
+    state.vehicle_type.is_active.value = payload
+  },
+  SET_VEHICLE_TYPE_IS_ACTIVE_ValueData(state, payload) {
+    state.vehicle_type.is_active.valueData = payload
+  },
 }

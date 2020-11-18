@@ -10,10 +10,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formGeoLocationCityController"
+                    ref="formVehicleController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="geolocation_city"
+                    typeForm="vehicle"
                 />
             </div>
         </template>
@@ -57,7 +57,7 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-geo-city",
+    name:"dialog-create-edit-vehicle",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
@@ -74,8 +74,7 @@ export default {
     data() {
         return {
             form: {},
-            formRole: this.$store.getters.getInputs.geolocation_city ? this.$store.getters.getInputs.geolocation_city : {},
-            geolocation_city_id: ''
+            vehicle_id: ''
         }
     },
     computed: {
@@ -92,14 +91,20 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.geolocation_city_id = val.geolocation_city_id
+                this.vehicle_id = val.vehicle_id
+            }
+        },
+        active: function (val) {
+            if (val == true) {
+                this.getNode()
+                this.getVehicleType()
             }
         }
     },
     methods: {
         formData(form){
             this.form = form
-            if(this.geolocation_city_id !== undefined && this.geolocation_city_id !== '') {
+            if(this.vehicle_id !== undefined && this.vehicle_id !== '') {
                     console.log('update')
                     this.updateData()
             } else {
@@ -107,16 +112,16 @@ export default {
             }
         },
         handleSubmit(){
-            this.$refs.formGeoLocationCityController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formVehicleController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formGeoLocationCityController.handleClearForm()
+            this.$refs.formVehicleController.handleClearForm()
             this.form = {}
-            this.geolocation_city_id = ""
+            this.vehicle_id = ""
         },
-        async getDataProvince(){
+        async getNode(){
             await axios
-                .get(this.URL.geolocation_province + 
+                .get(this.URL.node + 
                 `?n=1&sort_order=desc&limit=2000&page=1`, 
                 this.Helper.header())
                 .then(res => {
@@ -124,13 +129,38 @@ export default {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.geolocation_province_name
-                            obj["value"] = item.geolocation_province_id
+                            obj["label"] = item.node_name
+                            obj["value"] = item.node_id
 
                             arr.push(obj)
                         })
 
-                        this.$store.dispatch("SET_GEOLOCATION_CITY_GEOLOCATION_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_VEHICLE_VEHICLE_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getVehicleType(){
+            await axios
+                .get(this.URL.vehicle_type + 
+                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.vehicle_type_name
+                            obj["value"] = item.vehicle_type_id
+
+                            arr.push(obj)
+                        })
+
+                        this.$store.dispatch("SET_VEHICLE_VEHICLE_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -142,7 +172,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.geolocation_city + `/${this.geolocation_city_id}?n=1`,
+                    this.URL.vehicle + `/${this.vehicle_id}?n=1`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -163,7 +193,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.geolocation_city + `?n=1`,
+                    this.URL.vehicle,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -186,7 +216,6 @@ export default {
         }
     },
     mounted() {
-        this.getDataProvince()
     },
 }
 </script>

@@ -101,6 +101,12 @@ export default {
             if(val !== undefined) {
                 this.geolocation_province_id = val.geolocation_province_id
             }
+        },
+        active: function (val) {
+            if (val == true) {
+                this.getDataCountry()
+                this.getDataTimezone()
+            }
         }
     },
     methods: {
@@ -225,8 +231,7 @@ export default {
         }
     },
     mounted() {
-        this.getDataCountry()
-        this.getDataTimezone()
+        
     },
 }
 </script>

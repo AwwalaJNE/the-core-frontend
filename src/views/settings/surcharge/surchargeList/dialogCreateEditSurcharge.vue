@@ -93,6 +93,11 @@ export default {
             if(val !== undefined) {
                 this.surcharge_id = val.surcharge_id
             }
+        },
+        active: function (val) {
+            if (val == true) {
+                this.getDataSurchargeType()
+            }
         }
     },
     methods: {
@@ -129,7 +134,7 @@ export default {
                             arr.push(obj)
                         })
 
-                        this.$store.dispatch("SET_GEOLOCATION_CITY_GEOLOCATION_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_SURCHARGE_SURCHARGE_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -185,7 +190,7 @@ export default {
         }
     },
     mounted() {
-        this.getDataSurchargeType()
+        
     },
 }
 </script>
