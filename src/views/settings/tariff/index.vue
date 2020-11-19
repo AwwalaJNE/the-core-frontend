@@ -102,7 +102,7 @@ export default {
                     title: "Special Tariff List"
                 },
             ],
-            title:"Nodes",
+            title:"Tariff",
             navActive: "k-BASE-TARIFF",
             tempSearch: "",
             dialogTariff: false,

@@ -9,6 +9,7 @@
         :limit="pagination.limit"
         :hasAction="true"
         :hasPagination="true"
+        :expandable="true"
         @actionUpdate="actionUpdate"
         @actionRemove="actionRemove"
         @actionLimit="actionLimit"
@@ -104,6 +105,33 @@ export default {
                 .then(res => {
                     console.log(res)
                     this.dataTable = res.data.data
+                    this.dataTable.length > 0 && this.dataTable.map((item, i) => {
+                        let tariff_amount = []
+                        let tariff_weight = []
+                        let iterate = i + 1
+
+                        if(item.hasOwnProperty(`tariff_amount_${iterate}`)) {
+                            if(item[`tariff_amount_${iterate}`] !== null || item[`tariff_amount_${iterate}`] !== undefined) {
+                                let obj = {}
+                                obj[`tariff_amount_${iterate}`] = item[`tariff_amount_${iterate}`]
+                                tariff_amount.push(obj)
+                            }
+                        }
+
+                        if(item.hasOwnProperty(`tariff_weight_${iterate}`)) {
+                            if(item[`tariff_weight_${iterate}`] !== null || item[`tariff_weight_${iterate}`] !== undefined) {
+                                let obj = {}
+                                obj[`tariff_weight_${iterate}`] = item[`tariff_weight_${iterate}`]
+                                tariff_weight.push(obj)
+                            }
+                        }
+
+                        item['children']['tariff_amount'] = tariff_amount
+                        item['children']['tariff_weight'] = tariff_weight
+
+                    })
+
+                    console.log('this.dataTable', this.dataTable)
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)

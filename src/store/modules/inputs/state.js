@@ -637,15 +637,6 @@ export default {
       valueData: null,
       value: ''
     },
-    node_alternate_address_zip_code: {
-      label: "Node alternate address zip code*",
-      key: "node_alternate_address_zip_code",
-      rule: "required",
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: ''
-    },
     node_alternate_address_subdistrict_id: {
       label: "Node alternate address subdistrict*",
       key: "node_alternate_address_subdistrict_id",
@@ -656,57 +647,7 @@ export default {
       valueData: null,
       value: ''
     },
-    node_alternate_address_district_id: {
-      label: "Node alternate address district*",
-      key: "node_alternate_address_district_id",
-      rule: "required",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    node_alternate_address_city_id: {
-      label: "Node alternate address city*",
-      key: "node_alternate_address_city_id",
-      rule: "required",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    node_alternate_address_province_id: {
-      label: "Node alternate address province*",
-      key: "node_alternate_address_province_id",
-      rule: "required",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
     
-    node_alternate_address_time_zone_id: {
-      label: "Node alternate address time zone id*",
-      key: "node_alternate_address_time_zone_id",
-      rule: "required",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    node_alternate_address_tariff_code: {
-      label: "Node alternate address tariff code*",
-      key: "node_alternate_address_tariff_code",
-      rule: "required",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
     mapPicker:{
       // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
       typeInput: "mapPicker",
@@ -730,15 +671,6 @@ export default {
       typeData: "Number",
       valueData: 0,
       value: 0
-    },
-    node_alternate_address_zone_code: {
-      label: "Node alternate address zone code*",
-      key: "node_alternate_address_zone_code",
-      rule: "required",
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: ''
     },
     node_alternate_address_phone: {
       label: "Node_alternate_address_phone*",
@@ -918,11 +850,16 @@ export default {
       valueData: null,
       value: ''
     },
+    // Iterate selector
+    IterateSelector:{
+      // define IterateSelector hanya untuk menunjukan urutan IterateSelector akan ditampilkan
+      typeInput: "mapPicker",
+    },
     tariff_special_condition_from_country: {
       label: "Tariff special condition from country",
       key: "tariff_special_condition_from_country",
       rule: "",
-      typeInput: "text",
+      typeInput: "IterateSelector",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -931,7 +868,7 @@ export default {
       label: "Tariff special condition from province",
       key: "tariff_special_condition_from_province",
       rule: "",
-      typeInput: "text",
+      typeInput: "IterateSelector",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -940,7 +877,7 @@ export default {
       label: "Tariff special condition from city",
       key: "tariff_special_condition_from_city",
       rule: "",
-      typeInput: "text",
+      typeInput: "IterateSelector",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -949,7 +886,7 @@ export default {
       label: "Tariff special condition from district",
       key: "tariff_special_condition_from_district",
       rule: "",
-      typeInput: "text",
+      typeInput: "IterateSelector",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -958,7 +895,7 @@ export default {
       label: "Tariff special condition from subdistrict",
       key: "tariff_special_condition_from_subdistrict",
       rule: "",
-      typeInput: "text",
+      typeInput: "IterateSelector",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -967,7 +904,7 @@ export default {
       label: "Tariff special condition from zip code",
       key: "tariff_special_condition_from_zip_code",
       rule: "",
-      typeInput: "text",
+      typeInput: "IterateSelector",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -976,7 +913,7 @@ export default {
       label: "Tariff special condition from tariff code",
       key: "tariff_special_condition_from_tariff_code",
       rule: "",
-      typeInput: "text",
+      typeInput: "IterateSelector",
       typeData: "String",
       valueData: null,
       value: ''

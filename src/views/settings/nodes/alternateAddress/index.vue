@@ -69,40 +69,10 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Alternate address zip_code",
-                    key: "node_alternate_address_zip_code",
-                    width: "auto"
-                },
-                {
                     label: "Alternate address subdistrict id",
                     key: "node_alternate_address_subdistrict_id",
-                    width: "auto"
-                },
-                {
-                    label: "Alternate address district id",
-                    key: "node_alternate_address_district_id",
-                    width: "auto"
-                },
-                {
-                    label: "Alternate address city id",
-                    key: "node_alternate_address_city_id",
-                    width: "auto"
-                },
-                {
-                    label: "Alternate address province id",
-                    key: "node_alternate_address_province_id",
-                    width: "auto"
-                },
-                {
-                    label: "Alternate address tariff code",
-                    key: "node_alternate_address_tariff_code",
-                    width: "auto"
-                },
-                {
-                    label: "Alternate address zone code",
-                    key: "node_alternate_address_zone_code",
-                    width: "auto"
-                },                
+                    width: "xs"
+                },            
             ],
             loading: false,
             dataItem: {},

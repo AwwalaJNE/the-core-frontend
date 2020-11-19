@@ -9,6 +9,7 @@
         :limit="pagination.limit"
         :hasAction="true"
         :hasPagination="true"
+        :expandable="true"
         @actionUpdate="actionUpdate"
         @actionRemove="actionRemove"
         @actionLimit="actionLimit"
@@ -54,8 +55,8 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Description",
-                    key: "surcharge_description",
+                    label: "Surcharge formula",
+                    key: "surcharge_formula",
                     width: "auto"
                 },
             ],
@@ -94,6 +95,18 @@ export default {
                 .then(res => {
                     console.log(res)
                     this.dataTable = res.data.data
+
+                    this.dataTable.length > 0 && this.dataTable.map((item,i) => {
+                        let keys = Object.keys(item)
+                        keys = keys.filter(item => !item.includes('_id'))
+                        let obj = {}
+                        keys.map(header => {
+                            obj[`${header}`] = item[header]
+                        })
+                        item['children'] = obj
+                    })
+
+                    console.log('this.dataTable',this.dataTable)
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)

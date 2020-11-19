@@ -111,6 +111,25 @@
                                 </vs-row>
                             </vs-td>
                         </template>
+
+                        <template v-if="listenExpandable" #expand>
+                            <div class="con-content">
+                                <template v-if="item.hasOwnProperty('children') && Object.keys(item.children).length > 0">
+                                    <table>
+                                        <tr>
+                                            <th v-for="(c_item, c_key) in Object.keys(item.children)" :key="c_key">
+                                                {{c_item.replace(/[&\/\\#,+()$~%._'":*?<>{}]/g, " ")}}
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <template v-for="(c_item, c_td_key) in Object.keys(item.children)">
+                                                <td :key="c_td_key">{{item.children[c_item]}}</td>
+                                            </template>
+                                        </tr>
+                                    </table>
+                                </template>
+                            </div>
+                        </template>
                     </vs-tr>
                 </template>
             </template>
@@ -148,7 +167,8 @@ export default {
         page: Number,
         limit: Number,
         hasAction: Boolean,
-        hasPagination: Boolean
+        hasPagination: Boolean,
+        expandable: Boolean
     },
     data() {
         return {
@@ -175,6 +195,9 @@ export default {
         listenTableLoading() {
             return this.tableLoading
         },
+        listenExpandable () {
+            return this.expandable || false
+        }
     },
     watch: {
         tableLoading: function(val) {
