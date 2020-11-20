@@ -123,7 +123,28 @@
                                         </tr>
                                         <tr>
                                             <template v-for="(c_item, c_td_key) in Object.keys(item.children)">
-                                                <td :key="c_td_key">{{item.children[c_item]}}</td>
+                                                <template v-if="Array.isArray(item.children[c_item])">
+                                                   <td :key="c_td_key">
+                                                       <ul>
+                                                           <li v-for="(itm, idx) in item.children[c_item]" :key="idx">
+                                                               <template v-if="typeof itm === 'object'">
+                                                                   <template v-for="(itm_keys, itm_i) in Object.keys(itm)">
+                                                                       <p :key="itm_i">{{itm_keys+' = '+itm[itm_keys]}}</p>
+                                                                   </template>
+                                                               </template>
+                                                               <template v-else>
+                                                                   <p>{{itm}}</p>
+                                                               </template>
+                                                           </li>
+                                                       </ul>
+                                                   </td>
+                                                </template>
+                                                <template v-else>
+                                                    <td :key="c_td_key">
+                                                       {{item.children[c_item]}}
+                                                   </td>
+                                                </template>
+                                                
                                             </template>
                                         </tr>
                                     </table>

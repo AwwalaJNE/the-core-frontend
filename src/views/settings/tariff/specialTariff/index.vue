@@ -15,11 +15,11 @@
         @actionPagination="actionPagination"
         />
 
-        <dialog-create-edit-Tariff
+        <dialog-create-edit-SpecialTariff
             :active="dialogTariffSpecial" 
             :closeDialog="closeDialogTariffSpecial"
             :refresh="refresh"
-            title="Edit Tariff"
+            title="Edit Special Tariff"
             :dataItem="dataItem"
             />
     </div>
@@ -28,7 +28,7 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
-import dialogCreateEditTariff from "@/views/settings/tariff/baseTariff/dialogCreateEditTariff"
+import dialogCreateEditSpecialTariff from "@/views/settings/tariff/specialTariff/dialogCreateEditSpecialTariff"
 export default {
     name:"base-tariff-special",
     mixins: [master],
@@ -37,7 +37,7 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
-        "dialog-create-edit-Tariff": dialogCreateEditTariff
+        "dialog-create-edit-SpecialTariff": dialogCreateEditSpecialTariff
     },
     data() {
         return {

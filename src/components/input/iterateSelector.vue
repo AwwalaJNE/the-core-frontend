@@ -3,21 +3,35 @@
         <template v-for="(item,key) in inputArray">
             <vs-row justify="space-between" :key="key">
                 <vs-col xs="12" sm="6" lg="6">
-                    <!-- <selector 
-                        :ref="item.key"
-                        :name="InputObject[item].label" 
-                        :rules="InputObject[item].rule" 
-                        :formKey="InputObject[item].key"
-                        :valueData="InputObject[item].arrData"
-                        :selectedValue="InputObject[item].value"
+                    <selector 
+                        :ref="''"
+                        :name="''"
+                        :formKey="''"
+                        :valueData="Keys"
+                        :selectedValue="''"
                         :isMultiple="false"
-                        @updateValue="updateValue" /> -->
+                        @updateValue="updateValue" />
                 </vs-col>
                 <vs-col xs="12" sm="6" lg="6">
-                            
+                    <input-general 
+                        :name="''" 
+                        :rules="''" 
+                        :formKey="''"
+                        :valueData="''"
+                        :typeInput="''"
+                        @updateValue="updateValue" />
                 </vs-col>
             </vs-row>
         </template>
+        <vs-button
+            transparent
+            block
+            flat
+            :active="false"
+            @click="addInputArray"
+            >
+                + Add Setting
+        </vs-button>
     </div>
 </template>
 <script>
@@ -37,9 +51,15 @@ export default {
     data() {
         return {
             inputArray: [],
-            input: {},
+            input: {
+                        label: 'o',
+                        value: 'o',
+                        key: 'o',
+                        rule: 'o'
+                    },
             InputObject: {},
             Keys: [],
+            index: 1
         }
     },
     computed: {
@@ -67,18 +87,23 @@ export default {
                     keys.length > 0 && keys.map(item => {
                         
                            if(this.InputObject[item].hasOwnProperty('typeInput') && 
-                               this.InputObject[item]['typeInput'].includes('IterateSelector')) {
+                               this.InputObject[item]['typeInput'].includes('dynamicInput')) {
 
                                    let inputObj = {}
                                    inputObj['label'] = this.InputObject[item]['label']
                                    inputObj["value"] = item
+                                   inputObj["key"] = this.InputObject[item]['key']
+                                   inputObj["rule"] = this.InputObject[item]['rule']
 
                                    this.Keys.push(inputObj)
                            }
                         
                     })
 
+                    
+
                     // inputan pertama
+                    this.index = 1
                     this.inputArray.push(this.Keys[0])
 
                     console.log('iterate-selector ', this.Keys)
@@ -87,10 +112,15 @@ export default {
                 }
         },
         addInputArray() {
-            this.inputArray = [...this.inputArray, this.input]
+            this.index++
+            this.inputArray.push(this.input)
+            console.log('this.input', this.inputArray,this.input)
         },
         removeInputArray(index) {
             this.inputArray.splice(index, 1)
+        },
+        updateValue(type, val) {
+            console.log(type,val)
         }
     },
     mounted() {

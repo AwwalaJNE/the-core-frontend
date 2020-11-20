@@ -105,29 +105,44 @@ export default {
                 .then(res => {
                     console.log(res)
                     this.dataTable = res.data.data
-                    this.dataTable.length > 0 && this.dataTable.map((item, i) => {
+                    this.dataTable.length > 0 && this.dataTable.map((item) => {
                         let tariff_amount = []
                         let tariff_weight = []
-                        let iterate = i + 1
+                        let iterate = 1
+                        let children = {}
+                        let keys = Object.keys(item)
 
-                        if(item.hasOwnProperty(`tariff_amount_${iterate}`)) {
-                            if(item[`tariff_amount_${iterate}`] !== null || item[`tariff_amount_${iterate}`] !== undefined) {
-                                let obj = {}
-                                obj[`tariff_amount_${iterate}`] = item[`tariff_amount_${iterate}`]
-                                tariff_amount.push(obj)
+                        keys.map((header, i) => {
+                            if(header.includes('_amount_') || header.includes('_weight_')) {
+                                if(item.hasOwnProperty(`tariff_amount_${iterate}`)) {
+                                        let obj = {}
+                                        let val = item[`tariff_amount_${iterate}`]
+                                        val != undefined && val != null && val != 0 ? 
+                                        obj[`tariff_amount_${iterate}`] = item[`tariff_amount_${iterate}`] : obj
+
+                                        tariff_amount.push(obj)
+                                        
+                                } 
+                                if(item.hasOwnProperty(`tariff_weight_${iterate}`)) {
+                                        let obj = {}
+                                        let val = item[`tariff_weight_${iterate}`]
+                                        val != undefined && val != null && val != 0 ? 
+                                        obj[`tariff_weight_${iterate}`] = item[`tariff_weight_${iterate}`] : obj
+                                        
+                                        
+                                        tariff_weight.push(obj)
+                                        
+                                }
+                                iterate++
                             }
-                        }
+                            
+                        })
 
-                        if(item.hasOwnProperty(`tariff_weight_${iterate}`)) {
-                            if(item[`tariff_weight_${iterate}`] !== null || item[`tariff_weight_${iterate}`] !== undefined) {
-                                let obj = {}
-                                obj[`tariff_weight_${iterate}`] = item[`tariff_weight_${iterate}`]
-                                tariff_weight.push(obj)
-                            }
-                        }
+                        children['tariff_amount'] = tariff_amount
+                        children['tariff_weight'] = tariff_weight
 
-                        item['children']['tariff_amount'] = tariff_amount
-                        item['children']['tariff_weight'] = tariff_weight
+
+                        item['children'] = children
 
                     })
 

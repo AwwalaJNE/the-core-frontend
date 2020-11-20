@@ -786,6 +786,7 @@ export default {
     },
   },
 
+  
   tariff_special: {
     tariff_special_name: {
       label: "Tariff special name*",
@@ -850,16 +851,16 @@ export default {
       valueData: null,
       value: ''
     },
-    // Iterate selector
-    IterateSelector:{
-      // define IterateSelector hanya untuk menunjukan urutan IterateSelector akan ditampilkan
-      typeInput: "mapPicker",
+    // dynamicInput
+    dynamicInputComponent:{
+      // define dynamicInput hanya untuk menunjukan urutan dynamicInput akan ditampilkan
+      typeInput: "dynamicInputComponent",
     },
     tariff_special_condition_from_country: {
       label: "Tariff special condition from country",
       key: "tariff_special_condition_from_country",
       rule: "",
-      typeInput: "IterateSelector",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -868,7 +869,7 @@ export default {
       label: "Tariff special condition from province",
       key: "tariff_special_condition_from_province",
       rule: "",
-      typeInput: "IterateSelector",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -877,7 +878,7 @@ export default {
       label: "Tariff special condition from city",
       key: "tariff_special_condition_from_city",
       rule: "",
-      typeInput: "IterateSelector",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -886,7 +887,7 @@ export default {
       label: "Tariff special condition from district",
       key: "tariff_special_condition_from_district",
       rule: "",
-      typeInput: "IterateSelector",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -895,7 +896,7 @@ export default {
       label: "Tariff special condition from subdistrict",
       key: "tariff_special_condition_from_subdistrict",
       rule: "",
-      typeInput: "IterateSelector",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -904,7 +905,7 @@ export default {
       label: "Tariff special condition from zip code",
       key: "tariff_special_condition_from_zip_code",
       rule: "",
-      typeInput: "IterateSelector",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -913,7 +914,7 @@ export default {
       label: "Tariff special condition from tariff code",
       key: "tariff_special_condition_from_tariff_code",
       rule: "",
-      typeInput: "IterateSelector",
+      typeInput: "dynamicInput",
       typeData: "String",
       valueData: null,
       value: ''
@@ -922,7 +923,7 @@ export default {
       label: "Tariff special condition to country",
       key: "tariff_special_condition_to_country",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -931,7 +932,7 @@ export default {
       label: "Tariff special condition to province",
       key: "tariff_special_condition_to_province",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -940,7 +941,7 @@ export default {
       label: "Tariff special condition to city",
       key: "tariff_special_condition_to_city",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -949,7 +950,7 @@ export default {
       label: "Tariff special condition to district",
       key: "tariff_special_condition_to_district",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -958,7 +959,7 @@ export default {
       label: "Tariff special condition to subdistrict",
       key: "tariff_special_condition_to_subdistrict",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -967,7 +968,7 @@ export default {
       label: "Tariff special condition to zip code",
       key: "tariff_special_condition_to_zip_code",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -976,7 +977,7 @@ export default {
       label: "Tariff special condition to tariff code",
       key: "tariff_special_condition_to_tariff_code",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "String",
       valueData: null,
       value: ''
@@ -985,7 +986,7 @@ export default {
       label: "Tariff special condition min koli",
       key: "tariff_special_condition_min_koli",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -994,7 +995,7 @@ export default {
       label: "Tariff special condition max koli",
       key: "tariff_special_condition_max_koli",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -1003,7 +1004,7 @@ export default {
       label: "Tariff special condition min weight",
       key: "tariff_special_condition_min_weight",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -1012,7 +1013,7 @@ export default {
       label: "Tariff special condition max weight",
       key: "tariff_special_condition_max_weight",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -1021,7 +1022,7 @@ export default {
       label: "tariff special condition min volume",
       key: "tariff_special_condition_min_volume",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -1030,7 +1031,7 @@ export default {
       label: "tariff special condition max volume",
       key: "tariff_special_condition_max_volume",
       rule: "",
-      typeInput: "text",
+      typeInput: "dynamicInput",
       typeData: "Number",
       valueData: null,
       value: ''

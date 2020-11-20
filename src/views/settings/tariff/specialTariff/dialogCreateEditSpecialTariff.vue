@@ -74,7 +74,6 @@ export default {
     data() {
         return {
             form: {},
-            formRole: this.$store.getters.getInputs.tariff_special ? this.$store.getters.getInputs.tariff_special : {},
             tariff_special_id: ''
         }
     },
