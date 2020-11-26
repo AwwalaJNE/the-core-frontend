@@ -28,6 +28,12 @@ const Master = {
                 icon: `<i class="bx ${type == 'success' ? 'bx-select-multiple':'bx-error'}" ></i>`
             })
         },
+        checkAuth(status) {
+            if(status >= 400) {
+                localStorage.clear();
+                this.$router.go()
+            }
+        },
         addToObject(obj, key, value, index) {
             // Create a temp object and index variable
             let temp = {};

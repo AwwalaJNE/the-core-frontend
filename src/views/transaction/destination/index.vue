@@ -13,7 +13,7 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import FormInputController from "@/components/form/formInputControllerTransaction"
+import FormInputController from "@/views/transaction/formInputControllerTransaction"
 export default {
     name: "destination",
     mixins: [master],
@@ -37,14 +37,16 @@ export default {
         async getTableData(q) {
             console.log('get', q)
             await axios
-                .get(this.URL.geolocation + 
-                `?n=1&sort_order=desc&&limit=${10}&page=${1}&s=${q}`, 
+                .get(this.URL.geolocation_search + 
+                `?n=1&s=${q}`, 
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
                     this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", arr.length > 0 ? arr : [])
                     // this.loading = false
                 }).catch(err => {
+                    console.log(err.response)
+                    this.checkAuth(err.response.status)
                     // this.loading = false
                     // this.openNotification('danger', 'Failed to populate country list', err)
                 })

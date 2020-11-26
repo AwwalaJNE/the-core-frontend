@@ -81,13 +81,17 @@
     </div>
 </template>
 <script>
+import axios from "axios";
+import master from "@/mixins/master"
 export default {
     name: "calc-transaction",
+    mixins: [master],
     data() {
         return {
             switch_component: false,
             Keys: [],
-            objectKeys: {}
+            objectKeys: {},
+            destinationCode: ''
         }
     },
     computed: {
@@ -124,8 +128,6 @@ export default {
                 }
         },
         clickdulu(item){
-            console.log('prefix', this.listenCalcPrefix)
-            console.log('kita klik', item)
             switch(this.listenCalcPrefix) {
                 case "origin":
                     this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, item.geolocation_subdistrict_zip_code)
@@ -136,18 +138,33 @@ export default {
                         zip_code: item.geolocation_subdistrict_zip_code,
                         destination_code: item.geolocation_subdistrict_tarif_code
                     }
-                    console.log('klick desti', item.geolocation_subdistrict_zip_code)
+                    this.destinationCode = item.geolocation_subdistrict_tarif_code
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE`, obj)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE_zipCode`, item.geolocation_subdistrict_zip_code)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE_destinationCode`, item.geolocation_subdistrict_tarif_code)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, item.geolocation_location_name)
+
+                    this.getShippingService()
                     break;
                 default:
                     console.log('meong')
                     // code block
             }
-            
-        }
+        },
+        async getShippingService() {
+            await axios
+                .get(this.URL.shipping_service + 
+                `?n=1&destination=${this.destinationCode}`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log('getShippingService', res.data.data)
+                    // this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", arr.length > 0 ? arr : [])
+                    // this.loading = false
+                }).catch(err => {
+                    // this.loading = false
+                    // this.openNotification('danger', 'Failed to populate country list', err)
+                })
+        },
     },
     mounted() {
         this.initialize()

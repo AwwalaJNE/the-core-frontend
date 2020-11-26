@@ -1,16 +1,20 @@
 <template>
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
-            
-            <template v-for="(item,key) in DataArr">
-                <vs-radio 
-                v-model="value" 
-                :val="item.value" 
-                :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
-                :key="key">
-                    {{item.label}}
-                </vs-radio>
-            </template>
+            <vs-row>
+                <template v-if="DataArr.length > 0">
+                    <vs-col xs="6" :w="3" v-for="(item,key) in DataArr" :key="key">
+                        <vs-radio 
+                        style="margin-top:.5em"
+                        v-model="value" 
+                        :val="item.value" 
+                        :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                        :key="key">
+                            {{item.label}}
+                        </vs-radio>                      
+                    </vs-col>
+                </template>
+            </vs-row>
 
         </template>
     </inputan>

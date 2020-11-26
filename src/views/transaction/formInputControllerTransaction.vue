@@ -39,6 +39,19 @@
                             :isMultiple="false"
                             @updateValue="updateValue" />
                         </template>
+                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('radio')">
+                            <p>{{InputObject[item].label}}</p>
+                            <template v-if="InputObject[item].arrData.length > 0">
+                                <radio 
+                                :ref="InputObject[item].key"
+                                :name="''" 
+                                :rules="InputObject[item].rule" 
+                                :formKey="InputObject[item].key"
+                                :valueData="InputObject[item].arrData"
+                                :selectedValue="InputObject[item].value"
+                                @updateValue="updateValue" />
+                            </template>
+                        </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('boolean')">
                             <switchNih
                             :name="InputObject[item].label" 
@@ -58,6 +71,7 @@
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 import Switch from "@/components/input/switch"
+import Radio from "@/components/input/radio"
 export default {
     name:"input-controller-transaction",
     components: {
@@ -65,6 +79,7 @@ export default {
         "input-general": InputGeneral,
         "selector": Selector,
         "switchNih": Switch,
+        "radio": Radio,
     },
     props: {
         arrData: Array,

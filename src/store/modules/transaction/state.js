@@ -51,18 +51,18 @@ export default {
     destination_type: {
       label: "",
       key: "destination_type",
-      rule: "required",
+      rule: "",
       typeInput: "radio",
       typeData: "String",
       arrData: [
         {
-          label: "Rumah*",
+          label: "Rumah",
           value: "rumah"
         },
         {
-          label: "Kantor*",
+          label: "Kantor",
           value: "kantor"
-        }
+        },
       ],
       valueData: null,
       value: 'rumah'
@@ -193,74 +193,49 @@ export default {
 
 
     package_jumlah: {
-      typeInput: "row",
-      col:6,
-      input: [
-        {
-            label: "Jumlah*",
-            key: "package_jumlah",
-            rule: "required",
-            typeInput: "text|col_right",
-            typeData: "Number",
-            valueData: null,
-            value: '1'
-        },
-        {
-            label: "<i class='bx bx-layer-plus'></i> Atur Berat",
-            key: "package_jumlah_dialog",
-            rule: "required",
-            typeInput: "btnDialog",
-            valueData: null,
-            value: false
-        }
-      ],
-      package_jumlah: 1
+      label: "Jumlah*",
+      key: "package_jumlah",
+      rule: "required",
+      typeInput: "text|col_right",
+      typeData: "Number",
+      valueData: null,
+      value: '1'
     },
-    package_dimensi: {
-      typeInput: "row|col_right",
-      col: 3,
-      input: [
-        {
-          label: "Weight*",
-          key: "weight",
-          rule: "required",
-          typeInput: "text",
-          typeData: "Number",
-          valueData: null,
-          value: 0
-        },
-        {
-          label: "Length*",
-          key: "length",
-          rule: "required",
-          typeInput: "text",
-          typeData: "Number",
-          valueData: null,
-          value: 0
-        },
-        {
-          label: "Width*",
-          key: "width",
-          rule: "required",
-          typeInput: "text",
-          typeData: "Number",
-          valueData: null,
-          value: 0
-        },
-        {
-          label: "Height*",
-          key: "height",
-          rule: "required",
-          typeInput: "text",
-          typeData: "Number",
-          valueData: null,
-          value: 0
-        },
-      ],
-      weight: 1,
-      length: 0,
-      width: 0,
-      height: 0
+    package_dimensi_weight: {
+      label: "Weight*",
+      key: "package_weight",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: 0
+    },
+    package_dimensi_length: {
+      label: "Length*",
+      key: "package_length",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: 0
+    },
+    package_dimensi_width: {
+      label: "Width*",
+      key: "package_width",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: 0
+    },
+    package_dimensi_height: {
+      label: "Height*",
+      key: "package_height",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: 0
     },
     package_tidak_packing_kayu: {
       titleLabel: "Tidak Packing Kayu",
@@ -281,6 +256,16 @@ export default {
       typeData: "Boolean",
       valueData: false,
       value: false
+    },
+    package_surcharge: {
+      label: "Height*",
+      key: "package_surcharge",
+      rule: "",
+      typeInput: "tags",
+      typeData: "Array",
+      arrData: [],
+      valueData: null,
+      value: []
     },
     package_do_return: {
       titleLabel: "Do Return",
