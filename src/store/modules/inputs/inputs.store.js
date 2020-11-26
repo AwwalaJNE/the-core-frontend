@@ -10,11 +10,11 @@ import state from "./state";
 
 Vue.use(Vuex);
 
-const labaStore = {
+const inputStore = {
   actions,
   mutations,
   getters,
   state,
 };
 
-export default labaStore;
+export default inputStore;

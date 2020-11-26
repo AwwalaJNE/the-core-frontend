@@ -1,8 +1,7 @@
 <template>
-    <form-master ref="formMaster" @onSubmit="onSubmit">
-        <template v-slot:inputValidator>
-            <template v-if="Keys.length > 0 && Object.keys(InputObject).length > 0">
-                <vs-row v-for="(item, keys) in Keys" :key="keys">
+    <div>
+        <template v-if="Keys.length > 0 && Object.keys(InputObject).length > 0">
+                <vs-row v-for="(item, i) in Keys" :key="i">
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
                         <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
                             <input-general 
@@ -11,9 +10,10 @@
                             :formKey="InputObject[item].key"
                             :valueData="InputObject[item].value"
                             :typeInput="InputObject[item].typeInput"
-                            @updateValue="updateValue" />
+                            @updateValue="updateValue" 
+                            @inputFocus="onfocuslah" />
                         </template>
-                        <template v-if="InputObject[item].typeInput.toLowerCase().includes('row')">
+                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('row')">
                             <vs-row justify="center">
                                 <template v-if="InputObject[item].input.length > 0">
                                     <vs-col xs="12" :w="InputObject[item]['col']" v-for="(inp, i) in InputObject[item].input" :key="i">
@@ -50,19 +50,18 @@
                         </template>
                     </vs-col>
                 </vs-row>
-            </template>
         </template>
-    </form-master>
+    </div>
 </template>
 <script>
-import FormMaster from "@/components/form/formMaster"
+// import FormMaster from "@/components/form/formMaster"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 import Switch from "@/components/input/switch"
 export default {
     name:"input-controller-transaction",
     components: {
-        "form-master": FormMaster,
+        // "form-master": FormMaster,
         "input-general": InputGeneral,
         "selector": Selector,
         "switchNih": Switch,
@@ -117,37 +116,27 @@ export default {
             // console.log('initilize data', this.latitude, this.longitude)
 
         },
-        updateValue(type, val) {
+        onfocuslah(info) {
+            if(info.typeInput !== '' && info.typeInput.includes('calc_switch')) {
+              this.$store.dispatch('SET_CALC_COMPONENT_SWITCH', info.status)
+              this.$store.dispatch('SET_CALC_COMPONENT_PREFIX', this.listenTypeForm)
+            }
+        },
+        updateValue(type, val, info) {
             let action = type.toUpperCase()
             let prefix = this.listenTypeForm.toUpperCase()
             let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
             if(err == true) {
                 console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
             }
+            if(info.typeInput !== '' && info.typeInput.includes('calc_switch')) {
+                this.$emit("searchTariffCode", this.listenTypeForm, val)
+            }
         },
         handleSubmit(){
             this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster
         },
-        onSubmit(refs){
-            console.log('onsubmit form controller', refs)
-                refs.form.validate().then(success => {
-                    if (!success) {
-                        console.log('err niih')
-                        return;
-                    }
-                    this.InputObject = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm]
-                    this.Keys.map(item => {
-                        // yg diambil key input
-                        this.form[this.InputObject[item].key] = this.InputObject[item].value
-                    })
-                    this.$emit("formData", this.form)
-
-                    // Wait until the models are updated in the UI
-                    this.$nextTick(() => {
-                        refs.form.reset();
-                    });
-                });
-        },
+        
         handleClearForm(){
             let prefix = this.listenTypeForm.toUpperCase()
             this.Keys.map(item => {

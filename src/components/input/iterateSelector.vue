@@ -4,22 +4,20 @@
             <vs-row justify="space-between" :key="key">
                 <vs-col xs="12" sm="6" lg="6">
                     <selector 
-                        :ref="''"
-                        :name="''"
-                        :formKey="''"
                         :valueData="Keys"
                         :selectedValue="''"
                         :isMultiple="false"
                         @updateValue="updateValue" />
                 </vs-col>
                 <vs-col xs="12" sm="6" lg="6">
-                    <input-general 
+                    <!-- <input-general 
                         :name="''" 
                         :rules="''" 
                         :formKey="''"
-                        :valueData="''"
-                        :typeInput="''"
-                        @updateValue="updateValue" />
+                        :valueData="InputObject[item.key].value"
+                        :typeInput="InputObject[item.key].typeInput"
+                        @updateValue="updateValue" /> -->
+                        {{'ooo'}}
                 </vs-col>
             </vs-row>
         </template>
@@ -57,6 +55,7 @@ export default {
                         key: 'o',
                         rule: 'o'
                     },
+            typeInput: '',
             InputObject: {},
             Keys: [],
             index: 1
@@ -68,6 +67,9 @@ export default {
         },
         listenTypeForm() {
             return this.typeForm
+        },
+        listenTypeInput() {
+            return this.typeInput
         }
     },
     watch: {

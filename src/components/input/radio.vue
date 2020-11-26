@@ -1,28 +1,17 @@
 <template>
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
-            <vs-select
-                class="m-select"
-                filter
-                :multiple="listenIsMultiple"
-                :placeholder="name"
-                :label="name"
-                v-model="value"
-                :border="border"
-                @change="updateValue"
+            
+            <template v-for="(item,key) in DataArr">
+                <vs-radio 
+                v-model="value" 
+                :val="item.value" 
                 :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
-            >
-                <template v-if="DataArr.length > 0">
-                    <vs-option 
-                    v-for="(item,key) in DataArr"
-                    :key="key"
-                    :label="item.label" 
-                    :value="item.value">
-                        {{item.label}}
-                    </vs-option>
-                </template>
-                
-            </vs-select>
+                :key="key">
+                    {{item.label}}
+                </vs-radio>
+            </template>
+
         </template>
     </inputan>
     
@@ -30,7 +19,7 @@
 <script>
 import Inputan from "@/components/input/inputan"
 export default {
-    name:"select-filter",
+    name:"radio",
     components: {
         "inputan": Inputan
     }, 
@@ -39,16 +28,14 @@ export default {
         rules: String,
         valueData: Array,
         // loadingData: Boolean,
-        selectedValue: [Array, String, Number],
+        selectedValue: [String, Number],
         formKey: String,
-        isMultiple: Boolean,
         border: Boolean
     },
     data() {
         return {
             DataArr: this.valueData !== null ? this.valueData : [],
             value: this.selectedValue ? this.selectedValue :"",
-            arrValue: this.selectedValue ? this.selectedValue : [],
             // loading: true,
             // loadingInjector : null
         }
@@ -70,11 +57,7 @@ export default {
         },
         selectedValue: function (val) {
             if (val != undefined) {
-                if(this.isMultiple == false) {
-                    this.value = val
-                } else {
-                    this.arrValue = val
-                }
+                this.value = val
             }
         },
         // loadingData: function (val) {
