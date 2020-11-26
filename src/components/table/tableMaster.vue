@@ -27,7 +27,7 @@
                             {{ item.label }}
                         </vs-th>
                         <template v-if="hasAction == true">
-                            <vs-th class="action" style="width:200px !important;">
+                            <vs-th class="action">
                                 Action
                             </vs-th>
                         </template>
@@ -85,8 +85,8 @@
                             </template>
                         </template>
                         <template v-if="hasAction == true">
-                            <vs-td class="action" style="width:200px !important;">
-                                <vs-row justify="center">
+                            <vs-td class="action">
+                                <vs-row justify="center" class="btn_action">
                                     <vs-col w="4">
                                         <vs-button
                                             block
@@ -110,6 +110,46 @@
                                     </vs-col>
                                 </vs-row>
                             </vs-td>
+                        </template>
+
+                        <template v-if="listenExpandable" #expand>
+                            <div class="con-content">
+                                <template v-if="item.hasOwnProperty('children') && Object.keys(item.children).length > 0">
+                                    <table>
+                                        <tr>
+                                            <th v-for="(c_item, c_key) in Object.keys(item.children)" :key="c_key">
+                                                {{c_item.replace(/[&\/\\#,+()$~%._'":*?<>{}]/g, " ")}}
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <template v-for="(c_item, c_td_key) in Object.keys(item.children)">
+                                                <template v-if="Array.isArray(item.children[c_item])">
+                                                   <td :key="c_td_key">
+                                                       <ul>
+                                                           <li v-for="(itm, idx) in item.children[c_item]" :key="idx">
+                                                               <template v-if="typeof itm === 'object'">
+                                                                   <template v-for="(itm_keys, itm_i) in Object.keys(itm)">
+                                                                       <p :key="itm_i">{{itm_keys+' = '+itm[itm_keys]}}</p>
+                                                                   </template>
+                                                               </template>
+                                                               <template v-else>
+                                                                   <p>{{itm}}</p>
+                                                               </template>
+                                                           </li>
+                                                       </ul>
+                                                   </td>
+                                                </template>
+                                                <template v-else>
+                                                    <td :key="c_td_key">
+                                                       {{item.children[c_item]}}
+                                                   </td>
+                                                </template>
+                                                
+                                            </template>
+                                        </tr>
+                                    </table>
+                                </template>
+                            </div>
                         </template>
                     </vs-tr>
                 </template>
@@ -148,7 +188,8 @@ export default {
         page: Number,
         limit: Number,
         hasAction: Boolean,
-        hasPagination: Boolean
+        hasPagination: Boolean,
+        expandable: Boolean
     },
     data() {
         return {
@@ -175,6 +216,9 @@ export default {
         listenTableLoading() {
             return this.tableLoading
         },
+        listenExpandable () {
+            return this.expandable || false
+        }
     },
     watch: {
         tableLoading: function(val) {
@@ -259,10 +303,26 @@ export default {
             }
             .action{
                 &.vs-table__th{
+                    position: relative;
                     width: 280px !important;
+                    min-width: 280px;
+                    max-width: 300px;
+                    .vs-table__th__content{
+                        float: right;
+                        width: 280px;
+                        position: relative;
+                        // max-width: 280px !important;
+                    }
                 }
                 &.vs-table__td{
-                    width: 280px !important;
+                    position: relative;
+                    display: flex;
+                    justify-content: flex-end;
+                    .btn_action{
+                        max-width: 280px;
+                        position: relative;
+                        justify-content: flex-end;
+                    }
                 }
                 .vs-table__th__content{
                     text-align: center;

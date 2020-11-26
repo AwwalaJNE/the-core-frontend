@@ -255,6 +255,11 @@ export default {
                             icon: ''
                         },
                         {
+                            label: 'Settings Surcharge',
+                            url: '/settings/surcharge',
+                            icon: ''
+                        },
+                        {
                             label: 'Settings Geolocation',
                             url: '/settings/geolocation',
                             icon: ''

@@ -67,17 +67,20 @@ export default {
                     console.log('res', res.data.data)
                     localStorage.setItem("tokenBearer", res.data.data.token);
                     localStorage.setItem("UserID", res.data.data.user.user_id);
+
+                    this.$store.dispatch(`SET_USER_DATA`, res.data.data.user)
                     // this.$ls.set('tokenBearer', res.data.data.token)
                     // this.$ls.set('UserID', res.data.data.user.user_id)
                     // let token = this.$ls.get('tokenBearer')
 
                     // console.log('token local', token)
 
-                    this.$router.push({ name: "users"});
+                    // this.$router.push({ name: "users"});
+                    this.$router.replace('/settings/users')
                     
                 }).catch(err => {
-                    console.log('err', err.response)
-                    this.openNotification('danger', 'Login failed', err.response ? err.response.data.message : 'something went wrong')
+                    console.log('err', err)
+                    this.openNotification('danger', 'Login failed', err ? err : 'something went wrong')
                 })
             
         },

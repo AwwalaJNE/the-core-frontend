@@ -1,5 +1,4 @@
 import Vue from "vue";
-const token = localStorage.getItem("tokenBearer")
 
 export default {
     header() {
@@ -7,7 +6,7 @@ export default {
             headers: {
               // 'X-Auth-Key'  : Vue.ls.get('token'), 
               // Authorization: "Bearer " + Vue.ls.storage.tokenBearer,
-              Authorization: "Bearer " + token,
+              Authorization: "Bearer " + localStorage.getItem("tokenBearer"),
               "Content-Type": "application/json",
               Accept: "application/json"
             }

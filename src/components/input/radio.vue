@@ -1,0 +1,107 @@
+<template>
+    <inputan :name="name" :rules="rules">
+        <template v-slot:inputan="props">
+            
+            <template v-for="(item,key) in DataArr">
+                <vs-radio 
+                v-model="value" 
+                :val="item.value" 
+                :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                :key="key">
+                    {{item.label}}
+                </vs-radio>
+            </template>
+
+        </template>
+    </inputan>
+    
+</template>
+<script>
+import Inputan from "@/components/input/inputan"
+export default {
+    name:"radio",
+    components: {
+        "inputan": Inputan
+    }, 
+    props: {
+        name: String,
+        rules: String,
+        valueData: Array,
+        // loadingData: Boolean,
+        selectedValue: [String, Number],
+        formKey: String,
+        border: Boolean
+    },
+    data() {
+        return {
+            DataArr: this.valueData !== null ? this.valueData : [],
+            value: this.selectedValue ? this.selectedValue :"",
+            // loading: true,
+            // loadingInjector : null
+        }
+    },
+    computed: {
+        listenFormKey(){
+            return this.formKey || ''
+        },
+        listenIsMultiple(){
+            return this.isMultiple ? this.isMultiple : false
+        }
+    },
+    watch: {
+        valueData: function (val) {
+            if (val != undefined) {
+                this.DataArr = val
+                // this.DataArr.length > 0 ? this.loading = false : this.loading = true
+            }
+        },
+        selectedValue: function (val) {
+            if (val != undefined) {
+                this.value = val
+            }
+        },
+        // loadingData: function (val) {
+        //     if(val != undefined) {
+        //         this.loading = val || false
+        //     }
+        // },
+        // loading : function (val) {
+        //     val == true ? this.loadingHandler() : this.closeLoading()
+        // }
+    },
+    methods: {
+        // loadingHandler(){
+        //     let ref = `${this.name}`
+        //     console.log('this.$refs.ref', this.$refs.nameah, this.name)
+        //     this.loadingInjector = this.$vs.loading({
+        //         target: this.$refs.nameah,
+        //         color: '#333'
+        //     })
+        // },
+        // closeLoading(){
+        //     this.loadingInjector !== null ? this.loadingInjector.close() : null
+        // },
+        updateValue(val){
+            if(this.isMultiple == false) {
+                this.$emit("updateValue", this.listenFormKey, val)
+            } else {
+                this.$emit("updateValue", this.listenFormKey, val)
+            }
+        }
+    },
+}
+</script>
+<style lang="scss">
+    .m-select{
+        &.vs-select-content{
+            max-width: unset;
+            margin: 10px 0;
+        }
+        .vs-select__label--label{
+            transform: translate(-3px, -28px) !important;
+        }
+        .vs-select.activeOptions .vs-select__input:focus ~ .vs-select__label--label {
+            transform: translate(-3%, -28px) !important;
+        }
+    }
+</style>

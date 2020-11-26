@@ -14,15 +14,17 @@
                             @updateValue="updateValue" />
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
-                            <selector 
-                            :ref="InputObject[item].key"
-                            :name="InputObject[item].label" 
-                            :rules="InputObject[item].rule" 
-                            :formKey="InputObject[item].key"
-                            :valueData="InputObject[item].arrData"
-                            :selectedValue="InputObject[item].value"
-                            :isMultiple="false"
-                            @updateValue="updateValue" />
+                            <template v-if="InputObject[item].arrData.length > 0">
+                                <selector 
+                                :ref="InputObject[item].key"
+                                :name="InputObject[item].label" 
+                                :rules="InputObject[item].rule" 
+                                :formKey="InputObject[item].key"
+                                :valueData="InputObject[item].arrData"
+                                :selectedValue="InputObject[item].value"
+                                :isMultiple="false"
+                                @updateValue="updateValue" />
+                            </template>
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('mappicker')">
                             <map-picker 
@@ -31,6 +33,10 @@
                                 @pickLocation="pickLocation"
                             />
                         </template>
+                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('dynamicinputcomponent')">
+                            <iterate-selector :getters="listenGettersPrefix" :typeForm="listenTypeForm"/>
+                        </template>
+                        
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('boolean')">
                             <switchNih
                             :name="InputObject[item].label" 
@@ -52,6 +58,7 @@ import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 import Switch from "@/components/input/switch"
 import MapPicker from "@/components/map"
+import iterateSelector from "@/components/input/iterateSelector"
 export default {
     name:"input-controller",
     components: {
@@ -59,7 +66,8 @@ export default {
         "input-general": InputGeneral,
         "selector": Selector,
         "switchNih": Switch,
-        "map-picker": MapPicker
+        "map-picker": MapPicker,
+        "iterate-selector": iterateSelector
     },
     props: {
         arrData: Array,
@@ -101,7 +109,7 @@ export default {
                 if (Object.keys(obj).length > 0) {
                     this.Keys = Object.keys(obj)
                     this.InputObject = obj
-                    console.log('ini inputObject', this.InputObject)
+                    console.log('ini inputObject', this.InputObject, this.Keys)
                 } else {
                     this.Keys = []
                     this.InputObject = {}

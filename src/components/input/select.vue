@@ -8,6 +8,7 @@
                 :placeholder="name"
                 :label="name"
                 v-model="value"
+                :border="border"
                 @change="updateValue"
                 :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
             >
@@ -40,7 +41,8 @@ export default {
         // loadingData: Boolean,
         selectedValue: [Array, String, Number],
         formKey: String,
-        isMultiple: Boolean
+        isMultiple: Boolean,
+        border: Boolean
     },
     data() {
         return {

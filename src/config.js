@@ -1,5 +1,6 @@
 const api = process.env.VUE_APP_API;
 
+console.log('process.env.VUE_APP_API',process.env.VUE_APP_API);
 export default {
     login: api + "login",
     user: api + "user",
@@ -31,4 +32,14 @@ export default {
 
     // tariff
     tariff: api + "tariff",
+    tariff_special: api + "tariff-special",
+
+    //surcharge
+    surcharge: api + "surcharge",
+    surcharge_type: api + "surcharge-type",
+
+    //vehicle
+    vehicle: api + "vehicle",
+    vehicle_mode: api + "vehicle-mode",
+    vehicle_type: api + "vehicle-type",
 }

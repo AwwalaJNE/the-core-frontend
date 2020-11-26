@@ -9,6 +9,8 @@
                 v-model="value"
                 :disabled="isDisabled"
                 @input="updateValue"
+                @focus="focus(true)"
+                @blur="focus(false)"
                 :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
             />
         </template>
@@ -23,7 +25,8 @@ export default {
         rules: String,
         valueData: [String, Number],
         formKey: String,
-        typeInput: String
+        typeInput: String,
+        prefix: String
     },
     components: {
         "inputan": Inputan
@@ -52,8 +55,22 @@ export default {
         }
     },
     methods: {
+        focus(status){
+            let info = {}
+            info['name'] = this.name
+            info['key'] = this.listenFormKey
+            info['typeInput'] = this.listenTypeInput
+            info['status'] = status
+            let self = this
+            setTimeout(function(){ self.$emit("inputFocus", info) }, 200);
+        },
         updateValue(){
-            this.$emit("updateValue", this.listenFormKey, this.value)
+            let info = {}
+            info['name'] = this.name
+            info['key'] = this.listenFormKey
+            info['typeInput'] = this.listenTypeInput
+            info['status'] = status
+            this.$emit("updateValue", this.listenFormKey, this.value, info)
         }
     }
 }

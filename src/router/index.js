@@ -32,6 +32,9 @@ import Vehicles from "@/views/settings/vehicles"
 // === Customer ===
 import Customer from "@/views/settings/customer"
 
+// === Surcharge ===
+import Surcharge from "@/views/settings/surcharge"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -106,6 +109,15 @@ const routes = [
         meta: { 
           requiresAuth: true,
           breadCrumb: "Customer"
+        }
+      },
+      {
+        path: "/settings/surcharge",
+        name: "Surcharge",
+        component: Surcharge,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Surcharge"
         }
       },
       {

@@ -496,4 +496,501 @@ export default {
   SET_NODE_IS_ACTIVE_ValueData({ commit }, payload) {
     commit('SET_NODE_IS_ACTIVE_ValueData', payload)
   },
+
+  // node alt address
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ID({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ID', payload)
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ID_ValueData({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ID_ArrData({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ID_ArrData', payload)
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_NAME({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_NAME', payload)
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_NAME_ValueData({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_NAME_ValueData', payload)
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ADDRESS({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ADDRESS', payload)
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ADDRESS_ValueData', payload)
+  },
+    
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID', payload)
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ValueData({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ArrData({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ArrData', payload)
+  },
+
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LATITUDE({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LATITUDE', payload)
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LATITUDE_ValueData({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LATITUDE_ValueData', payload)
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LONGITUDE({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LONGITUDE', payload)
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LONGITUDE_ValueData({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LONGITUDE_ValueData', payload)
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PHONE({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PHONE', payload)
+  },
+  SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PHONE_ValueData({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PHONE_ValueData', payload)
+  },
+    
+  SET_NODE_ALTERNATE_ADDRESS_IS_ACTIVE({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_IS_ACTIVE', payload)
+  },
+  SET_NODE_ALTERNATE_ADDRESS_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_NODE_ALTERNATE_ADDRESS_IS_ACTIVE_ValueData', payload)
+  },
+
+
+
+  // tariff
+  SET_TARIFF_TARIFF_ORIGIN({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_ORIGIN', payload)
+  },
+  SET_TARIFF_TARIFF_ORIGIN_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_ORIGIN_ValueData', payload)
+  },
+    
+  SET_TARIFF_TARIFF_DESTINATION({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_DESTINATION', payload)
+  },
+  SET_TARIFF_TARIFF_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_DESTINATION_ValueData', payload)
+  },
+    
+  SET_TARIFF_TARIFF_START_DATE({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_START_DATE', payload)
+  },
+  SET_TARIFF_TARIFF_START_DATE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_START_DATE_ValueData', payload)
+  },
+    
+  SET_TARIFF_TARIFF_EXPIRY_DATE({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_EXPIRY_DATE', payload)
+  },
+  SET_TARIFF_TARIFF_EXPIRY_DATE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_EXPIRY_DATE_ValueData', payload)
+  },
+    
+  SET_TARIFF_TARIFF_SERVICE_CODE({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_SERVICE_CODE', payload)
+  },
+  SET_TARIFF_TARIFF_SERVICE_CODE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_SERVICE_CODE_ValueData', payload)
+  },
+    
+  SET_TARIFF_TARIFF_CURRENCY({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_CURRENCY', payload)
+  },
+  SET_TARIFF_TARIFF_CURRENCY_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_CURRENCY_ValueData', payload)
+  },
+    
+  SET_TARIFF_TARIFF_VEHICLE_MODE_ID({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_VEHICLE_MODE_ID', payload)
+  },
+  SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ArrData', payload)
+  },
+    
+  SET_TARIFF_TARIFF_AMOUNT_1({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_AMOUNT_1', payload)
+  },
+  SET_TARIFF_TARIFF_AMOUNT_1_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_AMOUNT_1_ValueData', payload)
+  },
+    
+  SET_TARIFF_TARIFF_WEIGHT_1({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_WEIGHT_1', payload)
+  },
+  SET_TARIFF_TARIFF_WEIGHT_1_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_WEIGHT_1_ValueData', payload)
+  },
+    
+  SET_TARIFF_IS_ACTIVE({ commit }, payload) {
+    commit('SET_TARIFF_IS_ACTIVE', payload)
+  },
+  SET_TARIFF_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_IS_ACTIVE_ValueData', payload)
+  },
+
+  // tariff special
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_NAME({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_NAME', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_NAME_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_NAME_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_SERVICE_CODE({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_SERVICE_CODE', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_SERVICE_CODE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_SERVICE_CODE_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_START_DATE({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_START_DATE', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_START_DATE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_START_DATE_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_EXPIRY_DATE({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_EXPIRY_DATE', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_EXPIRY_DATE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_EXPIRY_DATE_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_TYPE({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_TYPE', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_TYPE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_TYPE_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_AMOUNT({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_AMOUNT', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_AMOUNT_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_AMOUNT_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_MAX_AMOUNT({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_MAX_AMOUNT', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_MAX_AMOUNT_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_MAX_AMOUNT_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_COUNTRY({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_COUNTRY', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_COUNTRY_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_COUNTRY_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_PROVINCE({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_PROVINCE', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_PROVINCE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_PROVINCE_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_CITY({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_CITY', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_CITY_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_CITY_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_DISTRICT({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_DISTRICT', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_DISTRICT_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_DISTRICT_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_SUBDISTRICT({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_SUBDISTRICT', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_SUBDISTRICT_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_SUBDISTRICT_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_ZIP_CODE({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_ZIP_CODE', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_ZIP_CODE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_ZIP_CODE_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_TARIFF_CODE({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_TARIFF_CODE', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_TARIFF_CODE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_TARIFF_CODE_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_COUNTRY({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_COUNTRY', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_COUNTRY_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_COUNTRY_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_PROVINCE({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_PROVINCE', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_PROVINCE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_PROVINCE_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_CITY({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_CITY', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_CITY_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_CITY_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_DISTRICT({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_DISTRICT', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_DISTRICT_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_DISTRICT_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_SUBDISTRICT({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_SUBDISTRICT', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_SUBDISTRICT_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_SUBDISTRICT_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_ZIP_CODE({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_ZIP_CODE', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_ZIP_CODE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_ZIP_CODE_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_TARIFF_CODE({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_TARIFF_CODE', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_TARIFF_CODE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_TARIFF_CODE_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_KOLI({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_KOLI', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_KOLI_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_KOLI_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_KOLI({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_KOLI', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_KOLI_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_KOLI_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_WEIGHT({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_WEIGHT', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_WEIGHT_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_WEIGHT_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_WEIGHT({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_WEIGHT', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_WEIGHT_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_WEIGHT_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_VOLUME({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_VOLUME', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_VOLUME_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_VOLUME_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_VOLUME({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_VOLUME', payload)
+  },
+  SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_VOLUME_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_VOLUME_ValueData', payload)
+  },
+    
+  SET_TARIFF_SPECIAL_IS_ACTIVE({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_IS_ACTIVE', payload)
+  },
+  SET_TARIFF_SPECIAL_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_SPECIAL_IS_ACTIVE_ValueData', payload)
+  },
+
+  //SURCHARGE
+  SET_SURCHARGE_SURCHARGE_NAME({ commit }, payload) {
+    commit('SET_SURCHARGE_SURCHARGE_NAME', payload)
+  },
+  SET_SURCHARGE_SURCHARGE_NAME_ValueData({ commit }, payload) {
+    commit('SET_SURCHARGE_SURCHARGE_NAME_ValueData', payload)
+  },
+    
+  SET_SURCHARGE_SURCHARGE_TYPE_ID({ commit }, payload) {
+    commit('SET_SURCHARGE_SURCHARGE_TYPE_ID', payload)
+  },
+  SET_SURCHARGE_SURCHARGE_TYPE_ID_ValueData({ commit }, payload) {
+    commit('SET_SURCHARGE_SURCHARGE_TYPE_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_SURCHARGE_SURCHARGE_TYPE_ID_ArrData({ commit }, payload) {
+    commit('SET_SURCHARGE_SURCHARGE_TYPE_ID_ArrData', payload)
+  },
+    
+  SET_SURCHARGE_SURCHARGE_CONDITION({ commit }, payload) {
+    commit('SET_SURCHARGE_SURCHARGE_CONDITION', payload)
+  },
+  SET_SURCHARGE_SURCHARGE_CONDITION_ValueData({ commit }, payload) {
+    commit('SET_SURCHARGE_SURCHARGE_CONDITION_ValueData', payload)
+  },
+    
+  SET_SURCHARGE_SURCHARGE_FORMULA({ commit }, payload) {
+    commit('SET_SURCHARGE_SURCHARGE_FORMULA', payload)
+  },
+  SET_SURCHARGE_SURCHARGE_FORMULA_ValueData({ commit }, payload) {
+    commit('SET_SURCHARGE_SURCHARGE_FORMULA_ValueData', payload)
+  },
+    
+  SET_SURCHARGE_AUTO_APPLY({ commit }, payload) {
+    commit('SET_SURCHARGE_AUTO_APPLY', payload)
+  },
+  SET_SURCHARGE_AUTO_APPLY_ValueData({ commit }, payload) {
+    commit('SET_SURCHARGE_AUTO_APPLY_ValueData', payload)
+  },
+    
+  SET_SURCHARGE_IS_ACTIVE({ commit }, payload) {
+    commit('SET_SURCHARGE_IS_ACTIVE', payload)
+  },
+  SET_SURCHARGE_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_SURCHARGE_IS_ACTIVE_ValueData', payload)
+  },
+
+  SET_SURCHARGE_TYPE_SURCHARGE_TYPE_NAME({ commit }, payload) {
+    commit('SET_SURCHARGE_TYPE_SURCHARGE_TYPE_NAME', payload)
+  },
+  SET_SURCHARGE_TYPE_SURCHARGE_TYPE_NAME_ValueData({ commit }, payload) {
+    commit('SET_SURCHARGE_TYPE_SURCHARGE_TYPE_NAME_ValueData', payload)
+  },
+    
+  SET_SURCHARGE_TYPE_IS_ACTIVE({ commit }, payload) {
+    commit('SET_SURCHARGE_TYPE_IS_ACTIVE', payload)
+  },
+  SET_SURCHARGE_TYPE_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_SURCHARGE_TYPE_IS_ACTIVE_ValueData', payload)
+  },
+
+  // vehicle
+  SET_VEHICLE_VEHICLE_NAME({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_NAME', payload)
+  },
+  SET_VEHICLE_VEHICLE_NAME_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_NAME_ValueData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_POLICE_NO({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_POLICE_NO', payload)
+  },
+  SET_VEHICLE_VEHICLE_POLICE_NO_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_POLICE_NO_ValueData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_OWNED_BY({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_OWNED_BY', payload)
+  },
+  SET_VEHICLE_VEHICLE_OWNED_BY_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_OWNED_BY_ValueData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_MAX_WEIGHT({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_MAX_WEIGHT', payload)
+  },
+  SET_VEHICLE_VEHICLE_MAX_WEIGHT_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_MAX_WEIGHT_ValueData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_MAX_VOLUME({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_MAX_VOLUME', payload)
+  },
+  SET_VEHICLE_VEHICLE_MAX_VOLUME_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_MAX_VOLUME_ValueData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_TYPE_ID({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_TYPE_ID', payload)
+  },
+  SET_VEHICLE_VEHICLE_TYPE_ID_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_TYPE_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_VEHICLE_VEHICLE_TYPE_ID_ArrData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_TYPE_ID_ArrData', payload)
+  },
+    
+  SET_VEHICLE_VEHICLE_NODE_ID({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_NODE_ID', payload)
+  },
+  SET_VEHICLE_VEHICLE_NODE_ID_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_NODE_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_VEHICLE_VEHICLE_NODE_ID_ArrData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_NODE_ID_ArrData', payload)
+  },
+    
+  SET_VEHICLE_IS_ACTIVE({ commit }, payload) {
+    commit('SET_VEHICLE_IS_ACTIVE', payload)
+  },
+  SET_VEHICLE_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_IS_ACTIVE_ValueData', payload)
+  },
+
+  //vehicle mode
+  SET_VEHICLE_MODE_VEHICLE_MODE_NAME({ commit }, payload) {
+    commit('SET_VEHICLE_MODE_VEHICLE_MODE_NAME', payload)
+  },
+  SET_VEHICLE_MODE_VEHICLE_MODE_NAME_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_MODE_VEHICLE_MODE_NAME_ValueData', payload)
+  },
+    
+  SET_VEHICLE_MODE_IS_ACTIVE({ commit }, payload) {
+    commit('SET_VEHICLE_MODE_IS_ACTIVE', payload)
+  },
+  SET_VEHICLE_MODE_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_MODE_IS_ACTIVE_ValueData', payload)
+  },
+
+  // vehicle type
+  SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME({ commit }, payload) {
+    commit('SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME', payload)
+  },
+  SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME_ValueData', payload)
+  },
+    
+  SET_VEHICLE_TYPE_IS_ACTIVE({ commit }, payload) {
+    commit('SET_VEHICLE_TYPE_IS_ACTIVE', payload)
+  },
+  SET_VEHICLE_TYPE_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_TYPE_IS_ACTIVE_ValueData', payload)
+  },
 }

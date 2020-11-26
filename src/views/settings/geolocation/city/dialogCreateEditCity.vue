@@ -94,6 +94,11 @@ export default {
             if(val !== undefined) {
                 this.geolocation_city_id = val.geolocation_city_id
             }
+        },
+        active: function (val) {
+            if (val == true) {
+                this.getDataProvince()
+            }
         }
     },
     methods: {
@@ -186,7 +191,7 @@ export default {
         }
     },
     mounted() {
-        this.getDataProvince()
+        
     },
 }
 </script>

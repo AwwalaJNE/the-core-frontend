@@ -4,15 +4,19 @@
             <form-input-controller 
                 ref="formTransactionOriginController"
                 @formData="formData"
+                @searchTariffCode="searchTariffCode"
                 typeForm="origin"
             />
         </div>
     </div>
 </template>
 <script>
+import axios from "axios";
+import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputControllerTransaction"
 export default {
     name: "origin",
+    mixins: [master],
     components: {
         "form-input-controller": FormInputController, 
     },
@@ -26,8 +30,24 @@ export default {
             console.log(form)
             
         },
-        handleSubmit(){
-            this.$refs.formTransactionOriginController.handleSubmit() // trigger function submit form dari luar component formInputController
+        searchTariffCode(prefix, val){
+            console.log(prefix, val)
+            this.getTableData(val)
+        },
+        async getTableData(q) {
+            console.log('get', q)
+            await axios
+                .get(this.URL.geolocation + 
+                `?n=1&sort_order=desc&&limit=${10}&page=${1}&s=${q}`, 
+                this.Helper.header())
+                .then(res => {
+                    let arr = res.data.data
+                    this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", arr.length > 0 ? arr : [])
+                    // this.loading = false
+                }).catch(err => {
+                    // this.loading = false
+                    // this.openNotification('danger', 'Failed to populate country list', err)
+                })
         },
     },
 }

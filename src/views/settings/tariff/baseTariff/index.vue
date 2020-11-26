@@ -9,32 +9,36 @@
         :limit="pagination.limit"
         :hasAction="true"
         :hasPagination="true"
+        :expandable="true"
         @actionUpdate="actionUpdate"
         @actionRemove="actionRemove"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         />
 
-        <!--Create User Dialog end-->
-            <!-- <dialog-create-edit-role 
-            :active="dialogRole" 
-            :closeDialogRole="closeDialogRole"
+        <dialog-create-edit-Tariff
+            :active="dialogTariff" 
+            :closeDialog="closeDialogTariff"
             :refresh="refresh"
-            title="Edit role"
+            title="Edit Tariff"
             :dataItem="dataItem"
-            /> -->
+            />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import dialogCreateEditTariff from "@/views/settings/tariff/baseTariff/dialogCreateEditTariff"
 export default {
     name:"base-tariff-list",
     mixins: [master],
+    props: {
+        query: String
+    },
     components: {
         "table-master" : TableMaster,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-create-edit-Tariff": dialogCreateEditTariff
     },
     data() {
         return {
@@ -42,44 +46,34 @@ export default {
             datacolumn: [
                 {
                     label: "ID",
-                    key: "base_tariff_id",
+                    key: "tariff_id",
                     width: "xs"
                 },
                 {
                     label: "Origin",
-                    key: "base_tariff_origin",
+                    key: "tariff_origin",
                     width: "auto"
                 },
                 {
                     label: "Destination",
-                    key: "base_tariff_destination",
+                    key: "tariff_destination",
                     width: "auto"
                 },
                 {
-                    label: "Service",
-                    key: "base_tariff_service",
+                    label: "Tariff service code",
+                    key: "tariff_service_code",
                     width: "auto"
                 },
                 {
-                    label: "Tariff",
-                    key: "base_tariff_tariff",
-                    width: "auto"
-                },
-                {
-                    label: "Min Weight",
-                    key: "base_tariff_min_weight",
-                    width: "auto"
-                },
-                {
-                    label: "Max Weight",
-                    key: "base_tariff_max_weight",
+                    label: "Tariff amount 1",
+                    key: "tariff_amount_1",
                     width: "auto"
                 },
             ],
             loading: false,
             dataItem: {},
             tempSearch: "",
-            dialogGeolocation: false,
+            dialogTariff: false,
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -87,19 +81,142 @@ export default {
             }
         }
     },
-    methods: {
-        actionUpdate(){
-
-        },
-        actionRemove(){
-
-        },
-        actionLimit(){
-
-        },
-        actionPagination(){
-
-        },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
+            }
+        }
     },
+    methods: {
+        async getTableData(limit,page,q) {
+            this.loading = true
+            let query = "";
+            if(q !== undefined) {
+                query = q
+            }
+            await axios
+                .get(this.URL.tariff + 
+                `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log(res)
+                    this.dataTable = res.data.data
+                    this.dataTable.length > 0 && this.dataTable.map((item) => {
+                        let tariff_amount = []
+                        let tariff_weight = []
+                        let iterate = 1
+                        let children = {}
+                        let keys = Object.keys(item)
+
+                        keys.map((header, i) => {
+                            if(header.includes('_amount_') || header.includes('_weight_')) {
+                                if(item.hasOwnProperty(`tariff_amount_${iterate}`)) {
+                                        let obj = {}
+                                        let val = item[`tariff_amount_${iterate}`]
+                                        val != undefined && val != null && val != 0 ? 
+                                        obj[`tariff_amount_${iterate}`] = item[`tariff_amount_${iterate}`] : obj
+
+                                        tariff_amount.push(obj)
+                                        
+                                } 
+                                if(item.hasOwnProperty(`tariff_weight_${iterate}`)) {
+                                        let obj = {}
+                                        let val = item[`tariff_weight_${iterate}`]
+                                        val != undefined && val != null && val != 0 ? 
+                                        obj[`tariff_weight_${iterate}`] = item[`tariff_weight_${iterate}`] : obj
+                                        
+                                        
+                                        tariff_weight.push(obj)
+                                        
+                                }
+                                iterate++
+                            }
+                            
+                        })
+
+                        children['tariff_amount'] = tariff_amount
+                        children['tariff_weight'] = tariff_weight
+
+
+                        item['children'] = children
+
+                    })
+
+                    console.log('this.dataTable', this.dataTable)
+
+                        this.pagination.page = res.data.meta.current_page
+                        this.pagination.limit = parseInt(res.data.meta.per_page)
+                        this.pagination.page_size = res.data.meta.last_page
+                    if(res.data.data.length > 0) {
+                        
+                    } else {
+                        this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
+                    }
+                    
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                })
+        },
+        actionUpdate(val){
+            if(this.dataTable.length > 0) {
+                let obj = this.dataTable.filter(item => {
+                    return item.tariff_id === val.tariff_id
+                })
+                this.dataItem = obj[0]
+                console.log(this.dataItem, 'nihh val', val)
+                this.$nextTick(() => {
+                    this.dialogTariff = true
+                });
+            }
+        },
+        closeDialogConfirm(){
+            this.confirmDialog = false
+        },
+        confirm(val) {
+            if(val) {
+
+            }
+        },
+        async actionRemove(val){
+            // this.confirmDialog = true
+            await axios
+                .delete(
+                    this.URL.tariff + `/${val.tariff_id}`,
+                    this.Helper.header())
+                .then(res => {
+                    console.log('res', res)
+                    this.refresh()
+                    this.openNotification(null, 'Delete success', 'Delete tariff is success')
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+        },
+        actionLimit(val){
+            this.pagination.limit = val
+            this.pagination.page = 1
+            this.refresh()
+        },
+        actionPagination(val) {
+            this.pagination.page = val
+            this.refresh()
+        },
+        refresh(){
+            console.log("refresh")
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        },
+        closeDialogTariff() {
+            this.dialogTariff = false
+        }
+    },
+    mounted() {
+        this.refresh()
+    }
 }
 </script>
