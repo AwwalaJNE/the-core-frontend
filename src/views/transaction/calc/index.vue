@@ -83,9 +83,10 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
+import TransactionMixin from "@/mixins/transaction.js"
 export default {
     name: "calc-transaction",
-    mixins: [master],
+    mixins: [master, TransactionMixin],
     data() {
         return {
             switch_component: false,
@@ -105,14 +106,14 @@ export default {
             return this.$store.getters.getTransaction.calc_component.prefix
         },
         listenGrandTotal() {
-            return this.$store.getters.getTransaction.grand_total
+            return this.$store.getters.getTransaction.transaction.grand_total || 0
         },
 
         listenPackageService () {
             return this.$store.getters.getTransaction.package.package_service.valueData
         },
-        listenPackageSurcharge () {
-            return this.$store.getters.getTransaction.package.package_surcharge.value
+        listenPackageSurchargeByID () {
+            return this.$store.getters.getTransaction.package.package_surcharge.valueData
         },
 
         listenCalculatorChargeableWeight () {
@@ -131,11 +132,6 @@ export default {
 
         listenPackageService: function (n,o) {
             if(n !== o) {
-                this.calculation()
-            }
-        },
-        listenPackageSurcharge: function (val) {
-            if(val) {
                 this.calculation()
             }
         },
@@ -215,24 +211,6 @@ export default {
                 })
         },
 
-        calculation() {
-            let calc_tarif = 0
-            let tarifData = this.listenPackageService
-            let chargeable_weight = this.listenCalculatorChargeableWeight
-
-            let BASE_TARIFF = 0
-            if(Object.keys(tarifData).length > 0) {
-               BASE_TARIFF = tarifData.tarif * chargeable_weight
-            }
-            
-            // console.log('listenConnoteKoliItem', this.listenConnoteKoliItem)
-            
-
-            this.$nextTick(() => {
-                this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", BASE_TARIFF)
-            });
-
-        }
     },
     mounted() {
         this.initialize()

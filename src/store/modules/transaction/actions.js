@@ -259,4 +259,19 @@ export default {
     SET_CONNOTE_KOLI_ITEM({ commit }, payload) {
         commit('SET_CONNOTE_KOLI_ITEM', payload)
     },
+
+
+    SET_TRANSACTION_CONNOTE_TOTAL_BIAYA({ commit }, payload) {
+        commit('SET_TRANSACTION_CONNOTE_TOTAL_BIAYA', payload)
+    },
+    SET_TRANSACTION_GRAND_TOTAL({ commit }, payload) {
+        commit('SET_TRANSACTION_GRAND_TOTAL', payload)
+    },
+
+    MERGE_TRANSACTION_CONNOTE({ commit }, payload) {
+        commit('MERGE_TRANSACTION_CONNOTE', payload)
+    },
+    PUSH_CONNOTE_TO_TRANSACTION({ commit }, payload) {
+        commit('PUSH_CONNOTE_TO_TRANSACTION', payload)
+    },
 }

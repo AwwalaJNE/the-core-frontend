@@ -261,5 +261,20 @@ export default {
         state.connote_koli_item = payload
     },
 
+    SET_TRANSACTION_CONNOTE_TOTAL_BIAYA(state, payload) {
+        state.transaction.connote[payload.index]['total_biaya'] = payload.value
+    },
+    SET_TRANSACTION_GRAND_TOTAL(state, payload) {
+        state.transaction.grand_total = payload
+    },
+
+
+    MERGE_TRANSACTION_CONNOTE(state, payload) {
+        state.transaction.connote[payload.index].connote_koli_item = state.connote_koli_item
+    },
+    PUSH_CONNOTE_TO_TRANSACTION(state, payload) {
+        state.transaction.connote.push(proses_connote)
+    }
+
 
 }

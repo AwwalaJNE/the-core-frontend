@@ -342,7 +342,7 @@ export default {
       label: "surcharge",
       key: "surcharge",
       typeData: "String",
-      valueData: null,
+      valueData: [],
       value: 0
     },
     surcharge_manual: {
@@ -430,14 +430,28 @@ export default {
     connote_receiver_customer_id: '',
     is_insured: false,
     is_need_do_return: false,
-    connote_koli_item: []
+    connote_koli_item: [],
+    total_biaya: 0,
+    connote_id: ''
   },
   
   transaction: {
     transaction_id: '',
     transaction_finished: false,
     node_code: '',
-    connote: []
+    connote: [
+      {
+        connote_number: '',
+        connote_shipper_customer_id: '',
+        connote_receiver_customer_id: '',
+        is_insured: false,
+        is_need_do_return: false,
+        connote_koli_item: [],
+        total_biaya: 0,
+        connote_id: ''
+      },
+    ],
+    grand_total: 0
   }
   
 

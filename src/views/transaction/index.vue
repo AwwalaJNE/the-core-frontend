@@ -14,7 +14,7 @@
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="9" lg="9">
                     <div>
-                        <form-master ref="formMaster" @onSubmit="onSubmit">
+                        <form-master ref="formTransaction" @onSubmit="onSubmit">
                             <template v-slot:inputValidator>
                                 <div>
                                     <vs-row justify="space-between">
@@ -33,6 +33,33 @@
                                 </div>
                             </template>
                         </form-master>
+
+                        <vs-row justify="flex-end" style="top:-13px">
+                            <vs-col xs="6" sm="2" lg="2">
+                                <vs-button
+                                transparent
+                                block
+                                flat
+                                :active="true"
+                                type="submit"
+                                @click="addMoreConnote()"
+                                >
+                                <i class='bx bx-plus' style="margin-right: 5px" ></i> ADD MORE
+                                </vs-button>
+                            </vs-col>
+                            <vs-col xs="6" sm="2" lg="2">
+                                <vs-button
+                                transparent
+                                block
+                                flat
+                                :active="true"
+                                type="submit"
+                                @click="createTransaction()"
+                                >
+                                    FINISH
+                                </vs-button>
+                            </vs-col>
+                        </vs-row>
                     </div>
                 </vs-col>
                 <vs-col xs="12" sm="3" lg="3">
@@ -62,6 +89,11 @@ export default {
         "package": Package,
         "calc": Calc
     },
+    data() {
+        return {
+            typeAction: ''
+        }
+    },
     methods: {
         onSubmit(refs){
             console.log('onsubmit form controller', refs)
@@ -83,6 +115,14 @@ export default {
                     });
                 });
         },
+        addMoreConnote() {
+            this.typeAction = 'addconnote'
+            this.$refs.formTransaction.formSubmit()
+        },
+        createTransaction() {
+            this.typeAction = 'finish'
+            this.$refs.formTransaction.formSubmit()
+        }
     },
 }
 </script>

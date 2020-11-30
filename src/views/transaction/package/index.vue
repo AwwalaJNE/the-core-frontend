@@ -158,17 +158,19 @@
                                         <i class='bx bx-plus' style="margin-right:5px"></i> SURCHARGE
                                     </vs-button>
                                     <div>
-                                        <template v-if="listenPackageSurcharge.length > 0">
+                                        <template v-if="Object.keys(surchargeshow).length > 0">
                                             <span 
-                                            v-for="(item, key) in listenPackageSurcharge"
-                                            :data-value="item.surcharge_id" 
+                                            v-for="(item, key) in Object.keys(surchargeshow)"
+                                            :data-value="item" 
                                             class="vs-select__chips__chip"
                                             style="width: fit-content;"
                                             :key="key">
-                                                {{item.surcharge_name}}
-                                                <span class="vs-select__chips__chip__close" @click="removeSurcharge(item)">
-                                                    <i class="vs-icon-close vs-icon-hover-less"></i>
-                                                </span>
+                                                {{surchargeshow[item].surcharge_name}}
+                                                <template v-if="!surchargeshow[item].hasOwnProperty('jumlah')">
+                                                    <span class="vs-select__chips__chip__close" @click="removeSurcharge(item, 0)">
+                                                        <i class="vs-icon-close vs-icon-hover-less"></i>
+                                                    </span>
+                                                </template>
                                             </span>
                                         </template>
                                     </div>
@@ -203,6 +205,7 @@
     </div>
 </template>
 <script>
+import TransactionMixin from "@/mixins/transaction.js"
 import FormMaster from "@/components/form/formMaster"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
@@ -213,6 +216,7 @@ import Checkbox from "@/components/input/checkbox"
 import dialogSurcharge from "@/views/transaction/package/dialogSurcharge"
 export default {
     name: "package-information",
+    mixins: [TransactionMixin],
     components: {
         "form-master": FormMaster,
         "input-general": InputGeneral,
@@ -230,7 +234,7 @@ export default {
             form: {},
             surchargeSelector: false,
             surchargeByID: {},
-            surchargeshow: [],
+            surchargeshow: {},
             koliData: this.$store.getters['getTransaction']['template_koli'],
             connote_koli_item: []
         }
@@ -280,15 +284,10 @@ export default {
             
             let surchargeByID = {}
             arrSurcharge.map(item => {
-                item['service_relevant'] = true
-                if(surchargeByID.hasOwnProperty(item.surcharge_id)) {
-                    surchargeByID[item.surcharge_id].push(item)
-                } else {
-                    surchargeByID[item.surcharge_id] = []
-                    surchargeByID[item.surcharge_id].push(item)
-                }
+                surchargeByID[item.surcharge_id] = item
             })
             this.surchargeByID = surchargeByID
+            this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE_ValueData`, surchargeByID)
         },
         updateValue(key, value, value2 = null) {
             console.log(key, value, value2)
@@ -297,6 +296,13 @@ export default {
                     if(value2 !== null) {
                         this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", value2)
                         this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+
+                        // reset surcharge saat ganti service
+                        this.connote_koli_item.map(item => {
+                            item['surcharge_id'] = []
+                        })
+                        this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+
                         this.surchargeView()
                     }
                     break;
@@ -323,6 +329,7 @@ export default {
 
                     this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
                     this.surchargeView()
+                    this.calculation()
                     break;
                 default:
                     console.log('meong')
@@ -370,12 +377,41 @@ export default {
 
         surchargeView(){
             let koli = this.listenConnoteKoliItem
-            
+            let surchargeByID = this.surchargeByID
+            let view = {}
+            if(koli.length > 1) {
+                koli.map(item => {
+                    let obj = {}
+                    if (item.surcharge_id.length > 0) {
+                        item.surcharge_id.map(itm => {
+                            if(surchargeByID.hasOwnProperty(itm)) {
+                                let data = surchargeByID[itm]
+                                data['jumlah'] += 1
+                                view[itm] = data
+                            } else {
+                                let data = surchargeByID[itm]
+                                data['jumlah'] = 1
+                                view[itm] = data
+                            }
+                        })
+                    }
+                    
+                })
+            } else {
+                koli.map(item => {
+                    let obj = {}
+                    if (item.surcharge_id.length > 0) {
+                        item.surcharge_id.map(itm => {
+                            if(surchargeByID.hasOwnProperty(itm)) {
+                                view[itm] = surchargeByID[itm]
+                            }
+                        })
+                    }
+                    
+                })
+            }
 
-            console.log('surchargeView', koli, this.surchargeByID)
-            // if(koli.length > 0) {
-            //     koli.map()
-            // }
+            this.surchargeshow = view
         },
 
         round03(numToRound){
@@ -394,10 +430,12 @@ export default {
         closeDialogSurcharge() {
             this.surchargeSelector = false
         },
-        removeSurcharge(item) {
-            let arr = this.listenPackageSurcharge
-            arr = arr.filter(itm => itm.surcharge_id !== item.surcharge_id)
-            this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE`, arr)
+        removeSurcharge(id, index) {
+            let koli = this.listenConnoteKoliItem
+            koli[index].surcharge_id = koli[index].surcharge_id.filter(item => item != id)
+            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", koli)
+            this.surchargeView()
+            this.calculation()
         }
     },
     mounted() {

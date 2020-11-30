@@ -144,6 +144,9 @@ export default {
             if(err == true) {
                 console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
             }
+
+            console.log('ini inputan ->',type, val, info)
+
             if(info.typeInput !== '' && info.typeInput.includes('calc_switch')) {
                 this.$emit("searchTariffCode", this.listenTypeForm, val)
             }
