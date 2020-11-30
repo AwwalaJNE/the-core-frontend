@@ -29,6 +29,12 @@ export default {
             this.active = !this.active
         }
     },
+    created() {
+        let userData = this.$ls.get('user')
+        let surcharge = this.$ls.get('config')['surcharge']
+        this.$store.dispatch(`SET_USER_DATA`, userData)
+        this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE_arrData`, surcharge != null ? surcharge : [])
+    },
 }
 </script>
 <style lang="scss">

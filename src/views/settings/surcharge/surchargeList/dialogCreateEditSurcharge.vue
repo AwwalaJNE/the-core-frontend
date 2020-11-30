@@ -146,7 +146,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.surcharge + `/${this.surcharge_id}`,
+                    this.URL.surcharge + `/${this.surcharge_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -167,7 +167,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.surcharge,
+                    this.URL.surcharge + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {

@@ -156,10 +156,10 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 })
-
 router.beforeEach((to, from, next) => {
   let path = to.path;
-  let token = localStorage.getItem("tokenBearer")
+  let token= localStorage.getItem("vuejs__tokenBearer")
+  
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if(token == null) {
       next({

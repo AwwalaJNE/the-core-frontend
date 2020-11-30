@@ -18,7 +18,7 @@
         <dialog-create-edit-AltAddress
             :active="dialogAltAddress" 
             :closeDialog="closeDialogAltAddress"
-            :refresh="refresh"
+            @refresh="refresh"
             title="Edit Alternate Address"
             :dataItem="dataItem"
             />

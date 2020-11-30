@@ -15,6 +15,11 @@ const Master = {
             Helper: null
         }
     },
+    computed: {
+        listenNodeId() {
+            return this.$store.getters.getUser['node_id']
+        }
+    },
     methods: {
         openNotification(type = null, title,msg) {
             // type success, danger, warn

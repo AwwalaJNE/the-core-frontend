@@ -107,6 +107,20 @@ export default {
         listenGrandTotal() {
             return this.$store.getters.getTransaction.grand_total
         },
+
+        listenPackageService () {
+            return this.$store.getters.getTransaction.package.package_service.valueData
+        },
+        listenPackageSurcharge () {
+            return this.$store.getters.getTransaction.package.package_surcharge.value
+        },
+
+        listenCalculatorChargeableWeight () {
+            return this.$store.getters.getTransaction.calculator.chargeable_weight.value
+        },
+        listenConnoteKoliItem () {
+            return this.$store.getters.getTransaction.connote_koli_item
+        },
     },
     watch: {
         listenCalcComponentSwitch: function(val) {
@@ -114,6 +128,27 @@ export default {
                 this.switch_component = val
             }
         },
+
+        listenPackageService: function (n,o) {
+            if(n !== o) {
+                this.calculation()
+            }
+        },
+        listenPackageSurcharge: function (val) {
+            if(val) {
+                this.calculation()
+            }
+        },
+        listenCalculatorChargeableWeight: function (val) {
+            if(val) {
+                this.calculation()
+            }
+        },
+        listenConnoteKoliItem: function (val) {
+            if(val) {
+                this.calculation()
+            }
+        }
     },
     methods: {
         initialize() {
@@ -153,18 +188,51 @@ export default {
         },
         async getShippingService() {
             await axios
-                .get(this.URL.shipping_service + 
+                .get(this.URL.tariff_shipping_service + 
                 `?n=1&destination=${this.destinationCode}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log('getShippingService', res.data.data)
-                    // this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", arr.length > 0 ? arr : [])
+                    let data = res.data.data
+                    let arr = []
+                    data.map(item => {
+                        let obj = {}
+                        obj['label'] = item.service_name
+                        obj['value'] = item.tariff_service_code
+                        obj['data'] = item
+                        obj['tarif'] = item.tariff_amount_1
+                        
+                        arr.push(obj)
+                    })
+                    console.log('getShippingService arr', arr)
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])
                     // this.loading = false
                 }).catch(err => {
                     // this.loading = false
                     // this.openNotification('danger', 'Failed to populate country list', err)
                 })
         },
+
+        calculation() {
+            let calc_tarif = 0
+            let tarifData = this.listenPackageService
+            let chargeable_weight = this.listenCalculatorChargeableWeight
+
+            let BASE_TARIFF = 0
+            if(Object.keys(tarifData).length > 0) {
+               BASE_TARIFF = tarifData.tarif * chargeable_weight
+            }
+            
+            // console.log('listenConnoteKoliItem', this.listenConnoteKoliItem)
+            
+
+            this.$nextTick(() => {
+                this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", BASE_TARIFF)
+            });
+
+        }
     },
     mounted() {
         this.initialize()

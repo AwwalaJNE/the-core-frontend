@@ -8,4 +8,5 @@ export default {
     user_role_name: "",
     user_nodes: []
   },
+  node_id: ''
 }

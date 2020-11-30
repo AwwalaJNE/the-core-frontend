@@ -17,17 +17,16 @@
                     </vs-col>
                     <vs-col vs-type="flex" vs-justify="end" vs-align="center" xs="9" sm="6" lg="6">
                         <vs-row justify="flex-end">
-                            <vs-col vs-align="center" xs="1" sm="1" lg="1">
-                                
-                                <selector 
-                                ref="node_selector"
-                                :valueData="[]"
-                                :selectedValue="''"
-                                :isMultiple="false"
-                                :border="true"
-                                @updateValue="updateValue" />
-
-
+                            <vs-col vs-align="center" xs="3" sm="3" lg="3">
+                                <template v-if="datanode.length > 0">
+                                    <selector 
+                                    ref="node_selector"
+                                    :valueData="datanode"
+                                    :selectedValue="datanode[0].value"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    @updateValue="updateValue" />
+                                </template>
                             </vs-col>
                             <vs-col vs-align="center" xs="1" sm="1" lg="1">
                                 
@@ -103,12 +102,8 @@ export default {
         return {
             activeSidebar: false,
             activeTooltip1: false,
-            datanode: [
-                {
-                    label: null,
-                    value: null
-                }
-            ]
+            datanode: [],
+            selectedNode: this.$ls.get('node_id') || ''
         }
     },
     computed: {
@@ -116,25 +111,11 @@ export default {
             return this.$store.getters.getUser.user_data
         },
         listenGetUserNodeList() {
-            return this.$store.getters.getUser.user_data['user_nodes']
+            return this.$store.getters.getUser.user_data['nodes']
         },
         // getLabaLaba() {
         //     return this.$store.getters.getLABA
         // },
-    },
-    watch: {
-        listenGetUserNodeList: function(val) {
-            if(val !== undefined) {
-                this.datanode = []
-                val.length > 0 && val.map(item => {
-                            let obj = {}
-                            obj["label"] = item.node_name
-                            obj["value"] = item.node_id
-
-                            this.datanode.push(obj)
-                        })
-            }
-        }
     },
     methods: {
         updateValue(){
@@ -143,7 +124,34 @@ export default {
         logout() {
             localStorage.clear();
             this.$router.go()
+        },
+        updateValue(key,val) {
+            this.$ls.set('node_id', val)
+            let n = this.$ls.get('node_id')
+            this.$store.dispatch(`SET_USER_N`, val)
+        },
+        init(){
+            this.datanode = []
+            let node = this.listenGetUserNodeList
+                node.length > 0 && node.map(item => {
+                            let obj = {}
+                            obj["label"] = item.node_name
+                            obj["value"] = item.node_id
+
+                            this.datanode.push(obj)
+            })
+
+            let n = this.$ls.get('node_id')
+            if(n == null) {
+                this.$ls.set('node_id', this.datanode[0].value)
+                this.$store.dispatch(`SET_USER_N`, this.datanode[0].value)
+            } else {
+                this.$store.dispatch(`SET_USER_N`, n)
+            }
         }
+    },
+    mounted() {
+        this.init()
     },
     created() {
         // this.$store.dispatch('SET_NAME', 'Laba-laba 2 biji')

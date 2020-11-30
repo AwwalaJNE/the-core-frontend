@@ -27,6 +27,13 @@ export default {
         commit('SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS_ValueData', payload)
     },
 
+    SET_ORIGIN_ORIGIN_SUBDISTRICT_ID({ commit }, payload) {
+        commit('SET_ORIGIN_ORIGIN_SUBDISTRICT_ID', payload)
+    },
+    SET_ORIGIN_ORIGIN_SUBDISTRICT_ID_ValueData({ commit }, payload) {
+        commit('SET_ORIGIN_ORIGIN_SUBDISTRICT_ID_ValueData', payload)
+    },
+
     SET_ORIGIN_ORIGIN_ZIP_CODE({ commit }, payload) {
         commit('SET_ORIGIN_ORIGIN_ZIP_CODE', payload)
     },
@@ -74,6 +81,13 @@ export default {
         commit('SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS_arrData', payload)
     },
 
+    SET_DESTINATION_DESTINATION_SUBDISTRICT_ID({ commit }, payload) {
+        commit('SET_DESTINATION_DESTINATION_SUBDISTRICT_ID', payload)
+    },
+    SET_DESTINATION_DESTINATION_SUBDISTRICT_ID_ValueData({ commit }, payload) {
+        commit('SET_DESTINATION_DESTINATION_SUBDISTRICT_ID_ValueData', payload)
+    },
+
     SET_DESTINATION_DESTINATION_ZIP_CODE({ commit }, payload) {
         commit('SET_DESTINATION_DESTINATION_ZIP_CODE', payload)
     },
@@ -112,14 +126,18 @@ export default {
         commit('SET_PACKAGE_PACKAGE_SERVICE_arrData', payload)
     },
 
+    SET_PACKAGE_PACKAGE_SURCHARGE({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_SURCHARGE', payload)
+    },
+    SET_PACKAGE_PACKAGE_SURCHARGE_ValueData({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_SURCHARGE_ValueData', payload)
+    },
+    SET_PACKAGE_PACKAGE_SURCHARGE_arrData({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_SURCHARGE_arrData', payload)
+    },
+
 
     // Switch Calc component
-    SET_CALC_SWITCH({ commit }, payload) {
-        commit('SET_CALC_SWITCH', payload)
-    },
-    SET_CALC_ARRDATA({ commit }, payload) {
-        commit('SET_CALC_ARRDATA', payload)
-    },
     SET_CALC_COMPONENT_ARRDATA({ commit }, payload) {
         commit('SET_CALC_COMPONENT_ARRDATA', payload)
     },
@@ -128,5 +146,117 @@ export default {
     },
     SET_CALC_COMPONENT_PREFIX({ commit }, payload) {
         commit('SET_CALC_COMPONENT_PREFIX', payload)
+    },
+
+    // calculator component
+    SET_CALCULATOR_ACTUAL_WEIGHT({ commit }, payload) {
+        commit('SET_CALCULATOR_ACTUAL_WEIGHT', payload)
+    },
+    SET_CALCULATOR_ACTUAL_WEIGHT_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_ACTUAL_WEIGHT_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_VOLUME_WEIGHT({ commit }, payload) {
+        commit('SET_CALCULATOR_VOLUME_WEIGHT', payload)
+    },
+    SET_CALCULATOR_VOLUME_WEIGHT_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_VOLUME_WEIGHT_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_CHARGEABLE_WEIGHT({ commit }, payload) {
+        commit('SET_CALCULATOR_CHARGEABLE_WEIGHT', payload)
+    },
+    SET_CALCULATOR_CHARGEABLE_WEIGHT_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_CHARGEABLE_WEIGHT_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_BIAYA_KIRIM({ commit }, payload) {
+        commit('SET_CALCULATOR_BIAYA_KIRIM', payload)
+    },
+    SET_CALCULATOR_BIAYA_KIRIM_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_BIAYA_KIRIM_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_HANDLING_CHARGE({ commit }, payload) {
+        commit('SET_CALCULATOR_HANDLING_CHARGE', payload)
+    },
+    SET_CALCULATOR_HANDLING_CHARGE_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_HANDLING_CHARGE_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_SURCHARGE({ commit }, payload) {
+        commit('SET_CALCULATOR_SURCHARGE', payload)
+    },
+    SET_CALCULATOR_SURCHARGE_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_SURCHARGE_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_SURCHARGE_MANUAL({ commit }, payload) {
+        commit('SET_CALCULATOR_SURCHARGE_MANUAL', payload)
+    },
+    SET_CALCULATOR_SURCHARGE_MANUAL_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_SURCHARGE_MANUAL_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_AIRLINE_DOCUMENT({ commit }, payload) {
+        commit('SET_CALCULATOR_AIRLINE_DOCUMENT', payload)
+    },
+    SET_CALCULATOR_AIRLINE_DOCUMENT_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_AIRLINE_DOCUMENT_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_SHIPPER_DECLARATION({ commit }, payload) {
+        commit('SET_CALCULATOR_SHIPPER_DECLARATION', payload)
+    },
+    SET_CALCULATOR_SHIPPER_DECLARATION_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_SHIPPER_DECLARATION_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_ADM_KARANTINA({ commit }, payload) {
+        commit('SET_CALCULATOR_ADM_KARANTINA', payload)
+    },
+    SET_CALCULATOR_ADM_KARANTINA_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_ADM_KARANTINA_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_PELEPASAN_KARANTINA({ commit }, payload) {
+        commit('SET_CALCULATOR_PELEPASAN_KARANTINA', payload)
+    },
+    SET_CALCULATOR_PELEPASAN_KARANTINA_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_PELEPASAN_KARANTINA_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_ASURANSI({ commit }, payload) {
+        commit('SET_CALCULATOR_ASURANSI', payload)
+    },
+    SET_CALCULATOR_ASURANSI_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_ASURANSI_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_ADM_ASURANSI({ commit }, payload) {
+        commit('SET_CALCULATOR_ADM_ASURANSI', payload)
+    },
+    SET_CALCULATOR_ADM_ASURANSI_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_ADM_ASURANSI_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_DISKON({ commit }, payload) {
+        commit('SET_CALCULATOR_DISKON', payload)
+    },
+    SET_CALCULATOR_DISKON_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_DISKON_ValueData', payload)
+    },
+        
+    SET_CALCULATOR_TOTAL_BIAYA({ commit }, payload) {
+        commit('SET_CALCULATOR_TOTAL_BIAYA', payload)
+    },
+    SET_CALCULATOR_TOTAL_BIAYA_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_TOTAL_BIAYA_ValueData', payload)
+    },
+
+
+    // Koli Item
+    SET_CONNOTE_KOLI_ITEM({ commit }, payload) {
+        commit('SET_CONNOTE_KOLI_ITEM', payload)
     },
 }

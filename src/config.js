@@ -45,5 +45,5 @@ export default {
     vehicle_type: api + "vehicle-type",
 
     // transaction
-    shipping_service: api + "shipping-service",
+    tariff_shipping_service: api + "tariff-shipping-service",
 }

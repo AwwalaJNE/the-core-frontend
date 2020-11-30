@@ -64,6 +64,12 @@ export default {
                 this.value = val
             }
         },
+        value: function(n, o) {
+            if (n !== o) {
+                let data = this.DataArr.filter(item => item.value == n)
+                this.$emit("updateValue", this.listenFormKey, n, data[0])
+            }
+        }
         // loadingData: function (val) {
         //     if(val != undefined) {
         //         this.loading = val || false
@@ -86,11 +92,7 @@ export default {
         //     this.loadingInjector !== null ? this.loadingInjector.close() : null
         // },
         updateValue(val){
-            if(this.isMultiple == false) {
-                this.$emit("updateValue", this.listenFormKey, val)
-            } else {
-                this.$emit("updateValue", this.listenFormKey, val)
-            }
+            this.$emit("updateValue", this.listenFormKey, val)
         }
     },
 }
