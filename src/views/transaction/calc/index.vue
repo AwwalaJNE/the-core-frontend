@@ -81,13 +81,18 @@
     </div>
 </template>
 <script>
+import axios from "axios";
+import master from "@/mixins/master"
+import TransactionMixin from "@/mixins/transaction.js"
 export default {
     name: "calc-transaction",
+    mixins: [master, TransactionMixin],
     data() {
         return {
             switch_component: false,
             Keys: [],
-            objectKeys: {}
+            objectKeys: {},
+            destinationCode: ''
         }
     },
     computed: {
@@ -101,7 +106,21 @@ export default {
             return this.$store.getters.getTransaction.calc_component.prefix
         },
         listenGrandTotal() {
-            return this.$store.getters.getTransaction.grand_total
+            return this.$store.getters.getTransaction.transaction.grand_total || 0
+        },
+
+        listenPackageService () {
+            return this.$store.getters.getTransaction.package.package_service.valueData
+        },
+        listenPackageSurchargeByID () {
+            return this.$store.getters.getTransaction.package.package_surcharge.valueData
+        },
+
+        listenCalculatorChargeableWeight () {
+            return this.$store.getters.getTransaction.calculator.chargeable_weight.value
+        },
+        listenConnoteKoliItem () {
+            return this.$store.getters.getTransaction.connote_koli_item
         },
     },
     watch: {
@@ -110,6 +129,22 @@ export default {
                 this.switch_component = val
             }
         },
+
+        listenPackageService: function (n,o) {
+            if(n !== o) {
+                this.calculation()
+            }
+        },
+        listenCalculatorChargeableWeight: function (val) {
+            if(val) {
+                this.calculation()
+            }
+        },
+        listenConnoteKoliItem: function (val) {
+            if(val) {
+                this.calculation()
+            }
+        }
     },
     methods: {
         initialize() {
@@ -124,8 +159,6 @@ export default {
                 }
         },
         clickdulu(item){
-            console.log('prefix', this.listenCalcPrefix)
-            console.log('kita klik', item)
             switch(this.listenCalcPrefix) {
                 case "origin":
                     this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, item.geolocation_subdistrict_zip_code)
@@ -136,18 +169,48 @@ export default {
                         zip_code: item.geolocation_subdistrict_zip_code,
                         destination_code: item.geolocation_subdistrict_tarif_code
                     }
-                    console.log('klick desti', item.geolocation_subdistrict_zip_code)
+                    this.destinationCode = item.geolocation_subdistrict_tarif_code
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE`, obj)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE_zipCode`, item.geolocation_subdistrict_zip_code)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE_destinationCode`, item.geolocation_subdistrict_tarif_code)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, item.geolocation_location_name)
+
+                    this.getShippingService()
                     break;
                 default:
                     console.log('meong')
                     // code block
             }
-            
-        }
+        },
+        async getShippingService() {
+            await axios
+                .get(this.URL.tariff_shipping_service + 
+                `?n=1&destination=${this.destinationCode}`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log('getShippingService', res.data.data)
+                    let data = res.data.data
+                    let arr = []
+                    data.map(item => {
+                        let obj = {}
+                        obj['label'] = item.service_name
+                        obj['value'] = item.tariff_service_code
+                        obj['data'] = item
+                        obj['tarif'] = item.tariff_amount_1
+                        
+                        arr.push(obj)
+                    })
+                    console.log('getShippingService arr', arr)
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])
+                    // this.loading = false
+                }).catch(err => {
+                    // this.loading = false
+                    // this.openNotification('danger', 'Failed to populate country list', err)
+                })
+        },
+
     },
     mounted() {
         this.initialize()

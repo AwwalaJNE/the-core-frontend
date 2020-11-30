@@ -2,7 +2,7 @@ export default {
   origin: {
     origin_name: {
       label: "Nama Pengirim*",
-      key: "origin_name",
+      key: "connote_shipper_name",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -11,7 +11,7 @@ export default {
     },
     origin_phone: {
       label: "Telepon Pengirim*",
-      key: "origin_phone",
+      key: "connote_shipper_phone_number",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -20,7 +20,7 @@ export default {
     },
     origin_address: {
       label: "Alamat & Kode Pos Pengirim",
-      key: "origin_address",
+      key: "connote_shipper_street_address",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -37,9 +37,18 @@ export default {
       onchange: true,
       value: ''
     },
+    origin_subdistrict_id: {
+      label: "subdistrict id*",
+      key: "connote_shipper_geolocation_subdistrict_id",
+      rule: "",
+      typeInput: "hidden|disabled|dotted",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
     origin_zip_code: {
       label: "Kode Pos*",
-      key: "origin_zip_code",
+      key: "connote_shipper_zip_code",
       rule: "required",
       typeInput: "text|disabled|dotted",
       typeData: "String",
@@ -50,26 +59,26 @@ export default {
   destination: {
     destination_type: {
       label: "",
-      key: "destination_type",
-      rule: "required",
+      key: "connote_receiver_address_type",
+      rule: "",
       typeInput: "radio",
       typeData: "String",
       arrData: [
         {
-          label: "Rumah*",
+          label: "Rumah",
           value: "rumah"
         },
         {
-          label: "Kantor*",
+          label: "Kantor",
           value: "kantor"
-        }
+        },
       ],
       valueData: null,
       value: 'rumah'
     },
     destination_name: {
       label: "Nama Penerima*",
-      key: "destination_name",
+      key: "connote_receiver_name",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -78,7 +87,7 @@ export default {
     },
     destination_phone: {
       label: "Telepon Penerima*",
-      key: "destination_phone",
+      key: "connote_receiver_phone_number",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -87,7 +96,7 @@ export default {
     },
     destination_address: {
       label: "Alamat & Kode Pos Penerima",
-      key: "destination_address",
+      key: "connote_receiver_street_address",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -105,13 +114,22 @@ export default {
       onchange: true,
       value: ''
     },
+    destination_subdistrict_id: {
+      label: "Kode Pos*",
+      key: "connote_receiver_geolocation_subdistrict_id",
+      rule: "",
+      typeInput: "hidden|disabled|dotted",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
     destination_zip_code: {
       typeInput: "row",
       col:6,
       input: [
         {
           label: "Kode Pos",
-          key: "zip_code",
+          key: "connote_receiver_zip_code",
           rule: "required",
           typeInput: "text|disabled",
           typeData: "String",
@@ -120,7 +138,7 @@ export default {
         },
         {
           label: "Kode Tujuan*",
-          key: "destination_code",
+          key: "connote_receiver_tariff_code",
           rule: "required",
           typeInput: "text|disabled",
           typeData: "String",
@@ -135,7 +153,7 @@ export default {
   package: {
     package_description: {
       label: "Deskripsi Barang*",
-      key: "package_description",
+      key: "koli_description",
       rule: "required",
       typeInput: "text|col_left",
       typeData: "String",
@@ -144,7 +162,7 @@ export default {
     },
     package_category: {
       label: "Kategori*",
-      key: "package_category",
+      key: "connote_category",
       rule: "required",
       typeInput: "select|col_left",
       typeData: "String",
@@ -154,7 +172,7 @@ export default {
     },
     package_service: {
       label: "Service*",
-      key: "package_service",
+      key: "connote_service_code",
       rule: "required",
       typeInput: "radio|col_left",
       typeData: "String",
@@ -165,7 +183,7 @@ export default {
     },
     package_price: {
       label: "Nilai Barang",
-      key: "package_price",
+      key: "insured_goods_value",
       rule: "",
       typeInput: "text|col_left",
       typeData: "Number|money",
@@ -174,7 +192,7 @@ export default {
     },
     package_diskon: {
       label: "Diskon",
-      key: "package_diskon",
+      key: "amount_discount",
       rule: "",
       typeInput: "text|col_left",
       typeData: "Number|money",
@@ -183,7 +201,7 @@ export default {
     },
     package_instruksi: {
       label: "Instruksi Khusus",
-      key: "package_instruksi",
+      key: "remarks",
       rule: "",
       typeInput: "text|col_left",
       typeData: "String",
@@ -193,74 +211,49 @@ export default {
 
 
     package_jumlah: {
-      typeInput: "row",
-      col:6,
-      input: [
-        {
-            label: "Jumlah*",
-            key: "package_jumlah",
-            rule: "required",
-            typeInput: "text|col_right",
-            typeData: "Number",
-            valueData: null,
-            value: '1'
-        },
-        {
-            label: "<i class='bx bx-layer-plus'></i> Atur Berat",
-            key: "package_jumlah_dialog",
-            rule: "required",
-            typeInput: "btnDialog",
-            valueData: null,
-            value: false
-        }
-      ],
-      package_jumlah: 1
+      label: "Jumlah*",
+      key: "koli_jumlah",
+      rule: "required",
+      typeInput: "text|col_right",
+      typeData: "Number",
+      valueData: null,
+      value: '1'
     },
-    package_dimensi: {
-      typeInput: "row|col_right",
-      col: 3,
-      input: [
-        {
-          label: "Weight*",
-          key: "weight",
-          rule: "required",
-          typeInput: "text",
-          typeData: "Number",
-          valueData: null,
-          value: 0
-        },
-        {
-          label: "Length*",
-          key: "length",
-          rule: "required",
-          typeInput: "text",
-          typeData: "Number",
-          valueData: null,
-          value: 0
-        },
-        {
-          label: "Width*",
-          key: "width",
-          rule: "required",
-          typeInput: "text",
-          typeData: "Number",
-          valueData: null,
-          value: 0
-        },
-        {
-          label: "Height*",
-          key: "height",
-          rule: "required",
-          typeInput: "text",
-          typeData: "Number",
-          valueData: null,
-          value: 0
-        },
-      ],
-      weight: 1,
-      length: 0,
-      width: 0,
-      height: 0
+    package_dimensi_weight: {
+      label: "Weight*",
+      key: "koli_weight",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: 1
+    },
+    package_dimensi_length: {
+      label: "Length",
+      key: "koli_length",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: 0
+    },
+    package_dimensi_width: {
+      label: "Width",
+      key: "koli_width",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: 0
+    },
+    package_dimensi_height: {
+      label: "Height",
+      key: "koli_height",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: 0
     },
     package_tidak_packing_kayu: {
       titleLabel: "Tidak Packing Kayu",
@@ -275,17 +268,27 @@ export default {
     package_tidak_asuransi: {
       titleLabel: "Tidak Asuransi",
       label: "True|False",
-      key: "package_tidak_asuransi",
+      key: "is_insured",
       rule: "",
       typeInput: "Boolean|col_right",
       typeData: "Boolean",
       valueData: false,
       value: false
     },
+    package_surcharge: {
+      label: "Height*",
+      key: "koli_surcharge",
+      rule: "",
+      typeInput: "tags",
+      typeData: "Array",
+      arrData: [],
+      valueData: null,
+      value: []
+    },
     package_do_return: {
       titleLabel: "Do Return",
       label: "True|False",
-      key: "package_do_return",
+      key: "is_need_do_return",
       rule: "",
       typeInput: "Boolean|col_right",
       typeData: "Boolean",
@@ -293,13 +296,18 @@ export default {
       value: false
     },
   },
+  calc_component: {
+    arrData: [],
+    switch: false,
+    prefix: null
+  },
   calculator: {
     actual_weight: {
       label: "Actual Weight",
       key: "actual_weight",
       typeData: "String",
       valueData: null,
-      value: 0
+      value: 1
     },
     volume_weight: {
       label: "Volume Weight",
@@ -334,7 +342,7 @@ export default {
       label: "surcharge",
       key: "surcharge",
       typeData: "String",
-      valueData: null,
+      valueData: [],
       value: 0
     },
     surcharge_manual: {
@@ -401,13 +409,50 @@ export default {
       value: 0
     },
   },
-  calc_component: {
-    arrData: [],
-    switch: false,
-    prefix: null
+  
+  // sebagai getter untuk template data koli nnti dimasukin ke proses_connote connote_koli_item
+  template_koli: {
+    height: 0,
+    length: 0,
+    width: 0,
+    volume_weight: 0,
+    actual_weight: 1,
+    surcharge_id: [],
+    description: ''
   },
-  calc_arrData: [],
-  calc_switch: false,
-  grand_total: 0
+
+  connote_koli_item: [],
+
+  // proses store connote untuk dimasukin ke transaction connote
+  proses_connote: {
+    connote_number: '',
+    connote_shipper_customer_id: '',
+    connote_receiver_customer_id: '',
+    is_insured: false,
+    is_need_do_return: false,
+    connote_koli_item: [],
+    total_biaya: 0,
+    connote_id: ''
+  },
+  
+  transaction: {
+    transaction_id: '',
+    transaction_finished: false,
+    node_code: '',
+    connote: [
+      {
+        connote_number: '',
+        connote_shipper_customer_id: '',
+        connote_receiver_customer_id: '',
+        is_insured: false,
+        is_need_do_return: false,
+        connote_koli_item: [],
+        total_biaya: 0,
+        connote_id: ''
+      },
+    ],
+    grand_total: 0
+  }
+  
 
 }

@@ -99,11 +99,7 @@ export default {
         //     this.loadingInjector !== null ? this.loadingInjector.close() : null
         // },
         updateValue(val){
-            if(this.isMultiple == false) {
-                this.$emit("updateValue", this.listenFormKey, val)
-            } else {
-                this.$emit("updateValue", this.listenFormKey, val)
-            }
+            this.$emit("updateValue", this.listenFormKey, val)
         }
     },
 }

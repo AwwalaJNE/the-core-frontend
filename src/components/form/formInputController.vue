@@ -176,7 +176,13 @@ export default {
                     let tempKey = this.Keys.filter(item => !item.includes('mapPicker'))
                     tempKey.map(item => {
                         // yg diambil key input
-                        this.form[this.InputObject[item].key] = this.InputObject[item].value
+                        if(this.InputObject[item]['typeInput'].toLowerCase() == 'boolean') { 
+                            // fix component switch.vue onchange updateValue ga ketrigger dan return ''
+                            this.form[this.InputObject[item].key] = this.InputObject[item].value == '' ? true : this.InputObject[item].value 
+                        } else {
+                            this.form[this.InputObject[item].key] = this.InputObject[item].value
+                        }
+                        
                     })
                     this.$emit("formData", this.form)
 

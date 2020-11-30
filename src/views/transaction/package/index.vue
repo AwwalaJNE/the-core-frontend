@@ -1,136 +1,442 @@
 <template >
-    <div class="box">
-        <div class="con-form form-package">
+    <div>
+        <div class="box">
+            <div class="con-form form-package">
+                <template v-if="Object.keys(InputObject).length > 0">
                     <vs-row justify="center">
                         <vs-col xs="12" md="6" lg="6">
-                            <div>
-                                <vs-row v-for="(item, keys) in keysLeft" :key="keys">
-                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
-                                        <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
-                                            <input-general 
-                                            :name="InputObject[item].label" 
-                                            :rules="InputObject[item].rule" 
-                                            :formKey="InputObject[item].key"
-                                            :valueData="InputObject[item].value"
-                                            :typeInput="InputObject[item].typeInput"
-                                            @updateValue="updateValue" />
-                                        </template>
-                                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
-                                            <p>{{InputObject[item].label}}</p>
-                                            <template>
-                                                <selector 
-                                                :ref="InputObject[item].key"
-                                                :name="''" 
-                                                :rules="InputObject[item].rule" 
-                                                :formKey="InputObject[item].key"
-                                                :valueData="InputObject[item].arrData"
-                                                :selectedValue="InputObject[item].value"
-                                                :isMultiple="false"
-                                                @updateValue="updateValue" />
-                                            </template>
-                                        </template>
-                                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('radio')">
-                                            <p>{{InputObject[item].label}}</p>
-                                            <template v-if="InputObject[item].arrData.length > 0">
-                                                <radio 
-                                                :ref="InputObject[item].key"
-                                                :name="''" 
-                                                :rules="InputObject[item].rule" 
-                                                :formKey="InputObject[item].key"
-                                                :valueData="InputObject[item].arrData"
-                                                :selectedValue="InputObject[item].value"
-                                                @updateValue="updateValue" />
-                                            </template>
-                                        </template>
-                                    </vs-col>
-                                </vs-row>
-                            </div>
+                            <input-general 
+                                :name="InputObject['package_description'].label" 
+                                :rules="InputObject['package_description'].rule" 
+                                :formKey="InputObject['package_description'].key"
+                                :valueData="InputObject['package_description'].value"
+                                :typeInput="InputObject['package_description'].typeInput"
+                                @updateValue="updateValue" />
+                            
+                            <p>{{InputObject['package_category'].label}}</p>
+                            <selector 
+                                :ref="InputObject['package_category'].key"
+                                :name="''" 
+                                :rules="InputObject['package_category'].rule" 
+                                :formKey="InputObject['package_category'].key"
+                                :valueData="InputObject['package_category'].arrData"
+                                :selectedValue="InputObject['package_category'].value"
+                                :isMultiple="false"
+                                @updateValue="updateValue" />
+
+                            <p>{{InputObject['package_service'].label}}</p>
+                            <template v-if="InputObject['package_service'].arrData.length > 0">
+                                <radio 
+                                :ref="InputObject['package_service'].key"
+                                :name="''" 
+                                :rules="InputObject['package_service'].rule" 
+                                formKey="package_service"
+                                :valueData="InputObject['package_service'].arrData"
+                                :selectedValue="InputObject['package_service'].value"
+                                @updateValue="updateValue" />
+                            </template>
+        
+                            <input-general 
+                                :name="InputObject['package_price'].label" 
+                                :rules="InputObject['package_price'].rule" 
+                                :formKey="InputObject['package_price'].key"
+                                :valueData="InputObject['package_price'].value"
+                                :typeInput="InputObject['package_price'].typeInput"
+                                @updateValue="updateValue" />
+                            
+                            <input-general 
+                                :name="InputObject['package_diskon'].label" 
+                                :rules="InputObject['package_diskon'].rule" 
+                                :formKey="InputObject['package_diskon'].key"
+                                :valueData="InputObject['package_diskon'].value"
+                                :typeInput="InputObject['package_diskon'].typeInput"
+                                @updateValue="updateValue" />
+                            
+                            <input-general 
+                                :name="InputObject['package_instruksi'].label" 
+                                :rules="InputObject['package_instruksi'].rule" 
+                                :formKey="InputObject['package_instruksi'].key"
+                                :valueData="InputObject['package_instruksi'].value"
+                                :typeInput="InputObject['package_instruksi'].typeInput"
+                                @updateValue="updateValue" />
                         </vs-col>
                         <vs-col xs="12" md="6" lg="6">
-                            <div>
-                                <vs-row v-for="(item, keys) in keysRight" :key="keys">
-                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
-                                        <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
-                                            <input-general 
-                                            :name="InputObject[item].label" 
-                                            :rules="InputObject[item].rule" 
-                                            :formKey="InputObject[item].key"
-                                            :valueData="InputObject[item].value"
-                                            :typeInput="InputObject[item].typeInput"
-                                            @updateValue="updateValue" />
-                                        </template>
-                                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('row')">
-                                            <vs-row justify="center">
-                                                <template v-if="InputObject[item].input.length > 0">
-                                                    <vs-col xs="12" :w="InputObject[item]['col']" v-for="(inp, i) in InputObject[item].input" :key="i">
-                                                        <input-general 
-                                                        :name="inp.label" 
-                                                        :rules="inp.rule" 
-                                                        :formKey="inp.key"
-                                                        :valueData="inp.value"
-                                                        :typeInput="inp.typeInput"
-                                                        @updateValue="updateValue" />
-                                                    </vs-col>
+                            <vs-row>
+                                <vs-col xs="12" md="6" lg="6">
+                                    <input-general 
+                                        :name="InputObject['package_jumlah'].label" 
+                                        :rules="InputObject['package_jumlah'].rule" 
+                                        :formKey="InputObject['package_jumlah'].key"
+                                        :valueData="InputObject['package_jumlah'].value"
+                                        :typeInput="InputObject['package_jumlah'].typeInput"
+                                        @updateValue="updateValue" />
+                                </vs-col>
+                                <vs-col xs="12" md="6" lg="6">
+                                    <vs-button
+                                        shadow
+                                        :active="false"
+                                        style="margin-top:1.5em"
+                                    >
+                                        <i class='bx bx-layer-plus' style="margin-right:5px"></i> Atur Berat
+                                    </vs-button>
+                                </vs-col>
+                            </vs-row> 
+
+                            <vs-row>
+                                <vs-col xs="6" md="3" lg="3">
+                                    <input-general 
+                                        :name="InputObject['package_dimensi_weight'].label" 
+                                        :rules="InputObject['package_dimensi_weight'].rule" 
+                                        :formKey="InputObject['package_dimensi_weight'].key"
+                                        :valueData="InputObject['package_dimensi_weight'].value"
+                                        :typeInput="InputObject['package_dimensi_weight'].typeInput"
+                                        @updateValue="updateValue" />
+                                </vs-col>
+                                <vs-col xs="6" md="3" lg="3">
+                                    <input-general 
+                                        :name="InputObject['package_dimensi_length'].label" 
+                                        :rules="InputObject['package_dimensi_length'].rule" 
+                                        :formKey="InputObject['package_dimensi_length'].key"
+                                        :valueData="InputObject['package_dimensi_length'].value"
+                                        :typeInput="InputObject['package_dimensi_length'].typeInput"
+                                        @updateValue="updateValue" />
+                                </vs-col>
+                                <vs-col xs="6" md="3" lg="3">
+                                    <input-general 
+                                        :name="InputObject['package_dimensi_width'].label" 
+                                        :rules="InputObject['package_dimensi_width'].rule" 
+                                        :formKey="InputObject['package_dimensi_width'].key"
+                                        :valueData="InputObject['package_dimensi_width'].value"
+                                        :typeInput="InputObject['package_dimensi_width'].typeInput"
+                                        @updateValue="updateValue" />
+                                </vs-col>
+                                <vs-col xs="6" md="3" lg="3">
+                                    <input-general 
+                                        :name="InputObject['package_dimensi_height'].label" 
+                                        :rules="InputObject['package_dimensi_height'].rule" 
+                                        :formKey="InputObject['package_dimensi_height'].key"
+                                        :valueData="InputObject['package_dimensi_height'].value"
+                                        :typeInput="InputObject['package_dimensi_height'].typeInput"
+                                        @updateValue="updateValue" />
+                                </vs-col>
+                            </vs-row>  
+
+                            <vs-row>
+                                <vs-col xs="12" md="6" lg="6">
+                                    <div class="chekboxgroup">
+                                        <checkbox
+                                            :formKey="InputObject['package_tidak_packing_kayu'].key"
+                                            :isChecked="InputObject['package_tidak_packing_kayu'].value"
+                                            :typeInput="InputObject['package_tidak_packing_kayu'].typeInput"
+                                            @updateValue="updateValue" /> 
+                                        <a href="javascript:void(0)">
+                                            <p>{{InputObject['package_tidak_packing_kayu'].titleLabel}}</p>
+                                        </a>
+                                    </div>
+                                </vs-col>
+                                <vs-col xs="12" md="6" lg="6">
+                                    <div class="chekboxgroup">
+                                        <checkbox
+                                            :formKey="InputObject['package_tidak_asuransi'].key"
+                                            :isChecked="InputObject['package_tidak_asuransi'].value"
+                                            :typeInput="InputObject['package_tidak_asuransi'].typeInput"
+                                            @updateValue="updateValue" /> 
+                                        <a href="javascript:void(0)">
+                                            <p>{{InputObject['package_tidak_asuransi'].titleLabel}}</p>
+                                        </a>
+                                    </div>
+                                </vs-col>
+                            </vs-row>
+
+                            <vs-row class="mt-1">
+                                <vs-col xs="12" md="6" lg="6">
+                                    <vs-button
+                                        shadow
+                                        :active="false"
+                                        @click="openSurchargeDialog"
+                                    >
+                                        <i class='bx bx-plus' style="margin-right:5px"></i> SURCHARGE
+                                    </vs-button>
+                                    <div>
+                                        <template v-if="Object.keys(surchargeshow).length > 0">
+                                            <span 
+                                            v-for="(item, key) in Object.keys(surchargeshow)"
+                                            :data-value="item" 
+                                            class="vs-select__chips__chip"
+                                            style="width: fit-content;"
+                                            :key="key">
+                                                {{surchargeshow[item].surcharge_name}}
+                                                <template v-if="!surchargeshow[item].hasOwnProperty('jumlah')">
+                                                    <span class="vs-select__chips__chip__close" @click="removeSurcharge(item, 0)">
+                                                        <i class="vs-icon-close vs-icon-hover-less"></i>
+                                                    </span>
                                                 </template>
-                                            </vs-row>
+                                            </span>
                                         </template>
-                                    </vs-col>
-                                </vs-row>
-                            </div>
+                                    </div>
+                                </vs-col>
+                                <vs-col xs="12" md="6" lg="6">
+                                    <div class="chekboxgroup">
+                                        <checkbox
+                                            :formKey="InputObject['package_do_return'].key"
+                                            :isChecked="InputObject['package_do_return'].value"
+                                            :typeInput="InputObject['package_do_return'].typeInput"
+                                            @updateValue="updateValue" /> 
+                                        <a href="javascript:void(0)">
+                                            <p>{{InputObject['package_do_return'].titleLabel}}</p>
+                                        </a>
+                                    </div>
+                                </vs-col>
+                            </vs-row> 
+
                         </vs-col>
-                    </vs-row>
+                    </vs-row>  
+                </template>
+            </div>
         </div>
+
+        <dialog-surcharge
+            :active="surchargeSelector" 
+            :closeDialog="closeDialogSurcharge"
+            title="Edit Tariff"
+            :index="0"
+            @updateValue="updateValue"
+            />
     </div>
 </template>
 <script>
+import TransactionMixin from "@/mixins/transaction.js"
 import FormMaster from "@/components/form/formMaster"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 import Switch from "@/components/input/switch"
 import Radio from "@/components/input/radio"
+import Checkbox from "@/components/input/checkbox"
+
+import dialogSurcharge from "@/views/transaction/package/dialogSurcharge"
 export default {
     name: "package-information",
+    mixins: [TransactionMixin],
     components: {
         "form-master": FormMaster,
         "input-general": InputGeneral,
         "selector": Selector,
         "switchNih": Switch,
         "radio": Radio,
+        "checkbox": Checkbox,
+        "dialog-surcharge": dialogSurcharge
     },
     data() {
         return {
             keysLeft: [],
             keysRight: [],
             InputObject: {},
-            form: {}
+            form: {},
+            surchargeSelector: false,
+            surchargeByID: {},
+            surchargeshow: {},
+            koliData: this.$store.getters['getTransaction']['template_koli'],
+            connote_koli_item: []
         }
     },
     computed: {
+        listenSurchargeList() {
+            return this.$store.getters['getTransaction']['package']['package_surcharge']['arrData']
+        },
         listen_package_category_arrData() {
             return this.$store.getters['getTransaction']['package']
-        }
+        },
+        listenPackageSurcharge () {
+            return this.$store.getters.getTransaction.package.package_surcharge.value
+        },
+        listenPackageService () {
+            return this.$store.getters.getTransaction.package.package_service.valueData || {}
+        },
+        listenConnoteKoliItem () {
+            return this.$store.getters.getTransaction.connote_koli_item
+        },
+    },
+    watch: {
+        listenPackageService: function (n,o) {
+            if(n !== o) {
+                this.prosesKoli(null,null)
+            }
+        },
     },
     methods: {
         initialize() {
             let obj = this.$store.getters['getTransaction']['package'] || {}
                 if (Object.keys(obj).length > 0) {
                     let keys = Object.keys(obj)
-                    keys.map(item => {
-                        if(obj[item].typeInput.includes('col_left')) {
-                            this.keysLeft.push(item)
-                        } else if(obj[item].typeInput.includes('col_right')) {
-                            this.keysRight.push(item)
-                        }
-                    })
                     this.InputObject = obj
-                    console.log('ini inputObject', this.InputObject, this.keysLeft, this.keysRight)
                 } else {
                     this.keysLeft = []
                     this.keysRight = []
                     this.InputObject = {}
                 }
+
+            this.koliData = this.$store.getters['getTransaction']['template_koli']
+            if(Object.keys(this.koliData).length > 0) {
+                this.connote_koli_item.push(this.koliData)
+            }
+
+            let arrSurcharge = this.listenSurchargeList
+            
+            let surchargeByID = {}
+            arrSurcharge.map(item => {
+                surchargeByID[item.surcharge_id] = item
+            })
+            this.surchargeByID = surchargeByID
+            this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE_ValueData`, surchargeByID)
         },
-        updateValue() {}
+        updateValue(key, value, value2 = null) {
+            console.log(key, value, value2)
+            switch(key) {
+                case "package_service":
+                    if(value2 !== null) {
+                        this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", value2)
+                        this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+
+                        // reset surcharge saat ganti service
+                        this.connote_koli_item.map(item => {
+                            item['surcharge_id'] = []
+                        })
+                        this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+
+                        this.surchargeView()
+                    }
+                    break;
+                case "koli_weight":
+                    this.prosesKoli(key, value)
+                    break;
+                case "koli_length":
+                    this.prosesKoli(key, value)
+                    break;
+                case "koli_width":
+                    this.prosesKoli(key, value)
+                    break;
+                case "koli_height":
+                    this.prosesKoli(key, value)
+                    break;
+                case "handle_surcharge":
+                    console.log(key, value, value2 )
+                    let surcharge = value2
+                    let ids = []
+                    if(surcharge.length > 0){
+                        surcharge.map(item => ids.push(item.surcharge_id))
+                    }
+                    this.connote_koli_item[value].surcharge_id = ids
+
+                    this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+                    this.surchargeView()
+                    this.calculation()
+                    break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
+        },
+        prosesKoli(key, value) {
+            let service = this.listenPackageService.data || {}
+
+            if(key == 'koli_weight') {
+               this.connote_koli_item[0]['actual_weight'] = value
+            }
+            
+            if(key == 'koli_length') {
+               this.connote_koli_item[0]['length'] = value
+            }
+
+            if(key == 'koli_width') {
+               this.connote_koli_item[0]['width'] = value
+            }
+
+            if(key == 'koli_height') {
+               this.connote_koli_item[0]['height'] = value
+            }
+            
+            let volume_weight = 0
+            
+            if(Object.keys(service).length > 0) {
+                let service_volume_divider = service['service_volume_divider'].toString()
+                volume_weight = (this.connote_koli_item[0]['length'] * this.connote_koli_item[0]['width'] * this.connote_koli_item[0]['height']) / service_volume_divider 
+                volume_weight = volume_weight / 1000
+            }
+            this.connote_koli_item[0]['volume_weight'] = volume_weight.toFixed(2)
+            
+
+            let roundUp = this.round03(volume_weight.toFixed(2))
+
+            let chargeable_weight = Math.max(this.connote_koli_item[0]['actual_weight'], roundUp).toFixed(2)
+
+            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.connote_koli_item[0]['actual_weight'])
+            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.connote_koli_item[0]['volume_weight'])
+            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", chargeable_weight)  
+            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+        },
+
+        surchargeView(){
+            let koli = this.listenConnoteKoliItem
+            let surchargeByID = this.surchargeByID
+            let view = {}
+            if(koli.length > 1) {
+                koli.map(item => {
+                    let obj = {}
+                    if (item.surcharge_id.length > 0) {
+                        item.surcharge_id.map(itm => {
+                            if(surchargeByID.hasOwnProperty(itm)) {
+                                let data = surchargeByID[itm]
+                                data['jumlah'] += 1
+                                view[itm] = data
+                            } else {
+                                let data = surchargeByID[itm]
+                                data['jumlah'] = 1
+                                view[itm] = data
+                            }
+                        })
+                    }
+                    
+                })
+            } else {
+                koli.map(item => {
+                    let obj = {}
+                    if (item.surcharge_id.length > 0) {
+                        item.surcharge_id.map(itm => {
+                            if(surchargeByID.hasOwnProperty(itm)) {
+                                view[itm] = surchargeByID[itm]
+                            }
+                        })
+                    }
+                    
+                })
+            }
+
+            this.surchargeshow = view
+        },
+
+        round03(numToRound){
+            let oo = numToRound | 0
+            let ooo = oo + 0.3
+            let res = oo
+            if(numToRound > ooo) {
+                res = res +1
+            } 
+            return res;
+        },
+
+        openSurchargeDialog(){
+            this.surchargeSelector = true
+        },
+        closeDialogSurcharge() {
+            this.surchargeSelector = false
+        },
+        removeSurcharge(id, index) {
+            let koli = this.listenConnoteKoliItem
+            koli[index].surcharge_id = koli[index].surcharge_id.filter(item => item != id)
+            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", koli)
+            this.surchargeView()
+            this.calculation()
+        }
     },
     mounted() {
         this.initialize()
@@ -143,6 +449,19 @@ export default {
         p{
             margin: .5em;
             font-size: 14px;
+            &.surcharge{
+                margin: 0 .5em;
+            }
+        }
+        .chekboxgroup{
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            margin-top: .5em;
+            p{
+                margin: 0 .5em 0 0;
+                font-size: 14px;
+            }
         }
     }
 </style>

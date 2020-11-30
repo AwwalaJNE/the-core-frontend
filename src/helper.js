@@ -1,12 +1,10 @@
-import Vue from "vue";
-
 export default {
     header() {
         return {
             headers: {
               // 'X-Auth-Key'  : Vue.ls.get('token'), 
               // Authorization: "Bearer " + Vue.ls.storage.tokenBearer,
-              Authorization: "Bearer " + localStorage.getItem("tokenBearer"),
+              Authorization: "Bearer " + JSON.parse(localStorage.getItem("vuejs__tokenBearer")).value,
               "Content-Type": "application/json",
               Accept: "application/json"
             }

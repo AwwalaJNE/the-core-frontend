@@ -19,7 +19,7 @@
             <dialog-create-edit-Surcharge
             :active="dialogSurcharge" 
             :closeDialog="closeDialogSurcharge"
-            :refresh="refresh"
+            @refresh="refresh"
             title="Edit Surcharge"
             :dataItem="dataItem"
             />
@@ -129,6 +129,8 @@ export default {
                     return item.surcharge_id === val.surcharge_id
                 })
                 this.dataItem = obj[0]
+                this.dataItem.hasOwnProperty('surcharge_condition') ? this.dataItem['surcharge_condition'] = JSON.stringify(this.dataItem['surcharge_condition']) : ''
+                this.dataItem.hasOwnProperty('surcharge_formula') ? this.dataItem['surcharge_formula'] = JSON.stringify(this.dataItem['surcharge_formula']) : ''
                 console.log(this.dataItem, 'nihh val', val)
                 this.$nextTick(() => {
                     this.dialogSurcharge = true

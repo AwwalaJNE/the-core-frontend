@@ -64,11 +64,14 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.headerLogin())
                 .then(res => {
-                    console.log('res', res.data.data)
-                    localStorage.setItem("tokenBearer", res.data.data.token);
-                    localStorage.setItem("UserID", res.data.data.user.user_id);
+                    if(res.status == 200) {
+                        this.$ls.set('tokenBearer', res.data.data.token)
+                        this.$ls.set('user', res.data.data.user)
+                        this.$ls.set('config', res.data.data.config)
+                    }
+                    // localStorage.setItem("tokenBearer", res.data.data.token);
+                    // localStorage.setItem("UserID", res.data.data.user.user_id);
 
-                    this.$store.dispatch(`SET_USER_DATA`, res.data.data.user)
                     // this.$ls.set('tokenBearer', res.data.data.token)
                     // this.$ls.set('UserID', res.data.data.user.user_id)
                     // let token = this.$ls.get('tokenBearer')

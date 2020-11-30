@@ -27,6 +27,13 @@ export default {
         state.origin.origin_onchange_address.valueData = payload
     },
 
+    SET_ORIGIN_ORIGIN_SUBDISTRICT_ID(state, payload) {
+        state.origin.origin_subdistrict_id.value = payload
+    },
+    SET_ORIGIN_ORIGIN_SUBDISTRICT_ID_ValueData(state, payload) {
+        state.origin.origin_subdistrict_id.valueData = payload
+    },
+
     SET_ORIGIN_ORIGIN_ZIP_CODE(state, payload) {
         state.origin.origin_zip_code.value = payload
     },
@@ -73,6 +80,13 @@ export default {
         state.destination.destination_onchange_address.arrData = payload
     },
 
+    SET_DESTINATION_DESTINATION_SUBDISTRICT_ID(state, payload) {
+        state.destination.destination_subdistrict_id.value = payload
+    },
+    SET_DESTINATION_DESTINATION_SUBDISTRICT_ID_ValueData(state, payload) {
+        state.destination.destination_subdistrict_id.valueData = payload
+    },
+
     SET_DESTINATION_DESTINATION_ZIP_CODE(state, payload) {
         state.destination.destination_zip_code.input[0].value = payload.zip_code
         state.destination.destination_zip_code.input[1].value = payload.destination_code
@@ -113,11 +127,18 @@ export default {
         state.package.package_service.arrData = payload
     },
 
+    SET_PACKAGE_PACKAGE_SURCHARGE(state, payload) {
+        state.package.package_surcharge.value = payload
+    },
+    SET_PACKAGE_PACKAGE_SURCHARGE_ValueData(state, payload) {
+        state.package.package_surcharge.valueData = payload
+    },
+    SET_PACKAGE_PACKAGE_SURCHARGE_arrData(state, payload) {
+        state.package.package_surcharge.arrData = payload
+    },
+
 
     // Switch Calc component
-    SET_CALC_SWITCH(state, payload) {
-        state.calc_switch = payload
-    },
     SET_CALC_COMPONENT_ARRDATA(state, payload) {
         state.calc_component.arrData = payload
     },
@@ -127,7 +148,133 @@ export default {
     SET_CALC_COMPONENT_PREFIX(state, payload) {
         state.calc_component.prefix = payload
     },
-    SET_CALC_ARRDATA(state, payload) {
-        state.calc_arrData = payload
+
+
+    // calculator component
+    SET_CALCULATOR_ACTUAL_WEIGHT(state, payload) {
+        state.calculator.actual_weight.value = payload
     },
+    SET_CALCULATOR_ACTUAL_WEIGHT_ValueData(state, payload) {
+        state.calculator.actual_weight.valueData = payload
+    },
+        
+    SET_CALCULATOR_VOLUME_WEIGHT(state, payload) {
+        state.calculator.volume_weight.value = payload
+    },
+    SET_CALCULATOR_VOLUME_WEIGHT_ValueData(state, payload) {
+        state.calculator.volume_weight.valueData = payload
+    },
+        
+    SET_CALCULATOR_CHARGEABLE_WEIGHT(state, payload) {
+        state.calculator.chargeable_weight.value = payload
+    },
+    SET_CALCULATOR_CHARGEABLE_WEIGHT_ValueData(state, payload) {
+        state.calculator.chargeable_weight.valueData = payload
+    },
+        
+    SET_CALCULATOR_BIAYA_KIRIM(state, payload) {
+        state.calculator.biaya_kirim.value = payload
+    },
+    SET_CALCULATOR_BIAYA_KIRIM_ValueData(state, payload) {
+        state.calculator.biaya_kirim.valueData = payload
+    },
+        
+    SET_CALCULATOR_HANDLING_CHARGE(state, payload) {
+        state.calculator.handling_charge.value = payload
+    },
+    SET_CALCULATOR_HANDLING_CHARGE_ValueData(state, payload) {
+        state.calculator.handling_charge.valueData = payload
+    },
+        
+    SET_CALCULATOR_SURCHARGE(state, payload) {
+        state.calculator.surcharge.value = payload
+    },
+    SET_CALCULATOR_SURCHARGE_ValueData(state, payload) {
+        state.calculator.surcharge.valueData = payload
+    },
+        
+    SET_CALCULATOR_SURCHARGE_MANUAL(state, payload) {
+        state.calculator.surcharge_manual.value = payload
+    },
+    SET_CALCULATOR_SURCHARGE_MANUAL_ValueData(state, payload) {
+        state.calculator.surcharge_manual.valueData = payload
+    },
+        
+    SET_CALCULATOR_AIRLINE_DOCUMENT(state, payload) {
+        state.calculator.airline_document.value = payload
+    },
+    SET_CALCULATOR_AIRLINE_DOCUMENT_ValueData(state, payload) {
+        state.calculator.airline_document.valueData = payload
+    },
+        
+    SET_CALCULATOR_SHIPPER_DECLARATION(state, payload) {
+        state.calculator.shipper_declaration.value = payload
+    },
+    SET_CALCULATOR_SHIPPER_DECLARATION_ValueData(state, payload) {
+        state.calculator.shipper_declaration.valueData = payload
+    },
+        
+    SET_CALCULATOR_ADM_KARANTINA(state, payload) {
+        state.calculator.adm_karantina.value = payload
+    },
+    SET_CALCULATOR_ADM_KARANTINA_ValueData(state, payload) {
+        state.calculator.adm_karantina.valueData = payload
+    },
+        
+    SET_CALCULATOR_PELEPASAN_KARANTINA(state, payload) {
+        state.calculator.pelepasan_karantina.value = payload
+    },
+    SET_CALCULATOR_PELEPASAN_KARANTINA_ValueData(state, payload) {
+        state.calculator.pelepasan_karantina.valueData = payload
+    },
+        
+    SET_CALCULATOR_ASURANSI(state, payload) {
+        state.calculator.asuransi.value = payload
+    },
+    SET_CALCULATOR_ASURANSI_ValueData(state, payload) {
+        state.calculator.asuransi.valueData = payload
+    },
+        
+    SET_CALCULATOR_ADM_ASURANSI(state, payload) {
+        state.calculator.adm_asuransi.value = payload
+    },
+    SET_CALCULATOR_ADM_ASURANSI_ValueData(state, payload) {
+        state.calculator.adm_asuransi.valueData = payload
+    },
+        
+    SET_CALCULATOR_DISKON(state, payload) {
+        state.calculator.diskon.value = payload
+    },
+    SET_CALCULATOR_DISKON_ValueData(state, payload) {
+        state.calculator.diskon.valueData = payload
+    },
+        
+    SET_CALCULATOR_TOTAL_BIAYA(state, payload) {
+        state.calculator.total_biaya.value = payload
+    },
+    SET_CALCULATOR_TOTAL_BIAYA_ValueData(state, payload) {
+        state.calculator.total_biaya.valueData = payload
+    },
+
+
+    SET_CONNOTE_KOLI_ITEM(state, payload) {
+        state.connote_koli_item = payload
+    },
+
+    SET_TRANSACTION_CONNOTE_TOTAL_BIAYA(state, payload) {
+        state.transaction.connote[payload.index]['total_biaya'] = payload.value
+    },
+    SET_TRANSACTION_GRAND_TOTAL(state, payload) {
+        state.transaction.grand_total = payload
+    },
+
+
+    MERGE_TRANSACTION_CONNOTE(state, payload) {
+        state.transaction.connote[payload.index].connote_koli_item = state.connote_koli_item
+    },
+    PUSH_CONNOTE_TO_TRANSACTION(state, payload) {
+        state.transaction.connote.push(proses_connote)
+    }
+
+
 }

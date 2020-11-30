@@ -1,6 +1,8 @@
 <template>
     <div class="checkbox-inp">
-      <vs-checkbox v-model="option1" @change="changed" />
+      <vs-checkbox v-model="option1" @change="changed">
+          {{listenName}}
+      </vs-checkbox>
     </div>
 </template>
 <script>
@@ -8,7 +10,8 @@ export default {
     name:"checkbox",
     props: {
         isChecked: Boolean,
-        formKey: String
+        formKey: String,
+        name: String
     },
     data() {
         return {
@@ -18,6 +21,9 @@ export default {
     computed: {
         listenFormKey(){
             return this.formKey
+        },
+        listenName(){
+            return this.name || ''
         },
     },
     methods: {

@@ -7,4 +7,7 @@ export default {
       }
     })
   },
+  SET_USER_N(state, payload) {
+    state.node_id = payload
+  },
 }

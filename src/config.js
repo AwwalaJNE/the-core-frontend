@@ -15,6 +15,7 @@ export default {
     geolocation_subdistrict: api + "geolocation-subdistrict",
     geolocation_province: api + "geolocation-province",
     geolocation_timezone: api + "geolocation-timezone",
+    geolocation_search: api + "geolocation-search",
 
     // node
     node: api + "node",
@@ -42,4 +43,7 @@ export default {
     vehicle: api + "vehicle",
     vehicle_mode: api + "vehicle-mode",
     vehicle_type: api + "vehicle-type",
+
+    // transaction
+    tariff_shipping_service: api + "tariff-shipping-service",
 }
