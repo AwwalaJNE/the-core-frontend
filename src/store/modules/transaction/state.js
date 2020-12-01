@@ -412,6 +412,7 @@ export default {
   
   // sebagai getter untuk template data koli nnti dimasukin ke proses_connote connote_koli_item
   template_koli: {
+    koli_id: '',
     height: 0,
     length: 0,
     width: 0,
@@ -432,25 +433,14 @@ export default {
     is_need_do_return: false,
     connote_koli_item: [],
     total_biaya: 0,
-    connote_id: ''
+    connote_index: ''
   },
   
   transaction: {
     transaction_id: '',
     transaction_finished: false,
     node_code: '',
-    connote: [
-      {
-        connote_number: '',
-        connote_shipper_customer_id: '',
-        connote_receiver_customer_id: '',
-        is_insured: false,
-        is_need_do_return: false,
-        connote_koli_item: [],
-        total_biaya: 0,
-        connote_id: ''
-      },
-    ],
+    connote: [],
     grand_total: 0
   }
   

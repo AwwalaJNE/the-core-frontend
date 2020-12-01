@@ -51,6 +51,7 @@ export default {
         valueData: function(val){
             if(val !== undefined) {
                 this.value = val
+                this.updateValue()
             }
         }
     },

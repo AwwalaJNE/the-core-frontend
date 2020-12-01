@@ -46,8 +46,13 @@ export default {
     },
     data() {
         return {
-            DataArr: this.valueData !== null ? this.valueData : [],
-            value: this.selectedValue ? this.selectedValue :"",
+            DataArr: this.valueData ? this.valueData : [
+                {
+                    label: 'No Data',
+                    value: 'nodata'
+                }
+            ],
+            value: this.selectedValue ? this.selectedValue :"nodata",
             arrValue: this.selectedValue ? this.selectedValue : [],
             // loading: true,
             // loadingInjector : null

@@ -89,9 +89,24 @@ export default {
         "package": Package,
         "calc": Calc
     },
+    computed: {
+        listenOrigin () {
+            return this.$store.getters.getTransaction.origin
+        },
+        listenDestination () {
+            return this.$store.getters.getTransaction.destination
+        },
+        listenPackage () {
+            return this.$store.getters.getTransaction.package
+        },
+        listenTransaction () {
+            return this.$store.getters.getTransaction.transaction
+        },
+    },
     data() {
         return {
-            typeAction: ''
+            typeAction: '',
+            dataTransaction: {}
         }
     },
     methods: {
@@ -108,6 +123,8 @@ export default {
                     //     this.form[this.InputObject[item].key] = this.InputObject[item].value
                     // })
                     // this.$emit("formData", this.form)
+                    this.collectData()
+                    this.createConnote()
 
                     // Wait until the models are updated in the UI
                     this.$nextTick(() => {
@@ -121,8 +138,38 @@ export default {
         },
         createTransaction() {
             this.typeAction = 'finish'
+            
             this.$refs.formTransaction.formSubmit()
-        }
+        },
+        collectData() {
+            this.$store.dispatch(`MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE`, true)
+
+            console.log('==== transaction ====', this.listenTransaction)
+        },
+        async createConnote() {
+            let dataTransaction = this.listenTransaction
+            dataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
+            dataTransaction['node_code'] = this.listenNodeId
+            console.log('dataTransaction', dataTransaction)
+            await axios
+                .post(
+                    this.URL.connote + `?n=${this.listenNodeId}`,
+                    JSON.stringify(dataTransaction), 
+                    this.Helper.header())
+                .then(res => {
+                    console.log('res', res)
+                    // this.handleClearForm()
+                    // this.closeDialog()
+                    // this.$emit("refresh")
+                    this.openNotification(null, 'Create new success', 'Create new district is success')
+                }).catch(err => {
+                    // this.loading = false
+                    // this.handleClearForm()
+                    // this.closeDialog()
+                    // this.$emit("refresh")
+                    this.openNotification('danger', 'Create new transaction failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+        },
     },
 }
 </script>

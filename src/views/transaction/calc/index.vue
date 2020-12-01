@@ -43,6 +43,17 @@
         <template v-else-if="switch_component == false">
             <transition name="slide-fade">
                 <div class="calc_slide">
+                    <div class="select_connote">
+                        <p>{{listConnote.length}} Package (s)</p>
+                        <selector 
+                            :name="''"
+                            :rules="''" 
+                            :formKey="''"
+                            :valueData="listConnote"
+                            :selectedValue="''"
+                            :isMultiple="false"
+                            @updateValue="selectConnote" />
+                    </div>
                     <table>
                         <template v-if="Object.keys(objectKeys).length > 0">
                             <tr>
@@ -84,18 +95,26 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TransactionMixin from "@/mixins/transaction.js"
+import Selector from "@/components/input/select"
 export default {
     name: "calc-transaction",
     mixins: [master, TransactionMixin],
+    components: {
+        "selector": Selector,
+    },
     data() {
         return {
             switch_component: false,
             Keys: [],
             objectKeys: {},
-            destinationCode: ''
+            destinationCode: '',
+            listConnote: []
         }
     },
     computed: {
+        listenTransactionConnote () {
+            return this.$store.getters.getTransaction.transaction.connote
+        },
         listenCalcComponentSwitch() {
             return this.$store.getters.getTransaction.calc_component.switch
         },
@@ -144,6 +163,11 @@ export default {
             if(val) {
                 this.calculation()
             }
+        },
+        listenTransactionConnote: function (n,o) {
+            if(n.length !== o.length) {
+                this.prosesListConnote()
+            }
         }
     },
     methods: {
@@ -157,6 +181,21 @@ export default {
                     this.Keys = []
                     this.objectKeys = {}
                 }
+        },
+        prosesListConnote() {
+            let listconnote = this.listenTransactionConnote
+            if(listconnote > 0) {
+                let arr = []
+                listconnote.map(item => {
+                    let obj = {}
+                    obj['label'] = `connote number: ${item.connote_number}`
+                    obj['value'] = item.connote_number
+                })
+                this.listConnote = arr
+            }
+        },
+        selectConnote(k, value) {
+
         },
         clickdulu(item){
             switch(this.listenCalcPrefix) {
@@ -220,6 +259,11 @@ export default {
 <style lang="scss">
     .calculator{
         text-align: left;
+        .select_connote{
+            p{
+                margin: 0;
+            }
+        }
         .calc_slide{
             table{
                 position: relative;

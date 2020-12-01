@@ -8,6 +8,9 @@ const TransactionMixin = {
         listenTransactionConnote () {
             return this.$store.getters.getTransaction.transaction.connote
         },
+        listenProsesConnote () {
+            return this.$store.getters.getTransaction.proses_connote
+        },
         listenCalcComponentSwitch() {
             return this.$store.getters.getTransaction.calc_component.switch
         },
@@ -85,7 +88,8 @@ const TransactionMixin = {
                 this.$store.dispatch("SET_CALCULATOR_SURCHARGE", BIAYA_LAIN)
                 this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", HANDLING_CHARGE)
                 this.$store.dispatch("SET_CALCULATOR_TOTAL_BIAYA", TOTAL_BIAYA)
-                this.$store.dispatch("SET_TRANSACTION_CONNOTE_TOTAL_BIAYA", {'value': TOTAL_BIAYA, 'index': CONNOTE_INDEX})
+                this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
+                // this.$store.dispatch("SET_TRANSACTION_CONNOTE_TOTAL_BIAYA", {'value': TOTAL_BIAYA, 'index': CONNOTE_INDEX})
 
                 this.mergeProsesConnote(CONNOTE_INDEX)
                 this.calculateGrandTotal()
@@ -93,19 +97,28 @@ const TransactionMixin = {
             
         },
         mergeProsesConnote (CONNOTE_INDEX) {
-            this.$store.dispatch("MERGE_TRANSACTION_CONNOTE", { 'value':true, 'index': CONNOTE_INDEX })
+            // this.$store.dispatch("MERGE_TRANSACTION_CONNOTE", { 'value':true, 'index': CONNOTE_INDEX })
+            
+            // let transaction = this.$store.getters.getTransaction.transaction
+            // console.log("==== transaction ====", transaction)
 
-            let transaction = this.$store.getters.getTransaction.transaction
-            console.log("==== transaction ====", transaction)
+            this.$store.dispatch("MERGE_PROSES_CONNOTE", true)
+            console.log("==== proses_connote ====", this.listenProsesConnote)
         },
         calculateGrandTotal() {
             let listConnote = this.listenTransactionConnote
             let GTOTAL = 0
-            listConnote.map(item => {
-                if(item.hasOwnProperty('total_biaya')) {
-                    GTOTAL = GTOTAL + item['total_biaya']
-                }
-            })
+
+            if(listConnote.length > 0) {
+                listConnote.map(item => {
+                    if(item.hasOwnProperty('total_biaya')) {
+                        GTOTAL = GTOTAL + item['total_biaya']
+                    }
+                })
+            } else {
+                let proses_connote = this.listenProsesConnote
+                GTOTAL = GTOTAL + proses_connote['total_biaya']
+            }
             
             this.$nextTick(() => {
                 this.$store.dispatch("SET_TRANSACTION_GRAND_TOTAL", GTOTAL)

@@ -137,7 +137,7 @@ export default {
               this.$store.dispatch('SET_CALC_COMPONENT_PREFIX', this.listenTypeForm)
             }
         },
-        updateValue(type, val, info) {
+        updateValue(type, val, info = {}) {
             let action = type.toUpperCase()
             let prefix = this.listenTypeForm.toUpperCase()
             let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
@@ -145,14 +145,17 @@ export default {
                 console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
             }
 
+            if(info.hasOwnProperty('key')) {
+                if(info.key.includes('connote_')) {
+                    this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':info.key, 'value':val})
+                }
+            }
+
             console.log('ini inputan ->',type, val, info)
 
             if(info.typeInput !== '' && info.typeInput.includes('calc_switch')) {
                 this.$emit("searchTariffCode", this.listenTypeForm, val)
             }
-        },
-        handleSubmit(){
-            this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster
         },
         
         handleClearForm(){
