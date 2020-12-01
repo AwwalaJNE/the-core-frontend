@@ -137,6 +137,13 @@ export default {
         state.package.package_surcharge.arrData = payload
     },
 
+    SET_PACKAGE_PACKAGE_JUMLAH(state, payload) {
+        state.package.package_jumlah.value = payload
+    },
+    SET_PACKAGE_PACKAGE_JUMLAH_ValueData(state, payload) {
+        state.package.package_jumlah.valueData = payload
+    },
+
 
     // Switch Calc component
     SET_CALC_COMPONENT_ARRDATA(state, payload) {
@@ -261,6 +268,19 @@ export default {
         state.connote_koli_item = payload
     },
 
+    SET_PROSES_CONNOTE_TOTAL_BIAYA(state, payload) {
+        state.proses_connote['total_biaya'] = payload
+    },
+    SET_PROSES_CONNOTE_PROPERTY(state, payload) {
+        state.proses_connote[payload.key] = payload.value
+    },
+    MERGE_PROSES_CONNOTE(state, payload) {
+        state.proses_connote.connote_koli_item = state.connote_koli_item
+    },
+    MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE(state, payload) {
+        state.transaction.connote.push(state.proses_connote)
+    },
+
     SET_TRANSACTION_CONNOTE_TOTAL_BIAYA(state, payload) {
         state.transaction.connote[payload.index]['total_biaya'] = payload.value
     },
@@ -268,6 +288,7 @@ export default {
         state.transaction.grand_total = payload
     },
 
+    
 
     MERGE_TRANSACTION_CONNOTE(state, payload) {
         state.transaction.connote[payload.index].connote_koli_item = state.connote_koli_item

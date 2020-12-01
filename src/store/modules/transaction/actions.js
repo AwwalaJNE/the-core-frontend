@@ -136,6 +136,13 @@ export default {
         commit('SET_PACKAGE_PACKAGE_SURCHARGE_arrData', payload)
     },
 
+    SET_PACKAGE_PACKAGE_JUMLAH({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_JUMLAH', payload)
+    },
+    SET_PACKAGE_PACKAGE_JUMLAH_ValueData({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_JUMLAH_ValueData', payload)
+    },
+
 
     // Switch Calc component
     SET_CALC_COMPONENT_ARRDATA({ commit }, payload) {
@@ -260,6 +267,18 @@ export default {
         commit('SET_CONNOTE_KOLI_ITEM', payload)
     },
 
+    SET_PROSES_CONNOTE_TOTAL_BIAYA({ commit }, payload) {
+        commit('SET_PROSES_CONNOTE_TOTAL_BIAYA', payload)
+    },
+    SET_PROSES_CONNOTE_PROPERTY({ commit }, payload) {
+        commit('SET_PROSES_CONNOTE_PROPERTY', payload)
+    },
+    MERGE_PROSES_CONNOTE({ commit }, payload) {
+        commit('MERGE_PROSES_CONNOTE', payload)
+    },
+    MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE({ commit }, payload) {
+        commit('MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE', payload)
+    },
 
     SET_TRANSACTION_CONNOTE_TOTAL_BIAYA({ commit }, payload) {
         commit('SET_TRANSACTION_CONNOTE_TOTAL_BIAYA', payload)
@@ -267,6 +286,8 @@ export default {
     SET_TRANSACTION_GRAND_TOTAL({ commit }, payload) {
         commit('SET_TRANSACTION_GRAND_TOTAL', payload)
     },
+
+    
 
     MERGE_TRANSACTION_CONNOTE({ commit }, payload) {
         commit('MERGE_TRANSACTION_CONNOTE', payload)

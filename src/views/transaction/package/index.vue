@@ -75,7 +75,9 @@
                                     <vs-button
                                         shadow
                                         :active="false"
+                                        @click="openSettingMultipleKoli"
                                         style="margin-top:1.5em"
+                                        :disabled="disableBtnMultipleKoli"
                                     >
                                         <i class='bx bx-layer-plus' style="margin-right:5px"></i> Atur Berat
                                     </vs-button>
@@ -89,7 +91,7 @@
                                         :rules="InputObject['package_dimensi_weight'].rule" 
                                         :formKey="InputObject['package_dimensi_weight'].key"
                                         :valueData="InputObject['package_dimensi_weight'].value"
-                                        :typeInput="InputObject['package_dimensi_weight'].typeInput"
+                                        :typeInput="koliinput"
                                         @updateValue="updateValue" />
                                 </vs-col>
                                 <vs-col xs="6" md="3" lg="3">
@@ -98,7 +100,7 @@
                                         :rules="InputObject['package_dimensi_length'].rule" 
                                         :formKey="InputObject['package_dimensi_length'].key"
                                         :valueData="InputObject['package_dimensi_length'].value"
-                                        :typeInput="InputObject['package_dimensi_length'].typeInput"
+                                        :typeInput="koliinput"
                                         @updateValue="updateValue" />
                                 </vs-col>
                                 <vs-col xs="6" md="3" lg="3">
@@ -107,7 +109,7 @@
                                         :rules="InputObject['package_dimensi_width'].rule" 
                                         :formKey="InputObject['package_dimensi_width'].key"
                                         :valueData="InputObject['package_dimensi_width'].value"
-                                        :typeInput="InputObject['package_dimensi_width'].typeInput"
+                                        :typeInput="koliinput"
                                         @updateValue="updateValue" />
                                 </vs-col>
                                 <vs-col xs="6" md="3" lg="3">
@@ -116,7 +118,7 @@
                                         :rules="InputObject['package_dimensi_height'].rule" 
                                         :formKey="InputObject['package_dimensi_height'].key"
                                         :valueData="InputObject['package_dimensi_height'].value"
-                                        :typeInput="InputObject['package_dimensi_height'].typeInput"
+                                        :typeInput="koliinput"
                                         @updateValue="updateValue" />
                                 </vs-col>
                             </vs-row>  
@@ -198,9 +200,13 @@
         <dialog-surcharge
             :active="surchargeSelector" 
             :closeDialog="closeDialogSurcharge"
-            title="Edit Tariff"
             :index="0"
             @updateValue="updateValue"
+            />
+        <dialog-multipleKoli
+            :active="dialogSettingMultipleKoli" 
+            :closeDialog="closeSettingMultipleKoli"
+            :index="0"
             />
     </div>
 </template>
@@ -213,6 +219,7 @@ import Switch from "@/components/input/switch"
 import Radio from "@/components/input/radio"
 import Checkbox from "@/components/input/checkbox"
 
+import dialogMultipleKoli from "@/views/transaction/package/dialogMultipleKoli"
 import dialogSurcharge from "@/views/transaction/package/dialogSurcharge"
 export default {
     name: "package-information",
@@ -224,19 +231,20 @@ export default {
         "switchNih": Switch,
         "radio": Radio,
         "checkbox": Checkbox,
-        "dialog-surcharge": dialogSurcharge
+        "dialog-surcharge": dialogSurcharge,
+        "dialog-multipleKoli": dialogMultipleKoli
     },
     data() {
         return {
-            keysLeft: [],
-            keysRight: [],
             InputObject: {},
-            form: {},
             surchargeSelector: false,
+            dialogSettingMultipleKoli: false,
             surchargeByID: {},
             surchargeshow: {},
             koliData: this.$store.getters['getTransaction']['template_koli'],
-            connote_koli_item: []
+            connote_koli_item: [],
+            koliinput: 'text',
+            disableBtnMultipleKoli: true
         }
     },
     computed: {
@@ -255,6 +263,9 @@ export default {
         listenConnoteKoliItem () {
             return this.$store.getters.getTransaction.connote_koli_item
         },
+        listenJumlahPackage () {
+            return this.$store.getters.getTransaction.package.package_jumlah.value
+        },
     },
     watch: {
         listenPackageService: function (n,o) {
@@ -262,6 +273,11 @@ export default {
                 this.prosesKoli(null,null)
             }
         },
+        listenJumlahPackage: function (n,o) {
+            if(n !== o) {
+                this.isDisabledKoliInput()
+            }
+        }
     },
     methods: {
         initialize() {
@@ -270,8 +286,6 @@ export default {
                     let keys = Object.keys(obj)
                     this.InputObject = obj
                 } else {
-                    this.keysLeft = []
-                    this.keysRight = []
                     this.InputObject = {}
                 }
 
@@ -281,7 +295,6 @@ export default {
             }
 
             let arrSurcharge = this.listenSurchargeList
-            
             let surchargeByID = {}
             arrSurcharge.map(item => {
                 surchargeByID[item.surcharge_id] = item
@@ -289,22 +302,33 @@ export default {
             this.surchargeByID = surchargeByID
             this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE_ValueData`, surchargeByID)
         },
+        isDisabledKoliInput() {
+            if(this.listenJumlahPackage > 1) {
+                this.disableBtnMultipleKoli = false
+                this.koliinput = this.koliinput + `|disabled`
+            } else {
+                this.disableBtnMultipleKoli = true
+                this.koliinput = 'text' 
+            }
+        },
         updateValue(key, value, value2 = null) {
             console.log(key, value, value2)
             switch(key) {
                 case "package_service":
                     if(value2 !== null) {
                         this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", value2)
-                        this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
 
                         // reset surcharge saat ganti service
                         this.connote_koli_item.map(item => {
                             item['surcharge_id'] = []
                         })
                         this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
-
                         this.surchargeView()
+                        this.calculation()
                     }
+                    break;
+                case "koli_jumlah":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_JUMLAH", value)
                     break;
                 case "koli_weight":
                     this.prosesKoli(key, value)
@@ -429,6 +453,12 @@ export default {
         },
         closeDialogSurcharge() {
             this.surchargeSelector = false
+        },
+        openSettingMultipleKoli(){
+            this.dialogSettingMultipleKoli = true
+        },
+        closeSettingMultipleKoli() {
+            this.dialogSettingMultipleKoli = false
         },
         removeSurcharge(id, index) {
             let koli = this.listenConnoteKoliItem

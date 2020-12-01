@@ -46,4 +46,6 @@ export default {
 
     // transaction
     tariff_shipping_service: api + "tariff-shipping-service",
+    connote: api + "connote"
+
 }

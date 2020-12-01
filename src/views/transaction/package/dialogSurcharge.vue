@@ -186,7 +186,6 @@ export default {
                 let surcharge_condition = obj['surcharge_condition'] || {}
                 if(surcharge_condition.hasOwnProperty('DESTINATION')) {
                     if(Object.keys(service).length > 0) {
-                        console.log('apa meong', service['data']['tariff_destination'], surcharge_condition['DESTINATION'])
                         if(service['data']['tariff_destination'].includes(surcharge_condition['DESTINATION'])) {
                             obj['service_relevant'] = true
                         } else {
@@ -196,7 +195,6 @@ export default {
                 }
                 if(surcharge_condition.hasOwnProperty('FROM_BRANCH')) {
                     if(Object.keys(service).length > 0) {
-                        console.log('apa meong', service['data']['tariff_origin'], surcharge_condition['FROM_BRANCH'])
                         if(service['data']['tariff_origin'].includes(surcharge_condition['FROM_BRANCH'])) {
                             obj['service_relevant'] = true
                         } else {
@@ -206,7 +204,6 @@ export default {
                 }
                 if(surcharge_condition.hasOwnProperty('SERVICE')) {
                     if(Object.keys(service).length > 0) {
-                        console.log('apa meong', service['data']['tariff_service_code'], surcharge_condition['SERVICE'])
                         if(service['data']['tariff_service_code'].includes(surcharge_condition['SERVICE'])) {
                             obj['service_relevant'] = true
                         } else {
@@ -216,9 +213,6 @@ export default {
                 }
             }
             
-            console.log(obj, 'niih filtered')
-           
-
             return obj
 
         },
