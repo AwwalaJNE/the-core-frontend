@@ -35,6 +35,9 @@ import Customer from "@/views/settings/customer"
 // === Surcharge ===
 import Surcharge from "@/views/settings/surcharge"
 
+// === Inventory Item or Connote ===
+import InventoryItem from "@/views/inventory/connote"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -138,6 +141,15 @@ const routes = [
           breadCrumb: "Upload"
         }
       },
+      {
+        path: "/inventory/item",
+        name: "InventoryItem",
+        component: InventoryItem,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "inventory Item"
+        }
+      }
     ],
     meta: { 
       requiresAuth: true,

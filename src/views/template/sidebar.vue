@@ -158,7 +158,7 @@ export default {
                     children: [
                         {
                             label: 'Inventory Item',
-                            url: '/inventory/item/list',
+                            url: '/inventory/item',
                             icon: ''
                         },
                         {
