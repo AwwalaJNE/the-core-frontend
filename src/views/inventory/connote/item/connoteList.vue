@@ -32,7 +32,9 @@ export default {
     name:"list-user",
     mixins: [master],
     props: {
-        query: String
+        query: String,
+        queryBag: String,
+
     },
     components: {
         "table-master" : TableMaster
@@ -42,9 +44,17 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag)
                 }
             }
+        },
+        queryBag: function(val, old) {
+          if(val !== undefined) {
+            this.status_bag = val
+            if(this.status_bag !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val)
+            }
+          }
         }
     },
     data() {
@@ -106,6 +116,7 @@ export default {
             dataItem: {},
             tempSearch: this.query ? this.query : "",
             dialogUser: false,
+            status_bag:"",
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -114,16 +125,20 @@ export default {
         }
     },
     methods: {
-        async getTableData(limit,page,q) {
+        async getTableData(limit,page,q, statusBag) {
             this.loading = true
             let query = "";
+            let isOnBag = "";
             if(q !== undefined) {
                 query = q
+            }
+            if(statusBag !== undefined && statusBag !== '-') {
+              isOnBag = statusBag
             }
             await axios
                 .get(
                     this.URL.connote +
-                    `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                    `?n=1&sort_order=desc&limit=${limit}&is_on_bag=${isOnBag}&page=${page}&s=${query}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
@@ -180,14 +195,14 @@ export default {
             this.refresh()
         },
         refresh(val){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag)
         },
         closeDialogUser(){
             this.dialogUser = false
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag)
     },
 }
 </script>
