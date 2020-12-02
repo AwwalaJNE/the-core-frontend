@@ -34,6 +34,7 @@ export default {
     props: {
         query: String,
         queryBag: String,
+        queryInventory: String
 
     },
     components: {
@@ -44,18 +45,27 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag, this.statusinventory)
                 }
             }
+        },
+        queryInventory: function(val, old) {
+          if(val !== undefined) {
+            this.statusinventory = val
+            if(this.statusinventory !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, val)
+            }
+          }
         },
         queryBag: function(val, old) {
           if(val !== undefined) {
             this.status_bag = val
             if(this.status_bag !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.statusinventory)
             }
           }
-        }
+        },
+
     },
     data() {
         return {
@@ -63,12 +73,12 @@ export default {
             datacolumn: [
                 {
                     label: "Connote",
-                    key: "connote_number",
+                    key: "koli_number",
                     width: "auto"
                 },
                 {
                     label: "Bag",
-                    key: "on_bag",
+                    key: "bag_number",
                     width: "auto"
                 },
                 {
@@ -108,7 +118,7 @@ export default {
                 },
                 {
                     label: "Status",
-                    key: "status_inventory",
+                    key: "is_confirmed",
                     width: "auto"
                 },
             ],
@@ -117,6 +127,7 @@ export default {
             tempSearch: this.query ? this.query : "",
             dialogUser: false,
             status_bag:"",
+            statusinventory:"",
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -125,20 +136,24 @@ export default {
         }
     },
     methods: {
-        async getTableData(limit,page,q, statusBag) {
+        async getTableData(limit,page,q, statusBag, statusInventory) {
             this.loading = true
             let query = "";
             let isOnBag = "";
+            let isInventory = "";
             if(q !== undefined) {
                 query = q
             }
             if(statusBag !== undefined && statusBag !== '-') {
               isOnBag = statusBag
             }
+            if(statusInventory !== undefined && statusInventory !== '-') {
+              isInventory = statusInventory
+            }
             await axios
                 .get(
-                    this.URL.connote +
-                    `?n=1&sort_order=desc&limit=${limit}&is_on_bag=${isOnBag}&page=${page}&s=${query}`,
+                    this.URL.koli +
+                    `?n=1&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
@@ -195,14 +210,14 @@ export default {
             this.refresh()
         },
         refresh(val){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory)
         },
         closeDialogUser(){
             this.dialogUser = false
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory)
     },
 }
 </script>

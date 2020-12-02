@@ -28,26 +28,14 @@
                         <template v-if="navActive === 'k-CONNOTE'">
                           <vs-row >
                             <vs-col vs-align="center" xs="3" sm="3" lg="2">
-                                <select-status
-                                    ref="is_in_bag"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateStatusBag="updateStatusBag" />
+                                <select-status-bag ref="is_in_bag" :isMultiple="false" :border="true" @updateStatusBag="updateStatusBag" />
                             </vs-col>
                             <vs-col vs-align="center" xs="3" sm="3" lg="2">
-                              <template v-if="status_inventory.length > 0">
-                                <selector
-                                    ref="status_inventory"
-                                    :valueData="status_inventory"
-                                    :selectedValue="status_inventory[0].value"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updatestatusInventory="updateValue" />
-                              </template>
+                                <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
                             </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <connote-list :ref="navActive" :query="tempSearch" :queryBag="status_bag"/>
+                                <connote-list :ref="navActive" :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" />
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-BAG'">
@@ -86,6 +74,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import Selector from "@/components/input/select"
 import SelectBagStatusVue from "@/views/inventory/connote/item/selectBagStatus"
+import SelectInventoryVue from "@/views/inventory/connote/item/selectInventoryStatus"
 
 // Connote
 import ConnoteList from "@/views/inventory/connote/item/connoteList"
@@ -103,7 +92,8 @@ export default {
         "connote-list": ConnoteList,
         "bag-list": BagList,
         "selector": Selector,
-        "select-status": SelectBagStatusVue,
+        "select-status-bag": SelectBagStatusVue,
+        "select-status-inventory": SelectInventoryVue,
     },
     data() {
         return {
@@ -160,19 +150,7 @@ export default {
             },
             refreshInject:"",
             status_bag:"",
-
-            // select value status inventory
-            status_inventory: [{
-                label: 'All Status',
-                value: ''
-              }, {
-                label: 'Confirmed',
-                value: 'CONFIRMED'
-              }, {
-                label: 'Unconfirmed',
-                value: 'UNCONFIRMED'
-              }],
-
+            statusinventory:"",
             destination_tlc: [{
               label: 'All Destination',
               value: ''
@@ -187,11 +165,8 @@ export default {
         updateStatusBag(key,val) {
           this.status_bag = val;
         },
-        updateValue(key,val) {
-
-        },
-        updatestatusInventory(key,val) {
-
+        updateStatusinventory(key,val) {
+          this.statusinventory = val;
         },
         updatesdestination(key,val) {
 
