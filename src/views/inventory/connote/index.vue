@@ -28,30 +28,14 @@
                         <template v-if="navActive === 'k-CONNOTE'">
                           <vs-row >
                             <vs-col vs-align="center" xs="3" sm="3" lg="2">
-                              <template v-if="is_on_bag.length > 0">
-                                <selector
-                                    ref="node_selector"
-                                    :valueData="is_on_bag"
-                                    :selectedValue="is_on_bag[0].value"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateValue="updateValue" />
-                              </template>
+                                <select-status-bag ref="is_in_bag" :isMultiple="false" :border="true" @updateStatusBag="updateStatusBag" />
                             </vs-col>
                             <vs-col vs-align="center" xs="3" sm="3" lg="2">
-                              <template v-if="status_inventory.length > 0">
-                                <selector
-                                    ref="status_inventory"
-                                    :valueData="status_inventory"
-                                    :selectedValue="status_inventory[0].value"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updatestatusInventory="updateValue" />
-                              </template>
+                                <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
                             </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <user-list :ref="navActive" :query="tempSearch"/>
+                                <connote-list :ref="navActive" :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" />
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-BAG'">
@@ -69,7 +53,7 @@
                             </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <role-list :ref="navActive" :query="tempSearch"/>
+                                <bag-list :ref="navActive" :query="tempSearch"/>
                             </transition>
                         </template>
                         
@@ -89,11 +73,13 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import Selector from "@/components/input/select"
+import SelectBagStatusVue from "@/views/inventory/connote/item/selectBagStatus"
+import SelectInventoryVue from "@/views/inventory/connote/item/selectInventoryStatus"
 
-// users
-import UserList from "@/views/inventory/connote/item/connoteList"
-// role
-import RoleList from "@/views/inventory/connote/bag/bagList"
+// Connote
+import ConnoteList from "@/views/inventory/connote/item/connoteList"
+// Bag
+import BagList from "@/views/inventory/connote/bag/bagList"
 
 export default {
     name:"Users",
@@ -103,9 +89,11 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
-        "user-list": UserList,
-        "role-list": RoleList,
+        "connote-list": ConnoteList,
+        "bag-list": BagList,
         "selector": Selector,
+        "select-status-bag": SelectBagStatusVue,
+        "select-status-inventory": SelectInventoryVue,
     },
     data() {
         return {
@@ -161,30 +149,8 @@ export default {
                 page: 1
             },
             refreshInject:"",
-
-            is_on_bag: [{
-              label: 'All Bag',
-              value: ''
-            }, {
-              label: 'Is In Bag',
-              value: 1
-            }, {
-              label: 'Not In Bag',
-              value: 0
-            }],
-
-            // select value status inventory
-            status_inventory: [{
-                label: 'All Status',
-                value: ''
-              }, {
-                label: 'Confirmed',
-                value: 'CONFIRMED'
-              }, {
-                label: 'Unconfirmed',
-                value: 'UNCONFIRMED'
-              }],
-
+            status_bag:"",
+            statusinventory:"",
             destination_tlc: [{
               label: 'All Destination',
               value: ''
@@ -196,16 +162,15 @@ export default {
         }
     },
     methods: {
+        updateStatusBag(key,val) {
+          this.status_bag = val;
+        },
+        updateStatusinventory(key,val) {
+          this.statusinventory = val;
+        },
+        updatesdestination(key,val) {
 
-      updateValue(key,val) {
-
-      },
-      updatestatusInventory(key,val) {
-
-      },
-      updatesdestination(key,val) {
-
-      },
+        },
         refresh(){
             let el = this.refreshInject
             this.$refs[el].refresh() // trigger function refresh form dari luar component list
@@ -236,7 +201,6 @@ export default {
                     this.dialogRole = true
                     break;
                 default:
-                    console.log('meong')
                     // code block
             }
             this.refreshInject = this.navActive
