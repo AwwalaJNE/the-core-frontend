@@ -53,52 +53,52 @@ export default {
             datacolumn: [
                 {
                     label: "Connote",
-                    key: "user_name",
+                    key: "connote_number",
                     width: "auto"
                 },
                 {
                     label: "Bag",
-                    key: "user_email",
+                    key: "on_bag",
                     width: "auto"
                 },
                 {
                     label: "Date",
-                    key: "user_nodes",
-                    width: "auto"
+                    key: "created_at",
+                    width: "xs"
                 },
                 {
                     label: "Origin",
-                    key: "user_role_name",
+                    key: "connote_shipper_tariff_code",
                     width: "auto"
                 },
                 {
                     label: "Destination",
-                    key: "user_role_name",
+                    key: "connote_receiver_tariff_code",
                     width: "auto"
                 },
                 {
                     label: "Weight(Kg)",
-                    key: "user_role_name",
+                    key: "connote_chargeable_weight",
                     width: "auto"
                 },                
                 {
                     label: "Service",
-                    key: "user_role_name",
+                    key: "connote_service_code",
                     width: "auto"
                 },
                 {
                     label: "SLA",
-                    key: "user_role_name",
-                    width: "auto"
+                    key: "connote_sla_date",
+                    width: "xs"
                 },
                 {
                     label: "Wood Package",
-                    key: "user_role_name",
+                    key: "packing_kayu_type",
                     width: "auto"
                 },
                 {
                     label: "Status",
-                    key: "user_role_name",
+                    key: "status_inventory",
                     width: "auto"
                 },
             ],
@@ -122,14 +122,14 @@ export default {
             }
             await axios
                 .get(
-                    this.URL.user + 
+                    this.URL.connote +
                     `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
-                    arr.map(item => {
-                        item["user_nodes"] = item.user_nodes.toString()
-                    })
+                    // arr.map(item => {
+                    //     item["user_nodes"] = item.user_nodes.toString()
+                    // })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
