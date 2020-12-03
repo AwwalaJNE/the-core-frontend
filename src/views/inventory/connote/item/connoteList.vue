@@ -15,11 +15,13 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
+        :hasLinked="['koli_number']"
         :hasPagination="true"
         @actionUpdate="actionUpdate"
         @actionRemove="actionRemove"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
+        @handleEdit="showData"
         />
 
     </div>
@@ -88,12 +90,12 @@ export default {
                 },
                 {
                     label: "Origin",
-                    key: "connote_shipper_tariff_code",
+                    key: "origin_tariff_code",
                     width: "auto"
                 },
                 {
                     label: "Destination",
-                    key: "connote_receiver_tariff_code",
+                    key: "destination_tariff_code",
                     width: "auto"
                 },
                 {
@@ -214,7 +216,11 @@ export default {
         },
         closeDialogUser(){
             this.dialogUser = false
-        }
+        },
+
+        showData(row) {
+          this.$router.push(`/connote-detail/${row.koli_number}`);
+        },
     },
     mounted() {
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory)

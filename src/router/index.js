@@ -38,6 +38,9 @@ import Surcharge from "@/views/settings/surcharge"
 // === Inventory Item or Connote ===
 import InventoryItem from "@/views/inventory/connote"
 
+// === Inventory Item Connote detail===
+import ConnoteDetail from "@/views/inventory/connote-detail"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -148,6 +151,15 @@ const routes = [
         meta: { 
           requiresAuth: true,
           breadCrumb: "inventory Item"
+        }
+      },
+      {
+        path: "/connote-detail/:id",
+        name: "InventoryItem-detail",
+        component: ConnoteDetail,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "connote detail"
         }
       }
     ],
