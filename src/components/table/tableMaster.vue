@@ -78,6 +78,10 @@
                                     <template v-if="split(column.key).length == 2 && item.hasOwnProperty(split(column.key)[0])">
                                         {{ item.hasOwnProperty(split(column.key)[0]) ? item[split(column.key)[0]][split(column.key)[1]] : '' }}
                                     </template>
+                                    <!--column custom linked -->
+                                    <template v-else-if="hasLinked.length > 0 && column.key !== undefined && column.key.toLowerCase() === hasLinked[0]">
+                                      <span class="text-link" @click="handleEdit(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
+                                    </template>
                                     <template v-else>
                                         {{ item[column.key] ? item[column.key] : '' }}
                                     </template>
@@ -189,7 +193,8 @@ export default {
         limit: Number,
         hasAction: Boolean,
         hasPagination: Boolean,
-        expandable: Boolean
+        expandable: Boolean,
+        hasLinked:Array
     },
     data() {
         return {
@@ -275,7 +280,10 @@ export default {
         },
         actionRemove(val) {
             this.$emit("actionRemove", val)
-        }
+        },
+        handleEdit(val) {
+          this.$emit("handleEdit", val);
+        },
     },
     mounted() {
         this.handleColumnsOrder()
@@ -334,5 +342,9 @@ export default {
                 margin-left: 0px;
             }
         }
+    }
+    .text-link{
+      color: rgb(53, 92, 255);
+      cursor:pointer;
     }
 </style>
