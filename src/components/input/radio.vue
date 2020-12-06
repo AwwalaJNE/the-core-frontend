@@ -34,6 +34,7 @@ export default {
         // loadingData: Boolean,
         selectedValue: [String, Number],
         formKey: String,
+        typeInput: String,
         border: Boolean
     },
     data() {
@@ -67,7 +68,7 @@ export default {
         value: function(n, o) {
             if (n !== o) {
                 let data = this.DataArr.filter(item => item.value == n)
-                this.$emit("updateValue", this.listenFormKey, n, data[0])
+                this.$emit("updateValue", this.listenFormKey, data[0].value)
             }
         }
         // loadingData: function (val) {

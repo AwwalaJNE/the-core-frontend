@@ -202,6 +202,7 @@ export default {
                 case "origin":
                     this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, item.geolocation_subdistrict_zip_code)
                     this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, item.geolocation_location_name)
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, item.geolocation_subdistrict_id)
                     break;
                 case "destination":
                     let obj = {
@@ -209,6 +210,7 @@ export default {
                         destination_code: item.geolocation_subdistrict_tarif_code
                     }
                     this.destinationCode = item.geolocation_subdistrict_tarif_code
+                    this.$store.dispatch(`SET_DESTINATION_DESTINATION_SUBDISTRICT_ID`, item.geolocation_subdistrict_id)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE`, obj)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE_zipCode`, item.geolocation_subdistrict_zip_code)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE_destinationCode`, item.geolocation_subdistrict_tarif_code)
@@ -246,6 +248,7 @@ export default {
                     // this.loading = false
                 }).catch(err => {
                     // this.loading = false
+                    this.checkAuth(err.response.status)
                     // this.openNotification('danger', 'Failed to populate country list', err)
                 })
         },

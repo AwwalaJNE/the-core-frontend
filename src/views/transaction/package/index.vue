@@ -206,7 +206,8 @@
         <dialog-multipleKoli
             :active="dialogSettingMultipleKoli" 
             :closeDialog="closeSettingMultipleKoli"
-            :index="0"
+            @prosesmultipleKoli="prosesmultipleKoli"
+            :arrData="meongData"
             />
     </div>
 </template>
@@ -244,7 +245,9 @@ export default {
             koliData: this.$store.getters['getTransaction']['template_koli'],
             connote_koli_item: [],
             koliinput: 'text',
-            disableBtnMultipleKoli: true
+            disableBtnMultipleKoli: true,
+            meongData: '',
+            jumlahKoli: 1
         }
     },
     computed: {
@@ -270,12 +273,12 @@ export default {
     watch: {
         listenPackageService: function (n,o) {
             if(n !== o) {
-                this.prosesKoli(null,null)
+                this.prosesKoli0('','',0)
             }
         },
         listenJumlahPackage: function (n,o) {
             if(n !== o) {
-                this.isDisabledKoliInput()
+                this.changeJumlah()
             }
         }
     },
@@ -289,10 +292,11 @@ export default {
                     this.InputObject = {}
                 }
 
-            this.koliData = this.$store.getters['getTransaction']['template_koli']
-            if(Object.keys(this.koliData).length > 0) {
-                this.connote_koli_item.push(this.koliData)
-            }
+            // this.koliData = this.$store.getters['getTransaction']['template_koli']
+            // if(Object.keys(this.koliData).length > 0) {
+            //     this.connote_koli_item.push(this.koliData)
+            // }
+            this.connote_koli_item = this.listenConnoteKoliItem
 
             let arrSurcharge = this.listenSurchargeList
             let surchargeByID = {}
@@ -302,7 +306,7 @@ export default {
             this.surchargeByID = surchargeByID
             this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE_ValueData`, surchargeByID)
         },
-        isDisabledKoliInput() {
+        changeJumlah() {
             if(this.listenJumlahPackage > 1) {
                 this.disableBtnMultipleKoli = false
                 this.koliinput = this.koliinput + `|disabled`
@@ -310,6 +314,30 @@ export default {
                 this.disableBtnMultipleKoli = true
                 this.koliinput = 'text' 
             }
+
+            if(this.jumlahKoli > 0) {
+                let absValue = Math.abs(this.jumlahKoli - this.connote_koli_item.length)
+                if(this.connote_koli_item.length > this.jumlahKoli) {
+                    this.connote_koli_item.splice((this.connote_koli_item.length) - absValue,absValue)
+                } else if(this.jumlahKoli > this.connote_koli_item.length) {
+                    let templateKoli = {
+                        koli_id: '',
+                        height: 0,
+                        length: 0,
+                        width: 0,
+                        volume_weight: 0,
+                        actual_weight: 1,
+                        surcharge_id: [],
+                        description: ''
+                    }
+                    for(let i=0; i < absValue; i++) {
+                        this.connote_koli_item.push(templateKoli)
+                    }
+                }
+            }
+            let arr = JSON.stringify(this.connote_koli_item)
+            this.meongData = arr
+            this.calcMultipleKoli()
         },
         updateValue(key, value, value2 = null) {
             console.log(key, value, value2)
@@ -329,18 +357,19 @@ export default {
                     break;
                 case "koli_jumlah":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_JUMLAH", value)
+                    this.jumlahKoli = value
                     break;
                 case "koli_weight":
-                    this.prosesKoli(key, value)
+                    this.prosesKoli0("actual_weight", value, 0)
                     break;
                 case "koli_length":
-                    this.prosesKoli(key, value)
+                    this.prosesKoli0("length", value, 0)
                     break;
                 case "koli_width":
-                    this.prosesKoli(key, value)
+                    this.prosesKoli0("width", value, 0)
                     break;
                 case "koli_height":
-                    this.prosesKoli(key, value)
+                    this.prosesKoli0("height", value, 0)
                     break;
                 case "handle_surcharge":
                     console.log(key, value, value2 )
@@ -360,25 +389,12 @@ export default {
                     // code block
             }
         },
-        prosesKoli(key, value) {
+        prosesKoli0(key, value) {
             let service = this.listenPackageService.data || {}
 
-            if(key == 'koli_weight') {
-               this.connote_koli_item[0]['actual_weight'] = value
+            if(this.connote_koli_item[0].hasOwnProperty(key)) {
+                this.connote_koli_item[0][key] = value
             }
-            
-            if(key == 'koli_length') {
-               this.connote_koli_item[0]['length'] = value
-            }
-
-            if(key == 'koli_width') {
-               this.connote_koli_item[0]['width'] = value
-            }
-
-            if(key == 'koli_height') {
-               this.connote_koli_item[0]['height'] = value
-            }
-            
             let volume_weight = 0
             
             if(Object.keys(service).length > 0) {
@@ -437,17 +453,10 @@ export default {
 
             this.surchargeshow = view
         },
-
-        round03(numToRound){
-            let oo = numToRound | 0
-            let ooo = oo + 0.3
-            let res = oo
-            if(numToRound > ooo) {
-                res = res +1
-            } 
-            return res;
+        prosesmultipleKoli(key,index, value) {
+            console.log('prosesmultipleKoli', key,index, value)
+            // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM_index", {"index": index, "key":key, "value":value})
         },
-
         openSurchargeDialog(){
             this.surchargeSelector = true
         },

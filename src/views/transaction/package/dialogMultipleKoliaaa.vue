@@ -29,46 +29,18 @@
                         </vs-tr>
                         </template>
                         <template #tbody>
-                            <template v-if="connote_koli_item.length > 0">
-                                <vs-tr
-                                    v-for="(item,key) in connote_koli_item"
-                                    :key="key"
-                                    :data="key"
-                                >
-                                    <vs-td>
-                                        {{Number(key) + 1}}    
-                                    </vs-td>
-                                    <template v-for="(item_h, i) in tableHeader">
-                                        <vs-td
-                                            :key="i"
-                                        >
-                                            <template v-if="Array.isArray(item[item_h.key])">
-                                                {{item[item_h.key]}}
-                                            </template>
-                                            <template v-else>
-                                                <input-general 
-                                                name="" 
-                                                :rules="''" 
-                                                :formKey="`${item_h.key}|${key}`"
-                                                :valueData="item[item_h.key]"
-                                                typeInput="text"
-                                                @updateValue="updateValue" />
-                                            </template>
-                                        </vs-td>
-                                    </template>
-                                    
-                                    <vs-td>
-                                        <vs-button
-                                            shadow
-                                            :active="false"
-                                            @click="openSurchargeDialog(key)"
-                                        >
-                                            <i class='bx bx-plus' style="margin-right:5px"></i> SURCHARGE
-                                        </vs-button>
-                                    </vs-td>
-                                    
-                                </vs-tr>
-                            </template>
+                            <td>
+                                <div v-for="(apartment, index) in apartments" :key="index">
+                                <div class="row">
+                                    <div class="form-group col-xs-5">
+                                        <label>actual_weight</label>
+                                        <input v-model="apartment.actual_weight" type="number"
+                                            name="apartments[][actual_weight]" class="form-control" placeholder="Price">
+                                    </div>
+                                </div>
+                            </div>
+                            <pre>{{ $data.apartments }}</pre>
+                            </td>
                         </template>
                     </vs-table>
                 </div>
@@ -191,7 +163,12 @@ export default {
             surchargeByID: {},
             surchargeshow: {},
             viewKoli: {},
-            valueKoli: []
+            valueKoli: [],
+            apartment: {
+      price: '',
+      rooms: ''
+    },
+    apartments: [],
         }
     },
     watch: {
@@ -205,9 +182,42 @@ export default {
         }
     },
     methods: {
-        initialize() {
+        async initialize() {
+            let jumlah = this.listenJumlahPackage
+            let connote_koli_item = {}
             let arr = JSON.parse(this.arrData)
-            this.connote_koli_item = arr
+            this.apartments = arr
+            
+
+
+
+            // let absValue = Math.abs(jumlah - connote_koli_item.length)
+            // console.log('multiple ', jumlah,absValue, connote_koli_item.length, connote_koli_item, this.listenConnoteKoliItem)
+            
+            
+            // if(connote_koli_item.length > jumlah) {
+            //     connote_koli_item.splice((connote_koli_item.length) - absValue,absValue)
+            // } else if(jumlah > connote_koli_item.length) {
+            //     let templateKoli = {
+            //         koli_id: '',
+            //         height: 0,
+            //         length: 0,
+            //         width: 0,
+            //         volume_weight: 0,
+            //         actual_weight: 1,
+            //         surcharge_id: [],
+            //         description: ''
+            //     }
+            //     for(let i=0; i < absValue; i++) {
+            //         connote_koli_item.push(templateKoli)
+            //     }
+            // }
+
+            this.connote_koli_item = connote_koli_item
+            this.viewKoli = connote_koli_item
+            // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", connote_koli_item)
+            // console.log('multiple 2', this.connote_koli_item, absValue, this.connote_koli_item.length, this.connote_koli_item)
+            
         },
         cancel() {
             this.connote_koli_item = []
@@ -227,39 +237,40 @@ export default {
         updateValue(key, value, value2 = null) {
             let str = key.split("|")
             let index = str[1]
+            this.connote_koli_item[index]["actual_weight"] = value
             console.log(key, value, value2,index)
             console.log('this.connote_koli_item', this.connote_koli_item)
             // this.$emit("prosesmultipleKoli", str[0],index, value)
-            switch(true) {
-                case key.includes("actual_weight"):
-                    this.prosesKoli("actual_weight", value, index)
-                    break;
-                case key.includes("length"):
-                    this.prosesKoli("length", value, index)
-                    break;
-                case key.includes("width"):
-                    this.prosesKoli("width", value, index)
-                    break;
-                case key.includes("height"):
-                    this.prosesKoli("height", value, index)
-                    break;
-                case key.includes("handle_surcharge"):
-                    console.log(key, value, value2 )
-                    let surcharge = value2
-                    let ids = []
-                    if(surcharge.length > 0){
-                        surcharge.map(item => ids.push(item.surcharge_id))
-                    }
-                    this.connote_koli_item[index].surcharge_id = ids
+            // switch(true) {
+            //     case key.includes("actual_weight"):
+            //         this.prosesKoli("actual_weight", value, index)
+            //         break;
+            //     case key.includes("length"):
+            //         this.prosesKoli("length", value, index)
+            //         break;
+            //     case key.includes("width"):
+            //         this.prosesKoli("width", value, index)
+            //         break;
+            //     case key.includes("height"):
+            //         this.prosesKoli("height", value, index)
+            //         break;
+            //     case key.includes("handle_surcharge"):
+            //         console.log(key, value, value2 )
+            //         let surcharge = value2
+            //         let ids = []
+            //         if(surcharge.length > 0){
+            //             surcharge.map(item => ids.push(item.surcharge_id))
+            //         }
+            //         this.connote_koli_item[index].surcharge_id = ids
 
-                    this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
-                    // this.surchargeView()
-                    this.calculation()
-                    break;
-                default:
-                    console.log('meong')
-                    // code block
-            }
+            //         this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+            //         // this.surchargeView()
+            //         this.calculation()
+            //         break;
+            //     default:
+            //         console.log('meong')
+            //         // code block
+            // }
         },
         prosesKoli(key, value, index) {
             console.log('LLLLLL' ,key,index, this.connote_koli_item)
@@ -293,7 +304,12 @@ export default {
             
             console.log('this.connote_koli_item multiple', this.connote_koli_item)
 
-            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+            // let arr = []
+            // for(let i=0; i < Object.keys(this.connote_koli_item); i++) {
+            //     arr.push(this.connote_koli_item[i])
+            // }
+
+            // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", arr)
             this.calcMultipleKoli()
         },
         calcMultipleKoli(){
@@ -302,29 +318,23 @@ export default {
             let chargeable_weight = 0
             let actual_weight = 0
             let volume_weight = 0
-            if(this.connote_koli_item.length > 0) {
-                this.connote_koli_item.map(item => {
-                    let volume_weight_temp = 0
-                    if(item['volume_weight']) {
-                        volume_weight_temp = volume_weight_temp + Number(item['volume_weight'])
+            if(Object.keys(this.connote_koli_item).length > 0) {
+                Object.keys(this.connote_koli_item).map(key => {
+                    let tempchargeable_weight = 0
+                    if(this.connote_koli_item[key]['volume_weight']) {
+                        volume_weight = volume_weight + Number(this.connote_koli_item[key]['volume_weight'])
+                        let val= Number(this.connote_koli_item[key]['volume_weight']).toFixed(2)
+                        let roundUp = this.round03(val)
+                        tempchargeable_weight = tempchargeable_weight + Number(Math.max(Number(this.connote_koli_item[key]['actual_weight']), roundUp).toFixed(2))
                     }
-                    if(item['actual_weight']) {
-                        actual_weight = actual_weight + Number(item['actual_weight'])
+                    if(this.connote_koli_item[key]['actual_weight']) {
+                        actual_weight = actual_weight + Number(this.connote_koli_item[key]['actual_weight'])
+                        console.log('actual_weight',actual_weight)
                     }
-                    volume_weight = volume_weight + volume_weight_temp
+                    chargeable_weight = chargeable_weight + tempchargeable_weight
                 })
-
-                
             }
             
-            let roundUp = this.round03(volume_weight)
-                chargeable_weight = Number(Math.max(actual_weight, roundUp)).toFixed(2)
-
-                console.log('volume_weight',volume_weight)
-                console.log('roundUp',roundUp)
-                console.log('volume_weight',volume_weight)
-                console.log('chargeable_weight',chargeable_weight)
-
             this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", actual_weight)
             this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", volume_weight)
             this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", chargeable_weight) 

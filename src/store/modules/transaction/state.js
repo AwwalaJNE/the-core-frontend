@@ -422,7 +422,19 @@ export default {
     description: ''
   },
 
-  connote_koli_item: [],
+  temp_koli_item: [],
+  connote_koli_item: [
+    {
+      koli_id: '',
+      height: 0,
+      length: 0,
+      width: 0,
+      volume_weight: 0,
+      actual_weight: 1,
+      surcharge_id: [],
+      description: ''
+    }
+  ],
 
   // proses store connote untuk dimasukin ke transaction connote
   proses_connote: {

@@ -142,6 +142,32 @@ export default {
             this.$refs.formTransaction.formSubmit()
         },
         collectData() {
+            // if(info.key.includes('connote_')) {
+            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':info.key, 'value':val})
+            //     }
+            Object.keys(this.listenOrigin).map(item => {
+                if(this.listenOrigin[item].key.includes('connote_')){
+                    this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenOrigin[item].key, 'value':this.listenOrigin[item].value})
+                }
+            })
+            Object.keys(this.listenDestination).map(item => {
+                if(this.listenDestination[item].hasOwnProperty('key')) {
+                    if(this.listenDestination[item].key.includes('connote_')){
+                        this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination[item].key, 'value':this.listenDestination[item].value})
+                    }
+                }
+                if(item == 'destination_zip_code') {
+                    this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination['destination_zip_code'].input[0].key, 'value':this.listenDestination['destination_zip_code'].input[0].value})
+                    this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination['destination_zip_code'].input[1].key, 'value':this.listenDestination['destination_zip_code'].input[1].value})
+                }
+                
+            })
+            Object.keys(this.listenPackage).map(item => {
+                if(this.listenPackage[item].key.includes('connote_')){
+                    this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenPackage[item].key, 'value':this.listenPackage[item].value})
+                }
+            })
+
             this.$store.dispatch(`MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE`, true)
 
             console.log('==== transaction ====', this.listenTransaction)

@@ -30,6 +30,7 @@ export default {
     // customer
     customer: api + "customer",
     customer_type: api + "customer-type",
+    search_customer_code: api + "search-customer-code",
 
     // tariff
     tariff: api + "tariff",
