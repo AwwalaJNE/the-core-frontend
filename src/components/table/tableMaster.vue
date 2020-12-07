@@ -31,6 +31,11 @@
                                 Action
                             </vs-th>
                         </template>
+                      <template v-if="removeOnly == true">
+                        <vs-th class="action">
+                          Action
+                        </vs-th>
+                      </template>
                     </template>
                 </vs-tr>
             </template>
@@ -79,7 +84,7 @@
                                         {{ item.hasOwnProperty(split(column.key)[0]) ? item[split(column.key)[0]][split(column.key)[1]] : '' }}
                                     </template>
                                     <!--column custom linked -->
-                                    <template v-else-if="hasLinked.length > 0 && column.key !== undefined && column.key.toLowerCase() === hasLinked[0]">
+                                    <template v-else-if="hasLinked !== undefined && hasLinked.length > 0 && column.key !== undefined && column.key.toLowerCase() === hasLinked[0]">
                                       <span class="text-link" @click="handleEdit(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
                                     </template>
                                     <template v-else>
@@ -115,6 +120,23 @@
                                 </vs-row>
                             </vs-td>
                         </template>
+                      <template v-if="removeOnly == true">
+                        <vs-td class="action">
+                          <vs-row justify="center" class="btn_action">
+                            <vs-col w="4">
+                              <vs-button
+                                  block
+                                  flat
+                                  :active="true"
+                                  type="submit"
+                                  @click="actionRemove(item)"
+                              >
+                                Remove
+                              </vs-button>
+                            </vs-col>
+                          </vs-row>
+                        </vs-td>
+                      </template>
 
                         <template v-if="listenExpandable" #expand>
                             <div class="con-content">
@@ -194,7 +216,8 @@ export default {
         hasAction: Boolean,
         hasPagination: Boolean,
         expandable: Boolean,
-        hasLinked:Array
+        hasLinked:Array,
+        removeOnly: Boolean,
     },
     data() {
         return {

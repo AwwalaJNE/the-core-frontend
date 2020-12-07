@@ -38,6 +38,12 @@ import Surcharge from "@/views/settings/surcharge"
 // === Inventory Item or Connote ===
 import InventoryItem from "@/views/inventory/connote"
 
+// === Inventory Item or Bag ===
+import InventoryBag from "@/views/inventory/bag"
+
+// === Inventory Item or Bag detail===
+import InventoryBagDetail from "@/views/inventory/bag/bagDetail"
+
 // === Inventory Item Connote detail===
 import ConnoteDetail from "@/views/inventory/connote-detail"
 
@@ -161,7 +167,25 @@ const routes = [
           requiresAuth: true,
           breadCrumb: "connote detail"
         }
-      }
+      },
+      {
+        path: "/inventory/bagging",
+        name: "InventoryBag",
+        component: InventoryBag,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "bagging"
+        }
+      },
+      {
+        path: "/bagging-detail/:id",
+        name: "InventoryBagDetail",
+        component: InventoryBagDetail,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "bagging detail"
+        }
+      },
     ],
     meta: { 
       requiresAuth: true,
