@@ -264,6 +264,9 @@ export default {
 
 
     // Koli Item
+    SET_TEMP_KOLI_ITEM({ commit }, payload) {
+        commit('SET_TEMP_KOLI_ITEM', payload)
+    },
     SET_CONNOTE_KOLI_ITEM({ commit }, payload) {
         commit('SET_CONNOTE_KOLI_ITEM', payload)
     },

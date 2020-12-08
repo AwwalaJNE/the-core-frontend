@@ -69,6 +69,18 @@ export default {
                 }
             }
         }
+        &.xl{
+            @include for-phone-only{
+                // .vs-dialog {
+                //     min-width: 100%;
+                // }
+            }
+            @include for-desktop-up{
+                .vs-dialog {
+                    min-width: 85%;
+                }
+            }
+        }
     }
 
     .footer-dialog {

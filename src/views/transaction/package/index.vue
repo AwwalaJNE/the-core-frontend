@@ -167,7 +167,7 @@
                                             class="vs-select__chips__chip"
                                             style="width: fit-content;"
                                             :key="key">
-                                                {{surchargeshow[item].surcharge_name}}
+                                                {{`${surchargeshow[item].surcharge_name} ${surchargeshow[item]['jumlah'] || ''}`}}
                                                 <template v-if="!surchargeshow[item].hasOwnProperty('jumlah')">
                                                     <span class="vs-select__chips__chip__close" @click="removeSurcharge(item, 0)">
                                                         <i class="vs-icon-close vs-icon-hover-less"></i>
@@ -207,7 +207,8 @@
             :active="dialogSettingMultipleKoli" 
             :closeDialog="closeSettingMultipleKoli"
             @prosesmultipleKoli="prosesmultipleKoli"
-            :arrData="meongData"
+            :arrData="listenDataMultipleKoli"
+            :surchargeByID="surchargeByID"
             />
     </div>
 </template>
@@ -269,6 +270,9 @@ export default {
         listenJumlahPackage () {
             return this.$store.getters.getTransaction.package.package_jumlah.value
         },
+        listenDataMultipleKoli() {
+            return this.meongData
+        }
     },
     watch: {
         listenPackageService: function (n,o) {
@@ -335,8 +339,7 @@ export default {
                     }
                 }
             }
-            let arr = JSON.stringify(this.connote_koli_item)
-            this.meongData = arr
+            
             this.calcMultipleKoli()
         },
         updateValue(key, value, value2 = null) {
@@ -419,6 +422,7 @@ export default {
             let koli = this.listenConnoteKoliItem
             let surchargeByID = this.surchargeByID
             let view = {}
+            let jumlah = 1
             if(koli.length > 1) {
                 koli.map(item => {
                     let obj = {}
@@ -426,13 +430,21 @@ export default {
                         item.surcharge_id.map(itm => {
                             if(surchargeByID.hasOwnProperty(itm)) {
                                 let data = surchargeByID[itm]
-                                data['jumlah'] += 1
+                                if(view.hasOwnProperty(itm)){
+                                        jumlah += 1
+                                } else {
+                                        jumlah = 1
+                                }
+                                data['jumlah'] = jumlah
                                 view[itm] = data
                             } else {
                                 let data = surchargeByID[itm]
                                 data['jumlah'] = 1
                                 view[itm] = data
                             }
+
+                            
+                            
                         })
                     }
                     
@@ -452,9 +464,13 @@ export default {
             }
 
             this.surchargeshow = view
+            console.log('this.surchargeshow', this.surchargeshow)
         },
-        prosesmultipleKoli(key,index, value) {
-            console.log('prosesmultipleKoli', key,index, value)
+        prosesmultipleKoli(val) {
+            this.connote_koli_item = val
+            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+            this.surchargeView()
+            this.calculation()
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM_index", {"index": index, "key":key, "value":value})
         },
         openSurchargeDialog(){
@@ -464,9 +480,14 @@ export default {
             this.surchargeSelector = false
         },
         openSettingMultipleKoli(){
+            let arr = JSON.stringify(this.connote_koli_item)
+            this.meongData = arr
+            this.$store.dispatch("SET_TEMP_KOLI_ITEM", arr)
             this.dialogSettingMultipleKoli = true
         },
         closeSettingMultipleKoli() {
+            this.meongData = ''
+            this.$store.dispatch("SET_TEMP_KOLI_ITEM", '')
             this.dialogSettingMultipleKoli = false
         },
         removeSurcharge(id, index) {

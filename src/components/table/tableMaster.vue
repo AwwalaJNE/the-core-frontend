@@ -295,16 +295,16 @@ export default {
         table{
             text-align: left;
             .md{
-                width: calc(100% / 3);
+                width: calc(100% / 3) !important;
             }
             .sm{
-                width: calc(100% / 4);
+                width: calc(100% / 4) !important;
             }
             .xs{
-                width: calc(100% / 7);
+                width: calc(100% / 10) !important;
             }
             .xxs{
-                width: calc(100% / 10);
+                width: calc(100% / 12) !important;
             }
             .auto{
                 width: auto;

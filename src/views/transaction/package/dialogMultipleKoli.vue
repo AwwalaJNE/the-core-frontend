@@ -2,7 +2,7 @@
     <div>
         <dialog-master 
         :actived="listenActive" 
-        width="lg"
+        width="xl"
         :closeDialog="cancel">
 
             <template v-slot:header>
@@ -18,7 +18,7 @@
                                 No.
                             </vs-th>
                             <template v-for="(item, key) in tableHeader">
-                                <vs-th :key="key">
+                                <vs-th :key="key" :class="item.width ? item.width : ''">
                                     {{item.label}}
                                 </vs-th>
                             </template>
@@ -41,9 +41,25 @@
                                     <template v-for="(item_h, i) in tableHeader">
                                         <vs-td
                                             :key="i"
+                                            :class="item.width ? item.width : ''"
                                         >
                                             <template v-if="Array.isArray(item[item_h.key])">
-                                                {{item[item_h.key]}}
+                                                <template v-if="item[item_h.key].length > 0">
+                                                    <span 
+                                                    v-for="(itm, i) in item[item_h.key]"
+                                                    :data-value="itm" 
+                                                    class="vs-select__chips__chip"
+                                                    style="width: fit-content;"
+                                                    :key="i">
+                                                        {{surchargeByID[itm].surcharge_name}}
+                                                        <template>
+                                                            <span class="vs-select__chips__chip__close" @click="removeSurcharge(itm, key)">
+                                                                <i class="vs-icon-close vs-icon-hover-less"></i>
+                                                            </span>
+                                                        </template>
+                                                    </span>
+                                                </template>
+                                                <hr>
                                             </template>
                                             <template v-else>
                                                 <input-general 
@@ -76,7 +92,7 @@
 
             <template v-slot:footer>
                 <vs-row justify="flex-end" class="mt-2">
-                    <vs-col w="3">
+                    <vs-col w="2" justify="flex-end">
                         <vs-button
                         transparent
                         block
@@ -88,7 +104,7 @@
                             Cancel
                         </vs-button>
                     </vs-col>
-                    <vs-col w="3">
+                    <vs-col w="2" justify="flex-end">
                         <vs-button
                         transparent
                         block
@@ -130,7 +146,8 @@ export default {
     props: {
         closeDialog: Function,
         active: Boolean,
-        arrData: String
+        arrData: String,
+        surchargeByID: Object
     },
     computed: {
         listenActive(){
@@ -141,6 +158,9 @@ export default {
         },
         listenConnoteKoliItem () {
             return this.$store.getters.getTransaction.connote_koli_item
+        },
+        listenTempConnoteKoliItem () {
+            return this.$store.getters.getTransaction.temp_koli_item
         },
         listenJumlahPackage () {
             return this.$store.getters.getTransaction.package.package_jumlah.value
@@ -160,38 +180,46 @@ export default {
             tableHeader: [
                 {
                     label: 'Weight',
-                    key: 'actual_weight'
+                    key: 'actual_weight',
+                    width: "xxs"
                 },
                 {
                     label: 'Length',
-                    key: 'length'
+                    key: 'length',
+                     width: "xxs"
                 },
                 {
                     label: 'Width',
-                    key: 'width'
+                    key: 'width',
+                     width: "xxs"
                 },
                 {
                     label: 'Height',
-                    key: 'height'
+                    key: 'height',
+                     width: "xxs"
                 },
                 {
                     label: 'Volume Weight',
-                    key: 'volume_weight'
+                    key: 'volume_weight',
+                     width: "xxs"
                 },
                 {
                     label: 'Surcharge (s)',
-                    key: 'surcharge_id'
+                    key: 'surcharge_id',
+                    width: "sm"
                 },
                 {
                     label: 'Description',
-                    key: 'description'
+                    key: 'description',
+                    width: "md"
                 },
             ],
             connote_koli_item:{},
-            surchargeByID: {},
             surchargeshow: {},
             viewKoli: {},
-            valueKoli: []
+            chargeable_weight: 0,
+            actual_weight: 0,
+            volume_weight: 0,
         }
     },
     watch: {
@@ -206,15 +234,19 @@ export default {
     },
     methods: {
         initialize() {
-            let arr = JSON.parse(this.arrData)
+            // this.listenConnoteKoliItem
+            let arr = JSON.parse(this.listenTempConnoteKoliItem)
             this.connote_koli_item = arr
+            console.log('surcharge', this.surchargeByID)
         },
         cancel() {
-            this.connote_koli_item = []
             this.closeDialog()
         },
         handleSubmit() {
-            
+            this.$emit("prosesmultipleKoli", this.connote_koli_item)
+            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.actual_weight)
+            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.volume_weight)
+            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.chargeable_weight)
             this.closeDialog()
         },
         openSurchargeDialog(index){
@@ -244,17 +276,22 @@ export default {
                     this.prosesKoli("height", value, index)
                     break;
                 case key.includes("handle_surcharge"):
-                    console.log(key, value, value2 )
+                    
                     let surcharge = value2
+                    console.log('meong', surcharge,key, value, this.connote_koli_item[value] )
                     let ids = []
                     if(surcharge.length > 0){
                         surcharge.map(item => ids.push(item.surcharge_id))
                     }
-                    this.connote_koli_item[index].surcharge_id = ids
 
-                    this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+                    if(this.connote_koli_item[value].hasOwnProperty('surcharge_id')) {
+                        this.connote_koli_item[value].surcharge_id = ids
+                    }
+                    console.log("handle_surcharge",key, value, value2, this.connote_koli_item )
+
+                    // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
                     // this.surchargeView()
-                    this.calculation()
+                    // this.calculation()
                     break;
                 default:
                     console.log('meong')
@@ -293,8 +330,54 @@ export default {
             
             console.log('this.connote_koli_item multiple', this.connote_koli_item)
 
-            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+            // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
             this.calcMultipleKoli()
+        },
+        removeSurcharge(id, index) {
+            this.connote_koli_item[index].surcharge_id = this.connote_koli_item[index].surcharge_id.filter(item => item != id)
+            console.log('remove multiple surcharge', this.connote_koli_item, id, index)
+            // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+            // this.surchargeView()
+            // this.calculation()
+        },
+        surchargeView(){
+            let koli = this.listenConnoteKoliItem
+            let surchargeByID = this.surchargeByID
+            let view = {}
+            if(koli.length > 1) {
+                koli.map(item => {
+                    let obj = {}
+                    if (item.surcharge_id.length > 0) {
+                        item.surcharge_id.map(itm => {
+                            if(surchargeByID.hasOwnProperty(itm)) {
+                                let data = surchargeByID[itm]
+                                data['jumlah'] += 1
+                                view[itm] = data
+                            } else {
+                                let data = surchargeByID[itm]
+                                data['jumlah'] = 1
+                                view[itm] = data
+                            }
+                        })
+                    }
+                    
+                })
+            } else {
+                koli.map(item => {
+                    let obj = {}
+                    if (item.surcharge_id.length > 0) {
+                        item.surcharge_id.map(itm => {
+                            if(surchargeByID.hasOwnProperty(itm)) {
+                                view[itm] = surchargeByID[itm]
+                            }
+                        })
+                    }
+                    
+                })
+            }
+
+            this.surchargeshow = view
+            
         },
         calcMultipleKoli(){
             // let roundUp = this.round03(volume_weight.toFixed(2))
@@ -320,15 +403,33 @@ export default {
             let roundUp = this.round03(volume_weight)
                 chargeable_weight = Number(Math.max(actual_weight, roundUp)).toFixed(2)
 
-                console.log('volume_weight',volume_weight)
-                console.log('roundUp',roundUp)
-                console.log('volume_weight',volume_weight)
-                console.log('chargeable_weight',chargeable_weight)
-
-            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", actual_weight)
-            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", volume_weight)
-            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", chargeable_weight) 
+            this.chargeable_weight = chargeable_weight
+            this.actual_weight = actual_weight
+            this.volume_weight = volume_weight
         }
     },
 }
 </script>
+<style lang="scss">
+    .vs-table{
+        table{
+            text-align: left;
+            .md{
+                width: calc(100% / 3) !important;
+            }
+            .sm{
+                width: calc(100% / 4) !important;
+            }
+            .xs{
+                width: calc(100% / 10) !important;
+            }
+            .xxs{
+                width: calc(100% / 12) !important;
+            }
+            .auto{
+                width: auto;
+            }
+            
+        }
+    }
+</style>
