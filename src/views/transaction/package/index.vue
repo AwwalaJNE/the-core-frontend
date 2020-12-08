@@ -1,6 +1,47 @@
 <template >
     <div>
         <div class="box">
+            <div>
+                <vs-row justify="space-between">
+                    <vs-col xs="12" sm="3" lg="3">
+                        <h3 style="text-align:left;margin-top:8px;">Package Information</h3>
+                    </vs-col>
+                    <vs-col xs="12" sm="6" lg="6">
+                        <vs-row justify="flex-end">
+                            <vs-col xs="12" sm="4" lg="4">
+                                <vs-button
+                                    shadow
+                                    :active="false"
+                                    @click="0"
+                                    style="float:right"
+                                >
+                                    <i class='bx bx-plus'></i> BPIK
+                                </vs-button>
+                            </vs-col>
+                            <vs-col xs="12" sm="4" lg="4">
+                                <vs-button
+                                    shadow
+                                    :active="false"
+                                    @click="0"
+                                    style="float:right"
+                                >
+                                    <i class='bx bx-plus'></i> Pra Connote
+                                </vs-button>
+                            </vs-col>
+                            <vs-col xs="12" sm="4" lg="4">
+                                <vs-button
+                                    shadow
+                                    :active="false"
+                                    @click="0"
+                                    style="float:right"
+                                >
+                                    <i class='bx bx-plus'></i> Single Connote
+                                </vs-button>
+                            </vs-col>
+                        </vs-row>
+                    </vs-col>
+                </vs-row>
+            </div>
             <div class="con-form form-package">
                 <template v-if="Object.keys(InputObject).length > 0">
                     <vs-row justify="center">
@@ -428,13 +469,9 @@ export default {
                     let obj = {}
                     if (item.surcharge_id.length > 0) {
                         item.surcharge_id.map(itm => {
-                            if(surchargeByID.hasOwnProperty(itm)) {
+                            if(view.hasOwnProperty(itm)) {
                                 let data = surchargeByID[itm]
-                                if(view.hasOwnProperty(itm)){
-                                        jumlah += 1
-                                } else {
-                                        jumlah = 1
-                                }
+                                jumlah += 1
                                 data['jumlah'] = jumlah
                                 view[itm] = data
                             } else {
@@ -442,9 +479,6 @@ export default {
                                 data['jumlah'] = 1
                                 view[itm] = data
                             }
-
-                            
-                            
                         })
                     }
                     

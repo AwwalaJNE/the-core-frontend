@@ -7,7 +7,7 @@
                             <input-general 
                             :name="InputObject[item].label" 
                             :rules="InputObject[item].rule" 
-                            :formKey="InputObject[item].key"
+                            :formKey="item"
                             :valueData="InputObject[item].value"
                             :typeInput="InputObject[item].typeInput"
                             @updateValue="updateValue" 
@@ -30,10 +30,10 @@
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
                             <selector 
-                            :ref="InputObject[item].key"
+                            :ref="item"
                             :name="InputObject[item].label" 
                             :rules="InputObject[item].rule" 
-                            :formKey="InputObject[item].key"
+                            :formKey="item"
                             :valueData="InputObject[item].arrData"
                             :selectedValue="InputObject[item].value"
                             :isMultiple="false"
@@ -43,10 +43,10 @@
                             
                             <template v-if="InputObject[item].arrData.length > 0">
                                 <radio 
-                                :ref="InputObject[item].key"
+                                :ref="item"
                                 :name="''" 
                                 :rules="InputObject[item].rule" 
-                                :formKey="InputObject[item].key"
+                                :formKey="item"
                                 :valueData="InputObject[item].arrData"
                                 :selectedValue="InputObject[item].value"
                                 @updateValue="updateValue" />
@@ -57,7 +57,7 @@
                             :name="InputObject[item].label" 
                             :titleLabel="InputObject[item].titleLabel"
                             :rules="InputObject[item].rule" 
-                            :formKey="InputObject[item].key"
+                            :formKey="item"
                             :valueData="InputObject[item].value"
                             @updateValue="updateValue" />
                         </template>
@@ -147,10 +147,11 @@ export default {
         updateValue(type, val, info = {}) {
             let action = type.toUpperCase()
             let prefix = this.listenTypeForm.toUpperCase()
-            let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
-            if(err == true) {
-                console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
-            }
+            this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '')
+            // let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
+            // if(err == true) {
+            //     console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
+            // }
 
             if(info.hasOwnProperty('key')) {
                 if(info.key.includes('connote_')) {

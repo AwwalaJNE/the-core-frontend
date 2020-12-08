@@ -153,9 +153,6 @@ export default {
         listenActive(){
             return this.active
         },
-        listenConnoteKoli() {
-            return this.connote_koli_item
-        },
         listenConnoteKoliItem () {
             return this.$store.getters.getTransaction.connote_koli_item
         },
