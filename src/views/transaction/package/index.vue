@@ -59,7 +59,7 @@
                                 :ref="InputObject['package_category'].key"
                                 :name="''" 
                                 :rules="InputObject['package_category'].rule" 
-                                :formKey="InputObject['package_category'].key"
+                                :formKey="'package_category'"
                                 :valueData="InputObject['package_category'].arrData"
                                 :selectedValue="InputObject['package_category'].value"
                                 :isMultiple="false"
@@ -398,6 +398,9 @@ export default {
                         this.surchargeView()
                         this.calculation()
                     }
+                    break;
+                case "package_category":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_CATEGORY", value)
                     break;
                 case "koli_jumlah":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_JUMLAH", value)

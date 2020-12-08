@@ -164,6 +164,7 @@ export default {
             })
             Object.keys(this.listenPackage).map(item => {
                 if(this.listenPackage[item].key.includes('connote_')){
+                    console.log('this.listenPackage[item].key', this.listenPackage[item].key, this.listenPackage[item].value)
                     this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenPackage[item].key, 'value':this.listenPackage[item].value})
                 }
             })
