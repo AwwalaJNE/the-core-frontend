@@ -41,7 +41,7 @@ const TransactionMixin = {
     methods: {
         calculation(index) {
             let CONNOTE_INDEX = index != undefined ? index : 0
-            let tarifData = this.listenPackageService
+            let tarifData = this.listenPackageService || {}
             let chargeable_weight = this.listenCalculatorChargeableWeight
             let listKoli = this.listenConnoteKoliItem
             let surchargeByID = this.listenPackageSurchargeByID
@@ -123,7 +123,80 @@ const TransactionMixin = {
             this.$nextTick(() => {
                 this.$store.dispatch("SET_TRANSACTION_GRAND_TOTAL", GTOTAL)
             });
-        }
+        },
+
+        // prosesKoli(key, value, index) {
+        //     let listKoli = this.listenConnoteKoliItem
+        //     let service = this.listenPackageService.data || {}
+        //     console.log('proses koli', listKoli, key, value, index)
+        //     if(listKoli.length > 0) {
+        //         if(listKoli[index].hasOwnProperty(key)) {
+        //             listKoli[index][key] = value
+        //         }
+        //         // if(key.includes('length')) {
+        //         //    listKoli[index]['length'] = value
+        //         // }
+
+        //         // if(key.includes('width')) {
+        //         //    listKoli[index]['width'] = value
+        //         // }
+
+        //         // if(key.includes('height')) {
+        //         //    listKoli[index]['height'] = value
+        //         // }
+                
+        //         let volume_weight = 0
+                
+        //         if(Object.keys(service).length > 0) {
+        //             let service_volume_divider = service['service_volume_divider'].toString()
+        //             volume_weight = (listKoli[index]['length'] * listKoli[index]['width'] * listKoli[index]['height']) / service_volume_divider 
+        //             volume_weight = volume_weight / 1000
+        //         }
+        //         listKoli[index]['volume_weight'] = volume_weight.toFixed(2)
+    
+        //         this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", listKoli)
+        //         this.calcMultipleKoli()
+        //     }
+        // },
+        calcMultipleKoli(){
+            let listKoli = this.listenConnoteKoliItem
+            // let roundUp = this.round03(volume_weight.toFixed(2))
+            // let chargeable_weight = Math.max(listKoli[index]['actual_weight'], roundUp).toFixed(2)
+            let chargeable_weight = 0
+            let actual_weight = 0
+            let volume_weight = 0
+            if(listKoli.length > 0) {
+                listKoli.map(item => {
+                    let volume_weight_temp = 0
+                    if(item['volume_weight']) {
+                        volume_weight_temp = volume_weight_temp + Number(item['volume_weight'])
+                    }
+                    if(item['actual_weight']) {
+                        actual_weight = actual_weight + Number(item['actual_weight'])
+                    }
+                    volume_weight = volume_weight + volume_weight_temp
+                })
+
+                
+            }
+
+            console.log('calcMultipleKoli', chargeable_weight,actual_weight,volume_weight)
+            
+            let roundUp = this.round03(volume_weight)
+            chargeable_weight = Number(Math.max(actual_weight, roundUp)).toFixed(2)
+            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", actual_weight)
+            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", volume_weight)
+            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", chargeable_weight) 
+        },
+        round03(numToRound){
+            let oo = numToRound | 0
+            let ooo = oo + 0.3
+            let res = oo
+            if(numToRound > ooo) {
+                res = res +1
+            } 
+            return res;
+        },
     },
 }
 

@@ -1,28 +1,81 @@
 <template>
     <div class="box">
-        <div class="con-form">
-            <form-input-controller 
-                ref="formTransactionOriginController"
-                @formData="formData"
-                @searchTariffCode="searchTariffCode"
-                typeForm="origin"
-            />
+        <div>
+            <vs-row justify="space-between">
+                <vs-col xs="12" sm="2" lg="2">
+                    <h3>Origin</h3>
+                </vs-col>
+                <vs-col xs="12" sm="2" lg="2">
+                    <vs-tooltip>
+                        <vs-button
+                            shadow
+                            icon
+                            :active="false"
+                            @click="openGetCustomer"
+                            style="margin:10px auto 0;"
+                        >
+                            <i class='bx bx-user'></i>
+                        </vs-button>
+                        <template #tooltip>
+                            Search customer origin
+                        </template>
+                    </vs-tooltip>
+                </vs-col>
+            </vs-row>
         </div>
+        <div class="con-form">
+            <template v-if="listenforcererender == true">
+                <transition>
+                    loading ...
+                </transition>
+            </template>
+            <template v-else-if="listenforcererender == false">
+                <transition>
+                    <form-input-controller 
+                        ref="formTransactionOriginController"
+                        @formData="formData"
+                        :dataItem="listenDataItem"
+                        @searchTariffCode="searchTariffCode"
+                        typeForm="origin"
+                    />
+                </transition>
+            </template>
+        </div>
+
+        <customerByPhone
+            :active="dialogGetCustomer" 
+            :closeDialog="closeGetCustomer"
+            title="origin"
+            type="origin"
+            @updateValue="updateValue"
+        />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
+import customerByPhone from "@/views/transaction/customerByPhone"
 import FormInputController from "@/views/transaction/formInputControllerTransaction"
 export default {
     name: "origin",
     mixins: [master],
     components: {
         "form-input-controller": FormInputController, 
+        "customerByPhone": customerByPhone
     },
     data() {
         return {
-            
+            dialogGetCustomer: false,
+            dataItem: null,
+            forcererender: false
+        }
+    },
+    computed: {
+        listenDataItem(){
+            return this.dataItem
+        },
+        listenforcererender() {
+            return this.forcererender
         }
     },
     methods: {
@@ -50,6 +103,30 @@ export default {
                     // this.openNotification('danger', 'Failed to populate country list', err)
                 })
         },
+        openGetCustomer() {
+            this.dialogGetCustomer = true
+        },
+        closeGetCustomer() {
+            this.dialogGetCustomer = false
+        },
+        updateValue(key,value) {
+            
+            if(Object.keys(value).length > 0 && key == 'origin') {
+                this.forcererender = true
+                this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, value.customer_name)
+                this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, value.customer_phone)
+                this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, value.geolocation_location_name)
+                this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, '')
+                this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, value.geolocation_location_name)
+                this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, value.geolocation_subdistrict_zip_code)
+
+                let self = this
+                setTimeout(function(){ self.forcererender = false }, 100);
+                                
+                let aaa = this.$store.getters.getTransaction.origin
+                console.log('data origin', aaa)
+            }
+        }
     },
 }
 </script>

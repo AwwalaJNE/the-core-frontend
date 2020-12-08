@@ -264,8 +264,15 @@ export default {
     },
 
 
+    
+    SET_TEMP_KOLI_ITEM(state, payload) {
+        state.temp_koli_item = payload
+    },
     SET_CONNOTE_KOLI_ITEM(state, payload) {
         state.connote_koli_item = payload
+    },
+    SET_CONNOTE_KOLI_ITEM_index(state, payload) {
+        state.connote_koli_item[payload.index][payload.key] = payload.value
     },
 
     SET_PROSES_CONNOTE_TOTAL_BIAYA(state, payload) {

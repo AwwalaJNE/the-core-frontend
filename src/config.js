@@ -30,6 +30,7 @@ export default {
     // customer
     customer: api + "customer",
     customer_type: api + "customer-type",
+    search_customer_code: api + "search-customer-code",
 
     // tariff
     tariff: api + "tariff",
@@ -46,6 +47,8 @@ export default {
 
     // transaction
     tariff_shipping_service: api + "tariff-shipping-service",
-    connote: api + "connote"
+    connote: api + "connote",
+    koli: api + "koli",
+    bag: api + "bag"
 
 }

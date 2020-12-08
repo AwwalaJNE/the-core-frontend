@@ -142,6 +142,7 @@ export default {
     SET_PACKAGE_PACKAGE_JUMLAH_ValueData({ commit }, payload) {
         commit('SET_PACKAGE_PACKAGE_JUMLAH_ValueData', payload)
     },
+    
 
 
     // Switch Calc component
@@ -263,8 +264,14 @@ export default {
 
 
     // Koli Item
+    SET_TEMP_KOLI_ITEM({ commit }, payload) {
+        commit('SET_TEMP_KOLI_ITEM', payload)
+    },
     SET_CONNOTE_KOLI_ITEM({ commit }, payload) {
         commit('SET_CONNOTE_KOLI_ITEM', payload)
+    },
+    SET_CONNOTE_KOLI_ITEM_index({ commit }, payload) {
+        commit('SET_CONNOTE_KOLI_ITEM_index', payload)
     },
 
     SET_PROSES_CONNOTE_TOTAL_BIAYA({ commit }, payload) {

@@ -40,7 +40,7 @@
                             @updateValue="updateValue" />
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('radio')">
-                            <p>{{InputObject[item].label}}</p>
+                            
                             <template v-if="InputObject[item].arrData.length > 0">
                                 <radio 
                                 :ref="InputObject[item].key"
@@ -101,13 +101,20 @@ export default {
         listenDataItem() {
             return this.dataItem || null
         },
+        listenDataOrigin() {
+            return this.$store.getters.getTransaction.origin
+        },
+        listenDataDestination() {
+            return this.$store.getters.getTransaction.destination
+        },
         listenGettersPrefix() {
             return this.getters || 'getTransaction' // defaultnya akan mengarah ke transaction getters
         },
     },
     methods: {
         initialize() {
-            let obj = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm] || {}
+            let obj = this.listenTypeForm == 'origin' ? this.listenDataOrigin : this.listenTypeForm == 'destination' ? this.listenDataDestination : {}
+
                 if (Object.keys(obj).length > 0) {
                     this.Keys = Object.keys(obj)
                     this.InputObject = obj
@@ -153,8 +160,10 @@ export default {
 
             console.log('ini inputan ->',type, val, info)
 
-            if(info.typeInput !== '' && info.typeInput.includes('calc_switch')) {
-                this.$emit("searchTariffCode", this.listenTypeForm, val)
+            if(info !== undefined && info.hasOwnProperty('typeInput')) {
+                if(info.typeInput.includes('calc_switch')){
+                    this.$emit("searchTariffCode", this.listenTypeForm, val)
+                }
             }
         },
         

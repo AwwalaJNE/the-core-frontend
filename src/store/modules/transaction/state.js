@@ -166,7 +166,48 @@ export default {
       rule: "required",
       typeInput: "select|col_left",
       typeData: "String",
-      arrData: [],
+      arrData: [
+        {
+          label: 'Fashion',
+          value: 'fashion'
+        },
+        {
+          label: 'Perlengkapan Olahraga',
+          value: 'perlengkapan olahraga'
+        },
+        {
+          label: 'Kosmetik & Kesehatan',
+          value: 'Kosmetik & Kesehatan'
+        },
+        {
+          label: 'Makanan',
+          value: 'makanan'
+        },
+        {
+          label: 'Mainan & Hoby',
+          value: 'mainan & hoby'
+        },
+        {
+          label: 'Otomotif',
+          value: 'otomotif'
+        },
+        {
+          label: 'Perlengkapan Rumah Tangga',
+          value: 'perlengkapan rumah tangga'
+        },
+        {
+          label: 'Elektronik',
+          value: 'elektronik'
+        },
+        {
+          label: 'Gadget & Aksesoris',
+          value: 'Gadget & Aksesoris'
+        },
+        {
+          label: 'Lain Lain',
+          value: 'lain lain'
+        },
+      ],
       valueData: null,
       value: ''
     },
@@ -416,13 +457,25 @@ export default {
     height: 0,
     length: 0,
     width: 0,
-    volume_weight: 0,
+    volume_weight: 0.00,
     actual_weight: 1,
     surcharge_id: [],
     description: ''
   },
 
-  connote_koli_item: [],
+  temp_koli_item: '',
+  connote_koli_item: [
+    {
+      koli_id: '',
+      height: 0,
+      length: 0,
+      width: 0,
+      volume_weight: 0,
+      actual_weight: 1,
+      surcharge_id: [],
+      description: ''
+    }
+  ],
 
   // proses store connote untuk dimasukin ke transaction connote
   proses_connote: {

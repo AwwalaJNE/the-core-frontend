@@ -31,6 +31,11 @@
                                 Action
                             </vs-th>
                         </template>
+                      <template v-if="removeOnly == true">
+                        <vs-th class="action">
+                          Action
+                        </vs-th>
+                      </template>
                     </template>
                 </vs-tr>
             </template>
@@ -78,6 +83,10 @@
                                     <template v-if="split(column.key).length == 2 && item.hasOwnProperty(split(column.key)[0])">
                                         {{ item.hasOwnProperty(split(column.key)[0]) ? item[split(column.key)[0]][split(column.key)[1]] : '' }}
                                     </template>
+                                    <!--column custom linked -->
+                                    <template v-else-if="hasLinked !== undefined && hasLinked.length > 0 && column.key !== undefined && column.key.toLowerCase() === hasLinked[0]">
+                                      <span class="text-link" @click="handleEdit(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
+                                    </template>
                                     <template v-else>
                                         {{ item[column.key] ? item[column.key] : '' }}
                                     </template>
@@ -111,6 +120,23 @@
                                 </vs-row>
                             </vs-td>
                         </template>
+                      <template v-if="removeOnly == true">
+                        <vs-td class="action">
+                          <vs-row justify="center" class="btn_action">
+                            <vs-col w="4">
+                              <vs-button
+                                  block
+                                  flat
+                                  :active="true"
+                                  type="submit"
+                                  @click="actionRemove(item)"
+                              >
+                                Remove
+                              </vs-button>
+                            </vs-col>
+                          </vs-row>
+                        </vs-td>
+                      </template>
 
                         <template v-if="listenExpandable" #expand>
                             <div class="con-content">
@@ -189,7 +215,9 @@ export default {
         limit: Number,
         hasAction: Boolean,
         hasPagination: Boolean,
-        expandable: Boolean
+        expandable: Boolean,
+        hasLinked:Array,
+        removeOnly: Boolean,
     },
     data() {
         return {
@@ -275,7 +303,10 @@ export default {
         },
         actionRemove(val) {
             this.$emit("actionRemove", val)
-        }
+        },
+        handleEdit(val) {
+          this.$emit("handleEdit", val);
+        },
     },
     mounted() {
         this.handleColumnsOrder()
@@ -287,16 +318,16 @@ export default {
         table{
             text-align: left;
             .md{
-                width: calc(100% / 3);
+                width: calc(100% / 3) !important;
             }
             .sm{
-                width: calc(100% / 4);
+                width: calc(100% / 4) !important;
             }
             .xs{
-                width: calc(100% / 7);
+                width: calc(100% / 10) !important;
             }
             .xxs{
-                width: calc(100% / 10);
+                width: calc(100% / 12) !important;
             }
             .auto{
                 width: auto;
@@ -334,5 +365,9 @@ export default {
                 margin-left: 0px;
             }
         }
+    }
+    .text-link{
+      color: rgb(53, 92, 255);
+      cursor:pointer;
     }
 </style>
