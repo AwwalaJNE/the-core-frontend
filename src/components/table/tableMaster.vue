@@ -36,6 +36,11 @@
                           Action
                         </vs-th>
                       </template>
+                      <template v-if="printAction == true">
+                        <vs-th class="action">
+                          Action
+                        </vs-th>
+                      </template>
                     </template>
                 </vs-tr>
             </template>
@@ -137,6 +142,23 @@
                           </vs-row>
                         </vs-td>
                       </template>
+                      <template v-if="printAction == true">
+                        <vs-td class="action">
+                          <vs-row justify="center" class="btn_action">
+                            <vs-col w="4">
+                              <vs-button
+                                  block
+                                  flat
+                                  :active="true"
+                                  type="submit"
+                                  @click="actionPrint(item)"
+                              >
+                                Print
+                              </vs-button>
+                            </vs-col>
+                          </vs-row>
+                        </vs-td>
+                      </template>
 
                         <template v-if="listenExpandable" #expand>
                             <div class="con-content">
@@ -218,6 +240,7 @@ export default {
         expandable: Boolean,
         hasLinked:Array,
         removeOnly: Boolean,
+        printAction: Boolean,
     },
     data() {
         return {
@@ -303,6 +326,9 @@ export default {
         },
         actionRemove(val) {
             this.$emit("actionRemove", val)
+        },
+        actionPrint(val) {
+          this.$emit("actionPrint", val)
         },
         handleEdit(val) {
           this.$emit("handleEdit", val);
