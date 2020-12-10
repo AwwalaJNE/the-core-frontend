@@ -14,30 +14,22 @@
         :pageSize="pagination.page_size"
         :page="pagination.page"
         :limit="pagination.limit"
-        :hasAction="true"
+        :hasAction="false"
+        :hasLinked="['bag_number']"
+        :printAction="true"
         :hasPagination="true"
-        @actionUpdate="actionUpdate"
-        @actionRemove="actionRemove"
+        @handleEdit="actionDetail"
+        @actionPrint="actionPrint"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         />
 
-        <!--Create User Dialog end-->
-            <dialog-create-edit-role 
-            :active="dialogRole" 
-            :closeDialogRole="closeDialogRole"
-            @refresh="refresh"
-            btnBlue="Edit"
-            title="Edit role"
-            :dataItem="dataItem"
-            />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
-import DialogCreateEditRole from "@/views/settings/users/role/dialogCreateEditRole"
 export default {
     name:"Role-list",
     mixins: [master],
@@ -46,16 +38,23 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
-        "dialog-create-edit-role": DialogCreateEditRole
     },
     watch: {
         query: function(val, old) {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.bagFilter)
                 }
             }
+        },
+      bagDestination: function(val, old) {
+          if(val !== undefined) {
+            this.bagFilter = val
+            if(this.bagFilter !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val)
+            }
+          }
         }
     },
     data() {
@@ -63,19 +62,50 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "ID",
-                    key: "user_role_id",
-                    width: "xxs"
+                    label: "Bag #",
+                    key: "bag_number",
+                    width: "xs"
                 },
                 {
-                    label: "Roles",
-                    key: "user_role_name",
+                    label: "Date #",
+                    key: "created_at",
+                    width: "xs"
+                },
+                {
+                    label: "# Connote",
+                    key: "bag_detail_qty",
+                    width: "auto"
+                },
+                {
+                    label: "Weight (Kg)",
+                    key: "bag_weight",
+                    width: "auto"
+                },
+                {
+                    label: "Origin",
+                    key: "origin_tariff_code",
+                    width: "auto"
+                },
+                {
+                    label: "Destination",
+                    key: "destination_tariff_code",
+                    width: "auto"
+                },
+                {
+                    label: "Consolidation",
+                    key: "is_consolidated",
+                    width: "xs"
+                },
+                {
+                    label: "With User",
+                    key: "current_user",
                     width: "auto"
                 }
             ],
             loading: false,
             dataItem: {},
             tempSearch: this.query ? this.query : "",
+            bagFilter: this.bagDestination ? this.bagDestination : "",
             dialogRole: false,
             pagination: {
                 limit:5,
@@ -85,18 +115,21 @@ export default {
         }
     },
     methods: {
-        async getTableData(limit,page,q) {
+        async getTableData(limit,page,q, bagDestination) {
             this.loading = true
             let query = "";
+            let bagDes = "";
             if(q !== undefined) {
                 query = q
             }
+            if(bagDestination !== undefined) {
+              bagDes = bagDestination
+            }
             await axios
-                .get(this.URL.role + 
-                `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                .get(this.URL.bag +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}`,
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
                     this.dataTable = res.data.data
 
                     this.pagination.page = res.data.meta.current_page
@@ -112,31 +145,17 @@ export default {
                     this.openNotification('danger', 'Failed to populate role list', err)
                 })
         },
-        actionUpdate(val){
-            if(this.dataTable.length > 0) {
-                let obj = this.dataTable.filter(item => {
-                    return item.user_role_id === val.user_role_id
-                })
-                this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
-                this.$nextTick(() => {
-                    this.dialogRole = true
-                });
-            }
+        actionDetail(val){
+          this.$router.push('/bagging-detail/'+val.bag_number)
         },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.role + `/${val.user_role_id}`,
-                    this.Helper.header())
-                .then(res => {
-                    console.log('res', res)
-                    this.refresh()
-                    this.openNotification(null, 'Success', 'Delete role is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Delete role is failed', err)
-                })
+        actionPrint(val){
+          let WinPrint = window.open('http://google.com', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+          WinPrint.document.write('');
+
+          WinPrint.document.close();
+          WinPrint.focus();
+          WinPrint.print();
+          WinPrint.close();
         },
         actionLimit(val){
             this.pagination.limit = val
@@ -149,14 +168,14 @@ export default {
         },
         refresh(){
             console.log("refresh")
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter)
         },
         closeDialogRole() {
             this.dialogRole = false
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter)
     },
 }
 </script>
