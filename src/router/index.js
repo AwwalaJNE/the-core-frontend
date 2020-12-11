@@ -47,6 +47,12 @@ import InventoryBagDetail from "@/views/inventory/bag/bagDetail"
 // === Inventory Item Connote detail===
 import ConnoteDetail from "@/views/inventory/connote-detail"
 
+// === Transaction List ===
+import TransactionList from "@/views/transactionList"
+
+// === Transaction Detail ===
+import DetailConnote from "@/views/transactionList/detail"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -184,6 +190,24 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "bagging detail"
+        }
+      },
+      {
+        path: "/sales/transaction",
+        name: "transactionList",
+        component: TransactionList,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Transaction List"
+        }
+      },
+      {
+        path: "/transaction/detail/:id",
+        name: "detailConnote",
+        component: DetailConnote,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Transaction Detail"
         }
       },
     ],
