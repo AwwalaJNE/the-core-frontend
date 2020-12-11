@@ -4,8 +4,10 @@ import 'vuesax/dist/vuesax.css' //Vuesax styles
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { Upload, Autocomplete, Collapse, CollapseItem } from 'element-ui';
+import ElementUI from 'element-ui'
+import { Upload, Autocomplete, Collapse, CollapseItem, DatePicker } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import locale from 'element-ui/lib/locale/lang/en';
 
 
 import Storage from 'vue-ls'
@@ -15,6 +17,8 @@ Vue.use(Upload)
 Vue.use(Autocomplete)
 Vue.use(Collapse)
 Vue.use(CollapseItem)
+Vue.use(DatePicker)
+Vue.use(ElementUI, { locale })
 
 let options = {
     namespace: 'vuejs__', // key prefix

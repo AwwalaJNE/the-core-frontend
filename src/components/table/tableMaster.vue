@@ -36,7 +36,7 @@
                           Action
                         </vs-th>
                       </template>
-                      <template v-if="printAction == true">
+                      <template v-if="printAction == true || avoidAction == true">
                         <vs-th class="action">
                           Action
                         </vs-th>
@@ -104,6 +104,7 @@
                                     <vs-col w="4">
                                         <vs-button
                                             block
+                                            square
                                             flat
                                             :active="true"
                                             @click="actionUpdate(item)"
@@ -114,6 +115,8 @@
                                     <vs-col w="4">
                                         <vs-button
                                             block
+                                            danger
+                                            square
                                             flat
                                             :active="true"
                                             type="submit"
@@ -131,6 +134,7 @@
                             <vs-col w="4">
                               <vs-button
                                   block
+                                  square
                                   flat
                                   :active="true"
                                   type="submit"
@@ -148,17 +152,35 @@
                             <vs-col w="4">
                               <vs-button
                                   block
+                                  square
                                   flat
                                   :active="true"
-                                  type="submit"
                                   @click="actionPrint(item)"
                               >
                                 Print
                               </vs-button>
                             </vs-col>
+                            <template v-if="avoidAction == true">
+                              <vs-col w="4">
+                                <vs-button
+                                    block
+                                    warn
+                                    square
+                                    flat
+                                    :active="true"
+                                    type="submit"
+                                    @click="actionAvoid(item)"
+                                >
+                                  Avoid
+                                </vs-button>
+                              </vs-col>
+                            </template>
                           </vs-row>
                         </vs-td>
                       </template>
+
+                      <!--action for table has button avoid-->
+
 
                         <template v-if="listenExpandable" #expand>
                             <div class="con-content">
@@ -241,6 +263,7 @@ export default {
         hasLinked:Array,
         removeOnly: Boolean,
         printAction: Boolean,
+        avoidAction: Boolean,
     },
     data() {
         return {
@@ -329,6 +352,9 @@ export default {
         },
         actionPrint(val) {
           this.$emit("actionPrint", val)
+        },
+        actionAvoid(val) {
+          this.$emit("actionAvoid", val)
         },
         handleEdit(val) {
           this.$emit("handleEdit", val);
