@@ -191,15 +191,15 @@ export default {
         async actionRemove(val){
             await axios
                 .delete(
-                    this.URL.bag + `/${val.item_number}`,
+                    this.URL.bag+`/${val.bag_number}/detail/${val.bag_detail_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
-                    this.openNotification(null, 'Romove success', 'Romove role is success')
+                    this.openNotification('success', 'Romove success', 'Romove bag item successfully')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Romove role is failed', err)
+                    this.openNotification('danger', 'Romove bag item is failed', err)
                 })
         },
         actionLimit(val){

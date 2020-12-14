@@ -35,25 +35,21 @@
                             </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <connote-list :ref="navActive" :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" />
+                                <connote-list :ref="navActive"  :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" />
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-BAG'">
                           <vs-row >
                             <vs-col vs-align="center" xs="3" sm="3" lg="2">
-                              <template v-if="destination_tlc.length > 0">
-                                <selector
-                                    ref="destination_tlc"
-                                    :valueData="destination_tlc"
-                                    :selectedValue="destination_tlc[0].value"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updatesdestination="updateValue" />
-                              </template>
+                              <select-bag-destination
+                                  ref="bag_destination"
+                                  :isMultiple="false"
+                                  :border="true"
+                                  @updateBagDestination="updateBagDestination" />
                             </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <bag-list :ref="navActive" :query="tempSearch"/>
+                                <bag-list :ref="navActive" :bagDestination="bagDestination" :query="tempSearch"/>
                             </transition>
                         </template>
                         
@@ -75,6 +71,7 @@ import SearchInput from "@/components/search/searchInput"
 import Selector from "@/components/input/select"
 import SelectBagStatusVue from "@/views/inventory/connote/item/selectBagStatus"
 import SelectInventoryVue from "@/views/inventory/connote/item/selectInventoryStatus"
+import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDestination"
 
 // Connote
 import ConnoteList from "@/views/inventory/connote/item/connoteList"
@@ -94,6 +91,7 @@ export default {
         "selector": Selector,
         "select-status-bag": SelectBagStatusVue,
         "select-status-inventory": SelectInventoryVue,
+        "select-bag-destination": SelectBagDestinationVue,
     },
     data() {
         return {
@@ -151,12 +149,10 @@ export default {
             refreshInject:"",
             status_bag:"",
             statusinventory:"",
+            bagDestination:"",
             destination_tlc: [{
               label: 'All Destination',
               value: ''
-            },{
-              label: 'Allnation',
-              value: 1
             }],
 
         }
@@ -168,8 +164,8 @@ export default {
         updateStatusinventory(key,val) {
           this.statusinventory = val;
         },
-        updatesdestination(key,val) {
-
+        updateBagDestination(key,val) {
+          this.bagDestination = val
         },
         refresh(){
             let el = this.refreshInject
@@ -219,6 +215,7 @@ export default {
         },
 
 
+
         filterNow(){
             if(this.permission.length > 0) {
                 console.log('this.keysPermission before filter', this.keysPermission)
@@ -230,7 +227,8 @@ export default {
                 this.permissionDisplay = this.permission
                 console.log('this.keysPermission after filter', this.keysPermission)
             }
-        }
+        },
+
     },
 }
 </script>
