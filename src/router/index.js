@@ -56,8 +56,12 @@ import TransactionList from "@/views/transactionList"
 
 // === Transaction Detail ===
 import DetailConnote from "@/views/transactionList/detail"
+
 // === Cash Register  ===
 import CashRegister from "@/views/cashRegister"
+
+// === Inventory Unbagging  ===
+import Unbagging from "@/views/inventory/unbag"
 
 Vue.use(VueRouter)
 
@@ -223,6 +227,15 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Cash Register"
+        }
+      },
+      {
+        path: "inventory/unbagging",
+        name: "unbagging",
+        component: Unbagging,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Unbagging"
         }
       },
     ],
