@@ -12,7 +12,7 @@ export default {
     origin_phone: {
       label: "Telepon Pengirim*",
       key: "connote_shipper_phone_number",
-      rule: "required",
+      rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -88,7 +88,7 @@ export default {
     destination_phone: {
       label: "Telepon Penerima*",
       key: "connote_receiver_phone_number",
-      rule: "required",
+      rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -222,7 +222,7 @@ export default {
       valueData: null,
       value: ''
     },
-    package_price: {
+    package_insured_goods_value: {
       label: "Nilai Barang",
       key: "insured_goods_value",
       rule: "",
@@ -254,7 +254,7 @@ export default {
     package_jumlah: {
       label: "Jumlah*",
       key: "koli_jumlah",
-      rule: "required",
+      rule: "numeric|min_value:1",
       typeInput: "text|col_right",
       typeData: "Number",
       valueData: null,
@@ -263,7 +263,7 @@ export default {
     package_dimensi_weight: {
       label: "Weight*",
       key: "koli_weight",
-      rule: "",
+      rule: "numeric|min_value:1",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -272,7 +272,7 @@ export default {
     package_dimensi_length: {
       label: "Length",
       key: "koli_length",
-      rule: "",
+      rule: "numeric|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -281,7 +281,7 @@ export default {
     package_dimensi_width: {
       label: "Width",
       key: "koli_width",
-      rule: "",
+      rule: "numeric|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -290,7 +290,7 @@ export default {
     package_dimensi_height: {
       label: "Height",
       key: "koli_height",
-      rule: "",
+      rule: "numeric|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -451,10 +451,6 @@ export default {
     },
   },
   
-  connote_bpik: [
-    
-  ],
-
   // sebagai getter untuk template data koli nnti dimasukin ke proses_connote connote_koli_item
   template_koli: {
     koli_id: '',
@@ -485,7 +481,7 @@ export default {
     connote_number: '',
     connote_shipper_customer_id: '',
     connote_receiver_customer_id: '',
-    is_insured: false,
+    is_insured: true,
     is_need_do_return: false,
     connote_koli_item: [],
     connote_bpik:[],

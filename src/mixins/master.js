@@ -17,7 +17,10 @@ const Master = {
     },
     computed: {
         listenNodeId() {
-            return this.$store.getters.getUser['node_id']
+            return this.$store.getters.getUser['node_id'].value
+        },
+        listenNodeCode() {
+            return this.$store.getters.getUser['node_id'].node_code
         }
     },
     methods: {

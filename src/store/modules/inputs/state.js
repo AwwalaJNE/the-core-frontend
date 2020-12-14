@@ -1,4 +1,4 @@
-// rule : "required|min_value:8"
+// rule : "required|min:8"
 
 export default {
   user: {
@@ -32,7 +32,7 @@ export default {
     password: {
       label: "Password",
       key: "password",
-      rule: "min_value:8",
+      rule: "min:8",
       typeInput: "text|password",
       typeData: "String",
       valueData: null,

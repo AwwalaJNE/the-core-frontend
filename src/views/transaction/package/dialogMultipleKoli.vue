@@ -64,7 +64,7 @@
                                             <template v-else>
                                                 <input-general 
                                                 name="" 
-                                                :rules="''" 
+                                                :rules="item_h.rule" 
                                                 :formKey="`${item_h.key}|${key}`"
                                                 :valueData="item[item_h.key]"
                                                 typeInput="text"
@@ -172,36 +172,43 @@ export default {
                 {
                     label: 'Weight',
                     key: 'actual_weight',
+                    rule: 'numeric|min_value:1',
                     width: "xxs"
                 },
                 {
                     label: 'Length',
                     key: 'length',
+                    rule: 'numeric|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Width',
                     key: 'width',
+                    rule: 'numeric|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Height',
                     key: 'height',
+                    rule: 'numeric|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Volume Weight',
                     key: 'volume_weight',
+                    rule: 'numeric|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Surcharge (s)',
                     key: 'surcharge_id',
+                    rule: '',
                     width: "sm"
                 },
                 {
                     label: 'Description',
                     key: 'description',
+                    rule: '',
                     width: "md"
                 },
             ],
@@ -256,6 +263,9 @@ export default {
             console.log(key, value, value2,index)
             // this.$emit("prosesmultipleKoli", str[0],index, value)
             switch(true) {
+                case key.includes("description"):
+                    this.prosesKoli("description", value, index)
+                    break;
                 case key.includes("actual_weight"):
                     this.prosesKoli("actual_weight", value, index)
                     break;

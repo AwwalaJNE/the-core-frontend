@@ -78,11 +78,11 @@
                             </template>
         
                             <input-general 
-                                :name="InputObject['package_price'].label" 
-                                :rules="InputObject['package_price'].rule" 
-                                :formKey="InputObject['package_price'].key"
-                                :valueData="InputObject['package_price'].value"
-                                :typeInput="InputObject['package_price'].typeInput"
+                                :name="InputObject['package_insured_goods_value'].label" 
+                                :rules="InputObject['package_insured_goods_value'].rule" 
+                                :formKey="InputObject['package_insured_goods_value'].key"
+                                :valueData="InputObject['package_insured_goods_value'].value"
+                                :typeInput="InputObject['package_insured_goods_value'].typeInput"
                                 @updateValue="updateValue" />
                             
                             <input-general 
@@ -172,9 +172,9 @@
                                             :isChecked="InputObject['package_tidak_packing_kayu'].value"
                                             :typeInput="InputObject['package_tidak_packing_kayu'].typeInput"
                                             @updateValue="updateValue" /> 
-                                        <a href="javascript:void(0)">
-                                            <p>{{InputObject['package_tidak_packing_kayu'].titleLabel}}</p>
-                                        </a>
+                                        <router-link :to="{ name: 'printSPPAP'}" target="_blank">
+                                            <p style="color:#1890ff;">{{InputObject['package_tidak_packing_kayu'].titleLabel}}</p>
+                                        </router-link>
                                     </div>
                                 </vs-col>
                                 <vs-col xs="12" md="6" lg="6">
@@ -184,9 +184,9 @@
                                             :isChecked="InputObject['package_tidak_asuransi'].value"
                                             :typeInput="InputObject['package_tidak_asuransi'].typeInput"
                                             @updateValue="updateValue" /> 
-                                        <a href="javascript:void(0)">
-                                            <p>{{InputObject['package_tidak_asuransi'].titleLabel}}</p>
-                                        </a>
+                                        <router-link :to="{ name: 'printSPPAP'}" target="_blank">
+                                            <p style="color:#1890ff;">{{InputObject['package_tidak_asuransi'].titleLabel}}</p>
+                                        </router-link>
                                     </div>
                                 </vs-col>
                             </vs-row>
@@ -408,9 +408,24 @@ export default {
                 case "package_category":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_CATEGORY", value)
                     break;
+                case "insured_goods_value":
+
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE", value)
+                    this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", value)
+                    break;
+                case "amount_discount":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_DISKON", value)
+                    this.$store.dispatch("SET_CALCULATOR_DISKON", value)
+                    break;
+                case "remarks":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_INSTRUKSI", value)
+                    break;
                 case "koli_jumlah":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_JUMLAH", value)
                     this.jumlahKoli = value
+                    break;
+                case "koli_description":
+                    this.prosesKoli0("description", value, 0)
                     break;
                 case "koli_weight":
                     this.prosesKoli0("actual_weight", value, 0)

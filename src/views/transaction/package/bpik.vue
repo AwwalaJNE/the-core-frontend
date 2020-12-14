@@ -102,16 +102,17 @@
                             </vs-button>
                         </vs-col>
                         <vs-col w="1" justify="flex-end">
-                            <vs-button
-                            transparent
-                            block
-                            flat
-                            :active="true"
-                            type="submit"
-                            @click="0"
-                            >
-                                Print
-                            </vs-button>
+                            <router-link :to="{ name: 'printBpik'}" target="_blank">
+                                <vs-button
+                                transparent
+                                block
+                                flat
+                                :active="true"
+                                type="submit"
+                                >
+                                    Print
+                                </vs-button>
+                            </router-link>
                         </vs-col>
                     </vs-row>
                 </div>

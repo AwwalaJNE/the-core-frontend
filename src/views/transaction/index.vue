@@ -142,9 +142,8 @@ export default {
             this.$refs.formTransaction.formSubmit()
         },
         collectData() {
-            // if(info.key.includes('connote_')) {
-            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':info.key, 'value':val})
-            //     }
+            // fix jika data origin dan destination didapat dari dialog get customer by code dan/atau get data transaction
+            // maka perlu collect manual
             Object.keys(this.listenOrigin).map(item => {
                 if(this.listenOrigin[item].key.includes('connote_')){
                     this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenOrigin[item].key, 'value':this.listenOrigin[item].value})
@@ -166,6 +165,21 @@ export default {
                 if(this.listenPackage[item].key.includes('connote_')){
                     console.log('this.listenPackage[item].key', this.listenPackage[item].key, this.listenPackage[item].value)
                     this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenPackage[item].key, 'value':this.listenPackage[item].value})
+                } else {
+                    switch(this.listenPackage[item].key) {
+                        case "insured_goods_value":
+                            this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':'insured_goods_value', 'value':this.listenPackage[item].value})
+                            //break;
+                        case "amount_discount":
+                            this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':'amount_discount', 'value':this.listenPackage[item].value})
+                            //break;
+                        case "remarks":
+                            this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':'remarks', 'value':this.listenPackage[item].value})
+                            //break;
+                        default:
+                            console.log('meong')
+                            // code block
+                    }
                 }
             })
 
@@ -176,7 +190,7 @@ export default {
         async createConnote() {
             let dataTransaction = this.listenTransaction
             dataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
-            dataTransaction['node_code'] = this.listenNodeId
+            dataTransaction['node_code'] = this.listenNodeCode
             console.log('dataTransaction', dataTransaction)
             await axios
                 .post(

@@ -142,6 +142,27 @@ export default {
     SET_PACKAGE_PACKAGE_JUMLAH_ValueData({ commit }, payload) {
         commit('SET_PACKAGE_PACKAGE_JUMLAH_ValueData', payload)
     },
+
+    SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE', payload)
+    },
+    SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE_ValueData({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE_ValueData', payload)
+    },
+
+    SET_PACKAGE_PACKAGE_DISKON({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_DISKON', payload)
+    },
+    SET_PACKAGE_PACKAGE_DISKON_ValueData({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_DISKON_ValueData', payload)
+    },
+
+    SET_PACKAGE_PACKAGE_INSTRUKSI({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_INSTRUKSI', payload)
+    },
+    SET_PACKAGE_PACKAGE_INSTRUKSI_ValueData({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_INSTRUKSI_ValueData', payload)
+    },
     
 
 

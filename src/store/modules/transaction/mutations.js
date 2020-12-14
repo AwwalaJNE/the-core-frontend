@@ -144,6 +144,27 @@ export default {
         state.package.package_jumlah.valueData = payload
     },
 
+    SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE(state, payload) {
+        state.package.package_insured_goods_value.value = payload
+    },
+    SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE_ValueData(state, payload) {
+        state.package.package_insured_goods_value.valueData = payload
+    },
+
+    SET_PACKAGE_PACKAGE_DISKON(state, payload) {
+        state.package.package_diskon.value = payload
+    },
+    SET_PACKAGE_PACKAGE_DISKON_ValueData(state, payload) {
+        state.package.package_diskon.valueData = payload
+    },
+
+    SET_PACKAGE_PACKAGE_INSTRUKSI(state, payload) {
+        state.package.package_instruksi.value = payload
+    },
+    SET_PACKAGE_PACKAGE_INSTRUKSI_ValueData(state, payload) {
+        state.package.package_instruksi.valueData = payload
+    },
+
 
     // Switch Calc component
     SET_CALC_COMPONENT_ARRDATA(state, payload) {
