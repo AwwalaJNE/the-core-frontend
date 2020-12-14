@@ -147,7 +147,10 @@ export default {
         updateValue(type, val, info = {}) {
             let action = type.toUpperCase()
             let prefix = this.listenTypeForm.toUpperCase()
-            this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '')
+            if(info.key !== 'connote_receiver_zip_code' && info.key !== 'connote_receiver_tariff_code') {
+                this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '')
+            }
+            
             // let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
             // if(err == true) {
             //     console.log(`error input controller dispatch SET_USER_${action} | val ` + val)

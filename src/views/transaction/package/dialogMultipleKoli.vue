@@ -146,7 +146,6 @@ export default {
     props: {
         closeDialog: Function,
         active: Boolean,
-        arrData: String,
         surchargeByID: Object
     },
     computed: {
@@ -155,9 +154,6 @@ export default {
         },
         listenConnoteKoliItem () {
             return this.$store.getters.getTransaction.connote_koli_item
-        },
-        listenTempConnoteKoliItem () {
-            return this.$store.getters.getTransaction.temp_koli_item
         },
         listenJumlahPackage () {
             return this.$store.getters.getTransaction.package.package_jumlah.value
@@ -231,8 +227,11 @@ export default {
     },
     methods: {
         initialize() {
-            // this.listenConnoteKoliItem
-            let arr = JSON.parse(this.listenTempConnoteKoliItem)
+            // this.listenConnoteKoliItem issue jika pake ini, jdi perlu dibikin stringify
+            // data is nested, you need to make a deep copy. One option to do this is JSON.parse(JSON.stringify(...))
+            // https://github.com/vuejs/vue/issues/1849#issuecomment-158744006
+            // let arr = JSON.parse(this.listenTempConnoteKoliItem)
+            let arr = JSON.parse(JSON.stringify(this.listenConnoteKoliItem))
             this.connote_koli_item = arr
             console.log('surcharge', this.surchargeByID)
         },
@@ -257,7 +256,6 @@ export default {
             let str = key.split("|")
             let index = str[1]
             console.log(key, value, value2,index)
-            console.log('this.connote_koli_item', this.connote_koli_item)
             // this.$emit("prosesmultipleKoli", str[0],index, value)
             switch(true) {
                 case key.includes("actual_weight"):
@@ -284,7 +282,6 @@ export default {
                     if(this.connote_koli_item[value].hasOwnProperty('surcharge_id')) {
                         this.connote_koli_item[value].surcharge_id = ids
                     }
-                    console.log("handle_surcharge",key, value, value2, this.connote_koli_item )
 
                     // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
                     // this.surchargeView()
@@ -304,18 +301,6 @@ export default {
                console.log('===> dipanggil ke', index, this.connote_koli_item[index])
             }
             
-            // if(key.includes('length')) {
-            //    this.connote_koli_item[index]['length'] = value
-            // }
-
-            // if(key.includes('width')) {
-            //    this.connote_koli_item[index]['width'] = value
-            // }
-
-            // if(key.includes('height')) {
-            //    this.connote_koli_item[index]['height'] = value
-            // }
-            
             let volume_weight = 0
             
             if(Object.keys(service).length > 0) {
@@ -332,7 +317,6 @@ export default {
         },
         removeSurcharge(id, index) {
             this.connote_koli_item[index].surcharge_id = this.connote_koli_item[index].surcharge_id.filter(item => item != id)
-            console.log('remove multiple surcharge', this.connote_koli_item, id, index)
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
             // this.surchargeView()
             // this.calculation()
@@ -393,9 +377,8 @@ export default {
                     }
                     volume_weight = volume_weight + volume_weight_temp
                 })
-
-                
             }
+            // volume_weight = volume_weight.toFixed(2)
             
             let roundUp = this.round03(volume_weight)
                 chargeable_weight = Number(Math.max(actual_weight, roundUp)).toFixed(2)
@@ -407,26 +390,3 @@ export default {
     },
 }
 </script>
-<style lang="scss">
-    .vs-table{
-        table{
-            text-align: left;
-            .md{
-                width: calc(100% / 3) !important;
-            }
-            .sm{
-                width: calc(100% / 4) !important;
-            }
-            .xs{
-                width: calc(100% / 10) !important;
-            }
-            .xxs{
-                width: calc(100% / 12) !important;
-            }
-            .auto{
-                width: auto;
-            }
-            
-        }
-    }
-</style>

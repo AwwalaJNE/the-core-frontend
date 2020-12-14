@@ -1,0 +1,289 @@
+<template>
+    <div v-if="listenActive">
+        <div class="box" style="padding: 1.5em 0.5em !important;">
+            <template>
+                <vs-table>
+                    <template #thead>
+                        <vs-tr>
+                            <vs-th>
+                                No.
+                            </vs-th>
+                            <template v-for="(item, key) in tableHeader">
+                                <vs-th :key="key" :class="item.width ? item.width : ''">
+                                    {{item.label}}
+                                </vs-th>
+                            </template>
+                                    
+                            <vs-th class="md_5">
+                                <p style="position: relative;margin:0;width:100%;text-align:center;">Action</p>
+                            </vs-th>
+                        </vs-tr>
+                    </template>
+                    <template #tbody>
+                        <!-- v-if="listBpik.length > 0" -->
+                        <template v-if="listenBpik.length > 0">
+                            
+                            <vs-tr
+                                v-for="(item,key) in listenBpik"
+                                :key="key"
+                                :data="key"
+                            >
+                                <vs-td>
+                                    {{Number(key) + 1}}    
+                                </vs-td>
+                                <template v-for="(item_h, i) in tableHeader">
+                                    <vs-td
+                                        :key="i"
+                                        :class="item.width ? item.width : ''"
+                                    >
+                                        <template v-if="item_h.key == 'item_condition'">
+                                            <selector 
+                                            :ref="item_h.key"
+                                            :name="''" 
+                                            :rules="item_h.rule" 
+                                            :formKey="`${item_h.key}|${key}`"
+                                            :valueData="item_condition_Arr"
+                                            :selectedValue="item[item_h.key]"
+                                            :isMultiple="false"
+                                            @updateValue="updateValue" />
+                                        </template>
+                                        <template v-else>
+                                            <input-general 
+                                            :name="item_h.placeholder" 
+                                            :rules="''" 
+                                            :formKey="`${item_h.key}|${key}`"
+                                            :valueData="item[item_h.key]"
+                                            typeInput="text"
+                                            :placeholderGabung="true"
+                                            @updateValue="updateValue" />
+                                        </template>
+                                    </vs-td>
+                                </template>
+
+                                <vs-td class="md_5">
+                                    <vs-row justify="space-between">
+                                        <vs-col w="6" justify="flex-end">
+                                            <vs-button
+                                                shadow
+                                                :active="false"
+                                                @click="addNew"
+                                            >
+                                                <i class='bx bx-plus' style="margin-right:5px"></i> Add
+                                            </vs-button>
+                                        </vs-col>
+                                        <vs-col w="6" justify="flex-end" v-if="listenBpik.length > 1 && key !== 0">
+                                            <vs-button
+                                                shadow
+                                                :active="false"
+                                                @click="remove(key)"
+                                            >
+                                                <i class='bx bx-minus' style="margin-right:5px"></i> Del
+                                            </vs-button>
+                                        </vs-col>
+                                    </vs-row>
+                                </vs-td>
+
+                            </vs-tr>
+                        </template>
+                    </template>
+                </vs-table>
+            </template>
+        </div>
+    </div>
+</template>
+<script>
+import TransactionMixin from "@/mixins/transaction.js"
+import InputGeneral from "@/components/input/general"
+import Selector from "@/components/input/select"
+export default {
+    name: "bpik-form",
+    mixins: [TransactionMixin],
+    components: {
+        "input-general": InputGeneral,
+        "selector": Selector,
+    },
+    props: {
+        closeDialog: Function,
+        active: Boolean,
+        arrData: Array
+    },
+    data() {
+        return {
+            tableHeader: [
+                {
+                    label: 'Nama Kiriman',
+                    key: 'item_name',
+                    placeholder: 'Nama Kiriman',
+                    width: "sm_75",
+                    rule: ''
+                },
+                {
+                    label: 'Jenis Kiriman',
+                    key: 'item_type',
+                    placeholder: 'Jenis Kiriman',
+                    width: "sm_75",
+                    rule: ''
+                },
+                {
+                    label: 'Nomer Seri/IMEI(*/**)',
+                    key: 'item_serial_number',
+                    placeholder: 'Nomer Seri',
+                    width: "sm_75",
+                    rule: ''
+                },
+                {
+                    label: 'Jumlah',
+                    key: 'item_total',
+                    placeholder: 'Jumlah',
+                    width: "xs",
+                    rule: 'numeric'
+                },
+                {
+                    label: 'Warna',
+                    key: 'item_color',
+                    placeholder: 'Warna',
+                    width: "xs",
+                    rule: ''
+                },
+                {
+                    label: 'Kondisi(***)',
+                    key: 'item_condition',
+                    placeholder: 'Kondisi',
+                    width: "xs",
+                    rule: ''
+                },
+                {
+                    label: 'Kelengkapan',
+                    key: 'item_completeness',
+                    placeholder: 'Kelengkapan',
+                    width: "sm_75",
+                    rule: ''
+                },
+            ],
+            bpik: {
+                item_name:'',
+                item_type:'',
+                item_serial_number:'',
+                item_total:'',
+                item_color:'',
+                item_condition:'-',
+                item_completeness:''
+            },
+            item_condition_Arr: [
+                {
+                    label: '-',
+                    value: '-'
+                },
+                {
+                    label: 'Baru',
+                    value: 'baru'
+                },
+                {
+                    label: 'Second/Bekas',
+                    value: 'second/bekas'
+                },
+                {
+                    label: 'Service/Rusak',
+                    value: 'service/rusak'
+                }
+            ],
+            listBpik: []
+        }
+    },
+    computed: {
+        listenActive(){
+            return this.active || false
+        },
+        listenArrData() {
+            return this.arrData
+        },
+        listenConnoteBPIK () {
+            return this.$store.getters.getTransaction.connote_bpik
+        },
+        listenBpik() {
+            return this.listBpik
+        }
+    },
+    watch: {
+        active: function(val) {
+            if(val != undefined) {
+                if(val == true) {
+                    console.log('awww aktif')
+                    this.initialize()
+                }
+            }
+        }
+    },
+    methods: {
+        initialize() {
+            let arr =  JSON.parse(JSON.stringify(this.listenConnoteBPIK))
+            if(arr.length > 0) {
+
+            } else {
+                arr = [
+                    {
+                        item_name:'',
+                        item_type:'',
+                        item_serial_number:'',
+                        item_total:'',
+                        item_color:'',
+                        item_condition:'-',
+                        item_completeness:''
+                    },
+                ]
+            }
+            this.listBpik = arr
+        },
+        updateValue(key, value, value2){
+            let str = key.split("|")
+            let index = str[1]
+            console.log(key, value, value2,index)
+            switch(true) {
+                case key.includes("item_name"):
+                    this.prosesBpik('item_name', value, index)
+                    break;
+                case key.includes("item_type"):
+                    this.prosesBpik('item_type', value, index)
+                    break;
+                case key.includes("item_serial_number"):
+                    this.prosesBpik('item_serial_number', value, index)
+                    break;
+                case key.includes("item_total"):
+                    this.prosesBpik('item_total', value, index)
+                    break;
+                case key.includes("item_color"):
+                    this.prosesBpik('item_color', value, index)
+                    break;
+                case key.includes("item_condition"):
+                    this.prosesBpik('item_condition', value, index)
+                    break;
+                case key.includes("item_completeness"):
+                    this.prosesBpik('item_completeness', value, index)
+                    break;
+                default:
+            }
+            // this.$store.dispatch("SET_CONNOTE_BPIK", value)
+        },
+        prosesBpik(key, value, index) {
+            
+
+            if(this.listBpik[index].hasOwnProperty(key)) {
+               this.listBpik[index][key] = value
+               console.log('===> dipanggil ke', index, this.listBpik[index])
+            }
+            console.log('proses bpik' ,key,index, this.listBpik)
+            // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+        },
+        addNew() {
+            // this.listBpik.push(this.bpik)
+            this.listBpik.push(this.$VueExtend({}, this.bpik))
+        },
+        remove(i) {
+            console.log('remove', this.listBpik, i)
+            // this.listBpik.splice(i, 1);
+            this.$VueDelete(this.listBpik, i);
+            console.log('remove after', this.listBpik)
+        }
+    },
+}
+</script>

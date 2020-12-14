@@ -264,10 +264,10 @@ export default {
     },
 
 
-    
-    SET_TEMP_KOLI_ITEM(state, payload) {
-        state.temp_koli_item = payload
+    SET_CONNOTE_BPIK(state, payload) {
+        state.connote_bpik = payload
     },
+    
     SET_CONNOTE_KOLI_ITEM(state, payload) {
         state.connote_koli_item = payload
     },

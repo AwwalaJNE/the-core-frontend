@@ -451,6 +451,10 @@ export default {
     },
   },
   
+  connote_bpik: [
+    
+  ],
+
   // sebagai getter untuk template data koli nnti dimasukin ke proses_connote connote_koli_item
   template_koli: {
     koli_id: '',
@@ -463,7 +467,6 @@ export default {
     description: ''
   },
 
-  temp_koli_item: '',
   connote_koli_item: [
     {
       koli_id: '',
@@ -485,6 +488,7 @@ export default {
     is_insured: false,
     is_need_do_return: false,
     connote_koli_item: [],
+    connote_bpik:[],
     total_biaya: 0,
     connote_index: ''
   },

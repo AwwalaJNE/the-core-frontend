@@ -262,11 +262,11 @@ export default {
         commit('SET_CALCULATOR_TOTAL_BIAYA_ValueData', payload)
     },
 
+    SET_CONNOTE_BPIK({ commit }, payload) {
+        commit('SET_CONNOTE_BPIK', payload)
+    },
 
     // Koli Item
-    SET_TEMP_KOLI_ITEM({ commit }, payload) {
-        commit('SET_TEMP_KOLI_ITEM', payload)
-    },
     SET_CONNOTE_KOLI_ITEM({ commit }, payload) {
         commit('SET_CONNOTE_KOLI_ITEM', payload)
     },

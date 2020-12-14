@@ -12,7 +12,7 @@
                                 <vs-button
                                     shadow
                                     :active="false"
-                                    @click="0"
+                                    @click="openBpikComponent()"
                                     style="float:right"
                                 >
                                     <i class='bx bx-plus'></i> BPIK
@@ -238,6 +238,14 @@
             </div>
         </div>
 
+        <template>
+            <bpik
+            :closeDialog="closeBpikComponent"
+            :active="bpikComponent"
+            :arrData="[]"
+            />
+        </template>
+
         <dialog-surcharge
             :active="surchargeSelector" 
             :closeDialog="closeDialogSurcharge"
@@ -248,7 +256,6 @@
             :active="dialogSettingMultipleKoli" 
             :closeDialog="closeSettingMultipleKoli"
             @prosesmultipleKoli="prosesmultipleKoli"
-            :arrData="listenDataMultipleKoli"
             :surchargeByID="surchargeByID"
             />
     </div>
@@ -261,6 +268,7 @@ import Selector from "@/components/input/select"
 import Switch from "@/components/input/switch"
 import Radio from "@/components/input/radio"
 import Checkbox from "@/components/input/checkbox"
+import BPIK from "@/views/transaction/package/bpik"
 
 import dialogMultipleKoli from "@/views/transaction/package/dialogMultipleKoli"
 import dialogSurcharge from "@/views/transaction/package/dialogSurcharge"
@@ -275,20 +283,21 @@ export default {
         "radio": Radio,
         "checkbox": Checkbox,
         "dialog-surcharge": dialogSurcharge,
-        "dialog-multipleKoli": dialogMultipleKoli
+        "dialog-multipleKoli": dialogMultipleKoli,
+        "bpik": BPIK
     },
     data() {
         return {
             InputObject: {},
             surchargeSelector: false,
             dialogSettingMultipleKoli: false,
+            bpikComponent: false,
             surchargeByID: {},
             surchargeshow: {},
             koliData: this.$store.getters['getTransaction']['template_koli'],
             connote_koli_item: [],
             koliinput: 'text',
             disableBtnMultipleKoli: true,
-            meongData: '',
             jumlahKoli: 1
         }
     },
@@ -311,9 +320,6 @@ export default {
         listenJumlahPackage () {
             return this.$store.getters.getTransaction.package.package_jumlah.value
         },
-        listenDataMultipleKoli() {
-            return this.meongData
-        }
     },
     watch: {
         listenPackageService: function (n,o) {
@@ -510,6 +516,12 @@ export default {
             this.calculation()
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM_index", {"index": index, "key":key, "value":value})
         },
+        openBpikComponent(){
+            this.bpikComponent = !this.bpikComponent
+        },
+        closeBpikComponent(){
+            this.bpikComponent = false
+        },
         openSurchargeDialog(){
             this.surchargeSelector = true
         },
@@ -517,14 +529,9 @@ export default {
             this.surchargeSelector = false
         },
         openSettingMultipleKoli(){
-            let arr = JSON.stringify(this.connote_koli_item)
-            this.meongData = arr
-            this.$store.dispatch("SET_TEMP_KOLI_ITEM", arr)
             this.dialogSettingMultipleKoli = true
         },
         closeSettingMultipleKoli() {
-            this.meongData = ''
-            this.$store.dispatch("SET_TEMP_KOLI_ITEM", '')
             this.dialogSettingMultipleKoli = false
         },
         removeSurcharge(id, index) {

@@ -47,6 +47,9 @@ import InventoryBagDetail from "@/views/inventory/bag/bagDetail"
 // === Inventory Item Connote detail===
 import ConnoteDetail from "@/views/inventory/connote-detail"
 
+// print
+import PrintBPIK from "@/views/print/printBPIK"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -196,6 +199,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/print-bpik',
+    name: 'printBpik',
+    component: PrintBPIK
   },
 ]
 
