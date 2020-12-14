@@ -54,14 +54,14 @@
                 </vs-sidebar-group>
             </template>
             <template v-else>
-              <router-link :to="item.url" :key="key">
-                <vs-sidebar-item :id="item.label.trim()">
-                  <template #icon>
-                    <i :class="`bx ${item.icon !== null ? item.icon:''}`"></i>
-                  </template>
-                  {{item.label}}
+                <vs-sidebar-item :id="item.label.trim()" :key="key">
+                    <template #icon>
+                        <i :class="`bx ${item.icon !== null ? item.icon:''}`"></i>
+                    </template>
+                    <router-link :to="item.url" :key="key">
+                        <p>{{item.label}}</p>
+                    </router-link>
                 </vs-sidebar-item>
-              </router-link>
             </template>
         </template>
 

@@ -265,7 +265,7 @@ export default {
 
 
     SET_CONNOTE_BPIK(state, payload) {
-        state.connote_bpik = payload
+        state.proses_connote.connote_bpik = payload
     },
     
     SET_CONNOTE_KOLI_ITEM(state, payload) {

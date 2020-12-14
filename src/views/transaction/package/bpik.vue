@@ -1,6 +1,6 @@
 <template>
     <div v-if="listenActive">
-        <div class="box" style="padding: 1.5em 0.5em !important;">
+        <div class="box" style="padding: 1.5em 0.5em .5em !important;">
             <template>
                 <vs-table>
                     <template #thead>
@@ -87,6 +87,34 @@
                         </template>
                     </template>
                 </vs-table>
+
+                <div>
+                    <vs-row justify="flex-end">
+                        <vs-col w="1" justify="flex-end">
+                            <vs-button
+                            transparent
+                            block
+                            flat
+                            :active="true"
+                            @click="closeDialog"
+                            >
+                                Close
+                            </vs-button>
+                        </vs-col>
+                        <vs-col w="1" justify="flex-end">
+                            <vs-button
+                            transparent
+                            block
+                            flat
+                            :active="true"
+                            type="submit"
+                            @click="0"
+                            >
+                                Print
+                            </vs-button>
+                        </vs-col>
+                    </vs-row>
+                </div>
             </template>
         </div>
     </div>
@@ -198,7 +226,7 @@ export default {
             return this.arrData
         },
         listenConnoteBPIK () {
-            return this.$store.getters.getTransaction.connote_bpik
+            return this.$store.getters.getTransaction.proses_connote.connote_bpik
         },
         listenBpik() {
             return this.listBpik
@@ -265,23 +293,24 @@ export default {
             // this.$store.dispatch("SET_CONNOTE_BPIK", value)
         },
         prosesBpik(key, value, index) {
-            
-
             if(this.listBpik[index].hasOwnProperty(key)) {
                this.listBpik[index][key] = value
                console.log('===> dipanggil ke', index, this.listBpik[index])
             }
             console.log('proses bpik' ,key,index, this.listBpik)
+            this.$store.dispatch("SET_CONNOTE_BPIK", this.listBpik)
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
         },
         addNew() {
             // this.listBpik.push(this.bpik)
             this.listBpik.push(this.$VueExtend({}, this.bpik))
+            this.$store.dispatch("SET_CONNOTE_BPIK", this.listBpik)
         },
         remove(i) {
             console.log('remove', this.listBpik, i)
             // this.listBpik.splice(i, 1);
             this.$VueDelete(this.listBpik, i);
+            this.$store.dispatch("SET_CONNOTE_BPIK", this.listBpik)
             console.log('remove after', this.listBpik)
         }
     },

@@ -117,8 +117,6 @@
                         </vs-button>
                     </vs-col>
                 </vs-row>
-                    
-                    
             </template>
 
         </dialog-master>

@@ -122,7 +122,7 @@ export default {
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_NAME`, value.customer_name)
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_PHONE`, value.customer_phone)
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, value.geolocation_location_name)
-                this.$store.dispatch(`SET_DESTINATION_DESTINATION_SUBDISTRICT_ID`, '')
+                this.$store.dispatch(`SET_DESTINATION_DESTINATION_SUBDISTRICT_ID`, value.customer_subdistrict_id)
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, value.geolocation_location_name)
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE`, zipndestiCode)
 
