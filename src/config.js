@@ -50,6 +50,7 @@ export default {
     connote: api + "connote",
     transaction: api + "transaction",
     koli: api + "koli",
-    bag: api + "bag"
+    bag: api + "bag",
+    cash_register: api + "cash-register"
 
 }

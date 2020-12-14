@@ -55,6 +55,8 @@ import TransactionList from "@/views/transactionList"
 
 // === Transaction Detail ===
 import DetailConnote from "@/views/transactionList/detail"
+// === Cash Register  ===
+import CashRegister from "@/views/cashRegister"
 
 Vue.use(VueRouter)
 
@@ -211,6 +213,15 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Transaction Detail"
+        }
+      },
+      {
+        path: "/sales/cashregister",
+        name: "cashRegister",
+        component: CashRegister,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Cash Register"
         }
       },
     ],
