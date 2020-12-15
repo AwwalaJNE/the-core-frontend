@@ -63,6 +63,9 @@ import CashRegister from "@/views/cashRegister"
 // === Inventory Unbagging  ===
 import Unbagging from "@/views/inventory/unbag"
 
+// === Pickup Request ===
+import PickupRequest from "@/views/pickup/request"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -238,6 +241,15 @@ const routes = [
           breadCrumb: "Unbagging"
         }
       },
+      {
+        path: "/pickup/request",
+        name: "pickupRequest",
+        component: PickupRequest,
+        meta: {
+            requiresAuth: true,
+            breadCrumb: "Request Pickup"
+        }
+      }
     ],
     meta: { 
       requiresAuth: true,
