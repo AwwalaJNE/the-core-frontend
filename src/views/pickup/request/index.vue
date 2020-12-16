@@ -12,6 +12,7 @@
                     <div style="width: 100px;padding-right: 5px;">
                         <vs-button
                         flat
+                        square
                         block
                         :active="true"
                         @click="openDialog"

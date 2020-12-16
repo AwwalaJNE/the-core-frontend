@@ -161,3 +161,9 @@ export default {
     }
 }
 </script>
+<style>
+  .el-picker-panel__content, .el-date-range-picker__content{
+    font-family: "NunitoSans-Regular";
+    -webkit-font-smoothing: antialiased;
+  }
+</style>
