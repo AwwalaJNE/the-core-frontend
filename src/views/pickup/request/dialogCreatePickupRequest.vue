@@ -124,6 +124,7 @@ export default {
             this.addData() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
+            this.node_request=''
             this.form = {}
         },
         updateValue(val){
