@@ -26,7 +26,8 @@ export default {
     mixins: [master],
     props: {
         query: String,
-        dateFilter: Array
+        dateFilter: Array,
+        node:String
     },
     components: {
         "table-master" : TableMaster
@@ -67,6 +68,7 @@ export default {
             tempDate: [],
             startDate: "",
             endDate: "",
+            node_filter: "",
             dialogTariff: false,
             pagination: {
                 limit:5,
@@ -80,7 +82,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.node_filter)
                 }
             }
         },
@@ -91,12 +93,20 @@ export default {
               this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
               this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
             }
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter)
           }
-        }
+        },
+        node: function(val, old) {
+          if(val !== undefined) {
+            this.node_filter = val
+            if(this.node_filter !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val)
+            }
+          }
+        },
     },
     methods: {
-        async getTableData(limit,page,q, from, to) {
+        async getTableData(limit,page,q, from, to, node) {
             this.loading = true
             let query = "";
             let startDate = "";

@@ -88,7 +88,7 @@
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <PickupList :ref="'transactionList'"   :dateFilter="tempDate" :query="tempSearch"/>
+                        <PickupList :ref="'transactionList'"   :node="node_request" :dateFilter="tempDate" :query="tempSearch"/>
                     </transition>
                 </template>
             </div>
@@ -99,7 +99,7 @@
             :active="dialogPickupList"
             @refresh="refresh"
             :closeDialog="closeDialogPickupList"
-            title="Pickup List"
+            title="Create Pickup List"
         />
 
     </div>
@@ -113,7 +113,7 @@ import dateRange from "@/components/daterange/index"
 
 import PickupList from "@/views/pickup/list/pickupList"
 
-import DialogCreatePickupList from "@/views/pickup/list/dialogCreatePickupList"
+import DialogCreatePickupList from "@/views/pickup/list/dialogCreateEditPickupList"
 
 
 export default {
@@ -175,7 +175,7 @@ export default {
                   res.data.data.map(item => {
                     let obj = {}
                     obj["label"] = item.node_code
-                    obj["value"] = item.node_id
+                    obj["value"] = item.node_code
 
                     this.DataNode.push(obj)
                   })
