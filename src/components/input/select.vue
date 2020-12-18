@@ -5,7 +5,7 @@
                 class="m-select"
                 filter
                 :multiple="listenIsMultiple"
-                :placeholder="name"
+                :placeholder="placeholder"
                 :label="name"
                 v-model="value"
                 :border="border"
@@ -42,7 +42,8 @@ export default {
         selectedValue: [Array, String, Number],
         formKey: String,
         isMultiple: Boolean,
-        border: Boolean
+        border: Boolean,
+        placeholder:String
     },
     data() {
         return {
