@@ -1,7 +1,8 @@
 <template>
     <vs-dialog 
     v-model="modalActive" 
-    prevent-close 
+    prevent-close
+    overflow-hidden
     @close="closeDialog"
     :class="width">
         <template>

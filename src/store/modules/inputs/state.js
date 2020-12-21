@@ -1245,5 +1245,98 @@ export default {
       value: true
     },
   },
+
+  //form pickup list
+  pickup_list: {
+    req_name: {
+      label: "Name*",
+      key: "req_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    pic_name: {
+      label: "PIC*",
+      key: "pic_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    req_phone: {
+      label: "Phone*",
+      key: "req_phone",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    req_address: {
+      label: "Address*",
+      key: "req_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    req_date: {
+      label: "Date & Time",
+      key: "req_date",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    request_to: {
+      label: "Request To",
+      key: "request_to",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    req_courier_employee_id: {
+      label: "Courier",
+      key: "req_courier_employee_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    remark: {
+      label: "Remark*",
+      key: "remark",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    vehicle_type_id: {
+      label: "Vehicle Type",
+      key: "vehicle_type_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    mapPicker:{
+      // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
+      typeInput: "mapPicker",
+    },
+  },
   
 }

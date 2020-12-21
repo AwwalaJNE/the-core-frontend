@@ -13,7 +13,6 @@
                     @select="handleSelect"
                     ></el-autocomplete>
                 </div>
-                {{latitude+','+longitude}}
                 
                 <div ref="map_general" id="map_general" style="width: 100%; height: 250px;z-index:1;position:relative; display:block; overflow:hidden;"></div>
             </div>
