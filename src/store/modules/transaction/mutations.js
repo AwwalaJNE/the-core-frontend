@@ -417,7 +417,7 @@ export default {
                     } else if (state.destination[item]['typeData'].includes("Boolean")) {
                         state.destination[item].value = data[state.destination[item].key] || false
                     } else {
-                        state.destination[item].value = data[state.destination[item].key] || ''
+                        state.destination[item].value = data[state.destination[item].key].toLowerCase() || ''
                     }
                 } else if(item == 'destination_onchange_address') {
                     //connote_receiver_administrative_address
@@ -455,7 +455,7 @@ export default {
                     } else if (state.package[item]['typeData'].includes("Boolean")) {
                         state.package[item].value = data[state.package[item].key] || false
                     } else {
-                        state.package[item].value = data[state.package[item].key] || ''
+                        state.package[item].value = data[state.package[item].key].toLowerCase() || ''
                     }
                 }
 
@@ -477,13 +477,13 @@ export default {
                     if(state.destination[item].hasOwnProperty('value')){
                         state.destination[item].value = 'rumah'
                     }
-                    //break;
+                    break;
                 case "destination_zip_code":
                     if(state.destination[item].hasOwnProperty('input')){
                         state.destination[item]['input'][0].value = ''
                         state.destination[item]['input'][1].value = ''
                     }
-                    //break;
+                    break;
                 default:
                     if(state.destination[item].hasOwnProperty('value')){
                         state.destination[item].value = ''
@@ -522,6 +522,7 @@ export default {
                             }
                           ]
                     }
+                    console.log('state.package[item] ====', state.package[item])
                     
                     break;
                 default:

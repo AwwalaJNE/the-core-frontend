@@ -2,7 +2,6 @@
     <div>
         <div class="box">
             <div>
-                {{listenConnoteIndexActive}}
                 <vs-row justify="space-between">
                     <vs-col xs="12" sm="3" lg="3">
                         <h3 style="text-align:left;margin-top:8px;">Package Information</h3>

@@ -48,7 +48,7 @@ const TransactionMixin = {
             let CONNOTE_INDEX = index != undefined ? index : 0
             let tarifData = this.listenPackageService || {}
             let chargeable_weight = this.listenCalculatorChargeableWeight
-            let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
+            let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
             let surchargeByID = this.listenPackageSurchargeByID
 
             let BASE_TARIFF = 0
@@ -60,7 +60,7 @@ const TransactionMixin = {
             let HANDLING_CHARGE = 0
             if(listKoli.length > 0) {
                 listKoli.map(item => {
-                    if(item.surcharge_id.length > 0) {
+                    if(item.surcharge_id && item.surcharge_id.length > 0) {
                         let tempbiaya = 0
                         let temp_handling_charge = 0
                         item.surcharge_id.map(su_id => {
@@ -85,7 +85,7 @@ const TransactionMixin = {
             let TOTAL_BIAYA = 0
             TOTAL_BIAYA = BASE_TARIFF + HANDLING_CHARGE + BIAYA_LAIN
             
-            console.log('list connote koli => ', listKoli, surchargeByID)
+            console.log('list connote koli => ', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive],listKoli, surchargeByID)
             
 
             this.$nextTick(() => {
@@ -96,20 +96,9 @@ const TransactionMixin = {
                 // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
                 this.$store.dispatch('SET_CONNOTE_DATA', {'key':'total_biaya','value': TOTAL_BIAYA})
                 // this.$store.dispatch("SET_TRANSACTION_CONNOTE_TOTAL_BIAYA", {'value': TOTAL_BIAYA, 'index': CONNOTE_INDEX})
-
-                this.mergeProsesConnote(CONNOTE_INDEX)
                 this.calculateGrandTotal()
             });
             
-        },
-        mergeProsesConnote (CONNOTE_INDEX) {
-            // this.$store.dispatch("MERGE_TRANSACTION_CONNOTE", { 'value':true, 'index': CONNOTE_INDEX })
-            
-            // let transaction = this.$store.getters.getTransaction.transaction
-            // console.log("==== transaction ====", transaction)
-
-            // this.$store.dispatch("MERGE_PROSES_CONNOTE", true)
-            console.log("==== DATA CONNOTE ====", this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item)
         },
         calculateGrandTotal() {
             let listConnote = this.listenTransactionConnote
@@ -205,51 +194,6 @@ const TransactionMixin = {
         },
         refreshTransactionStore() {
             this.$store.dispatch("EMPTY_TRANSACTION_DATA_CONNOTE", true)
-            // this.$store.dispatch(`SET_CONNOTE_KOLI_ITEM_EMPTY`, true)
-            // this.$store.dispatch(`SET_PROSES_CONNOTE_EMPTY`, true)
-
-            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, '')
-            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, '')
-            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, '')
-            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, '')
-            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, '')
-            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, '')
-
-            // let typeaddress = 'home'
-            // let zipndestiCode = {'zip_code' : '', 'destination_code': ''}
-            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_TYPE`, typeaddress)
-            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_NAME`, '')
-            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_PHONE`, '')
-            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, '')
-            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_SUBDISTRICT_ID`, '')
-            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, '')
-            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE`, zipndestiCode)
-
-            // this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", '')
-            // this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", {})
-            // this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", [])
-
-            // this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", 0)
-            // this.$store.dispatch("SET_CALCULATOR_SURCHARGE", 0)
-            // this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", 0)
-            // this.$store.dispatch("SET_CALCULATOR_TOTAL_BIAYA", 0)
-            // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", 0)
-
-            // this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", 1)
-            // this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", 0)
-            // this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", 1)
-
-            // this.$store.dispatch("SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE", 0)
-            // this.$store.dispatch("SET_CALCULATOR_ASURANSI", 0)
-            // this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 0)
-
-            // this.$store.dispatch("SET_PACKAGE_PACKAGE_DISKON", 0)
-            // this.$store.dispatch("SET_CALCULATOR_DISKON", 0)
-
-            // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.$store.getters['getTransaction']['template_koli'])
-            // this.$store.dispatch("SET_PACKAGE_PACKAGE_CATEGORY", '')
-            // this.$store.dispatch("SET_PACKAGE_PACKAGE_INSTRUKSI", ' ')
-            // this.$store.dispatch("SET_PACKAGE_PACKAGE_JUMLAH", 1)
         },
     },
 }
