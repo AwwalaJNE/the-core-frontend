@@ -1,6 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
+    :loading="listenLoading"
     :closeDialog="closeDialog">
 
         <template v-slot:header>
@@ -22,6 +23,7 @@
                     danger
                     flat
                     :active="true"
+                    @click="cancel"
                     >
                         Cancel
                     </vs-button>
@@ -55,12 +57,16 @@ export default {
     props: {
         closeDialog: Function,
         active: Boolean,
+        loading:Boolean,
         title: String,
         message: String
     },
     computed: {
         listenActive(){
             return this.active
+        },
+        listenLoading(){
+          return this.loading
         },
         listenTitle(){
             return this.title
@@ -72,7 +78,10 @@ export default {
     methods: {
         confirm() {
             this.$emit("confirm",true)
-        }
+        },
+        cancel(val) {
+          this.$emit("cancel",true)
+        },
     },
 }
 </script>

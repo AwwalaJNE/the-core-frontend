@@ -2,6 +2,7 @@
     <vs-dialog 
     v-model="modalActive" 
     prevent-close
+    :loading="loadingActive"
     overflow-hidden
     @close="closeDialog"
     :class="width">
@@ -29,11 +30,13 @@ export default {
     props: {
         actived: Boolean,
         closeDialog: Function,
-        width: String
+        width: String,
+        loading:Boolean
     },
     data() {
         return {
-            modalActive: false
+            modalActive: false,
+            loadingActive: false
         }
     },
     watch: {
@@ -41,6 +44,12 @@ export default {
             if(val !== undefined) {
                 this.modalActive = val || false
             }
+        },
+        loading: function(val) {
+          if(val !== undefined) {
+            console.log(val, 'loading')
+            this.loadingActive = val || false
+          }
         }
     },
     methods: {
