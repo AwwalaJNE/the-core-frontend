@@ -10,7 +10,7 @@
         :hasAction="false"
         :printAction="false"
         :hasLinked="['cash_register_number']"
-        :hasPagination="false"
+        :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEdit="actionDetail"
@@ -94,7 +94,7 @@ export default {
                 .get(this.URL.cash_register +`?n=${this.listenNodeId}&start_date=${from}&end_date=${to}`,
                 this.Helper.header())
                 .then(res => {
-                    let arr =res.data.data.connote
+                    let arr =res.data.data
 
                   console.log(arr)
                     this.dataTable = arr
@@ -125,7 +125,8 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         actionDetail(row){
-          this.$router.push({name:'InventoryItem-detail', params:{ id:row.connote_number}});
+          let token = JSON.parse(localStorage.getItem("vuejs__tokenBearer")).value
+          window.open(this.URL.cash_register+`/${row.cash_register_number}?bearer=Bearer&tok=${token}`, '_blank')
         },
 
     },

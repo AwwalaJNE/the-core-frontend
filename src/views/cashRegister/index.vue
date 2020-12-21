@@ -12,8 +12,9 @@
                 <vs-button class="btn-cash-register"
                     square
                     block
+                    @click="generateCashRegister"
                 >
-                  GENERATE CASH REGISTER
+                  GENERATE
                 </vs-button>
               </div>
             </vs-col>
@@ -40,31 +41,51 @@
             </div>
         </section>
 
+      <!--    dialog confirm create cash register-->
+      <dialog-confirm
+          :active="activeDialogCashRegister"
+          :loading="activeLoadingCashRegister"
+          :closeDialog="closeDialogConfirm"
+          title="Cash Register"
+          message="Are you sure you want to generate cash register ?"
+          @confirm="confirm"
+          @cancel="closeDialogConfirm"
+      />
     </div>
+
 </template>
 <script>
+import axios from "axios";
+import master from "@/mixins/master"
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import dateRange from "@/components/daterange/index"
 
 import cashRegisterList from "@/views/cashRegister/cashRegisterList"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 
 
 export default {
     name:"cash-register",
+    mixins:[master],
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
         "daterange-filter": dateRange,
         "cashRegisterList": cashRegisterList,
+        "dialog-confirm": DialogConfirm
     },
     data() {
         return {
             title:"Cash Register",
             tempSearch: "",
             tempDate: [],
+            activeDialogCashRegister:false,
+            activeLoadingCashRegister:false,
+            form:{}
+
         }
     },
     methods: {
@@ -84,7 +105,39 @@ export default {
         openDialog(){
             this.$router.push('/new-transactions')
         },
-
+        generateCashRegister(){
+          this.activeDialogCashRegister = true
+        },
+        closeDialogConfirm(){
+          this.activeDialogCashRegister = false
+        },
+        confirm(val) {
+          if(val) {
+            console.log(val,'asdasdasd')
+            this.activeLoadingCashRegister=true
+            this.addData()
+          }
+        },
+        async addData() {
+          await axios
+              .post(
+                  this.URL.cash_register +`?n=${this.listenNodeId}`,
+                  JSON.stringify(this.form),this.Helper.header())
+              .then(res => {
+                console.log('res', res)
+                this.loading=false
+                this.activeLoadingCashRegister=false
+                this.closeDialogConfirm()
+                this.$refs.transactionList.refresh()
+                this.openNotification(null, 'Success', 'Generate cash Register is success')
+              }).catch(err => {
+                this.loading = false
+                this.activeLoadingCashRegister = false
+                this.closeDialogConfirm()
+                this.$refs.transactionList.refresh()
+                this.openNotification('danger', 'Create new role is failed', err.response ? err.response.data.message : 'something went wrong')
+              })
+        },
     }
 }
 </script>
