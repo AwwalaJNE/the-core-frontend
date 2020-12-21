@@ -47,13 +47,27 @@ import InventoryBagDetail from "@/views/inventory/bag/bagDetail"
 // === Inventory Item Connote detail===
 import ConnoteDetail from "@/views/inventory/connote-detail"
 
+// === Print ===
+import PrintBPIK from "@/views/print/printBPIK"
+import printSPPAP from "@/views/print/printSPPAP"
+
 // === Transaction List ===
 import TransactionList from "@/views/transactionList"
 
 // === Transaction Detail ===
 import DetailConnote from "@/views/transactionList/detail"
+
 // === Cash Register  ===
 import CashRegister from "@/views/cashRegister"
+
+// === Inventory Unbagging  ===
+import Unbagging from "@/views/inventory/unbag"
+
+// === Pickup Request ===
+import PickupRequest from "@/views/pickup/request"
+
+// === Pickup List ===
+import PickupList from "@/views/pickup/list"
 
 Vue.use(VueRouter)
 
@@ -221,6 +235,33 @@ const routes = [
           breadCrumb: "Cash Register"
         }
       },
+      {
+        path: "inventory/unbagging",
+        name: "unbagging",
+        component: Unbagging,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Unbagging"
+        }
+      },
+      {
+        path: "/pickup/request",
+        name: "pickupRequest",
+        component: PickupRequest,
+        meta: {
+            requiresAuth: true,
+            breadCrumb: "Request Pickup"
+        }
+      },
+      {
+        path: "/pickup/list",
+        name: "pickupList",
+        component: PickupList,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Pickup List"
+        }
+      }
     ],
     meta: { 
       requiresAuth: true,
@@ -231,6 +272,16 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/print-bpik',
+    name: 'printBpik',
+    component: PrintBPIK
+  },
+  {
+    path: '/print-sppap',
+    name: 'printSPPAP',
+    component: printSPPAP
   },
 ]
 

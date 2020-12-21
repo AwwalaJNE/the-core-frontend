@@ -72,6 +72,7 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
+import TransactionMixin from "@/mixins/transaction.js"
 import FormMaster from "@/components/form/formMaster"
 import Breadcrumb from "@/components/breadcrumb/index"
 import Origin from "@/views/transaction/origin"
@@ -80,7 +81,7 @@ import Package from "@/views/transaction/package"
 import Calc from "@/views/transaction/calc"
 export default {
     name: "new-transaction",
-    mixins: [master],
+    mixins: [master, TransactionMixin],
     components: {
         "form-master": FormMaster,
         "origin" : Origin,
@@ -92,6 +93,9 @@ export default {
     computed: {
         listenOrigin () {
             return this.$store.getters.getTransaction.origin
+        },
+        listenConnoteActive () {
+            return this.$store.getters.getTransaction.connote_index_active
         },
         listenDestination () {
             return this.$store.getters.getTransaction.destination
@@ -106,7 +110,7 @@ export default {
     data() {
         return {
             typeAction: '',
-            dataTransaction: {}
+            dataTransaction: {},
         }
     },
     methods: {
@@ -142,61 +146,123 @@ export default {
             this.$refs.formTransaction.formSubmit()
         },
         collectData() {
-            // if(info.key.includes('connote_')) {
-            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':info.key, 'value':val})
+            // fix jika data origin dan destination didapat dari dialog get customer by code dan/atau get data transaction
+            // maka perlu collect manual
+            // Object.keys(this.listenOrigin).map(item => {
+            //     if(this.listenOrigin[item].key.includes('connote_')){
+            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenOrigin[item].key, 'value':this.listenOrigin[item].value})
             //     }
-            Object.keys(this.listenOrigin).map(item => {
-                if(this.listenOrigin[item].key.includes('connote_')){
-                    this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenOrigin[item].key, 'value':this.listenOrigin[item].value})
-                }
-            })
-            Object.keys(this.listenDestination).map(item => {
-                if(this.listenDestination[item].hasOwnProperty('key')) {
-                    if(this.listenDestination[item].key.includes('connote_')){
-                        this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination[item].key, 'value':this.listenDestination[item].value})
-                    }
-                }
-                if(item == 'destination_zip_code') {
-                    this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination['destination_zip_code'].input[0].key, 'value':this.listenDestination['destination_zip_code'].input[0].value})
-                    this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination['destination_zip_code'].input[1].key, 'value':this.listenDestination['destination_zip_code'].input[1].value})
-                }
+            // })
+            // Object.keys(this.listenDestination).map(item => {
+            //     if(this.listenDestination[item].hasOwnProperty('key')) {
+            //         if(this.listenDestination[item].key.includes('connote_')){
+            //             this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination[item].key, 'value':this.listenDestination[item].value})
+            //         }
+            //     }
+            //     if(item == 'destination_zip_code') {
+            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination['destination_zip_code'].input[0].key, 'value':this.listenDestination['destination_zip_code'].input[0].value})
+            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination['destination_zip_code'].input[1].key, 'value':this.listenDestination['destination_zip_code'].input[1].value})
+            //     }
                 
-            })
-            Object.keys(this.listenPackage).map(item => {
-                if(this.listenPackage[item].key.includes('connote_')){
-                    console.log('this.listenPackage[item].key', this.listenPackage[item].key, this.listenPackage[item].value)
-                    this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenPackage[item].key, 'value':this.listenPackage[item].value})
-                }
-            })
+            // })
+            // Object.keys(this.listenPackage).map(item => {
+            //     if(this.listenPackage[item].key.includes('connote_')){
+            //         console.log('this.listenPackage[item].key', this.listenPackage[item].key, this.listenPackage[item].value)
+            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenPackage[item].key, 'value':this.listenPackage[item].value})
+            //     } else {
+            //         switch(this.listenPackage[item].key) {
+            //             case "insured_goods_value":
+            //                 this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':'insured_goods_value', 'value':this.listenPackage[item].value})
+            //                 //break;
+            //             case "amount_discount":
+            //                 this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':'amount_discount', 'value':this.listenPackage[item].value})
+            //                 //break;
+            //             case "remarks":
+            //                 this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':'remarks', 'value':this.listenPackage[item].value})
+            //                 //break;
+            //             default:
+            //                 console.log('meong')
+            //                 // code block
+            //         }
+            //     }
+            // })
 
-            this.$store.dispatch(`MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE`, true)
+            // this.$store.dispatch(`MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE`, {'index': this.listenConnoteActive})
 
             console.log('==== transaction ====', this.listenTransaction)
         },
         async createConnote() {
-            let dataTransaction = this.listenTransaction
-            dataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
-            dataTransaction['node_code'] = this.listenNodeId
-            console.log('dataTransaction', dataTransaction)
+            this.dataTransaction = this.listenTransaction
+            this.dataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
+            this.dataTransaction['node_code'] = this.listenNodeCode
+            console.log('this.dataTransaction', this.dataTransaction)
             await axios
                 .post(
                     this.URL.connote + `?n=${this.listenNodeId}`,
-                    JSON.stringify(dataTransaction), 
+                    JSON.stringify(this.dataTransaction), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
-                    // this.handleClearForm()
-                    // this.closeDialog()
-                    // this.$emit("refresh")
+                    console.log('res connote', res)
+                    if(res.status == 200) {
+                        if(this.typeAction == 'addconnote') {
+                            this.fillTransactionDataAddMoreConnote(res.data.data)
+                        }
+                        this.refreshTransactionStore()
+                    }
+                    
                     this.openNotification(null, 'Create new success', 'Create new district is success')
                 }).catch(err => {
-                    // this.loading = false
-                    // this.handleClearForm()
-                    // this.closeDialog()
-                    // this.$emit("refresh")
                     this.openNotification('danger', 'Create new transaction failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
+
+        fillTransactionDataAddMoreConnote(data){
+            
+            this.dataTransaction['transaction_id'] = data.transaction_id || ''
+            let res_connote = {}
+            Object.keys(data).length > 0 && Object.keys(data).map(item => {
+                if(item !== 'shipper_geolocation' && 
+                item !== 'receiver_geolocation' &&
+                item !== 'tariff' &&
+                item !== 'koli' &&
+                item !== 'transaction_id') {
+                    if(item == 'connote_number' ||
+                    item == 'connote_booking_number' ||
+                    item == 'connote_reference_number') {
+                        res_connote[item] = data[item].toString()
+                    } else {
+                        res_connote[item] = data[item]
+                    }
+                    
+                }
+
+                if(item == 'koli') {
+                    res_connote['connote_koli_item'] = data[item]
+                }
+            })
+
+            
+
+            // connote yg terakhir dibuat / connote dengan connote_number yg sebelumnya kosong 
+            let lastIndex = this.dataTransaction['connote'].length - 1
+            this.dataTransaction['connote'][lastIndex] = res_connote
+
+            console.log('CCCConote', this.dataTransaction, res_connote)
+
+            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':this.dataTransaction['transaction_id']})
+            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'connote', 'value':this.dataTransaction['connote']})
+            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value':this.dataTransaction['transaction_finished']})
+            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'node_code', 'value':this.dataTransaction['node_code']})
+
+
+            // setelah proses ngisi transaction data connote dari respond post connote selesai,
+            // - add obj data connote template
+            // - connote index active + 1.
+            this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
+            this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
+        }
+
+        
     },
 }
 </script>

@@ -64,7 +64,7 @@
                                             <template v-else>
                                                 <input-general 
                                                 name="" 
-                                                :rules="''" 
+                                                :rules="item_h.rule" 
                                                 :formKey="`${item_h.key}|${key}`"
                                                 :valueData="item[item_h.key]"
                                                 typeInput="text"
@@ -117,8 +117,6 @@
                         </vs-button>
                     </vs-col>
                 </vs-row>
-                    
-                    
             </template>
 
         </dialog-master>
@@ -146,7 +144,6 @@ export default {
     props: {
         closeDialog: Function,
         active: Boolean,
-        arrData: String,
         surchargeByID: Object
     },
     computed: {
@@ -155,9 +152,6 @@ export default {
         },
         listenConnoteKoliItem () {
             return this.$store.getters.getTransaction.connote_koli_item
-        },
-        listenTempConnoteKoliItem () {
-            return this.$store.getters.getTransaction.temp_koli_item
         },
         listenJumlahPackage () {
             return this.$store.getters.getTransaction.package.package_jumlah.value
@@ -168,46 +162,57 @@ export default {
         listenPackageService () {
             return this.$store.getters.getTransaction.package.package_service.valueData || {}
         },
+
+        // new code
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
+        },
     },
     data() {
         return {
-            koliData: this.$store.getters['getTransaction']['template_koli'],
             indexSurcharge: 0,
             surchargeSelector: false,
             tableHeader: [
                 {
                     label: 'Weight',
                     key: 'actual_weight',
+                    rule: 'numeric|min_value:1',
                     width: "xxs"
                 },
                 {
                     label: 'Length',
                     key: 'length',
+                    rule: 'numeric|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Width',
                     key: 'width',
+                    rule: 'numeric|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Height',
                     key: 'height',
+                    rule: 'numeric|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Volume Weight',
                     key: 'volume_weight',
+                    rule: 'numeric|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Surcharge (s)',
                     key: 'surcharge_id',
+                    rule: '',
                     width: "sm"
                 },
                 {
                     label: 'Description',
                     key: 'description',
+                    rule: '',
                     width: "md"
                 },
             ],
@@ -231,10 +236,34 @@ export default {
     },
     methods: {
         initialize() {
-            // this.listenConnoteKoliItem
-            let arr = JSON.parse(this.listenTempConnoteKoliItem)
+            // this.listenConnoteKoliItem issue jika pake ini, jdi perlu dibikin stringify
+            // data is nested, you need to make a deep copy. One option to do this is JSON.parse(JSON.stringify(...))
+            // https://github.com/vuejs/vue/issues/1849#issuecomment-158744006
+            // let arr = JSON.parse(this.listenTempConnoteKoliItem)
+            let data = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
+            let arr = JSON.parse(JSON.stringify(data))
+
+            // fix karena key yg didapet dari respond create connote gak konsisten dengan key saat create data
+            arr.map((item, i) => {
+                if(item.hasOwnProperty('koli_actual_weight')) {
+                   arr[i]['actual_weight'] = item['koli_actual_weight']
+                }
+                if(item.hasOwnProperty('koli_height')) {
+                    arr[i]['height'] = item['koli_height']
+                }
+                if(item.hasOwnProperty('koli_length')) {
+                    arr[i]['length'] = item['koli_length']
+                }
+                if(item.hasOwnProperty('koli_width')) {
+                    arr[i]['width'] = item['koli_width']
+                }
+                if(item.hasOwnProperty('koli_volume_weight')) {
+                    arr[i]['volume_weight'] = item['koli_volume_weight']
+                }
+            })
+
             this.connote_koli_item = arr
-            console.log('surcharge', this.surchargeByID)
+            console.log('surcharge', this.surchargeByID, this.connote_koli_item)
         },
         cancel() {
             this.closeDialog()
@@ -257,9 +286,11 @@ export default {
             let str = key.split("|")
             let index = str[1]
             console.log(key, value, value2,index)
-            console.log('this.connote_koli_item', this.connote_koli_item)
             // this.$emit("prosesmultipleKoli", str[0],index, value)
             switch(true) {
+                case key.includes("description"):
+                    this.prosesKoli("description", value, index)
+                    break;
                 case key.includes("actual_weight"):
                     this.prosesKoli("actual_weight", value, index)
                     break;
@@ -284,7 +315,6 @@ export default {
                     if(this.connote_koli_item[value].hasOwnProperty('surcharge_id')) {
                         this.connote_koli_item[value].surcharge_id = ids
                     }
-                    console.log("handle_surcharge",key, value, value2, this.connote_koli_item )
 
                     // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
                     // this.surchargeView()
@@ -304,24 +334,11 @@ export default {
                console.log('===> dipanggil ke', index, this.connote_koli_item[index])
             }
             
-            // if(key.includes('length')) {
-            //    this.connote_koli_item[index]['length'] = value
-            // }
-
-            // if(key.includes('width')) {
-            //    this.connote_koli_item[index]['width'] = value
-            // }
-
-            // if(key.includes('height')) {
-            //    this.connote_koli_item[index]['height'] = value
-            // }
-            
             let volume_weight = 0
             
             if(Object.keys(service).length > 0) {
-                let service_volume_divider = service['service_volume_divider'].toString()
+                let service_volume_divider = Number(service['service_volume_divider'])
                 volume_weight = (this.connote_koli_item[index]['length'] * this.connote_koli_item[index]['width'] * this.connote_koli_item[index]['height']) / service_volume_divider 
-                volume_weight = volume_weight / 1000
             }
             this.connote_koli_item[index]['volume_weight'] = volume_weight.toFixed(2)
             
@@ -332,7 +349,6 @@ export default {
         },
         removeSurcharge(id, index) {
             this.connote_koli_item[index].surcharge_id = this.connote_koli_item[index].surcharge_id.filter(item => item != id)
-            console.log('remove multiple surcharge', this.connote_koli_item, id, index)
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
             // this.surchargeView()
             // this.calculation()
@@ -393,9 +409,8 @@ export default {
                     }
                     volume_weight = volume_weight + volume_weight_temp
                 })
-
-                
             }
+            // volume_weight = volume_weight.toFixed(2)
             
             let roundUp = this.round03(volume_weight)
                 chargeable_weight = Number(Math.max(actual_weight, roundUp)).toFixed(2)
@@ -407,26 +422,3 @@ export default {
     },
 }
 </script>
-<style lang="scss">
-    .vs-table{
-        table{
-            text-align: left;
-            .md{
-                width: calc(100% / 3) !important;
-            }
-            .sm{
-                width: calc(100% / 4) !important;
-            }
-            .xs{
-                width: calc(100% / 10) !important;
-            }
-            .xxs{
-                width: calc(100% / 12) !important;
-            }
-            .auto{
-                width: auto;
-            }
-            
-        }
-    }
-</style>

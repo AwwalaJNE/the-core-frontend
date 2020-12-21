@@ -122,6 +122,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
+                    this.checkAuth(err.response)
                     this.openNotification('danger', 'Failed to populate users list', err.response.data.message)
                 })
         },
@@ -148,6 +149,7 @@ export default {
                     this.openNotification(null, 'Romove success', 'Romove role is success')
                 }).catch(err => {
                     this.loading = false
+                    this.checkAuth(err.response)
                     this.openNotification('danger', 'Romove role is failed', err)
                 })
         },

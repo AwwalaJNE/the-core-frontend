@@ -109,7 +109,6 @@ export default {
                 if (Object.keys(obj).length > 0) {
                     this.Keys = Object.keys(obj)
                     this.InputObject = obj
-                    console.log('ini inputObject', this.InputObject, this.Keys)
                 } else {
                     this.Keys = []
                     this.InputObject = {}
@@ -134,7 +133,6 @@ export default {
                     }
                 })
             }
-            console.log('initilize data', this.latitude, this.longitude)
 
         },
         pickLocation(item){
@@ -142,7 +140,6 @@ export default {
             this.Keys.map(key => {
                 let action = key.toUpperCase()
                 if(this.InputObject[key].hasOwnProperty('mapPicker')) {
-                    console.log(`this.InputObject['typeInput']`,this.InputObject[key]['typeInput'])
                     if(this.InputObject[key]['typeInput'].toLowerCase().includes('latitude')){
                         this.$store.dispatch(`SET_${prefix}_${action}`, item['latitude'])
                         // this.latitude = item['latitude']
@@ -166,7 +163,6 @@ export default {
             this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster
         },
         onSubmit(refs){
-            console.log('onsubmit form controller', refs)
                 refs.form.validate().then(success => {
                     if (!success) {
                         console.log('err niih')
@@ -204,7 +200,6 @@ export default {
                     }
             })
             this.form = {}
-            console.log('clear form', this.form, this.$store.getters[this.listenGettersPrefix][this.listenTypeForm])
         },
     },
     mounted() {
@@ -213,7 +208,6 @@ export default {
             this.initializeDataItem()
         });
         
-        console.log('form controller')
     },
 }
 </script>

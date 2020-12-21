@@ -67,7 +67,7 @@ export default {
                 },
                 {
                     label: "Province",
-                    key: "geolocation_province",
+                    key: "geolocation_province_name",
                     width: "auto"
                 },
             ],

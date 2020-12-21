@@ -17,7 +17,10 @@ const Master = {
     },
     computed: {
         listenNodeId() {
-            return this.$store.getters.getUser['node_id']
+            return this.$store.getters.getUser['node_id'].value
+        },
+        listenNodeCode() {
+            return this.$store.getters.getUser['node_id'].node_code
         }
     },
     methods: {
@@ -33,11 +36,23 @@ const Master = {
                 icon: `<i class="bx ${type == 'success' ? 'bx-select-multiple':'bx-error'}" ></i>`
             })
         },
-        checkAuth(status) {
-            if(status >= 400) {
-                localStorage.clear();
-                this.$router.go()
+        checkAuth(res) {
+            console.log('res', res.data)
+            if(res.data.reason) {
+                let reason = res.data.reason.toLowerCase()
+                switch(true) {
+                    case reason.includes("unauthenticated"):
+                        localStorage.clear();
+                        this.$router.go()
+                        break;
+                    default:
+                        // code block
+                }
             }
+            // if(res == 401) {
+            //     localStorage.clear();
+            //     this.$router.go()
+            // }
         },
         addToObject(obj, key, value, index) {
             // Create a temp object and index variable

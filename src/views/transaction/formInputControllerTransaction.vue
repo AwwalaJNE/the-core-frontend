@@ -118,7 +118,6 @@ export default {
                 if (Object.keys(obj).length > 0) {
                     this.Keys = Object.keys(obj)
                     this.InputObject = obj
-                    console.log('ini inputObject', this.InputObject)
                 } else {
                     this.Keys = []
                     this.InputObject = {}
@@ -147,7 +146,10 @@ export default {
         updateValue(type, val, info = {}) {
             let action = type.toUpperCase()
             let prefix = this.listenTypeForm.toUpperCase()
-            this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '')
+            if(info.key !== 'connote_receiver_zip_code' && info.key !== 'connote_receiver_tariff_code') {
+                this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '')
+            }
+            
             // let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
             // if(err == true) {
             //     console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
@@ -158,9 +160,6 @@ export default {
                     this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':info.key, 'value':val})
                 }
             }
-
-            console.log('ini inputan ->',type, val, info)
-
             if(info !== undefined && info.hasOwnProperty('typeInput')) {
                 if(info.typeInput.includes('calc_switch')){
                     this.$emit("searchTariffCode", this.listenTypeForm, val)
@@ -179,7 +178,6 @@ export default {
                     }
             })
             this.form = {}
-            console.log('clear form', this.form, this.$store.getters[this.listenGettersPrefix][this.listenTypeForm])
         },
     },
     mounted() {
@@ -187,8 +185,6 @@ export default {
         this.$nextTick(() => {
             this.initializeDataItem()
         });
-        
-        console.log('form controller transaction')
     },
 }
 </script>

@@ -129,6 +129,7 @@ export default {
                     this.loading = false
                     this.closeDialogRole()
                     this.$emit("refresh")
+                    this.checkAuth(err.response)
                     this.openNotification('danger', 'Update role is failed', err)
                 })
         },
@@ -148,6 +149,7 @@ export default {
                     this.loading = false
                     this.closeDialogRole()
                     this.$emit("refresh")
+                    this.checkAuth(err.response)
                     this.openNotification('danger', 'Create new role is failed', err)
                 })
         },

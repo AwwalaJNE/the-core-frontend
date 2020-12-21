@@ -12,7 +12,7 @@ export default {
     origin_phone: {
       label: "Telepon Pengirim*",
       key: "connote_shipper_phone_number",
-      rule: "required",
+      rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -88,7 +88,7 @@ export default {
     destination_phone: {
       label: "Telepon Penerima*",
       key: "connote_receiver_phone_number",
-      rule: "required",
+      rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -126,6 +126,7 @@ export default {
     destination_zip_code: {
       typeInput: "row",
       col:6,
+      key: 'zip_code_and_destination_code',
       input: [
         {
           label: "Kode Pos",
@@ -158,7 +159,7 @@ export default {
       typeInput: "text|col_left",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: " "
     },
     package_category: {
       label: "Kategori*",
@@ -218,18 +219,25 @@ export default {
       typeInput: "radio|col_left",
       typeData: "String",
       onchange: true,
-      arrData: [],
+      arrData: [
+        {
+          'label': 'null',
+          'value': 'null',
+          'data': {},
+          'tarif': 0
+        }
+      ],
       valueData: null,
       value: ''
     },
-    package_price: {
+    package_insured_goods_value: {
       label: "Nilai Barang",
       key: "insured_goods_value",
       rule: "",
       typeInput: "text|col_left",
       typeData: "Number|money",
       valueData: null,
-      value: ''
+      value: 0
     },
     package_diskon: {
       label: "Diskon",
@@ -238,7 +246,7 @@ export default {
       typeInput: "text|col_left",
       typeData: "Number|money",
       valueData: null,
-      value: ''
+      value: 0
     },
     package_instruksi: {
       label: "Instruksi Khusus",
@@ -247,23 +255,23 @@ export default {
       typeInput: "text|col_left",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: " "
     },
 
 
     package_jumlah: {
       label: "Jumlah*",
       key: "koli_jumlah",
-      rule: "required",
+      rule: "numeric|min_value:1",
       typeInput: "text|col_right",
       typeData: "Number",
       valueData: null,
-      value: '1'
+      value: 1
     },
     package_dimensi_weight: {
       label: "Weight*",
       key: "koli_weight",
-      rule: "",
+      rule: "numeric|min_value:1",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -272,7 +280,7 @@ export default {
     package_dimensi_length: {
       label: "Length",
       key: "koli_length",
-      rule: "",
+      rule: "numeric|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -281,7 +289,7 @@ export default {
     package_dimensi_width: {
       label: "Width",
       key: "koli_width",
-      rule: "",
+      rule: "numeric|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -290,7 +298,7 @@ export default {
     package_dimensi_height: {
       label: "Height",
       key: "koli_height",
-      rule: "",
+      rule: "numeric|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -460,10 +468,9 @@ export default {
     volume_weight: 0.00,
     actual_weight: 1,
     surcharge_id: [],
-    description: ''
+    description: ' '
   },
 
-  temp_koli_item: '',
   connote_koli_item: [
     {
       koli_id: '',
@@ -473,27 +480,80 @@ export default {
       volume_weight: 0,
       actual_weight: 1,
       surcharge_id: [],
-      description: ''
+      description: ' '
     }
   ],
 
   // proses store connote untuk dimasukin ke transaction connote
+  
   proses_connote: {
     connote_number: '',
     connote_shipper_customer_id: '',
     connote_receiver_customer_id: '',
-    is_insured: false,
+    is_insured: true,
     is_need_do_return: false,
     connote_koli_item: [],
+    connote_bpik:[],
     total_biaya: 0,
     connote_index: ''
   },
-  
+  connote_index_active: 0,
+  connote_template: {
+    connote_number: '',
+    connote_shipper_customer_id: '',
+    connote_receiver_customer_id: '',
+    connote_receiver_address_type: 'rumah',
+    insured_goods_value: 0,
+    amount_discount: 0,
+    is_insured: true,
+    is_need_do_return: false,
+    connote_koli_item: [
+      {
+        koli_id: '',
+        height: 0,
+        length: 0,
+        width: 0,
+        volume_weight: 0,
+        actual_weight: 1,
+        surcharge_id: [],
+        description: ' '
+      }
+    ],
+    connote_bpik:[],
+    total_biaya: 0,
+    connote_index: ''
+  },
   transaction: {
     transaction_id: '',
     transaction_finished: false,
     node_code: '',
-    connote: [],
+    connote: [
+      {
+        connote_number: '',
+        connote_shipper_customer_id: '',
+        connote_receiver_customer_id: '',
+        connote_receiver_address_type: 'rumah',
+        insured_goods_value: 0,
+        amount_discount: 0,
+        is_insured: true,
+        is_need_do_return: false,
+        connote_koli_item: [
+          {
+            koli_id: '',
+            height: 0,
+            length: 0,
+            width: 0,
+            volume_weight: 0,
+            actual_weight: 1,
+            surcharge_id: [],
+            description: ' '
+          }
+        ],
+        connote_bpik:[],
+        total_biaya: 0,
+        connote_index: ''
+      },
+    ],
     grand_total: 0
   }
   

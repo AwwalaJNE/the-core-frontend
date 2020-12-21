@@ -31,8 +31,16 @@ Vue.use(Storage,options)
 Vue.config.productionTip = false
 Vue.prototype.$log = console.log
 
+// global variable dari https://vuejs.org/v2/api/#Vue-extend
+Vue.prototype.$VueExtend = Vue.util.extend 
+// global variable darihttps://vuejs.org/v2/api/#Vue-delete
+Vue.prototype.$VueDelete = Vue.delete
+// global variable https://vuejs.org/v2/api/#Vue-nextTick
+Vue.prototype.$nextTick = Vue.nextTick
+
 new Vue({
   router,
   store,
   render: (h) => h(App),
 }).$mount('#app')
+

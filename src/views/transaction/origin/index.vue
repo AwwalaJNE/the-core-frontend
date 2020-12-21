@@ -116,7 +116,7 @@ export default {
                 this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, value.customer_name)
                 this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, value.customer_phone)
                 this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, value.geolocation_location_name)
-                this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, '')
+                this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, value.customer_subdistrict_id)
                 this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, value.geolocation_location_name)
                 this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, value.geolocation_subdistrict_zip_code)
 

@@ -37,13 +37,18 @@ const TransactionMixin = {
         listenConnoteKoliItem () {
             return this.$store.getters.getTransaction.connote_koli_item
         },
+
+        // new code
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
+        },
     },
     methods: {
         calculation(index) {
             let CONNOTE_INDEX = index != undefined ? index : 0
             let tarifData = this.listenPackageService || {}
             let chargeable_weight = this.listenCalculatorChargeableWeight
-            let listKoli = this.listenConnoteKoliItem
+            let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
             let surchargeByID = this.listenPackageSurchargeByID
 
             let BASE_TARIFF = 0
@@ -80,7 +85,7 @@ const TransactionMixin = {
             let TOTAL_BIAYA = 0
             TOTAL_BIAYA = BASE_TARIFF + HANDLING_CHARGE + BIAYA_LAIN
             
-            console.log('listenConnoteKoliItem', listKoli, surchargeByID)
+            console.log('list connote koli => ', listKoli, surchargeByID)
             
 
             this.$nextTick(() => {
@@ -88,7 +93,8 @@ const TransactionMixin = {
                 this.$store.dispatch("SET_CALCULATOR_SURCHARGE", BIAYA_LAIN)
                 this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", HANDLING_CHARGE)
                 this.$store.dispatch("SET_CALCULATOR_TOTAL_BIAYA", TOTAL_BIAYA)
-                this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
+                // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
+                this.$store.dispatch('SET_CONNOTE_DATA', {'key':'total_biaya','value': TOTAL_BIAYA})
                 // this.$store.dispatch("SET_TRANSACTION_CONNOTE_TOTAL_BIAYA", {'value': TOTAL_BIAYA, 'index': CONNOTE_INDEX})
 
                 this.mergeProsesConnote(CONNOTE_INDEX)
@@ -102,8 +108,8 @@ const TransactionMixin = {
             // let transaction = this.$store.getters.getTransaction.transaction
             // console.log("==== transaction ====", transaction)
 
-            this.$store.dispatch("MERGE_PROSES_CONNOTE", true)
-            console.log("==== proses_connote ====", this.listenProsesConnote)
+            // this.$store.dispatch("MERGE_PROSES_CONNOTE", true)
+            console.log("==== DATA CONNOTE ====", this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item)
         },
         calculateGrandTotal() {
             let listConnote = this.listenTransactionConnote
@@ -159,7 +165,7 @@ const TransactionMixin = {
         //     }
         // },
         calcMultipleKoli(){
-            let listKoli = this.listenConnoteKoliItem
+            let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
             // let roundUp = this.round03(volume_weight.toFixed(2))
             // let chargeable_weight = Math.max(listKoli[index]['actual_weight'], roundUp).toFixed(2)
             let chargeable_weight = 0
@@ -196,6 +202,54 @@ const TransactionMixin = {
                 res = res +1
             } 
             return res;
+        },
+        refreshTransactionStore() {
+            this.$store.dispatch("EMPTY_TRANSACTION_DATA_CONNOTE", true)
+            // this.$store.dispatch(`SET_CONNOTE_KOLI_ITEM_EMPTY`, true)
+            // this.$store.dispatch(`SET_PROSES_CONNOTE_EMPTY`, true)
+
+            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, '')
+            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, '')
+            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, '')
+            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, '')
+            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, '')
+            // this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, '')
+
+            // let typeaddress = 'home'
+            // let zipndestiCode = {'zip_code' : '', 'destination_code': ''}
+            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_TYPE`, typeaddress)
+            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_NAME`, '')
+            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_PHONE`, '')
+            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, '')
+            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_SUBDISTRICT_ID`, '')
+            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, '')
+            // this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE`, zipndestiCode)
+
+            // this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", '')
+            // this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", {})
+            // this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", [])
+
+            // this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", 0)
+            // this.$store.dispatch("SET_CALCULATOR_SURCHARGE", 0)
+            // this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", 0)
+            // this.$store.dispatch("SET_CALCULATOR_TOTAL_BIAYA", 0)
+            // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", 0)
+
+            // this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", 1)
+            // this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", 0)
+            // this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", 1)
+
+            // this.$store.dispatch("SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE", 0)
+            // this.$store.dispatch("SET_CALCULATOR_ASURANSI", 0)
+            // this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 0)
+
+            // this.$store.dispatch("SET_PACKAGE_PACKAGE_DISKON", 0)
+            // this.$store.dispatch("SET_CALCULATOR_DISKON", 0)
+
+            // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.$store.getters['getTransaction']['template_koli'])
+            // this.$store.dispatch("SET_PACKAGE_PACKAGE_CATEGORY", '')
+            // this.$store.dispatch("SET_PACKAGE_PACKAGE_INSTRUKSI", ' ')
+            // this.$store.dispatch("SET_PACKAGE_PACKAGE_JUMLAH", 1)
         },
     },
 }

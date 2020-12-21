@@ -127,3 +127,36 @@ ul{
 .vs-button{
     max-width: 187px !important;
 }
+
+.vs-table{
+    table{
+        text-align: left;
+        .md_5{
+            width: calc(100% / 5) !important;
+        }
+        .md{
+            width: calc(100% / 6) !important;
+        }
+        .sm{
+            width: calc(100% / 7) !important;
+        }
+        .sm_75{
+            width: calc(100% / 7.5) !important;
+        }
+        .xs_8{
+            width: calc(100% / 8) !important;
+        }
+        .xs{
+            width: calc(100% / 10) !important;
+        }
+        .xxs{
+            width: calc(100% / 12) !important;
+        }
+        .auto{
+            width: auto;
+        }
+        .vs-table__td{
+            padding: 10px 5px;
+        }
+    }
+}

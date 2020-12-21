@@ -115,6 +115,9 @@ export default {
         listenTransactionConnote () {
             return this.$store.getters.getTransaction.transaction.connote
         },
+        listenTransactionConnoteLength () {
+            return this.$store.getters.getTransaction.transaction.connote.length
+        },
         listenCalcComponentSwitch() {
             return this.$store.getters.getTransaction.calc_component.switch
         },
@@ -141,6 +144,10 @@ export default {
         listenConnoteKoliItem () {
             return this.$store.getters.getTransaction.connote_koli_item
         },
+
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
+        },
     },
     watch: {
         listenCalcComponentSwitch: function(val) {
@@ -164,8 +171,9 @@ export default {
                 this.calculation()
             }
         },
-        listenTransactionConnote: function (n,o) {
-            if(n.length !== o.length) {
+        listenTransactionConnoteLength: function (n,o) {
+            if(n !== o) {
+                console.log('+++ calc listen list connote +++', n)
                 this.prosesListConnote()
             }
         }
@@ -184,18 +192,26 @@ export default {
         },
         prosesListConnote() {
             let listconnote = this.listenTransactionConnote
-            if(listconnote > 0) {
+            if(listconnote.length > 0) {
                 let arr = []
-                listconnote.map(item => {
+                listconnote.map((item,i) => {
                     let obj = {}
-                    obj['label'] = `connote number: ${item.connote_number}`
-                    obj['value'] = item.connote_number
+                    obj['label'] = `connote ${i + 1} | ${item.connote_number ? 'No: '+item.connote_number:''}`
+                    obj['value'] = i
+                    obj['index'] = i
+
+                    arr.push(obj)
                 })
                 this.listConnote = arr
+            } else {
+                this.listConnote = [{'label': 'Package Empty', 'value':'-'}]
             }
+            console.log('Calculate === list === Connote', this.listConnote)
         },
-        selectConnote(k, value) {
-
+        selectConnote(key, value) {
+            let index = 0
+            this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, value)
+            this.$store.dispatch(`SWITCH_CONNOTE_ACTIVE`, value)
         },
         clickdulu(item){
             switch(this.listenCalcPrefix) {
@@ -216,46 +232,47 @@ export default {
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE_destinationCode`, item.geolocation_subdistrict_tarif_code)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, item.geolocation_location_name)
 
-                    this.getShippingService()
+                    // this.getShippingService()
                     break;
                 default:
                     console.log('meong')
                     // code block
             }
         },
-        async getShippingService() {
-            await axios
-                .get(this.URL.tariff_shipping_service + 
-                `?n=1&destination=${this.destinationCode}`, 
-                this.Helper.header())
-                .then(res => {
-                    console.log('getShippingService', res.data.data)
-                    let data = res.data.data
-                    let arr = []
-                    data.map(item => {
-                        let obj = {}
-                        obj['label'] = item.service_name
-                        obj['value'] = item.tariff_service_code
-                        obj['data'] = item
-                        obj['tarif'] = item.tariff_amount_1
+        // async getShippingService() {
+        //     await axios
+        //         .get(this.URL.tariff_shipping_service + 
+        //         `?n=1&destination=${this.destinationCode}`, 
+        //         this.Helper.header())
+        //         .then(res => {
+        //             console.log('getShippingService', res.data.data)
+        //             let data = res.data.data
+        //             let arr = []
+        //             data.map(item => {
+        //                 let obj = {}
+        //                 obj['label'] = item.service_name
+        //                 obj['value'] = item.tariff_service_code
+        //                 obj['data'] = item
+        //                 obj['tarif'] = item.tariff_amount_1
                         
-                        arr.push(obj)
-                    })
-                    console.log('getShippingService arr', arr)
-                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
-                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
-                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])
-                    // this.loading = false
-                }).catch(err => {
-                    // this.loading = false
-                    this.checkAuth(err.response.status)
-                    // this.openNotification('danger', 'Failed to populate country list', err)
-                })
-        },
+        //                 arr.push(obj)
+        //             })
+        //             console.log('getShippingService arr', arr)
+        //             this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
+        //             this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
+        //             this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])
+        //             // this.loading = false
+        //         }).catch(err => {
+        //             // this.loading = false
+        //             this.checkAuth(err.response.status)
+        //             // this.openNotification('danger', 'Failed to populate country list', err)
+        //         })
+        // },
 
     },
     mounted() {
         this.initialize()
+        this.prosesListConnote()
     },
 }
 </script>
