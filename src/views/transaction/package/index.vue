@@ -2,6 +2,7 @@
     <div>
         <div class="box">
             <div>
+                {{listenConnoteIndexActive}}
                 <vs-row justify="space-between">
                     <vs-col xs="12" sm="3" lg="3">
                         <h3 style="text-align:left;margin-top:8px;">Package Information</h3>
@@ -66,7 +67,7 @@
                                 @updateValue="updateValue" />
 
                             <p>{{InputObject['package_service'].label}}</p>
-                            <template v-if="InputObject['package_service'].arrData.length > 0">
+                            <template v-if="InputObject['package_service'].arrData.length > 0 && InputObject['package_service'].arrData[0].value !== 'null'">
                                 <radio 
                                 :ref="InputObject['package_service'].key"
                                 :name="''" 
@@ -261,6 +262,8 @@
     </div>
 </template>
 <script>
+import axios from "axios";
+import master from "@/mixins/master"
 import TransactionMixin from "@/mixins/transaction.js"
 import FormMaster from "@/components/form/formMaster"
 import InputGeneral from "@/components/input/general"
@@ -274,7 +277,7 @@ import dialogMultipleKoli from "@/views/transaction/package/dialogMultipleKoli"
 import dialogSurcharge from "@/views/transaction/package/dialogSurcharge"
 export default {
     name: "package-information",
-    mixins: [TransactionMixin],
+    mixins: [master,TransactionMixin],
     components: {
         "form-master": FormMaster,
         "input-general": InputGeneral,
@@ -294,7 +297,7 @@ export default {
             bpikComponent: false,
             surchargeByID: {},
             surchargeshow: {},
-            koliData: this.$store.getters['getTransaction']['template_koli'],
+            template_koli: this.$store.getters['getTransaction']['template_koli'],
             connote_koli_item: [],
             koliinput: 'text',
             disableBtnMultipleKoli: true,
@@ -320,6 +323,15 @@ export default {
         listenJumlahPackage () {
             return this.$store.getters.getTransaction.package.package_jumlah.value
         },
+        listenDestinationCode() {
+            return this.$store.getters.getTransaction.destination.destination_zip_code.input[1].value
+        },
+
+
+        // new code
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
+        },
     },
     watch: {
         listenPackageService: function (n,o) {
@@ -331,7 +343,19 @@ export default {
             if(n !== o) {
                 this.changeJumlah()
             }
-        }
+        },
+        listenConnoteIndexActive: function (n,o) {
+            if(n !== o) {
+                this.initialize()
+            }
+        },
+        listenDestinationCode: function (n,o) {
+            if(n !== o) {
+                if(n !== '') {
+                    this.getShippingService()
+                }
+            }
+        },
     },
     methods: {
         initialize() {
@@ -342,12 +366,10 @@ export default {
                 } else {
                     this.InputObject = {}
                 }
+            // this.connote_koli_item = this.listenConnoteKoliItem
 
-            // this.koliData = this.$store.getters['getTransaction']['template_koli']
-            // if(Object.keys(this.koliData).length > 0) {
-            //     this.connote_koli_item.push(this.koliData)
-            // }
-            this.connote_koli_item = this.listenConnoteKoliItem
+            // new code
+            this.connote_koli_item = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
 
             let arrSurcharge = this.listenSurchargeList
             let surchargeByID = {}
@@ -356,6 +378,35 @@ export default {
             })
             this.surchargeByID = surchargeByID
             this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE_ValueData`, surchargeByID)
+        },
+        async getShippingService() {
+            await axios
+                .get(this.URL.tariff_shipping_service + 
+                `?n=1&destination=${this.listenDestinationCode}`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log('getShippingService', res.data.data)
+                    let data = res.data.data
+                    let arr = []
+                    data.map(item => {
+                        let obj = {}
+                        obj['label'] = item.service_name
+                        obj['value'] = item.tariff_service_code
+                        obj['data'] = item
+                        obj['tarif'] = item.tariff_amount_1
+                        
+                        arr.push(obj)
+                    })
+                    console.log('getShippingService arr', arr)
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])
+                    // this.loading = false
+                }).catch(err => {
+                    // this.loading = false
+                    this.checkAuth(err.response)
+                    // this.openNotification('danger', 'Failed to populate country list', err)
+                })
         },
         changeJumlah() {
             if(this.listenJumlahPackage > 1) {
@@ -371,18 +422,18 @@ export default {
                 if(this.connote_koli_item.length > this.jumlahKoli) {
                     this.connote_koli_item.splice((this.connote_koli_item.length) - absValue,absValue)
                 } else if(this.jumlahKoli > this.connote_koli_item.length) {
-                    let templateKoli = {
-                        koli_id: '',
-                        height: 0,
-                        length: 0,
-                        width: 0,
-                        volume_weight: 0,
-                        actual_weight: 1,
-                        surcharge_id: [],
-                        description: ''
-                    }
+                    // let templateKoli = {
+                    //     koli_id: '',
+                    //     height: 0,
+                    //     length: 0,
+                    //     width: 0,
+                    //     volume_weight: 0,
+                    //     actual_weight: 1,
+                    //     surcharge_id: [],
+                    //     description: ' '
+                    // }
                     for(let i=0; i < absValue; i++) {
-                        this.connote_koli_item.push(templateKoli)
+                        this.connote_koli_item.push(this.template_koli)
                     }
                 }
             }
@@ -390,17 +441,16 @@ export default {
             this.calcMultipleKoli()
         },
         updateValue(key, value, value2 = null) {
-            console.log(key, value, value2)
             switch(key) {
                 case "package_service":
                     if(value2 !== null) {
                         this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", value2)
 
                         // reset surcharge saat ganti service
-                        this.connote_koli_item.map(item => {
-                            item['surcharge_id'] = []
-                        })
-                        this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+                        // this.connote_koli_item.map(item => {
+                        //     item['surcharge_id'] = []
+                        // })
+                        // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
                         this.surchargeView()
                         this.calculation()
                     }
@@ -409,9 +459,9 @@ export default {
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_CATEGORY", value)
                     break;
                 case "insured_goods_value":
-
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE", value)
-                    this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", value)
+                    this.$store.dispatch("SET_CALCULATOR_ASURANSI", value * 0.002)
+                    this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 5000)
                     break;
                 case "amount_discount":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_DISKON", value)
@@ -440,7 +490,6 @@ export default {
                     this.prosesKoli0("height", value, 0)
                     break;
                 case "handle_surcharge":
-                    console.log(key, value, value2 )
                     let surcharge = value2
                     let ids = []
                     if(surcharge.length > 0){
@@ -448,12 +497,11 @@ export default {
                     }
                     this.connote_koli_item[value].surcharge_id = ids
 
-                    this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+                    this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
                     this.surchargeView()
                     this.calculation()
                     break;
                 default:
-                    console.log('meong')
                     // code block
             }
         },
@@ -466,25 +514,26 @@ export default {
             let volume_weight = 0
             
             if(Object.keys(service).length > 0) {
-                let service_volume_divider = service['service_volume_divider'].toString()
+                let service_volume_divider = Number(service['service_volume_divider'])
                 volume_weight = (this.connote_koli_item[0]['length'] * this.connote_koli_item[0]['width'] * this.connote_koli_item[0]['height']) / service_volume_divider 
-                volume_weight = volume_weight / 1000
             }
+            
             this.connote_koli_item[0]['volume_weight'] = volume_weight.toFixed(2)
             
-
             let roundUp = this.round03(volume_weight.toFixed(2))
-
             let chargeable_weight = Math.max(this.connote_koli_item[0]['actual_weight'], roundUp).toFixed(2)
 
             this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.connote_koli_item[0]['actual_weight'])
             this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.connote_koli_item[0]['volume_weight'])
             this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", chargeable_weight)  
-            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+            // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+
+            // new code
+            this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
         },
 
         surchargeView(){
-            let koli = this.listenConnoteKoliItem
+            let koli = this.connote_koli_item
             let surchargeByID = this.surchargeByID
             let view = {}
             let jumlah = 1
@@ -522,11 +571,10 @@ export default {
             }
 
             this.surchargeshow = view
-            console.log('this.surchargeshow', this.surchargeshow)
         },
         prosesmultipleKoli(val) {
             this.connote_koli_item = val
-            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+            this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
             this.surchargeView()
             this.calculation()
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM_index", {"index": index, "key":key, "value":value})
@@ -550,9 +598,9 @@ export default {
             this.dialogSettingMultipleKoli = false
         },
         removeSurcharge(id, index) {
-            let koli = this.listenConnoteKoliItem
+            let koli = this.connote_koli_item
             koli[index].surcharge_id = koli[index].surcharge_id.filter(item => item != id)
-            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", koli)
+            this.$store.dispatch("SET_CONNOTE_DATA_KOLI", koli)
             this.surchargeView()
             this.calculation()
         }

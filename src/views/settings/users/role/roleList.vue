@@ -109,6 +109,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
+                    this.checkAuth(err.response)
                     this.openNotification('danger', 'Failed to populate role list', err)
                 })
         },
@@ -135,6 +136,7 @@ export default {
                     this.openNotification(null, 'Success', 'Delete role is success')
                 }).catch(err => {
                     this.loading = false
+                    this.checkAuth(err.response)
                     this.openNotification('danger', 'Delete role is failed', err)
                 })
         },

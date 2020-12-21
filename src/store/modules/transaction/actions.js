@@ -1,41 +1,48 @@
 export default {
-    SET_ORIGIN_ORIGIN_NAME({ commit }, payload) {
+    SET_ORIGIN_ORIGIN_NAME({ commit, dispatch  }, payload) {
         commit('SET_ORIGIN_ORIGIN_NAME', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_shipper_name','value': payload})
     },
-    SET_ORIGIN_ORIGIN_NAME_ValueData({ commit }, payload) {
+    SET_ORIGIN_ORIGIN_NAME_ValueData({ commit, dispatch }, payload) {
         commit('SET_ORIGIN_ORIGIN_NAME_ValueData', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_shipper_name','value': payload})
     },
 
-    SET_ORIGIN_ORIGIN_PHONE({ commit }, payload) {
+    SET_ORIGIN_ORIGIN_PHONE({ commit, dispatch }, payload) {
         commit('SET_ORIGIN_ORIGIN_PHONE', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_shipper_phone_number','value': payload})
     },
     SET_ORIGIN_ORIGIN_PHONE_ValueData({ commit }, payload) {
         commit('SET_ORIGIN_ORIGIN_PHONE_ValueData', payload)
     },
 
-    SET_ORIGIN_ORIGIN_ADDRESS({ commit }, payload) {
+    SET_ORIGIN_ORIGIN_ADDRESS({ commit, dispatch }, payload) {
         commit('SET_ORIGIN_ORIGIN_ADDRESS', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_shipper_street_address','value': payload})
     },
     SET_ORIGIN_ORIGIN_ADDRESS_ValueData({ commit }, payload) {
         commit('SET_ORIGIN_ORIGIN_ADDRESS_ValueData', payload)
     },
 
-    SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS({ commit }, payload) {
+    SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS({ commit, dispatch }, payload) {
         commit('SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_shipper_administrative_address','value': payload})
     },
     SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS_ValueData({ commit }, payload) {
         commit('SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS_ValueData', payload)
     },
 
-    SET_ORIGIN_ORIGIN_SUBDISTRICT_ID({ commit }, payload) {
+    SET_ORIGIN_ORIGIN_SUBDISTRICT_ID({ commit, dispatch }, payload) {
         commit('SET_ORIGIN_ORIGIN_SUBDISTRICT_ID', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_shipper_geolocation_subdistrict_id','value': payload})
     },
     SET_ORIGIN_ORIGIN_SUBDISTRICT_ID_ValueData({ commit }, payload) {
         commit('SET_ORIGIN_ORIGIN_SUBDISTRICT_ID_ValueData', payload)
     },
 
-    SET_ORIGIN_ORIGIN_ZIP_CODE({ commit }, payload) {
+    SET_ORIGIN_ORIGIN_ZIP_CODE({ commit, dispatch }, payload) {
         commit('SET_ORIGIN_ORIGIN_ZIP_CODE', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_shipper_zip_code','value': payload})
     },
     SET_ORIGIN_ORIGIN_ZIP_CODE_ValueData({ commit }, payload) {
         commit('SET_ORIGIN_ORIGIN_ZIP_CODE_ValueData', payload)
@@ -43,36 +50,41 @@ export default {
 
 
 
-    SET_DESTINATION_DESTINATION_TYPE({ commit }, payload) {
+    SET_DESTINATION_DESTINATION_TYPE({ commit, dispatch }, payload) {
         commit('SET_DESTINATION_DESTINATION_TYPE', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_receiver_address_type','value': payload})
     },
     SET_DESTINATION_DESTINATION_TYPE_ValueData({ commit }, payload) {
         commit('SET_DESTINATION_DESTINATION_TYPE_ValueData', payload)
     },
 
-    SET_DESTINATION_DESTINATION_NAME({ commit }, payload) {
+    SET_DESTINATION_DESTINATION_NAME({ commit, dispatch }, payload) {
         commit('SET_DESTINATION_DESTINATION_NAME', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_receiver_name','value': payload})
     },
     SET_DESTINATION_DESTINATION_NAME_ValueData({ commit }, payload) {
         commit('SET_DESTINATION_DESTINATION_NAME_ValueData', payload)
     },
 
-    SET_DESTINATION_DESTINATION_PHONE({ commit }, payload) {
+    SET_DESTINATION_DESTINATION_PHONE({ commit,dispatch }, payload) {
         commit('SET_DESTINATION_DESTINATION_PHONE', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_receiver_phone_number','value': payload})
     },
     SET_DESTINATION_DESTINATION_PHONE_ValueData({ commit }, payload) {
         commit('SET_DESTINATION_DESTINATION_PHONE_ValueData', payload)
     },
 
-    SET_DESTINATION_DESTINATION_ADDRESS({ commit }, payload) {
+    SET_DESTINATION_DESTINATION_ADDRESS({ commit, dispatch }, payload) {
         commit('SET_DESTINATION_DESTINATION_ADDRESS', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_receiver_street_address','value': payload})
     },
     SET_DESTINATION_DESTINATION_ADDRESS_ValueData({ commit }, payload) {
         commit('SET_DESTINATION_DESTINATION_ADDRESS_ValueData', payload)
     },
 
-    SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS({ commit }, payload) {
+    SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS({ commit, dispatch }, payload) {
         commit('SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_receiver_administrative_address','value': payload})
     },
     SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS_ValueData({ commit }, payload) {
         commit('SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS_ValueData', payload)
@@ -81,15 +93,18 @@ export default {
         commit('SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS_arrData', payload)
     },
 
-    SET_DESTINATION_DESTINATION_SUBDISTRICT_ID({ commit }, payload) {
+    SET_DESTINATION_DESTINATION_SUBDISTRICT_ID({ commit, dispatch }, payload) {
         commit('SET_DESTINATION_DESTINATION_SUBDISTRICT_ID', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_receiver_geolocation_subdistrict_id','value': payload})
     },
     SET_DESTINATION_DESTINATION_SUBDISTRICT_ID_ValueData({ commit }, payload) {
         commit('SET_DESTINATION_DESTINATION_SUBDISTRICT_ID_ValueData', payload)
     },
 
-    SET_DESTINATION_DESTINATION_ZIP_CODE({ commit }, payload) {
+    SET_DESTINATION_DESTINATION_ZIP_CODE({ commit, dispatch }, payload) {
         commit('SET_DESTINATION_DESTINATION_ZIP_CODE', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_receiver_zip_code','value': payload.zip_code})
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_receiver_tariff_code','value': payload.destination_code})
     },
     SET_DESTINATION_DESTINATION_ZIP_CODE_zipCode({ commit }, payload) {
         commit('SET_DESTINATION_DESTINATION_ZIP_CODE_zipCode', payload)
@@ -106,8 +121,9 @@ export default {
         commit('SET_PACKAGE_PACKAGE_DESCRIPTION_ValueData', payload)
     },
 
-    SET_PACKAGE_PACKAGE_CATEGORY({ commit }, payload) {
+    SET_PACKAGE_PACKAGE_CATEGORY({ commit,dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_CATEGORY', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_category','value': payload})
     },
     SET_PACKAGE_PACKAGE_CATEGORY_ValueData({ commit }, payload) {
         commit('SET_PACKAGE_PACKAGE_CATEGORY_ValueData', payload)
@@ -116,8 +132,9 @@ export default {
         commit('SET_PACKAGE_PACKAGE_CATEGORY_arrData', payload)
     },
 
-    SET_PACKAGE_PACKAGE_SERVICE({ commit }, payload) {
+    SET_PACKAGE_PACKAGE_SERVICE({ commit, dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_SERVICE', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_service_code','value': payload})
     },
     SET_PACKAGE_PACKAGE_SERVICE_ValueData({ commit }, payload) {
         commit('SET_PACKAGE_PACKAGE_SERVICE_ValueData', payload)
@@ -143,22 +160,25 @@ export default {
         commit('SET_PACKAGE_PACKAGE_JUMLAH_ValueData', payload)
     },
 
-    SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE({ commit }, payload) {
+    SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE({ commit, dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'insured_goods_value','value': payload})
     },
     SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE_ValueData({ commit }, payload) {
         commit('SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE_ValueData', payload)
     },
 
-    SET_PACKAGE_PACKAGE_DISKON({ commit }, payload) {
+    SET_PACKAGE_PACKAGE_DISKON({ commit, dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_DISKON', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'amount_discount','value': payload})
     },
     SET_PACKAGE_PACKAGE_DISKON_ValueData({ commit }, payload) {
         commit('SET_PACKAGE_PACKAGE_DISKON_ValueData', payload)
     },
 
-    SET_PACKAGE_PACKAGE_INSTRUKSI({ commit }, payload) {
+    SET_PACKAGE_PACKAGE_INSTRUKSI({ commit, dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_INSTRUKSI', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'remarks','value': payload})
     },
     SET_PACKAGE_PACKAGE_INSTRUKSI_ValueData({ commit }, payload) {
         commit('SET_PACKAGE_PACKAGE_INSTRUKSI_ValueData', payload)
@@ -288,6 +308,9 @@ export default {
     },
 
     // Koli Item
+    SET_CONNOTE_KOLI_ITEM_EMPTY({ commit }, payload) {
+        commit('SET_CONNOTE_KOLI_ITEM_EMPTY', payload)
+    },
     SET_CONNOTE_KOLI_ITEM({ commit }, payload) {
         commit('SET_CONNOTE_KOLI_ITEM', payload)
     },
@@ -295,12 +318,17 @@ export default {
         commit('SET_CONNOTE_KOLI_ITEM_index', payload)
     },
 
+    SET_PROSES_CONNOTE_EMPTY({ commit }, payload) {
+        commit('SET_PROSES_CONNOTE_EMPTY', payload)
+    },
     SET_PROSES_CONNOTE_TOTAL_BIAYA({ commit }, payload) {
         commit('SET_PROSES_CONNOTE_TOTAL_BIAYA', payload)
     },
     SET_PROSES_CONNOTE_PROPERTY({ commit }, payload) {
         commit('SET_PROSES_CONNOTE_PROPERTY', payload)
     },
+
+    
     MERGE_PROSES_CONNOTE({ commit }, payload) {
         commit('MERGE_PROSES_CONNOTE', payload)
     },
@@ -322,5 +350,33 @@ export default {
     },
     PUSH_CONNOTE_TO_TRANSACTION({ commit }, payload) {
         commit('PUSH_CONNOTE_TO_TRANSACTION', payload)
+    },
+
+    // new code
+
+    SET_CONNOTE_INDEX_ACTIVE({ commit }, payload) {
+        commit('SET_CONNOTE_INDEX_ACTIVE', payload)
+    },
+    ADD_MORE_CONNOTE({ commit }, payload) {
+        commit('ADD_MORE_CONNOTE', payload)
+    },
+
+    SET_CONNOTE_DATA({ commit }, payload) {
+        commit('SET_CONNOTE_DATA', payload)
+    },
+    SET_CONNOTE_DATA_KOLI({ commit }, payload) {
+        commit('SET_CONNOTE_DATA_KOLI', payload)
+    },
+
+    FILL_TRANSACTION_DATA({ commit }, payload) {
+        commit('FILL_TRANSACTION_DATA', payload)
+    },
+
+    SWITCH_CONNOTE_ACTIVE({ commit }, payload) {
+        commit('SWITCH_CONNOTE_ACTIVE', payload)
+    },
+
+    EMPTY_TRANSACTION_DATA_CONNOTE({ commit }, payload) {
+        commit('EMPTY_TRANSACTION_DATA_CONNOTE', payload)
     },
 }

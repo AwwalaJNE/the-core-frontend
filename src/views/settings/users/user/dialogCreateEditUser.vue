@@ -150,6 +150,7 @@ export default {
                     this.loadingDataRole = false
                 }).catch(err => {
                     this.loadingDataRole = false
+                    this.checkAuth(err.response)
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
@@ -166,6 +167,7 @@ export default {
                     this.openNotification(null, 'Success', 'Update user is success')
                 }).catch(err => {
                     this.loading = false
+                    this.checkAuth(err.response)
                     this.openNotification('danger', 'Failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
@@ -182,6 +184,7 @@ export default {
                     this.openNotification(null, 'Success', 'Create user is success')
                 }).catch(err => {
                     this.loading = false
+                    this.checkAuth(err.response)
                     this.openNotification('danger', 'Failed add data', err.response ? err.response.data.message : 'something went wrong')
                 })
         },

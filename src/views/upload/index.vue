@@ -69,7 +69,7 @@
                                 <el-upload
                                     class="upload-demo"
                                     drag
-                                    action="https://jsonplaceholder.typicode.com/posts/"
+                                    action=""
                                     :before-upload="beforeUpload"
                                     multiple>
                                     <i class="el-icon-upload"></i>

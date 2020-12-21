@@ -162,10 +162,14 @@ export default {
         listenPackageService () {
             return this.$store.getters.getTransaction.package.package_service.valueData || {}
         },
+
+        // new code
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
+        },
     },
     data() {
         return {
-            koliData: this.$store.getters['getTransaction']['template_koli'],
             indexSurcharge: 0,
             surchargeSelector: false,
             tableHeader: [
@@ -236,9 +240,30 @@ export default {
             // data is nested, you need to make a deep copy. One option to do this is JSON.parse(JSON.stringify(...))
             // https://github.com/vuejs/vue/issues/1849#issuecomment-158744006
             // let arr = JSON.parse(this.listenTempConnoteKoliItem)
-            let arr = JSON.parse(JSON.stringify(this.listenConnoteKoliItem))
+            let data = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
+            let arr = JSON.parse(JSON.stringify(data))
+
+            // fix karena key yg didapet dari respond create connote gak konsisten dengan key saat create data
+            arr.map((item, i) => {
+                if(item.hasOwnProperty('koli_actual_weight')) {
+                   arr[i]['actual_weight'] = item['koli_actual_weight']
+                }
+                if(item.hasOwnProperty('koli_height')) {
+                    arr[i]['height'] = item['koli_height']
+                }
+                if(item.hasOwnProperty('koli_length')) {
+                    arr[i]['length'] = item['koli_length']
+                }
+                if(item.hasOwnProperty('koli_width')) {
+                    arr[i]['width'] = item['koli_width']
+                }
+                if(item.hasOwnProperty('koli_volume_weight')) {
+                    arr[i]['volume_weight'] = item['koli_volume_weight']
+                }
+            })
+
             this.connote_koli_item = arr
-            console.log('surcharge', this.surchargeByID)
+            console.log('surcharge', this.surchargeByID, this.connote_koli_item)
         },
         cancel() {
             this.closeDialog()
@@ -312,9 +337,8 @@ export default {
             let volume_weight = 0
             
             if(Object.keys(service).length > 0) {
-                let service_volume_divider = service['service_volume_divider'].toString()
+                let service_volume_divider = Number(service['service_volume_divider'])
                 volume_weight = (this.connote_koli_item[index]['length'] * this.connote_koli_item[index]['width'] * this.connote_koli_item[index]['height']) / service_volume_divider 
-                volume_weight = volume_weight / 1000
             }
             this.connote_koli_item[index]['volume_weight'] = volume_weight.toFixed(2)
             

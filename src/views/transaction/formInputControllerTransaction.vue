@@ -118,7 +118,6 @@ export default {
                 if (Object.keys(obj).length > 0) {
                     this.Keys = Object.keys(obj)
                     this.InputObject = obj
-                    console.log('ini inputObject', this.InputObject)
                 } else {
                     this.Keys = []
                     this.InputObject = {}
@@ -161,9 +160,6 @@ export default {
                     this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':info.key, 'value':val})
                 }
             }
-
-            console.log('ini inputan ->',type, val, info)
-
             if(info !== undefined && info.hasOwnProperty('typeInput')) {
                 if(info.typeInput.includes('calc_switch')){
                     this.$emit("searchTariffCode", this.listenTypeForm, val)
@@ -182,7 +178,6 @@ export default {
                     }
             })
             this.form = {}
-            console.log('clear form', this.form, this.$store.getters[this.listenGettersPrefix][this.listenTypeForm])
         },
     },
     mounted() {
@@ -190,8 +185,6 @@ export default {
         this.$nextTick(() => {
             this.initializeDataItem()
         });
-        
-        console.log('form controller transaction')
     },
 }
 </script>
