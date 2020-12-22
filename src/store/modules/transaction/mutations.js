@@ -496,7 +496,11 @@ export default {
             switch(true) {
                 case state.package[item]['typeData'].includes("Number"):
                     if(state.package[item].hasOwnProperty('value')){
-                        state.package[item].value = 0
+                        if(item == 'package_dimensi_weight') {
+                            state.package[item].value = 1
+                        } else {
+                            state.package[item].value = 0
+                        }
                     }
                     break;
                 case state.package[item]['typeData'].includes("Boolean"):

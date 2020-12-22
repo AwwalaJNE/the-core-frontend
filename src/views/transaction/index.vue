@@ -146,49 +146,6 @@ export default {
             this.$refs.formTransaction.formSubmit()
         },
         collectData() {
-            // fix jika data origin dan destination didapat dari dialog get customer by code dan/atau get data transaction
-            // maka perlu collect manual
-            // Object.keys(this.listenOrigin).map(item => {
-            //     if(this.listenOrigin[item].key.includes('connote_')){
-            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenOrigin[item].key, 'value':this.listenOrigin[item].value})
-            //     }
-            // })
-            // Object.keys(this.listenDestination).map(item => {
-            //     if(this.listenDestination[item].hasOwnProperty('key')) {
-            //         if(this.listenDestination[item].key.includes('connote_')){
-            //             this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination[item].key, 'value':this.listenDestination[item].value})
-            //         }
-            //     }
-            //     if(item == 'destination_zip_code') {
-            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination['destination_zip_code'].input[0].key, 'value':this.listenDestination['destination_zip_code'].input[0].value})
-            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenDestination['destination_zip_code'].input[1].key, 'value':this.listenDestination['destination_zip_code'].input[1].value})
-            //     }
-                
-            // })
-            // Object.keys(this.listenPackage).map(item => {
-            //     if(this.listenPackage[item].key.includes('connote_')){
-            //         console.log('this.listenPackage[item].key', this.listenPackage[item].key, this.listenPackage[item].value)
-            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':this.listenPackage[item].key, 'value':this.listenPackage[item].value})
-            //     } else {
-            //         switch(this.listenPackage[item].key) {
-            //             case "insured_goods_value":
-            //                 this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':'insured_goods_value', 'value':this.listenPackage[item].value})
-            //                 //break;
-            //             case "amount_discount":
-            //                 this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':'amount_discount', 'value':this.listenPackage[item].value})
-            //                 //break;
-            //             case "remarks":
-            //                 this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':'remarks', 'value':this.listenPackage[item].value})
-            //                 //break;
-            //             default:
-            //                 console.log('meong')
-            //                 // code block
-            //         }
-            //     }
-            // })
-
-            // this.$store.dispatch(`MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE`, {'index': this.listenConnoteActive})
-
             console.log('==== transaction ====', this.listenTransaction)
         },
         async createConnote() {
@@ -237,7 +194,30 @@ export default {
                 }
 
                 if(item == 'koli') {
-                    res_connote['connote_koli_item'] = data[item]
+                    let koliList = data[item]
+
+                    // fix karena key yg didapet dari respond endpoint create connote gak konsisten 
+                    // dengan key yg dibutuhkan untuk create data connote
+
+                    koliList.map(item => {
+                        if(item.hasOwnProperty('koli_actual_weight')) {
+                            item['actual_weight'] = item['koli_actual_weight']
+                        } 
+                        if(item.hasOwnProperty('koli_height')) {
+                            item['height'] = item['koli_height']
+                        } 
+                        if(item.hasOwnProperty('koli_length')) {
+                            item['length'] = item['koli_length']
+                        } 
+                        if(item.hasOwnProperty('koli_width')) {
+                            item['width'] = item['koli_width']
+                        } 
+                        if(item.hasOwnProperty('koli_volume_weight')) {
+                            item['volume_weight'] = item['koli_volume_weight']
+                        }
+                    })
+
+                    res_connote['connote_koli_item'] = koliList
                 }
             })
 

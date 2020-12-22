@@ -440,11 +440,11 @@ export default {
             this.calcMultipleKoli()
         },
         updateValue(key, value, value2 = null) {
-            console.log(key, value, value2)
             switch(key) {
                 case "package_service":
                     if(value2) {
                         this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", value2)
+                        this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", value)
                         console.log(key, value, value2)
                         // reset surcharge saat ganti service
                         // this.connote_koli_item.map(item => {
