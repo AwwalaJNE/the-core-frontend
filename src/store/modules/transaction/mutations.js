@@ -513,6 +513,7 @@ export default {
                     console.log('connote_service_code =', state.package[item]['key'])
                     if(state.package[item].hasOwnProperty('value')){
                         state.package[item].value = ''
+                        state.package[item].value = {}
                         state.package[item].arrData = [
                             {
                               'label': 'null',

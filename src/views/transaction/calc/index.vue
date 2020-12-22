@@ -288,6 +288,7 @@ export default {
             table{
                 position: relative;
                 width: 100%;
+                text-transform: capitalize;
                 tr{
                     td{
                         &:last-of-type{

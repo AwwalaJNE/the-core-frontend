@@ -68,7 +68,7 @@ export default {
         value: function(n, o) {
             if (n !== o) {
                 let data = this.DataArr.filter(item => item.value == n)
-                this.$emit("updateValue", this.listenFormKey, data[0].value)
+                this.$emit("updateValue", this.listenFormKey, n, data[0])
             }
         }
         // loadingData: function (val) {
@@ -92,9 +92,9 @@ export default {
         // closeLoading(){
         //     this.loadingInjector !== null ? this.loadingInjector.close() : null
         // },
-        updateValue(val){
-            this.$emit("updateValue", this.listenFormKey, val)
-        }
+        // updateValue(val){
+        //     this.$emit("updateValue", this.listenFormKey, val)
+        // }
     },
 }
 </script>

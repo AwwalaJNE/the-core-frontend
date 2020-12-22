@@ -179,9 +179,8 @@ export default {
         },
         filterSurcharge(obj) {
             let filtered = {}
-            let service = this.listenPackageService
+            let service = this.listenPackageService || {}
              
-
             if (Object.keys(service).length > 0) {
                 let surcharge_condition = obj['surcharge_condition'] || {}
                 if(surcharge_condition.hasOwnProperty('DESTINATION')) {
