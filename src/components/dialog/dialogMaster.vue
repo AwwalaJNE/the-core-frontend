@@ -47,7 +47,6 @@ export default {
         },
         loading: function(val) {
           if(val !== undefined) {
-            console.log(val, 'loading')
             this.loadingActive = val || false
           }
         }
