@@ -14,6 +14,21 @@
                     :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                 />
             </template>
+          <template v-else-if="listenTypeInput.includes('date') == true ">
+            <vs-input
+                class="mt-input"
+                :type="listenTypeInput.includes('date') == true ? 'date' : 'text'"
+                :label="name"
+                :label-placeholder="name"
+                v-model="value"
+                format="yyyy-mm-dd H:i"
+                :disabled="isDisabled"
+                @input="updateValue"
+                @focus="focus(true)"
+                @blur="focus(false)"
+                :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+            />
+          </template>
             <template v-else>
                 <vs-input
                     class="mt-input"
@@ -49,7 +64,7 @@ export default {
     },
     data() {
         return {
-            value: this.valueData
+            value: this.valueData,
         }
     },
     computed: {
@@ -90,8 +105,8 @@ export default {
             info['key'] = this.listenFormKey
             info['typeInput'] = this.listenTypeInput
             info['status'] = status
-            this.$emit("updateValue", this.listenFormKey, this.value, info)
-        }
-    }
+          this.$emit("updateValue", this.listenFormKey, this.value, info)
+        },
+    },
 }
 </script>
