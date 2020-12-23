@@ -995,11 +995,11 @@ export default {
   },
 
   //PICKUP LIST
-  SET_PICKUP_LIST_REQ_NAME({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQ_NAME', payload)
+  SET_PICKUP_LIST_PICKUP_NAME({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_NAME', payload)
   },
-  SET_PICKUP_LIST_REQ_NAME_ValueData({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQ_NAME_ValueData', payload)
+  SET_PICKUP_LIST_PICKUP_NAME_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_NAME_ValueData', payload)
   },
 
   SET_PICKUP_LIST_PIC_NAME({ commit }, payload) {
@@ -1013,54 +1013,54 @@ export default {
     commit('SET_PICKUP_LIST_PIC_NAME_ArrData', payload)
   },
 
-  SET_PICKUP_LIST_REQ_PHONE({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQ_PHONE', payload)
+  SET_PICKUP_LIST_PICKUP_PHONE_NUMBER({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_PHONE_NUMBER', payload)
   },
-  SET_PICKUP_LIST_REQ_PHONE_ValueData({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQ_PHONE_ValueData', payload)
-  },
-
-  SET_PICKUP_LIST_REQ_ADDRESS({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQ_ADDRESS', payload)
-  },
-  SET_PICKUP_LIST_REQ_ADDRESS_ValueData({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQ_ADDRESS_ValueData', payload)
+  SET_PICKUP_LIST_PICKUP_PHONE_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_PHONE_NUMBER_ValueData', payload)
   },
 
-  SET_PICKUP_LIST_REQ_DATE({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQ_DATE', payload)
+  SET_PICKUP_LIST_PICKUP_ADDRESS({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_ADDRESS', payload)
   },
-  SET_PICKUP_LIST_REQ_DATE_ValueData({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQ_DATE_ValueData', payload)
+  SET_PICKUP_LIST_PICKUP_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_ADDRESS_ValueData', payload)
   },
 
-  SET_PICKUP_LIST_REQUEST_TO({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQUEST_TO', payload)
+  SET_PICKUP_LIST_PICKUP_DATE({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_DATE', payload)
   },
-  SET_PICKUP_LIST_REQUEST_TO_ValueData({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQUEST_TO_ValueData', payload)
+  SET_PICKUP_LIST_PICKUP_DATE_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_DATE_ValueData', payload)
+  },
+
+  SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION', payload)
+  },
+  SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ValueData', payload)
   },
 // type select perlu data array
-  SET_PICKUP_LIST_REQUEST_TO_ArrData({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQUEST_TO_ArrData', payload)
+  SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ArrData', payload)
   },
 
-  SET_PICKUP_LIST_REQ_COURIER_EMPLOYEE_ID({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQ_COURIER_EMPLOYEE_ID', payload)
+  SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID', payload)
   },
-  SET_PICKUP_LIST_REQ_COURIER_EMPLOYEE_ID_ValueData({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQ_COURIER_EMPLOYEE_ID_ValueData', payload)
+  SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ValueData', payload)
   },
 // type select perlu data array
-  SET_PICKUP_LIST_REQ_COURIER_EMPLOYEE_ID_ArrData({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REQ_COURIER_EMPLOYEE_ID_ArrData', payload)
+  SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData', payload)
   },
 
-  SET_PICKUP_LIST_REMARK({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REMARK', payload)
+  SET_PICKUP_LIST_PICKUP_REMARKS({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_REMARKS', payload)
   },
-  SET_PICKUP_LIST_REMARK_ValueData({ commit }, payload) {
-    commit('SET_PICKUP_LIST_REMARK_ValueData', payload)
+  SET_PICKUP_LIST_PICKUP_REMARKS_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_REMARKS_ValueData', payload)
   },
 
   SET_PICKUP_LIST_VEHICLE_TYPE_ID({ commit }, payload) {
@@ -1069,8 +1069,23 @@ export default {
   SET_PICKUP_LIST_VEHICLE_TYPE_ID_ValueData({ commit }, payload) {
     commit('SET_PICKUP_LIST_VEHICLE_TYPE_ID_ValueData', payload)
   },
-  // type select perlu data array
+// type select perlu data array
   SET_PICKUP_LIST_VEHICLE_TYPE_ID_ArrData({ commit }, payload) {
     commit('SET_PICKUP_LIST_VEHICLE_TYPE_ID_ArrData', payload)
   },
+
+  SET_PICKUP_LIST_PICKUP_LATITUDE({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_LATITUDE', payload)
+  },
+  SET_PICKUP_LIST_PICKUP_LATITUDE_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_LATITUDE_ValueData', payload)
+  },
+
+  SET_PICKUP_LIST_PICKUP_LONGITUDE({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_LONGITUDE', payload)
+  },
+  SET_PICKUP_LIST_PICKUP_LONGITUDE_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_LONGITUDE_ValueData', payload)
+  },
+  //END PICKUP LIST
 }

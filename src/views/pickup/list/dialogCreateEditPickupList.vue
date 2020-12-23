@@ -130,14 +130,18 @@ export default {
     },
     methods: {
         formData(form){
-            this.form = form
-            if(this.node_id !== undefined && this.node_id !== '') {
-                    console.log('update')
-                    this.updateData()
-            } else {
-                    console.log('create new')
-                    this.addData()
-            }
+          this.node_id = this.listenNodeId
+          this.form = form
+          this.form.pickup_node_id_requestor = this.node_id
+          let current = new Date();
+          let minute = current.getMinutes()
+          if(minute < 10){
+            minute = '0'+minute
+          }
+          let time = current.getHours() + ":" + minute;
+          this.form.pickup_date = this.form.pickup_date + ' '+time
+          this.addData()
+
         },
         handleSubmit(){
             this.$refs.formUserNodeController.handleSubmit() // trigger function submit form dari luar component formInputController
@@ -174,10 +178,58 @@ export default {
           }
         },
 
-        async getDataNode(){
+        async getDataEmployee(){
             await axios
-                .get(this.URL.node + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                .get(this.URL.employee +
+                `?n=1&sort_order=desc&limit=1000&page=1`,
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.employee_name
+                            obj["value"] = item.employee_id
+
+                            arr.push(obj)
+                        })
+                        this.$store.dispatch("SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataVehicleType(){
+            await axios
+                .get(this.URL.vehicle_type +
+                `?n=1&sort_order=desc&limit=1000&page=1`,
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.vehicle_type_name
+                            obj["value"] = item.vehicle_type_id
+
+                            arr.push(obj)
+                        })
+                        this.$store.dispatch("SET_PICKUP_LIST_VEHICLE_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataNodeDestination(){
+            await axios
+                .get(this.URL.node +
+                `/${this.listenNodeId}/destination-link?n=1&sort_order=desc&limit=1000&page=1`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -189,80 +241,8 @@ export default {
 
                             arr.push(obj)
                         })
-                        this.$store.dispatch("SET_NODE_DEFAULT_NODE_LINK_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
-                    
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
-        async getDataAltAddress(){
-            await axios
-                .get(this.URL.node_alternate_address + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.node_alternate_address_name
-                            obj["value"] = item.node_alternate_address_id
-
-                            arr.push(obj)
-                        })
-                        this.$store.dispatch("SET_NODE_DEFAULT_NODE_ALTERNATE_ADDRESS_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
-                    
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
-        async getDataTariff(){
-            await axios
-                .get(this.URL.tariff + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.tariff_origin
-                            obj["value"] = item.tariff_origin
-
-                            arr.push(obj)
-                        })
-                        this.$store.dispatch("SET_NODE_NODE_TARIFF_CODE_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
-                    
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
-        async getDataNodeType(){
-            await axios
-                .get(this.URL.node_type + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.node_type_name
-                            obj["value"] = item.node_type_id
-
-                            arr.push(obj)
-                        })
                         // this.dataNodeType = arr
-                        this.$store.dispatch("SET_PICKUP_LIST_REQUEST_TO_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -293,7 +273,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.node,
+                    this.URL.pickup + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -314,10 +294,9 @@ export default {
         }
     },
     mounted() {
-        this.getDataNodeType()
-        this.getDataTariff()
-        this.getDataNode()
-        this.getDataAltAddress()
+        this.getDataNodeDestination()
+        this.getDataVehicleType()
+        this.getDataEmployee()
     },
 }
 </script>

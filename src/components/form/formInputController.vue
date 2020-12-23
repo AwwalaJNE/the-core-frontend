@@ -6,12 +6,21 @@
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
                         <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
                             <input-general 
-                            :name="InputObject[item].label" 
-                            :rules="InputObject[item].rule" 
+                            :name="InputObject[item].label"
+                            :rules="InputObject[item].rule"
                             :formKey="InputObject[item].key"
                             :valueData="InputObject[item].value"
                             :typeInput="InputObject[item].typeInput"
                             @updateValue="updateValue" />
+                        </template>
+                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('date')">
+                          <input-general
+                              :name="InputObject[item].label"
+                              :rules="InputObject[item].rule"
+                              :formKey="InputObject[item].key"
+                              :valueData="InputObject[item].value"
+                              :typeInput="InputObject[item].typeInput"
+                              @updateValue="updateValue" />
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
                             <template v-if="InputObject[item].arrData.length > 0">

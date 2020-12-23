@@ -53,6 +53,9 @@ export default {
     bag: api + "bag",
     cash_register: api + "cash-register",
 
+    //PICKUP
+    pickup: api + "pickup",
+
     //PICKUP REQUEST
     pickup_request: api + "pickup-request",
 
