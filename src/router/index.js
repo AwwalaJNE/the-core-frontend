@@ -69,6 +69,9 @@ import PickupRequest from "@/views/pickup/request"
 // === Pickup List ===
 import PickupList from "@/views/pickup/list"
 
+// === Pickup Schedule ===
+import PickupSchedule from "@/views/pickup/schedule"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -260,6 +263,15 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Pickup List"
+        }
+      },
+      {
+        path: "/pickup/schedule",
+        name: "pickupSchedule",
+        component: PickupSchedule,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Pickup Schedule"
         }
       }
     ],
