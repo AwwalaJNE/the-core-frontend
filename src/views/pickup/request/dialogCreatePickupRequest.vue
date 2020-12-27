@@ -1,6 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
+    :loading="listenLoading"
     :closeDialog="cancel">
 
         <template v-slot:header>
@@ -9,27 +10,30 @@
 
         <template v-slot:content>
             <div>
-              <vs-select
-                  class="m-select"
-                  filter
-                  :multiple="listenIsMultiple"
-                  placeholder="Select Link Request"
-                  label="Request To"
-                  v-model="node_request"
-                  :border="true"
-                  @change="updateValue"
-              >
-                <template v-if="DataArr.length > 0">
-                  <vs-option
-                      v-for="(item,key) in DataArr"
-                      :key="key"
-                      :label="item.label"
-                      :value="item.value">
-                    {{item.label}}
-                  </vs-option>
-                </template>
+              <template v-if="DataArr.length > 0">
+                <vs-select
+                    class="m-select"
+                    filter
+                    :multiple="false"
+                    placeholder="Select Link Request"
+                    label="Request To"
+                    v-model="node_request"
+                    :border="true"
+                    @change="updateValue"
+                >
+                  <template v-if="DataArr.length > 0">
+                    <vs-option
+                        v-for="(item,key) in DataArr"
+                        :key="key"
+                        :label="item.label"
+                        :value="item.value">
+                      {{item.label}}
+                    </vs-option>
+                  </template>
 
-              </vs-select>
+                </vs-select>
+              </template>
+
             </div>
         </template>
 
@@ -88,12 +92,16 @@ export default {
         return {
             form: {},
             DataArr:[],
+            loading:false,
             node_request:''
         }
     },
     computed: {
         listenActive(){
             return this.active
+        },
+        listenLoading(){
+            return this.loading
         },
         listenTitle(){
             return this.title
@@ -104,10 +112,6 @@ export default {
         listenFormKey(){
           return this.formKey || ''
         },
-        listenIsMultiple(){
-          return this.isMultiple ? this.isMultiple : false
-        },
-
     },
     mounted() {
       this.getTableData();
@@ -121,6 +125,8 @@ export default {
     },
     methods: {
         handleSubmit(){
+            this.form.pickup_node_id_destination= this.node_request
+            this.loading = true
             this.addData() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
@@ -134,37 +140,40 @@ export default {
         async addData() {
             await axios
                 .post(
-                    this.URL.tariff_special,
+                    this.URL.pickup_request + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.handleClearForm()
                     this.closeDialog()
+                    this.loading = false
+                    this.$emit("refresh")
                     this.openNotification(null, 'Success', 'Create pickup request is success')
                 }).catch(err => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
+                    this.$emit("refresh")
                     this.openNotification('danger', 'Create pickup request is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {
+            this.loading = false
             this.handleClearForm()
             this.closeDialog()
+
         },
         async getTableData() {
           this.loading = true
           await axios
               .get(this.URL.node +
-                  `?n=1&sort_order=desc&&limit=1000&page=1&s=`,
+                  `/${this.listenNodeId}/destination-link?n=1&sort_order=desc&&limit=1000&page=1&s=`,
                   this.Helper.header())
               .then(res => {
-                console.log('link', res)
                 if(res.data.data.length > 0) {
                   res.data.data.map(item => {
                     let obj = {}
-                    obj["label"] = item.node_code
+                    obj["label"] = item.node_name
                     obj["value"] = item.node_id
 
                     this.DataArr.push(obj)

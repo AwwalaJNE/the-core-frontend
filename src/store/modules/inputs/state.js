@@ -1248,9 +1248,9 @@ export default {
 
   //form pickup list
   pickup_list: {
-    req_name: {
+    pickup_name: {
       label: "Name*",
-      key: "req_name",
+      key: "pickup_name",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -1258,7 +1258,7 @@ export default {
       value: ''
     },
     pic_name: {
-      label: "PIC*",
+      label: "PIC",
       key: "pic_name",
       rule: "required",
       typeInput: "text",
@@ -1267,36 +1267,36 @@ export default {
       valueData: null,
       value: ''
     },
-    req_phone: {
+    pickup_phone_number: {
       label: "Phone*",
-      key: "req_phone",
+      key: "pickup_phone_number",
       rule: "required",
       typeInput: "text",
       typeData: "String",
       valueData: null,
       value: ''
     },
-    req_address: {
+    pickup_address: {
       label: "Address*",
-      key: "req_address",
+      key: "pickup_address",
       rule: "required",
       typeInput: "text",
       typeData: "String",
       valueData: null,
       value: ''
     },
-    req_date: {
+    pickup_date: {
       label: "Date & Time",
-      key: "req_date",
+      key: "pickup_date",
       rule: "required",
-      typeInput: "text",
+      typeInput: "date",
       typeData: "String",
       valueData: null,
       value: ''
     },
-    request_to: {
+    pickup_node_id_destination: {
       label: "Request To",
-      key: "request_to",
+      key: "pickup_node_id_destination",
       rule: "required",
       typeInput: "select",
       typeData: "String",
@@ -1304,9 +1304,9 @@ export default {
       valueData: null,
       value: ''
     },
-    req_courier_employee_id: {
+    pickup_courier_employee_id: {
       label: "Courier",
-      key: "req_courier_employee_id",
+      key: "pickup_courier_employee_id",
       rule: "required",
       typeInput: "select",
       typeData: "String",
@@ -1314,9 +1314,9 @@ export default {
       valueData: null,
       value: ''
     },
-    remark: {
-      label: "Remark*",
-      key: "remark",
+    pickup_remarks: {
+      label: "Remark",
+      key: "pickup_remarks",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -1324,9 +1324,9 @@ export default {
       value: ''
     },
     vehicle_type_id: {
-      label: "Vehicle Type",
+      label: "vehicle node",
       key: "vehicle_type_id",
-      rule: "required",
+      rule: "",
       typeInput: "select",
       typeData: "String",
       arrData: [],
@@ -1336,6 +1336,26 @@ export default {
     mapPicker:{
       // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
       typeInput: "mapPicker",
+    },
+    pickup_latitude: {
+      label: "Latitude*",
+      key: "pickup_latitude",
+      rule: "required",
+      mapPicker: true,
+      typeInput: "text|latitude",
+      typeData: "Number",
+      valueData: 0,
+      value: 0
+    },
+    pickup_longitude: {
+      label: "Longitude*",
+      key: "pickup_longitude",
+      rule: "required",
+      mapPicker: true,
+      typeInput: "text|longitude",
+      typeData: "Number",
+      valueData: 0,
+      value: 0
     },
   },
   

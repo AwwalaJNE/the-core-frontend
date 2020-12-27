@@ -51,6 +51,15 @@ export default {
     transaction: api + "transaction",
     koli: api + "koli",
     bag: api + "bag",
-    cash_register: api + "cash-register"
+    cash_register: api + "cash-register",
+
+    //PICKUP
+    pickup: api + "pickup",
+
+    //PICKUP REQUEST
+    pickup_request: api + "pickup-request",
+
+    //PICKUP SCHEDULE
+    pickup_schedule: api + "pickup-schedule",
 
 }
