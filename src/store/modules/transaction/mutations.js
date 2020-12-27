@@ -286,7 +286,8 @@ export default {
 
 
     SET_CONNOTE_BPIK(state, payload) {
-        state.proses_connote.connote_bpik = payload
+        let index = state.connote_index_active
+        state.transaction.connote[index].connote_bpik = payload
     },
     
     SET_CONNOTE_KOLI_ITEM_EMPTY(state, payload) {

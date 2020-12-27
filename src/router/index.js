@@ -69,6 +69,8 @@ import PickupRequest from "@/views/pickup/request"
 // === Pickup List ===
 import PickupList from "@/views/pickup/list"
 
+import TransportPackingKayu from "@/views/transport/transportPackingKayu"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -261,7 +263,16 @@ const routes = [
           requiresAuth: true,
           breadCrumb: "Pickup List"
         }
-      }
+      },
+      {
+        path: "/transport/packingkayu",
+        name: "packingkayu",
+        component: TransportPackingKayu,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Packing Kayu"
+        }
+      },
     ],
     meta: { 
       requiresAuth: true,

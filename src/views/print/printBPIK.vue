@@ -191,10 +191,34 @@ export default {
     props: {
         typePrint: String
     },
+    computed: {
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
+        },
+    },
     data() {
         return {
-            dataPrint: []
+            dataConnote : {},
+            pengirim: '',
+            penerima: '',
+            date: '',
+            no_connote: '',
+            bpik: [],
+            koli: [],
+            asuransi: false,
+            volume: false,
+            packing_kayu: false,
+            nilai_barang: 0
         }
+    },
+    methods: {
+        initialize() {
+            this.dataConnote = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive] || {}
+            console.log('data connote', this.dataConnote)
+        },
+    },
+    created() {
+        this.initialize()
     },
 }
 </script>
