@@ -369,16 +369,21 @@ export default {
 
             // new code
             this.connote_koli_item = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
-
+            this.wrapingSurcharge()
+        },
+        wrapingSurcharge() {
             let arrSurcharge = this.listenSurchargeList
             let surchargeByID = {}
             arrSurcharge.map(item => {
                 surchargeByID[item.surcharge_id] = item
             })
             this.surchargeByID = surchargeByID
+            console.log('this.surchargeByID', this.surchargeByID)
             this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE_ValueData`, surchargeByID)
         },
         async getShippingService() {
+            let connote_number = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number || ''
+
             await axios
                 .get(this.URL.tariff_shipping_service + 
                 `?n=1&destination=${this.listenDestinationCode}`, 
@@ -390,14 +395,19 @@ export default {
                     data.map(item => {
                         let obj = {}
                         obj['label'] = item.service_name
-                        obj['value'] = item.tariff_service_code
+                        obj['value'] = item.tariff_service_code.toLowerCase()
                         obj['data'] = item
                         obj['tarif'] = item.tariff_amount_1
                         
                         arr.push(obj)
                     })
                     console.log('getShippingService arr', arr)
-                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
+
+                    // if create new transaction
+                    if(connote_number == ""){
+                        this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
+                    }
+                    
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])
                     // this.loading = false
@@ -421,16 +431,6 @@ export default {
                 if(this.connote_koli_item.length > this.jumlahKoli) {
                     this.connote_koli_item.splice((this.connote_koli_item.length) - absValue,absValue)
                 } else if(this.jumlahKoli > this.connote_koli_item.length) {
-                    // let templateKoli = {
-                    //     koli_id: '',
-                    //     height: 0,
-                    //     length: 0,
-                    //     width: 0,
-                    //     volume_weight: 0,
-                    //     actual_weight: 1,
-                    //     surcharge_id: [],
-                    //     description: ' '
-                    // }
                     for(let i=0; i < absValue; i++) {
                         this.connote_koli_item.push(this.template_koli)
                     }
@@ -451,8 +451,15 @@ export default {
                         //     item['surcharge_id'] = []
                         // })
                         // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
-                        this.surchargeView()
-                        this.calculation()
+                        let node_code = this.listenNodeCode
+                        this.$nextTick(() => {
+                            this.autoApply(node_code)
+
+                            console.log('HASIL', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
+                            this.surchargeView()
+                            this.calculation()
+                        });
+                        
                     }
                     break;
                 case "package_category":
@@ -530,6 +537,12 @@ export default {
 
             // new code
             this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
+            let node_code = this.listenNodeCode
+            this.$nextTick(() => {
+                this.autoApply(node_code)
+                this.surchargeView()
+                this.calculation()
+            });
         },
 
         surchargeView(){
@@ -574,9 +587,16 @@ export default {
         },
         prosesmultipleKoli(val) {
             this.connote_koli_item = val
+            let node_code = this.listenNodeCode
+            console.log('UPDATE KOLI', this.connote_koli_item)
+
             this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
-            this.surchargeView()
-            this.calculation()
+            this.$nextTick(() => {
+                this.autoApply(node_code)
+                this.surchargeView()
+                this.calculation()
+            });
+            
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM_index", {"index": index, "key":key, "value":value})
         },
         openBpikComponent(){

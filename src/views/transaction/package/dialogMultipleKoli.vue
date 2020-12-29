@@ -228,7 +228,6 @@ export default {
         active: function(val) {
             if(val != undefined) {
                 if(val == true) {
-                    console.log('awww aktif')
                     this.initialize()
                 }
             }
@@ -263,13 +262,12 @@ export default {
             })
 
             this.connote_koli_item = arr
-            console.log('surcharge', this.surchargeByID, this.connote_koli_item)
         },
         cancel() {
             this.closeDialog()
         },
         handleSubmit() {
-            this.$emit("prosesmultipleKoli", this.connote_koli_item)
+            
             this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.actual_weight)
             this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.volume_weight)
             this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.chargeable_weight)
@@ -285,7 +283,6 @@ export default {
         updateValue(key, value, value2 = null) {
             let str = key.split("|")
             let index = str[1]
-            console.log(key, value, value2,index)
             // this.$emit("prosesmultipleKoli", str[0],index, value)
             switch(true) {
                 case key.includes("description"):
@@ -306,7 +303,6 @@ export default {
                 case key.includes("handle_surcharge"):
                     
                     let surcharge = value2
-                    console.log('meong', surcharge,key, value, this.connote_koli_item[value] )
                     let ids = []
                     if(surcharge.length > 0){
                         surcharge.map(item => ids.push(item.surcharge_id))
@@ -316,6 +312,7 @@ export default {
                         this.connote_koli_item[value].surcharge_id = ids
                     }
 
+                    this.$emit("prosesmultipleKoli", this.connote_koli_item)
                     // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
                     // this.surchargeView()
                     // this.calculation()
@@ -326,12 +323,10 @@ export default {
             }
         },
         prosesKoli(key, value, index) {
-            console.log('LLLLLL' ,key,index, this.connote_koli_item)
             let service = this.listenPackageService.data || {}
 
             if(this.connote_koli_item[index].hasOwnProperty(key)) {
                this.connote_koli_item[index][key] = value
-               console.log('===> dipanggil ke', index, this.connote_koli_item[index])
             }
             
             let volume_weight = 0
@@ -342,7 +337,7 @@ export default {
             }
             this.connote_koli_item[index]['volume_weight'] = volume_weight.toFixed(2)
             
-            console.log('this.connote_koli_item multiple', this.connote_koli_item)
+            this.$emit("prosesmultipleKoli", this.connote_koli_item)
 
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
             this.calcMultipleKoli()

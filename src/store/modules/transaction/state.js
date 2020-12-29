@@ -501,8 +501,21 @@ export default {
   connote_template: {
     connote_number: '',
     connote_shipper_customer_id: '',
+    connote_shipper_name: '',
+    connote_shipper_phone_number: '',
+    connote_shipper_street_address:'',
+    connote_shipper_administrative_address: '',
+    connote_shipper_tariff_code: '',
+
     connote_receiver_customer_id: '',
     connote_receiver_address_type: 'rumah',
+    connote_receiver_zip_code: '',
+    connote_receiver_tariff_code: '',
+    connote_receiver_name: '',
+    connote_receiver_phone_number: '',
+    connote_receiver_street_address: '',
+    connote_receiver_administrative_address: '',
+
     insured_goods_value: 0,
     amount_discount: 0,
     is_insured: true,
@@ -531,8 +544,21 @@ export default {
       {
         connote_number: '',
         connote_shipper_customer_id: '',
+        connote_shipper_name: '',
+        connote_shipper_phone_number: '',
+        connote_shipper_street_address:'',
+        connote_shipper_administrative_address: '',
+        connote_shipper_tariff_code: '',
+    
         connote_receiver_customer_id: '',
         connote_receiver_address_type: 'rumah',
+        connote_receiver_zip_code: '',
+        connote_receiver_tariff_code: '',
+        connote_receiver_name: '',
+        connote_receiver_phone_number: '',
+        connote_receiver_street_address: '',
+        connote_receiver_administrative_address: '',
+    
         insured_goods_value: 0,
         amount_discount: 0,
         is_insured: true,

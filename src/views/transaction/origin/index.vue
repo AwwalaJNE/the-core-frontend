@@ -1,5 +1,5 @@
 <template>
-    <div class="box">
+    <div class="box" style="min-height: 500px;">
         <div>
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="2" lg="2">
@@ -84,18 +84,23 @@ export default {
             
         },
         searchTariffCode(prefix, val){
-            console.log(prefix, val)
-            this.getTableData(val)
+            if(val.length > 2) {
+                this.getTableData(val)
+            }
         },
         async getTableData(q) {
-            console.log('get', q)
             await axios
                 .get(this.URL.geolocation_search + 
                 `?n=1&s=${q}`, 
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
-                    this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", arr.length > 0 ? arr : [])
+                    if(res.status == 200 && arr.length > 0) {
+                        arr.map((item, key) => {
+                            item['index'] = key
+                        })
+                        this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", arr.length > 0 ? arr : [])
+                    }
                     // this.loading = false
                 }).catch(err => {
                     this.checkAuth(err.response.status)

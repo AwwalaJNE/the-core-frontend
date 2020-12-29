@@ -418,7 +418,7 @@ export default {
                     } else if (state.destination[item]['typeData'].includes("Boolean")) {
                         state.destination[item].value = data[state.destination[item].key] || false
                     } else {
-                        state.destination[item].value = data[state.destination[item].key].toLowerCase() || ''
+                        state.destination[item].value = data[state.destination[item].key] || ''
                     }
                 } else if(item == 'destination_onchange_address') {
                     //connote_receiver_administrative_address

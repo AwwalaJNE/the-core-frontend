@@ -13,26 +13,34 @@
                         </thead>
 
                         <tbody>
-                            <template v-if="listenCalcArrData.length > 0">
-                                <template v-for="(item, key) in listenCalcArrData">
-                                    <tr class="lin" :key="key" @click="clickdulu(item)">
-                                        <td style="width: 50%;">
-                                            <small>{{item.geolocation_subdistrict_name}}</small> <br>
-                                            <small>{{item.geolocation_district_name}}</small> <br>
-                                            <small>{{item.geolocation_location_name}}</small>
-                                        </td>
-                                        <td>
-                                            <small>{{item.geolocation_subdistrict_zip_code}}</small>
-                                        </td>
-                                        <td>
-                                            <small>{{item.geolocation_subdistrict_tarif_code}}</small>
-                                        </td>
-                                    </tr>
-                                </template>
-                            </template>
-                            <template v-else>
-                                <tr>Data not found</tr>
-                            </template>
+                            
+                                <with-keyboard-control ref="keyboardControll" :listLength="listenCalcArrData.length" @selected="selectedHandler">
+                                        <template v-slot:listcontent="props">
+                                            <template v-if="listenCalcArrData.length > 0">
+                                                <template v-for="(item, key) in listenCalcArrData">
+                                                    <tr class="lin" :class="{'selected': key === props.selectedIndex}" :key="key" @click="clickdulu(item)">
+                                                        <td style="width: 50%;">
+                                                            <!-- <small>{{item.geolocation_subdistrict_name}}</small> <br>
+                                                            <small>{{item.geolocation_district_name}}</small> <br> -->
+                                                            <small>{{item.geolocation_location_name}}</small>
+                                                        </td>
+                                                        <td>
+                                                            <small>{{item.geolocation_subdistrict_zip_code}}</small>
+                                                        </td>
+                                                        <td>
+                                                            <small>{{item.geolocation_subdistrict_tarif_code}}</small>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </template>
+
+                                            <template v-else>
+                                                <tr>Data not found</tr>
+                                            </template>
+                                        </template>
+                                </with-keyboard-control>
+                            
+                            
                         </tbody>
                         
                         
@@ -96,11 +104,13 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TransactionMixin from "@/mixins/transaction.js"
 import Selector from "@/components/input/select"
+import WithKeyBoardControll from "@/views/transaction/calc/withkeyboardcontrol"
 export default {
     name: "calc-transaction",
     mixins: [master, TransactionMixin],
     components: {
         "selector": Selector,
+        "with-keyboard-control": WithKeyBoardControll
     },
     data() {
         return {
@@ -108,7 +118,7 @@ export default {
             Keys: [],
             objectKeys: {},
             destinationCode: '',
-            listConnote: []
+            listConnote: [],
         }
     },
     computed: {
@@ -141,9 +151,6 @@ export default {
         listenCalculatorChargeableWeight () {
             return this.$store.getters.getTransaction.calculator.chargeable_weight.value
         },
-        listenConnoteKoliItem () {
-            return this.$store.getters.getTransaction.connote_koli_item
-        },
 
         listenConnoteIndexActive () {
             return this.$store.getters.getTransaction.connote_index_active
@@ -153,6 +160,12 @@ export default {
         listenCalcComponentSwitch: function(val) {
             if(val !== undefined) {
                 this.switch_component = val
+                if(val == true) {
+                    let self = this
+                    setTimeout(function(){ self.$refs.keyboardControll.addKeyHandler() }, 100);
+                } else {
+                    this.$refs.keyboardControll.removeKeyHandler()
+                }
             }
         },
 
@@ -162,11 +175,6 @@ export default {
             }
         },
         listenCalculatorChargeableWeight: function (val) {
-            if(val) {
-                this.calculation()
-            }
-        },
-        listenConnoteKoliItem: function (val) {
             if(val) {
                 this.calculation()
             }
@@ -190,6 +198,11 @@ export default {
                     this.objectKeys = {}
                 }
         },
+        selectedHandler(index) {
+            let data = this.listenCalcArrData.filter(item => item.index == index)
+            this.clickdulu(data[0])
+            this.$store.dispatch('SET_CALC_COMPONENT_SWITCH', false)
+        },
         prosesListConnote() {
             let listconnote = this.listenTransactionConnote
             if(listconnote.length > 0) {
@@ -212,6 +225,8 @@ export default {
             let index = 0
             this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, value)
             this.$store.dispatch(`SWITCH_CONNOTE_ACTIVE`, value)
+
+            console.log('list connote koli => ', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
         },
         clickdulu(item){
             switch(this.listenCalcPrefix) {
@@ -239,36 +254,6 @@ export default {
                     // code block
             }
         },
-        // async getShippingService() {
-        //     await axios
-        //         .get(this.URL.tariff_shipping_service + 
-        //         `?n=1&destination=${this.destinationCode}`, 
-        //         this.Helper.header())
-        //         .then(res => {
-        //             console.log('getShippingService', res.data.data)
-        //             let data = res.data.data
-        //             let arr = []
-        //             data.map(item => {
-        //                 let obj = {}
-        //                 obj['label'] = item.service_name
-        //                 obj['value'] = item.tariff_service_code
-        //                 obj['data'] = item
-        //                 obj['tarif'] = item.tariff_amount_1
-                        
-        //                 arr.push(obj)
-        //             })
-        //             console.log('getShippingService arr', arr)
-        //             this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
-        //             this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
-        //             this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])
-        //             // this.loading = false
-        //         }).catch(err => {
-        //             // this.loading = false
-        //             this.checkAuth(err.response.status)
-        //             // this.openNotification('danger', 'Failed to populate country list', err)
-        //         })
-        // },
-
     },
     mounted() {
         this.initialize()
@@ -313,6 +298,9 @@ export default {
                 }
             }
             
+            .selected{
+                background-color: #eaeaea;
+            }
         }
     }
 </style>

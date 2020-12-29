@@ -155,11 +155,11 @@ export default {
             //     console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
             // }
 
-            if(info.hasOwnProperty('key')) {
-                if(info.key.includes('connote_')) {
-                    this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':info.key, 'value':val})
-                }
-            }
+            // if(info.hasOwnProperty('key')) {
+            //     if(info.key.includes('connote_')) {
+            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':info.key, 'value':val})
+            //     }
+            // }
             if(info !== undefined && info.hasOwnProperty('typeInput')) {
                 if(info.typeInput.includes('calc_switch')){
                     this.$emit("searchTariffCode", this.listenTypeForm, val)

@@ -1,5 +1,5 @@
 <template>
-    <div class="box">
+    <div class="box" style="min-height: 500px;">
         <div>
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="2" lg="2">
@@ -84,18 +84,23 @@ export default {
             
         },
         searchTariffCode(prefix, val){
-            console.log(prefix, val)
-            this.getTableData(val)
+            if(val.length > 2) {
+                this.getTableData(val)
+            }
         },
         async getTableData(q) {
-            console.log('get', q)
             await axios
                 .get(this.URL.geolocation_search + 
                 `?n=1&s=${q}`, 
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
-                    this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", arr.length > 0 ? arr : [])
+                    if(res.status == 200 && arr.length > 0) {
+                        arr.map((item, key) => {
+                            item['index'] = key
+                        })
+                        this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", arr.length > 0 ? arr : [])
+                    }
                     // this.loading = false
                 }).catch(err => {
                     console.log(err.response)
@@ -126,22 +131,8 @@ export default {
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, value.geolocation_location_name)
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE`, zipndestiCode)
 
-
-                // let obj = {}
-                // obj['DESTINATION_TYPE'] = typeaddress
-                // obj['DESTINATION_NAME'] = value.customer_name
-                // obj['DESTINATION_PHONE'] = value.customer_phone
-                // obj['DESTINATION_ADDRESS'] = value.geolocation_location_name
-                // obj['DESTINATION_SUBDISTRICT_ID'] = ''
-                // obj['DESTINATION_ONCHANGE_ADDRESS'] = value.geolocation_location_name
-                // obj['DESTINATION_ZIP_CODE'] = zipndestiCode
-
-                // this.dataItem = obj
                 let self = this
                 setTimeout(function(){ self.forcererender = false }, 100);
-
-                let aaa = this.$store.getters.getTransaction.destination
-                console.log('data destination', aaa)
             }
         },
         async getShippingService() {

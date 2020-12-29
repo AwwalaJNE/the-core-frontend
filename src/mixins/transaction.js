@@ -1,7 +1,9 @@
 const TransactionMixin = {
     data() {
         return {
-            
+            prepareSurchargeID: '',
+            listKoli: [],
+            service: ''
         }
     },
     computed: {
@@ -27,6 +29,9 @@ const TransactionMixin = {
         listenPackageService () {
             return this.$store.getters.getTransaction.package.package_service.valueData
         },
+        listenSurchargeList() {
+            return this.$store.getters['getTransaction']['package']['package_surcharge']['arrData']
+        },
         listenPackageSurchargeByID () {
             return this.$store.getters.getTransaction.package.package_surcharge.valueData
         },
@@ -44,6 +49,221 @@ const TransactionMixin = {
         },
     },
     methods: {
+        autoApply(node_code='') {
+            console.log('PROSES AUTO APPLY')
+            let surchargeList = this.listenSurchargeList
+
+            this.listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
+            this.service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
+            
+            if(surchargeList.length > 0) {
+                surchargeList.map(item => {
+                    if(item.hasOwnProperty('auto_apply')) {
+                        if(item['auto_apply'] == true) {
+                            if(item.hasOwnProperty('surcharge_condition')) {
+                                let objectives = item['surcharge_condition'] || {}
+                                // Cek jika punya surcharge_condition
+                                if (Object.keys(objectives).length > 0) {
+                                    let w_condition = ''
+                                    let w_conditionValue = {}
+                                    let srv_condition = null
+                                    let srv_conditionValue = {}
+                                    let shipper_condition = null
+                                    let shipper_conditionValue = {}
+                                    // jaga2 pake looping karena key setiap surcharge_condition berbeda
+                                    // DAN KEY surcharge_condition DARI BACKEND TIDAK NORMALIZE ALIAS BEDA2. contoh ada yg "actual_weight" dan "weight" -> ini pada dasarnya adalah actual_weight. kan bikin KESEL.
+                                    Object.keys(objectives).map(condition => {
+                                        
+                                        if(condition.toLowerCase().includes('weight')) {
+                                            w_condition = condition
+                                            w_conditionValue = objectives[condition]
+                                        } 
+                                        if(condition.toLowerCase().includes('service_code')) {
+                                            srv_condition = condition
+                                            srv_conditionValue = objectives[condition]
+                                        }
+                                        if(condition.toLowerCase().includes('shipper_tlc')) {
+                                            shipper_condition = condition
+                                            shipper_conditionValue = objectives[condition]
+                                        }
+                                        
+                                    })
+
+                                    this.koliCek(
+                                        item,
+                                        node_code,
+                                        w_condition,
+                                        w_conditionValue,
+                                        srv_condition,
+                                        srv_conditionValue,
+                                        shipper_condition,
+                                        shipper_conditionValue)
+
+                                }
+                                
+
+                            }
+                        }
+                    }
+                })
+
+                
+            }
+
+
+            
+        },
+
+        // codingan pecah ndase
+        koliCek(
+            data={},
+            node='',
+            w_condition='', 
+            w_conditionValue={}, 
+            srv_condition=null, 
+            srv_conditionValue={}, 
+            shipper_condition=null, 
+            shipper_conditionValue={}) {
+
+            let listKoli = this.listKoli
+            let service = this.service
+            let shipper_tlc = ''
+
+            let prepareSurchargeID = ''
+            
+            // WEIGHT CONDITION
+            let typeWeight = 'actual_weight'
+            let has_w_condition = w_condition !== '' ? true : false
+            let weightCondition = Object.keys(w_conditionValue)[0]
+            let weightConditionValue = w_conditionValue[weightCondition] || -1
+            if(w_condition.toLowerCase().includes('chargeble_weight')) {
+                typeWeight = 'chargeble_weight'
+            }
+
+            // SERVICE CODE CONDITION
+            let has_srv_condition = srv_condition !== null ? true : false
+            let serviceCodeCondition = Object.keys(srv_conditionValue)[0] || '='
+            let serviceCodeConditionValue = srv_conditionValue[serviceCodeCondition] || ''
+
+            // SHIPPER TLC CONDITION
+            let has_shipper_tlc_condition = shipper_condition !== null ? true : false
+            let shipperCodeCondition = Object.keys(shipper_conditionValue)[0] || '='
+            let shipperCodeConditionValue = shipper_conditionValue[shipperCodeCondition] || ''
+
+
+            // console.log('PROSES AUTO APPLY LIST KOLI', listKoli)
+            if(listKoli.length > 0) {
+                let self = this
+                listKoli.map(koli => {
+
+                    if(typeWeight == 'actual_weight') {
+                        if(koli.hasOwnProperty('actual_weight')) {
+                            
+                            // Codingan dinamis based surcharge condition format data
+
+                            let str = `if(has_w_condition == ${true}) {
+                                
+                                if(weightConditionValue ${weightCondition} koli['actual_weight'] && weightConditionValue > 0){
+                                    self.prepareSurchargeID = data.hasOwnProperty('surcharge_id') ? data['surcharge_id'] : ''
+                                    if(has_shipper_tlc_condition == ${true}) {
+                                        if(node.toLowerCase().includes(shipperCodeConditionValue.toLowerCase())) {
+                                            self.prepareSurchargeID = data.hasOwnProperty('surcharge_id') ? data['surcharge_id'] : ''
+                                        } else {
+                                            // jika ada pengecekan node code, dan kondisi tidak terpenuhi maka auto apply batal
+                                            self.prepareSurchargeID = ''
+                                        }
+                                    } 
+    
+                                    if(has_srv_condition == ${true}) {
+                                        if(service.toLowerCase().includes(serviceCodeConditionValue.toLowerCase())) {
+                                            self.prepareSurchargeID = data.hasOwnProperty('surcharge_id') ? data['surcharge_id'] : ''
+                                        } else {
+                                            // jika ada pengecekan service code, dan kondisi tidak terpenuhi maka auto apply batal
+                                            self.prepareSurchargeID = ''
+                                        }
+                                    }
+                                } else {
+                                    self.prepareSurchargeID = ''
+                                }
+
+                                console.log('=========APPLY=========')
+                                console.log('CONDITION WEIGHT = ', weightConditionValue)
+                                console.log('OPERATOR ', weightCondition)
+                                console.log('WEIGHT = ',koli['actual_weight'])
+                                console.log('STATUS: ',weightConditionValue ${weightCondition} koli['actual_weight'])
+                                console.log('---')
+                                console.log('has_shipper_tlc_condition = ', has_shipper_tlc_condition)
+                                console.log('NODE ', node.toLowerCase())
+                                console.log('shipperCodeConditionValue = ',shipperCodeConditionValue.toLowerCase())
+                                console.log('STATUS: ', node.toLowerCase().includes(shipperCodeConditionValue.toLowerCase()))
+                                console.log('---')
+                                console.log('has_srv_condition = ', has_srv_condition)
+                                console.log('SERVICE ', service.toLowerCase())
+                                console.log('serviceCodeConditionValue = ',serviceCodeConditionValue.toLowerCase())
+                                console.log('STATUS: ', service.toLowerCase().includes(serviceCodeConditionValue.toLowerCase()))
+                                console.log('---')
+                                console.log('HASILnya prepareSurchargeID', self.prepareSurchargeID)
+                                console.log('=========APPLY END=========')
+                            }`
+
+                            // console.log(str)
+                            eval(str)
+                        }
+                    } else if(typeWeight == 'chargeble_weight') {
+                        let calcWeight = 0
+                    }
+
+                    
+                    
+                    if(self.prepareSurchargeID !== '') {
+                        if(koli.hasOwnProperty('surcharge_id')) {
+                            let idx = 0
+                            let cek = true
+                            koli['surcharge_id'].map((itm) => {
+                                if(this.listenPackageSurchargeByID.hasOwnProperty(itm) == true) {
+                                    if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('overweight')) {
+                                        idx = koli['surcharge_id'].indexOf(itm)
+                                        cek = false
+                                        
+                                    }
+                                }
+                            })
+                            if(cek) {
+                                koli['surcharge_id'].push(self.prepareSurchargeID)
+                            } else {
+                                // if (idx > -1) {
+                                //     koli['surcharge_id'].splice(idx, 1);
+                                // }
+                                // koli['surcharge_id'].push(self.prepareSurchargeID)
+                            }
+                            
+                            console.log('PUSH',listKoli)
+                            
+                        }
+                    } else {
+                        let idx = 0
+                            koli['surcharge_id'].map((itm) => {
+                                if(this.listenPackageSurchargeByID.hasOwnProperty(itm) == true) {
+                                    if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('overweight')) {
+                                        idx = koli['surcharge_id'].indexOf(itm)
+                                        if (idx > -1) {
+                                            koli['surcharge_id'].splice(idx, 1);
+                                        }
+                                    }
+                                }
+                            })
+                    }
+
+                })
+
+                this.$store.dispatch("SET_CONNOTE_DATA_KOLI", listKoli)
+                // this.listKoli = listKoli
+                console.log('prepareSurchargeID ==>', prepareSurchargeID, data, this.listKoli)
+            }
+
+            
+        },
+
         calculation(index) {
             let CONNOTE_INDEX = index != undefined ? index : 0
             let tarifData = this.listenPackageService || {}
@@ -68,10 +288,10 @@ const TransactionMixin = {
                             if(dataSurcharge.hasOwnProperty('surcharge_formula')) {
                                 if(dataSurcharge['surcharge_formula'].hasOwnProperty('SURCHARGE')) {
                                     let evalSurcharge = eval(dataSurcharge['surcharge_formula']['SURCHARGE'])
-                                    tempbiaya = tempbiaya + evalSurcharge
+                                    tempbiaya = tempbiaya + Number(evalSurcharge)
                                 }
                                 if(dataSurcharge['surcharge_formula'].hasOwnProperty('HANDLING_CHARGE')) {
-                                    temp_handling_charge = dataSurcharge['surcharge_formula']['HANDLING_CHARGE']
+                                    temp_handling_charge = Number(dataSurcharge['surcharge_formula']['HANDLING_CHARGE'])
                                 }
                             }
                         })
@@ -84,9 +304,6 @@ const TransactionMixin = {
 
             let TOTAL_BIAYA = 0
             TOTAL_BIAYA = BASE_TARIFF + HANDLING_CHARGE + BIAYA_LAIN
-            
-            console.log('list connote koli => ', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive],listKoli, surchargeByID)
-            
 
             this.$nextTick(() => {
                 this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", BASE_TARIFF)
@@ -120,39 +337,6 @@ const TransactionMixin = {
             });
         },
 
-        // prosesKoli(key, value, index) {
-        //     let listKoli = this.listenConnoteKoliItem
-        //     let service = this.listenPackageService.data || {}
-        //     console.log('proses koli', listKoli, key, value, index)
-        //     if(listKoli.length > 0) {
-        //         if(listKoli[index].hasOwnProperty(key)) {
-        //             listKoli[index][key] = value
-        //         }
-        //         // if(key.includes('length')) {
-        //         //    listKoli[index]['length'] = value
-        //         // }
-
-        //         // if(key.includes('width')) {
-        //         //    listKoli[index]['width'] = value
-        //         // }
-
-        //         // if(key.includes('height')) {
-        //         //    listKoli[index]['height'] = value
-        //         // }
-                
-        //         let volume_weight = 0
-                
-        //         if(Object.keys(service).length > 0) {
-        //             let service_volume_divider = service['service_volume_divider'].toString()
-        //             volume_weight = (listKoli[index]['length'] * listKoli[index]['width'] * listKoli[index]['height']) / service_volume_divider 
-        //             volume_weight = volume_weight / 1000
-        //         }
-        //         listKoli[index]['volume_weight'] = volume_weight.toFixed(2)
-    
-        //         this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", listKoli)
-        //         this.calcMultipleKoli()
-        //     }
-        // },
         calcMultipleKoli(){
             let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
             // let roundUp = this.round03(volume_weight.toFixed(2))

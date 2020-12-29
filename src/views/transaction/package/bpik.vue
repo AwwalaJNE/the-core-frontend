@@ -312,7 +312,6 @@ export default {
             // this.listBpik.splice(i, 1);
             this.$VueDelete(this.listBpik, i);
             this.$store.dispatch("SET_CONNOTE_BPIK", this.listBpik)
-            console.log('remove after', this.listBpik)
         }
     },
 }
