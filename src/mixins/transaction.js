@@ -3,7 +3,18 @@ const TransactionMixin = {
         return {
             prepareSurchargeID: '',
             listKoli: [],
-            service: ''
+            service: '',
+            chargeable_weight: 0,
+            actual_weight: 0,
+            volume_weight: 0,
+            BIAYA_LAIN: 0,
+            HANDLING_CHARGE: 0,
+
+
+            SUM_CHARGEBLE_WEIGHT: 0,
+            SUM_ACTUAL_WEIGHT: 0,
+            SUM_VOLUME_WEIGHT: 0,
+            BASE_TARIFF: 0,
         }
     },
     computed: {
@@ -35,10 +46,6 @@ const TransactionMixin = {
         listenPackageSurchargeByID () {
             return this.$store.getters.getTransaction.package.package_surcharge.valueData
         },
-
-        listenCalculatorChargeableWeight () {
-            return this.$store.getters.getTransaction.calculator.chargeable_weight.value
-        },
         listenConnoteKoliItem () {
             return this.$store.getters.getTransaction.connote_koli_item
         },
@@ -49,266 +56,232 @@ const TransactionMixin = {
         },
     },
     methods: {
-        autoApply(node_code='') {
-            console.log('PROSES AUTO APPLY')
-            let surchargeList = this.listenSurchargeList
+        async autoApply(node_code){
+            if(node_code !== undefined) {
+                console.log('PROSES AUTO APPLY NEW CODE')
+                
+                let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
+                let filterAutoSurcharge = await this.filterAutoSurcharge(node_code)
+                
+                console.log('filterAutoSurcharge', filterAutoSurcharge)
+                try {
+                    if(listKoli.length > 0) {
+                        listKoli.map(koli => {
+                            if(koli.hasOwnProperty('actual_weight')) {
+                                // autoapply minimal 70kg
+                                let actual_weight = koli['actual_weight'] //>= 70 ? koli['actual_weight'] : -1
+                                let volume_weight = Number(koli['volume_weight']) || 0
 
-            this.listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
-            this.service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
-            
-            if(surchargeList.length > 0) {
-                surchargeList.map(item => {
-                    if(item.hasOwnProperty('auto_apply')) {
-                        if(item['auto_apply'] == true) {
-                            if(item.hasOwnProperty('surcharge_condition')) {
-                                let objectives = item['surcharge_condition'] || {}
-                                // Cek jika punya surcharge_condition
-                                if (Object.keys(objectives).length > 0) {
-                                    let w_condition = ''
-                                    let w_conditionValue = {}
-                                    let srv_condition = null
-                                    let srv_conditionValue = {}
-                                    let shipper_condition = null
-                                    let shipper_conditionValue = {}
-                                    // jaga2 pake looping karena key setiap surcharge_condition berbeda
-                                    // DAN KEY surcharge_condition DARI BACKEND TIDAK NORMALIZE ALIAS BEDA2. contoh ada yg "actual_weight" dan "weight" -> ini pada dasarnya adalah actual_weight. kan bikin KESEL.
-                                    Object.keys(objectives).map(condition => {
-                                        
-                                        if(condition.toLowerCase().includes('weight')) {
-                                            w_condition = condition
-                                            w_conditionValue = objectives[condition]
-                                        } 
-                                        if(condition.toLowerCase().includes('service_code')) {
-                                            srv_condition = condition
-                                            srv_conditionValue = objectives[condition]
-                                        }
-                                        if(condition.toLowerCase().includes('shipper_tlc')) {
-                                            shipper_condition = condition
-                                            shipper_conditionValue = objectives[condition]
+                                let chargeable_weight = Number(Math.max(actual_weight, volume_weight)).toFixed(2)
+                                chargeable_weight = chargeable_weight //>= 70 ? chargeable_weight : -1
+                                let prepareSurchargeID = ''
+                                
+                                if(actual_weight > 0 && chargeable_weight > 0) {
+                                    filterAutoSurcharge.map(surcharge => {
+                                        if(surcharge.hasOwnProperty('surcharge_condition')) {
+                                            let objectives = surcharge['surcharge_condition']
+                                            let str = ''
+                                            if(objectives.hasOwnProperty('KOLI_ACTUAL_WEIGHT')){
+                                                console.log('1')
+                                                let operator = Object.keys(objectives['KOLI_ACTUAL_WEIGHT'])[0]
+                                                let val1 = objectives['KOLI_ACTUAL_WEIGHT'][operator]
+                                                let val2 = actual_weight
+                                                // fix jika type operator lebih dari ('>='), maka switch value
+                                                if(operator == '>=') {
+                                                    val1 = actual_weight
+                                                    val2 = objectives['KOLI_ACTUAL_WEIGHT'][operator]
+                                                }
+                                                str = `if(${val1} ${operator} ${val2}){
+                                                    prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
+                                                }`
+    
+                                            } else if(objectives.hasOwnProperty('CHARGEBLE_WEIGHT')) {
+                                                console.log('2')
+                                                let operator = Object.keys(objectives['CHARGEBLE_WEIGHT'])[0]
+                                                let val1 = objectives['CHARGEBLE_WEIGHT'][operator]
+                                                let val2 = chargeable_weight
+                                                // fix jika type operator lebih dari ('>='), maka switch value
+                                                if(operator == '>=') {
+                                                    val1 = chargeable_weight
+                                                    val2 = objectives['CHARGEBLE_WEIGHT'][operator]
+                                                }
+                                                str = `if(${val1} ${operator} ${val2}){
+                                                    prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
+                                                }`
+                                                console.log('str', str)
+    
+                                            } else if(objectives.hasOwnProperty('WEIGHT')) {
+                                                console.log('3')
+                                                let operator = Object.keys(objectives['WEIGHT'])[0]
+                                                let val1 = objectives['WEIGHT'][operator]
+                                                let val2 = actual_weight
+                                                // fix jika type operator lebih dari ('>='), maka switch value
+                                                if(operator == '>=') {
+                                                    val1 = actual_weight
+                                                    val2 = objectives['WEIGHT'][operator]
+                                                }
+                                                str = `if(${val1} ${operator} ${val2}){
+                                                    prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
+                                                }`
+                                                console.log('str', str)
+                                            }
+                                            eval(str)
                                         }
                                         
                                     })
 
-                                    this.koliCek(
-                                        item,
-                                        node_code,
-                                        w_condition,
-                                        w_conditionValue,
-                                        srv_condition,
-                                        srv_conditionValue,
-                                        shipper_condition,
-                                        shipper_conditionValue)
+                                    console.log('prepareSurchargeID', prepareSurchargeID)
+                                }
 
+                                if(koli.hasOwnProperty('surcharge_id')) {
+                                    // fix setiap masing2 koli overweight, wajib hanya memiliki 1 type surcharge overweight
+                                    let alreadyHasOverWeight = false
+                                    let index = 0
+                                    koli['surcharge_id'].map((itm) => {
+                                        if(this.listenPackageSurchargeByID.hasOwnProperty(itm) == true) {
+                                            if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('overweight')) {
+                                                index = koli['surcharge_id'].indexOf(itm)
+                                                alreadyHasOverWeight = true
+                                            }
+                                        }
+                                    })
+
+                                    if(alreadyHasOverWeight) {
+                                        if (index > -1) {
+                                            koli['surcharge_id'].splice(index, 1);
+                                        }
+                                    }
+
+                                    if(prepareSurchargeID !== '') {
+                                        koli['surcharge_id'].push(prepareSurchargeID)
+                                    }
                                 }
                                 
-
-                            }
-                        }
-                    }
-                })
-
-                
-            }
-
-
-            
-        },
-
-        // codingan pecah ndase
-        koliCek(
-            data={},
-            node='',
-            w_condition='', 
-            w_conditionValue={}, 
-            srv_condition=null, 
-            srv_conditionValue={}, 
-            shipper_condition=null, 
-            shipper_conditionValue={}) {
-
-            let listKoli = this.listKoli
-            let service = this.service
-            let shipper_tlc = ''
-
-            let prepareSurchargeID = ''
-            
-            // WEIGHT CONDITION
-            let typeWeight = 'actual_weight'
-            let has_w_condition = w_condition !== '' ? true : false
-            let weightCondition = Object.keys(w_conditionValue)[0]
-            let weightConditionValue = w_conditionValue[weightCondition] || -1
-            if(w_condition.toLowerCase().includes('chargeble_weight')) {
-                typeWeight = 'chargeble_weight'
-            }
-
-            // SERVICE CODE CONDITION
-            let has_srv_condition = srv_condition !== null ? true : false
-            let serviceCodeCondition = Object.keys(srv_conditionValue)[0] || '='
-            let serviceCodeConditionValue = srv_conditionValue[serviceCodeCondition] || ''
-
-            // SHIPPER TLC CONDITION
-            let has_shipper_tlc_condition = shipper_condition !== null ? true : false
-            let shipperCodeCondition = Object.keys(shipper_conditionValue)[0] || '='
-            let shipperCodeConditionValue = shipper_conditionValue[shipperCodeCondition] || ''
-
-
-            // console.log('PROSES AUTO APPLY LIST KOLI', listKoli)
-            if(listKoli.length > 0) {
-                let self = this
-                listKoli.map(koli => {
-
-                    if(typeWeight == 'actual_weight') {
-                        if(koli.hasOwnProperty('actual_weight')) {
-                            
-                            // Codingan dinamis based surcharge condition format data
-
-                            let str = `if(has_w_condition == ${true}) {
-                                
-                                if(weightConditionValue ${weightCondition} koli['actual_weight'] && weightConditionValue > 0){
-                                    self.prepareSurchargeID = data.hasOwnProperty('surcharge_id') ? data['surcharge_id'] : ''
-                                    if(has_shipper_tlc_condition == ${true}) {
-                                        if(node.toLowerCase().includes(shipperCodeConditionValue.toLowerCase())) {
-                                            self.prepareSurchargeID = data.hasOwnProperty('surcharge_id') ? data['surcharge_id'] : ''
-                                        } else {
-                                            // jika ada pengecekan node code, dan kondisi tidak terpenuhi maka auto apply batal
-                                            self.prepareSurchargeID = ''
-                                        }
-                                    } 
-    
-                                    if(has_srv_condition == ${true}) {
-                                        if(service.toLowerCase().includes(serviceCodeConditionValue.toLowerCase())) {
-                                            self.prepareSurchargeID = data.hasOwnProperty('surcharge_id') ? data['surcharge_id'] : ''
-                                        } else {
-                                            // jika ada pengecekan service code, dan kondisi tidak terpenuhi maka auto apply batal
-                                            self.prepareSurchargeID = ''
-                                        }
-                                    }
-                                } else {
-                                    self.prepareSurchargeID = ''
-                                }
-
-                                console.log('=========APPLY=========')
-                                console.log('CONDITION WEIGHT = ', weightConditionValue)
-                                console.log('OPERATOR ', weightCondition)
-                                console.log('WEIGHT = ',koli['actual_weight'])
-                                console.log('STATUS: ',weightConditionValue ${weightCondition} koli['actual_weight'])
-                                console.log('---')
-                                console.log('has_shipper_tlc_condition = ', has_shipper_tlc_condition)
-                                console.log('NODE ', node.toLowerCase())
-                                console.log('shipperCodeConditionValue = ',shipperCodeConditionValue.toLowerCase())
-                                console.log('STATUS: ', node.toLowerCase().includes(shipperCodeConditionValue.toLowerCase()))
-                                console.log('---')
-                                console.log('has_srv_condition = ', has_srv_condition)
-                                console.log('SERVICE ', service.toLowerCase())
-                                console.log('serviceCodeConditionValue = ',serviceCodeConditionValue.toLowerCase())
-                                console.log('STATUS: ', service.toLowerCase().includes(serviceCodeConditionValue.toLowerCase()))
-                                console.log('---')
-                                console.log('HASILnya prepareSurchargeID', self.prepareSurchargeID)
-                                console.log('=========APPLY END=========')
-                            }`
-
-                            // console.log(str)
-                            eval(str)
-                        }
-                    } else if(typeWeight == 'chargeble_weight') {
-                        let calcWeight = 0
-                    }
-
-                    
-                    
-                    if(self.prepareSurchargeID !== '') {
-                        if(koli.hasOwnProperty('surcharge_id')) {
-                            let idx = 0
-                            let cek = true
-                            koli['surcharge_id'].map((itm) => {
-                                if(this.listenPackageSurchargeByID.hasOwnProperty(itm) == true) {
-                                    if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('overweight')) {
-                                        idx = koli['surcharge_id'].indexOf(itm)
-                                        cek = false
-                                        
-                                    }
-                                }
-                            })
-                            if(cek) {
-                                koli['surcharge_id'].push(self.prepareSurchargeID)
-                            } else {
-                                // if (idx > -1) {
-                                //     koli['surcharge_id'].splice(idx, 1);
-                                // }
-                                // koli['surcharge_id'].push(self.prepareSurchargeID)
-                            }
-                            
-                            console.log('PUSH',listKoli)
-                            
-                        }
-                    } else {
-                        let idx = 0
-                            koli['surcharge_id'].map((itm) => {
-                                if(this.listenPackageSurchargeByID.hasOwnProperty(itm) == true) {
-                                    if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('overweight')) {
-                                        idx = koli['surcharge_id'].indexOf(itm)
-                                        if (idx > -1) {
-                                            koli['surcharge_id'].splice(idx, 1);
-                                        }
-                                    }
-                                }
-                            })
-                    }
-
-                })
-
-                this.$store.dispatch("SET_CONNOTE_DATA_KOLI", listKoli)
-                // this.listKoli = listKoli
-                console.log('prepareSurchargeID ==>', prepareSurchargeID, data, this.listKoli)
-            }
-
-            
-        },
-
-        calculation(index) {
-            let CONNOTE_INDEX = index != undefined ? index : 0
-            let tarifData = this.listenPackageService || {}
-            let chargeable_weight = this.listenCalculatorChargeableWeight
-            let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
-            let surchargeByID = this.listenPackageSurchargeByID
-
-            let BASE_TARIFF = 0
-            if(Object.keys(tarifData).length > 0) {
-               BASE_TARIFF = tarifData.tarif * chargeable_weight
-            }
-
-            let BIAYA_LAIN = 0
-            let HANDLING_CHARGE = 0
-            if(listKoli.length > 0) {
-                listKoli.map(item => {
-                    if(item.surcharge_id && item.surcharge_id.length > 0) {
-                        let tempbiaya = 0
-                        let temp_handling_charge = 0
-                        item.surcharge_id.map(su_id => {
-                            let dataSurcharge = surchargeByID[su_id]
-                            if(dataSurcharge.hasOwnProperty('surcharge_formula')) {
-                                if(dataSurcharge['surcharge_formula'].hasOwnProperty('SURCHARGE')) {
-                                    let evalSurcharge = eval(dataSurcharge['surcharge_formula']['SURCHARGE'])
-                                    tempbiaya = tempbiaya + Number(evalSurcharge)
-                                }
-                                if(dataSurcharge['surcharge_formula'].hasOwnProperty('HANDLING_CHARGE')) {
-                                    temp_handling_charge = Number(dataSurcharge['surcharge_formula']['HANDLING_CHARGE'])
-                                }
                             }
                         })
-                        BIAYA_LAIN = BIAYA_LAIN + tempbiaya
-                        HANDLING_CHARGE = HANDLING_CHARGE + temp_handling_charge
+
+                        this.$store.dispatch("SET_CONNOTE_DATA_KOLI", listKoli)
+                        console.log('SET_CONNOTE_DATA_KOLI ==>', listKoli)
                     }
-                })
+                } catch (error) {
+                    console.log('error auto apply', error)
+                }
             }
+        },
+
+        async filterAutoSurcharge(node = ''){
+            // filter berdasarkan selected service code sebelum koli checking, untuk mengurangi time complexity
+            this.service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
+            let surchargeList = this.listenSurchargeList || []
+            let result = []
+            console.log('ini service', this.service)
+            try {
+                if(surchargeList.length > 0) {
+                    surchargeList.map(surcharge => {
+                        if(surcharge.hasOwnProperty('surcharge_condition')) {
+                            let objectives = surcharge['surcharge_condition'] || {}
+                            let serviceObjectives = false
+                            let hasShipperObjectives = false
+                            let shipperObjectivesStatus = false
+                            if(objectives.hasOwnProperty('CONNOTE_SERVICE_CODE')) {
+                               let operator = Object.keys(objectives['CONNOTE_SERVICE_CODE'])[0] || ''
+                               if(operator !== ''){
+                                    serviceObjectives = this.service.toLowerCase().includes(objectives['CONNOTE_SERVICE_CODE'][operator].toLowerCase())
+                               }
+                            }
+
+                            if(objectives.hasOwnProperty('CONNOTE_SHIPPER_TLC')) {
+                                hasShipperObjectives = true
+                                let operator = Object.keys(objectives['CONNOTE_SHIPPER_TLC'])[0] || ''
+                                if(operator !== ''){
+                                    shipperObjectivesStatus = node.toLowerCase().includes(objectives['CONNOTE_SHIPPER_TLC'][operator].toLowerCase())
+                                }
+                            }
+
+                            if(serviceObjectives) {
+                                if(hasShipperObjectives){
+                                    if(shipperObjectivesStatus == true) {
+                                        result.push(surcharge)
+                                    } else {
+                                        // jika punya kondisi shipper tlc, namun tidak memenuhi syarat maka batal
+                                    }
+                                } else {
+                                    result.push(surcharge)
+                                }
+                            }
+                        }
+                    })
+                }  
+            } catch (error) {
+                console.log('filter error ', error)
+                return []
+            }
+            return result
+        },
 
 
+        calculationold(index) {
+            let CONNOTE_INDEX = index != undefined ? index : 0
+            this.calcDataKoli()
+
+            // let BIAYA_LAIN = 0
+            // let HANDLING_CHARGE = 0
+            // let CHARGEBLE_WEIGHT = Number(this.$store.getters.getTransaction.calculator.chargeable_weight.value) || 0
+            // let PROSES_CHARGEBLE_WEIGHT = 0
+
+            // if(this.listKoli.length > 0) {
+            //     this.listKoli.map(item => {
+            //         if(item.surcharge_id && item.surcharge_id.length > 0) {
+            //             let tempbiaya = 0
+            //             let temp_handling_charge = 0
+            //             let temp_chargeable_weight = 0
+            //             item.surcharge_id.map(su_id => {
+            //                 let dataSurcharge = surchargeByID[su_id] || {}
+                            
+            //                 if(Object.keys(dataSurcharge).length > 0) {
+            //                     if(dataSurcharge.hasOwnProperty('surcharge_formula')) {
+            //                         if(dataSurcharge['surcharge_formula'].hasOwnProperty('SURCHARGE')) {
+            //                             let evalSurcharge = eval(dataSurcharge['surcharge_formula']['SURCHARGE'])
+            //                             tempbiaya = tempbiaya + Number(evalSurcharge)
+            //                         }
+            //                         if(dataSurcharge['surcharge_formula'].hasOwnProperty('HANDLING_CHARGE')) {
+            //                             temp_handling_charge = Number(dataSurcharge['surcharge_formula']['HANDLING_CHARGE'])
+            //                         }
+            //                         if(dataSurcharge['surcharge_formula'].hasOwnProperty('CHARGEBLE_WEIGHT')) {
+            //                             let evalchargeable_weight = eval(dataSurcharge['surcharge_formula']['CHARGEBLE_WEIGHT'])
+            //                             PROSES_CHARGEBLE_WEIGHT = PROSES_CHARGEBLE_WEIGHT + Number(evalchargeable_weight)
+            //                             console.log('CHARGEBLE_WEIGHT', evalchargeable_weight)
+            //                             // temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)
+            //                         }
+            //                     }
+            //                 }
+            //             })
+            //             BIAYA_LAIN = BIAYA_LAIN + tempbiaya
+            //             HANDLING_CHARGE = HANDLING_CHARGE + temp_handling_charge
+                        
+            //         }
+            //     })
+            // }
+
+            // console.log('CHARGEBLE_WEIGHT_additional', CHARGEBLE_WEIGHT_additional)
+
+            // let chargeable_weight_calc = CHARGEBLE_WEIGHT
+            // if(PROSES_CHARGEBLE_WEIGHT > 0) {
+            //     this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", PROSES_CHARGEBLE_WEIGHT) 
+            //     chargeable_weight_calc = PROSES_CHARGEBLE_WEIGHT
+            // }
+
+            // let BASE_TARIFF = 0
+            // if(Object.keys(tarifData).length > 0) {
+            //    BASE_TARIFF = tarifData.tarif * this.chargeable_weight
+            // }
             let TOTAL_BIAYA = 0
-            TOTAL_BIAYA = BASE_TARIFF + HANDLING_CHARGE + BIAYA_LAIN
+            TOTAL_BIAYA = this.BASE_TARIFF + this.HANDLING_CHARGE + this.BIAYA_LAIN
 
             this.$nextTick(() => {
-                this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", BASE_TARIFF)
-                this.$store.dispatch("SET_CALCULATOR_SURCHARGE", BIAYA_LAIN)
-                this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", HANDLING_CHARGE)
+                this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", this.BASE_TARIFF)
+                this.$store.dispatch("SET_CALCULATOR_SURCHARGE", this.BIAYA_LAIN)
+                this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", this.HANDLING_CHARGE)
                 this.$store.dispatch("SET_CALCULATOR_TOTAL_BIAYA", TOTAL_BIAYA)
                 // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
                 this.$store.dispatch('SET_CONNOTE_DATA', {'key':'total_biaya','value': TOTAL_BIAYA})
@@ -317,6 +290,7 @@ const TransactionMixin = {
             });
             
         },
+
         calculateGrandTotal() {
             let listConnote = this.listenTransactionConnote
             let GTOTAL = 0
@@ -337,13 +311,105 @@ const TransactionMixin = {
             });
         },
 
-        calcMultipleKoli(){
+
+        calculation(){
+            let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
+            let surchargeByID = this.listenPackageSurchargeByID
+            let tarifData = this.listenPackageService || {}
+            let service = this.listenPackageService.data || {}
+
+            this.SUM_CHARGEBLE_WEIGHT= 0
+            this.SUM_ACTUAL_WEIGHT= 0
+            this.SUM_VOLUME_WEIGHT= 0
+
+            let SUM_BIAYA_LAIN = 0
+            let SUM_HANDLING_CHARGE = 0
+            let TOTAL_BIAYA = 0
+            
+            
+            if(listKoli.length > 0) {
+                listKoli.map(koli => {
+                    // koli hitung satuan
+                    let koli_volume_weight = Number(koli['volume_weight'])
+                    
+                    let koli_actual_weight = Number(koli['actual_weight'])
+
+                    let roundUp = Number(this.round03(koli_volume_weight))
+                    let ALL_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, roundUp).toFixed(2))
+
+                    // koli total calculator
+                    this.SUM_CHARGEBLE_WEIGHT = this.SUM_CHARGEBLE_WEIGHT + ALL_CHARGEBLE_WEIGHT
+                    this.SUM_ACTUAL_WEIGHT = this.SUM_ACTUAL_WEIGHT + koli_actual_weight
+                    this.SUM_VOLUME_WEIGHT = this.SUM_VOLUME_WEIGHT + Number(koli_volume_weight.toFixed(2))
+
+                    if(koli.surcharge_id && koli.surcharge_id.length > 0) {
+                        let tempbiaya = 0
+                        let temp_handling_charge = 0
+                        let temp_chargeable_weight = 0
+                        let CHARGEBLE_WEIGHT = this.SUM_CHARGEBLE_WEIGHT
+                        koli.surcharge_id.map(su_id => {
+                            let dataSurcharge = surchargeByID[su_id] || {}
+                            
+                            if(Object.keys(dataSurcharge).length > 0) {
+                                if(dataSurcharge.hasOwnProperty('surcharge_formula')) {
+                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('SURCHARGE')) {
+                                        let evalSurcharge = eval(dataSurcharge['surcharge_formula']['SURCHARGE'])
+                                        tempbiaya = tempbiaya + Number(evalSurcharge)
+                                    }
+                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('HANDLING_CHARGE')) {
+                                        temp_handling_charge = Number(dataSurcharge['surcharge_formula']['HANDLING_CHARGE'])
+                                    }
+                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('CHARGEBLE_WEIGHT')) {
+                                        let evalchargeable_weight = eval(dataSurcharge['surcharge_formula']['CHARGEBLE_WEIGHT'])
+                                        this.SUM_CHARGEBLE_WEIGHT = evalchargeable_weight
+                                        console.log('CHARGEBLE_WEIGHT', evalchargeable_weight)
+                                        // temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)
+                                    }
+                                }
+                            }
+                        })
+                        SUM_BIAYA_LAIN = SUM_BIAYA_LAIN + tempbiaya
+                        SUM_HANDLING_CHARGE = SUM_HANDLING_CHARGE + temp_handling_charge
+                    }
+
+                })
+
+                if(Object.keys(tarifData).length > 0) {
+                    this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
+                }
+                TOTAL_BIAYA = this.BASE_TARIFF + SUM_HANDLING_CHARGE + SUM_BIAYA_LAIN
+            }
+
+            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.SUM_ACTUAL_WEIGHT)
+            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.SUM_VOLUME_WEIGHT)
+            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.SUM_CHARGEBLE_WEIGHT)
+            
+            this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", this.BASE_TARIFF)
+            this.$store.dispatch("SET_CALCULATOR_SURCHARGE", SUM_BIAYA_LAIN)
+            this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", SUM_HANDLING_CHARGE)
+            this.$store.dispatch("SET_CALCULATOR_TOTAL_BIAYA", TOTAL_BIAYA)
+            // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
+            this.$store.dispatch('SET_CONNOTE_DATA', {'key':'total_biaya','value': TOTAL_BIAYA})
+            this.calculateGrandTotal()
+        },
+
+        calcDataKoliold(){
             let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
+            let surchargeByID = this.listenPackageSurchargeByID
+            let tarifData = this.listenPackageService || {}
             // let roundUp = this.round03(volume_weight.toFixed(2))
             // let chargeable_weight = Math.max(listKoli[index]['actual_weight'], roundUp).toFixed(2)
-            let chargeable_weight = 0
-            let actual_weight = 0
-            let volume_weight = 0
+            this.chargeable_weight = 0
+            this.actual_weight = 0
+            this.volume_weight = 0
+
+            let BIAYA_LAIN = 0
+            let HANDLING_CHARGE = 0
+            let PROSES_CHARGEBLE_WEIGHT = 0
+
+            let BASE_TARIFF = 0
+            
+            
             if(listKoli.length > 0) {
                 listKoli.map(item => {
                     let volume_weight_temp = 0
@@ -351,21 +417,73 @@ const TransactionMixin = {
                         volume_weight_temp = volume_weight_temp + Number(item['volume_weight'])
                     }
                     if(item['actual_weight']) {
-                        actual_weight = actual_weight + Number(item['actual_weight'])
+                        this.actual_weight = this.actual_weight + Number(item['actual_weight'])
                     }
-                    volume_weight = volume_weight + volume_weight_temp
+
+                    this.volume_weight = this.volume_weight + volume_weight_temp
+                    let roundUp = this.round03(this.volume_weight)
+                    this.chargeable_weight = Number(Math.max(this.actual_weight, roundUp).toFixed(2))
+
+                    let CHARGEBLE_WEIGHT = this.chargeable_weight
+                    
+                    
+                    if(item.surcharge_id && item.surcharge_id.length > 0) {
+                        let tempbiaya = 0
+                        let temp_handling_charge = 0
+                        let temp_chargeable_weight = 0
+                        item.surcharge_id.map(su_id => {
+                            let dataSurcharge = surchargeByID[su_id] || {}
+                            
+                            if(Object.keys(dataSurcharge).length > 0) {
+                                if(dataSurcharge.hasOwnProperty('surcharge_formula')) {
+                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('SURCHARGE')) {
+                                        let evalSurcharge = eval(dataSurcharge['surcharge_formula']['SURCHARGE'])
+                                        tempbiaya = tempbiaya + Number(evalSurcharge)
+                                    }
+                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('HANDLING_CHARGE')) {
+                                        temp_handling_charge = Number(dataSurcharge['surcharge_formula']['HANDLING_CHARGE'])
+                                    }
+                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('CHARGEBLE_WEIGHT')) {
+                                        let evalchargeable_weight = eval(dataSurcharge['surcharge_formula']['CHARGEBLE_WEIGHT'])
+                                        temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)
+                                        console.log('CHARGEBLE_WEIGHT', evalchargeable_weight)
+                                        // temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)
+                                    }
+                                }
+                            }
+                        })
+                        BIAYA_LAIN = BIAYA_LAIN + tempbiaya
+                        HANDLING_CHARGE = HANDLING_CHARGE + temp_handling_charge
+                        PROSES_CHARGEBLE_WEIGHT = PROSES_CHARGEBLE_WEIGHT + temp_chargeable_weight
+
+                        if(PROSES_CHARGEBLE_WEIGHT !== 0) {
+                            this.chargeable_weight = PROSES_CHARGEBLE_WEIGHT
+                            console.log('PROSES_CHARGEBLE_WEIGHT', this.chargeable_weight, PROSES_CHARGEBLE_WEIGHT)
+                        }
+                        
+                    } else {
+                        this.chargeable_weight = CHARGEBLE_WEIGHT
+                        console.log('ELSE PROSES_CHARGEBLE_WEIGHT', this.chargeable_weight)
+                    }
                 })
+
+                
 
                 
             }
 
-            console.log('calcMultipleKoli', chargeable_weight,actual_weight,volume_weight)
+            if(Object.keys(tarifData).length > 0) {
+                BASE_TARIFF = tarifData.tarif * this.chargeable_weight
+            }
             
-            let roundUp = this.round03(volume_weight)
-            chargeable_weight = Number(Math.max(actual_weight, roundUp)).toFixed(2)
-            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", actual_weight)
-            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", volume_weight)
-            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", chargeable_weight) 
+            this.BASE_TARIFF = BASE_TARIFF
+
+            console.log('calcDataKoli', this.chargeable_weight,this.actual_weight,this.volume_weight)
+            
+            
+            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.actual_weight)
+            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.volume_weight)
+            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.chargeable_weight) 
         },
         round03(numToRound){
             let oo = numToRound | 0

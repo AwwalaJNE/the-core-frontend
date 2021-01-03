@@ -148,10 +148,6 @@ export default {
             return this.$store.getters.getTransaction.package.package_surcharge.valueData
         },
 
-        listenCalculatorChargeableWeight () {
-            return this.$store.getters.getTransaction.calculator.chargeable_weight.value
-        },
-
         listenConnoteIndexActive () {
             return this.$store.getters.getTransaction.connote_index_active
         },
@@ -171,11 +167,6 @@ export default {
 
         listenPackageService: function (n,o) {
             if(n !== o) {
-                this.calculation()
-            }
-        },
-        listenCalculatorChargeableWeight: function (val) {
-            if(val) {
                 this.calculation()
             }
         },

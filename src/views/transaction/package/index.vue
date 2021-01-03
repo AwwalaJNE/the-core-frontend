@@ -300,7 +300,8 @@ export default {
             connote_koli_item: [],
             koliinput: 'text',
             disableBtnMultipleKoli: true,
-            jumlahKoli: 1
+            jumlahKoli: 1,
+            current_index_koli: 0
         }
     },
     computed: {
@@ -399,7 +400,12 @@ export default {
                         obj['data'] = item
                         obj['tarif'] = item.tariff_amount_1
                         
-                        arr.push(obj)
+                        if(item.tariff_service_code.toLowerCase().includes('reg')) {
+                            arr.unshift(obj)
+                        } else {
+                            arr.push(obj)
+                        }
+                        
                     })
                     console.log('getShippingService arr', arr)
 
@@ -410,6 +416,12 @@ export default {
                     
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])
+
+                    let node_code = this.listenNodeCode
+                    let self = this
+                    this.autoApply(node_code).then(() => {
+                        self.surchargeView()
+                    })
                     // this.loading = false
                 }).catch(err => {
                     // this.loading = false
@@ -436,8 +448,9 @@ export default {
                     }
                 }
             }
-            
-            this.calcMultipleKoli()
+            this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
+            // this.calcDataKoli()
+            this.calculation()
         },
         updateValue(key, value, value2 = null) {
             switch(key) {
@@ -452,12 +465,15 @@ export default {
                         // })
                         // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
                         let node_code = this.listenNodeCode
-                        this.$nextTick(() => {
-                            this.autoApply(node_code)
+                        let self = this
+                        this.autoApply(node_code).then(() => {
+                            self.surchargeView()
+                        })
 
-                            console.log('HASIL', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
-                            this.surchargeView()
-                            this.calculation()
+                        console.log('HASIL', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
+                        
+                        this.$nextTick(() => {
+                            // this.calculation()
                         });
                         
                     }
@@ -527,73 +543,91 @@ export default {
             
             this.connote_koli_item[0]['volume_weight'] = volume_weight.toFixed(2)
             
-            let roundUp = this.round03(volume_weight.toFixed(2))
-            let chargeable_weight = Math.max(this.connote_koli_item[0]['actual_weight'], roundUp).toFixed(2)
+            // let roundUp = this.round03(volume_weight.toFixed(2))
+            // let chargeable_weight = Math.max(this.connote_koli_item[0]['actual_weight'], roundUp).toFixed(2)
 
-            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.connote_koli_item[0]['actual_weight'])
-            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.connote_koli_item[0]['volume_weight'])
-            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", chargeable_weight)  
+            // this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.connote_koli_item[0]['actual_weight'])
+            // this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.connote_koli_item[0]['volume_weight'])
+            // this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", chargeable_weight)  
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
 
             // new code
             this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
+            // this.calcDataKoli()
             let node_code = this.listenNodeCode
-            this.$nextTick(() => {
-                this.autoApply(node_code)
-                this.surchargeView()
-                this.calculation()
-            });
+            let self = this
+            this.autoApply(node_code).then(() => {
+                self.surchargeView()
+            })
+            this.calculation()
         },
 
         surchargeView(){
-            let koli = this.connote_koli_item
+            this.surchargeshow = {}
+            let koli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
+            
             let surchargeByID = this.surchargeByID
-            let view = {}
-            let jumlah = 1
-            if(koli.length > 1) {
-                koli.map(item => {
-                    let obj = {}
-                    if (item.surcharge_id.length > 0) {
-                        item.surcharge_id.map(itm => {
-                            if(view.hasOwnProperty(itm)) {
-                                let data = surchargeByID[itm]
-                                jumlah += 1
-                                data['jumlah'] = jumlah
-                                view[itm] = data
-                            } else {
-                                let data = surchargeByID[itm]
-                                data['jumlah'] = 1
-                                view[itm] = data
-                            }
-                        })
-                    }
-                    
-                })
-            } else {
-                koli.map(item => {
-                    let obj = {}
-                    if (item.surcharge_id.length > 0) {
-                        item.surcharge_id.map(itm => {
-                            if(surchargeByID.hasOwnProperty(itm)) {
-                                view[itm] = surchargeByID[itm]
-                            }
-                        })
-                    }
-                    
-                })
-            }
+            console.log('surchargeByID /////', surchargeByID)
 
-            this.surchargeshow = view
+            let jumlah = 1
+            let surcharge_view = {}
+                if(koli.length >= 1) {
+                    koli.map(item => {
+                        let obj = {}
+                        if (item.surcharge_id.length > 0) {
+                            item.surcharge_id.map(itm => {
+                                if(surcharge_view.hasOwnProperty(itm)) {
+                                    let data = surchargeByID[itm]
+                                    jumlah += 1
+                                    data['jumlah'] = jumlah
+                                    surcharge_view[itm] = data
+                                } else {
+                                    let data = surchargeByID[itm]
+                                    data['jumlah'] = 1
+                                    surcharge_view[itm] = data
+                                }
+                            })
+                        }
+                        
+                    })
+                } else {
+                    koli.map(item => {
+                        let obj = {}
+                        if (item.surcharge_id.length > 0) {
+                            item.surcharge_id.map(itm => {
+                                if(surchargeByID.hasOwnProperty(itm)) {
+                                    let data = surchargeByID[itm]
+                                    surcharge_view[itm] = data
+                                    console.log('AFFFF', this.surchargeshow)
+                                }
+                            })
+                        }
+                        
+                    })
+                }
+
+            //     console.log('surchargeView', this.connote_koli_item,surchargeByID,this.surchargeshow)
+            
+            this.surchargeshow = surcharge_view
+            console.log('HIT surcharge view', this.surchargeshow)
+            
+            
+            // this.surchargeshow = view
+            
         },
         prosesmultipleKoli(val) {
             this.connote_koli_item = val
-            let node_code = this.listenNodeCode
             console.log('UPDATE KOLI', this.connote_koli_item)
 
             this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
+            // this.calcDataKoli()
+            let node_code = this.listenNodeCode
+            let self = this
+            this.autoApply(node_code).then(() => {
+                self.surchargeView()
+            })
+
             this.$nextTick(() => {
-                this.autoApply(node_code)
-                this.surchargeView()
                 this.calculation()
             });
             
@@ -606,6 +640,7 @@ export default {
             this.bpikComponent = false
         },
         openSurchargeDialog(){
+            this.current_index_koli = 0
             this.surchargeSelector = true
         },
         closeDialogSurcharge() {

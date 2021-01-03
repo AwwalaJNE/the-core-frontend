@@ -268,9 +268,9 @@ export default {
         },
         handleSubmit() {
             
-            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.actual_weight)
-            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.volume_weight)
-            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.chargeable_weight)
+            // this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.actual_weight)
+            // this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.volume_weight)
+            // this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.chargeable_weight)
             this.closeDialog()
         },
         openSurchargeDialog(index){
