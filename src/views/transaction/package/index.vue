@@ -468,13 +468,11 @@ export default {
                         let self = this
                         this.autoApply(node_code).then(() => {
                             self.surchargeView()
+                            self.calculation()
                         })
 
                         console.log('HASIL', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
                         
-                        this.$nextTick(() => {
-                            // this.calculation()
-                        });
                         
                     }
                     break;
@@ -558,8 +556,9 @@ export default {
             let self = this
             this.autoApply(node_code).then(() => {
                 self.surchargeView()
+                self.calculation()
             })
-            this.calculation()
+            
         },
 
         surchargeView(){
