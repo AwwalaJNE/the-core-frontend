@@ -36,6 +36,11 @@
                           Action
                         </vs-th>
                       </template>
+                      <template v-if="pickupListAction == true">
+                        <vs-th class="action">
+                          Action
+                        </vs-th>
+                      </template>
                       <template v-if="printAction == true || avoidAction == true">
                         <vs-th class="action">
                           Action
@@ -149,17 +154,6 @@
                       <template v-if="printAction == true">
                         <vs-td class="action">
                           <vs-row justify="center" class="btn_action">
-                            <vs-col w="4">
-                              <vs-button
-                                  block
-                                  square
-                                  flat
-                                  :active="true"
-                                  @click="actionPrint(item)"
-                              >
-                                Print
-                              </vs-button>
-                            </vs-col>
                             <template v-if="avoidAction == true">
                               <vs-col w="4">
                                 <vs-button
@@ -175,9 +169,82 @@
                                 </vs-button>
                               </vs-col>
                             </template>
+                            
+                            <template v-if="updateAction == true">
+                              <vs-col w="4">
+                                <vs-button
+                                    block
+                                    square
+                                    flat
+                                    :active="true"
+                                    @click="actionUpdate(item)"
+                                >
+                                  Edit
+                                </vs-button>
+                              </vs-col>
+                            </template>
+                            
+
+                            <vs-col w="4">
+                              <vs-button
+                                  block
+                                  square
+                                  flat
+                                  :active="true"
+                                  @click="actionPrint(item)"
+                              >
+                                Print
+                              </vs-button>
+                            </vs-col>
                           </vs-row>
                         </vs-td>
                       </template>
+
+
+                      <template v-if="pickupListAction == true">
+                        <vs-td class="action">
+                          <vs-row justify="center" class="btn_action">
+                            <vs-col w="4">
+                                <vs-button
+                                    block
+                                    warn
+                                    square
+                                    flat
+                                    :active="true"
+                                    type="submit"
+                                    @click="actionPicked(item)"
+                                >
+                                  Picked
+                                </vs-button>
+                              </vs-col>
+                              <vs-col w="4">
+                                <vs-button
+                                    block
+                                    square
+                                    flat
+                                    :active="true"
+                                    @click="actionUpdate(item)"
+                                >
+                                Edit
+                                </vs-button>
+                              </vs-col>
+                            
+                            <vs-col w="4">
+                              <vs-button
+                                  block
+                                  square
+                                  flat
+                                  :active="true"
+                                  @click="actionCancel(item)"
+                              >
+                                Cancel
+                              </vs-button>
+                            </vs-col>
+                          </vs-row>
+                        </vs-td>
+                      </template>
+
+                      
 
                       <!--action for table has button avoid-->
 
@@ -263,7 +330,10 @@ export default {
         hasLinked:Array,
         removeOnly: Boolean,
         printAction: Boolean,
+        pickupListAction:Boolean,
+        updateAction: Boolean,
         avoidAction: Boolean,
+        pickedAction: Boolean, //pickup list action picked
     },
     data() {
         return {
@@ -356,6 +426,16 @@ export default {
         actionAvoid(val) {
           this.$emit("actionAvoid", val)
         },
+        
+        //pickup list action picked
+        actionPicked(val) {
+          this.$emit("actionPicked", val)
+        },
+        actionCancel(val) {
+          this.$emit("actionCancel", val)
+        },
+
+
         handleEdit(val) {
           this.$emit("handleEdit", val);
         },
