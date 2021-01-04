@@ -151,7 +151,7 @@ export default {
             // this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE`, [])
             let surcharge = this.listenSurchargeList
             this.koli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item[this.listenCurrentIndexKoli] || {}
-            console.log('this.koli', this.koli)
+            // console.log('this.koli', this.koli)
             let obj = {}
             surcharge.map(item => {
                 item['service_relevant'] = false
@@ -190,7 +190,7 @@ export default {
                 if (Object.keys(service).length > 0) {
                     let surcharge_condition = obj['surcharge_condition'] || {}
                     
-                    console.log('--- Surcharge -> '+obj['surcharge_name']+'----------', surcharge_condition, this.koli, this.listenCurrentIndexKoli)
+                    // console.log('--- Surcharge -> '+obj['surcharge_name']+'----------', surcharge_condition, this.koli, this.listenCurrentIndexKoli)
                             if(Object.keys(surcharge_condition).length > 0) {
                                 
                                 Object.keys(surcharge_condition).map(condition => {
@@ -217,7 +217,7 @@ export default {
                                                 if(value1 !== '' && value2 !== '') {
                                                     let str = `value1 ${operator} value2`
                                                     status = eval(str)
-                                                    console.log('proses condition', str,value1,operator,value2, status)
+                                                    // console.log('proses condition', str,value1,operator,value2, status)
                                                 }
                                             }
                                         }
@@ -237,7 +237,7 @@ export default {
                                                 if(typeof objective2 == 'number') {
                                                     let str = `${value1} ${operator} ${value2}`
                                                     status = eval(str)
-                                                    console.log('has KOLI_ACTUAL_WEIGHT condition', str,value1, operator, value2, eval(str))
+                                                    // console.log('has KOLI_ACTUAL_WEIGHT condition', str,value1, operator, value2, eval(str))
                                                 }
                                             }
                                         }
@@ -262,7 +262,7 @@ export default {
                                                 if(typeof objective2 == 'number') {
                                                     let str = `${value1} ${operator} ${value2}`
                                                     status = eval(str)
-                                                    console.log('has KOLI_CHARGEBLE_WEIGHT condition', str,value1, operator, value2, eval(str))
+                                                    // console.log('has KOLI_CHARGEBLE_WEIGHT condition', str,value1, operator, value2, eval(str))
                                                 }
                                             }
                                         }
@@ -281,7 +281,7 @@ export default {
 
                                                 let str = `${value1} ${operator} ${value2}`
                                                 status = eval(str)
-                                                console.log('has length', str,value1, operator, value2, status)
+                                                // console.log('has length', str,value1, operator, value2, status)
                                             }
                                         }
                                     }
@@ -295,7 +295,7 @@ export default {
                                 })
                             }
                     obj['service_relevant'] = status
-                    console.log('=================== obj', obj)
+                    // console.log('=================== obj', obj)
                 }
             } catch (error) {
                 console.log('error', error)
@@ -353,11 +353,13 @@ export default {
         },
         cancel() {
             this.closeDialog()
+            this.selectedData = []
         },
         handleSubmit() {
             // this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE`, [])
             // this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE`, this.selectedData)
             this.$emit("updateValue", "handle_surcharge",this.index, this.selectedData)
+            this.selectedData = []
             this.closeDialog()
         }
     },

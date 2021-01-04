@@ -209,7 +209,7 @@
                                             style="width: fit-content;"
                                             :key="key">
                                                 {{`${surchargeshow[item].surcharge_name} ${surchargeshow[item]['jumlah'] || ''}`}}
-                                                <template v-if="!surchargeshow[item].hasOwnProperty('jumlah')">
+                                                <template v-if="!surchargeshow[item].hasOwnProperty('jumlah') && !surchargeshow[item].surcharge_name.toLowerCase().includes('overweight')">
                                                     <span class="vs-select__chips__chip__close" @click="removeSurcharge(item, 0)">
                                                         <i class="vs-icon-close vs-icon-hover-less"></i>
                                                     </span>
@@ -570,7 +570,7 @@ export default {
 
             let jumlah = 1
             let surcharge_view = {}
-                if(koli.length >= 1) {
+                if(koli.length > 1) {
                     koli.map(item => {
                         let obj = {}
                         if (item.surcharge_id.length > 0) {

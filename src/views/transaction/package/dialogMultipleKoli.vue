@@ -52,7 +52,7 @@
                                                     style="width: fit-content;"
                                                     :key="i">
                                                         {{surchargeByID[itm].surcharge_name}}
-                                                        <template>
+                                                        <template v-if="!surchargeByID[itm].surcharge_name.toLowerCase().includes('overweight')">
                                                             <span class="vs-select__chips__chip__close" @click="removeSurcharge(itm, key)">
                                                                 <i class="vs-icon-close vs-icon-hover-less"></i>
                                                             </span>
@@ -309,7 +309,7 @@ export default {
                     }
 
                     if(this.connote_koli_item[value].hasOwnProperty('surcharge_id')) {
-                        this.connote_koli_item[value].surcharge_id = ids
+                        this.connote_koli_item[value].surcharge_id = [...this.connote_koli_item[value].surcharge_id,...ids]
                     }
 
                     this.$emit("prosesmultipleKoli", this.connote_koli_item)
@@ -344,6 +344,7 @@ export default {
         },
         removeSurcharge(id, index) {
             this.connote_koli_item[index].surcharge_id = this.connote_koli_item[index].surcharge_id.filter(item => item != id)
+            this.$emit("prosesmultipleKoli", this.connote_koli_item)
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
             // this.surchargeView()
             // this.calculation()
