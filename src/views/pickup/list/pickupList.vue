@@ -8,19 +8,44 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :printAction="true"
+        :pickupListAction="true"
+        :updateAction="true"
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
-        @handleEdit="actionDetail"
+        @actionUpdate="actionUpdate"
+        @actionPicked="actionPicked"
+        @actionCancel="actionCancel"
         />
 
+      <!--Create pickup List-->
+      <dialogCreatePickupList
+          :active="dialogPickupList"
+          @refresh="refresh"
+          :closeDialog="closeDialogPickupList"
+          title="Create Pickup List"
+          :dataItem="dataItem"
+      />
+
+      <!--dialog confirm picked -->
+      <dialog-confirm
+            :active="confirmDialogPicked"
+            :closeDialog="closeDialogConfirmPicked"
+            title="Are you sure to pickup ?"
+            message=""
+            @confirm="confirmPicked"
+            @cancel="closeDialogConfirmPicked"
+            
+        />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogCreatePickupList from "@/views/pickup/list/dialogCreateEditPickupList"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
+
 export default {
     name:"pickup-requestlist",
     mixins: [master],
@@ -30,15 +55,19 @@ export default {
         node:String
     },
     components: {
-        "table-master" : TableMaster
+        "table-master" : TableMaster,
+        "dialogCreatePickupList": DialogCreatePickupList,
+        "dialog-confirm": DialogConfirm
     },
     data() {
         return {
             dataTable: [],
+            dialogPickupList:false,
+            confirmDialogPicked: false,
             datacolumn: [
                 {
-                    label: "Date",
-                    key: "created_at",
+                    label: "Request Date",
+                    key: "pickup_request_time",
                     width: "xs"
                 },
                 {
@@ -47,18 +76,28 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Name#",
+                    key: "pickup_name",
+                    width: "auto"
+                },
+                {
                     label: "Courier",
-                    key: "courier",
+                    key: "pickup_courier_employee_code",
                     width: "auto"
                 },
                 {
                     label: "Pickup Time",
-                    key: "created_at",
+                    key: "pickup_date",
+                    width: "auto"
+                },
+                {
+                    label: "Type",
+                    key: "pickup_type",
                     width: "auto"
                 },
                 {
                     label: "Status",
-                    key: "status",
+                    key: "pickup_status",
                     width: "auto"
                 },
             ],
@@ -119,7 +158,7 @@ export default {
               endDate = to
             }
             await axios
-                .get(this.URL.transaction +
+                .get(this.URL.pickup +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
@@ -141,8 +180,11 @@ export default {
                 })
         },
 
-        closeDialogConfirm(){
-            this.confirmDialog = false
+        closeDialogConfirmPicked(){
+            this.confirmDialogPicked = false
+        },
+        closeDialogPickupList() {
+          this.dialogPickupList = false
         },
 
         actionLimit(val){
@@ -161,9 +203,31 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
 
-        actionDetail(row){
-          this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
-        }
+        actionUpdate(val){
+          if(this.dataTable.length > 0) {
+            let obj = this.dataTable.filter(item => {
+              console.log(item, 'asd', val)
+              return item.user_id === val.user_id
+            })
+            this.dataItem = obj[0]
+            console.log(this.dataItem, 'nihh val', val)
+            this.$nextTick(() => {
+              this.dialogPickupList = true
+            });
+          }
+        },
+        actionPicked(val){
+           console.log('val picked', val); 
+            this.confirmDialogPicked = true;
+        },
+        actionCancel(val){
+          console.log('val cancel', val); 
+        },
+        confirmPicked(val) {
+            if(val) {
+
+            }
+        },
 
     },
     mounted() {
