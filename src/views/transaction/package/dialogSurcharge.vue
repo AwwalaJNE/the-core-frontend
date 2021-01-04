@@ -254,10 +254,10 @@ export default {
                                                 let value1 = chargeble_weight
                                                 let value2 = objective2
 
-                                                // if(operator.includes('<')) {
-                                                //     value1 = objective2
-                                                //     value2 = chargeble_weight
-                                                // }
+                                                if(operator.includes('<')) {
+                                                    value1 = objective2
+                                                    value2 = chargeble_weight
+                                                }
 
                                                 if(typeof objective2 == 'number') {
                                                     let str = `${value1} ${operator} ${value2}`
@@ -274,10 +274,10 @@ export default {
                                                 let value1 = Number(max)
                                                 let value2 = Number(objective2)
 
-                                                // if(operator.includes('<')) {
-                                                //     value1 = Number(objective2)
-                                                //     value2 = Number(max)
-                                                // }
+                                                if(operator.includes('<')) {
+                                                    value1 = Number(objective2)
+                                                    value2 = Number(max)
+                                                }
 
                                                 let str = `${value1} ${operator} ${value2}`
                                                 status = eval(str)

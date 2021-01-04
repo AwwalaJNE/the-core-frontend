@@ -339,7 +339,7 @@ const TransactionMixin = {
 
                     // koli total calculator
                     this.SUM_CHARGEBLE_WEIGHT = this.SUM_CHARGEBLE_WEIGHT + ALL_CHARGEBLE_WEIGHT
-                    this.SUM_ACTUAL_WEIGHT = this.SUM_ACTUAL_WEIGHT + koli_actual_weight
+                    
                     this.SUM_VOLUME_WEIGHT = this.SUM_VOLUME_WEIGHT + Number(koli_volume_weight.toFixed(2))
 
                     if(koli.surcharge_id && koli.surcharge_id.length > 0) {
@@ -347,6 +347,8 @@ const TransactionMixin = {
                         let temp_handling_charge = 0
                         let temp_chargeable_weight = 0
                         let CHARGEBLE_WEIGHT = this.SUM_CHARGEBLE_WEIGHT
+                        let ACTUAL_WEIGHT = koli_actual_weight
+                        let temp_actual = 0
                         koli.surcharge_id.map(su_id => {
                             let dataSurcharge = surchargeByID[su_id] || {}
                             
@@ -365,11 +367,25 @@ const TransactionMixin = {
                                         console.log('CHARGEBLE_WEIGHT', evalchargeable_weight)
                                         // temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)
                                     }
+                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('ACTUAL_WEIGHT')) {
+                                        let evalactual_weight = eval(dataSurcharge['surcharge_formula']['ACTUAL_WEIGHT'])
+                                        koli_actual_weight = evalactual_weight
+
+                                        
+
+                                        console.log('ACTUAL_WEIGHT', evalactual_weight)
+                                        // temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)
+                                    }
                                 }
                             }
                         })
+                        this.SUM_ACTUAL_WEIGHT = this.SUM_ACTUAL_WEIGHT + koli_actual_weight
                         SUM_BIAYA_LAIN = SUM_BIAYA_LAIN + tempbiaya
                         SUM_HANDLING_CHARGE = SUM_HANDLING_CHARGE + temp_handling_charge
+
+                        // let reroundUp = Number(this.round03(this.SUM_VOLUME_WEIGHT))
+                        let reCompare = Number(Math.max(this.SUM_ACTUAL_WEIGHT, roundUp).toFixed(2))
+                        this.SUM_CHARGEBLE_WEIGHT = reCompare
                     }
 
                 })
