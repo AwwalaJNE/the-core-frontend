@@ -84,14 +84,14 @@
                             item !== 'chargeable_weight'">
                                 <tr :key="i">
                                     <td>{{objectKeys[item].label}}</td>
-                                    <td>{{objectKeys[item].value}}</td>
+                                    <td>{{moneyformat(objectKeys[item].value)}}</td>
                                 </tr>
                             </template>
                         </template>
                         <hr>
                         <tr>
                             <td><h3>Grand Total</h3></td>
-                            <td><h3>{{listenGrandTotal}}</h3></td>
+                            <td><h3>{{moneyformat(listenGrandTotal)}}</h3></td>
                         </tr>
                     </table>
                 </div>

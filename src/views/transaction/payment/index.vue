@@ -31,6 +31,18 @@
                     </vs-col>
                 </vs-row>
                 <h2>Payment Method</h2>
+                <vs-row>
+                    <vs-col xs="12" sm="4" lg="4">
+                        <ul>
+                            <li><a href="javascript:void(0)">Cash</a></li>
+                            <li><a href="javascript:void(0)">Card</a></li>
+                            <li><a href="javascript:void(0)">Payment Wallet</a></li>
+                        </ul>
+                    </vs-col>
+                    <vs-col xs="12" sm="8" lg="8">
+                        <div></div>
+                    </vs-col>
+                </vs-row>
                 
             </div>
         </template>
@@ -48,6 +60,21 @@ export default {
     },
     data() {
         return {
+            navItemm: [
+                {
+                    label: "Cash",
+                    key: "k-CASH"
+                },
+                {
+                    label: "Card",
+                    key: "k-CARD"
+                },
+                {
+                    label: "Payment Wallet",
+                    key: "k-WALLET"
+                },
+            ],
+            selectedItem: 'k-CASH',
             dataTransaction: {},
             koli_qty: 0,
             connote_qty: 0,
