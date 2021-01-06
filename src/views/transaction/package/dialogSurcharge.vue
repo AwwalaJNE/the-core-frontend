@@ -254,15 +254,15 @@ export default {
                                                 let value1 = chargeble_weight
                                                 let value2 = objective2
 
-                                                if(operator.includes('<')) {
-                                                    value1 = objective2
-                                                    value2 = chargeble_weight
-                                                }
+                                                // if(operator.includes('<')) {
+                                                //     value1 = objective2
+                                                //     value2 = chargeble_weight
+                                                // }
 
                                                 if(typeof objective2 == 'number') {
                                                     let str = `${value1} ${operator} ${value2}`
                                                     status = eval(str)
-                                                    // console.log('has KOLI_CHARGEBLE_WEIGHT condition', str,value1, operator, value2, eval(str))
+                                                    console.log('has KOLI_CHARGEBLE_WEIGHT condition', str,value1, operator, value2, eval(str))
                                                 }
                                             }
                                         }
