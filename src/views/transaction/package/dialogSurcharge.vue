@@ -172,7 +172,7 @@ export default {
                 this.Keys = keys
             }
 
-            this.selectedData = this.listenPackageSurcharge
+            // this.selectedData = this.listenPackageSurcharge
 
             let activeSurchargeType = []
             this.listenPackageSurcharge.length > 0 && this.listenPackageSurcharge.map(item => {
