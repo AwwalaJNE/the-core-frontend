@@ -363,8 +363,7 @@ const TransactionMixin = {
                                             if(formula.toLowerCase() == 'chargeble_weight') {
                                                 let str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? dataSurcharge['surcharge_formula'][formula].toLowerCase() : dataSurcharge['surcharge_formula'][formula]
                                                 let evalchargeable_weight = eval(str)
-                                                temp_chargeable_weight = evalchargeable_weight
-                                                this.SUM_CHARGEBLE_WEIGHT = temp_chargeable_weight
+                                                this.SUM_CHARGEBLE_WEIGHT = evalchargeable_weight
                                                 this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
                                                 base_tariff = this.BASE_TARIFF
                                                 console.log('CHARGEBLE_WEIGHT', evalchargeable_weight, this.SUM_CHARGEBLE_WEIGHT, base_tariff)
@@ -416,9 +415,9 @@ const TransactionMixin = {
 
                     // let reroundUp = Number(this.round03(this.SUM_VOLUME_WEIGHT))
                     let reCompareWeight = Number(Math.max(this.SUM_ACTUAL_WEIGHT, roundUp).toFixed(2))
-                    this.SUM_CHARGEBLE_WEIGHT = reCompareWeight
-                    if(temp_chargeable_weight !== 0) {
-                        this.SUM_CHARGEBLE_WEIGHT += temp_chargeable_weight
+                    
+                    if(reCompare == true) {
+                        this.SUM_CHARGEBLE_WEIGHT += reCompareWeight
                     }
                     // this.SUM_CHARGEBLE_WEIGHT += chargeble_weight_intervensi
                     
