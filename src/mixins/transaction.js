@@ -357,6 +357,10 @@ const TransactionMixin = {
                             
                             if(Object.keys(dataSurcharge).length > 0) {
                                 if(dataSurcharge.hasOwnProperty('surcharge_formula')) {
+                                    // dataSurcharge['surcharge_formula'].map(formula => {
+                                    //     let fmr = dataSurcharge['surcharge_formula'][formula].toLowerCase()
+                                    //     let str = ``
+                                    // })
                                     if(dataSurcharge['surcharge_formula'].hasOwnProperty('SURCHARGE')) {
                                         let evalSurcharge = eval(dataSurcharge['surcharge_formula']['SURCHARGE'])
                                         
@@ -373,8 +377,8 @@ const TransactionMixin = {
                                         
                                         // temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)
                                     }
-                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('ACTUAL_WEIGHT')) {
-                                        let evalactual_weight = eval(dataSurcharge['surcharge_formula']['ACTUAL_WEIGHT'])
+                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('KOLI_ACTUAL_WEIGHT')) {
+                                        let evalactual_weight = eval(dataSurcharge['surcharge_formula']['KOLI_ACTUAL_WEIGHT'].toLowerCase())
                                         koli_actual_weight = evalactual_weight
                                         console.log('ACTUAL_WEIGHT', evalactual_weight)
                                         // temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)

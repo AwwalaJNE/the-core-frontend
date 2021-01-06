@@ -516,7 +516,7 @@ export default {
                     if(surcharge.length > 0){
                         surcharge.map(item => ids.push(item.surcharge_id))
                     }
-                    this.connote_koli_item[value].surcharge_id = ids
+                    this.connote_koli_item[value].surcharge_id = [...this.connote_koli_item[value].surcharge_id,...ids]
 
                     this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
                     this.surchargeView()
