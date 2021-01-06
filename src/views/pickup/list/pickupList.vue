@@ -28,13 +28,12 @@
       />
 
       <!--dialog confirm picked -->
-      <dialog-confirm
-            :active="confirmDialogPicked"
-            :closeDialog="closeDialogConfirmPicked"
-            title="Are you sure to pickup ?"
-            message=""
-            @confirm="confirmPicked"
-            @cancel="closeDialogConfirmPicked"
+      <DialogPicked
+          :active="dialogPickedActive"
+          @refresh="refresh"
+          :closeDialog="closeDialogConfirmPicked"
+          title="List of Bags"
+          :pickupData="pickupData"
             
         />
     </div>
@@ -44,7 +43,7 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import DialogCreatePickupList from "@/views/pickup/list/dialogCreateEditPickupList"
-import DialogConfirm from "@/components/dialog/dialogConfirm"
+import DialogPicked from "@/views/pickup/list/dialogPicked"
 
 export default {
     name:"pickup-requestlist",
@@ -57,13 +56,13 @@ export default {
     components: {
         "table-master" : TableMaster,
         "dialogCreatePickupList": DialogCreatePickupList,
-        "dialog-confirm": DialogConfirm
+        "DialogPicked": DialogPicked
     },
     data() {
         return {
             dataTable: [],
             dialogPickupList:false,
-            confirmDialogPicked: false,
+            dialogPickedActive: false,
             datacolumn: [
                 {
                     label: "Request Date",
@@ -81,9 +80,19 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Courier",
-                    key: "pickup_courier_employee_code",
-                    width: "auto"
+                  label: "Bags",
+                  key: "total_bag",
+                  width: "auto"
+                },
+                {
+                  label: "Picked",
+                  key: "total_bag_picked",
+                  width: "auto"
+                },
+                {
+                  label: "Courier",
+                  key: "pickup_courier_employee_name",
+                  width: "auto"
                 },
                 {
                     label: "Pickup Time",
@@ -103,6 +112,7 @@ export default {
             ],
             loading: false,
             dataItem: {},
+            pickupData:{},
             tempSearch: "",
             tempDate: [],
             startDate: "",
@@ -162,15 +172,19 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
-                    this.dataTable = res.data.data
-
+                    // this.dataTable = res.data.data
+                    let arr = res.data.data
+                    arr.map(item => {
+                        item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
+                    })
+                    this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
+                        this.openNotification('warn', 'Pickup data is empty!', ' Please create a new pickup data')
                     }
                     
                     this.loading = false
@@ -181,7 +195,7 @@ export default {
         },
 
         closeDialogConfirmPicked(){
-            this.confirmDialogPicked = false
+            this.dialogPickedActive = false
         },
         closeDialogPickupList() {
           this.dialogPickupList = false
@@ -210,15 +224,16 @@ export default {
               return item.user_id === val.user_id
             })
             this.dataItem = obj[0]
-            console.log(this.dataItem, 'nihh val', val)
+            this.dataItem = val
             this.$nextTick(() => {
               this.dialogPickupList = true
             });
           }
         },
         actionPicked(val){
-           console.log('val picked', val); 
-            this.confirmDialogPicked = true;
+           console.log('val picked', val);
+          this.pickupData = val;
+          this.dialogPickedActive = true;
         },
         actionCancel(val){
           console.log('val cancel', val); 
