@@ -4,6 +4,7 @@
     prevent-close
     :loading="loadingActive"
     overflow-hidden
+    :not-close="not_close"
     @close="closeDialog"
     :class="width">
         <template>
@@ -31,12 +32,14 @@ export default {
         actived: Boolean,
         closeDialog: Function,
         width: String,
-        loading:Boolean
+        loading:Boolean,
+        not_close_option: Boolean
     },
     data() {
         return {
             modalActive: false,
-            loadingActive: false
+            loadingActive: false,
+            not_close: false
         }
     },
     watch: {
@@ -49,6 +52,11 @@ export default {
           if(val !== undefined) {
             this.loadingActive = val || false
           }
+        },
+        not_close_option: function(val) {
+            if(val !== undefined) {
+                this.not_close = val || false
+            }
         }
     },
     methods: {

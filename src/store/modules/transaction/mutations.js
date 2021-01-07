@@ -539,6 +539,10 @@ export default {
             }
         })
 
+        
+        
+    },
+    CLEAR_TRANSACTION_DATA_CONNOTE(state, payload) {
         state.transaction = {
             transaction_id: '',
             transaction_finished: false,
@@ -583,10 +587,10 @@ export default {
                     connote_index: ''
                 },
             ],
-            grand_total: 0
+            grand_total: 0,
+            discount: 0
         }
-        
-    },
+    }
 
 
 }

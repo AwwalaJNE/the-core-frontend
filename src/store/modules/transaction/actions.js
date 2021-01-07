@@ -379,4 +379,7 @@ export default {
     EMPTY_TRANSACTION_DATA_CONNOTE({ commit }, payload) {
         commit('EMPTY_TRANSACTION_DATA_CONNOTE', payload)
     },
+    CLEAR_TRANSACTION_DATA_CONNOTE({ commit }, payload) {
+        commit('CLEAR_TRANSACTION_DATA_CONNOTE', payload)
+    },
 }

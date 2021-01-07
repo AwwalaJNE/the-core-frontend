@@ -580,7 +580,8 @@ export default {
         connote_index: ''
       },
     ],
-    grand_total: 0
+    grand_total: 0,
+    discount: 0
   }
   
 

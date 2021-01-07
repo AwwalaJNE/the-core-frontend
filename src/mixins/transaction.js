@@ -78,8 +78,8 @@ const TransactionMixin = {
                                 
                                 if(actual_weight > 0 && chargeable_weight > 0) {
                                     filterAutoSurcharge.map(surcharge => {
-                                        if(surcharge.hasOwnProperty('surcharge_condition')) {
-                                            let objectives = surcharge['surcharge_condition']
+                                        if(surcharge.hasOwnProperty('surcharge_condition') && surcharge['surcharge_type_name'].toLowerCase().includes('overweight')) {
+                                            let objectives = surcharge['surcharge_condition'] || {}
                                             let str = ''
                                             if(objectives.hasOwnProperty('KOLI_ACTUAL_WEIGHT')){
                                                 console.log('1')
@@ -98,17 +98,19 @@ const TransactionMixin = {
                                             } else if(objectives.hasOwnProperty('CHARGEBLE_WEIGHT')) {
                                                 console.log('2')
                                                 let operator = Object.keys(objectives['CHARGEBLE_WEIGHT'])[0]
-                                                let val1 = objectives['CHARGEBLE_WEIGHT'][operator]
-                                                let val2 = chargeable_weight
-                                                // fix jika type operator lebih dari ('>='), maka switch value
-                                                if(operator == '>=') {
-                                                    val1 = chargeable_weight
-                                                    val2 = objectives['CHARGEBLE_WEIGHT'][operator]
-                                                }
+                                                // let val1 = objectives['CHARGEBLE_WEIGHT'][operator]
+                                                // let val2 = chargeable_weight
+                                                // // fix jika type operator lebih dari ('>='), maka switch value
+                                                // if(operator == '>=') {
+                                                //     val1 = chargeable_weight
+                                                //     val2 = objectives['CHARGEBLE_WEIGHT'][operator]
+                                                // }
+                                                    let val1 = chargeable_weight
+                                                    let val2 = objectives['CHARGEBLE_WEIGHT'][operator]
                                                 str = `if(${val1} ${operator} ${val2}){
                                                     prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
                                                 }`
-                                                console.log('str', str)
+                                                console.log('str', str, val1,operator,val2)
     
                                             } else if(objectives.hasOwnProperty('WEIGHT')) {
                                                 console.log('3')
@@ -174,12 +176,14 @@ const TransactionMixin = {
             this.service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
             let surchargeList = this.listenSurchargeList || []
             let result = []
+            
             console.log('ini service', this.service)
             try {
                 if(surchargeList.length > 0) {
                     surchargeList.map(surcharge => {
                         if(surcharge.hasOwnProperty('surcharge_condition')) {
                             let objectives = surcharge['surcharge_condition'] || {}
+                            let autosurchargeCek = true
                             let serviceObjectives = false
                             let hasShipperObjectives = false
                             let shipperObjectivesStatus = false
@@ -187,6 +191,7 @@ const TransactionMixin = {
                                let operator = Object.keys(objectives['CONNOTE_SERVICE_CODE'])[0] || ''
                                if(operator !== ''){
                                     serviceObjectives = this.service.toLowerCase().includes(objectives['CONNOTE_SERVICE_CODE'][operator].toLowerCase())
+                                    autosurchargeCek = serviceObjectives
                                }
                             }
 
@@ -195,19 +200,23 @@ const TransactionMixin = {
                                 let operator = Object.keys(objectives['CONNOTE_SHIPPER_TLC'])[0] || ''
                                 if(operator !== ''){
                                     shipperObjectivesStatus = node.toLowerCase().includes(objectives['CONNOTE_SHIPPER_TLC'][operator].toLowerCase())
+                                    autosurchargeCek = shipperObjectivesStatus
                                 }
                             }
 
-                            if(serviceObjectives) {
-                                if(hasShipperObjectives){
-                                    if(shipperObjectivesStatus == true) {
-                                        result.push(surcharge)
-                                    } else {
-                                        // jika punya kondisi shipper tlc, namun tidak memenuhi syarat maka batal
-                                    }
-                                } else {
-                                    result.push(surcharge)
-                                }
+                            // if(serviceObjectives) {
+                            //     if(hasShipperObjectives){
+                            //         if(shipperObjectivesStatus == true) {
+                            //             result.push(surcharge)
+                            //         } else {
+                            //             // jika punya kondisi shipper tlc, namun tidak memenuhi syarat maka batal
+                            //         }
+                            //     } else {
+                            //         result.push(surcharge)
+                            //     }
+                            // }
+                            if(autosurchargeCek) {
+                                result.push(surcharge)
                             }
                         }
                     })
@@ -550,6 +559,9 @@ const TransactionMixin = {
         refreshTransactionStore() {
             this.$store.dispatch("EMPTY_TRANSACTION_DATA_CONNOTE", true)
         },
+        clearTransactionStore() {
+            this.$store.dispatch("CLEAR_TRANSACTION_DATA_CONNOTE", true)
+        }
     },
 }
 

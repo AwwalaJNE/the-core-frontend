@@ -67,6 +67,10 @@
                 </vs-col>
             </vs-row>
         </section>
+        <payment
+            :active="dialogPayment" 
+            :closeDialog="closePaymentDialog"
+            />
     </div>
 </template>
 <script>
@@ -79,6 +83,7 @@ import Origin from "@/views/transaction/origin"
 import Destination from "@/views/transaction/destination"
 import Package from "@/views/transaction/package"
 import Calc from "@/views/transaction/calc"
+import Payment from "@/views/transaction/payment"
 export default {
     name: "new-transaction",
     mixins: [master, TransactionMixin],
@@ -88,7 +93,8 @@ export default {
         "destination" : Destination,
         "breadcrumb": Breadcrumb,
         "package": Package,
-        "calc": Calc
+        "calc": Calc,
+        "payment": Payment
     },
     computed: {
         listenOrigin () {
@@ -111,9 +117,16 @@ export default {
         return {
             typeAction: '',
             dataTransaction: {},
+            dialogPayment: false
         }
     },
     methods: {
+        openPaymentDialog(){
+            this.dialogPayment = true
+        },
+        closePaymentDialog() {
+            this.dialogPayment = false
+        },
         onSubmit(refs){
             console.log('onsubmit form controller', refs)
                 refs.form.validate().then(success => {
@@ -161,10 +174,16 @@ export default {
                 .then(res => {
                     console.log('res connote', res)
                     if(res.status == 200) {
+                        this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':res.data.data['transaction_id']})
                         if(this.typeAction == 'addconnote') {
                             this.fillTransactionDataAddMoreConnote(res.data.data)
+                            this.refreshTransactionStore()
+                        } else {
+                            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value':res.data.data['transaction_finished'] || true})
+                            this.openPaymentDialog()
                         }
-                        this.refreshTransactionStore()
+                        
+                        
                     }
                     
                     this.openNotification(null, 'Create new success', 'Create new district is success')
