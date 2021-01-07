@@ -27,7 +27,7 @@
           :dataItem="dataItem"
       />
 
-      <!--dialog confirm picked -->
+      <!--dialog d picked -->
       <DialogPicked
           :active="dialogPickedActive"
           @refresh="refresh"
@@ -36,6 +36,17 @@
           :pickupData="pickupData"
             
         />
+
+      <!-- dialog confirm cancel pickup-->
+      <dialog-confirm
+          :active="activeDialogCancel"
+          :loading="activeLoadingCancel"
+          :closeDialog="closeDialogConfirmCancel"
+          title="Cancel Pickup"
+          message="Are you sure you want to cancel Pickup ?"
+          @confirm="confirmCancel"
+          @cancel="closeDialogConfirmCancel"
+      />
     </div>
 </template>
 <script>
@@ -44,6 +55,7 @@ import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import DialogCreatePickupList from "@/views/pickup/list/dialogCreateEditPickupList"
 import DialogPicked from "@/views/pickup/list/dialogPicked"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 
 export default {
     name:"pickup-requestlist",
@@ -56,10 +68,15 @@ export default {
     components: {
         "table-master" : TableMaster,
         "dialogCreatePickupList": DialogCreatePickupList,
-        "DialogPicked": DialogPicked
+        "DialogPicked": DialogPicked,
+        "dialog-confirm": DialogConfirm
     },
     data() {
         return {
+            //cancel pickup
+            activeDialogCancel:false,
+            activeLoadingCancel:false,
+
             dataTable: [],
             dialogPickupList:false,
             dialogPickedActive: false,
@@ -219,29 +236,58 @@ export default {
 
         actionUpdate(val){
           if(this.dataTable.length > 0) {
-            let obj = this.dataTable.filter(item => {
-              console.log(item, 'asd', val)
-              return item.user_id === val.user_id
-            })
-            this.dataItem = obj[0]
             this.dataItem = val
+            this.dataItem.pickup_date = (val.pickup_date) ? val.pickup_date.substring(0,10) : val.pickup_date
+
             this.$nextTick(() => {
               this.dialogPickupList = true
             });
           }
         },
         actionPicked(val){
-           console.log('val picked', val);
           this.pickupData = val;
           this.dialogPickedActive = true;
         },
         actionCancel(val){
-          console.log('val cancel', val); 
+          this.pickupData = val;
+          this.activeDialogCancel = true;
         },
-        confirmPicked(val) {
-            if(val) {
 
+        //cancel pickup
+        confirmCancel(val) {
+          if(val) {
+            this.activeLoadingCancel=true
+            let formupdate = {
+                'pickup_number' : this.pickupData.pickup_number,
+                'pickup_status' : 'CANCELED',
+                'is_pickup_canceled'  : 1
             }
+            this.updateData(formupdate)
+          }
+        },
+        closeDialogConfirmCancel(){
+          this.activeDialogCancel = false
+          this.activeLoadingCancel=false
+        },
+        async updateData(form){
+          await axios
+              .put(
+                  this.URL.pickup + `?n=${this.listenNodeId}`,
+                  JSON.stringify(form),
+                  this.Helper.header())
+              .then(res => {
+                this.closeDialogConfirmCancel()
+                this.btnLoading = false
+                this.activeLoadingCancel = false
+                this.refresh()
+                this.openNotification(null, 'Success', 'Cancel Pickup is success')
+              }).catch(err => {
+                this.btnLoading = false
+                this.activeLoadingCancel = false
+                this.closeDialogConfirmCancel()
+                this.refresh()
+                this.openNotification('danger', 'Cancel Pickup is failed', err)
+              })
         },
 
     },

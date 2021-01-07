@@ -127,7 +127,7 @@ export default {
     async updateData(){
       await axios
           .put(
-              this.URL.pickup + `/n=${this.listenNodeId}`,
+              this.URL.pickup + `?n=${this.listenNodeId}`,
               JSON.stringify(this.form),
               this.Helper.header())
           .then(res => {
@@ -150,12 +150,10 @@ export default {
       this.bag_picked = []
     },
     updateValue(val){
-      console.log(val,'selec');
     },
     scanBag(){
       this.bag_picked.push(this.scan_bag);
       this.scan_bag='';
-      console.log(this.bag_picked,'as')
     },
 
   },
