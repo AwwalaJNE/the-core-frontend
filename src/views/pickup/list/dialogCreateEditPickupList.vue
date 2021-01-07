@@ -107,7 +107,8 @@ export default {
         return {
             form: {},
             node_id: '',
-            dialogGetCustomer:false
+            dialogGetCustomer:false,
+            pickup_number:'',
         }
     },
     computed: {
@@ -125,14 +126,14 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.node_id = val.node_id
+                this.pickup_number = val.pickup_number
             }
-        }
+        },
+
     },
     methods: {
         formData(form){
-          this.node_id = this.listenNodeId
           this.form = form
-          this.form.pickup_node_id_requestor = this.node_id
           let current = new Date();
           let minute = current.getMinutes()
           if(minute < 10){
@@ -140,7 +141,18 @@ export default {
           }
           let time = current.getHours() + ":" + minute;
           this.form.pickup_date = this.form.pickup_date + ' '+time
-          this.addData()
+
+
+          if(this.pickup_number !== undefined && this.pickup_number !== '') {
+            this.form.pickup_number = this.pickup_number
+            console.log(this.form,'alah')
+            this.updateData()
+          } else {
+            this.node_id = this.listenNodeId
+            this.form.pickup_node_id_requestor = this.node_id
+            this.addData()
+          }
+
 
         },
         handleSubmit(){
@@ -150,6 +162,7 @@ export default {
             this.$refs.formUserNodeController.handleClearForm()
             this.form = {}
             this.node_id = ""
+            this.pickup_number = ""
         },
 
         openGetCustomer() {
@@ -251,14 +264,14 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.node + `/${this.node_id}`,
+                    this.URL.pickup + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Update success', 'Update node is success')
+                    this.openNotification(null, 'Update success', 'Update pickup is success')
                 }).catch(err => {
                     this.loading = false
                     this.closeDialog()
