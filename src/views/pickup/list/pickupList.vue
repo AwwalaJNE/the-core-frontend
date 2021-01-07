@@ -27,16 +27,26 @@
           :dataItem="dataItem"
       />
 
-      <!--dialog confirm picked -->
-      <dialog-confirm
-            :active="confirmDialogPicked"
-            :closeDialog="closeDialogConfirmPicked"
-            title="Are you sure to pickup ?"
-            message=""
-            @confirm="confirmPicked"
-            @cancel="closeDialogConfirmPicked"
+      <!--dialog d picked -->
+      <DialogPicked
+          :active="dialogPickedActive"
+          @refresh="refresh"
+          :closeDialog="closeDialogConfirmPicked"
+          title="List of Bags"
+          :pickupData="pickupData"
             
         />
+
+      <!-- dialog confirm cancel pickup-->
+      <dialog-confirm
+          :active="activeDialogCancel"
+          :loading="activeLoadingCancel"
+          :closeDialog="closeDialogConfirmCancel"
+          title="Cancel Pickup"
+          message="Are you sure you want to cancel Pickup ?"
+          @confirm="confirmCancel"
+          @cancel="closeDialogConfirmCancel"
+      />
     </div>
 </template>
 <script>
@@ -44,6 +54,7 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import DialogCreatePickupList from "@/views/pickup/list/dialogCreateEditPickupList"
+import DialogPicked from "@/views/pickup/list/dialogPicked"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 
 export default {
@@ -57,13 +68,18 @@ export default {
     components: {
         "table-master" : TableMaster,
         "dialogCreatePickupList": DialogCreatePickupList,
+        "DialogPicked": DialogPicked,
         "dialog-confirm": DialogConfirm
     },
     data() {
         return {
+            //cancel pickup
+            activeDialogCancel:false,
+            activeLoadingCancel:false,
+
             dataTable: [],
             dialogPickupList:false,
-            confirmDialogPicked: false,
+            dialogPickedActive: false,
             datacolumn: [
                 {
                     label: "Request Date",
@@ -81,9 +97,19 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Courier",
-                    key: "pickup_courier_employee_code",
-                    width: "auto"
+                  label: "Bags",
+                  key: "total_bag",
+                  width: "auto"
+                },
+                {
+                  label: "Picked",
+                  key: "total_bag_picked",
+                  width: "auto"
+                },
+                {
+                  label: "Courier",
+                  key: "pickup_courier_employee_name",
+                  width: "auto"
                 },
                 {
                     label: "Pickup Time",
@@ -103,6 +129,7 @@ export default {
             ],
             loading: false,
             dataItem: {},
+            pickupData:{},
             tempSearch: "",
             tempDate: [],
             startDate: "",
@@ -162,15 +189,19 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
-                    this.dataTable = res.data.data
-
+                    // this.dataTable = res.data.data
+                    let arr = res.data.data
+                    arr.map(item => {
+                        item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
+                    })
+                    this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
+                        this.openNotification('warn', 'Pickup data is empty!', ' Please create a new pickup data')
                     }
                     
                     this.loading = false
@@ -181,7 +212,7 @@ export default {
         },
 
         closeDialogConfirmPicked(){
-            this.confirmDialogPicked = false
+            this.dialogPickedActive = false
         },
         closeDialogPickupList() {
           this.dialogPickupList = false
@@ -205,28 +236,58 @@ export default {
 
         actionUpdate(val){
           if(this.dataTable.length > 0) {
-            let obj = this.dataTable.filter(item => {
-              console.log(item, 'asd', val)
-              return item.user_id === val.user_id
-            })
-            this.dataItem = obj[0]
-            console.log(this.dataItem, 'nihh val', val)
+            this.dataItem = val
+            this.dataItem.pickup_date = (val.pickup_date) ? val.pickup_date.substring(0,10) : val.pickup_date
+
             this.$nextTick(() => {
               this.dialogPickupList = true
             });
           }
         },
         actionPicked(val){
-           console.log('val picked', val); 
-            this.confirmDialogPicked = true;
+          this.pickupData = val;
+          this.dialogPickedActive = true;
         },
         actionCancel(val){
-          console.log('val cancel', val); 
+          this.pickupData = val;
+          this.activeDialogCancel = true;
         },
-        confirmPicked(val) {
-            if(val) {
 
+        //cancel pickup
+        confirmCancel(val) {
+          if(val) {
+            this.activeLoadingCancel=true
+            let formupdate = {
+                'pickup_number' : this.pickupData.pickup_number,
+                'pickup_status' : 'CANCELED',
+                'is_pickup_canceled'  : 1
             }
+            this.updateData(formupdate)
+          }
+        },
+        closeDialogConfirmCancel(){
+          this.activeDialogCancel = false
+          this.activeLoadingCancel=false
+        },
+        async updateData(form){
+          await axios
+              .put(
+                  this.URL.pickup + `?n=${this.listenNodeId}`,
+                  JSON.stringify(form),
+                  this.Helper.header())
+              .then(res => {
+                this.closeDialogConfirmCancel()
+                this.btnLoading = false
+                this.activeLoadingCancel = false
+                this.refresh()
+                this.openNotification(null, 'Success', 'Cancel Pickup is success')
+              }).catch(err => {
+                this.btnLoading = false
+                this.activeLoadingCancel = false
+                this.closeDialogConfirmCancel()
+                this.refresh()
+                this.openNotification('danger', 'Cancel Pickup is failed', err)
+              })
         },
 
     },
