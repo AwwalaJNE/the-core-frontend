@@ -38,7 +38,7 @@
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <PickupRequest :ref="'transactionList'"   :dateFilter="tempDate" :query="tempSearch"/>
+                        <PickupRequest :ref="'pickupRequest'"   :dateFilter="tempDate" :query="tempSearch"/>
                     </transition>
                 </template>
             </div>
@@ -85,7 +85,7 @@ export default {
     },
     methods: {
         refresh(){
-            this.$refs.transactionList.refresh() // trigger function refresh form dari luar component list
+            this.$refs.pickupRequest.refresh() // trigger function refresh form dari luar component list
         },
         searchValue (val) {
             this.tempSearch = val

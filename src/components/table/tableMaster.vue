@@ -204,7 +204,32 @@
                       <template v-if="pickupListAction == true">
                         <vs-td class="action">
                           <vs-row justify="center" class="btn_action">
-                            <vs-col w="4">
+                            <template v-if="cancelRequestAction == true">
+                              <vs-col w="4">
+                                <vs-button
+                                    block
+                                    square
+                                    flat
+                                    :active="true"
+                                    @click="actionCancel(item)"
+                                >
+                                  Cancel
+                                </vs-button>
+                              </vs-col>
+                              <vs-col w="4">
+                                <vs-button
+                                    block
+                                    square
+                                    flat
+                                    :active="true"
+                                    @click="actionPrint(item)"
+                                >
+                                  Print
+                                </vs-button>
+                              </vs-col>
+                            </template>
+                            <template v-else>
+                              <vs-col w="4">
                                 <vs-button
                                     block
                                     warn
@@ -225,21 +250,23 @@
                                     :active="true"
                                     @click="actionUpdate(item)"
                                 >
-                                Edit
+                                  Edit
                                 </vs-button>
                               </vs-col>
-                            
-                            <vs-col w="4">
-                              <vs-button
-                                  block
-                                  square
-                                  flat
-                                  :active="true"
-                                  @click="actionCancel(item)"
-                              >
-                                Cancel
-                              </vs-button>
-                            </vs-col>
+
+                              <vs-col w="4">
+                                <vs-button
+                                    block
+                                    square
+                                    flat
+                                    :active="true"
+                                    @click="actionCancel(item)"
+                                >
+                                  Cancel
+                                </vs-button>
+                              </vs-col>
+                            </template>
+
                           </vs-row>
                         </vs-td>
                       </template>
@@ -334,6 +361,7 @@ export default {
         updateAction: Boolean,
         avoidAction: Boolean,
         pickedAction: Boolean, //pickup list action picked
+        cancelRequestAction: Boolean, //pickup request action cancel
     },
     data() {
         return {
