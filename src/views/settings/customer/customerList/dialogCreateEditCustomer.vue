@@ -119,7 +119,7 @@ export default {
             this.loadingDataRole = true
             await axios
                 .get(this.URL.geolocation_subdistrict + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -147,7 +147,7 @@ export default {
             this.loadingDataRole = true
             await axios
                 .get(this.URL.customer_type + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -175,7 +175,7 @@ export default {
             this.loadingDataRole = true
             await axios
                 .get(this.URL.node + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -202,7 +202,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.customer + `/${this.customer_id}?n=1`,
+                    this.URL.customer + `/${this.customer_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -221,7 +221,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.customer + `?n=1`,
+                    this.URL.customer + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {

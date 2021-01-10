@@ -131,7 +131,7 @@ export default {
     },
     async ProccessAddBagItem(){
       await axios
-          .post(this.URL.bag+'/'+this.bag_id+`/detail?n=1`, JSON.stringify(this.form), this.Helper.header())
+          .post(this.URL.bag+'/'+this.bag_id+`/detail?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header())
           .then(res => {
             console.log('res',res)
             this.handleClearForm()

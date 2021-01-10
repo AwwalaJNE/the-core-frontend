@@ -84,7 +84,7 @@ export default {
             }
             await axios
                 .get(this.URL.customer_type + 
-                `?n=1&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     this.dataTable = res.data.data

@@ -155,7 +155,7 @@ export default {
             await axios
                 .get(
                     this.URL.koli +
-                    `?n=1&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}`,
+                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data

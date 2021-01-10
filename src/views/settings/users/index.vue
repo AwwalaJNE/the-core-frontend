@@ -242,7 +242,7 @@ export default {
             this.loadingDataRole = true
             await axios
                 .get(this.URL.role + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
@@ -262,7 +262,7 @@ export default {
             this.loadingPermission = true
             await axios
                 .get(this.URL.permission + 
-                `?n=1&sort_order=desc&&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     console.log('getDataPermission',res.data.data)

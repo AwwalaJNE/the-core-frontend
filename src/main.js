@@ -8,12 +8,16 @@ import { Upload, Autocomplete, Collapse, CollapseItem, DatePicker } from 'elemen
 import 'element-ui/lib/theme-chalk/index.css';
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
+// import VueMoment from 'vue-moment'
+// import moment from 'moment-timezone'
 
 locale.use(lang)
 
 import Storage from 'vue-ls'
 Vue.use(Vuesax)
-
+// Vue.use(VueMoment, {
+//   moment,
+// })
 Vue.use(Upload)
 Vue.use(Autocomplete)
 Vue.use(Collapse)

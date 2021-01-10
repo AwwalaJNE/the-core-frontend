@@ -117,7 +117,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.role + `/${this.user_role_id}?n=1`,
+                    this.URL.role + `/${this.user_role_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -137,7 +137,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.role + `?n=1`,
+                    this.URL.role + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {

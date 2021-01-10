@@ -164,7 +164,7 @@ export default {
                     if(item.status == true) {
                         await axios
                         .post(
-                            this.URL[this.selectedInputType] +`?n=1`, 
+                            this.URL[this.selectedInputType] +`?n=${this.listenNodeId}`, 
                             JSON.stringify(item),
                             this.Helper.header())
                         .then(res => {

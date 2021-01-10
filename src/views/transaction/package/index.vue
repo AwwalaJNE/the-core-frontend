@@ -387,7 +387,7 @@ export default {
 
             await axios
                 .get(this.URL.tariff_shipping_service + 
-                `?n=1&destination=${this.listenDestinationCode}`, 
+                `?n=${this.listenNodeId}&destination=${this.listenDestinationCode}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log('getShippingService', res.data.data)

@@ -116,7 +116,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.vehicle_type + `/${this.vehicle_type_id}?n=1`,
+                    this.URL.vehicle_type + `/${this.vehicle_type_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {

@@ -96,7 +96,7 @@ export default {
             }
             await axios
                 .get(this.URL.geolocation_province + 
-                `?n=1&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)

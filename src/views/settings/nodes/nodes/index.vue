@@ -111,7 +111,7 @@ export default {
             }
             await axios
                 .get(this.URL.node + 
-                `?n=1&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
@@ -128,7 +128,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate node list', err)
+                    this.openNotification('danger', 'Failed to populate node list', err.response.data.message)
                 })
         },
         actionUpdate(val){

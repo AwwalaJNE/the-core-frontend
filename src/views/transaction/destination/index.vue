@@ -91,7 +91,7 @@ export default {
         async getTableData(q) {
             await axios
                 .get(this.URL.geolocation_search + 
-                `?n=1&s=${q}`, 
+                `?n=${this.listenNodeId}&s=${q}`, 
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
@@ -138,7 +138,7 @@ export default {
         async getShippingService() {
             await axios
                 .get(this.URL.tariff_shipping_service + 
-                `?n=1&destination=${this.destinationCode}`, 
+                `?n=${this.listenNodeId}&destination=${this.destinationCode}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log('getShippingService', res.data.data)

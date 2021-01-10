@@ -142,7 +142,7 @@ export default {
         async getDataAltAddress(){
             await axios
                 .get(this.URL.node_alternate_address + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -166,7 +166,7 @@ export default {
         async getDataTariff(){
             await axios
                 .get(this.URL.tariff + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -190,7 +190,7 @@ export default {
         async getDataNodeType(){
             await axios
                 .get(this.URL.node_type + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -215,7 +215,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.node + `/${this.node_id}`,
+                    this.URL.node + `/${this.node_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -227,14 +227,14 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update failed', err)
+                    this.openNotification('danger', 'Update failed', err.response.data.message)
                 })
         },
         async addData() {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.node,
+                    this.URL.node + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -246,7 +246,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create failed', err)
+                    this.openNotification('danger', 'Create failed', err.response.data.message)
                 })
         },
         cancel() {

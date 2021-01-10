@@ -122,7 +122,7 @@ export default {
         async getDataCity(){
             await axios
                 .get(this.URL.geolocation_city + 
-                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -147,7 +147,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.geolocation_district + `/${this.geolocation_district_id}?n=1`,
+                    this.URL.geolocation_district + `/${this.geolocation_district_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -168,7 +168,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.geolocation_district + `?n=1`,
+                    this.URL.geolocation_district + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {

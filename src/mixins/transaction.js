@@ -56,12 +56,13 @@ const TransactionMixin = {
         },
     },
     methods: {
-        async autoApply(node_code){
+        async autoApply(){
+            let node_code = this.$store.getters.getUser['node_id'].node_code
             if(node_code !== undefined) {
                 console.log('PROSES AUTO APPLY NEW CODE')
                 
                 let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
-                let filterAutoSurcharge = await this.filterAutoSurcharge(node_code)
+                let filterAutoSurcharge = this.listenSurchargeList || []
                 
                 console.log('filterAutoSurcharge', filterAutoSurcharge)
                 try {
@@ -78,57 +79,63 @@ const TransactionMixin = {
                                 
                                 if(actual_weight > 0 && chargeable_weight > 0) {
                                     filterAutoSurcharge.map(surcharge => {
-                                        if(surcharge.hasOwnProperty('surcharge_condition') && surcharge['surcharge_type_name'].toLowerCase().includes('overweight')) {
-                                            let objectives = surcharge['surcharge_condition'] || {}
-                                            let str = ''
-                                            if(objectives.hasOwnProperty('KOLI_ACTUAL_WEIGHT')){
-                                                console.log('1')
-                                                let operator = Object.keys(objectives['KOLI_ACTUAL_WEIGHT'])[0]
-                                                let val1 = objectives['KOLI_ACTUAL_WEIGHT'][operator]
-                                                let val2 = actual_weight
-                                                // fix jika type operator lebih dari ('>='), maka switch value
-                                                if(operator == '>=') {
-                                                    val1 = actual_weight
-                                                    val2 = objectives['KOLI_ACTUAL_WEIGHT'][operator]
-                                                }
-                                                str = `if(${val1} ${operator} ${val2}){
-                                                    prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
-                                                }`
-    
-                                            } else if(objectives.hasOwnProperty('CHARGEBLE_WEIGHT')) {
-                                                console.log('2')
-                                                let operator = Object.keys(objectives['CHARGEBLE_WEIGHT'])[0]
-                                                // let val1 = objectives['CHARGEBLE_WEIGHT'][operator]
-                                                // let val2 = chargeable_weight
-                                                // // fix jika type operator lebih dari ('>='), maka switch value
-                                                // if(operator == '>=') {
-                                                //     val1 = chargeable_weight
-                                                //     val2 = objectives['CHARGEBLE_WEIGHT'][operator]
-                                                // }
-                                                    let val1 = chargeable_weight
-                                                    let val2 = objectives['CHARGEBLE_WEIGHT'][operator]
-                                                str = `if(${val1} ${operator} ${val2}){
-                                                    prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
-                                                }`
-                                                console.log('str', str, val1,operator,val2)
-    
-                                            } else if(objectives.hasOwnProperty('WEIGHT')) {
-                                                console.log('3')
-                                                let operator = Object.keys(objectives['WEIGHT'])[0]
-                                                let val1 = objectives['WEIGHT'][operator]
-                                                let val2 = actual_weight
-                                                // fix jika type operator lebih dari ('>='), maka switch value
-                                                if(operator == '>=') {
-                                                    val1 = actual_weight
-                                                    val2 = objectives['WEIGHT'][operator]
-                                                }
-                                                str = `if(${val1} ${operator} ${val2}){
-                                                    prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
-                                                }`
-                                                console.log('str', str)
+                                        if (surcharge.hasOwnProperty('surcharge_condition') && surcharge['surcharge_type_name'].toLowerCase().includes('overweight')){
+                                            let obj = this.filterSurcharge(surcharge, koli, node_code)
+                                            if(obj['service_relevant'] == true) {
+                                                prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
                                             }
-                                            eval(str)
                                         }
+                                        // if(surcharge.hasOwnProperty('surcharge_condition') && surcharge['surcharge_type_name'].toLowerCase().includes('overweight')) {
+                                        //     let objectives = surcharge['surcharge_condition'] || {}
+                                        //     let str = ''
+                                        //     if(objectives.hasOwnProperty('KOLI_ACTUAL_WEIGHT')){
+                                        //         console.log('1')
+                                        //         let operator = Object.keys(objectives['KOLI_ACTUAL_WEIGHT'])[0]
+                                        //         let val1 = objectives['KOLI_ACTUAL_WEIGHT'][operator]
+                                        //         let val2 = actual_weight
+                                        //         // fix jika type operator lebih dari ('>='), maka switch value
+                                        //         if(operator == '>=') {
+                                        //             val1 = actual_weight
+                                        //             val2 = objectives['KOLI_ACTUAL_WEIGHT'][operator]
+                                        //         }
+                                        //         str = `if(${val1} ${operator} ${val2}){
+                                        //             prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
+                                        //         }`
+    
+                                        //     } else if(objectives.hasOwnProperty('CHARGEBLE_WEIGHT')) {
+                                        //         console.log('2')
+                                        //         let operator = Object.keys(objectives['CHARGEBLE_WEIGHT'])[0]
+                                        //         // let val1 = objectives['CHARGEBLE_WEIGHT'][operator]
+                                        //         // let val2 = chargeable_weight
+                                        //         // // fix jika type operator lebih dari ('>='), maka switch value
+                                        //         // if(operator == '>=') {
+                                        //         //     val1 = chargeable_weight
+                                        //         //     val2 = objectives['CHARGEBLE_WEIGHT'][operator]
+                                        //         // }
+                                        //             let val1 = chargeable_weight
+                                        //             let val2 = objectives['CHARGEBLE_WEIGHT'][operator]
+                                        //         str = `if(${val1} ${operator} ${val2}){
+                                        //             prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
+                                        //         }`
+                                        //         console.log('str', str, val1,operator,val2)
+    
+                                        //     } else if(objectives.hasOwnProperty('WEIGHT')) {
+                                        //         console.log('3')
+                                        //         let operator = Object.keys(objectives['WEIGHT'])[0]
+                                        //         let val1 = objectives['WEIGHT'][operator]
+                                        //         let val2 = actual_weight
+                                        //         // fix jika type operator lebih dari ('>='), maka switch value
+                                        //         if(operator == '>=') {
+                                        //             val1 = actual_weight
+                                        //             val2 = objectives['WEIGHT'][operator]
+                                        //         }
+                                        //         str = `if(${val1} ${operator} ${val2}){
+                                        //             prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
+                                        //         }`
+                                        //         console.log('str', str)
+                                        //     }
+                                        //     eval(str)
+                                        // }
                                         
                                     })
 
@@ -171,63 +178,205 @@ const TransactionMixin = {
             }
         },
 
-        async filterAutoSurcharge(node = ''){
-            // filter berdasarkan selected service code sebelum koli checking, untuk mengurangi time complexity
-            this.service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
-            let surchargeList = this.listenSurchargeList || []
-            let result = []
+        // async filterAutoSurcharge(node = ''){
+        //     // filter berdasarkan selected service code sebelum koli checking, untuk mengurangi time complexity
+        //     this.service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
+        //     let surchargeList = this.listenSurchargeList || []
+        //     let result = []
             
-            console.log('ini service', this.service)
-            try {
-                if(surchargeList.length > 0) {
-                    surchargeList.map(surcharge => {
-                        if(surcharge.hasOwnProperty('surcharge_condition')) {
-                            let objectives = surcharge['surcharge_condition'] || {}
-                            let autosurchargeCek = true
-                            let serviceObjectives = false
-                            let hasShipperObjectives = false
-                            let shipperObjectivesStatus = false
-                            if(objectives.hasOwnProperty('CONNOTE_SERVICE_CODE')) {
-                               let operator = Object.keys(objectives['CONNOTE_SERVICE_CODE'])[0] || ''
-                               if(operator !== ''){
-                                    serviceObjectives = this.service.toLowerCase().includes(objectives['CONNOTE_SERVICE_CODE'][operator].toLowerCase())
-                                    autosurchargeCek = serviceObjectives
-                               }
-                            }
+        //     console.log('ini service', this.service)
+        //     try {
+        //         if(surchargeList.length > 0) {
+        //             // surchargeList.map(surcharge => {
+        //             //     if(surcharge.hasOwnProperty('surcharge_condition')) {
+        //             //         let objectives = surcharge['surcharge_condition'] || {}
+        //             //         let autosurchargeCek = true
+        //             //         let serviceObjectives = false
+        //             //         let hasShipperObjectives = false
+        //             //         let shipperObjectivesStatus = false
+        //             //         if(objectives.hasOwnProperty('CONNOTE_SERVICE_CODE')) {
+        //             //            let operator = Object.keys(objectives['CONNOTE_SERVICE_CODE'])[0] || ''
+        //             //            if(operator !== ''){
+        //             //                 serviceObjectives = this.service.toLowerCase().includes(objectives['CONNOTE_SERVICE_CODE'][operator].toLowerCase())
+        //             //                 autosurchargeCek = serviceObjectives
+        //             //            }
+        //             //         }
 
-                            if(objectives.hasOwnProperty('CONNOTE_SHIPPER_TLC')) {
-                                hasShipperObjectives = true
-                                let operator = Object.keys(objectives['CONNOTE_SHIPPER_TLC'])[0] || ''
-                                if(operator !== ''){
-                                    shipperObjectivesStatus = node.toLowerCase().includes(objectives['CONNOTE_SHIPPER_TLC'][operator].toLowerCase())
-                                    autosurchargeCek = shipperObjectivesStatus
+        //             //         if(objectives.hasOwnProperty('CONNOTE_SHIPPER_TLC')) {
+        //             //             hasShipperObjectives = true
+        //             //             let operator = Object.keys(objectives['CONNOTE_SHIPPER_TLC'])[0] || ''
+        //             //             if(operator !== ''){
+        //             //                 shipperObjectivesStatus = node.toLowerCase().includes(objectives['CONNOTE_SHIPPER_TLC'][operator].toLowerCase())
+        //             //                 autosurchargeCek = shipperObjectivesStatus
+        //             //             }
+        //             //         }
+
+        //             //         // if(serviceObjectives) {
+        //             //         //     if(hasShipperObjectives){
+        //             //         //         if(shipperObjectivesStatus == true) {
+        //             //         //             result.push(surcharge)
+        //             //         //         } else {
+        //             //         //             // jika punya kondisi shipper tlc, namun tidak memenuhi syarat maka batal
+        //             //         //         }
+        //             //         //     } else {
+        //             //         //         result.push(surcharge)
+        //             //         //     }
+        //             //         // }
+        //             //         if(autosurchargeCek) {
+        //             //             result.push(surcharge)
+        //             //         }
+        //             //     }
+        //             // })
+        //             result = surchargeList
+        //         }  
+        //     } catch (error) {
+        //         console.log('filter error ', error)
+        //         return []
+        //     }
+        //     return result
+        // },
+
+        filterSurcharge(obj, koli, node_code) {
+            let service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
+            let status = false
+            let listkoli = koli || []
+            let node = node_code || ''
+            
+            try {
+                if (Object.keys(service).length > 0) {
+                    let surcharge_condition = obj['surcharge_condition'] || {}
+                    
+                    // console.log('--- Surcharge -> '+obj['surcharge_name']+'----------', surcharge_condition, this.koli, this.listenCurrentIndexKoli)
+                            if(Object.keys(surcharge_condition).length > 0) {
+                                let tempStatus = null
+                                Object.keys(surcharge_condition).map(objective1 => {
+                                    surcharge_condition[objective1].map( item => {
+                                        
+                                        let operator = Object.keys(item)[0]
+                                        let objective2 = item[operator] !== undefined ? item[operator] : ''
+
+                                        if(objective1.toLowerCase().includes('connote_service_code')) {
+                                            if(service.toLowerCase().includes(objective2.toLowerCase())) {
+                                                tempStatus = tempStatus !== null ? tempStatus && true : true
+                                            } else {
+                                                tempStatus = tempStatus !== null ? tempStatus && false : false
+                                            }
+                                            console.log('Surcharge name = ', obj['surcharge_name'])
+                                            console.log('proses condition', objective1, service, objective2.toLowerCase(), tempStatus)
+                                            console.log('END ///')
+                                        } else if (objective1.toLowerCase().includes('connote_shipper_tlc')) {
+                                            if(node.toLowerCase().includes(objective2.toLowerCase())) {
+                                                tempStatus = tempStatus !== null ? tempStatus && true : true
+                                            } else {
+                                                tempStatus = tempStatus !== null ? tempStatus && false : false
+                                            }
+                                            console.log('Surcharge name = ', obj['surcharge_name'])
+                                            console.log('proses condition', objective1, node, objective2.toLowerCase(), tempStatus)
+                                            console.log('END ///')
+                                        } else {
+                                                if(Object.keys(listkoli).length > 0) {
+                                                    if(!objective1.toLowerCase().includes('actual_weight') && !objective1.toLowerCase().includes('length')) {
+                                                        let con1 = objective1.toLowerCase().replace("koli_", "")
+                                                        let con2 = typeof objective2 !== 'number' ? objective2.toLowerCase().replace("koli_", "") : ''
+
+                                                        let value1 = Number(listkoli[con1]) || ''
+                                                        let value2 = Number(listkoli[con2]) || ''
+                                                        
+                                                        if(value1 !== '' && value2 !== '') {
+                                                            let str = `value1 ${operator} value2`
+                                                            tempStatus = tempStatus !== null ? tempStatus !== null ? tempStatus && eval(str) : eval(str) : eval(str)
+                                                            // console.log('Surcharge name = ', obj['surcharge_name'])
+                                                            // console.log('proses condition', objective1, objective2,str,value1,operator,value2, status)
+                                                            // console.log('END ///')
+                                                        }
+                                                    }
+                                                }
+
+                                                if(objective1.toLowerCase().includes('actual_weight')) {
+                                                    if(Object.keys(listkoli).length > 0) {
+                                                        let actual_weight = Number(listkoli['actual_weight'])
+
+                                                        let value1 = actual_weight
+                                                        let value2 = objective2
+
+                                                        // if(operator.includes('<')) {
+                                                        //     value1 = objective2
+                                                        //     value2 = actual_weight
+                                                        // }
+
+                                                        if(typeof objective2 == 'number') {
+                                                            let str = `${value1} ${operator} ${value2}`
+                                                            tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
+                                                            console.log('Surcharge name = ', obj['surcharge_name'])
+                                                            console.log('proses condition', objective1, objective2,str,value1,operator,value2, eval(str))
+                                                            console.log('END ///')
+                                                        }
+                                                    }
+                                                }
+
+                                                if(objective1.toLowerCase().includes('chargeble_weight')) {
+                                                    if(Object.keys(listkoli).length > 0) {
+                                                        let volume_weight = Number(listkoli['volume_weight'])
+                                                        let actual_weight = Number(listkoli['actual_weight'])
+                                                        let roundUp = this.round03(volume_weight)
+                                                        let chargeble_weight = 0
+                                                        chargeble_weight = Number(Math.max(actual_weight, roundUp).toFixed(2))
+                                                        
+
+                                                        let value1 = chargeble_weight
+                                                        let value2 = objective2
+
+                                                        // if(operator.includes('<')) {
+                                                        //     value1 = objective2
+                                                        //     value2 = chargeble_weight
+                                                        // }
+
+                                                        if(typeof objective2 == 'number') {
+                                                            let str = `${value1} ${operator} ${value2}`
+                                                            tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
+                                                            // console.log('Surcharge name = ', obj['surcharge_name'])
+                                                            // console.log('proses condition', objective1, objective2,str,value1,operator,value2, status)
+                                                            // console.log('END ///')
+                                                        }
+                                                    }
+                                                }
+                                                if(objective1.toLowerCase() == 'length') {
+                                                    if(Object.keys(this.koli).length > 0) {
+                                                        let max = Number(Math.max(Number(Math.max(this.koli['length'], this.koli['width'])), this.koli['height']))
+                                                        
+                                                        let value1 = Number(max)
+                                                        let value2 = Number(objective2)
+
+                                                        if(operator.includes('<')) {
+                                                            value1 = Number(objective2)
+                                                            value2 = Number(max)
+                                                        }
+
+                                                        let str = `${value1} ${operator} ${value2}`
+                                                        tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
+                                                        // console.log('Surcharge name = ', obj['surcharge_name'])
+                                                        // console.log('proses condition', objective1, objective2,str,value1,operator,value2, status)
+                                                        // console.log('END ///')
+                                                    }
+                                                }
+                                        }
+                                    })
+
+                                })
+                                if(tempStatus !== null) {
+                                    status = tempStatus
                                 }
                             }
-
-                            // if(serviceObjectives) {
-                            //     if(hasShipperObjectives){
-                            //         if(shipperObjectivesStatus == true) {
-                            //             result.push(surcharge)
-                            //         } else {
-                            //             // jika punya kondisi shipper tlc, namun tidak memenuhi syarat maka batal
-                            //         }
-                            //     } else {
-                            //         result.push(surcharge)
-                            //     }
-                            // }
-                            if(autosurchargeCek) {
-                                result.push(surcharge)
-                            }
-                        }
-                    })
-                }  
+                    obj['service_relevant'] = status
+                    // console.log('=================== obj', obj)
+                }
             } catch (error) {
-                console.log('filter error ', error)
-                return []
+                console.log('error', error)
+                return {}
             }
-            return result
-        },
 
+            return obj
+        },
 
         calculationold(index) {
             let CONNOTE_INDEX = index != undefined ? index : 0

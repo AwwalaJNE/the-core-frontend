@@ -588,7 +588,8 @@ export default {
                 },
             ],
             grand_total: 0,
-            discount: 0
+            discount: 0,
+            payment_method: ''
         }
     }
 

@@ -141,7 +141,7 @@ export default {
 
             await axios
                 .get(
-                    this.URL.bag + '/'+bagId+`?n=1`,
+                    this.URL.bag + '/'+bagId+`?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.detail

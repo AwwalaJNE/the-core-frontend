@@ -71,6 +71,9 @@
             :active="dialogPayment" 
             :closeDialog="closePaymentDialog"
             />
+        <windowPortal v-model="printTransactionBarcodeShow">
+            <printTransactionBarcode :active="printTransactionBarcodeShow"/>
+        </windowPortal>
     </div>
 </template>
 <script>
@@ -84,6 +87,8 @@ import Destination from "@/views/transaction/destination"
 import Package from "@/views/transaction/package"
 import Calc from "@/views/transaction/calc"
 import Payment from "@/views/transaction/payment"
+import WindowPortal from "@/components/windowPortal"
+import PrintTransactionBarcode from "@/views/print/printTransactionBarcode"
 export default {
     name: "new-transaction",
     mixins: [master, TransactionMixin],
@@ -94,7 +99,9 @@ export default {
         "breadcrumb": Breadcrumb,
         "package": Package,
         "calc": Calc,
-        "payment": Payment
+        "payment": Payment,
+        "windowPortal": WindowPortal,
+        "printTransactionBarcode": PrintTransactionBarcode
     },
     computed: {
         listenOrigin () {
@@ -117,7 +124,8 @@ export default {
         return {
             typeAction: '',
             dataTransaction: {},
-            dialogPayment: false
+            dialogPayment: false,
+            printTransactionBarcodeShow: false
         }
     },
     methods: {
@@ -174,12 +182,13 @@ export default {
                 .then(res => {
                     console.log('res connote', res)
                     if(res.status == 200) {
-                        this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':res.data.data['transaction_id']})
+                        // this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':res.data.data['transaction_id']})
+                        this.fillTransactionData(res.data.data)
                         if(this.typeAction == 'addconnote') {
-                            this.fillTransactionDataAddMoreConnote(res.data.data)
                             this.refreshTransactionStore()
                         } else {
-                            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value':res.data.data['transaction_finished'] || true})
+                            // this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value':res.data.data['transaction_finished'] || true})
+                            this.printTransactionBarcodeShow = true
                             this.openPaymentDialog()
                         }
                         
@@ -192,7 +201,7 @@ export default {
                 })
         },
 
-        fillTransactionDataAddMoreConnote(data){
+        fillTransactionData(data){
             
             this.dataTransaction['transaction_id'] = data.transaction_id || ''
             let res_connote = {}
@@ -257,8 +266,10 @@ export default {
             // setelah proses ngisi transaction data connote dari respond post connote selesai,
             // - add obj data connote template
             // - connote index active + 1.
-            this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
-            this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
+            if(this.typeAction == 'addconnote') {
+                this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
+                this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
+            }
         }
 
         

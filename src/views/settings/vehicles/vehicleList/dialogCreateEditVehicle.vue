@@ -122,7 +122,7 @@ export default {
         async getNode(){
             await axios
                 .get(this.URL.node + 
-                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -147,7 +147,7 @@ export default {
         async getVehicleType(){
             await axios
                 .get(this.URL.vehicle_type + 
-                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -172,7 +172,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.vehicle + `/${this.vehicle_id}?n=1`,
+                    this.URL.vehicle + `/${this.vehicle_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {

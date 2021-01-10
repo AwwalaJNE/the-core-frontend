@@ -91,7 +91,7 @@ export default {
         async getTableData(q) {
             await axios
                 .get(this.URL.geolocation_search + 
-                `?n=1&s=${q}`, 
+                `?n=${this.listenNodeId}&s=${q}`, 
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data

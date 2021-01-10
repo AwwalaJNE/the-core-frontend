@@ -82,7 +82,7 @@ export default {
             }
             await axios
                 .get(this.URL.geolocation_timezone + 
-                `?n=1&sort_order=desc&limit=${1000}&page=${1}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${1000}&page=${1}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)

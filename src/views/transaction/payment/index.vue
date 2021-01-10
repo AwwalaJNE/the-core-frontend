@@ -190,10 +190,10 @@ export default {
                 this.price = data['grand_total']
                 // this.discount = data['discount']
                 let koli_qty = 0
-                data['connote'].map(item => {
-                    let connotekoli = item['connote_koli_item'].length
-                    koli_qty += connotekoli
-                })
+                // data['connote'].map(item => {
+                //     let connotekoli = item['connote_koli_item'].length
+                //     koli_qty += connotekoli
+                // })
                 this.jumlahbayar = this.price
                 this.koli_qty = koli_qty
             }

@@ -492,10 +492,10 @@ export default {
                     justify-content: center;
                 }
             }
-            .checkbox-inp .vs-icon-check span {
-                width: 8px;
-                margin-left: 0px;
-            }
+            // .checkbox-inp .vs-icon-check span {
+            //     width: 8px;
+            //     margin-left: 0px;
+            // }
         }
     }
     .text-link{

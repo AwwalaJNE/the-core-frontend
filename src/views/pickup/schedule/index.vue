@@ -167,7 +167,7 @@ export default {
           this.loading = true
           await axios
               .get(this.URL.node +
-                  `?n=1&sort_order=desc&&limit=1000&page=1&s=`,
+                  `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
                   this.Helper.header())
               .then(res => {
                 console.log('link', res)
