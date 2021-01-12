@@ -64,7 +64,6 @@ const TransactionMixin = {
                 let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
                 let filterAutoSurcharge = this.listenSurchargeList || []
                 
-                console.log('filterAutoSurcharge', filterAutoSurcharge)
                 try {
                     if(listKoli.length > 0) {
                         listKoli.map(koli => {
@@ -85,57 +84,6 @@ const TransactionMixin = {
                                                 prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
                                             }
                                         }
-                                        // if(surcharge.hasOwnProperty('surcharge_condition') && surcharge['surcharge_type_name'].toLowerCase().includes('overweight')) {
-                                        //     let objectives = surcharge['surcharge_condition'] || {}
-                                        //     let str = ''
-                                        //     if(objectives.hasOwnProperty('KOLI_ACTUAL_WEIGHT')){
-                                        //         console.log('1')
-                                        //         let operator = Object.keys(objectives['KOLI_ACTUAL_WEIGHT'])[0]
-                                        //         let val1 = objectives['KOLI_ACTUAL_WEIGHT'][operator]
-                                        //         let val2 = actual_weight
-                                        //         // fix jika type operator lebih dari ('>='), maka switch value
-                                        //         if(operator == '>=') {
-                                        //             val1 = actual_weight
-                                        //             val2 = objectives['KOLI_ACTUAL_WEIGHT'][operator]
-                                        //         }
-                                        //         str = `if(${val1} ${operator} ${val2}){
-                                        //             prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
-                                        //         }`
-    
-                                        //     } else if(objectives.hasOwnProperty('CHARGEBLE_WEIGHT')) {
-                                        //         console.log('2')
-                                        //         let operator = Object.keys(objectives['CHARGEBLE_WEIGHT'])[0]
-                                        //         // let val1 = objectives['CHARGEBLE_WEIGHT'][operator]
-                                        //         // let val2 = chargeable_weight
-                                        //         // // fix jika type operator lebih dari ('>='), maka switch value
-                                        //         // if(operator == '>=') {
-                                        //         //     val1 = chargeable_weight
-                                        //         //     val2 = objectives['CHARGEBLE_WEIGHT'][operator]
-                                        //         // }
-                                        //             let val1 = chargeable_weight
-                                        //             let val2 = objectives['CHARGEBLE_WEIGHT'][operator]
-                                        //         str = `if(${val1} ${operator} ${val2}){
-                                        //             prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
-                                        //         }`
-                                        //         console.log('str', str, val1,operator,val2)
-    
-                                        //     } else if(objectives.hasOwnProperty('WEIGHT')) {
-                                        //         console.log('3')
-                                        //         let operator = Object.keys(objectives['WEIGHT'])[0]
-                                        //         let val1 = objectives['WEIGHT'][operator]
-                                        //         let val2 = actual_weight
-                                        //         // fix jika type operator lebih dari ('>='), maka switch value
-                                        //         if(operator == '>=') {
-                                        //             val1 = actual_weight
-                                        //             val2 = objectives['WEIGHT'][operator]
-                                        //         }
-                                        //         str = `if(${val1} ${operator} ${val2}){
-                                        //             prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
-                                        //         }`
-                                        //         console.log('str', str)
-                                        //     }
-                                        //     eval(str)
-                                        // }
                                         
                                     })
 
@@ -261,18 +209,18 @@ const TransactionMixin = {
                                             } else {
                                                 tempStatus = tempStatus !== null ? tempStatus && false : false
                                             }
-                                            console.log('Surcharge name = ', obj['surcharge_name'])
-                                            console.log('proses condition', objective1, service, objective2.toLowerCase(), tempStatus)
-                                            console.log('END ///')
+                                            // console.log('Surcharge name = ', obj['surcharge_name'])
+                                            // console.log('proses condition', objective1, service, objective2.toLowerCase(), tempStatus)
+                                            // console.log('END ///')
                                         } else if (objective1.toLowerCase().includes('connote_shipper_tlc')) {
                                             if(node.toLowerCase().includes(objective2.toLowerCase())) {
                                                 tempStatus = tempStatus !== null ? tempStatus && true : true
                                             } else {
                                                 tempStatus = tempStatus !== null ? tempStatus && false : false
                                             }
-                                            console.log('Surcharge name = ', obj['surcharge_name'])
-                                            console.log('proses condition', objective1, node, objective2.toLowerCase(), tempStatus)
-                                            console.log('END ///')
+                                            // console.log('Surcharge name = ', obj['surcharge_name'])
+                                            // console.log('proses condition', objective1, node, objective2.toLowerCase(), tempStatus)
+                                            // console.log('END ///')
                                         } else {
                                                 if(Object.keys(listkoli).length > 0) {
                                                     if(!objective1.toLowerCase().includes('actual_weight') && !objective1.toLowerCase().includes('length')) {
@@ -307,9 +255,9 @@ const TransactionMixin = {
                                                         if(typeof objective2 == 'number') {
                                                             let str = `${value1} ${operator} ${value2}`
                                                             tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
-                                                            console.log('Surcharge name = ', obj['surcharge_name'])
-                                                            console.log('proses condition', objective1, objective2,str,value1,operator,value2, eval(str))
-                                                            console.log('END ///')
+                                                            // console.log('Surcharge name = ', obj['surcharge_name'])
+                                                            // console.log('proses condition', objective1, objective2,str,value1,operator,value2, eval(str))
+                                                            // console.log('END ///')
                                                         }
                                                     }
                                                 }
@@ -474,8 +422,7 @@ const TransactionMixin = {
             let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
             let surchargeByID = this.listenPackageSurchargeByID
             let tarifData = this.listenPackageService || {}
-            let service = this.listenPackageService.data || {}
-
+            
             this.SUM_CHARGEBLE_WEIGHT= 0
             this.SUM_ACTUAL_WEIGHT= 0
             this.SUM_VOLUME_WEIGHT= 0
@@ -509,7 +456,7 @@ const TransactionMixin = {
                         
                         let chargeble_weight = this.SUM_CHARGEBLE_WEIGHT
                         let base_tariff = this.BASE_TARIFF 
-                        console.log('base_tariff', this.BASE_TARIFF )
+                        // console.log('base_tariff', this.BASE_TARIFF )
                         let temp_actual = 0
                         koli.surcharge_id.map(su_id => {
                             let dataSurcharge = surchargeByID[su_id] || {}
@@ -522,9 +469,10 @@ const TransactionMixin = {
                                                 let str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? dataSurcharge['surcharge_formula'][formula].toLowerCase() : dataSurcharge['surcharge_formula'][formula]
                                                 let evalchargeable_weight = eval(str)
                                                 this.SUM_CHARGEBLE_WEIGHT = evalchargeable_weight
-                                                this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
+                                                // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
+                                                this.BASE_TARIFF = this.tarifTiering(this.SUM_CHARGEBLE_WEIGHT)
                                                 base_tariff = this.BASE_TARIFF
-                                                console.log('CHARGEBLE_WEIGHT', evalchargeable_weight, this.SUM_CHARGEBLE_WEIGHT, base_tariff)
+                                                // console.log('CHARGEBLE_WEIGHT', evalchargeable_weight, this.SUM_CHARGEBLE_WEIGHT, base_tariff)
                                             } else if (formula.toLowerCase() == 'surcharge') {
                                                 let evalSurcharge = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
                                                 // tempbiaya = Number(evalSurcharge)
@@ -535,32 +483,11 @@ const TransactionMixin = {
                                                 let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
                                                 koli_actual_weight = evalactual_weight
                                                 reCompare = true
-                                                console.log('ACTUAL_WEIGHT', evalactual_weight)
+                                                // console.log('ACTUAL_WEIGHT', evalactual_weight)
                                             }
                                         }
                                     })
-                                    // if(dataSurcharge['surcharge_formula'].hasOwnProperty('SURCHARGE')) {
-                                    //     let evalSurcharge = eval(dataSurcharge['surcharge_formula']['SURCHARGE'])
-                                        
-                                    //     tempbiaya = tempbiaya + Number(evalSurcharge)
-                                    // }
-                                    // if(dataSurcharge['surcharge_formula'].hasOwnProperty('HANDLING_CHARGE')) {
-                                    //     temp_handling_charge = Number(dataSurcharge['surcharge_formula']['HANDLING_CHARGE'])
-                                        
-                                    // }
-                                    // if(dataSurcharge['surcharge_formula'].hasOwnProperty('CHARGEBLE_WEIGHT')) {
-                                    //     let evalchargeable_weight = eval(dataSurcharge['surcharge_formula']['CHARGEBLE_WEIGHT'])
-                                    //     this.SUM_CHARGEBLE_WEIGHT = evalchargeable_weight
-                                    //     console.log('CHARGEBLE_WEIGHT', evalchargeable_weight)
-                                        
-                                    //     // temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)
-                                    // }
-                                    // if(dataSurcharge['surcharge_formula'].hasOwnProperty('KOLI_ACTUAL_WEIGHT')) {
-                                    //     let evalactual_weight = eval(dataSurcharge['surcharge_formula']['KOLI_ACTUAL_WEIGHT'].toLowerCase())
-                                    //     koli_actual_weight = evalactual_weight
-                                    //     console.log('ACTUAL_WEIGHT', evalactual_weight)
-                                    //     // temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)
-                                    // }
+                                    
                                 }
                             }
                         })
@@ -579,17 +506,16 @@ const TransactionMixin = {
                     }
                     // this.SUM_CHARGEBLE_WEIGHT += chargeble_weight_intervensi
                     
-                    
-
                 })
 
                 if(Object.keys(tarifData).length > 0) {
-                    this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
+                    // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
+                    this.BASE_TARIFF = this.tarifTiering(this.SUM_CHARGEBLE_WEIGHT)
                 }
                 TOTAL_BIAYA = this.BASE_TARIFF + SUM_HANDLING_CHARGE + SUM_BIAYA_LAIN
             }
 
-            console.log('PPPPPPPPPPPPPP', this.SUM_VOLUME_WEIGHT, this.SUM_ACTUAL_WEIGHT, this.SUM_CHARGEBLE_WEIGHT)
+            
 
             this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.SUM_ACTUAL_WEIGHT)
             this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.SUM_VOLUME_WEIGHT)
@@ -602,6 +528,42 @@ const TransactionMixin = {
             // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
             this.$store.dispatch('SET_CONNOTE_DATA', {'key':'total_biaya','value': TOTAL_BIAYA})
             this.calculateGrandTotal()
+        },
+
+        tarifTiering(weight){
+            let service = this.listenPackageService || {}
+            
+            let processTariff = 0
+            let sumTariffAkumulatif = 0
+
+            let tariffStandar = service['tariffStandar']
+            let tariffAkumulatif = service['tariffAkumulatif']
+            
+            processTariff = Number(tariffStandar['value']) * (weight <= Number(tariffStandar['weight']) ? weight : Number(tariffStandar['weight']))
+            if(weight > tariffStandar['weight']){
+                let Processweight = Math.abs(Number(tariffStandar['weight']) - Number(weight))
+                let sisa = 0
+                let keys = Object.keys(tariffAkumulatif)
+                let temp = 0
+                for(let i=0; i <= keys.length -1 ; i++) {
+                    let calc = (Number(Processweight) - Number(keys[i])) < 0 ? 0 : (Number(Processweight) - Number(keys[i]))
+                    if(calc !== 0) {
+                        let abs = Math.abs(Number(Processweight) - Number(keys[i]))
+                        Processweight = abs
+                        temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(keys[i]))
+                        
+                    } else {
+                        temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(Processweight))
+                        sumTariffAkumulatif = Number(sumTariffAkumulatif) + temp
+                        break
+                    }   
+                }
+            }
+
+            processTariff = Number(processTariff) + Number(sumTariffAkumulatif)
+
+            return processTariff
+            
         },
 
         calcDataKoliold(){

@@ -399,6 +399,26 @@ export default {
                         obj['value'] = item.tariff_service_code.toLowerCase()
                         obj['data'] = item
                         obj['tarif'] = item.tariff_amount_1
+
+                        // tiering tarrif
+                        let tariffAkumulatif = {}
+                        let tariffStandar = {}
+                        let keys = Object.keys(item)
+
+                        // sudah dipastikan tiering sampe 50 biji
+                        for(let i=1; i <= 50; i++) {
+                            if(i == 1) {
+                                tariffStandar['weight'] = item[`tariff_weight_1`] || 0
+                                tariffStandar['value'] = item[`tariff_amount_1`] || 0
+                            } else {
+                                if(Number(item[`tariff_amount_${i}`]) != 0) {
+                                    tariffAkumulatif[item[`tariff_weight_${i}`]] = item[`tariff_amount_${i}`] || 0
+                                }
+                            }
+                        }
+                        
+                        obj['tariffAkumulatif'] = tariffAkumulatif
+                        obj['tariffStandar'] = tariffStandar
                         
                         if(item.tariff_service_code.toLowerCase().includes('reg')) {
                             arr.unshift(obj)
