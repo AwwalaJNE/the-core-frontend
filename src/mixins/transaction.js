@@ -419,6 +419,7 @@ const TransactionMixin = {
 
 
         calculation(){
+            // rumit cuuk
             let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
             let surchargeByID = this.listenPackageSurchargeByID
             let tarifData = this.listenPackageService || {}
@@ -566,98 +567,6 @@ const TransactionMixin = {
             
         },
 
-        calcDataKoliold(){
-            let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
-            let surchargeByID = this.listenPackageSurchargeByID
-            let tarifData = this.listenPackageService || {}
-            // let roundUp = this.round03(volume_weight.toFixed(2))
-            // let chargeable_weight = Math.max(listKoli[index]['actual_weight'], roundUp).toFixed(2)
-            this.chargeable_weight = 0
-            this.actual_weight = 0
-            this.volume_weight = 0
-
-            let BIAYA_LAIN = 0
-            let HANDLING_CHARGE = 0
-            let PROSES_CHARGEBLE_WEIGHT = 0
-
-            let BASE_TARIFF = 0
-            
-            
-            if(listKoli.length > 0) {
-                listKoli.map(item => {
-                    let volume_weight_temp = 0
-                    if(item['volume_weight']) {
-                        volume_weight_temp = volume_weight_temp + Number(item['volume_weight'])
-                    }
-                    if(item['actual_weight']) {
-                        this.actual_weight = this.actual_weight + Number(item['actual_weight'])
-                    }
-
-                    this.volume_weight = this.volume_weight + volume_weight_temp
-                    let roundUp = this.round03(this.volume_weight)
-                    this.chargeable_weight = Number(Math.max(this.actual_weight, roundUp).toFixed(2))
-
-                    let CHARGEBLE_WEIGHT = this.chargeable_weight
-                    
-                    
-                    if(item.surcharge_id && item.surcharge_id.length > 0) {
-                        let tempbiaya = 0
-                        let temp_handling_charge = 0
-                        let temp_chargeable_weight = 0
-                        item.surcharge_id.map(su_id => {
-                            let dataSurcharge = surchargeByID[su_id] || {}
-                            
-                            if(Object.keys(dataSurcharge).length > 0) {
-                                if(dataSurcharge.hasOwnProperty('surcharge_formula')) {
-                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('SURCHARGE')) {
-                                        let evalSurcharge = eval(dataSurcharge['surcharge_formula']['SURCHARGE'])
-                                        tempbiaya = tempbiaya + Number(evalSurcharge)
-                                    }
-                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('HANDLING_CHARGE')) {
-                                        temp_handling_charge = Number(dataSurcharge['surcharge_formula']['HANDLING_CHARGE'])
-                                    }
-                                    if(dataSurcharge['surcharge_formula'].hasOwnProperty('CHARGEBLE_WEIGHT')) {
-                                        let evalchargeable_weight = eval(dataSurcharge['surcharge_formula']['CHARGEBLE_WEIGHT'])
-                                        temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)
-                                        console.log('CHARGEBLE_WEIGHT', evalchargeable_weight)
-                                        // temp_chargeable_weight = temp_chargeable_weight + Number(evalchargeable_weight)
-                                    }
-                                }
-                            }
-                        })
-                        BIAYA_LAIN = BIAYA_LAIN + tempbiaya
-                        HANDLING_CHARGE = HANDLING_CHARGE + temp_handling_charge
-                        PROSES_CHARGEBLE_WEIGHT = PROSES_CHARGEBLE_WEIGHT + temp_chargeable_weight
-
-                        if(PROSES_CHARGEBLE_WEIGHT !== 0) {
-                            this.chargeable_weight = PROSES_CHARGEBLE_WEIGHT
-                            console.log('PROSES_CHARGEBLE_WEIGHT', this.chargeable_weight, PROSES_CHARGEBLE_WEIGHT)
-                        }
-                        
-                    } else {
-                        this.chargeable_weight = CHARGEBLE_WEIGHT
-                        console.log('ELSE PROSES_CHARGEBLE_WEIGHT', this.chargeable_weight)
-                    }
-                })
-
-                
-
-                
-            }
-
-            if(Object.keys(tarifData).length > 0) {
-                BASE_TARIFF = tarifData.tarif * this.chargeable_weight
-            }
-            
-            this.BASE_TARIFF = BASE_TARIFF
-
-            console.log('calcDataKoli', this.chargeable_weight,this.actual_weight,this.volume_weight)
-            
-            
-            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.actual_weight)
-            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.volume_weight)
-            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.chargeable_weight) 
-        },
         round03(numToRound){
             let oo = numToRound | 0
             let ooo = oo + 0.3

@@ -526,6 +526,8 @@ export default {
     mapPicker:{
       // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
       typeInput: "mapPicker",
+      uploadInput: false,
+      label: ''
     },
     node_lat: {
       label: "Node latitude*",
