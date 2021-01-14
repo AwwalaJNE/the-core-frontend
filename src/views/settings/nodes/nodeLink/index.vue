@@ -15,26 +15,29 @@
         @actionPagination="actionPagination"
         />
 
-        <!--Create User Dialog end-->
-            <!-- <dialog-create-edit-role 
-            :active="dialogRole" 
-            :closeDialogRole="closeDialogRole"
-            :refresh="refresh"
-            title="Edit role"
-            :dataItem="dataItem"
-            /> -->
+        <!--Create nodelik Dialog end-->
+             <dialog-create-edit-node-link
+              :active="dialogNodeLink"
+              :closeDialog="closeDialogNodeLink"
+              @refresh="refresh"
+              btnBlue="Edit"
+              title="Edit Node Link"
+              :dataItem="dataItem"
+            />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogCreateEditNodeLink from "@/views/settings/nodes/nodeLink/dialogCreateEditNodeLink";
 export default {
-    name:"types-list",
+    name:"Node-Link",
     mixins: [master],
     components: {
         "table-master" : TableMaster,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-create-edit-node-link":DialogCreateEditNodeLink,
+      // "dialog-create-edit-role": DialogCreateEditRole
     },
     data() {
         return {
@@ -42,24 +45,29 @@ export default {
             datacolumn: [
                 {
                     label: "ID",
-                    key: "node_type_id",
+                    key: "node_link_id",
                     width: "xs"
                 },
                 {
-                    label: "Name",
-                    key: "node_type_name",
+                    label: "Origin",
+                    key: "node_origin.node_name",
                     width: "auto"
                 },
                 {
-                    label: "Code",
-                    key: "node_type_code",
+                    label: "Destination",
+                    key: "node_destination.node_name",
+                    width: "auto"
+                },
+                {
+                    label: "Vehicle Type",
+                    key: "vehicle_mode.vehicle_mode_name",
                     width: "auto"
                 },
             ],
             loading: false,
             dataItem: {},
             tempSearch: "",
-            dialogGeolocation: false,
+            dialogNodeLink: false,
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -76,7 +84,7 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.node_type + 
+                .get(this.URL.node_link +
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
@@ -97,11 +105,33 @@ export default {
                     this.openNotification('danger', 'Failed to populate node type list', err.response.data.message)
                 })
         },
-        actionUpdate(){
 
+        actionUpdate(val){
+          if(this.dataTable.length > 0) {
+            let obj = this.dataTable.filter(item => {
+              return item.node_link_id === val.node_link_id
+            })
+            // console.log(obj,'obj')
+            this.dataItem = obj[0]
+            console.log(this.dataItem, 'nihh val', val, this.dataItem['node_link_origin_id'])
+            this.$nextTick(() => {
+              this.dialogNodeLink = true
+            });
+          }
         },
-        actionRemove(){
-
+        async actionRemove(val){
+          await axios
+              .delete(
+                  this.URL.node_link + `/${val.node_link_id}?n=${this.listenNodeId}`,
+                  this.Helper.header())
+              .then(res => {
+                console.log('res', res)
+                this.refresh()
+                this.openNotification(null, 'Success', 'Delete node link is success')
+              }).catch(err => {
+                this.loading = false
+                this.openNotification('danger', 'Delete node link is failed', err)
+              })
         },
         actionLimit(val){
             this.pagination.limit = val
@@ -112,6 +142,13 @@ export default {
             this.pagination.page = val
             this.getTableData(this.pagination.limit,this.pagination.page)
         },
+        refresh(){
+          console.log("refresh")
+          this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        },
+        closeDialogNodeLink() {
+          this.dialogNodeLink = false
+        }
     },
     mounted() {
         this.getTableData(this.pagination.limit,this.pagination.page)
