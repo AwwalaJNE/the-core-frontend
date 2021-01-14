@@ -98,6 +98,7 @@
         <dialogCreatePickupList
             :active="dialogPickupList"
             @refresh="refresh"
+            :withSchedule="true"
             :closeDialog="closeDialogPickupList"
             title="Create Pickup List"
         />

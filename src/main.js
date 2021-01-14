@@ -4,7 +4,7 @@ import 'vuesax/dist/vuesax.css' //Vuesax styles
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { Upload, Autocomplete, Collapse, CollapseItem, DatePicker } from 'element-ui';
+import { Upload, Autocomplete, Collapse, CollapseItem, DatePicker, TimePicker } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
@@ -23,6 +23,7 @@ Vue.use(Autocomplete)
 Vue.use(Collapse)
 Vue.use(CollapseItem)
 Vue.use(DatePicker)
+Vue.use(TimePicker)
 
 
 let options = {

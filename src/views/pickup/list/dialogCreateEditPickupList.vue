@@ -31,14 +31,26 @@
                     :dataItem="listenDataItem"
                     typeForm="pickup_list"
                 />
+                <template>
+                    <!-- v-if="listenwithSchedule" -->
+                    <div style="display:block; position: relative; text-align: left; padding-left: 8px;">
+                        <p><b>Set Schedule:</b></p>
+                        <template v-for="(item,key) in pickup_schedule">
+                            <div :key="key">
+                                <p>{{item.label}}</p>
+                                <specialSchedule :arrData="item.time" :date="item.date" title="set_schedule" @updateValue="updateValue"/>
+                            </div>
+                        </template>
+                    </div>
+                </template>
             </div>
 
 
           <customerByPhone
               :active="dialogGetCustomer"
               :closeDialog="closeGetCustomer"
-              title="origin"
-              type="origin"
+              title="customer"
+              type="customer"
               @updateValue="updateValue"
           />
         </template>
@@ -86,6 +98,7 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 import customerByPhone from "@/views/transaction/customerByPhone"
+import specialSchedule from "@/components/input/specialSchedule"
 
 export default {
     name:"dialog-create-edit-node",
@@ -93,7 +106,8 @@ export default {
     components: {
         "dialog-master": DialogMaster,
         "form-input-controller": FormInputController,
-        "customerByPhone":customerByPhone
+        "customerByPhone":customerByPhone,
+        "specialSchedule": specialSchedule
     },
     props: {
        closeDialog: Function,
@@ -101,7 +115,8 @@ export default {
        title: String,
        dataItem: Object,
        btnRed: String,
-       btnBlue: String
+       btnBlue: String,
+       withSchedule: Boolean
     },
     data() {
         return {
@@ -109,6 +124,43 @@ export default {
             node_id: '',
             dialogGetCustomer:false,
             pickup_number:'',
+            pickup_schedule: [
+                {
+                    date: 7,
+                    label: 'Minggu',
+                    time: []
+                },
+                {
+                    date: 1,
+                    label: 'Senin',
+                    time: []
+                },
+                {
+                    date: 2,
+                    label: 'Selasa',
+                    time: []
+                },
+                {
+                    date: 3,
+                    label: 'Rabu',
+                    time: []
+                },
+                {
+                    date: 4,
+                    label: 'Kamis',
+                    time: []
+                },
+                {
+                    date: 5,
+                    label: 'Jumat',
+                    time: []
+                },
+                {
+                    date: 6,
+                    label: 'Sabtu',
+                    time: []
+                }
+            ]
         }
     },
     computed: {
@@ -120,6 +172,12 @@ export default {
         },
         listenDataItem() {
             return this.dataItem
+        },
+        listenDataSchedule() {
+            return this.$store.getters.getInputs.pickup_list.pickup_schedule || []
+        },
+        listenwithSchedule() {
+            return this.withSchedule || false
         }
     },
     watch: {
@@ -132,6 +190,23 @@ export default {
 
     },
     methods: {
+        initialize() {
+            if(this.listenDataSchedule.length > 0) {
+                // better time complexity
+                let obj = {}
+                this.listenDataSchedule.map(item => {
+                    if(item.date) {
+                        obj[item.date] = item.time
+                    }
+                })
+
+                this.pickup_schedule.map(item => {
+                    if(obj.hasOwnProperty(item.date)) {
+                        item.time = obj[item.date]
+                    }
+                })
+            }
+        },
         formData(form){
           this.form = form
           let current = new Date();
@@ -142,6 +217,15 @@ export default {
           let time = current.getHours() + ":" + minute;
           this.form.pickup_date = this.form.pickup_date + ' '+time
 
+            // if(this.listenwithSchedule) {
+                let schedule = []
+                this.pickup_schedule.map(item => {
+                    if(item.time.length > 0) {
+                        schedule.push(item)
+                    }
+                })
+                this.form['pickup_schedule_time'] = schedule
+            // }
 
           if(this.pickup_number !== undefined && this.pickup_number !== '') {
             this.form.pickup_number = this.pickup_number
@@ -153,6 +237,7 @@ export default {
             this.addData()
           }
 
+          
 
         },
         handleSubmit(){
@@ -172,20 +257,41 @@ export default {
         closeGetCustomer() {
           this.dialogGetCustomer = false
         },
-        updateValue(key,value) {
+        updateValue(key, value, info) {
+            if(info !== undefined && info.title == 'set_schedule') {
+                if(info.type == 'add') {
+                    this.pickup_schedule.map(item => {
+                        if(item.date == key) {
+                            if(item.time.filter(val => val == value).length == 0) {
+                                item.time.push(value)
+                            }
+                        }
+                    })
 
-          if(Object.keys(value).length > 0 && key == 'origin') {
-            this.forcererender = true
-            this.$store.dispatch(`SET_PICKUP_LIST_PICKUP_NAME`, value.customer_name)
-            this.$store.dispatch(`SET_PICKUP_LIST_PICKUP_PHONE_NUMBER`, value.customer_phone)
-            this.$store.dispatch(`SET_PICKUP_LIST_PICKUP_ADDRESS`, value.geolocation_location_name)
+                    console.log('update this.pickup_schedule', this.pickup_schedule)
+                } else if(info.type == 'remove') {
+                    console.log('remove', key, value, info)
+                    this.pickup_schedule.map(item => {
+                        if(item.date == key) {
+                            let filteredAry = item.time.filter(e => e !== value)
+                            item.time = filteredAry
+                        }
+                    })
+                }
+                
 
-            let self = this
-            setTimeout(function(){ self.forcererender = false }, 100);
+            } else if(Object.keys(value).length > 0 && key == 'customer') {
+                this.forcererender = true
+                this.$store.dispatch(`SET_PICKUP_LIST_PICKUP_NAME`, value.customer_name)
+                this.$store.dispatch(`SET_PICKUP_LIST_PICKUP_PHONE_NUMBER`, value.customer_phone)
+                this.$store.dispatch(`SET_PICKUP_LIST_PICKUP_ADDRESS`, value.geolocation_location_name)
 
-            let aaa = this.$store.getters.getTransaction.origin
-            console.log('data origin', aaa)
-          }
+                // let self = this
+                // setTimeout(function(){ self.forcererender = false }, 100);
+
+                let aaa = this.$store.getters.getInputs.pickup_list
+                console.log('data customer', aaa)
+            }
         },
 
         async getDataEmployee(){
@@ -307,6 +413,8 @@ export default {
         this.getDataNodeDestination()
         this.getDataVehicleType()
         this.getDataEmployee()
+
+        this.initialize()
     },
 }
 </script>

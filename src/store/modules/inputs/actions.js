@@ -1087,5 +1087,16 @@ export default {
   SET_PICKUP_LIST_PICKUP_LONGITUDE_ValueData({ commit }, payload) {
     commit('SET_PICKUP_LIST_PICKUP_LONGITUDE_ValueData', payload)
   },
+
+  SET_PICKUP_LIST_PICKUP_SCHEDULE({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_SCHEDULE', payload)
+  },
+  SET_PICKUP_LIST_PICKUP_SCHEDULE_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_SCHEDULE_ValueData', payload)
+  },
+// type select perlu data array
+  SET_PICKUP_LIST_PICKUP_SCHEDULE_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_SCHEDULE_ArrData', payload)
+  },
   //END PICKUP LIST
 }

@@ -1112,5 +1112,17 @@ export default {
   SET_PICKUP_LIST_PICKUP_LONGITUDE_ValueData(state, payload) {
     state.pickup_list.pickup_longitude.valueData = payload
   },
+
+  SET_PICKUP_LIST_PICKUP_SCHEDULE(state, payload) {
+    state.pickup_list.pickup_schedule.value = payload
+  },
+  SET_PICKUP_LIST_PICKUP_SCHEDULE_ValueData(state, payload) {
+    state.pickup_list.pickup_schedule.valueData = payload
+  },
+  SET_PICKUP_LIST_PICKUP_SCHEDULE_ArrData(state, payload) {
+    state.pickup_list.pickup_schedule.hasOwnProperty('arrData') ?
+        state.pickup_list.pickup_schedule.arrData = payload :
+        state.pickup_list.pickup_schedule.arrData = []
+  },
   //END PICKUP LIST
 }

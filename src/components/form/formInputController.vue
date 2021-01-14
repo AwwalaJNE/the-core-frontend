@@ -24,15 +24,17 @@
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
                             <template v-if="InputObject[item].arrData.length > 0">
-                                <selector 
-                                :ref="InputObject[item].key"
-                                :name="InputObject[item].label" 
-                                :rules="InputObject[item].rule" 
-                                :formKey="InputObject[item].key"
-                                :valueData="InputObject[item].arrData"
-                                :selectedValue="InputObject[item].value"
-                                :isMultiple="false"
-                                @updateValue="updateValue" />
+                                <div style="margin-top:8px;">
+                                    <selector 
+                                    :ref="InputObject[item].key"
+                                    :name="InputObject[item].label" 
+                                    :rules="InputObject[item].rule" 
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].arrData"
+                                    :selectedValue="InputObject[item].value"
+                                    :isMultiple="false"
+                                    @updateValue="updateValue" />
+                                </div>
                             </template>
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('mappicker')">

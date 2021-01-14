@@ -1306,16 +1306,6 @@ export default {
       valueData: null,
       value: ''
     },
-    pickup_courier_employee_id: {
-      label: "Courier",
-      key: "pickup_courier_employee_id",
-      rule: "required",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
     pickup_remarks: {
       label: "Remark",
       key: "pickup_remarks",
@@ -1359,6 +1349,40 @@ export default {
       valueData: 0,
       value: 0
     },
+    pickup_courier_employee_id: {
+      label: "Courier",
+      key: "pickup_courier_employee_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    pickup_schedule: {
+      label: "Set Schedule:",
+      key: "pickup_schedule",
+      rule: "required",
+      typeInput: "special_schedule",
+      typeData: "Array",
+      arrData: [
+        {
+          date: 7,
+          time: [
+            "22:00",
+            "12:20"
+          ]
+        },
+        {
+          date: 1,
+          time: [
+            "08:00"
+          ]
+        }
+      ],
+      valueData: null,
+      value: ''
+    }
   },
   
 }
