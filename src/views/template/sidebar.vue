@@ -270,11 +270,6 @@ export default {
                             icon: ''
                         },
                         {
-                            label: 'Settings Links',
-                            url: '/settings/links',
-                            icon: ''
-                        },
-                        {
                             label: 'Settings Vehicles',
                             url: '/settings/vehicles',
                             icon: ''

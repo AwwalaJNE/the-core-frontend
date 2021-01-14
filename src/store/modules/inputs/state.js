@@ -694,6 +694,49 @@ export default {
     },
   },
 
+  nodeLink: {
+    node_link_origin_id: {
+      label: "origin",
+      key: "node_link_origin_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_link_destination_id: {
+      label: "Destination",
+      key: "node_link_destination_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_link_vehicle_mode_id: {
+      label: "Vehicle Type",
+      key: "node_link_vehicle_mode_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+
+  },
+
   tariff: {
     tariff_origin: {
       label: "Tariff origin*",
