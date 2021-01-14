@@ -582,6 +582,52 @@ export default {
     state.node_alternate_address.is_active.valueData = payload
   },
 
+  //======= Generate node link =======
+  SET_NODELINK_NODE_LINK_ORIGIN_ID(state, payload) {
+    state.nodeLink.node_link_origin_id.value = payload
+  },
+  SET_NODELINK_NODE_LINK_ORIGIN_ID_ValueData(state, payload) {
+    state.nodeLink.node_link_origin_id.valueData = payload
+  },
+  SET_NODELINK_NODE_LINK_ORIGIN_ID_ArrData(state, payload) {
+    state.nodeLink.node_link_origin_id.hasOwnProperty('arrData') ?
+        state.nodeLink.node_link_origin_id.arrData = payload :
+        state.nodeLink.node_link_origin_id.arrData = []
+  },
+
+  SET_NODELINK_NODE_LINK_DESTINATION_ID(state, payload) {
+    state.nodeLink.node_link_destination_id.value = payload
+  },
+  SET_NODELINK_NODE_LINK_DESTINATION_ID_ValueData(state, payload) {
+    state.nodeLink.node_link_destination_id.valueData = payload
+  },
+  SET_NODELINK_NODE_LINK_DESTINATION_ID_ArrData(state, payload) {
+    state.nodeLink.node_link_destination_id.hasOwnProperty('arrData') ?
+        state.nodeLink.node_link_destination_id.arrData = payload :
+        state.nodeLink.node_link_destination_id.arrData = []
+  },
+
+  SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID(state, payload) {
+    state.nodeLink.node_link_vehicle_mode_id.value = payload
+  },
+  SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ValueData(state, payload) {
+    state.nodeLink.node_link_vehicle_mode_id.valueData = payload
+  },
+  SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ArrData(state, payload) {
+    state.nodeLink.node_link_vehicle_mode_id.hasOwnProperty('arrData') ?
+        state.nodeLink.node_link_vehicle_mode_id.arrData = payload :
+        state.nodeLink.node_link_vehicle_mode_id.arrData = []
+  },
+
+  SET_NODELINK_IS_ACTIVE(state, payload) {
+    state.nodeLink.is_active.value = payload
+  },
+  SET_NODELINK_IS_ACTIVE_ValueData(state, payload) {
+    state.nodeLink.is_active.valueData = payload
+  },
+
+  //end node link
+
   // tariff
   SET_TARIFF_TARIFF_ORIGIN(state, payload) {
     state.tariff.tariff_origin.value = payload

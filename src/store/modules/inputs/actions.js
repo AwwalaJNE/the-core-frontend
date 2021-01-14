@@ -564,9 +564,51 @@ export default {
     commit('SET_NODE_ALTERNATE_ADDRESS_IS_ACTIVE_ValueData', payload)
   },
 
+  //======= Generate node link =======
+  SET_NODELINK_NODE_LINK_ORIGIN_ID({ commit }, payload) {
+    commit('SET_NODELINK_NODE_LINK_ORIGIN_ID', payload)
+  },
+  SET_NODELINK_NODE_LINK_ORIGIN_ID_ValueData({ commit }, payload) {
+    commit('SET_NODELINK_NODE_LINK_ORIGIN_ID_ValueData', payload)
+  },
+// type select perlu data array
+  SET_NODELINK_NODE_LINK_ORIGIN_ID_ArrData({ commit }, payload) {
+    commit('SET_NODELINK_NODE_LINK_ORIGIN_ID_ArrData', payload)
+  },
+
+  SET_NODELINK_NODE_LINK_DESTINATION_ID({ commit }, payload) {
+    commit('SET_NODELINK_NODE_LINK_DESTINATION_ID', payload)
+  },
+  SET_NODELINK_NODE_LINK_DESTINATION_ID_ValueData({ commit }, payload) {
+    commit('SET_NODELINK_NODE_LINK_DESTINATION_ID_ValueData', payload)
+  },
+// type select perlu data array
+  SET_NODELINK_NODE_LINK_DESTINATION_ID_ArrData({ commit }, payload) {
+    commit('SET_NODELINK_NODE_LINK_DESTINATION_ID_ArrData', payload)
+  },
+
+  SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID({ commit }, payload) {
+    commit('SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID', payload)
+  },
+  SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ValueData({ commit }, payload) {
+    commit('SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ValueData', payload)
+  },
+// type select perlu data array
+  SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
+    commit('SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ArrData', payload)
+  },
+
+  SET_NODELINK_IS_ACTIVE({ commit }, payload) {
+    commit('SET_NODELINK_IS_ACTIVE', payload)
+  },
+  SET_NODELINK_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_NODELINK_IS_ACTIVE_ValueData', payload)
+  },
 
 
-  // tariff
+  //end node link
+
+// tariff
   SET_TARIFF_TARIFF_ORIGIN({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_ORIGIN', payload)
   },
