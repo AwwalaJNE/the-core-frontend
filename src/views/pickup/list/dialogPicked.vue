@@ -126,18 +126,22 @@ export default {
 
     async updateData(){
       await axios
-          .put(
-              this.URL.pickup + `?n=${this.listenNodeId}`,
+          .post(
+              this.URL.pickup + `/${this.pickup_number}/picking-up?n=${this.listenNodeId}`,
               JSON.stringify(this.form),
               this.Helper.header())
           .then(res => {
             this.closeDialog()
             this.btnLoading = false
+            this.cancel()
+            this.$emit("refresh")
             this.openNotification(null, 'Success', 'Update Pickup is success')
           }).catch(err => {
             this.loading = false
             this.btnLoading = false
             this.closeDialog()
+            this.cancel()
+            this.$emit("refresh")
             this.openNotification('danger', 'Update Pickup is failed', err)
           })
     },
