@@ -95,7 +95,7 @@
         </section>
 
         <!--Create pickup List-->
-        <dialogCreatePickupList
+        <dialogCreateEditPickupSchedule
             :active="dialogPickupList"
             @refresh="refresh"
             :withSchedule="true"
@@ -114,7 +114,7 @@ import dateRange from "@/components/daterange/index"
 
 import PickupList from "@/views/pickup/list/pickupList"
 
-import DialogCreatePickupList from "@/views/pickup/list/dialogCreateEditPickupList"
+import DialogCreateEditPickupSchedule from "@/views/pickup/schedule/dialogCreateEditPickupSchedule"
 
 
 export default {
@@ -125,7 +125,7 @@ export default {
         "search-input": SearchInput,
         "daterange-filter": dateRange,
         "PickupList": PickupList,
-        "dialogCreatePickupList": DialogCreatePickupList,
+        "dialogCreateEditPickupSchedule": DialogCreateEditPickupSchedule,
     },
     data() {
         return {
