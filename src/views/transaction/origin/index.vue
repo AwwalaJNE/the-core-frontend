@@ -103,7 +103,7 @@ export default {
                     }
                     // this.loading = false
                 }).catch(err => {
-                    this.checkAuth(err.response.status)
+                    this.checkAuth(err.response)
                     // this.loading = false
                     // this.openNotification('danger', 'Failed to populate country list', err)
                 })

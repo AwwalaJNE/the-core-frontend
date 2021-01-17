@@ -4,10 +4,10 @@
 
 <template>
     <ValidationObserver ref="form">
-        <form @submit.prevent="formSubmit">
+        <!-- <form @submit.prevent="formSubmit">
             <slot name='inputValidator'></slot>
-        </form>
-        <!-- <slot name='inputValidator'></slot> -->
+        </form> -->
+        <slot name='inputValidator'></slot>
     </ValidationObserver>
 </template>
 <script>

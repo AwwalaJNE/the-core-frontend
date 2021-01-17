@@ -35,15 +35,22 @@
                     <vs-col xs="12" sm="4" lg="4">
                         <div class="box">
                             <ul class="mnu_payment">
-                                <li><a href="javascript:void(0)" @click="changeTypePayment(navItemm[0])"><i class='bx bx-dots-horizontal-rounded' v-if="navActive === 'k-CASH'"></i>Cash</a></li>
+                                <template v-for="(item, key) in navItemm">
+                                    <li :key="key">
+                                        <a href="javascript:void(0)" @click="changeTypePayment(item)">
+                                            <i class='bx bx-dots-horizontal-rounded' v-if="navActive.toLowerCase().includes(`${item.label.toLowerCase()}`)"></i> {{item.label}}
+                                        </a>
+                                    </li>
+                                </template>
+                                <!-- <li><a href="javascript:void(0)" @click="changeTypePayment(navItemm[0])"><i class='bx bx-dots-horizontal-rounded' v-if="navActive === 'k-CASH'"></i>Cash</a></li>
                                 <li><a href="javascript:void(0)" @click="changeTypePayment(navItemm[1])"><i class='bx bx-dots-horizontal-rounded' v-if="navActive === 'k-CARD'"></i> Card</a></li>
-                                <li><a href="javascript:void(0)" @click="changeTypePayment(navItemm[2])"><i class='bx bx-dots-horizontal-rounded' v-if="navActive === 'k-WALLET'"></i> Payment Wallet</a></li>
+                                <li><a href="javascript:void(0)" @click="changeTypePayment(navItemm[2])"><i class='bx bx-dots-horizontal-rounded' v-if="navActive === 'k-WALLET'"></i> Payment Wallet</a></li> -->
                             </ul>
                         </div>
                     </vs-col>
                     <vs-col xs="12" sm="8" lg="8">
                         <div class="box">
-                            <template v-if="navActive === 'k-CASH'">
+                            <template v-if="navActive.toLowerCase().includes('cash')">
                                 <transition name="slide-fade">
                                     <div>
                                         <vs-row>
@@ -65,7 +72,7 @@
                                     </div>
                                 </transition>
                             </template>
-                            <template v-else-if="navActive === 'k-CARD'">
+                            <template v-else-if="navActive.toLowerCase().includes('card')">
                                 <transition name="slide-fade">
                                     <div>
                                         <vs-row>
@@ -79,7 +86,7 @@
                                     </div>
                                 </transition>
                             </template>
-                            <template v-else-if="navActive === 'k-WALLET'">
+                            <template v-else-if="navActive.toLowerCase().includes('wallet')">
                                 <transition name="slide-fade">
                                     <div>
                                         Wallet payment
@@ -145,27 +152,27 @@ export default {
     data() {
         return {
             navItemm: [
-                {
-                    label: "Cash",
-                    key: "k-CASH",
-                    payment_type_name: "Tunai",
-                    payment_provider_name: "Cash",
-                    payment_provider_code_number: "Cash"
-                },
-                {
-                    label: "Card",
-                    key: "k-CARD",
-                    payment_type_name: "Kartu",
-                    payment_provider_name: "Card",
-                    payment_provider_code_number: "Card"
-                },
-                {
-                    label: "Payment Wallet",
-                    key: "k-WALLET",
-                    payment_type_name: "Wallet",
-                    payment_provider_name: "Wallet",
-                    payment_provider_code_number: "Wallet"
-                },
+                // {
+                //     label: "Cash",
+                //     key: "k-CASH",
+                //     payment_type_name: "Tunai",
+                //     payment_provider_name: "Cash",
+                //     payment_provider_code_number: "Cash"
+                // },
+                // {
+                //     label: "Card",
+                //     key: "k-CARD",
+                //     payment_type_name: "Kartu",
+                //     payment_provider_name: "Card",
+                //     payment_provider_code_number: "Card"
+                // },
+                // {
+                //     label: "Payment Wallet",
+                //     key: "k-WALLET",
+                //     payment_type_name: "Wallet",
+                //     payment_provider_name: "Wallet",
+                //     payment_provider_code_number: "Wallet"
+                // },
             ],
             navActive: 'k-CASH',
             typePayment: {},
@@ -213,6 +220,45 @@ export default {
         changeTypePayment(obj) {
             this.navActive = obj['key']
             this.typePayment = obj
+            console.log('this.typePayment', this.typePayment)
+        },
+        async getListPayment(){
+            this.loadingDataRole = true
+            await axios
+                .get(this.URL.payment + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        console.log('getListPayment', res.data.data)
+                        let data = res.data.data
+                        let arr = []
+                        data.map(item => {
+                            let obj = {}
+                            obj['label'] = item.description
+                            obj['payment_type_name'] = item.description
+                            obj['payment_provider_name'] = item.description
+                            obj['key'] = `${item.payment_method_id}_${item.description}`
+                            obj['payment_provider_code_number'] = item.payment_method_id
+
+                            if(item.description.toLowerCase().includes('cash')) {
+                                arr.unshift(obj)
+                            } else {
+                                arr.push(obj)
+                            }
+                        })
+
+                        this.navItemm = arr
+                        
+                    } else {
+                        this.openNotification('warn', 'Payment method not found!', '')
+                    }
+                    
+                    this.loadingDataRole = false
+                }).catch(err => {
+                    this.checkAuth(err.response.status)
+                    this.openNotification('danger', 'Failed to get Payment method', err.response.data.message || 'something went wrong')
+                })
         },
         async CreatePayment() {
             if(this.transaction_id !== null) {
@@ -222,10 +268,13 @@ export default {
                 form['payment_type_name'] = this.typePayment['payment_type_name']
                 form['payment_provider_name'] = this.typePayment['payment_provider_name']
                 form['payment_provider_code_number'] = this.typePayment['payment_provider_code_number']
+                form['payment_type_id'] = this.typePayment['payment_provider_code_number']
+
+                console.log('form', form, this.typePayment)
                 await axios
                 .post(
                     this.URL.transaction + `/${this.transaction_id}/payment?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
+                    JSON.stringify(form), 
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
@@ -251,7 +300,9 @@ export default {
             this.discount= 0        
         },
     },
-
+    mounted() {
+        this.getListPayment()
+    },
 }
 </script>
 <style lang="scss">

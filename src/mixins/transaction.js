@@ -531,14 +531,14 @@ const TransactionMixin = {
             this.calculateGrandTotal()
         },
 
-        tarifTiering(weight){
+        tarifTiering(wg){
             let service = this.listenPackageService || {}
-            
+            let weight = wg || 0
             let processTariff = 0
             let sumTariffAkumulatif = 0
 
-            let tariffStandar = service['tariffStandar']
-            let tariffAkumulatif = service['tariffAkumulatif']
+            let tariffStandar = service['tariffStandar'] || {}
+            let tariffAkumulatif = service['tariffAkumulatif'] || {}
             
             processTariff = Number(tariffStandar['value']) * (weight <= Number(tariffStandar['weight']) ? weight : Number(tariffStandar['weight']))
             if(weight > tariffStandar['weight']){
