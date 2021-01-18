@@ -249,7 +249,7 @@ export default {
                         })
 
                         this.navItemm = arr
-                        
+                        this.typePayment = arr[0]
                     } else {
                         this.openNotification('warn', 'Payment method not found!', '')
                     }
