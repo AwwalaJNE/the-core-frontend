@@ -1141,4 +1141,111 @@ export default {
     commit('SET_PICKUP_LIST_PICKUP_SCHEDULE_ArrData', payload)
   },
   //END PICKUP LIST
+
+  /* PICKUP SCHEDULE START */
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME_ValueData', payload)
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME_ValueData', payload)
+  },
+// type select perlu data array
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME_ArrData', payload)
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PHONE_NUMBER({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PHONE_NUMBER', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PHONE_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PHONE_NUMBER_ValueData', payload)
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ADDRESS({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ADDRESS', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ADDRESS_ValueData', payload)
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_DATE({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_DATE', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_DATE_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_DATE_ValueData', payload)
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ValueData', payload)
+  },
+// type select perlu data array
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ArrData', payload)
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_REMARKS({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_REMARKS', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_REMARKS_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_REMARKS_ValueData', payload)
+  },
+
+  SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID', payload)
+  },
+  SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID_ValueData', payload)
+  },
+// type select perlu data array
+  SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID_ArrData', payload)
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LATITUDE({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LATITUDE', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LATITUDE_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LATITUDE_ValueData', payload)
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LONGITUDE({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LONGITUDE', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LONGITUDE_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LONGITUDE_ValueData', payload)
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ValueData', payload)
+  },
+// type select perlu data array
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ArrData', payload)
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ValueData', payload)
+  },
+// type select perlu data array
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ArrData', payload)
+  },
+
+  /* PICKUP SCHEDULE END*/
 }

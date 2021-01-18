@@ -1408,21 +1408,113 @@ export default {
       rule: "required",
       typeInput: "special_schedule",
       typeData: "Array",
-      arrData: [
-        {
-          date: 7,
-          time: [
-            "22:00",
-            "12:20"
-          ]
-        },
-        {
-          date: 1,
-          time: [
-            "08:00"
-          ]
-        }
-      ],
+      arrData: [],
+      valueData: null,
+      value: ''
+    }
+  },
+
+  //form pickup schedule
+  pickup_schedule: {
+    pickup_schedule_name: {
+      label: "Name*",
+      key: "pickup_schedule_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    pickup_schedule_phone_number: {
+      label: "Phone*",
+      key: "pickup_schedule_phone_number",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    pickup_schedule_address: {
+      label: "Address*",
+      key: "pickup_schedule_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+
+
+    pickup_schedule_node_id_destination: {
+      label: "Request To",
+      key: "pickup_schedule_node_id_destination",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    pickup_schedule_courier_employee_id: {
+      label: "Courier",
+      key: "pickup_schedule_courier_employee_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    pickup_schedule_remarks: {
+      label: "Remark",
+      key: "pickup_schedule_remarks",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    vehicle_type_id: {
+      label: "vehicle node",
+      key: "vehicle_type_id",
+      rule: "",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    mapPicker:{
+      // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
+      typeInput: "mapPicker",
+    },
+    pickup_schedule_latitude: {
+      label: "Latitude*",
+      key: "pickup_schedule_latitude",
+      rule: "required",
+      mapPicker: true,
+      typeInput: "text|latitude",
+      typeData: "Number",
+      valueData: 0,
+      value: 0
+    },
+    pickup_schedule_longitude: {
+      label: "Longitude*",
+      key: "pickup_schedule_longitude",
+      rule: "required",
+      mapPicker: true,
+      typeInput: "text|longitude",
+      typeData: "Number",
+      valueData: 0,
+      value: 0
+    },
+    pickup_schedule: {
+      label: "Set Schedule:",
+      key: "pickup_schedule",
+      rule: "required",
+      typeInput: "special_schedule",
+      typeData: "Array",
+      arrData: [],
       valueData: null,
       value: ''
     }

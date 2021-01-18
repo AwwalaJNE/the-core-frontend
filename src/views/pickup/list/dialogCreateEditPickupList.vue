@@ -31,6 +31,19 @@
                     :dataItem="listenDataItem"
                     typeForm="pickup_list"
                 />
+
+                <template v-if="listenwithSchedule">
+                    <!-- v-if="listenwithSchedule" -->
+                    <div style="display:block; position: relative; text-align: left; padding-left: 8px;">
+                        <p><b>Set Schedule:</b></p>
+                        <template v-for="(item,key) in pickup_schedule">
+                            <div :key="key">
+                                <p>{{item.label}}</p>
+                                <specialSchedule :arrData="item.time" :date="item.date" title="set_schedule" @updateValue="updateValue"/>
+                            </div>
+                        </template>
+                    </div>
+                </template>
             </div>
 
 

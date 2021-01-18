@@ -1171,4 +1171,115 @@ export default {
         state.pickup_list.pickup_schedule.arrData = []
   },
   //END PICKUP LIST
+
+  //pickup schedule start
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME(state, payload) {
+    state.pickup_schedule.pickup_schedule_name.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_name.valueData = payload
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME(state, payload) {
+    state.pickup_schedule.pickup_schedule_pic_name.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_pic_name.valueData = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME_ArrData(state, payload) {
+    state.pickup_schedule.pickup_schedule_pic_name.hasOwnProperty('arrData') ?
+        state.pickup_schedule.pickup_schedule_pic_name.arrData = payload :
+        state.pickup_schedule.pickup_schedule_pic_name.arrData = []
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PHONE_NUMBER(state, payload) {
+    state.pickup_schedule.pickup_schedule_phone_number.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PHONE_NUMBER_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_phone_number.valueData = payload
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ADDRESS(state, payload) {
+    state.pickup_schedule.pickup_schedule_address.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ADDRESS_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_address.valueData = payload
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_DATE(state, payload) {
+    state.pickup_schedule.pickup_schedule_date.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_DATE_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_date.valueData = payload
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION(state, payload) {
+    state.pickup_schedule.pickup_schedule_node_id_destination.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_node_id_destination.valueData = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ArrData(state, payload) {
+    state.pickup_schedule.pickup_schedule_node_id_destination.hasOwnProperty('arrData') ?
+        state.pickup_schedule.pickup_schedule_node_id_destination.arrData = payload :
+        state.pickup_schedule.pickup_schedule_node_id_destination.arrData = []
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_REMARKS(state, payload) {
+    state.pickup_schedule.pickup_schedule_remarks.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_REMARKS_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_remarks.valueData = payload
+  },
+
+  SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID(state, payload) {
+    state.pickup_schedule.vehicle_type_id.value = payload
+  },
+  SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID_ValueData(state, payload) {
+    state.pickup_schedule.vehicle_type_id.valueData = payload
+  },
+  SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID_ArrData(state, payload) {
+    state.pickup_schedule.vehicle_type_id.hasOwnProperty('arrData') ?
+        state.pickup_schedule.vehicle_type_id.arrData = payload :
+        state.pickup_schedule.vehicle_type_id.arrData = []
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LATITUDE(state, payload) {
+    state.pickup_schedule.pickup_schedule_latitude.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LATITUDE_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_latitude.valueData = payload
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LONGITUDE(state, payload) {
+    state.pickup_schedule.pickup_schedule_longitude.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LONGITUDE_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_longitude.valueData = payload
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID(state, payload) {
+    state.pickup_schedule.pickup_schedule_courier_employee_id.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_courier_employee_id.valueData = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ArrData(state, payload) {
+    state.pickup_schedule.pickup_schedule_courier_employee_id.hasOwnProperty('arrData') ?
+        state.pickup_schedule.pickup_schedule_courier_employee_id.arrData = payload :
+        state.pickup_schedule.pickup_schedule_courier_employee_id.arrData = []
+  },
+
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE(state, payload) {
+    state.pickup_schedule.pickup_schedule.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule.valueData = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ArrData(state, payload) {
+    state.pickup_schedule.pickup_schedule.hasOwnProperty('arrData') ?
+        state.pickup_schedule.pickup_schedule.arrData = payload :
+        state.pickup_schedule.pickup_schedule.arrData = []
+  },
+  //pickup schedule end
 }

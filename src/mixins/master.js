@@ -12,7 +12,8 @@ const Master = {
     data() {
         return {
             URL : null,
-            Helper: null
+            Helper: null,
+            day:null
         }
     },
     computed: {
@@ -87,6 +88,35 @@ const Master = {
             }
 
             return temp;
+        },
+        dayConverter(val){
+            switch(val) {
+                case "7":
+                    this.day = 'Minggu'
+                    break;
+                case "6":
+                    this.day = 'Sabtu'
+                    break;
+                case "5":
+                    this.day = 'Jum\'at'
+                    break;
+                case "4":
+                    this.day = 'Kamis'
+                    break;
+                case "3":
+                    this.day = 'Rabu'
+                    break;
+                case "2":
+                    this.day = 'Selasa'
+                    break;
+                case "1":
+                    this.day = 'Senin'
+                    break;
+                default:
+                    console.log('meong')
+                // code block
+            }
+            return this.day
         }
     },
     created() {
