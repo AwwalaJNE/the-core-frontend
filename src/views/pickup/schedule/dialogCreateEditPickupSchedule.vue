@@ -26,12 +26,13 @@
             </vs-row>
             <div>
                 <form-input-controller 
-                    ref="formUserNodeController"
+                    ref="formPickupScheduleController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="pickup_list"
+                    typeForm="pickup_schedule"
                 />
-                <template>
+
+                <template v-if="listenwithSchedule">
                     <!-- v-if="listenwithSchedule" -->
                     <div style="display:block; position: relative; text-align: left; padding-left: 8px;">
                         <p><b>Set Schedule:</b></p>
@@ -123,7 +124,7 @@ export default {
             form: {},
             node_id: '',
             dialogGetCustomer:false,
-            pickup_number:'',
+            pickup_schedule_id:'',
             pickup_schedule: [
                 {
                     date: 7,
@@ -174,7 +175,7 @@ export default {
             return this.dataItem
         },
         listenDataSchedule() {
-            return this.$store.getters.getInputs.pickup_list.pickup_schedule || []
+            return this.$store.getters.getInputs.pickup_schedule.pickup_schedule || []
         },
         listenwithSchedule() {
             return this.withSchedule || false
@@ -184,7 +185,17 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.node_id = val.node_id
-                this.pickup_number = val.pickup_number
+                val.detail.map((item,index )=> {
+                  if(item.day_of_week) {
+                    this.pickup_schedule.map(itemschedule =>{
+                      if(itemschedule['date'] == item.day_of_week){
+                        itemschedule['time'].push(item.pickup_time)
+                      }
+                    })
+                  }
+                })
+                this.pickup_schedule_id = val.pickup_schedule_id
+
             }
         },
 
@@ -215,7 +226,9 @@ export default {
             minute = '0'+minute
           }
           let time = current.getHours() + ":" + minute;
-          this.form.pickup_date = this.form.pickup_date + ' '+time
+
+          this.form.pickup_schedule_date = this.form.pickup_schedule_date + ' '+time
+
 
             // if(this.listenwithSchedule) {
                 let schedule = []
@@ -227,8 +240,10 @@ export default {
                 this.form['pickup_schedule_time'] = schedule
             // }
 
-          if(this.pickup_number !== undefined && this.pickup_number !== '') {
-            this.form.pickup_number = this.pickup_number
+
+          if(this.pickup_schedule_id !== undefined && this.pickup_schedule_id !== '') {
+            this.form.pickup_schedule_id = this.pickup_schedule_id
+
             console.log(this.form,'alah')
             this.updateData()
           } else {
@@ -241,10 +256,10 @@ export default {
 
         },
         handleSubmit(){
-            this.$refs.formUserNodeController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formPickupScheduleController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formUserNodeController.handleClearForm()
+            this.$refs.formPickupScheduleController.handleClearForm()
             this.form = {}
             this.node_id = ""
             this.pickup_number = ""
@@ -309,7 +324,7 @@ export default {
 
                             arr.push(obj)
                         })
-                        this.$store.dispatch("SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -358,7 +373,7 @@ export default {
                             arr.push(obj)
                         })
                         // this.dataNodeType = arr
-                        this.$store.dispatch("SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
