@@ -50,7 +50,7 @@ export default {
     },
     data() {
         return {
-            time: [],
+          time: this.arrData || [],
             value1: '',
             isAddTime: false
         }

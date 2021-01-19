@@ -88,14 +88,16 @@
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <PickupList :ref="'transactionList'"   :node="node_request" :dateFilter="tempDate" :query="tempSearch"/>
+                        <PickupSchedule :ref="'PickupScheduleTable'"   :node="node_request" :dateFilter="tempDate" :query="tempSearch"/>
                     </transition>
                 </template>
             </div>
         </section>
 
-        <!--Create pickup List-->
+
+        <!--Create pickup schedule-->
         <dialogCreateEditPickupSchedule
+
             :active="dialogPickupList"
             @refresh="refresh"
             :withSchedule="true"
@@ -112,9 +114,10 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import dateRange from "@/components/daterange/index"
 
-import PickupList from "@/views/pickup/list/pickupList"
+import PickupSchedule from "@/views/pickup/schedule/pickupSchedule"
 
 import DialogCreateEditPickupSchedule from "@/views/pickup/schedule/dialogCreateEditPickupSchedule"
+
 
 
 export default {
@@ -124,8 +127,8 @@ export default {
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
         "daterange-filter": dateRange,
-        "PickupList": PickupList,
         "dialogCreateEditPickupSchedule": DialogCreateEditPickupSchedule,
+        "PickupSchedule": PickupSchedule,
     },
     data() {
         return {
@@ -144,7 +147,7 @@ export default {
     },
     methods: {
         refresh(){
-            this.$refs.transactionList.refresh() // trigger function refresh form dari luar component list
+            this.$refs.PickupScheduleTable.refresh() // trigger function refresh form dari luar component list
         },
         searchValue (val) {
             this.tempSearch = val
