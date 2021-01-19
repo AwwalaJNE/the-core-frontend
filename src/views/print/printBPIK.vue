@@ -18,30 +18,31 @@
                 </tr>
                 <tr style="border: 1px solid black;">
                     <th style="border: 1px solid black; background-color: grey;">No Connote</th>
-                    <th style="border: 1px solid black;">-</th>
-                    <th rowspan="2" style="border: 1px solid black;">CGK10000</th>
+                    <th style="border: 1px solid black;">{{no_connote}}</th>
+                    <th rowspan="2" style="border: 1px solid black;">{{origin}}</th>
                     <th rowspan="5" style="border: 1px solid black;">TTD &amp; NAMA JELAS</th>
                     <th rowspan="5" colspan="2" style="border: 1px solid black;">TTD &amp; NAMA JELAS</th>
                     <th rowspan="5" colspan="2" style="border: 1px solid black;">TTD &amp; NAMA JELAS</th>
                 </tr>
                 <tr style="border: 1px solid black;">
                     <th style="border: 1px solid black; background-color: grey;">Tanggal</th>
-                    <th style="border: 1px solid black;"><time datetime="1607587242000">10 Des 2020/15:00</time></th>
+                    <th style="border: 1px solid black;">{{date}}</th>
                 </tr>
                 <tr style="border: 1px solid black;">
                     <th style="border: 1px solid black; background-color: grey;">Counter</th>
-                    <th style="border: 1px solid black;">JAKARTA, TOMANG 45</th>
+                    <th style="border: 1px solid black;">{{counter}}</th>
                     <th style="border: 1px solid black; background-color: grey;">DESTINATION</th>
                 </tr>
                 <tr style="border: 1px solid black;">
                     <th style="border: 1px solid black; background-color: grey;">Pengirim</th>
-                    <th style="border: 1px solid black;"></th>
-                    <th rowspan="2" style="border: 1px solid black;"></th>
+                    <th style="border: 1px solid black;">{{pengirim}}</th>
+                    <th rowspan="2" style="border: 1px solid black;">{{destination}}</th>
                 </tr>
                 <tr style="border: 1px solid black;">
                     <th style="border: 1px solid black; background-color: grey;">Penerima</th>
-                    <th style="border: 1px solid black;"></th>
+                    <th style="border: 1px solid black;">{{penerima}}</th>
                 </tr>
+                
                 <tr style="border: 1px solid black;">
                     <th style="border: 1px solid black; background-color: grey;">No</th>
                     <th style="border: 1px solid black; background-color: grey;">NAMA KIRIMAN</th>
@@ -52,76 +53,19 @@
                     <th style="border: 1px solid black; background-color: grey;">KONDISI(***)</th>
                     <th style="border: 1px solid black; background-color: grey;">KELENGKAPAN</th>
                 </tr>
-                <tr style="border: 1px solid black;">
-                    <td style="border: 1px solid black;">1</td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;">0</td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                </tr>
-                <tr style="border: 1px solid black;">
-                    <td style="border: 1px solid black;">2</td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                </tr>
-                <tr style="border: 1px solid black;">
-                    <td style="border: 1px solid black;">3</td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                </tr>
-                <tr style="border: 1px solid black;">
-                    <td style="border: 1px solid black;">4</td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                </tr>
-                <tr style="border: 1px solid black;">
-                    <td style="border: 1px solid black;">5</td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                </tr>
-                <tr style="border: 1px solid black;">
-                    <td style="border: 1px solid black;">6</td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                </tr>
-                <tr style="border: 1px solid black;">
-                    <td style="border: 1px solid black;">7</td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                    <td style="border: 1px solid black;"></td>
-                </tr>
+                <template v-for="(item, key) in bpik">
+                    <tr :key="key" style="border: 1px solid black;">
+                        <td style="border: 1px solid black;">{{(key + 1)}}</td>
+                        <td style="border: 1px solid black;">{{item.item_name}}</td>
+                        <td style="border: 1px solid black;">{{item.item_type}}</td>
+                        <td style="border: 1px solid black;">{{item.item_serial_number}}</td>
+                        <td style="border: 1px solid black;">{{item.item_total}}</td>
+                        <td style="border: 1px solid black;">{{item.item_color}}</td>
+                        <td style="border: 1px solid black;">{{item.item_condition}}</td>
+                        <td style="border: 1px solid black;">{{item.item_completeness}}</td>
+                    </tr>
+                </template>
+                
             </tbody>
         </table>
         <br>
@@ -132,18 +76,18 @@
                         <tbody>
                         <tr>
                             <th style="width: 150px;">ASURANSI ****</th>
-                            <th style="width: 120px;"><input type="checkbox" readonly="readonly" @click.prevent='0'> YA</th>
-                            <th style="width: 120px;"><input type="checkbox" :checked="true" readonly="readonly" @click.prevent='0'> TIDAK</th>
+                            <th style="width: 120px;"><input type="checkbox" :checked="asuransi == true" readonly="readonly" @click.prevent='0'> YA</th>
+                            <th style="width: 120px;"><input type="checkbox" :checked="asuransi == false" readonly="readonly" @click.prevent='0'> TIDAK</th>
                         </tr>
                         <tr>
                             <th style="width: 150px;">VOLUME</th>
-                            <th style="width: 120px;"><input type="checkbox" readonly="readonly" @click.prevent='0'> YA</th>
-                            <th style="width: 120px;"><input type="checkbox" :checked="true" readonly="readonly" @click.prevent='0'> TIDAK</th>
+                            <th style="width: 120px;"><input type="checkbox" :checked="volume == true" readonly="readonly" @click.prevent='0'> YA</th>
+                            <th style="width: 120px;"><input type="checkbox" :checked="volume == false" readonly="readonly" @click.prevent='0'> TIDAK</th>
                         </tr>
                         <tr>
                             <th style="width: 120px;">PACKING KAYU ****</th>
-                            <th style="width: 120px;"><input type="checkbox" readonly="readonly" @click.prevent='0'> YA</th>
-                            <th style="width: 120px;"><input type="checkbox" readonly="readonly" @click.prevent='0'> TIDAK</th>
+                            <th style="width: 120px;"><input type="checkbox" :checked="packing_kayu == true" readonly="readonly" @click.prevent='0'> YA</th>
+                            <th style="width: 120px;"><input type="checkbox" :checked="packing_kayu == false" readonly="readonly" @click.prevent='0'> TIDAK</th>
                         </tr>
                         <tr>
                             <th colspan="1">
@@ -169,14 +113,19 @@
                         <tbody>
                         <tr>
                             <th style="width: 150px;">NILAI BARANG</th>
-                            <th style="width: 100px;">Rp.</th>
-                            <th colspan="2" style="width: 100px;">0.00</th>
+                            <!-- <th style="width: 100px;">Rp.</th> -->
+                            <th colspan="2" style="width: 100px;">{{moneyformat(nilai_barang)}}</th>
                         </tr>
                         <tr>
                             <th style="width: 100px;">UKURAN</th>
-                            <th style="width: 100px;">P:&nbsp;&nbsp;&nbsp;&nbsp; <span>0&nbsp;&nbsp;cm</span></th>
-                            <th style="width: 100px;">L:&nbsp;&nbsp;&nbsp;&nbsp; <span>0&nbsp;&nbsp;cm</span></th>
-                            <th style="width: 100px;">T:&nbsp;&nbsp;&nbsp;&nbsp; <span>0&nbsp;&nbsp;cm</span></th>
+                            <template v-for="(item, key) in koli">
+                                <tr :key="key">
+                                    <th style="width: 100px;">P:&nbsp;&nbsp;&nbsp;&nbsp; <span>{{item.length}}&nbsp;&nbsp;cm</span></th>
+                                    <th style="width: 100px;">L:&nbsp;&nbsp;&nbsp;&nbsp; <span>{{item.width}}&nbsp;&nbsp;cm</span></th>
+                                    <th style="width: 100px;">T:&nbsp;&nbsp;&nbsp;&nbsp; <span>{{item.height}}&nbsp;&nbsp;cm</span></th>
+                                </tr>
+                            </template>
+                            
                         </tr>
                         </tbody>
                     </table>
@@ -186,10 +135,12 @@
     </div>
 </template>
 <script>
+import moment from "moment"
 export default {
     name: "print-BPIK",
     props: {
-        typePrint: String
+        typePrint: String,
+        transactionData: Object
     },
     computed: {
         listenConnoteIndexActive () {
@@ -199,6 +150,7 @@ export default {
     data() {
         return {
             dataConnote : {},
+            counter: '',
             pengirim: '',
             penerima: '',
             date: '',
@@ -207,14 +159,59 @@ export default {
             koli: [],
             asuransi: false,
             volume: false,
-            packing_kayu: false,
-            nilai_barang: 0
+            packing_kayu: true,
+            nilai_barang: 0,
+            origin: '',
+            destination: ''
         }
     },
     methods: {
         initialize() {
-            this.dataConnote = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive] || {}
-            console.log('data connote', this.dataConnote)
+            let printBPIK = this.$ls.get('printBPIK')
+            let date = new Date()
+            this.date = moment(date).format("DD MMM YYYY/h:mm")
+            this.counter = this.$ls.get('node_id')['label'] || ''
+            this.pengirim = printBPIK['pengirim'] || ''
+            this.penerima = printBPIK['penerima'] || ''
+            this.no_connote = printBPIK['no_connote'] || '-'
+            this.origin = printBPIK['origin'] || ''
+            this.destination = printBPIK['destination'] || ''
+            this.asuransi = printBPIK['asuransi'] || false
+            this.nilai_barang = printBPIK['insured_goods_value'] || 0
+
+            this.koli = printBPIK['koli'] || []
+            if(printBPIK['koli'] !== undefined) {
+                let is_volume = false
+                printBPIK['koli'].map(item => {
+                    if(Number(item.volume_weight) > 0) {
+                        is_volume = true
+                    }
+                })
+                this.volume = is_volume
+            }
+
+            this.packing_kayu = printBPIK['packing_kayu'] || false
+            this.bpik = printBPIK['connote_bpik'] || []
+            if(this.bpik.length < 7){
+                let sisa = Math.abs(this.bpik.length - 7)
+                let obj = {
+                        item_name:'',
+                        item_type:'',
+                        item_serial_number:'',
+                        item_total:'',
+                        item_color:'',
+                        item_condition:'',
+                        item_completeness:''
+                    }
+                for(let i=0; i< sisa; i++) {
+                    this.bpik.push(obj)
+                }
+            }
+            console.log('data connote', printBPIK)
+        },
+        moneyformat(number){
+            let val = number != 0 ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number) : 'Rp 0'
+            return val
         },
     },
     created() {
@@ -226,6 +223,9 @@ export default {
     .print{
         h6{
             margin: 0;
+        }
+        table{
+                border-spacing: 0px !important;
         }
     }
 </style>

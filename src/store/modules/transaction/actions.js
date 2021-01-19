@@ -163,6 +163,11 @@ export default {
     SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE({ commit, dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE', payload)
         dispatch('SET_CONNOTE_DATA', {'key':'insured_goods_value','value': payload})
+        if(payload > 0) {
+            dispatch('SET_CONNOTE_DATA', {'key':'is_insured','value': true})
+        } else {
+            dispatch('SET_CONNOTE_DATA', {'key':'is_insured','value': false})
+        }
     },
     SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE_ValueData({ commit }, payload) {
         commit('SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE_ValueData', payload)
@@ -182,6 +187,45 @@ export default {
     },
     SET_PACKAGE_PACKAGE_INSTRUKSI_ValueData({ commit }, payload) {
         commit('SET_PACKAGE_PACKAGE_INSTRUKSI_ValueData', payload)
+    },
+
+    SET_PACKAGE_PACKAGE_TIDAK_ASURANSI({ commit, dispatch, state }, payload) {
+        commit('SET_PACKAGE_PACKAGE_TIDAK_ASURANSI', payload)
+
+        let insured_goods_value = state.transaction.connote[state.connote_index_active]['insured_goods_value'] || 0
+        if(payload == true && insured_goods_value > 0) {
+            dispatch('SET_CONNOTE_DATA', {'key':'is_insured','value': false})
+        } else {
+            dispatch('SET_CONNOTE_DATA', {'key':'is_insured','value': true})
+        }
+        
+    },
+    SET_PACKAGE_PACKAGE_TIDAK_ASURANSI_ValueData({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_TIDAK_ASURANSI_ValueData', payload)
+    },
+
+    SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU({ commit, dispatch, state }, payload) {
+        commit('SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU', payload)
+
+        if(payload == true) {
+            dispatch('SET_CONNOTE_DATA', {'key':'is_packing_kayu','value': false})
+        } else {
+            dispatch('SET_CONNOTE_DATA', {'key':'is_packing_kayu','value': true})
+        }
+        
+    },
+    SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU_ValueData({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU_ValueData', payload)
+    },
+
+    SET_PACKAGE_PACKAGE_DO_RETURN({ commit, dispatch, state }, payload) {
+        commit('SET_PACKAGE_PACKAGE_DO_RETURN', payload)
+
+        dispatch('SET_CONNOTE_DATA', {'key':'is_need_do_return','value': payload})
+        
+    },
+    SET_PACKAGE_PACKAGE_DO_RETURN_ValueData({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_DO_RETURN_ValueData', payload)
     },
     
 
@@ -326,14 +370,6 @@ export default {
     },
     SET_PROSES_CONNOTE_PROPERTY({ commit }, payload) {
         commit('SET_PROSES_CONNOTE_PROPERTY', payload)
-    },
-
-    
-    MERGE_PROSES_CONNOTE({ commit }, payload) {
-        commit('MERGE_PROSES_CONNOTE', payload)
-    },
-    MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE({ commit }, payload) {
-        commit('MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE', payload)
     },
 
     SET_TRANSACTION_CONNOTE_TOTAL_BIAYA({ commit }, payload) {

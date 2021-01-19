@@ -108,6 +108,7 @@
                                 block
                                 flat
                                 :active="true"
+                                @click="printBPIK"
                                 type="submit"
                                 >
                                     Print
@@ -231,7 +232,10 @@ export default {
         },
         listenBpik() {
             return this.listBpik
-        }
+        },
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
+        },
     },
     watch: {
         active: function(val) {
@@ -312,7 +316,23 @@ export default {
             // this.listBpik.splice(i, 1);
             this.$VueDelete(this.listBpik, i);
             this.$store.dispatch("SET_CONNOTE_BPIK", this.listBpik)
-        }
+        },
+        printBPIK() {
+            this.$ls.set('printBPIK', {})
+            let data = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
+            let obj = {}
+            obj['connote_number'] = data.connote_number || '-'
+            obj['connote_bpik'] = data.connote_bpik
+            obj['koli'] = data.connote_koli_item
+            obj['pengirim'] = data.connote_shipper_name
+            obj['penerima'] = data.connote_receiver_name
+            obj['insured_goods_value'] = data.insured_goods_value
+            obj['origin'] = this.$store.getters.getUser['node_id'].node_code
+            obj['destination'] = data.connote_receiver_tariff_code
+            obj['asuransi'] = data.is_insured
+            obj['packing_kayu'] = data.is_packing_kayu // nnti di update
+            this.$ls.set('printBPIK', obj)
+        },
     },
 }
 </script>

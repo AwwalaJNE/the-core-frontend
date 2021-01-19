@@ -1,6 +1,6 @@
 <template>
     <div class="checkbox-inp">
-      <vs-checkbox v-model="option1" @change="changed">
+      <vs-checkbox v-model="option1" @change="updateValue">
           {{listenName}}
       </vs-checkbox>
     </div>
@@ -28,10 +28,12 @@ export default {
     },
     methods: {
         changed() {
+            // console.log('changed',this.listenFormKey, this.option1)
             this.$emit("changed", this.option1)
         },
         updateValue(){
             this.$emit("updateValue", this.listenFormKey, this.option1)
+            this.$emit("changed", this.option1)
         }
     },
 }

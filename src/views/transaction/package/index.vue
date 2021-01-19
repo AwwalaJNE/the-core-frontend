@@ -168,24 +168,25 @@
                                 <vs-col xs="12" md="6" lg="6">
                                     <div class="chekboxgroup">
                                         <checkbox
-                                            :formKey="InputObject['package_tidak_packing_kayu'].key"
+                                            formKey="package_tidak_packing_kayu"
                                             :isChecked="InputObject['package_tidak_packing_kayu'].value"
                                             :typeInput="InputObject['package_tidak_packing_kayu'].typeInput"
                                             @updateValue="updateValue" /> 
                                         <router-link :to="{ name: 'printSPPAP'}" target="_blank">
-                                            <p style="color:#1890ff;">{{InputObject['package_tidak_packing_kayu'].titleLabel}}</p>
+                                            <p @click="printSPPAP" style="color:#1890ff;">{{InputObject['package_tidak_packing_kayu'].titleLabel}}</p>
                                         </router-link>
                                     </div>
                                 </vs-col>
                                 <vs-col xs="12" md="6" lg="6">
                                     <div class="chekboxgroup">
                                         <checkbox
-                                            :formKey="InputObject['package_tidak_asuransi'].key"
+                                            formKey="package_tidak_asuransi"
                                             :isChecked="InputObject['package_tidak_asuransi'].value"
                                             :typeInput="InputObject['package_tidak_asuransi'].typeInput"
+                                            :disabled="insured_goods_value > 0"
                                             @updateValue="updateValue" /> 
                                         <router-link :to="{ name: 'printSPPAP'}" target="_blank">
-                                            <p style="color:#1890ff;">{{InputObject['package_tidak_asuransi'].titleLabel}}</p>
+                                            <p @click="printSPPAP" style="color:#1890ff;">{{InputObject['package_tidak_asuransi'].titleLabel}}</p>
                                         </router-link>
                                     </div>
                                 </vs-col>
@@ -221,7 +222,7 @@
                                 <vs-col xs="12" md="6" lg="6">
                                     <div class="chekboxgroup">
                                         <checkbox
-                                            :formKey="InputObject['package_do_return'].key"
+                                            formKey="package_do_return"
                                             :isChecked="InputObject['package_do_return'].value"
                                             :typeInput="InputObject['package_do_return'].typeInput"
                                             @updateValue="updateValue" /> 
@@ -301,7 +302,10 @@ export default {
             koliinput: 'text',
             disableBtnMultipleKoli: true,
             jumlahKoli: 1,
-            current_index_koli: 0
+            current_index_koli: 0,
+            insured_goods_value : 0,
+            package_tidak_packing_kayu: false,
+            package_tidak_asuransi: false
         }
     },
     computed: {
@@ -500,9 +504,12 @@ export default {
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_CATEGORY", value)
                     break;
                 case "insured_goods_value":
+                    this.insured_goods_value = value
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE", value)
-                    this.$store.dispatch("SET_CALCULATOR_ASURANSI", value * 0.002)
-                    this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 5000)
+                    if(value > 0) {
+                        this.$store.dispatch("SET_CALCULATOR_ASURANSI", value * 0.002)
+                        this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 5000)
+                    }
                     break;
                 case "amount_discount":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_DISKON", value)
@@ -529,6 +536,18 @@ export default {
                     break;
                 case "koli_height":
                     this.prosesKoli0("height", value, 0)
+                    break;
+                case "package_tidak_asuransi":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_TIDAK_ASURANSI", value)
+                    this.package_tidak_asuransi = value
+                    break;
+                case "package_tidak_packing_kayu":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU", value)
+                    this.package_tidak_packing_kayu = value
+                    console.log('package_tidak_packing_kayu', value)
+                    break;
+                case "package_do_return":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_DO_RETURN", value)
                     break;
                 case "handle_surcharge":
                     let surcharge = value2
@@ -677,7 +696,16 @@ export default {
             this.$store.dispatch("SET_CONNOTE_DATA_KOLI", koli)
             this.surchargeView()
             this.calculation()
-        }
+        },
+        printSPPAP() {
+            this.$ls.set('printSPPAP', {})
+            let data = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
+            let obj = {}
+            obj['tidak_asuransi'] = this.package_tidak_asuransi//data.is_insured == false ? true : false
+            obj['tidak_packing_kayu'] = this.package_tidak_packing_kayu//data.is_packing_kayu == false ? true : false // nnti di update
+            this.$ls.set('printSPPAP', obj)
+            console.log('printSPPAP', obj, data.is_insured, data.is_packing_kayu)
+        },
     },
     mounted() {
         this.initialize()

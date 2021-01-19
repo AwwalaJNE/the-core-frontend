@@ -165,6 +165,27 @@ export default {
         state.package.package_instruksi.valueData = payload
     },
 
+    SET_PACKAGE_PACKAGE_TIDAK_ASURANSI(state, payload) {
+        state.package.package_tidak_asuransi.value = payload
+    },
+    SET_PACKAGE_PACKAGE_TIDAK_ASURANSI_ValueData(state, payload) {
+        state.package.package_tidak_asuransi.valueData = payload
+    },
+
+    SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU(state, payload) {
+        state.package.package_tidak_packing_kayu.value = payload
+    },
+    SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU_ValueData(state, payload) {
+        state.package.package_tidak_packing_kayu.valueData = payload
+    },
+
+    SET_PACKAGE_PACKAGE_DO_RETURN(state, payload) {
+        state.package.package_do_return.value = payload
+    },
+    SET_PACKAGE_PACKAGE_DO_RETURN_ValueData(state, payload) {
+        state.package.package_do_return.valueData = payload
+    },
+
 
     // Switch Calc component
     SET_CALC_COMPONENT_ARRDATA(state, payload) {
@@ -333,16 +354,6 @@ export default {
         state.proses_connote[payload.key] = payload.value
     },
     
-    MERGE_PROSES_CONNOTE(state, payload) {
-        state.proses_connote.connote_koli_item = state.connote_koli_item
-    },
-    MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE(state, payload) {
-        if(state.transaction.connote.length == 0) {
-            state.transaction.connote.push(state.proses_connote)
-        } else {
-            state.transaction.connote[payload.index] = state.proses_connote
-        }
-    },
 
     SET_TRANSACTION_CONNOTE_TOTAL_BIAYA(state, payload) {
         state.transaction.connote[payload.index]['total_biaya'] = payload.value
@@ -353,12 +364,12 @@ export default {
 
     
 
-    MERGE_TRANSACTION_CONNOTE(state, payload) {
-        state.transaction.connote[payload.index].connote_koli_item = state.connote_koli_item
-    },
-    PUSH_CONNOTE_TO_TRANSACTION(state, payload) {
-        state.transaction.connote.push(proses_connote)
-    },
+    // MERGE_TRANSACTION_CONNOTE(state, payload) {
+    //     state.transaction.connote[payload.index].connote_koli_item = state.connote_koli_item
+    // },
+    // PUSH_CONNOTE_TO_TRANSACTION(state, payload) {
+    //     state.transaction.connote.push(proses_connote)
+    // },
 
 
     // new code
@@ -543,54 +554,7 @@ export default {
         
     },
     CLEAR_TRANSACTION_DATA_CONNOTE(state, payload) {
-        state.transaction = {
-            transaction_id: '',
-            transaction_finished: false,
-            node_code: '',
-            connote: [
-                {
-                    connote_number: '',
-                    connote_shipper_customer_id: '',
-                    connote_shipper_name: '',
-                    connote_shipper_phone_number: '',
-                    connote_shipper_street_address:'',
-                    connote_shipper_administrative_address: '',
-                    connote_shipper_tariff_code: '',
-                
-                    connote_receiver_customer_id: '',
-                    connote_receiver_address_type: 'rumah',
-                    connote_receiver_zip_code: '',
-                    connote_receiver_tariff_code: '',
-                    connote_receiver_name: '',
-                    connote_receiver_phone_number: '',
-                    connote_receiver_street_address: '',
-                    connote_receiver_administrative_address: '',
-                
-                    insured_goods_value: 0,
-                    amount_discount: 0,
-                    is_insured: true,
-                    is_need_do_return: false,
-                    connote_koli_item: [
-                    {
-                        koli_id: '',
-                        height: 0,
-                        length: 0,
-                        width: 0,
-                        volume_weight: 0,
-                        actual_weight: 1,
-                        surcharge_id: [],
-                        description: ' '
-                    }
-                    ],
-                    connote_bpik:[],
-                    total_biaya: 0,
-                    connote_index: ''
-                },
-            ],
-            grand_total: 0,
-            discount: 0,
-            payment_method: ''
-        }
+        state.transaction = state.transaction_TEMPLATE
     }
 
 

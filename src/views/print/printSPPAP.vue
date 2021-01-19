@@ -12,13 +12,13 @@
                         <ul class="jss8 jss9 jss1 check">
                             <li class="jss12 jss15 jss19" style="padding-bottom: 0px; padding-top: 0px;">
                             <label class="jss22" style="padding-bottom: 0px; padding-top: 0px;">
-                                <input type="checkbox" class="cb" :checked="false" readonly="readonly" @click.prevent='0'>
+                                <input type="checkbox" class="cb" :checked="packing_kayu" readonly="readonly" @click.prevent='0'>
                                 <span class="jss58 jss67 jss24">Packing Kayu</span>
                             </label>
                             </li>
                             <li class="jss12 jss15 jss19" style="padding-bottom: 0px; padding-top: 0px;">
                             <label class="jss22" style="padding-bottom: 0px; padding-top: 0px;">
-                                <input type="checkbox" class="cb" :checked="false" readonly="readonly" @click.prevent='0'>
+                                <input type="checkbox" class="cb" :checked="asuransi" readonly="readonly" @click.prevent='0'>
                                 <span class="jss58 jss67 jss24">Asuransi</span>
                             </label>
                             </li>
@@ -56,6 +56,7 @@
     </div>
 </template>
 <script>
+import moment from "moment"
 export default {
     name: "print-SPPAP",
     props: {
@@ -63,8 +64,23 @@ export default {
     },
     data() {
         return {
-            dataPrint: []
+            dataPrint: [],
+            packing_kayu: false,
+            asuransi: false,
+            date: ''
         }
+    },
+    methods: {
+        initialize() {
+            let printSPPAP = this.$ls.get('printSPPAP')
+            let date = new Date()
+            this.date = moment(date).format("DD MMM YYYY/h:mm")
+            this.asuransi = printSPPAP['tidak_asuransi'] || false
+            this.packing_kayu = printSPPAP['tidak_packing_kayu'] || false
+        }
+    },
+    created() {
+        this.initialize()
     },
 }
 </script>
