@@ -11,6 +11,7 @@
                         @formData="formData"
                         getters="getAuth"
                         typeForm="login"
+                        :submitByEnter="true"
                     />
                 </div>
                 

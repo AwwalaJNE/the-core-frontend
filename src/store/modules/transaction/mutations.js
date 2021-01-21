@@ -193,6 +193,9 @@ export default {
     },
     SET_CALC_COMPONENT_SWITCH(state, payload) {
         state.calc_component.switch = payload
+        if(payload == false) {
+            state.calc_component.arrData = []
+        }
     },
     SET_CALC_COMPONENT_PREFIX(state, payload) {
         state.calc_component.prefix = payload

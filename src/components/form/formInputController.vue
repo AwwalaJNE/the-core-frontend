@@ -1,5 +1,5 @@
 <template>
-    <form-master ref="formMaster" @onSubmit="onSubmit">
+    <form-master ref="formMaster" @onSubmit="onSubmit" :submitByEnter="submit_Enter">
         <template v-slot:inputValidator>
             <template v-if="Keys.length > 0 && Object.keys(InputObject).length > 0">
                 <vs-row v-for="(item, keys) in Keys" :key="keys">
@@ -84,7 +84,8 @@ export default {
         arrData: Array,
         typeForm: String,
         dataItem: Object,
-        getters: String
+        getters: String,
+        submitByEnter: Boolean
     },
     data() {
         return {
@@ -94,7 +95,8 @@ export default {
             latlon:[0,0],
             latitude: 0,
             longitude: 0,
-            hasMapPicker: false
+            hasMapPicker: false,
+            submit_Enter: this.submitByEnter || false
         }
     },
     computed: {

@@ -195,7 +195,7 @@ export default {
                         
                     }
                     
-                    this.openNotification(null, 'Create new success', 'Create new district is success')
+                    this.openNotification(null, 'Success', 'Create connote success')
                 }).catch(err => {
                     this.openNotification('danger', 'Create new transaction failed', err.response ? err.response.data.message : 'something went wrong')
                 })
