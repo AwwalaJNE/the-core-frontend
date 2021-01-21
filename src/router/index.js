@@ -75,6 +75,12 @@ import PickupSchedule from "@/views/pickup/schedule"
 // === Transport Packing Kayu ===
 import TransportPackingKayu from "@/views/transport/transportPackingKayu"
 
+// === Inbound Incoming ===
+import InboundIncoming from "@/views/inbound"
+
+// === Inbound Incoming ===
+import InboundIncomingScan from "@/views/inbound/scan"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -284,6 +290,24 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Packing Kayu"
+        }
+      },
+      {
+        path: "/inbound/prealert",
+        name: "InboundIncoming",
+        component: InboundIncoming,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Inbound Incoming"
+        }
+      },
+      {
+        path: "/inbound/prealert/scan/:inbound_number?",
+        name: "InboundIncomingScan",
+        component: InboundIncomingScan,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Inbound Incoming / Receiving"
         }
       },
     ],
