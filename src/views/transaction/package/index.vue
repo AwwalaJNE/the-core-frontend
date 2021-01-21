@@ -183,7 +183,6 @@
                                             formKey="package_tidak_asuransi"
                                             :isChecked="InputObject['package_tidak_asuransi'].value"
                                             :typeInput="InputObject['package_tidak_asuransi'].typeInput"
-                                            :disabled="insured_goods_value > 0"
                                             @updateValue="updateValue" /> 
                                         <router-link :to="{ name: 'printSPPAP'}" target="_blank">
                                             <p @click="printSPPAP" style="color:#1890ff;">{{InputObject['package_tidak_asuransi'].titleLabel}}</p>
@@ -303,7 +302,6 @@ export default {
             disableBtnMultipleKoli: true,
             jumlahKoli: 1,
             current_index_koli: 0,
-            insured_goods_value : 0,
             package_tidak_packing_kayu: false,
             package_tidak_asuransi: false
         }
@@ -504,11 +502,11 @@ export default {
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_CATEGORY", value)
                     break;
                 case "insured_goods_value":
-                    this.insured_goods_value = value
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE", value)
                     if(value > 0) {
                         this.$store.dispatch("SET_CALCULATOR_ASURANSI", value * 0.002)
                         this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 5000)
+                        this.calculation()
                     }
                     break;
                 case "amount_discount":
@@ -540,6 +538,17 @@ export default {
                 case "package_tidak_asuransi":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_TIDAK_ASURANSI", value)
                     this.package_tidak_asuransi = value
+                    if(value == true) {
+                        this.$store.dispatch("SET_CALCULATOR_ASURANSI", 0)
+                        this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 0)
+                    } else {
+                        let insured_good_value = this.$store.getters.getTransaction.package.package_insured_goods_value.value
+                        if(insured_good_value > 0) {
+                            this.$store.dispatch("SET_CALCULATOR_ASURANSI", insured_good_value * 0.002)
+                            this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 5000)
+                        }
+                    }
+                    this.calculation()
                     break;
                 case "package_tidak_packing_kayu":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU", value)

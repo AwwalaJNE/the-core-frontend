@@ -126,64 +126,6 @@ const TransactionMixin = {
             }
         },
 
-        // async filterAutoSurcharge(node = ''){
-        //     // filter berdasarkan selected service code sebelum koli checking, untuk mengurangi time complexity
-        //     this.service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
-        //     let surchargeList = this.listenSurchargeList || []
-        //     let result = []
-            
-        //     console.log('ini service', this.service)
-        //     try {
-        //         if(surchargeList.length > 0) {
-        //             // surchargeList.map(surcharge => {
-        //             //     if(surcharge.hasOwnProperty('surcharge_condition')) {
-        //             //         let objectives = surcharge['surcharge_condition'] || {}
-        //             //         let autosurchargeCek = true
-        //             //         let serviceObjectives = false
-        //             //         let hasShipperObjectives = false
-        //             //         let shipperObjectivesStatus = false
-        //             //         if(objectives.hasOwnProperty('CONNOTE_SERVICE_CODE')) {
-        //             //            let operator = Object.keys(objectives['CONNOTE_SERVICE_CODE'])[0] || ''
-        //             //            if(operator !== ''){
-        //             //                 serviceObjectives = this.service.toLowerCase().includes(objectives['CONNOTE_SERVICE_CODE'][operator].toLowerCase())
-        //             //                 autosurchargeCek = serviceObjectives
-        //             //            }
-        //             //         }
-
-        //             //         if(objectives.hasOwnProperty('CONNOTE_SHIPPER_TLC')) {
-        //             //             hasShipperObjectives = true
-        //             //             let operator = Object.keys(objectives['CONNOTE_SHIPPER_TLC'])[0] || ''
-        //             //             if(operator !== ''){
-        //             //                 shipperObjectivesStatus = node.toLowerCase().includes(objectives['CONNOTE_SHIPPER_TLC'][operator].toLowerCase())
-        //             //                 autosurchargeCek = shipperObjectivesStatus
-        //             //             }
-        //             //         }
-
-        //             //         // if(serviceObjectives) {
-        //             //         //     if(hasShipperObjectives){
-        //             //         //         if(shipperObjectivesStatus == true) {
-        //             //         //             result.push(surcharge)
-        //             //         //         } else {
-        //             //         //             // jika punya kondisi shipper tlc, namun tidak memenuhi syarat maka batal
-        //             //         //         }
-        //             //         //     } else {
-        //             //         //         result.push(surcharge)
-        //             //         //     }
-        //             //         // }
-        //             //         if(autosurchargeCek) {
-        //             //             result.push(surcharge)
-        //             //         }
-        //             //     }
-        //             // })
-        //             result = surchargeList
-        //         }  
-        //     } catch (error) {
-        //         console.log('filter error ', error)
-        //         return []
-        //     }
-        //     return result
-        // },
-
         filterSurcharge(obj, koli, node_code) {
             let service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
             let status = false
@@ -445,6 +387,10 @@ const TransactionMixin = {
                 TOTAL_BIAYA = this.BASE_TARIFF + SUM_HANDLING_CHARGE + SUM_BIAYA_LAIN
             }
 
+            let ASURANSI = this.$store.getters.getTransaction.calculator.asuransi.value
+            let ADM_ASURANSI = this.$store.getters.getTransaction.calculator.adm_asuransi.value
+
+            TOTAL_BIAYA = TOTAL_BIAYA + ASURANSI + ADM_ASURANSI
             
 
             this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.SUM_ACTUAL_WEIGHT)
