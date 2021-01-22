@@ -472,7 +472,12 @@ export default {
             }
             this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
             // this.calcDataKoli()
-            this.calculation()
+            let node_code = this.listenNodeCode
+            let self = this
+            this.autoApply(node_code).then(() => {
+                self.surchargeView()
+                self.calculation()
+            })
         },
         updateValue(key, value, value2 = null) {
             switch(key) {

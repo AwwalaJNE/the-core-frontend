@@ -54,6 +54,9 @@ export default {
     cash_register: api + "cash-register",
     payment: api + "payment",
 
+    // PRINT
+    print: api + "print",
+
     //PICKUP
     pickup: api + "pickup",
 

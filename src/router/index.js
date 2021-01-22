@@ -75,6 +75,9 @@ import PickupSchedule from "@/views/pickup/schedule"
 // === Transport Packing Kayu ===
 import TransportPackingKayu from "@/views/transport/transportPackingKayu"
 
+// === Transport Surat Jalan ===
+import TransportSuratJalan from "@/views/transport/suratJalan"
+
 // === Inbound Incoming ===
 import InboundIncoming from "@/views/inbound"
 
@@ -290,6 +293,15 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Packing Kayu"
+        }
+      },
+      {
+        path: "/transport/manifest-jalan",
+        name: "SuratJalan",
+        component: TransportSuratJalan,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Surat Jalan"
         }
       },
       {

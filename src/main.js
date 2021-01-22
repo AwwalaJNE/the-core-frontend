@@ -8,6 +8,7 @@ import { Upload, Autocomplete, Collapse, CollapseItem, DatePicker, TimePicker } 
 import 'element-ui/lib/theme-chalk/index.css';
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
+import VueAppend from 'vue-append'
 // import VueMoment from 'vue-moment'
 // import moment from 'moment-timezone'
 
@@ -24,6 +25,8 @@ Vue.use(Collapse)
 Vue.use(CollapseItem)
 Vue.use(DatePicker)
 Vue.use(TimePicker)
+
+Vue.use(VueAppend);
 
 
 let options = {

@@ -71,9 +71,7 @@
             :active="dialogPayment" 
             :closeDialog="closePaymentDialog"
             />
-        <windowPortal v-model="printTransactionBarcodeShow">
-            <printTransactionBarcode :active="printTransactionBarcodeShow"/>
-        </windowPortal>
+        
     </div>
 </template>
 <script>
@@ -87,8 +85,6 @@ import Destination from "@/views/transaction/destination"
 import Package from "@/views/transaction/package"
 import Calc from "@/views/transaction/calc"
 import Payment from "@/views/transaction/payment"
-import WindowPortal from "@/components/windowPortal"
-import PrintTransactionBarcode from "@/views/print/printTransactionBarcode"
 export default {
     name: "new-transaction",
     mixins: [master, TransactionMixin],
@@ -100,8 +96,6 @@ export default {
         "package": Package,
         "calc": Calc,
         "payment": Payment,
-        "windowPortal": WindowPortal,
-        "printTransactionBarcode": PrintTransactionBarcode
     },
     computed: {
         listenOrigin () {
@@ -125,7 +119,9 @@ export default {
             typeAction: '',
             dataTransaction: {},
             dialogPayment: false,
-            printTransactionBarcodeShow: false
+            printTransactionBarcodeShow: false,
+            koli_number: '',
+            legacySystemHTML: ''
         }
     },
     methods: {
@@ -184,6 +180,8 @@ export default {
                     if(res.status == 200) {
                         // this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':res.data.data['transaction_id']})
                         this.fillTransactionData(res.data.data)
+                        this.wrapKoliNumber()
+                        this.getDataKoli()
                         if(this.typeAction == 'addconnote') {
                             this.refreshTransactionStore()
                         } else {
@@ -199,6 +197,23 @@ export default {
                 }).catch(err => {
                     this.openNotification('danger', 'Create new transaction failed', err.response ? err.response.data.message : 'something went wrong')
                 })
+        },
+
+        wrapKoliNumber() {
+            let connote = this.$store.getters.getTransaction.transaction.connote
+            this.koli_number = ''
+            let str = []
+            connote.map(conot => {
+                if(conot.hasOwnProperty('connote_koli_item')) {
+                    conot.connote_koli_item.map(koli => {
+                        if(koli.hasOwnProperty('koli_number')) {
+                            str.push(koli.koli_number)
+                        }
+                    })
+                }
+            })
+            this.koli_number = str.toString()
+            console.log('this.koli_number', this.koli_number)
         },
 
         fillTransactionData(data){
@@ -270,7 +285,34 @@ export default {
                 this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
             }
-        }
+        },
+
+        async getDataKoli() {
+			let self = this
+			await axios
+                .get(this.URL.print + 
+                `/${this.koli_number}/koli?n=${this.listenNodeId}`, 
+                this.Helper.header())
+                .then(res => {
+					console.log('getDataKoli', res.data)
+                    this.legacySystemHTML = res.data.html 
+                    
+                    var myWindow = window.open("", "MsgWindow", "width=600,height=400");
+                    myWindow.document.write(`${this.legacySystemHTML}`);
+                    myWindow.document.close();
+                    myWindow.focus();
+                    myWindow.print();
+					
+					// document.appendChild(div)
+					
+                    // this.res = res.data.data
+                }).catch(err => {
+                    // this.loading = false
+                    // this.checkAuth(err.response)
+					// this.openNotification('danger', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
+                    // this.openNotification('danger', 'Failed to populate country list', err)
+                })
+		}
 
         
     },

@@ -344,7 +344,7 @@ const TransactionMixin = {
                                                 // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
                                                 this.BASE_TARIFF = this.tarifTiering(this.SUM_CHARGEBLE_WEIGHT)
                                                 base_tariff = this.BASE_TARIFF
-                                                // console.log('CHARGEBLE_WEIGHT', evalchargeable_weight, this.SUM_CHARGEBLE_WEIGHT, base_tariff)
+                                                // console.log('CHARGEBLE_WEIGHT', str, chargeble_weight,evalchargeable_weight, this.SUM_CHARGEBLE_WEIGHT, base_tariff)
                                             } else if (formula.toLowerCase() == 'surcharge') {
                                                 let evalSurcharge = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
                                                 // tempbiaya = Number(evalSurcharge)
@@ -379,6 +379,10 @@ const TransactionMixin = {
                     // this.SUM_CHARGEBLE_WEIGHT += chargeble_weight_intervensi
                     
                 })
+
+                let reCompareWeight = Number(Math.max(this.SUM_ACTUAL_WEIGHT, this.SUM_CHARGEBLE_WEIGHT).toFixed(2))
+                this.SUM_CHARGEBLE_WEIGHT = reCompareWeight
+                    
 
                 if(Object.keys(tarifData).length > 0) {
                     // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
