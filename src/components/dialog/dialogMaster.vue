@@ -1,7 +1,8 @@
 <template>
-    <vs-dialog 
+    <vs-dialog
     v-model="modalActive" 
     prevent-close
+    :full-screen="fullScreen"
     :loading="loadingActive"
     overflow-hidden
     :not-close="not_close"
@@ -32,6 +33,7 @@ export default {
         actived: Boolean,
         closeDialog: Function,
         width: String,
+        fullScreen: String,
         loading:Boolean,
         not_close_option: Boolean
     },

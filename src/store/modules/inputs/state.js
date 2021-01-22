@@ -1519,5 +1519,126 @@ export default {
       value: ''
     }
   },
+  //surat muatan
+  surat_muatan:{
+    manifest_method_id: {
+      label: "Type Surat Muatan",
+      key: "manifest_method_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_id_origin: {
+      label: "Origin",
+      key: "node_id_origin",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_id_transit_1: {
+      label: "Transit",
+      key: "node_id_transit_1",
+      rule:"",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_id_transit_2: {
+      label: "Transit",
+      key: "node_id_transit_2",
+      rule:"",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_id_transit_3: {
+      label: "Transit",
+      key: "node_id_transit_3",
+      rule:"",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_id_destination: {
+      label: "Destination",
+      key: "node_id_destination",
+      rule:"",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    vehicle_mode_id: {
+      label: "Moda Angkutan",
+      key: "vehicle_mode_id",
+      rule:"",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    manifest_type_id: {
+      label: "Jenis Kiriman",
+      key: "manifest_type_id",
+      rule:"",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    vehicle_id: {
+      label: "No Moda Angkutan",
+      key: "vehicle_id",
+      rule:"",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    pic_employee_id: {
+      label: "Driver",
+      key: "pic_employee_id",
+      rule:"",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    etd: {
+      label: "ETD",
+      key: "etd",
+      rule: "required",
+      typeInput: "date",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    eta: {
+      label: "ETA",
+      key: "eta",
+      rule: "required",
+      typeInput: "date",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+  },
   
 }
