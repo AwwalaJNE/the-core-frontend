@@ -1246,6 +1246,132 @@ export default {
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ArrData({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ArrData', payload)
   },
-
   /* PICKUP SCHEDULE END*/
+
+  /* Start Surat Muatan */
+  SET_SURAT_MUATAN_MANIFEST_METHOD_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_METHOD_ID', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ValueData', payload)
+  },
+// type select perlu data array
+  SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN', payload)
+  },
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData', payload)
+  },
+// type select perlu data array
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_1', payload)
+  },
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ValueData', payload)
+  },
+// type select perlu data array
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_2({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_2', payload)
+  },
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ValueData', payload)
+  },
+// type select perlu data array
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_3({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_3', payload)
+  },
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ValueData', payload)
+  },
+// type select perlu data array
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_NODE_ID_DESTINATION({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_DESTINATION', payload)
+  },
+  SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData', payload)
+  },
+// type select perlu data array
+  SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_VEHICLE_MODE_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_MODE_ID', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_MODE_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_MODE_ID_ValueData', payload)
+  },
+// type select perlu data array
+  SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_MANIFEST_TYPE_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData', payload)
+  },
+// type select perlu data array
+  SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_VEHICLE_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ID', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ID_ValueData', payload)
+  },
+// type select perlu data array
+  SET_SURAT_MUATAN_VEHICLE_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ID_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_PIC_EMPLOYEE_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID', payload)
+  },
+  SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ValueData', payload)
+  },
+// type select perlu data array
+  SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_ETD({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_ETD', payload)
+  },
+  SET_SURAT_MUATAN_ETD_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_ETD_ValueData', payload)
+  },
+
+  SET_SURAT_MUATAN_ETA({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_ETA', payload)
+  },
+  SET_SURAT_MUATAN_ETA_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_ETA_ValueData', payload)
+  },
+
+  /* End Suart Muatan */
 }

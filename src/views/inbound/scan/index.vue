@@ -168,6 +168,6 @@ export default {
     min-height: 190px;
   }
   .nav-box{
-    margin-top: 3em;
+    margin-top: 1em;
   }
 </style>

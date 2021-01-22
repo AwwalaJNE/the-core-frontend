@@ -84,6 +84,9 @@ import InboundIncoming from "@/views/inbound"
 // === Inbound Incoming ===
 import InboundIncomingScan from "@/views/inbound/scan"
 
+// === Transport Manifest ===
+import TransportManifest from "@/views/transport/manifest"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -320,6 +323,15 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Inbound Incoming / Receiving"
+        }
+      },
+      {
+        path: "/transport/manifest-new",
+        name: "transport-manifest-new",
+        component: TransportManifest,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "surat muatan"
         }
       },
     ],
