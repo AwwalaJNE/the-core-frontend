@@ -75,5 +75,8 @@ export default {
     //INBOUND RECEIVING
     receiving: api + "receiving",
 
+    //SURAT JALAN
+    manifest_delivery_order: api + "manifest-delivery-order",
+
 
 }

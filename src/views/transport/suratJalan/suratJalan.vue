@@ -150,30 +150,31 @@ export default {
               startDate = from
               endDate = to
             }
-            // await axios
-            //     .get(this.URL.pickup +
-            //     `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
-            //     this.Helper.header())
-            //     .then(res => {
-            //         let arr = res.data.data
-            //         arr.map(item => {
-            //           item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
-            //         })
-            //         this.dataTable = arr
-            //         this.pagination.page = res.data.meta.current_page
-            //         this.pagination.limit = parseInt(res.data.meta.per_page)
-            //         this.pagination.page_size = res.data.meta.last_page
-            //         if(res.data.data.length > 0) {
+            await axios
+                .get(this.URL.manifest_delivery_order +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                this.Helper.header())
+                .then(res => {
+                    let arr = res.data.data
+                    console.log('manifest_delivery_order', arr, res)
+                    // arr.map(item => {
+                    //   item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
+                    // })
+                    // this.dataTable = arr
+                    // this.pagination.page = res.data.meta.current_page
+                    // this.pagination.limit = parseInt(res.data.meta.per_page)
+                    // this.pagination.page_size = res.data.meta.last_page
+                    // if(res.data.data.length > 0) {
                         
-            //         } else {
-            //             this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
-            //         }
+                    // } else {
+                    //     this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
+                    // }
                     
-            //         this.loading = false
-            //     }).catch(err => {
-            //         this.loading = false
-            //         this.openNotification('danger', 'Failed to populate tariff list', err)
-            //     })
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                })
         },
 
         closeDialogConfirm(){
