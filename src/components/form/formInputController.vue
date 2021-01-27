@@ -57,7 +57,7 @@
                                 />
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('dynamicinputcomponent')">
-                                <iterate-selector :getters="listenGettersPrefix" :typeForm="listenTypeForm"/>
+                                <iterate-selector :addBtn="InputObject[item].label" :getters="listenGettersPrefix" :typeForm="listenTypeForm" @updateValue="updateValue"/>
                             </template>
                             
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('boolean')">
@@ -83,7 +83,7 @@ import Selector from "@/components/input/select"
 import Switch from "@/components/input/switch"
 import MapPicker from "@/components/map"
 import DateTime from "@/components/input/dateTime"
-import iterateSelector from "@/components/input/iterateSelector"
+import iterateSelector from "@/components/input/iterateInput"
 export default {
     name:"input-controller",
     components: {

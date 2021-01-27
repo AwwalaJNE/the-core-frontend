@@ -1541,11 +1541,34 @@ export default {
       valueData: null,
       value: ''
     },
+    dynamicinputcomponent: {
+      label: "Transit",
+      key: "dynamicinputcomponent",
+      rule:"",
+      typeInput: "dynamicinputcomponent",
+      typeData: "Array",
+      arrData: [
+        {
+          key: "node_id_transit_1",
+          typeInput: "select",
+        },
+        {
+          key: "node_id_transit_2",
+          typeInput: "select",
+        },
+        {
+          key: "node_id_transit_3",
+          typeInput: "select",
+        }
+      ],
+      valueData: null,
+      value: ''
+    },
     node_id_transit_1: {
       label: "Transit",
       key: "node_id_transit_1",
       rule:"",
-      typeInput: "select",
+      typeInput: "null",
       typeData: "String",
       arrData: [],
       valueData: null,
@@ -1555,7 +1578,7 @@ export default {
       label: "Transit",
       key: "node_id_transit_2",
       rule:"",
-      typeInput: "select",
+      typeInput: "null",
       typeData: "String",
       arrData: [],
       valueData: null,
@@ -1565,7 +1588,7 @@ export default {
       label: "Transit",
       key: "node_id_transit_3",
       rule:"",
-      typeInput: "select",
+      typeInput: "null",
       typeData: "String",
       arrData: [],
       valueData: null,
@@ -1674,6 +1697,17 @@ export default {
       valueData: null,
       value: ''
     },
+    driver_id: {
+      label: "Driver",
+      key: "driver_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     etd: {
       label: "ETD",
       key: "etd",
@@ -1693,18 +1727,7 @@ export default {
       width: "6",
       valueData: null,
       value: ''
-    },
-    driver_id: {
-      label: "Driver",
-      key: "driver_id",
-      rule:"required",
-      typeInput: "select",
-      typeData: "String",
-      width: "6",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
+    }
   }
   
 }

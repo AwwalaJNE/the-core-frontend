@@ -2,7 +2,7 @@
     <dialog-master 
     :actived="listenActive" 
     width="lg"
-    fullScreen="true"
+    :fullScreen="true"
     :closeDialog="cancel">
 
         <template v-slot:header>
@@ -24,13 +24,14 @@
               </vs-col>
               <vs-col lg="6" sm="6">
                 <vs-col offset="1" w="5">
+                    <!-- :autofocus="true" -->
                   <vs-input
                       border
                       type="text"
                       v-model="item_code"
                       label-placeholder="Masukkan code BAG / Connote"
                       v-on:keyup.enter="updateValue"
-                      :autofocus="true"
+                      
                       ref="formInputItemManifest">
 
                   </vs-input>
@@ -264,6 +265,9 @@ export default {
                         })
                         // this.dataNodeType = arr
                         this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ArrData", arr.length > 0 ? arr : null)
                     }
                     
                 }).catch(err => {

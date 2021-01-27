@@ -33,7 +33,7 @@ export default {
         actived: Boolean,
         closeDialog: Function,
         width: String,
-        fullScreen: String,
+        fullScreen: Boolean,
         loading:Boolean,
         not_close_option: Boolean
     },
