@@ -1420,4 +1420,69 @@ export default {
 
 
   /* End Surat Muatan */
+
+  /* SURAT JALAN */
+  SET_SURAT_JALAN_DESTINATION_ID(state, payload) {
+    state.surat_jalan.destination_id.value = payload
+  },
+  SET_SURAT_JALAN_DESTINATION_ID_ValueData(state, payload) {
+    state.surat_jalan.destination_id.valueData = payload
+  },
+  SET_SURAT_JALAN_DESTINATION_ID_ArrData(state, payload) {
+    state.surat_jalan.destination_id.hasOwnProperty('arrData') ?
+    state.surat_jalan.destination_id.arrData = payload :
+    state.surat_jalan.destination_id.arrData = []
+  },
+    
+  SET_SURAT_JALAN_MODA_ANGKUTAN_ID(state, payload) {
+    state.surat_jalan.moda_angkutan_id.value = payload
+  },
+  SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ValueData(state, payload) {
+    state.surat_jalan.moda_angkutan_id.valueData = payload
+  },
+  SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ArrData(state, payload) {
+    state.surat_jalan.moda_angkutan_id.hasOwnProperty('arrData') ?
+    state.surat_jalan.moda_angkutan_id.arrData = payload :
+    state.surat_jalan.moda_angkutan_id.arrData = []
+  },
+    
+  SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID(state, payload) {
+    state.surat_jalan.no_moda_angkutan_id.value = payload
+  },
+  SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ValueData(state, payload) {
+    state.surat_jalan.no_moda_angkutan_id.valueData = payload
+  },
+  SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ArrData(state, payload) {
+    state.surat_jalan.no_moda_angkutan_id.hasOwnProperty('arrData') ?
+    state.surat_jalan.no_moda_angkutan_id.arrData = payload :
+    state.surat_jalan.no_moda_angkutan_id.arrData = []
+  },
+    
+  SET_SURAT_JALAN_ETD(state, payload) {
+    state.surat_jalan.etd.value = payload
+  },
+  SET_SURAT_JALAN_ETD_ValueData(state, payload) {
+    state.surat_jalan.etd.valueData = payload
+  },
+    
+  SET_SURAT_JALAN_ETA(state, payload) {
+    state.surat_jalan.eta.value = payload
+  },
+  SET_SURAT_JALAN_ETA_ValueData(state, payload) {
+    state.surat_jalan.eta.valueData = payload
+  },
+    
+  SET_SURAT_JALAN_DRIVER_ID(state, payload) {
+    state.surat_jalan.driver_id.value = payload
+  },
+  SET_SURAT_JALAN_DRIVER_ID_ValueData(state, payload) {
+    state.surat_jalan.driver_id.valueData = payload
+  },
+  SET_SURAT_JALAN_DRIVER_ID_ArrData(state, payload) {
+    state.surat_jalan.driver_id.hasOwnProperty('arrData') ?
+    state.surat_jalan.driver_id.arrData = payload :
+    state.surat_jalan.driver_id.arrData = []
+  },
+    
+  /* SURAT JALAN END */ 
 }

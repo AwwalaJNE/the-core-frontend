@@ -181,13 +181,14 @@ export default {
                         // this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':res.data.data['transaction_id']})
                         this.fillTransactionData(res.data.data)
                         this.wrapKoliNumber()
-                        this.getDataKoli()
+                        
                         if(this.typeAction == 'addconnote') {
                             this.refreshTransactionStore()
                         } else {
                             // this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value':res.data.data['transaction_finished'] || true})
                             this.printTransactionBarcodeShow = true
                             this.openPaymentDialog()
+                            this.getDataKoli()
                         }
                         
                         

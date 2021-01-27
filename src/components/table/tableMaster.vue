@@ -109,7 +109,7 @@
                                     <vs-col w="4">
                                         <vs-button
                                             block
-                                            square
+                                            
                                             flat
                                             :active="true"
                                             @click="actionUpdate(item)"
@@ -121,7 +121,7 @@
                                         <vs-button
                                             block
                                             danger
-                                            square
+                                            
                                             flat
                                             :active="true"
                                             type="submit"
@@ -139,7 +139,7 @@
                             <vs-col w="4">
                               <vs-button
                                   block
-                                  square
+                                  
                                   flat
                                   :active="true"
                                   type="submit"
@@ -159,7 +159,7 @@
                                 <vs-button
                                     block
                                     warn
-                                    square
+                                    
                                     flat
                                     :active="true"
                                     type="submit"
@@ -174,7 +174,7 @@
                               <vs-col w="4">
                                 <vs-button
                                     block
-                                    square
+                                    
                                     flat
                                     :active="true"
                                     @click="actionUpdate(item)"
@@ -188,7 +188,7 @@
                             <vs-col w="4">
                               <vs-button
                                   block
-                                  square
+                                  
                                   flat
                                   :active="true"
                                   @click="actionPrint(item)"
@@ -208,7 +208,7 @@
                               <vs-col w="4">
                                 <vs-button
                                     block
-                                    square
+                                    
                                     flat
                                     :active="true"
                                     @click="actionCancel(item)"
@@ -219,7 +219,7 @@
                               <vs-col w="4">
                                 <vs-button
                                     block
-                                    square
+                                    
                                     flat
                                     :active="true"
                                     @click="actionPrint(item)"
@@ -233,7 +233,7 @@
                                 <vs-button
                                     block
                                     warn
-                                    square
+                                    
                                     flat
                                     :active="true"
                                     type="submit"
@@ -245,7 +245,7 @@
                               <vs-col w="4">
                                 <vs-button
                                     block
-                                    square
+                                    
                                     flat
                                     :active="true"
                                     @click="actionUpdate(item)"
@@ -257,7 +257,7 @@
                               <vs-col w="4">
                                 <vs-button
                                     block
-                                    square
+                                    
                                     flat
                                     :active="true"
                                     @click="actionCancel(item)"

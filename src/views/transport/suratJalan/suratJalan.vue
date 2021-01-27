@@ -51,7 +51,7 @@ export default {
             datacolumn: [
               {
                 label: "Surat Jalan #",
-                key: "pickup_request_time",
+                key: "manifest_type",
                 width: "xs"
               },
               {
@@ -61,37 +61,37 @@ export default {
               },
               {
                 label: "Mode#",
-                key: "pickup_name",
+                key: "vehicle_mode_name",
                 width: "auto"
               },
               {
                 label: "Origin",
-                key: "total_bag",
+                key: "node_origin",
                 width: "auto"
               },
               {
                 label: "Destination",
-                key: "total_bag_picked",
+                key: "node_destination",
                 width: "auto"
               },
               {
                 label: "Kg",
-                key: "pickup_courier_employee_name",
+                key: "total_weight",
                 width: "auto"
               },
               {
                 label: "ETD",
-                key: "pickup_date",
+                key: "etd",
                 width: "auto"
               },
               {
                 label: "ETA",
-                key: "pickup_type",
+                key: "eta",
                 width: "auto"
               },
               {
                 label: "Status",
-                key: "pickup_status",
+                key: "status",
                 width: "auto"
               },
               {

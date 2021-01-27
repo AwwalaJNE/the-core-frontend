@@ -1640,5 +1640,71 @@ export default {
       value: ''
     },
   },
+  surat_jalan:{
+    destination_id: {
+      label: "Destination",
+      key: "destination_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    moda_angkutan_id: {
+      label: "Moda Angkutan",
+      key: "moda_angkutan_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    no_moda_angkutan_id: {
+      label: "No Moda Angkutan",
+      key: "no_moda_angkutan_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    etd: {
+      label: "ETD",
+      key: "etd",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      width: "6",
+      valueData: null,
+      value: ''
+    },
+    eta: {
+      label: "ETA",
+      key: "eta",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      width: "6",
+      valueData: null,
+      value: ''
+    },
+    driver_id: {
+      label: "Driver",
+      key: "driver_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  }
   
 }

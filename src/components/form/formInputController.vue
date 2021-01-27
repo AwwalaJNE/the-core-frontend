@@ -2,62 +2,75 @@
     <form-master ref="formMaster" @onSubmit="onSubmit" :submitByEnter="submit_Enter">
         <template v-slot:inputValidator>
             <template v-if="Keys.length > 0 && Object.keys(InputObject).length > 0">
-                <vs-row v-for="(item, keys) in Keys" :key="keys">
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
-                        <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
-                            <input-general 
-                            :name="InputObject[item].label"
-                            :rules="InputObject[item].rule"
-                            :formKey="InputObject[item].key"
-                            :valueData="InputObject[item].value"
-                            :typeInput="InputObject[item].typeInput"
-                            @updateValue="updateValue" />
-                        </template>
-                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('date')">
-                          <input-general
-                              :name="InputObject[item].label"
-                              :rules="InputObject[item].rule"
-                              :formKey="InputObject[item].key"
-                              :valueData="InputObject[item].value"
-                              :typeInput="InputObject[item].typeInput"
-                              @updateValue="updateValue" />
-                        </template>
-                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
-                            <template v-if="InputObject[item].arrData.length > 0">
-                                <div style="margin-top:8px;">
-                                    <selector 
-                                    :ref="InputObject[item].key"
-                                    :name="InputObject[item].label" 
-                                    :rules="InputObject[item].rule" 
+                <vs-row>
+                    <template v-for="(item, keys) in Keys">
+                        <vs-col justify="space-between" :key="keys" :w="InputObject[item].width || 12">
+                            <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
+                                <input-general 
+                                :name="InputObject[item].label"
+                                :rules="InputObject[item].rule"
+                                :formKey="InputObject[item].key"
+                                :valueData="InputObject[item].value"
+                                :typeInput="InputObject[item].typeInput"
+                                @updateValue="updateValue" />
+                            </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase() == 'date'">
+                            <input-general
+                                :name="InputObject[item].label"
+                                :rules="InputObject[item].rule"
+                                :formKey="InputObject[item].key"
+                                :valueData="InputObject[item].value"
+                                :typeInput="InputObject[item].typeInput"
+                                @updateValue="updateValue" />
+                            </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase() == 'datetime'">
+                                <div style="margin-top:16px;">
+                                    <date-time
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
                                     :formKey="InputObject[item].key"
-                                    :valueData="InputObject[item].arrData"
-                                    :selectedValue="InputObject[item].value"
-                                    :isMultiple="false"
+                                    :valueData="InputObject[item].value"
+                                    :typeInput="InputObject[item].typeInput"
                                     @updateValue="updateValue" />
                                 </div>
                             </template>
-                        </template>
-                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('mappicker')">
-                            <map-picker 
-                                :lat="listenLatitude"
-                                :lon="listenLongitude"
-                                @pickLocation="pickLocation"
-                            />
-                        </template>
-                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('dynamicinputcomponent')">
-                            <iterate-selector :getters="listenGettersPrefix" :typeForm="listenTypeForm"/>
-                        </template>
-                        
-                        <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('boolean')">
-                            <switchNih
-                            :name="InputObject[item].label" 
-                            :titleLabel="InputObject[item].titleLabel"
-                            :rules="InputObject[item].rule" 
-                            :formKey="InputObject[item].key"
-                            :valueData="InputObject[item].value"
-                            @updateValue="updateValue" />
-                        </template>
-                    </vs-col>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
+                                <template v-if="InputObject[item].arrData.length > 0">
+                                    <div style="margin-top:16px;">
+                                        <selector 
+                                        :ref="InputObject[item].key"
+                                        :name="InputObject[item].label" 
+                                        :rules="InputObject[item].rule" 
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].arrData"
+                                        :selectedValue="InputObject[item].value"
+                                        :isMultiple="false"
+                                        @updateValue="updateValue" />
+                                    </div>
+                                </template>
+                            </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('mappicker')">
+                                <map-picker 
+                                    :lat="listenLatitude"
+                                    :lon="listenLongitude"
+                                    @pickLocation="pickLocation"
+                                />
+                            </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('dynamicinputcomponent')">
+                                <iterate-selector :getters="listenGettersPrefix" :typeForm="listenTypeForm"/>
+                            </template>
+                            
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('boolean')">
+                                <switchNih
+                                :name="InputObject[item].label" 
+                                :titleLabel="InputObject[item].titleLabel"
+                                :rules="InputObject[item].rule" 
+                                :formKey="InputObject[item].key"
+                                :valueData="InputObject[item].value"
+                                @updateValue="updateValue" />
+                            </template>
+                        </vs-col>
+                    </template>
                 </vs-row>
             </template>
         </template>
@@ -69,6 +82,7 @@ import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 import Switch from "@/components/input/switch"
 import MapPicker from "@/components/map"
+import DateTime from "@/components/input/dateTime"
 import iterateSelector from "@/components/input/iterateSelector"
 export default {
     name:"input-controller",
@@ -78,7 +92,8 @@ export default {
         "selector": Selector,
         "switchNih": Switch,
         "map-picker": MapPicker,
-        "iterate-selector": iterateSelector
+        "iterate-selector": iterateSelector,
+        "date-time": DateTime
     },
     props: {
         arrData: Array,
@@ -119,6 +134,7 @@ export default {
     methods: {
         initialize() {
             let obj = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm] || {}
+            console.log('this.listenTypeForm',this.listenTypeForm,obj)
                 if (Object.keys(obj).length > 0) {
                     this.Keys = Object.keys(obj)
                     this.InputObject = obj

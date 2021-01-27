@@ -1374,4 +1374,64 @@ export default {
   },
 
   /* End Suart Muatan */
+
+  /* SURAT JALAN */
+  SET_SURAT_JALAN_DESTINATION_ID({ commit }, payload) {
+    commit('SET_SURAT_JALAN_DESTINATION_ID', payload)
+  },
+  SET_SURAT_JALAN_DESTINATION_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_DESTINATION_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_SURAT_JALAN_DESTINATION_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_DESTINATION_ID_ArrData', payload)
+  },
+    
+  SET_SURAT_JALAN_MODA_ANGKUTAN_ID({ commit }, payload) {
+    commit('SET_SURAT_JALAN_MODA_ANGKUTAN_ID', payload)
+  },
+  SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ArrData', payload)
+  },
+    
+  SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID({ commit }, payload) {
+    commit('SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID', payload)
+  },
+  SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ArrData', payload)
+  },
+    
+  SET_SURAT_JALAN_ETD({ commit }, payload) {
+    commit('SET_SURAT_JALAN_ETD', payload)
+  },
+  SET_SURAT_JALAN_ETD_ValueData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_ETD_ValueData', payload)
+  },
+    
+  SET_SURAT_JALAN_ETA({ commit }, payload) {
+    commit('SET_SURAT_JALAN_ETA', payload)
+  },
+  SET_SURAT_JALAN_ETA_ValueData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_ETA_ValueData', payload)
+  },
+    
+  SET_SURAT_JALAN_DRIVER_ID({ commit }, payload) {
+    commit('SET_SURAT_JALAN_DRIVER_ID', payload)
+  },
+  SET_SURAT_JALAN_DRIVER_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_DRIVER_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_SURAT_JALAN_DRIVER_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_DRIVER_ID_ArrData', payload)
+  },
+  /* SURAT JALAN END */
 }

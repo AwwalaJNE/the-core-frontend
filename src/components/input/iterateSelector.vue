@@ -17,7 +17,7 @@
                         :valueData="InputObject[item.key].value"
                         :typeInput="InputObject[item.key].typeInput"
                         @updateValue="updateValue" /> -->
-                        {{'ooo'}}
+                        <!-- {{'ooo'}} -->
                 </vs-col>
             </vs-row>
         </template>
@@ -108,7 +108,7 @@ export default {
                     this.index = 1
                     this.inputArray.push(this.Keys[0])
 
-                    console.log('iterate-selector ', this.Keys)
+                    console.log('iterate-selector ', this.Keys, this.InputObject)
                 } else {
                     this.InputObject = {}
                 }

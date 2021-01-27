@@ -21,9 +21,6 @@ const TransactionMixin = {
         listenTransactionConnote () {
             return this.$store.getters.getTransaction.transaction.connote
         },
-        listenProsesConnote () {
-            return this.$store.getters.getTransaction.proses_connote
-        },
         listenCalcComponentSwitch() {
             return this.$store.getters.getTransaction.calc_component.switch
         },
@@ -269,7 +266,7 @@ const TransactionMixin = {
         },
 
         calculateGrandTotal() {
-            let listConnote = this.listenTransactionConnote
+            let listConnote = this.$store.getters.getTransaction.transaction.connote
             let GTOTAL = 0
 
             if(listConnote.length > 0) {
@@ -278,10 +275,7 @@ const TransactionMixin = {
                         GTOTAL = GTOTAL + item['total_biaya']
                     }
                 })
-            } else {
-                let proses_connote = this.listenProsesConnote
-                GTOTAL = GTOTAL + proses_connote['total_biaya']
-            }
+            } 
             
             this.$nextTick(() => {
                 this.$store.dispatch("SET_TRANSACTION_GRAND_TOTAL", GTOTAL)
