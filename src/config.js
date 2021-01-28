@@ -78,5 +78,17 @@ export default {
     //SURAT JALAN
     manifest_delivery_order: api + "manifest-delivery-order",
 
+    //delivery runsheet
+    delivery : api + "delivery",
+
+    //delivery return
+    delivery_return : api + "delivery/return",
+
+    //delivery cod
+    delivery_cod : api + "delivery/cod",
+
+    //delivery cod history
+    delivery_cod_history : api + "delivery/cod/history"
+
 
 }
