@@ -41,7 +41,7 @@
                           Action
                         </vs-th>
                       </template>
-                      <template v-if="printAction == true || avoidAction == true">
+                      <template v-if="printAction == true || avoidAction == true || codAction == true " >
                         <vs-th class="action">
                           Action
                         </vs-th>
@@ -271,10 +271,24 @@
                         </vs-td>
                       </template>
 
-                      
+                      <template v-if="codAction == true">
+                        <vs-td class="action">
+                          <vs-row justify="center" class="btn_action">
+                            <vs-col w="4">
+                              <vs-button
+                                  block
 
-                      <!--action for table has button avoid-->
-
+                                  flat
+                                  :active="true"
+                                  type="submit"
+                                  @click="actionCollect(item)"
+                              >
+                                Collect
+                              </vs-button>
+                            </vs-col>
+                          </vs-row>
+                        </vs-td>
+                      </template>
 
                         <template v-if="listenExpandable" #expand>
                             <div class="con-content">
@@ -361,7 +375,8 @@ export default {
         updateAction: Boolean,
         avoidAction: Boolean,
         pickedAction: Boolean, //pickup list action picked
-        cancelRequestAction: Boolean, //pickup request action cancel
+        cancelRequestAction: Boolean, //pickup request action cancel,
+        codAction: Boolean
     },
     data() {
         return {
@@ -444,6 +459,9 @@ export default {
         },
         actionUpdate(val) {
             this.$emit("actionUpdate", val)
+        },
+        actionCollect(val) {
+            this.$emit("actionCollect", val)
         },
         actionRemove(val) {
             this.$emit("actionRemove", val)

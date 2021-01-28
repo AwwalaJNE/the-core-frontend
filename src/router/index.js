@@ -87,6 +87,21 @@ import InboundIncomingScan from "@/views/inbound/scan"
 // === Transport Manifest ===
 import TransportManifest from "@/views/transport/manifest"
 
+// === Delivery Runsheet ===
+import DeliveryRunsheet from "@/views/delivery/runsheet"
+
+// === Delivery Runsheet EDIT===
+import DeliveryRunsheetEdit from "@/views/delivery/runsheet/edit"
+
+// === Delivery COD===
+import DeliveryCod from "@/views/delivery/cod"
+
+// === Delivery Undelivery ===
+import DeliveryUndelivery from "@/views/delivery/undelivery"
+
+// === Delivery COD History ===
+import DeliveryCodHistory from "@/views/delivery/codHistory"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -332,6 +347,51 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "surat muatan"
+        }
+      },
+      {
+        path: "/delivery/runsheet",
+        name: "delivery-runsheet",
+        component: DeliveryRunsheet,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Delivery Assign"
+        }
+      },
+      {
+        path: "/delivery/runsheet/edit/:delivery_runsheet_number",
+        name: "delivery-runsheet-edit",
+        component: DeliveryRunsheetEdit,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Delivery Assign"
+        }
+      },
+      {
+        path: "/delivery/cod_collect",
+        name: "delivery-cod",
+        component: DeliveryCod,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "COD Collect"
+        }
+      },
+      {
+        path: "/undelivered",
+        name: "delivery-undelivery",
+        component: DeliveryUndelivery,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Delivery /Undelivered Receiving"
+        }
+      },
+      {
+        path: "/delivery/cod_history",
+        name: "delivery-cod-history",
+        component: DeliveryCodHistory,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Cod History"
         }
       },
     ],

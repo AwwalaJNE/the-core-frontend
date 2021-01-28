@@ -242,6 +242,11 @@ export default {
                             url: '/undelivered',
                             icon: ''
                         },
+                        {
+                          label: 'Cod History',
+                          url: '/delivery/cod_history',
+                          icon: ''
+                        },
                     ]
                 },
                 {
