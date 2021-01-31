@@ -8,8 +8,6 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :pickupListAction="true"
-        :cancelRequestAction="true"
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
@@ -51,12 +49,12 @@ export default {
             datacolumn: [
               {
                 label: "Surat Jalan #",
-                key: "manifest_type",
+                key: "manifest_do_number",
                 width: "xs"
               },
               {
-                label: "Date#",
-                key: "pickup_number",
+                label: "Vehicle Type",
+                key: "vehicle_type_name",
                 width: "auto"
               },
               {
@@ -66,12 +64,12 @@ export default {
               },
               {
                 label: "Origin",
-                key: "node_origin",
+                key: "node_id_origin",
                 width: "auto"
               },
               {
                 label: "Destination",
-                key: "node_destination",
+                key: "node_id_destination",
                 width: "auto"
               },
               {
@@ -157,23 +155,23 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     console.log('manifest_delivery_order', arr, res)
-                    // arr.map(item => {
-                    //   item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
-                    // })
-                    // this.dataTable = arr
-                    // this.pagination.page = res.data.meta.current_page
-                    // this.pagination.limit = parseInt(res.data.meta.per_page)
-                    // this.pagination.page_size = res.data.meta.last_page
-                    // if(res.data.data.length > 0) {
+                    arr.map(item => {
+                      item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
+                    })
+                    this.dataTable = arr
+                    this.pagination.page = res.data.meta.current_page
+                    this.pagination.limit = parseInt(res.data.meta.per_page)
+                    this.pagination.page_size = res.data.meta.last_page
+                    if(res.data.data.length > 0) {
                         
-                    // } else {
-                    //     this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
-                    // }
+                    } else {
+                        this.openNotification('warn', 'Surat Jalan data is empty!', ' Please create a new Surat Jalan data')
+                    }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', 'Failed to populate Surat Jalan data', err)
                 })
         },
 

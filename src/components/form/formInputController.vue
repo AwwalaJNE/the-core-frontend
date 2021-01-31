@@ -5,14 +5,36 @@
                 <vs-row>
                     <template v-for="(item, keys) in Keys">
                         <vs-col justify="space-between" :key="keys" :w="InputObject[item].width || 12">
+                            
                             <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
-                                <input-general 
-                                :name="InputObject[item].label"
-                                :rules="InputObject[item].rule"
-                                :formKey="InputObject[item].key"
-                                :valueData="InputObject[item].value"
-                                :typeInput="InputObject[item].typeInput"
-                                @updateValue="updateValue" />
+                                <template v-if="InputObject[item].hasOwnProperty('visible')">
+                                    <template v-if="InputObject[item]['visible'] == true">
+                                        <div>
+                                            <input-general 
+                                            :name="InputObject[item].label"
+                                            :rules="InputObject[item].rule"
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].value"
+                                            :typeInput="InputObject[item].typeInput"
+                                            @updateValue="updateValue" />
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        
+                                    </template>
+                                </template>
+                                <template v-else>
+                                    <input-general 
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].value"
+                                    :typeInput="InputObject[item].typeInput"
+                                    @updateValue="updateValue" />
+                                </template>
+                                <template v-if="InputObject[item].hasOwnProperty('visible') && InputObject[item]['visible'] == true">
+                                    
+                                </template>
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase() == 'date'">
                             <input-general
@@ -24,18 +46,54 @@
                                 @updateValue="updateValue" />
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase() == 'datetime'">
-                                <div style="margin-top:16px;">
-                                    <date-time
-                                    :name="InputObject[item].label"
-                                    :rules="InputObject[item].rule"
-                                    :formKey="InputObject[item].key"
-                                    :valueData="InputObject[item].value"
-                                    :typeInput="InputObject[item].typeInput"
-                                    @updateValue="updateValue" />
-                                </div>
+                                <template v-if="InputObject[item].hasOwnProperty('visible')">
+                                    <template v-if="InputObject[item]['visible'] == true">
+                                        <div style="margin-top:16px;">
+                                            <date-time
+                                            :name="InputObject[item].label"
+                                            :rules="InputObject[item].rule"
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].value"
+                                            :typeInput="InputObject[item].typeInput"
+                                            @updateValue="updateValue" />
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        
+                                    </template>
+                                </template>
+                                <template v-else>
+                                    <div style="margin-top:16px;">
+                                        <date-time
+                                        :name="InputObject[item].label"
+                                        :rules="InputObject[item].rule"
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].value"
+                                        :typeInput="InputObject[item].typeInput"
+                                        @updateValue="updateValue" />
+                                    </div>
+                                </template>
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
-                                <template v-if="InputObject[item].arrData.length > 0">
+                                <template v-if="InputObject[item].hasOwnProperty('visible')">
+                                    <template v-if="InputObject[item]['visible'] == true">
+                                        <div style="margin-top:16px;">
+                                            <selector 
+                                            :ref="InputObject[item].key"
+                                            :name="InputObject[item].label" 
+                                            :rules="InputObject[item].rule" 
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].arrData"
+                                            :selectedValue="InputObject[item].value"
+                                            :isMultiple="false"
+                                            @updateValue="updateValue" />
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        
+                                    </template>
+                                </template>
+                                <template v-else>
                                     <div style="margin-top:16px;">
                                         <selector 
                                         :ref="InputObject[item].key"

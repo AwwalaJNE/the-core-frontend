@@ -76,7 +76,7 @@ export default {
     }
 
     .vs-dialog-content{
-        &.lg{
+        &.md{
             @include for-phone-only{
                 // .vs-dialog {
                 //     min-width: 100%;
@@ -85,6 +85,18 @@ export default {
             @include for-desktop-up{
                 .vs-dialog {
                     min-width: 600px;
+                }
+            }
+        }
+        &.lg{
+            @include for-phone-only{
+                // .vs-dialog {
+                //     min-width: 100%;
+                // }
+            }
+            @include for-desktop-up{
+                .vs-dialog {
+                    min-width: 880px;
                 }
             }
         }

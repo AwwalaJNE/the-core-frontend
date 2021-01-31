@@ -629,6 +629,20 @@ export default {
   //end node link
 
   // tariff
+  SET_TARIFF_TARIFF_GROUP(state, payload) {
+    state.tariff.tariff_group.value = payload
+  },
+  SET_TARIFF_TARIFF_GROUP_visible(state, payload) {
+    state.tariff.tariff_group.visible = payload
+  },
+  SET_TARIFF_TARIFF_GROUP_ValueData(state, payload) {
+    state.tariff.tariff_group.valueData = payload
+  },
+  SET_TARIFF_TARIFF_GROUP_ArrData(state, payload) {
+    state.tariff.tariff_group.hasOwnProperty('arrData') ?
+    state.tariff.tariff_group.arrData = payload :
+    state.tariff.tariff_group.arrData = []
+  },
   SET_TARIFF_TARIFF_ORIGIN(state, payload) {
     state.tariff.tariff_origin.value = payload
   },

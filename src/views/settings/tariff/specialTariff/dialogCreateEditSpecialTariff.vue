@@ -10,10 +10,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formTariffSpecialController"
+                    ref="formTariffController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="tariff_special"
+                    typeForm="tariff"
                 />
             </div>
         </template>
@@ -74,7 +74,8 @@ export default {
     data() {
         return {
             form: {},
-            tariff_special_id: ''
+            formRole: this.$store.getters.getInputs.geolocation_city ? this.$store.getters.getInputs.geolocation_city : {},
+            tariff_id: ''
         }
     },
     computed: {
@@ -91,14 +92,20 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.tariff_special_id = val.tariff_special_id
+                this.tariff_id = val.tariff_id
+            }
+        },
+        active: function (val) {
+            if (val == true) {
+                this.getDataVehicleMode()
+                this.getDataTariffGroup()
             }
         }
     },
     methods: {
         formData(form){
             this.form = form
-            if(this.tariff_special_id !== undefined && this.tariff_special_id !== '') {
+            if(this.tariff_id !== undefined && this.tariff_id !== '') {
                     console.log('update')
                     this.updateData()
             } else {
@@ -106,18 +113,68 @@ export default {
             }
         },
         handleSubmit(){
-            this.$refs.formTariffSpecialController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formTariffController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formTariffSpecialController.handleClearForm()
+            this.$refs.formTariffController.handleClearForm()
             this.form = {}
-            this.tariff_special_id = ""
+            this.tariff_id = ""
         },
-        
+        getDataTariffGroup(){
+            // await axios
+            //     .get(this.URL.vehicle_mode + 
+            //     `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+            //     this.Helper.header())
+            //     .then(res => {
+            //         if(res.data.data.length > 0) {
+            //             let arr = []
+            //             res.data.data.map(item => {
+            //                 let obj = {}
+            //                 obj["label"] = item.vehicle_mode_name
+            //                 obj["value"] = item.vehicle_mode_id
+
+            //                 arr.push(obj)
+            //             })
+
+            //             this.$store.dispatch("SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ArrData", arr.length > 0 ? arr : null)
+            //         } else {
+            //             // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+            //         }
+                    
+            //     }).catch(err => {
+            //         // this.openNotification('danger', 'Failed to collect role list', err)
+            //     })
+            this.$store.dispatch("SET_TARIFF_TARIFF_GROUP_visible", true)
+        },
+        async getDataVehicleMode(){
+            await axios
+                .get(this.URL.vehicle_mode + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.vehicle_mode_name
+                            obj["value"] = item.vehicle_mode_id
+
+                            arr.push(obj)
+                        })
+
+                        this.$store.dispatch("SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
         async updateData(){
             await axios
                 .put(
-                    this.URL.tariff_special + `/${this.tariff_special_id}`,
+                    this.URL.tariff + `/${this.tariff_id}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -138,7 +195,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.tariff_special,
+                    this.URL.tariff,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -159,6 +216,9 @@ export default {
             this.handleClearForm()
             this.closeDialog()
         }
+    },
+    mounted() {
+        
     },
 }
 </script>

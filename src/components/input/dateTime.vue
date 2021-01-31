@@ -5,8 +5,11 @@
                 <label class="vs-input__label vs-input__label--placeholder vs-input__label--label">{{name}}</label>
                 <el-date-picker
                     v-model="value"
-                    :type="`${typeInput.toLowerCase().includes('time') ? 'datetime' : 'date'}`"
+                    :type="type"
                     :placeholder="`Select date ${typeInput.toLowerCase().includes('time') ? 'and time' : ''}`"
+                    range-separator="To"
+                    start-placeholder="Start date"
+                    end-placeholder="End date"
                     @change="updateValue">
                 </el-date-picker>
             </div>
@@ -20,7 +23,7 @@ export default {
     props: {
         name: String,
         rules: String,
-        valueData: [String, Number],
+        valueData: [String, Array],
         formKey: String,
         typeInput: String,
         prefix: String,
@@ -32,6 +35,7 @@ export default {
     data() {
         return {
             value: this.valueData,
+            type: this.typeInput || 'date'
         }
     },
     computed: {
@@ -89,11 +93,15 @@ export default {
             height: 38px !important;
             line-height: 38px !important;
         }
+        .el-range-input{
+            background-color: transparent !important;
+        }
         &.danger{
             .el-input__inner {
                 background: rgba(var(--vs-danger), 0.1) !important;
                 color: rgba(var(--vs-danger), 1);
             }
+            
             label{
                 color: rgba(var(--vs-danger), 1);
             }

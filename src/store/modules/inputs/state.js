@@ -738,6 +738,22 @@ export default {
   },
 
   tariff: {
+    tariff_group: {
+      label: "Tariff Group",
+      key: "tariff_group",
+      rule: "required",
+      visible: false,
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: null,
+          value: null
+        }
+      ],
+      valueData: null,
+      value: ''
+    },
     tariff_origin: {
       label: "Tariff origin*",
       key: "tariff_origin",
@@ -761,6 +777,7 @@ export default {
       key: "tariff_start_date",
       rule: "required",
       typeInput: "date",
+      width: '6',
       typeData: "String",
       valueData: null,
       value: ''
@@ -769,6 +786,7 @@ export default {
       label: "Tariff expiry date*",
       key: "tariff_expiry_date",
       rule: "required",
+      width: '6',
       typeInput: "date",
       typeData: "String",
       valueData: null,

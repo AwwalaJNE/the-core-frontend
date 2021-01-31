@@ -609,6 +609,19 @@ export default {
   //end node link
 
 // tariff
+SET_TARIFF_TARIFF_GROUP({ commit }, payload) {
+  commit('SET_TARIFF_TARIFF_GROUP', payload)
+},
+SET_TARIFF_TARIFF_GROUP_visible({ commit }, payload) {
+  commit('SET_TARIFF_TARIFF_GROUP_visible', payload)
+},
+SET_TARIFF_TARIFF_GROUP_ValueData({ commit }, payload) {
+  commit('SET_TARIFF_TARIFF_GROUP_ValueData', payload)
+},
+  // type select perlu data array
+SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
+  commit('SET_TARIFF_TARIFF_GROUP_ArrData', payload)
+},
   SET_TARIFF_TARIFF_ORIGIN({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_ORIGIN', payload)
   },
