@@ -2,7 +2,6 @@
     <vs-dialog
     v-model="modalActive" 
     prevent-close
-    :full-screen="fullScreen"
     :loading="loadingActive"
     overflow-hidden
     :not-close="not_close"
