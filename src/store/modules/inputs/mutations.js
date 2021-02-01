@@ -1385,6 +1385,9 @@ export default {
   SET_SURAT_MUATAN_MANIFEST_TYPE_ID(state, payload) {
     state.surat_muatan.manifest_type_id.value = payload
   },
+  SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible(state, payload) {
+    state.surat_muatan.manifest_type_id.visible = payload
+  },
   SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData(state, payload) {
     state.surat_muatan.manifest_type_id.valueData = payload
   },
@@ -1408,6 +1411,9 @@ export default {
 
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID(state, payload) {
     state.surat_muatan.pic_employee_id.value = payload
+  },
+  SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible(state, payload) {
+    state.surat_muatan.pic_employee_id.visible = payload
   },
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ValueData(state, payload) {
     state.surat_muatan.pic_employee_id.valueData = payload

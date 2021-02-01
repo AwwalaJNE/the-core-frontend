@@ -1639,6 +1639,7 @@ export default {
       typeInput: "select",
       typeData: "String",
       arrData: [],
+      visible: false,
       valueData: null,
       value: ''
     },
@@ -1656,6 +1657,7 @@ export default {
       label: "Driver",
       key: "pic_employee_id",
       rule:"",
+      visible: true,
       typeInput: "select",
       typeData: "String",
       arrData: [],
@@ -1666,7 +1668,7 @@ export default {
       label: "ETD",
       key: "etd",
       rule: "required",
-      typeInput: "date",
+      typeInput: "datetime",
       typeData: "String",
       valueData: null,
       value: ''
@@ -1675,7 +1677,7 @@ export default {
       label: "ETA",
       key: "eta",
       rule: "required",
-      typeInput: "date",
+      typeInput: "datetime",
       typeData: "String",
       valueData: null,
       value: ''

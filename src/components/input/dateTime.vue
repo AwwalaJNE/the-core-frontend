@@ -8,6 +8,7 @@
                     :type="type"
                     :placeholder="`Select date ${typeInput.toLowerCase().includes('time') ? 'and time' : ''}`"
                     range-separator="To"
+                    value-format="yyyy-MM-dd HH:mm:ss"
                     start-placeholder="Start date"
                     end-placeholder="End date"
                     @change="updateValue">
