@@ -6,6 +6,7 @@ import Login from '@/views/auth'
 import Content from '@/views/template/Content.vue'
 
 import Upload from '@/views/upload/index.vue'
+import UploadTransaction from '@/views/upload/transaction.vue'
 
 import NotFound from '@/components/NotFound.vue'
 
@@ -203,6 +204,15 @@ const routes = [
         meta: { 
           requiresAuth: true,
           breadCrumb: "Upload"
+        }
+      },
+      {
+        path: "/upload-transaction",
+        name: "UploadTransaction",
+        component: UploadTransaction,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Upload Transaction"
         }
       },
       {

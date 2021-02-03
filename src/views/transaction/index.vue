@@ -113,6 +113,9 @@ export default {
         listenTransaction () {
             return this.$store.getters.getTransaction.transaction
         },
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
+        },
     },
     data() {
         return {
@@ -166,7 +169,24 @@ export default {
             console.log('==== transaction ====', this.listenTransaction)
         },
         async createConnote() {
-            this.dataTransaction = this.listenTransaction
+            // send only actived connote
+            let dataConnote = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
+            let dataTransaction = this.$store.getters.getTransaction.transaction
+            let arr = []
+            arr.push(dataConnote)
+            dataTransaction['connote'] = arr
+
+            // if(this.typeAction == 'addconnote' && dataConnote['connote_number'] !== '') {
+            //     this.openNotification('danger', 'failed to update connote', '')
+            //     let connote = this.$store.getters.getTransaction.transaction.connote
+            //     let lastindex = connote.length - 1
+            //     this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, lastindex)
+            //     this.$store.dispatch(`SWITCH_CONNOTE_ACTIVE`, lastindex)
+            // } else {
+
+            // }
+
+            this.dataTransaction = dataTransaction //this.listenTransaction
             this.dataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
             this.dataTransaction['node_code'] = this.listenNodeCode
             console.log('this.dataTransaction', this.dataTransaction)
@@ -258,6 +278,11 @@ export default {
                         } 
                         if(item.hasOwnProperty('koli_volume_weight')) {
                             item['volume_weight'] = item['koli_volume_weight']
+                        }
+                        if(item.hasOwnProperty('surcharge_id')) {
+                            item['surcharge_id'] = item['surcharge_id']
+                        } else {
+                            item['surcharge_id'] = []
                         }
                     })
 
