@@ -2,8 +2,7 @@
     <dialog-master 
     :actived="listenActive" 
     width="lg"
-    :fullScreen="true"
-    :closeDialog="cancel">
+    :closeDialog="cancel" class="custom-width">
 
         <template v-slot:header>
             {{listenTitle}}
@@ -12,33 +11,48 @@
         <template v-slot:content>
 
             <vs-row>
-              <vs-col lg="6" sm="6">
+              <vs-col lg="5" sm="5">
                 <div>
                   <form-input-controller
-                      ref="formUserNodeController"
+                      ref="formSuratMuatanController"
                       @formData="formData"
                       :dataItem="listenDataItem"
                       typeForm="surat_muatan"
+                      @onChangeCustom="onChangeOrigin"
                   />
                 </div>
               </vs-col>
-              <vs-col lg="6" sm="6">
-                <vs-col offset="1" w="5">
-                    <!-- :autofocus="true" -->
-                  <vs-input
-                      border
-                      type="text"
-                      v-model="item_code"
-                      label-placeholder="Masukkan code BAG / Connote"
-                      v-on:keyup.enter="updateValue"
-                      
-                      ref="formInputItemManifest">
+              <vs-col lg="7" sm="7">
+                <vs-row>
+                  <vs-col>
+                    <vs-input
+                        border
+                        type="text"
+                        v-model="item_code"
+                        label-placeholder="Masukkan code BAG / Connote"
+                        v-on:keyup.enter="updateValue"
+                        :autofocus="true"
+                        ref="formInputItemManifest">
 
-                  </vs-input>
-                </vs-col>
+                    </vs-input>
+                  </vs-col>
+                </vs-row>
 
+                <!-- display informasi surat muatan-->
+                <vs-row>
+                  <table-master
+                      :dataTable="dataTable"
+                      :dataColumn="datacolumn"
+                      :tableLoading="loading"
+                      :pageSize="pagination.page_size"
+                      :page="pagination.page"
+                      :limit="pagination.limit"
+                      :hasAction="false"
+                      :hasPagination="false"
+                      @actionPagination="actionPagination"
+                  />
+                </vs-row>
               </vs-col>
-
             </vs-row>
         </template>
 
@@ -84,13 +98,14 @@ import axios from "axios";
 import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
-
+import TableMaster from "@/components/table/tableMaster.vue"
 export default {
-    name:"dialog-create-edit-node",
+    name:"dialog-create-edit-surat_muatan",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
         "form-input-controller": FormInputController,
+        "table-master": TableMaster,
     },
     props: {
        closeDialog: Function,
@@ -104,8 +119,38 @@ export default {
         return {
             form: {},
             node_id: '',
+
             manifest_number:'',
-            item_code:''
+            item_code:'',
+            dataTable:[],
+            datacolumn: [
+              {
+                label: "Item No",
+                key: "bag_number",
+                width: "sm"
+              },
+              {
+                label: "Type",
+                key: "type",
+                width: "auto"
+              },
+              {
+                label: "Weight (Kg)",
+                key: "bag_weight",
+                width: "auto"
+              },
+              {
+                label: "Destination",
+                key: "destination",
+                width: "xs"
+              }
+            ],
+            loading:false,
+            pagination: {
+              limit:5,
+              page_size: 1,
+              page: 1
+            },
         }
     },
     computed: {
@@ -146,12 +191,12 @@ export default {
 
         },
         handleSubmit(){
-            this.$refs.formUserNodeController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formSuratMuatanController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formUserNodeController.handleClearForm()
+            this.$refs.formSuratMuatanController.handleClearForm()
             this.form = {}
-            this.node_id = ""
+            this.item_code = ""
             this.manifest_number = ""
         },
 
@@ -170,7 +215,7 @@ export default {
 
                             arr.push(obj)
                         })
-                        this.$store.dispatch("SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -327,14 +372,14 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.pickup + `?n=${this.listenNodeId}`,
+                    this.URL.surat_muatan + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Update success', 'Update pickup is success')
+                    this.openNotification(null, 'Update success', 'Update  surat muatan is success')
                 }).catch(err => {
                     this.loading = false
                     this.closeDialog()
@@ -345,16 +390,19 @@ export default {
 
         async addData() {
             console.log('form', this.form)
+            this.form.manifest_item = this.dataTable
+            this.form.vehicle_type_id = this.form.vehicle_mode_id
+            this.form.max_weight = 1
             await axios
                 .post(
-                    this.URL.pickup + `?n=${this.listenNodeId}`,
+                    this.URL.surat_muatan + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Create Success', 'Create new node is success')
+                    this.openNotification(null, 'Create Success', 'Create surat muatan is success')
                 }).catch(err => {
                     this.loading = false
                     this.closeDialog()
@@ -367,7 +415,60 @@ export default {
             this.closeDialog()
         },
         updateValue(val){
+          this.getDataManifest(this.item_code)
+        },
 
+        async getDataManifest(val){
+        await axios
+            .get(this.URL.surat_muatan +
+                `/scan?item_no=${val}&n=${this.listenNodeId}`,
+                this.Helper.header())
+            .then(res => {
+              if(res.data.data.length > 0) {
+                let arr = res.data.data
+                arr.map(item => {
+                  item["type"] = 'Bag'
+                })
+                this.dataTable = this.dataTable.concat(arr)
+                console.log(this.dataTable,'data')
+              }
+
+            }).catch(err => {
+              this.openNotification('danger', 'Koli / Connote not found', err)
+            })
+        },
+        actionPagination(val) {
+          this.pagination.page = val
+          this.refresh()
+        },
+
+        onChangeOrigin(type, val){
+          if(type == 'manifest_method_id' && val == 1){
+            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false)
+            this.jenisKiriman(true);
+          }else if (type == 'manifest_method_id' && val != 1){
+            this.jenisKiriman(false);
+            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true)
+          }
+        },
+        jenisKiriman(type){
+          let arr = [
+            {
+              label:"DG",
+              value:1,
+            },{
+              label:"Genko",
+              value:2,
+            },{
+              label:"GoSynergy",
+              value:3,
+            },{
+              label:"Special Cargo",
+              value:4,
+            }
+          ];
+          this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible", type)
+          this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
         }
     },
     mounted() {
@@ -380,3 +481,11 @@ export default {
     },
 }
 </script>
+<style lang="scss">
+@media (min-width: 1200px){
+  .vs-dialog-content.custom-width .vs-dialog{
+    min-width: 1000px;
+  }
+}
+
+</style>

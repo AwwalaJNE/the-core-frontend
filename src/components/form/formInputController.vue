@@ -245,6 +245,7 @@ export default {
             if(err == true) {
                 console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
             }
+            this.$emit("onChangeCustom", type, val)
         },
         handleSubmit(){
             this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster

@@ -1342,6 +1342,11 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_MUATAN_MANIFEST_TYPE_ID({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID', payload)
   },
+
+  SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible', payload)
+  },
+
   SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData', payload)
   },
@@ -1363,6 +1368,10 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
 
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID({ commit }, payload) {
     commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID', payload)
+  },
+
+  SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible', payload)
   },
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ValueData', payload)

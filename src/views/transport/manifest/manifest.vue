@@ -7,39 +7,33 @@
         :pageSize="pagination.page_size"
         :page="pagination.page"
         :limit="pagination.limit"
-        :hasAction="true"
+        :hasLinked="['manifest_number']"
+        :pickupListAction="true"
+        :cancelRequestAction="true"
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
-        @actionUpdate="actionUpdate"
+        @actionPrint="actionPrint"
+        @actionCancel="actionCancel"
+        @handleEdit="actionUpdate"
         />
 
       <!--Create pickup List-->
-      <dialogCreatePickupList
-          :active="dialogPickupList"
+      <dialogCreateManifest
+          :active="dialogManifestList"
           @refresh="refresh"
           :closeDialog="closeDialogPickupList"
-          title="Create Pickup List"
+          title="Edit Manifest"
           :dataItem="dataItem"
       />
 
-      <!--dialog d picked -->
-      <DialogPicked
-          :active="dialogPickedActive"
-          @refresh="refresh"
-          :closeDialog="closeDialogConfirmPicked"
-          title="List of Bags"
-          :pickupData="pickupData"
-            
-        />
-
-      <!-- dialog confirm cancel pickup-->
+      <!-- dialog confirm remove manifest-->
       <dialog-confirm
           :active="activeDialogCancel"
           :loading="activeLoadingCancel"
           :closeDialog="closeDialogConfirmCancel"
-          title="Cancel Pickup"
-          message="Are you sure you want to cancel Pickup ?"
+          title="Cancel Surat Muatan"
+          message="Are you sure you want to Cancel Surat Muatan ?"
           @confirm="confirmCancel"
           @cancel="closeDialogConfirmCancel"
       />
@@ -49,7 +43,7 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
-import DialogCreatePickupList from "@/views/pickup/list/dialogCreateEditPickupList"
+import DialogCreateManifest from "@/views/transport/manifest/dialogCreateEditManifest"
 import DialogPicked from "@/views/pickup/list/dialogPicked"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 
@@ -63,7 +57,7 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
-        "dialogCreatePickupList": DialogCreatePickupList,
+        "dialogCreateManifest": DialogCreateManifest,
         "DialogPicked": DialogPicked,
         "dialog-confirm": DialogConfirm
     },
@@ -74,57 +68,57 @@ export default {
             activeLoadingCancel:false,
 
             dataTable: [],
-            dialogPickupList:false,
+            dialogManifestList:false,
             dialogPickedActive: false,
             datacolumn: [
                 {
                     label: "No Surat Muatan",
-                    key: "pickup_request_time",
+                    key: "manifest_number",
                     width: "xs"
                 },
                 {
                     label: "Date#",
-                    key: "pickup_number",
+                    key: "created_at",
                     width: "auto"
                 },
                 {
                     label: "Type SM",
-                    key: "pickup_name",
+                    key: "manifest_type_name",
                     width: "auto"
                 },
                 {
                   label: "Jenis Kiriman",
-                  key: "total_bag",
+                  key: "jenis_kiriman",
                   width: "auto"
                 },
                 {
                   label: "Origin",
-                  key: "total_bag_picked",
+                  key: "origin_name",
                   width: "auto"
                 },
                 {
                   label: "Destination",
-                  key: "pickup_courier_employee_name",
+                  key: "destination_name",
                   width: "auto"
                 },
                 {
                     label: "Kg",
-                    key: "pickup_date",
+                    key: "max_weight",
                     width: "auto"
                 },
                 {
                     label: "ETA",
-                    key: "pickup_type",
+                    key: "eta",
                     width: "auto"
                 },
                 {
                     label: "ETD",
-                    key: "pickup_status",
+                    key: "etd",
                     width: "auto"
                 },
                 {
                     label: "status",
-                    key: "pickup_status",
+                    key: "status",
                     width: "auto"
                 },
             ],
@@ -141,7 +135,8 @@ export default {
                 limit:5,
                 page_size: 1,
                 page: 1
-            }
+            },
+            manifest_number:''
         }
     },
     watch: {
@@ -186,7 +181,7 @@ export default {
               endDate = to
             }
             await axios
-                .get(this.URL.pickup +
+                .get(this.URL.surat_muatan +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
@@ -194,6 +189,7 @@ export default {
                     let arr = res.data.data
                     arr.map(item => {
                         item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
+                        item["manifest_type_name"] = (item.manifest_type) ? item.manifest_type.vehicle_mode_name: null
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
@@ -202,13 +198,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Pickup data is empty!', ' Please create a new pickup data')
+                        this.openNotification('warn', 'Surat Muatan data is empty!', ' Please create Surat Muatan data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', 'Failed to populate Surat Muatan', err)
                 })
         },
 
@@ -216,7 +212,7 @@ export default {
             this.dialogPickedActive = false
         },
         closeDialogPickupList() {
-          this.dialogPickupList = false
+          this.dialogManifestList = false
         },
 
         actionLimit(val){
@@ -238,10 +234,8 @@ export default {
         actionUpdate(val){
           if(this.dataTable.length > 0) {
             this.dataItem = val
-            this.dataItem.pickup_date = (val.pickup_date) ? val.pickup_date.substring(0,10) : val.pickup_date
-
             this.$nextTick(() => {
-              this.dialogPickupList = true
+              this.dialogManifestList = true
             });
           }
         },
@@ -249,24 +243,19 @@ export default {
 
         //cancel pickup
         confirmCancel(val) {
-          if(val) {
-            this.activeLoadingCancel=true
-            let formupdate = {
-                'pickup_number' : this.pickupData.pickup_number,
-                'pickup_status' : 'CANCELED',
-                'is_pickup_canceled'  : 1
-            }
-            this.updateData(formupdate)
-          }
+          let form = {};
+          form.status = 'cancel';
+          this.cancelData(this.manifest_number, form)
         },
+
         closeDialogConfirmCancel(){
           this.activeDialogCancel = false
           this.activeLoadingCancel=false
         },
-        async updateData(form){
+        async cancelData(form, surat_muatan){
           await axios
               .put(
-                  this.URL.pickup + `?n=${this.listenNodeId}`,
+                  this.URL.surat_muatan + `/${manifest_number}?n=${this.listenNodeId}`,
                   JSON.stringify(form),
                   this.Helper.header())
               .then(res => {
@@ -274,14 +263,23 @@ export default {
                 this.btnLoading = false
                 this.activeLoadingCancel = false
                 this.refresh()
-                this.openNotification(null, 'Success', 'Cancel Pickup is success')
+                this.openNotification(null, 'Success', 'Delete manifest is success')
               }).catch(err => {
                 this.btnLoading = false
                 this.activeLoadingCancel = false
                 this.closeDialogConfirmCancel()
                 this.refresh()
-                this.openNotification('danger', 'Cancel Pickup is failed', err)
+                this.openNotification('danger', 'Delete Manifest is failed', err)
               })
+        },
+
+        actionPrint(row){
+          alert('print surat muatan')
+          console.log(row,'print')
+        },
+        actionCancel(row){
+          console.log('cancel', row)
+          this.activeDialogCancel = true;
         },
 
     },

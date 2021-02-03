@@ -88,7 +88,9 @@ export default {
     delivery_cod : api + "delivery/cod",
 
     //delivery cod history
-    delivery_cod_history : api + "delivery/cod/history"
+    delivery_cod_history : api + "delivery/cod/history",
 
+    //SURAT MUATAN
+    surat_muatan: api + "manifest",
 
 }
