@@ -103,6 +103,8 @@ import DeliveryUndelivery from "@/views/delivery/undelivery"
 // === Delivery COD History ===
 import DeliveryCodHistory from "@/views/delivery/codHistory"
 
+import CashLess from "@/views/report/cashless"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -195,6 +197,15 @@ const routes = [
         meta: { 
           requiresAuth: true,
           breadCrumb: "Transaction"
+        }
+      },
+      {
+        path: "/report/cashless",
+        name: "CashLess",
+        component: CashLess,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Cashless"
         }
       },
       {
