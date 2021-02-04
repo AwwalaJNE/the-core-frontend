@@ -16,7 +16,6 @@
                     <vs-input border type="text"
                               v-model="item_code"
                               label-placeholder="Masukkan code BAG / Connote"
-                              v-on:keyup.enter="updateValue"
                               :autofocus="true"
                               ref="formInputUnbagging">
 
@@ -37,7 +36,7 @@
             </vs-row>
 
             <vs-row justify="space-between" class=" mt-2">
-              <unbagDetail ref="unbagDetail" ></unbagDetail>
+              <unbagDetail ref="unbagDetail" :itemNumber="item_number" ></unbagDetail>
             </vs-row>
         </section>
 
@@ -61,6 +60,7 @@ export default {
         return {
             title: "Unbagging",
             item_code:'',
+            item_number:'',
             form:{}
 
 
@@ -69,27 +69,17 @@ export default {
     methods: {
       updateValue(){
         this.form.item_number = this.item_code
-        console.log(this.item_code,'code')
-        // this.ProccessBagging()
+        if(this.item_code !== null){
+          this.item_number = this.item_code
+        }
+       
       },
+
       handleClearForm(){
         this.form = {}
         this.item_code=''
       },
-      async ProccessBagging(){
-        await axios
-            .post(this.URL.bag+`?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header())
-            .then(res => {
-              let bagNumber = res.data.data.bag_number;
-              this.handleClearForm()
-              this.openNotification(null, 'Success', 'Bagging is success')
-              this.$router.push('/bagging-detail/'+bagNumber)
-            }).catch(err => {
-              this.loading = false
-              this.handleClearForm()
-              this.openNotification('danger', err.response ? err.response.data.message : 'something went wrong')
-            })
-      }
+      
     }
 }
 </script>

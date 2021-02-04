@@ -9,7 +9,7 @@
     <vs-col xs="12" sm="6" lg="6" >
       <div class="box view">
         <div class="summary-unbag">
-          <span class="subtitle" align="right"><p>0</p></span>
+          <span class="subtitle" align="right"><p>{{total_bag}}</p></span>
           <span class="title" align="right"><h4>Unbagged</h4></span>
         </div>
         <table-master
@@ -32,7 +32,7 @@
     <vs-col xs="12" sm="6" lg="6">
       <div class="box view">
         <div class="summary-unbag">
-          <span class="subtitle" align="right"><p>0/0</p></span>
+          <span class="subtitle" align="right"><p>{{total_confirmed}}/{{total_connote}}</p></span>
           <span class="title" align="right"><h4>Connote Scanned</h4></span>
         </div>
         <table-master
@@ -62,23 +62,12 @@ export default {
     mixins: [master],
     props: {
         query: String,
+        itemNumber: String,
         bagId: String
 
     },
     components: {
         "table-master" : TableMaster
-    },
-    watch: {
-        query: function(val, old) {
-            if(val !== undefined) {
-                this.tempSearch = val
-                if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, this.bag_id)
-                }
-            }
-        },
-
-
     },
     data() {
         return {
@@ -99,12 +88,11 @@ export default {
             loading: false,
             dataItem: {},
             tempSearch: this.query ? this.query : "",
-            bag_id:"",
-            bag_number :'',
-            total_connote :'',
-            total_weight :'',
-            actual_weight :'',
-            bag_detail_qty:'',
+            bag_number:"",
+            item_number :'',
+            total_connote :0,
+            total_bag :0,
+            total_confirmed :0,
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -112,51 +100,95 @@ export default {
             }
         }
     },
+    watch: {
+      query: function(val, old) {
+        if(val !== undefined) {
+          this.tempSearch = val
+          if(this.tempSearch !== old) {
+            this.getTableData(this.pagination.limit, this.pagination.page)
+          }
+        }
+      },
+      itemNumber: function(val, old) {
+        if(val !== undefined || val !== null) {
+          this.item_number = val
+          if(this.item_number !== old || this.item_number !== null) {
+            this.getTableData(this.pagination.limit, this.pagination.page)
+          }
+        }
+      },
+
+
+    },
     methods: {
 
-        async getTableData(limit,page, bag) {
+        async getTableData(limit,page) {
             this.loading = true
-            let bagId = "";
-            if(bag !== undefined) {
-              bagId = bag
+            let form = {};
+            let itemNumber = "";
+            if(this.item_number !== undefined) {
+              itemNumber = this.item_number
+              form.item_number = this.item_number
             }
-
+            if(this.bag_number !== null || this.bag_number !== undefined){
+              form.bag_number = this.bag_number
+            }
             await axios
-                .get(
-                    this.URL.bag + '/'+bagId+`?n=${this.listenNodeId}`,
+                .post(
+                    this.URL.unbagging + `/bag?n=${this.listenNodeId}`,
+                    JSON.stringify(form),
                     this.Helper.header())
                 .then(res => {
-                    let arr = res.data.detail
-                    arr.map((item, index)  => {
-                      item["no"] = index+1
-                    })
+                  if(res.data.data.is_unbagged == 1){
+                    this.dataTable = []
+                    this.dataTableBag = []
+                    this.handleClearData()
+                    this.openNotification('success', 'Unbagging is Success')
+                   
+                  }else{
+                    let arr = [];
+                    let arrBag = [];
+                    let dataBag = {};
+                  
+                    dataBag['no'] = 1
+                    dataBag['item_number'] = res.data.data.bag_number
+                    this.bag_number = res.data.data.bag_number
                     this.getSummaryBag(res)
-                  // arr.map(item => {
-                    //     item["user_nodes"] = item.user_nodes.toString()
-                    // })
-                    this.dataTable = arr
-                    // this.pagination.page = res.data.meta.current_page
-                    // this.pagination.limit = parseInt(res.data.meta.per_page)
-                    // this.pagination.page_size = res.data.meta.last_page
-                    // if(res.data.data.length == 0) {
-                    //     this.openNotification('warn', 'Failed to populate User data', )
-                    // }
+                    arrBag.push(dataBag)
+                    if(res.data.data.koli_detail && res.data.data.koli_detail.length > 0) {
+                      arr = res.data.data.koli_detail
+                      arr.map((item, index)  => {
+                        item["no"] = index+1
+                        item["item_number"] = item.koli_number
+                      })
+                      this.dataTable = arr
+                    }else{
+                        this.dataTable = []
+                    }
+                    this.dataTableBag = arrBag
+                  }
                     
                     this.loading = false
                 }).catch(err => {
                   console.log(err)
                     this.loading = false
                     // this.$router.push('/inventory/bagging')
-                    // this.openNotification('danger', 'Failed to populate users list', err.response.data.message)
+                    this.openNotification('danger', 'Failed to populate Connote', err)
                 })
         },
 
         getSummaryBag(val){
-          this.bag_number = val.data.data.bag_number
-          this.bag_detail_qty = val.data.data.bag_detail_qty
-          this.total_connote = val.data.data.detail.length
-          this.total_weight = val.data.data.bag_weight
-          this.actual_weight = val.data.data.bag_weight
+          this.total_bag = 1
+          this.total_connote = val.data.data.bag_detail_qty
+          this.total_confirmed = val.data.data.koli_detail ? (this.total_connote - val.data.data.koli_detail.length) : 0 
+          
+        },
+        handleClearData(){
+          this.bag_number=""
+          this.item_number =""
+          this.total_connote =0
+          this.total_bag =0,
+          this.total_confirmed =0
         },
         actionUpdate(val){
             if(this.dataTable.length > 0) {
@@ -204,8 +236,7 @@ export default {
         }
     },
     mounted() {
-        this.getBagIdParam()
-        this.getTableData(this.pagination.limit,this.pagination.page,this.bag_id)
+      //
     },
 }
 </script>
