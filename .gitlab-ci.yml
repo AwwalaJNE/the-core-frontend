@@ -2,7 +2,7 @@ build dev:
     image: node:14.15.0
     stage: build 
     tags:
-      - aws-docker-executor
+      - docker-exec
     script:
       - npm install --progress=false
       - npm run build
@@ -17,7 +17,7 @@ deploy dev:
   image: alpine
   stage: deploy
   tags:
-    - aws-docker-executor
+    - docker-exec
   script:
       - apk add --no-cache rsync openssh
       - mkdir -p ~/.ssh
