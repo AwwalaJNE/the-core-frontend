@@ -103,7 +103,7 @@ export default {
             menus: [
                 {
                     label: 'New Transaction',
-                    url: '/new-transactions',
+                    url: '/transaction/new-transactions',
                     icon: 'bx-archive',
                     children: []
                 },
@@ -124,7 +124,7 @@ export default {
                         },
                         {
                             label: 'Upload Transaction',
-                            url: '/upload/connote',
+                            url: '/transaction/upload-connote',
                             icon: 'bx-upload'
                         },
                     ]

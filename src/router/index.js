@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Login from '@/views/auth'
 
 import Content from '@/views/template/Content.vue'
+import ContentChild from '@/views/template/Content-child'
 
 import Upload from '@/views/upload/index.vue'
 import UploadTransaction from '@/views/upload/transaction.vue'
@@ -54,6 +55,7 @@ import printSPPAP from "@/views/print/printSPPAP"
 
 // === Transaction List ===
 import TransactionList from "@/views/transactionList"
+import TransactionFinish from "@/views/transaction/finish"
 
 // === Transaction Detail ===
 import DetailConnote from "@/views/transactionList/detail"
@@ -119,86 +121,166 @@ const routes = [
     component: Content,
     children: [
       {
-        path: "/settings/users",
-        name: "users",
-        component: Users,
+        path: "settings",
+        name: "settings",
+        component: ContentChild,
+        children: [
+          {
+            path: "users",
+            name: "users",
+            component: Users,
+            meta: { 
+              requiresAuth: true,
+              breadCrumb: "Users"
+            }
+          },
+          {
+            path: "geolocation",
+            name: "Geolocation",
+            component: Geolocation,
+            meta: { 
+              requiresAuth: true,
+              breadCrumb: "Geolocation"
+            }
+          },
+          {
+            path: "nodes",
+            name: "Nodes",
+            component: Nodes,
+            meta: { 
+              requiresAuth: true,
+              breadCrumb: "Nodes"
+            }
+          },
+          {
+            path: "tariff",
+            name: "Tariff",
+            component: Tariff,
+            meta: { 
+              requiresAuth: true,
+              breadCrumb: "Tariff"
+            }
+          },
+          {
+            path: "employee",
+            name: "Employee",
+            component: Employee,
+            meta: { 
+              requiresAuth: true,
+              breadCrumb: "Employee"
+            }
+          },
+          {
+            path: "vehicles",
+            name: "Vehicles",
+            component: Vehicles,
+            meta: { 
+              requiresAuth: true,
+              breadCrumb: "Vehicles"
+            }
+          },
+          {
+            path: "customer",
+            name: "Customer",
+            component: Customer,
+            meta: { 
+              requiresAuth: true,
+              breadCrumb: "Customer"
+            }
+          },
+          {
+            path: "surcharge",
+            name: "Surcharge",
+            component: Surcharge,
+            meta: { 
+              requiresAuth: true,
+              breadCrumb: "Surcharge"
+            }
+          },
+        ],
         meta: { 
           requiresAuth: true,
-          breadCrumb: "Users"
+          breadCrumb: "Settings"
         }
       },
       {
-        path: "/settings/geolocation",
-        name: "Geolocation",
-        component: Geolocation,
-        meta: { 
-          requiresAuth: true,
-          breadCrumb: "Geolocation"
-        }
-      },
-      {
-        path: "/settings/nodes",
-        name: "Nodes",
-        component: Nodes,
-        meta: { 
-          requiresAuth: true,
-          breadCrumb: "Nodes"
-        }
-      },
-      {
-        path: "/settings/tariff",
-        name: "Tariff",
-        component: Tariff,
-        meta: { 
-          requiresAuth: true,
-          breadCrumb: "Tariff"
-        }
-      },
-      {
-        path: "/settings/employee",
-        name: "Employee",
-        component: Employee,
-        meta: { 
-          requiresAuth: true,
-          breadCrumb: "Employee"
-        }
-      },
-      {
-        path: "/settings/vehicles",
-        name: "Vehicles",
-        component: Vehicles,
-        meta: { 
-          requiresAuth: true,
-          breadCrumb: "Vehicles"
-        }
-      },
-      {
-        path: "/settings/customer",
-        name: "Customer",
-        component: Customer,
-        meta: { 
-          requiresAuth: true,
-          breadCrumb: "Customer"
-        }
-      },
-      {
-        path: "/settings/surcharge",
-        name: "Surcharge",
-        component: Surcharge,
-        meta: { 
-          requiresAuth: true,
-          breadCrumb: "Surcharge"
-        }
-      },
-      {
-        path: "/new-transactions",
-        name: "Transaction",
-        component: Transaction,
+        path: "transaction",
+        name: "transaction",
+        component: ContentChild,
+        children: [
+          {
+            path: "new-transactions",
+            name: "new-transactions",
+            component: Transaction,
+            meta: { 
+              requiresAuth: true,
+              breadCrumb: "New Transaction"
+            }
+          },
+          {
+            path: "upload-connote",
+            name: "UploadConnote",
+            component: UploadTransaction,
+            meta: { 
+              requiresAuth: true,
+              breadCrumb: "Upload Connote"
+            }
+          },
+          {
+            path: "complete/:id",
+            name: "transactionComplete",
+            component: TransactionFinish,
+            meta: { 
+              requiresAuth: true,
+              breadCrumb: "Transaction Complete"
+            }
+          },
+          {
+            path: "detail/:id",
+            name: "detailConnote",
+            component: DetailConnote,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Transaction Detail"
+            }
+          },
+        ],
         meta: { 
           requiresAuth: true,
           breadCrumb: "Transaction"
         }
       },
+      {
+        path: "sales",
+        name: "sales",
+        component: ContentChild,
+        children: [
+          {
+            path: "transaction",
+            name: "transactionList",
+            component: TransactionList,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Transaction List"
+            }
+          },
+          
+          {
+            path: "cashregister",
+            name: "cashRegister",
+            component: CashRegister,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Cash Register"
+            }
+          },
+        ],
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Sales"
+        }
+      },
+      
       {
         path: "/report/cashless",
         name: "CashLess",
@@ -217,15 +299,7 @@ const routes = [
           breadCrumb: "Upload"
         }
       },
-      {
-        path: "/upload-transaction",
-        name: "UploadTransaction",
-        component: UploadTransaction,
-        meta: { 
-          requiresAuth: true,
-          breadCrumb: "Upload Transaction"
-        }
-      },
+      
       {
         path: "/inventory/item",
         name: "InventoryItem",
@@ -262,33 +336,7 @@ const routes = [
           breadCrumb: "bagging detail"
         }
       },
-      {
-        path: "/sales/transaction",
-        name: "transactionList",
-        component: TransactionList,
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Transaction List"
-        }
-      },
-      {
-        path: "/transaction/detail/:id",
-        name: "detailConnote",
-        component: DetailConnote,
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Transaction Detail"
-        }
-      },
-      {
-        path: "/sales/cashregister",
-        name: "cashRegister",
-        component: CashRegister,
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Cash Register"
-        }
-      },
+      
       {
         path: "inventory/unbagging",
         name: "unbagging",

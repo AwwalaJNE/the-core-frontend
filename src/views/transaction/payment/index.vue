@@ -285,6 +285,7 @@ export default {
                     this.discount= 0  
                     this.$store.dispatch("CLEAR_TRANSACTION_DATA_CONNOTE", true)
                     this.$store.dispatch("EMPTY_TRANSACTION_DATA_CONNOTE", true)
+                    this.$router.push({ name: 'transactionComplete', params: { id: this.transaction_id } });
                     this.openNotification(null, 'Success', 'Payment success')
                 }).catch(err => {
                     this.openNotification('danger', 'Payment failed', err)
