@@ -56,7 +56,7 @@
                       <template>
                         <transition name="slide-fade">
                           <template>
-                            <RunsheetInformation :ref="'runsheetInformation'"   :query="tempSearch"/>
+                            <RunsheetInformation :ref="'runsheetInformation'"   :query="tempSearch" :deliveryRunsheetNumber="delivery_runsheet_number" />
                           </template>
                         </transition>
                       </template>
@@ -114,7 +114,7 @@ export default {
             dialogPickupRequest:false,
             item_no:'',
             form:{},
-            inbound_number:''
+            delivery_runsheet_number:''
         }
     },
     methods: {
@@ -141,15 +141,15 @@ export default {
           this.processInbond();
         },
         getParamRoute(){
-          if(this.$route.params.inbound_number){
-            this.inbound_number = this.$route.params.inbound_number
-            this.tempSearch = this.$route.params.inbound_number
+          if(this.$route.params.delivery_runsheet_number){
+            this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number
+            // this.tempSearch = this.$route.params.delivery_runsheet_number
           }
         },
         async processInbond() {
           console.log('form', this.form)
           await axios
-              .post(this.URL.receiving + `?n=${this.listenNodeId}`,
+              .post(this.URL.delivery + `?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {

@@ -25,6 +25,7 @@ export default {
     mixins: [master],
     props: {
         query: String,
+        deliveryRunsheetNumber:String
     },
     components: {
         "table-master" : TableMaster
@@ -72,6 +73,7 @@ export default {
             startDate: "",
             endDate: "",
             dialogTariff: false,
+            delivery_runsheet_number:"",
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -88,6 +90,14 @@ export default {
                 }
             }
         },
+        deliveryRunsheetNumber: function(val, old) {
+            if(val !== undefined) {
+                this.delivery_runsheet_number = val
+                if(this.delivery_runsheet_number !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
+            }
+        },
     },
     methods: {
         async getTableData(limit,page,q) {
@@ -99,8 +109,8 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.inbound +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                .get(this.URL.delivery +
+                `/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
                     this.dataTable = res.data.data
@@ -149,7 +159,7 @@ export default {
 
     },
     mounted() {
-        this.refresh()
+        // this.refresh()
     }
 }
 </script>
