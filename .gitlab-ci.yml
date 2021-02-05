@@ -5,6 +5,7 @@ build dev:
       - docker-exec
     script:
       - npm install --progress=false
+      - npm audit fix
       - npm run build
     artifacts:
       expire_in: 1 week
