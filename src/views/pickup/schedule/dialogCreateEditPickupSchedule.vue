@@ -242,7 +242,7 @@ export default {
 
 
           if(this.pickup_schedule_id !== undefined && this.pickup_schedule_id !== '') {
-            this.form.pickup_schedule_id = this.pickup_schedule_id
+            this.form.pickup_schedule_id = String(this.pickup_schedule_id)
 
             console.log(this.form,'alah')
             this.updateData()
@@ -385,7 +385,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.pickup_schedule + `?n=${this.listenNodeId}`,
+                    this.URL.pickup_schedule + `/${this.pickup_schedule_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {

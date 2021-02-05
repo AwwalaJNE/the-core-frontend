@@ -26,6 +26,17 @@
           title="Edit Pickup Schedule"
           :dataItem="dataItem"
       />
+
+      <!-- dialog confirm cancel pickup schedule-->
+      <dialog-confirm
+          :active="activeDialogRemove"
+          :loading="activeLoadingRemove"
+          :closeDialog="closeDialogConfirmRemove"
+          title="Remove Pickup"
+          message="Are you sure you want to remove Pickup ?"
+          @confirm="confirmRemove"
+          @cancel="closeDialogConfirmRemove"
+      />
     </div>
 </template>
 <script>
@@ -33,6 +44,7 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import dialogCreateEditPickupSchedule from "@/views/pickup/schedule/dialogCreateEditPickupSchedule";
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 export default {
     name:"pickup-requestlist",
     mixins: [master],
@@ -43,7 +55,8 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
-        "dialog-create-edit-pickup-schedule" : dialogCreateEditPickupSchedule
+        "dialog-create-edit-pickup-schedule" : dialogCreateEditPickupSchedule,
+        "dialog-confirm": DialogConfirm
     },
     data() {
         return {
@@ -89,6 +102,9 @@ export default {
                 page_size: 1,
                 page: 1
             },
+            activeDialogRemove:false,
+            activeLoadingRemove:false,
+            pickup_schedule_id:''
 
         }
     },
@@ -204,11 +220,36 @@ export default {
           });
         },
         actionRemove(val){
-
+            this.pickup_schedule_id = val.pickup_schedule_id
+            this.activeDialogRemove = true
         },
         closeDialogPickupSchedule() {
           this.dialogPickupSchedule = false
-        }
+        },
+        closeDialogConfirmRemove(){
+          this.activeDialogRemove = false
+          this.activeLoadingRemove=false
+        },
+        confirmRemove(val) {
+          this.activeLoadingRemove=true
+          this.removePickup()
+        },
+        async removePickup(){
+          await axios
+              .delete(this.URL.pickup_schedule + `/${this.pickup_schedule_id}?n=${this.listenNodeId}`,
+                  this.Helper.header())
+              .then(res => {
+                this.closeDialogConfirmRemove()
+                this.activeLoadingRemove = false
+                this.refresh()
+                this.openNotification(null, 'Success', 'Delete Pickup is success')
+              }).catch(err => {
+                this.activeLoadingRemove = false
+                this.closeDialogConfirmRemove()
+                this.refresh()
+                this.openNotification('danger', 'Delete Pickup is failed', err)
+              })
+        },
 
 
     },
