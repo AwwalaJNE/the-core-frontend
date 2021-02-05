@@ -1,20 +1,16 @@
 {
   "name": "thecore",
   "version": "2.0.0",
-  "author": "Odon",
-  "contributors": [
-    "Odon",
-    "Bagus"
-  ],
-  "main": "server.js",
-  "description": "Core",
   "private": true,
+  "description": "Core",
+  "author": "Odon",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "stylelint '**/*.vue' '**/*.scss' --fix scss"
   },
+  "main": "server.js",
   "dependencies": {
     "@vue/eslint-config-airbnb": "^4.0.1",
     "@yaireo/tagify": "^3.21.4",
@@ -37,9 +33,9 @@
     "xlsx": "^0.16.8"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.0.0",
-    "@vue/cli-plugin-unit-jest": "^4.0.0",
-    "@vue/cli-service": "^4.0.0",
+    "@vue/cli-plugin-babel": "^4.5.11",
+    "@vue/cli-plugin-unit-jest": "^4.5.11",
+    "@vue/cli-service": "^4.5.11",
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-eslint": "^10.0.3",
     "babel-preset-airbnb": "^4.1.0",
@@ -64,5 +60,9 @@
   ],
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest"
-  }
+  },
+  "contributors": [
+    "Odon",
+    "Bagus"
+  ]
 }
