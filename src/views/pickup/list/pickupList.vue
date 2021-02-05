@@ -262,17 +262,18 @@ export default {
                 'pickup_status' : 'CANCELED',
                 'is_pickup_canceled'  : 1
             }
-            this.updateData(formupdate)
+            let pickup_number = this.pickupData.pickup_number
+            this.updateData(formupdate, pickup_number)
           }
         },
         closeDialogConfirmCancel(){
           this.activeDialogCancel = false
           this.activeLoadingCancel=false
         },
-        async updateData(form){
+        async updateData(form, pickup_number){
           await axios
               .put(
-                  this.URL.pickup + `?n=${this.listenNodeId}`,
+                  this.URL.pickup + `/${pickup_number}?n=${this.listenNodeId}`,
                   JSON.stringify(form),
                   this.Helper.header())
               .then(res => {
