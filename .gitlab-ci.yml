@@ -1,5 +1,5 @@
 build dev:
-    image: node:14.15.0
+    image: node:10.13.0
     stage: build 
     tags:
       - docker-exec
