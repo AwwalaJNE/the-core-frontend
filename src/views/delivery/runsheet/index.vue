@@ -74,7 +74,7 @@ export default {
     },
     methods: {
         refresh(){
-            this.$refs.inboundIncoming.refresh() // trigger function refresh form dari luar component list
+            this.$refs.DeliveryRunsheetTable.refresh() // trigger function refresh form dari luar component list
         },
         searchValue (val) {
             this.tempSearch = val

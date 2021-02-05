@@ -94,4 +94,7 @@ export default {
     //SURAT MUATAN
     surat_muatan: api + "manifest",
 
+    //display-list-status
+    status: api + "status",
+
 }

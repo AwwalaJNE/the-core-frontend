@@ -1,19 +1,20 @@
 <template>
     <div>
-        <table-master 
-        :dataTable="dataTable" 
-        :dataColumn="datacolumn" 
-        :tableLoading="loading"
-        :pageSize="pagination.page_size"
-        :page="pagination.page"
-        :limit="pagination.limit"
-        :hasAction="false"
-        :hasPagination="false"
-        @actionLimit="actionLimit"
-        @actionPagination="actionPagination"
-        @handleEdit="actionDetail"
-        />
-
+        <template v-if="loadStatus == false">
+           <table-master 
+            :dataTable="dataTable" 
+            :dataColumn="datacolumn" 
+            :tableLoading="loading"
+            :pageSize="pagination.page_size"
+            :page="pagination.page"
+            :limit="pagination.limit"
+            :hasAction="false"
+            :hasPagination="false"
+            @actionLimit="actionLimit"
+            @actionPagination="actionPagination"
+            @handleEdit="actionDetail"
+            />
+        </template>
     </div>
 </template>
 <script>
@@ -36,18 +37,39 @@ export default {
             datacolumn: [
                 {
                     label: "Connote Number",
-                    key: "inbound_number",
+                    key: "koli_number",
                     width: "xs"
                 },
                 {
                     label: "ZipCode",
-                    key: "inbound_total_weight",
+                    key: "connote_receiver_zip_code",
                     width: "xxs"
                 },
                 {
                   label: "Status Delivery",
                   key: "Remarks",
                   width: "xxs"
+                },
+
+                {
+                    label: "Status",
+                    key: "status",
+                    type: "inputan",
+                    typeInput: "select",
+                    data: [
+                        {
+                            label: null,
+                            value: null
+                        }
+                    ]
+                },
+
+                {
+                    label: "Remarks",
+                    key: "remarks",
+                    type: "inputan",
+                    typeInput: "text",
+                    data: ''
                 },
 
                 {
@@ -78,7 +100,8 @@ export default {
                 limit:5,
                 page_size: 1,
                 page: 1
-            }
+            },
+            loadStatus: false
         }
     },
     watch: {
@@ -134,6 +157,38 @@ export default {
                 })
         },
 
+        async getStatus() {
+            this.loadStatus = true
+            await axios
+                .get(this.URL.status +
+                `/?n=${this.listenNodeId}&sort_by=created_at&sort_order=desc&limit=3&page=1s=`,
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.geolocation_province_name
+                            obj["value"] = item.geolocation_province_id
+
+                            arr.push(obj)
+                        })
+
+                        this.datacolumn.map(item => {
+                            if(item.key == 'status') {
+                                item.data == arr
+                            }
+                        })
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    this.loadStatus = false
+                }).catch(err => {
+                    this.loadStatus = false
+                    // this.openNotification('danger', 'Failed to populate status', err)
+                })
+        },
+
         closeDialogConfirm(){
             this.confirmDialog = false
         },
@@ -159,6 +214,7 @@ export default {
 
     },
     mounted() {
+        this.getStatus()
         // this.refresh()
     }
 }

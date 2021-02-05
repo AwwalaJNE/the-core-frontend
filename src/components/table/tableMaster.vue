@@ -72,6 +72,36 @@
                                     <checkbox :isChecked="item['selected']"/>
                                 </vs-td>
                             </template>
+                            <template v-else-if="column.type !== undefined && column.type.toLowerCase() === 'inputan'">
+                                <vs-td :key="key" :class="column.width ? column.width : ''">
+                                    <template v-if="column.typeInput !== undefined && column.typeInput.toLowerCase() === 'select'">
+                                        <template v-if="column.data !== undefined && Array.isArray(column.data)">
+                                            <template v-if="column.data.length > 0">
+                                                <div style="margin-top:10px;">
+                                                    <!-- {{`${column.key}|${item[listenColumn[0].key]}`}} -->
+                                                    <selector 
+                                                    :name="column.label" 
+                                                    :rules="''" 
+                                                    :formKey="`${column.key}|${item[listenColumn[0].key]}`"
+                                                    :valueData="column.data"
+                                                    :selectedValue="''"
+                                                    :isMultiple="false"
+                                                    @updateValue="updateValue" />
+                                                </div>
+                                            </template>
+                                        </template>
+                                    </template>
+                                    <template v-else-if="column.typeInput !== undefined && column.typeInput.toLowerCase() === 'text'">
+                                        <input-general 
+                                        :name="column.label"
+                                        :rules="''"
+                                        :formKey="`${column.key}|${item[listenColumn[0].key]}`"
+                                        :valueData="''"
+                                        :typeInput="'text'"
+                                        @updateValue="updateValue" />
+                                    </template>
+                                </vs-td>
+                            </template>
                             <template v-else-if="column.type !== undefined && column.type.toLowerCase() === 'status'">
                                 <vs-td :key="key" :class="column.width ? column.width : ''">
                                     <template v-if="item[column.key] !== undefined">
@@ -352,11 +382,15 @@
 <script>
 import Pagination from "@/components/pagination/pagination.vue"
 import Checkbox from "@/components/input/checkbox.vue"
+import InputGeneral from "@/components/input/general"
+import Selector from "@/components/input/select"
 export default {
     name:"tabelMaster",
     components: {
         "pagination-master" : Pagination,
-        "checkbox" : Checkbox
+        "checkbox" : Checkbox,
+        "input-general": InputGeneral,
+        "selector": Selector,
     },
     props: {
         dataTable: Array,
@@ -481,6 +515,10 @@ export default {
           this.$emit("actionCancel", val)
         },
 
+        updateValue(key, val){
+            this.$emit("updateValue", key, val)
+        },
+
 
         handleEdit(val) {
           this.$emit("handleEdit", val);
@@ -542,6 +580,12 @@ export default {
             //     width: 8px;
             //     margin-left: 0px;
             // }
+            .m-select.vs-select-content{
+                margin-bottom: 0;
+            }
+            .vs-select__input{
+                min-height: 34px !important;
+            }
         }
     }
     .text-link{

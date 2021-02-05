@@ -149,7 +149,7 @@ export default {
         async processInbond() {
           console.log('form', this.form)
           await axios
-              .post(this.URL.delivery + `?n=${this.listenNodeId}`,
+              .post(this.URL.delivery + `/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
