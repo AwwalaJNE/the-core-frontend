@@ -13,6 +13,7 @@
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
             @handleEdit="actionDetail"
+            @updateValue="updateValue"
             />
         </template>
     </div>
@@ -155,6 +156,10 @@ export default {
                     this.loading = false
                     this.openNotification('danger', 'Failed to populate tariff list', err)
                 })
+        },
+
+        updateValue(key, val){
+            
         },
 
         async getStatus() {
