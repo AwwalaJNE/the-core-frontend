@@ -107,6 +107,10 @@ import DeliveryCodHistory from "@/views/delivery/codHistory"
 
 import CashLess from "@/views/report/cashless"
 
+// === Irreguralities ===
+import irreguralitiesCancel from "@/views/irreguralities/cancel/index.vue"
+import irreguralitiesReturn from "@/views/irreguralities/return/index.vue"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -278,6 +282,35 @@ const routes = [
         meta: { 
           requiresAuth: true,
           breadCrumb: "Sales"
+        }
+      },
+      {
+        path: "irreguralities",
+        name: "irreguralities",
+        component: ContentChild,
+        children: [
+          {
+            path: "cancel",
+            name: "irreguralities-cancel",
+            component: irreguralitiesCancel,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Cancel"
+            }
+          },
+          {
+            path: "return",
+            name: "irreguralities-return",
+            component: irreguralitiesReturn,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "return"
+            }
+          },
+        ],
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Irreguralities"
         }
       },
       

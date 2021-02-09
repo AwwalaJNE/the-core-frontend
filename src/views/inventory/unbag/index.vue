@@ -27,9 +27,8 @@
                 <template>
                   <div class="center in-get-bag">
                     <vs-button
-                        square
                         @click="updateValue"
-                    >ADD</vs-button>
+                    >Submit</vs-button>
                   </div>
                 </template>
               </vs-col>

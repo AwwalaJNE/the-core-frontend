@@ -41,7 +41,7 @@
                     type="submit"
                     @click="handleSubmit"
                     >
-                        {{btnBlue || 'Add'}}
+                       Submit
                     </vs-button>
                 </vs-col>
             </vs-row>
