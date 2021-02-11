@@ -372,7 +372,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.surat_muatan + `?n=${this.listenNodeId}`,
+                    this.URL.surat_muatan + `/${this.manifest_number}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
