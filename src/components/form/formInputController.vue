@@ -221,6 +221,7 @@ export default {
         initializeDataItem() {
             let obj = this.listenDataItem
             let prefix = this.listenTypeForm.toUpperCase()
+            console.log('obj', prefix,obj)
             if(obj != null && Object.keys(this.InputObject).length > 0) {
                 this.Keys.map(item => {
                     let action = item.toUpperCase()
