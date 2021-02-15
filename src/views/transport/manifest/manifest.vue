@@ -244,8 +244,9 @@ export default {
         //cancel pickup
         confirmCancel(val) {
           let form = {};
-          form.status = 'cancel';
-          this.cancelData(this.manifest_number, form)
+          form.status = 'CANCELED';
+          form.manifest_number = this.manifest_number;
+          this.cancelData(form, this.manifest_number)
         },
 
         closeDialogConfirmCancel(){
@@ -255,7 +256,7 @@ export default {
         async cancelData(form, surat_muatan){
           await axios
               .put(
-                  this.URL.surat_muatan + `/${manifest_number}?n=${this.listenNodeId}`,
+                  this.URL.surat_muatan + `/${this.manifest_number}?n=${this.listenNodeId}`,
                   JSON.stringify(form),
                   this.Helper.header())
               .then(res => {
@@ -278,7 +279,8 @@ export default {
           console.log(row,'print')
         },
         actionCancel(row){
-          console.log('cancel', row)
+
+          this.manifest_number = row.manifest_number
           this.activeDialogCancel = true;
         },
 
