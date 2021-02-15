@@ -43,12 +43,12 @@ export default {
                 },
                 {
                     label: "Total Connotes",
-                    key: "tariff_origin",
+                    key: "total_connote",
                     width: "auto"
                 },
                 {
                     label: "Shipper Name",
-                    key: "tariff_destination",
+                    key: "connote_shipper_name",
                     width: "auto"
                 },
                 {
@@ -58,7 +58,7 @@ export default {
                 },
                 {
                     label: "User",
-                    key: "tariff_amount_1",
+                    key: "user_name",
                     width: "auto"
                 },
                 {
@@ -128,6 +128,9 @@ export default {
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
                       total = Number(total) + Number(item.transaction_amount);
+                      item['total_connote'] = item.connote.length
+                      item['connote_shipper_name'] = item.connote.length > 0 ? item.connote[0].connote_shipper_name : null
+                      item['user_name'] = item.user.user_name
                     })
                     this.setTotalAmount(total);
                     this.pagination.page = res.data.meta.current_page
@@ -136,13 +139,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
+                        this.openNotification('warn', 'Transaction data is empty!', ' Please create a new Transaction data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', 'Failed to populate Transaction list', err)
                 })
         },
 
