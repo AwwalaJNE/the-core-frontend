@@ -30,6 +30,11 @@
                                 <vs-col xs="12" sm="12" lg="12">
                                     <template>
                                         <div>
+                                            <template>
+                                                <div>
+                                                    
+                                                </div>
+                                            </template>
                                             <selector 
                                             :ref="''"
                                             name="Alternate Address" 
@@ -187,6 +192,8 @@ export default {
             irregularity_type: '',
             irregularity_status_code: '',
             remark: '',
+            node_id: '',
+            
 
             locationSelectorActive: false,
             query: ''
@@ -194,22 +201,56 @@ export default {
     },
     methods: {
         formData(form){
-            this.form = form
-            console.log('form data', form)
+
+            let obj = {}
+            obj['connote_number'] = this.connote_number
+            obj['irregularity_type'] = this.dataItem['irregularity_type']
+            obj['irregularity_status_code'] = this.dataItem['irregularity_status_code']
+            obj['irregularity_status_description'] = this.dataItem['irregularity_status_description']
+            obj['remark'] = this.remark
+
+            let connote = []
+            connote.push(form)
+
+            obj['connote'] = connote
+
+            this.form = obj
+            this.addData()
             
+        },
+        async addData() {
+            console.log('form', this.form)
+            await axios
+                .post(
+                    this.URL.irregularities + `/return?n=${this.listenNodeId}`,
+                    JSON.stringify(this.form), 
+                    this.Helper.header())
+                .then(res => {
+                    console.log('res', res)
+                    this.handleClearForm()
+                    this.closeDialog()
+                    this.$emit("refresh")
+                    this.openNotification(null, 'Success', 'Create new return is success')
+                }).catch(err => {
+                    this.loading = false
+                    this.handleClearForm()
+                    this.closeDialog()
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Create new return is failed', err.response ? err.response.data.message : 'something went wrong')
+                })
         },
         updateValue(key, val, info){
             switch(key) {
                 case "alt_address":
                     
-                    let obj = this.alt_address_arr.filter(item => item.value == val)[0]
-                    console.log('alt_address', val, obj)
-                    if(Object.keys(obj).length > 0) {
-                        if(obj.hasOwnProperty('item')) {
-                            // this.irregularity_type = obj.item.status_type || ''
-                            // this.irregularity_alt_address = obj.item.alt_address || ''
-                        }
-                    }
+                    // let obj = this.alt_address_arr.filter(item => item.value == val)[0]
+                    // console.log('alt_address', val, obj)
+                    // if(Object.keys(obj).length > 0) {
+                    //     if(obj.hasOwnProperty('item')) {
+                    //         // this.irregularity_type = obj.item.status_type || ''
+                    //         // this.irregularity_alt_address = obj.item.alt_address || ''
+                    //     }
+                    // }
                     break;
                 case "connote_number":
                     this.connote_number= val
@@ -257,10 +298,30 @@ export default {
 
                         this.selectedStatusCode = res.data.irregularity_status_code.toLowerCase() || ''
                         this.remark = res.data.remark
+                        this.node_id = res.data.node_id
                     }
+                    this.AltAddress()
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async AltAddress(){
+            this.alt_address_arr = [{'label': null,'value': null}]
+            await axios
+                .get(this.URL.node_alternate_address + 
+                `/${this.node_id}?n=${this.listenNodeId}`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log('AltAddress',res.data.data)
+                    if(res.data) {
+                        let data = res.data
+
+                        
+                    }
+                    
+                }).catch(err => {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
@@ -275,14 +336,14 @@ export default {
                         let arr = []
                         res.data.data.map(item => {
                             if(item.hasOwnProperty('status_subtype')) {
-                                if(item['status_subtype'].toLowerCase().includes('return')) {
+                                
                                     let obj = {}
                                     obj["label"] = item.status_description
                                     obj["value"] = item.status_id
                                     obj["item"] = item
 
                                     arr.push(obj)
-                                }
+                                
                             }
                         })
 
@@ -316,10 +377,19 @@ export default {
             // this.$emit("updateValue", 'DIALOG_CANCEL',form)
         },
         handleClearForm(){
-            // this.form = {}
-            // this.irregularity_type = ''
-            // this.irregularity_alt_address = ''
-            // this.connote_number= ''
+            this.form = {}
+            this.alt_address_arr = []
+            
+            this.connote_number = ''
+            this.dataItem = {}
+
+            this.status_code_arr = []
+            this.selectedStatusCode = ''
+            this.irregularity_type = ''
+            this.irregularity_status_code = ''
+            this.remark = ''
+            this.node_id = ''
+            this.query = ''
         },
         onFocusLocationSelector(info){
             console.log(info)

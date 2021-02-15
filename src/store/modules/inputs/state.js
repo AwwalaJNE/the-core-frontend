@@ -1753,7 +1753,7 @@ export default {
   irreguralities_return_destination: {
     destination_type: {
       label: "",
-      key: "connote_receiver_address_type",
+      key: "destination_type",
       rule: "",
       typeInput: "radio",
       typeData: "String",
@@ -1773,7 +1773,7 @@ export default {
     },
     destination_name: {
       label: "Nama Penerima*",
-      key: "connote_receiver_name",
+      key: "destination_name",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -1783,7 +1783,7 @@ export default {
     },
     destination_phone: {
       label: "Telepon Penerima*",
-      key: "connote_receiver_phone_number",
+      key: "destination_phone",
       rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
@@ -1793,7 +1793,7 @@ export default {
     },
     destination_address: {
       label: "Alamat & Kode Pos Penerima",
-      key: "connote_receiver_street_address",
+      key: "destination_address",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -1815,7 +1815,7 @@ export default {
     },
     destination_subdistrict_id: {
       label: "Kode Pos*",
-      key: "connote_receiver_geolocation_subdistrict_id",
+      key: "destination_subdistrict_id",
       rule: "",
       isDisabled: true,
       typeInput: "hidden|disabled|dotted",
@@ -1825,7 +1825,7 @@ export default {
     },
     zip_code:{
       label: "Kode Pos",
-      key: "connote_receiver_zip_code",
+      key: "zip_code",
       rule: "required",
       isDisabled: true,
       width: '6',
@@ -1836,7 +1836,7 @@ export default {
     },
     tariff_code: {
       label: "Kode Tujuan*",
-      key: "connote_receiver_tariff_code",
+      key: "tariff_code",
       rule: "required",
       isDisabled: true,
       width: '6',
