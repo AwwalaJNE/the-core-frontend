@@ -41,7 +41,7 @@
                           Action
                         </vs-th>
                       </template>
-                      <template v-if="printAction == true || avoidAction == true || codAction == true " >
+                      <template v-if="printAction == true || avoidAction == true || codAction == true || customBtn == true" >
                         <vs-th class="action">
                           Action
                         </vs-th>
@@ -133,6 +133,22 @@
                                 </vs-td>
                             </template>
                         </template>
+
+                        <template v-if="customBtn == true">
+                            
+                            <vs-td class="action">
+                                <vs-button
+                                    block
+                                    flat
+                                    :active="true"
+                                    @click="actionUpdate(item)"
+                                    >
+                                    {{customBtn_label}}
+                                </vs-button>    
+                            </vs-td>
+                                
+                        </template>
+
                         <template v-if="hasAction == true">
                             <vs-td class="action">
                                 <vs-row justify="center" class="btn_action">
@@ -410,7 +426,9 @@ export default {
         avoidAction: Boolean,
         pickedAction: Boolean, //pickup list action picked
         cancelRequestAction: Boolean, //pickup request action cancel,
-        codAction: Boolean
+        codAction: Boolean,
+        customBtn: Boolean,
+        customBtn_label: String
     },
     data() {
         return {

@@ -97,4 +97,7 @@ export default {
     //display-list-status
     status: api + "status",
 
+    //irregularities
+    irregularities: api + "irregularities",
+
 }

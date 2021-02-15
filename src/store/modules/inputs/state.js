@@ -1748,6 +1748,103 @@ export default {
       valueData: null,
       value: ''
     }
-  }
+  },
+
+  irreguralities_return_destination: {
+    destination_type: {
+      label: "",
+      key: "connote_receiver_address_type",
+      rule: "",
+      typeInput: "radio",
+      typeData: "String",
+      arrData: [
+        {
+          label: "Rumah",
+          value: "rumah"
+        },
+        {
+          label: "Kantor",
+          value: "kantor"
+        },
+      ],
+      isDisabled: true,
+      valueData: null,
+      value: 'rumah'
+    },
+    destination_name: {
+      label: "Nama Penerima*",
+      key: "connote_receiver_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    destination_phone: {
+      label: "Telepon Penerima*",
+      key: "connote_receiver_phone_number",
+      rule: "required|numeric|min:8",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    destination_address: {
+      label: "Alamat & Kode Pos Penerima",
+      key: "connote_receiver_street_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    destination_onchange_address: {
+      label: "Kelurahan / Kecamatan / Kota / Kode Pos*",
+      key: "destination_onchange_address",
+      rule: "required",
+      typeInput: "text|onchange|location_selector",
+      typeData: "String",
+      isDisabled: true,
+      arrData: [],
+      valueData: null,
+      onchange: true,
+      value: ''
+    },
+    destination_subdistrict_id: {
+      label: "Kode Pos*",
+      key: "connote_receiver_geolocation_subdistrict_id",
+      rule: "",
+      isDisabled: true,
+      typeInput: "hidden|disabled|dotted",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    zip_code:{
+      label: "Kode Pos",
+      key: "connote_receiver_zip_code",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_code: {
+      label: "Kode Tujuan*",
+      key: "connote_receiver_tariff_code",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    }
+  },
   
 }

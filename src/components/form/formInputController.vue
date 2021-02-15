@@ -16,7 +16,8 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
-                                            @updateValue="updateValue" />
+                                            @updateValue="updateValue" 
+                                            @inputFocus="onfocuslah"/>
                                         </div>
                                     </template>
                                     <template v-else>
@@ -30,7 +31,8 @@
                                     :formKey="InputObject[item].key"
                                     :valueData="InputObject[item].value"
                                     :typeInput="InputObject[item].typeInput"
-                                    @updateValue="updateValue" />
+                                    @updateValue="updateValue" 
+                                    @inputFocus="onfocuslah"/>
                                 </template>
                                 <template v-if="InputObject[item].hasOwnProperty('visible') && InputObject[item]['visible'] == true">
                                     
@@ -127,6 +129,19 @@
                                 :valueData="InputObject[item].value"
                                 @updateValue="updateValue" />
                             </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('radio')">
+                                
+                                <template v-if="InputObject[item].arrData.length > 0">
+                                    <radio 
+                                    :ref="item"
+                                    :name="''" 
+                                    :rules="InputObject[item].rule" 
+                                    :formKey="item"
+                                    :valueData="InputObject[item].arrData"
+                                    :selectedValue="InputObject[item].value"
+                                    @updateValue="updateValue" />
+                                </template>
+                            </template>
                         </vs-col>
                     </template>
                 </vs-row>
@@ -141,6 +156,7 @@ import Selector from "@/components/input/select"
 import Switch from "@/components/input/switch"
 import MapPicker from "@/components/map"
 import DateTime from "@/components/input/dateTime"
+import Radio from "@/components/input/radio"
 import iterateSelector from "@/components/input/iterateInput"
 export default {
     name:"input-controller",
@@ -151,7 +167,8 @@ export default {
         "switchNih": Switch,
         "map-picker": MapPicker,
         "iterate-selector": iterateSelector,
-        "date-time": DateTime
+        "date-time": DateTime,
+        "radio": Radio,
     },
     props: {
         arrData: Array,
@@ -243,9 +260,14 @@ export default {
             let prefix = this.listenTypeForm.toUpperCase()
             let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
             if(err == true) {
-                console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
+                console.log(`error input controller dispatch SET_${prefix}_${action} | val ` + val)
             }
             this.$emit("onChangeCustom", type, val)
+        },
+        onfocuslah(info) {
+            if(info.typeInput !== '' && info.typeInput.includes('location_selector')) {
+              this.$emit("onFocus_location_selector", info)
+            }
         },
         handleSubmit(){
             this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster

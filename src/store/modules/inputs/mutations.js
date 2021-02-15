@@ -1505,4 +1505,97 @@ export default {
   },
     
   /* SURAT JALAN END */ 
+
+  /* IRREGULARITIES RETURN */
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_TYPE(state, payload) {
+    state.irreguralities_return_destination.destination_type.value = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_TYPE_isDisabled(state, payload) {
+    state.irreguralities_return_destination.destination_type.isDisabled = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_TYPE_ValueData(state, payload) {
+    state.irreguralities_return_destination.destination_type.valueData = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_TYPE_ArrData(state, payload) {
+    state.irreguralities_return_destination.destination_type.hasOwnProperty('arrData') ?
+    state.irreguralities_return_destination.destination_type.arrData = payload :
+    state.irreguralities_return_destination.destination_type.arrData = []
+  },
+    
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_NAME(state, payload) {
+    state.irreguralities_return_destination.destination_name.value = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_NAME_isDisabled(state, payload) {
+    state.irreguralities_return_destination.destination_name.isDisabled = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_NAME_ValueData(state, payload) {
+    state.irreguralities_return_destination.destination_name.valueData = payload
+  },
+    
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_PHONE(state, payload) {
+    state.irreguralities_return_destination.destination_phone.value = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_PHONE_isDisabled(state, payload) {
+    state.irreguralities_return_destination.destination_phone.isDisabled = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_PHONE_ValueData(state, payload) {
+    state.irreguralities_return_destination.destination_phone.valueData = payload
+  },
+    
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ADDRESS(state, payload) {
+    state.irreguralities_return_destination.destination_address.value = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ADDRESS_isDisabled(state, payload) {
+    state.irreguralities_return_destination.destination_address.isDisabled = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ADDRESS_ValueData(state, payload) {
+    state.irreguralities_return_destination.destination_address.valueData = payload
+  },
+    
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ONCHANGE_ADDRESS(state, payload) {
+    state.irreguralities_return_destination.destination_onchange_address.value = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ONCHANGE_ADDRESS_isDisabled(state, payload) {
+    state.irreguralities_return_destination.destination_onchange_address.isDisabled = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ONCHANGE_ADDRESS_ValueData(state, payload) {
+    state.irreguralities_return_destination.destination_onchange_address.valueData = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ONCHANGE_ADDRESS_ArrData(state, payload) {
+    state.irreguralities_return_destination.destination_onchange_address.hasOwnProperty('arrData') ?
+    state.irreguralities_return_destination.destination_onchange_address.arrData = payload :
+    state.irreguralities_return_destination.destination_onchange_address.arrData = []
+  },
+    
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_SUBDISTRICT_ID(state, payload) {
+    state.irreguralities_return_destination.destination_subdistrict_id.value = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_SUBDISTRICT_ID_isDisabled(state, payload) {
+    state.irreguralities_return_destination.destination_subdistrict_id.isDisabled = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_SUBDISTRICT_ID_ValueData(state, payload) {
+    state.irreguralities_return_destination.destination_subdistrict_id.valueData = payload
+  },
+    
+  SET_IRREGURALITIES_RETURN_DESTINATION_ZIP_CODE(state, payload) {
+    state.irreguralities_return_destination.zip_code.value = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_ZIP_CODE_isDisabled(state, payload) {
+    state.irreguralities_return_destination.zip_code.isDisabled = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_ZIP_CODE_ValueData(state, payload) {
+    state.irreguralities_return_destination.zip_code.valueData = payload
+  },
+    
+  SET_IRREGURALITIES_RETURN_DESTINATION_TARIFF_CODE(state, payload) {
+    state.irreguralities_return_destination.tariff_code.value = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_TARIFF_CODE_isDisabled(state, payload) {
+    state.irreguralities_return_destination.tariff_code.isDisabled = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_TARIFF_CODE_ValueData(state, payload) {
+    state.irreguralities_return_destination.tariff_code.valueData = payload
+  },
+  /* IRREGULARITIES RETURN END*/
+    
 }
