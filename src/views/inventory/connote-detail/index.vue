@@ -168,137 +168,139 @@ export default {
         },
         async getConnote() {
             await axios
-                .get(this.URL.transaction +`/556?n=${this.listenNodeId}`,
+                .get(this.URL.connote +`/${this.connote_number}?n=${this.listenNodeId}`,
                 this.Helper.header())
                 .then(res => {
+                    let response = res.data.data;
                     let dataorigin={};
                     let dataDestination={}; 
                     let dataInformation={}; 
                     dataorigin = [
                         {
                             key : 'Nama',
-                            value: res.data.data.connote[0].connote_shipper_name
+                            value: response.connote_shipper_name
                         },
                         {
                             key : 'Phone',
-                            value: res.data.data.connote[0].connote_shipper_phone_number
+                            value: response.connote_shipper_phone_number
                         },
                         {
                             key : 'Alamat',
-                            value: res.data.data.connote[0].connote_shipper_street_address
+                            value: response.connote_shipper_street_address
                         },
                         {
                             key : 'Kode Pos',
-                            value: res.data.data.connote[0].connote_shipper_zip_code,
+                            value: response.connote_shipper_zip_code,
                             width: 6
                         },
                         {
                             key : 'Kode Asal',
-                            value: res.data.data.connote[0].connote_shipper_tariff_code,
+                            value: response.connote_shipper_tariff_code,
                              width: 6
                         }
                     ]
                     this.originData = dataorigin  
-                    this.originTlc = res.data.data.connote[0].connote_shipper_tlc  
-                    this.destinationTlc = res.data.data.connote[0].connote_receiver_tlc  
+                    this.originTlc = response.connote_shipper_tlc  
+                    this.destinationTlc = response.connote_receiver_tlc  
    
                     dataDestination = [
                         {
                             key : 'Nama',
-                            value: res.data.data.connote[0].connote_receiver_name
+                            value: response.connote_receiver_name
                         },
                         {
                             key : 'Phone',
-                            value: res.data.data.connote[0].connote_receiver_phone_number
+                            value: response.connote_receiver_phone_number
                         },
                         {
                             key : 'Alamat',
-                            value: res.data.data.connote[0].connote_receiver_street_address
+                            value: response.connote_receiver_street_address
                         },
                         {
                             key : 'Kode Pos',
-                            value: res.data.data.connote[0].connote_receiver_zip_code,
+                            value: response.connote_receiver_zip_code,
                             width: 6
                         },
                         {
                             key : 'Kode Asal',
-                            value: res.data.data.connote[0].connote_receiver_tariff_code,
+                            value: response.connote_receiver_tariff_code,
                             width: 6
                         }
                     ];
                     this.destinationData = dataDestination
-                    let special_tariff = res.data.data.connote[0].special_tariff ? res.data.data.connote[0].special_tariff : 0;
+                    let special_tariff = response.special_tariff ? response.special_tariff : 0;
+                    let total =parseInt(response.amount_adm_insurance )+parseInt(response.amount_insurance) + parseInt(response.amount_surcharge) + parseInt(response.amount_total_price)
                     let packing=[
                         {
                             key:'Packing Kayu',
-                            value:res.data.data.connote[0].is_packing_kayu,
+                            value:response.is_packing_kayu,
                         },
                         {
                             key:'Insurance Admin',
-                            value:this.moneyformat(res.data.data.connote[0].amount_adm_insurance),
+                            value:this.moneyformat(response.amount_adm_insurance),
                         },
                         {
                             key:'Insurance',
-                            value:this.moneyformat(res.data.data.connote[0].amount_insurance),
+                            value:this.moneyformat(response.amount_insurance),
                         },
                         {
                             key:'Surcharges',
-                            value:this.moneyformat(res.data.data.connote[0].amount_surcharge),
+                            value:this.moneyformat(response.amount_surcharge),
                         },
                         
                         {
                             key:'Subtotal',
-                            value:this.moneyformat(res.data.data.connote[0].amount_total_price),
+                            value:this.moneyformat(response.amount_total_price),
                         },
                         {
                             key:'Special Tariff',
-                            value:res.data.data.connote[0].special_tariff,
+                            value:response.special_tariff,
                         },
                         {
                             key:'Total',
-                            value:this.moneyformat(res.data.data.connote[0].amount_total_price + special_tariff),
+                            value:this.moneyformat(total),
                         }
                     ];
                     dataInformation = [
                         {
                             key : 'Deskripsi barang',
-                            value: res.data.data.connote[0].description,
+                            value: response.description,
                             width: 6
                         },
                         {
                             key : 'Insured Value',
-                            value: res.data.data.connote[0].amount_insurance ? 'Rp '+ res.data.data.connote[0].amount_insurance : 'Rp 0,00',
+                            value: response.amount_insurance ? 'Rp '+ response.amount_insurance : 'Rp 0,00',
                             width: 6
                         },
                         {
                             key : 'kategori Barang',
-                            value: res.data.data.connote[0].connote_category,
+                            value: response.connote_category,
                             width: 6
                         },
                         {
                             key : 'Service',
-                            value: res.data.data.connote[0].connote_service_code,
+                            value: response.connote_service_code,
                             width: 6
                         },
                         {
                             key : 'Remark',
-                            value: res.data.data.connote[0].remarks ? res.data.data.connote[0].remarks : 'N/A',
+                            value: response.remarks ? response.remarks : 'N/A',
                             width: 6
                         },
                         {
                             key : 'Actual Weight',
-                            value: res.data.data.connote[0].connote_actual_weight + ' Kg',
+                            value: response.connote_actual_weight + ' Kg',
                             width: 6
                         },
                        
                         {
                             key : 'Charged Weight',
-                            value: res.data.data.connote[0].connote_chargeable_weight + ' Kg',
+                            value: response.connote_chargeable_weight + ' Kg',
                             width: 6
                         },
                         {
                             key : 'Jumlah',
-                            value: res.data.data.connote[0].koli_qty + ' Pcs',
+                            value: response.koli_qty + ' Pcs',
                             width: 6
                         },
                          {
