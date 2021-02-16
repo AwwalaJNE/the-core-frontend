@@ -111,6 +111,9 @@ import CashLess from "@/views/report/cashless"
 import irreguralitiesCancel from "@/views/irreguralities/cancel/index.vue"
 import irreguralitiesReturn from "@/views/irreguralities/return/index.vue"
 
+// === Cost To Cost ===
+import CostToCostSetting from "@/views/costToCost/setting"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -494,6 +497,15 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Cod History"
+        }
+      },
+      {
+        path: "/costing/list",
+        name: "CostToCostSetting",
+        component: CostToCostSetting,
+        meta: {
+            requiresAuth: true,
+            breadCrumb: "Cost To Cost"
         }
       },
     ],
