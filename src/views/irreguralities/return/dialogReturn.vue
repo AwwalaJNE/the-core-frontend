@@ -82,7 +82,6 @@
                                             :selectedValue="selectedStatusCode"
                                             :isMultiple="false"
                                             @updateValue="updateValue" />
-                                            
                                         </div>
                                     </template>
                                 </vs-col>
@@ -176,7 +175,7 @@ export default {
     watch: {
         active: function (val) {
             if (val == true) {
-                this.getDataStatus()
+                
             }
         }
     },
@@ -359,6 +358,7 @@ export default {
                         }
                     }
                     // this.AltAddress()
+                    this.getDataStatus()
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
@@ -367,6 +367,7 @@ export default {
         },
         async getDataStatus(){
             this.loading = true
+            let self = this
             await axios
                 .get(this.URL.status + 
                 `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
@@ -376,14 +377,14 @@ export default {
                         let arr = []
                         res.data.data.map(item => {
                             if(item.hasOwnProperty('status_subtype')) {
-                                
+                                if(item['status_subtype'].toLowerCase().includes('return')) {
                                     let obj = {}
-                                    obj["label"] = item.status_description
+                                    obj["label"] = `${item.status_description} (${self.selectedStatusCode})`
                                     obj["value"] = item.status_id
                                     obj["item"] = item
 
                                     arr.push(obj)
-                                
+                                }
                             }
                         })
 

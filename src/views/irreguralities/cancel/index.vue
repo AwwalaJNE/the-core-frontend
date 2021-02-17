@@ -167,7 +167,7 @@ export default {
             }
             await axios
                 .get(this.URL.irregularities +
-                `?n=${this.listenNodeId}&irregularity_type=CANCEL&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                `?n=${this.listenNodeId}&irregularity_type=CANCELED&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
                     // this.dataTable = res.data.data

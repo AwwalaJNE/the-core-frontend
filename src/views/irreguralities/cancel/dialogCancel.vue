@@ -118,7 +118,7 @@ export default {
                     console.log('status_code', val, obj)
                     if(Object.keys(obj).length > 0) {
                         if(obj.hasOwnProperty('item')) {
-                            this.irregularity_type = obj.item.status_type || ''
+                            this.irregularity_type = obj.item.status_subtype || ''
                             this.irregularity_status_code = obj.item.status_code || ''
                         }
                     }
