@@ -100,4 +100,7 @@ export default {
     //irregularities
     irregularities: api + "irregularities",
 
+    //cost to cost
+    cost_to_cost: api + "cost-to-cost",
+
 }

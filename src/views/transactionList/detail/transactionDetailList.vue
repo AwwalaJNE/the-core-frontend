@@ -54,72 +54,72 @@ export default {
                 },
                 {
                     label: "Koli",
-                    key: "tariff_origin",
+                    key: "koli_qty",
                     width: "auto"
                 },
                 {
                     label: "From",
-                    key: "tariff_destination",
+                    key: "connote_shipper_name",
                     width: "auto"
                 },
                 {
                     label: "To",
-                    key: "transaction_amount",
+                    key: "connote_receiver_name",
                     width: "auto"
                 },
                 {
                     label: "Service",
-                    key: "tariff_amount_1",
+                    key: "connote_service_code",
                     width: "auto"
                 },
                 {
                   label: "Origin",
-                  key: "transaction_date",
-                  width: "sm"
+                  key: "connote_shipper_tlc",
+                  width: "xs"
                 },
                 {
                   label: "Destination",
-                  key: "payment_type_name",
-                  width: "auto"
+                  key: "connote_receiver_tlc",
+                  width: "xs"
                 },
                 {
                   label: "Date",
                   key: "created_at",
-                  width: "auto"
+                  width: "xs"
                 },
                 {
                   label: "Due Date",
-                  key: "created_at",
-                  width: "auto"
+                  key: "connote_sla_date",
+                  width: "xs"
                 },
                 {
                   label: "Amount",
-                  key: "created_at",
+                  key: "amount_price",
                   width: "auto"
                 },
                 {
                   label: "Surcharges",
-                  key: "created_at",
+                  key: "amount_surcharge",
                   width: "auto"
                 },
                 {
                   label: "Insurance",
-                  key: "created_at",
+                  key: "amount_insurance",
                   width: "auto"
                 },
                 {
                   label: "Adm. Fee",
-                  key: "created_at",
-                  width: "auto"
+                  key: "amount_adm_insurance",
+                  width: "sm"
                 },
                 {
                   label: "Discount",
-                  key: "created_at",
+                  key: "amount_discount",
                   width: "auto"
                 },
                 {
                   label: "Total",
-                  key: "created_at",
+                  key: "amount_total_price",
                   width: "auto"
                 },
 

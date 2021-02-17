@@ -26,19 +26,21 @@
                               <selector-origin
                                   :title="'From'"
                                   :valueData="originData"
+                                  :tlc="originTlc"
                                   @updateInfo="updateInfo" />
                             </vs-col>
 
                             <vs-col xs="4" sm="4" lg="4">
                               <selector-detail
                                   :title="'To'"
-                                  :valueData="originData"
+                                  :valueData="destinationData"
+                                  :tlc="destinationTlc"
                                   @updateInfo="updateInfo" />
                             </vs-col>
                             <vs-col xs="4" sm="4" lg="4">
                               <selector-detail
                                   :title="'Information'"
-                                  :valueData="originData"
+                                  :valueData="informationData"
                                   @updateInfo="updateInfo" />
                             </vs-col>
                           </vs-row>
@@ -101,36 +103,18 @@ export default {
             title: "Connote List",
             dataRole: [],
             loadingDataRole: false,
-
             loading: false,
             dataItem: {},
             tempSearch: "",
             dialogRole: false,
             refreshInject:"",
-            originData:[
-              {
-                label: 'Nama',
-                value: 'Pengirim A',
-                key: ''
-              },
-              {
-                label: 'Alamat',
-                value: 'Jakarta Barat',
-                key: ''
-              },
-              {
-                label: 'Kode Pos',
-                value: '67828',
-                key: 'kodepos'
-              },
-              {
-                label: 'Kode Asal',
-                value: 'CGKH678',
-                key: 'kodeasal'
-              }
-
-            ],
+            originData:[],
+            destinationData:[],
+            originTlc:'',
+            destinationTlc:'',
+            informationData:[],
             statusinventory:"",
+            connote_number:''
 
         }
     },
@@ -176,8 +160,168 @@ export default {
         },
         closeDialogRole() {
             this.dialogRole = false
-        }
+        },
+        getParamRoute(){
+          if(this.$route.params.id){
+            this.connote_number = this.$route.params.id
+          }
+        },
+        async getConnote() {
+            await axios
+                .get(this.URL.connote +`/${this.connote_number}?n=${this.listenNodeId}`,
+                this.Helper.header())
+                .then(res => {
+                    let response = res.data.data;
+                    let dataorigin={};
+                    let dataDestination={}; 
+                    let dataInformation={}; 
+                    dataorigin = [
+                        {
+                            key : 'Nama',
+                            value: response.connote_shipper_name
+                        },
+                        {
+                            key : 'Phone',
+                            value: response.connote_shipper_phone_number
+                        },
+                        {
+                            key : 'Alamat',
+                            value: response.connote_shipper_street_address
+                        },
+                        {
+                            key : 'Kode Pos',
+                            value: response.connote_shipper_zip_code,
+                            width: 6
+                        },
+                        {
+                            key : 'Kode Asal',
+                            value: response.connote_shipper_tariff_code,
+                             width: 6
+                        }
+                    ]
+                    this.originData = dataorigin  
+                    this.originTlc = response.connote_shipper_tlc  
+                    this.destinationTlc = response.connote_receiver_tlc  
+   
+                    dataDestination = [
+                        {
+                            key : 'Nama',
+                            value: response.connote_receiver_name
+                        },
+                        {
+                            key : 'Phone',
+                            value: response.connote_receiver_phone_number
+                        },
+                        {
+                            key : 'Alamat',
+                            value: response.connote_receiver_street_address
+                        },
+                        {
+                            key : 'Kode Pos',
+                            value: response.connote_receiver_zip_code,
+                            width: 6
+                        },
+                        {
+                            key : 'Kode Asal',
+                            value: response.connote_receiver_tariff_code,
+                            width: 6
+                        }
+                    ];
+                    this.destinationData = dataDestination
+                    let special_tariff = response.special_tariff ? response.special_tariff : 0;
+                    let total =parseInt(response.amount_adm_insurance )+parseInt(response.amount_insurance) + parseInt(response.amount_surcharge) + parseInt(response.amount_total_price)
+                    let packing=[
+                        {
+                            key:'Packing Kayu',
+                            value:response.is_packing_kayu,
+                        },
+                        {
+                            key:'Insurance Admin',
+                            value:this.moneyformat(response.amount_adm_insurance),
+                        },
+                        {
+                            key:'Insurance',
+                            value:this.moneyformat(response.amount_insurance),
+                        },
+                        {
+                            key:'Surcharges',
+                            value:this.moneyformat(response.amount_surcharge),
+                        },
+                        
+                        {
+                            key:'Subtotal',
+                            value:this.moneyformat(response.amount_total_price),
+                        },
+                        {
+                            key:'Special Tariff',
+                            value:response.special_tariff,
+                        },
+                        {
+                            key:'Total',
+                            value:this.moneyformat(total),
+                        }
+                    ];
+                    dataInformation = [
+                        {
+                            key : 'Deskripsi barang',
+                            value: response.description,
+                            width: 6
+                        },
+                        {
+                            key : 'Insured Value',
+                            value: response.amount_insurance ? 'Rp '+ response.amount_insurance : 'Rp 0,00',
+                            width: 6
+                        },
+                        {
+                            key : 'kategori Barang',
+                            value: response.connote_category,
+                            width: 6
+                        },
+                        {
+                            key : 'Service',
+                            value: response.connote_service_code,
+                            width: 6
+                        },
+                        {
+                            key : 'Remark',
+                            value: response.remarks ? response.remarks : 'N/A',
+                            width: 6
+                        },
+                        {
+                            key : 'Actual Weight',
+                            value: response.connote_actual_weight + ' Kg',
+                            width: 6
+                        },
+                       
+                        {
+                            key : 'Charged Weight',
+                            value: response.connote_chargeable_weight + ' Kg',
+                            width: 6
+                        },
+                        {
+                            key : 'Jumlah',
+                            value: response.koli_qty + ' Pcs',
+                            width: 6
+                        },
+                         {
+                            key : 'Packing Kayu',
+                            value: packing,
+                        },
+                        
+                       
+                    ]  
+                    this.informationData = dataInformation
+
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to populate list', err)
+                })
+        },
     },
+    mounted(){
+        this.getParamRoute();
+        this.getConnote();
+    }
 }
 </script>
 <style lang="scss">
