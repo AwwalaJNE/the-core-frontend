@@ -1545,5 +1545,123 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_IRREGURALITIES_RETURN_DESTINATION_TARIFF_CODE_ValueData({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_TARIFF_CODE_ValueData', payload)
   },
-  /* IRREGULARITIES RETURN END*/    
+  /* IRREGULARITIES RETURN END*/   
+  
+  //===== ACTION Cost To Cost Setting=======
+  SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID', payload)
+  },
+  SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ArrData', payload)
+  },
+
+  SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID', payload)
+  },
+  SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ArrData', payload)
+  },
+
+  SET_COST_TO_COST_SETTING_COST_GROUP_CODE({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_GROUP_CODE', payload)
+  },
+  SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ArrData', payload)
+  },
+
+  SET_COST_TO_COST_SETTING_RULE_CONDITION({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_RULE_CONDITION', payload)
+  },
+  SET_COST_TO_COST_SETTING_RULE_CONDITION_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_RULE_CONDITION_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_SETTING_RULE_CONDITION_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_RULE_CONDITION_ArrData', payload)
+  },
+
+  SET_COST_TO_COST_SETTING_CONDITION({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_CONDITION', payload)
+  },
+  SET_COST_TO_COST_SETTING_CONDITION_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_CONDITION_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_SETTING_CONDITION_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_CONDITION_ArrData', payload)
+  },
+
+  SET_COST_TO_COST_SETTING_RULE_VALUE({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_RULE_VALUE', payload)
+  },
+  SET_COST_TO_COST_SETTING_RULE_VALUE_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_RULE_VALUE_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_SETTING_RULE_VALUE_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_RULE_VALUE_ArrData', payload)
+  },
+
+  SET_COST_TO_COST_SETTING_COST_TYPE_CODE({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_TYPE_CODE', payload)
+  },
+  SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ArrData', payload)
+  },
+
+  SET_COST_TO_COST_SETTING_MIN_KG({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_MIN_KG', payload)
+  },
+  SET_COST_TO_COST_SETTING_MIN_KG_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_MIN_KG_ValueData', payload)
+  },
+
+  SET_COST_TO_COST_SETTING_MAX_KG({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_MAX_KG', payload)
+  },
+  SET_COST_TO_COST_SETTING_MAX_KG_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_MAX_KG_ValueData', payload)
+  },
+
+  SET_COST_TO_COST_SETTING_COST_VALUE({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_VALUE', payload)
+  },
+  SET_COST_TO_COST_SETTING_COST_VALUE_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_COST_VALUE_ValueData', payload)
+  },
+
+  SET_COST_TO_COST_SETTING_NAME({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_NAME', payload)
+  },
+  SET_COST_TO_COST_SETTING_NAME_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_NAME_ValueData', payload)
+  },
+
+  SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME', payload)
+  },
+  SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ArrData', payload)
+  },
+  //===== END ACTION Cost To Cost Setting=======
 }

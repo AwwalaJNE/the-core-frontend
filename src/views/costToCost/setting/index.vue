@@ -41,6 +41,14 @@
             </div>
         </section>
 
+        <!-- dialog new edit costing setting-->
+        <dialogCreateEditCostingSetting
+            :active="dialogNewEditCostingSetting"
+            @refresh="refresh"
+            :withSchedule="false"
+            :closeDialog="closeDialogPickupList"
+            title="Create Cost To Cost Setting"
+        />
     </div>
 </template>
 <script>
@@ -53,6 +61,8 @@ import SearchInput from "@/components/search/searchInput"
 
 import CostToCostList from "@/views/costToCost/setting/costToCostSettingList"
 
+import DialogCreateEditCostingSetting from "@/views/costToCost/setting/dialogCreateEditCostingSetting"
+
 
 
 export default {
@@ -63,11 +73,14 @@ export default {
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
         "CostToCostList": CostToCostList,
+        "dialogCreateEditCostingSetting":DialogCreateEditCostingSetting
     },
     data() {
         return {
             title:"List",
             tempSearch: "",
+            dialogNewEditCostingSetting:false,
+
         }
     },
     methods: {
@@ -85,7 +98,10 @@ export default {
         },
 
         openDialog(){
-            this.$router.push('/inbound/prealert/scan')
+           this.dialogNewEditCostingSetting = true
+        },
+        closeDialogPickupList() {
+          this.dialogNewEditCostingSetting = false
         },
 
        
