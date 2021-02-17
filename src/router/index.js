@@ -108,8 +108,10 @@ import DeliveryCodHistory from "@/views/delivery/codHistory"
 import CashLess from "@/views/report/cashless"
 
 // === Irreguralities ===
-import irreguralitiesCancel from "@/views/irreguralities/cancel/index.vue"
-import irreguralitiesReturn from "@/views/irreguralities/return/index.vue"
+import irreguralitiesCancel from "@/views/irreguralities/cancel"
+import irreguralitiesReturn from "@/views/irreguralities/return"
+import irreguralitiesProblem from "@/views/irreguralities/problem"
+import irreguralitiesHold from "@/views/irreguralities/hold"
 
 Vue.use(VueRouter)
 
@@ -307,6 +309,25 @@ const routes = [
               breadCrumb: "return"
             }
           },
+          {
+            path: "problem",
+            name: "irreguralities-problem",
+            component: irreguralitiesProblem,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "problem"
+            }
+          },
+          {
+            path: "hold",
+            name: "irreguralities-hold",
+            component: irreguralitiesHold,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "hold"
+            }
+          },
+          
         ],
         meta: { 
           requiresAuth: true,

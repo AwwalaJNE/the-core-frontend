@@ -23,27 +23,30 @@
                     </vs-col>
                 </vs-row>
 
+                
+
                 <template v-if="Object.keys(dataItem).length > 0">
+                    <hr>
                     <vs-row justify="space-between">
                         <vs-col xs="6" sm="6" lg="6">
                             <vs-row justify="space-between">
                                 <vs-col xs="12" sm="12" lg="12">
                                     <template>
                                         <div>
-                                            <template>
-                                                <div>
-                                                    
+                                            <template v-if="alt_address_arr.length > 0">
+                                                <div class="mt-1">
+                                                    <selector 
+                                                    :ref="''"
+                                                    name="Alternate Address" 
+                                                    :rules="''" 
+                                                    formKey="alt_address"
+                                                    :valueData="alt_address_arr"
+                                                    :selectedValue="''"
+                                                    :isMultiple="false"
+                                                    @updateValue="updateValue" />
                                                 </div>
                                             </template>
-                                            <selector 
-                                            :ref="''"
-                                            name="Alternate Address" 
-                                            :rules="''" 
-                                            formKey="alt_address"
-                                            :valueData="alt_address_arr"
-                                            :selectedValue="''"
-                                            :isMultiple="false"
-                                            @updateValue="updateValue" />
+                                            
                                         </div>
                                         <div style="position:relative;display:flex;justify-content:flex-end;">
                                             <vs-switch v-model="isEdit">
@@ -181,6 +184,7 @@ export default {
         return {
             form: {},
             alt_address_arr: [],
+            alt_address_obj: {},
             
             connote_number: '',
             loading: true,
@@ -209,8 +213,16 @@ export default {
             obj['irregularity_status_description'] = this.dataItem['irregularity_status_description']
             obj['remark'] = this.remark
 
-            let connote = []
-            connote.push(form)
+            let connote = {}
+            // connote = {...form}
+            connote['connote_receiver_tariff_code'] = form.tariff_code
+            connote['connote_receiver_zip_code'] = form.zip_code
+            connote['connote_receiver_administrative_address'] = form.destination_onchange_address
+            connote['connote_receiver_street_address'] = form.destination_address
+            connote['connote_receiver_customer_id'] = form.tariff_code
+            connote['connote_receiver_name'] = form.tariff_code
+            connote['connote_receiver_phone_number'] = form.tariff_code
+            connote['connote_receiver_address_type'] = form.tariff_code
 
             obj['connote'] = connote
 
@@ -242,15 +254,25 @@ export default {
         updateValue(key, val, info){
             switch(key) {
                 case "alt_address":
+                    let prefix = 'IRREGURALITIES_RETURN_DESTINATION'
+                    let obj = this.$store.getters['getInputs']['irreguralities_return_destination']
+                    let Keys = []
+
+                    let selectedData = this.alt_address_obj[val] ? this.alt_address_obj[val] : {}
+
+                    if(Object.keys(selectedData).length > 0) {
+                        if (Object.keys(obj).length > 0) {
+                            Keys = Object.keys(obj)
+                            Keys.map(item => {
+                                let action = item.toUpperCase()
+                                if(selectedData.hasOwnProperty(item)) {
+                                    this.$store.dispatch(`SET_${prefix}_${action}`, selectedData[item])
+                                }
+                            })
+                        }
+                    }
+
                     
-                    // let obj = this.alt_address_arr.filter(item => item.value == val)[0]
-                    // console.log('alt_address', val, obj)
-                    // if(Object.keys(obj).length > 0) {
-                    //     if(obj.hasOwnProperty('item')) {
-                    //         // this.irregularity_type = obj.item.status_type || ''
-                    //         // this.irregularity_alt_address = obj.item.alt_address || ''
-                    //     }
-                    // }
                     break;
                 case "connote_number":
                     this.connote_number= val
@@ -271,14 +293,14 @@ export default {
                     if(res.data) {
                         let obj = {}
 
-                        obj['destination_type'] = res.data.koli.connote.connote_receiver_address_type.toLowerCase() || 'rumah'
-                        obj['destination_name'] = res.data.koli.connote.connote_receiver_name || ''
-                        obj['destination_phone'] = res.data.koli.connote.connote_receiver_phone_number || ''
-                        obj['destination_address'] = res.data.koli.connote.connote_receiver_street_address || ''
+                        obj['destination_type'] = 'rumah' // res.data.koli.connote.connote_shipper_address_type.toLowerCase() || 'rumah'
+                        obj['destination_name'] = res.data.koli.connote.connote_shipper_name || ''
+                        obj['destination_phone'] = res.data.koli.connote.connote_shipper_phone_number || ''
+                        obj['destination_address'] = res.data.koli.connote.connote_shipper_street_address || ''
                         obj['destination_onchange_address'] = res.data.koli.connote.connote_shipper_administrative_address || ''
-                        obj['destination_subdistrict_id'] = res.data.koli.connote.connote_receiver_geolocation_subdistrict_id || ''
-                        obj['zip_code'] = res.data.koli.connote.connote_receiver_zip_code || ''
-                        obj['tariff_code'] = res.data.koli.connote.connote_receiver_tariff_code || ''
+                        obj['destination_subdistrict_id'] = res.data.koli.connote.connote_shipper_geolocation_subdistrict_id || ''
+                        obj['zip_code'] = res.data.koli.connote.connote_shipper_zip_code || ''
+                        obj['tariff_code'] = res.data.koli.connote.connote_shipper_tariff_code || ''
 
                         obj['remark'] = res.data.remark || ''
                         obj['irregularity_id'] = res.data.irregularity_id || ''
@@ -299,29 +321,47 @@ export default {
                         this.selectedStatusCode = res.data.irregularity_status_code.toLowerCase() || ''
                         this.remark = res.data.remark
                         this.node_id = res.data.node_id
-                    }
-                    this.AltAddress()
-                    this.loading = false
-                }).catch(err => {
-                    this.loading = false
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
-        async AltAddress(){
-            this.alt_address_arr = [{'label': null,'value': null}]
-            await axios
-                .get(this.URL.node_alternate_address + 
-                `/${this.node_id}?n=${this.listenNodeId}`, 
-                this.Helper.header())
-                .then(res => {
-                    console.log('AltAddress',res.data.data)
-                    if(res.data) {
-                        let data = res.data
 
-                        
+                        if(res.data.koli.connote.hasOwnProperty('shipper_customer')) {
+                            if(res.data.koli.connote['shipper_customer'].hasOwnProperty('customer_shipper_alternatif_address')) {
+                                let altAddress = res.data.koli.connote['shipper_customer']['customer_shipper_alternatif_address'] || []
+                                let altAddressObj = {}
+                                let altAddressArr = []
+
+                                
+
+                                altAddress.map(item => {
+                                    let obj = {}
+                                    obj['destination_address'] = item.node_alternate_address_address || ''
+                                    obj['destination_onchange_address'] = item.node_alternate_address_address || ''
+                                    obj['destination_subdistrict_id'] = item.node_alternate_address_subdistrict_id || ''
+                                    obj['zip_code'] = item.node_alternate_address_zip_code || ''
+                                    obj['tariff_code'] = item.node_alternate_address_tariff_code || ''
+                                    obj['destination_name'] = item.node_alternate_address_name || ''
+                                    obj['destination_phone'] = item.node_alternate_address_phone || ''
+
+                                    altAddressObj[item.node_alternate_address_id] = obj
+
+                                    let objArr = {}
+                                    objArr['label'] = item.node_alternate_address_name
+                                    objArr['value'] = item.node_alternate_address_id
+
+                                    altAddressArr.push(objArr)
+                                    
+                                })
+
+                                this.alt_address_arr = altAddressArr
+                                this.alt_address_obj = altAddressObj
+                                console.log('altAddressObj', altAddressObj, altAddressArr)
+
+
+                            }
+                        }
                     }
-                    
+                    // this.AltAddress()
+                    this.loading = false
                 }).catch(err => {
+                    this.loading = false
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
@@ -398,7 +438,6 @@ export default {
             }
         },
         onChangeCustom(key, val){
-            console.log(key, val)
             if(key == 'destination_onchange_address') {
                 this.query = val
             }
@@ -411,7 +450,39 @@ export default {
         },
         selectedDataLocation(val){
             console.log(val)
+            let data = val || {}
+            if(Object.keys(data).length > 0) {
+                let obj = {}
+                obj['destination_address'] = data.geolocation_location_name || ''
+                obj['destination_onchange_address'] = data.geolocation_location_name || ''
+                obj['destination_subdistrict_id'] = data.geolocation_subdistrict_id || ''
+                obj['zip_code'] = data.geolocation_subdistrict_zip_code || ''
+                obj['tariff_code'] = data.geolocation_subdistrict_tarif_code || ''
+
+                this.dispatchStore(obj)
+            }
         },
+
+        dispatchStore(val) {
+            let prefix = 'IRREGURALITIES_RETURN_DESTINATION'
+            let obj = this.$store.getters['getInputs']['irreguralities_return_destination']
+            let Keys = []
+
+            let selectedData = val || {}
+
+            if(Object.keys(selectedData).length > 0) {
+                if (Object.keys(obj).length > 0) {
+                    Keys = Object.keys(obj)
+                    Keys.map(item => {
+                        let action = item.toUpperCase()
+                        if(selectedData.hasOwnProperty(item)) {
+                            this.$store.dispatch(`SET_${prefix}_${action}`, selectedData[item])
+                        }
+                    })
+                }
+            }
+        },
+
         cancel() {
             this.handleClearForm()
             this.closeDialog()
