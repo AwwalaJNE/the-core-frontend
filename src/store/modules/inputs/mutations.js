@@ -1597,5 +1597,131 @@ export default {
     state.irreguralities_return_destination.tariff_code.valueData = payload
   },
   /* IRREGULARITIES RETURN END*/
+
+  //======= MUTATION Cost to cost Setting=======
+  SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID(state, payload) {
+  state.cost_to_cost_setting.cost_owner_node_id.value = payload
+  },
+  SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ValueData(state, payload) {
+  state.cost_to_cost_setting.cost_owner_node_id.valueData = payload
+  },
+  SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ArrData(state, payload) {
+  state.cost_to_cost_setting.cost_owner_node_id.hasOwnProperty('arrData') ?
+  state.cost_to_cost_setting.cost_owner_node_id.arrData = payload :
+  state.cost_to_cost_setting.cost_owner_node_id.arrData = []
+  },
+
+  SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID(state, payload) {
+  state.cost_to_cost_setting.cost_payer_node_id.value = payload
+  },
+  SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ValueData(state, payload) {
+  state.cost_to_cost_setting.cost_payer_node_id.valueData = payload
+  },
+  SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ArrData(state, payload) {
+  state.cost_to_cost_setting.cost_payer_node_id.hasOwnProperty('arrData') ?
+  state.cost_to_cost_setting.cost_payer_node_id.arrData = payload :
+  state.cost_to_cost_setting.cost_payer_node_id.arrData = []
+  },
+
+  SET_COST_TO_COST_SETTING_COST_GROUP_CODE(state, payload) {
+  state.cost_to_cost_setting.cost_group_code.value = payload
+  },
+  SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ValueData(state, payload) {
+  state.cost_to_cost_setting.cost_group_code.valueData = payload
+  },
+  SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ArrData(state, payload) {
+  state.cost_to_cost_setting.cost_group_code.hasOwnProperty('arrData') ?
+  state.cost_to_cost_setting.cost_group_code.arrData = payload :
+  state.cost_to_cost_setting.cost_group_code.arrData = []
+  },
+
+  SET_COST_TO_COST_SETTING_RULE_CONDITION(state, payload) {
+  state.cost_to_cost_setting.rule_condition.value = payload
+  },
+  SET_COST_TO_COST_SETTING_RULE_CONDITION_ValueData(state, payload) {
+  state.cost_to_cost_setting.rule_condition.valueData = payload
+  },
+  SET_COST_TO_COST_SETTING_RULE_CONDITION_ArrData(state, payload) {
+  state.cost_to_cost_setting.rule_condition.hasOwnProperty('arrData') ?
+  state.cost_to_cost_setting.rule_condition.arrData = payload :
+  state.cost_to_cost_setting.rule_condition.arrData = []
+  },
+
+  SET_COST_TO_COST_SETTING_CONDITION(state, payload) {
+  state.cost_to_cost_setting.condition.value = payload
+  },
+  SET_COST_TO_COST_SETTING_CONDITION_ValueData(state, payload) {
+  state.cost_to_cost_setting.condition.valueData = payload
+  },
+  SET_COST_TO_COST_SETTING_CONDITION_ArrData(state, payload) {
+  state.cost_to_cost_setting.condition.hasOwnProperty('arrData') ?
+  state.cost_to_cost_setting.condition.arrData = payload :
+  state.cost_to_cost_setting.condition.arrData = []
+  },
+
+  SET_COST_TO_COST_SETTING_RULE_VALUE(state, payload) {
+  state.cost_to_cost_setting.rule_value.value = payload
+  },
+  SET_COST_TO_COST_SETTING_RULE_VALUE_ValueData(state, payload) {
+  state.cost_to_cost_setting.rule_value.valueData = payload
+  },
+  SET_COST_TO_COST_SETTING_RULE_VALUE_ArrData(state, payload) {
+  state.cost_to_cost_setting.rule_value.hasOwnProperty('arrData') ?
+  state.cost_to_cost_setting.rule_value.arrData = payload :
+  state.cost_to_cost_setting.rule_value.arrData = []
+  },
+
+  SET_COST_TO_COST_SETTING_COST_TYPE_CODE(state, payload) {
+  state.cost_to_cost_setting.cost_type_code.value = payload
+  },
+  SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ValueData(state, payload) {
+  state.cost_to_cost_setting.cost_type_code.valueData = payload
+  },
+  SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ArrData(state, payload) {
+  state.cost_to_cost_setting.cost_type_code.hasOwnProperty('arrData') ?
+  state.cost_to_cost_setting.cost_type_code.arrData = payload :
+  state.cost_to_cost_setting.cost_type_code.arrData = []
+  },
+
+  SET_COST_TO_COST_SETTING_MIN_KG(state, payload) {
+  state.cost_to_cost_setting.min_kg.value = payload
+  },
+  SET_COST_TO_COST_SETTING_MIN_KG_ValueData(state, payload) {
+  state.cost_to_cost_setting.min_kg.valueData = payload
+  },
+
+  SET_COST_TO_COST_SETTING_MAX_KG(state, payload) {
+  state.cost_to_cost_setting.max_kg.value = payload
+  },
+  SET_COST_TO_COST_SETTING_MAX_KG_ValueData(state, payload) {
+  state.cost_to_cost_setting.max_kg.valueData = payload
+  },
+
+  SET_COST_TO_COST_SETTING_COST_VALUE(state, payload) {
+  state.cost_to_cost_setting.cost_value.value = payload
+  },
+  SET_COST_TO_COST_SETTING_COST_VALUE_ValueData(state, payload) {
+  state.cost_to_cost_setting.cost_value.valueData = payload
+  },
+
+  SET_COST_TO_COST_SETTING_NAME(state, payload) {
+  state.cost_to_cost_setting.name.value = payload
+  },
+  SET_COST_TO_COST_SETTING_NAME_ValueData(state, payload) {
+  state.cost_to_cost_setting.name.valueData = payload
+  },
+
+  SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME(state, payload) {
+  state.cost_to_cost_setting.tracking_type_name.value = payload
+  },
+  SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ValueData(state, payload) {
+  state.cost_to_cost_setting.tracking_type_name.valueData = payload
+  },
+  SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ArrData(state, payload) {
+  state.cost_to_cost_setting.tracking_type_name.hasOwnProperty('arrData') ?
+  state.cost_to_cost_setting.tracking_type_name.arrData = payload :
+  state.cost_to_cost_setting.tracking_type_name.arrData = []
+  },
+  //======= END MUTATION Cost to cost Setting=======
     
 }

@@ -1846,5 +1846,137 @@ export default {
       value: ''
     }
   },
+
+  cost_to_cost_setting:{
+    cost_owner_node_id: {
+      label: "Cost Owner",
+      key: "cost_owner_node_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "12",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    cost_payer_node_id: {
+      label: "Cost Payer",
+      key: "cost_payer_node_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "12",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    cost_group_code: {
+      label: "Cost Group",
+      key: "cost_group_code",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "12",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    rule_condition: {
+      label: "Rules",
+      key: "rule_condition",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "4",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    condition: {
+      label: "Condition",
+      key: "condition",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "4",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    rule_value: {
+      label: "Value",
+      key: "rule_value",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "4",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    cost_type_code: {
+      label: "Cost Type",
+      key: "cost_type_code",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "12",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    min_kg: {
+      label: "Min(Kg)",
+      key: "min_kg",
+      rule: "required|numeric",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: '',
+      width: "4",
+    },
+    max_kg: {
+      label: "Max(Kg)",
+      key: "max_kg",
+      rule: "required|numeric",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: '',
+      width: "4",
+    },
+    cost_value: {
+      label: "Rp",
+      key: "cost_value",
+      rule: "required|numeric",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: '',
+      width: "4",
+    },
+    name: {
+      label: "Name",
+      key: "name",
+      rule:"required",
+      typeInput: "text",
+      typeData: "String",
+      width: "6",
+      valueData: null,
+      value: ''
+    },
+    tracking_type_name: {
+      label: "Activity",
+      key: "tracking_type_name",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+
+  },
   
 }

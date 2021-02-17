@@ -15,8 +15,8 @@
         @actionUpdate="actionUpdate"
         />
 
-      <!-- dialog confirm remove Costing-->
-      <dialog-confirm
+        <!-- dialog confirm remove Costing-->
+        <dialog-confirm
           :active="activeDialogRemove"
           :loading="activeLoadingRemove"
           :closeDialog="closeDialogConfirmRemove"
@@ -24,7 +24,17 @@
           message="Are you sure you want to Remove Costing ?"
           @confirm="confirmRemove"
           @cancel="closeDialogConfirmRemove"
-      />
+        />
+
+        <!-- dialog new edit costing setting-->
+        <dialogCreateEditCostingSetting
+            :active="dialogNewEditCostingSetting"
+            @refresh="refresh"
+            :withSchedule="false"
+            :closeDialog="closeDialogNewEditCostingSetting"
+            title="Edit Cost To Cost Setting"
+            :dataItem="dataItem"
+        />
 
     </div>
 </template>
@@ -33,6 +43,8 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
+import DialogCreateEditCostingSetting from "@/views/costToCost/setting/dialogCreateEditCostingSetting"
+
 export default {
     name:"Inbound-Incoming",
     mixins: [master],
@@ -43,12 +55,14 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
-        "dialog-confirm": DialogConfirm
+        "dialog-confirm": DialogConfirm,
+        "dialogCreateEditCostingSetting":DialogCreateEditCostingSetting,
     },
     data() {
         return {
             activeDialogRemove:false,
             activeLoadingRemove:false,
+            dialogNewEditCostingSetting:false,
             dataTable: [],
             datacolumn: [
                 {
@@ -120,14 +134,19 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
-                    this.dataTable = res.data.data
+                    let data = res.data.data;
+                    data.map(item=>{
+                        item['owner_name'] = item.cost_owner[0].node_name
+                        item['payer_name'] = item.cost_payer[0].node_name
+                    })
+                    this.dataTable = data
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
+                        this.openNotification('warn', 'tariff data is empty!', ' Please create cost to cost data')
                     }
                     
                     this.loading = false
@@ -166,7 +185,13 @@ export default {
            this.cost_to_cost_id = val.cost_to_cost_id;
         },
         actionUpdate(val){
-           console.log(val, 'val update')
+          if(this.dataTable.length > 0) {
+            this.dataItem = val
+            this.dataItem.cost_to_cost_id = val.cost_to_cost_id
+            this.$nextTick(() => {
+              this.dialogNewEditCostingSetting = true
+            });
+          }
         },
         async removeCosting(){
             await axios
@@ -197,6 +222,9 @@ export default {
           this.activeDialogRemove = false
           this.activeLoadingRemove=false
           this.cost_to_cost_id = ""
+        },
+        closeDialogNewEditCostingSetting() {
+          this.dialogNewEditCostingSetting = false
         },
 
     },
