@@ -180,13 +180,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Surat Muatan data is empty!', ' Please create Surat Muatan data')
+                        this.openNotification('warn', 'Irreguralities Hold data is empty!', ' Please create Irreguralities Hold data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Surat Muatan', err)
+                    this.openNotification('danger', 'Failed to populate Irreguralities Hold', err)
                 })
         },
         async handleSubmit() {
