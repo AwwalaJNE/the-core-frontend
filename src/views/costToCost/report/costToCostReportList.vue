@@ -9,6 +9,8 @@
         :limit="pagination.limit"
         :hasAction="false"
         :hasPagination="true"
+        :customBtn="true"
+        customBtn_label="PRINT"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @actionRemove="actionRemove"
@@ -154,11 +156,10 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     let data = res.data.data;
-                     console.log(data,'dataaaaa')
                     data.map(item=>{
                         item['name'] = item.cost_to_cost.name
-                        item['owner_name'] = item.cost_to_cost.cost_owner[0].node_name
-                        item['payer_name'] = item.cost_to_cost.cost_payer[0].node_name
+                        item['owner_name'] = item.cost_to_cost.cost_owner[0] ? item.cost_to_cost.cost_owner[0].node_name : null
+                        item['payer_name'] = item.cost_to_cost.cost_payer[0] ? item.cost_to_cost.cost_payer[0].node_name : null
                         item['cost_group_code'] = item.cost_to_cost.cost_group_code
                     })
                    
@@ -208,13 +209,7 @@ export default {
            this.cost_to_cost_id = val.cost_to_cost_id;
         },
         actionUpdate(val){
-          if(this.dataTable.length > 0) {
-            this.dataItem = val
-            this.dataItem.cost_to_cost_id = val.cost_to_cost_id
-            this.$nextTick(() => {
-              this.dialogNewEditCostingSetting = true
-            });
-          }
+          console.log(val,'val up print')
         },
         async removeCosting(){
             await axios

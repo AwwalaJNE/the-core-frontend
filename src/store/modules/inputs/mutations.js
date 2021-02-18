@@ -1723,5 +1723,70 @@ export default {
   state.cost_to_cost_setting.tracking_type_name.arrData = []
   },
   //======= END MUTATION Cost to cost Setting=======
+
+
+  //======= Cost To Cost Report =======
+  SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID(state, payload) {
+  state.cost_to_cost_report.cost_owner_node_id.value = payload
+  },
+  SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ValueData(state, payload) {
+  state.cost_to_cost_report.cost_owner_node_id.valueData = payload
+  },
+  SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ArrData(state, payload) {
+  state.cost_to_cost_report.cost_owner_node_id.hasOwnProperty('arrData') ?
+  state.cost_to_cost_report.cost_owner_node_id.arrData = payload :
+  state.cost_to_cost_report.cost_owner_node_id.arrData = []
+  },
+
+  SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID(state, payload) {
+  state.cost_to_cost_report.cost_payer_node_id.value = payload
+  },
+  SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ValueData(state, payload) {
+  state.cost_to_cost_report.cost_payer_node_id.valueData = payload
+  },
+  SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ArrData(state, payload) {
+  state.cost_to_cost_report.cost_payer_node_id.hasOwnProperty('arrData') ?
+  state.cost_to_cost_report.cost_payer_node_id.arrData = payload :
+  state.cost_to_cost_report.cost_payer_node_id.arrData = []
+  },
+
+  SET_COST_TO_COST_REPORT_COST_GROUP_CODE(state, payload) {
+  state.cost_to_cost_report.cost_group_code.value = payload
+  },
+  SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ValueData(state, payload) {
+  state.cost_to_cost_report.cost_group_code.valueData = payload
+  },
+  SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ArrData(state, payload) {
+  state.cost_to_cost_report.cost_group_code.hasOwnProperty('arrData') ?
+  state.cost_to_cost_report.cost_group_code.arrData = payload :
+  state.cost_to_cost_report.cost_group_code.arrData = []
+  },
+  SET_COST_TO_COST_REPORT_NAME(state, payload) {
+  state.cost_to_cost_report.name.value = payload
+  },
+  SET_COST_TO_COST_REPORT_NAME_ValueData(state, payload) {
+  state.cost_to_cost_report.name.valueData = payload
+  },
+  SET_COST_TO_COST_REPORT_NAME_ArrData(state, payload) {
+  state.cost_to_cost_report.name.hasOwnProperty('arrData') ?
+  state.cost_to_cost_report.name.arrData = payload :
+  state.cost_to_cost_report.name.arrData = []
+  },
+
+  SET_COST_TO_COST_REPORT_DATE_FROM(state, payload) {
+  state.cost_to_cost_report.date_from.value = payload
+  },
+  SET_COST_TO_COST_REPORT_DATE_FROM_ValueData(state, payload) {
+  state.cost_to_cost_report.date_from.valueData = payload
+  },
+
+  SET_COST_TO_COST_REPORT_DATE_TO(state, payload) {
+  state.cost_to_cost_report.date_to.value = payload
+  },
+  SET_COST_TO_COST_REPORT_DATE_TO_ValueData(state, payload) {
+  state.cost_to_cost_report.date_to.valueData = payload
+  },
+
+  //======= Cost To Cost Report =======
     
 }

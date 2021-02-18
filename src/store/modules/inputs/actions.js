@@ -1664,4 +1664,65 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   commit('SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ArrData', payload)
   },
   //===== END ACTION Cost To Cost Setting=======
+
+
+  //======= ACTION COSTING REPORT=======
+  SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID', payload)
+  },
+  SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ArrData', payload)
+  },
+
+  SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID', payload)
+  },
+  SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ArrData', payload)
+  },
+
+  SET_COST_TO_COST_REPORT_COST_GROUP_CODE({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_COST_GROUP_CODE', payload)
+  },
+  SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ArrData', payload)
+  },
+  SET_COST_TO_COST_REPORT_NAME({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_NAME', payload)
+  },
+  SET_COST_TO_COST_REPORT_NAME_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_NAME_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_COST_TO_COST_REPORT_NAME_ArrData({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_NAME_ArrData', payload)
+  },
+
+  SET_COST_TO_COST_REPORT_DATE_FROM({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_DATE_FROM', payload)
+  },
+  SET_COST_TO_COST_REPORT_DATE_FROM_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_DATE_FROM_ValueData', payload)
+  },
+
+  SET_COST_TO_COST_REPORT_DATE_TO({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_DATE_TO', payload)
+  },
+  SET_COST_TO_COST_REPORT_DATE_TO_ValueData({ commit }, payload) {
+  commit('SET_COST_TO_COST_REPORT_DATE_TO_ValueData', payload)
+  },
+  //======= END ACTION COSTING REPORT=======
+
 }
