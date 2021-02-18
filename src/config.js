@@ -102,5 +102,8 @@ export default {
 
     //cost to cost
     cost_to_cost: api + "cost-to-cost",
+    
+    //cost to cost Report
+    cost_to_cost_report: api + "cost-to-cost-report",
 
 }

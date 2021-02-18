@@ -116,6 +116,9 @@ import irreguralitiesHold from "@/views/irreguralities/hold"
 // === Cost To Cost ===
 import CostToCostSetting from "@/views/costToCost/setting"
 
+// === Cost To Cost ===
+import CostToCostReport from "@/views/costToCost/report"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -524,6 +527,15 @@ const routes = [
         path: "/costing/list",
         name: "CostToCostSetting",
         component: CostToCostSetting,
+        meta: {
+            requiresAuth: true,
+            breadCrumb: "Cost To Cost"
+        }
+      },
+      {
+        path: "/costing/report",
+        name: "CostToCostReport",
+        component: CostToCostReport,
         meta: {
             requiresAuth: true,
             breadCrumb: "Cost To Cost"
