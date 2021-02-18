@@ -1978,5 +1978,72 @@ export default {
     },
 
   },
+  cost_to_cost_report:{
+    cost_owner_node_id: {
+      label: "Cost Owner",
+      key: "cost_owner_node_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    cost_payer_node_id: {
+      label: "Cost Payer",
+      key: "cost_payer_node_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    cost_group_code: {
+      label: "Cost Group",
+      key: "cost_group_code",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    name: {
+      label: "Cost Name",
+      key: "name",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    date_from: {
+      label: "From",
+      key: "date_from",
+      rule:"required",
+      typeData: "String",
+      typeInput: "date",
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    date_to: {
+      label: "To",
+      key: "date_to",
+      rule:"required",
+      typeData: "String",
+      typeInput: "date",
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+
+  },
   
 }

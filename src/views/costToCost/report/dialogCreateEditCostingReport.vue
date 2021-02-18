@@ -11,10 +11,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formCostingSettingController"
+                    ref="formCostingReportController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="cost_to_cost_setting"
+                    typeForm="cost_to_cost_report"
                 />
             </div>
         </template>
@@ -80,7 +80,7 @@ export default {
     data() {
         return {
             form: {},
-            cosToCostId: '',
+            cost_report_id: '',
             dialogGetCustomer:false,
             listcostGroup :[
                 {
@@ -108,27 +108,27 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.cosToCostId = val.cost_to_cost_id
+                this.cost_report_id = val.cost_report_id
             }
         }
     },
     methods: {
         formData(form){
           this.node_id = this.listenNodeId
-          this.form = this.dataItem
-          if(this.cosToCostId !== undefined && this.cosToCostId !== ''){
-            this.updateData()
+          this.form = form
+          if(this.cost_report_id !== undefined && this.cost_report_id !== ''){
+            // this.updateData()
+            console.log('update')
           }else{
             this.addData()
           } 
-        //   this.addData()
 
         },
         handleSubmit(){
-            this.$refs.formCostingSettingController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formCostingReportController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formCostingSettingController.handleClearForm()
+            this.$refs.formCostingReportController.handleClearForm()
             this.form = {}
             this.node_id = ""
         },
@@ -145,7 +145,7 @@ export default {
           
         },
         initForm(){
-           this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ArrData", this.listcostGroup.length > 0 ? this.listcostGroup : null)
+           this.$store.dispatch("SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ArrData", this.listcostGroup.length > 0 ? this.listcostGroup : null)
         },
         async getDataNode(){
             await axios
@@ -163,8 +163,8 @@ export default {
                             arr.push(obj)
                         })
                         // this.dataNodeType = arr
-                        this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
-                        this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -173,29 +173,12 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-        async updateData(){
-            await axios
-                .put(
-                    this.URL.cost_to_cost + `/${this.node_id}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
-                    this.handleClearForm()
-                    this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification(null, 'Update success', 'Update cost_to_cost is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification('danger', 'Update failed', err)
-                })
-        },
+      
         async addData() {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.cost_to_cost + `?n=${this.listenNodeId}`,
+                    this.URL.cost_to_cost_report + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
