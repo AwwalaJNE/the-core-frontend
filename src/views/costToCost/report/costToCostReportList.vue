@@ -7,8 +7,10 @@
         :pageSize="pagination.page_size"
         :page="pagination.page"
         :limit="pagination.limit"
-        :hasAction="true"
+        :hasAction="false"
         :hasPagination="true"
+        :customBtn="true"
+        customBtn_label="PRINT"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @actionRemove="actionRemove"
@@ -65,29 +67,48 @@ export default {
             dialogNewEditCostingSetting:false,
             dataTable: [],
             datacolumn: [
+               
                 {
+                    label: "Cost Owner",
+                    key: "owner_name",
+                    width: "auto"
+                },
+                {
+                    label: "Cost Payer",
+                    key: "payer_name",
+                    width: "auto"
+                },
+                 {
                     label: "Group Code",
                     key: "cost_group_code",
                     width: "xs"
                 },
                 {
-                    label: "Name",
+                    label: "Cost Name",
                     key: "name",
                     width: "auto"
                 },
                 {
-                    label: "Owner Name",
-                    key: "owner_name",
+                    label: "Date From",
+                    key: "date_from",
                     width: "auto"
                 },
+                
                 {
-                    label: "Payer Name",
-                    key: "payer_name",
+                    label: "Date To",
+                    key: "date_to",
                     width: "auto"
                 },
+                
                 {
-                    label: "Activity",
-                    key: "tracking_type_name",
+                    label: "Jumlah Connote",
+                    key: "total_connote",
+                    width: "auto"
+                },
+                
+                {
+                    label: "Cost",
+                    key: "cost_value",
                     width: "auto"
                 }
             ],
@@ -130,15 +151,18 @@ export default {
               endDate = to
             }
             await axios
-                .get(this.URL.cost_to_cost +
+                .get(this.URL.cost_to_cost_report +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
                     let data = res.data.data;
                     data.map(item=>{
-                        item['owner_name'] = item.cost_owner[0].node_name
-                        item['payer_name'] = item.cost_payer[0].node_name
+                        item['name'] = item.cost_to_cost.name
+                        item['owner_name'] = item.cost_to_cost.cost_owner[0] ? item.cost_to_cost.cost_owner[0].node_name : null
+                        item['payer_name'] = item.cost_to_cost.cost_payer[0] ? item.cost_to_cost.cost_payer[0].node_name : null
+                        item['cost_group_code'] = item.cost_to_cost.cost_group_code
                     })
+                   
                     this.dataTable = data
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -185,13 +209,7 @@ export default {
            this.cost_to_cost_id = val.cost_to_cost_id;
         },
         actionUpdate(val){
-          if(this.dataTable.length > 0) {
-            this.dataItem = val
-            this.dataItem.cost_to_cost_id = val.cost_to_cost_id
-            this.$nextTick(() => {
-              this.dialogNewEditCostingSetting = true
-            });
-          }
+          console.log(val,'val up print')
         },
         async removeCosting(){
             await axios

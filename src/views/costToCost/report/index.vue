@@ -41,13 +41,13 @@
             </div>
         </section>
 
-        <!-- dialog new edit costing setting-->
-        <dialogCreateEditCostingSetting
-            :active="dialogNewEditCostingSetting"
+        <!-- dialog new edit costing Report-->
+        <dialogCreateEditCostingReport
+            :active="dialogNewEditCostingReport"
             @refresh="refresh"
             :withSchedule="false"
-            :closeDialog="closeDialogPickupList"
-            title="Create Cost To Cost Setting"
+            :closeDialog="closeDialogCostingReport"
+            title="Create Cost To Cost Report"
         />
     </div>
 </template>
@@ -59,27 +59,27 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 
-import CostToCostList from "@/views/costToCost/setting/costToCostSettingList"
+import CostToCostList from "@/views/costToCost/report/costToCostReportList"
 
-import DialogCreateEditCostingSetting from "@/views/costToCost/setting/dialogCreateEditCostingSetting"
+import DialogCreateEditCostingReport from "@/views/costToCost/report/dialogCreateEditCostingReport"
 
 
 
 export default {
-    name:"CostToCost-List",
+    name:"CostToCost-Report",
     mixins:[master],
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
         "CostToCostList": CostToCostList,
-        "dialogCreateEditCostingSetting":DialogCreateEditCostingSetting
+        "dialogCreateEditCostingReport":DialogCreateEditCostingReport
     },
     data() {
         return {
-            title:"List",
+            title:"Report",
             tempSearch: "",
-            dialogNewEditCostingSetting:false,
+            dialogNewEditCostingReport:false,
 
         }
     },
@@ -98,10 +98,10 @@ export default {
         },
 
         openDialog(){
-           this.dialogNewEditCostingSetting = true
+           this.dialogNewEditCostingReport = true
         },
-        closeDialogPickupList() {
-          this.dialogNewEditCostingSetting = false
+        closeDialogCostingReport() {
+          this.dialogNewEditCostingReport = false
         },
 
        
