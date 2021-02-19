@@ -52,6 +52,7 @@ import ConnoteDetail from "@/views/inventory/connote-detail"
 // === Print ===
 import PrintBPIK from "@/views/print/printBPIK"
 import printSPPAP from "@/views/print/printSPPAP"
+import printGeneral from "@/views/print/general"
 
 // === Transaction List ===
 import TransactionList from "@/views/transactionList"
@@ -544,6 +545,11 @@ const routes = [
     path: '/print-bpik',
     name: 'printBpik',
     component: PrintBPIK
+  },
+  {
+    path: '/print/:id/:type',
+    name: 'printGeneral',
+    component: printGeneral
   },
   {
     path: '/print-sppap',

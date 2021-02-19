@@ -7,13 +7,17 @@
         :pageSize="pagination.page_size"
         :page="pagination.page"
         :limit="pagination.limit"
-        :hasAction="false"
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @actionPrint="actionPrint"
-        
-        />
+
+        :customAction="true"
+        :customActionList="customActionList"
+        @actionUpdate="actionUpdate"
+        >
+          
+        </table-master>
 
       <!-- dialog confirm cancel pickup request-->
       <!-- <dialog-confirm
@@ -98,6 +102,23 @@ export default {
                 width: "auto"
               },
             ],
+            customActionList: [
+              {
+                label: 'Print',
+                key: 'print',
+                attribute: '',
+                option: {
+                  type: 'redirect',
+
+                }
+              },
+              {
+                label: 'Depart',
+                key: 'depart',
+                attribute: '',
+              }
+            ],
+
             loading: false,
             dataItem: {},
             tempSearch: "",
@@ -177,6 +198,22 @@ export default {
 
         closeDialogConfirm(){
             this.confirmDialog = false
+        },
+
+        actionUpdate(val, key) {
+          switch(key) {
+                case "print":
+                    console.log('print', val)
+                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.manifest_do_number, 'type': 'manifest-delivery-order'} });
+                    window.open(routeData.href, '_blank');
+                    break;
+                case "depart":
+                  console.log('depart', val)
+                   break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
         },
 
         actionLimit(val){

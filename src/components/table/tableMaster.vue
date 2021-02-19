@@ -41,7 +41,7 @@
                           Action
                         </vs-th>
                       </template>
-                      <template v-if="printAction == true || avoidAction == true || codAction == true || customBtn == true" >
+                      <template v-if="printAction == true || avoidAction == true || codAction == true || customBtn == true || customAction == true">
                         <vs-th class="action">
                           Action
                         </vs-th>
@@ -147,6 +147,34 @@
                                 </vs-button>    
                             </vs-td>
                                 
+                        </template>
+
+                        <template v-if="customAction == true">
+                            <vs-td class="action">
+                                <vs-row justify="center" class="btn_action">
+                                    <template v-if="listCustomActionList.length > 0">
+                                        
+                                            <template v-for="(actionItem, keyActionItem) in listCustomActionList">
+                                                <vs-col w="3" :key ="keyActionItem">
+                                                    <!-- <template v-if="actionItem.hasOwnProperty('option')">
+                                                        
+                                                    </template> -->
+
+                                                    <vs-button
+                                                        block
+                                                        flat
+                                                        :danger="actionItem.attribute.toLowerCase().includes('danger') ? true : false"
+                                                        :active="true"
+                                                        @click="actionUpdate(item, actionItem.key)"
+                                                    >
+                                                        {{actionItem.label}}
+                                                    </vs-button>
+                                                </vs-col>
+                                            </template>
+                                        
+                                    </template>
+                                </vs-row>
+                            </vs-td>
                         </template>
 
                         <template v-if="hasAction == true">
@@ -428,7 +456,10 @@ export default {
         cancelRequestAction: Boolean, //pickup request action cancel,
         codAction: Boolean,
         customBtn: Boolean,
-        customBtn_label: String
+        customBtn_label: String,
+
+        customAction: Boolean,
+        customActionList: Array, 
     },
     data() {
         return {
@@ -457,6 +488,9 @@ export default {
         },
         listenExpandable () {
             return this.expandable || false
+        },
+        listCustomActionList() {
+            return this.customActionList || []
         }
     },
     watch: {
@@ -509,8 +543,8 @@ export default {
         actionPagination(val) {
             this.$emit("actionPagination", val)
         },
-        actionUpdate(val) {
-            this.$emit("actionUpdate", val)
+        actionUpdate(val, key) {
+            this.$emit("actionUpdate", val, key)
         },
         actionCollect(val) {
             this.$emit("actionCollect", val)
