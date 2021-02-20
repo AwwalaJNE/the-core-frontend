@@ -38,7 +38,7 @@
                     </vs-row>
                     <vs-row justify="flex-start">
                         <vs-col xs="6" sm="6" lg="6" class="mt-50 ">
-                             <vs-input dark   label="Kurs Terbaru"  ref="kursUsd" border type="text" v-model="kurs_usd_new" placeholder="Masukkan kurs terbaru" >
+                             <vs-input dark   label="Kurs Terbaru"  ref="kursUsd" border type="text" v-model="kurs_usd_new" >
                                 <template #icon>
                                 Rp
                                 </template>
@@ -148,4 +148,7 @@ export default {
     .mt-50{
         margin-top:50px;
     }
+    .box  .vs-input__label {
+    left: 4px;
+}
 </style>
