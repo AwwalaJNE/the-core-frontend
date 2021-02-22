@@ -1920,16 +1920,7 @@ export default {
       typeData: "String",
       visible: false,
       width: "4",
-      arrData: [
-        {
-          label: 'meong',
-          value: 'meong1'
-        },
-        {
-          label: 'meong 2',
-          value: 'meong2'
-        }
-      ],
+      arrData: [],
       valueData: null,
       value: ''
     },
@@ -1943,12 +1934,12 @@ export default {
       width: "4",
       arrData: [
         {
-          label: 'mimi',
-          value: 'mimi1'
+          label: 'IS',
+          value: 'is'
         },
         {
-          label: 'mimi 2',
-          value: 'mimi2'
+          label: 'NOT',
+          value: 'not'
         }
       ],
       valueData: null,

@@ -188,6 +188,9 @@ export default {
           if(this.dataTable.length > 0) {
             this.dataItem = val
             this.dataItem.cost_to_cost_id = val.cost_to_cost_id
+            this.dataItem.cost_owner_node_id = parseInt(val.cost_owner_node_id)
+            this.dataItem.cost_payer_node_id = parseInt(val.cost_payer_node_id)
+            console.log(this.dataItem,'item')
             this.$nextTick(() => {
               this.dialogNewEditCostingSetting = true
             });
