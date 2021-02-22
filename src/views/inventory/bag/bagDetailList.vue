@@ -12,11 +12,12 @@
               <span><b>Bag No. {{ bag_number }}</b></span>
             </vs-col>
             <vs-col xs="3" sm="3" lg="3" align="left">
-              <span><p>Service: REG</p></span>
-              <span><p>Destination: CGK</p></span>
+                <!-- <span><p>Service: REG</p></span> -->
+                <span><p>Destination: {{bag_destination}}</p></span>
+                <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
             </vs-col>
             <vs-col xs="3" sm="3" lg="3" align="left">
-              <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
+            
               <span><p>Total Weight: {{ total_weight }} Kg</p></span>
               <span><p>Actual Weight: {{ actual_weight }} Kg</p></span>
             </vs-col>
@@ -75,7 +76,7 @@ export default {
                 {
                     label: "No",
                     key: "no",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Item",
@@ -84,17 +85,17 @@ export default {
                 },
                 {
                     label: "Koli#",
-                    key: "koli_count",
+                    key: "no",
                     width: "xs"
                 },
                 {
                     label: "Of#",
-                    key: "koli_off",
+                    key: "bag_detail_qty",
                     width: "auto"
                 },
                 {
                     label: "Destination Code",
-                    key: "destination_tariff_code",
+                    key: "destination_code",
                     width: "auto"
                 },
                 {
@@ -123,6 +124,7 @@ export default {
             total_weight :'',
             actual_weight :'',
             bag_detail_qty:'',
+            bag_destination:'',
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -145,14 +147,18 @@ export default {
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.detail
+                    
                     arr.map((item, index)  => {
                       item["no"] = index+1
+                      item['destination_code'] = res.data.data.destination.node_code
+                      item['bag_detail_qty'] = res.data.data.bag_detail_qty
                     })
                     this.getSummaryBag(res)
                   // arr.map(item => {
                     //     item["user_nodes"] = item.user_nodes.toString()
                     // })
                     this.dataTable = arr
+                    console.log(this.dataTable)
                     // this.pagination.page = res.data.meta.current_page
                     // this.pagination.limit = parseInt(res.data.meta.per_page)
                     // this.pagination.page_size = res.data.meta.last_page
@@ -175,6 +181,7 @@ export default {
           this.total_connote = val.data.data.detail.length
           this.total_weight = val.data.data.bag_weight
           this.actual_weight = val.data.data.bag_weight
+          this.bag_destination = val.data.data.destination.node_code
         },
         actionUpdate(val){
             if(this.dataTable.length > 0) {
