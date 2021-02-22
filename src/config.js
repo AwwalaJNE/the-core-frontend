@@ -103,9 +103,18 @@ export default {
     //cost to cost
     cost_to_cost: api + "cost-to-cost",
     
+    //cost to cost
+    cost_to_cost_rules: api + "cost-to-cost-rules",
+    
+    //cost to cost
+    cost_to_cost_type: api + "cost-to-cost-type",
+    
     //cost to cost Report
     cost_to_cost_report: api + "cost-to-cost-report",
     
+    //cost to cost
+    activity_type: api + "activity-type",
+
     //config
     config: api + "config",
 

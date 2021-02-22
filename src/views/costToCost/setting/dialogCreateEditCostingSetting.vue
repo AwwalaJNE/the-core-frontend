@@ -114,15 +114,40 @@ export default {
     },
     methods: {
         formData(form){
-            console.log('form', form)
-          this.node_id = this.listenNodeId
-          this.form = this.dataItem
-          if(this.cosToCostId !== undefined && this.cosToCostId !== ''){
-            // this.updateData()
-          }else{
-            // this.addData()
-          } 
-        //   this.addData()
+                          console.log(form,'asd');
+            if(form != undefined){
+                let cost_value =[]
+                form.dynamicinputcomponent_cost_value.map((item, index) =>{
+                  let obj_cost = {}
+                    obj_cost[item.inputs[0].key] = item.inputs[0].value
+                    obj_cost[item.inputs[1].key] = item.inputs[1].value
+                    obj_cost[item.inputs[2].key] = item.inputs[2].value
+
+                    cost_value.push(obj_cost)
+
+                })
+                let cost_rule =[]
+                form.dynamicinputcomponent_rules.map((item, index) =>{
+                  let obj_rule = {}
+                    obj_rule[item.inputs[0].key] = item.inputs[0].value
+                    obj_rule[item.inputs[1].key] = item.inputs[1].value
+                    obj_rule[item.inputs[2].key] = item.inputs[2].value
+
+                    cost_rule.push(obj_rule)
+
+                })
+              
+              this.form = form
+              this.form.rule = cost_rule
+              this.form.cost_value = cost_value
+            }
+
+            if(this.cosToCostId !== undefined && this.cosToCostId !== ''){
+                // this.updateData()
+            }else{
+                this.addData()
+            } 
+            //   this.addData()
 
         },
         handleSubmit(){
@@ -166,6 +191,82 @@ export default {
                         // this.dataNodeType = arr
                         this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
                         this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getCostingRules(){
+            await axios
+                .get(this.URL.cost_to_cost_rules +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.description
+                            obj["value"] = item.name
+
+                            arr.push(obj)
+                        })
+                        // this.dataNodeType = arr
+                        this.$store.dispatch("SET_COST_TO_COST_SETTING_RULE_CONDITION_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getCostingType(){
+            await axios
+                .get(this.URL.cost_to_cost_type +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.name
+                            obj["value"] = item.cost_type_code
+
+                            arr.push(obj)
+                        })
+                        // this.dataNodeType = arr
+                        this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+
+        async getActivityType(){
+            await axios
+                .get(this.URL.activity_type +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.name
+                            obj["value"] = item.code
+
+                            arr.push(obj)
+                        })
+                        // this.dataNodeType = arr
+                        this.$store.dispatch("SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -219,6 +320,9 @@ export default {
     mounted() {
         this.initForm()
         this.getDataNode()
+        this.getCostingRules()
+        this.getCostingType()
+        this.getActivityType()
     },
 }
 </script>
