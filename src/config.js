@@ -105,5 +105,8 @@ export default {
     
     //cost to cost Report
     cost_to_cost_report: api + "cost-to-cost-report",
+    
+    //config
+    config: api + "config",
 
 }

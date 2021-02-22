@@ -120,6 +120,11 @@ import CostToCostSetting from "@/views/costToCost/setting"
 // === Cost To Cost ===
 import CostToCostReport from "@/views/costToCost/report"
 
+// === setting kurs ===
+import SettingExchangeRate from "@/views/settings/exchange_rate"
+
+
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -540,6 +545,16 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadCrumb: "Cost To Cost"
+        }
+      },
+      ,
+      {
+        path: "/settings/exchangerate",
+        name: "SettingExchangeRate",
+        component: SettingExchangeRate,
+        meta: {
+            requiresAuth: true,
+            breadCrumb: "setting"
         }
       },
     ],
