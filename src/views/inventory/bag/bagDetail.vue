@@ -31,12 +31,29 @@
           <template>
             <div class="center in-get-bag">
               <vs-col lg="8">
-                <vs-input border type="text"
-                          v-model="location_id"
-                          label-placeholder="select location"
-                          @change="updateValue"
-                          ref="formInputBagging">
-                </vs-input>
+                    <template v-if="DataNode.length > 0">
+                      <vs-select
+                          class="m-select"
+                          filter
+                          :multiple="false"
+                          placeholder="All Nodes"
+                          v-model="node_request"
+                          :border="true"
+                          @change="updateNode"
+                      >
+                        <template v-if="DataNode.length > 0">
+                          <vs-option
+                              v-for="(item,key) in DataNode"
+                              :key="key"
+                              :label="item.label"
+                              :value="item.value">
+                            {{item.label}}
+                          </vs-option>
+                        </template>
+
+                      </vs-select>
+
+                    </template>
               </vs-col>
 
             </div>
@@ -51,7 +68,7 @@
                <vs-input border type="text"
                          v-model="weight"
                          label-placeholder="Weight"
-                         @change="updateValue"
+                         v-on:keyup.enter="updateValue"
                          ref="formInputBagging" icon-after>
                  <template #icon>Kg</template>
                </vs-input>
@@ -105,12 +122,14 @@ export default {
   },
   data() {
     return {
-      title: "Bagging List",
+      title: "Bagging Detail",
       item_code:'',
       bag_id:'',
       weight:'',
       form:{},
-      location_id:''
+      location_id:'',
+      DataNode:[],
+      node_request:''
     }
   },
   methods: {
@@ -122,12 +141,18 @@ export default {
       this.ProccessAddBagItem()
     },
     updateValue(){
-
+      this.form={
+          bag_number : this.bag_id,
+          bag_weight : this.weight
+      }
+      this.loading = true
+      this.putBag();
     },
 
     handleClearForm(){
       this.form = {}
-      this.item_code=''
+      this.item_code='',
+      this.weight =''
     },
     async ProccessAddBagItem(){
       await axios
@@ -143,11 +168,64 @@ export default {
             this.handleClearForm()
             this.openNotification('danger', err.response ? err.response.data.message : 'something went wrong')
           })
-    }
+    },
+
+    async getNodeLink() {
+      this.loading = true
+      await axios
+          .get(this.URL.node_link +
+              `/${this.listenNodeId}?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+              this.Helper.header())
+          .then(res => {
+            let datas = [];
+              datas = [res.data.data];
+              
+              datas.map(item => {
+                let obj = {}
+                obj["label"] = item.node_destination.node_code
+                obj["value"] = item.node_destination.node_id
+
+                this.DataNode.push(obj)
+              })
+            
+
+            this.loading = false
+          }).catch(err => {
+            this.loading = false
+            this.openNotification('danger', 'Failed to populate node list', err)
+          })
+    },
+    updateNode(){
+      this.form={
+          bag_number : this.bag_id,
+          destination_node_id : this.node_request
+      }
+      this.loading = true
+      this.putBag();
+    },
+    async putBag(){
+      await axios
+          .put(this.URL.bag+'/'+this.bag_id+`?n=${this.listenNodeId}`, 
+            JSON.stringify(this.form), 
+            this.Helper.header())
+          .then(res => {
+            console.log('res',res)
+            this.handleClearForm()
+            this.loading = false
+            this.openNotification('success', 'Update Bagging is success')
+            this.$refs.detailbagList.refresh()
+          }).catch(err => {
+            console.log(err)
+            this.loading = false
+            this.handleClearForm()
+            this.openNotification('danger', err.response ? err.response.data.message : 'something went wrong')
+          })
+    },
 
   },
   mounted() {
     this.getBagIdParam()
+    this.getNodeLink()
   }
 }
 </script>

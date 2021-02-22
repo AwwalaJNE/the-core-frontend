@@ -547,7 +547,6 @@ const routes = [
             breadCrumb: "Cost To Cost"
         }
       },
-      ,
       {
         path: "/settings/exchangerate",
         name: "SettingExchangeRate",
