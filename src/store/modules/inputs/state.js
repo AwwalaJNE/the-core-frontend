@@ -1881,14 +1881,55 @@ export default {
       valueData: null,
       value: ''
     },
+    dynamicinputcomponent_rules: {
+      label: "Add Rule",
+      key: "dynamicinputcomponent_rules",
+      rule:"",
+      typeInput: "dynamicinputcomponent",
+      typeData: "Array",
+      arrData: [
+        {
+          inputs: [
+            {
+              key: "rule_condition",
+              typeInput: "select",
+              value: 'meong1'
+            },
+            {
+              key: "condition",
+              typeInput: "select",
+              value: 'mimi1'
+            },
+            {
+              key: "rule_value",
+              typeInput: "text",
+              value: 'bbb'
+            }
+          ]
+        },
+      ],
+      valueData: null,
+      value: ''
+    },
+
     rule_condition: {
       label: "Rules",
       key: "rule_condition",
       rule:"required",
-      typeInput: "select",
+      typeInput: "select|hidden",
       typeData: "String",
+      visible: false,
       width: "4",
-      arrData: [],
+      arrData: [
+        {
+          label: 'meong',
+          value: 'meong1'
+        },
+        {
+          label: 'meong 2',
+          value: 'meong2'
+        }
+      ],
       valueData: null,
       value: ''
     },
@@ -1898,8 +1939,18 @@ export default {
       rule:"required",
       typeInput: "select",
       typeData: "String",
+      visible: false,
       width: "4",
-      arrData: [],
+      arrData: [
+        {
+          label: 'mimi',
+          value: 'mimi1'
+        },
+        {
+          label: 'mimi 2',
+          value: 'mimi2'
+        }
+      ],
       valueData: null,
       value: ''
     },
@@ -1907,8 +1958,9 @@ export default {
       label: "Value",
       key: "rule_value",
       rule:"required",
-      typeInput: "select",
+      typeInput: "text",
       typeData: "String",
+      visible: false,
       width: "4",
       arrData: [],
       valueData: null,
@@ -1925,11 +1977,44 @@ export default {
       valueData: null,
       value: ''
     },
+
+    dynamicinputcomponent_cost_value: {
+      label: "Add Cost",
+      key: "dynamicinputcomponent_cost_value",
+      rule:"",
+      typeInput: "dynamicinputcomponent",
+      typeData: "Array",
+      arrData: [
+        {
+          inputs: [
+            {
+              key: "min_kg",
+              typeInput: "text",
+              value: ''
+            },
+            {
+              key: "max_kg",
+              typeInput: "text",
+              value: ''
+            },
+            {
+              key: "cost_value",
+              typeInput: "text",
+              value: ''
+            }
+          ]
+        }
+      ],
+      valueData: null,
+      value: ''
+    },
+
     min_kg: {
       label: "Min(Kg)",
       key: "min_kg",
       rule: "required|numeric",
       typeInput: "text",
+      visible: false,
       typeData: "Number",
       valueData: null,
       value: '',
@@ -1940,6 +2025,7 @@ export default {
       key: "max_kg",
       rule: "required|numeric",
       typeInput: "text",
+      visible: false,
       typeData: "Number",
       valueData: null,
       value: '',
@@ -1950,6 +2036,7 @@ export default {
       key: "cost_value",
       rule: "required|numeric",
       typeInput: "text",
+      visible: false,
       typeData: "Number",
       valueData: null,
       value: '',

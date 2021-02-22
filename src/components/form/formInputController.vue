@@ -117,7 +117,7 @@
                                 />
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('dynamicinputcomponent')">
-                                <iterate-selector :addBtn="InputObject[item].label" :getters="listenGettersPrefix" :typeForm="listenTypeForm" @updateValue="updateValue"/>
+                                <iterate-selector :addBtn="InputObject[item].label" :getters="listenGettersPrefix" :fromKey="InputObject[item].key" :typeForm="listenTypeForm" @updateValue="updateValue"/>
                             </template>
                             
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('boolean')">
@@ -157,7 +157,7 @@ import Switch from "@/components/input/switch"
 import MapPicker from "@/components/map"
 import DateTime from "@/components/input/dateTime"
 import Radio from "@/components/input/radio"
-import iterateSelector from "@/components/input/iterateInput"
+import iterateSelector from "@/components/input/iterateInput2"
 export default {
     name:"input-controller",
     components: {
@@ -259,6 +259,7 @@ export default {
         updateValue(type, val) {
             let action = type.toUpperCase()
             let prefix = this.listenTypeForm.toUpperCase()
+
             let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
             if(err == true) {
                 console.log(`error input controller dispatch SET_${prefix}_${action} | val ` + val)
@@ -286,7 +287,10 @@ export default {
                         if(this.InputObject[item]['typeInput'].toLowerCase() == 'boolean') { 
                             // fix component switch.vue onchange updateValue ga ketrigger dan return ''
                             this.form[this.InputObject[item].key] = this.InputObject[item].value == '' ? true : this.InputObject[item].value 
-                        } else {
+                        } else if (this.InputObject[item]['typeInput'].toLowerCase() == 'dynamicinputcomponent') {
+                            this.form[this.InputObject[item].key] = this.InputObject[item].arrData
+                        }
+                        else {
                             this.form[this.InputObject[item].key] = this.InputObject[item].value
                         }
                         
@@ -301,14 +305,19 @@ export default {
         },
         handleClearForm(){
             let prefix = this.listenTypeForm.toUpperCase()
-            let tempKey = this.Keys.filter(item => !item.includes('mapPicker'))
+            let tempKey = this.Keys.filter(item => !item.includes('mapPicker') && !item.includes('dynamicinputcomponent'))
             tempKey.map(item => {
                 let action = item.toUpperCase()
-                this.$store.dispatch(`SET_${prefix}_${action}`, '')
-                this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
+                try {
+                    this.$store.dispatch(`SET_${prefix}_${action}`, '')
+                    this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
                     if(item.hasOwnProperty('arrData')) {
                         this.$store.dispatch(`SET_${prefix}_${action}_ArrData`, '')
                     }
+                } catch (error) {
+                    
+                }
+                
             })
             this.form = {}
         },

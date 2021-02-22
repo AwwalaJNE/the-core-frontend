@@ -114,12 +114,13 @@ export default {
     },
     methods: {
         formData(form){
+            console.log('form', form)
           this.node_id = this.listenNodeId
           this.form = this.dataItem
           if(this.cosToCostId !== undefined && this.cosToCostId !== ''){
-            this.updateData()
+            // this.updateData()
           }else{
-            this.addData()
+            // this.addData()
           } 
         //   this.addData()
 

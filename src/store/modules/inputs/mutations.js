@@ -1635,6 +1635,17 @@ export default {
   state.cost_to_cost_setting.cost_group_code.arrData = []
   },
 
+  SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_RULES(state, payload) {
+    state.cost_to_cost_setting.dynamicinputcomponent_rules.hasOwnProperty('arrData') ?
+    state.cost_to_cost_setting.dynamicinputcomponent_rules.arrData = payload :
+    state.cost_to_cost_setting.dynamicinputcomponent_rules.arrData = []
+  },
+  SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_COST_VALUE(state, payload) {
+    state.cost_to_cost_setting.dynamicinputcomponent_cost_value.hasOwnProperty('arrData') ?
+    state.cost_to_cost_setting.dynamicinputcomponent_cost_value.arrData = payload :
+    state.cost_to_cost_setting.dynamicinputcomponent_cost_value.arrData = []
+  },
+
   SET_COST_TO_COST_SETTING_RULE_CONDITION(state, payload) {
   state.cost_to_cost_setting.rule_condition.value = payload
   },
