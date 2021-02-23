@@ -129,7 +129,7 @@ export default {
                                 if(item.is_active == true){
                                     item['status'] = 'Active'
                                 }else{
-                                    item['status'] = 'Non Active'
+                                    item['status'] = 'Unactive'
                                 }
                             })
                             this.dataTable = res.data.data
