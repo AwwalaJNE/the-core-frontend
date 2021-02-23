@@ -107,6 +107,7 @@ export default {
             title:"Customer List",
             navActive: "k-CUSTOMER-LIST",
             dialogCustomer: false,
+            tempSearch:'',
             dialogCustomerType: false,
             refreshInject:""
         }

@@ -56,12 +56,12 @@ export default {
                 {
                     label: "ID",
                     key: "customer_type_id",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Customer Type",
                     key: "customer_type_name",
-                    width: "auto"
+                    width: "sm"
                 },
             ],
             loading: false,
