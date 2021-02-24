@@ -1751,4 +1751,47 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   },
   //======= END ACTION COSTING REPORT=======
 
+  //======= Start Packing Kayu =======
+  SET_PACKINGKAYU_KOLI_NUMBER({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_NUMBER', payload)
+  },
+  SET_PACKINGKAYU_KOLI_NUMBER_ValueData({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_NUMBER_ValueData', payload)
+  },
+
+  SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE', payload)
+  },
+  SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE_ValueData({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE_ValueData', payload)
+  },
+
+  SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT', payload)
+  },
+  SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT_ValueData({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT_ValueData', payload)
+  },
+
+  SET_PACKINGKAYU_KOLI_HEIGHT({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_HEIGHT', payload)
+  },
+  SET_PACKINGKAYU_KOLI_HEIGHT_ValueData({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_HEIGHT_ValueData', payload)
+  },
+
+  SET_PACKINGKAYU_KOLI_WIDTH({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_WIDTH', payload)
+  },
+  SET_PACKINGKAYU_KOLI_WIDTH_ValueData({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_WIDTH_ValueData', payload)
+  },
+
+  SET_PACKINGKAYU_KOLI_LENGTH({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_LENGTH', payload)
+  },
+  SET_PACKINGKAYU_KOLI_LENGTH_ValueData({ commit }, payload) {
+  commit('SET_PACKINGKAYU_KOLI_LENGTH_ValueData', payload)
+  },
+  //======= END Packing Kayu =======
 }

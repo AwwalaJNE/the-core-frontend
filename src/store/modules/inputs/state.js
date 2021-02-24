@@ -2144,5 +2144,73 @@ export default {
     },
 
   },
+  packingkayu:{
+    koli_number: {
+      label: "Koli Number*",
+      key: "koli_number",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    koli_actual_before: {
+      label: "Kg Before",
+      key: "koli_actual_before",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    koli_actual_weight: {
+      label: "Kg After",
+      key: "koli_actual_weight",
+      rule: "required",
+      isDisabled: false,
+      width: '6',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    koli_height: {
+      label: "Height",
+      key: "koli_height",
+      rule: "required",
+      isDisabled: false,
+      width: '6',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    koli_width: {
+      label: "Width",
+      key: "koli_width",
+      rule: "required",
+      isDisabled: false,
+      width: '6',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    koli_length: {
+      label: "Length",
+      key: "koli_length",
+      rule: "required",
+      isDisabled: false,
+      width: '6',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    }
+  }
   
 }
