@@ -118,4 +118,7 @@ export default {
     //config
     config: api + "config",
 
+    //packingkayu
+    packing_kayu: api + "packingkayu",
+
 }
