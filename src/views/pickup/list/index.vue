@@ -88,7 +88,7 @@
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <PickupList :ref="'transactionList'"   :node="node_request" :dateFilter="tempDate" :query="tempSearch"/>
+                        <PickupList :ref="'transactionList'"  :status_pickup="status_pickup" :node="node_request" :dateFilter="tempDate" :query="tempSearch"/>
                     </transition>
                 </template>
             </div>
@@ -133,10 +133,7 @@ export default {
             tempDate: [],
             dialogPickupList:false,
             DataNode:[],
-            DataStatus:[{
-              'label':'Confirm',
-              'value':'Confirm'
-            }],
+            DataStatus:[],
             node_request:'',
             status_pickup:'',
         }
@@ -187,9 +184,34 @@ export default {
                 this.openNotification('danger', 'Failed to populate node list', err)
               })
         },
+        async getPickupStatus() {
+          this.loading = true
+          await axios
+              .get(this.URL.status +
+                  `?status_type=pickup&n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+                  this.Helper.header())
+              .then(res => {
+                console.log('status', res)
+                if(res.data.data.length > 0) {
+                  res.data.data.map(item => {
+                    let obj = {}
+                    obj["label"] = item.status_code +' - '+ item.status_subtype
+                    obj["value"] = item.status_subtype
+
+                    this.DataStatus.push(obj)
+                  })
+                }
+
+                this.loading = false
+              }).catch(err => {
+                this.loading = false
+                this.openNotification('danger', 'Failed to populate node list', err)
+              })
+        },
     },
   mounted() {
       this.getTableData()
+      this.getPickupStatus()
   }
 }
 </script>

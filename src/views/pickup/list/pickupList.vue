@@ -63,7 +63,8 @@ export default {
     props: {
         query: String,
         dateFilter: Array,
-        node:String
+        node:String,
+        status_pickup:String
     },
     components: {
         "table-master" : TableMaster,
@@ -135,6 +136,7 @@ export default {
             startDate: "",
             endDate: "",
             node_filter: "",
+            temp_pickup_status:'',
             dialogTariff: false,
             pagination: {
                 limit:5,
@@ -148,7 +150,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.node_filter)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.node_filter, this.temp_pickup_status)
                 }
             }
         },
@@ -159,24 +161,33 @@ export default {
               this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
               this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
             }
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter, this.temp_pickup_status)
           }
         },
         node: function(val, old) {
           if(val !== undefined) {
             this.node_filter = val
             if(this.node_filter !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val, this.temp_pickup_status)
+            }
+          }
+        },
+        status_pickup: function(val, old) {
+          if(val !== undefined) {
+            this.temp_pickup_status = val
+            if(this.temp_pickup_status !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter, val)
             }
           }
         },
     },
     methods: {
-        async getTableData(limit,page,q, from, to, node) {
+        async getTableData(limit,page,q, from, to, node, status=null) {
             this.loading = true
             let query = "";
             let startDate = "";
             let endDate = "";
+            let status_pickup=''
             if(q !== undefined) {
                 query = q
             }
@@ -184,9 +195,12 @@ export default {
               startDate = from
               endDate = to
             }
+            if(status !== undefined && status !== null) {
+              status_pickup = status
+            }
             await axios
                 .get(this.URL.pickup +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&pickup_status=${status_pickup}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
                     // this.dataTable = res.data.data
