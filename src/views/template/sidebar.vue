@@ -183,21 +183,21 @@ export default {
                             url: '/transport/packingkayu',
                             icon: ''
                         },
-                        {
-                            label: 'Transport Booking',
-                            url: '/transport/booking',
-                            icon: ''
-                        },
-                        {
-                            label: 'Transport Manifest',
-                            url: '/transport/manifest',
-                            icon: ''
-                        },
-                        {
-                            label: 'Transport Manifest Pickup',
-                            url: '/transport/manifest_pickup',
-                            icon: ''
-                        },
+                        // {
+                        //     label: 'Transport Booking',
+                        //     url: '/transport/booking',
+                        //     icon: ''
+                        // },
+                        // {
+                        //     label: 'Transport Manifest',
+                        //     url: '/transport/manifest',
+                        //     icon: ''
+                        // },
+                        // {
+                        //     label: 'Transport Manifest Pickup',
+                        //     url: '/transport/manifest_pickup',
+                        //     icon: ''
+                        // },
                         {
                             label: 'Surat Jalan',
                             url: '/transport/manifest-jalan',

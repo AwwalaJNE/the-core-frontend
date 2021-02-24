@@ -398,6 +398,11 @@ export default {
         state.transaction[payload.key] = payload.value
     },
 
+    FILL_CONNOTE_NUMBER(state, payload) {
+        let index = state.connote_index_active
+        state.transaction.connote[index].connote_number = payload
+    },
+
     SWITCH_CONNOTE_ACTIVE(state, payload) {
         let index = state.connote_index_active
         let data = state.transaction.connote[index] || {}

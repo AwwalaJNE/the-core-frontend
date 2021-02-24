@@ -1881,9 +1881,9 @@ export default {
       valueData: null,
       value: ''
     },
-    dynamicinputcomponent_rules: {
+    dynamicinputcomponent_cost_to_cost_rule: {
       label: "Add Rule",
-      key: "dynamicinputcomponent_rules",
+      key: "dynamicinputcomponent_cost_to_cost_rule",
       rule:"",
       typeInput: "dynamicinputcomponent",
       typeData: "Array",
@@ -1969,9 +1969,9 @@ export default {
       value: ''
     },
 
-    dynamicinputcomponent_cost_value: {
+    dynamicinputcomponent_cost_to_cost_detail_value: {
       label: "Add Cost",
-      key: "dynamicinputcomponent_cost_value",
+      key: "dynamicinputcomponent_cost_to_cost_detail_value",
       rule:"",
       typeInput: "dynamicinputcomponent",
       typeData: "Array",

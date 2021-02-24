@@ -351,6 +351,10 @@ export default {
         commit('SET_CONNOTE_BPIK', payload)
     },
 
+    FILL_CONNOTE_NUMBER({ commit }, payload) {
+        commit('FILL_CONNOTE_NUMBER', payload)
+    },
+
     // Koli Item
     SET_CONNOTE_KOLI_ITEM_EMPTY({ commit }, payload) {
         commit('SET_CONNOTE_KOLI_ITEM_EMPTY', payload)

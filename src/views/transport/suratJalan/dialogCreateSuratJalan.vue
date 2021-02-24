@@ -21,13 +21,15 @@
                 <div class="mt-2 mb-2">
                     <vs-row justify="space-between">
                         <vs-col xs="6" sm="3" lg="3">
-                            <input-general 
+                            <form @submit.prevent="getDataSuratMuatan">
+                                <input-general 
                                 name="Scan Surat Muatan / Bag"
                                 rules=""
-                                formKey="sancBag"
-                                :valueData="''"
+                                formKey="scanBag"
+                                :valueData="suratMuatan"
                                 typeInput="text"
                                 @updateValue="updateValue" />
+                            </form>
                         </vs-col>
                     </vs-row>
                     <table-master 
@@ -35,6 +37,10 @@
                     :dataColumn="datacolumn" 
                     :hasAction="false"
                     :hasPagination="false"
+
+                    :customAction="true"
+                    :customActionList="customActionList"
+                    @actionUpdate="actionUpdate"
                     />
                 </div>
             </div>
@@ -108,25 +114,33 @@ export default {
             datacolumn: [
               {
                 label: "No Surat Muatan",
-                key: "manifest_type",
+                key: "bag_number",
                 width: "xs"
               },
               {
                 label: "Weight (Kg)",
-                key: "pickup_number",
+                key: "bag_weight",
                 width: "auto"
               },
               {
                 label: "Destination",
-                key: "vehicle_mode_name",
+                key: "destination",
                 width: "auto"
               },
               {
                 label: "Type",
-                key: "node_origin",
+                key: "bag_type",
                 width: "auto"
               },
             ],
+            customActionList: [
+              {
+                label: 'Remove',
+                key: 'remove',
+                attribute: '',
+              }
+            ],
+            suratMuatan: ''
         }
     },
     computed: {
@@ -171,6 +185,19 @@ export default {
                     this.addData()
             }
         },
+        actionUpdate(val, key) {
+          switch(key) {
+                case "remove":
+                    if(this.dataTable.length > 0 && typeof val === 'object') {
+                        let filter = this.dataTable.filter(item => item.bag_number !== val.bag_number)
+                        this.dataTable = filter
+                    }
+                   break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
+        },
         handleSubmit(){
             this.$refs.formSuratJalan.handleSubmit() // trigger function submit form dari luar component formInputController
         },
@@ -179,7 +206,14 @@ export default {
             this.form = {}
         },
         updateValue(key,val){
-
+            switch(key) {
+                case "scanBag":
+                    this.suratMuatan = val
+                    break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
         },
         async updateData(){
             await axios
@@ -227,118 +261,106 @@ export default {
             this.closeDialog()
 
         },
-        getDestination() {
-            // await axios
-            //     .get(this.URL.geolocation_province + 
-            //     `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-            //     this.Helper.header())
-            //     .then(res => {
-            //         if(res.data.data.length > 0) {
-            //             let arr = []
-            //             res.data.data.map(item => {
-            //                 let obj = {}
-            //                 obj["label"] = item.geolocation_province_name
-            //                 obj["value"] = item.geolocation_province_id
+        async getDestination() {
+            await axios
+                .get(this.URL.node_link + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.node_name
+                            obj["value"] = item.node_id
 
-            //                 arr.push(obj)
-            //             })
+                            arr.push(obj)
+                        })
 
-            //             this.$store.dispatch("SET_GEOLOCATION_CITY_GEOLOCATION_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
-            //         } else {
-            //             // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-            //         }
+                        this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
                     
-            //     }).catch(err => {
-            //         // this.openNotification('danger', 'Failed to collect role list', err)
-            //     })
-            let arr = [
-                {
-                    label: 'BANDAR UDARA INTERNASIONAL SOEKARNO-HATTA',
-                    value: '7087'
-                }
-            ]
-          this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID_ArrData", arr.length > 0 ? arr : null)
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
         },
-        getModeAngkutan() {
-            // await axios
-            //     .get(this.URL.geolocation_province + 
-            //     `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-            //     this.Helper.header())
-            //     .then(res => {
-            //         if(res.data.data.length > 0) {
-            //             let arr = []
-            //             res.data.data.map(item => {
-            //                 let obj = {}
-            //                 obj["label"] = item.geolocation_province_name
-            //                 obj["value"] = item.geolocation_province_id
+        async getModeAngkutan() {
+            await axios
+                .get(this.URL.vehicle_mode + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.vehicle_mode_name
+                            obj["value"] = item.vehicle_mode_id
 
-            //                 arr.push(obj)
-            //             })
+                            arr.push(obj)
+                        })
 
-            //             this.$store.dispatch("SET_GEOLOCATION_CITY_GEOLOCATION_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
-            //         } else {
-            //             // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-            //         }
+                        this.$store.dispatch("SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
                     
-            //     }).catch(err => {
-            //         // this.openNotification('danger', 'Failed to collect role list', err)
-            //     })
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getNoModeAngkutan() {
+            await axios
+                .get(this.URL.vehicle + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.vehicle_name
+                            obj["value"] = item.vehicle_id
+
+                            arr.push(obj)
+                        })
+
+                        this.$store.dispatch("SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
             
-            let arr = [
-                {
-                    label: 'MOTORCYCLE',
-                    value: '23'
-                },
-                {
-                    label: 'Van',
-                    value: '203'
-                },
-                {
-                    label: 'Truck',
-                    value: '103'
-                },
-                {
-                    label: 'Big Truck',
-                    value: '13'
-                },
-            ]
-          this.$store.dispatch("SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ArrData", arr.length > 0 ? arr : null)
         },
-        getNoModeAngkutan() {
-            // await axios
-            //     .get(this.URL.geolocation_province + 
-            //     `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-            //     this.Helper.header())
-            //     .then(res => {
-            //         if(res.data.data.length > 0) {
-            //             let arr = []
-            //             res.data.data.map(item => {
-            //                 let obj = {}
-            //                 obj["label"] = item.geolocation_province_name
-            //                 obj["value"] = item.geolocation_province_id
+        async getDataSuratMuatan(){
+          await axios
+              .get(this.URL.surat_muatan +
+                  `/scan?n=${this.listenNodeId}&item_no=${this.suratMuatan}`,
+                  this.Helper.header())
+              .then(res => {
+                if(res.data.data.length > 0) {
+                    let data = res.data.data
+                    let arr = []
+                    data.map(item => {
+                        let obj = {}
+                        obj['bag_number'] = item.bag_number
+                        obj['bag_weight'] = item.bag_weight
+                        obj['destination'] = item.destination ? item.destination['node_name'] : ''
+                        obj['bag_type'] = item.bag_type
 
-            //                 arr.push(obj)
-            //             })
-
-            //             this.$store.dispatch("SET_GEOLOCATION_CITY_GEOLOCATION_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
-            //         } else {
-            //             // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-            //         }
-                    
-            //     }).catch(err => {
-            //         // this.openNotification('danger', 'Failed to collect role list', err)
-            //     })
-            let arr = [
-                {
-                    label: 'GA GC',
-                    value: '1'
-                },
-                {
-                    label: 'QG (HLP) DG',
-                    value: '2'
+                        this.dataTable.push(obj)
+                    })
+                    this.suratMuatan = ''
                 }
-            ]
-          this.$store.dispatch("SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ArrData", arr.length > 0 ? arr : null)
+
+              }).catch(err => {
+                // this.openNotification('danger', 'Failed to collect role list', err)
+              })
         },
         getDriver() {
             // await axios

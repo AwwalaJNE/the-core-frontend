@@ -125,8 +125,8 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         actionDetail(row){
-          let token = JSON.parse(localStorage.getItem("vuejs__tokenBearer")).value
-          window.open(this.URL.cash_register+`/${row.cash_register_number}?bearer=Bearer&tok=${token}`, '_blank')
+            let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': row.cash_register_number, 'type': 'cash-register'} });
+            window.open(routeData.href, '_blank');
         },
 
     },

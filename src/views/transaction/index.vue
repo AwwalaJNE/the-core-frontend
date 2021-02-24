@@ -10,7 +10,26 @@
             <vs-col xs="6" sm="3" lg="3">
             </vs-col>
         </vs-row>
-        <section class="new-transaction mt-2">
+        <section class="new-transaction mt-1">
+            <vs-row justify="space-between">
+                        <vs-col xs="6" sm="3" lg="3">
+                            <form @submit.prevent="processBookingCode">
+                                <!-- <input-general 
+                                name="Masukan Kode Booking"
+                                rules=""
+                                formKey="bookingCode"
+                                :valueData="''"
+                                typeInput="text"
+                                @updateValue="updateValue" /> -->
+                                <vs-input border type="text"
+                                    v-model="bookingCode"
+                                    label-placeholder="Masukkan Code Booking"
+                                    :autofocus="true"
+                                    ref="formInputUnbagging">
+                                </vs-input>
+                            </form>
+                        </vs-col>
+            </vs-row>
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="9" lg="9">
                     <div>
@@ -22,7 +41,7 @@
                                             <origin />
                                         </vs-col>
                                         <vs-col xs="12" sm="6" lg="6">
-                                            <destination />
+                                            <destination ref="destinationComponent"/>
                                         </vs-col>
                                     </vs-row>
                                     <vs-row justify="space-between" class="mb-2" style="margin-top:10px">
@@ -78,6 +97,7 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TransactionMixin from "@/mixins/transaction.js"
+import InputGeneral from "@/components/input/general"
 import FormMaster from "@/components/form/formMaster"
 import Breadcrumb from "@/components/breadcrumb/index"
 import Origin from "@/views/transaction/origin"
@@ -96,6 +116,7 @@ export default {
         "package": Package,
         "calc": Calc,
         "payment": Payment,
+        "input-general": InputGeneral,
     },
     computed: {
         listenOrigin () {
@@ -124,7 +145,8 @@ export default {
             dialogPayment: false,
             printTransactionBarcodeShow: false,
             koli_number: '',
-            legacySystemHTML: ''
+            legacySystemHTML: '',
+            bookingCode: ''
         }
     },
     methods: {
@@ -156,6 +178,56 @@ export default {
                     });
                 });
         },
+        updateValue(key,val){
+            switch(key) {
+                case "bookingCode":
+                    this.bookingCode = val
+                    break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
+        },
+        
+        async processBookingCode(){
+          await axios
+              .get(this.URL.booking_connote +
+                  `/${this.bookingCode}?n=${this.listenNodeId}`,
+                  this.Helper.header())
+              .then(res => {
+                // console.log('res processBookingCode', res.data.data)
+                if(res.data.data) {
+                    let data = res.data.data
+                
+                    this.$store.dispatch(`FILL_CONNOTE_NUMBER`, data.booking_connote_number)
+
+                    // Origin
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, data.booking_connote_shipper_name)
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, data.booking_connote_shipper_phone_number)
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, data.booking_connote_shipper_street_address)
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, data.booking_connote_shipper_geolocation_subdistrict_id)
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, data.booking_connote_shipper_administrative_address)
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, data.booking_connote_shipper_zip_code)
+
+                    // destination
+                    let destinationObj = {}
+                    destinationObj['customer_address_type'] = data.booking_connote_receiver_address_type
+                    destinationObj['geolocation_subdistrict_zip_code'] = data.booking_connote_receiver_zip_code
+                    destinationObj['geolocation_subdistrict_tarif_code'] = data.booking_connote_receiver_tariff_code
+                    destinationObj['customer_name'] = data.booking_connote_receiver_name
+                    destinationObj['customer_phone'] = data.booking_connote_receiver_phone_number
+                    
+                    destinationObj['customer_subdistrict_id'] = data.booking_connote_receiver_geolocation_subdistrict_id
+                    destinationObj['geolocation_location_name'] = data.booking_connote_receiver_administrative_address
+                    destinationObj['booking_connote_service_code'] = data.booking_connote_service_code
+                    this.$refs.destinationComponent.updateValue('detination', destinationObj, true)
+                    this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, data.booking_connote_receiver_street_address)
+                }
+              }).catch(err => {
+                // this.openNotification('danger', 'Failed to collect role list', err)
+              })
+        },
+
         addMoreConnote() {
             this.typeAction = 'addconnote'
             this.$refs.formTransaction.formSubmit()

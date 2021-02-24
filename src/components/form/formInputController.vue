@@ -117,7 +117,7 @@
                                 />
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('dynamicinputcomponent')">
-                                <iterate-selector :addBtn="InputObject[item].label" :getters="listenGettersPrefix" :fromKey="InputObject[item].key" :typeForm="listenTypeForm" @updateValue="updateValue"/>
+                                <iterate-selector ref="dynamicinputComponent" :addBtn="InputObject[item].label" :getters="listenGettersPrefix" :fromKey="InputObject[item].key" :typeForm="listenTypeForm" @updateValue="updateValue"/>
                             </template>
                             
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('boolean')">
@@ -221,10 +221,17 @@ export default {
         initializeDataItem() {
             let obj = this.listenDataItem
             let prefix = this.listenTypeForm.toUpperCase()
-            console.log('obj', prefix,obj)
             if(obj != null && Object.keys(this.InputObject).length > 0) {
                 this.Keys.map(item => {
                     let action = item.toUpperCase()
+                    if(item.includes('dynamicinputcomponent')){
+                        let itemAlt = item.split('dynamicinputcomponent_')[1]
+                        console.log('itemAlt', itemAlt)
+                        if(this.listenDataItem.hasOwnProperty(itemAlt)){
+                            this.$store.dispatch(`SET_${prefix}_${action}`, this.listenDataItem[itemAlt])
+                            
+                        }
+                    }
                     if(this.listenDataItem.hasOwnProperty(item)) {
                         this.$store.dispatch(`SET_${prefix}_${action}`, this.listenDataItem[item])
 
@@ -238,7 +245,6 @@ export default {
                     }
                 })
             }
-
         },
         pickLocation(item){
             let prefix = this.listenTypeForm.toUpperCase()

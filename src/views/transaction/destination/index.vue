@@ -115,13 +115,14 @@ export default {
         closeGetCustomer() {
             this.dialogGetCustomer = false
         },
-        updateValue(key,value) {
+        updateValue(key,value,fromBooking = false) {
             if(Object.keys(value).length > 0 && key == 'detination') {
                 this.forcererender = true
                 let typeaddress = value.customer_address_type.toLowerCase() || ''
                 let zipndestiCode = {'zip_code' : value.geolocation_subdistrict_zip_code, 'destination_code': value.geolocation_subdistrict_tarif_code}
                 this.destinationCode = value.geolocation_subdistrict_tarif_code
-                this.getShippingService()
+                let booking_connote_service_code = value.booking_connote_service_code ? value.booking_connote_service_code : ''
+                this.getShippingService(booking_connote_service_code, fromBooking)
 
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_TYPE`, typeaddress)
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_NAME`, value.customer_name)
@@ -135,7 +136,7 @@ export default {
                 setTimeout(function(){ self.forcererender = false }, 100);
             }
         },
-        async getShippingService() {
+        async getShippingService(booking_connote_service_code, fromBooking = false) {
             await axios
                 .get(this.URL.tariff_shipping_service + 
                 `?n=${this.listenNodeId}&destination=${this.destinationCode}`, 
@@ -157,6 +158,13 @@ export default {
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])
+
+                    if(fromBooking == true && booking_connote_service_code != '') {
+                        let dat = arr.filter(item => item.value == booking_connote_service_code)
+                        let serviceItem = dat[0]
+                        this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", serviceItem)
+                        this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", booking_connote_service_code)
+                    }
                     // this.loading = false
                 }).catch(err => {
                     // this.loading = false

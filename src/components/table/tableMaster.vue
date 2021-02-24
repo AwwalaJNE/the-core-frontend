@@ -164,6 +164,7 @@
                                                         block
                                                         flat
                                                         :danger="actionItem.attribute.toLowerCase().includes('danger') ? true : false"
+                                                        :warn="actionItem.attribute.toLowerCase().includes('warn') ? true : false"
                                                         :active="true"
                                                         @click="actionUpdate(item, actionItem.key)"
                                                     >

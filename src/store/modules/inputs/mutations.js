@@ -1635,15 +1635,72 @@ export default {
   state.cost_to_cost_setting.cost_group_code.arrData = []
   },
 
-  SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_RULES(state, payload) {
-    state.cost_to_cost_setting.dynamicinputcomponent_rules.hasOwnProperty('arrData') ?
-    state.cost_to_cost_setting.dynamicinputcomponent_rules.arrData = payload :
-    state.cost_to_cost_setting.dynamicinputcomponent_rules.arrData = []
+  SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_COST_TO_COST_RULE(state, payload) {
+    let arr = state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.arrData
+    console.log('ARR', arr)
+    if(payload && payload.length > 0) {
+      let obj = {}
+      let template = arr[0]['inputs']
+
+      let final = []
+      payload.map(item => {
+        let newArr = []
+        template.map(tmpl => {
+          if(item.hasOwnProperty(tmpl.key.toLowerCase())){
+            let val = item[tmpl.key.toLowerCase()]
+            let newObj = {}
+            newObj['key'] = tmpl.key
+            newObj['typeInput'] = tmpl.typeInput
+            newObj['value'] = val
+            
+            newArr.push(newObj)
+          }
+        })
+
+        let newData = {'inputs': []}
+        newData['inputs'] = newArr
+        final.push(newData)
+      })
+      console.log('final', final)
+      state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.hasOwnProperty('arrData') ?
+      state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.arrData = final :
+      state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.arrData = []
+      
+    }
   },
-  SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_COST_VALUE(state, payload) {
-    state.cost_to_cost_setting.dynamicinputcomponent_cost_value.hasOwnProperty('arrData') ?
-    state.cost_to_cost_setting.dynamicinputcomponent_cost_value.arrData = payload :
-    state.cost_to_cost_setting.dynamicinputcomponent_cost_value.arrData = []
+  SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_COST_TO_COST_DETAIL_VALUE(state, payload) {
+    let arr = state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.arrData
+    console.log('ARR', arr)
+    if(payload && payload.length > 0) {
+      let obj = {}
+      let template = arr[0]['inputs']
+
+      let final = []
+      payload.map(item => {
+        let newArr = []
+        template.map(tmpl => {
+          if(item.hasOwnProperty(tmpl.key.toLowerCase())){
+            let val = item[tmpl.key.toLowerCase()]
+            let newObj = {}
+            newObj['key'] = tmpl.key
+            newObj['typeInput'] = tmpl.typeInput
+            newObj['value'] = val
+            
+            newArr.push(newObj)
+          }
+        })
+
+        let newData = {'inputs': []}
+        newData['inputs'] = newArr
+        final.push(newData)
+      })
+      console.log('final', final)
+      state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_detail_value.hasOwnProperty('arrData') ?
+      state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_detail_value.arrData = final :
+      state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_detail_value.arrData = []
+      
+    }
+    
   },
 
   SET_COST_TO_COST_SETTING_RULE_CONDITION(state, payload) {

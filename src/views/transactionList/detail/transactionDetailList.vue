@@ -8,14 +8,16 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :printAction="true"
-        :avoidAction="true"
+        
         :hasLinked="['connote_number']"
         :hasPagination="false"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEdit="actionDetail"
-        @actionAvoid="actionAvoid"
+
+        :customAction="true"
+        :customActionList="customActionList"
+        @actionUpdate="actionUpdate"
         />
 
       <!--avoid transaction Dialog-->
@@ -124,6 +126,22 @@ export default {
                 },
 
             ],
+            customActionList: [
+              {
+                label: 'Void',
+                key: 'void',
+                attribute: 'warn',
+              },
+              {
+                label: 'Print',
+                key: 'print',
+                attribute: '',
+                option: {
+                  type: 'redirect',
+
+                }
+              }
+            ],
             loading: false,
             dataItem: {},
             tempSearch: "",
@@ -202,7 +220,22 @@ export default {
         actionAvoid(){
           console.log('gas')
           this.dialogAvoidActive = true
-        }
+        },
+        actionUpdate(val, key) {
+          switch(key) {
+                case "print":
+                    console.log('print', val)
+                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.transaction_id, 'type': 'transaction'} });
+                    window.open(routeData.href, '_blank');
+                    break;
+                case "void":
+                    this.dialogAvoidActive = true
+                   break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
+        },
 
     },
     mounted() {
