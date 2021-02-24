@@ -465,6 +465,27 @@ export default {
     },
     
   },
+  customer_type: {
+    customer_type_name: {
+      label: "Customer Type Name*",
+      key: "customer_type_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+    
+  },
 
   node: {
     node_name: {

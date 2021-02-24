@@ -130,7 +130,7 @@ export default {
                       total = Number(total) + Number(item.transaction_amount);
                       item['total_connote'] = item.connote.length
                       item['connote_shipper_name'] = item.connote.length > 0 ? item.connote[0].connote_shipper_name : null
-                      item['user_name'] = item.user.user_name
+                      item['user_name'] = item.user ? item.user.user_name : '-'
                     })
                     this.setTotalAmount(total);
                     this.pagination.page = res.data.meta.current_page

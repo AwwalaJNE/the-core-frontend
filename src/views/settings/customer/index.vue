@@ -51,10 +51,16 @@
 
         <!--Create Edit User Dialog-->
             <dialog-create-edit-customer
-            :active="dialogCustomer" 
-            @refresh="refresh"
-            :closeDialog="closeDialogCustomer"
-            title="New customer"
+                :active="dialogCustomer" 
+                @refresh="refresh"
+                :closeDialog="closeDialogCustomer"
+                title="New customer"
+            />
+            <dialog-create-edit-customer-type
+                :active="dialogCustomerType" 
+                @refresh="refresh"
+                :closeDialog="closeDialogCustomerType"
+                title="New customer Type"
             />
         <!--Create User Dialog end-->
             <!-- <dialog-create-edit-role 
@@ -75,7 +81,7 @@ import CustomerList from "@/views/settings/customer/customerList"
 import CustomerType from "@/views/settings/customer/customerType"
 
 import DialogCreateEditCustomer from "@/views/settings/customer/customerList/dialogCreateEditCustomer"
-
+import DialogCreateEditCustomerType from "@/views/settings/customer/customerType/dialogCreateEditCustomerType"
 
 export default {
     name:"customer-index",
@@ -86,6 +92,7 @@ export default {
         "customer-list": CustomerList,
         "customer-type": CustomerType,
         "dialog-create-edit-customer": DialogCreateEditCustomer,
+        "dialog-create-edit-customer-type": DialogCreateEditCustomerType,
         // "role-list": RoleList,
         // "dialog-create-edit-user": DialogCreateEditUser,
         // "dialog-create-edit-role": DialogCreateEditRole
@@ -107,6 +114,7 @@ export default {
             title:"Customer List",
             navActive: "k-CUSTOMER-LIST",
             dialogCustomer: false,
+            tempSearch:'',
             dialogCustomerType: false,
             refreshInject:""
         }

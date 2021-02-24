@@ -382,6 +382,24 @@ export default {
     commit('SET_CUSTOMER_CUSTOMER_CORPORATE_CREDIT_ValueData', payload)
   },
 
+ // ======= START Customer Type =======
+ SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME({ commit }, payload) {
+  commit('SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME', payload)
+  },
+  SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME_ValueData({ commit }, payload) {
+  commit('SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME_ValueData', payload)
+  },
+  
+  SET_CUSTOMER_TYPE_IS_ACTIVE({ commit }, payload) {
+  commit('SET_CUSTOMER_TYPE_IS_ACTIVE', payload)
+  },
+  SET_CUSTOMER_TYPE_IS_ACTIVE_ValueData({ commit }, payload) {
+  commit('SET_CUSTOMER_TYPE_IS_ACTIVE_ValueData', payload)
+  },
+  
+ // ======= END Customer Type =======
+
+ 
   // ==== Node ====
   SET_NODE_NODE_NAME({ commit }, payload) {
     commit('SET_NODE_NODE_NAME', payload)
