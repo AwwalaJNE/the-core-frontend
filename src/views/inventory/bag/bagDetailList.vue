@@ -150,7 +150,7 @@ export default {
                     
                     arr.map((item, index)  => {
                       item["no"] = index+1
-                      item['destination_code'] = res.data.data.destination.node_code
+                      item['destination_code'] = res.data.data.destination ? res.data.data.destination.node_code : ''
                       item['bag_detail_qty'] = res.data.data.bag_detail_qty
                     })
                     this.getSummaryBag(res)
@@ -158,7 +158,6 @@ export default {
                     //     item["user_nodes"] = item.user_nodes.toString()
                     // })
                     this.dataTable = arr
-                    console.log(this.dataTable)
                     // this.pagination.page = res.data.meta.current_page
                     // this.pagination.limit = parseInt(res.data.meta.per_page)
                     // this.pagination.page_size = res.data.meta.last_page
@@ -168,10 +167,8 @@ export default {
                     
                     this.loading = false
                 }).catch(err => {
-                  console.log(err)
                     this.loading = false
-                    this.$router.push('/inventory/bagging')
-                    // this.openNotification('danger', 'Failed to populate users list', err.response.data.message)
+                    this.openNotification('danger', 'Failed to populate bag', err.response.data.message)
                 })
         },
 
@@ -181,7 +178,7 @@ export default {
           this.total_connote = val.data.data.detail.length
           this.total_weight = val.data.data.bag_weight
           this.actual_weight = val.data.data.bag_weight
-          this.bag_destination = val.data.data.destination.node_code
+          this.bag_destination = val.data.data.destination ? val.data.data.destination.node_code : ''
         },
         actionUpdate(val){
             if(this.dataTable.length > 0) {
