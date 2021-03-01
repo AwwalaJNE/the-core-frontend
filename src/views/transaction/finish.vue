@@ -1,9 +1,13 @@
 <template>
     <div>
-        <h1>Thank You</h1>
-        <p>Transaction Number : {{dataTransaction.transaction_id}}</p>
-        <p>Customer: SELAMET</p>
-        <p>Press spacebar to continue</p>
+        <template v-if="Object.keys(dataTransaction).length > 0">
+            <div>
+                <h1>Thank You</h1>
+                <p>Transaction Number : {{dataTransaction.id}}</p>
+                <p>Customer: {{dataTransaction.name}}</p>
+                <p>Press spacebar to continue</p>
+            </div>
+        </template>
     </div>
 </template>
 <script>
@@ -35,9 +39,11 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     let data = res.data.data
-
-                    console.log(arr)
-                    this.dataTransaction = data
+                    let obj = {}
+                    obj['name'] = data.customer ? data.customer.toUpperCase() : ''
+                    obj['id'] = data.transaction_id
+                    this.dataTransaction = obj
+                    console.log(data)
                 }).catch(err => {
                     this.loading = false
                 })
@@ -45,6 +51,13 @@ export default {
     },
     mounted() {
         this.initialize()
+        let self = this
+        window.document.onkeydown = function(evt) {
+            evt = evt || window.event;
+            if (evt.keyCode == 32) {
+                self.$router.push({ name: 'new-transactions'});
+            }
+        };
     },
 }
 </script>
