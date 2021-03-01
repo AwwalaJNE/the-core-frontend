@@ -8,6 +8,7 @@
                     :placeholder="name"
                     v-model="value"
                     :disabled="isDisabled"
+                    :autofocus="isFocusToInput"
                     @input="updateValue"
                     @focus="focus(true)"
                     @blur="focus(false)"
@@ -36,6 +37,7 @@
                     :label="name"
                     :label-placeholder="name"
                     v-model="value"
+                    :autofocus="isFocusToInput"
                     :disabled="isDisabled"
                     @input="updateValue"
                     @focus="focus(true)"
@@ -57,7 +59,8 @@ export default {
         formKey: String,
         typeInput: String,
         prefix: String,
-        placeholderGabung: Boolean
+        placeholderGabung: Boolean,
+        focusToInput: Boolean
     },
     components: {
         "inputan": Inputan
@@ -79,6 +82,9 @@ export default {
         },
         isPlaceholderGabung() {
             return this.placeholderGabung || false
+        },
+        isFocusToInput() {
+            return this.focusToInput || false
         }
     },
     watch: {

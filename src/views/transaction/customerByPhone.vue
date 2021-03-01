@@ -14,9 +14,10 @@
                     <form v-on:submit.prevent="submit">
                         <input-general 
                         name="JLC/Corp ID/Phone" 
-                        rules="required" 
+                        rules="" 
                         :formKey="listenType"
                         :valueData="value"
+                        :focusToInput="listenActive == true"
                         typeInput="text"
                         @updateValue="updateValue" />
                     </form>
