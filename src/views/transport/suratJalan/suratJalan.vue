@@ -49,6 +49,7 @@ export default {
     },
     data() {
         return {
+            form: {},
             dataTable: [],
             datacolumn: [
               {
@@ -133,7 +134,8 @@ export default {
             },
             activeDialogCancel:false,
             activeLoadingCancel:false,
-            pickupData:{}
+            pickupData:{},
+            manifest_do_number: '',
         }
     },
     watch: {
@@ -208,8 +210,22 @@ export default {
                     window.open(routeData.href, '_blank');
                     break;
                 case "depart":
-                  console.log('depart', val)
-                   break;
+                    this.manifest_do_number = val.manifest_do_number
+                    let obj = {}
+                    obj['node_id_origin'] = val.node_id_origin
+                    obj['node_id_destination'] = val.node_id_destination
+                    obj['vehicle_mode_id'] = val.vehicle_mode_id
+                    obj['vehicle_type_id'] = val.vehicle_type_id
+                    obj['vehicle_id'] = val.vehicle_id
+                    obj['pic_employee_id'] = val.pic_employee_id
+                    obj['max_weight'] = val.max_weight
+                    obj['etd'] = val.etd
+                    obj['eta'] = val.eta
+
+                    this.form = obj
+                    this.depart()
+
+                    break;
                 default:
                     console.log('meong')
                     // code block
@@ -238,41 +254,32 @@ export default {
           this.pickupData = row;
           this.activeDialogCancel = true;
         },
-        async updateData(form){
-          await axios
-              .put(
-                  this.URL.pickup + `?n=${this.listenNodeId}`,
-                  JSON.stringify(form),
-                  this.Helper.header())
-              .then(res => {
-                this.closeDialogConfirmCancel()
-                this.activeLoadingCancel = false
-                this.refresh()
-                this.openNotification(null, 'Success', 'Cancel Pickup is success')
-              }).catch(err => {
-                this.activeLoadingCancel = false
-                this.closeDialogConfirmCancel()
-                this.refresh()
-                this.openNotification('danger', 'Cancel Pickup is failed', err)
-              })
+        async depart() {
+            await axios
+                .put(
+                    this.URL.manifest_delivery_order + `?n=${this.listenNodeId}/${this.manifest_do_number}/detail/1`,
+                    JSON.stringify(this.form), 
+                    this.Helper.header())
+                .then(res => {
+                    this.handleClearForm()
+                    this.closeDialog()
+                    this.loading = false
+                    this.$emit("refresh")
+                    this.openNotification(null, 'Success', 'Update surat jalan success')
+                }).catch(err => {
+                    this.loading = false
+                    this.handleClearForm()
+                    this.closeDialog()
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
+                })
         },
 
         closeDialogConfirmCancel(){
           this.activeDialogCancel = false
           this.activeLoadingCancel=false
         },
-        //cancel pickup
-        confirmCancel(val) {
-          if(val) {
-            this.activeLoadingCancel=true
-            let formupdate = {
-              'pickup_number' : this.pickupData.pickup_number,
-              'pickup_status' : 'CANCELED',
-              'is_pickup_canceled'  : 1
-            }
-            this.updateData(formupdate)
-          }
-        },
+        
 
     },
     mounted() {

@@ -88,8 +88,11 @@
                             </template>
                             <template v-else-if="navActive.toLowerCase().includes('wallet')">
                                 <transition name="slide-fade">
-                                    <div>
-                                        Wallet payment
+                                    <div class="wallet_box">
+                                        <iframe 
+                                        :src="`https://staging.ecodi.cloud/f/0ea4ad92b532e972aeae55aab4887169/TCR/${ecodi_id}/${price}`" 
+                                        loading="auto" 
+                                        id="myId"></iframe>
                                     </div>
                                 </transition>
                             </template>
@@ -185,7 +188,8 @@ export default {
             jumlahbayar: 0,
             change: 0,
             cardNumber:'',
-            paymentBtnDisabled: false
+            paymentBtnDisabled: false,
+            ecodi_id: ''
         }
     },
     methods: {
@@ -204,6 +208,7 @@ export default {
                 this.jumlahbayar = this.price
                 this.koli_qty = koli_qty
             }
+            this.ecodi_id = `TCR${this.transaction_id}`
             console.log('PAYMENT', data)
         },
         updateValue(){
@@ -337,6 +342,16 @@ export default {
                         background: rgba(204, 204, 204, .2);
                     }
                 }
+            }
+        }
+        .wallet_box{
+            iframe{
+                border: 0;
+                position: relative;
+                width: 100%;
+                height: 100%;
+                min-height: 300px;
+                display: block;
             }
         }
     }
