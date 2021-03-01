@@ -221,6 +221,7 @@ export default {
         initializeDataItem() {
             let obj = this.listenDataItem
             let prefix = this.listenTypeForm.toUpperCase()
+            console.log('obj', this.Keys, prefix,obj)
             if(obj != null && Object.keys(this.InputObject).length > 0) {
                 this.Keys.map(item => {
                     let action = item.toUpperCase()
@@ -262,7 +263,7 @@ export default {
 
             })
         },
-        updateValue(type, val) {
+        updateValue(type, val, obj = {}) {
             let action = type.toUpperCase()
             let prefix = this.listenTypeForm.toUpperCase()
 
@@ -270,7 +271,7 @@ export default {
             if(err == true) {
                 console.log(`error input controller dispatch SET_${prefix}_${action} | val ` + val)
             }
-            this.$emit("onChangeCustom", type, val)
+            this.$emit("onChangeCustom", type, val, obj)
         },
         onfocuslah(info) {
             if(info.typeInput !== '' && info.typeInput.includes('location_selector')) {

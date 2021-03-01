@@ -94,6 +94,7 @@ export default {
 
     //SURAT MUATAN
     surat_muatan: api + "manifest",
+    manifest_do: api + "manifest-do",
 
     //display-list-status
     status: api + "status",

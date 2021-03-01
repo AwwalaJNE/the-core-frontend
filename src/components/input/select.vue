@@ -105,7 +105,8 @@ export default {
         //     this.loadingInjector !== null ? this.loadingInjector.close() : null
         // },
         updateValue(val){
-            this.$emit("updateValue", this.listenFormKey, val)
+            let obj = this.DataArr.filter(item => item.value == val)[0]
+            this.$emit("updateValue", this.listenFormKey, val, obj)
         }
     },
 }

@@ -98,6 +98,9 @@ export default {
         },
         listenTypeInput() {
             return this.typeInput
+        },
+        listenInputs() {
+            return this.$store.getters[this.listenGettersPrefix][this.listenTypeForm][this.listenFromKey]['arrData']
         }
     },
     methods: {
@@ -117,7 +120,7 @@ export default {
             tempObj['inputs'] = arr
             this.template = tempObj
 
-            console.log('this.template', this.template, arr)
+            console.log('this.template', obj,this.template, arr)
             this.listInput = [...inputs]
             this.tempform = [...inputs]
             console.log('dynamicinputcomponent', obj, this.listInput, this.form)

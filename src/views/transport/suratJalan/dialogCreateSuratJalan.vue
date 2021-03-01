@@ -16,6 +16,7 @@
                     @formData="formData"
                     :dataItem="listenDataItem"
                     typeForm="surat_jalan"
+                    @onChangeCustom="onChangeCustom"
                 />
 
                 <div class="mt-2 mb-2">
@@ -114,12 +115,12 @@ export default {
             datacolumn: [
               {
                 label: "No Surat Muatan",
-                key: "bag_number",
+                key: "item_number",
                 width: "xs"
               },
               {
                 label: "Weight (Kg)",
-                key: "bag_weight",
+                key: "total_weight",
                 width: "auto"
               },
               {
@@ -129,7 +130,7 @@ export default {
               },
               {
                 label: "Type",
-                key: "bag_type",
+                key: "item_type",
                 width: "auto"
               },
             ],
@@ -140,7 +141,10 @@ export default {
                 attribute: '',
               }
             ],
-            suratMuatan: ''
+            suratMuatan: '',
+            vehicle_max_weight: 0,
+            vehicle_type_id: '',
+            lot_weight:0
         }
     },
     computed: {
@@ -168,28 +172,64 @@ export default {
         },
         active: function (val) {
             if (val == true) {
-                this.getDestination()
-                this.getModeAngkutan()
-                this.getNoModeAngkutan()
-                this.getDriver()
+                
             }
         }
     },
     methods: {
         formData(form){
-            this.form = form
-            if(this.geolocation_city_id !== undefined && this.geolocation_city_id !== '') {
-                    console.log('update')
-                    this.updateData()
+            
+            let weight = 0
+            this.dataTable.map(item => {
+                if(item.total_weight) {
+                    weight =+ item.total_weight
+                }
+            })
+
+            if(this.vehicle_max_weight >= weight) {
+                let obj = {}
+                obj['node_id_origin'] = this.listenNodeId
+                obj['node_id_destination'] = form.destination_id
+                obj['vehicle_mode_id'] = form.moda_angkutan_id
+                obj['vehicle_id'] = form.no_moda_angkutan_id
+                obj['pic_employee_id'] = form.driver_id
+                obj['etd'] = form.etd
+                obj['eta'] = form.eta
+                obj['vehicle_type_id'] = this.vehicle_type_id
+                obj['max_weight'] = this.vehicle_max_weight
+                
+                obj['manifest_do_item'] = this.dataTable
+
+                this.form = obj
+                console.log('form', this.form)
+                // this.addData()
             } else {
-                    this.addData()
+                this.openNotification('warn', 'Melebihi berat', 'Berat muatan melebihi batas berat kendaraan')
+            }
+        },
+        onChangeCustom(type, val, obj){
+            console.log('onchange',type, val, obj)
+            switch(type) {
+                case "no_moda_angkutan_id":
+                    if(typeof obj === 'object') {
+                        if(obj.hasOwnProperty('item')) {
+                            this.vehicle_max_weight = obj['item']['vehicle_max_weight']
+                            this.vehicle_type_id = obj['item']['vehicle_type_id']
+                            console.log('this.vehicle_max_weight',this.vehicle_max_weight)
+                        }
+                    }
+                   break;
+                default:
+                    console.log('meong')
+                    // code block
             }
         },
         actionUpdate(val, key) {
+            console.log('table', key, val)
           switch(key) {
                 case "remove":
                     if(this.dataTable.length > 0 && typeof val === 'object') {
-                        let filter = this.dataTable.filter(item => item.bag_number !== val.bag_number)
+                        let filter = this.dataTable.filter(item => item.item_number !== val.item_number)
                         this.dataTable = filter
                     }
                    break;
@@ -214,26 +254,6 @@ export default {
                     console.log('meong')
                     // code block
             }
-        },
-        async updateData(){
-            await axios
-                .put(
-                    this.URL.manifest_delivery_order + `/${this.manifest_delivery_id}?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
-                    console.log('res', res)
-                    this.handleClearForm()
-                    this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Update surat jalan success')
-                }).catch(err => {
-                    this.loading = false
-                    this.handleClearForm()
-                    this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification('danger', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
-                })
         },
         async addData() {
             await axios
@@ -264,15 +284,15 @@ export default {
         async getDestination() {
             await axios
                 .get(this.URL.node_link + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.node_name
-                            obj["value"] = item.node_id
+                            obj["label"] = item.node_destination['node_name']
+                            obj["value"] = item.node_link_id
 
                             arr.push(obj)
                         })
@@ -289,16 +309,16 @@ export default {
         async getModeAngkutan() {
             await axios
                 .get(this.URL.vehicle_mode + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.vehicle_mode_name
-                            obj["value"] = item.vehicle_mode_id
-
+                            obj['label'] = item.vehicle_mode_name
+                            obj['value'] = item.vehicle_mode_id
+                            // obj["item"] = item
                             arr.push(obj)
                         })
 
@@ -323,7 +343,7 @@ export default {
                             let obj = {}
                             obj["label"] = item.vehicle_name
                             obj["value"] = item.vehicle_id
-
+                            obj['item'] = item 
                             arr.push(obj)
                         })
 
@@ -339,22 +359,23 @@ export default {
         },
         async getDataSuratMuatan(){
           await axios
-              .get(this.URL.surat_muatan +
+              .get(this.URL.manifest_do +
                   `/scan?n=${this.listenNodeId}&item_no=${this.suratMuatan}`,
                   this.Helper.header())
               .then(res => {
-                if(res.data.data.length > 0) {
+                if(res.data.data) {
                     let data = res.data.data
-                    let arr = []
-                    data.map(item => {
-                        let obj = {}
-                        obj['bag_number'] = item.bag_number
-                        obj['bag_weight'] = item.bag_weight
-                        obj['destination'] = item.destination ? item.destination['node_name'] : ''
-                        obj['bag_type'] = item.bag_type
 
-                        this.dataTable.push(obj)
-                    })
+                    let obj = {}
+                    obj['item_number'] = data.item_number
+                    obj['total_weight'] = data.total_weight
+                    obj['destination'] = data.destination ? data.destination : ''
+                    obj['node_id_receiver'] = data.node_id_receiver
+                    obj['total_koli'] = data.total_koli
+                    obj['item_type'] = data.item_type
+
+                    this.dataTable.push(obj)
+
                     this.suratMuatan = ''
                 }
 
@@ -362,42 +383,39 @@ export default {
                 // this.openNotification('danger', 'Failed to collect role list', err)
               })
         },
-        getDriver() {
-            // await axios
-            //     .get(this.URL.geolocation_province + 
-            //     `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-            //     this.Helper.header())
-            //     .then(res => {
-            //         if(res.data.data.length > 0) {
-            //             let arr = []
-            //             res.data.data.map(item => {
-            //                 let obj = {}
-            //                 obj["label"] = item.geolocation_province_name
-            //                 obj["value"] = item.geolocation_province_id
+        async getDriver() {
+            await axios
+                .get(this.URL.employee + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = `${item.employee_name} (${item.employee_nik})`
+                            obj["value"] = item.employee_id
 
-            //                 arr.push(obj)
-            //             })
+                            arr.push(obj)
+                        })
 
-            //             this.$store.dispatch("SET_GEOLOCATION_CITY_GEOLOCATION_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
-            //         } else {
-            //             // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-            //         }
+                        this.$store.dispatch("SET_SURAT_JALAN_DRIVER_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
                     
-            //     }).catch(err => {
-            //         // this.openNotification('danger', 'Failed to collect role list', err)
-            //     })
-            let arr = [
-                {
-                    label: 'Son',
-                    value: '1'
-                },
-                {
-                    label: 'Veni',
-                    value: '2'
-                }
-            ]
-          this.$store.dispatch("SET_SURAT_JALAN_DRIVER_ID_ArrData", arr.length > 0 ? arr : null)
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+            
+          
         },
+    },
+    mounted() {
+        this.getDestination()
+                this.getModeAngkutan()
+                this.getNoModeAngkutan()
+                this.getDriver()
     },
 }
 </script>
