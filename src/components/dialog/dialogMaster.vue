@@ -3,7 +3,6 @@
     v-model="modalActive" 
     prevent-close
     :loading="loadingActive"
-    overflow-hidden
     :not-close="not_close"
     @close="closeDialog"
     :class="width">
