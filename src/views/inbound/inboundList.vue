@@ -148,7 +148,7 @@ export default {
               endDate = to
             }
             await axios
-                .get(this.URL.inbound +
+                .get(this.URL.inbound_incoming +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
@@ -163,13 +163,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
+                        this.openNotification('warn', 'inbound data is empty!', ' Please create a new data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', 'Failed to populate data', err)
                 })
         },
 
