@@ -45,33 +45,33 @@
                                     <template #tooltip>
                                     <div class="content-tooltip">
                                         <div class="body">
-                                        <div class="text">
+                                        <!-- <div class="text">
                                             Cosed Tasks
                                             <span>
                                             89
                                             </span>
-                                        </div>
-                                        <vs-avatar circle size="60">
+                                        </div> -->
+                                        <!-- <vs-avatar circle size="60"> -->
                                             <!-- <img src="/avatars/avatar-5.png" alt=""> -->
-                                            <i class='bx bx-user'></i>
-                                        </vs-avatar>
-                                        <div class="text">
+                                            <!-- <i class='bx bx-user'></i> -->
+                                        <!-- </vs-avatar>  -->
+                                        <!-- <div class="text">
                                             Open Tasks
                                             <span>
                                             8
                                             </span>
-                                        </div>
+                                        </div> -->
                                         </div>
                                         <footer>
-                                        <vs-button circle icon border>
+                                        <!-- <vs-button circle icon border>
                                             <i class='bx bxs-share-alt'></i>
-                                        </vs-button>
+                                        </vs-button> -->
                                         <vs-button circle @click="logout">
                                             Logout
                                         </vs-button>
-                                        <vs-button circle icon border>
+                                        <!-- <vs-button circle icon border>
                                             <i class='bx bx-like' ></i>
-                                        </vs-button>
+                                        </vs-button> -->
                                         </footer>
                                     </div>
                                     </template>
