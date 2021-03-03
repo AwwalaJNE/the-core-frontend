@@ -275,7 +275,7 @@ export default {
     package_dimensi_weight: {
       label: "Weight*",
       key: "koli_weight",
-      rule: "double|min_value:0",
+      rule: "decimal|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -284,7 +284,7 @@ export default {
     package_dimensi_length: {
       label: "Length",
       key: "koli_length",
-      rule: "numeric|min_value:0",
+      rule: "decimal|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -293,7 +293,7 @@ export default {
     package_dimensi_width: {
       label: "Width",
       key: "koli_width",
-      rule: "numeric|min_value:0",
+      rule: "decimal|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -302,7 +302,7 @@ export default {
     package_dimensi_height: {
       label: "Height",
       key: "koli_height",
-      rule: "numeric|min_value:0",
+      rule: "decimal|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
