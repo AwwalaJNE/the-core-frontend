@@ -90,7 +90,7 @@ export default {
         },
 
         openDialog(){
-            this.$router.push('/new-transactions')
+            this.$router.push('transaction/new-transactions')
         },
         getTotalAmount(val){
           this.totalAmount = val
