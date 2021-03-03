@@ -25,6 +25,7 @@
                                     :selectedValue="datanode[0].value"
                                     :isMultiple="false"
                                     :border="true"
+                                    :tabindex="-1"
                                     @updateValue="updateValue" />
                                 </template>
                             </vs-col>

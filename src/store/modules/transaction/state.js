@@ -12,7 +12,7 @@ export default {
     origin_phone: {
       label: "Telepon Pengirim*",
       key: "connote_shipper_phone_number",
-      rule: "required|numeric|min:8",
+      rule: "required|phone",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -52,6 +52,7 @@ export default {
       rule: "required",
       typeInput: "text|disabled|dotted",
       typeData: "String",
+      tabindex: -1,
       valueData: null,
       value: ''
     },
@@ -88,7 +89,7 @@ export default {
     destination_phone: {
       label: "Telepon Penerima*",
       key: "connote_receiver_phone_number",
-      rule: "required|numeric|min:8",
+      rule: "required|phone",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -127,6 +128,7 @@ export default {
       typeInput: "row",
       col:6,
       key: 'zip_code_and_destination_code',
+      tabindex: -1,
       input: [
         {
           label: "Kode Pos",
@@ -134,6 +136,7 @@ export default {
           rule: "required",
           typeInput: "text|disabled",
           typeData: "String",
+          tabindex: -1,
           valueData: null,
           value: ''
         },
@@ -143,6 +146,7 @@ export default {
           rule: "required",
           typeInput: "text|disabled",
           typeData: "String",
+          tabindex: -1,
           valueData: null,
           value: ''
         }
@@ -271,7 +275,7 @@ export default {
     package_dimensi_weight: {
       label: "Weight*",
       key: "koli_weight",
-      rule: "numeric|min_value:1",
+      rule: "double|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,

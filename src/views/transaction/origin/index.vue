@@ -12,6 +12,7 @@
                             icon
                             :active="false"
                             @click="openGetCustomer"
+                            :tabindex="-1"
                             style="margin:10px auto 0;"
                         >
                             <i class='bx bx-user'></i>
@@ -36,6 +37,7 @@
                         @formData="formData"
                         :dataItem="listenDataItem"
                         @searchTariffCode="searchTariffCode"
+                        @onChangeCustom="onChangeCustom"
                         typeForm="origin"
                     />
                 </transition>
@@ -113,6 +115,13 @@ export default {
         },
         closeGetCustomer() {
             this.dialogGetCustomer = false
+        },
+        onChangeCustom(key,val,info) {
+            if(key != undefined) {
+                if(key == 'origin_onchange_address') {
+                    this.$store.dispatch('SET_CALC_COMPONENT_SWITCH', true)
+                }
+            }
         },
         updateValue(key,value) {
             

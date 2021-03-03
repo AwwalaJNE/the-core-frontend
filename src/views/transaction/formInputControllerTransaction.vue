@@ -8,6 +8,7 @@
                             :name="InputObject[item].label" 
                             :rules="InputObject[item].rule" 
                             :formKey="item"
+                            :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
                             :valueData="InputObject[item].value"
                             :typeInput="InputObject[item].typeInput"
                             @updateValue="updateValue" 
@@ -20,6 +21,7 @@
                                         <input-general 
                                         :name="inp.label" 
                                         :rules="inp.rule" 
+                                        :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
                                         :formKey="inp.key"
                                         :valueData="inp.value"
                                         :typeInput="inp.typeInput"
@@ -33,6 +35,7 @@
                             :ref="item"
                             :name="InputObject[item].label" 
                             :rules="InputObject[item].rule" 
+                            :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
                             :formKey="item"
                             :valueData="InputObject[item].arrData"
                             :selectedValue="InputObject[item].value"
@@ -46,6 +49,7 @@
                                 :ref="item"
                                 :name="''" 
                                 :rules="InputObject[item].rule" 
+                                :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
                                 :formKey="item"
                                 :valueData="InputObject[item].arrData"
                                 :selectedValue="InputObject[item].value"
@@ -57,6 +61,7 @@
                             :name="InputObject[item].label" 
                             :titleLabel="InputObject[item].titleLabel"
                             :rules="InputObject[item].rule" 
+                            :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
                             :formKey="item"
                             :valueData="InputObject[item].value"
                             @updateValue="updateValue" />
@@ -149,7 +154,6 @@ export default {
             if(info.key !== 'connote_receiver_zip_code' && info.key !== 'connote_receiver_tariff_code') {
                 this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '')
             }
-            
             // let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
             // if(err == true) {
             //     console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
@@ -165,6 +169,7 @@ export default {
                     this.$emit("searchTariffCode", this.listenTypeForm, val)
                 }
             }
+            this.$emit("onChangeCustom", type, val, info)
         },
         
         handleClearForm(){

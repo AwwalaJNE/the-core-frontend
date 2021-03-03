@@ -9,6 +9,7 @@
                 :label="name"
                 v-model="value"
                 :border="border"
+                :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
                 @change="updateValue"
                 :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
             >
@@ -43,7 +44,8 @@ export default {
         formKey: String,
         isMultiple: Boolean,
         border: Boolean,
-        placeholder:String
+        placeholder:String,
+        tabindex: [Number, String]
     },
     data() {
         return {
@@ -65,6 +67,9 @@ export default {
         },
         listenIsMultiple(){
             return this.isMultiple ? this.isMultiple : false
+        },
+        listenTabIndex() {
+            return this.tabindex
         }
     },
     watch: {

@@ -38,15 +38,18 @@
                                 <div>
                                     <vs-row justify="space-between">
                                         <vs-col xs="12" sm="6" lg="6">
-                                            <origin />
+                                            <div ref="test" tabindex="1"></div>
+                                            <origin ref="originComponent"/>
                                         </vs-col>
                                         <vs-col xs="12" sm="6" lg="6">
+                                            <div ref="test2" tabindex="2"></div>
                                             <destination ref="destinationComponent"/>
                                         </vs-col>
                                     </vs-row>
                                     <vs-row justify="space-between" class="mb-2" style="margin-top:10px">
                                         <vs-col xs="12" sm="12" lg="12">
-                                            <package />
+                                            <div ref="test3" tabindex="11"></div>
+                                            <package ref="packageComponent"/>
                                         </vs-col>
                                     </vs-row>
                                 </div>
@@ -412,6 +415,10 @@ export default {
                 })
 		}
 
+        
+    },
+    mounted() {
+        
         
     },
 }

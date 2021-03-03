@@ -27,6 +27,7 @@ export default {
         40 - down
         9 - tab
         13 - enter
+        27 - escape
        */
       const key = e.which || e.keyCode;
       if (key === 38 || (e.shiftKey && key === 9)) {
@@ -35,7 +36,13 @@ export default {
         this.handleKeyDown(e);
       } else if (key === 13) {
         this.handleEnter(e);
+      } else if (key === 27) {
+        this.escape(e);
       }
+    },
+    escape(e) {
+      e.preventDefault();
+      this.$emit("selected", null);
     },
     handleEnter(e) {
       e.preventDefault();

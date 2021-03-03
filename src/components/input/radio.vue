@@ -111,4 +111,29 @@ export default {
             transform: translate(-3%, -28px) !important;
         }
     }
+    .vs-radio-content{
+        .vs-radio__effect::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            border-radius: 50%;
+        border: .1px solid rgba($color: #7a99ee, $alpha: 0.8);
+        filter: blur(0);
+        transform-origin: 50%;
+            display: block;
+        }
+        &.active:focus-within{
+           .vs-radio__effect::before{
+               border-color: transparent;
+                filter: blur(1px);
+                transform: scale(3);
+                transition: 800ms transform ease, 2100ms blur ease, 900ms border-color ease;
+                transition-delay: 100ms;
+
+            }
+        }
+    }
+    
 </style>

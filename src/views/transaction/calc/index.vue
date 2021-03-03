@@ -59,6 +59,7 @@
                             :formKey="''"
                             :valueData="listConnote"
                             :selectedValue="''"
+                            :tabindex="-1"
                             :isMultiple="false"
                             @updateValue="selectConnote" />
                     </div>
@@ -190,8 +191,10 @@ export default {
                 }
         },
         selectedHandler(index) {
-            let data = this.listenCalcArrData.filter(item => item.index == index)
-            this.clickdulu(data[0])
+            if(index !== null) {
+                let data = this.listenCalcArrData.filter(item => item.index == index)
+                this.clickdulu(data[0])
+            }
             this.$store.dispatch('SET_CALC_COMPONENT_SWITCH', false)
         },
         prosesListConnote() {

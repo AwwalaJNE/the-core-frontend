@@ -3,45 +3,51 @@
         <template v-slot:inputan="props">
             <template v-if="isPlaceholderGabung">
                 <vs-input
-                    class="mt-input"
+                    :class="`mt-input`"
                     :type="listenTypeInput.includes('password') == true ? 'password' : 'text'"
                     :placeholder="name"
                     v-model="value"
                     :disabled="isDisabled"
                     :autofocus="isFocusToInput"
+                    :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
                     @input="updateValue"
                     @focus="focus(true)"
                     @blur="focus(false)"
+                    ref="generalInput"
                     :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                 />
             </template>
           <template v-else-if="listenTypeInput.includes('date') == true ">
             <vs-input
-                class="mt-input"
+                :class="`mt-input`"
                 :type="listenTypeInput.includes('date') == true ? 'date' : 'text'"
                 :label="name"
                 :label-placeholder="name"
                 v-model="value"
                 format="yyyy-mm-dd H:i"
                 :disabled="isDisabled"
+                :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
                 @input="updateValue"
                 @focus="focus(true)"
                 @blur="focus(false)"
+                ref="generalInput"
                 :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
             />
           </template>
             <template v-else>
                 <vs-input
-                    class="mt-input"
+                    :class="`mt-input`"
                     :type="listenTypeInput.includes('password') == true ? 'password' : 'text'"
                     :label="name"
                     :label-placeholder="name"
                     v-model="value"
                     :autofocus="isFocusToInput"
+                    :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
                     :disabled="isDisabled"
                     @input="updateValue"
                     @focus="focus(true)"
                     @blur="focus(false)"
+                    ref="generalInput"
                     :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                 />
             </template>
@@ -60,7 +66,8 @@ export default {
         typeInput: String,
         prefix: String,
         placeholderGabung: Boolean,
-        focusToInput: Boolean
+        focusToInput: Boolean,
+        tabindex: [Number, String]
     },
     components: {
         "inputan": Inputan
@@ -85,6 +92,9 @@ export default {
         },
         isFocusToInput() {
             return this.focusToInput || false
+        },
+        listenTabIndex() {
+            return this.tabindex
         }
     },
     watch: {

@@ -13,6 +13,7 @@
                                     shadow
                                     :active="false"
                                     @click="openBpikComponent()"
+                                    :tabindex="-1"
                                     style="float:right"
                                 >
                                     <i class='bx bx-plus'></i> BPIK
@@ -23,6 +24,7 @@
                                     shadow
                                     :active="false"
                                     @click="0"
+                                    :tabindex="-1"
                                     style="float:right"
                                 >
                                     <i class='bx bx-plus'></i> Pra Connote
@@ -33,6 +35,7 @@
                                     shadow
                                     :active="false"
                                     @click="0"
+                                    :tabindex="-1"
                                     style="float:right"
                                 >
                                     <i class='bx bx-plus'></i> Single Connote

@@ -3,6 +3,7 @@
         <dialog-master 
         :actived="listenActive" 
         width="md"
+        ref="cust"
         :closeDialog="cancel">
 
             <template v-slot:header>
@@ -10,7 +11,7 @@
             </template>
 
             <template v-slot:content>
-                <div>
+                <div> 
                     <form v-on:submit.prevent="submit">
                         <input-general 
                         name="JLC/Corp ID/Phone" 
@@ -19,11 +20,15 @@
                         :valueData="value"
                         :focusToInput="listenActive == true"
                         typeInput="text"
+                        :tabindex="1"
+                        ref="labelInput"
                         @updateValue="updateValue" />
                     </form>
+                    <!-- <input type="text" ref="test" :autofocus="true"> -->
                 </div>
             </template>
         </dialog-master>
+        
     </div>
 </template>
 <script>
@@ -52,6 +57,30 @@ export default {
             return this.type
         }
     },
+    watch: {
+        active: function (val) {
+            if (val == true) {
+                const cust = this.$refs.cust
+                let el = cust.$scopedSlots.content()
+                let self = this
+                this.$nextTick(() => {
+                    // el[0].context.$refs.test.value = 'aaa'
+                    // console.log('input', el[0].context.$refs)
+                //     // this.$refs.theInput.focus();
+                    // console.log('el', el[0].context.$refs.labelInput.$refs.generalInput)
+                    // el[0].context.$refs.labelInput.$refs.generalInput.focus()
+
+                    
+                    // let inputEl = el[0].context.$refs.labelInput.$refs.generalInput.$el.querySelector('input')
+                    // console.log('input', inputEl)
+                    // inputEl.focus();
+                    
+                });
+                
+                //  el[0].children[1].focus();
+            }
+        }
+    },
     data() {
         return {
             key: '',
@@ -66,6 +95,9 @@ export default {
         },
         cancel() {
             this.closeDialog()
+        },
+        ooo(){
+            console.log('blur')
         },
         async submit() {
 
@@ -93,3 +125,10 @@ export default {
     },
 }
 </script>
+<style lang="scss">
+    .coba{
+        &:focus{
+            color: red;
+        }
+    }
+</style>
