@@ -6,8 +6,8 @@ const phoneRule = {
     return `The ${field} must be either a valid phone number`;
   },
   validate(value, args) {
-
-    const MOBILEREG = /^(^\+62|62|^08)(\d{3,4}-?){2}\d{3,4}$/g;
+    //   /^(^\+62|62|^08)(\d{3,4}-?){2}\d{3,4}$/g;
+    const MOBILEREG = /^(^\+62|62|^0)(\d{3,4}-?){2}\d{3,4}$/g;
 
     return MOBILEREG.test(value);
   }
