@@ -174,7 +174,7 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.transaction +'/'+this.transactionId+`?n=${this.listenNodeId}`,
+                .get(this.URL.transaction +'/'+this.transactionId+`?n=${this.listenNodeId}&s=${query}`,
                 this.Helper.header())
                 .then(res => {
                     let arr =res.data.data.connote
