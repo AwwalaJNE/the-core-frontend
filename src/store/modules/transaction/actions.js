@@ -162,7 +162,14 @@ export default {
 
     SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE({ commit, dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE', payload)
-        dispatch('SET_CONNOTE_DATA', {'key':'insured_goods_value','value': payload})
+        let numb = 0
+            if(payload !== '') {
+                let txt = payload.split(".")[0]
+                // console.log('money str', str,txt)
+                numb = txt.match(/\d/g);
+                numb = numb.join("");
+            }
+        dispatch('SET_CONNOTE_DATA', {'key':'insured_goods_value','value': numb})
         if(payload > 0) {
             dispatch('SET_CONNOTE_DATA', {'key':'is_insured','value': true})
         } else {
@@ -175,7 +182,14 @@ export default {
 
     SET_PACKAGE_PACKAGE_DISKON({ commit, dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_DISKON', payload)
-        dispatch('SET_CONNOTE_DATA', {'key':'amount_discount','value': payload})
+        let numb = 0
+            if(payload !== '') {
+                let txt = payload.split(".")[0]
+                // console.log('money str', str,txt)
+                numb = txt.match(/\d/g);
+                numb = numb.join("");
+            }
+        dispatch('SET_CONNOTE_DATA', {'key':'amount_discount','value': numb})
     },
     SET_PACKAGE_PACKAGE_DISKON_ValueData({ commit }, payload) {
         commit('SET_PACKAGE_PACKAGE_DISKON_ValueData', payload)
@@ -318,9 +332,14 @@ export default {
     SET_CALCULATOR_PELEPASAN_KARANTINA_ValueData({ commit }, payload) {
         commit('SET_CALCULATOR_PELEPASAN_KARANTINA_ValueData', payload)
     },
-        
-    SET_CALCULATOR_ASURANSI({ commit }, payload) {
+    
+    SET_CALCULATOR_ASURANSI({ commit, dispatch }, payload) {
         commit('SET_CALCULATOR_ASURANSI', payload)
+        if(payload > 0) {
+            dispatch("SET_CALCULATOR_ADM_ASURANSI", 5000)
+        } else {
+            dispatch("SET_CALCULATOR_ADM_ASURANSI", 0)
+        }
     },
     SET_CALCULATOR_ASURANSI_ValueData({ commit }, payload) {
         commit('SET_CALCULATOR_ASURANSI_ValueData', payload)
@@ -334,7 +353,14 @@ export default {
     },
         
     SET_CALCULATOR_DISKON({ commit }, payload) {
-        commit('SET_CALCULATOR_DISKON', payload)
+        let numb = 0
+            if(payload !== '') {
+                let txt = payload.split(".")[0]
+                // console.log('money str', str,txt)
+                numb = txt.match(/\d/g);
+                numb = numb.join("");
+            }
+        commit('SET_CALCULATOR_DISKON', numb)
     },
     SET_CALCULATOR_DISKON_ValueData({ commit }, payload) {
         commit('SET_CALCULATOR_DISKON_ValueData', payload)

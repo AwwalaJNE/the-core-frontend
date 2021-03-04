@@ -8,6 +8,7 @@
 
 import URL from "@/config.js";
 import helper from "@/helper.js";
+// import { parse } from "vue-currency-input";
 const Master = {
     data() {
         return {
@@ -28,6 +29,27 @@ const Master = {
         moneyformat(number){
             let val = number != 0 ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number) : 'Rp 0'
             return val
+        },
+        moneyParsing(str) {
+            
+            // let option = {
+            //     distractionFree: false,
+            //     valueAsInteger: true,
+            //     autoDecimalMode: true
+            // }
+            // return parse(str, this.options);
+            let numb = 0
+            if(typeof str == 'string') {
+                if(str !== '') {
+                    let txt = str.split(".")[0]
+                    // console.log('money str', str,txt)
+                    numb = txt.match(/\d/g);
+                    numb = numb.join("");
+                }
+            }
+            
+            return numb
+            
         },
         openNotification(type = null, title,msg) {
             // type success, danger, warn

@@ -237,7 +237,7 @@ export default {
     package_insured_goods_value: {
       label: "Nilai Barang",
       key: "insured_goods_value",
-      rule: "",
+      rule: "maxlength:20",
       typeInput: "text|col_left",
       typeData: "Number|money",
       valueData: null,
@@ -246,7 +246,7 @@ export default {
     package_diskon: {
       label: "Diskon",
       key: "amount_discount",
-      rule: "",
+      rule: "maxlength:20",
       typeInput: "text|col_left",
       typeData: "Number|money",
       valueData: null,

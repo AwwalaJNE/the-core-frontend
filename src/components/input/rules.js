@@ -1,5 +1,5 @@
 import { extend } from 'vee-validate';
-import { required, email, min, min_value, numeric, double } from 'vee-validate/dist/rules';
+import { required, email, min, min_value, max_value, numeric, double } from 'vee-validate/dist/rules';
 
 const phoneRule = {
   getMessage(field, args) {
@@ -29,6 +29,17 @@ extend('min', min);
 
 // Override the default message.
 extend('min_value', min_value);
+
+const maxlength = {
+  getMessage(field, args) {
+    return `${field} not valid`;
+  },
+  validate(value, args) {
+    return value.length > args ? false : true;
+  }
+};
+
+extend('maxlength', maxlength);
 
 // Numeric
 extend('numeric', numeric);

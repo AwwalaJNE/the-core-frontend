@@ -67,7 +67,7 @@
                                                 :rules="item_h.rule" 
                                                 :formKey="`${item_h.key}|${key}`"
                                                 :valueData="item[item_h.key]"
-                                                typeInput="text"
+                                                :typeInput="`text${item_h.hasOwnProperty('disabled') ? item_h.disabled == true ? '|disabled' : '' : ''}`"
                                                 @updateValue="updateValue" />
                                             </template>
                                         </vs-td>
@@ -176,32 +176,33 @@ export default {
                 {
                     label: 'Weight',
                     key: 'actual_weight',
-                    rule: 'numeric|min_value:1',
+                    rule: 'decimal|min_value:0',
                     width: "xxs"
                 },
                 {
                     label: 'Length',
                     key: 'length',
-                    rule: 'numeric|min_value:0',
-                     width: "xxs"
+                    rule: 'decimal|min_value:0',
+                    width: "xxs"
                 },
                 {
                     label: 'Width',
                     key: 'width',
-                    rule: 'numeric|min_value:0',
+                    rule: 'decimal|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Height',
                     key: 'height',
-                    rule: 'numeric|min_value:0',
+                    rule: 'decimal|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Volume Weight',
                     key: 'volume_weight',
-                    rule: 'numeric|min_value:0',
-                     width: "xxs"
+                    rule: 'decimal|min_value:0',
+                    width: "xxs",
+                    disabled: true
                 },
                 {
                     label: 'Surcharge (s)',

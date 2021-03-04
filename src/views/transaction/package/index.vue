@@ -86,6 +86,7 @@
                                 :formKey="InputObject['package_insured_goods_value'].key"
                                 :valueData="InputObject['package_insured_goods_value'].value"
                                 :typeInput="InputObject['package_insured_goods_value'].typeInput"
+                                :currencyMasking="true"
                                 @updateValue="updateValue" />
                             
                             <input-general 
@@ -94,6 +95,7 @@
                                 :formKey="InputObject['package_diskon'].key"
                                 :valueData="InputObject['package_diskon'].value"
                                 :typeInput="InputObject['package_diskon'].typeInput"
+                                :currencyMasking="true"
                                 @updateValue="updateValue" />
                             
                             <input-general 
@@ -306,7 +308,7 @@ export default {
             jumlahKoli: 1,
             current_index_koli: 0,
             package_tidak_packing_kayu: false,
-            package_tidak_asuransi: false
+            package_tidak_asuransi: false,
         }
     },
     computed: {
@@ -488,12 +490,8 @@ export default {
                     if(value2) {
                         this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", value2)
                         this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", value)
-                        console.log(key, value, value2)
-                        // reset surcharge saat ganti service
-                        // this.connote_koli_item.map(item => {
-                        //     item['surcharge_id'] = []
-                        // })
-                        // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+                        
+                        
                         let node_code = this.listenNodeCode
                         let self = this
                         this.autoApply(node_code).then(() => {
@@ -510,16 +508,19 @@ export default {
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_CATEGORY", value)
                     break;
                 case "insured_goods_value":
+                    let numb = this.moneyParsing(value)
+                    this.$store.dispatch("SET_CALCULATOR_ASURANSI", numb * 0.002)
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE", value)
-                    if(value > 0) {
-                        this.$store.dispatch("SET_CALCULATOR_ASURANSI", value * 0.002)
-                        this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 5000)
-                        this.calculation()
-                    }
+                    
+                    this.calculation()
                     break;
                 case "amount_discount":
-                    this.$store.dispatch("SET_PACKAGE_PACKAGE_DISKON", value)
+                    // let num = this.moneyParsing(value)
+                    let val = value ? value : 0
                     this.$store.dispatch("SET_CALCULATOR_DISKON", value)
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_DISKON", value)
+                    
+                    this.calculation()
                     break;
                 case "remarks":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_INSTRUKSI", value)
@@ -551,10 +552,9 @@ export default {
                         this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 0)
                     } else {
                         let insured_good_value = this.$store.getters.getTransaction.package.package_insured_goods_value.value
-                        if(insured_good_value > 0) {
-                            this.$store.dispatch("SET_CALCULATOR_ASURANSI", insured_good_value * 0.002)
-                            this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 5000)
-                        }
+                        
+                        let goods_value = this.moneyParsing(insured_good_value)
+                        this.$store.dispatch("SET_CALCULATOR_ASURANSI", goods_value * 0.002)
                     }
                     this.calculation()
                     break;
@@ -597,14 +597,6 @@ export default {
             
             this.connote_koli_item[0]['volume_weight'] = volume_weight.toFixed(2)
             
-            // let roundUp = this.round03(volume_weight.toFixed(2))
-            // let chargeable_weight = Math.max(this.connote_koli_item[0]['actual_weight'], roundUp).toFixed(2)
-
-            // this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.connote_koli_item[0]['actual_weight'])
-            // this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.connote_koli_item[0]['volume_weight'])
-            // this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", chargeable_weight)  
-            // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
-
             // new code
             this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
             // this.calcDataKoli()

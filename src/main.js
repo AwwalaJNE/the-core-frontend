@@ -8,6 +8,7 @@ import { Upload, Autocomplete, Collapse, CollapseItem, DatePicker, TimePicker } 
 import 'element-ui/lib/theme-chalk/index.css';
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
+import VueCurrencyInput from 'vue-currency-input'
 
 // import VueMoment from 'vue-moment'
 // import moment from 'moment-timezone'
@@ -25,6 +26,14 @@ Vue.use(Collapse)
 Vue.use(CollapseItem)
 Vue.use(DatePicker)
 Vue.use(TimePicker)
+
+const pluginOptions = {
+  /* see config reference https://dm4t2.github.io/vue-currency-input/config/*/
+  globalOptions: { 
+    currency: {prefix: 'Rp ', suffix: ''},
+  }
+}
+Vue.use(VueCurrencyInput, pluginOptions)
 
 
 

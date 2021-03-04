@@ -17,6 +17,24 @@
                     :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                 />
             </template>
+            <template v-else-if="listenCurrencyMasking">
+                <vs-input
+                    :class="`mt-input`"
+                    :type="'text'"
+                    :label="name"
+                    :label-placeholder="name"
+                    v-currency
+                    v-model="value"
+                    :disabled="isDisabled"
+                    :autofocus="isFocusToInput"
+                    :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                    @input="updateValue"
+                    @focus="focus(true)"
+                    @blur="focus(false)"
+                    ref="generalInput"
+                    :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                />
+            </template>
           <template v-else-if="listenTypeInput.includes('date') == true ">
             <vs-input
                 :class="`mt-input`"
@@ -67,7 +85,8 @@ export default {
         prefix: String,
         placeholderGabung: Boolean,
         focusToInput: Boolean,
-        tabindex: [Number, String]
+        tabindex: [Number, String],
+        currencyMasking: Boolean
     },
     components: {
         "inputan": Inputan
@@ -95,6 +114,9 @@ export default {
         },
         listenTabIndex() {
             return this.tabindex
+        },
+        listenCurrencyMasking() {
+            return this.currencyMasking
         }
     },
     watch: {
@@ -121,7 +143,8 @@ export default {
             info['key'] = this.listenFormKey
             info['typeInput'] = this.listenTypeInput
             info['status'] = status
-          this.$emit("updateValue", this.listenFormKey, this.value, info)
+
+            this.$emit("updateValue", this.listenFormKey, this.value, info)
         },
     },
 }

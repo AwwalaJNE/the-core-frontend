@@ -286,6 +286,8 @@ const TransactionMixin = {
         calculation(){
             // rumit cuuk
             let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
+            let diskon = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].amount_discount
+            diskon = this.moneyParsing(diskon)
             let surchargeByID = this.listenPackageSurchargeByID
             let tarifData = this.listenPackageService || {}
             
@@ -389,8 +391,12 @@ const TransactionMixin = {
             let ADM_ASURANSI = this.$store.getters.getTransaction.calculator.adm_asuransi.value
 
             TOTAL_BIAYA = TOTAL_BIAYA + ASURANSI + ADM_ASURANSI
-            
 
+            if(TOTAL_BIAYA > diskon) {
+                TOTAL_BIAYA = TOTAL_BIAYA - diskon
+            }
+            
+            
             this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.SUM_ACTUAL_WEIGHT)
             this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.SUM_VOLUME_WEIGHT)
             this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.SUM_CHARGEBLE_WEIGHT)
