@@ -80,8 +80,9 @@ export default {
                     let iframe = document.getElementById('iframe')
                     iframe.contentWindow.document.write(this.html);
                     
+                    
                     this.loading = false
-                }).catch(err => {
+                }).then(() => { setTimeout(function(){ window.print(); }, 1000); }).catch(err => {
                     this.loading = false
                     this.err = err.response.data.message || 'Invalid'
                     // this.loading = false

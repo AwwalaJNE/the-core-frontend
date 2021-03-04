@@ -224,8 +224,19 @@ export default {
         actionUpdate(val, key) {
           switch(key) {
                 case "print":
-                    console.log('print', val)
-                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.transaction_id, 'type': 'transaction'} });
+                    let kolinumber = ''
+                    if(val.hasOwnProperty('koli')) {
+                      val.koli.map(item => {
+                          if(item.koli_number) {
+                            if(kolinumber == '') {
+                              kolinumber = item.koli_number
+                            } else {
+                              kolinumber = `${kolinumber},${item.koli_number}`
+                            }
+                          }
+                      })
+                    }
+                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': kolinumber, 'type': 'koli'} });
                     window.open(routeData.href, '_blank');
                     break;
                 case "void":

@@ -8,12 +8,16 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :printAction="true"
+        
         :hasLinked="['transaction_id']"
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEdit="actionDetail"
+
+        :customAction="true"
+        :customActionList="customActionList"
+        @actionUpdate="actionUpdate"
         />
 
     </div>
@@ -71,6 +75,17 @@ export default {
                   key: "payment_type_name",
                   width: "auto"
                 }
+            ],
+            customActionList: [
+              {
+                label: 'Print',
+                key: 'print',
+                attribute: '',
+                option: {
+                  type: 'redirect',
+
+                }
+              }
             ],
             loading: false,
             dataItem: {},
@@ -147,6 +162,18 @@ export default {
                     this.loading = false
                     this.openNotification('danger', 'Failed to populate Transaction list', err)
                 })
+        },
+
+        actionUpdate(val, key) {
+          switch(key) {
+                case "print":
+                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.transaction_id, 'type': 'transaction'} });
+                    window.open(routeData.href, '_blank');
+                    break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
         },
 
         closeDialogConfirm(){
