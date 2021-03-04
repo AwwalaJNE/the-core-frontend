@@ -123,4 +123,7 @@ export default {
     //packingkayu
     packing_kayu: api + "packingkayu",
 
+    //cashless
+    cashless: api + "cashless"
+
 }

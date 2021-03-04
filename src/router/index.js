@@ -356,7 +356,7 @@ const routes = [
         component: CashLess,
         meta: { 
           requiresAuth: true,
-          breadCrumb: "Cashless"
+          breadCrumb: "Report"
         }
       },
       {
