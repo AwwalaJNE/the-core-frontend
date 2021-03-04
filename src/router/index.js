@@ -85,6 +85,9 @@ import TransportSuratJalan from "@/views/transport/suratJalan"
 // === Inbound Incoming ===
 import InboundIncoming from "@/views/inbound"
 
+// === PackingList ===
+import PackingList from "@/views/report/packinglist"
+
 // === Inbound Incoming ===
 import InboundIncomingScan from "@/views/inbound/scan"
 
@@ -353,7 +356,16 @@ const routes = [
         component: CashLess,
         meta: { 
           requiresAuth: true,
-          breadCrumb: "Cashless"
+          breadCrumb: "Report"
+        }
+      },
+      {
+        path: "/report/packinglist",
+        name: "Packinglist",
+        component: PackingList,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "report"
         }
       },
       {
