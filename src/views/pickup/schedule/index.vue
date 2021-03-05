@@ -12,7 +12,6 @@
                     <div style="width: 100px;padding-right: 5px;">
                         <vs-button
                         flat
-                        square
                         block
                         :active="true"
                         @click="openDialog"
@@ -31,57 +30,9 @@
                   <vs-col xs="3" sm="3" lg="3">
                     <daterange-filter @searchDate="searchDate"/>
                   </vs-col>
-                  <vs-col xs="2" sm="2" lg="2">
-                    <template v-if="DataNode.length > 0">
-                      <vs-select
-                          class="m-select"
-                          filter
-                          :multiple="false"
-                          placeholder="All Nodes"
-                          v-model="node_request"
-                          :border="true"
-                          @change="updateNode"
-                      >
-                        <template v-if="DataNode.length > 0">
-                          <vs-option
-                              v-for="(item,key) in DataNode"
-                              :key="key"
-                              :label="item.label"
-                              :value="item.value">
-                            {{item.label}}
-                          </vs-option>
-                        </template>
-
-                      </vs-select>
-
-                    </template>
-                  </vs-col>
-                  <vs-col xs="2" sm="2" lg="2">
-                    <template v-if="DataStatus.length > 0">
-                      <vs-select
-                          class="m-select"
-                          filter
-                          :multiple="false"
-                          placeholder="All Status"
-                          v-model="status_pickup"
-                          :border="true"
-                          @change="updateNode"
-                      >
-                        <template v-if="DataStatus.length > 0">
-                          <vs-option
-                              v-for="(item,key) in DataStatus"
-                              :key="key"
-                              :label="item.label"
-                              :value="item.value">
-                            {{item.label}}
-                          </vs-option>
-                        </template>
-
-                      </vs-select>
-
-                    </template>
-                  </vs-col>
-                  <vs-col offset="2" xs="6" sm="3" lg="3" class="mb-15" align="right">
+                  
+                  
+                  <vs-col offset="6" xs="6" sm="3" lg="3" class="mb-15" align="right">
                     <search-input ref="searchInput" @searchValue="searchValue"/>
                   </vs-col>
                 </vs-row>
