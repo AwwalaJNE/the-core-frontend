@@ -86,7 +86,7 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.employee + 
+                .get(this.URL.employee_type + 
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {

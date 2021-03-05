@@ -3,6 +3,7 @@
         <template v-slot:inputan="props">
             <vs-select
                 class="m-select"
+                autocomplete="off"
                 filter
                 :multiple="listenIsMultiple"
                 :placeholder="placeholder"
