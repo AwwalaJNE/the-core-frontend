@@ -180,14 +180,12 @@ export default {
                     this.pagination.page_size = res.data.meta.last_page
                     if(res.data.data.length > 0) {
                         
-                    } else {
-                        this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
-                    }
+                    } 
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', 'Failed to populate data', err)
                 })
         },
 

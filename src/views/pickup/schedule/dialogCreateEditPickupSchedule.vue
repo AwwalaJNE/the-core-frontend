@@ -348,7 +348,7 @@ export default {
 
                             arr.push(obj)
                         })
-                        this.$store.dispatch("SET_PICKUP_LIST_VEHICLE_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
