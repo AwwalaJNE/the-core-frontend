@@ -1794,4 +1794,102 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   commit('SET_PACKINGKAYU_KOLI_LENGTH_ValueData', payload)
   },
   //======= END Packing Kayu =======
+
+  //======= START EMPLOYEE =======
+  SET_EMPLOYEE_EMPLOYEE_NIK({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_NIK', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_NIK_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_NIK_ValueData', payload)
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_NAME({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_NAME', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_NAME_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_NAME_ValueData', payload)
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER_ValueData', payload)
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE_ValueData', payload)
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE_ValueData', payload)
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_GENDER({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_GENDER', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_GENDER_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_GENDER_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_EMPLOYEE_EMPLOYEE_GENDER_ArrData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_GENDER_ArrData', payload)
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_NO_SIM({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_NO_SIM', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_NO_SIM_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_NO_SIM_ValueData', payload)
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_NO_KTP({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_NO_KTP', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_NO_KTP_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_NO_KTP_ValueData', payload)
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS_ValueData', payload)
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_TYPE_ID({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_TYPE_ID', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ArrData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ArrData', payload)
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_NODE_ID({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_NODE_ID', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_NODE_ID_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_NODE_ID_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_EMPLOYEE_EMPLOYEE_NODE_ID_ArrData({ commit }, payload) {
+  commit('SET_EMPLOYEE_EMPLOYEE_NODE_ID_ArrData', payload)
+  },
+
+  SET_EMPLOYEE_IS_ACTIVE({ commit }, payload) {
+  commit('SET_EMPLOYEE_IS_ACTIVE', payload)
+  },
+  SET_EMPLOYEE_IS_ACTIVE_ValueData({ commit }, payload) {
+  commit('SET_EMPLOYEE_IS_ACTIVE_ValueData', payload)
+  },
+  //====== end employee ======
 }

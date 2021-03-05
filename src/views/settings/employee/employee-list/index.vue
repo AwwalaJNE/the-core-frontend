@@ -46,23 +46,23 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "First Name",
-                    key: "node_commision_service",
+                    label: "NIK",
+                    key: "employee_nik",
                     width: "auto"
                 },
                 {
-                    label: "Last Name",
-                    key: "node_commision_daily",
+                    label: "Name",
+                    key: "employee_name",
                     width: "auto"
                 },
                 {
                     label: "Location",
-                    key: "node_commision_amount1",
+                    key: "node_name",
                     width: "auto"
                 },
                 {
                     label: "Courier Code",
-                    key: "node_commision_amount2",
+                    key: "employee_code",
                     width: "auto"
                 },
             ],
@@ -92,6 +92,9 @@ export default {
                 .then(res => {
                     console.log(res)
                     if(res.data.data.length > 0) {
+                        res.data.data.map(item=>{
+                            item['node_name'] = item.node ? item.node.node_name : '-'
+                        })
                         this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
@@ -116,14 +119,18 @@ export default {
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.getTableData(this.pagination.limit,this.pagination.page, this.tempSearch)
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.getTableData(this.pagination.limit,this.pagination.page, this.tempSearch)
         },
+        refresh(){
+            this.getTableData(this.pagination.limit,this.pagination.page, this.tempSearch)
+        }
     },
     mounted() {
+        this.refresh()
         // this.getTableData(this.pagination.limit,this.pagination.page)
     },
 }
