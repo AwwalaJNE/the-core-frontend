@@ -68,14 +68,10 @@ export default {
                     key: "pickup_schedule_name",
                     width: "xs"
                 },
-                {
-                    label: "PIC",
-                    key: "pickup_schedule_pic_name",
-                    width: "auto"
-                },
+               
                 {
                     label: "Destination",
-                    key: "pickup_schedule_node_id_destination",
+                    key: "destination_node_name",
                     width: "auto"
                 },
                 {
@@ -158,6 +154,7 @@ export default {
                     let arr = res.data.data
                     arr.map(item => {
                       item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
+                      item["destination_node_name"] = (item.destination) ? item.destination.node_name: null
                     })
 
                     this.dataTable = arr
@@ -180,14 +177,12 @@ export default {
                     this.pagination.page_size = res.data.meta.last_page
                     if(res.data.data.length > 0) {
                         
-                    } else {
-                        this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
-                    }
+                    } 
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', 'Failed to populate data', err)
                 })
         },
 

@@ -49,6 +49,7 @@ export default {
       value: ''
     },
   },
+
   role: {
     user_role_name: {
       label: "Role*",
@@ -149,6 +150,143 @@ export default {
       valueData: true,
       value: true
     },
+  },
+
+  //employee
+  employee: {
+    employee_nik: {
+      label: "NIK",
+      key: "employee_nik",
+      rule: "required",
+      width: '6',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_name: {
+      label: "Name",
+      key: "employee_name",
+      rule: "required",
+      width: '6',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_phone_number: {
+      label: "Phone Number",
+      key: "employee_phone_number",
+      rule: "required|numeric|min:8",
+      typeInput: "text",
+      width: '6',
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_no_sim: {
+      label: "No. SIM",
+      key: "employee_no_sim",
+      rule: "required|numeric|min:8",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '6',
+    },
+    employee_no_ktp: {
+      label: "No. KTP",
+      key: "employee_no_ktp",
+      rule: "required|numeric|min:5",
+      typeInput: "text",
+      width: '6',
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_birth_place: {
+      label: "Birth Place",
+      key: "employee_birth_place",
+      rule: "required",
+      typeInput: "text",
+      width: '6',
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_birth_date: {
+      label: "Birth Date",
+      key: "employee_birth_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_gender: {
+      label: "Gender",
+      key: "employee_gender",
+      rule: "required",
+      width: '6',
+      typeInput: "select",
+      typeData: "String",
+      arrData: [ 
+        {
+          label: 'Laki Laki',
+          value: 'L'
+        },
+        {
+          label: 'Perempuan',
+          value: 'P'
+        },
+    ],
+      valueData: null,
+      value: ''
+    },
+    
+    employee_employement_status: {
+      label: "Employement Status",
+      key: "employee_employement_status",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      width: '6',
+      value: ''
+    },
+    employee_type_id: {
+      label: "Type",
+      key: "employee_type_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      width: '6',
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    employee_node_id: {
+      label: "Work Location",
+      key: "employee_node_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      width: '6',
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      width: '6',
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    }
   },
 
   geolocation_city: {
@@ -1467,7 +1605,7 @@ export default {
     pickup_schedule_phone_number: {
       label: "Phone*",
       key: "pickup_schedule_phone_number",
-      rule: "required",
+      rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
       valueData: null,

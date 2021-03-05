@@ -1917,4 +1917,106 @@ export default {
   },
   //======= END packing Kayu ==========
     
+
+  //======= Start Employee =======
+  SET_EMPLOYEE_EMPLOYEE_NIK(state, payload) {
+  state.employee.employee_nik.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_NIK_ValueData(state, payload) {
+  state.employee.employee_nik.valueData = payload
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_NAME(state, payload) {
+  state.employee.employee_name.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_NAME_ValueData(state, payload) {
+  state.employee.employee_name.valueData = payload
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER(state, payload) {
+  state.employee.employee_phone_number.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER_ValueData(state, payload) {
+  state.employee.employee_phone_number.valueData = payload
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE(state, payload) {
+  state.employee.employee_birth_place.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE_ValueData(state, payload) {
+  state.employee.employee_birth_place.valueData = payload
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE(state, payload) {
+  state.employee.employee_birth_date.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE_ValueData(state, payload) {
+  state.employee.employee_birth_date.valueData = payload
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_GENDER(state, payload) {
+  state.employee.employee_gender.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_GENDER_ValueData(state, payload) {
+  state.employee.employee_gender.valueData = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_GENDER_ArrData(state, payload) {
+  state.employee.employee_gender.hasOwnProperty('arrData') ?
+  state.employee.employee_gender.arrData = payload :
+  state.employee.employee_gender.arrData = []
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_NO_SIM(state, payload) {
+  state.employee.employee_no_sim.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_NO_SIM_ValueData(state, payload) {
+  state.employee.employee_no_sim.valueData = payload
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_NO_KTP(state, payload) {
+  state.employee.employee_no_ktp.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_NO_KTP_ValueData(state, payload) {
+  state.employee.employee_no_ktp.valueData = payload
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS(state, payload) {
+  state.employee.employee_employement_status.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS_ValueData(state, payload) {
+  state.employee.employee_employement_status.valueData = payload
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_TYPE_ID(state, payload) {
+  state.employee.employee_type_id.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ValueData(state, payload) {
+  state.employee.employee_type_id.valueData = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ArrData(state, payload) {
+  state.employee.employee_type_id.hasOwnProperty('arrData') ?
+  state.employee.employee_type_id.arrData = payload :
+  state.employee.employee_type_id.arrData = []
+  },
+
+  SET_EMPLOYEE_EMPLOYEE_NODE_ID(state, payload) {
+  state.employee.employee_node_id.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_NODE_ID_ValueData(state, payload) {
+  state.employee.employee_node_id.valueData = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_NODE_ID_ArrData(state, payload) {
+  state.employee.employee_node_id.hasOwnProperty('arrData') ?
+  state.employee.employee_node_id.arrData = payload :
+  state.employee.employee_node_id.arrData = []
+  },
+
+  SET_EMPLOYEE_IS_ACTIVE(state, payload) {
+  state.employee.is_active.value = payload
+  },
+  SET_EMPLOYEE_IS_ACTIVE_ValueData(state, payload) {
+  state.employee.is_active.valueData = payload
+  },
+  //===== end employee ======
+
 }
