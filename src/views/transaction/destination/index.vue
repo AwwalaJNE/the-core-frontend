@@ -151,7 +151,7 @@ export default {
                 `?n=${this.listenNodeId}&destination=${this.destinationCode}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log('getShippingService', res.data.data)
+                    // console.log('getShippingService', res.data.data)
                     let data = res.data.data
                     let arr = []
                     data.map(item => {
@@ -163,7 +163,7 @@ export default {
                         
                         arr.push(obj)
                     })
-                    console.log('getShippingService arr', arr)
+                    // console.log('getShippingService arr', arr)
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])

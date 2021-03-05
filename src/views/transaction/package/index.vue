@@ -567,12 +567,13 @@ export default {
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_DO_RETURN", value)
                     break;
                 case "handle_surcharge":
-                    let surcharge = value2
-                    let ids = []
-                    if(surcharge.length > 0){
-                        surcharge.map(item => ids.push(item.surcharge_id))
-                    }
-                    this.connote_koli_item[value].surcharge_id = [...this.connote_koli_item[value].surcharge_id,...ids]
+                    // console.log('handle_surcharge => ', key, value,value2)
+                    // let surcharge = value2
+                    // let ids = []
+                    // if(surcharge.length > 0){
+                    //     surcharge.map(item => ids.push(item.surcharge_id))
+                    // }
+                    this.connote_koli_item[value].surcharge_id = value2//[...this.connote_koli_item[value].surcharge_id,...value2]
 
                     this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
                     this.surchargeView()

@@ -90,17 +90,21 @@ const TransactionMixin = {
                                 if(koli.hasOwnProperty('surcharge_id')) {
                                     // fix setiap masing2 koli overweight, wajib hanya memiliki 1 type surcharge overweight
                                     let alreadyHasOverWeight = false
+                                    let alreadyHasPackingKayu = false
                                     let index = 0
                                     koli['surcharge_id'].map((itm) => {
                                         if(this.listenPackageSurchargeByID.hasOwnProperty(itm) == true) {
                                             if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('overweight')) {
                                                 index = koli['surcharge_id'].indexOf(itm)
                                                 alreadyHasOverWeight = true
+                                            } else if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('packing kayu')) {
+                                                index = koli['surcharge_id'].indexOf(itm)
+                                                alreadyHasPackingKayu = true
                                             }
                                         }
                                     })
 
-                                    if(alreadyHasOverWeight) {
+                                    if(alreadyHasOverWeight || alreadyHasPackingKayu) {
                                         if (index > -1) {
                                             koli['surcharge_id'].splice(index, 1);
                                         }

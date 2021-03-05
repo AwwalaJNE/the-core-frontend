@@ -1,9 +1,9 @@
 <template>
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
-            <vs-row>
+            <vs-row :style="vertical == true ? 'flex-direction: column !important;':''">
                 <template v-if="DataArr.length > 0">
-                    <vs-col xs="6" :w="3" v-for="(item,key) in DataArr" :key="key">
+                    <vs-col xs="6" :w="width ? width : 3" v-for="(item,key) in DataArr" :key="key">
                         <vs-radio 
                         style="margin-top:.5em"
                         v-model="value" 
@@ -15,7 +15,6 @@
                     </vs-col>
                 </template>
             </vs-row>
-
         </template>
     </inputan>
     
@@ -35,7 +34,9 @@ export default {
         selectedValue: [String, Number],
         formKey: String,
         typeInput: String,
-        border: Boolean
+        border: Boolean,
+        vertical: Boolean,
+        width: [String, Number]
     },
     data() {
         return {
@@ -112,6 +113,7 @@ export default {
         }
     }
     .vs-radio-content{
+            justify-content: left !important;
         .vs-radio__effect::before {
             content: "";
             position: absolute;

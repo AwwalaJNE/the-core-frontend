@@ -303,14 +303,14 @@ export default {
                     break;
                 case key.includes("handle_surcharge"):
                     
-                    let surcharge = value2
-                    let ids = []
-                    if(surcharge.length > 0){
-                        surcharge.map(item => ids.push(item.surcharge_id))
-                    }
+                    // let surcharge = value2
+                    // let ids = []
+                    // if(surcharge.length > 0){
+                    //     surcharge.map(item => ids.push(item.surcharge_id))
+                    // }
 
                     if(this.connote_koli_item[value].hasOwnProperty('surcharge_id')) {
-                        this.connote_koli_item[value].surcharge_id = [...this.connote_koli_item[value].surcharge_id,...ids]
+                        this.connote_koli_item[value].surcharge_id = value2//[...this.connote_koli_item[value].surcharge_id,...ids]
                     }
 
                     this.$emit("prosesmultipleKoli", this.connote_koli_item)

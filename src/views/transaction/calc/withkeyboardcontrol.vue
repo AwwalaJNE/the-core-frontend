@@ -30,9 +30,9 @@ export default {
         27 - escape
        */
       const key = e.which || e.keyCode;
-      if (key === 38 || (e.shiftKey && key === 9)) {
+      if (key === 38) {
         this.handleKeyUp(e);
-      } else if (key === 40 || key === 9) {
+      } else if (key === 40) {
         this.handleKeyDown(e);
       } else if (key === 13) {
         this.handleEnter(e);
