@@ -1467,7 +1467,7 @@ export default {
     pickup_schedule_phone_number: {
       label: "Phone*",
       key: "pickup_schedule_phone_number",
-      rule: "required",
+      rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
       valueData: null,
