@@ -11,7 +11,7 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formUserNodeController"
+                    ref="formEmployeeController"
                     @formData="formData"
                     :dataItem="listenDataItem"
                     typeForm="employee"
@@ -112,10 +112,8 @@ export default {
           this.form = form
           if(this.employee_id !== undefined && this.employee_id !== '') {
             this.form.employee_id = this.employee_id
-            console.log(this.form,'alah')
             this.updateData()
           } else {
-           
             this.addData()
           }
 
@@ -123,10 +121,10 @@ export default {
 
         },
         handleSubmit(){
-            this.$refs.formUserNodeController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formEmployeeController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formUserNodeController.handleClearForm()
+            this.$refs.formEmployeeController.handleClearForm()
             this.form = {}
             this.employee_id = ""
         },
@@ -176,7 +174,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.employee + `?n=${this.listenNodeId}`,
+                    this.URL.employee + `/${this.employee_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -185,14 +183,14 @@ export default {
                     this.$emit("refresh")
                     this.openNotification(null, 'Update success', 'Update employee is success')
                 }).catch(err => {
+                    let messageErr = err.response.data ? err.response.data.message : 'Update failed' 
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update failed', err)
+                    this.openNotification('danger', 'Update failed', messageErr)
                 })
         },
         async addData() {
-            console.log('form', this.form)
             await axios
                 .post(
                     this.URL.employee + `?n=${this.listenNodeId}`,
@@ -211,8 +209,8 @@ export default {
                 })
         },
         cancel() {
-            this.handleClearForm()
             this.closeDialog()
+            this.handleClearForm()
         }
     },
     mounted() {
