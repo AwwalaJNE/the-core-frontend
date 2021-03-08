@@ -249,6 +249,8 @@ export default {
                         console.log()
                         this.$refs.bpikinput0[0].focus()
                     })
+                } else {
+                    this.emptyBpik()
                 }
             }
         }
@@ -321,6 +323,10 @@ export default {
             console.log('remove', this.listBpik, i)
             // this.listBpik.splice(i, 1);
             this.$VueDelete(this.listBpik, i);
+            this.$store.dispatch("SET_CONNOTE_BPIK", this.listBpik)
+        },
+        emptyBpik() {
+            this.listBpik = []
             this.$store.dispatch("SET_CONNOTE_BPIK", this.listBpik)
         },
         printBPIK() {

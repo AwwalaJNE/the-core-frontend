@@ -176,7 +176,12 @@ export default {
                 console.log('+++ calc listen list connote +++', n)
                 this.prosesListConnote()
             }
-        }
+        },
+        listenCalcArrData: function (arr) {
+            if(arr.length == 1) {
+                this.selectedHandler(0)
+            }
+        },
     },
     methods: {
         initialize() {
