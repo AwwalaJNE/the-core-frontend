@@ -46,6 +46,13 @@ export default {
         actived: function(val) {
             if(val !== undefined) {
                 this.modalActive = val || false
+                this.$nextTick(() => {
+                    if(val == true) {
+                        this.addKeyHandler()
+                    } else {
+                        this.removeKeyHandler()
+                    }
+                });
             }
         },
         loading: function(val) {
@@ -62,7 +69,25 @@ export default {
     methods: {
         handleClose(){
             this.closeDialog()
+        },
+        keyHandler(e){
+            /**
+             * 27 - Esc
+             */
+            const key = e.which || e.keyCode;
+            if(key === 27) {
+                this.handleClose()
+            }
+        },
+        addKeyHandler() {
+            window.addEventListener("keydown", this.keyHandler);
+            console.log('inject dialog key handler add')
+        },
+        removeKeyHandler() {
+            window.removeEventListener("keydown", this.keyHandler);
+            console.log('dialog key handler destroy')
         }
+
     },
 }
 </script>

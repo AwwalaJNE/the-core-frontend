@@ -420,6 +420,13 @@ export default {
 
     // new code
 
+    SET_PRA_CONNOTE_NUMBER({ commit, dispatch  }, payload) {
+        dispatch('SET_CONNOTE_DATA', {'key':'pra_connote','value': payload})
+    },
+    SET_SINGLE_CONNOTE_NUMBER({ commit, dispatch  }, payload) {
+        dispatch('SET_CONNOTE_DATA', {'key':'single_connote_no','value': payload})
+    },
+
     SET_CONNOTE_INDEX_ACTIVE({ commit }, payload) {
         commit('SET_CONNOTE_INDEX_ACTIVE', payload)
     },

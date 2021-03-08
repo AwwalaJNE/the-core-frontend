@@ -23,7 +23,7 @@
                                 <vs-button
                                     shadow
                                     :active="false"
-                                    @click="0"
+                                    @click="connoteNumberDialog('pra')"
                                     :tabindex="-1"
                                     style="float:right"
                                 >
@@ -34,7 +34,7 @@
                                 <vs-button
                                     shadow
                                     :active="false"
-                                    @click="0"
+                                    @click="connoteNumberDialog('single')"
                                     :tabindex="-1"
                                     style="float:right"
                                 >
@@ -263,6 +263,14 @@
             @prosesmultipleKoli="prosesmultipleKoli"
             :surchargeByID="surchargeByID"
             />
+        
+        <connote-number-dialog
+            :active="connote_number_dialog" 
+            :closeDialog="closeConnoteNumberDialog"
+            :title="connote_number_type"
+            :type="connote_number_type"
+            @updateValue="updateValue"
+        />
     </div>
 </template>
 <script>
@@ -276,6 +284,7 @@ import Switch from "@/components/input/switch"
 import Radio from "@/components/input/radio"
 import Checkbox from "@/components/input/checkbox"
 import BPIK from "@/views/transaction/package/bpik"
+import ConnoteNumberDialog from "@/views/transaction/connoteNumberDialog"
 
 import dialogMultipleKoli from "@/views/transaction/package/dialogMultipleKoli"
 import dialogSurcharge from "@/views/transaction/package/dialogSurcharge"
@@ -291,7 +300,8 @@ export default {
         "checkbox": Checkbox,
         "dialog-surcharge": dialogSurcharge,
         "dialog-multipleKoli": dialogMultipleKoli,
-        "bpik": BPIK
+        "bpik": BPIK,
+        "connote-number-dialog": ConnoteNumberDialog
     },
     data() {
         return {
@@ -309,6 +319,9 @@ export default {
             current_index_koli: 0,
             package_tidak_packing_kayu: false,
             package_tidak_asuransi: false,
+
+            connote_number_type: '',
+            connote_number_dialog: false
         }
     },
     computed: {
@@ -378,6 +391,13 @@ export default {
             // new code
             this.connote_koli_item = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
             this.wrapingSurcharge()
+        },
+        connoteNumberDialog(type) {
+            this.connote_number_type = type || 'pra'
+            this.connote_number_dialog = !this.connote_number_dialog
+        },
+        closeConnoteNumberDialog() {
+            this.connote_number_dialog = false
         },
         wrapingSurcharge() {
             let arrSurcharge = this.listenSurchargeList

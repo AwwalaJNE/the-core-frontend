@@ -503,6 +503,8 @@ export default {
   },
   connote_index_active: 0,
   connote_template: {
+    pra_connote: '',
+    single_connote_no: '',
     connote_number: '',
     connote_shipper_customer_id: '',
     connote_shipper_name: '',
@@ -549,6 +551,8 @@ export default {
     node_code: '',
     connote: [
       {
+        pra_connote: '',
+        single_connote_no: '',
         connote_number: '',
         connote_shipper_customer_id: '',
         connote_shipper_name: '',
@@ -600,6 +604,8 @@ export default {
     node_code: '',
     connote: [
       {
+        pra_connote: '',
+        single_connote_no: '',
         connote_number: '',
         connote_shipper_customer_id: '',
         connote_shipper_name: '',

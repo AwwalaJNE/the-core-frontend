@@ -435,11 +435,11 @@ export default {
                 case key === 114 || (e.altKey && key === 114):
                     this.$refs.packageComponent.openBpikComponent()
                     break;
-                case 115:
-                    
+                case key === 115 || (e.altKey && key === 115):
+                    this.$refs.packageComponent.connoteNumberDialog('pra')
                     break;
-                case 116:
-                    
+                case key === 116 || (e.altKey && key === 116):
+                    this.$refs.packageComponent.connoteNumberDialog('single')
                     break;
                 case 117:
                     
