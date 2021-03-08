@@ -165,7 +165,6 @@ export default {
 
           if(this.pickup_number !== undefined && this.pickup_number !== '') {
             this.form.pickup_number = this.pickup_number
-            console.log(this.form,'alah')
             this.updateData()
           } else {
             this.node_id = this.listenNodeId
@@ -204,7 +203,6 @@ export default {
                 // setTimeout(function(){ self.forcererender = false }, 100);
 
                 let aaa = this.$store.getters.getInputs.pickup_list
-                console.log('data customer', aaa)
             }
         },
 
@@ -284,7 +282,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.pickup + `?n=${this.listenNodeId}`,
+                    this.URL.pickup + `/${this.pickup_number}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -293,14 +291,14 @@ export default {
                     this.$emit("refresh")
                     this.openNotification(null, 'Update success', 'Update pickup is success')
                 }).catch(err => {
+                    let message = err.response.data ? err.response.data.message : 'Update Failed'
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update failed', err)
+                    this.openNotification('danger', 'Update failed', message)
                 })
         },
         async addData() {
-            console.log('form', this.form)
             await axios
                 .post(
                     this.URL.pickup + `?n=${this.listenNodeId}`,
@@ -310,7 +308,7 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Create Success', 'Create new node is success')
+                    this.openNotification(null, 'Create Success', 'Create new Pickup is success')
                 }).catch(err => {
                     this.loading = false
                     this.closeDialog()
