@@ -328,7 +328,8 @@ const TransactionMixin = {
                         
                         let chargeble_weight = this.SUM_CHARGEBLE_WEIGHT
                         let base_tariff = this.BASE_TARIFF 
-                        // console.log('base_tariff', this.BASE_TARIFF )
+                        
+                        console.log('base_tariff', this.BASE_TARIFF )
                         let temp_actual = 0
                         koli.surcharge_id.map(su_id => {
                             let dataSurcharge = surchargeByID[su_id] || {}
@@ -343,6 +344,7 @@ const TransactionMixin = {
                                                 this.SUM_CHARGEBLE_WEIGHT = evalchargeable_weight
                                                 // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
                                                 this.BASE_TARIFF = this.tarifTiering(this.SUM_CHARGEBLE_WEIGHT)
+                                                this.BASE_TARIFF = this.diskonCalc(this.BASE_TARIFF,diskon)
                                                 base_tariff = this.BASE_TARIFF
                                                 // console.log('CHARGEBLE_WEIGHT', str, chargeble_weight,evalchargeable_weight, this.SUM_CHARGEBLE_WEIGHT, base_tariff)
                                             } else if (formula.toLowerCase() == 'surcharge') {
@@ -381,12 +383,13 @@ const TransactionMixin = {
                 })
 
                 let reCompareWeight = Number(Math.max(this.SUM_ACTUAL_WEIGHT, this.SUM_CHARGEBLE_WEIGHT).toFixed(2))
-                this.SUM_CHARGEBLE_WEIGHT = reCompareWeight
+                this.SUM_CHARGEBLE_WEIGHT = this.round03(reCompareWeight) 
                     
 
                 if(Object.keys(tarifData).length > 0) {
                     // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
                     this.BASE_TARIFF = this.tarifTiering(this.SUM_CHARGEBLE_WEIGHT)
+                    this.BASE_TARIFF = this.diskonCalc(this.BASE_TARIFF,diskon)
                 }
                 TOTAL_BIAYA = this.BASE_TARIFF + SUM_HANDLING_CHARGE + SUM_BIAYA_LAIN
             }
@@ -396,9 +399,9 @@ const TransactionMixin = {
 
             TOTAL_BIAYA = TOTAL_BIAYA + ASURANSI + ADM_ASURANSI
 
-            if(TOTAL_BIAYA > diskon) {
-                TOTAL_BIAYA = TOTAL_BIAYA - diskon
-            }
+            // if(TOTAL_BIAYA > diskon) {
+            //     TOTAL_BIAYA = TOTAL_BIAYA - diskon
+            // }
             
             
             this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.SUM_ACTUAL_WEIGHT)
@@ -412,6 +415,14 @@ const TransactionMixin = {
             // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
             this.$store.dispatch('SET_CONNOTE_DATA', {'key':'total_biaya','value': TOTAL_BIAYA})
             this.calculateGrandTotal()
+        },
+
+        diskonCalc(base_tariff, diskon){
+            let val = 0
+            if(base_tariff >= diskon) {
+                val = base_tariff - diskon
+            }
+            return val
         },
 
         tarifTiering(wg){
@@ -456,7 +467,9 @@ const TransactionMixin = {
             let res = oo
             if(numToRound > ooo) {
                 res = res +1
-            } 
+            } else if (numToRound < 1) {
+                res = 1
+            }
             return res;
         },
         refreshTransactionStore() {
