@@ -426,19 +426,19 @@ export default {
              */
             const key = e.which || e.keyCode;
             switch(true) {
-                case key === 112 || (e.altKey && key === 112):
+                case key === 112 || (e.altKey && key === 112) || (e.shiftKey && key === 112):
                     this.$refs.originComponent.openGetCustomer()
                     break;
-                case key === 113 || (e.altKey && key === 113):
+                case key === 113 || (e.altKey && key === 113) || (e.shiftKey && key === 113):
                     this.$refs.destinationComponent.openGetCustomer()
                     break;
-                case key === 114 || (e.altKey && key === 114):
+                case key === 114 || (e.altKey && key === 114) || (e.shiftKey && key === 114):
                     this.$refs.packageComponent.openBpikComponent()
                     break;
-                case key === 115 || (e.altKey && key === 115):
+                case key === 115 || (e.altKey && key === 115) || (e.shiftKey && key === 115):
                     this.$refs.packageComponent.connoteNumberDialog('pra')
                     break;
-                case key === 116 || (e.altKey && key === 116):
+                case key === 116 || (e.altKey && key === 116) || (e.shiftKey && key === 116):
                     this.$refs.packageComponent.connoteNumberDialog('single')
                     break;
                 case 117:
