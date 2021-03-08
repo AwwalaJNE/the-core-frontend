@@ -7,14 +7,14 @@
         :closeDialog="cancel">
 
             <template v-slot:header>
-                <h3>Search by JLC/Corp ID/Phone</h3>
+                <h3>{{`Search by ${type !== 'detination' ?'JLC/Corp ID/' : ''}Phone`}}</h3>
             </template>
 
             <template v-slot:content>
                 <div> 
                     <form v-on:submit.prevent="submit">
                         <input-general 
-                        name="JLC/Corp ID/Phone" 
+                        :name="`${type !== 'detination' ?'JLC/Corp ID/' : ''}Phone`" 
                         rules="" 
                         :formKey="listenType"
                         :valueData="value"

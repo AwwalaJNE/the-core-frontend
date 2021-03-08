@@ -413,13 +413,56 @@ export default {
 					// this.openNotification('danger', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
                     // this.openNotification('danger', 'Failed to populate country list', err)
                 })
-		}
+		},
+
+        keyHandler(e) {
+            /**
+             * 112 - f1
+             * 113 - f2
+             * 114 - f3
+             * 115 - f4
+             * 116 - f5
+             * 117 - f6
+             */
+            const key = e.which || e.keyCode;
+            switch(true) {
+                case key === 112 || (e.altKey && key === 112):
+                    this.$refs.originComponent.openGetCustomer()
+                    break;
+                case key === 113 || (e.altKey && key === 113):
+                    this.$refs.destinationComponent.openGetCustomer()
+                    break;
+                case key === 114 || (e.altKey && key === 114):
+                    this.$refs.packageComponent.openBpikComponent()
+                    break;
+                case 115:
+                    
+                    break;
+                case 116:
+                    
+                    break;
+                case 117:
+                    
+                    break;
+                default:
+            }
+        },
+        addKeyHandler() {
+            window.addEventListener("keydown", this.keyHandler);
+            console.log('inject transaction key handler add')
+        },
+        removeKeyHandler() {
+            window.removeEventListener("keydown", this.keyHandler);
+            console.log('transaction key handler destroy')
+        }
 
         
     },
     mounted() {
-        
-        
+        this.addKeyHandler()
     },
+    destroyed() {
+        this.removeKeyHandler();
+    }
 }
 </script>

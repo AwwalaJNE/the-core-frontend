@@ -1,6 +1,6 @@
 <template>
     <div v-if="listenActive">
-        <div class="box" style="padding: 1.5em 0.5em .5em !important;">
+        <div ref="bpikBox" class="box" style="padding: 1.5em 0.5em .5em !important;">
             <template>
                 <vs-table>
                     <template #thead>
@@ -49,6 +49,7 @@
                                         </template>
                                         <template v-else>
                                             <input-general 
+                                            :ref="`bpikinput${i}`"
                                             :name="item_h.placeholder" 
                                             :rules="''" 
                                             :formKey="`${item_h.key}|${key}`"
@@ -243,6 +244,11 @@ export default {
                 if(val == true) {
                     console.log('awww aktif')
                     this.initialize()
+                    this.$nextTick(() => {
+                        this.$refs.bpikBox.scrollIntoView({ behavior: 'smooth' })
+                        console.log()
+                        this.$refs.bpikinput0[0].focus()
+                    })
                 }
             }
         }

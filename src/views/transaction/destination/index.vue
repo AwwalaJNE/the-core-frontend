@@ -112,7 +112,7 @@ export default {
                 })
         },
         openGetCustomer() {
-            this.dialogGetCustomer = true
+            this.dialogGetCustomer = !this.dialogGetCustomer
         },
         closeGetCustomer() {
             this.dialogGetCustomer = false
