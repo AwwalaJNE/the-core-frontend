@@ -30,7 +30,7 @@
         <vs-col xs="12" sm="3" lg="3">
           <template>
             <div class="center in-get-bag">
-              <vs-col lg="8">
+              <vs-col lg="12">
                     <template v-if="DataNode.length > 0">
                       <vs-select
                           class="m-select"
@@ -39,6 +39,7 @@
                           placeholder="All Nodes"
                           v-model="node_request"
                           :border="true"
+                          autocomplete="off"
                           @change="updateNode"
                       >
                         <template v-if="DataNode.length > 0">
@@ -173,17 +174,14 @@ export default {
     async getNodeLink() {
       this.loading = true
       await axios
-          .get(this.URL.node_link +
-              `/${this.listenNodeId}?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+          .get(this.URL.node +
+              `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
               this.Helper.header())
           .then(res => {
-            let datas = [];
-              datas = [res.data.data];
-              
-              datas.map(item => {
+              res.data.data.map(item => {
                 let obj = {}
-                obj["label"] = item.node_destination.node_code
-                obj["value"] = item.node_destination.node_id
+                obj["label"] = item.node_name
+                obj["value"] = item.node_id
 
                 this.DataNode.push(obj)
               })
