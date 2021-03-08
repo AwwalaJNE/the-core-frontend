@@ -7,6 +7,12 @@
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
+            <vs-col xs="6" sm="3" lg="3">
+                <vs-button 
+                class="--primary"
+                @click="actionDetail"
+                >PRINT</vs-button>
+            </vs-col>
         </vs-row>
         <section class="users">
             <vs-row justify="space-around">
@@ -16,9 +22,7 @@
                             <vs-col xs="6" sm="9" lg="9">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
-                            <vs-col xs="6" sm="3" lg="3">
-                             <vs-button class="--primary">PRINT</vs-button>
-                            </vs-col>
+                            
                         </vs-row>
                         <template v-if="navActive === 'k-INFO'">
                           <vs-row justify="space-between">
@@ -48,7 +52,7 @@
                         </template>
                         <template v-if="navActive === 'k-ACTIVITY'">
                           <vs-row >
-                            <vs-col vs-align="center" xs="3" sm="3" lg="2">
+                            <vs-col vs-align="center" xs="3" sm="3" lg="12">
                               <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
                             </vs-col>
                           </vs-row>
@@ -316,6 +320,16 @@ export default {
                     this.loading = false
                     this.openNotification('danger', 'Failed to populate list', err)
                 })
+        },
+        actionDetail(){
+            let routeData = this.$router.resolve({ 
+                name: 'printGeneral', 
+                params: { 
+                    'id': this.connote_number, 
+                    'type': 'bpik'
+                } 
+            });
+            window.open(routeData.href, '_blank');
         },
     },
     mounted(){
