@@ -100,7 +100,7 @@ export default {
                 },
                 {
                     label: "Service",
-                    key: "connote_chargeable_weight",
+                    key: "connote_service_code",
                     width: "auto"
                 },                
                 {

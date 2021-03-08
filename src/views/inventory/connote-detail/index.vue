@@ -8,7 +8,10 @@
                 </div>
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
-                <vs-button class="--primary">PRINT</vs-button>
+                <vs-button 
+                class="--primary"
+                @click="actionDetail"
+                >PRINT</vs-button>
             </vs-col>
         </vs-row>
         <section class="users">
@@ -317,6 +320,16 @@ export default {
                     this.loading = false
                     this.openNotification('danger', 'Failed to populate list', err)
                 })
+        },
+        actionDetail(){
+            let routeData = this.$router.resolve({ 
+                name: 'printGeneral', 
+                params: { 
+                    'id': this.connote_number, 
+                    'type': 'bpik'
+                } 
+            });
+            window.open(routeData.href, '_blank');
         },
     },
     mounted(){
