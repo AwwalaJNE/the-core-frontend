@@ -201,6 +201,7 @@ export default {
                 this.clickdulu(data[0])
             }
             this.$store.dispatch('SET_CALC_COMPONENT_SWITCH', false)
+            this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", [])
         },
         prosesListConnote() {
             let listconnote = this.listenTransactionConnote
