@@ -79,7 +79,7 @@ export default {
                 {
                     label: "Date#",
                     key: "created_at",
-                    width: "auto"
+                    width: "sm"
                 },
                 {
                     label: "Type SM",
@@ -89,17 +89,17 @@ export default {
                 {
                   label: "Jenis Kiriman",
                   key: "jenis_kiriman",
-                  width: "auto"
+                  width: "xs"
                 },
                 {
                   label: "Origin",
                   key: "origin_name",
-                  width: "auto"
+                  width: "sm"
                 },
                 {
                   label: "Destination",
                   key: "destination_name",
-                  width: "auto"
+                  width: "sm"
                 },
                 {
                     label: "Kg",
@@ -109,12 +109,12 @@ export default {
                 {
                     label: "ETA",
                     key: "eta",
-                    width: "auto"
+                    width: "sm"
                 },
                 {
                     label: "ETD",
                     key: "etd",
-                    width: "auto"
+                    width: "sm"
                 },
                 {
                     label: "status",
@@ -190,6 +190,9 @@ export default {
                     arr.map(item => {
                         item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
                         item["manifest_type_name"] = (item.manifest_type) ? item.manifest_type.vehicle_mode_name: null
+                        item['jenis_kiriman'] = (item.vehicle_type) ? item.vehicle_type.vehicle_type_name: '-'
+                        item['origin_name']       = (item.origin) ? item.origin.node_name: '-'
+                        item['destination_name']  = (item.destination) ? item.destination.node_name: '-'
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page

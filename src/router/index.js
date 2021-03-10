@@ -451,22 +451,45 @@ const routes = [
           breadCrumb: "Pickup Schedule"
         }
       },
+      //parent transport
       {
-        path: "/transport/packingkayu",
-        name: "packingkayu",
-        component: TransportPackingKayu,
+        path: "transport",
+        name: "transport",
+        component: ContentChild,
+        children: [
+          {
+            path: "manifest",
+            name: "transport-manifest",
+            component: TransportManifest,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Surat Muatan"
+            }
+          },
+          {
+            path: "packingkayu",
+            name: "packingkayu",
+            component: TransportPackingKayu,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Packing Kayu"
+            }
+          },
+          {
+            path: "manifest-jalan",
+            name: "SuratJalan",
+            component: TransportSuratJalan,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Surat Jalan"
+            }
+          },
+
+
+        ],
         meta: {
           requiresAuth: true,
-          breadCrumb: "Packing Kayu"
-        }
-      },
-      {
-        path: "/transport/manifest-jalan",
-        name: "SuratJalan",
-        component: TransportSuratJalan,
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Surat Jalan"
+          breadCrumb: "transport"
         }
       },
       {
@@ -487,15 +510,7 @@ const routes = [
           breadCrumb: "Inbound Incoming / Receiving"
         }
       },
-      {
-        path: "/transport/manifest-new",
-        name: "transport-manifest-new",
-        component: TransportManifest,
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "surat muatan"
-        }
-      },
+
       {
         path: "/delivery/runsheet",
         name: "delivery-runsheet",
