@@ -21,7 +21,7 @@
                     </vs-col>
                     <vs-col xs="12" sm="3" lg="3">
                         <p>Total Price</p>
-                        <h2>{{moneyformat(price)}}</h2>
+                        <h2>{{moneyformat(grand_total)}}</h2>
                         <br>
                         <p>Special Tariff Discount</p>
                         <h2>{{moneyformat(discount)}}</h2>
@@ -182,6 +182,7 @@ export default {
             dataTransaction: {},
             koli_qty: 0,
             connote_qty: 0,
+            grand_total: 0,
             price: 0,
             discount: 0,
             transaction_id: null,
@@ -196,10 +197,18 @@ export default {
         initialize() {
             let data = this.$store.getters.getTransaction.transaction
             if(data['transaction_id'] !== '' && data['transaction_finished'] == true) {
+                console.log('PAYMENT', 'meong')
                 this.transaction_id = data['transaction_id']
                 this.connote_qty = data['connote'].length
-                this.price = data['grand_total']
-                // this.discount = data['discount']
+                let diskon = 0
+                data['connote'].map(item => {
+                    if(item.amount_discount) {
+                        diskon += item.amount_discount
+                    }
+                })
+                this.grand_total = data['grand_total'] + diskon // data['grand_total'] sebelumnya sudah kena efek diskon saat proses calculation
+                this.price = data['grand_total'] 
+                this.discount = diskon
                 let koli_qty = 0
                 data['connote'].map(item => {
                     let connotekoli = item['connote_koli_item'].length
@@ -209,7 +218,7 @@ export default {
                 this.koli_qty = koli_qty
             }
             this.ecodi_id = `TCR${this.transaction_id}`
-            console.log('PAYMENT', data)
+            
         },
         updateValue(){
             switch(this.navActive) {

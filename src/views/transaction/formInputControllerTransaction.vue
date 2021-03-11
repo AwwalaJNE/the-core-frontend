@@ -5,6 +5,7 @@
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
                         <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
                             <input-general 
+                            :ref="InputObject[item].key"
                             :name="InputObject[item].label" 
                             :rules="InputObject[item].rule" 
                             :formKey="item"

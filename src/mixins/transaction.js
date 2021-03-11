@@ -56,7 +56,7 @@ const TransactionMixin = {
         async autoApply(){
             let node_code = this.$store.getters.getUser['node_id'].node_code
             if(node_code !== undefined) {
-                console.log('PROSES AUTO APPLY NEW CODE')
+                // console.log('PROSES AUTO APPLY NEW CODE')
                 
                 let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
                 let filterAutoSurcharge = this.listenSurchargeList || []
@@ -84,7 +84,7 @@ const TransactionMixin = {
                                         
                                     })
 
-                                    console.log('prepareSurchargeID', prepareSurchargeID)
+                                    // console.log('prepareSurchargeID', prepareSurchargeID)
                                 }
 
                                 if(koli.hasOwnProperty('surcharge_id')) {
@@ -119,7 +119,7 @@ const TransactionMixin = {
                         })
 
                         this.$store.dispatch("SET_CONNOTE_DATA_KOLI", listKoli)
-                        console.log('SET_CONNOTE_DATA_KOLI ==>', listKoli)
+                        // console.log('SET_CONNOTE_DATA_KOLI ==>', listKoli)
                     }
                 } catch (error) {
                     console.log('error auto apply', error)
@@ -329,7 +329,7 @@ const TransactionMixin = {
                         let chargeble_weight = this.SUM_CHARGEBLE_WEIGHT
                         let base_tariff = this.BASE_TARIFF 
                         
-                        console.log('base_tariff', this.BASE_TARIFF )
+                        // console.log('base_tariff', this.BASE_TARIFF )
                         let temp_actual = 0
                         koli.surcharge_id.map(su_id => {
                             let dataSurcharge = surchargeByID[su_id] || {}

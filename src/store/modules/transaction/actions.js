@@ -163,7 +163,7 @@ export default {
     SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE({ commit, dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE', payload)
         let numb = 0
-            if(payload !== '') {
+            if(payload !== '' && typeof payload == 'string') {
                 let txt = payload.split(".")[0]
                 // console.log('money str', str,txt)
                 numb = txt.match(/\d/g);
@@ -183,7 +183,7 @@ export default {
     SET_PACKAGE_PACKAGE_DISKON({ commit, dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_DISKON', payload)
         let numb = 0
-            if(payload !== '') {
+            if(payload !== '' && typeof payload == 'string') {
                 let txt = payload.split(".")[0]
                 // console.log('money str', str,txt)
                 numb = txt.match(/\d/g);
@@ -354,7 +354,7 @@ export default {
         
     SET_CALCULATOR_DISKON({ commit }, payload) {
         let numb = 0
-            if(payload !== '') {
+            if(payload !== '' && typeof payload == 'string') {
                 let txt = payload.split(".")[0]
                 // console.log('money str', str,txt)
                 numb = txt.match(/\d/g);

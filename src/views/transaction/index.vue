@@ -149,7 +149,11 @@ export default {
             printTransactionBarcodeShow: false,
             koli_number: '',
             legacySystemHTML: '',
-            bookingCode: ''
+            bookingCode: '',
+
+            prosesConnote: {},
+            tempConnote: {},
+            prosesDataTransaction: {}
         }
     },
     methods: {
@@ -160,20 +164,15 @@ export default {
             this.dialogPayment = false
         },
         onSubmit(refs){
-            console.log('onsubmit form controller', refs)
+            // console.log('onsubmit form controller', refs)
                 refs.form.validate().then(success => {
                     if (!success) {
                         console.log('err niih')
                         return;
                     }
-                    // this.InputObject = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm]
-                    // this.Keys.map(item => {
-                    //     // yg diambil key input
-                    //     this.form[this.InputObject[item].key] = this.InputObject[item].value
-                    // })
-                    // this.$emit("formData", this.form)
+                    
                     this.collectData()
-                    this.createConnote()
+                    this.createConnote2()
 
                     // Wait until the models are updated in the UI
                     this.$nextTick(() => {
@@ -241,8 +240,124 @@ export default {
             this.$refs.formTransaction.formSubmit()
         },
         collectData() {
-            console.log('==== transaction ====', this.listenTransaction)
+            this.tempConnote = {}
+            let dataTransaction = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction))
+            this.prosesDataTransaction = dataTransaction
+            this.prosesDataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
+
+            // hanya kirim connote yg belom/mau dibuat
+            let dataConnote = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]))
+            let arr = []
+            arr.push(dataConnote)
+            this.prosesDataTransaction['connote'] = arr
+            this.prosesDataTransaction['node_code'] = this.listenNodeCode
+
+            console.log('==== transaction collectData ====', this.prosesDataTransaction)
         },
+
+        async createConnote2() {
+            await axios
+                .post(
+                    this.URL.connote + `?n=${this.listenNodeId}`,
+                    JSON.stringify(this.prosesDataTransaction), 
+                    this.Helper.header()
+                ).then(res => {
+                    if(res.status == 200){
+                        this.prosesDataTransaction = {}
+                        console.log('res connote ========>', res)
+                        this.tempConnote = res.data.data
+                        this.handleDataTransaction()
+                        if(this.typeAction == 'addconnote') {
+                            this.refreshTransactionStore()
+                        } else {
+                            this.getDataKoli()
+                            this.$nextTick(() => {
+                                this.openPaymentDialog()
+                            });
+                        }
+                    }
+                })
+        },
+
+        handleDataTransaction() {
+            console.log('ADMORE CONNOTE ===> ', this.tempConnote)
+            let current_connote = {}
+            Object.keys(this.tempConnote).length > 0 && Object.keys(this.tempConnote).map(item => {
+                if(item !== 'shipper_geolocation' && 
+                item !== 'receiver_geolocation' &&
+                item !== 'tariff' &&
+                item !== 'koli' &&
+                item !== 'transaction_id') {
+                    if(item == 'connote_number' ||
+                    item == 'connote_booking_number' ||
+                    item == 'connote_reference_number') {
+                        current_connote[item] = this.tempConnote[item].toString()
+                    } else {
+                        current_connote[item] = this.tempConnote[item]
+                    }
+                    
+                }
+
+                if(item == 'amount_total_price') {
+                    current_connote['total_biaya'] = this.tempConnote[item]
+                }
+
+                if(item == 'koli') {
+                    let koliList = this.tempConnote[item]
+
+                    // fix karena key yg didapet dari respond endpoint create connote gak konsisten 
+                    // dengan key yg dibutuhkan untuk create data connote
+
+                    koliList.map(item => {
+                        if(item.hasOwnProperty('koli_actual_weight')) {
+                            item['actual_weight'] = item['koli_actual_weight']
+                        } 
+                        if(item.hasOwnProperty('koli_height')) {
+                            item['height'] = item['koli_height']
+                        } 
+                        if(item.hasOwnProperty('koli_length')) {
+                            item['length'] = item['koli_length']
+                        } 
+                        if(item.hasOwnProperty('koli_width')) {
+                            item['width'] = item['koli_width']
+                        } 
+                        if(item.hasOwnProperty('koli_volume_weight')) {
+                            item['volume_weight'] = item['koli_volume_weight']
+                        }
+                        if(item.hasOwnProperty('surcharge_id')) {
+                            item['surcharge_id'] = item['surcharge_id']
+                        } else {
+                            item['surcharge_id'] = []
+                        }
+                    })
+
+                    current_connote['connote_koli_item'] = koliList
+                }
+            })
+
+            let test = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction.connote))
+            test[this.listenConnoteActive] = current_connote
+
+            console.log('handleDataTransaction ++++=? ', test)
+
+
+            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':this.tempConnote['transaction_id']})
+            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'connote', 'value':test})
+            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value': this.typeAction == 'finish' ? true : false }) // this.tempConnote['transaction_finished']
+            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'node_code', 'value':this.listenNodeCode})
+
+
+            // // setelah proses ngisi transaction data connote dari respond post connote selesai,
+            // // - add obj data connote template
+            // // - connote index active + 1.
+            if(this.typeAction == 'addconnote') {
+                this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
+                this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
+            }
+
+            this.wrapKoliNumber()
+        },
+
         async createConnote() {
             // send only actived connote
             let dataConnote = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
@@ -251,61 +366,55 @@ export default {
             arr.push(dataConnote)
             dataTransaction['connote'] = arr
 
-            // if(this.typeAction == 'addconnote' && dataConnote['connote_number'] !== '') {
-            //     this.openNotification('danger', 'failed to update connote', '')
-            //     let connote = this.$store.getters.getTransaction.transaction.connote
-            //     let lastindex = connote.length - 1
-            //     this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, lastindex)
-            //     this.$store.dispatch(`SWITCH_CONNOTE_ACTIVE`, lastindex)
-            // } else {
+            // this.dataTransaction = dataTransaction //this.listenTransaction
+            // this.dataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
+            // this.dataTransaction['node_code'] = this.listenNodeCode
+            // console.log('this.dataTransaction', this.dataTransaction)
+            // await axios
+            //     .post(
+            //         this.URL.connote + `?n=${this.listenNodeId}`,
+            //         JSON.stringify(this.dataTransaction), 
+            //         this.Helper.header())
+            //     .then(res => {
+            //         console.log('res connote', res)
+            //         if(res.status == 200) {
+            //             // this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':res.data.data['transaction_id']})
+            //             this.fillTransactionData(res.data.data)
+            //             this.wrapKoliNumber()
+            //             this.refreshTransactionStore()
 
-            // }
-
-            this.dataTransaction = dataTransaction //this.listenTransaction
-            this.dataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
-            this.dataTransaction['node_code'] = this.listenNodeCode
-            console.log('this.dataTransaction', this.dataTransaction)
-            await axios
-                .post(
-                    this.URL.connote + `?n=${this.listenNodeId}`,
-                    JSON.stringify(this.dataTransaction), 
-                    this.Helper.header())
-                .then(res => {
-                    console.log('res connote', res)
-                    if(res.status == 200) {
-                        // this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':res.data.data['transaction_id']})
-                        this.fillTransactionData(res.data.data)
-                        this.wrapKoliNumber()
-                        
-                        if(this.typeAction == 'addconnote') {
-                            this.refreshTransactionStore()
-                        } else {
-                            // this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value':res.data.data['transaction_finished'] || true})
-                            this.printTransactionBarcodeShow = true
-                            this.openPaymentDialog()
-                            this.getDataKoli()
-                        }
+            //             if(this.typeAction == 'addconnote') {
+            //                 // this.refreshTransactionStore()
+            //             } else {
+            //                 // this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value':res.data.data['transaction_finished'] || true})
+            //                 this.printTransactionBarcodeShow = true
+            //                 this.openPaymentDialog()
+            //                 this.getDataKoli()
+            //             }
                         
                         
-                    }
+            //         }
                     
-                    this.openNotification(null, 'Success', 'Create connote success')
-                }).catch(err => {
-                    this.openNotification('danger', 'Create new transaction failed', err.response ? err.response.data.message : 'something went wrong')
-                })
+            //         this.openNotification(null, 'Success', 'Create connote success')
+            //     }).catch(err => {
+            //         this.openNotification('danger', 'Create new transaction failed', err.response ? err.response.data.message : 'something went wrong')
+            //     })
         },
 
         wrapKoliNumber() {
             let connote = this.$store.getters.getTransaction.transaction.connote
+            console.log('+++++++++WRAP KOLI+++++++++',connote)
             this.koli_number = ''
             let str = []
             connote.map(conot => {
                 if(conot.hasOwnProperty('connote_koli_item')) {
+                    let temp = []
                     conot.connote_koli_item.map(koli => {
                         if(koli.hasOwnProperty('koli_number')) {
-                            str.push(koli.koli_number)
+                            temp.push(koli.koli_number)
                         }
                     })
+                    str = [...str, ...temp]
                 }
             })
             this.koli_number = str.toString()
@@ -330,6 +439,10 @@ export default {
                         res_connote[item] = data[item]
                     }
                     
+                }
+
+                if(item == 'amount_total_price') {
+                    res_connote['total_biaya'] = data[item]
                 }
 
                 if(item == 'koli') {
