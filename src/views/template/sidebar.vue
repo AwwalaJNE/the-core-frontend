@@ -190,7 +190,7 @@ export default {
                         },
                         {
                             label: 'Surat Muatan',
-                            url: '/transport/manifest-new',
+                            url: '/transport/manifest',
                             icon: ''
                         },
                     ]

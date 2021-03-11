@@ -79,7 +79,7 @@ export default {
     },
     data() {
         return {
-            title:"Surat Muatan List",
+            title:"Surat Muatan",
             tempSearch: "",
             tempDate: [],
             dialogSuratMuatan:false,
