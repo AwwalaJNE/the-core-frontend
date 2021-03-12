@@ -69,13 +69,13 @@ export default {
               },
               {
                 label: "Origin",
-                key: "node_id_origin",
-                width: "auto"
+                key: "node_id_origin_name",
+                width: "sm"
               },
               {
                 label: "Destination",
-                key: "node_id_destination",
-                width: "auto"
+                key: "node_id_destination_name",
+                width: "sm"
               },
               {
                 label: "Kg",
@@ -85,12 +85,12 @@ export default {
               {
                 label: "ETD",
                 key: "etd",
-                width: "auto"
+                width: "sm"
               },
               {
                 label: "ETA",
                 key: "eta",
-                width: "auto"
+                width: "sm"
               },
               {
                 label: "Status",
@@ -99,7 +99,7 @@ export default {
               },
               {
                 label: "Received",
-                key: "pickup_status",
+                key: "received_time",
                 width: "auto"
               },
             ],
@@ -180,6 +180,8 @@ export default {
                     console.log('manifest_delivery_order', arr, res)
                     arr.map(item => {
                       item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
+                      item["node_id_origin_name"] = (item.origin) ? item.origin.node_name: null
+                      item["node_id_destination_name"] = (item.destination) ? item.destination.node_name: null
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
