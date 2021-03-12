@@ -4,7 +4,7 @@
       <vs-sidebar
         absolute
         v-model="active"
-        :open="expand"
+        :open="isExpand"
         @update:open="actionSidebar"
         @input="redirect"
         >
@@ -355,9 +355,15 @@ export default {
             ]
         }
     },
+    watch:{
+        expand: function(val){
+            this.isExpand = val
+        }
+    },
     methods: {
         redirect(val){
             console.log('meong', val)
+            this.isExpand = false
             // this.$router.push(`${val}`)
         }
     },
