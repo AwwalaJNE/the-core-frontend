@@ -171,7 +171,7 @@ export default {
 
     async updateData(){
       await axios
-          .put(
+          .post(
               this.URL.connote +'/'+this.transactionId+ `/void?n=${this.listenNodeId}`,
               JSON.stringify(this.form),
               this.Helper.header())
