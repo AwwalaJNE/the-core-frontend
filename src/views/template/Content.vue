@@ -24,6 +24,10 @@ export default {
             active: false
         }
     },
+    beforeRouteUpdate (to, from, next) {
+        this.active = false
+        next()
+    },
     methods: {
         sidabarAction(){
             this.active = !this.active
