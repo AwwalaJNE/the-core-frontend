@@ -15,6 +15,9 @@ export default {
   SET_USER_USER_ROLE_ID({ commit }, payload) {
       commit('SET_USER_USER_ROLE_ID', payload)
   },
+  SET_USER_USER_NODE_ID({ commit }, payload) {
+      commit('SET_USER_USER_NODE_ID', payload)
+  },
   SET_USER_USER_NAME_ValueData({ commit }, payload) {
     commit('SET_USER_USER_NAME_ValueData', payload)
   },
@@ -33,6 +36,13 @@ export default {
   // type select perlu data array
   SET_USER_USER_ROLE_ID_ArrData({ commit }, payload) {
       commit('SET_USER_USER_ROLE_ID_ArrData', payload)
+  },
+  SET_USER_USER_NODE_ID_ValueData({ commit }, payload) {
+      commit('SET_USER_USER_NODE_ID_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_USER_USER_NODE_ID_ArrData({ commit }, payload) {
+      commit('SET_USER_USER_NODE_ID_ArrData', payload)
   },
 
   // ==== user role ====

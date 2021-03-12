@@ -17,6 +17,9 @@ export default {
   SET_USER_USER_ROLE_ID(state, payload) {
     state.user.user_role_id.value = payload
   },
+  SET_USER_USER_NODE_ID(state, payload) {
+    state.user.user_node_id.value = payload
+  },
   SET_USER_USER_NAME_ValueData(state, payload) {
     state.user.user_name.valueData = payload
   },
@@ -38,6 +41,16 @@ export default {
     state.user.user_role_id.hasOwnProperty('arrData') ?
     state.user.user_role_id.arrData = payload :
     state.user.user_role_id.arrData = []
+  },
+  // type select
+  SET_USER_USER_NODE_ID_ValueData(state, payload) {
+    state.user.user_node_id.valueData = payload
+  },
+  // type select perlu data array
+  SET_USER_USER_NODE_ID_ArrData(state, payload) {
+    state.user.user_node_id.hasOwnProperty('arrData') ?
+      state.user.user_node_id.arrData = payload :
+      state.user.user_node_id.arrData = []
   },
 
   // ==== user role ====
