@@ -73,7 +73,8 @@ export default {
             formUser: this.$store.getters.getInputs.user ? this.$store.getters.getInputs.user : {},
             user_id: '',
             dataRole: [],
-            loadingDataRole: false
+            loadingDataRole: false,
+            loadingDataNode: false
         }
     },
     computed: {
@@ -96,6 +97,7 @@ export default {
         active: function (val) {
             if (val == true) {
                 this.getDataRole()
+                this.getDataNode()
             }
         }
     },
@@ -153,6 +155,33 @@ export default {
                     this.checkAuth(err.response)
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
+        },
+        async getDataNode(){
+          this.loadingDataNode = true
+          await axios
+              .get(this.URL.node +
+                  `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                  this.Helper.header())
+              .then(res => {
+                if(res.data.data.length > 0) {
+                  let arr = []
+                  res.data.data.map(item => {
+                    let obj = {}
+                    obj["label"] = item.node_name
+                    obj["value"] = item.node_id
+
+                    arr.push(obj)
+                  })
+                  console.log(arr)
+                  this.$store.dispatch("SET_USER_USER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+                }
+
+                this.loadingDataNode = false
+              }).catch(err => {
+                this.loadingDataNode = false
+                this.checkAuth(err.response)
+                // this.openNotification('danger', 'Failed to collect role list', err)
+              })
         },
         async updateData() {
             await axios

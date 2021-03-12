@@ -48,6 +48,16 @@ export default {
       valueData: null,
       value: ''
     },
+    user_node_id: {
+      label: "Node*",
+      key: "user_node_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
   },
 
   role: {
