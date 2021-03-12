@@ -166,11 +166,11 @@ export default {
             }
         },
 
-        listenPackageService: function (n,o) {
-            if(n !== o) {
-                this.calculation()
-            }
-        },
+        // listenPackageService: function (n,o) {
+        //     if(n !== o) {
+        //         this.calculation()
+        //     }
+        // },
         listenTransactionConnoteLength: function (n,o) {
             if(n !== o) {
                 console.log('+++ calc listen list connote +++', n)

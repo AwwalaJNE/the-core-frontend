@@ -491,19 +491,41 @@ export default {
             }
         })
 
-        Object.keys(state.calculator).map(item => {
-            switch(true) {
-                case state.calculator[item].hasOwnProperty('typeData'):
-                    if(state.calculator[item].typeData == 'Number'){
-                        state.calculator[item].value = 0
-                    }
-                    break;
-                default:
-            }
-            if(item == 'actual_weight' || item == 'chargeable_weight' ){
-                state.calculator[item].value = 1
-            }
-        })
+        console.log('clear calculator', )
+        state.calculator['actual_weight'].value = 1
+        state.calculator['volume_weight'].value = 0
+        state.calculator['chargeable_weight'].value = 1
+
+        state.calculator['biaya_kirim'].value = 0
+        state.calculator['handling_charge'].value = 0
+        state.calculator['surcharge'].value = 0
+
+        state.calculator['surcharge_manual'].value = 0
+        state.calculator['airline_document'].value = 0
+        state.calculator['shipper_declaration'].value = 0
+
+        state.calculator['adm_karantina'].value = 0
+        state.calculator['pelepasan_karantina'].value = 0
+        state.calculator['asuransi'].value = 0
+
+        state.calculator['adm_asuransi'].value = 0
+        state.calculator['diskon'].value = 0
+        state.calculator['total_biaya'].value = 0
+
+        // Object.keys(state.calculator).map(item => {
+
+        //     switch(true) {
+        //         case state.calculator[item]['typeData'].includes("Number"):
+                    
+        //                 state.calculator[item].value = 0
+                    
+        //             break;
+        //         default:
+        //     }
+        //     if(item == 'actual_weight' || item == 'chargeable_weight' ){
+        //         state.calculator[item].value = 1
+        //     }
+        // })
 
         Object.keys(state.destination).map(item => {
             switch(item) {
@@ -549,7 +571,7 @@ export default {
                     console.log('connote_service_code =', state.package[item]['key'])
                     if(state.package[item].hasOwnProperty('value')){
                         state.package[item].value = ''
-                        state.package[item].value = {}
+                        state.package[item].valueData = {}
                         state.package[item].arrData = [
                             {
                               'label': 'null',
@@ -569,17 +591,11 @@ export default {
                     // code block
             }
 
-            if(item == 'package_dimensi_weight') {
-                state.package['package_dimensi_weight'].value = 1
+            if(item == 'package_dimensi_weight' || item == 'package_jumlah') {
+                state.package[item].value = 1
             }
 
-        })
-
-
-
-
-        
-        
+        })  
     },
     CLEAR_TRANSACTION_DATA_CONNOTE(state, payload) {
         state.transaction = state.transaction_TEMPLATE

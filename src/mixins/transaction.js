@@ -344,7 +344,7 @@ const TransactionMixin = {
                                                 this.SUM_CHARGEBLE_WEIGHT = evalchargeable_weight
                                                 // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
                                                 this.BASE_TARIFF = this.tarifTiering(this.SUM_CHARGEBLE_WEIGHT)
-                                                this.BASE_TARIFF = this.diskonCalc(this.BASE_TARIFF,diskon)
+                                                // this.BASE_TARIFF = this.diskonCalc(this.BASE_TARIFF,diskon)
                                                 base_tariff = this.BASE_TARIFF
                                                 // console.log('CHARGEBLE_WEIGHT', str, chargeble_weight,evalchargeable_weight, this.SUM_CHARGEBLE_WEIGHT, base_tariff)
                                             } else if (formula.toLowerCase() == 'surcharge') {
@@ -389,7 +389,7 @@ const TransactionMixin = {
                 if(Object.keys(tarifData).length > 0) {
                     // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
                     this.BASE_TARIFF = this.tarifTiering(this.SUM_CHARGEBLE_WEIGHT)
-                    this.BASE_TARIFF = this.diskonCalc(this.BASE_TARIFF,diskon)
+                    // this.BASE_TARIFF = this.diskonCalc(this.BASE_TARIFF,diskon)
                 }
                 TOTAL_BIAYA = this.BASE_TARIFF + SUM_HANDLING_CHARGE + SUM_BIAYA_LAIN
             }
@@ -398,6 +398,7 @@ const TransactionMixin = {
             let ADM_ASURANSI = this.$store.getters.getTransaction.calculator.adm_asuransi.value
 
             TOTAL_BIAYA = TOTAL_BIAYA + ASURANSI + ADM_ASURANSI
+            TOTAL_BIAYA = this.diskonCalc(TOTAL_BIAYA,diskon)
 
             // if(TOTAL_BIAYA > diskon) {
             //     TOTAL_BIAYA = TOTAL_BIAYA - diskon
