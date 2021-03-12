@@ -491,6 +491,20 @@ export default {
             }
         })
 
+        Object.keys(state.calculator).map(item => {
+            switch(true) {
+                case state.calculator[item].hasOwnProperty('typeData'):
+                    if(state.calculator[item].typeData == 'Number'){
+                        state.calculator[item].value = 0
+                    }
+                    break;
+                default:
+            }
+            if(item == 'actual_weight' || item == 'chargeable_weight' ){
+                state.calculator[item].value = 1
+            }
+        })
+
         Object.keys(state.destination).map(item => {
             switch(item) {
                 case "destination_type":
@@ -516,11 +530,9 @@ export default {
             switch(true) {
                 case state.package[item]['typeData'].includes("Number"):
                     if(state.package[item].hasOwnProperty('value')){
-                        if(item == 'package_dimensi_weight') {
-                            state.package[item].value = 1
-                        } else {
+                        
                             state.package[item].value = 0
-                        }
+                        
                     }
                     break;
                 case state.package[item]['typeData'].includes("Boolean"):
@@ -556,7 +568,15 @@ export default {
                     }
                     // code block
             }
+
+            if(item == 'package_dimensi_weight') {
+                state.package['package_dimensi_weight'].value = 1
+            }
+
         })
+
+
+
 
         
         

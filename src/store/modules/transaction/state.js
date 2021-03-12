@@ -358,21 +358,21 @@ export default {
     actual_weight: {
       label: "Actual Weight",
       key: "actual_weight",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 1
     },
     volume_weight: {
       label: "Volume Weight",
       key: "volume_weight",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     chargeable_weight: {
       label: "chargeable Weight",
       key: "chargeable_weight",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
@@ -380,84 +380,84 @@ export default {
     biaya_kirim: {
       label: "biaya kirim",
       key: "biaya_kirim",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     handling_charge: {
       label: "handling charge",
       key: "handling_charge",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     surcharge: {
       label: "surcharge",
       key: "surcharge",
-      typeData: "String",
+      typeData: "Number",
       valueData: [],
       value: 0
     },
     surcharge_manual: {
       label: "surcharge manual",
       key: "surcharge_manual",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     airline_document: {
       label: "airline document",
       key: "airline_document",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     shipper_declaration: {
       label: "shipper declaration",
       key: "shipper_declaration",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     adm_karantina: {
       label: "adm karantina",
       key: "adm_karantina",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     pelepasan_karantina: {
       label: "Pelepasan Karantina",
       key: "pelepasan_karantina",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     asuransi: {
       label: "Asuransi",
       key: "asuransi",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     adm_asuransi: {
       label: "adm asuransi",
       key: "adm_asuransi",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     diskon: {
       label: "diskon",
       key: "diskon",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     total_biaya: {
       label: "total biaya",
       key: "total_biaya",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
