@@ -201,8 +201,8 @@ export default {
                 obj['manifest_do_item'] = this.dataTable
 
                 this.form = obj
-                console.log('form', this.form)
-                // this.addData()
+                // console.log('form', this.form)
+                this.addData()
             } else {
                 this.openNotification('warn', 'Melebihi berat', 'Berat muatan melebihi batas berat kendaraan')
             }
