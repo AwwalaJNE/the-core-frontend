@@ -247,7 +247,9 @@ export default {
                     this.$nextTick(() => {
                         this.$refs.bpikBox.scrollIntoView({ behavior: 'smooth' })
                         console.log()
-                        this.$refs.bpikinput0[0].focus()
+                        let bpikINput = this.$refs.bpikinput0[0]
+                        
+                        setTimeout(function(){ bpikINput.$el.querySelector('input').focus() }, 100);
                     })
                 } else {
                     this.emptyBpik()
