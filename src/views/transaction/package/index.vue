@@ -201,6 +201,7 @@
                                     <vs-button
                                         shadow
                                         :active="false"
+                                        :disabled="!disableBtnMultipleKoli"
                                         @click="openSurchargeDialog"
                                     >
                                         <i class='bx bx-plus' style="margin-right:5px"></i> SURCHARGE
