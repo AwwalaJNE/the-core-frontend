@@ -67,13 +67,15 @@ export default {
                     // el[0].context.$refs.test.value = 'aaa'
                     // console.log('input', el[0].context.$refs)
                 //     // this.$refs.theInput.focus();
-                    console.log('el', el[0].context.$refs.labelInput.$refs.generalInput)
-                    el[0].context.$refs.labelInput.$refs.generalInput.focus()
+                    // console.log('el', el[0].context.$refs.labelInput.$refs.generalInput)
+                    // setTimeout(function(){ el[0].context.$refs.labelInput.$refs.generalInput.focus() }, 3000);
+                    
 
                     
-                    // let inputEl = el[0].context.$refs.labelInput.$refs.generalInput.$el.querySelector('input')
-                    // console.log('input', inputEl)
+                    let inputEl = el[0].context.$refs.labelInput.$refs.generalInput.$el.querySelector('input')
                     // inputEl.focus();
+                    setTimeout(function(){ inputEl.focus(); }, 100);
+                    
                     
                 });
                 

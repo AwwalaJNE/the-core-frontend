@@ -81,6 +81,12 @@ export default {
         }
     },
     methods: {
+        setFocus(){
+            let inp = this.$refs.formTransactionOriginController.$refs.connote_shipper_name[0]
+            this.$nextTick(() => {
+                inp.$refs.generalInput.$el.querySelector('input').focus()
+            });
+        },
         formData(form) {
             console.log(form)
             

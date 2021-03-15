@@ -119,6 +119,7 @@ export default {
     },
     methods: {
         initialize() {
+            // let obj = JSON.parse(JSON.stringify(this.$store.getters.getTransaction[this.listenTypeForm] || {}))
             let obj = this.listenTypeForm == 'origin' ? this.listenDataOrigin : this.listenTypeForm == 'destination' ? this.listenDataDestination : {}
 
                 if (Object.keys(obj).length > 0) {

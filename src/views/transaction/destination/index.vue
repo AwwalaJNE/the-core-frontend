@@ -25,6 +25,7 @@
             </vs-row>
         </div>
         <div class="con-form">
+            
             <template v-if="listenforcererender == true">
                 <transition>
                     loading ...
@@ -33,7 +34,7 @@
             <template v-else-if="listenforcererender == false">
                 <transition>
                     <form-input-controller 
-                        ref="formTransactionOriginController"
+                        ref="formTransactionDestinationController"
                         @formData="formData"
                         :dataItem="listenDataItem"
                         @searchTariffCode="searchTariffCode"

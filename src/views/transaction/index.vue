@@ -269,6 +269,7 @@ export default {
                         this.handleDataTransaction()
                         if(this.typeAction == 'addconnote') {
                             this.refreshTransactionStore()
+                            this.$refs.originComponent.setFocus()
                         } else {
                             this.getDataKoli()
                             this.$nextTick(() => {
@@ -356,49 +357,6 @@ export default {
             }
 
             this.wrapKoliNumber()
-        },
-
-        async createConnote() {
-            // send only actived connote
-            let dataConnote = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
-            let dataTransaction = this.$store.getters.getTransaction.transaction
-            let arr = []
-            arr.push(dataConnote)
-            dataTransaction['connote'] = arr
-
-            // this.dataTransaction = dataTransaction //this.listenTransaction
-            // this.dataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
-            // this.dataTransaction['node_code'] = this.listenNodeCode
-            // console.log('this.dataTransaction', this.dataTransaction)
-            // await axios
-            //     .post(
-            //         this.URL.connote + `?n=${this.listenNodeId}`,
-            //         JSON.stringify(this.dataTransaction), 
-            //         this.Helper.header())
-            //     .then(res => {
-            //         console.log('res connote', res)
-            //         if(res.status == 200) {
-            //             // this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':res.data.data['transaction_id']})
-            //             this.fillTransactionData(res.data.data)
-            //             this.wrapKoliNumber()
-            //             this.refreshTransactionStore()
-
-            //             if(this.typeAction == 'addconnote') {
-            //                 // this.refreshTransactionStore()
-            //             } else {
-            //                 // this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value':res.data.data['transaction_finished'] || true})
-            //                 this.printTransactionBarcodeShow = true
-            //                 this.openPaymentDialog()
-            //                 this.getDataKoli()
-            //             }
-                        
-                        
-            //         }
-                    
-            //         this.openNotification(null, 'Success', 'Create connote success')
-            //     }).catch(err => {
-            //         this.openNotification('danger', 'Create new transaction failed', err.response ? err.response.data.message : 'something went wrong')
-            //     })
         },
 
         wrapKoliNumber() {
