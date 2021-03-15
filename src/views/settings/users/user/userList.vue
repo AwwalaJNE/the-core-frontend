@@ -141,16 +141,16 @@ export default {
         async actionRemove(val){
             await axios
                 .delete(
-                    this.URL.user + `/${val.user_id}`,
+                    this.URL.user + `/${val.user_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
-                    this.openNotification(null, 'Romove success', 'Romove role is success')
+                    this.openNotification(null, 'Romove success', 'Romove User is success')
                 }).catch(err => {
                     this.loading = false
                     this.checkAuth(err.response)
-                    this.openNotification('danger', 'Romove role is failed', err)
+                    this.openNotification('danger', 'Romove User is failed', err)
                 })
         },
         actionLimit(val){
