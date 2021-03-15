@@ -31,6 +31,13 @@ const pluginOptions = {
   /* see config reference https://dm4t2.github.io/vue-currency-input/config/*/
   globalOptions: { 
     currency: {prefix: 'Rp ', suffix: ''},
+    allowNegative: false,
+    distractionFree: {
+      hideNegligibleDecimalDigits: true,
+      hideGroupingSymbol: false,
+      hideCurrencySymbol: false
+    },
+    autoDecimalMode: false
   }
 }
 Vue.use(VueCurrencyInput, pluginOptions)

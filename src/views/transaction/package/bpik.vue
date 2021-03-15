@@ -49,7 +49,8 @@
                                         </template>
                                         <template v-else>
                                             <input-general 
-                                            :ref="`bpikinput${i}`"
+                                            :ref="`bpikinput${key}${i}`"
+                                            :id="`bpikinput${key}${i}`"
                                             :name="item_h.placeholder" 
                                             :rules="''" 
                                             :formKey="`${item_h.key}|${key}`"
@@ -247,7 +248,7 @@ export default {
                     this.$nextTick(() => {
                         this.$refs.bpikBox.scrollIntoView({ behavior: 'smooth' })
                         console.log()
-                        let bpikINput = this.$refs.bpikinput0[0]
+                        let bpikINput = this.$refs.bpikinput00[0]
                         
                         setTimeout(function(){ bpikINput.$el.querySelector('input').focus() }, 100);
                     })
@@ -320,6 +321,16 @@ export default {
             // this.listBpik.push(this.bpik)
             this.listBpik.push(this.$VueExtend({}, this.bpik))
             this.$store.dispatch("SET_CONNOTE_BPIK", this.listBpik)
+
+            let self = this
+            let strEval = `self.$refs.bpikinput${this.listBpik.length - 1}0[0]`
+            console.log('BPIK strEval',this.listBpik, strEval)
+            this.$nextTick(() => {
+                let bpikINput = eval(strEval)
+                        
+                setTimeout(function(){ bpikINput.$el.querySelector('input').focus() }, 100);
+            })
+            
         },
         remove(i) {
             console.log('remove', this.listBpik, i)
