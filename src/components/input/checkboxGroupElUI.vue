@@ -1,29 +1,27 @@
 <template>
     <div class="checkbox-inp">
-      <vs-checkbox ref="vuesaxCheckbox" v-model="option1" @change="updateValue">
-          {{listenName}}
-      </vs-checkbox>
+        <el-checkbox-group v-model="checkList" @change="updateValue">
+            <template v-if="optionsArr">
+                <template v-for="(item, key) in optionsArr">
+                    <el-checkbox :label="item.value" :key="key">{{item.label}}</el-checkbox>
+                </template>
+            </template>
+        </el-checkbox-group>
     </div>
 </template>
 <script>
 export default {
-    name:"checkbox",
+    name:"checkboxGroupElUI",
     props: {
-        isChecked: Boolean,
+        checkList: Array,
+        optionsArr: Array,
         formKey: String,
         name: String
     },
     data() {
         return {
-            option1: this.isChecked
+            checkList: this.checkList
         }
-    },
-    watch:{
-        isChecked: function(val) {
-            if(val != undefined) {
-                this.option1 = val
-            }
-        },
     },
     computed: {
         listenFormKey(){
@@ -36,11 +34,11 @@ export default {
     methods: {
         changed() {
             // console.log('changed',this.listenFormKey, this.option1)
-            this.$emit("changed", this.option1)
+            this.$emit("changed", this.checkList)
         },
         updateValue(){
-            this.$emit("updateValue", this.listenFormKey, this.option1)
-            this.$emit("changed", this.option1)
+            this.$emit("updateValue", this.listenFormKey, this.checkList)
+            this.$emit("changed", this.checkList)
         }
     },
 }

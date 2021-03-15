@@ -82,6 +82,12 @@ export default {
         }
     },
     methods: {
+        setFocus(){
+            let inp = this.$refs.formTransactionDestinationController.$refs.connote_receiver_name[0]
+            this.$nextTick(() => {
+                inp.$refs.generalInput.$el.querySelector('input').focus()
+            });
+        },
         formData(form) {
             console.log(form)
             
@@ -117,6 +123,7 @@ export default {
         },
         closeGetCustomer() {
             this.dialogGetCustomer = false
+            this.setFocus()
         },
         // onChangeCustom(key,val) {
         //     if(key != undefined) {

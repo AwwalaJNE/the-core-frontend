@@ -7,7 +7,7 @@
     @close="closeDialog"
     :class="width">
         <template>
-          <h4 class="not-margin">
+          <h4 class="not-margin" style="font-size:18px">
             <slot name='header'></slot>
           </h4>
         </template>

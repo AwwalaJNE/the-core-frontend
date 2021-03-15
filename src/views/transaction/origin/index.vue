@@ -121,6 +121,7 @@ export default {
         },
         closeGetCustomer() {
             this.dialogGetCustomer = false
+            this.setFocus()
         },
         onChangeCustom(key,val,info) {
             if(key != undefined) {

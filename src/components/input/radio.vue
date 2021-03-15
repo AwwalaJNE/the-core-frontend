@@ -114,6 +114,17 @@ export default {
     }
     .vs-radio-content{
             justify-content: left !important;
+        &:focus-within{
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 2px;
+        }
+        label{
+            font-size: 14px;
+        }
+        // .vs-radio:focus{
+        //     border: 1px solid black;
+        // }
         .vs-radio__effect::before {
             content: "";
             position: absolute;

@@ -1,13 +1,11 @@
 <template>
-    <div class="checkbox-inp">
-      <vs-checkbox ref="vuesaxCheckbox" v-model="option1" @change="updateValue">
-          {{listenName}}
-      </vs-checkbox>
+    <div @keyup.enter="keyHandler" style="text-align: left;">
+        <el-checkbox ref="elBoxc" v-model="option1" @change="updateValue">{{listenName}}</el-checkbox>
     </div>
 </template>
 <script>
 export default {
-    name:"checkbox",
+    name:"checkboxELUI",
     props: {
         isChecked: Boolean,
         formKey: String,
@@ -34,19 +32,27 @@ export default {
         },
     },
     methods: {
-        changed() {
-            // console.log('changed',this.listenFormKey, this.option1)
-            this.$emit("changed", this.option1)
-        },
         updateValue(){
             this.$emit("updateValue", this.listenFormKey, this.option1)
-            this.$emit("changed", this.option1)
-        }
+            // this.$emit("changed", this.option1)
+        },
+        keyHandler(e){
+            this.option1 = true
+            this.updateValue()
+            console.log('HANDLE KEY enter', this.listenFormKey, this.option1)
+        },
     },
 }
 </script>
 <style lang="scss">
-
+    .el-checkbox{
+        font-size: 16px;
+        &:focus-within{
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 2px;
+        }
+    }
 // .checkbox-inp{
 //     $root: &;
     

@@ -1,7 +1,8 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
-    width="lg"
+    width="md"
+    ref="cust"
     :closeDialog="cancel">
 
         <template v-slot:header>
@@ -10,56 +11,34 @@
 
         <template v-slot:content>
             <div>
-                <!-- <el-collapse v-model="activeNames">
-
-                        <template v-if="Keys.length > 0">
-                            <el-collapse-item 
-                            v-for="(item,key) in Keys"
-                            :title="item" :name="item"
-                            :key="key">
-                                <template>
-                                    <template v-if="objData[item].length > 0">
-                                        <template v-for="(sur,i) in objData[item]">
-                                            <template v-if="sur.service_relevant == true">
-                                                <vs-checkbox 
-                                                :val="sur" 
-                                                v-model="selectedData"
-                                                :key="i">
-                                                    {{sur.surcharge_name}}
-                                                </vs-checkbox>
-                                            </template>
-                                            
-                                        </template>
-                                    </template>
-                                </template>
-                            </el-collapse-item>
-                        </template>
-                    </el-collapse> -->
                     <template v-if="Keys.length > 0">
                         <template v-for="(item,key) in Keys">
                             <vs-row :key="key">
                                 <vs-col xs="12" sm="12" lg="12">
                                     <checkbox
                                         :formKey="`surcharge_type|${item}`"
-                                        :isChecked="options.includes(item)"
+                                        :isChecked="listenOptions.includes(item)"
                                         :name="item"
+                                        :ref="`surchargeType${item.replace(/\s+/g, '')}`"
+                                        
                                         @updateValue="updateValue" /> 
-                                    <template v-if="options.includes(item) && selectedRadio.hasOwnProperty(item)">
+                                    <template v-if="(options.includes(item) && selectedRadio.hasOwnProperty(item))">
                                         <vs-row>
                                             <vs-col xs="1" sm="1" lg="1">
                                             </vs-col>
                                             <vs-col xs="11" sm="11" lg="11">
                                                 <template v-if="objData[item].length > 0">
                                                     <radio 
-                                                    :ref="item"
-                                                    :name="''" 
-                                                    :rules="''" 
-                                                    :vertical="true"
-                                                    width="6"
-                                                    :formKey="`radio_surcharge|${item}`"
-                                                    :valueData="objData[item]"
-                                                    :selectedValue="selectedRadio[item]"
-                                                    @updateValue="updateValue" />
+                                                            :ref="item"
+                                                            :name="''" 
+                                                            :rules="''" 
+                                                            :vertical="true"
+                                                            width="6"
+                                                            :formKey="`radio_surcharge|${item}`"
+                                                            :valueData="objData[item]"
+                                                            :selectedValue="selectedRadio[item] ? selectedRadio[item] :null"
+                                                            @updateValue="updateValue" />
+                                                    
                                                     <!-- <template v-for="(sur,i) in objData[item]">
                                                         <template v-if="sur.service_relevant == true">
                                                             <vs-radio v-model="tempRadio" :val="sur.surcharge_id" :key ="i" @input="radioChange(item,tempRadio)">
@@ -118,7 +97,7 @@
 <script>
 import DialogMaster from "@/components/dialog/dialogMaster"
 import TransactionMixin from "@/mixins/transaction.js"
-import Checkbox from "@/components/input/checkbox"
+import Checkbox from "@/components/input/checkboxELUI"
 import Radio from "@/components/input/radio"
 export default {
     name: "dialog-surcharge",
@@ -132,6 +111,22 @@ export default {
         closeDialog: Function,
         active: Boolean,
         index: Number,
+    },
+    data() {
+        return {
+            activeNames: [],
+            objData: {},
+            Keys: [],
+            selectedData: [],
+            koli: {},
+
+            options: [],
+            selectedRadio: {
+                test: null
+            },
+            packingKayuRerender: true,
+            tempRadio: ''
+        }
     },
     computed: {
         listenActive(){
@@ -156,21 +151,8 @@ export default {
         listenCurrentIndexKoli () {
             return this.index || 0
         },
-        
-    },
-    data() {
-        return {
-            activeNames: [],
-            objData: {},
-            Keys: [],
-            selectedData: [],
-            koli: {},
-
-            options: [],
-            selectedRadio: {
-                test: null
-            },
-            tempRadio: ''
+        listenOptions() {
+            return this.options
         }
     },
     watch: {
@@ -178,6 +160,27 @@ export default {
             if(val != undefined) {
                 if(val == true) {
                     this.initialize()
+                    const cust = this.$refs.cust
+                    let el = cust.$scopedSlots.content()
+                    let self = this
+                    this.$nextTick(() => {
+                        // el[0].context.$refs.test.value = 'aaa'
+                        // console.log('input', el[0].context.$refs)
+                    //     // this.$refs.theInput.focus();
+                        let str = `el[0].context.$refs.surchargeType${this.Keys[0].replace(/\s+/g, '')}`
+                        let elInput = eval(str)[0]
+                        let Checkbox = elInput.$el.querySelector('input')
+                        console.log('DIALOG SURCHARGE el', el[0].context, str, Checkbox)
+                        // setTimeout(function(){ el[0].context.$refs.labelInput.$refs.generalInput.focus() }, 3000);
+                        
+
+                        
+                        // let Checkbox = el[0].context.$refs.labelInput.$refs.generalInput.$el.querySelector('input')
+                        // inputEl.focus();
+                        setTimeout(function(){ Checkbox.focus(); }, 100);
+                        
+                        
+                    });
                 }
             }
         },
@@ -235,13 +238,13 @@ export default {
                 if(Object.keys(selectedR).length > 0) {
                     this.options = Object.keys(selectedR)
                     this.selectedRadio = selectedR
-                    if(!this.options.includes(keys[0])) {
-                        this.options.push(keys[0])
-                        this.selectedRadio[keys[0]] = ""
-                    }
+                    // if(!this.options.includes(keys[0])) {
+                    //     this.options.push(keys[0])
+                    //     this.selectedRadio[keys[0]] = ""
+                    // }
                 } else {
-                    this.options.push(keys[0])
-                    this.selectedRadio[keys[0]] = obj[keys[0]].filter(item => item.service_relevant)[0].surcharge_id
+                    // this.options.push(keys[0])
+                    // this.selectedRadio[keys[0]] = obj[keys[0]].filter(item => item.service_relevant)[0].surcharge_id
                 }
                 
                 
@@ -270,6 +273,7 @@ export default {
             switch(true) {
                 case key.includes('surcharge_type'):
                     // this.options
+                    this.packingKayuRerender = false
                     let split = key.split("|")[1]
                     if(value == true) {
                         if(this.options.includes(split) == false){
@@ -282,6 +286,10 @@ export default {
                             this.options = temp
                             if(this.selectedRadio.hasOwnProperty(split)) {
                                 delete this.selectedRadio[split]
+
+                                if(split.toLowerCase().includes('packing kayu')) {
+                                    this.packingKayuRerender = true
+                                }
                             }
                         }
                     }
@@ -292,6 +300,21 @@ export default {
                 case key.includes('radio_surcharge'):
                     // this.selectedRadio
                     let str = key.split("|")[1]
+
+                    let self = this
+                    let checkbox = `self.$refs.surchargeType${str.replace(/\s+/g, '')}`
+                    
+                    this.$nextTick(() => {
+                        console.log('checkbox nihh', checkbox)
+                        let el = eval(checkbox)
+                        console.log('checkbox nihh el', el)
+                    });
+                    
+
+                    if(this.options.includes(str) == false){
+                        this.options.push(str)
+                    }
+
                     if(this.selectedRadio.hasOwnProperty(str)) {
                         this.selectedRadio[str] = value
                     }
