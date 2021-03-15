@@ -25,7 +25,7 @@
                                     v-model="bookingCode"
                                     label-placeholder="Masukkan Code Booking"
                                     :autofocus="true"
-                                    ref="formInputUnbagging">
+                                    ref="inputCodeBooking">
                                 </vs-input>
                             </form>
                         </vs-col>
@@ -531,6 +531,10 @@ export default {
     },
     mounted() {
         this.addKeyHandler()
+        this.$nextTick(() => {
+            let inputCodeBooking = this.$refs.inputCodeBooking
+            setTimeout(function(){ inputCodeBooking.$el.querySelector('input').focus() }, 100);
+        })
     },
     destroyed() {
         this.removeKeyHandler();
