@@ -167,15 +167,16 @@ export default {
                     
                     this.loading = false
                 }).catch(err => {
+                    let errMessage = err.response ? err.response.data.message : 'Failed to populate bag'
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate bag', err.response.data.message)
+                    this.openNotification('danger', 'Failed to populate bag', errMessage)
                 })
         },
 
         getSummaryBag(val){
           this.bag_number = val.data.data.bag_number
           this.bag_detail_qty = val.data.data.bag_detail_qty
-          this.total_connote = val.data.data.detail.length
+          this.total_connote = val.data.detail.length
           this.total_weight = val.data.data.bag_weight
           this.actual_weight = val.data.data.bag_weight
           this.bag_destination = val.data.data.destination ? val.data.data.destination.node_code : ''

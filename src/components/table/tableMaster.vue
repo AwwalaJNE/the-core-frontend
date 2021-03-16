@@ -467,7 +467,7 @@ export default {
             tableHeader: [],
             tableBody: this.dataTable ? this.dataTable : [],
             pagination: {
-                limit: 5,
+                limit: 20,
                 page_size: 1,
                 page: 1
             },
@@ -480,8 +480,8 @@ export default {
             return this.dataColumn
         },
         listenDataTable() {
-            console.log('computed master table data', this.dataTable)
-            console.log("-----------------")
+            // console.log('computed master table data', this.dataTable)
+            // console.log("-----------------")
             return this.dataTable
         },
         listenTableLoading() {

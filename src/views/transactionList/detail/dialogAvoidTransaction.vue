@@ -76,7 +76,8 @@ export default {
     active: Boolean,
     title: String,
     dataItem: Object,
-    transactionId:String
+    transactionId:String,
+    connoteNumber:String
   },
   computed: {
     listenActive(){
@@ -89,6 +90,7 @@ export default {
   data() {
     return {
       tempTransactionId:'',
+      tempConnoteNumber:'',
       selectedData:'',
       btnLoading:false,
       form:{},
@@ -150,10 +152,10 @@ export default {
     }
   },
   watch: {
-    transactionId: function (val) {
+    connoteNumber: function (val) {
       if(val !== undefined) {
-          if(this.tempTransactionId !== val){
-            this.tempTransactionId = val
+          if(this.tempConnoteNumber !== val){
+            this.tempConnoteNumber = val
           }
       }
     }
@@ -172,18 +174,18 @@ export default {
     async updateData(){
       await axios
           .post(
-              this.URL.connote +'/'+this.transactionId+ `/void?n=${this.listenNodeId}`,
+              this.URL.connote +'/'+this.connoteNumber+ `/void?n=${this.listenNodeId}`,
               JSON.stringify(this.form),
               this.Helper.header())
           .then(res => {
             this.closeDialog()
             this.btnLoading = false
-            this.openNotification(null, 'Success', 'Update Transaction is success')
+            this.openNotification(null, 'Success', 'Update Connote is success')
           }).catch(err => {
             this.loading = false
             this.btnLoading = false
             this.closeDialog()
-            this.openNotification('danger', 'Update Transaction is failed', err)
+            this.openNotification('danger', 'Update Connote is failed', err)
           })
     },
     activeLoading(){
