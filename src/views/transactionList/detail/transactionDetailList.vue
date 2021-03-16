@@ -27,6 +27,7 @@
           :closeDialog="closeDialogAvoid"
           title="Void Transaction"
           :transactionId="transactionId"
+          :connoteNumber="connote_number"
       />
     </div>
 </template>
@@ -146,9 +147,10 @@ export default {
             dataItem: {},
             tempSearch: "",
             transactionId: "",
+            connote_number: "",
             dialogAvoidActive: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -179,7 +181,6 @@ export default {
                 .then(res => {
                     let arr =res.data.data.connote
 
-                  console.log(arr)
                     this.dataTable = arr
 
                     this.pagination.page = res.data.meta ? res.data.meta.current_page : 1
@@ -240,6 +241,7 @@ export default {
                     window.open(routeData.href, '_blank');
                     break;
                 case "void":
+                    this.connote_number = val.connote_number
                     this.dialogAvoidActive = true
                    break;
                 default:
