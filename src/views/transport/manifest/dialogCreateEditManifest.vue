@@ -296,7 +296,7 @@ export default {
 
         async getDataNodeorigin(){
             await axios
-                .get(this.URL.node + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                .get(this.URL.node + `/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {

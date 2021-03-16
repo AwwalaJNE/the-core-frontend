@@ -283,16 +283,16 @@ export default {
         },
         async getDestination() {
             await axios
-                .get(this.URL.node_link + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
+                .get(this.URL.node +
+                `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.node_destination['node_name']
-                            obj["value"] = item.node_link_id
+                            obj["label"] = item.node_name
+                            obj["value"] = item.node_id
 
                             arr.push(obj)
                         })
