@@ -84,7 +84,7 @@
                                 :isMultiple="false"
                                 @updateValue="updateValue" />
 
-                            <p>{{InputObject['package_service'].label}}</p>
+                            <p style="margin-bottom:0;">{{InputObject['package_service'].label}}</p>
                             <template v-if="InputObject['package_service'].arrData.length > 0 && InputObject['package_service'].arrData[0].value !== 'null'">
                                 <radio 
                                 :ref="InputObject['package_service'].key"
@@ -95,7 +95,7 @@
                                 :selectedValue="InputObject['package_service'].value"
                                 @updateValue="updateValue" />
                             </template>
-        
+                            <div class="mt-1"></div>
                             <input-general 
                                 :name="InputObject['package_insured_goods_value'].label" 
                                 :rules="InputObject['package_insured_goods_value'].rule" 
