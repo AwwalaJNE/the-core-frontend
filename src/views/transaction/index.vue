@@ -491,9 +491,9 @@ export default {
              * 112 - f1
              * 113 - f2
              * 114 - f3
-             * 115 - f4
-             * 116 - f5
+             
              * 117 - f6
+             * 118 - f7
              */
             const key = e.which || e.keyCode;
             switch(true) {
@@ -506,10 +506,10 @@ export default {
                 case key === 114 || (e.altKey && key === 114) || (e.shiftKey && key === 114):
                     this.$refs.packageComponent.openBpikComponent()
                     break;
-                case key === 115 || (e.altKey && key === 115) || (e.shiftKey && key === 115):
+                case key === 117 || (e.altKey && key === 117) || (e.shiftKey && key === 117):
                     this.$refs.packageComponent.connoteNumberDialog('pra')
                     break;
-                case key === 116 || (e.altKey && key === 116) || (e.shiftKey && key === 116):
+                case key === 118 || (e.altKey && key === 118) || (e.shiftKey && key === 118):
                     this.$refs.packageComponent.connoteNumberDialog('single')
                     break;
                 case 117:

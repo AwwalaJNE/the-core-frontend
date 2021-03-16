@@ -18,7 +18,7 @@
                             <i class='bx bx-user'></i>
                         </vs-button>
                         <template #tooltip>
-                            Search customer destination
+                            {{`Alt + f2 | Search customer destination`}}
                         </template>
                     </vs-tooltip>
                 </vs-col>
