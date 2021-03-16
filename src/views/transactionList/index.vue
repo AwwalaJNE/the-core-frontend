@@ -31,7 +31,7 @@
                     <daterange-filter @searchDate="searchDate"/>
                   </vs-col>
                   <vs-col offset="2" xs="6" sm="3" lg="3">
-                   <div class="custom-title">Total Amount : Rp {{ totalAmount }}</div>
+                   <div class="custom-title">Total Amount :  {{ moneyformat(totalAmount) }}</div>
                   </vs-col>
                   <vs-col xs="6" sm="3" lg="3" class="mb-15">
                     <search-input ref="searchInput" @searchValue="searchValue"/>
@@ -56,10 +56,12 @@ import SearchInput from "@/components/search/searchInput"
 import dateRange from "@/components/daterange/index"
 
 import TransactionList from "@/views/transactionList/transactionList"
+import master from "@/mixins/master";
 
 
 export default {
     name:"transaction-index",
+    mixins: [master],
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,

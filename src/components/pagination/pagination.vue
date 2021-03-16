@@ -37,8 +37,8 @@ export default {
         return {
             current_page: this.page ? this.page : 1,
             page_size:1,
-            limit_page:5,
-            limitSelector: [5,10,20],
+            limit_page:20,
+            limitSelector: [20,50,100,200],
             value:''
         }
     },
