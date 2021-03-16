@@ -60,7 +60,7 @@ const TransactionMixin = {
                 
                 let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
                 let filterAutoSurcharge = this.listenSurchargeList || []
-                
+                console.log('listKoli', listKoli)
                 try {
                     if(listKoli.length > 0) {
                         listKoli.map(koli => {
@@ -97,19 +97,19 @@ const TransactionMixin = {
                                             if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('overweight')) {
                                                 index = koli['surcharge_id'].indexOf(itm)
                                                 alreadyHasOverWeight = true
-                                            } else if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('packing kayu')) {
-                                                index = koli['surcharge_id'].indexOf(itm)
-                                                alreadyHasPackingKayu = true
-                                            }
+                                            } 
+                                            // else if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('packing kayu')) {
+                                            //     index = koli['surcharge_id'].indexOf(itm)
+                                            //     alreadyHasPackingKayu = true
+                                            // }
                                         }
                                     })
 
-                                    if(alreadyHasOverWeight || alreadyHasPackingKayu) {
+                                    if(alreadyHasOverWeight) {
                                         if (index > -1) {
                                             koli['surcharge_id'].splice(index, 1);
                                         }
-                                    }
-
+                                    } 
                                     if(prepareSurchargeID !== '') {
                                         koli['surcharge_id'].push(prepareSurchargeID)
                                     }
@@ -118,8 +118,9 @@ const TransactionMixin = {
                             }
                         })
 
+                        // console.log('AUTO APPLY OVERWEIGHT ==>', listKoli)
                         this.$store.dispatch("SET_CONNOTE_DATA_KOLI", listKoli)
-                        // console.log('SET_CONNOTE_DATA_KOLI ==>', listKoli)
+                        
                     }
                 } catch (error) {
                     console.log('error auto apply', error)

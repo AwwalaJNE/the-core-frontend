@@ -124,7 +124,7 @@
                         </vs-col>
                         <vs-col xs="12" md="6" lg="6">
                             <vs-row>
-                                <vs-col xs="12" md="6" lg="6">
+                                <vs-col xs="12" md="3" lg="3">
                                     <input-general 
                                         :name="InputObject['package_jumlah'].label" 
                                         :rules="InputObject['package_jumlah'].rule" 
@@ -186,35 +186,38 @@
                             </vs-row>  
 
                             <vs-row>
-                                <vs-col xs="12" md="6" lg="6">
-                                    <div class="chekboxgroup">
-                                        <checkbox
-                                            formKey="package_tidak_packing_kayu"
-                                            :isChecked="InputObject['package_tidak_packing_kayu'].value"
-                                            :typeInput="InputObject['package_tidak_packing_kayu'].typeInput"
-                                            @updateValue="updateValue" /> 
-                                        <router-link :to="{ name: 'printSPPAP'}" target="_blank">
-                                            <p @click="printSPPAP" style="color:#1890ff;">{{InputObject['package_tidak_packing_kayu'].titleLabel}}</p>
-                                        </router-link>
-                                    </div>
+                                <vs-col xs="12" md="5" lg="5">
+                                    <checkbox
+                                        formKey="package_tidak_packing_kayu"
+                                        :isChecked="InputObject['package_tidak_packing_kayu'].value"
+                                        :name="InputObject['package_tidak_packing_kayu'].titleLabel"
+                                        ref="package_tidak_packing_kayu_checkbox"
+                                        @updateValue="updateValue" /> 
+                                    <div class="mt-05"></div>
+                                    <checkbox
+                                        formKey="package_tidak_asuransi"
+                                        :isChecked="InputObject['package_tidak_asuransi'].value"
+                                        :name="InputObject['package_tidak_asuransi'].titleLabel"
+                                        ref="package_tidak_asuransi_checkbox"
+                                        @updateValue="updateValue" /> 
                                 </vs-col>
-                                <vs-col xs="12" md="6" lg="6">
-                                    <div class="chekboxgroup">
-                                        <checkbox
-                                            formKey="package_tidak_asuransi"
-                                            :isChecked="InputObject['package_tidak_asuransi'].value"
-                                            :typeInput="InputObject['package_tidak_asuransi'].typeInput"
-                                            @updateValue="updateValue" /> 
-                                        <router-link :to="{ name: 'printSPPAP'}" target="_blank">
-                                            <p @click="printSPPAP" style="color:#1890ff;">{{InputObject['package_tidak_asuransi'].titleLabel}}</p>
-                                        </router-link>
-                                    </div>
+                                <vs-col xs="12" md="3" lg="3">
+                                    <vs-button
+                                        shadow
+                                        :active="false"
+                                        @click="printASRdanSJ"
+                                        style="margin-top:0"
+                                        :disabled="btnPrintASRdanSJ == false"
+                                    >
+                                        <i class='bx bx-printer' style="margin-right:5px"></i> Print
+                                    </vs-button>
                                 </vs-col>
                             </vs-row>
 
-                            <vs-row class="mt-1">
-                                <vs-col xs="12" md="6" lg="6">
+                            <vs-row>
+                                <vs-col xs="12" md="5" lg="5">
                                     <vs-button
+                                        style="margin-left:0"
                                         shadow
                                         :active="false"
                                         :disabled="!disableBtnMultipleKoli"
@@ -240,17 +243,14 @@
                                         </template>
                                     </div>
                                 </vs-col>
-                                <vs-col xs="12" md="6" lg="6">
-                                    <div class="chekboxgroup">
-                                        <checkbox
-                                            formKey="package_do_return"
-                                            :isChecked="InputObject['package_do_return'].value"
-                                            :typeInput="InputObject['package_do_return'].typeInput"
-                                            @updateValue="updateValue" /> 
-                                        <a href="javascript:void(0)">
-                                            <p>{{InputObject['package_do_return'].titleLabel}}</p>
-                                        </a>
-                                    </div>
+                                <vs-col xs="12" md="4" lg="4">
+                                    <checkbox
+                                        style="margin-top:10px;margin-left: 18px;"
+                                        formKey="package_do_return"
+                                        :isChecked="InputObject['package_do_return'].value"
+                                        :name="InputObject['package_do_return'].titleLabel"
+                                        ref="package_do_return"
+                                        @updateValue="updateValue" />
                                 </vs-col>
                             </vs-row> 
 
@@ -299,7 +299,7 @@ import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 import Switch from "@/components/input/switch"
 import Radio from "@/components/input/radio"
-import Checkbox from "@/components/input/checkbox"
+import Checkbox from "@/components/input/checkboxELUI"
 import BPIK from "@/views/transaction/package/bpik"
 import ConnoteNumberDialog from "@/views/transaction/connoteNumberDialog"
 
@@ -338,7 +338,9 @@ export default {
             package_tidak_asuransi: false,
 
             connote_number_type: '',
-            connote_number_dialog: false
+            connote_number_dialog: false,
+
+            btnPrintASRdanSJ: false
         }
     },
     computed: {
@@ -416,6 +418,11 @@ export default {
         closeConnoteNumberDialog() {
             this.connote_number_dialog = false
         },
+        printASRdanSJ(){
+            this.printSPPAP()
+            let routeData = this.$router.resolve({name: 'printSPPAP'});
+            window.open(routeData.href, '_blank');
+        },
         wrapingSurcharge() {
             let arrSurcharge = this.listenSurchargeList
             let surchargeByID = {}
@@ -423,7 +430,7 @@ export default {
                 surchargeByID[item.surcharge_id] = item
             })
             this.surchargeByID = surchargeByID
-            console.log('this.surchargeByID', this.surchargeByID)
+            // console.log('this.surchargeByID', this.surchargeByID)
             this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE_ValueData`, surchargeByID)
         },
         async getShippingService() {
@@ -584,6 +591,7 @@ export default {
                 case "package_tidak_asuransi":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_TIDAK_ASURANSI", value)
                     this.package_tidak_asuransi = value
+
                     if(value == true) {
                         this.$store.dispatch("SET_CALCULATOR_ASURANSI", 0)
                         this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 0)
@@ -617,6 +625,14 @@ export default {
                 default:
                     // code block
             }
+
+            
+            if(this.package_tidak_asuransi == true || this.package_tidak_packing_kayu == true) {
+                this.btnPrintASRdanSJ = true
+            } else {
+                this.btnPrintASRdanSJ = false
+            }
+            
         },
         prosesKoli0(key, value) {
             let service = this.listenPackageService.data || {}
@@ -769,6 +785,9 @@ export default {
         }
         label{
             font-size: 16px !important;
+            .el-checkbox__label{
+                font-size: 16px !important;
+            }
         }
         .chekboxgroup{
             position: relative;
