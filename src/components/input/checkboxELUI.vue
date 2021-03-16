@@ -37,7 +37,7 @@ export default {
             // this.$emit("changed", this.option1)
         },
         keyHandler(e){
-            this.option1 = true
+            this.option1 = !this.option1
             this.updateValue()
             console.log('HANDLE KEY enter', this.listenFormKey, this.option1)
         },

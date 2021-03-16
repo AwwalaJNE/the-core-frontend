@@ -55,7 +55,7 @@
             <template v-else>
                 <vs-input
                     :class="`mt-input`"
-                    :type="listenTypeInput.includes('password') == true ? 'password' : 'text'"
+                    :type="listenTypeInput ? listenTypeInput.includes('password') == true ? 'password' : listenTypeInput : 'text'"
                     :label="name"
                     :label-placeholder="name"
                     v-model="value"
@@ -101,7 +101,7 @@ export default {
             return this.formKey
         },
         listenTypeInput() {
-            return this.typeInput || 'text'
+            return this.typeInput
         },
         isDisabled() {
             return this.typeInput.includes('disabled')

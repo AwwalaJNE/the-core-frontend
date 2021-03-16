@@ -124,7 +124,7 @@ export default {
             selectedRadio: {
                 test: null
             },
-            packingKayuRerender: true,
+            selectedPackingKayu_id: '',
             tempRadio: ''
         }
     },
@@ -272,8 +272,6 @@ export default {
             console.log('selected name', key, value)
             switch(true) {
                 case key.includes('surcharge_type'):
-                    // this.options
-                    this.packingKayuRerender = false
                     let split = key.split("|")[1]
                     if(value == true) {
                         if(this.options.includes(split) == false){
@@ -287,9 +285,7 @@ export default {
                             if(this.selectedRadio.hasOwnProperty(split)) {
                                 delete this.selectedRadio[split]
 
-                                if(split.toLowerCase().includes('packing kayu')) {
-                                    this.packingKayuRerender = true
-                                }
+                                
                             }
                         }
                     }
@@ -305,9 +301,7 @@ export default {
                     let checkbox = `self.$refs.surchargeType${str.replace(/\s+/g, '')}`
                     
                     this.$nextTick(() => {
-                        console.log('checkbox nihh', checkbox)
                         let el = eval(checkbox)
-                        console.log('checkbox nihh el', el)
                     });
                     
 
@@ -317,6 +311,9 @@ export default {
 
                     if(this.selectedRadio.hasOwnProperty(str)) {
                         this.selectedRadio[str] = value
+                    }
+                    if(str.toLowerCase().includes('packing kayu')) {
+                        this.selectedPackingKayu_id = value
                     }
                     console.log('this.selectedRadio ===', this.selectedRadio)
                     break;
@@ -348,7 +345,7 @@ export default {
                 })
                 console.log('arr radio', arr)
                 if(arr.length > 0) {
-                    this.$emit("updateValue", "handle_surcharge",this.index, arr)
+                    this.$emit("updateValue", "handle_surcharge",this.index, arr, this.selectedPackingKayu_id)
                     this.selectedRadio = {}
                 }
             }

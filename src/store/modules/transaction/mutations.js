@@ -336,26 +336,26 @@ export default {
         state.connote_koli_item[payload.index][payload.key] = payload.value
     },
 
-    SET_PROSES_CONNOTE_EMPTY(state, payload) {
-        let obj = {
-            connote_number: '',
-            connote_shipper_customer_id: '',
-            connote_receiver_customer_id: '',
-            is_insured: true,
-            is_need_do_return: false,
-            connote_koli_item: [],
-            connote_bpik:[],
-            total_biaya: 0,
-            connote_index: ''
-          }
-        state.proses_connote = obj
-    },
-    SET_PROSES_CONNOTE_TOTAL_BIAYA(state, payload) {
-        state.proses_connote['total_biaya'] = payload
-    },
-    SET_PROSES_CONNOTE_PROPERTY(state, payload) {
-        state.proses_connote[payload.key] = payload.value
-    },
+    // SET_PROSES_CONNOTE_EMPTY(state, payload) {
+    //     let obj = {
+    //         connote_number: '',
+    //         connote_shipper_customer_id: '',
+    //         connote_receiver_customer_id: '',
+    //         is_insured: true,
+    //         is_need_do_return: false,
+    //         connote_koli_item: [],
+    //         connote_bpik:[],
+    //         total_biaya: 0,
+    //         connote_index: ''
+    //       }
+    //     state.proses_connote = obj
+    // },
+    // SET_PROSES_CONNOTE_TOTAL_BIAYA(state, payload) {
+    //     state.proses_connote['total_biaya'] = payload
+    // },
+    // SET_PROSES_CONNOTE_PROPERTY(state, payload) {
+    //     state.proses_connote[payload.key] = payload.value
+    // },
     
 
     SET_TRANSACTION_CONNOTE_TOTAL_BIAYA(state, payload) {

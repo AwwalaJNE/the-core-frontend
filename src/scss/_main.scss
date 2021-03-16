@@ -175,3 +175,11 @@ ul{
 .el-time-panel{
     z-index: 99999 !important;
 }
+
+.vs-button{
+    &:focus-within{
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 2px;
+    }
+}

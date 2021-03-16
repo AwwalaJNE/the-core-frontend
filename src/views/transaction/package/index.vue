@@ -114,7 +114,7 @@
                                         :rules="InputObject['package_jumlah'].rule" 
                                         :formKey="InputObject['package_jumlah'].key"
                                         :valueData="InputObject['package_jumlah'].value"
-                                        :typeInput="InputObject['package_jumlah'].typeInput"
+                                        :typeInput="'number'"
                                         @updateValue="updateValue" />
                                 </vs-col>
                                 <vs-col xs="12" md="6" lg="6">
@@ -505,7 +505,7 @@ export default {
                 self.calculation()
             })
         },
-        updateValue(key, value, value2 = null) {
+        updateValue(key, value, value2 = null, value3 = null) {
             switch(key) {
                 case "package_service":
                     if(value2) {
@@ -588,13 +588,11 @@ export default {
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_DO_RETURN", value)
                     break;
                 case "handle_surcharge":
-                    // console.log('handle_surcharge => ', key, value,value2)
-                    // let surcharge = value2
-                    // let ids = []
-                    // if(surcharge.length > 0){
-                    //     surcharge.map(item => ids.push(item.surcharge_id))
-                    // }
-                    this.connote_koli_item[value].surcharge_id = value2//[...this.connote_koli_item[value].surcharge_id,...value2]
+                    this.connote_koli_item[value].surcharge_id = value2
+                    
+                    if(value3 !== null && this.connote_koli_item[value].hasOwnProperty('hasPackingKayu_id')) {
+                        this.connote_koli_item[value].hasPackingKayu_id = value3
+                    }
 
                     this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
                     this.surchargeView()

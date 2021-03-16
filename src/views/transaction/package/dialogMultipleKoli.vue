@@ -3,6 +3,7 @@
         <dialog-master 
         :actived="listenActive" 
         width="xl"
+        ref="cust"
         :closeDialog="cancel">
 
             <template v-slot:header>
@@ -11,7 +12,7 @@
 
             <template v-slot:content>
                 <div>
-                    <vs-table>
+                    <vs-table  ref="tableColom">
                         <template #thead>
                         <vs-tr>
                             <vs-th>
@@ -29,6 +30,7 @@
                         </vs-tr>
                         </template>
                         <template #tbody>
+
                             <template v-if="connote_koli_item.length > 0">
                                 <vs-tr
                                     v-for="(item,key) in connote_koli_item"
@@ -68,6 +70,8 @@
                                                 :formKey="`${item_h.key}|${key}`"
                                                 :valueData="item[item_h.key]"
                                                 :typeInput="`text${item_h.hasOwnProperty('disabled') ? item_h.disabled == true ? '|disabled' : '' : ''}`"
+                                                :ref="`${item_h.key}${key}`"
+                                                :id="`${item_h.key}${key}`"
                                                 @updateValue="updateValue" />
                                             </template>
                                         </vs-td>
@@ -230,6 +234,31 @@ export default {
             if(val != undefined) {
                 if(val == true) {
                     this.initialize()
+                    const cust = this.$refs.cust
+                    let el = cust.$scopedSlots.content()
+                    let self = this
+                    this.$nextTick(() => {
+                        // el[0].context.$refs.test.value = 'aaa'
+                        // console.log('input', el[0].context.$refs)
+                    //     // this.$refs.theInput.focus();
+                        // let str = `el[0].context.$refs.surchargeType${this.Keys[0].replace(/\s+/g, '')}`
+                        // let elInput = eval(str)[0]
+                        // let Checkbox = elInput.$el.querySelector('input')
+
+                        //actual_weight|0
+                        let inputF = el[0].context.$refs.tableColom.$scopedSlots.tbody()[0].context.$refs.actual_weight0[0]
+                        let inputEl = inputF.$el.querySelector('input')
+                        console.log('DIALOG SURCHARGE el', inputF)
+                        // setTimeout(function(){ el[0].context.$refs.labelInput.$refs.generalInput.focus() }, 3000);
+                        
+
+                        
+                        // let Checkbox = el[0].context.$refs.labelInput.$refs.generalInput.$el.querySelector('input')
+                        // inputEl.focus();
+                        setTimeout(function(){ inputEl.focus(); }, 100);
+                        
+                        
+                    });
                 }
             }
         }
@@ -281,7 +310,7 @@ export default {
         closeDialogSurcharge() {
             this.surchargeSelector = false
         },
-        updateValue(key, value, value2 = null) {
+        updateValue(key, value, value2 = null, value3 = null) {
             let str = key.split("|")
             let index = str[1]
             // this.$emit("prosesmultipleKoli", str[0],index, value)
@@ -303,14 +332,13 @@ export default {
                     break;
                 case key.includes("handle_surcharge"):
                     
-                    // let surcharge = value2
-                    // let ids = []
-                    // if(surcharge.length > 0){
-                    //     surcharge.map(item => ids.push(item.surcharge_id))
-                    // }
 
                     if(this.connote_koli_item[value].hasOwnProperty('surcharge_id')) {
-                        this.connote_koli_item[value].surcharge_id = value2//[...this.connote_koli_item[value].surcharge_id,...ids]
+                        this.connote_koli_item[value].surcharge_id = value2
+                    }
+
+                    if(value3 !== null) {
+                        this.connote_koli_item[value].hasPackingKayu_id = value3
                     }
 
                     this.$emit("prosesmultipleKoli", this.connote_koli_item)

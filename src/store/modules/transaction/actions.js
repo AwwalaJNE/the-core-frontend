@@ -223,6 +223,24 @@ export default {
 
         if(payload == true) {
             dispatch('SET_CONNOTE_DATA', {'key':'is_packing_kayu','value': false})
+
+            // let connote = state.transaction.connote || []
+            // connote.map(item => {
+            //     if(item.connote_koli_item){
+            //         item.connote_koli_item.map(koli => {
+            //             let hasPackingKayu_id = koli.hasPackingKayu_id || ''
+            //             let surcharge_id = koli.surcharge_id
+            //             if(hasPackingKayu_id !== '') {
+            //                 surcharge_id = surcharge_id.filter(sur => sur !== hasPackingKayu_id)
+            //                 koli.surcharge_id = surcharge_id
+            //             }
+            //         })
+            //     }
+            // })
+
+            // console.log('REMOVE PACKING KAYU', connote)
+            // dispatch('SET_CONNOTE_DATA', {'key':'connote','value': connote})
+
         } else {
             dispatch('SET_CONNOTE_DATA', {'key':'is_packing_kayu','value': true})
         }
@@ -392,15 +410,15 @@ export default {
         commit('SET_CONNOTE_KOLI_ITEM_index', payload)
     },
 
-    SET_PROSES_CONNOTE_EMPTY({ commit }, payload) {
-        commit('SET_PROSES_CONNOTE_EMPTY', payload)
-    },
-    SET_PROSES_CONNOTE_TOTAL_BIAYA({ commit }, payload) {
-        commit('SET_PROSES_CONNOTE_TOTAL_BIAYA', payload)
-    },
-    SET_PROSES_CONNOTE_PROPERTY({ commit }, payload) {
-        commit('SET_PROSES_CONNOTE_PROPERTY', payload)
-    },
+    // SET_PROSES_CONNOTE_EMPTY({ commit }, payload) {
+    //     commit('SET_PROSES_CONNOTE_EMPTY', payload)
+    // },
+    // SET_PROSES_CONNOTE_TOTAL_BIAYA({ commit }, payload) {
+    //     commit('SET_PROSES_CONNOTE_TOTAL_BIAYA', payload)
+    // },
+    // SET_PROSES_CONNOTE_PROPERTY({ commit }, payload) {
+    //     commit('SET_PROSES_CONNOTE_PROPERTY', payload)
+    // },
 
     SET_TRANSACTION_CONNOTE_TOTAL_BIAYA({ commit }, payload) {
         commit('SET_TRANSACTION_CONNOTE_TOTAL_BIAYA', payload)
