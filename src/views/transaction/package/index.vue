@@ -73,7 +73,7 @@
                                 :typeInput="InputObject['package_description'].typeInput"
                                 @updateValue="updateValue" />
                             
-                            <p>{{InputObject['package_category'].label}}</p>
+                            <p style="margin:0;">{{InputObject['package_category'].label}}</p>
                             <selector 
                                 :ref="InputObject['package_category'].key"
                                 :name="''" 
@@ -84,7 +84,7 @@
                                 :isMultiple="false"
                                 @updateValue="updateValue" />
 
-                            <p style="margin-bottom:0;">{{InputObject['package_service'].label}}</p>
+                            <p style="margin:0;">{{InputObject['package_service'].label}}</p>
                             <template v-if="InputObject['package_service'].arrData.length > 0 && InputObject['package_service'].arrData[0].value !== 'null'">
                                 <radio 
                                 :ref="InputObject['package_service'].key"
@@ -762,10 +762,13 @@ export default {
         text-align: left;
         p{
             margin: .5em;
-            font-size: 14px;
+            font-size: 16px;
             &.surcharge{
                 margin: 0 .5em;
             }
+        }
+        label{
+            font-size: 16px !important;
         }
         .chekboxgroup{
             position: relative;

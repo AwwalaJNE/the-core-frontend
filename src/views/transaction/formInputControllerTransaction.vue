@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="customTransaction">
         <template v-if="Keys.length > 0 && Object.keys(InputObject).length > 0">
                 <vs-row v-for="(item, i) in Keys" :key="i">
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
@@ -195,3 +195,10 @@ export default {
     },
 }
 </script>
+<style lang="scss">
+    .customTransaction{
+        p,label{
+            font-size: 16px !important;
+        }
+    }
+</style>
