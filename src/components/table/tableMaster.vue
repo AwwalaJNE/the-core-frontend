@@ -308,7 +308,7 @@
                                 <vs-button
                                     block
                                     warn
-                                    
+                                    :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                     flat
                                     :active="true"
                                     type="submit"
@@ -320,7 +320,7 @@
                               <vs-col w="4">
                                 <vs-button
                                     block
-                                    
+                                    :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                     flat
                                     :active="true"
                                     @click="actionUpdate(item)"
@@ -332,7 +332,7 @@
                               <vs-col w="4">
                                 <vs-button
                                     block
-                                    
+                                    :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                     flat
                                     :active="true"
                                     @click="actionCancel(item)"
