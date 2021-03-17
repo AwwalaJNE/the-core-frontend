@@ -467,8 +467,8 @@ export default {
                 this.Helper.header())
                 .then(res => {
 					console.log('getDataKoli', res.data)
-                    this.legacySystemHTML = res.data.html 
-                    
+                    this.legacySystemHTML = res.data 
+
                     var myWindow = window.open("", "MsgWindow", "width=600,height=400");
                     myWindow.document.write(`${this.legacySystemHTML}`);
                     myWindow.document.close();
