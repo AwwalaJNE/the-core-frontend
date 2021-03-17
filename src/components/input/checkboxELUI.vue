@@ -46,7 +46,7 @@ export default {
 </script>
 <style lang="scss">
     .el-checkbox{
-        font-size: 18px;
+        font-size: 16px;
         &:focus-within{
             border: 1px solid black;
             border-radius: 5px;

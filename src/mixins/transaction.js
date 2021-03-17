@@ -59,10 +59,12 @@ const TransactionMixin = {
                 // console.log('PROSES AUTO APPLY NEW CODE')
                 
                 let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
+
                 let filterAutoSurcharge = this.listenSurchargeList || []
                 console.log('listKoli', listKoli)
                 try {
                     if(listKoli.length > 0) {
+                        let hasPackingKayu = false
                         listKoli.map(koli => {
                             if(koli.hasOwnProperty('actual_weight')) {
                                 // autoapply minimal 70kg
@@ -90,7 +92,7 @@ const TransactionMixin = {
                                 if(koli.hasOwnProperty('surcharge_id')) {
                                     // fix setiap masing2 koli overweight, wajib hanya memiliki 1 type surcharge overweight
                                     let alreadyHasOverWeight = false
-                                    let alreadyHasPackingKayu = false
+                                    
                                     let index = 0
                                     koli['surcharge_id'].map((itm) => {
                                         if(this.listenPackageSurchargeByID.hasOwnProperty(itm) == true) {
@@ -98,10 +100,10 @@ const TransactionMixin = {
                                                 index = koli['surcharge_id'].indexOf(itm)
                                                 alreadyHasOverWeight = true
                                             } 
-                                            // else if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('packing kayu')) {
-                                            //     index = koli['surcharge_id'].indexOf(itm)
-                                            //     alreadyHasPackingKayu = true
-                                            // }
+                                            if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('packing kayu')) {
+                                                console.log('HAS PACKING KAYU')
+                                                hasPackingKayu = true
+                                            }
                                         }
                                     })
 
@@ -110,6 +112,7 @@ const TransactionMixin = {
                                             koli['surcharge_id'].splice(index, 1);
                                         }
                                     } 
+
                                     if(prepareSurchargeID !== '') {
                                         koli['surcharge_id'].push(prepareSurchargeID)
                                     }
@@ -120,6 +123,9 @@ const TransactionMixin = {
 
                         // console.log('AUTO APPLY OVERWEIGHT ==>', listKoli)
                         this.$store.dispatch("SET_CONNOTE_DATA_KOLI", listKoli)
+
+                        
+                        this.$store.dispatch('SET_CONNOTE_DATA', {'key':'is_packing_kayu','value': hasPackingKayu})
                         
                     }
                 } catch (error) {

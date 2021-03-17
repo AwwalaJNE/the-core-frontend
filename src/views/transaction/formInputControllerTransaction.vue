@@ -200,5 +200,8 @@ export default {
         p,label{
             font-size: 16px !important;
         }
+        .validation p.err-message{
+            font-size: .8em !important;
+        }
     }
 </style>

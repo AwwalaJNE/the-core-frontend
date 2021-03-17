@@ -235,7 +235,7 @@
                                             :key="key">
                                                 {{`${surchargeshow[item].surcharge_name} ${surchargeshow[item]['jumlah'] || ''}`}}
                                                 <template v-if="!surchargeshow[item].hasOwnProperty('jumlah') && !surchargeshow[item].surcharge_name.toLowerCase().includes('overweight')">
-                                                    <span class="vs-select__chips__chip__close" @click="removeSurcharge(item, 0)">
+                                                    <span class="vs-select__chips__chip__close" @click="removeSurcharge(item, 0, surchargeshow[item].surcharge_name)">
                                                         <i class="vs-icon-close vs-icon-hover-less"></i>
                                                     </span>
                                                 </template>
@@ -340,7 +340,8 @@ export default {
             connote_number_type: '',
             connote_number_dialog: false,
 
-            btnPrintASRdanSJ: false
+            btnPrintASRdanSJ: false,
+            tempKoliSurchargePackingKayu: {}
         }
     },
     computed: {
@@ -606,6 +607,7 @@ export default {
                 case "package_tidak_packing_kayu":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU", value)
                     this.package_tidak_packing_kayu = value
+                    this.tidakPackingKayuToggle()
                     console.log('package_tidak_packing_kayu', value)
                     break;
                 case "package_do_return":
@@ -614,13 +616,17 @@ export default {
                 case "handle_surcharge":
                     this.connote_koli_item[value].surcharge_id = value2
                     
-                    if(value3 !== null && this.connote_koli_item[value].hasOwnProperty('hasPackingKayu_id')) {
+                    if(this.connote_koli_item[value].hasOwnProperty('hasPackingKayu_id')) {
                         this.connote_koli_item[value].hasPackingKayu_id = value3
                     }
 
                     this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
-                    this.surchargeView()
-                    this.calculation()
+                    let node_code = this.listenNodeCode
+                    let self = this
+                    this.autoApply(node_code).then(() => {
+                        self.surchargeView()
+                        self.calculation()
+                    })
                     break;
                 default:
                     // code block
@@ -659,6 +665,50 @@ export default {
                 self.calculation()
             })
             
+        },
+        tidakPackingKayuToggle(){
+            let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
+            let tempKoliSurchargePackingKayu = {}
+            listKoli.map((item, i) => {
+                if(item.hasPackingKayu_id !== null && item.hasPackingKayu_id !== ''){
+                    tempKoliSurchargePackingKayu[i] = item.hasPackingKayu_id
+                }
+            })
+
+            
+
+            if(this.package_tidak_packing_kayu == true) {
+                this.tempKoliSurchargePackingKayu = tempKoliSurchargePackingKayu
+
+                console.log('this.tempKoliSurchargePackingKayu ====', this.tempKoliSurchargePackingKayu)
+                if (Object.keys(this.tempKoliSurchargePackingKayu).length > 0) {
+                    Object.keys(this.tempKoliSurchargePackingKayu).map(index => {
+                        if(listKoli[index]) {
+                            listKoli[index].surcharge_id = listKoli[index].surcharge_id.filter(sur => sur !== this.tempKoliSurchargePackingKayu[index])
+                            listKoli[index].hasPackingKayu_id = ''
+                        }
+                        
+                    })
+                }
+                this.$store.dispatch('SET_CONNOTE_DATA', {'key':'is_packing_kayu','value': false})
+            } else {
+                if (Object.keys(this.tempKoliSurchargePackingKayu).length > 0) {
+                    Object.keys(this.tempKoliSurchargePackingKayu).map(index => {
+                        if(listKoli[index]) {
+                            listKoli[index].surcharge_id.push(this.tempKoliSurchargePackingKayu[index])
+                            listKoli[index].hasPackingKayu_id = this.tempKoliSurchargePackingKayu[index]
+                        }
+                        
+                    })
+                }
+                this.$store.dispatch('SET_CONNOTE_DATA', {'key':'is_packing_kayu','value': true})
+                // clear
+                this.tempKoliSurchargePackingKayu = {}
+            }
+
+            this.$store.dispatch("SET_CONNOTE_DATA_KOLI", listKoli)
+            this.surchargeView()
+            this.calculation()
         },
 
         surchargeView(){
@@ -751,12 +801,21 @@ export default {
         closeSettingMultipleKoli() {
             this.dialogSettingMultipleKoli = false
         },
-        removeSurcharge(id, index) {
+        removeSurcharge(id, index, name) {
             let koli = this.connote_koli_item
             koli[index].surcharge_id = koli[index].surcharge_id.filter(item => item != id)
+            if(name.toLowerCase().includes('packing kayu')) {
+                if(koli[index].hasOwnProperty('hasPackingKayu_id')) {
+                    koli[index].hasPackingKayu_id = ''
+                }
+            }
             this.$store.dispatch("SET_CONNOTE_DATA_KOLI", koli)
-            this.surchargeView()
-            this.calculation()
+            let node_code = this.listenNodeCode
+            let self = this
+            this.autoApply(node_code).then(() => {
+                self.surchargeView()
+                self.calculation()
+            })
         },
         printSPPAP() {
             this.$ls.set('printSPPAP', {})

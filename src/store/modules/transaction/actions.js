@@ -170,7 +170,7 @@ export default {
                 numb = numb.join("");
             }
         dispatch('SET_CONNOTE_DATA', {'key':'insured_goods_value','value': numb})
-        if(payload > 0) {
+        if(numb > 0) {
             dispatch('SET_CONNOTE_DATA', {'key':'is_insured','value': true})
         } else {
             dispatch('SET_CONNOTE_DATA', {'key':'is_insured','value': false})

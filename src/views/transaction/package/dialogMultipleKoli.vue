@@ -55,7 +55,7 @@
                                                     :key="i">
                                                         {{surchargeByID[itm].surcharge_name}}
                                                         <template v-if="!surchargeByID[itm].surcharge_name.toLowerCase().includes('overweight')">
-                                                            <span class="vs-select__chips__chip__close" @click="removeSurcharge(itm, key)">
+                                                            <span class="vs-select__chips__chip__close" @click="removeSurcharge(itm, key, surchargeByID[itm].surcharge_name)">
                                                                 <i class="vs-icon-close vs-icon-hover-less"></i>
                                                             </span>
                                                         </template>
@@ -337,9 +337,10 @@ export default {
                         this.connote_koli_item[value].surcharge_id = value2
                     }
 
-                    if(value3 !== null) {
+                    if(this.connote_koli_item[value].hasOwnProperty('hasPackingKayu_id')) {
                         this.connote_koli_item[value].hasPackingKayu_id = value3
                     }
+
 
                     this.$emit("prosesmultipleKoli", this.connote_koli_item)
                     // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
@@ -371,8 +372,15 @@ export default {
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
             this.calcMultipleKoli()
         },
-        removeSurcharge(id, index) {
+        removeSurcharge(id, index, name) {
             this.connote_koli_item[index].surcharge_id = this.connote_koli_item[index].surcharge_id.filter(item => item != id)
+
+            if(name.toLowerCase().includes('packing kayu')) {
+                if(this.connote_koli_item[index].hasOwnProperty('hasPackingKayu_id')) {
+                    this.connote_koli_item[index].hasPackingKayu_id = ''
+                }
+            }
+
             this.$emit("prosesmultipleKoli", this.connote_koli_item)
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
             // this.surchargeView()

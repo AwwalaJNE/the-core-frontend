@@ -472,6 +472,7 @@ export default {
     volume_weight: 0.00,
     actual_weight: 1,
     surcharge_id: [],
+    hasPackingKayu_id: '',
     description: ' '
   },
 
@@ -484,6 +485,7 @@ export default {
       volume_weight: 0,
       actual_weight: 1,
       surcharge_id: [],
+      hasPackingKayu_id: '',
       description: ' '
     }
   ],
@@ -537,6 +539,7 @@ export default {
         volume_weight: 0,
         actual_weight: 1,
         surcharge_id: [],
+        hasPackingKayu_id: '',
         description: ' '
       }
     ],
@@ -585,6 +588,7 @@ export default {
             volume_weight: 0,
             actual_weight: 1,
             surcharge_id: [],
+            hasPackingKayu_id: '',
             description: ' '
           }
         ],
@@ -638,6 +642,7 @@ export default {
             volume_weight: 0,
             actual_weight: 1,
             surcharge_id: [],
+            hasPackingKayu_id: '',
             description: ' '
           }
         ],
