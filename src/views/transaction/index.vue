@@ -469,11 +469,14 @@ export default {
 					console.log('getDataKoli', res.data)
                     this.legacySystemHTML = res.data 
 
-                    var myWindow = window.open("", "MsgWindow", "width=600,height=400");
+                    this.$nextTick(() => {
+                        var myWindow = window.open("", "MsgWindow", "width=600,height=400");
                     myWindow.document.write(`${this.legacySystemHTML}`);
                     myWindow.document.close();
                     myWindow.focus();
                     myWindow.print();
+                    });
+                    
 					
 					// document.appendChild(div)
 					
