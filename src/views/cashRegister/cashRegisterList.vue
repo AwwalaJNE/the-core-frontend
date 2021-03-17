@@ -91,7 +91,7 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.cash_register +`?n=${this.listenNodeId}&start_date=${from}&end_date=${to}`,
+                .get(this.URL.cash_register +`?n=${this.listenNodeId}&s=${query}&start_date=${from}&end_date=${to}`,
                 this.Helper.header())
                 .then(res => {
                     let arr =res.data.data
@@ -122,7 +122,7 @@ export default {
 
         refresh(){
             console.log("refresh")
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
         actionDetail(row){
             let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': row.cash_register_number, 'type': 'cash-register'} });
