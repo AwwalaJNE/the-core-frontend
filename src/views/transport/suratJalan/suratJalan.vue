@@ -128,7 +128,7 @@ export default {
             endDate: "",
             dialogTariff: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             },
@@ -257,21 +257,18 @@ export default {
           this.activeDialogCancel = true;
         },
         async depart() {
+            this.loading = true
             await axios
                 .put(
-                    this.URL.manifest_delivery_order + `?n=${this.listenNodeId}/${this.manifest_do_number}/detail/1`,
+                    this.URL.manifest_delivery_order + `/${this.manifest_do_number}/detail/1?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    this.handleClearForm()
-                    this.closeDialog()
                     this.loading = false
                     this.$emit("refresh")
                     this.openNotification(null, 'Success', 'Update surat jalan success')
                 }).catch(err => {
                     this.loading = false
-                    this.handleClearForm()
-                    this.closeDialog()
                     this.$emit("refresh")
                     this.openNotification('danger', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
                 })
