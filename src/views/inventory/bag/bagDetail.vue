@@ -83,7 +83,7 @@
             <div class="center in-get-bag" style="float: right; width: 100%">
               <vs-row>
                 <vs-col lg="6" align="">
-                  <vs-button>Print</vs-button>
+                  <vs-button @click="actionDetail">Print</vs-button>
                 </vs-col>
                 <vs-col lg="6" align="right">
                   <vs-button @click="$router.go(-1)">Back</vs-button>
@@ -219,7 +219,16 @@ export default {
             this.openNotification('danger', err.response ? err.response.data.message : 'something went wrong')
           })
     },
-
+    actionDetail(){
+        let routeData = this.$router.resolve({ 
+            name: 'printGeneral', 
+            params: { 
+                'id': this.bag_id, 
+                'type': 'bag'
+            } 
+        });
+        window.open(routeData.href, '_blank');
+    }
   },
   mounted() {
     this.getBagIdParam()
