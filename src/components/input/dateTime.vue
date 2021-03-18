@@ -11,6 +11,7 @@
                     value-format="yyyy-MM-dd HH:mm:ss"
                     start-placeholder="Start date"
                     end-placeholder="End date"
+                    :picker-options="isETDnETA ? pickerOptions : null"
                     @change="updateValue">
                 </el-date-picker>
             </div>
@@ -36,7 +37,16 @@ export default {
     data() {
         return {
             value: this.valueData,
-            type: this.typeInput || 'date'
+            type: this.typeInput || 'date',
+            pickerOptions: {
+                disabledDate(time) {
+                    var date = new Date();
+
+                    date.setDate(date.getDate() - 1);
+
+                    return time.getTime() < date;
+                }
+            }
         }
     },
     computed: {
@@ -51,6 +61,13 @@ export default {
         },
         isPlaceholderGabung() {
             return this.placeholderGabung || false
+        },
+        isETDnETA() {
+            if (this.name.toLowerCase() === 'eta' || this.name.toLowerCase() === 'etd') {
+                return true;
+            } else {
+                return false;
+            }
         }
     },
     watch: {

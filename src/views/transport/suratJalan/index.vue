@@ -84,7 +84,7 @@ export default {
     },
     methods: {
         refresh(){
-            this.$refs.pickupRequest.refresh() // trigger function refresh form dari luar component list
+            this.$refs.SuratJalan.refresh() // trigger function refresh form dari luar component list
         },
         searchValue (val) {
             this.tempSearch = val

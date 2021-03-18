@@ -103,7 +103,8 @@ export default {
        title: String,
        dataItem: Object,
        btnRed: String,
-       btnBlue: String
+       btnBlue: String,
+       refresh: Function
     },
     data() {
         return {
@@ -215,7 +216,6 @@ export default {
                         if(obj.hasOwnProperty('item')) {
                             this.vehicle_max_weight = obj['item']['vehicle_max_weight']
                             this.vehicle_type_id = obj['item']['vehicle_type_id']
-                            console.log('this.vehicle_max_weight',this.vehicle_max_weight)
                         }
                     }
                    break;
@@ -256,28 +256,32 @@ export default {
             }
         },
         async addData() {
+            this.loading = true
             await axios
                 .post(
                     this.URL.manifest_delivery_order + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    this.handleClearForm()
                     this.closeDialog()
                     this.loading = false
                     this.$emit("refresh")
+                    this.handleClearForm()
+                    this.dataTable = []
                     this.openNotification(null, 'Success', 'Create surat jalan success')
                 }).catch(err => {
                     this.loading = false
-                    this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
+                    this.dataTable = []
+                    this.handleClearForm()
                     this.openNotification('danger', 'Create surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {
             this.loading = false
             this.handleClearForm()
+            this.dataTable = []
             this.closeDialog()
 
         },
