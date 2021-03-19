@@ -466,15 +466,16 @@ export default {
                 `/${this.koli_number}/koli?n=${this.listenNodeId}`, 
                 this.Helper.header())
                 .then(res => {
-					console.log('getDataKoli', res.data)
-                    this.legacySystemHTML = res.data 
+					// console.log('getDataKoli', res.data.html)
+                    this.legacySystemHTML = res.data.html
 
                     this.$nextTick(() => {
                         var myWindow = window.open("", "MsgWindow", "width=600,height=400");
-                    myWindow.document.write(`${this.legacySystemHTML}`);
-                    myWindow.document.close();
-                    myWindow.focus();
-                    myWindow.print();
+                        myWindow.document.write(`${this.legacySystemHTML}`);
+                        myWindow.document.close();
+                        myWindow.focus();
+                        // window action print setelah 3s
+                        setTimeout(function(){ myWindow.print(); }, 3000);
                     });
                     
 					
