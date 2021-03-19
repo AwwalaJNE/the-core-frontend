@@ -192,7 +192,14 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
         actionPrint(row){
-          console.log(row,'print')
+          let routeData = this.$router.resolve({ 
+            name: 'printGeneral', 
+            params: { 
+                'id': row.pickup_number, 
+                'type': 'pickup'
+            } 
+          });
+          window.open(routeData.href, '_blank');
         },
         actionCancel(row){
           this.pickupData = row;
