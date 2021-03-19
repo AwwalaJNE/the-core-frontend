@@ -126,7 +126,7 @@ export default {
             bag_detail_qty:'',
             bag_destination:'',
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }

@@ -91,7 +91,7 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.cash_register +`?n=${this.listenNodeId}&s=${query}&start_date=${from}&end_date=${to}`,
+                .get(this.URL.cash_register +`?n=${this.listenNodeId}&limit=${limit}&page=${page}&s=${query}&start_date=${from}&end_date=${to}`,
                 this.Helper.header())
                 .then(res => {
                     let arr =res.data.data

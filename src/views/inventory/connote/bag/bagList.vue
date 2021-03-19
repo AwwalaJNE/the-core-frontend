@@ -149,13 +149,14 @@ export default {
           this.$router.push('/bagging-detail/'+val.bag_number)
         },
         actionPrint(val){
-          let WinPrint = window.open('http://google.com', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
-          WinPrint.document.write('');
-
-          WinPrint.document.close();
-          WinPrint.focus();
-          WinPrint.print();
-          WinPrint.close();
+            let routeData = this.$router.resolve({ 
+                name: 'printGeneral', 
+                params: { 
+                    'id': val.bag_number, 
+                    'type': 'bag'
+                } 
+            });
+        window.open(routeData.href, '_blank');
         },
         actionLimit(val){
             this.pagination.limit = val

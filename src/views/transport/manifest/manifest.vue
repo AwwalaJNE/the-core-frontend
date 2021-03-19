@@ -132,7 +132,7 @@ export default {
             node_filter: "",
             dialogTariff: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             },
@@ -278,7 +278,14 @@ export default {
         },
 
         actionPrint(row){
-          alert('print surat muatan')
+        let routeData = this.$router.resolve({ 
+          name: 'printGeneral', 
+          params: { 
+              'id': row.manifest_number, 
+              'type': 'manifest'
+          } 
+        });
+        window.open(routeData.href, '_blank');
           console.log(row,'print')
         },
         actionCancel(row){
