@@ -170,10 +170,10 @@ export default {
                     
                     this.loading = false
                 }).catch(err => {
-                  console.log(err)
+                  console.log(err.response)
                     this.loading = false
                     // this.$router.push('/inventory/bagging')
-                    this.openNotification('danger', 'Failed to populate Connote', err)
+                    this.openNotification('danger', 'Failed to populate Connote', (err.response && err.response.data && err.response.data.message) ? err.response.data.message : err)
                 })
         },
 

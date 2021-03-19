@@ -36,7 +36,7 @@
                           class="m-select"
                           filter
                           :multiple="false"
-                          placeholder="All Nodes"
+                          placeholder="Select Location"
                           v-model="node_request"
                           :border="true"
                           autocomplete="off"
@@ -83,10 +83,9 @@
             <div class="center in-get-bag" style="float: right; width: 100%">
               <vs-row>
                 <vs-col lg="6" align="">
-                  <vs-button @click="actionDetail">Print</vs-button>
                 </vs-col>
                 <vs-col lg="6" align="right">
-                  <vs-button @click="$router.go(-1)">Back</vs-button>
+                  <vs-button @click="actionDetail">Print</vs-button>
                 </vs-col>
               </vs-row>
             </div>
@@ -102,6 +101,9 @@
         </vs-row>
 
       </div>
+      <vs-col xs="12" sm="12" lg="12" align="right" style="padding:20px 5px;">
+        <vs-button @click="$router.go(-1)">Back</vs-button>
+      </vs-col>
 
     </section>
 
