@@ -182,6 +182,7 @@ export default {
                     let arr =res.data.data.connote
 
                     this.dataTable = arr
+                    this.$emit("printAllData", this.dataTable)
 
                     this.pagination.page = res.data.meta ? res.data.meta.current_page : 1
                     this.pagination.limit = res.data.meta ? parseInt(res.data.meta.per_page) : 1000

@@ -12,6 +12,7 @@
                 <vs-button
                     square
                     block
+                    @click="printAll"
                 >
                   PRINT ALL
                 </vs-button>
@@ -31,7 +32,7 @@
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <transactionDetailList :ref="'transactionList'" :query="tempSearch"/>
+                        <transactionDetailList :ref="'transactionList'" :query="tempSearch" @printAllData="printAllDataResolver"/>
                     </transition>
                 </template>
 
@@ -63,6 +64,7 @@ export default {
             title:"Connote Detail",
             tempSearch: "",
             tempDate: [],
+            koli_number: ''
         }
     },
     methods: {
@@ -82,6 +84,32 @@ export default {
         openDialog(){
             this.$router.push('/new-transactions')
         },
+
+        printAllDataResolver(arr) {
+            if(arr.length > 0) {
+              this.koli_number = ''
+              let str = []
+              arr.map(conot => {
+                  if(conot.hasOwnProperty('koli')) {
+                      let temp = []
+                      conot.koli.map(koli => {
+                          if(koli.hasOwnProperty('koli_number')) {
+                              temp.push(koli.koli_number)
+                          }
+                      })
+                      str = [...str, ...temp]
+                  }
+              })
+              this.koli_number = str.toString()
+            }
+            
+        },
+        printAll() {
+            if(this.koli_number.length > 0) {
+              let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': this.koli_number, 'type': 'koli'} });
+              window.open(routeData.href, '_blank');
+            }
+        }
 
     }
 }
