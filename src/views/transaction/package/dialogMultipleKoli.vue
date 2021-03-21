@@ -217,7 +217,7 @@ export default {
                 {
                     label: 'Description',
                     key: 'description',
-                    rule: '',
+                    rule: 'required',
                     width: "md"
                 },
             ],
