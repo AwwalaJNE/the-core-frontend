@@ -1077,6 +1077,18 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
     commit('SET_VEHICLE_TYPE_IS_ACTIVE_ValueData', payload)
   },
 
+  SET_PICKUP_REQUEST_NODE_REQUEST({ commit }, payload) {
+    commit('SET_PICKUP_REQUEST_NODE_REQUEST', payload)
+  },
+  SET_PICKUP_REQUEST_NODE_REQUEST_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_REQUEST_NODE_REQUEST_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_PICKUP_REQUEST_NODE_REQUEST_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_REQUEST_NODE_REQUEST_ArrData', payload)
+  },
+    
+
   //PICKUP LIST
   SET_PICKUP_LIST_PICKUP_NAME({ commit }, payload) {
     commit('SET_PICKUP_LIST_PICKUP_NAME', payload)

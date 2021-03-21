@@ -1478,6 +1478,19 @@ export default {
     },
   },
 
+  pickup_request: {
+    node_request: {
+      label: "Select Link Request",
+      key: "node_request",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  },
+
   //form pickup list
   pickup_list: {
     pickup_name: {
