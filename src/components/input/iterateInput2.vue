@@ -113,7 +113,7 @@ export default {
             
             let arr = []
             let tempObj = {}
-            inputs[0]['inputs'].map(item => {
+            inputs[0] && inputs[0]['inputs'] && inputs[0]['inputs'].map(item => {
                 item.value = ''
                 arr.push(item)
             })

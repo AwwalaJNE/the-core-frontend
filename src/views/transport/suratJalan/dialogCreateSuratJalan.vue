@@ -159,6 +159,13 @@ export default {
             return this.title
         },
         listenDataItem() {
+            if (this.dataItem && !this.dataItem.hasOwnProperty("destination_id")) {
+                this.dataItem["destination_id"] = this.dataItem.node_id_destination
+                this.dataItem["moda_angkutan_id"] = this.dataItem.vehicle_mode_id
+                this.dataItem["no_moda_angkutan_id"] = this.dataItem.vehicle_type_id
+                this.dataItem["manifest_do_item"] = this.dataItem.detail
+                this.dataItem["driver_id"] = this.dataItem.pic_employee_id
+            }
             return this.dataItem
         },
         listenFormKey(){
@@ -168,7 +175,8 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.manifest_delivery_id = val.manifest_delivery_id
+                this.manifest_delivery_id = val.manifest_do_number
+                this.dataTable = val.detail
             }
         },
         active: function (val) {
@@ -179,9 +187,8 @@ export default {
     },
     methods: {
         formData(form){
-            
             let weight = 0
-            this.dataTable.map(item => {
+            this.dataTable.map(item => {    
                 if(item.total_weight) {
                     weight =+ item.total_weight
                 }
@@ -202,8 +209,12 @@ export default {
                 obj['manifest_do_item'] = this.dataTable
 
                 this.form = obj
-                // console.log('form', this.form)
-                this.addData()
+                console.log('samaa form', this.form)
+                if(this.manifest_delivery_id !== undefined && this.manifest_delivery_id !== '') {
+                    this.updateData()
+                } else {
+                    this.addData()
+                }
             } else {
                 this.openNotification('warn', 'Melebihi berat', 'Berat muatan melebihi batas berat kendaraan')
             }
@@ -269,6 +280,29 @@ export default {
                     this.handleClearForm()
                     this.dataTable = []
                     this.openNotification(null, 'Success', 'Create surat jalan success')
+                }).catch(err => {
+                    this.loading = false
+                    this.closeDialog()
+                    this.$emit("refresh")
+                    this.dataTable = []
+                    this.handleClearForm()
+                    this.openNotification('danger', 'Create surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+        },
+        async updateData() {
+            this.loading = true
+            await axios
+                .put(
+                    this.URL.manifest_delivery_order + `/${this.manifest_delivery_id}?n=${this.listenNodeId}`,
+                    JSON.stringify(this.form), 
+                    this.Helper.header())
+                .then(res => {
+                    this.closeDialog()
+                    this.loading = false
+                    this.$emit("refresh")
+                    this.handleClearForm()
+                    this.dataTable = []
+                    this.openNotification(null, 'Success', 'Update surat jalan success')
                 }).catch(err => {
                     this.loading = false
                     this.closeDialog()
