@@ -12,9 +12,11 @@
         @actionPagination="actionPagination"
         @actionPrint="actionPrint"
 
+        :hasLinked="['manifest_do_number']"
         :customAction="true"
         :customActionList="customActionList"
         @actionUpdate="actionUpdate"
+        @handleEdit="handleEdit"
         >
           
         </table-master>
@@ -29,6 +31,15 @@
           @confirm="confirmCancel"
           @cancel="closeDialogConfirmCancel"
       /> -->
+              <!--Create pickup Request-->
+        <dialogCreateSuratJalan
+          :active="dialogSuratJalan"
+          @refresh="refresh"
+          :closeDialog="closeDialogSuratJalan"
+          title="Edit Transport Surat Jalan"
+          :dataItem="dataItem"
+          btnBlue="Edit"
+        />
     </div>
 </template>
 <script>
@@ -36,6 +47,7 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
+import DialogCreateSuratJalan from "@/views/transport/suratJalan/dialogCreateSuratJalan"
 export default {
     name:"surat-jalan",
     mixins: [master],
@@ -44,13 +56,15 @@ export default {
         dateFilter: Array
     },
     components: {
-        "table-master" : TableMaster,
-      "dialog-confirm": DialogConfirm
+      "table-master" : TableMaster,
+      "dialog-confirm": DialogConfirm,
+      "dialogCreateSuratJalan": DialogCreateSuratJalan
     },
     data() {
         return {
             form: {},
             dataTable: [],
+            dialogSuratJalan:false,
             datacolumn: [
               {
                 label: "Surat Jalan #",
@@ -233,6 +247,14 @@ export default {
                     // code block
             }
         },
+        handleEdit(val){
+          if(this.dataTable.length > 0) {
+            this.dataItem = val
+            this.$nextTick(() => {
+              this.dialogSuratJalan = true
+            });
+          }
+        },
 
         actionLimit(val){
             this.pagination.limit = val
@@ -278,7 +300,9 @@ export default {
           this.activeDialogCancel = false
           this.activeLoadingCancel=false
         },
-        
+        closeDialogSuratJalan() {
+          this.dialogSuratJalan = false
+        },
 
     },
     mounted() {

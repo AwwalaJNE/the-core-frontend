@@ -49,6 +49,7 @@
             @refresh="refresh"
             :closeDialog="closeDialogSuratJalan"
             title="Transport Surat Jalan"
+            btnBlue="Add"
         />
 
     </div>
