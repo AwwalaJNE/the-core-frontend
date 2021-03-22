@@ -8,9 +8,9 @@ const phoneRule = {
   validate(value, args) {
     //   /^(^\+62|62|^08)(\d{3,4}-?){2}\d{3,4}$/g;
     // /^(^\+62|62|^0)(\d{3,4}-?){2}\d{3,4}$/g
-    const MOBILEREG = /^[\+]?(\d{7,16})$/;
+    const REGEX = /^[\+]?(\d{7,16})$/;
 
-    return MOBILEREG.test(value);
+    return REGEX.test(value);
   }
 };
 
@@ -52,9 +52,9 @@ const decimal = {
   validate(value, args) {
     //  /^\d*\.?\d+$/
     //  /^[\d\.?\,]{0,5}([\.?\,]\d{3})?$/
-    const MOBILEREG = /^[\d\.?\,]{0,5}([\.?\,]\d{3})?$/
+    const REGEX = /^[\d\.?\,]{0,5}([\.?\,]\d{3})?$/
     
-    return MOBILEREG.test(value);
+    return REGEX.test(value);
   }
 };
 

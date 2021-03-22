@@ -243,22 +243,7 @@ export default {
         width: 100%;
         text-align: left;
         font-size: 0.75rem;
-        .el-autocomplete{
-            width: 100%;
-            .el-input__inner{
-                background: rgba(var(--vs-gray-2), 1);
-                color: rgba(var(--vs-text), 1);
-                border-color: transparent !important;
-                border-radius: 10px;
-                margin-bottom: 1em;
-                padding: 7px 13px;
-                height: 35px;
-                line-height: 35px;
-                &:focus{
-                    border-color: transparent !important;
-                }
-            }
-        }
+        
     }
     .map_picker{
         position: relative;

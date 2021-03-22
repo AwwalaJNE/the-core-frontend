@@ -132,7 +132,8 @@ export default {
             InputKeys: [],
             datacolumn: [],
             dataTable: [],
-            progress: 0
+            progress: 0,
+            keys:[]
         }
     },
     computed: {
@@ -201,7 +202,6 @@ export default {
         handleDownload(){
 
             var ws_name = "SheetJS";
-
             /* make worksheet */
             var ws_data = [];
             ws_data.push(this.keys)

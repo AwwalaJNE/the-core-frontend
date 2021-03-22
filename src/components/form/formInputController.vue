@@ -142,6 +142,18 @@
                                     @updateValue="updateValue" />
                                 </template>
                             </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete')">
+                                <auto-complete
+                                :name="InputObject[item].label"
+                                :rules="InputObject[item].rule"
+                                :formKey="InputObject[item].key"
+                                :valueData="InputObject[item].value"
+                                :querySearch="querySearch"
+                                :selectedValue="InputObject[item].query"
+                                :typeForm="listenTypeForm"
+                                :typeInput="InputObject[item].typeInput"
+                                @updateValue="updateValue" />
+                            </template>
                         </vs-col>
                     </template>
                 </vs-row>
@@ -157,6 +169,7 @@ import Switch from "@/components/input/switch"
 import MapPicker from "@/components/map"
 import DateTime from "@/components/input/dateTime"
 import Radio from "@/components/input/radio"
+import AutoComplete from "@/components/input/autoComplete"
 import iterateSelector from "@/components/input/iterateInput2"
 export default {
     name:"input-controller",
@@ -169,13 +182,15 @@ export default {
         "iterate-selector": iterateSelector,
         "date-time": DateTime,
         "radio": Radio,
+        "auto-complete": AutoComplete
     },
     props: {
         arrData: Array,
         typeForm: String,
         dataItem: Object,
         getters: String,
-        submitByEnter: Boolean
+        submitByEnter: Boolean,
+        querySearch: Function
     },
     data() {
         return {
@@ -296,6 +311,8 @@ export default {
                             this.form[this.InputObject[item].key] = this.InputObject[item].value == '' ? true : this.InputObject[item].value 
                         } else if (this.InputObject[item]['typeInput'].toLowerCase() == 'dynamicinputcomponent') {
                             this.form[this.InputObject[item].key] = this.InputObject[item].arrData
+                        } else if (this.InputObject[item]['typeInput'].toLowerCase() == 'autocomplete') {
+                            this.form[this.InputObject[item].key] = this.InputObject[item].valueData
                         }
                         else {
                             this.form[this.InputObject[item].key] = this.InputObject[item].value

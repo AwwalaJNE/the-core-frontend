@@ -132,26 +132,162 @@ export default {
             datacolumn: [],
             dataTable: [],
             progress: 0,
+            keys: [],
             template: {
-                "Alamat Penerima": "",
-                "Alamat Pengirim": "",
-                "Asuransi": "",
-                "Berat": 1,
-                "Connote ID": "",
-                "Kodepos Penerima": "",
-                "Kodepos Pengirim": "",
-                "Lebar": 0,
-                "Nama Penerima": "",
-                "Nama Pengirim": "",
-                "Nilai Barang": 0,
-                "Panjang": 0,
-                "Service": "",
-                "Telepon Penerima": "",
-                "Telepon Pengirim": "",
-                "Tinggi": 0,
-                "message": ""
+                "Connote ID":{
+                    "label":"Connote ID",
+                    "key":"connote_id",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|string"
+                },
+                "Nama Penerima":{
+                    "label":"Nama Penerima",
+                    "key":"connote_receiver_name",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|string"
+                },
+                "Alamat Penerima":{
+                    "label":"Alamat Penerima",
+                    "key":"connote_receiver_street_address",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|string"
+                },
+                "Kodepos Penerima":{
+                    "label":"Kodepos Penerima",
+                    "key":"connote_receiver_zip_code",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|number"
+                },
+                "Telepon Penerima":{
+                    "label":"Telepon Penerima",
+                    "key":"connote_receiver_phone_number",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|phone"
+                },
+
+                "Nama Pengirim":{
+                    "label":"Nama Pengirim",
+                    "key":"connote_shipper_name",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|string"
+                },
+                
+                "Alamat Pengirim":{
+                    "label":"Alamat Pengirim",
+                    "key":"connote_shipper_street_address",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|string"
+                },
+                "Kodepos Pengirim":{
+                    "label":"Kodepos Pengirim",
+                    "key":"connote_shipper_zip_code",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|number"
+                },
+                "Telepon Pengirim":{
+                    "label":"Telepon Pengirim",
+                    "key":"connote_shipper_phone_number",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|phone"
+                },
+
+                "Service":{
+                    "label":"Service",
+                    "key":"connote_service_code",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|string"
+                },
+
+                "Deskripsi Barang":{
+                    "label":"Deskripsi Barang",
+                    "key":"connote_description",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|string"
+                },
+
+                "Remarks":{
+                    "label":"Remarks",
+                    "key":"remarks",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "string"
+                },
+
+                "Berat":{
+                    "label":"Berat",
+                    "key":"weight",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "required|decimal"
+                },
+                "Panjang":{
+                    "label":"Panjang",
+                    "key":"length",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "decimal"
+                },
+                "Lebar":{
+                    "label":"Lebar",
+                    "key":"width",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "decimal"
+                },
+                "Tinggi":{
+                    "label":"Tinggi",
+                    "key":"height",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "decimal"
+                },
+
+                "Asuransi":{
+                    "label":"Asuransi",
+                    "key":"is_insured",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "boolean"
+                },
+
+                "Amount Cod":{
+                    "label":"Amount Cod",
+                    "key":"amount_cod",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "number"
+                },
+
+                "Nilai Barang":{
+                    "label":"Nilai Barang",
+                    "key":"insured_goods_value",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "number"
+                },
+
+                "Reference Number":{
+                    "label":"Reference Number",
+                    "key":"reference_number",
+                    "width":"xs",
+                    "type": "",
+                    "rule": "string"
+                },
             },
-            connote: []
+            tempStatus: true,
+            tempMsg: '',
+            dataConnote: []
         }
     },
     computed: {
@@ -171,43 +307,46 @@ export default {
                 }
             }, 40)
 
-            const data = this.dataTable
-
-            console.log('this.dataTable ', this.dataTable)
-            // let filterData = this.dataTable.filter(item => {
-            //     return item.status == true
-            // })
-            // const addData = async () => {
-            //     this.dataTable = []
-            //     for(let item of data) {
-            //         if(item.status == true) {
-            //             await axios
-            //             .post(
-            //                 this.URL[this.selectedInputType] +`?n=${this.listenNodeId}`, 
-            //                 JSON.stringify(item),
-            //                 this.Helper.header())
-            //             .then(res => {
-            //                 console.log('res ', res)
-            //                 item["status"] = true
-            //                 item["message"] = 'success'
-            //                 if (this.progress <= 100) {
-            //                     loading.changeProgress(this.progress++)
-            //                 }
-            //             }).catch(err => {
-            //                 console.log('err', err)
-            //                 item["status"] = false
-            //                 item["message"] = err.response.data.message || 'something went wrong'
-            //                 // this.openNotification('danger', 'Failed to collect role list', err)
-            //             })
-            //         }
-                    
-            //     }
-
-            //     this.dataTable = data
-            //     console.log('this.dataTable after ==== ', this.dataTable)
-            // }
-
-            // addData()
+            
+            // let wrapTransaction = this.$store.getters.getTransaction.transaction
+            // wrapTransaction['connote'] = this.dataConnote
+            // wrapTransaction['transaction_finished'] = true
+            // wrapTransaction['node_code'] = this.listenNodeCode
+            let filterData = this.dataConnote.filter(item => {
+                return item.status == true
+            })
+            await axios
+                .post(
+                    this.URL.upload_connote + `?n=${this.listenNodeId}`,
+                    JSON.stringify(filterData), 
+                    this.Helper.header()
+                ).then(res => {
+                    if(res.status == 200){
+                        console.log('res connote ========>', res)
+                        if (this.progress <= 100) {
+                                loading.changeProgress(this.progress++)
+                        }
+                        // this.tempConnote = res.data.data
+                        // this.handleDataTransaction()
+                        // if(this.typeAction == 'addconnote') {
+                            // this.refreshTransactionStore()
+                            // this.$refs.originComponent.setFocus()
+                        // } else {
+                            // this.getDataKoli()
+                            // this.$nextTick(() => {
+                            //     this.openPaymentDialog()
+                            // });
+                        // }
+                    }
+                }).catch(err => {
+                    console.log('err', err.response)
+                    // let index = err.response.data.message.split('.')[0] || 0
+                    // let obj = {}
+                    // this.dataTable[index]['status'] = false
+                    // this.dataTable[index]['message'] = err.response.data.message || 'something went wrong'
+            
+                })
+            
             
             setTimeout(() => {
                 loading.close()
@@ -220,10 +359,9 @@ export default {
         handleDownload(){
 
             var ws_name = "SheetJS";
-
             /* make worksheet */
             var ws_data = [];
-            ws_data.push(this.keys)
+            ws_data.push(this.InputKeys)
             var ws = XLSX.utils.aoa_to_sheet(ws_data);
 
             var wb = XLSX.utils.book_new();
@@ -238,42 +376,16 @@ export default {
             this.$router.go();
         },
         initializeInputType() {
-            this.inputType = []
-            let obj = this.$store.getters.getInputs
-            Object.keys(obj).map(item => {
-                let keys = {}
-                keys["label"] = item.replace(/[&\/\\#,+()$~%._'":*?<>{}]/g, " ")
-                keys["value"] = item 
-                this.inputType.push(keys)
-            })
-        },
-        handleChangeInputType(type, val) {
-            console.log('handleChangeInputType', val)
-            this.selectedInputType = val
-            this.datacolumn = []
-            this.InputObject = this.$store.getters.getInputs[val] || {}
-            let objkeys = []
-            Object.keys(this.InputObject).map(item => {
-                if(this.InputObject[item].hasOwnProperty('uploadInput') && this.InputObject[item].uploadInput == false) {
-
-                } else {
-                    objkeys.push(item)
-                }
+            this.InputKeys = Object.keys(this.template)
+            this.InputKeys.map(item => {
+                let obj = {}    
+                obj["label"] = this.template[item].label
+                obj["key"] = this.template[item].label
+                obj["width"] = "auto"
+                this.datacolumn.push(obj)     
             })
 
-            this.keys = objkeys //Object.keys(this.InputObject)
-            if (this.keys.length > 0) {
-                this.keys.map(item => {
-                    let obj = {}
-                    
-                        obj["label"] = this.InputObject[item].label !== undefined ? this.InputObject[item].label.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, " ") : ''
-                        obj["key"] = this.InputObject[item].key
-                        obj["width"] = "auto"
-                    
-                    
-                    this.datacolumn.push(obj)                    
-                })
-                let statusColumn = [
+            let statusColumn = [
                     {
                         "label": 'status',
                         "key": 'status',
@@ -286,8 +398,12 @@ export default {
                         "width": "sm"
                     }
                 ]
-                this.datacolumn = [...this.datacolumn, ...statusColumn]
-            }
+            this.datacolumn = [...this.datacolumn, ...statusColumn]
+            console.log('this.datacolumn',this.datacolumn)
+        },
+        handleChangeInputType(type, val) {
+            // console.log('handleChangeInputType', val)
+            
         },
         async beforeUpload(file) {
             await this.validateExcel(file)
@@ -329,129 +445,117 @@ export default {
             let first_sheet_name = workbook.SheetNames[0];
             let worksheet = workbook.Sheets[first_sheet_name];
             let jsonExcel = XLSX.utils.sheet_to_json(worksheet);
-            this.dataTable = jsonExcel
+            let tempData = jsonExcel
 
-            this.dataTable.map(item => {
-                
-                let checkValid = this.rowValidation(item)
-                item["status"] = checkValid.status
-                item["message"] = checkValid.message
+            let dataConnote = []
+            this.dataConnote = []
 
+            tempData.map(item => {
+                this.tempStatus = true
+                this.tempMsg = 'valid'
+                dataConnote.push(this.processConnote(item))
             })
+            this.dataConnote = dataConnote
+            this.dataTable = tempData
 
-            console.log('this.dataTable', this.dataTable)
-
+             
         },
-        processConnote(item) {
-            let obj = {}
-            
-            if(item.hasOwnProperty('Alamat Penerima')) {
-                obj['connote_receiver_street_address'] = item['Alamat Penerima']
-                obj['connote_receiver_administrative_address'] = item['Alamat Penerima']
-            }
-            if(item.hasOwnProperty('Alamat Pengirim')) {
-                obj['connote_receiver_street_address'] = item['Alamat Pengirim']
-                obj['connote_receiver_administrative_address'] = item['Alamat Pengirim']
-            }
-            if(item.hasOwnProperty('Asuransi')) {
-                let val = false
-                if(item['Asuransi'].toLowerCase() == 'tidak') {
-                    val = false
-                } else if(item['Asuransi'].toLowerCase() == 'ya' || item['Asuransi'].toLowerCase() == 'iya') {
-                    val = true
-                }
-                obj['is_insured'] = val
-            }
-            if(item.hasOwnProperty('Connote ID')) {
-                obj['connote_number'] = item['Connote ID']
-            }
-            if(item.hasOwnProperty('Kodepos Penerima')) {
-                obj['connote_receiver_zip_code'] = item['Kodepos Penerima']
-            }
-            if(item.hasOwnProperty('Kodepos Pengirim')) {
-                obj['connote_shipper_zip_code'] = item['Kodepos Pengirim']
-            }
-            if(item.hasOwnProperty('Telepon Penerima')) {
-                obj['connote_receiver_phone_number'] = item['Telepon Penerima']
-            }
-            if(item.hasOwnProperty('Telepon Pengirim')) {
-                obj['connote_receiver_phone_number'] = item['Telepon Pengirim']
-            }
-
-            let koli = []
-            let objKoli = {}
-            let t,p,l = 0
-            if(item.hasOwnProperty('Berat')) {
-                objKoli['actual_weight'] = item['Berat']
-            }
-            if(item.hasOwnProperty('Tinggi')) {
-                objKoli['height'] = item['Tinggi']
-                t = item['Tinggi']
-            }
-            if(item.hasOwnProperty('Panjang')) {
-                objKoli['length'] = item['Panjang']
-                p = item['Panjang']
-            }
-            if(item.hasOwnProperty('Lebar')) {
-                objKoli['width'] = item['Lebar']
-                l = item['Lebar']
-            }
-
-            let volume = t*p*l
-            objKoli['volume_weight'] = volume
-            objKoli['surcharge_id'] = []
-            objKoli['description'] = ''
-
-            koli.push(objKoli)
-            objKoli['connote_koli_item'] = koli
-            
-
-            if(item.hasOwnProperty('Nilai Barang')) {
-                objKoli['insured_goods_value'] = item['Nilai Barang']
-            }
-            if(item.hasOwnProperty('Service')) {
-                objKoli['connote_service_code'] = item['Service']
-            }
-        },
-        rowValidation(item) {
+        rowValidation2(key, value){
             let obj = {
                 "status": true,
                 "message": 'valid'
             }
-            let keys = Object.keys(this.InputObject)
-            let rule = ''
-            console.log('item', item)
-            for(let inp of keys) {
-                rule = this.InputObject[inp].rule || ''
-                switch(true) {
-                    case rule.includes("required"):
-                        if(item.hasOwnProperty(inp) == false) {
-                            obj["status"] = false
-                            obj["message"] = `${obj["message"].replace(/valid/g, " ")} ${inp} required,`
-                        }
-                    case rule.includes("email"):
-                        if(item.hasOwnProperty(inp)) {
-                            // let emailValidate = email.validate(item["email"])
-                            // obj["status"] = emailValidate || false
-                            // obj["message"] = emailValidate == false ? `${inp} is not valid` : 'valid' 
-                            
-                            // console.log(item, emailValidate, obj)
+            let dataInput = this.template[key] || {}
+            let rule = dataInput.rule || null
+
+            if(rule != null) {
+                // console.log('rule', rule, value[dataInput.label])
+                if(rule.includes("required")) {
+                    if(value.hasOwnProperty(dataInput.label) == false) {
+                            this.tempStatus = false
+                            this.tempMsg = this.tempMsg.replace(/valid/g, " ") + `${this.tempMsg.length > 0 ? ' \n ': ''} -${dataInput.label} required`
+                            // obj["status"] = false
+                            // obj["message"] = `${obj["message"].replace(/valid/g, " ")} ${dataInput.label} required,`
+                    }
+                }
+
+                if(rule.includes("number")) {
+                    if(value.hasOwnProperty(dataInput.label)) {
+                            const REGEX = /^[0-9]*$/
+                            let testlah = REGEX.test(value[dataInput.label]);
+
+                            if(testlah == false) {
+                                this.tempStatus = false
+                                this.tempMsg = this.tempMsg.replace(/valid/g, " ") + `${this.tempMsg.length > 0 ? ' \n ': ''} -${dataInput.label} should be numeric`
+                                // obj["status"] = testlah
+                                // obj["message"] = `${obj["message"].replace(/valid/g, " ")} ${dataInput.label} should be numeric,`
+                            }
                         } 
-                        // break;
-                    case rule.includes("min_value"):
-                        
-                        // break;
-                    default:
-                        console.log('meong')
-                        // code block
+                }
+
+                if(rule.includes("decimal")){
+                    if(value.hasOwnProperty(dataInput.label)) {
+                            const REGEX = /^[\d\.?\,]{0,5}([\.?\,]\d{3})?$/
+                            let testlah = REGEX.test(value[dataInput.label]);
+
+                            if(testlah == false) {
+                                this.tempStatus = false
+                                this.tempMsg = this.tempMsg.replace(/valid/g, " ") + `${this.tempMsg.length > 0 ? ' \n ': ''} -${dataInput.label} should be numeric/decimal`
+                                // obj["status"] = testlah
+                                // obj["message"] = `${obj["message"].replace(/valid/g, " ")} ${dataInput.label} should be numeric/decimal,`
+                            }
+                        } 
+                }
+
+                if(rule.includes("phone")) {
+                    if(value.hasOwnProperty(dataInput.label)) {
+                            const REGEX = /^[\+]?(\d{7,16})$/
+                            let testlah = REGEX.test(value[dataInput.label]);
+
+                            if(testlah == false) {
+                                this.tempStatus = false
+                                this.tempMsg = this.tempMsg.replace(/valid/g, " ") + `${this.tempMsg.length > 0 ? ' \n ': ''} -${dataInput.label} not valid`
+                                // obj["status"] = testlah
+                                // obj["message"] = `${obj["message"].replace(/valid/g, " ")} ${dataInput.label} not valid,`
+                            }
+                        } 
                 }
             }
 
-            console.log('last obj', obj)
+            obj["status"] = this.tempStatus
+            obj["message"] = this.tempMsg
+            // console.log('last obj', obj)
 
             return obj
-            
-        }
+        },
+        processConnote(item) {
+            let obj = {}
+            if(Object.keys(item).length > 0) {
+                Object.keys(this.template).map(itemlabel => {
+                        
+                        let checkValid = this.rowValidation2(itemlabel,item)
+                        item["status"] = checkValid.status
+                        item["message"] = checkValid.message
+
+                        if(checkValid.status) {
+                            if(this.template.hasOwnProperty(itemlabel)) {
+                                if(this.template[itemlabel].rule.includes('string')) {
+                                    obj[this.template[itemlabel].key] = item[itemlabel].toString()
+                                } else {
+                                    obj[this.template[itemlabel].key] = item[itemlabel]
+                                }
+                            }
+                            
+                        }
+                        obj["status"] = checkValid.status
+                })
+            }
+
+
+            return obj
+
+        },
+        
     },
     mounted() {
         this.initializeInputType()
