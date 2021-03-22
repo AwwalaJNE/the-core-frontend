@@ -141,9 +141,11 @@ export default {
                 .then(res => {
                     let total = 0
                     let data = res.data.data
+                    data = data.filter(item => item['is_paid'] == 1)
+
                     data.map(item=>{
                         if(item.hasOwnProperty('is_paid')) {
-                            if(item['is_paid'] == 1 || item['is_paid'] == '1') {
+                            if(item['is_paid'] == '1') {
                                 total = Number(total) + Number(item.transaction_amount);
                                 item['total_connote'] = item.connote.length
                                 item['connote_shipper_name'] = item.connote.length > 0 ? item.connote[0].connote_shipper_name : null
