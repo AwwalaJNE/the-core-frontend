@@ -172,7 +172,32 @@ export default {
                     }
                     
                     this.collectData()
-                    this.createConnote2()
+
+                    let needValidation = false
+                    let indexKoli = 0
+                    let inputan = ''
+                    // quick fix required koli input dalem dialog multikoli
+                    let dataConnote = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
+                    for(let i=0; i<= dataConnote['connote_koli_item'].length-1;i++) {
+                        console.log('koli curr', dataConnote['connote_koli_item'][i])
+                        if(dataConnote['connote_koli_item'][i]['description'] == '') {
+                                    needValidation = true
+                                    indexKoli = i
+                                    inputan = 'Description'
+                                    break;
+                        } else if(dataConnote['connote_koli_item'][i]['actual_weight'] == '') {
+                            needValidation = true
+                            indexKoli = i
+                            inputan = 'Weight'
+                            break;
+                        }
+                    }
+
+                    if(needValidation == true) {
+                        this.openNotification('warn', `${inputan} koli ke ${indexKoli + 1} kosong`, `${inputan} tidak boleh kosong`)
+                    } else {
+                        this.createConnote2()
+                    }
 
                     // Wait until the models are updated in the UI
                     this.$nextTick(() => {

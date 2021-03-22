@@ -473,7 +473,7 @@ export default {
     actual_weight: 1,
     surcharge_id: [],
     hasPackingKayu_id: '',
-    description: ' '
+    description: ''
   },
 
   connote_koli_item: [
@@ -486,7 +486,7 @@ export default {
       actual_weight: 1,
       surcharge_id: [],
       hasPackingKayu_id: '',
-      description: ' '
+      description: ''
     }
   ],
 
@@ -540,7 +540,7 @@ export default {
         actual_weight: 1,
         surcharge_id: [],
         hasPackingKayu_id: '',
-        description: ' '
+        description: ''
       }
     ],
     connote_bpik:[],
@@ -589,7 +589,7 @@ export default {
             actual_weight: 1,
             surcharge_id: [],
             hasPackingKayu_id: '',
-            description: ' '
+            description: ''
           }
         ],
         connote_bpik:[],
@@ -643,7 +643,7 @@ export default {
             actual_weight: 1,
             surcharge_id: [],
             hasPackingKayu_id: '',
-            description: ' '
+            description: ''
           }
         ],
         connote_bpik:[],

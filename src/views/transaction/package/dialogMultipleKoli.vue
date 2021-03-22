@@ -65,7 +65,7 @@
                                             </template>
                                             <template v-else>
                                                 <input-general 
-                                                name="" 
+                                                :name="item_h.label" 
                                                 :rules="item_h.rule" 
                                                 :formKey="`${item_h.key}|${key}`"
                                                 :valueData="item[item_h.key]"
@@ -180,7 +180,7 @@ export default {
                 {
                     label: 'Weight',
                     key: 'actual_weight',
-                    rule: 'decimal|min_value:0',
+                    rule: 'required|decimal|min_value:0',
                     width: "xxs"
                 },
                 {
