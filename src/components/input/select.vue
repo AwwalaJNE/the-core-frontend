@@ -56,7 +56,7 @@ export default {
                     value: 'nodata'
                 }
             ],
-            value: this.selectedValue ? this.selectedValue :"nodata",
+            value: this.selectedValue ? this.selectedValue :"",
             arrValue: this.selectedValue ? this.selectedValue : [],
             // loading: true,
             // loadingInjector : null

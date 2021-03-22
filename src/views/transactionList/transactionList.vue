@@ -140,8 +140,8 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     let total = 0
-                    this.dataTable = res.data.data
-                    this.dataTable.map(item=>{
+                    let data = res.data.data
+                    data.map(item=>{
                         if(item.hasOwnProperty('is_paid')) {
                             if(item['is_paid'] == 1 || item['is_paid'] == '1') {
                                 total = Number(total) + Number(item.transaction_amount);
@@ -152,6 +152,8 @@ export default {
                         }
                       
                     })
+
+                    this.dataTable = data
                     this.setTotalAmount(total);
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)

@@ -10,30 +10,12 @@
 
         <template v-slot:content>
             <div>
-              <template v-if="DataArr.length > 0">
-                <vs-select
-                    class="m-select"
-                    filter
-                    :multiple="false"
-                    placeholder="Select Link Request"
-                    label="Request To"
-                    v-model="node_request"
-                    :border="true"
-                    @change="updateValue"
-                >
-                  <template v-if="DataArr.length > 0">
-                    <vs-option
-                        v-for="(item,key) in DataArr"
-                        :key="key"
-                        :label="item.label"
-                        :value="item.value">
-                      {{item.label}}
-                    </vs-option>
-                  </template>
-
-                </vs-select>
-              </template>
-
+                <form-input-controller 
+                    ref="formUserPickupRequestController"
+                    @formData="formData"
+                    :dataItem="listenDataItem"
+                    typeForm="pickup_request"
+                />
             </div>
         </template>
 
@@ -73,12 +55,14 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
+import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
     name:"dialog-create-pickupRequest",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
+        "form-input-controller": FormInputController,  
     },
     props: {
        closeDialog: Function, 
@@ -125,18 +109,20 @@ export default {
     },
     methods: {
         handleSubmit(){
-            this.form.pickup_node_id_destination= this.node_request
-            this.loading = true
-            this.addData() // trigger function submit form dari luar component formInputController
+            this.$refs.formUserPickupRequestController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
+        formData(form){
+            // this.form = form
+            this.form.pickup_node_id_destination= form.node_request
+            this.loading = true
+            this.addData() 
+        },
+        
         handleClearForm(){
+            this.$refs.formUserPickupRequestController.handleClearForm()
             this.node_request=''
             this.form = {}
         },
-        updateValue(val){
-
-        },
-
         async addData() {
             await axios
                 .post(
@@ -171,13 +157,16 @@ export default {
                   this.Helper.header())
               .then(res => {
                 if(res.data.data.length > 0) {
-                  res.data.data.map(item => {
-                    let obj = {}
-                    obj["label"] = item.node_name
-                    obj["value"] = item.node_id
+                    let arr = []
+                    res.data.data.map(item => {
+                        let obj = {}
+                        obj["label"] = item.node_name
+                        obj["value"] = item.node_id
 
-                    this.DataArr.push(obj)
-                  })
+                        arr.push(obj)
+                    })
+
+                  this.$store.dispatch("SET_PICKUP_REQUEST_NODE_REQUEST_ArrData", arr.length > 0 ? arr : null)
                 }
 
                 this.loading = false

@@ -1104,6 +1104,18 @@ export default {
     state.vehicle_type.is_active.valueData = payload
   },
 
+  SET_PICKUP_REQUEST_NODE_REQUEST(state, payload) {
+    state.pickup_request.node_request.value = payload
+  },
+  SET_PICKUP_REQUEST_NODE_REQUEST_ValueData(state, payload) {
+    state.pickup_request.node_request.valueData = payload
+  },
+  SET_PICKUP_REQUEST_NODE_REQUEST_ArrData(state, payload) {
+    state.pickup_request.node_request.hasOwnProperty('arrData') ?
+    state.pickup_request.node_request.arrData = payload :
+    state.pickup_request.node_request.arrData = []
+  },
+
   //PICKUP LIST
   SET_PICKUP_LIST_PICKUP_NAME(state, payload) {
     state.pickup_list.pickup_name.value = payload
