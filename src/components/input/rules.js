@@ -2,13 +2,11 @@ import { extend } from 'vee-validate';
 import { required, email, min, min_value, max_value, numeric, double } from 'vee-validate/dist/rules';
 
 const phoneRule = {
-  getMessage(field, args) {
-    return `The ${field} must be either a valid phone number`;
-  },
+  message: 'The {_field_} must be either a valid phone number',
   validate(value, args) {
     //   /^(^\+62|62|^08)(\d{3,4}-?){2}\d{3,4}$/g;
     // /^(^\+62|62|^0)(\d{3,4}-?){2}\d{3,4}$/g
-    const REGEX = /^[\+]?(\d{7,16})$/;
+    const REGEX = /^[\+]?(\d{7,14})$/;
 
     return REGEX.test(value);
   }
@@ -59,6 +57,17 @@ const decimal = {
 };
 
 extend('decimal', decimal);
+
+const coordinate = {
+  message: `{_field_} field don't have a valid coordinate`,
+  validate(value, args) {
+    const REGEX = /^[\d\.?\,]{0,14}([\.?\,]\d{3})?$/
+    
+    return REGEX.test(value);
+  }
+};
+
+extend('coordinate', coordinate);
 
 
 

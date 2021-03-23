@@ -5,7 +5,7 @@
 -->
 
 <template>
-    <ValidationProvider class="validation" :name="name" :rules="rules" v-slot="{ errors }">
+    <ValidationProvider class="validation" :name="name" :rules="listenRules" v-slot="{ errors }">
         <slot name='inputan' v-bind:err="errors[0]"></slot>
         <p class="err-message">{{ errors[0] }}</p>
     </ValidationProvider>
@@ -21,6 +21,19 @@ export default {
     props: {
         name: String,
         rules: String
+    },
+    computed: {
+        listenRules() {
+            if (this.name === 'phone' || this.name === 'Phone' || this.name === 'Phone*') {
+                return `${this.rules}|phone`
+            } else if (this.name === 'email' || this.name === 'Email' || this.name === 'Email') {
+                return `${this.rules}|email`
+            } else if (this.name === 'Longitude' || this.name === 'Latitude' || this.name === 'Longitude*' || this.name === 'Latitude*') {
+                return `${this.rules}|coordinate`
+            } else {
+                return this.rules
+            }
+        }
     }
 }
 </script>
