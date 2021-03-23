@@ -12,7 +12,6 @@
             :hasPagination="false"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
-            @handleEdit="actionDetail"
             @updateValue="updateValue"
             />
         </template>
@@ -141,49 +140,73 @@ export default {
                     this.dataTable.map(item=>{
                       item['inbound_type_name'] = 'false'
                     })
-                  console.log(this.dataTable,'asdasdasds')
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
+                    this.$emit('reload', res.data.data);
+                    this.pagination.page = res.data.meta ? res.data.meta.current_page : 1
+                    this.pagination.limit = res.data.meta ? parseInt(res.data.meta.per_page) : 20
+                    this.pagination.page_size = res.data.meta ? res.data.meta.last_page : 1
                     if(res.data.data.length > 0) {
                         
-                    } else {
-                        this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
                     }
-                    
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', 'Failed to populate list', err)
                 })
         },
 
-        updateValue(key, val){
-            
-        },
 
+        updateValue(key, val){
+          key = key.split('|');
+            if(key[0] && key[0] == 'status'){
+              this.form = {
+                koli_number : key[1],
+                status : val,
+                delivery_runsheet_number:this.delivery_runsheet_number
+              }
+              this.updateInbound();
+            }
+        },
+        async updateInbound() {
+          await axios
+              .put(this.URL.delivery + `/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`,
+                  JSON.stringify(this.form),
+                  this.Helper.header())
+              .then(res => {
+                console.log(res,'res receiving');
+                this.refresh()
+                this.openNotification(null, 'Success', 'Update is success')
+              }).catch(err => {
+                console.log(err,'err receiving');
+                this.loading = false
+                this.refresh()
+                this.openNotification('danger', 'Update is failed', err)
+              })
+        },
         async getStatus() {
             this.loadStatus = true
             await axios
                 .get(this.URL.status +
-                `/?n=${this.listenNodeId}&sort_by=created_at&sort_order=desc&limit=3&page=1s=`,
+                `?status_type=DELIVERY&n=${this.listenNodeId}&sort_by=created_at&sort_order=desc&limit=1000&page=1s=`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
+                      console.log('status', res.data.data)
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.geolocation_province_name
-                            obj["value"] = item.geolocation_province_id
+                            obj["label"] = item.status_description +'('+item.status_code+')'
+                            obj["value"] = item.status_code
 
                             arr.push(obj)
                         })
 
                         this.datacolumn.map(item => {
                             if(item.key == 'status') {
-                                item.data == arr
+                              console.log('asd')
+                                item.data = arr
                             }
                         })
+                      console.log(this.datacolumn,'column nya')
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -213,9 +236,7 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
 
-        actionDetail(row){
-          this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
-        }
+
 
     },
     mounted() {

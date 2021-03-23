@@ -98,7 +98,7 @@ export default {
         },
         submit() {
             let action = `SET_${this.listenType == 'pra' ? 'PRA':'SINGLE'}_CONNOTE_NUMBER`
-            this.$store.dispatch("action", this.value)
+            this.$store.dispatch(action, this.value)
             this.$nextTick(() => {
                 this.closeDialog()
             })

@@ -86,6 +86,8 @@
                                                     :valueData="column.data"
                                                     :selectedValue="''"
                                                     :isMultiple="false"
+                                                    autocomplete="off"
+                                                    @change="updateValue"
                                                     @updateValue="updateValue" />
                                                 </div>
                                             </template>
@@ -98,6 +100,7 @@
                                         :formKey="`${column.key}|${item[listenColumn[0].key]}`"
                                         :valueData="''"
                                         :typeInput="'text'"
+
                                         @updateValue="updateValue" />
                                     </template>
                                 </vs-td>
@@ -571,7 +574,6 @@ export default {
         updateValue(key, val){
             this.$emit("updateValue", key, val)
         },
-
 
         handleEdit(val) {
           this.$emit("handleEdit", val);
