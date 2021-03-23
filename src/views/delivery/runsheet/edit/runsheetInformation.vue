@@ -142,9 +142,9 @@ export default {
                       item['inbound_type_name'] = 'false'
                     })
                   console.log(this.dataTable,'asdasdasds')
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
+                    this.pagination.page = res.data.meta ? res.data.meta.current_page : 1
+                    this.pagination.limit = res.data.meta ? parseInt(res.data.meta.per_page) : 20
+                    this.pagination.page_size = res.data.meta ? res.data.meta.last_page : 1
                     if(res.data.data.length > 0) {
                         
                     } else {
