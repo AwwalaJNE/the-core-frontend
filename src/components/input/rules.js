@@ -61,7 +61,7 @@ extend('decimal', decimal);
 const coordinate = {
   message: `{_field_} field don't have a valid coordinate`,
   validate(value, args) {
-    const REGEX = /^[\d\.?\,]{0,14}([\.?\,]\d{3})?$/
+    const REGEX = /^[\-?\d\.?\,]{0,20}([\.?\,]\d{3})?$/
     
     return REGEX.test(value);
   }
