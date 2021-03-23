@@ -15,7 +15,7 @@
             <vs-col lg="12" sm="12" xs="12">
               <div class="box information" style="padding-top: 1px !important;">
                 <p align="left"><b>Courier</b></p>
-                <p align="left">7668(KURIR1)</p>
+                <p align="left">{{dataDelivery.employee_code }} ({{dataDelivery.employee_name}})</p>
                 <div class="nav-box">
                   <vs-row>
                     <vs-col xs="4" sm="4" lg="4" style="margin-top: 2em">
@@ -39,10 +39,10 @@
                       <template>
                         <div class="left">
                           <ul style="float: left; text-align: left">
-                            <li>User : SAM</li>
-                            <li>Date : 2021-09-10</li>
-                            <li>Total : 1 Connotes (1 Kg)</li>
-                            <li>Expectations COD :  Rp. 200.000</li>
+                            <li>User : -</li>
+                            <li>Date : -</li>
+                            <li>Total : {{ summary.total_connote }} Connotes</li>
+                            <li>Expectations COD : {{summary.amount_cod}}</li>
                           </ul>
                         </div>
                       </template>
@@ -56,7 +56,7 @@
                       <template>
                         <transition name="slide-fade">
                           <template>
-                            <RunsheetInformation :ref="'runsheetInformation'"   :query="tempSearch" :deliveryRunsheetNumber="delivery_runsheet_number" />
+                            <RunsheetInformation :ref="'runsheetInformation'"   @reload="reloadSummary" :query="tempSearch" :deliveryRunsheetNumber="delivery_runsheet_number" />
                           </template>
                         </transition>
                       </template>
@@ -115,12 +115,24 @@ export default {
             item_no:'',
             form:{},
             delivery_runsheet_number:'',
-            dataDelivery:''
+            dataDelivery:'',
+            summary: {},
         }
     },
     methods: {
         refresh(){
             this.$refs.runsheetInformation.refresh() // trigger function refresh form dari luar component list
+        },
+        reloadSummary(val){
+          let amount = 0
+          let total_connote = 0
+          val.map(item=>{
+            amount = amount + parseInt(item.amount_cod)
+
+          })
+          this.summary.amount_cod = this.moneyformat(amount)
+          this.summary.total_connote = val.length
+
         },
         searchValue (val) {
             this.tempSearch = val
