@@ -185,7 +185,7 @@ export default {
                     let result = res;
                     console.log('result',result)
                     let address_data =
-                        result["data"]["Response"]["View"][0]["Result"][0]["Location"];
+                        result["data"]["Response"]["View"].length > 0 ? result["data"]["Response"]["View"][0]["Result"][0]["Location"] : "";
                     self.locationName = address_data.Address.Label;
                 })
             .catch(error => console.log("error", error));

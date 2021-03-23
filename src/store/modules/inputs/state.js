@@ -1515,7 +1515,7 @@ export default {
     pickup_phone_number: {
       label: "Phone*",
       key: "pickup_phone_number",
-      rule: "required",
+      rule: "required|phone",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -1575,7 +1575,7 @@ export default {
     pickup_latitude: {
       label: "Latitude*",
       key: "pickup_latitude",
-      rule: "required",
+      rule: "required|coordinate",
       mapPicker: true,
       typeInput: "text|latitude",
       typeData: "Number",
@@ -1585,7 +1585,7 @@ export default {
     pickup_longitude: {
       label: "Longitude*",
       key: "pickup_longitude",
-      rule: "required",
+      rule: "required|coordinate",
       mapPicker: true,
       typeInput: "text|longitude",
       typeData: "Number",
