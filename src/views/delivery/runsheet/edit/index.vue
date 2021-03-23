@@ -114,12 +114,13 @@ export default {
             dialogPickupRequest:false,
             item_no:'',
             form:{},
-            delivery_runsheet_number:''
+            delivery_runsheet_number:'',
+            dataDelivery:''
         }
     },
     methods: {
         refresh(){
-            this.$refs.inboundInformation.refresh() // trigger function refresh form dari luar component list
+            this.$refs.runsheetInformation.refresh() // trigger function refresh form dari luar component list
         },
         searchValue (val) {
             this.tempSearch = val
@@ -137,13 +138,16 @@ export default {
             this.dialogPickupRequest = true
         },
         updateValue(){
-          this.form.item_no = this.item_no
+          console.log(this.dataDelivery,'kkl')
+          this.form.koli_number = this.item_no
+          this.form.delivery_runsheet_number = this.delivery_runsheet_number
+          this.form.courier_employee_id = this.dataDelivery.employee_id
           this.processInbond();
         },
         getParamRoute(){
           if(this.$route.params.delivery_runsheet_number){
             this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number
-            // this.tempSearch = this.$route.params.delivery_runsheet_number
+            this.dataDelivery = this.$route.params.data
           }
         },
         async processInbond() {

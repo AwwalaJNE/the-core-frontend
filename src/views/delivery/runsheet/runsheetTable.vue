@@ -43,7 +43,7 @@ export default {
                 },
                 {
                     label: "Name",
-                    key: "courier_employee_name",
+                    key: "employee_name",
                     width: "auto"
                 },
                 {
@@ -129,7 +129,10 @@ export default {
                 .then(res => {
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
-                      item['courier_employee_name'] = item.employee_courier.employee_name
+                      item['count_connote'] = item.delivery[0] ? item.delivery[0].count_connote : '0'
+                      item['total_depart'] = item.delivery[0] ? item.delivery[0].total_depart : '0'
+                      item['total_ready_to_depart'] = item.delivery[0] ? item.delivery[0].total_ready_to_depart : '0'
+                      item['delivery_runsheet_number'] = item.delivery[0] ? item.delivery[0].delivery_runsheet_number : 0
                     })
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -169,7 +172,7 @@ export default {
 
         actionDetail(row){
           console.log(row)
-          this.$router.push({ name: 'delivery-runsheet-edit', params: { delivery_runsheet_number: row.delivery_runsheet_number } });
+          this.$router.push({ name: 'delivery-runsheet-edit', params: { delivery_runsheet_number: row.delivery_runsheet_number,  data: row} });
         }
 
     },
