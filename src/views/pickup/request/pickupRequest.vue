@@ -142,10 +142,12 @@ export default {
             if(q !== undefined) {
                 query = q
             }
+            
             if(from !== undefined && to !== undefined) {
               startDate = from
               endDate = to
             }
+
             await axios
                 .get(this.URL.pickup_request +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
