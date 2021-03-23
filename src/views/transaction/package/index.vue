@@ -341,7 +341,9 @@ export default {
             connote_number_dialog: false,
 
             btnPrintASRdanSJ: false,
-            tempKoliSurchargePackingKayu: {}
+            tempKoliSurchargePackingKayu: {},
+            tempActualWeightPackingKayu: null,
+            tempvolumeWeightPackingKayu: null,
         }
     },
     computed: {
@@ -616,8 +618,13 @@ export default {
                 case "handle_surcharge":
                     this.connote_koli_item[value].surcharge_id = value2
                     
-                    if(this.connote_koli_item[value].hasOwnProperty('hasPackingKayu_id')) {
-                        this.connote_koli_item[value].hasPackingKayu_id = value3
+                    if(this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
+                        this.connote_koli_item[value].is_packing_kayu_id = value3
+                        if(value3 !== null) {
+                            this.connote_koli_item[value].is_packing_kayu = true
+                        } else {
+                            this.connote_koli_item[value].is_packing_kayu = false
+                        }
                     }
 
                     this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
@@ -669,13 +676,13 @@ export default {
         tidakPackingKayuToggle(){
             let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
             let tempKoliSurchargePackingKayu = {}
+            let service = this.listenPackageService.data || {}
+
             listKoli.map((item, i) => {
-                if(item.hasPackingKayu_id !== null && item.hasPackingKayu_id !== ''){
-                    tempKoliSurchargePackingKayu[i] = item.hasPackingKayu_id
+                if(item.is_packing_kayu_id !== null && item.is_packing_kayu_id !== ''){
+                    tempKoliSurchargePackingKayu[i] = item.is_packing_kayu_id
                 }
             })
-
-            
 
             if(this.package_tidak_packing_kayu == true) {
                 this.tempKoliSurchargePackingKayu = tempKoliSurchargePackingKayu
@@ -685,7 +692,18 @@ export default {
                     Object.keys(this.tempKoliSurchargePackingKayu).map(index => {
                         if(listKoli[index]) {
                             listKoli[index].surcharge_id = listKoli[index].surcharge_id.filter(sur => sur !== this.tempKoliSurchargePackingKayu[index])
-                            listKoli[index].hasPackingKayu_id = ''
+                            listKoli[index].is_packing_kayu_id = ''
+                            listKoli[index].is_packing_kayu = false
+
+                            let volume_weight = 0
+            
+                            if(Object.keys(service).length > 0) {
+                                let service_volume_divider = Number(service['service_volume_divider'])
+                                volume_weight = (listKoli[index]['length'] * listKoli[index]['width'] * listKoli[index]['height']) / service_volume_divider 
+                            }
+                            
+                            listKoli[index]['volume_weight'] = volume_weight.toFixed(2)
+
                         }
                         
                     })
@@ -696,7 +714,8 @@ export default {
                     Object.keys(this.tempKoliSurchargePackingKayu).map(index => {
                         if(listKoli[index]) {
                             listKoli[index].surcharge_id.push(this.tempKoliSurchargePackingKayu[index])
-                            listKoli[index].hasPackingKayu_id = this.tempKoliSurchargePackingKayu[index]
+                            listKoli[index].is_packing_kayu_id = this.tempKoliSurchargePackingKayu[index]
+                            listKoli[index].is_packing_kayu = true
                         }
                         
                     })
@@ -802,11 +821,21 @@ export default {
             this.dialogSettingMultipleKoli = false
         },
         removeSurcharge(id, index, name) {
+            let service = this.listenPackageService.data || {}
             let koli = this.connote_koli_item
             koli[index].surcharge_id = koli[index].surcharge_id.filter(item => item != id)
             if(name.toLowerCase().includes('packing kayu')) {
-                if(koli[index].hasOwnProperty('hasPackingKayu_id')) {
-                    koli[index].hasPackingKayu_id = ''
+                if(koli[index].hasOwnProperty('is_packing_kayu_id')) {
+                    koli[index].is_packing_kayu_id = ''
+                    koli[index].is_packing_kayu = false
+                    let volume_weight = 0
+            
+                            if(Object.keys(service).length > 0) {
+                                let service_volume_divider = Number(service['service_volume_divider'])
+                                volume_weight = (koli[index]['length'] * koli[index]['width'] * koli[index]['height']) / service_volume_divider 
+                            }
+                            
+                    koli[index]['volume_weight'] = volume_weight.toFixed(2)
                 }
             }
             this.$store.dispatch("SET_CONNOTE_DATA_KOLI", koli)

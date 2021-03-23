@@ -472,7 +472,8 @@ export default {
     volume_weight: 0.00,
     actual_weight: 1,
     surcharge_id: [],
-    hasPackingKayu_id: '',
+    is_packing_kayu: false,
+    is_packing_kayu_id: '',
     description: ''
   },
 
@@ -485,7 +486,8 @@ export default {
       volume_weight: 0,
       actual_weight: 1,
       surcharge_id: [],
-      hasPackingKayu_id: '',
+      is_packing_kayu: false,
+      is_packing_kayu_id: '',
       description: ''
     }
   ],
@@ -528,6 +530,7 @@ export default {
     insured_goods_value: 0,
     amount_discount: 0,
     is_insured: false,
+    connote_refuse_wooden_package:false,
     is_packing_kayu: false,
     is_need_do_return: false,
     connote_koli_item: [
@@ -539,7 +542,8 @@ export default {
         volume_weight: 0,
         actual_weight: 1,
         surcharge_id: [],
-        hasPackingKayu_id: '',
+        is_packing_kayu: false,
+        is_packing_kayu_id: '',
         description: ''
       }
     ],
@@ -577,6 +581,7 @@ export default {
         insured_goods_value: 0,
         amount_discount: 0,
         is_insured: false,
+        connote_refuse_wooden_package:false,
         is_packing_kayu: false,
         is_need_do_return: false,
         connote_koli_item: [
@@ -588,7 +593,8 @@ export default {
             volume_weight: 0,
             actual_weight: 1,
             surcharge_id: [],
-            hasPackingKayu_id: '',
+            is_packing_kayu: false,
+            is_packing_kayu_id: '',
             description: ''
           }
         ],
@@ -632,6 +638,7 @@ export default {
         amount_discount: 0,
         is_insured: false,
         is_packing_kayu: false,
+        connote_refuse_wooden_package:false,
         is_need_do_return: false,
         connote_koli_item: [
           {
@@ -642,7 +649,8 @@ export default {
             volume_weight: 0,
             actual_weight: 1,
             surcharge_id: [],
-            hasPackingKayu_id: '',
+            is_packing_kayu: false,
+            is_packing_kayu_id: '',
             description: ''
           }
         ],

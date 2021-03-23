@@ -35,7 +35,7 @@ const TransactionMixin = {
         },
 
         listenPackageService () {
-            return this.$store.getters.getTransaction.package.package_service.valueData
+            return this.$store.getters.getTransaction.package.package_service.valueData || {}
         },
         listenSurchargeList() {
             return this.$store.getters['getTransaction']['package']['package_surcharge']['arrData']
@@ -301,6 +301,8 @@ const TransactionMixin = {
             diskon = this.moneyParsing(diskon)
             let surchargeByID = this.listenPackageSurchargeByID
             let tarifData = this.listenPackageService || {}
+
+            let service = this.listenPackageService.data || {}
             
             this.SUM_CHARGEBLE_WEIGHT= 0
             this.SUM_ACTUAL_WEIGHT= 0
@@ -314,17 +316,25 @@ const TransactionMixin = {
             if(listKoli.length > 0) {
                 listKoli.map(koli => {
                     // koli hitung satuan
-                    let koli_volume_weight = Number(koli['volume_weight'])
+                    let vw = 0
+            
+                            if(Object.keys(service).length > 0) {
+                                let service_volume_divider = Number(service['service_volume_divider'])
+                                vw = (koli['length'] * koli['width'] * koli['height']) / service_volume_divider 
+                            }
+                            
+
+                    let koli_volume_weight = vw
                     
                     let koli_actual_weight = Number(koli['actual_weight'])
 
-                    let roundUp = Number(this.round03(koli_volume_weight))
-                    let ALL_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, roundUp).toFixed(2))
+                    // let roundUp = Number(this.round03(koli_volume_weight))
+                    // let ALL_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, roundUp).toFixed(2))
 
-                    // koli total calculator
-                    this.SUM_CHARGEBLE_WEIGHT = this.SUM_CHARGEBLE_WEIGHT + ALL_CHARGEBLE_WEIGHT
-                    // this.SUM_ACTUAL_WEIGHT = this.SUM_ACTUAL_WEIGHT + koli_actual_weight
-                    this.SUM_VOLUME_WEIGHT = this.SUM_VOLUME_WEIGHT + Number(koli_volume_weight.toFixed(2))
+                    // // koli total calculator
+                    // this.SUM_CHARGEBLE_WEIGHT = this.SUM_CHARGEBLE_WEIGHT + ALL_CHARGEBLE_WEIGHT
+                    // // this.SUM_ACTUAL_WEIGHT = this.SUM_ACTUAL_WEIGHT + koli_actual_weight
+                    // this.SUM_VOLUME_WEIGHT = this.SUM_VOLUME_WEIGHT + Number(koli_volume_weight.toFixed(2))
                     
                     let tempbiaya = 0
                     let temp_handling_charge = 0
@@ -363,8 +373,19 @@ const TransactionMixin = {
                                             } else if(formula.toLowerCase() == 'koli_actual_weight') {
                                                 let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
                                                 koli_actual_weight = evalactual_weight
+                                                koli.actual_weight = koli_actual_weight
                                                 reCompare = true
                                                 // console.log('ACTUAL_WEIGHT', evalactual_weight)
+                                            } else if(formula.toLowerCase() == 'volume_weight') {
+                                                let koli_length = Number(koli.length)
+                                                let koli_width = Number(koli.width)
+                                                let koli_height = Number(koli.height)
+                                                // let oooppi = "(koli_length+5)"
+                                                let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
+                                                
+                                                koli_volume_weight = evalactual_weight
+                                                koli.volume_weight = koli_volume_weight.toFixed(2)
+                                                // console.log('VOLUME CHANGED to be', dataSurcharge['surcharge_formula'][formula].toLowerCase(), koli_length, koli_width, koli_height,evalactual_weight)
                                             }
                                         }
                                     })
@@ -374,6 +395,13 @@ const TransactionMixin = {
                         })
                         
                     }
+
+                    this.SUM_VOLUME_WEIGHT = this.SUM_VOLUME_WEIGHT + Number(koli_volume_weight.toFixed(2))
+                    let roundUp = Number(this.round03(koli_volume_weight))
+                    let ALL_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, roundUp).toFixed(2))
+
+                    // koli total calculator
+                    this.SUM_CHARGEBLE_WEIGHT = this.SUM_CHARGEBLE_WEIGHT + ALL_CHARGEBLE_WEIGHT
 
                     this.SUM_ACTUAL_WEIGHT = this.SUM_ACTUAL_WEIGHT + koli_actual_weight
                     SUM_BIAYA_LAIN = SUM_BIAYA_LAIN + tempbiaya

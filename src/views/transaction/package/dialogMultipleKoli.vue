@@ -301,6 +301,7 @@ export default {
             // this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.actual_weight)
             // this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.volume_weight)
             // this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.chargeable_weight)
+            this.$emit("prosesmultipleKoli", this.connote_koli_item)
             this.closeDialog()
         },
         openSurchargeDialog(index){
@@ -337,8 +338,8 @@ export default {
                         this.connote_koli_item[value].surcharge_id = value2
                     }
 
-                    if(this.connote_koli_item[value].hasOwnProperty('hasPackingKayu_id')) {
-                        this.connote_koli_item[value].hasPackingKayu_id = value3
+                    if(this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
+                        this.connote_koli_item[value].is_packing_kayu_id = value3
                     }
 
 
@@ -370,14 +371,24 @@ export default {
             this.$emit("prosesmultipleKoli", this.connote_koli_item)
 
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
-            this.calcMultipleKoli()
+            // this.calcMultipleKoli()
         },
         removeSurcharge(id, index, name) {
+            let service = this.listenPackageService.data || {}
             this.connote_koli_item[index].surcharge_id = this.connote_koli_item[index].surcharge_id.filter(item => item != id)
 
             if(name.toLowerCase().includes('packing kayu')) {
-                if(this.connote_koli_item[index].hasOwnProperty('hasPackingKayu_id')) {
-                    this.connote_koli_item[index].hasPackingKayu_id = ''
+                if(this.connote_koli_item[index].hasOwnProperty('is_packing_kayu_id')) {
+                    this.connote_koli_item[index].is_packing_kayu_id = ''
+                    this.connote_koli_item[index].is_packing_kayu = false
+                    let volume_weight = 0
+            
+                            if(Object.keys(service).length > 0) {
+                                let service_volume_divider = Number(service['service_volume_divider'])
+                                volume_weight = (this.connote_koli_item[index]['length'] * this.connote_koli_item[index]['width'] * this.connote_koli_item[index]['height']) / service_volume_divider 
+                            }
+                            
+                    this.connote_koli_item[index]['volume_weight'] = volume_weight.toFixed(2)
                 }
             }
 

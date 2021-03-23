@@ -220,7 +220,7 @@ export default {
 
     SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU({ commit, dispatch, state }, payload) {
         commit('SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU', payload)
-
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_refuse_wooden_package','value': payload})
         if(payload == true) {
             dispatch('SET_CONNOTE_DATA', {'key':'is_packing_kayu','value': false})
 
@@ -228,10 +228,10 @@ export default {
             // connote.map(item => {
             //     if(item.connote_koli_item){
             //         item.connote_koli_item.map(koli => {
-            //             let hasPackingKayu_id = koli.hasPackingKayu_id || ''
+            //             let is_packing_kayu_id = koli.is_packing_kayu_id || ''
             //             let surcharge_id = koli.surcharge_id
-            //             if(hasPackingKayu_id !== '') {
-            //                 surcharge_id = surcharge_id.filter(sur => sur !== hasPackingKayu_id)
+            //             if(is_packing_kayu_id !== '') {
+            //                 surcharge_id = surcharge_id.filter(sur => sur !== is_packing_kayu_id)
             //                 koli.surcharge_id = surcharge_id
             //             }
             //         })
