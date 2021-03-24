@@ -25,6 +25,7 @@ export default {
     mixins: [master],
     props: {
         query: String,
+        inboundId: Number,
     },
     components: {
         "table-master" : TableMaster
@@ -40,24 +41,25 @@ export default {
                 },
                 {
                     label: "Received",
-                    key: "inbound_total_weight",
+                    key: "total_received",
                     width: "xxs"
                 },
                 {
                   label: "Unreceived",
-                  key: "transaction_date",
+                  key: "total_unreceived",
                   width: "xxs"
                 },
 
                 {
                   label: "Status",
-                  key: "inbound_type_name",
+                  key: "status_received",
                   width: "xxs"
                 },
             ],
             loading: false,
             dataItem: {},
             tempSearch: "",
+            inbound_id:'',
             tempDate: [],
             startDate: "",
             endDate: "",
@@ -71,12 +73,22 @@ export default {
     },
     watch: {
         query: function(val, old) {
+          console.log('paramquery', val)
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
                     this.getTableData(this.pagination.limit, this.pagination.page, val)
                 }
             }
+        },
+        inboundId: function(val, old) {
+          console.log('param', val)
+          if(val !== undefined) {
+            this.inbound_id = val
+            if(this.inbound_id !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
+            }
+          }
         },
     },
     methods: {
@@ -90,27 +102,24 @@ export default {
             }
             await axios
                 .get(this.URL.inbound +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                `/${this.inboundId}/inbound-status?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
-                    this.dataTable = res.data.data
-                    this.dataTable.map(item=>{
-                      item['inbound_type_name'] = 'false'
+                    let data=[res.data.data]
+                    data.map(item=>{
+                      item['total_received'] = item.total_received.toString()
+                      item['total_unreceived'] = item.total_unreceived.toString()
                     })
-                  console.log(this.dataTable,'asdasdasds')
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
-                    if(res.data.data.length > 0) {
-                        
-                    } else {
-                        this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
-                    }
-                    
+                    this.dataTable = data
+
+                    this.pagination.page = res.data.meta ? res.data.meta.current_page : 1
+                    this.pagination.limit = res.data.meta ? parseInt(res.data.meta.per_page) : 20
+                    this.pagination.page_size = res.data.meta ? res.data.meta.last_page : 1
+
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', 'Failed to populate Inbound list', err)
                 })
         },
 

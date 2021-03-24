@@ -502,7 +502,7 @@ const routes = [
         }
       },
       {
-        path: "/inbound/prealert/scan/:inbound_number?",
+        path: "/inbound/prealert/scan/:inbound_id?",
         name: "InboundIncomingScan",
         component: InboundIncomingScan,
         meta: {

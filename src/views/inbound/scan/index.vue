@@ -47,8 +47,8 @@
                 <div class="nav-box">
                   <template>
                     <transition name="slide-fade">
-                      <template v-if="this.inbound_number">
-                          <InboundInformation :ref="'inboundInformation'"   :query="tempSearch"/>
+                      <template v-if="this.inbound_id">
+                          <InboundInformation :ref="'inboundInformation'"   :query="tempSearch" :inboundId="inbound_id"/>
                       </template>
                     </transition>
                   </template>
@@ -96,7 +96,7 @@ export default {
             dialogPickupRequest:false,
             item_no:'',
             form:{},
-            inbound_number:''
+            inbound_id:''
         }
     },
     methods: {
@@ -123,9 +123,10 @@ export default {
           this.processInbond();
         },
         getParamRoute(){
-          if(this.$route.params.inbound_number){
-            this.inbound_number = this.$route.params.inbound_number
-            this.tempSearch = this.$route.params.inbound_number
+          if(this.$route.params.inbound_id){
+            this.inbound_id = parseInt(this.$route.params.inbound_id)
+            this.tempSearch = this.inbound_id.toString()
+            console.log(this.inbound_id,'asd')
           }
         },
         async processInbond() {
@@ -135,18 +136,23 @@ export default {
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
-                console.log(res,'res receiving');
+                this.inbound_id = res.data.data.inbound_id
                 this.refresh()
+                this.handlerClearForm()
                 this.openNotification(null, 'Success', 'Receiving is success')
               }).catch(err => {
                 console.log(err,'err receiving');
                 this.loading = false
                 this.refresh()
+                this.handlerClearForm()
                 this.openNotification('danger', 'Receiving is failed', err)
               })
         },
         back(){
           this.$router.push('/inbound/prealert')
+        },
+        handlerClearForm(){
+          this.item_no = ''
         }
 
     },

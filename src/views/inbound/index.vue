@@ -33,6 +33,7 @@
                           class="m-select"
                           filter
                           :multiple="false"
+                          autocomplete="off"
                           placeholder="All Nodes"
                           v-model="node_request"
                           :border="true"
@@ -52,20 +53,20 @@
 
                     </template>
                   </vs-col>
-                  <vs-col xs="2" sm="2" lg="2">
-                    <template v-if="DataNode.length > 0">
+                  <vs-col xs="3" sm="3" lg="3">
+                    <template v-if="nodeOrigin.length > 0">
                       <vs-select
                           class="m-select"
                           filter
                           :multiple="false"
                           placeholder="Origin"
                           v-model="node_origin"
-                          :border="true"
+                          :border="false"
                           @change="updateNode"
                       >
-                        <template v-if="DataNode.length > 0">
+                        <template v-if="nodeOrigin.length > 0">
                           <vs-option
-                              v-for="(item,key) in DataNode"
+                              v-for="(item,key) in nodeOrigin"
                               :key="key"
                               :label="item.label"
                               :value="item.value">
@@ -77,24 +78,22 @@
 
                     </template>
                   </vs-col>
-                  <vs-col xs="2" sm="2" lg="2">
-                    <template v-if="DataNode.length > 0">
+                  <vs-col xs="3" sm="3" lg="3">
+                    <template v-if="nodeDestination.length > 0">
                       <vs-select
                           class="m-select"
                           filter
-                          :multiple="false"
                           placeholder="Destination"
                           v-model="node_destination"
-                          :border="true"
-                          @change="updateNode"
+                          :border="false"
                       >
-                        <template v-if="DataNode.length > 0">
+                        <template v-if="nodeDestination.length > 0">
                           <vs-option
-                              v-for="(item,key) in DataNode"
-                              :key="key"
-                              :label="item.label"
-                              :value="item.value">
-                            {{item.label}}
+                              v-for="(items,keydes) in nodeDestination"
+                              :key="keydes"
+                              :label="items.label"
+                              :value="items.value">
+                            {{items.label}}
                           </vs-option>
                         </template>
 
@@ -102,14 +101,14 @@
 
                     </template>
                   </vs-col>
-                  <vs-col xs="6" sm="3" lg="3" offset="3"  class="mb-15">
+                  <vs-col xs="6" sm="3" lg="3" offset="1"  class="mb-15">
                     <search-input ref="searchInput" @searchValue="searchValue"/>
                   </vs-col>
                 </vs-row>
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <InboundIncoming :ref="'inboundIncoming'"   :node="node_request" :dateFilter="tempDate" :query="tempSearch"/>
+                        <InboundIncoming :ref="'inboundIncoming'"   :nodeType="node_request" :origin="node_origin" :destination="node_destination" :query="tempSearch"/>
                     </transition>
                 </template>
 
@@ -147,6 +146,8 @@ export default {
             tempSearch: "",
             tempDate: [],
             DataNode:[],
+            nodeOrigin:[],
+            nodeDestination:[],
             node_request:'',
             node_origin:'',
             node_destination:''
@@ -194,6 +195,54 @@ export default {
                 this.openNotification('danger', 'Failed to populate node list', err)
               })
         },
+        async getDataOrigin() {
+          this.loading = true
+          await axios
+              .get(this.URL.node +
+                  `/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+                  this.Helper.header())
+              .then(res => {
+                console.log('link', res)
+                if(res.data.data.length > 0) {
+                  res.data.data.map(item => {
+                    let obj = {}
+                    obj["label"] = item.node_name
+                    obj["value"] = item.node_id
+
+                    this.nodeOrigin.push(obj)
+                  })
+                }
+
+                this.loading = false
+              }).catch(err => {
+                this.loading = false
+                this.openNotification('danger', 'Failed to populate node list', err)
+              })
+        },
+        async getDataDestination() {
+          this.loading = true
+          await axios
+              .get(this.URL.node +
+                  `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+                  this.Helper.header())
+              .then(res => {
+                console.log('link', res)
+                if(res.data.data.length > 0) {
+                  res.data.data.map(item => {
+                    let obj = {}
+                    obj["label"] = item.node_name
+                    obj["value"] = item.node_id
+
+                    this.nodeDestination.push(obj)
+                  })
+                }
+
+                this.loading = false
+              }).catch(err => {
+                this.loading = false
+                this.openNotification('danger', 'Failed to populate node list', err)
+              })
+        },
         updateNode(val){
 
         },
@@ -201,6 +250,8 @@ export default {
     },
     mounted() {
         this.getDataNodeType()
+        this.getDataOrigin()
+        this.getDataDestination()
     }
 }
 </script>
