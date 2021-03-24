@@ -27,7 +27,9 @@ export default {
     props: {
         query: String,
         dateFilter: Array,
-        node:String
+        nodeType:String,
+        origin:String,
+        destination:String
     },
     components: {
         "table-master" : TableMaster
@@ -37,19 +39,24 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
+                  label: "Inbound Number",
+                  key: "inbound_number",
+                  width: "xs"
+                },
+                {
                     label: "Vehicle Type",
                     key: "transaction_id",
                     width: "xs"
                 },
                 {
                     label: "From",
-                    key: "tariff_origin",
-                    width: "auto"
+                    key: "ibound_node_name_origin",
+                    width: "xs"
                 },
                 {
                     label: "#SM /SJ /PICKUP",
-                    key: "inbound_number",
-                    width: "auto"
+                    key: "inbound_type",
+                    width: "xs"
                 },
                 {
                     label: "Bag",
@@ -59,48 +66,49 @@ export default {
                 {
                     label: "Weight (Kg)",
                     key: "inbound_total_weight",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                   label: "Unreceive",
                   key: "transaction_date",
-                  width: "sm"
+                  width: "auto"
                 },
                 {
                   label: "Vehicle No",
-                  key: "payment_type_name",
-                  width: "auto"
+                  key: "vehicle_type_name",
+                  width: "xs"
                 },
                 {
                   label: "PIC",
-                  key: "payment_type_name",
-                  width: "auto"
+                  key: "carrier_employee_name",
+                  width: "xs"
                 },
                 {
                   label: "ETA",
                   key: "inbound_eta",
-                  width: "auto"
+                  width: "xs"
                 },
                 {
                   label: "ETD",
                   key: "inbound_etd",
-                  width: "auto"
+                  width: "xs"
                 },
                 {
                   label: "Departed",
                   key: "departed_at",
-                  width: "auto"
+                  width: "xs"
                 },
             ],
             loading: false,
             dataItem: {},
             tempSearch: "",
             tempDate: [],
-            startDate: "",
-            endDate: "",
+            nodeOrigin: "",
+            nodeDestination: "",
+            node_type:'',
             dialogTariff: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -111,31 +119,37 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type)
                 }
             }
         },
-        dateFilter: function(val, old) {
+        nodeType: function(val, old) {
           if(val !== undefined) {
-            this.tempDate = val
-            if(this.tempDate !== old ) {
-              this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
-              this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
+            this.node_type = val
+            if(this.node_type !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val)
             }
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
           }
         },
-        node: function(val, old) {
+        origin: function(val, old) {
           if(val !== undefined) {
-            this.node_filter = val
-            if(this.node_filter !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val)
+            this.nodeOrigin = val
+            if(this.nodeOrigin !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type)
+            }
+          }
+        },
+        destination: function(val, old) {
+          if(val !== undefined) {
+            this.nodeDestination = val
+            if(this.nodeDestination !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type)
             }
           }
         },
     },
     methods: {
-        async getTableData(limit,page,q, from, to) {
+        async getTableData(limit,page,q, origin, destination,node_type) {
             this.loading = true
             let query = "";
             let startDate = "";
@@ -143,18 +157,20 @@ export default {
             if(q !== undefined) {
                 query = q
             }
-            if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
-            }
+
+
             await axios
                 .get(this.URL.inbound_incoming +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                `?n=${this.listenNodeId}&type=${node_type}&origin=${origin}&destination=${destination}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
                 this.Helper.header())
                 .then(res => {
+
                     let total = 0
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
+                      item['inbound_eta'] = this.dateConvert(item['inbound_eta'])
+                      item['inbound_etd'] = this.dateConvert(item['inbound_etd'])
+                      item['departed_at'] = this.dateConvert(item['departed_at'])
                       total = Number(total) + Number(item.transaction_amount);
                     })
                     this.pagination.page = res.data.meta.current_page
@@ -194,7 +210,7 @@ export default {
         },
 
         actionDetail(row){
-          this.$router.push({ name: 'InboundIncomingScan', params: { inbound_number: row.inbound_number } });
+          this.$router.push({ name: 'InboundIncomingScan', params: { inbound_id: row.inbound_id } });
         }
 
     },

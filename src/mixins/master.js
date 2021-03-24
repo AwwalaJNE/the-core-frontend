@@ -8,6 +8,7 @@
 
 import URL from "@/config.js";
 import helper from "@/helper.js";
+import moment from "moment"
 // import { parse } from "vue-currency-input";
 const Master = {
     data() {
@@ -135,10 +136,15 @@ const Master = {
                     this.day = 'Senin'
                     break;
                 default:
-                    console.log('meong')
                 // code block
             }
             return this.day
+        },
+
+        dateConvert(val){
+            if(val != null){
+                return moment(val).format('DD-MMM-YYYY kk:mm');
+            }
         }
     },
     created() {
