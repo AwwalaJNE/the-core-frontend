@@ -369,6 +369,33 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
+        
+        async getDestinationFromOriginChanges(nodeChange){
+            await axios
+                .get(this.URL.node +
+                `/${nodeChange}/destination-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.node_name
+                            obj["value"] = item.node_id
+
+                            arr.push(obj)
+                        })
+                        // this.dataNodeType = arr
+                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", [])
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
 
         async updateData(){
             await axios
@@ -450,6 +477,9 @@ export default {
           }else if (type == 'manifest_method_id' && val != 1){
             this.jenisKiriman(false);
             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true)
+          }
+          if (type == 'node_id_origin') {
+            this.getDestinationFromOriginChanges(val)
           }
         },
         jenisKiriman(type){

@@ -237,7 +237,7 @@ export default {
                     obj['max_weight'] = val.max_weight
                     obj['etd'] = val.etd
                     obj['eta'] = val.eta
-                    obj['status'] = "DEPART"
+                    obj['status'] = "DEPARTED"
 
                     this.form = obj
                     this.depart()
