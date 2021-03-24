@@ -237,7 +237,7 @@ export default {
                     obj['max_weight'] = val.max_weight
                     obj['etd'] = val.etd
                     obj['eta'] = val.eta
-                    obj['status'] = "DEPART"
+                    obj['status'] = "DEPARTED"
 
                     this.form = obj
                     this.depart()
@@ -288,10 +288,12 @@ export default {
                     this.Helper.header())
                 .then(res => {
                     this.loading = false
+                    this.refresh()
                     this.$emit("refresh")
                     this.openNotification(null, 'Success', 'Update surat jalan success')
                 }).catch(err => {
                     this.loading = false
+                    this.refresh()
                     this.$emit("refresh")
                     this.openNotification('danger', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
                 })
