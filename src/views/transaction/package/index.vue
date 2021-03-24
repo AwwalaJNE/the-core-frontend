@@ -271,6 +271,7 @@
         <dialog-surcharge
             :active="surchargeSelector" 
             :closeDialog="closeDialogSurcharge"
+            :koliObj="koliObj"
             :index="0"
             @updateValue="updateValue"
             />
@@ -330,6 +331,7 @@ export default {
             surchargeshow: {},
             template_koli: this.$store.getters['getTransaction']['template_koli'],
             connote_koli_item: [],
+            koliObj: {},
             koliinput: 'text',
             disableBtnMultipleKoli: true,
             jumlahKoli: 1,
@@ -341,7 +343,8 @@ export default {
             connote_number_dialog: false,
 
             btnPrintASRdanSJ: false,
-            tempKoliSurchargePackingKayu: {},
+            connote_koli_item_sebelum_surcharge_menyerang: [],
+            koli_b4_surcharge:{},
             tempActualWeightPackingKayu: null,
             tempvolumeWeightPackingKayu: null,
         }
@@ -411,8 +414,12 @@ export default {
             // this.connote_koli_item = this.listenConnoteKoliItem
 
             // new code
-            this.connote_koli_item = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
+            this.connote_koli_item = this.test(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item)
             this.wrapingSurcharge()
+        },
+        test(json) {
+            // untuk mutus hubungan sama store
+            return JSON.parse(JSON.stringify(json))
         },
         connoteNumberDialog(type) {
             this.connote_number_type = type || 'pra'
@@ -619,14 +626,13 @@ export default {
                     this.connote_koli_item[value].surcharge_id = value2
                     
                     if(this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
-                        this.connote_koli_item[value].is_packing_kayu_id = value3
                         if(value3 !== null) {
                             this.connote_koli_item[value].is_packing_kayu = true
+                            this.connote_koli_item[value].is_packing_kayu_id = value3
                         } else {
                             this.connote_koli_item[value].is_packing_kayu = false
                         }
                     }
-
                     this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
                     let node_code = this.listenNodeCode
                     let self = this
@@ -661,7 +667,7 @@ export default {
             }
             
             this.connote_koli_item[0]['volume_weight'] = volume_weight.toFixed(2)
-            
+            this.connote_koli_item_sebelum_surcharge_menyerang = this.connote_koli_item
             // new code
             this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
             // this.calcDataKoli()
@@ -674,7 +680,7 @@ export default {
             
         },
         tidakPackingKayuToggle(){
-            let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
+            let listKoli = this.connote_koli_item//this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
             let tempKoliSurchargePackingKayu = {}
             let service = this.listenPackageService.data || {}
 
@@ -785,7 +791,7 @@ export default {
         },
         prosesmultipleKoli(val) {
             this.connote_koli_item = val
-            console.log('UPDATE KOLI', this.connote_koli_item)
+            this.connote_koli_item_sebelum_surcharge_menyerang = val
 
             this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
             // this.calcDataKoli()
@@ -809,9 +815,11 @@ export default {
         },
         openSurchargeDialog(){
             this.current_index_koli = 0
+            this.koliObj = this.connote_koli_item[0]
             this.surchargeSelector = true
         },
         closeDialogSurcharge() {
+            this.koliObj = {}
             this.surchargeSelector = false
         },
         openSettingMultipleKoli(){

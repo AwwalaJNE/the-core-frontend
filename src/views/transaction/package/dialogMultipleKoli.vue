@@ -128,6 +128,7 @@
                 :active="surchargeSelector" 
                 :closeDialog="closeDialogSurcharge"
                 :index="indexSurcharge"
+                :koliObj="koliObj"
                 @updateValue="updateValue"
                 />
     </div>
@@ -221,12 +222,13 @@ export default {
                     width: "md"
                 },
             ],
-            connote_koli_item:{},
+            connote_koli_item:[],
             surchargeshow: {},
             viewKoli: {},
             chargeable_weight: 0,
             actual_weight: 0,
             volume_weight: 0,
+            koliObj: {}
         }
     },
     watch: {
@@ -306,9 +308,12 @@ export default {
         },
         openSurchargeDialog(index){
             this.indexSurcharge = index
+            this.koliObj = this.connote_koli_item[index]
             this.surchargeSelector = true
         },
         closeDialogSurcharge() {
+            this.indexSurcharge = 0
+            this.koliObj = {}
             this.surchargeSelector = false
         },
         updateValue(key, value, value2 = null, value3 = null) {
@@ -343,7 +348,7 @@ export default {
                     }
 
 
-                    this.$emit("prosesmultipleKoli", this.connote_koli_item)
+                    // this.$emit("prosesmultipleKoli", this.connote_koli_item)
                     // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
                     // this.surchargeView()
                     // this.calculation()
@@ -368,7 +373,7 @@ export default {
             }
             this.connote_koli_item[index]['volume_weight'] = volume_weight.toFixed(2)
             
-            this.$emit("prosesmultipleKoli", this.connote_koli_item)
+            // this.$emit("prosesmultipleKoli", this.connote_koli_item)
 
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
             // this.calcMultipleKoli()
@@ -392,7 +397,7 @@ export default {
                 }
             }
 
-            this.$emit("prosesmultipleKoli", this.connote_koli_item)
+            // this.$emit("prosesmultipleKoli", this.connote_koli_item)
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
             // this.surchargeView()
             // this.calculation()

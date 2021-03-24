@@ -111,6 +111,7 @@ export default {
         closeDialog: Function,
         active: Boolean,
         index: Number,
+        koliObj: Object
     },
     data() {
         return {
@@ -153,6 +154,9 @@ export default {
         },
         listenOptions() {
             return this.options
+        },
+        listenkoliObj() {
+            return this.koliObj
         }
     },
     watch: {
@@ -194,7 +198,7 @@ export default {
         initialize() {
             // this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE`, [])
             let surcharge = this.listenSurchargeList
-            this.koli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item[this.listenCurrentIndexKoli] || {}
+            this.koli = this.listenkoliObj //this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item[this.listenCurrentIndexKoli] || {}
             this.selectedRadio = {}
             this.options = []
             let selectedR = {}
@@ -347,6 +351,7 @@ export default {
                 if(arr.length > 0) {
                     this.$emit("updateValue", "handle_surcharge",this.index, arr, this.selectedPackingKayu_id)
                     this.selectedRadio = {}
+                    this.selectedPackingKayu_id = ""
                 }
             }
             console.log('this.selectedRadio', this.selectedRadio, key)
