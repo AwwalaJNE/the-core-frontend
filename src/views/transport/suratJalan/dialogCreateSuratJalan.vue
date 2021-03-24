@@ -209,11 +209,15 @@ export default {
                 obj['manifest_do_item'] = this.dataTable
 
                 this.form = obj
-                console.log('samaa form', this.form)
-                if(this.manifest_delivery_id !== undefined && this.manifest_delivery_id !== '') {
-                    this.updateData()
+                
+                if (this.form.eta > this.form.etd) {
+                    if(this.manifest_delivery_id !== undefined && this.manifest_delivery_id !== '') {
+                        this.updateData()
+                    } else {
+                        this.addData()
+                    }
                 } else {
-                    this.addData()
+                    this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')
                 }
             } else {
                 this.openNotification('warn', 'Melebihi berat', 'Berat muatan melebihi batas berat kendaraan')
@@ -337,6 +341,7 @@ export default {
 
                         this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
+                        this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID_ArrData", null)
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
