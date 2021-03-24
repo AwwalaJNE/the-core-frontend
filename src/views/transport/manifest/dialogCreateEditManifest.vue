@@ -177,18 +177,18 @@ export default {
         formData(form){
           this.form = form
 
-          if(this.manifest_number !== undefined && this.manifest_number !== '') {
-            this.form.manifest_number = this.manifest_number
-            console.log(this.form,'alah')
-            this.updateData()
+          if (this.form.eta > this.form.etd) {
+            if(this.manifest_number !== undefined && this.manifest_number !== '') {
+              this.form.manifest_number = this.manifest_number
+              this.updateData()
+            } else {
+              this.node_id = this.listenNodeId
+              this.form.pickup_node_id_requestor = this.node_id
+              this.addData()
+            }
           } else {
-            this.node_id = this.listenNodeId
-            this.form.pickup_node_id_requestor = this.node_id
-            this.addData()
+            this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')
           }
-
-          
-
         },
         handleSubmit(){
             this.$refs.formSuratMuatanController.handleSubmit() // trigger function submit form dari luar component formInputController
@@ -361,6 +361,7 @@ export default {
                         // this.dataNodeType = arr
                         this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
                     } else {
+                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", null)
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
 
