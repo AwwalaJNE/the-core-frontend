@@ -65,7 +65,7 @@ export default {
             tempSearch: this.query ? this.query : "",
             dialogSurcharge: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -93,7 +93,6 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
                     this.dataTable = res.data.data
 
                     this.dataTable.length > 0 && this.dataTable.map((item,i) => {
@@ -106,7 +105,6 @@ export default {
                         item['children'] = obj
                     })
 
-                    console.log('this.dataTable',this.dataTable)
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -131,7 +129,6 @@ export default {
                 this.dataItem = obj[0]
                 this.dataItem.hasOwnProperty('surcharge_condition') ? this.dataItem['surcharge_condition'] = JSON.stringify(this.dataItem['surcharge_condition']) : ''
                 this.dataItem.hasOwnProperty('surcharge_formula') ? this.dataItem['surcharge_formula'] = JSON.stringify(this.dataItem['surcharge_formula']) : ''
-                console.log(this.dataItem, 'nihh val', val)
                 this.$nextTick(() => {
                     this.dialogSurcharge = true
                 });
@@ -152,7 +149,6 @@ export default {
                     this.URL.geolocation_city + `/${val.surcharge_id}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.refresh()
                     this.openNotification(null, 'Delete success', 'Delete city is success')
                 }).catch(err => {
@@ -170,7 +166,6 @@ export default {
             this.refresh()
         },
         refresh(){
-            console.log("refresh")
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogSurcharge() {

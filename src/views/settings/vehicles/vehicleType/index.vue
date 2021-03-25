@@ -59,7 +59,7 @@ export default {
             tempSearch: "",
             dialogVehicleType: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
