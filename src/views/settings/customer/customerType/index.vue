@@ -87,7 +87,7 @@ export default {
             tempSearch: this.query ? this.query : "",
             customer_type_id: '',
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }

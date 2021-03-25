@@ -61,7 +61,7 @@ export default {
             tempSearch: this.query ? this.query : "",
             dialogSurchargeType: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -89,7 +89,6 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
                     this.dataTable = res.data.data
                     this.dataTable.map(item => {
                         item["selected"] = item.is_active
@@ -116,7 +115,6 @@ export default {
                     return item.surcharge_type_id === val.surcharge_type_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
                 this.$nextTick(() => {
                     this.dialogSurchargeType = true
                 });
@@ -137,7 +135,6 @@ export default {
                     this.URL.surcharge_type + `/${val.surcharge_type_id}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.refresh()
                     this.openNotification(null, 'Delete success', 'Delete surcharge type is success')
                 }).catch(err => {
@@ -155,7 +152,6 @@ export default {
             this.refresh()
         },
         refresh(){
-            console.log("refresh")
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogSurchargeType() {
