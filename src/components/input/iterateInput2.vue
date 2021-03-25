@@ -53,6 +53,7 @@
             shadow
             :active="false"
             @click="Add"
+            :disabled="addDisabled"
         >
             <i class='bx bx-plus' style="margin-right:5px"></i> {{ addBtn || 'Add' }}
         </vs-button>
@@ -83,7 +84,9 @@ export default {
             template: {},
             keys: [],
             index: 0,
-            tempform: []
+            tempform: [],
+            Max: null,
+            addDisabled: false
         }
     },
     computed: {
@@ -108,12 +111,13 @@ export default {
             let obj = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm] || {}
             // this.keys = obj['dynamicinputcomponent']['arrData'] || []
             this.InputObject = obj
-
-            let inputs = obj[this.listenFromKey]['arrData'] || []
+            this.Max = obj[this.listenFromKey].hasOwnProperty('max') ? obj[this.listenFromKey]['max'] : null
             
+            let inputs = obj[this.listenFromKey]['inputs'] || null
+            console.log('inputs', inputs)
             let arr = []
             let tempObj = {}
-            inputs[0] && inputs[0]['inputs'] && inputs[0]['inputs'].map(item => {
+            inputs && inputs.map(item => {
                 item.value = ''
                 arr.push(item)
             })
@@ -126,9 +130,18 @@ export default {
             console.log('dynamicinputcomponent', obj, this.listInput, this.form)
         },
         Add() {
-            this.listInput.push(this.template)
-            this.tempform.push(this.template)
-            
+            if(this.Max == null) {
+                this.listInput.push(this.template)
+                this.tempform.push(this.template)
+            } else {
+                if(this.listInput.length <= this.Max) {
+                    this.addDisabled = false
+                    this.listInput.push(this.template)
+                    this.tempform.push(this.template)
+                } else {
+                    this.addDisabled = true // atau bisa pake watcher aja biar langsung
+                }
+            }
         },
         Remove(index) {
             this.listInput.splice(index,1)

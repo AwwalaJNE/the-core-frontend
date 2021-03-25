@@ -1747,19 +1747,28 @@ export default {
       rule:"",
       typeInput: "dynamicinputcomponent",
       typeData: "Array",
-      arrData: [
+      max: 3,
+      inputs: [
         {
           key: "node_id_transit_1",
           typeInput: "select",
+          value: 'meong1'
         },
-        {
-          key: "node_id_transit_2",
-          typeInput: "select",
-        },
-        {
-          key: "node_id_transit_3",
-          typeInput: "select",
-        }
+      ],
+      arrData: [
+        
+        // {
+        //   key: "node_id_transit_1",
+        //   typeInput: "select",
+        // },
+        // {
+        //   key: "node_id_transit_2",
+        //   typeInput: "select",
+        // },
+        // {
+        //   key: "node_id_transit_3",
+        //   typeInput: "select",
+        // }
       ],
       valueData: null,
       value: ''
@@ -1774,26 +1783,26 @@ export default {
       valueData: null,
       value: ''
     },
-    node_id_transit_2: {
-      label: "Transit",
-      key: "node_id_transit_2",
-      rule:"",
-      typeInput: "null",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    node_id_transit_3: {
-      label: "Transit",
-      key: "node_id_transit_3",
-      rule:"",
-      typeInput: "null",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
+    // node_id_transit_2: {
+    //   label: "Transit",
+    //   key: "node_id_transit_2",
+    //   rule:"",
+    //   typeInput: "null",
+    //   typeData: "String",
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
+    // node_id_transit_3: {
+    //   label: "Transit",
+    //   key: "node_id_transit_3",
+    //   rule:"",
+    //   typeInput: "null",
+    //   typeData: "String",
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
     node_id_destination: {
       label: "Destination",
       key: "node_id_destination",
@@ -2069,27 +2078,24 @@ export default {
       rule:"",
       typeInput: "dynamicinputcomponent",
       typeData: "Array",
-      arrData: [
+      inputs: [
         {
-          inputs: [
-            {
-              key: "rule_condition",
-              typeInput: "select",
-              value: 'meong1'
-            },
-            {
-              key: "condition",
-              typeInput: "select",
-              value: 'mimi1'
-            },
-            {
-              key: "rule_value",
-              typeInput: "text",
-              value: 'bbb'
-            }
-          ]
+          key: "rule_condition",
+          typeInput: "select",
+          value: 'meong1'
         },
+        {
+          key: "condition",
+          typeInput: "select",
+          value: 'mimi1'
+        },
+        {
+          key: "rule_value",
+          typeInput: "text",
+          value: 'bbb'
+        }
       ],
+      arrData: [],
       valueData: null,
       value: ''
     },
@@ -2157,27 +2163,24 @@ export default {
       rule:"",
       typeInput: "dynamicinputcomponent",
       typeData: "Array",
-      arrData: [
+      inputs: [
         {
-          inputs: [
-            {
-              key: "min_kg",
-              typeInput: "text",
-              value: ''
-            },
-            {
-              key: "max_kg",
-              typeInput: "text",
-              value: ''
-            },
-            {
-              key: "cost_value",
-              typeInput: "text",
-              value: ''
-            }
-          ]
+          key: "min_kg",
+          typeInput: "text",
+          value: ''
+        },
+        {
+          key: "max_kg",
+          typeInput: "text",
+          value: ''
+        },
+        {
+          key: "cost_value",
+          typeInput: "text",
+          value: ''
         }
       ],
+      arrData: [],
       valueData: null,
       value: ''
     },
