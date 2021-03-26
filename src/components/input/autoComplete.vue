@@ -12,12 +12,12 @@
 </template>
 <script>
 
-// import axios from "axios";
-// import master from "@/mixins/master"
+import axios from "axios";
+import master from "@/mixins/master"
 import Inputan from "@/components/input/inputan"
 export default {
     name:"auto-complete",
-    // mixins: [master],
+    mixins: [master],
     props: {
         name: String,
         rules: String,
@@ -28,7 +28,8 @@ export default {
         focusToInput: Boolean,
         getters: String,
         typeForm: String,
-        querySearch: Function
+        url: String,
+        flag: [String, Number]
     },
     components: {
         "inputan": Inputan
@@ -41,7 +42,7 @@ export default {
     watch: {
         value: function(val){
             if(val.length > 2) {
-                this.resolveQuery()
+                // this.resolveQuery()
             }
         }
     },
@@ -58,33 +59,44 @@ export default {
         listenTypeForm() {
             return this.typeForm
         },
+        listenUrl() {
+            return this.url || ''
+        },
+        listenFlag() {
+            return this.flag || ''
+        },
         isDisabled() {
             return this.typeInput.includes('disabled')
         }
     },
     methods:{
-        // querySearch(queryString, cb){
-        //     axios.get()
-        //     .then(res => {
-        //         let result = res.data
-        //         console.log('result',result)
-        //         let suggestions = [];
+        querySearch(queryString, cb){
+            
+            let flag = this.listenFlag
+            console.log('autocomplete url', flag)
+            console.log('meanwhile from prop was', this.listenUrl)
+            axios.get(this.listenUrl +`&s=${queryString}`, this.Helper.header())
+            .then(res => {
+                let result = res.data.data
+                console.log('result',result)
+                let suggestions = [];
 
-        //         if (result["items"] != undefined && result["items"].length > 0) {
-        //             result["items"].forEach(item => {
-        //             suggestions.push({
-        //                 value: item.address.label,
-        //                 data: item
-        //             });
-        //             });
-        //         }
+                result.length > 0 && result.map(item => {
+                    if(item.hasOwnProperty(flag)) {
+                        suggestions.push({
+                                value: item[flag],
+                                data: item
+                        });
+                    }
+                })
+                
 
-        //         console.log('suggestions', suggestions)
+                console.log('suggestions', suggestions)
 
-        //         cb(suggestions);
-        //         })
-        //     .catch(error => console.log("error", error));
-        // },
+                cb(suggestions);
+                })
+            .catch(error => console.log("error", error));
+        },
         resolveQuery(){
             let action = this.listenFormKey.toUpperCase() + '_Query'
             let prefix = this.listenTypeForm.toUpperCase()

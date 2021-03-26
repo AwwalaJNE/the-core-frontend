@@ -1357,6 +1357,12 @@ export default {
   SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData(state, payload) {
     state.surat_muatan.node_id_origin.valueData = payload
   },
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN_URL(state, payload) {
+    state.surat_muatan.node_id_origin.url = payload
+  },
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN_FLAG(state, payload) {
+    state.surat_muatan.node_id_origin.flag = payload
+  },
   SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData(state, payload) {
     state.surat_muatan.node_id_origin.hasOwnProperty('arrData') ?
         state.surat_muatan.node_id_origin.arrData = payload :
@@ -1677,13 +1683,14 @@ export default {
   },
 
   SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_COST_TO_COST_RULE(state, payload) {
-    let arr = state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.arrData
-    console.log('ARR', arr)
+    let arr = state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.inputs
+    console.log('ARR', arr, payload)
+    let final = []
     if(payload && payload.length > 0) {
       let obj = {}
-      let template = arr[0]['inputs']
+      let template = arr
 
-      let final = []
+      
       payload.map(item => {
         let newArr = []
         template.map(tmpl => {
@@ -1702,21 +1709,21 @@ export default {
         newData['inputs'] = newArr
         final.push(newData)
       })
-      console.log('final', final)
+    }
+    console.log('final', final)
       state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.hasOwnProperty('arrData') ?
       state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.arrData = final :
       state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.arrData = []
-      
-    }
   },
   SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_COST_TO_COST_DETAIL_VALUE(state, payload) {
-    let arr = state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.arrData
-    console.log('ARR', arr)
+    let arr = state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_detail_value.inputs
+    console.log('ARR', arr, payload)
+    let final = []
     if(payload && payload.length > 0) {
       let obj = {}
-      let template = arr[0]['inputs']
+      let template = arr
 
-      let final = []
+      
       payload.map(item => {
         let newArr = []
         template.map(tmpl => {
@@ -1735,12 +1742,12 @@ export default {
         newData['inputs'] = newArr
         final.push(newData)
       })
-      console.log('final', final)
+    }
+
+    console.log('final', final)
       state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_detail_value.hasOwnProperty('arrData') ?
       state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_detail_value.arrData = final :
       state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_detail_value.arrData = []
-      
-    }
     
   },
 

@@ -1735,7 +1735,9 @@ export default {
       label: "Origin",
       key: "node_id_origin",
       rule: "required",
-      typeInput: "select",
+      typeInput: "autocomplete",
+      url: "",
+      flag: "node_name", // flag untuk acuan saat wrapping data hasil async
       typeData: "String",
       arrData: [],
       valueData: null,
@@ -1755,21 +1757,7 @@ export default {
           value: 'meong1'
         },
       ],
-      arrData: [
-        
-        // {
-        //   key: "node_id_transit_1",
-        //   typeInput: "select",
-        // },
-        // {
-        //   key: "node_id_transit_2",
-        //   typeInput: "select",
-        // },
-        // {
-        //   key: "node_id_transit_3",
-        //   typeInput: "select",
-        // }
-      ],
+      arrData: [],
       valueData: null,
       value: ''
     },
@@ -2095,7 +2083,9 @@ export default {
           value: 'bbb'
         }
       ],
-      arrData: [],
+      arrData: [
+        
+      ],
       valueData: null,
       value: ''
     },
@@ -2123,11 +2113,11 @@ export default {
       arrData: [
         {
           label: 'IS',
-          value: 'is'
+          value: 'IS'
         },
         {
           label: 'NOT',
-          value: 'not'
+          value: 'NOT'
         }
       ],
       valueData: null,

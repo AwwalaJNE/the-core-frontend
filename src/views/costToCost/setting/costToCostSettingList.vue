@@ -158,6 +158,8 @@ export default {
 
         closeDialogConfirm(){
             this.confirmDialog = false
+            this.$store.dispatch("SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_COST_TO_COST_RULE", {})
+           this.$store.dispatch("SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_COST_TO_COST_DETAIL_VALUE", {})
         },
 
         actionLimit(val){

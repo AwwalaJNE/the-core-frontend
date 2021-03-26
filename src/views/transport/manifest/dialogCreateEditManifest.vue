@@ -174,21 +174,26 @@ export default {
 
     },
     methods: {
+        initialize(){
+            // siapin url untuk input autocomplete
+            let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_URL", url)
+        },
         formData(form){
           this.form = form
-
-          if (this.form.eta > this.form.etd) {
-            if(this.manifest_number !== undefined && this.manifest_number !== '') {
-              this.form.manifest_number = this.manifest_number
-              this.updateData()
-            } else {
-              this.node_id = this.listenNodeId
-              this.form.pickup_node_id_requestor = this.node_id
-              this.addData()
-            }
-          } else {
-            this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')
-          }
+          console.log('form',form)
+          // if (this.form.eta > this.form.etd) {
+          //   if(this.manifest_number !== undefined && this.manifest_number !== '') {
+          //     this.form.manifest_number = this.manifest_number
+          //     this.updateData()
+          //   } else {
+          //     this.node_id = this.listenNodeId
+          //     this.form.pickup_node_id_requestor = this.node_id
+          //     this.addData()
+          //   }
+          // } else {
+          //   this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')
+          // }
         },
         handleSubmit(){
             this.$refs.formSuratMuatanController.handleSubmit() // trigger function submit form dari luar component formInputController
@@ -294,31 +299,31 @@ export default {
               })
         },
 
-        async getDataNodeorigin(){
-            await axios
-                .get(this.URL.node + `/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.node_name
-                            obj["value"] = item.node_id
+        // async getDataNodeorigin(){
+        //     await axios
+        //         .get(this.URL.node + `/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+        //         this.Helper.header())
+        //         .then(res => {
+        //             if(res.data.data.length > 0) {
+        //                 let arr = []
+        //                 res.data.data.map(item => {
+        //                     let obj = {}
+        //                     obj["label"] = item.node_name
+        //                     obj["value"] = item.node_id
 
-                            arr.push(obj)
-                        })
-                        // this.dataNodeType = arr
-                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData", arr.length > 0 ? arr : null)
-                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ArrData", arr.length > 0 ? arr : null)
-                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ArrData", arr.length > 0 ? arr : null)
-                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ArrData", arr.length > 0 ? arr : null)
-                    }
+        //                     arr.push(obj)
+        //                 })
+        //                 // this.dataNodeType = arr
+        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData", arr.length > 0 ? arr : null)
+        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ArrData", arr.length > 0 ? arr : null)
+        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ArrData", arr.length > 0 ? arr : null)
+        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ArrData", arr.length > 0 ? arr : null)
+        //             }
                     
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
+        //         }).catch(err => {
+        //             // this.openNotification('danger', 'Failed to collect role list', err)
+        //         })
+        // },
 
         async getDataEmployee(){
             await axios
@@ -371,30 +376,30 @@ export default {
         },
         
         async getDestinationFromOriginChanges(nodeChange){
-            await axios
-                .get(this.URL.node +
-                `/${nodeChange}/destination-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.node_name
-                            obj["value"] = item.node_id
+            // await axios
+            //     .get(this.URL.node +
+            //     `/${nodeChange}/destination-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+            //     this.Helper.header())
+            //     .then(res => {
+            //         if(res.data.data.length > 0) {
+            //             let arr = []
+            //             res.data.data.map(item => {
+            //                 let obj = {}
+            //                 obj["label"] = item.node_name
+            //                 obj["value"] = item.node_id
 
-                            arr.push(obj)
-                        })
-                        // this.dataNodeType = arr
-                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", [])
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
+            //                 arr.push(obj)
+            //             })
+            //             // this.dataNodeType = arr
+            //             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
+            //         } else {
+            //             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", [])
+            //             // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+            //         }
 
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
+            //     }).catch(err => {
+            //         // this.openNotification('danger', 'Failed to collect role list', err)
+            //     })
         },
 
         async updateData(){
@@ -503,7 +508,8 @@ export default {
         }
     },
     mounted() {
-        this.getDataNodeorigin()
+        // this.getDataNodeorigin()
+        this.initialize()
         this.getDataNodeDestination()
         this.getDataVehicleType()
         this.getDataVehicle()

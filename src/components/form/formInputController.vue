@@ -117,7 +117,12 @@
                                 />
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('dynamicinputcomponent')">
-                                <iterate-selector ref="dynamicinputComponent" :addBtn="InputObject[item].label" :getters="listenGettersPrefix" :fromKey="InputObject[item].key" :typeForm="listenTypeForm" @updateValue="updateValue"/>
+                                <template v-if="iterateInputWait == false">
+                                    <iterate-selector ref="dynamicinputComponent" :addBtn="InputObject[item].label" :getters="listenGettersPrefix" :fromKey="InputObject[item].key" :typeForm="listenTypeForm" @updateValue="updateValue"/>
+                                </template>
+                                <template v-else>
+                                    loading...
+                                </template>
                             </template>
                             
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('boolean')">
@@ -148,6 +153,8 @@
                                 :rules="InputObject[item].rule"
                                 :formKey="InputObject[item].key"
                                 :valueData="InputObject[item].value"
+                                :url="InputObject[item].url"
+                                :flag="InputObject[item].flag"
                                 :querySearch="querySearch"
                                 :selectedValue="InputObject[item].query"
                                 :typeForm="listenTypeForm"
@@ -201,7 +208,9 @@ export default {
             latitude: 0,
             longitude: 0,
             hasMapPicker: false,
-            submit_Enter: this.submitByEnter || false
+            submit_Enter: this.submitByEnter || false,
+
+            iterateInputWait: null,
         }
     },
     computed: {
@@ -234,6 +243,7 @@ export default {
                 }
         },
         initializeDataItem() {
+            this.iterateInputWait = true
             let obj = this.listenDataItem
             let prefix = this.listenTypeForm.toUpperCase()
             console.log('obj', this.Keys, prefix,obj)
@@ -261,6 +271,9 @@ export default {
                     }
                 })
             }
+            this.iterateInputWait = false
+            // setTimeout(function(){ self.iterateInputWait = false }, 800);
+            
         },
         pickLocation(item){
             let prefix = this.listenTypeForm.toUpperCase()

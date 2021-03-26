@@ -113,11 +113,15 @@ export default {
             this.InputObject = obj
             this.Max = obj[this.listenFromKey].hasOwnProperty('max') ? obj[this.listenFromKey]['max'] : null
             
-            let inputs = obj[this.listenFromKey]['inputs'] || null
-            console.log('inputs', inputs)
+            let dataInputs = obj[this.listenFromKey]['arrData'] || []
+            this.listInput = [...dataInputs]
+            this.tempform = [...dataInputs]
+
+            let inputs_template = obj[this.listenFromKey]['inputs'] || []
+            console.log('inputs', inputs_template)
             let arr = []
             let tempObj = {}
-            inputs && inputs.map(item => {
+            inputs_template && inputs_template.map(item => {
                 item.value = ''
                 arr.push(item)
             })
@@ -125,8 +129,7 @@ export default {
             this.template = tempObj
 
             console.log('this.template', obj,this.template, arr)
-            this.listInput = [...inputs]
-            this.tempform = [...inputs]
+            
             console.log('dynamicinputcomponent', obj, this.listInput, this.form)
         },
         Add() {
