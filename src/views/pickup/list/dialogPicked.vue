@@ -116,12 +116,17 @@ export default {
   },
   methods: {
     handleSubmit(){
-        this.btnLoading = true
+        // this.btnLoading = true
         this.form = {
           'pickup_number':this.pickup_number,
-          'bag_number':this.bag_picked
+          'bag_number':this.bag_picked,
+          'pickup_status': 'PICKED'
         }
-        this.updateData() // trigger function submit form dari luar component formMaster
+        if (this.form['bag_number'].length > 0) {
+          this.updateData() // trigger function submit form dari luar component formMaster
+        } else {
+          this.openNotification(null, 'Choose Bag', 'List bag cannot empty')
+        }
     },
 
     async updateData(){
