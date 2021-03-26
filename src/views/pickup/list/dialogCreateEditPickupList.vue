@@ -165,6 +165,8 @@ export default {
                 } else {
                     form['pickup_status'] = 'ASSIGNED'
                 }
+            } else if (this.listenDataItem && this.listenDataItem.hasOwnProperty('pickup_courier_employee_id')) {
+                form['pickup_status'] = this.listenDataItem['pickup_status']
             }
           this.form = form
           let current = new Date();
@@ -306,6 +308,7 @@ export default {
                     this.$emit("refresh")
                     this.openNotification(null, 'Update success', 'Update pickup is success')
                 }).catch(err => {
+                    this.hasClicked = false;
                     let message = err.response.data ? err.response.data.message : 'Update Failed'
                     this.loading = false
                     this.closeDialog()
@@ -327,6 +330,7 @@ export default {
                     this.openNotification(null, 'Create Success', 'Create new Pickup is success')
                 }).catch(err => {
                     this.loading = false
+                    this.hasClicked = false;
                     this.closeDialog()
                     this.$emit("refresh")
                     this.openNotification('danger', 'Create failed', err)
