@@ -42,7 +42,7 @@
                 :label="name"
                 :label-placeholder="name"
                 v-model="value"
-                format="yyyy-mm-dd H:i"
+                format="yyyy-mm-dd HH:i"
                 :disabled="isDisabled"
                 :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
                 @input="updateValue"

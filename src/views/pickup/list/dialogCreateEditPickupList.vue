@@ -167,6 +167,8 @@ export default {
                 }
             } else if (this.listenDataItem && this.listenDataItem.hasOwnProperty('pickup_courier_employee_id')) {
                 form['pickup_status'] = this.listenDataItem['pickup_status']
+            } else if (!this.listenDataItem && form['pickup_courier_employee_id'] != null && form['pickup_courier_employee_id'] != '') {
+                form['pickup_status'] = 'ASSIGNED'
             }
           this.form = form
           let current = new Date();
