@@ -28,7 +28,7 @@ export default {
         query: String,
         dateFilter: Array,
         nodeType:String,
-        origin:String,
+        origin:String/Number,
         destination:String
     },
     components: {
