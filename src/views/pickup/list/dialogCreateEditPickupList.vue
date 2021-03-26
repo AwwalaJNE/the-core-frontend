@@ -76,6 +76,7 @@
                     block
                     flat
                     :active="true"
+                    :loading="hasClicked"
                     type="submit"
                     @click="handleSubmit"
                     >
@@ -123,6 +124,7 @@ export default {
             node_id: '',
             dialogGetCustomer:false,
             pickup_number:'',
+            hasClicked: false
         }
     },
     computed: {
@@ -153,6 +155,17 @@ export default {
     },
     methods: {
         formData(form){
+            if (this.listenDataItem && this.listenDataItem.hasOwnProperty('pickup_courier_employee_id') && this.listenDataItem['pickup_courier_employee_id'] != null && this.listenDataItem['pickup_courier_employee_id'] != "") {
+                if(this.pickup_number !== undefined && this.pickup_number !== '') {
+                    if (Number(this.listenDataItem['pickup_courier_employee_id']) === Number(form['pickup_courier_employee_id'])) {
+                        form['pickup_status'] = this.listenDataItem['pickup_status']
+                    } else {
+                        form['pickup_status'] = 'HANDOVER'
+                    }
+                } else {
+                    form['pickup_status'] = 'ASSIGNED'
+                }
+            }
           this.form = form
           let current = new Date();
           let minute = current.getMinutes()
@@ -163,6 +176,7 @@ export default {
           this.form.pickup_date = this.form.pickup_date + ' '+time
 
 
+            this.hasClicked = true;
           if(this.pickup_number !== undefined && this.pickup_number !== '') {
             this.form.pickup_number = this.pickup_number
             this.updateData()
@@ -179,6 +193,7 @@ export default {
             this.$refs.formUserNodeController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
+            this.hasClicked = false;
             this.$refs.formUserNodeController.handleClearForm()
             this.form = {}
             this.node_id = ""
@@ -294,6 +309,7 @@ export default {
                     let message = err.response.data ? err.response.data.message : 'Update Failed'
                     this.loading = false
                     this.closeDialog()
+                    this.handleClearForm()
                     this.$emit("refresh")
                     this.openNotification('danger', 'Update failed', message)
                 })
