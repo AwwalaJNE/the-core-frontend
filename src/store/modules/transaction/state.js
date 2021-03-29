@@ -533,6 +533,7 @@ export default {
     connote_refuse_wooden_package:false,
     is_packing_kayu: false,
     is_need_do_return: false,
+    connote_is_do_return: false,
     connote_koli_item: [
       {
         koli_id: '',
@@ -584,6 +585,7 @@ export default {
         connote_refuse_wooden_package:false,
         is_packing_kayu: false,
         is_need_do_return: false,
+        connote_is_do_return: false,
         connote_koli_item: [
           {
             koli_id: '',
@@ -640,6 +642,7 @@ export default {
         is_packing_kayu: false,
         connote_refuse_wooden_package:false,
         is_need_do_return: false,
+        connote_is_do_return: false,
         connote_koli_item: [
           {
             koli_id: '',

@@ -252,8 +252,9 @@ export default {
 
     SET_PACKAGE_PACKAGE_DO_RETURN({ commit, dispatch, state }, payload) {
         commit('SET_PACKAGE_PACKAGE_DO_RETURN', payload)
-
+        // gw juga ga faham kenapa req body dari backend dobel2 gini x_x
         dispatch('SET_CONNOTE_DATA', {'key':'is_need_do_return','value': payload})
+        dispatch('SET_CONNOTE_DATA', {'key':'connote_is_do_return','value': payload})
         
     },
     SET_PACKAGE_PACKAGE_DO_RETURN_ValueData({ commit }, payload) {
