@@ -231,7 +231,7 @@ export default {
                   res.data.data.map(item => {
                     let obj = {}
                     obj["label"] = item.node_name
-                    obj["value"] = item.node_id
+                    obj["value"] = Number(item.node_id)
 
                     this.nodeDestination.push(obj)
                   })
