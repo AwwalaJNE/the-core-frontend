@@ -292,7 +292,7 @@ export default {
             this.keysPermission = {}
             console.log('this.keysPermission meong', this.keysPermission)
             await axios
-                .get(this.URL.role + `/${val}/permission`, 
+                .get(this.URL.role + `/${val}/permission?n=${this.listenNodeId}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log('getRolePermission',res.data.data)
