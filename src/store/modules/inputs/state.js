@@ -1736,8 +1736,6 @@ export default {
       key: "node_id_origin",
       rule: "required",
       typeInput: "autocomplete",
-      url: "",
-      flag: "node_name", // flag untuk acuan saat wrapping data hasil async
       typeData: "String",
       arrData: [],
       valueData: null,
@@ -1750,11 +1748,13 @@ export default {
       typeInput: "dynamicinputcomponent",
       typeData: "Array",
       max: 3,
-      inputs: [
+      inputs: [ // template input yg di render tiap row
         {
           key: "node_id_transit_1",
-          typeInput: "select",
-          value: 'meong1'
+          typeInput: "autocomplete",
+          value: 'meong1',
+          query: "",
+          width: "12",
         },
       ],
       arrData: [],
@@ -2066,7 +2066,7 @@ export default {
       rule:"",
       typeInput: "dynamicinputcomponent",
       typeData: "Array",
-      inputs: [
+      inputs: [ // template input yg di render tiap row
         {
           key: "rule_condition",
           typeInput: "select",
@@ -2153,7 +2153,7 @@ export default {
       rule:"",
       typeInput: "dynamicinputcomponent",
       typeData: "Array",
-      inputs: [
+      inputs: [ // template input yg di render tiap row
         {
           key: "min_kg",
           typeInput: "text",

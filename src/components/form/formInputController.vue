@@ -118,7 +118,15 @@
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('dynamicinputcomponent')">
                                 <template v-if="iterateInputWait == false">
-                                    <iterate-selector ref="dynamicinputComponent" :addBtn="InputObject[item].label" :getters="listenGettersPrefix" :fromKey="InputObject[item].key" :typeForm="listenTypeForm" @updateValue="updateValue"/>
+                                    <iterate-selector 
+                                    ref="dynamicinputComponent" 
+                                    :addBtn="InputObject[item].label" 
+                                    :getters="listenGettersPrefix" 
+                                    :fromKey="InputObject[item].key" 
+                                    :typeForm="listenTypeForm"
+                                    :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
+                                    :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
+                                    @updateValue="updateValue"/>
                                 </template>
                                 <template v-else>
                                     loading...
@@ -148,18 +156,20 @@
                                 </template>
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete')">
-                                <auto-complete
-                                :name="InputObject[item].label"
-                                :rules="InputObject[item].rule"
-                                :formKey="InputObject[item].key"
-                                :valueData="InputObject[item].value"
-                                :url="InputObject[item].url"
-                                :flag="InputObject[item].flag"
-                                :querySearch="querySearch"
-                                :selectedValue="InputObject[item].query"
-                                :typeForm="listenTypeForm"
-                                :typeInput="InputObject[item].typeInput"
-                                @updateValue="updateValue" />
+                                <template v-if="querySearch !== undefined">
+                                    <auto-complete
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].value"
+                                    :url="InputObject[item].url"
+                                    :flag="InputObject[item].flag"
+                                    :querySearch="querySearch"
+                                    :selectedValue="InputObject[item].query"
+                                    :typeForm="listenTypeForm"
+                                    :typeInput="InputObject[item].typeInput"
+                                    @updateValue="updateValue" />
+                                </template>
                             </template>
                         </vs-col>
                     </template>
@@ -197,7 +207,9 @@ export default {
         dataItem: Object,
         getters: String,
         submitByEnter: Boolean,
-        querySearch: Function
+        querySearch: Function, // klo ada auto complete [required]
+        itterateUrlAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
+        itterateFlagAutoComplete: String // klo pke itterate component dan ada auto complete [required]
     },
     data() {
         return {
@@ -228,6 +240,12 @@ export default {
         },
         listenLongitude() {
             return this.longitude
+        },
+        listenItterateUrlAutoComplete() {
+            return this.itterateUrlAutoComplete
+        },
+        listenItterateFlagAutoComplete() {
+            return this.itterateFlagAutoComplete
         }
     },
     methods: {
@@ -295,10 +313,28 @@ export default {
             let action = type.toUpperCase()
             let prefix = this.listenTypeForm.toUpperCase()
 
-            let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
-            if(err == true) {
-                console.log(`error input controller dispatch SET_${prefix}_${action} | val ` + val)
+            try {
+                if(!type.toLowerCase().includes('dynamicinputcomponent')) {
+                    let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
+                    if(err == true) {
+                        console.log(`error input controller dispatch SET_${prefix}_${action} | val ` + val)
+                    }
+                }
+            } catch (error) {
+                
             }
+            
+
+            if(obj.hasOwnProperty('typeInput')) {
+                if(obj['typeInput'] == 'autocomplete') {
+                    try {
+                        this.$store.dispatch(`SET_${prefix}_${action + '_ValueData'}`, obj['data'] !== undefined ? obj['data'] : {})
+                    } catch (error) {
+                        
+                    }
+                }
+            }
+
             this.$emit("onChangeCustom", type, val, obj)
         },
         onfocuslah(info) {

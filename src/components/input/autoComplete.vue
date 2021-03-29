@@ -7,6 +7,7 @@
         :placeholder="`Cari ${name}`"
         :trigger-on-focus="false"
         @select="handleSelect"
+        @input="updateValue"
         ></el-autocomplete>
     </div>
 </template>
@@ -28,8 +29,10 @@ export default {
         focusToInput: Boolean,
         getters: String,
         typeForm: String,
-        url: String,
-        flag: [String, Number]
+        querySearch: Function,
+
+        // url: String,
+        // flag: [String, Number]
     },
     components: {
         "inputan": Inputan
@@ -39,13 +42,13 @@ export default {
             value: this.selectedValue,
         }
     },
-    watch: {
-        value: function(val){
-            if(val.length > 2) {
-                // this.resolveQuery()
-            }
-        }
-    },
+    // watch: {
+    //     value: function(val){
+    //         if(val.length > 2) {
+    //             // this.resolveQuery()
+    //         }
+    //     }
+    // },
     computed: {
         listenFormKey(){
             return this.formKey
@@ -59,52 +62,52 @@ export default {
         listenTypeForm() {
             return this.typeForm
         },
-        listenUrl() {
-            return this.url || ''
-        },
-        listenFlag() {
-            return this.flag || ''
-        },
+        // listenUrl() {
+        //     return this.url || ''
+        // },
+        // listenFlag() {
+        //     return this.flag || ''
+        // },
         isDisabled() {
             return this.typeInput.includes('disabled')
         }
     },
     methods:{
-        querySearch(queryString, cb){
+        // querySearch(queryString, cb){
             
-            let flag = this.listenFlag
-            console.log('autocomplete url', flag)
-            console.log('meanwhile from prop was', this.listenUrl)
-            axios.get(this.listenUrl +`&s=${queryString}`, this.Helper.header())
-            .then(res => {
-                let result = res.data.data
-                console.log('result',result)
-                let suggestions = [];
+        //     let flag = this.listenFlag
+        //     console.log('autocomplete url', flag)
+        //     console.log('meanwhile from prop was', this.listenUrl)
+        //     axios.get(this.listenUrl +`&s=${queryString}`, this.Helper.header())
+        //     .then(res => {
+        //         let result = res.data.data
+        //         console.log('result',result)
+        //         let suggestions = [];
 
-                result.length > 0 && result.map(item => {
-                    if(item.hasOwnProperty(flag)) {
-                        suggestions.push({
-                                value: item[flag],
-                                data: item
-                        });
-                    }
-                })
+        //         result.length > 0 && result.map(item => {
+        //             if(item.hasOwnProperty(flag)) {
+        //                 suggestions.push({
+        //                         value: item[flag],
+        //                         data: item
+        //                 });
+        //             }
+        //         })
                 
 
-                console.log('suggestions', suggestions)
+        //         console.log('suggestions', suggestions)
 
-                cb(suggestions);
-                })
-            .catch(error => console.log("error", error));
-        },
-        resolveQuery(){
-            let action = this.listenFormKey.toUpperCase() + '_Query'
-            let prefix = this.listenTypeForm.toUpperCase()
-            console.log('resolve query', this.value)
-            this.$store.dispatch(`SET_${prefix}_${action}`, this.value)
-        },
+        //         cb(suggestions);
+        //         })
+        //     .catch(error => console.log("error", error));
+        // },
+        // resolveQuery(){
+        //     let action = this.listenFormKey.toUpperCase() + '_Query'
+        //     let prefix = this.listenTypeForm.toUpperCase()
+        //     console.log('resolve query', this.value)
+        //     this.$store.dispatch(`SET_${prefix}_${action}`, this.value)
+        // },
         updateValue(){
-            
+            this.$emit("updateValue", this.listenFormKey, this.value, {})
         },
         handleSelect(item) {
 
@@ -114,11 +117,6 @@ export default {
             info['typeInput'] = this.listenTypeInput
             info['status'] = status
             info['data'] = item.data
-
-            let action = this.listenFormKey.toUpperCase() + '_ValueData'
-            let prefix = this.listenTypeForm.toUpperCase()
-            this.$store.dispatch(`SET_${prefix}_${action}`, item.data)
-            
 
             this.$emit("updateValue", this.listenFormKey, item.value, info)
         }

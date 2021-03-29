@@ -1375,6 +1375,12 @@ export default {
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ValueData(state, payload) {
     state.surat_muatan.node_id_transit_1.valueData = payload
   },
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_URL(state, payload) {
+    state.surat_muatan.node_id_transit_1.url = payload
+  },
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_FLAG(state, payload) {
+    state.surat_muatan.node_id_transit_1.flag = payload
+  },
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ArrData(state, payload) {
     state.surat_muatan.node_id_transit_1.hasOwnProperty('arrData') ?
         state.surat_muatan.node_id_transit_1.arrData = payload :

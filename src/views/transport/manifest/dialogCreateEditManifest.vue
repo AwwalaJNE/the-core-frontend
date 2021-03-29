@@ -18,6 +18,9 @@
                       @formData="formData"
                       :dataItem="listenDataItem"
                       typeForm="surat_muatan"
+                      :querySearch="querySearch"
+                      :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
+                      :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
                       @onChangeCustom="onChangeOrigin"
                   />
                 </div>
@@ -151,6 +154,10 @@ export default {
               page_size: 1,
               page: 1
             },
+
+            autoComplateUrl: '',
+            itterateUrlAutoComplete: '',
+            itterateFlagAutoComplete: 'node_name'
         }
     },
     computed: {
@@ -163,6 +170,12 @@ export default {
         listenDataItem() {
             return this.dataItem
         },
+        listenItterateUrlAutoComplete() {
+            return this.itterateUrlAutoComplete
+        },
+        listenItterateFlagAutoComplete() {
+            return this.itterateFlagAutoComplete
+        }
     },
     watch: {
         dataItem: function (val) {
@@ -177,23 +190,54 @@ export default {
         initialize(){
             // siapin url untuk input autocomplete
             let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_URL", url)
+            this.autoComplateUrl = url
+            // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_URL", url)
+        },
+        querySearch(queryString, cb){
+            
+            // let flag = this.listenFlag
+            // console.log('autocomplete url', flag)
+            // console.log('meanwhile from prop was', this.listenUrl)
+            axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
+            .then(res => {
+                let result = res.data.data
+                console.log('result',result)
+                let suggestions = [];
+
+                result.length > 0 && result.map(item => {
+                    if(item.hasOwnProperty('node_name')) {
+                        suggestions.push({
+                                value: item['node_name'],
+                                data: item
+                        });
+                    }
+                })
+                
+
+                console.log('suggestions', suggestions)
+
+                cb(suggestions);
+                })
+            .catch(error => console.log("error", error));
         },
         formData(form){
+          // console.log('form',form)
+          form['node_id_origin'] = form['node_id_origin']['node_id']
           this.form = form
-          console.log('form',form)
-          // if (this.form.eta > this.form.etd) {
-          //   if(this.manifest_number !== undefined && this.manifest_number !== '') {
-          //     this.form.manifest_number = this.manifest_number
-          //     this.updateData()
-          //   } else {
-          //     this.node_id = this.listenNodeId
-          //     this.form.pickup_node_id_requestor = this.node_id
-          //     this.addData()
-          //   }
-          // } else {
-          //   this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')
-          // }
+          
+          
+          if (this.form.eta > this.form.etd) {
+            if(this.manifest_number !== undefined && this.manifest_number !== '') {
+              this.form.manifest_number = this.manifest_number
+              this.updateData()
+            } else {
+              this.node_id = this.listenNodeId
+              this.form.pickup_node_id_requestor = this.node_id
+              this.addData()
+            }
+          } else {
+            this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')
+          }
         },
         handleSubmit(){
             this.$refs.formSuratMuatanController.handleSubmit() // trigger function submit form dari luar component formInputController
@@ -376,6 +420,10 @@ export default {
         },
         
         async getDestinationFromOriginChanges(nodeChange){
+            console.log('action form', nodeChange)
+            // siapin url untuk input autocomplete
+            // let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
+            // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_URL", url)
             // await axios
             //     .get(this.URL.node +
             //     `/${nodeChange}/destination-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
@@ -475,7 +523,8 @@ export default {
           this.refresh()
         },
 
-        onChangeOrigin(type, val){
+        onChangeOrigin(type, val, info = {}){
+          console.log('type', type , val, info)
           if(type == 'manifest_method_id' && val == 1){
             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false)
             this.jenisKiriman(true);
@@ -484,8 +533,25 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true)
           }
           if (type == 'node_id_origin') {
-            this.getDestinationFromOriginChanges(val)
-          }
+            if(Object.keys(info).length > 0) {
+              if(info.hasOwnProperty('data')) {
+                      
+                      let url = this.URL.node +'/'+ info['data']['node_id'] +'/destination-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
+                      this.itterateUrlAutoComplete = url
+              }
+            }
+            
+            // this.getDestinationFromOriginChanges(val)
+          } 
+
+          // if(info.hasOwnProperty('key')) {
+          //     if(info['key'] == 'dynamicinputcomponent') {
+          //       if(info.hasOwnProperty('option')) {
+          //         let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
+          //         this.autoComplateUrl = url
+          //       }
+          //     }
+          // }
         },
         jenisKiriman(type){
           let arr = [

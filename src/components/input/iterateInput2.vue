@@ -7,7 +7,11 @@
                     <vs-col xs="10" sm="10" lg="10">
                         <vs-row justify="space-between">
                             <template v-for="(input, key) in item.inputs">
-                                <vs-col xs="4" sm="4" lg="4" :key="key">
+                                <vs-col 
+                                :xs="`${input.width ? input.width:'4'}`" 
+                                :sm="`${input.width ? input.width:'4'}`" 
+                                :lg="`${input.width ? input.width:'4'}`"
+                                :key="key">
                                     <template v-if="input.typeInput.toLowerCase().includes('text')">
                                         <input-general 
                                             :name="InputObject[input.key].label"
@@ -29,6 +33,21 @@
                                             :isMultiple="false"
                                             @updateValue="updateValue" />
                                         </div>
+                                    </template>
+                                    <template v-else-if="input.typeInput.toLowerCase().includes('autocomplete')">
+                                        <template v-if="querySearch !== undefined">
+                                            <auto-complete
+                                            :ref="input.key"
+                                            :name="InputObject[input.key].label"
+                                            :rules="InputObject[input.key].rule"
+                                            :formKey="`${index}|${input.key}`"
+                                            :valueData="InputObject[input.key].value"
+                                            :querySearch="querySearch"
+                                            :selectedValue="input.value"
+                                            :typeForm="listenTypeForm"
+                                            :typeInput="InputObject[input.key].typeInput"
+                                            @updateValue="updateValue" />
+                                        </template>
                                     </template>
                                 </vs-col>
                             </template>
@@ -60,21 +79,28 @@
     </div>
 </template>
 <script>
+import axios from "axios";
+import master from "@/mixins/master"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
+import AutoComplete from "@/components/input/autoComplete"
 export default {
     name: "iterate-input",
+    mixins: [master],
     props: {
         inputList: Array,
         getters: String,
         typeInput: String,
         typeForm: String,
         addBtn: String,
+        itterateUrlAutoComplete: String,
+        itterateFlagAutoComplete: String,
         fromKey: String
     },
     components: {
         "input-general": InputGeneral,
         "selector": Selector,
+        "auto-complete": AutoComplete
     },
     data() {
         return {
@@ -104,7 +130,14 @@ export default {
         },
         listenInputs() {
             return this.$store.getters[this.listenGettersPrefix][this.listenTypeForm][this.listenFromKey]['arrData']
+        },
+        listenItterateUrlAutoComplete() {
+            return this.itterateUrlAutoComplete
+        },
+        listenItterateFlagAutoComplete() {
+            return this.itterateFlagAutoComplete
         }
+        
     },
     methods: {
         initialize() {
@@ -128,9 +161,38 @@ export default {
             tempObj['inputs'] = arr
             this.template = tempObj
 
+            
+
             console.log('this.template', obj,this.template, arr)
             
             console.log('dynamicinputcomponent', obj, this.listInput, this.form)
+        },
+        querySearch(queryString, cb){
+            
+            // let flag = this.listenFlag
+            // console.log('autocomplete url', flag)
+            // console.log('meanwhile from prop was', this.listenUrl)
+            axios.get(this.listenItterateUrlAutoComplete +`&s=${queryString}`, this.Helper.header())
+            .then(res => {
+                let result = res.data.data
+                console.log('result',result)
+                let suggestions = [];
+
+                result.length > 0 && result.map(item => {
+                    if(item.hasOwnProperty(this.itterateFlagAutoComplete)) {
+                        suggestions.push({
+                                value: item[this.itterateFlagAutoComplete],
+                                data: item
+                        });
+                    }
+                })
+                
+
+                console.log('suggestions', suggestions)
+
+                cb(suggestions);
+                })
+            .catch(error => console.log("error", error));
         },
         Add() {
             if(this.Max == null) {
@@ -149,8 +211,12 @@ export default {
         Remove(index) {
             this.listInput.splice(index,1)
             this.tempform.splice(index,1)
+
+            if(this.Max !== null && this.Max > this.listInput.length) {
+                this.addDisabled = false
+            }
         },
-        updateValue(key, value){
+        updateValue(key, value, info = {}){
             let index = key.split("|")[0]
             let getkey = key.split("|")[1]
 
@@ -159,7 +225,16 @@ export default {
                 if(item.key == getkey) {item.value = value}
             })
             this.tempform = arr
-            this.$emit("updateValue", this.listenFromKey, this.tempform)
+
+            if(Object.keys(info).length > 0) {
+                info['option'] = {
+                    'index' : index,
+                    'key': getkey,
+                    'value': value
+                }
+            }
+            
+            this.$emit("updateValue", this.listenFromKey, this.tempform, info)
         },
         test(json) {
             return JSON.parse(JSON.stringify(json))
