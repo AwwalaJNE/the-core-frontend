@@ -162,7 +162,7 @@ export default {
 
     SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE({ commit, dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE', payload)
-        dispatch('SET_CONNOTE_DATA', {'key':'is_insurance_refused','value': payload})
+        
         let numb = 0
             if(payload !== '' && typeof payload == 'string') {
                 let txt = payload.split(".")[0]
@@ -206,7 +206,7 @@ export default {
 
     SET_PACKAGE_PACKAGE_TIDAK_ASURANSI({ commit, dispatch, state }, payload) {
         commit('SET_PACKAGE_PACKAGE_TIDAK_ASURANSI', payload)
-
+        dispatch('SET_CONNOTE_DATA', {'key':'is_insurance_refused','value': payload})
         let insured_goods_value = state.transaction.connote[state.connote_index_active]['insured_goods_value'] || 0
         if(payload == true && insured_goods_value > 0) {
             dispatch('SET_CONNOTE_DATA', {'key':'is_insured','value': false})
