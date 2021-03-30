@@ -189,10 +189,13 @@ export default {
                     let arr = res.data.data
                     arr.map(item => {
                         item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
-                        item["manifest_type_name"] = (item.manifest_type) ? item.manifest_type.vehicle_mode_name: null
+                        item["manifest_type_name"] = (item.manifest_method) ? item.manifest_method.vehicle_mode_name: null
                         item['jenis_kiriman'] = (item.vehicle_type) ? item.vehicle_type.vehicle_type_name: '-'
                         item['origin_name']       = (item.origin) ? item.origin.node_name: '-'
                         item['destination_name']  = (item.destination) ? item.destination.node_name: '-'
+                        item['eta']  = this.dateConvert(item.eta)
+                        item['etd']  = this.dateConvert(item.etd)
+                        item['created_at']  = this.dateConvert(item.created_at)
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
