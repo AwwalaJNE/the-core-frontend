@@ -160,7 +160,7 @@ export default {
                     "key":"connote_receiver_zip_code",
                     "width":"xs",
                     "type": "",
-                    "rule": "required|number"
+                    "rule": "required|string"
                 },
                 "Telepon Penerima":{
                     "label":"Telepon Penerima",
@@ -190,7 +190,7 @@ export default {
                     "key":"connote_shipper_zip_code",
                     "width":"xs",
                     "type": "",
-                    "rule": "required|number"
+                    "rule": "required|string"
                 },
                 "Telepon Pengirim":{
                     "label":"Telepon Pengirim",
@@ -307,17 +307,16 @@ export default {
                 }
             }, 40)
 
-            
-            // let wrapTransaction = this.$store.getters.getTransaction.transaction
-            // wrapTransaction['connote'] = this.dataConnote
-            // wrapTransaction['transaction_finished'] = true
-            // wrapTransaction['node_code'] = this.listenNodeCode
+
+            let form= {}
             let filterData = this.dataConnote.filter(item => {
                 return item.status == true
             })
+
+            form.connote = filterData
             await axios
                 .post(this.URL.upload_connote + `?n=${this.listenNodeId}`,
-                    JSON.stringify(filterData), 
+                    JSON.stringify(form),
                     this.Helper.header()
                 ).then(res => {
                     if(res.status == 200){
@@ -540,9 +539,9 @@ export default {
                         if(checkValid.status) {
                             if(this.template.hasOwnProperty(itemlabel)) {
                                 if(this.template[itemlabel].rule.includes('string')) {
-                                    obj[this.template[itemlabel].key] = item[itemlabel] ? item[itemlabel].toString() : null
+                                    obj[this.template[itemlabel].key] = item[itemlabel] ? item[itemlabel].toString() : ''
                                 } else {
-                                    obj[this.template[itemlabel].key] = item[itemlabel]
+                                    obj[this.template[itemlabel].key] = (item[itemlabel] == null) ? 0 : item[itemlabel]
                                 }
                             }
                             
