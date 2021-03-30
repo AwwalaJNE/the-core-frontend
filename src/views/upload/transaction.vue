@@ -105,9 +105,9 @@
     </div>
 </template>
 <script>
-import XLSX from "xlsx"
 import axios from "axios";
 import master from "@/mixins/master"
+import XLSX from "xlsx"
 import Breadcrumb from "@/components/breadcrumb/index"
 import TableMaster from "@/components/table/tableMaster.vue"
 import Selector from "@/components/input/select"
@@ -316,8 +316,7 @@ export default {
                 return item.status == true
             })
             await axios
-                .post(
-                    this.URL.upload_connote + `?n=${this.listenNodeId}`,
+                .post(this.URL.upload_connote + `?n=${this.listenNodeId}`,
                     JSON.stringify(filterData), 
                     this.Helper.header()
                 ).then(res => {
@@ -337,14 +336,15 @@ export default {
                             //     this.openPaymentDialog()
                             // });
                         // }
+                      this.openNotification('success', 'Success', 'Upload Transaction is success')
                     }
                 }).catch(err => {
-                    console.log('err', err.response)
+                   let message = err.response ? err.response.data.message : 'upload data failed'
                     // let index = err.response.data.message.split('.')[0] || 0
                     // let obj = {}
                     // this.dataTable[index]['status'] = false
                     // this.dataTable[index]['message'] = err.response.data.message || 'something went wrong'
-            
+                  this.openNotification('danger', 'Upload Transaction is failed', message)
                 })
             
             
@@ -540,7 +540,7 @@ export default {
                         if(checkValid.status) {
                             if(this.template.hasOwnProperty(itemlabel)) {
                                 if(this.template[itemlabel].rule.includes('string')) {
-                                    obj[this.template[itemlabel].key] = item[itemlabel].toString()
+                                    obj[this.template[itemlabel].key] = item[itemlabel] ? item[itemlabel].toString() : null
                                 } else {
                                     obj[this.template[itemlabel].key] = item[itemlabel]
                                 }
