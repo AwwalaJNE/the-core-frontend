@@ -144,6 +144,7 @@
                                     block
                                     flat
                                     :active="true"
+                                    :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                     @click="actionUpdate(item)"
                                     >
                                     {{customBtn_label}}

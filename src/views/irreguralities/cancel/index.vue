@@ -59,6 +59,7 @@
                     :limit="pagination.limit"
                     :customBtn="true"
                     customBtn_label="APPROVE"
+                    @actionUpdate="actionUpdate"
                     :hasPagination="true"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
@@ -73,6 +74,16 @@
             :closeDialog="closeDialog"
             @updateValue="updateValue"
         />
+        <!-- dialog confirm approve cancel irregularity-->
+        <dialog-confirm
+            :active="dialogApproveActive"
+            :loading="loadingApproveActive"
+            :closeDialog="closeDialogApproveCancel"
+            title="Approve Cancel Irregularity"
+            message="Are you sure you want to approve cancel Irregularity ?"
+            @confirm="approveIrreg"
+            @cancel="closeDialogApproveCancel"
+        />
     </div>
 </template>
 <script>
@@ -85,6 +96,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
 
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogCancel from "@/views/irreguralities/cancel/dialogCancel"
 export default {
     name:"irregularities-cancel",
@@ -96,6 +108,7 @@ export default {
         "date-time": DateTime,
         "table-master" : TableMaster,
         "dialog-cancel": DialogCancel,
+        "dialog-confirm": DialogConfirm
     },
     data() {
         return {
@@ -103,6 +116,7 @@ export default {
             dateRange: [],
             tempSearch: "",
             dataTable: [],
+            dataItem: {},
             datacolumn: [
                 {
                     label: "Canceled Date",
@@ -133,6 +147,8 @@ export default {
             },
             form: {},
             dialogCancelActive: false,
+            dialogApproveActive: false,
+            loadingApproveActive: false
         }
     },
     methods: {
@@ -172,7 +188,9 @@ export default {
                 .then(res => {
                     // this.dataTable = res.data.data
                     let arr = res.data.data
-                    
+                    arr.map(item => {
+                        item["isDisabled"] = item.disable_button_approve ? true : false;
+                    })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -226,6 +244,47 @@ export default {
                     console.log('meong')
                     // code block
             }
+        },
+        actionUpdate(val){
+          if(this.dataTable.length > 0) {
+              //dibuat untuk approve saja jadi gapake switch case
+            this.$nextTick(() => {
+                this.dataItem = val;
+                this.dialogApproveActive = true;
+            });
+          }
+        },
+        confirmApprove(val) {
+          if(val) {
+            let formUpdate = {}
+            let irregularity_id = this.dataItem.irregularity_id
+            this.loadingApproveActive = true;
+            this.approveIrreg(formUpdate, irregularity_id)
+          }
+        },
+        async approveIrreg(formUpdate, irregularity_id) {
+            this.loading = true
+            await axios
+            .put(
+                this.URL.irregularities + `/${irregularity_id}?n=${this.listenNodeId}`,
+                JSON.stringify(formUpdate), 
+                this.Helper.header())
+            .then(res => {
+                this.closeDialogApproveCancel()
+                this.loading = false
+                this.refresh()
+                this.openNotification(null, 'Success', 'Cancel approved')
+            }).catch(err => {
+                this.closeDialogApproveCancel()
+                this.loading = false
+                this.refresh()
+                this.openNotification('danger', 'Cannot approve cancel irregularity', err.response ? err.response.data.message : 'something went wrong')
+            })
+        },
+        closeDialogApproveCancel(){
+            this.dataItem = {};
+            this.loadingApproveActive = false
+            this.dialogApproveActive = false
         },
         actionLimit(val){
             this.pagination.limit = val
