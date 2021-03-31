@@ -171,6 +171,7 @@ export default {
                   this.Helper.header())
               .then(res => {
                 console.log(res,'res receiving');
+                this.delivery_runsheet_number = res.data.data.delivery_runsheet_number.toString()
                 this.refresh()
                 this.openNotification(null, 'Success', 'Receiving is success')
               }).catch(err => {
