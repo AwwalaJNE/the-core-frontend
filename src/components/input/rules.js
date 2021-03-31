@@ -1,5 +1,5 @@
 import { extend } from 'vee-validate';
-import { required, email, min, min_value, max_value, numeric, double } from 'vee-validate/dist/rules';
+import { required, email, min, min_value, max_value, numeric, double,  } from 'vee-validate/dist/rules';
 
 const phoneRule = {
   message: 'The {_field_} must be either a valid phone number',
@@ -68,6 +68,21 @@ const coordinate = {
 };
 
 extend('coordinate', coordinate);
+
+const validString = {
+  message: `{_field_} field don't have a valid input`,
+  validate(value, args) {
+    //regex ini validasi kata pertama hanya alphabet
+    //dan kata2 setelah pertama bisa menggunakan sesuai di array kedua regex dengan \s berarti spasi atau white space
+    //intinya supaya ga bisa special karakter untuk field string
+    //tetap bisa spasi atau whitespace karena digunakan untuk address
+    const REGEX = /^[a-zA-Z][a-zA-Z0-9\._-\s]+$/g
+    
+    return REGEX.test(value)
+  }
+};
+
+extend('validString', validString);
 
 
 
