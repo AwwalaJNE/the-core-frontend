@@ -38,7 +38,7 @@
         <dialog-create-edit-packingkayu 
             :active="dialogPackingKayu" 
             :closeDialog="closeDialogPackingKayu"
-            :refresh="refresh"
+            @refresh="refresh"
             title="Edit Koli"
             :dataItem="dataItem"
             btnBlue="Edit"
@@ -161,9 +161,9 @@ export default {
                 });
             }
         },
-        refresh(){
-            console.log(this.form,'refresh')
-            this.dataTable = [];
+        async refresh(){
+            await this.getPackingKayu()
+            // this.dataTable = [];
         },
         actionRemove(){
 
