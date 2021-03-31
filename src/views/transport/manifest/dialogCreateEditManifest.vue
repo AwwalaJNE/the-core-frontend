@@ -155,6 +155,9 @@ export default {
               page: 1
             },
 
+            vehicle_mode_id : "",
+            vehicle_type_id: "",
+
             autoComplateUrl: '',
             itterateUrlAutoComplete: '',
             itterateFlagAutoComplete: 'node_name'
@@ -286,6 +289,7 @@ export default {
                             let obj = {}
                             obj["label"] = item.vehicle_mode_name
                             obj["value"] = item.vehicle_mode_id
+                            obj["data"] = item
 
                             arr.push(obj)
                         })
@@ -300,7 +304,7 @@ export default {
         async getDataVehicleType(){
           await axios
               .get(this.URL.vehicle_type +
-                  `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                  `?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=1000&page=1`,
                   this.Helper.header())
               .then(res => {
                 if(res.data.data.length > 0) {
@@ -309,6 +313,7 @@ export default {
                     let obj = {}
                     obj["label"] = item.vehicle_type_name
                     obj["value"] = item.vehicle_type_id
+                    obj["data"] = item
 
                     arr.push(obj)
                   })
@@ -323,7 +328,7 @@ export default {
         async getDataVehicle(){
           await axios
               .get(this.URL.vehicle +
-                  `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                  `?n=${this.listenNodeId}&vehicle_type_id=${this.vehicle_type_id}&sort_order=desc&limit=1000&page=1`,
                   this.Helper.header())
               .then(res => {
                 if(res.data.data.length > 0) {
@@ -395,7 +400,7 @@ export default {
         async getDataNodeDestination(){
             await axios
                 .get(this.URL.node +
-                `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=1000&page=1`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -525,6 +530,13 @@ export default {
 
         onChangeOrigin(type, val, info = {}){
           console.log('type', type , val, info)
+          if(type == 'vehicle_mode_id') {
+            if(info.hasOwnProperty('data')) {
+              this.vehicle_type_id = info.data.vehicle_type_id || ''
+              
+              this.getDataVehicle()
+            }
+          }
           if(type == 'manifest_method_id' && val == 1){
             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false)
             this.jenisKiriman(true);
@@ -532,11 +544,25 @@ export default {
             this.jenisKiriman(false);
             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true)
           }
+
+          if(type == 'manifest_method_id'){
+            if(info.hasOwnProperty('data')) {
+                this.vehicle_mode_id = info.data.vehicle_mode_id || ''
+
+                let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id+ '&sort_order=desc&limit=15&page=1'
+                this.autoComplateUrl = url
+
+                this.getDataNodeDestination()
+                this.getDataVehicleType()
+                
+            }
+          }
+
           if (type == 'node_id_origin') {
             if(Object.keys(info).length > 0) {
               if(info.hasOwnProperty('data')) {
                       
-                      let url = this.URL.node +'/'+ info['data']['node_id'] +'/destination-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
+                      let url = this.URL.node +'/'+ info['data']['node_id'] +'/destination-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id+ '&sort_order=desc&limit=15&page=1'
                       this.itterateUrlAutoComplete = url
               }
             }
@@ -544,14 +570,6 @@ export default {
             // this.getDestinationFromOriginChanges(val)
           } 
 
-          // if(info.hasOwnProperty('key')) {
-          //     if(info['key'] == 'dynamicinputcomponent') {
-          //       if(info.hasOwnProperty('option')) {
-          //         let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
-          //         this.autoComplateUrl = url
-          //       }
-          //     }
-          // }
         },
         jenisKiriman(type){
           let arr = [
@@ -576,9 +594,10 @@ export default {
     mounted() {
         // this.getDataNodeorigin()
         this.initialize()
-        this.getDataNodeDestination()
-        this.getDataVehicleType()
-        this.getDataVehicle()
+        // this.getDataNodeDestination()
+        // this.getDataVehicleType()
+        // this.getDataVehicle()
+
         this.getDataVehicleMode()
         this.getDataEmployee()
     },
