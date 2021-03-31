@@ -286,6 +286,7 @@
                               <vs-col w="4">
                                 <vs-button
                                     block
+                                    :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                     
                                     flat
                                     :active="true"

@@ -1619,7 +1619,7 @@ export default {
     pickup_schedule_name: {
       label: "Name*",
       key: "pickup_schedule_name",
-      rule: "required",
+      rule: "required|validString",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -1628,7 +1628,7 @@ export default {
     pickup_schedule_phone_number: {
       label: "Phone*",
       key: "pickup_schedule_phone_number",
-      rule: "required|numeric|min:8",
+      rule: "required|phone|min:8",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -1637,7 +1637,7 @@ export default {
     pickup_schedule_address: {
       label: "Address*",
       key: "pickup_schedule_address",
-      rule: "required",
+      rule: "required|validString",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -1668,7 +1668,7 @@ export default {
     pickup_schedule_remarks: {
       label: "Remark",
       key: "pickup_schedule_remarks",
-      rule: "required",
+      rule: "required|validString",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -1691,7 +1691,7 @@ export default {
     pickup_schedule_latitude: {
       label: "Latitude*",
       key: "pickup_schedule_latitude",
-      rule: "required",
+      rule: "required|coordinate",
       mapPicker: true,
       typeInput: "text|latitude",
       typeData: "Number",
@@ -1701,7 +1701,7 @@ export default {
     pickup_schedule_longitude: {
       label: "Longitude*",
       key: "pickup_schedule_longitude",
-      rule: "required",
+      rule: "required|coordinate",
       mapPicker: true,
       typeInput: "text|longitude",
       typeData: "Number",

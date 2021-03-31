@@ -26,7 +26,8 @@ export default {
     mixins: [master],
     props: {
         query: String,
-        deliveryRunsheetNumber:String
+        employeeId:String,
+        deliveryNumber:String
     },
     components: {
         "table-master" : TableMaster
@@ -47,7 +48,7 @@ export default {
                 },
                 {
                   label: "Status Delivery",
-                  key: "Remarks",
+                  key: "status_delivery",
                   width: "xxs"
                 },
 
@@ -95,6 +96,7 @@ export default {
             startDate: "",
             endDate: "",
             dialogTariff: false,
+            employee_id:"",
             delivery_runsheet_number:"",
             pagination: {
                 limit:5,
@@ -113,13 +115,22 @@ export default {
                 }
             }
         },
-        deliveryRunsheetNumber: function(val, old) {
-            if(val !== undefined) {
-                this.delivery_runsheet_number = val
-                if(this.delivery_runsheet_number !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val)
-                }
-            }
+        employeeId: function(val, old) {
+              if(val !== undefined) {
+                  this.employee_id = val
+                  if(this.employee_id !== old) {
+                      this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
+                  }
+              }
+        },
+        deliveryNumber: function(val, old) {
+              if(val !== undefined) {
+                  this.delivery_runsheet_number = val
+
+                  if(this.delivery_runsheet_number !== old) {
+                    this.delivery_runsheet_number = val
+                  }
+              }
         },
     },
     methods: {
@@ -132,8 +143,8 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.delivery +
-                `/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                .get(this.URL.courier_delivery +
+                `/${this.employee_id}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
                     this.dataTable = res.data.data
@@ -167,6 +178,7 @@ export default {
             }
         },
         async updateInbound() {
+          console.log(this.delivery_runsheet_number, 'asdasd')
           await axios
               .put(this.URL.delivery + `/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),

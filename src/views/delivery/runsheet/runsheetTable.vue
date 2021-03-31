@@ -8,7 +8,7 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :hasLinked="['delivery_runsheet_number']"
+        :hasLinked="['employee_code']"
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
@@ -38,7 +38,7 @@ export default {
             datacolumn: [
                 {
                     label: "ID",
-                    key: "delivery_runsheet_number",
+                    key: "employee_code",
                     width: "xs"
                 },
                 {
@@ -123,11 +123,12 @@ export default {
               endDate = to
             }
             await axios
-                .get(this.URL.delivery +
+                .get(this.URL.courier_delivery +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
                     this.dataTable = res.data.data
+                  console.log(this.dataTable,'data')
                     this.dataTable.map(item=>{
                       item['count_connote'] = item.delivery[0] ? item.delivery[0].count_connote : '0'
                       item['total_depart'] = item.delivery[0] ? item.delivery[0].total_depart : '0'
@@ -171,8 +172,7 @@ export default {
         },
 
         actionDetail(row){
-          console.log(row)
-          this.$router.push({ name: 'delivery-runsheet-edit', params: { delivery_runsheet_number: row.delivery_runsheet_number,  data: row} });
+          this.$router.push({ name: 'delivery-runsheet-edit', params: { employee_id: row.employee_id,  data: row} });
         }
 
     },

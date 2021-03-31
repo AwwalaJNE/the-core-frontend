@@ -105,9 +105,9 @@
     </div>
 </template>
 <script>
-import XLSX from "xlsx"
 import axios from "axios";
 import master from "@/mixins/master"
+import XLSX from "xlsx"
 import Breadcrumb from "@/components/breadcrumb/index"
 import TableMaster from "@/components/table/tableMaster.vue"
 import Selector from "@/components/input/select"
@@ -160,7 +160,7 @@ export default {
                     "key":"connote_receiver_zip_code",
                     "width":"xs",
                     "type": "",
-                    "rule": "required|number"
+                    "rule": "required|string"
                 },
                 "Telepon Penerima":{
                     "label":"Telepon Penerima",
@@ -190,7 +190,7 @@ export default {
                     "key":"connote_shipper_zip_code",
                     "width":"xs",
                     "type": "",
-                    "rule": "required|number"
+                    "rule": "required|string"
                 },
                 "Telepon Pengirim":{
                     "label":"Telepon Pengirim",
@@ -307,18 +307,16 @@ export default {
                 }
             }, 40)
 
-            
-            // let wrapTransaction = this.$store.getters.getTransaction.transaction
-            // wrapTransaction['connote'] = this.dataConnote
-            // wrapTransaction['transaction_finished'] = true
-            // wrapTransaction['node_code'] = this.listenNodeCode
+
+            let form= {}
             let filterData = this.dataConnote.filter(item => {
                 return item.status == true
             })
+
+            form.connote = filterData
             await axios
-                .post(
-                    this.URL.upload_connote + `?n=${this.listenNodeId}`,
-                    JSON.stringify(filterData), 
+                .post(this.URL.upload_connote + `?n=${this.listenNodeId}`,
+                    JSON.stringify(form),
                     this.Helper.header()
                 ).then(res => {
                     if(res.status == 200){
@@ -337,14 +335,15 @@ export default {
                             //     this.openPaymentDialog()
                             // });
                         // }
+                      this.openNotification('success', 'Success', 'Upload Transaction is success')
                     }
                 }).catch(err => {
-                    console.log('err', err.response)
+                   let message = err.response ? err.response.data.message : 'upload data failed'
                     // let index = err.response.data.message.split('.')[0] || 0
                     // let obj = {}
                     // this.dataTable[index]['status'] = false
                     // this.dataTable[index]['message'] = err.response.data.message || 'something went wrong'
-            
+                  this.openNotification('danger', 'Upload Transaction is failed', message)
                 })
             
             
@@ -540,9 +539,9 @@ export default {
                         if(checkValid.status) {
                             if(this.template.hasOwnProperty(itemlabel)) {
                                 if(this.template[itemlabel].rule.includes('string')) {
-                                    obj[this.template[itemlabel].key] = item[itemlabel].toString()
+                                    obj[this.template[itemlabel].key] = item[itemlabel] ? item[itemlabel].toString() : ''
                                 } else {
-                                    obj[this.template[itemlabel].key] = item[itemlabel]
+                                    obj[this.template[itemlabel].key] = (item[itemlabel] == null) ? 0 : item[itemlabel]
                                 }
                             }
                             

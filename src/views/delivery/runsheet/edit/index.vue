@@ -36,13 +36,13 @@
                       </template>
                     </vs-col>
                     <vs-col xs="4" sm="4" lg="4" offset="2">
-                      <template>
+                      <template v-if="summary.length > 0">
                         <div class="left">
                           <ul style="float: left; text-align: left">
                             <li>User : -</li>
                             <li>Date : -</li>
-                            <li>Total : {{ summary.total_connote }} Connotes</li>
-                            <li>Expectations COD : {{summary.amount_cod}}</li>
+                            <li>Total : {{ summary[0].total_connote + ' Connotes'  }} </li>
+                            <li>Expectations COD : {{ summary[0].amount_cod }}</li>
                           </ul>
                         </div>
                       </template>
@@ -56,7 +56,7 @@
                       <template>
                         <transition name="slide-fade">
                           <template>
-                            <RunsheetInformation :ref="'runsheetInformation'"   @reload="reloadSummary" :query="tempSearch" :deliveryRunsheetNumber="delivery_runsheet_number" />
+                            <RunsheetInformation :ref="'runsheetInformation'"   @reload="reloadSummary" :query="tempSearch" :deliveryNumber="delivery_runsheet_number" :employeeId="employee_id" />
                           </template>
                         </transition>
                       </template>
@@ -115,8 +115,9 @@ export default {
             item_no:'',
             form:{},
             delivery_runsheet_number:'',
+            employee_id:'',
             dataDelivery:'',
-            summary: {},
+            summary: [],
         }
     },
     methods: {
@@ -124,14 +125,15 @@ export default {
             this.$refs.runsheetInformation.refresh() // trigger function refresh form dari luar component list
         },
         reloadSummary(val){
+          let data_summary = {}
           let amount = 0
           let total_connote = 0
           val.map(item=>{
             amount = amount + parseInt(item.amount_cod)
-
           })
-          this.summary.amount_cod = this.moneyformat(amount)
-          this.summary.total_connote = val.length
+          data_summary.amount_cod = this.moneyformat(amount)
+          data_summary.total_connote = val.length
+          this.summary.push(data_summary)
 
         },
         searchValue (val) {
@@ -150,26 +152,26 @@ export default {
             this.dialogPickupRequest = true
         },
         updateValue(){
-          console.log(this.dataDelivery,'kkl')
           this.form.koli_number = this.item_no
-          this.form.delivery_runsheet_number = this.delivery_runsheet_number
-          this.form.courier_employee_id = this.dataDelivery.employee_id
+          this.form.delivery_runsheet_number = this.dataDelivery.delivery_runsheet_number
+          this.form.courier_employee_id = this.employee_id
           this.processInbond();
         },
         getParamRoute(){
-          if(this.$route.params.delivery_runsheet_number){
-            this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number
+          if(this.$route.params.employee_id){
+            this.employee_id = this.$route.params.employee_id.toString()
             this.dataDelivery = this.$route.params.data
+            this.delivery_runsheet_number = this.dataDelivery.delivery_runsheet_number.toString()
           }
         },
         async processInbond() {
-          console.log('form', this.form)
           await axios
-              .post(this.URL.delivery + `/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`,
+              .post(this.URL.courier_delivery + `/${this.employee_id}?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
                 console.log(res,'res receiving');
+                this.delivery_runsheet_number = res.data.data.delivery_runsheet_number.toString()
                 this.refresh()
                 this.openNotification(null, 'Success', 'Receiving is success')
               }).catch(err => {
