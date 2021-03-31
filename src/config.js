@@ -87,6 +87,9 @@ export default {
     //delivery runsheet
     delivery : api + "delivery",
 
+    //courier delivery
+    courier_delivery : api + "courier-delivery",
+
     //delivery return
     delivery_return : api + "delivery/return",
 

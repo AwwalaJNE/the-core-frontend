@@ -521,7 +521,7 @@ const routes = [
         }
       },
       {
-        path: "/delivery/runsheet/edit/:delivery_runsheet_number",
+        path: "/delivery/runsheet/edit/:employee_id",
         name: "delivery-runsheet-edit",
         component: DeliveryRunsheetEdit,
         meta: {
