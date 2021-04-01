@@ -47,6 +47,7 @@ export default {
     vehicle: api + "vehicle",
     vehicle_mode: api + "vehicle-mode",
     vehicle_type: api + "vehicle-type",
+    pickup_vehicle_type: api + "pickup-vehicle-type",
 
     // transaction
     tariff_shipping_service: api + "tariff-shipping-service",
