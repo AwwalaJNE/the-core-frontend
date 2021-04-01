@@ -71,7 +71,7 @@
             <vs-button class="mt-1" style="float: right"
                        square
                        active
-                       @click="back"
+                       @click="print"
             ><i class="bx bxs-printer"> </i>  PRINT
             </vs-button>
             <vs-button class="mt-1" style="float: right"
@@ -187,6 +187,10 @@ export default {
         },
         back(){
           this.$router.push('/delivery/runsheet')
+        },
+        print(){
+          let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': this.delivery_runsheet_number, 'type': 'delivery'} });
+          window.open(routeData.href, '_blank');
         }
 
     },
