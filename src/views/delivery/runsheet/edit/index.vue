@@ -39,8 +39,8 @@
                       <template v-if="summary.length > 0">
                         <div class="left">
                           <ul style="float: left; text-align: left">
-                            <li>User : -</li>
-                            <li>Date : -</li>
+                            <li>User : {{ listenActiveUser ? listenActiveUser.user_login : ''  }}</li>
+                            <li>Date : {{ summary[0].date }}</li>
                             <li>Total : {{ summary[0].total_connote + ' Connotes'  }} </li>
                             <li>Expectations COD : {{ summary[0].amount_cod }}</li>
                           </ul>
@@ -125,14 +125,18 @@ export default {
             this.$refs.runsheetInformation.refresh() // trigger function refresh form dari luar component list
         },
         reloadSummary(val){
+
           let data_summary = {}
           let amount = 0
+          let date = null
           let total_connote = 0
           val.map(item=>{
             amount = amount + parseInt(item.amount_cod)
+            date = item.created_at ? this.dateConvert(item.created_at):null
           })
           data_summary.amount_cod = this.moneyformat(amount)
           data_summary.total_connote = val.length
+          data_summary.date = date
           this.summary.push(data_summary)
 
         },
