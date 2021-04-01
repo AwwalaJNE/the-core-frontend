@@ -1,7 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
-    width="xl"
+    width="lg"
     :closeDialog="cancel">
         <template v-slot:header>
             
@@ -13,25 +13,25 @@
                 <vs-row>
                     <vs-col xs="12" sm="3" lg="3">
                         <p>Jumlah Connote</p>
-                        <h2>{{connote_qty}}</h2>
+                        <h3>{{connote_qty}}</h3>
                     </vs-col>
                     <vs-col xs="12" sm="3" lg="3">
                         <p>Jumlah Koli</p>
-                        <h2>{{koli_qty}}</h2>
+                        <h3>{{koli_qty}}</h3>
                     </vs-col>
                     <vs-col xs="12" sm="3" lg="3">
                         <p>Total Price</p>
-                        <h2>{{moneyformat(grand_total)}}</h2>
+                        <h3>{{moneyformat(grand_total)}}</h3>
                         <br>
                         <p>Special Tariff Discount</p>
-                        <h2>{{moneyformat(discount)}}</h2>
+                        <h3>{{moneyformat(discount)}}</h3>
                         <br>
                         <p>Total After Discount</p>
-                        <h2>{{moneyformat(price)}}</h2>
+                        <h3>{{moneyformat(price)}}</h3>
                     </vs-col>
                 </vs-row>
                 <h2>Payment Method</h2>
-                <vs-row>
+                <vs-row justify="space-between">
                     <vs-col xs="12" sm="4" lg="4">
                         <div class="box">
                             <ul class="mnu_payment">
@@ -100,7 +100,7 @@
                     </vs-col>
                 </vs-row>
 
-                <vs-row justify="flex-end" class="mt-2">
+                <vs-row justify="flex-end" class="mt-1">
                             <vs-col xs="6" sm="2" lg="2">
                                 <vs-button
                                 transparent
@@ -195,9 +195,10 @@ export default {
     },
     methods: {
         initialize() {
+            this.grand_total = 0
             let data = this.$store.getters.getTransaction.transaction
             if(data['transaction_id'] !== '' && data['transaction_finished'] == true) {
-                console.log('PAYMENT', 'meong')
+                
                 this.transaction_id = data['transaction_id']
                 this.connote_qty = data['connote'].length
                 let diskon = 0
@@ -216,6 +217,7 @@ export default {
                 })
                 this.jumlahbayar = this.price
                 this.koli_qty = koli_qty
+                console.log('PAYMENT', 'meong', data, this.grand_total, diskon)
             }
             this.ecodi_id = `TCR${this.transaction_id}`
             
@@ -323,12 +325,18 @@ export default {
 <style lang="scss">
     .payment_dialog{
         text-align: left;
+        h3,h2,p{
+            margin: 0 .5em
+        }
+
         .box{
-            padding: 1.5em .5em;
+            padding: .5em;
             min-height: 200px;
+            min-width: auto;
         }
         ul{
             padding: 0;
+            margin: 0;
             &.mnu_payment{
                 li{
                     display: flex;

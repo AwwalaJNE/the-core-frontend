@@ -214,14 +214,14 @@ export default {
 
             let connote = {}
             // connote = {...form}
-            connote['connote_receiver_tariff_code'] = form.tariff_code
-            connote['connote_receiver_zip_code'] = form.zip_code
-            connote['connote_receiver_administrative_address'] = form.destination_onchange_address
-            connote['connote_receiver_street_address'] = form.destination_address
-            connote['connote_receiver_customer_id'] = form.tariff_code
-            connote['connote_receiver_name'] = form.tariff_code
-            connote['connote_receiver_phone_number'] = form.tariff_code
-            connote['connote_receiver_address_type'] = form.tariff_code
+            connote['connote_receiver_tariff_code'] = this.dataItem['connote_receiver_tariff_code']
+            connote['connote_receiver_zip_code'] = this.dataItem['connote_receiver_zip_code']
+            connote['connote_receiver_administrative_address'] = this.dataItem['connote_receiver_administrative_address']
+            connote['connote_receiver_street_address'] = this.dataItem['connote_receiver_street_address']
+            connote['connote_receiver_customer_id'] = this.dataItem['connote_receiver_customer_id']
+            connote['connote_receiver_name'] = this.dataItem['connote_receiver_name']
+            connote['connote_receiver_phone_number'] = this.dataItem['connote_receiver_phone_number']
+            connote['connote_receiver_address_type'] = this.dataItem['connote_receiver_address_type']
 
             obj['connote'] = connote
 

@@ -47,13 +47,7 @@ export default {
                     width: "xxs"
                 },
                 {
-                  label: "Status Delivery",
-                  key: "status_delivery",
-                  width: "xxs"
-                },
-
-                {
-                    label: "Status",
+                    label: "Status Delivery",
                     key: "status",
                     type: "inputan",
                     typeInput: "select",
@@ -75,17 +69,17 @@ export default {
 
                 {
                   label: "COD",
-                  key: "inbound_type_name",
+                  key: "amount_cod",
                   width: "xxs"
                 },
                 {
                   label: "Description",
-                  key: "inbound_type_name",
+                  key: "description",
                   width: "xxs"
                 },
                 {
                   label: "Status",
-                  key: "inbound_type_name",
+                  key: "status_subtype",
                   width: "xxs"
                 },
             ],
@@ -149,7 +143,8 @@ export default {
                 .then(res => {
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
-                      item['inbound_type_name'] = 'false'
+                      item['status_subtype'] = item.status ? item.status.status_subtype : ''
+                      item['status_code'] = item.status ? item.status.status_code : ''
                     })
                     this.$emit('reload', res.data.data);
                     this.pagination.page = res.data.meta ? res.data.meta.current_page : 1
@@ -203,7 +198,6 @@ export default {
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
-                      console.log('status', res.data.data)
                         res.data.data.map(item => {
                             let obj = {}
                             obj["label"] = item.status_description +'('+item.status_code+')'
@@ -218,7 +212,6 @@ export default {
                                 item.data = arr
                             }
                         })
-                      console.log(this.datacolumn,'column nya')
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
