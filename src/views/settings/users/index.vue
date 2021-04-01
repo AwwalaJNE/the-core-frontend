@@ -193,6 +193,7 @@ export default {
         searchValue (val) {
             this.tempSearch = val
             console.log("this.tempSearch = ",this.tempSearch)
+            this.getDataRole(this.tempSearch)
         },
         clearSearch() {
             this.$refs.searchInput.clear()
@@ -207,7 +208,7 @@ export default {
 
             if(this.navActive === "k-PERMISSIONS") {
                 console.log('ini permission page')
-                this.getDataRole()
+                this.getDataRole(this.tempSearch)
                 this.getDataPermission()
             }
         },
@@ -238,17 +239,22 @@ export default {
             this.pagination.page = val
         },
 
-        async getDataRole(){
+        async getDataRole(q){
             this.loadingDataRole = true
+            let query = "";
+            if(q !== undefined) {
+                query = q
+            }
             await axios
                 .get(this.URL.role + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+                    console.log('role', res.data.data)
                     if(res.data.data.length > 0) {
                         this.dataRole = res.data.data
                     } else {
+                        this.dataRole = []
                         this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     

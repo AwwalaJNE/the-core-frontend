@@ -84,7 +84,7 @@
                                                     :rules="''" 
                                                     :formKey="`${column.key}|${item[listenColumn[0].key]}`"
                                                     :valueData="column.data"
-                                                    :selectedValue="''"
+                                                    :selectedValue="item[column.selectedValue] ? item[column.selectedValue] : ''"
                                                     :isMultiple="false"
                                                     autocomplete="off"
                                                     @change="updateValue"
