@@ -27,11 +27,11 @@
         <section class="nodes">
             <div class="box view">
               <div class="nav-box">
-                <vs-row justify="">
-                  <vs-col xs="3" sm="3" lg="3">
+                <vs-row justify="space-between">
+                  <vs-col xs="3" sm="3" lg="3" >
                     <daterange-filter @searchDate="searchDate"/>
                   </vs-col>
-                  <vs-col xs="2" sm="2" lg="2">
+                  <!-- <vs-col xs="2" sm="2" lg="2">
                     <template v-if="DataNode.length > 0">
                       <vs-select
                           class="m-select"
@@ -55,8 +55,8 @@
                       </vs-select>
 
                     </template>
-                  </vs-col>
-                  <vs-col xs="2" sm="2" lg="2">
+                  </vs-col> -->
+                  <vs-col xs="2" sm="2" lg="2" >
                     <template v-if="DataStatus.length > 0">
                       <vs-select
                           class="m-select"
@@ -81,7 +81,7 @@
 
                     </template>
                   </vs-col>
-                  <vs-col offset="2" xs="6" sm="3" lg="3" class="mb-15" align="right">
+                  <vs-col offset="2" xs="6" sm="4" lg="4" class="mb-15" align="right">
                     <search-input ref="searchInput" @searchValue="searchValue"/>
                   </vs-col>
                 </vs-row>
@@ -132,7 +132,7 @@ export default {
             tempSearch: "",
             tempDate: [],
             dialogPickupList:false,
-            DataNode:[],
+            // DataNode:[],
             DataStatus:[],
             node_request:'',
             status_pickup:'',
@@ -160,30 +160,30 @@ export default {
         updateNode(val){
 
         },
-        async getTableData() {
-          this.loading = true
-          await axios
-              .get(this.URL.node +
-                  `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
-                  this.Helper.header())
-              .then(res => {
-                console.log('link', res)
-                if(res.data.data.length > 0) {
-                  res.data.data.map(item => {
-                    let obj = {}
-                    obj["label"] = item.node_code
-                    obj["value"] = item.node_code
+        // async getTableData() {
+        //   this.loading = true
+        //   await axios
+        //       .get(this.URL.node +
+        //           `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+        //           this.Helper.header())
+        //       .then(res => {
+        //         console.log('link', res.data.data)
+        //         if(res.data.data.length > 0) {
+        //           res.data.data.map(item => {
+        //             let obj = {}
+        //             obj["label"] = item.node_code
+        //             obj["value"] = item.node_code
 
-                    this.DataNode.push(obj)
-                  })
-                }
+        //             this.DataNode.push(obj)
+        //           })
+        //         }
 
-                this.loading = false
-              }).catch(err => {
-                this.loading = false
-                this.openNotification('danger', 'Failed to populate node list', err)
-              })
-        },
+        //         this.loading = false
+        //       }).catch(err => {
+        //         this.loading = false
+        //         this.openNotification('danger', 'Failed to populate node list', err)
+        //       })
+        // },
         async getPickupStatus() {
           this.loading = true
           await axios
@@ -210,7 +210,7 @@ export default {
         },
     },
   mounted() {
-      this.getTableData()
+      // this.getTableData()
       this.getPickupStatus()
   }
 }
