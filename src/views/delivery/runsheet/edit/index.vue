@@ -78,7 +78,7 @@
                        square
                        active
                        @click="back"
-            ><i class="bx bxs-save"> </i>  DEPART
+            ><i class="bx bx-left-arrow"> </i>  BACK
             </vs-button>
           </vs-row>
 
@@ -182,7 +182,7 @@ export default {
               })
         },
         back(){
-          this.$router.push('/inbound/prealert')
+          this.$router.push('/delivery/runsheet')
         }
 
     },
