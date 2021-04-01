@@ -251,7 +251,7 @@ export default {
         },
         async getDataVehicleType(){
             await axios
-                .get(this.URL.vehicle_type +
+                .get(this.URL.pickup_vehicle_type +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
                 this.Helper.header())
                 .then(res => {
