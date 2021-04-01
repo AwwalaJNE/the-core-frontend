@@ -1543,11 +1543,12 @@ export default {
       label: "Request To",
       key: "pickup_node_id_destination",
       rule: "required",
-      typeInput: "select",
+      typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      query: "node_destination"
     },
     pickup_remarks: {
       label: "Remark",

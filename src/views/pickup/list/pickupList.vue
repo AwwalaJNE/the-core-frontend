@@ -232,6 +232,7 @@ export default {
         },
         closeDialogPickupList() {
           this.dialogPickupList = false
+          this.dataItem = {}
         },
 
         actionLimit(val){

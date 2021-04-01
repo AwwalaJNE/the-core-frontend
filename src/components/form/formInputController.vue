@@ -165,7 +165,7 @@
                                     :url="InputObject[item].url"
                                     :flag="InputObject[item].flag"
                                     :querySearch="querySearch"
-                                    :selectedValue="InputObject[item].query"
+                                    :selectedValue="InputObject[item].value"
                                     :typeForm="listenTypeForm"
                                     :typeInput="InputObject[item].typeInput"
                                     @updateValue="updateValue" />
