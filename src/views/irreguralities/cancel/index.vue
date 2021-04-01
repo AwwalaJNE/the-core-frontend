@@ -81,7 +81,7 @@
             :closeDialog="closeDialogApproveCancel"
             title="Approve Cancel Irregularity"
             message="Are you sure you want to approve cancel Irregularity ?"
-            @confirm="approveIrreg"
+            @confirm="confirmApprove"
             @cancel="closeDialogApproveCancel"
         />
     </div>
@@ -186,17 +186,15 @@ export default {
                 `?n=${this.listenNodeId}&irregularity_type=CANCELED&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
-                    // this.dataTable = res.data.data
-                    let arr = res.data.data
-                    arr.map(item => {
-                        item["isDisabled"] = item.disable_button_approve ? true : false;
-                    })
-                    this.dataTable = arr
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
                     if(res.data.data.length > 0) {
-                        
+                        let arr = res.data.data
+                        arr.map(item => {
+                            item["isDisabled"] = item.disable_button_approve ? true : false;
+                        })
+                        this.dataTable = arr
+                        this.pagination.page = res.data.meta.current_page
+                        this.pagination.limit = parseInt(res.data.meta.per_page)
+                        this.pagination.page_size = res.data.meta.last_page
                     } else {
                         this.openNotification('warn', 'Irreguralities Cancel data is empty!', ' Please create Irreguralities Cancel data')
                     }
@@ -248,8 +246,8 @@ export default {
         actionUpdate(val){
           if(this.dataTable.length > 0) {
               //dibuat untuk approve saja jadi gapake switch case
+            this.dataItem = val;
             this.$nextTick(() => {
-                this.dataItem = val;
                 this.dialogApproveActive = true;
             });
           }

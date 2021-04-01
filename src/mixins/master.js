@@ -19,6 +19,9 @@ const Master = {
         }
     },
     computed: {
+        listenActiveUser() {
+            return this.$ls.get('user')
+        },
         listenNodeId() {
             return this.$store.getters.getUser['node_id'].value
         },
