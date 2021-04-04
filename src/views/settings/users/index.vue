@@ -246,7 +246,7 @@ export default {
             this.title = item[0].title
 
             if(this.navActive === "k-PERMISSIONS") {
-                console.log('ini permission page')
+                // console.log('ini permission page')
                 this.getDataRole()
                 // this.getDataPermission()
             }
@@ -260,7 +260,6 @@ export default {
                     this.dialogRole = true
                     break;
                 default:
-                    console.log('meong')
                     // code block
             }
             this.refreshInject = this.navActive
@@ -289,7 +288,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log('role', res.data.data)
+                    // console.log('role', res.data.data)
                     if(res.data.data.length > 0) {
                         this.dataRole = res.data.data
                     } else {
@@ -342,12 +341,12 @@ export default {
             this.user_role_permission = []
             // this.permissionDisplay = []
             this.keysPermission = {}
-            console.log('this.keysPermission meong', this.keysPermission)
+            // console.log('this.keysPermission meong', this.keysPermission)
             await axios
                 .get(this.URL.role + `/${val}/permission?n=${this.listenNodeId}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log('getRolePermission',res.data.data)
+                    // console.log('getRolePermission',res.data.data)
                     let temp = {}
                     // let arr = []
                     let data = res.data.data.permission
@@ -393,14 +392,14 @@ export default {
                 this.updateRole()
             }
             
-            console.log('update selected from table', arr)
+            // console.log('update selected from table', arr)
         },
         updateValue(key, val, info){
             let splitAction = key.split("|")[0] || null
             let splitKey = key.split("|")[1] || null
-            console.log('permissionObject', this.permissionObject, this.user_role_permission)
-            console.log('this.keysPermission', this.keysPermission)
-            console.log('table action', key,splitAction,splitKey, val, info)
+            // console.log('permissionObject', this.permissionObject, this.user_role_permission)
+            // console.log('this.keysPermission', this.keysPermission)
+            // console.log('table action', key,splitAction,splitKey, val, info)
             
             let obj = {}
             switch(splitAction) {
@@ -424,7 +423,7 @@ export default {
                     console.log('meong')
                     // code block
             }
-            console.log('new this.user_role_permission', this.user_role_permission)
+            // console.log('new this.user_role_permission', this.user_role_permission)
             
             
         },
@@ -464,7 +463,7 @@ export default {
                 
                 this.user_role_permission = arr
                 // this.permissionDisplay = this.permission
-                console.log('this.keysPermission after filter', this.keysPermission, this.permissionDisplay, this.user_role_permission)
+                // console.log('this.keysPermission after filter', this.keysPermission, this.permissionDisplay, this.user_role_permission)
             }
             
             // quickfix issue jika input dalem table, akan men-trigger event updateValue karena ada perubahan state dari inputan saat render table
