@@ -30,6 +30,7 @@
                     @formData="formData"
                     :dataItem="listenDataItem"
                     typeForm="pickup_list"
+                    :querySearch="querySearch"
                 />
 
                 <template v-if="listenwithSchedule">
@@ -124,7 +125,8 @@ export default {
             node_id: '',
             dialogGetCustomer:false,
             pickup_number:'',
-            hasClicked: false
+            hasClicked: false,
+            autoCompleteUrl: ''
         }
     },
     computed: {
@@ -147,6 +149,9 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
+                if (val.hasOwnProperty('node_destination')) {
+                    this.$store.dispatch("SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION", val.node_destination.node_name)
+                }
                 this.node_id = val.node_id
                 this.pickup_number = val.pickup_number
             }
@@ -154,6 +159,10 @@ export default {
 
     },
     methods: {
+        initialize(){
+            let url = this.URL.node +'?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
+            this.autoCompleteUrl = url
+        },
         formData(form){
             if (this.listenDataItem && this.listenDataItem.hasOwnProperty('pickup_courier_employee_id') && this.listenDataItem['pickup_courier_employee_id'] != null && this.listenDataItem['pickup_courier_employee_id'] != "") {
                 if(this.pickup_number !== undefined && this.pickup_number !== '') {
@@ -179,7 +188,12 @@ export default {
           let time = current.getHours() + ":" + minute;
           this.form.pickup_date = this.form.pickup_date + ' '+time
 
-
+            if (this.form.hasOwnProperty("pickup_node_id_destination") && this.form.pickup_node_id_destination) {
+                let objDestination = this.form.pickup_node_id_destination.node_id
+                this.form['pickup_node_id_destination'] = objDestination
+            } else if (this.listenDataItem.hasOwnProperty('pickup_node_id_destination')) {
+                this.form['pickup_node_id_destination'] = Number(this.listenDataItem.pickup_node_id_destination)
+            }
             this.hasClicked = true;
           if(this.pickup_number !== undefined && this.pickup_number !== '') {
             this.form.pickup_number = this.pickup_number
@@ -251,7 +265,7 @@ export default {
         },
         async getDataVehicleType(){
             await axios
-                .get(this.URL.vehicle_type +
+                .get(this.URL.pickup_vehicle_type +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
                 this.Helper.header())
                 .then(res => {
@@ -273,11 +287,8 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-        async getDataNodeDestination(){
-            await axios
-                .get(this.URL.node +
-                `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                this.Helper.header())
+        async getDataNodeDestination(queryString = ''){
+            await axios.get(this.autoCompleteUrl +`&s=${queryString}`, this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
@@ -289,7 +300,7 @@ export default {
                             arr.push(obj)
                         })
                         // this.dataNodeType = arr
-                        this.$store.dispatch("SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
+                        // this.$store.dispatch("SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -297,6 +308,28 @@ export default {
                 }).catch(err => {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
+        },
+        querySearch(queryString, cb){
+            
+            axios.get(this.autoCompleteUrl +`&s=${queryString}`, this.Helper.header())
+            .then(res => {
+                let result = res.data.data
+                let suggestions = [];
+
+                result.length > 0 && result.map(item => {
+                    if(item.hasOwnProperty('node_name')) {
+                        suggestions.push({
+                                value: item['node_name'],
+                                data: item
+                        });
+                    }
+                })
+                
+
+
+                cb(suggestions);
+                })
+            .catch(error => console.log("error", error));
         },
         async updateData(){
             await axios
@@ -344,7 +377,8 @@ export default {
         }
     },
     mounted() {
-        this.getDataNodeDestination()
+        this.initialize()
+        // this.getDataNodeDestination()
         this.getDataVehicleType()
         this.getDataEmployee()
     },

@@ -51,12 +51,12 @@ export default {
                     key: "status",
                     type: "inputan",
                     typeInput: "select",
-                    data: [
+                    data: 
                         {
                             label: null,
                             value: null
-                        }
-                    ]
+                        },
+                    selectedValue : "status_code"
                 },
 
                 {
