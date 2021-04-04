@@ -43,6 +43,7 @@ export default {
         name: String,
         rules: String,
         valueData: Array,
+        dataObj: [Object, String, Array],
         // loadingData: Boolean,
         selectedValue: [Array, String, Number],
         formKey: String,
@@ -74,7 +75,7 @@ export default {
         },
         listenTabIndex() {
             return this.tabindex
-        }
+        },
     },
     watch: {
         valueData: function (val) {
@@ -115,7 +116,7 @@ export default {
         // },
         updateValue(val){
             let obj = this.DataArr.filter(item => item.value == val)[0]
-            this.$emit("updateValue", this.listenFormKey, val, obj)
+            this.$emit("updateValue", this.listenFormKey, val, obj, this.dataObj)
         }
     },
 }

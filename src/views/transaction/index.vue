@@ -33,28 +33,31 @@
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="9" lg="9">
                     <div>
-                        <form-master ref="formTransaction" @onSubmit="onSubmit">
-                            <template v-slot:inputValidator>
-                                <div>
-                                    <vs-row justify="space-between">
-                                        <vs-col xs="12" sm="6" lg="6">
-                                            <div ref="test" tabindex="1"></div>
-                                            <origin ref="originComponent"/>
-                                        </vs-col>
-                                        <vs-col xs="12" sm="6" lg="6">
-                                            <div ref="test2" tabindex="2"></div>
-                                            <destination ref="destinationComponent"/>
-                                        </vs-col>
-                                    </vs-row>
-                                    <vs-row justify="space-between" class="mb-2" style="margin-top:10px">
-                                        <vs-col xs="12" sm="12" lg="12">
-                                            <div ref="test3" tabindex="11"></div>
-                                            <package ref="packageComponent"/>
-                                        </vs-col>
-                                    </vs-row>
-                                </div>
-                            </template>
-                        </form-master>
+                        <template v-if="rerender == false">
+                            <form-master ref="formTransaction" @onSubmit="onSubmit">
+                                <template v-slot:inputValidator>
+                                    <div>
+                                        <vs-row justify="space-between">
+                                            <vs-col xs="12" sm="6" lg="6">
+                                                <div ref="test" tabindex="1"></div>
+                                                <origin ref="originComponent"/>
+                                            </vs-col>
+                                            <vs-col xs="12" sm="6" lg="6">
+                                                <div ref="test2" tabindex="2"></div>
+                                                <destination ref="destinationComponent"/>
+                                            </vs-col>
+                                        </vs-row>
+                                        <vs-row justify="space-between" class="mb-2" style="margin-top:10px">
+                                            <vs-col xs="12" sm="12" lg="12">
+                                                <div ref="test3" tabindex="11"></div>
+                                                <package ref="packageComponent"/>
+                                            </vs-col>
+                                        </vs-row>
+                                    </div>
+                                </template>
+                            </form-master>
+                        </template>
+                        
 
                         <vs-row justify="flex-end" style="top:-13px">
                             <vs-col xs="6" sm="2" lg="2">
@@ -153,7 +156,9 @@ export default {
 
             prosesConnote: {},
             tempConnote: {},
-            prosesDataTransaction: {}
+            prosesDataTransaction: {},
+
+            rerender: false
         }
     },
     methods: {
@@ -281,6 +286,7 @@ export default {
         },
 
         async createConnote2() {
+            this.rerender = true
             await axios
                 .post(
                     this.URL.connote + `?n=${this.listenNodeId}`,
@@ -301,7 +307,10 @@ export default {
                                 this.openPaymentDialog()
                             });
                         }
+                        this.rerender = false
                     }
+                }).catch(err => {
+                    this.rerender = false
                 })
         },
 

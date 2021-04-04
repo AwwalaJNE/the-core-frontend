@@ -1,6 +1,6 @@
 <template>
     <div class="searchbox">
-        <vs-input icon-after v-model="value" placeholder="Search" @change="searchValue">
+        <vs-input icon-after v-model="value" autocomplete="chrome-off" placeholder="Search" @change="searchValue">
             <template #icon>
                 <i class='bx bx-search' @click="clear"></i>
             </template>

@@ -1,6 +1,6 @@
 <template>
     <div class="checkbox-inp">
-      <vs-checkbox ref="vuesaxCheckbox" v-model="option1" @change="updateValue">
+      <vs-checkbox ref="vuesaxCheckbox" v-model="option1" @input="updateValue">
           {{listenName}}
       </vs-checkbox>
     </div>
@@ -11,6 +11,7 @@ export default {
     props: {
         isChecked: Boolean,
         formKey: String,
+        dataObj: [Object, String, Array],
         name: String
     },
     data() {
@@ -39,7 +40,9 @@ export default {
             this.$emit("changed", this.option1)
         },
         updateValue(){
-            this.$emit("updateValue", this.listenFormKey, this.option1)
+            let info = {}
+            info['data'] = this.dataObj || {}
+            this.$emit("updateValue", this.listenFormKey, this.option1, info)
             this.$emit("changed", this.option1)
         }
     },
