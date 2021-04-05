@@ -441,7 +441,9 @@
                 </template>
             </template>
             <template #footer>
-                <vs-pagination v-model="localPage" :length="$vs.getLength($vs.getSearch(listenDataTable, search), localmax)" />
+                <template v-if="listenIsLocalPagination">
+                    <vs-pagination v-model="localPage" :length="$vs.getLength($vs.getSearch(listenDataTable, search), localmax)" />
+                </template>
             </template>
         </vs-table>
     
@@ -498,6 +500,7 @@ export default {
         isMultipleSelect: Boolean,
         selectedData: Array,
         isSearchAble: Boolean,
+        isLocalPagination: Boolean,
 
         customAction: Boolean,
         customActionList: Array, 
@@ -545,7 +548,11 @@ export default {
         },
         listenIsSearchAble() {
             return this.isSearchAble
-        }
+        },
+        listenIsLocalPagination() {
+            return this.isLocalPagination
+        },
+        
         
     },
     watch: {
