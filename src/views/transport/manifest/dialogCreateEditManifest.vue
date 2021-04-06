@@ -159,6 +159,7 @@ export default {
             vehicle_mode_id : "",
             vehicle_type_id: "",
             node_id_origin: "",
+            vehicle_id: "",
 
             autoComplateUrl: '',
             itterateUrlAutoComplete: '',
@@ -272,32 +273,6 @@ export default {
             this.item_code = ""
             this.manifest_number = ""
         },
-
-        async getDataEmployee(){
-            await axios
-                .get(this.URL.employee +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.employee_name
-                            obj["value"] = item.employee_id
-
-                            arr.push(obj)
-                        })
-                        this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
-
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
-
         async getDataVehicleMode(){
             await axios
                 .get(this.URL.vehicle_mode +
@@ -356,7 +331,7 @@ export default {
                   let arr = []
                   res.data.data.map(item => {
                     let obj = {}
-                    obj["label"] = item.vehicle_name
+                    obj["label"] = `${item.vehicle_name} | Police number: ${item.vehicle_police_no}`
                     obj["value"] = item.vehicle_id
 
                     arr.push(obj)
@@ -396,8 +371,9 @@ export default {
         // },
 
         async getDataEmployee(){
+          //this.URL.employee + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`
             await axios
-                .get(this.URL.employee + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                .get(this.URL.vehicle + `/${this.vehicle_id}/driver?n=${this.listenNodeId}&sort_order=desc&limit=100&page=1`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -417,65 +393,7 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-
-        // async getDataNodeDestination(){
-        //     await axios
-        //         .get(this.URL.node +
-        //         `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=1000&page=1`,
-        //         this.Helper.header())
-        //         .then(res => {
-        //             if(res.data.data.length > 0) {
-        //                 let arr = []
-        //                 res.data.data.map(item => {
-        //                     let obj = {}
-        //                     obj["label"] = item.node_name
-        //                     obj["value"] = Number(item.node_id)
-
-        //                     arr.push(obj)
-        //                 })
-        //                 // this.dataNodeType = arr
-        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
-        //             } else {
-        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", null)
-        //                 // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-        //             }
-
-        //         }).catch(err => {
-        //             // this.openNotification('danger', 'Failed to collect role list', err)
-        //         })
-        // },
-        
-        async getDestinationFromOriginChanges(nodeChange){
-            // console.log('action form', nodeChange)
-            // siapin url untuk input autocomplete
-            // let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
-            // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_URL", url)
-            // await axios
-            //     .get(this.URL.node +
-            //     `/${nodeChange}/destination-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-            //     this.Helper.header())
-            //     .then(res => {
-            //         if(res.data.data.length > 0) {
-            //             let arr = []
-            //             res.data.data.map(item => {
-            //                 let obj = {}
-            //                 obj["label"] = item.node_name
-            //                 obj["value"] = item.node_id
-
-            //                 arr.push(obj)
-            //             })
-            //             // this.dataNodeType = arr
-            //             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
-            //         } else {
-            //             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", [])
-            //             // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-            //         }
-
-            //     }).catch(err => {
-            //         // this.openNotification('danger', 'Failed to collect role list', err)
-            //     })
-        },
-
+      
         async updateData(){
             await axios
                 .put(
@@ -550,7 +468,7 @@ export default {
         },
 
         onChangeOrigin(type, val, info = {}){
-          // console.log('type', type , val, info)
+          console.log('type', type , val, info)
           if(type == 'vehicle_mode_id') {
             if(info.hasOwnProperty('data')) {
               this.vehicle_type_id = info.data.vehicle_type_id || ''
@@ -577,6 +495,11 @@ export default {
                 this.getDataVehicleType()
                 
             }
+          }
+
+          if(type == 'vehicle_id') {
+            this.vehicle_id = val
+            this.getDataEmployee()
           }
 
           if (type == 'node_id_origin') {
@@ -614,13 +537,12 @@ export default {
     },
     mounted() {
         // this.getDataNodeorigin()
-        this.initialize()
         // this.getDataNodeDestination()
         // this.getDataVehicleType()
         // this.getDataVehicle()
 
         this.getDataVehicleMode()
-        this.getDataEmployee()
+        // this.getDataEmployee()
     },
 }
 </script>
