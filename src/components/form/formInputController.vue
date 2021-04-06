@@ -126,7 +126,8 @@
                                     :typeForm="listenTypeForm"
                                     :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
                                     :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
-                                    @updateValue="updateValue"/>
+                                    @updateValue="updateValue"
+                                    @inputFocus="onfocuslah"/>
                                 </template>
                                 <template v-else>
                                     loading...
@@ -315,17 +316,18 @@ export default {
             let prefix = this.listenTypeForm.toUpperCase()
 
             try {
-                if(!type.toLowerCase().includes('dynamicinputcomponent')) {
-                    let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
-                    if(err == true) {
-                        console.log(`error input controller dispatch SET_${prefix}_${action} | val ` + val)
-                    }
+                // if(!type.toLowerCase().includes('dynamicinputcomponent')) {
+                    
+                // }
+                let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
+                if(err == true) {
+                    console.log(`error input controller dispatch SET_${prefix}_${action} | val ` + val)
                 }
             } catch (error) {
                 
             }
             
-
+            console.log('form input component', type, val, obj)
             if(obj.hasOwnProperty('typeInput')) {
                 if(obj['typeInput'] == 'autocomplete') {
                     try {

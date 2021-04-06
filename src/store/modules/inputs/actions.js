@@ -1337,6 +1337,10 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData', payload)
   },
 
+  SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT_1({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT_1', payload)
+  },
+
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_1({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_1', payload)
   },

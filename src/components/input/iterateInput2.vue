@@ -46,7 +46,8 @@
                                             :selectedValue="input.value"
                                             :typeForm="listenTypeForm"
                                             :typeInput="InputObject[input.key].typeInput"
-                                            @updateValue="updateValue" />
+                                            @updateValue="updateValue"
+                                            @inputFocus="onfocuslah" />
                                         </template>
                                     </template>
                                 </vs-col>
@@ -167,6 +168,9 @@ export default {
             
             console.log('dynamicinputcomponent', obj, this.listInput, this.form)
         },
+        onfocuslah(info) {
+            this.$emit("inputFocus", info)
+        },
         querySearch(queryString, cb){
             
             // let flag = this.listenFlag
@@ -222,7 +226,10 @@ export default {
 
             let arr = this.test(this.tempform)
             arr[index]['inputs'].map(item => {
-                if(item.key == getkey) {item.value = value}
+                if(item.key == getkey) {
+                    item.value = value
+                    item["data"] = info['data'] || {}
+                }
             })
             this.tempform = arr
 
@@ -230,7 +237,7 @@ export default {
                 info['option'] = {
                     'index' : index,
                     'key': getkey,
-                    'value': value
+                    'value': value,
                 }
             }
             

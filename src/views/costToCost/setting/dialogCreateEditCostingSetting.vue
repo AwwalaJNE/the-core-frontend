@@ -117,7 +117,7 @@ export default {
                           console.log(form,'asd');
             if(form != undefined){
                 let cost_value =[]
-                form.dynamicinputcomponent_cost_value.map((item, index) =>{
+                form.dynamicinputcomponent_cost_to_cost_detail_value.map((item, index) =>{
                   let obj_cost = {}
                     obj_cost[item.inputs[0].key] = item.inputs[0].value
                     obj_cost[item.inputs[1].key] = item.inputs[1].value
@@ -127,7 +127,7 @@ export default {
 
                 })
                 let cost_rule =[]
-                form.dynamicinputcomponent_rules.map((item, index) =>{
+                form.dynamicinputcomponent_cost_to_cost_rule.map((item, index) =>{
                   let obj_rule = {}
                     obj_rule[item.inputs[0].key] = item.inputs[0].value
                     obj_rule[item.inputs[1].key] = item.inputs[1].value

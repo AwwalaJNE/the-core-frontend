@@ -1388,6 +1388,42 @@ export default {
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_FLAG(state, payload) {
     state.surat_muatan.node_id_transit_1.flag = payload
   },
+
+  SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT_1(state, payload) {
+    let arr = state.surat_muatan.dynamicinputcomponent_node_id_transit_1.inputs
+    console.log('ARR', arr, payload)
+    let final = []
+    if(payload && payload.length > 0) {
+      let obj = {}
+      let template = arr
+
+      payload.map(item => {
+        let newArr = []
+        template.map(tmpl => {
+          if(item.hasOwnProperty(tmpl.key.toLowerCase())){
+            let val = item[tmpl.key.toLowerCase()]
+            let newObj = {}
+            newObj['key'] = tmpl.key
+            newObj['typeInput'] = tmpl.typeInput
+            newObj['value'] = val
+            
+            newArr.push(newObj)
+          } else if(item.hasOwnProperty("inputs")) {
+            newArr = item["inputs"]
+          }
+        })
+
+        let newData = {'inputs': []}
+        newData['inputs'] = newArr
+        final.push(newData)
+      })
+    }
+    console.log('final', final)
+      state.surat_muatan.dynamicinputcomponent_node_id_transit_1.hasOwnProperty('arrData') ?
+      state.surat_muatan.dynamicinputcomponent_node_id_transit_1.arrData = final :
+      state.surat_muatan.dynamicinputcomponent_node_id_transit_1.arrData = []
+  },
+
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ArrData(state, payload) {
     state.surat_muatan.node_id_transit_1.hasOwnProperty('arrData') ?
         state.surat_muatan.node_id_transit_1.arrData = payload :
@@ -1715,6 +1751,8 @@ export default {
             newObj['value'] = val
             
             newArr.push(newObj)
+          } else if(item.hasOwnProperty("inputs")) {
+            newArr = item["inputs"]
           }
         })
 
@@ -1748,6 +1786,8 @@ export default {
             newObj['value'] = val
             
             newArr.push(newObj)
+          } else if(item.hasOwnProperty("inputs")) {
+            newArr = item["inputs"]
           }
         })
 

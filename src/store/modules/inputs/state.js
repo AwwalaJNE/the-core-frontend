@@ -1751,9 +1751,9 @@ export default {
       valueData: null,
       value: ''
     },
-    dynamicinputcomponent: {
+    dynamicinputcomponent_node_id_transit_1: {
       label: "Transit",
-      key: "dynamicinputcomponent",
+      key: "dynamicinputcomponent_node_id_transit_1",
       rule:"",
       typeInput: "dynamicinputcomponent",
       typeData: "Array",
