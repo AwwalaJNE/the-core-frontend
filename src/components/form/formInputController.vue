@@ -272,13 +272,15 @@ export default {
                     let action = item.toUpperCase()
                     if(item.includes('dynamicinputcomponent')){
                         let itemAlt = item.split('dynamicinputcomponent_')[1]
-                        console.log('itemAlt', itemAlt)
+                        // console.log('itemAlt', itemAlt)
                         if(this.listenDataItem.hasOwnProperty(itemAlt)){
                             this.$store.dispatch(`SET_${prefix}_${action}`, this.listenDataItem[itemAlt])
                             
                         }
                     }
                     if(this.listenDataItem.hasOwnProperty(item)) {
+
+                        // console.log('obj store dispatch', `SET_${prefix}_${action}`, this.listenDataItem[item])
                         this.$store.dispatch(`SET_${prefix}_${action}`, this.listenDataItem[item])
 
                         if(this.InputObject[item].hasOwnProperty('mapPicker')) {

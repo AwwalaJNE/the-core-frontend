@@ -253,11 +253,11 @@ export default {
           if (this.form.eta > this.form.etd) {
             if(this.manifest_number !== undefined && this.manifest_number !== '') {
               this.form.manifest_number = this.manifest_number
-              // this.updateData()
+              this.updateData()
             } else {
               this.node_id = this.listenNodeId
               this.form.pickup_node_id_requestor = this.node_id
-              // this.addData()
+              this.addData()
             }
           } else {
             this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')

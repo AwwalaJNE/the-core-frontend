@@ -73,6 +73,13 @@ export default {
             return this.typeInput.includes('disabled')
         }
     },
+    watch: {
+        selectedValue: function (val) {
+            if (val != undefined) {
+                this.value = val
+            }
+        },
+    },
     methods:{
         // querySearch(queryString, cb){
             

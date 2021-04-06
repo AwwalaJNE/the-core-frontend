@@ -239,7 +239,13 @@ export default {
 
         actionUpdate(val){
           if(this.dataTable.length > 0) {
+            val["node_id_origin"] = val["origin_name"] 
+            val["node_id_destination"] = val["destination_name"]          
             this.dataItem = val
+
+            this.$store.dispatch(`SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData`, val["origin"])
+            this.$store.dispatch(`SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData`, val["destination"])
+
             this.$nextTick(() => {
               this.dialogManifestList = true
             });
