@@ -84,6 +84,7 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
+import moment from "moment"
 import DialogMaster from "@/components/dialog/dialogMaster"
 import FormInputController from "@/components/form/formInputController"
 import TableMaster from "@/components/table/tableMaster"
@@ -146,7 +147,9 @@ export default {
             vehicle_max_weight: 0,
             vehicle_type_id: '',
             lot_weight:0,
-            no_moda_angkutan_id: null
+            no_moda_angkutan_id: null,
+            etd:null,
+            estimated_time_in_hour:null,
         }
     },
     computed: {
@@ -182,7 +185,8 @@ export default {
         },
         active: function (val) {
             if (val == true) {
-                
+              this.getDestination()
+              this.getNoModeAngkutan()
             }
         }
     },
@@ -225,7 +229,7 @@ export default {
             }
         },
         onChangeCustom(type, val, obj){
-            console.log('onchange',type, val, obj)
+            // console.log('onchange',type, val, obj)
             switch(type) {
                 case "no_moda_angkutan_id":
                     if(typeof obj === 'object') {
@@ -237,10 +241,29 @@ export default {
                     this.no_moda_angkutan_id = val
                     this.getDriver()
                    break;
+                case "destination_id":
+                  if(typeof obj === 'object') {
+                    if(obj.hasOwnProperty('item')) {
+                      this.estimated_time_in_hour = obj['item']['estimated_time_in_hour']
+                      this.handleEta(this.etd, this.estimated_time_in_hour)
+                    }
+                  }
+                  break;
+                case "etd":
+                  this.etd = val
+                  let dateEta = this.handleEta(this.etd, this.estimated_time_in_hour)
+
+                  break;
                 default:
                     console.log('meong')
                     // code block
             }
+        },
+        handleEta(dateTime, amount){
+          if(dateTime && amount){
+            let dateEta =  moment(dateTime).add(amount, 'hours').format('YYYY-MM-DD HH:mm:ss');
+            this.$store.dispatch("SET_SURAT_JALAN_ETA", dateEta)
+          }
         },
         actionUpdate(val, key) {
             console.log('table', key, val)
@@ -338,6 +361,7 @@ export default {
                             let obj = {}
                             obj["label"] = item.node_name
                             obj["value"] = Number(item.node_id)
+                            obj["item"] = item
 
                             arr.push(obj)
                         })
@@ -458,10 +482,8 @@ export default {
         },
     },
     mounted() {
-        this.getDestination()
-                // this.getModeAngkutan()
-                this.getNoModeAngkutan()
-                // this.getDriver()
+      // this.getDestination()
+      // this.getNoModeAngkutan()
     },
 }
 </script>
