@@ -204,10 +204,10 @@ export default {
                 let diskon = 0
                 data['connote'].map(item => {
                     if(item.amount_discount) {
-                        diskon += item.amount_discount
+                        diskon += Number(item.amount_discount)
                     }
                 })
-                this.grand_total = data['grand_total'] + diskon // data['grand_total'] sebelumnya sudah kena efek diskon saat proses calculation
+                this.grand_total = diskon > 0 ? data['grand_total'] + diskon : data['grand_total'] // data['grand_total'] sebelumnya sudah kena efek diskon saat proses calculation
                 this.price = data['grand_total'] 
                 this.discount = diskon
                 let koli_qty = 0
