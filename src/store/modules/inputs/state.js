@@ -1805,7 +1805,7 @@ export default {
       label: "Destination",
       key: "node_id_destination",
       rule:"",
-      typeInput: "select",
+      typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
       valueData: null,

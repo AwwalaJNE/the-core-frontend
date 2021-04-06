@@ -8,6 +8,7 @@
         :trigger-on-focus="false"
         @select="handleSelect"
         @input="updateValue"
+        @focus="inputFocus"
         ></el-autocomplete>
     </div>
 </template>
@@ -108,6 +109,13 @@ export default {
         // },
         updateValue(){
             this.$emit("updateValue", this.listenFormKey, this.value, {})
+        },
+        inputFocus(){
+            let info = {}
+            info["key"] = this.listenFormKey
+            info["typeInput"] = this.listenTypeInput
+            info["data"] = this.value
+            this.$emit("inputFocus", info)
         },
         handleSelect(item) {
 

@@ -168,7 +168,8 @@
                                     :selectedValue="InputObject[item].value"
                                     :typeForm="listenTypeForm"
                                     :typeInput="InputObject[item].typeInput"
-                                    @updateValue="updateValue" />
+                                    @updateValue="updateValue" 
+                                    @inputFocus="onfocuslah"/>
                                 </template>
                             </template>
                         </vs-col>
@@ -341,6 +342,7 @@ export default {
             if(info.typeInput !== '' && info.typeInput.includes('location_selector')) {
               this.$emit("onFocus_location_selector", info)
             }
+            this.$emit("inputFocus", info)
         },
         handleSubmit(){
             this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster

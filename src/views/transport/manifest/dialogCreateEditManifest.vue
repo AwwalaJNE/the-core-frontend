@@ -22,6 +22,7 @@
                       :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
                       :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
                       @onChangeCustom="onChangeOrigin"
+                      @inputFocus="inputFocus"
                   />
                 </div>
               </vs-col>
@@ -157,6 +158,7 @@ export default {
 
             vehicle_mode_id : "",
             vehicle_type_id: "",
+            node_id_origin: "",
 
             autoComplateUrl: '',
             itterateUrlAutoComplete: '',
@@ -192,9 +194,27 @@ export default {
     methods: {
         initialize(){
             // siapin url untuk input autocomplete
-            let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
-            this.autoComplateUrl = url
+            // let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
+            // this.autoComplateUrl = url
             // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_URL", url)
+        },
+        inputFocus(info){
+          console.log('focus to', info)
+          if(info && info.hasOwnProperty("key")) {
+            let url = ""
+            switch(info["key"]) {
+                case "node_id_origin":
+                    url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
+                    this.autoComplateUrl = url
+                    break;
+                case "node_id_destination":
+                    url = this.URL.node +'/'+ this.node_id_origin +'/destination-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id+ '&sort_order=desc&limit=15&page=1'
+                    this.autoComplateUrl = url
+                    break;
+                default:
+                    // code block
+            }
+          }
         },
         querySearch(queryString, cb){
             
@@ -226,6 +246,7 @@ export default {
         formData(form){
           // console.log('form',form)
           form['node_id_origin'] = form['node_id_origin']['node_id']
+          form['node_id_destination'] = form['node_id_destination']['node_id']
           this.form = form
           
           
@@ -241,7 +262,6 @@ export default {
           } else {
             this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')
           }
-
         },
         handleSubmit(){
             this.$refs.formSuratMuatanController.handleSubmit() // trigger function submit form dari luar component formInputController
@@ -398,32 +418,32 @@ export default {
                 })
         },
 
-        async getDataNodeDestination(){
-            await axios
-                .get(this.URL.node +
-                `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=1000&page=1`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.node_name
-                            obj["value"] = Number(item.node_id)
+        // async getDataNodeDestination(){
+        //     await axios
+        //         .get(this.URL.node +
+        //         `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=1000&page=1`,
+        //         this.Helper.header())
+        //         .then(res => {
+        //             if(res.data.data.length > 0) {
+        //                 let arr = []
+        //                 res.data.data.map(item => {
+        //                     let obj = {}
+        //                     obj["label"] = item.node_name
+        //                     obj["value"] = Number(item.node_id)
 
-                            arr.push(obj)
-                        })
-                        // this.dataNodeType = arr
-                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", null)
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
+        //                     arr.push(obj)
+        //                 })
+        //                 // this.dataNodeType = arr
+        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
+        //             } else {
+        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData", null)
+        //                 // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+        //             }
 
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
+        //         }).catch(err => {
+        //             // this.openNotification('danger', 'Failed to collect role list', err)
+        //         })
+        // },
         
         async getDestinationFromOriginChanges(nodeChange){
             // console.log('action form', nodeChange)
@@ -553,7 +573,7 @@ export default {
                 let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id+ '&sort_order=desc&limit=15&page=1'
                 this.autoComplateUrl = url
 
-                this.getDataNodeDestination()
+                // this.getDataNodeDestination() nnti gonta ganti url auto complete disini
                 this.getDataVehicleType()
                 
             }
@@ -562,8 +582,8 @@ export default {
           if (type == 'node_id_origin') {
             if(Object.keys(info).length > 0) {
               if(info.hasOwnProperty('data')) {
-                      
-                      let url = this.URL.node +'/'+ info['data']['node_id'] +'/destination-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id+ '&sort_order=desc&limit=15&page=1'
+                      this.node_id_origin = info['data']['node_id']
+                      let url = this.URL.node +'/'+ this.node_id_origin +'/destination-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id+ '&sort_order=desc&limit=15&page=1'
                       this.itterateUrlAutoComplete = url
               }
             }
