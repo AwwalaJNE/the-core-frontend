@@ -45,6 +45,7 @@ export default {
 
     //vehicle
     vehicle: api + "vehicle",
+    vehicle_manifest_delivery_order: api + "vehicle-manifest-delivery-order",
     vehicle_mode: api + "vehicle-mode",
     vehicle_type: api + "vehicle-type",
     pickup_vehicle_type: api + "pickup-vehicle-type",

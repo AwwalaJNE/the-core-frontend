@@ -145,7 +145,8 @@ export default {
             suratMuatan: '',
             vehicle_max_weight: 0,
             vehicle_type_id: '',
-            lot_weight:0
+            lot_weight:0,
+            no_moda_angkutan_id: null
         }
     },
     computed: {
@@ -233,6 +234,8 @@ export default {
                             this.vehicle_type_id = obj['item']['vehicle_type_id']
                         }
                     }
+                    this.no_moda_angkutan_id = val
+                    this.getDriver()
                    break;
                 default:
                     console.log('meong')
@@ -326,7 +329,7 @@ export default {
         async getDestination() {
             await axios
                 .get(this.URL.node +
-                `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                `/${this.listenNodeId}/destination-link-manifest-delivery-order?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -349,42 +352,42 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-        async getModeAngkutan() {
-            await axios
-                .get(this.URL.vehicle_mode + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj['label'] = item.vehicle_mode_name
-                            obj['value'] = item.vehicle_mode_id
-                            // obj["item"] = item
-                            arr.push(obj)
-                        })
-
-                        this.$store.dispatch("SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
-                    
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
+        // async getModeAngkutan() {
+        //     await axios
+        //         .get(this.URL.vehicle_mode +
+        //         `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+        //         this.Helper.header())
+        //         .then(res => {
+        //             if(res.data.data.length > 0) {
+        //                 let arr = []
+        //                 res.data.data.map(item => {
+        //                     let obj = {}
+        //                     obj['label'] = item.vehicle_mode_name
+        //                     obj['value'] = item.vehicle_mode_id
+        //                     // obj["item"] = item
+        //                     arr.push(obj)
+        //                 })
+        //
+        //                 this.$store.dispatch("SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ArrData", arr.length > 0 ? arr : null)
+        //             } else {
+        //                 // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+        //             }
+        //
+        //         }).catch(err => {
+        //             // this.openNotification('danger', 'Failed to collect role list', err)
+        //         })
+        // },
         async getNoModeAngkutan() {
             await axios
-                .get(this.URL.vehicle + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+                .get(this.URL.vehicle_manifest_delivery_order +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.vehicle_name
+                            obj["label"] = item.vehicle_name + '('+item.vehicle_police_no+')'
                             obj["value"] = item.vehicle_id
                             obj['item'] = item 
                             arr.push(obj)
@@ -428,8 +431,8 @@ export default {
         },
         async getDriver() {
             await axios
-                .get(this.URL.employee + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
+                .get(this.URL.vehicle +
+                `/${this.no_moda_angkutan_id}/driver?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -456,9 +459,9 @@ export default {
     },
     mounted() {
         this.getDestination()
-                this.getModeAngkutan()
+                // this.getModeAngkutan()
                 this.getNoModeAngkutan()
-                this.getDriver()
+                // this.getDriver()
     },
 }
 </script>

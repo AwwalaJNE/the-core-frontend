@@ -1875,17 +1875,17 @@ export default {
       valueData: null,
       value: ''
     },
-    moda_angkutan_id: {
-      label: "Moda Angkutan",
-      key: "moda_angkutan_id",
-      rule:"required",
-      typeInput: "select",
-      typeData: "String",
-      width: "6",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
+    // moda_angkutan_id: {
+    //   label: "Moda Angkutan",
+    //   key: "moda_angkutan_id",
+    //   rule:"required",
+    //   typeInput: "select",
+    //   typeData: "String",
+    //   width: "6",
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
     no_moda_angkutan_id: {
       label: "No Moda Angkutan",
       key: "no_moda_angkutan_id",
@@ -1897,17 +1897,7 @@ export default {
       valueData: null,
       value: ''
     },
-    driver_id: {
-      label: "Driver",
-      key: "driver_id",
-      rule:"required",
-      typeInput: "select",
-      typeData: "String",
-      width: "6",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
+
     etd: {
       label: "ETD",
       key: "etd",
@@ -1925,6 +1915,20 @@ export default {
       typeInput: "datetime",
       typeData: "String",
       width: "6",
+      valueData: null,
+      value: ''
+    },
+    driver_id: {
+      label: "Driver",
+      key: "driver_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [{
+        'label':null,
+        'value':0
+      }],
       valueData: null,
       value: ''
     }
