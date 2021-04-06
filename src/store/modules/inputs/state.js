@@ -1722,6 +1722,15 @@ export default {
   },
   //surat muatan
   surat_muatan:{
+    manifest_number: {
+      label: "Manifest Number",
+      key: "manifest_number",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
     manifest_method_id: {
       label: "Type Surat Muatan",
       key: "manifest_method_id",

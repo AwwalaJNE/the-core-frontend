@@ -204,7 +204,7 @@ export default {
             axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
-                console.log('result',result)
+                // console.log('result',result)
                 let suggestions = [];
 
                 result.length > 0 && result.map(item => {
@@ -217,7 +217,7 @@ export default {
                 })
                 
 
-                console.log('suggestions', suggestions)
+                // console.log('suggestions', suggestions)
 
                 cb(suggestions);
                 })
@@ -241,6 +241,7 @@ export default {
           } else {
             this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')
           }
+
         },
         handleSubmit(){
             this.$refs.formSuratMuatanController.handleSubmit() // trigger function submit form dari luar component formInputController
@@ -425,7 +426,7 @@ export default {
         },
         
         async getDestinationFromOriginChanges(nodeChange){
-            console.log('action form', nodeChange)
+            // console.log('action form', nodeChange)
             // siapin url untuk input autocomplete
             // let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
             // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_URL", url)
@@ -475,7 +476,7 @@ export default {
         },
 
         async addData() {
-            console.log('form', this.form)
+            // console.log('form', this.form)
             this.form.manifest_item = this.dataTable
             this.form.vehicle_type_id = this.form.vehicle_mode_id
             this.form.max_weight = 1
@@ -516,7 +517,7 @@ export default {
                   item["type"] = 'Bag'
                 })
                 this.dataTable = this.dataTable.concat(arr)
-                console.log(this.dataTable,'data')
+                // console.log(this.dataTable,'data')
               }
 
             }).catch(err => {
@@ -529,7 +530,7 @@ export default {
         },
 
         onChangeOrigin(type, val, info = {}){
-          console.log('type', type , val, info)
+          // console.log('type', type , val, info)
           if(type == 'vehicle_mode_id') {
             if(info.hasOwnProperty('data')) {
               this.vehicle_type_id = info.data.vehicle_type_id || ''

@@ -1302,6 +1302,13 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   /* PICKUP SCHEDULE END*/
 
   /* Start Surat Muatan */
+  SET_SURAT_MUATAN_MANIFEST_NUMBER({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_NUMBER', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData', payload)
+  },
+
   SET_SURAT_MUATAN_MANIFEST_METHOD_ID({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_METHOD_ID', payload)
   },

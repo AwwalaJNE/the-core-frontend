@@ -1339,6 +1339,13 @@ export default {
   //pickup schedule end
 
   /* Start Surat Muatan */
+  SET_SURAT_MUATAN_MANIFEST_NUMBER(state, payload) {
+    state.surat_muatan.manifest_number.value = payload
+  },
+  SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData(state, payload) {
+    state.surat_muatan.manifest_number.valueData = payload
+  },
+
   SET_SURAT_MUATAN_MANIFEST_METHOD_ID(state, payload) {
     state.surat_muatan.manifest_method_id.value = payload
   },
