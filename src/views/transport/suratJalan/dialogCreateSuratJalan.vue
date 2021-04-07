@@ -166,10 +166,11 @@ export default {
             if (this.dataItem && !this.dataItem.hasOwnProperty("destination_id")) {
                 this.dataItem["destination_id"] = this.dataItem.node_id_destination
                 this.dataItem["moda_angkutan_id"] = this.dataItem.vehicle_mode_id
-                this.dataItem["no_moda_angkutan_id"] = this.dataItem.vehicle_type_id
+                this.dataItem["no_moda_angkutan_id"] = this.dataItem.vehicle_id
                 this.dataItem["manifest_do_item"] = this.dataItem.detail
-                this.dataItem["driver_id"] = this.dataItem.pic_employee_id
+                this.dataItem["driver_id"] = parseInt(this.dataItem.pic_employee_id)
             }
+
             return this.dataItem
         },
         listenFormKey(){

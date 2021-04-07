@@ -159,9 +159,9 @@ export default {
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
-                    // arr.map(item => {
-                    //     item["user_nodes"] = item.user_nodes.toString()
-                    // })
+                    arr.map(item => {
+                        item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
+                    })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)

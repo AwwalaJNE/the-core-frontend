@@ -1467,6 +1467,16 @@ export default {
       valueData: null,
       value: ''
     },
+    vehicle_mode_id: {
+      label: "Vehicle Mode",
+      key: "vehicle_mode_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     is_active: {
       label: "Active|Unactive",
       key: "is_active",

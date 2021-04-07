@@ -196,6 +196,7 @@ export default {
                       item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
                       item["node_id_origin_name"] = (item.origin) ? item.origin.node_name: null
                       item["node_id_destination_name"] = (item.destination) ? item.destination.node_name: null
+                      item["driver_id"] = (item.pic_employee_id) ? item.pic_employee_id: null
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page

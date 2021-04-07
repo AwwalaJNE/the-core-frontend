@@ -1,53 +1,53 @@
 export default {
   // ==== user ====
   SET_USER_USER_NAME({ commit }, payload) {
-      commit('SET_USER_USER_NAME', payload)
+    commit('SET_USER_USER_NAME', payload)
   },
   SET_USER_USER_LOGIN({ commit }, payload) {
-      commit('SET_USER_USER_LOGIN', payload)
+    commit('SET_USER_USER_LOGIN', payload)
   },
   SET_USER_USER_EMAIL({ commit }, payload) {
-      commit('SET_USER_USER_EMAIL', payload)
+    commit('SET_USER_USER_EMAIL', payload)
   },
   SET_USER_PASSWORD({ commit }, payload) {
-      commit('SET_USER_PASSWORD', payload)
+    commit('SET_USER_PASSWORD', payload)
   },
   SET_USER_USER_ROLE_ID({ commit }, payload) {
-      commit('SET_USER_USER_ROLE_ID', payload)
+    commit('SET_USER_USER_ROLE_ID', payload)
   },
   SET_USER_USER_NODE_ID({ commit }, payload) {
-      commit('SET_USER_USER_NODE_ID', payload)
+    commit('SET_USER_USER_NODE_ID', payload)
   },
   SET_USER_USER_NAME_ValueData({ commit }, payload) {
     commit('SET_USER_USER_NAME_ValueData', payload)
   },
   SET_USER_USER_LOGIN_ValueData({ commit }, payload) {
-      commit('SET_USER_USER_LOGIN_ValueData', payload)
+    commit('SET_USER_USER_LOGIN_ValueData', payload)
   },
   SET_USER_USER_EMAIL_ValueData({ commit }, payload) {
-      commit('SET_USER_USER_EMAIL_ValueData', payload)
+    commit('SET_USER_USER_EMAIL_ValueData', payload)
   },
   SET_USER_PASSWORD_ValueData({ commit }, payload) {
-      commit('SET_USER_PASSWORD_ValueData', payload)
+    commit('SET_USER_PASSWORD_ValueData', payload)
   },
   SET_USER_USER_ROLE_ID_ValueData({ commit }, payload) {
-      commit('SET_USER_USER_ROLE_ID_ValueData', payload)
+    commit('SET_USER_USER_ROLE_ID_ValueData', payload)
   },
   // type select perlu data array
   SET_USER_USER_ROLE_ID_ArrData({ commit }, payload) {
-      commit('SET_USER_USER_ROLE_ID_ArrData', payload)
+    commit('SET_USER_USER_ROLE_ID_ArrData', payload)
   },
   SET_USER_USER_NODE_ID_ValueData({ commit }, payload) {
-      commit('SET_USER_USER_NODE_ID_ValueData', payload)
+    commit('SET_USER_USER_NODE_ID_ValueData', payload)
   },
   // type select perlu data array
   SET_USER_USER_NODE_ID_ArrData({ commit }, payload) {
-      commit('SET_USER_USER_NODE_ID_ArrData', payload)
+    commit('SET_USER_USER_NODE_ID_ArrData', payload)
   },
 
   // ==== user role ====
   SET_ROLE_USER_ROLE_NAME({ commit }, payload) {
-      commit('SET_ROLE_USER_ROLE_NAME', payload)
+    commit('SET_ROLE_USER_ROLE_NAME', payload)
   },
   SET_ROLE_USER_ROLE_NAME_ValueData({ commit }, payload) {
     commit('SET_ROLE_USER_ROLE_NAME_ValueData', payload)
@@ -392,24 +392,24 @@ export default {
     commit('SET_CUSTOMER_CUSTOMER_CORPORATE_CREDIT_ValueData', payload)
   },
 
- // ======= START Customer Type =======
- SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME({ commit }, payload) {
-  commit('SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME', payload)
+  // ======= START Customer Type =======
+  SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME({ commit }, payload) {
+    commit('SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME', payload)
   },
   SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME_ValueData({ commit }, payload) {
-  commit('SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME_ValueData', payload)
+    commit('SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME_ValueData', payload)
   },
-  
+
   SET_CUSTOMER_TYPE_IS_ACTIVE({ commit }, payload) {
-  commit('SET_CUSTOMER_TYPE_IS_ACTIVE', payload)
+    commit('SET_CUSTOMER_TYPE_IS_ACTIVE', payload)
   },
   SET_CUSTOMER_TYPE_IS_ACTIVE_ValueData({ commit }, payload) {
-  commit('SET_CUSTOMER_TYPE_IS_ACTIVE_ValueData', payload)
+    commit('SET_CUSTOMER_TYPE_IS_ACTIVE_ValueData', payload)
   },
-  
- // ======= END Customer Type =======
 
- 
+  // ======= END Customer Type =======
+
+
   // ==== Node ====
   SET_NODE_NODE_NAME({ commit }, payload) {
     commit('SET_NODE_NODE_NAME', payload)
@@ -532,59 +532,59 @@ export default {
   SET_NODE_ALTERNATE_ADDRESS_NODE_ID_ValueData({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ID_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_NODE_ALTERNATE_ADDRESS_NODE_ID_ArrData({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ID_ArrData', payload)
   },
-    
+
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_NAME({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_NAME', payload)
   },
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_NAME_ValueData({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_NAME_ValueData', payload)
   },
-    
+
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ADDRESS({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ADDRESS', payload)
   },
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ADDRESS_ValueData({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_ADDRESS_ValueData', payload)
   },
-    
-    
+
+
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID', payload)
   },
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ValueData({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ArrData({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ArrData', payload)
   },
 
-    
+
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LATITUDE({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LATITUDE', payload)
   },
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LATITUDE_ValueData({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LATITUDE_ValueData', payload)
   },
-    
+
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LONGITUDE({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LONGITUDE', payload)
   },
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LONGITUDE_ValueData({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_LONGITUDE_ValueData', payload)
   },
-    
+
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PHONE({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PHONE', payload)
   },
   SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PHONE_ValueData({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_PHONE_ValueData', payload)
   },
-    
+
   SET_NODE_ALTERNATE_ADDRESS_IS_ACTIVE({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_IS_ACTIVE', payload)
   },
@@ -599,7 +599,7 @@ export default {
   SET_NODELINK_NODE_LINK_ORIGIN_ID_ValueData({ commit }, payload) {
     commit('SET_NODELINK_NODE_LINK_ORIGIN_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_NODELINK_NODE_LINK_ORIGIN_ID_ArrData({ commit }, payload) {
     commit('SET_NODELINK_NODE_LINK_ORIGIN_ID_ArrData', payload)
   },
@@ -610,7 +610,7 @@ export default {
   SET_NODELINK_NODE_LINK_DESTINATION_ID_ValueData({ commit }, payload) {
     commit('SET_NODELINK_NODE_LINK_DESTINATION_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_NODELINK_NODE_LINK_DESTINATION_ID_ArrData({ commit }, payload) {
     commit('SET_NODELINK_NODE_LINK_DESTINATION_ID_ArrData', payload)
   },
@@ -621,7 +621,7 @@ export default {
   SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ValueData({ commit }, payload) {
     commit('SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
     commit('SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ArrData', payload)
   },
@@ -636,87 +636,87 @@ export default {
 
   //end node link
 
-// tariff
-SET_TARIFF_TARIFF_GROUP({ commit }, payload) {
-  commit('SET_TARIFF_TARIFF_GROUP', payload)
-},
-SET_TARIFF_TARIFF_GROUP_visible({ commit }, payload) {
-  commit('SET_TARIFF_TARIFF_GROUP_visible', payload)
-},
-SET_TARIFF_TARIFF_GROUP_ValueData({ commit }, payload) {
-  commit('SET_TARIFF_TARIFF_GROUP_ValueData', payload)
-},
+  // tariff
+  SET_TARIFF_TARIFF_GROUP({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_GROUP', payload)
+  },
+  SET_TARIFF_TARIFF_GROUP_visible({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_GROUP_visible', payload)
+  },
+  SET_TARIFF_TARIFF_GROUP_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_GROUP_ValueData', payload)
+  },
   // type select perlu data array
-SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
-  commit('SET_TARIFF_TARIFF_GROUP_ArrData', payload)
-},
+  SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_GROUP_ArrData', payload)
+  },
   SET_TARIFF_TARIFF_ORIGIN({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_ORIGIN', payload)
   },
   SET_TARIFF_TARIFF_ORIGIN_ValueData({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_ORIGIN_ValueData', payload)
   },
-    
+
   SET_TARIFF_TARIFF_DESTINATION({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_DESTINATION', payload)
   },
   SET_TARIFF_TARIFF_DESTINATION_ValueData({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_DESTINATION_ValueData', payload)
   },
-    
+
   SET_TARIFF_TARIFF_START_DATE({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_START_DATE', payload)
   },
   SET_TARIFF_TARIFF_START_DATE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_START_DATE_ValueData', payload)
   },
-    
+
   SET_TARIFF_TARIFF_EXPIRY_DATE({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_EXPIRY_DATE', payload)
   },
   SET_TARIFF_TARIFF_EXPIRY_DATE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_EXPIRY_DATE_ValueData', payload)
   },
-    
+
   SET_TARIFF_TARIFF_SERVICE_CODE({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_SERVICE_CODE', payload)
   },
   SET_TARIFF_TARIFF_SERVICE_CODE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_SERVICE_CODE_ValueData', payload)
   },
-    
+
   SET_TARIFF_TARIFF_CURRENCY({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_CURRENCY', payload)
   },
   SET_TARIFF_TARIFF_CURRENCY_ValueData({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_CURRENCY_ValueData', payload)
   },
-    
+
   SET_TARIFF_TARIFF_VEHICLE_MODE_ID({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_VEHICLE_MODE_ID', payload)
   },
   SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ValueData({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ArrData', payload)
   },
-    
+
   SET_TARIFF_TARIFF_AMOUNT_1({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_AMOUNT_1', payload)
   },
   SET_TARIFF_TARIFF_AMOUNT_1_ValueData({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_AMOUNT_1_ValueData', payload)
   },
-    
+
   SET_TARIFF_TARIFF_WEIGHT_1({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_WEIGHT_1', payload)
   },
   SET_TARIFF_TARIFF_WEIGHT_1_ValueData({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_WEIGHT_1_ValueData', payload)
   },
-    
+
   SET_TARIFF_IS_ACTIVE({ commit }, payload) {
     commit('SET_TARIFF_IS_ACTIVE', payload)
   },
@@ -731,189 +731,189 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_NAME_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_NAME_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_SERVICE_CODE({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_SERVICE_CODE', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_SERVICE_CODE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_SERVICE_CODE_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_START_DATE({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_START_DATE', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_START_DATE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_START_DATE_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_EXPIRY_DATE({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_EXPIRY_DATE', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_EXPIRY_DATE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_EXPIRY_DATE_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_TYPE({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_TYPE', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_TYPE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_TYPE_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_AMOUNT({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_AMOUNT', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_AMOUNT_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_AMOUNT_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_MAX_AMOUNT({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_MAX_AMOUNT', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_MAX_AMOUNT_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_MAX_AMOUNT_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_COUNTRY({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_COUNTRY', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_COUNTRY_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_COUNTRY_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_PROVINCE({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_PROVINCE', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_PROVINCE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_PROVINCE_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_CITY({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_CITY', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_CITY_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_CITY_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_DISTRICT({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_DISTRICT', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_DISTRICT_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_DISTRICT_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_SUBDISTRICT({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_SUBDISTRICT', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_SUBDISTRICT_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_SUBDISTRICT_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_ZIP_CODE({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_ZIP_CODE', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_ZIP_CODE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_ZIP_CODE_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_TARIFF_CODE({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_TARIFF_CODE', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_TARIFF_CODE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_FROM_TARIFF_CODE_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_COUNTRY({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_COUNTRY', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_COUNTRY_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_COUNTRY_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_PROVINCE({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_PROVINCE', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_PROVINCE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_PROVINCE_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_CITY({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_CITY', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_CITY_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_CITY_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_DISTRICT({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_DISTRICT', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_DISTRICT_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_DISTRICT_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_SUBDISTRICT({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_SUBDISTRICT', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_SUBDISTRICT_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_SUBDISTRICT_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_ZIP_CODE({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_ZIP_CODE', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_ZIP_CODE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_ZIP_CODE_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_TARIFF_CODE({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_TARIFF_CODE', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_TARIFF_CODE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_TO_TARIFF_CODE_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_KOLI({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_KOLI', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_KOLI_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_KOLI_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_KOLI({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_KOLI', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_KOLI_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_KOLI_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_WEIGHT({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_WEIGHT', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_WEIGHT_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_WEIGHT_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_WEIGHT({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_WEIGHT', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_WEIGHT_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_WEIGHT_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_VOLUME({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_VOLUME', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_VOLUME_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MIN_VOLUME_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_VOLUME({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_VOLUME', payload)
   },
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_VOLUME_ValueData({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_TARIFF_SPECIAL_CONDITION_MAX_VOLUME_ValueData', payload)
   },
-    
+
   SET_TARIFF_SPECIAL_IS_ACTIVE({ commit }, payload) {
     commit('SET_TARIFF_SPECIAL_IS_ACTIVE', payload)
   },
@@ -928,39 +928,39 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURCHARGE_SURCHARGE_NAME_ValueData({ commit }, payload) {
     commit('SET_SURCHARGE_SURCHARGE_NAME_ValueData', payload)
   },
-    
+
   SET_SURCHARGE_SURCHARGE_TYPE_ID({ commit }, payload) {
     commit('SET_SURCHARGE_SURCHARGE_TYPE_ID', payload)
   },
   SET_SURCHARGE_SURCHARGE_TYPE_ID_ValueData({ commit }, payload) {
     commit('SET_SURCHARGE_SURCHARGE_TYPE_ID_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_SURCHARGE_SURCHARGE_TYPE_ID_ArrData({ commit }, payload) {
     commit('SET_SURCHARGE_SURCHARGE_TYPE_ID_ArrData', payload)
   },
-    
+
   SET_SURCHARGE_SURCHARGE_CONDITION({ commit }, payload) {
     commit('SET_SURCHARGE_SURCHARGE_CONDITION', payload)
   },
   SET_SURCHARGE_SURCHARGE_CONDITION_ValueData({ commit }, payload) {
     commit('SET_SURCHARGE_SURCHARGE_CONDITION_ValueData', payload)
   },
-    
+
   SET_SURCHARGE_SURCHARGE_FORMULA({ commit }, payload) {
     commit('SET_SURCHARGE_SURCHARGE_FORMULA', payload)
   },
   SET_SURCHARGE_SURCHARGE_FORMULA_ValueData({ commit }, payload) {
     commit('SET_SURCHARGE_SURCHARGE_FORMULA_ValueData', payload)
   },
-    
+
   SET_SURCHARGE_AUTO_APPLY({ commit }, payload) {
     commit('SET_SURCHARGE_AUTO_APPLY', payload)
   },
   SET_SURCHARGE_AUTO_APPLY_ValueData({ commit }, payload) {
     commit('SET_SURCHARGE_AUTO_APPLY_ValueData', payload)
   },
-    
+
   SET_SURCHARGE_IS_ACTIVE({ commit }, payload) {
     commit('SET_SURCHARGE_IS_ACTIVE', payload)
   },
@@ -974,7 +974,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURCHARGE_TYPE_SURCHARGE_TYPE_NAME_ValueData({ commit }, payload) {
     commit('SET_SURCHARGE_TYPE_SURCHARGE_TYPE_NAME_ValueData', payload)
   },
-    
+
   SET_SURCHARGE_TYPE_IS_ACTIVE({ commit }, payload) {
     commit('SET_SURCHARGE_TYPE_IS_ACTIVE', payload)
   },
@@ -989,57 +989,57 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_VEHICLE_VEHICLE_NAME_ValueData({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_NAME_ValueData', payload)
   },
-    
+
   SET_VEHICLE_VEHICLE_POLICE_NO({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_POLICE_NO', payload)
   },
   SET_VEHICLE_VEHICLE_POLICE_NO_ValueData({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_POLICE_NO_ValueData', payload)
   },
-    
+
   SET_VEHICLE_VEHICLE_OWNED_BY({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_OWNED_BY', payload)
   },
   SET_VEHICLE_VEHICLE_OWNED_BY_ValueData({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_OWNED_BY_ValueData', payload)
   },
-    
+
   SET_VEHICLE_VEHICLE_MAX_WEIGHT({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_MAX_WEIGHT', payload)
   },
   SET_VEHICLE_VEHICLE_MAX_WEIGHT_ValueData({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_MAX_WEIGHT_ValueData', payload)
   },
-    
+
   SET_VEHICLE_VEHICLE_MAX_VOLUME({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_MAX_VOLUME', payload)
   },
   SET_VEHICLE_VEHICLE_MAX_VOLUME_ValueData({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_MAX_VOLUME_ValueData', payload)
   },
-    
+
   SET_VEHICLE_VEHICLE_TYPE_ID({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_TYPE_ID', payload)
   },
   SET_VEHICLE_VEHICLE_TYPE_ID_ValueData({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_TYPE_ID_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_VEHICLE_VEHICLE_TYPE_ID_ArrData({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_TYPE_ID_ArrData', payload)
   },
-    
+
   SET_VEHICLE_VEHICLE_NODE_ID({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_NODE_ID', payload)
   },
   SET_VEHICLE_VEHICLE_NODE_ID_ValueData({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_NODE_ID_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_VEHICLE_VEHICLE_NODE_ID_ArrData({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_NODE_ID_ArrData', payload)
   },
-    
+
   SET_VEHICLE_IS_ACTIVE({ commit }, payload) {
     commit('SET_VEHICLE_IS_ACTIVE', payload)
   },
@@ -1054,7 +1054,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_VEHICLE_MODE_VEHICLE_MODE_NAME_ValueData({ commit }, payload) {
     commit('SET_VEHICLE_MODE_VEHICLE_MODE_NAME_ValueData', payload)
   },
-    
+
   SET_VEHICLE_MODE_IS_ACTIVE({ commit }, payload) {
     commit('SET_VEHICLE_MODE_IS_ACTIVE', payload)
   },
@@ -1069,7 +1069,18 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME_ValueData({ commit }, payload) {
     commit('SET_VEHICLE_TYPE_VEHICLE_TYPE_NAME_ValueData', payload)
   },
-    
+
+  SET_VEHICLE_TYPE_VEHICLE_MODE_ID({ commit }, payload) {
+    commit('SET_VEHICLE_TYPE_VEHICLE_MODE_ID', payload)
+  },
+  SET_VEHICLE_TYPE_VEHICLE_MODE_ID_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_TYPE_VEHICLE_MODE_ID_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_VEHICLE_TYPE_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
+    commit('SET_VEHICLE_TYPE_VEHICLE_MODE_ID_ArrData', payload)
+  },
+
   SET_VEHICLE_TYPE_IS_ACTIVE({ commit }, payload) {
     commit('SET_VEHICLE_TYPE_IS_ACTIVE', payload)
   },
@@ -1083,11 +1094,11 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_PICKUP_REQUEST_NODE_REQUEST_ValueData({ commit }, payload) {
     commit('SET_PICKUP_REQUEST_NODE_REQUEST_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_PICKUP_REQUEST_NODE_REQUEST_ArrData({ commit }, payload) {
     commit('SET_PICKUP_REQUEST_NODE_REQUEST_ArrData', payload)
   },
-    
+
 
   //PICKUP LIST
   SET_PICKUP_LIST_PICKUP_NAME({ commit }, payload) {
@@ -1103,7 +1114,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_PICKUP_LIST_PIC_NAME_ValueData({ commit }, payload) {
     commit('SET_PICKUP_LIST_PIC_NAME_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_PICKUP_LIST_PIC_NAME_ArrData({ commit }, payload) {
     commit('SET_PICKUP_LIST_PIC_NAME_ArrData', payload)
   },
@@ -1135,7 +1146,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ValueData({ commit }, payload) {
     commit('SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ArrData({ commit }, payload) {
     commit('SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ArrData', payload)
   },
@@ -1146,7 +1157,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ValueData({ commit }, payload) {
     commit('SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData({ commit }, payload) {
     commit('SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData', payload)
   },
@@ -1164,7 +1175,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_PICKUP_LIST_VEHICLE_TYPE_ID_ValueData({ commit }, payload) {
     commit('SET_PICKUP_LIST_VEHICLE_TYPE_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_PICKUP_LIST_VEHICLE_TYPE_ID_ArrData({ commit }, payload) {
     commit('SET_PICKUP_LIST_VEHICLE_TYPE_ID_ArrData', payload)
   },
@@ -1189,7 +1200,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_PICKUP_LIST_PICKUP_SCHEDULE_ValueData({ commit }, payload) {
     commit('SET_PICKUP_LIST_PICKUP_SCHEDULE_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_PICKUP_LIST_PICKUP_SCHEDULE_ArrData({ commit }, payload) {
     commit('SET_PICKUP_LIST_PICKUP_SCHEDULE_ArrData', payload)
   },
@@ -1209,7 +1220,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME_ValueData({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME_ArrData({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PIC_NAME_ArrData', payload)
   },
@@ -1241,7 +1252,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ValueData({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ArrData({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ArrData', payload)
   },
@@ -1259,7 +1270,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID_ValueData({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID_ArrData({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_VEHICLE_TYPE_ID_ArrData', payload)
   },
@@ -1284,7 +1295,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ValueData({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ArrData({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ArrData', payload)
   },
@@ -1295,7 +1306,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ValueData({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ArrData({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ArrData', payload)
   },
@@ -1315,7 +1326,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ArrData', payload)
   },
@@ -1332,7 +1343,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_MUATAN_NODE_ID_ORIGIN_FLAG({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_FLAG', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData', payload)
   },
@@ -1353,7 +1364,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_ArrData', payload)
   },
@@ -1364,7 +1375,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ArrData', payload)
   },
@@ -1375,7 +1386,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ArrData', payload)
   },
@@ -1386,7 +1397,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData', payload)
   },
@@ -1397,7 +1408,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_MUATAN_VEHICLE_MODE_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_VEHICLE_MODE_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData', payload)
   },
@@ -1413,7 +1424,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData', payload)
   },
@@ -1424,7 +1435,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_MUATAN_VEHICLE_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_VEHICLE_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_SURAT_MUATAN_VEHICLE_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_VEHICLE_ID_ArrData', payload)
   },
@@ -1439,7 +1450,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ValueData', payload)
   },
-// type select perlu data array
+  // type select perlu data array
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData', payload)
   },
@@ -1467,54 +1478,54 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_SURAT_JALAN_DESTINATION_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_JALAN_DESTINATION_ID_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_SURAT_JALAN_DESTINATION_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_JALAN_DESTINATION_ID_ArrData', payload)
   },
-    
+
   SET_SURAT_JALAN_MODA_ANGKUTAN_ID({ commit }, payload) {
     commit('SET_SURAT_JALAN_MODA_ANGKUTAN_ID', payload)
   },
   SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_JALAN_MODA_ANGKUTAN_ID_ArrData', payload)
   },
-    
+
   SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID({ commit }, payload) {
     commit('SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID', payload)
   },
   SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ArrData', payload)
   },
-    
+
   SET_SURAT_JALAN_ETD({ commit }, payload) {
     commit('SET_SURAT_JALAN_ETD', payload)
   },
   SET_SURAT_JALAN_ETD_ValueData({ commit }, payload) {
     commit('SET_SURAT_JALAN_ETD_ValueData', payload)
   },
-    
+
   SET_SURAT_JALAN_ETA({ commit }, payload) {
     commit('SET_SURAT_JALAN_ETA', payload)
   },
   SET_SURAT_JALAN_ETA_ValueData({ commit }, payload) {
     commit('SET_SURAT_JALAN_ETA_ValueData', payload)
   },
-    
+
   SET_SURAT_JALAN_DRIVER_ID({ commit }, payload) {
     commit('SET_SURAT_JALAN_DRIVER_ID', payload)
   },
   SET_SURAT_JALAN_DRIVER_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_JALAN_DRIVER_ID_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_SURAT_JALAN_DRIVER_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_JALAN_DRIVER_ID_ArrData', payload)
   },
@@ -1530,11 +1541,11 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_TYPE_ValueData({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_TYPE_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_TYPE_ArrData({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_TYPE_ArrData', payload)
   },
-    
+
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_NAME({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_NAME', payload)
   },
@@ -1544,7 +1555,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_NAME_ValueData({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_NAME_ValueData', payload)
   },
-    
+
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_PHONE({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_PHONE', payload)
   },
@@ -1554,7 +1565,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_PHONE_ValueData({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_PHONE_ValueData', payload)
   },
-    
+
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ADDRESS({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ADDRESS', payload)
   },
@@ -1564,7 +1575,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ADDRESS_ValueData({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ADDRESS_ValueData', payload)
   },
-    
+
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ONCHANGE_ADDRESS({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ONCHANGE_ADDRESS', payload)
   },
@@ -1574,11 +1585,11 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ONCHANGE_ADDRESS_ValueData({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ONCHANGE_ADDRESS_ValueData', payload)
   },
-    // type select perlu data array
+  // type select perlu data array
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ONCHANGE_ADDRESS_ArrData({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ONCHANGE_ADDRESS_ArrData', payload)
   },
-    
+
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_SUBDISTRICT_ID({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_SUBDISTRICT_ID', payload)
   },
@@ -1588,7 +1599,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_SUBDISTRICT_ID_ValueData({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_SUBDISTRICT_ID_ValueData', payload)
   },
-    
+
   SET_IRREGURALITIES_RETURN_DESTINATION_ZIP_CODE({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_ZIP_CODE', payload)
   },
@@ -1598,7 +1609,7 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_IRREGURALITIES_RETURN_DESTINATION_ZIP_CODE_ValueData({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_ZIP_CODE_ValueData', payload)
   },
-    
+
   SET_IRREGURALITIES_RETURN_DESTINATION_TARIFF_CODE({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_TARIFF_CODE', payload)
   },
@@ -1608,29 +1619,29 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   SET_IRREGURALITIES_RETURN_DESTINATION_TARIFF_CODE_ValueData({ commit }, payload) {
     commit('SET_IRREGURALITIES_RETURN_DESTINATION_TARIFF_CODE_ValueData', payload)
   },
-  /* IRREGULARITIES RETURN END*/   
-  
+  /* IRREGULARITIES RETURN END*/
+
   //===== ACTION Cost To Cost Setting=======
   SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID', payload)
   },
   SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ArrData', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ArrData', payload)
   },
 
   SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID', payload)
   },
   SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ArrData', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ArrData', payload)
   },
 
 
@@ -1642,299 +1653,299 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
   },
 
   SET_COST_TO_COST_SETTING_COST_GROUP_CODE({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_GROUP_CODE', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_GROUP_CODE', payload)
   },
   SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ArrData', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ArrData', payload)
   },
 
   SET_COST_TO_COST_SETTING_RULE_CONDITION({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_RULE_CONDITION', payload)
+    commit('SET_COST_TO_COST_SETTING_RULE_CONDITION', payload)
   },
   SET_COST_TO_COST_SETTING_RULE_CONDITION_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_RULE_CONDITION_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_RULE_CONDITION_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_SETTING_RULE_CONDITION_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_RULE_CONDITION_ArrData', payload)
+    commit('SET_COST_TO_COST_SETTING_RULE_CONDITION_ArrData', payload)
   },
 
   SET_COST_TO_COST_SETTING_CONDITION({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_CONDITION', payload)
+    commit('SET_COST_TO_COST_SETTING_CONDITION', payload)
   },
   SET_COST_TO_COST_SETTING_CONDITION_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_CONDITION_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_CONDITION_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_SETTING_CONDITION_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_CONDITION_ArrData', payload)
+    commit('SET_COST_TO_COST_SETTING_CONDITION_ArrData', payload)
   },
 
   SET_COST_TO_COST_SETTING_RULE_VALUE({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_RULE_VALUE', payload)
+    commit('SET_COST_TO_COST_SETTING_RULE_VALUE', payload)
   },
   SET_COST_TO_COST_SETTING_RULE_VALUE_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_RULE_VALUE_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_RULE_VALUE_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_SETTING_RULE_VALUE_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_RULE_VALUE_ArrData', payload)
+    commit('SET_COST_TO_COST_SETTING_RULE_VALUE_ArrData', payload)
   },
 
   SET_COST_TO_COST_SETTING_COST_TYPE_CODE({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_TYPE_CODE', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_TYPE_CODE', payload)
   },
   SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ArrData', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ArrData', payload)
   },
 
   SET_COST_TO_COST_SETTING_MIN_KG({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_MIN_KG', payload)
+    commit('SET_COST_TO_COST_SETTING_MIN_KG', payload)
   },
   SET_COST_TO_COST_SETTING_MIN_KG_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_MIN_KG_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_MIN_KG_ValueData', payload)
   },
 
   SET_COST_TO_COST_SETTING_MAX_KG({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_MAX_KG', payload)
+    commit('SET_COST_TO_COST_SETTING_MAX_KG', payload)
   },
   SET_COST_TO_COST_SETTING_MAX_KG_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_MAX_KG_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_MAX_KG_ValueData', payload)
   },
 
   SET_COST_TO_COST_SETTING_COST_VALUE({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_VALUE', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_VALUE', payload)
   },
   SET_COST_TO_COST_SETTING_COST_VALUE_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_COST_VALUE_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_COST_VALUE_ValueData', payload)
   },
 
   SET_COST_TO_COST_SETTING_NAME({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_NAME', payload)
+    commit('SET_COST_TO_COST_SETTING_NAME', payload)
   },
   SET_COST_TO_COST_SETTING_NAME_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_NAME_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_NAME_ValueData', payload)
   },
 
   SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME', payload)
+    commit('SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME', payload)
   },
   SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ValueData', payload)
+    commit('SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ArrData', payload)
+    commit('SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ArrData', payload)
   },
   //===== END ACTION Cost To Cost Setting=======
 
 
   //======= ACTION COSTING REPORT=======
   SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID', payload)
+    commit('SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID', payload)
   },
   SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ValueData', payload)
+    commit('SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ArrData', payload)
+    commit('SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ArrData', payload)
   },
 
   SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID', payload)
+    commit('SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID', payload)
   },
   SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ValueData', payload)
+    commit('SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ArrData', payload)
+    commit('SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ArrData', payload)
   },
 
   SET_COST_TO_COST_REPORT_COST_GROUP_CODE({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_COST_GROUP_CODE', payload)
+    commit('SET_COST_TO_COST_REPORT_COST_GROUP_CODE', payload)
   },
   SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ValueData', payload)
+    commit('SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ArrData', payload)
+    commit('SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ArrData', payload)
   },
   SET_COST_TO_COST_REPORT_NAME({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_NAME', payload)
+    commit('SET_COST_TO_COST_REPORT_NAME', payload)
   },
   SET_COST_TO_COST_REPORT_NAME_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_NAME_ValueData', payload)
+    commit('SET_COST_TO_COST_REPORT_NAME_ValueData', payload)
   },
   // type select perlu data array
   SET_COST_TO_COST_REPORT_NAME_ArrData({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_NAME_ArrData', payload)
+    commit('SET_COST_TO_COST_REPORT_NAME_ArrData', payload)
   },
 
   SET_COST_TO_COST_REPORT_DATE_FROM({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_DATE_FROM', payload)
+    commit('SET_COST_TO_COST_REPORT_DATE_FROM', payload)
   },
   SET_COST_TO_COST_REPORT_DATE_FROM_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_DATE_FROM_ValueData', payload)
+    commit('SET_COST_TO_COST_REPORT_DATE_FROM_ValueData', payload)
   },
 
   SET_COST_TO_COST_REPORT_DATE_TO({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_DATE_TO', payload)
+    commit('SET_COST_TO_COST_REPORT_DATE_TO', payload)
   },
   SET_COST_TO_COST_REPORT_DATE_TO_ValueData({ commit }, payload) {
-  commit('SET_COST_TO_COST_REPORT_DATE_TO_ValueData', payload)
+    commit('SET_COST_TO_COST_REPORT_DATE_TO_ValueData', payload)
   },
   //======= END ACTION COSTING REPORT=======
 
   //======= Start Packing Kayu =======
   SET_PACKINGKAYU_KOLI_NUMBER({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_NUMBER', payload)
+    commit('SET_PACKINGKAYU_KOLI_NUMBER', payload)
   },
   SET_PACKINGKAYU_KOLI_NUMBER_ValueData({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_NUMBER_ValueData', payload)
+    commit('SET_PACKINGKAYU_KOLI_NUMBER_ValueData', payload)
   },
 
   SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE', payload)
+    commit('SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE', payload)
   },
   SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE_ValueData({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE_ValueData', payload)
+    commit('SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE_ValueData', payload)
   },
 
   SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT', payload)
+    commit('SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT', payload)
   },
   SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT_ValueData({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT_ValueData', payload)
+    commit('SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT_ValueData', payload)
   },
 
   SET_PACKINGKAYU_KOLI_HEIGHT({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_HEIGHT', payload)
+    commit('SET_PACKINGKAYU_KOLI_HEIGHT', payload)
   },
   SET_PACKINGKAYU_KOLI_HEIGHT_ValueData({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_HEIGHT_ValueData', payload)
+    commit('SET_PACKINGKAYU_KOLI_HEIGHT_ValueData', payload)
   },
 
   SET_PACKINGKAYU_KOLI_WIDTH({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_WIDTH', payload)
+    commit('SET_PACKINGKAYU_KOLI_WIDTH', payload)
   },
   SET_PACKINGKAYU_KOLI_WIDTH_ValueData({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_WIDTH_ValueData', payload)
+    commit('SET_PACKINGKAYU_KOLI_WIDTH_ValueData', payload)
   },
 
   SET_PACKINGKAYU_KOLI_LENGTH({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_LENGTH', payload)
+    commit('SET_PACKINGKAYU_KOLI_LENGTH', payload)
   },
   SET_PACKINGKAYU_KOLI_LENGTH_ValueData({ commit }, payload) {
-  commit('SET_PACKINGKAYU_KOLI_LENGTH_ValueData', payload)
+    commit('SET_PACKINGKAYU_KOLI_LENGTH_ValueData', payload)
   },
   //======= END Packing Kayu =======
 
   //======= START EMPLOYEE =======
   SET_EMPLOYEE_EMPLOYEE_NIK({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_NIK', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_NIK', payload)
   },
   SET_EMPLOYEE_EMPLOYEE_NIK_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_NIK_ValueData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_NIK_ValueData', payload)
   },
 
   SET_EMPLOYEE_EMPLOYEE_NAME({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_NAME', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_NAME', payload)
   },
   SET_EMPLOYEE_EMPLOYEE_NAME_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_NAME_ValueData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_NAME_ValueData', payload)
   },
 
   SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER', payload)
   },
   SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER_ValueData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER_ValueData', payload)
   },
 
   SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE', payload)
   },
   SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE_ValueData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_PLACE_ValueData', payload)
   },
 
   SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE', payload)
   },
   SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE_ValueData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_BIRTH_DATE_ValueData', payload)
   },
 
   SET_EMPLOYEE_EMPLOYEE_GENDER({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_GENDER', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_GENDER', payload)
   },
   SET_EMPLOYEE_EMPLOYEE_GENDER_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_GENDER_ValueData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_GENDER_ValueData', payload)
   },
   // type select perlu data array
   SET_EMPLOYEE_EMPLOYEE_GENDER_ArrData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_GENDER_ArrData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_GENDER_ArrData', payload)
   },
 
   SET_EMPLOYEE_EMPLOYEE_NO_SIM({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_NO_SIM', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_NO_SIM', payload)
   },
   SET_EMPLOYEE_EMPLOYEE_NO_SIM_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_NO_SIM_ValueData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_NO_SIM_ValueData', payload)
   },
 
   SET_EMPLOYEE_EMPLOYEE_NO_KTP({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_NO_KTP', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_NO_KTP', payload)
   },
   SET_EMPLOYEE_EMPLOYEE_NO_KTP_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_NO_KTP_ValueData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_NO_KTP_ValueData', payload)
   },
 
   SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS', payload)
   },
   SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS_ValueData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS_ValueData', payload)
   },
 
   SET_EMPLOYEE_EMPLOYEE_TYPE_ID({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_TYPE_ID', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_TYPE_ID', payload)
   },
   SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ValueData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ValueData', payload)
   },
   // type select perlu data array
   SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ArrData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ArrData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_TYPE_ID_ArrData', payload)
   },
 
   SET_EMPLOYEE_EMPLOYEE_NODE_ID({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_NODE_ID', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_NODE_ID', payload)
   },
   SET_EMPLOYEE_EMPLOYEE_NODE_ID_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_NODE_ID_ValueData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_NODE_ID_ValueData', payload)
   },
   // type select perlu data array
   SET_EMPLOYEE_EMPLOYEE_NODE_ID_ArrData({ commit }, payload) {
-  commit('SET_EMPLOYEE_EMPLOYEE_NODE_ID_ArrData', payload)
+    commit('SET_EMPLOYEE_EMPLOYEE_NODE_ID_ArrData', payload)
   },
 
   SET_EMPLOYEE_IS_ACTIVE({ commit }, payload) {
-  commit('SET_EMPLOYEE_IS_ACTIVE', payload)
+    commit('SET_EMPLOYEE_IS_ACTIVE', payload)
   },
   SET_EMPLOYEE_IS_ACTIVE_ValueData({ commit }, payload) {
-  commit('SET_EMPLOYEE_IS_ACTIVE_ValueData', payload)
+    commit('SET_EMPLOYEE_IS_ACTIVE_ValueData', payload)
   },
   //====== end employee ======
 }
