@@ -93,16 +93,21 @@ export default {
             if(val !== undefined) {
                 this.vehicle_type_id = val.vehicle_type_id
             }
+        },
+        active: function (val) {
+            if (val == true) {
+                this.getVehicleMode()
+            }
         }
     },
     methods: {
         formData(form){
             this.form = form
+            console.log(this.form)
             if(this.vehicle_type_id !== undefined && this.vehicle_type_id !== '') {
-                    console.log('update')
-                    this.updateData()
+                    // this.updateData()
             } else {
-                    this.addData()
+                    // this.addData()
             }
         },
         handleSubmit(){
@@ -112,6 +117,29 @@ export default {
             this.$refs.formVehicleTypeController.handleClearForm()
             this.form = {}
             this.vehicle_type_id = ""
+        },
+        async getVehicleMode(){
+            await axios
+                .get(this.URL.vehicle_mode + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=-1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.vehicle_mode_name
+                            obj["value"] = item.vehicle_mode_id
+
+                            arr.push(obj)
+                        })
+    
+                        this.$store.dispatch("SET_VEHICLE_TYPE_VEHICLE_MODE_ID_ArrData", arr.length > 0 ? arr : null)
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
         },
         async updateData(){
             await axios
@@ -134,14 +162,12 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.vehicle_type,
+                    this.URL.vehicle_type + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")

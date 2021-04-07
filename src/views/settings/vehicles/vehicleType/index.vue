@@ -87,7 +87,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+                    
                     this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
@@ -111,7 +111,7 @@ export default {
                     return item.vehicle_type_id === val.vehicle_type_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+                
                 this.$nextTick(() => {
                     this.dialogVehicleType = true
                 });
@@ -129,10 +129,10 @@ export default {
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.vehicle_type + `/${val.vehicle_type_id}`,
+                    this.URL.vehicle_type + `/${val.vehicle_type_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+                    
                     this.refresh()
                     this.openNotification(null, 'Delete success', 'Delete Vehicle mode is success')
                 }).catch(err => {
@@ -150,7 +150,7 @@ export default {
             this.refresh()
         },
         refresh(){
-            console.log("refresh")
+            
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogVehicleType() {
