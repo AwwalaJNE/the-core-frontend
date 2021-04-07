@@ -211,9 +211,10 @@ export default {
                 case "node_id_destination":
                     let transit = this.$store.getters["getInputs"]["surat_muatan"]["dynamicinputcomponent_node_id_transit"]
                     let arr = transit["arrData"]
-                    console.log('node_id_destination transit', arr)
+                    // console.log('node_id_destination transit', arr)
 
                     let nodeId = this.node_id_origin
+                    // jika punya transit
                     if(arr && arr.length > 0) {
                       if(arr[arr.length-1].hasOwnProperty("inputs")) {
                         let data = arr[arr.length-1]["inputs"][0]["data"]
@@ -260,6 +261,21 @@ export default {
           console.log('form',form)
           form['node_id_origin'] = form['node_id_origin']['node_id']
           form['node_id_destination'] = form['node_id_destination']['node_id']
+
+          if(form.hasOwnProperty("dynamicinputcomponent_node_id_transit")){
+            if(form["dynamicinputcomponent_node_id_transit"].length > 0) {
+              form["node_id_transit_1"] = form["dynamicinputcomponent_node_id_transit"][0] ?
+                                            form["dynamicinputcomponent_node_id_transit"][0]["inputs"][0]["data"]["node_id"] : ""
+
+              form["node_id_transit_2"] = form["dynamicinputcomponent_node_id_transit"][1] ?
+                                            form["dynamicinputcomponent_node_id_transit"][1]["inputs"][0]["data"]["node_id"] : ""
+
+              form["node_id_transit_3"] = form["dynamicinputcomponent_node_id_transit"][2] ?
+                                            form["dynamicinputcomponent_node_id_transit"][2]["inputs"][0]["data"]["node_id"] : ""
+            }
+          }
+
+
           this.form = form
           
           
@@ -275,6 +291,8 @@ export default {
           } else {
             this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')
           }
+
+          // console.log('this.form',this.form)
         },
         handleSubmit(){
             this.$refs.formSuratMuatanController.handleSubmit() // trigger function submit form dari luar component formInputController
