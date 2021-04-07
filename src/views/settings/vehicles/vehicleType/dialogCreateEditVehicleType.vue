@@ -103,11 +103,11 @@ export default {
     methods: {
         formData(form){
             this.form = form
-            console.log(this.form)
+            // console.log(this.form)
             if(this.vehicle_type_id !== undefined && this.vehicle_type_id !== '') {
-                    // this.updateData()
+                    this.updateData()
             } else {
-                    // this.addData()
+                    this.addData()
             }
         },
         handleSubmit(){
