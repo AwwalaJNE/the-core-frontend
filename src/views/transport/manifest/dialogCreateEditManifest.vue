@@ -209,7 +209,19 @@ export default {
                     this.autoComplateUrl = url
                     break;
                 case "node_id_destination":
-                    url = this.URL.node +'/'+ this.node_id_origin +'/destination-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id+ '&sort_order=desc&limit=15&page=1'
+                    let transit = this.$store.getters["getInputs"]["surat_muatan"]["dynamicinputcomponent_node_id_transit"]
+                    let arr = transit["arrData"]
+                    console.log('node_id_destination transit', arr)
+
+                    let nodeId = this.node_id_origin
+                    if(arr && arr.length > 0) {
+                      if(arr[arr.length-1].hasOwnProperty("inputs")) {
+                        let data = arr[arr.length-1]["inputs"][0]["data"]
+                        nodeId = data["node_id"] ? data["node_id"] : this.node_id_origin
+                      }
+                    }
+
+                    url = this.URL.node +'/'+ nodeId +'/destination-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id+ '&sort_order=desc&limit=15&page=1'
                     this.autoComplateUrl = url
                     break;
                 default:
@@ -360,7 +372,7 @@ export default {
         //                 })
         //                 // this.dataNodeType = arr
         //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData", arr.length > 0 ? arr : null)
-        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ArrData", arr.length > 0 ? arr : null)
+        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_ArrData", arr.length > 0 ? arr : null)
         //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ArrData", arr.length > 0 ? arr : null)
         //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ArrData", arr.length > 0 ? arr : null)
         //             }

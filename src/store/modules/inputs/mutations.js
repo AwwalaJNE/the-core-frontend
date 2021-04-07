@@ -1376,21 +1376,21 @@ export default {
         state.surat_muatan.node_id_origin.arrData = []
   },
 
-  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1(state, payload) {
-    state.surat_muatan.node_id_transit_1.value = payload
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT(state, payload) {
+    state.surat_muatan.node_id_transit.value = payload
   },
-  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ValueData(state, payload) {
-    state.surat_muatan.node_id_transit_1.valueData = payload
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_ValueData(state, payload) {
+    state.surat_muatan.node_id_transit.valueData = payload
   },
-  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_URL(state, payload) {
-    state.surat_muatan.node_id_transit_1.url = payload
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_URL(state, payload) {
+    state.surat_muatan.node_id_transit.url = payload
   },
-  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_FLAG(state, payload) {
-    state.surat_muatan.node_id_transit_1.flag = payload
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_FLAG(state, payload) {
+    state.surat_muatan.node_id_transit.flag = payload
   },
 
-  SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT_1(state, payload) {
-    let arr = state.surat_muatan.dynamicinputcomponent_node_id_transit_1.inputs
+  SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT(state, payload) {
+    let arr = state.surat_muatan.dynamicinputcomponent_node_id_transit.inputs
     console.log('ARR', arr, payload)
     let final = []
     if(payload && payload.length > 0) {
@@ -1419,15 +1419,15 @@ export default {
       })
     }
     console.log('final', final)
-      state.surat_muatan.dynamicinputcomponent_node_id_transit_1.hasOwnProperty('arrData') ?
-      state.surat_muatan.dynamicinputcomponent_node_id_transit_1.arrData = final :
-      state.surat_muatan.dynamicinputcomponent_node_id_transit_1.arrData = []
+      state.surat_muatan.dynamicinputcomponent_node_id_transit.hasOwnProperty('arrData') ?
+      state.surat_muatan.dynamicinputcomponent_node_id_transit.arrData = final :
+      state.surat_muatan.dynamicinputcomponent_node_id_transit.arrData = []
   },
 
-  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ArrData(state, payload) {
-    state.surat_muatan.node_id_transit_1.hasOwnProperty('arrData') ?
-        state.surat_muatan.node_id_transit_1.arrData = payload :
-        state.surat_muatan.node_id_transit_1.arrData = []
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_ArrData(state, payload) {
+    state.surat_muatan.node_id_transit.hasOwnProperty('arrData') ?
+        state.surat_muatan.node_id_transit.arrData = payload :
+        state.surat_muatan.node_id_transit.arrData = []
   },
 
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_2(state, payload) {

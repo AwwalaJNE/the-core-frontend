@@ -1337,25 +1337,25 @@ SET_TARIFF_TARIFF_GROUP_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData', payload)
   },
 
-  SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT_1({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT_1', payload)
+  SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT', payload)
   },
 
-  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_1', payload)
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT', payload)
   },
-  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_URL({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_URL', payload)
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_URL({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_URL', payload)
   },
-  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_FLAG({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_FLAG', payload)
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_FLAG({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_FLAG', payload)
   },
-  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ValueData({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ValueData', payload)
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_ValueData', payload)
   },
 // type select perlu data array
-  SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ArrData({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_1_ArrData', payload)
+  SET_SURAT_MUATAN_NODE_ID_TRANSIT_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_TRANSIT_ArrData', payload)
   },
 
   SET_SURAT_MUATAN_NODE_ID_TRANSIT_2({ commit }, payload) {

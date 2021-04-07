@@ -1751,16 +1751,16 @@ export default {
       valueData: null,
       value: ''
     },
-    dynamicinputcomponent_node_id_transit_1: {
+    dynamicinputcomponent_node_id_transit: {
       label: "Transit",
-      key: "dynamicinputcomponent_node_id_transit_1",
+      key: "dynamicinputcomponent_node_id_transit",
       rule:"",
       typeInput: "dynamicinputcomponent",
       typeData: "Array",
       max: 3,
       inputs: [ // template input yg di render tiap row
         {
-          key: "node_id_transit_1",
+          key: "node_id_transit",
           typeInput: "autocomplete",
           value: 'meong1',
           query: "",
@@ -1771,9 +1771,9 @@ export default {
       valueData: null,
       value: ''
     },
-    node_id_transit_1: {
+    node_id_transit: {
       label: "Transit",
-      key: "node_id_transit_1",
+      key: "node_id_transit",
       rule:"",
       typeInput: "null",
       typeData: "String",
