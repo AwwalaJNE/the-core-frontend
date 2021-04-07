@@ -17,6 +17,7 @@
                               v-model="item_code"
                               label-placeholder="Masukkan code BAG / Connote"
                               :autofocus="true"
+                              @keyup.enter.native="updateValue"
                               ref="formInputUnbagging">
 
                     </vs-input>
