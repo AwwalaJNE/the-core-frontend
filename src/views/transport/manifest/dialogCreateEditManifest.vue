@@ -508,9 +508,9 @@ export default {
           }
           if(type == 'manifest_method_id' && val == 1){
             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false)
-            this.jenisKiriman(true);
+            // this.jenisKiriman(true);
           }else if (type == 'manifest_method_id' && val != 1){
-            this.jenisKiriman(false);
+            // this.jenisKiriman(false);
             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true)
           }
 
