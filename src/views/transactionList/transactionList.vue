@@ -176,7 +176,7 @@ export default {
         actionUpdate(val, key) {
           switch(key) {
                 case "print":
-                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.transaction_id, 'type': 'transaction'} });
+                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.transaction_id, 'type': 'transaction', 'node_id':this.listenNodeId} });
                     window.open(routeData.href, '_blank');
                     break;
                 default:
