@@ -1742,7 +1742,7 @@ export default {
       value: ''
     },
     manifest_method_id: {
-      label: "Type Surat Muatan",
+      label: "Moda",
       key: "manifest_method_id",
       rule: "required",
       typeInput: "select",
@@ -1822,7 +1822,7 @@ export default {
       value: ''
     },
     vehicle_mode_id: {
-      label: "Moda Angkutan",
+      label: "Tipe",
       key: "vehicle_mode_id",
       rule:"",
       typeInput: "select",
@@ -1843,7 +1843,7 @@ export default {
       value: ''
     },
     vehicle_id: {
-      label: "No Moda Angkutan",
+      label: "Nama",
       key: "vehicle_id",
       rule:"",
       typeInput: "select",
