@@ -103,6 +103,7 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 import TableMaster from "@/components/table/tableMaster.vue"
+import moment from "moment";
 export default {
     name:"dialog-create-edit-surat_muatan",
     mixins: [master],
@@ -163,7 +164,9 @@ export default {
 
             autoComplateUrl: '',
             itterateUrlAutoComplete: '',
-            itterateFlagAutoComplete: 'node_name'
+            itterateFlagAutoComplete: 'node_name',
+            etd:null,
+            estimated_time_in_hour:null,
         }
     },
     computed: {
@@ -501,52 +504,69 @@ export default {
         },
 
         onChangeOrigin(type, val, info = {}){
-          console.log('type', type , val, info)
-          if(type == 'vehicle_mode_id') {
-            if(info.hasOwnProperty('data')) {
-              this.vehicle_type_id = info.data.vehicle_type_id || ''
-              
-              this.getDataVehicle()
-            }
-          }
-          if(type == 'manifest_method_id' && val == 1){
-            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false)
-            // this.jenisKiriman(true);
-          }else if (type == 'manifest_method_id' && val != 1){
-            // this.jenisKiriman(false);
-            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true)
-          }
-
-          if(type == 'manifest_method_id'){
-            if(info.hasOwnProperty('data')) {
+          // console.log('type', type , val, info)
+          switch(type) {
+            case 'vehicle_mode_id':
+              if(info.hasOwnProperty('data')) {
+                this.vehicle_type_id = info.data.vehicle_type_id || ''
+                this.getDataVehicle()
+              }
+              break
+            case 'manifest_method_id':
+              if(type == 'manifest_method_id' && val == 1){
+                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false)
+                // this.jenisKiriman(true);
+              }else if (type == 'manifest_method_id' && val != 1){
+                // this.jenisKiriman(false);
+                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true)
+              }
+              if(info.hasOwnProperty('data')) {
                 this.vehicle_mode_id = info.data.vehicle_mode_id || ''
 
                 let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id+ '&sort_order=desc&limit=15&page=1'
                 this.autoComplateUrl = url
 
-                // this.getDataNodeDestination() nnti gonta ganti url auto complete disini
                 this.getDataVehicleType()
-                
-            }
-          }
 
-          if(type == 'vehicle_id') {
-            this.vehicle_id = val
-            this.getDataEmployee()
-          }
-
-          if (type == 'node_id_origin') {
-            if(Object.keys(info).length > 0) {
-              if(info.hasOwnProperty('data')) {
-                      this.node_id_origin = info['data']['node_id']
-                      let url = this.URL.node +'/'+ this.node_id_origin +'/destination-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id+ '&sort_order=desc&limit=15&page=1'
-                      this.itterateUrlAutoComplete = url
               }
-            }
-            
-            // this.getDestinationFromOriginChanges(val)
-          } 
+              break
+            case 'vehicle_id':
+              this.vehicle_id = val
+              this.getDataEmployee()
+              break
+            case 'node_id_origin':
+              if(Object.keys(info).length > 0) {
+                if(info.hasOwnProperty('data')) {
+                  this.node_id_origin = info['data']['node_id']
+                  let url = this.URL.node +'/'+ this.node_id_origin +'/destination-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id+ '&sort_order=desc&limit=15&page=1'
+                  this.itterateUrlAutoComplete = url
+                }
+              }
+              break
+            case 'node_id_destination':
+              if(typeof info === 'object') {
+                if(info.hasOwnProperty('data')) {
+                  this.estimated_time_in_hour = info['data'].estimated_time_in_hour
+                  this.handleEta(this.etd, this.estimated_time_in_hour)
+                }
+              }
+              break;
+            case 'etd':
+              this.etd = val
+              this.handleEta(this.etd, this.estimated_time_in_hour)
 
+              break;
+            default:
+              console.log(info)
+
+          }
+
+        },
+        handleEta(dateTime, amount){
+          if(dateTime && amount){
+            let dateEta =  moment(dateTime).add(amount, 'hours').format('YYYY-MM-DD HH:mm:ss');
+            this.$store.dispatch("SET_SURAT_MUATAN_ETA", dateEta)
+          }
         },
         jenisKiriman(type){
           let arr = [
