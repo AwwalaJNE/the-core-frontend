@@ -1361,7 +1361,7 @@ export default {
 
   vehicle: {
     vehicle_name: {
-      label: "vehicle name*",
+      label: "Vehicle Name *",
       key: "vehicle_name",
       rule: "required",
       typeInput: "text",
@@ -1370,7 +1370,7 @@ export default {
       value: ''
     },
     vehicle_police_no: {
-      label: "Vehicle police no*",
+      label: "Vehicle No / Plate Number *",
       key: "vehicle_police_no",
       rule: "required",
       typeInput: "text",
@@ -1405,6 +1405,16 @@ export default {
       valueData: null,
       value: ''
     },
+    vehicle_mode_id: {
+      label: "Vehicle Mode",
+      key: "vehicle_mode_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     vehicle_type_id: {
       label: "Vehicle type",
       key: "vehicle_type_id",
@@ -1416,7 +1426,7 @@ export default {
       value: ''
     },
     vehicle_node_id: {
-      label: "vehicle node",
+      label: "Vehicle Node",
       key: "vehicle_node_id",
       rule: "",
       typeInput: "select",

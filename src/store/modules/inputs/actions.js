@@ -1018,6 +1018,16 @@ export default {
     commit('SET_VEHICLE_VEHICLE_MAX_VOLUME_ValueData', payload)
   },
 
+  SET_VEHICLE_VEHICLE_MODE_ID({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_MODE_ID', payload)
+  },
+  SET_VEHICLE_VEHICLE_MODE_ID_ValueData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_MODE_ID_ValueData', payload)
+  },
+  SET_VEHICLE_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
+    commit('SET_VEHICLE_VEHICLE_MODE_ID_ArrData', payload)
+  },  
+
   SET_VEHICLE_VEHICLE_TYPE_ID({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_TYPE_ID', payload)
   },

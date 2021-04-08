@@ -14,6 +14,7 @@
                     @formData="formData"
                     :dataItem="listenDataItem"
                     typeForm="vehicle"
+                    @onChangeCustom="onFormChanged"
                 />
             </div>
         </template>
@@ -92,23 +93,37 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.vehicle_id = val.vehicle_id
+                this.vehicle_type_id = val.vehicle_type_id
+                this.vehicle_mode_id = val.vehicle_mode_id
             }
         },
         active: function (val) {
             if (val == true) {
                 this.getNode()
-                this.getVehicleType()
+                this.getVehicleMode()
+                if(this.vehicle_mode_id != null && this.vehicle_mode_id != '' && this.vehicle_mode_id != 'undefined'){
+                    this.getVehicleType(this.vehicle_mode_id)
+                }
             }
         }
     },
     methods: {
         formData(form){
             this.form = form
-            if(this.vehicle_id !== undefined && this.vehicle_id !== '') {
-                    console.log('update')
+            if(this.vehicle_id !== undefined && this.vehicle_id !== '') {                    
                     this.updateData()
             } else {
                     this.addData()
+            }
+        },
+        onFormChanged(componentId, value, obj){
+            switch(componentId) {
+                case 'vehicle_mode_id':
+                        this.getVehicleType(value)
+                    break;
+
+                    default:
+                        break;
             }
         },
         handleSubmit(){
@@ -122,7 +137,7 @@ export default {
         async getNode(){
             await axios
                 .get(this.URL.node + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=50&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -136,6 +151,29 @@ export default {
                         })
 
                         this.$store.dispatch("SET_VEHICLE_VEHICLE_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getVehicleMode(){
+            await axios
+                .get(this.URL.vehicle_mode + 
+                `?n=${this.listenNodeId}&limit=20`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.vehicle_mode_name
+                            obj["value"] = item.vehicle_mode_id
+
+                            arr.push(obj)
+                        })
+
+                        this.$store.dispatch("SET_VEHICLE_VEHICLE_MODE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -144,10 +182,22 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-        async getVehicleType(){
+        async getVehicleType(vehicle_mode_id = null){
+            
+            this.$store.dispatch("SET_VEHICLE_VEHICLE_TYPE_ID", "");            
+            if(this.vehicle_type_id != null && this.vehicle_type_id != '' && this.vehicle_type_id != 'undefined'){
+                this.$store.dispatch("SET_VEHICLE_VEHICLE_TYPE_ID", this.vehicle_type_id);                            
+            }
+            this.$store.dispatch("SET_VEHICLE_VEHICLE_TYPE_ID_ArrData", []);
+
+            let queryString = `?n=${this.listenNodeId}&sort_order=desc&limit=20&page=1`;
+
+            if(vehicle_mode_id != null){
+                queryString += `&vehicle_mode_id=${vehicle_mode_id}`
+            }
+
             await axios
-                .get(this.URL.vehicle_type + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+                .get(this.URL.vehicle_type + queryString, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -161,8 +211,6 @@ export default {
                         })
 
                         this.$store.dispatch("SET_VEHICLE_VEHICLE_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                 }).catch(err => {
@@ -176,7 +224,7 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+                    
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
@@ -190,18 +238,18 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
+            
             await axios
                 .post(
-                    this.URL.vehicle,
+                    this.URL.vehicle+`?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+                    
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Create new role is success')
+                    this.openNotification(null, 'Success', res.data.message)
                 }).catch(err => {
                     this.loading = false
                     this.handleClearForm()
