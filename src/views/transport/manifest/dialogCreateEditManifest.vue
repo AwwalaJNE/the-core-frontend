@@ -333,8 +333,9 @@ export default {
                   `?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=1000&page=1`,
                   this.Helper.header())
               .then(res => {
+                let arr = []
                 if(res.data.data.length > 0) {
-                  let arr = []
+                  
                   res.data.data.map(item => {
                     let obj = {}
                     obj["label"] = item.vehicle_type_name
@@ -343,9 +344,11 @@ export default {
 
                     arr.push(obj)
                   })
-                  this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData", arr.length > 0 ? arr : null)
+                  
+                } else {
+                  arr = [{label: null, value: null, data: {}}]
                 }
-
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData", arr)
               }).catch(err => {
                 // this.openNotification('danger', 'Failed to collect role list', err)
               })
