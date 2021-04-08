@@ -253,8 +253,11 @@ export default {
 
         actionUpdate(val){
           if(this.dataTable.length > 0) {
+            val["pickup_node_id_destination"] = val["node_destination"] ? val["node_destination"]["node_name"] : ""     
             this.dataItem = val
             this.dataItem.pickup_date = (val.pickup_date) ? val.pickup_date.substring(0,10) : val.pickup_date
+
+            this.$store.dispatch(`SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ValueData`, val["node_destination"])
 
             this.$nextTick(() => {
               this.dialogPickupList = true
