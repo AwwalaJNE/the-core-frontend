@@ -1053,6 +1053,18 @@ export default {
     state.vehicle.vehicle_type_id.hasOwnProperty('arrData') ?
       state.vehicle.vehicle_type_id.arrData = payload :
       state.vehicle.vehicle_type_id.arrData = []
+  },  
+
+  SET_VEHICLE_VEHICLE_MODE_ID(state, payload) {
+    state.vehicle.vehicle_mode_id.value = payload
+  },
+  SET_VEHICLE_VEHICLE_MODE_ID_ValueData(state, payload) {
+    state.vehicle.vehicle_mode_id.valueData = payload
+  },
+  SET_VEHICLE_VEHICLE_MODE_ID_ArrData(state, payload) {
+    state.vehicle.vehicle_mode_id.hasOwnProperty('arrData') ?
+      state.vehicle.vehicle_mode_id.arrData = payload :
+      state.vehicle.vehicle_mode_id.arrData = []
   },
 
   SET_VEHICLE_VEHICLE_NODE_ID(state, payload) {
