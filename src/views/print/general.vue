@@ -54,7 +54,8 @@ export default {
             loading: false,
             val: '',
             type: '',
-            err: ''
+            err: '',
+            node_id: ''
         }
     },
     methods: {
@@ -62,7 +63,8 @@ export default {
           if(this.$route.params.id && this.$route.params.type){
             this.val = this.$route.params.id
             this.type = this.$route.params.type
-
+            this.node_id = this.$route.params.node_id
+            console.log(this.$route.params.node_id,'node')
             this.getDataPrint()
           }
         },
@@ -71,7 +73,7 @@ export default {
             this.loading = true
 			await axios
                 .get(this.URL.print + 
-                `/${this.val}/${this.type}?n=${1}`, 
+                `/${this.val}/${this.type}?n=${this.node_id}`,
                 this.Helper.header())
                 .then(res => {
 					console.log('getDataPrint', res.data)
