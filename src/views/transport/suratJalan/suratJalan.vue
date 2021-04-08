@@ -10,7 +10,6 @@
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
-        @actionPrint="actionPrint"
 
         :hasLinked="['manifest_do_number']"
         :customAction="true"
@@ -131,6 +130,11 @@ export default {
                 label: 'Depart',
                 key: 'depart',
                 attribute: '',
+              },
+              {
+                label: 'Cancel',
+                key: 'cancel',
+                attribute: '',
               }
             ],
 
@@ -223,7 +227,7 @@ export default {
           switch(key) {
                 case "print":
                     console.log('print', val)
-                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.manifest_do_number, 'type': 'manifest-delivery-order'} });
+                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.manifest_do_number, 'type': 'manifest-delivery-order', 'node_id':this.listenNodeId } });
                     window.open(routeData.href, '_blank');
                     break;
                 case "depart":
@@ -244,6 +248,9 @@ export default {
                     this.depart()
 
                     break;
+                case 'cancel':
+                  this.manifest_do_number = val.manifest_do_number
+                  this.cancel()
                 default:
                     console.log('meong')
                     // code block
@@ -273,9 +280,7 @@ export default {
             console.log("refresh")
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
-        actionPrint(row){
-          console.log(row,'print')
-        },
+
         actionCancel(row){
           this.pickupData = row;
           this.activeDialogCancel = true;
@@ -284,8 +289,28 @@ export default {
             this.loading = true
             await axios
                 .put(
-                    this.URL.manifest_delivery_order + `/${this.manifest_do_number}/detail/1?n=${this.listenNodeId}`,
+                    this.URL.manifest_delivery_order + `/${this.manifest_do_number}/detail/${this.manifest_do_number}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
+                    this.Helper.header())
+                .then(res => {
+                    this.loading = false
+                    this.refresh()
+                    this.$emit("refresh")
+                    this.openNotification(null, 'Success', 'Update surat jalan success')
+                }).catch(err => {
+                    this.loading = false
+                    this.refresh()
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+        },
+        async cancel() {
+            this.loading = true
+          let formCancel={}
+            await axios
+                .post(
+                    this.URL.manifest_delivery_order + `/${this.manifest_do_number}/cancel?n=${this.listenNodeId}`,
+                    JSON.stringify(formCancel),
                     this.Helper.header())
                 .then(res => {
                     this.loading = false
