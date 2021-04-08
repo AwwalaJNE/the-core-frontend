@@ -10,7 +10,6 @@
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
-        @actionPrint="actionPrint"
 
         :hasLinked="['manifest_do_number']"
         :customAction="true"
@@ -131,6 +130,11 @@ export default {
                 label: 'Depart',
                 key: 'depart',
                 attribute: '',
+              },
+              {
+                label: 'Cancel',
+                key: 'cancel',
+                attribute: '',
               }
             ],
 
@@ -244,6 +248,9 @@ export default {
                     this.depart()
 
                     break;
+                case 'cancel':
+                  this.manifest_do_number = val.manifest_do_number
+                  this.cancel()
                 default:
                     console.log('meong')
                     // code block
@@ -284,6 +291,26 @@ export default {
                 .put(
                     this.URL.manifest_delivery_order + `/${this.manifest_do_number}/detail/${this.manifest_do_number}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
+                    this.Helper.header())
+                .then(res => {
+                    this.loading = false
+                    this.refresh()
+                    this.$emit("refresh")
+                    this.openNotification(null, 'Success', 'Update surat jalan success')
+                }).catch(err => {
+                    this.loading = false
+                    this.refresh()
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+        },
+        async cancel() {
+            this.loading = true
+          let formCancel={}
+            await axios
+                .post(
+                    this.URL.manifest_delivery_order + `/${this.manifest_do_number}/cancel?n=${this.listenNodeId}`,
+                    JSON.stringify(formCancel),
                     this.Helper.header())
                 .then(res => {
                     this.loading = false
