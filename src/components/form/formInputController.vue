@@ -172,6 +172,9 @@
                                     @updateValue="updateValue" 
                                     @inputFocus="onfocuslah"/>
                                 </template>
+                                <template v-else>
+                                    <code style="color:red">component failed to render, querySearch for autocomplete undefined</code>
+                                </template>
                             </template>
                         </vs-col>
                     </template>

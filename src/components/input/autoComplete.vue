@@ -1,11 +1,11 @@
 <template>
-    <div style="text-align:left;">
-        <small style="padding-left:10px;">{{name}}</small>
+    <div style="text-align:left">
+        <label v-text="`${name}`" style="font-size:12px;"></label>
         <el-autocomplete
         class="inline-input"
         v-model="value"
         :fetch-suggestions="querySearch"
-        :placeholder="`Cari ${name}`"
+        :placeholder="`Search ${name}`"
         :trigger-on-focus="false"
         @select="handleSelect"
         @input="updateValue"

@@ -168,7 +168,6 @@ export default {
       label: "NIK",
       key: "employee_nik",
       rule: "required",
-      width: '6',
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -178,7 +177,6 @@ export default {
       label: "Name",
       key: "employee_name",
       rule: "required",
-      width: '6',
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -189,7 +187,6 @@ export default {
       key: "employee_phone_number",
       rule: "required|numeric|min:8",
       typeInput: "text",
-      width: '6',
       typeData: "String",
       valueData: null,
       value: ''
@@ -202,14 +199,12 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-      width: '6',
     },
     employee_no_ktp: {
       label: "No. KTP",
       key: "employee_no_ktp",
       rule: "required|numeric|min:5",
       typeInput: "text",
-      width: '6',
       typeData: "String",
       valueData: null,
       value: ''
@@ -219,7 +214,7 @@ export default {
       key: "employee_birth_place",
       rule: "required",
       typeInput: "text",
-      width: '6',
+      width: '4',
       typeData: "String",
       valueData: null,
       value: ''
@@ -229,7 +224,7 @@ export default {
       key: "employee_birth_date",
       rule: "required",
       typeInput: "date",
-      width: '6',
+      width: '4',
       typeData: "String",
       valueData: null,
       value: ''
@@ -238,7 +233,7 @@ export default {
       label: "Gender",
       key: "employee_gender",
       rule: "required",
-      width: '6',
+      width: '4',
       typeInput: "select",
       typeData: "String",
       arrData: [ 
@@ -263,10 +258,10 @@ export default {
       typeData: "String",
       valueData: null,
       width: '6',
-      value: ''
+      value: 'Fulltime'
     },
     employee_type_id: {
-      label: "Type",
+      label: "Employee Type / Role",
       key: "employee_type_id",
       rule: "required",
       typeInput: "select",
@@ -276,13 +271,24 @@ export default {
       valueData: null,
       value: ''
     },
+    // employee_node_id: {
+    //   label: "Work Location",
+    //   key: "employee_node_id",
+    //   rule: "required",
+    //   typeInput: "select",
+    //   typeData: "String",
+    //   width: '6',
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
     employee_node_id: {
       label: "Work Location",
       key: "employee_node_id",
       rule: "required",
-      typeInput: "select",
+      typeInput: "autocomplete",
       typeData: "String",
-      width: '6',
+      width: '12',      
       arrData: [],
       valueData: null,
       value: ''
@@ -292,7 +298,7 @@ export default {
       key: "is_active",
       rule: "",
       typeInput: "Boolean",
-      width: '6',
+      width: '12',
       typeData: "Boolean",
       valueData: true,
       value: true
