@@ -1916,7 +1916,7 @@ export default {
     //   value: ''
     // },
     no_moda_angkutan_id: {
-      label: "No Moda Angkutan",
+      label: "Nama Kendaraan",
       key: "no_moda_angkutan_id",
       rule:"required",
       typeInput: "select",
