@@ -79,6 +79,11 @@ export default {
                 {
                     label: "Customer Type",
                     key: "customer_type_name",
+                    width: "lg"
+                },
+                {
+                    label: "Status",
+                    key: "status",
                     width: "sm"
                 },
             ],
@@ -105,6 +110,10 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
+                    let arr = res.data.data
+                    arr.map(item =>{
+                      item['status'] = item.is_active === true ? 'Active' : 'Inactive'
+                    })
                     this.dataTable = res.data.data
 
                     this.pagination.page = res.data.meta.current_page

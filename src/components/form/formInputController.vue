@@ -363,7 +363,7 @@ export default {
                         // yg diambil key input
                         if(this.InputObject[item]['typeInput'].toLowerCase() == 'boolean') { 
                             // fix component switch.vue onchange updateValue ga ketrigger dan return ''
-                            this.form[this.InputObject[item].key] = this.InputObject[item].value //this.InputObject[item].value == '' ? true : this.InputObject[item].value 
+                            this.form[this.InputObject[item].key] = this.InputObject[item].value ? this.InputObject[item].value : this.InputObject[item].valueData //this.InputObject[item].value == '' ? true : this.InputObject[item].value
                         } else if (this.InputObject[item]['typeInput'].toLowerCase() == 'dynamicinputcomponent') {
                             this.form[this.InputObject[item].key] = this.InputObject[item].arrData
                         } else if (this.InputObject[item]['typeInput'].toLowerCase() == 'autocomplete') {
