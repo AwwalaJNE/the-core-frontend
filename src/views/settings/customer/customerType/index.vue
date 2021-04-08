@@ -79,7 +79,7 @@ export default {
                 {
                     label: "Customer Type",
                     key: "customer_type_name",
-                    width: "lg"
+                    width: "sm"
                 },
                 {
                     label: "Status",
