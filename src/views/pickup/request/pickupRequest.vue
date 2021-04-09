@@ -77,7 +77,7 @@ export default {
               },
               {
                 label: "Courier",
-                key: "pickup_courier_employee_name",
+                key: "user_name",
                 width: "auto"
               },
               {

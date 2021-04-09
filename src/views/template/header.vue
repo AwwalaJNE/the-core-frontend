@@ -46,12 +46,10 @@
                                     <template #tooltip>
                                     <div class="content-tooltip">
                                         <div class="body">
-                                        <!-- <div class="text">
-                                            Cosed Tasks
-                                            <span>
-                                            89
-                                            </span>
-                                        </div> -->
+                                        <div class="text">
+                                            <i v-html="`${userAuthFullName}`" />
+                                            <span v-html="`${userAuthLoginName}`" />
+                                        </div>
                                         <!-- <vs-avatar circle size="60"> -->
                                             <!-- <img src="/avatars/avatar-5.png" alt=""> -->
                                             <!-- <i class='bx bx-user'></i> -->
@@ -104,7 +102,9 @@ export default {
             activeSidebar: false,
             activeTooltip1: false,
             datanode: [],
-            selectedNode: ''
+            selectedNode: '',
+            userAuthFullName:'',
+            userAuthLoginName:''
         }
     },
     computed: {
@@ -132,6 +132,9 @@ export default {
             this.$store.dispatch(`SET_USER_N`, node[0])
         },
         init(){
+            let userObjLocalStorage = JSON.parse(localStorage.getItem('vuejs__user')).value;
+            this.userAuthLoginName = userObjLocalStorage.user_login;
+            this.userAuthFullName = userObjLocalStorage.user_name;
             this.datanode = []
             let node = this.listenGetUserNodeList
                 node.length > 0 && node.map(item => {
