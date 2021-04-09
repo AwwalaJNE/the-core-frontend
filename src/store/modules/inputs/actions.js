@@ -1341,6 +1341,13 @@ export default {
     commit('SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData', payload)
   },
 
+  SET_SURAT_MUATAN_MAX_WEIGHT({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MAX_WEIGHT', payload)
+  },
+  SET_SURAT_MUATAN_MAX_WEIGHT_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MAX_WEIGHT_ValueData', payload)
+  },
+
   SET_SURAT_MUATAN_MANIFEST_METHOD_ID({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_METHOD_ID', payload)
   },

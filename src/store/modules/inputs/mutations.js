@@ -1382,6 +1382,13 @@ export default {
     state.surat_muatan.manifest_number.valueData = payload
   },
 
+  SET_SURAT_MUATAN_MAX_WEIGHT(state, payload) {
+    state.surat_muatan.max_weight.value = payload
+  },
+  SET_SURAT_MUATAN_MAX_WEIGHT_ValueData(state, payload) {
+    state.surat_muatan.max_weight.valueData = payload
+  },
+
   SET_SURAT_MUATAN_MANIFEST_METHOD_ID(state, payload) {
     state.surat_muatan.manifest_method_id.value = payload
   },

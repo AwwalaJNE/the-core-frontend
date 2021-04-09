@@ -102,7 +102,7 @@ export default {
                   width: "sm"
                 },
                 {
-                    label: "Kg",
+                    label: "Max Weight",
                     key: "max_weight",
                     width: "auto"
                 },
@@ -291,7 +291,8 @@ export default {
           name: 'printGeneral', 
           params: { 
               'id': row.manifest_number, 
-              'type': 'manifest'
+              'type': 'manifest',
+              'node_id': this.listenNodeId
           } 
         });
         window.open(routeData.href, '_blank');

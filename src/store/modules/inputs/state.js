@@ -1757,6 +1757,15 @@ export default {
       valueData: null,
       value: ''
     },
+    max_weight: {
+      label: "Max Weight",
+      key: "max_weight",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: null
+    },
     manifest_method_id: {
       label: "Moda",
       key: "manifest_method_id",
