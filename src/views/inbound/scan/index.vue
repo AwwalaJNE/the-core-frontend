@@ -138,10 +138,16 @@ export default {
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
-                this.inbound_id = res.data.data.inbound_id
+                  let message = 'TANPA : SM / SJ / PICKUP';
+                  let typeNotif = null;
+                if(res.data.data.inbound_id){
+                  typeNotif = 'success';                  
+                  message = null;
+                  this.inbound_id = res.data.data.inbound_id
+                }
                 this.refresh()
                 this.handlerClearForm()
-                this.openNotification(null, 'Success', 'Receiving Success!')
+                this.openNotification(typeNotif, 'Receiving Success!', message)
               }).catch(err => {
                 console.log(err,'err receiving');
                 this.loading = false
