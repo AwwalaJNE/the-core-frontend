@@ -5,22 +5,41 @@
                 <vs-col xs="12" sm="2" lg="2">
                     <h3>Destination</h3>
                 </vs-col>
-                <vs-col xs="12" sm="2" lg="2">
-                    <vs-tooltip>
-                        <vs-button
-                            shadow
-                            icon
-                            :active="false"
-                            @click="openGetCustomer"
-                            :tabindex="-1"
-                            style="margin:10px auto 0;"
-                        >
-                            <i class='bx bx-user'></i>
-                        </vs-button>
-                        <template #tooltip>
-                            {{`Alt + f2 | Search customer destination`}}
-                        </template>
-                    </vs-tooltip>
+                <vs-col xs="12" sm="6" lg="6">
+                    <vs-row justify="flex-end">
+                        <vs-col xs="12" sm="8" lg="8">
+                            <template v-if="customer !== ''">
+                                <span 
+                                    :data-value="customer" 
+                                    class="vs-select__chips__chip baloon"
+                                    style="width: fit-content;"
+                                    >
+                                        {{`${customer}`}}
+                                        <span class="vs-select__chips__chip__close" @click="removeCustomer()">
+                                            <i class="vs-icon-close vs-icon-hover-less"></i>
+                                        </span>
+                                </span>
+                            </template>
+                        </vs-col>
+                        <vs-col xs="12" sm="2" lg="2">
+                            <vs-tooltip>
+                                <vs-button
+                                    shadow
+                                    icon
+                                    :active="false"
+                                    @click="openGetCustomer"
+                                    :tabindex="-1"
+                                    style="margin:10px auto 0;"
+                                >
+                                    <i class='bx bx-user'></i>
+                                </vs-button>
+                                <template #tooltip>
+                                    {{`Alt + f2 | Search customer destination`}}
+                                </template>
+                            </vs-tooltip>
+                        </vs-col>
+                    </vs-row>
+                    
                 </vs-col>
             </vs-row>
         </div>
@@ -70,7 +89,8 @@ export default {
             dialogGetCustomer: false,
             dataItem: null,
             forcererender: false,
-            destinationCode: ''
+            destinationCode: '',
+            customer:""
         }
     },
     computed: {
@@ -82,6 +102,26 @@ export default {
         }
     },
     methods: {
+        removeCustomer(){
+            this.forcererender = true
+            let zipndestiCode = {'zip_code' : "", 'destination_code': ""}
+            this.$store.dispatch(`SET_DESTINATION_DESTINATION_TYPE`, "")
+            this.$store.dispatch(`SET_DESTINATION_DESTINATION_NAME`, "")
+            this.$store.dispatch(`SET_DESTINATION_DESTINATION_PHONE`, "")
+            this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, "")
+            this.$store.dispatch(`SET_DESTINATION_DESTINATION_SUBDISTRICT_ID`, "")
+            this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, "")
+            this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE`, zipndestiCode)
+
+            this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", {})
+            this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", {})
+            this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", [])
+
+            this.customer = ""
+
+            let self = this
+            setTimeout(function(){ self.forcererender = false }, 100);
+        },
         setFocus(){
             let inp = this.$refs.formTransactionDestinationController.$refs.connote_receiver_name[0]
             this.$nextTick(() => {
@@ -132,7 +172,7 @@ export default {
         //         }
         //     }
         // },
-        updateValue(key,value,fromBooking = false) {
+        updateValue(key,value,fromBooking = false, value2) {
             if(Object.keys(value).length > 0 && key == 'detination') {
                 // this.forcererender = true
                 let typeaddress = value.customer_address_type.toLowerCase() || ''
@@ -149,6 +189,7 @@ export default {
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, value.geolocation_location_name)
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE`, zipndestiCode)
 
+                this.customer = value2
                 // let self = this
                 // this.$nextTick(() => {
                 //     this.getShippingService(booking_connote_service_code, fromBooking)
@@ -199,3 +240,10 @@ export default {
     },
 }
 </script>
+<style lang="scss">
+    .coba{
+        &:focus{
+            color: red;
+        }
+    }
+</style>

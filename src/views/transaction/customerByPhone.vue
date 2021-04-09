@@ -111,7 +111,7 @@ export default {
                     console.log('res', res)
                     if(res.status == 200) {
                         let data = res.data.data
-                        this.$emit("updateValue", this.listenType, data)
+                        this.$emit("updateValue", this.listenType, data, null,this.value)
                         this.closeDialog()
                     }
                 }).catch(err => {

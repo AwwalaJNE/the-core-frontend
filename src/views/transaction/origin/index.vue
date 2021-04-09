@@ -5,22 +5,40 @@
                 <vs-col xs="12" sm="2" lg="2">
                     <h3>Origin</h3>
                 </vs-col>
-                <vs-col xs="12" sm="2" lg="2">
-                    <vs-tooltip>
-                        <vs-button
-                            shadow
-                            icon
-                            :active="false"
-                            @click="openGetCustomer"
-                            :tabindex="-1"
-                            style="margin:10px auto 0;"
-                        >
-                            <i class='bx bx-user'></i>
-                        </vs-button>
-                        <template #tooltip>
-                            {{`Alt + f1 | Search customer origin`}}
-                        </template>
-                    </vs-tooltip>
+                <vs-col xs="12" sm="6" lg="6">
+                    <vs-row justify="flex-end">
+                        <vs-col xs="12" sm="8" lg="8">
+                            <template v-if="customer !== ''">
+                                <span 
+                                    :data-value="customer" 
+                                    class="vs-select__chips__chip baloon"
+                                    style="width: fit-content;"
+                                    >
+                                        {{`${customer}`}}
+                                        <span class="vs-select__chips__chip__close" @click="removeCustomer()">
+                                            <i class="vs-icon-close vs-icon-hover-less"></i>
+                                        </span>
+                                </span>
+                            </template>
+                        </vs-col>
+                        <vs-col xs="12" sm="2" lg="2">
+                            <vs-tooltip>
+                                <vs-button
+                                    shadow
+                                    icon
+                                    :active="false"
+                                    @click="openGetCustomer"
+                                    :tabindex="-1"
+                                    style="margin:10px auto 0;"
+                                >
+                                    <i class='bx bx-user'></i>
+                                </vs-button>
+                                <template #tooltip>
+                                    {{`Alt + f1 | Search customer origin`}}
+                                </template>
+                            </vs-tooltip>
+                        </vs-col>
+                    </vs-row>
                 </vs-col>
             </vs-row>
         </div>
@@ -69,7 +87,8 @@ export default {
         return {
             dialogGetCustomer: false,
             dataItem: null,
-            forcererender: false
+            forcererender: false,
+            customer:""
         }
     },
     computed: {
@@ -81,8 +100,23 @@ export default {
         }
     },
     methods: {
+        removeCustomer(){
+            this.forcererender = true
+            this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, "")
+            this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, "")
+            this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, "")
+            this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, "")
+            this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, "")
+            this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, "")
+
+            this.customer = ""
+
+            let self = this
+            setTimeout(function(){ self.forcererender = false }, 100);
+        },
         setFocus(){
             let inp = this.$refs.formTransactionOriginController.$refs.connote_shipper_name[0]
+            console.log(inp)
             this.$nextTick(() => {
                 inp.$refs.generalInput.$el.querySelector('input').focus()
             });
@@ -130,7 +164,7 @@ export default {
                 }
             }
         },
-        updateValue(key,value) {
+        updateValue(key,value, value1,value2) {
             
             if(Object.keys(value).length > 0 && key == 'origin') {
                 this.forcererender = true
@@ -141,13 +175,21 @@ export default {
                 this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, value.geolocation_location_name)
                 this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, value.geolocation_subdistrict_zip_code)
 
+                this.customer = value2
+
                 let self = this
                 setTimeout(function(){ self.forcererender = false }, 100);
                                 
-                let aaa = this.$store.getters.getTransaction.origin
-                console.log('data origin', aaa)
+                
             }
         }
     },
 }
 </script>
+<style lang="scss">
+    .baloon{
+        position: absolute;
+        right: 0;
+        top: 15px;
+    }
+</style>
