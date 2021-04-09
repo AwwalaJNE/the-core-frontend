@@ -138,7 +138,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.surcharge_type + `?n=1`,
+                    this.URL.surcharge_type + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {

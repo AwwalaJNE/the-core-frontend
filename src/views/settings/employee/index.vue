@@ -30,12 +30,26 @@
                 </div>
                 <template v-if="navActive === 'k-EMPLOYEE'">
                     <transition name="slide-fade">
-                        <employee-list />
+                        <employee-list :ref="navActive"  />
                     </transition>
                 </template>
+                <!-- <template v-else-if="navActive === 'k-EMPLOYEE_TYPE'">
+                    <transition name="slide-fade">
+                        <employee-type :ref="navActive"  />
+                    </transition>
+                </template> -->
 
             </div>
         </section>
+
+        
+        <!--Create Employee-->
+            <dialog-create-edit-employee
+            :active="dialogEmployee" 
+            @refresh="refresh"
+            :closeDialog="closeDialogEmployee"
+            title="Create Employee"
+            />
     </div>
 </template>
 <script>
@@ -43,6 +57,9 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 
 import EmployeeList from "@/views/settings/employee/employee-list"
+import DialogCreateEditEmployee from "@/views/settings/employee/employee-list/dialogCreateEditEmployee"
+
+import EmployeeType from "@/views/settings/employee/employee-type"
 
 
 export default {
@@ -51,8 +68,9 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "employee-list": EmployeeList,
+        "employee-type": EmployeeType,
         // "role-list": RoleList,
-        // "dialog-create-edit-user": DialogCreateEditUser,
+        "dialog-create-edit-employee": DialogCreateEditEmployee,
         // "dialog-create-edit-role": DialogCreateEditRole
     },
     data() {
@@ -61,11 +79,17 @@ export default {
                 {
                     label: "EMPLOYEE",
                     key: "k-EMPLOYEE",
-                    title: "EMPLOYEE List"
+                    title: "Employee"
+                },
+                {
+                    label: "EMPLOYEE TYPE",
+                    key: "k-EMPLOYEE_TYPE",
+                    title: "Employee Type"
                 },
             ],
-            title:"Nodes",
-            navActive: "k-EMPLOYEE"
+            title:"Employee",
+            navActive: "k-EMPLOYEE",
+            dialogEmployee:false
         }
     },
     methods: {
@@ -78,8 +102,26 @@ export default {
             this.title = item[0].title
         },
         openDialog(){
-
+            switch(this.navActive) {
+                case "k-EMPLOYEE":
+                    this.dialogEmployee = true
+                    break;
+                case "k-EMPLOYEE-TYPE":
+                    this.dialogEmployeeType = true
+                    break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
+            this.refreshInject = this.navActive
         },
+         refresh(){
+            let el = this.refreshInject
+            this.$refs[el].refresh() // trigger function refresh form dari luar component list
+        },
+        closeDialogEmployee(){
+            this.dialogEmployee = false
+        }
     },
 }
 </script>

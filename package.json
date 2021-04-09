@@ -3,7 +3,8 @@
   "version": "2.0.0",
   "author": "Odon",
   "contributors": [
-    "Odon"
+    "Odon",
+    "Bagus"
   ],
   "main": "server.js",
   "description": "Core",
@@ -22,10 +23,14 @@
     "core-js": "^3.1.2",
     "element-ui": "^2.14.0",
     "leaflet": "^1.7.1",
+    "moment-timezone": "^0.5.32",
     "node-sass": "^4.13.0",
     "vee-validate": "^3.4.2",
     "vue": "^2.6.10",
+    "vue-barcode": "^1.3.0",
+    "vue-currency-input": "^1.22.6",
     "vue-ls": "^3.2.1",
+    "vue-moment": "^4.1.0",
     "vue-router": "^3.0.1",
     "vuesax": "^4.0.1-alpha.25",
     "vuex": "^3.0.1",

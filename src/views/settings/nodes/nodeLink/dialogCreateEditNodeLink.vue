@@ -1,6 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
+    width="lg"
     :closeDialog="cancel">
 
         <template v-slot:header>
@@ -10,10 +11,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formGeoLocationCityController"
+                    ref="formNodeLinkController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="geolocation_city"
+                    typeForm="nodeLink"
                 />
             </div>
         </template>
@@ -57,14 +58,14 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-geo-city",
+    name:"dialog-create-edit-node-link",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,   
+        "form-input-controller": FormInputController,    
     },
     props: {
-       closeDialog: Function, 
+       closeDialog: Function,
        active: Boolean,
        title: String,
        dataItem: Object,
@@ -74,8 +75,7 @@ export default {
     data() {
         return {
             form: {},
-            formRole: this.$store.getters.getInputs.geolocation_city ? this.$store.getters.getInputs.geolocation_city : {},
-            geolocation_city_id: ''
+            node_link_id: ''
         }
     },
     computed: {
@@ -92,45 +92,47 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.geolocation_city_id = val.geolocation_city_id
+                this.node_link_id = val.node_link_id
             }
         }
     },
     methods: {
         formData(form){
             this.form = form
-            if(this.geolocation_city_id !== undefined && this.geolocation_city_id !== '') {
+            if(this.node_link_id !== undefined && this.node_link_id !== '') {
                     console.log('update')
+                    this.form.node_link_id = this.node_link_id
                     this.updateData()
             } else {
+                    console.log('create new')
                     this.addData()
             }
         },
         handleSubmit(){
-            this.$refs.formGeoLocationCityController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formNodeLinkController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formGeoLocationCityController.handleClearForm()
+            this.$refs.formNodeLinkController.handleClearForm()
             this.form = {}
-            this.geolocation_city_id = ""
+            this.node_link_id = ""
         },
-        async getDataProvince(){
+        async getDataNode(){
             await axios
-                .get(this.URL.geolocation_province + 
-                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                .get(this.URL.node + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.geolocation_province_name
-                            obj["value"] = item.geolocation_province_id
+                            obj["label"] = item.node_name
+                            obj["value"] = item.node_id
 
                             arr.push(obj)
                         })
-
-                        this.$store.dispatch("SET_GEOLOCATION_CITY_GEOLOCATION_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_NODELINK_NODE_LINK_ORIGIN_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_NODELINK_NODE_LINK_DESTINATION_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -139,45 +141,69 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
+
+        async getVehicleMode(){
+        await axios
+            .get(this.URL.vehicle_mode +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
+                this.Helper.header())
+            .then(res => {
+              if(res.data.data.length > 0) {
+                let arr = []
+                res.data.data.map(item => {
+                  let obj = {}
+                  obj["label"] = item.vehicle_mode_name
+                  obj["value"] = item.vehicle_mode_id
+
+                  arr.push(obj)
+                })
+
+                this.$store.dispatch("SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ArrData", arr.length > 0 ? arr : null)
+              } else {
+                // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+              }
+
+            }).catch(err => {
+              // this.openNotification('danger', 'Failed to collect role list', err)
+            })
+      },
+
         async updateData(){
             await axios
                 .put(
-                    this.URL.geolocation_city + `/${this.geolocation_city_id}?n=1`,
+                    this.URL.node_link + `/${this.node_link_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Update role is success')
+                    this.openNotification(null, 'Update success', 'Update node is success')
                 }).catch(err => {
                     this.loading = false
-                    this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update role is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', 'Update failed', err.response.data.message)
                 })
         },
+
         async addData() {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.geolocation_city + `?n=1`,
+                    this.URL.node_link + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Create new role is success')
+                    this.openNotification(null, 'Create Success', 'Create new node is success')
                 }).catch(err => {
                     this.loading = false
-                    this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create new role is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', 'Create failed', err.response.data.message)
                 })
         },
         cancel() {
@@ -186,7 +212,8 @@ export default {
         }
     },
     mounted() {
-        this.getDataProvince()
+      this.getDataNode()
+      this.getVehicleMode()
     },
 }
 </script>

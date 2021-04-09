@@ -122,7 +122,7 @@ export default {
         async getDataVehicleMode(){
             await axios
                 .get(this.URL.vehicle_mode + 
-                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {

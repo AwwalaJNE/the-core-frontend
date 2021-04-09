@@ -3,6 +3,7 @@
         <dialog-master 
         :actived="listenActive" 
         width="xl"
+        ref="cust"
         :closeDialog="cancel">
 
             <template v-slot:header>
@@ -11,7 +12,7 @@
 
             <template v-slot:content>
                 <div>
-                    <vs-table>
+                    <vs-table  ref="tableColom">
                         <template #thead>
                         <vs-tr>
                             <vs-th>
@@ -29,6 +30,7 @@
                         </vs-tr>
                         </template>
                         <template #tbody>
+
                             <template v-if="connote_koli_item.length > 0">
                                 <vs-tr
                                     v-for="(item,key) in connote_koli_item"
@@ -52,8 +54,8 @@
                                                     style="width: fit-content;"
                                                     :key="i">
                                                         {{surchargeByID[itm].surcharge_name}}
-                                                        <template>
-                                                            <span class="vs-select__chips__chip__close" @click="removeSurcharge(itm, key)">
+                                                        <template v-if="!surchargeByID[itm].surcharge_name.toLowerCase().includes('overweight')">
+                                                            <span class="vs-select__chips__chip__close" @click="removeSurcharge(itm, key, surchargeByID[itm].surcharge_name)">
                                                                 <i class="vs-icon-close vs-icon-hover-less"></i>
                                                             </span>
                                                         </template>
@@ -63,11 +65,13 @@
                                             </template>
                                             <template v-else>
                                                 <input-general 
-                                                name="" 
-                                                :rules="''" 
+                                                :name="item_h.label" 
+                                                :rules="item_h.rule" 
                                                 :formKey="`${item_h.key}|${key}`"
                                                 :valueData="item[item_h.key]"
-                                                typeInput="text"
+                                                :typeInput="`text${item_h.hasOwnProperty('disabled') ? item_h.disabled == true ? '|disabled' : '' : ''}`"
+                                                :ref="`${item_h.key}${key}`"
+                                                :id="`${item_h.key}${key}`"
                                                 @updateValue="updateValue" />
                                             </template>
                                         </vs-td>
@@ -117,8 +121,6 @@
                         </vs-button>
                     </vs-col>
                 </vs-row>
-                    
-                    
             </template>
 
         </dialog-master>
@@ -126,6 +128,7 @@
                 :active="surchargeSelector" 
                 :closeDialog="closeDialogSurcharge"
                 :index="indexSurcharge"
+                :koliObj="koliObj"
                 @updateValue="updateValue"
                 />
     </div>
@@ -146,21 +149,14 @@ export default {
     props: {
         closeDialog: Function,
         active: Boolean,
-        arrData: String,
         surchargeByID: Object
     },
     computed: {
         listenActive(){
             return this.active
         },
-        listenConnoteKoli() {
-            return this.connote_koli_item
-        },
         listenConnoteKoliItem () {
             return this.$store.getters.getTransaction.connote_koli_item
-        },
-        listenTempConnoteKoliItem () {
-            return this.$store.getters.getTransaction.temp_koli_item
         },
         listenJumlahPackage () {
             return this.$store.getters.getTransaction.package.package_jumlah.value
@@ -171,98 +167,163 @@ export default {
         listenPackageService () {
             return this.$store.getters.getTransaction.package.package_service.valueData || {}
         },
+
+        // new code
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
+        },
     },
     data() {
         return {
-            koliData: this.$store.getters['getTransaction']['template_koli'],
             indexSurcharge: 0,
             surchargeSelector: false,
             tableHeader: [
                 {
                     label: 'Weight',
                     key: 'actual_weight',
+                    rule: 'required|decimal|min_value:0',
                     width: "xxs"
                 },
                 {
                     label: 'Length',
                     key: 'length',
-                     width: "xxs"
+                    rule: 'decimal|min_value:0',
+                    width: "xxs"
                 },
                 {
                     label: 'Width',
                     key: 'width',
+                    rule: 'decimal|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Height',
                     key: 'height',
+                    rule: 'decimal|min_value:0',
                      width: "xxs"
                 },
                 {
                     label: 'Volume Weight',
                     key: 'volume_weight',
-                     width: "xxs"
+                    rule: 'decimal|min_value:0',
+                    width: "xxs",
+                    disabled: true
                 },
                 {
                     label: 'Surcharge (s)',
                     key: 'surcharge_id',
+                    rule: '',
                     width: "sm"
                 },
                 {
                     label: 'Description',
                     key: 'description',
+                    rule: 'required',
                     width: "md"
                 },
             ],
-            connote_koli_item:{},
+            connote_koli_item:[],
             surchargeshow: {},
             viewKoli: {},
             chargeable_weight: 0,
             actual_weight: 0,
             volume_weight: 0,
+            koliObj: {}
         }
     },
     watch: {
         active: function(val) {
             if(val != undefined) {
                 if(val == true) {
-                    console.log('awww aktif')
                     this.initialize()
+                    const cust = this.$refs.cust
+                    let el = cust.$scopedSlots.content()
+                    let self = this
+                    this.$nextTick(() => {
+                        // el[0].context.$refs.test.value = 'aaa'
+                        // console.log('input', el[0].context.$refs)
+                    //     // this.$refs.theInput.focus();
+                        // let str = `el[0].context.$refs.surchargeType${this.Keys[0].replace(/\s+/g, '')}`
+                        // let elInput = eval(str)[0]
+                        // let Checkbox = elInput.$el.querySelector('input')
+
+                        //actual_weight|0
+                        let inputF = el[0].context.$refs.tableColom.$scopedSlots.tbody()[0].context.$refs.actual_weight0[0]
+                        let inputEl = inputF.$el.querySelector('input')
+                        console.log('DIALOG SURCHARGE el', inputF)
+                        // setTimeout(function(){ el[0].context.$refs.labelInput.$refs.generalInput.focus() }, 3000);
+                        
+
+                        
+                        // let Checkbox = el[0].context.$refs.labelInput.$refs.generalInput.$el.querySelector('input')
+                        // inputEl.focus();
+                        setTimeout(function(){ inputEl.focus(); }, 100);
+                        
+                        
+                    });
                 }
             }
         }
     },
     methods: {
         initialize() {
-            // this.listenConnoteKoliItem
-            let arr = JSON.parse(this.listenTempConnoteKoliItem)
+            // this.listenConnoteKoliItem issue jika pake ini, jdi perlu dibikin stringify
+            // data is nested, you need to make a deep copy. One option to do this is JSON.parse(JSON.stringify(...))
+            // https://github.com/vuejs/vue/issues/1849#issuecomment-158744006
+            // let arr = JSON.parse(this.listenTempConnoteKoliItem)
+            let data = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
+            let arr = JSON.parse(JSON.stringify(data))
+
+            // fix karena key yg didapet dari respond create connote gak konsisten dengan key saat create data
+            arr.map((item, i) => {
+                if(item.hasOwnProperty('koli_actual_weight')) {
+                   arr[i]['actual_weight'] = item['koli_actual_weight']
+                }
+                if(item.hasOwnProperty('koli_height')) {
+                    arr[i]['height'] = item['koli_height']
+                }
+                if(item.hasOwnProperty('koli_length')) {
+                    arr[i]['length'] = item['koli_length']
+                }
+                if(item.hasOwnProperty('koli_width')) {
+                    arr[i]['width'] = item['koli_width']
+                }
+                if(item.hasOwnProperty('koli_volume_weight')) {
+                    arr[i]['volume_weight'] = item['koli_volume_weight']
+                }
+            })
+
             this.connote_koli_item = arr
-            console.log('surcharge', this.surchargeByID)
         },
         cancel() {
             this.closeDialog()
         },
         handleSubmit() {
+            
+            // this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.actual_weight)
+            // this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.volume_weight)
+            // this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.chargeable_weight)
             this.$emit("prosesmultipleKoli", this.connote_koli_item)
-            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.actual_weight)
-            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.volume_weight)
-            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.chargeable_weight)
             this.closeDialog()
         },
         openSurchargeDialog(index){
             this.indexSurcharge = index
+            this.koliObj = this.connote_koli_item[index]
             this.surchargeSelector = true
         },
         closeDialogSurcharge() {
+            this.indexSurcharge = 0
+            this.koliObj = {}
             this.surchargeSelector = false
         },
-        updateValue(key, value, value2 = null) {
+        updateValue(key, value, value2 = null, value3 = null) {
             let str = key.split("|")
             let index = str[1]
-            console.log(key, value, value2,index)
-            console.log('this.connote_koli_item', this.connote_koli_item)
             // this.$emit("prosesmultipleKoli", str[0],index, value)
             switch(true) {
+                case key.includes("description"):
+                    this.prosesKoli("description", value, index)
+                    break;
                 case key.includes("actual_weight"):
                     this.prosesKoli("actual_weight", value, index)
                     break;
@@ -277,18 +338,17 @@ export default {
                     break;
                 case key.includes("handle_surcharge"):
                     
-                    let surcharge = value2
-                    console.log('meong', surcharge,key, value, this.connote_koli_item[value] )
-                    let ids = []
-                    if(surcharge.length > 0){
-                        surcharge.map(item => ids.push(item.surcharge_id))
-                    }
 
                     if(this.connote_koli_item[value].hasOwnProperty('surcharge_id')) {
-                        this.connote_koli_item[value].surcharge_id = ids
+                        this.connote_koli_item[value].surcharge_id = value2
                     }
-                    console.log("handle_surcharge",key, value, value2, this.connote_koli_item )
 
+                    if(this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
+                        this.connote_koli_item[value].is_packing_kayu_id = value3
+                    }
+
+
+                    // this.$emit("prosesmultipleKoli", this.connote_koli_item)
                     // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
                     // this.surchargeView()
                     // this.calculation()
@@ -299,43 +359,45 @@ export default {
             }
         },
         prosesKoli(key, value, index) {
-            console.log('LLLLLL' ,key,index, this.connote_koli_item)
             let service = this.listenPackageService.data || {}
 
             if(this.connote_koli_item[index].hasOwnProperty(key)) {
                this.connote_koli_item[index][key] = value
-               console.log('===> dipanggil ke', index, this.connote_koli_item[index])
             }
-            
-            // if(key.includes('length')) {
-            //    this.connote_koli_item[index]['length'] = value
-            // }
-
-            // if(key.includes('width')) {
-            //    this.connote_koli_item[index]['width'] = value
-            // }
-
-            // if(key.includes('height')) {
-            //    this.connote_koli_item[index]['height'] = value
-            // }
             
             let volume_weight = 0
             
             if(Object.keys(service).length > 0) {
-                let service_volume_divider = service['service_volume_divider'].toString()
+                let service_volume_divider = Number(service['service_volume_divider'])
                 volume_weight = (this.connote_koli_item[index]['length'] * this.connote_koli_item[index]['width'] * this.connote_koli_item[index]['height']) / service_volume_divider 
-                volume_weight = volume_weight / 1000
             }
             this.connote_koli_item[index]['volume_weight'] = volume_weight.toFixed(2)
             
-            console.log('this.connote_koli_item multiple', this.connote_koli_item)
+            // this.$emit("prosesmultipleKoli", this.connote_koli_item)
 
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
-            this.calcMultipleKoli()
+            // this.calcMultipleKoli()
         },
-        removeSurcharge(id, index) {
+        removeSurcharge(id, index, name) {
+            let service = this.listenPackageService.data || {}
             this.connote_koli_item[index].surcharge_id = this.connote_koli_item[index].surcharge_id.filter(item => item != id)
-            console.log('remove multiple surcharge', this.connote_koli_item, id, index)
+
+            if(name.toLowerCase().includes('packing kayu')) {
+                if(this.connote_koli_item[index].hasOwnProperty('is_packing_kayu_id')) {
+                    this.connote_koli_item[index].is_packing_kayu_id = ''
+                    this.connote_koli_item[index].is_packing_kayu = false
+                    let volume_weight = 0
+            
+                            if(Object.keys(service).length > 0) {
+                                let service_volume_divider = Number(service['service_volume_divider'])
+                                volume_weight = (this.connote_koli_item[index]['length'] * this.connote_koli_item[index]['width'] * this.connote_koli_item[index]['height']) / service_volume_divider 
+                            }
+                            
+                    this.connote_koli_item[index]['volume_weight'] = volume_weight.toFixed(2)
+                }
+            }
+
+            // this.$emit("prosesmultipleKoli", this.connote_koli_item)
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
             // this.surchargeView()
             // this.calculation()
@@ -396,9 +458,8 @@ export default {
                     }
                     volume_weight = volume_weight + volume_weight_temp
                 })
-
-                
             }
+            // volume_weight = volume_weight.toFixed(2)
             
             let roundUp = this.round03(volume_weight)
                 chargeable_weight = Number(Math.max(actual_weight, roundUp)).toFixed(2)
@@ -410,26 +471,3 @@ export default {
     },
 }
 </script>
-<style lang="scss">
-    .vs-table{
-        table{
-            text-align: left;
-            .md{
-                width: calc(100% / 3) !important;
-            }
-            .sm{
-                width: calc(100% / 4) !important;
-            }
-            .xs{
-                width: calc(100% / 10) !important;
-            }
-            .xxs{
-                width: calc(100% / 12) !important;
-            }
-            .auto{
-                width: auto;
-            }
-            
-        }
-    }
-</style>

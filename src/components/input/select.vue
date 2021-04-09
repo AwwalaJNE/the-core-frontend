@@ -1,31 +1,36 @@
 <template>
-    <inputan :name="name" :rules="rules">
-        <template v-slot:inputan="props">
-            <vs-select
-                class="m-select"
-                filter
-                :multiple="listenIsMultiple"
-                :placeholder="name"
-                :label="name"
-                v-model="value"
-                :border="border"
-                @change="updateValue"
-                :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
-            >
-                <template v-if="DataArr.length > 0">
-                    <vs-option 
-                    v-for="(item,key) in DataArr"
-                    :key="key"
-                    :label="item.label" 
-                    :value="item.value">
-                        {{item.label}}
-                    </vs-option>
+    <div>
+        <template v-if="DataArr.length > 0">
+            <inputan :name="name" :rules="rules">
+                <template v-slot:inputan="props">
+                    <vs-select
+                        class="m-select"
+                        autocomplete="off"
+                        filter
+                        :multiple="listenIsMultiple"
+                        :placeholder="placeholder"
+                        :label="name"
+                        v-model="value"
+                        :border="border"
+                        :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                        @change="updateValue"
+                        :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                    >
+                        
+                            <vs-option 
+                            v-for="(item,key) in DataArr"
+                            :key="key"
+                            :label="item.label" 
+                            :value="item.value">
+                                {{item.label}}
+                            </vs-option>
+                        
+                        
+                    </vs-select>
                 </template>
-                
-            </vs-select>
+            </inputan>
         </template>
-    </inputan>
-    
+    </div>
 </template>
 <script>
 import Inputan from "@/components/input/inputan"
@@ -38,11 +43,14 @@ export default {
         name: String,
         rules: String,
         valueData: Array,
+        dataObj: [Object, String, Array],
         // loadingData: Boolean,
         selectedValue: [Array, String, Number],
         formKey: String,
         isMultiple: Boolean,
-        border: Boolean
+        border: Boolean,
+        placeholder:String,
+        tabindex: [Number, String]
     },
     data() {
         return {
@@ -52,7 +60,7 @@ export default {
                     value: 'nodata'
                 }
             ],
-            value: this.selectedValue ? this.selectedValue :"nodata",
+            value: this.selectedValue ? this.selectedValue :"",
             arrValue: this.selectedValue ? this.selectedValue : [],
             // loading: true,
             // loadingInjector : null
@@ -64,7 +72,10 @@ export default {
         },
         listenIsMultiple(){
             return this.isMultiple ? this.isMultiple : false
-        }
+        },
+        listenTabIndex() {
+            return this.tabindex
+        },
     },
     watch: {
         valueData: function (val) {
@@ -104,7 +115,8 @@ export default {
         //     this.loadingInjector !== null ? this.loadingInjector.close() : null
         // },
         updateValue(val){
-            this.$emit("updateValue", this.listenFormKey, val)
+            let obj = this.DataArr.filter(item => item.value == val)[0]
+            this.$emit("updateValue", this.listenFormKey, val, obj, this.dataObj)
         }
     },
 }

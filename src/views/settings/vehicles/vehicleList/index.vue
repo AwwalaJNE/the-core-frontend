@@ -79,7 +79,7 @@ export default {
             tempSearch: "",
             dialogVehicle: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -104,10 +104,10 @@ export default {
             }
             await axios
                 .get(this.URL.vehicle + 
-                `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+                    
                     this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
@@ -131,7 +131,8 @@ export default {
                     return item.vehicle_id === val.vehicle_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+                this.dataItem.vehicle_mode_id = this.dataItem.vehicle_type.vehicle_mode_id
+                
                 this.$nextTick(() => {
                     this.dialogVehicle = true
                 });
@@ -152,7 +153,7 @@ export default {
                     this.URL.vehicle + `/${val.vehicle_id}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+                    
                     this.refresh()
                     this.openNotification(null, 'Delete success', 'Delete Vehicle is success')
                 }).catch(err => {
@@ -170,7 +171,7 @@ export default {
             this.refresh()
         },
         refresh(){
-            console.log("refresh")
+            
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogVehicle() {

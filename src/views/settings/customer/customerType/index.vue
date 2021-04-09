@@ -15,26 +15,41 @@
         @actionPagination="actionPagination"
         />
 
-        <!--Create User Dialog end-->
-            <!-- <dialog-create-edit-role 
-            :active="dialogRole" 
-            :closeDialogRole="closeDialogRole"
-            :refresh="refresh"
-            title="Edit role"
-            :dataItem="dataItem"
-            /> -->
+            <!--Create User Dialog end-->
+            <dialog-create-edit-customer-type 
+                :active="dialogCustomerType" 
+                :closeDialog="closeDialogCustomerType"
+                :refresh="refresh"
+                title="Edit customer Type"
+                :dataItem="dataItem"
+                btnBlue="Edit"
+            />
+
+            <dialog-confirm
+                :active="activeDialogRemove"
+                :loading="activeLoadingRemove"
+                :closeDialog="closeDialogConfirmRemove"
+                title="Remove Customer Type"
+                message="Are you sure you want to remove Customer Type ?"
+                @confirm="confirmRemove"
+                @cancel="closeDialogConfirmRemove"
+            />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogCreateEditCustomerType from "@/views/settings/customer/customerType/dialogCreateEditCustomerType"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
+
 export default {
     name:"special-tariff-list",
     mixins: [master],
     components: {
         "table-master" : TableMaster,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-create-edit-customer-type": DialogCreateEditCustomerType,
+        "dialog-confirm": DialogConfirm
     },
     props: {
         query: String
@@ -51,25 +66,33 @@ export default {
     },
     data() {
         return {
+            dialogCustomerType:false,
+            activeDialogRemove:false,
+            activeLoadingRemove:false,
             dataTable: [],
             datacolumn: [
                 {
                     label: "ID",
                     key: "customer_type_id",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Customer Type",
                     key: "customer_type_name",
-                    width: "auto"
+                    width: "sm"
+                },
+                {
+                    label: "Status",
+                    key: "status",
+                    width: "sm"
                 },
             ],
             loading: false,
             dataItem: {},
             tempSearch: this.query ? this.query : "",
-            dialogGeolocation: false,
+            customer_type_id: '',
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -84,9 +107,13 @@ export default {
             }
             await axios
                 .get(this.URL.customer_type + 
-                `?n=1&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
+                    let arr = res.data.data
+                    arr.map(item =>{
+                      item['status'] = item.is_active === true ? 'Active' : 'Inactive'
+                    })
                     this.dataTable = res.data.data
 
                     this.pagination.page = res.data.meta.current_page
@@ -102,11 +129,21 @@ export default {
                     this.openNotification('danger', 'Failed to populate country list', err)
                 })
         },
-        actionUpdate(){
-
+        actionUpdate(val){
+            if(this.dataTable.length > 0) {
+                let obj = this.dataTable.filter(item => {
+                    return item.customer_type_id === val.customer_type_id
+                })
+                this.dataItem = obj[0]
+                console.log(this.dataItem, 'nihh val', val)
+                this.$nextTick(() => {
+                    this.dialogCustomerType = true
+                });
+            }
         },
-        actionRemove(){
-
+        actionRemove(val){
+            this.customer_type_id = val.customer_type_id
+            this.activeDialogRemove = true
         },
         actionLimit(val){
             this.pagination.limit = val
@@ -119,6 +156,34 @@ export default {
         },
         refresh(){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        },
+        closeDialogCustomerType() {
+            this.dialogCustomerType = false
+        },
+
+        closeDialogConfirmRemove(){
+          this.activeDialogRemove = false
+          this.activeLoadingRemove=false
+        },
+         confirmRemove() {
+          this.activeLoadingRemove=true
+          this.removeCustomer()
+        },
+        async removeCustomer(){
+          await axios
+              .delete(this.URL.customer_type + `/${this.customer_type_id}?n=${this.listenNodeId}`,
+                  this.Helper.header())
+              .then(res => {
+                this.closeDialogConfirmRemove()
+                this.activeLoadingRemove = false
+                this.refresh()
+                this.openNotification(null, 'Success', 'Delete Customer Type is success')
+              }).catch(err => {
+                this.activeLoadingRemove = false
+                this.closeDialogConfirmRemove()
+                this.refresh()
+                this.openNotification('danger', 'Delete Customer Type is failed', err)
+              })
         },
     },
     mounted() {

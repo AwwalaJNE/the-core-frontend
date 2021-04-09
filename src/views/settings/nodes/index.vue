@@ -55,6 +55,11 @@
                         <types :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
+              <template v-else-if="navActive === 'k-NODE-LINK'">
+                <transition name="slide-fade">
+                  <node-link :ref="navActive" :query="tempSearch"/>
+                </transition>
+              </template>
 
             </div>
         </section>
@@ -65,6 +70,12 @@
             :closeDialog="closeDialogNode"
             title="Create Node"
             />
+        <dialog-create-edit-node-link
+            :active="dialogNodeLink"
+            @refresh="refresh"
+            :closeDialog="closeDialogNodeLink"
+            title="Create Node Link"
+            />
     </div>
 </template>
 <script>
@@ -72,11 +83,13 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 
+import NodeLink from "@/views/settings/nodes/nodeLink"
 import AlternateAddress from "@/views/settings/nodes/alternateAddress"
 import Nodes from "@/views/settings/nodes/nodes"
 import NodesCommision from "@/views/settings/nodes/nodesCommision"
 import Types from "@/views/settings/nodes/types"
 import DialogCreateEditNode from "@/views/settings/nodes/nodes/dialogCreateEditNode"
+import DialogCreateEditNodeLink from "@/views/settings/nodes/nodeLink/dialogCreateEditNodeLink"
 
 
 export default {
@@ -87,9 +100,11 @@ export default {
         "search-input": SearchInput,
         "alternate-address": AlternateAddress,
         "nodes": Nodes,
+        "node-link": NodeLink,
         "nodes-commision": NodesCommision,
         "types": Types,
         "dialog-create-edit-node": DialogCreateEditNode,
+        "dialog-create-edit-node-link": DialogCreateEditNodeLink,
         // "role-list": RoleList,
         // "dialog-create-edit-user": DialogCreateEditUser,
         // "dialog-create-edit-role": DialogCreateEditRole
@@ -117,11 +132,17 @@ export default {
                     key: "k-ALTERNATE-ADDRESS",
                     title: "Alternate Address List"
                 },
+                {
+                  label: "NODE LINK",
+                  key: "k-NODE-LINK",
+                  title: "Node Link"
+                },
             ],
             title:"Nodes",
             navActive: "k-NODES",
             tempSearch: "",
             dialogNode: false,
+            dialogNodeLink: false,
             dialogALTERNATEADDRESS: false,
             dialogNODESCOMMISION: false,
             dialogNodeType: false
@@ -162,6 +183,9 @@ export default {
                 case "k-ALTERNATE-ADDRESS":
                     this.dialogALTERNATEADDRESS = true
                     break;
+                case "k-NODE-LINK":
+                  this.dialogNodeLink = true
+                  break;
                 default:
                     console.log('meong')
                     // code block
@@ -170,6 +194,9 @@ export default {
         },
         closeDialogNode() {
             this.dialogNode = false
+        },
+        closeDialogNodeLink() {
+            this.dialogNodeLink = false
         },
     },
 }

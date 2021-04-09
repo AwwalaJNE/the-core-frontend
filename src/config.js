@@ -1,6 +1,6 @@
 const api = process.env.VUE_APP_API;
 
-console.log('process.env.VUE_APP_API',process.env.VUE_APP_API);
+// console.log('process.env.VUE_APP_API',process.env.VUE_APP_API);
 export default {
     login: api + "login",
     user: api + "user",
@@ -27,6 +27,9 @@ export default {
     // employee
     employee: api + "employee",
 
+    // employee type
+    employee_type: api + "employee-type",
+
     // customer
     customer: api + "customer",
     customer_type: api + "customer-type",
@@ -42,13 +45,98 @@ export default {
 
     //vehicle
     vehicle: api + "vehicle",
+    vehicle_manifest_delivery_order: api + "vehicle-manifest-delivery-order",
     vehicle_mode: api + "vehicle-mode",
     vehicle_type: api + "vehicle-type",
+    pickup_vehicle_type: api + "pickup-vehicle-type",
 
     // transaction
     tariff_shipping_service: api + "tariff-shipping-service",
     connote: api + "connote",
+    upload_connote: api + "upload-connote",
+    booking_connote: api + "booking-connote",
+    transaction: api + "transaction",
     koli: api + "koli",
-    bag: api + "bag"
+    bag: api + "bag",
+    unbagging: api + "unbagging",
+    cash_register: api + "cash-register",
+    payment: api + "payment",
+
+    // PRINT
+    print: api + "print",
+
+    //PICKUP
+    pickup: api + "pickup",
+
+    //PICKUP REQUEST
+    pickup_request: api + "pickup-request",
+
+    //PICKUP SCHEDULE
+    pickup_schedule: api + "pickup-schedule",
+
+    // PICKUP COURIER
+    pickup_courier: api + "pickup-courier",    
+
+
+    //INBOUND
+    inbound: api + "inbound",
+
+    //INBOUND INCOMING
+    inbound_incoming: api + "inbound-incoming",
+
+    //INBOUND RECEIVING
+    receiving: api + "receiving",
+
+    //SURAT JALAN
+    manifest_delivery_order: api + "manifest-delivery-order",
+
+    //delivery runsheet
+    delivery : api + "delivery",
+
+    //courier delivery
+    courier_delivery : api + "courier-delivery",
+
+    //delivery return
+    delivery_return : api + "delivery/return",
+
+    //delivery cod
+    delivery_cod : api + "delivery/cod",
+
+    //delivery cod history
+    delivery_cod_history : api + "delivery/cod/history",
+
+    //SURAT MUATAN
+    surat_muatan: api + "manifest",
+    manifest_do: api + "manifest-do",
+
+    //display-list-status
+    status: api + "status",
+
+    //irregularities
+    irregularities: api + "irregularities",
+
+    //cost to cost
+    cost_to_cost: api + "cost-to-cost",
+    
+    //cost to cost
+    cost_to_cost_rules: api + "cost-to-cost-rules",
+    
+    //cost to cost
+    cost_to_cost_type: api + "cost-to-cost-type",
+    
+    //cost to cost Report
+    cost_to_cost_report: api + "cost-to-cost-report",
+    
+    //cost to cost
+    activity_type: api + "activity-type",
+
+    //config
+    config: api + "config",
+
+    //packingkayu
+    packing_kayu: api + "packingkayu",
+
+    //cashless
+    cashless: api + "cashless"
 
 }

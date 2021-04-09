@@ -23,21 +23,50 @@
             title="Edit role"
             :dataItem="dataItem"
             /> -->
+          
+        <!--Create Employee-->
+            <dialog-create-edit-employee
+                :active="dialogEmployee" 
+                @refresh="refresh"
+                :closeDialog="closeDialogEmployee"
+                title="Edit Employee"
+                :dataItem="dataItem"
+                btnBlue="Edit"
+            />
+
+
+        <!-- dialog confirm remove Employee-->
+        <dialog-confirm
+          :active="activeDialogRemove"
+          :loading="activeLoadingRemove"
+          :closeDialog="closeDialogConfirmRemove"
+          title="Remove Employee"
+          message="Are you sure you want to Remove Employee ?"
+          @confirm="confirmRemove"
+          @cancel="closeDialogConfirmRemove"
+        />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
+import DialogCreateEditEmployee from "@/views/settings/employee/employee-list/dialogCreateEditEmployee"
+
 export default {
     name:"employee-list",
     mixins: [master],
     components: {
         "table-master" : TableMaster,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-confirm": DialogConfirm,
+        "dialog-create-edit-employee": DialogCreateEditEmployee
     },
     data() {
         return {
+            activeDialogRemove:false,
+            activeLoadingRemove:false,
+            dialogEmployee:false,
             dataTable: [],
             datacolumn: [
                 {
@@ -46,32 +75,32 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "First Name",
-                    key: "node_commision_service",
+                    label: "NIK",
+                    key: "employee_nik",
                     width: "auto"
                 },
                 {
-                    label: "Last Name",
-                    key: "node_commision_daily",
+                    label: "Name",
+                    key: "employee_name",
                     width: "auto"
                 },
                 {
                     label: "Location",
-                    key: "node_commision_amount1",
+                    key: "node_name",
                     width: "auto"
                 },
                 {
                     label: "Courier Code",
-                    key: "node_commision_amount2",
+                    key: "employee_code",
                     width: "auto"
                 },
             ],
             loading: false,
             dataItem: {},
             tempSearch: "",
-            dialogGeolocation: false,
+            employee_id: '',
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -87,11 +116,14 @@ export default {
             }
             await axios
                 .get(this.URL.employee + 
-                `?n=1&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
                     if(res.data.data.length > 0) {
+                        res.data.data.map(item=>{
+                            item['node_name'] = item.node ? item.node.node_name : '-'
+                        })
                         this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
@@ -107,24 +139,63 @@ export default {
                     this.openNotification('danger', 'Failed to populate node commission list', err)
                 })
         },
-        actionUpdate(){
-
+        actionUpdate(val){
+          if(this.dataTable.length > 0) {
+            this.dataItem = val
+            console.log(this.dataItem,'item')
+            this.$nextTick(() => {
+              this.dialogEmployee = true
+            });
+          }
         },
-        actionRemove(){
-
+        actionRemove(val){
+            this.activeDialogRemove = true;
+            this.employee_id = val.employee_id;
         },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.getTableData(this.pagination.limit,this.pagination.page, this.tempSearch)
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.getTableData(this.pagination.limit,this.pagination.page)
+            this.getTableData(this.pagination.limit,this.pagination.page, this.tempSearch)
         },
+        refresh(){
+            this.getTableData(this.pagination.limit,this.pagination.page, this.tempSearch)
+        },
+        confirmRemove(){
+            this.removeEmployee();
+        },
+        async removeEmployee(){
+            this.activeLoadingRemove=true
+            await axios
+                .delete(
+                    this.URL.employee + `/${this.employee_id}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    this.refresh()
+                    this.closeDialogConfirmRemove();
+                    this.openNotification(null, 'Remove success', 'Romove Employee is success')
+                    
+                }).catch(err => {
+                    let message = err.response.data ? err.response.data.message : 'Update Failed'
+                    this.loading = false
+                    this.closeDialogConfirmRemove();
+                    this.openNotification('danger', 'Remove Employee is failed', message)
+                   
+                })
+        },
+        closeDialogConfirmRemove(){
+            this.activeDialogRemove=false
+            this.activeLoadingRemove=false
+        },
+        closeDialogEmployee(){
+            this.dialogEmployee=false
+        }
     },
     mounted() {
-        // this.getTableData(this.pagination.limit,this.pagination.page)
+        this.refresh()
     },
 }
 </script>

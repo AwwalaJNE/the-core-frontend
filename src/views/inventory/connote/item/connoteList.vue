@@ -131,7 +131,7 @@ export default {
             status_bag:"",
             statusinventory:"",
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -155,13 +155,13 @@ export default {
             await axios
                 .get(
                     this.URL.koli +
-                    `?n=1&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}`,
+                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
-                    // arr.map(item => {
-                    //     item["user_nodes"] = item.user_nodes.toString()
-                    // })
+                    arr.map(item => {
+                        item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
+                    })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)

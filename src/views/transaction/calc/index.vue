@@ -13,26 +13,34 @@
                         </thead>
 
                         <tbody>
-                            <template v-if="listenCalcArrData.length > 0">
-                                <template v-for="(item, key) in listenCalcArrData">
-                                    <tr class="lin" :key="key" @click="clickdulu(item)">
-                                        <td style="width: 50%;">
-                                            <small>{{item.geolocation_subdistrict_name}}</small> <br>
-                                            <small>{{item.geolocation_district_name}}</small> <br>
-                                            <small>{{item.geolocation_location_name}}</small>
-                                        </td>
-                                        <td>
-                                            <small>{{item.geolocation_subdistrict_zip_code}}</small>
-                                        </td>
-                                        <td>
-                                            <small>{{item.geolocation_subdistrict_tarif_code}}</small>
-                                        </td>
-                                    </tr>
-                                </template>
-                            </template>
-                            <template v-else>
-                                <tr>Data not found</tr>
-                            </template>
+                            
+                                <with-keyboard-control ref="keyboardControll" :listLength="listenCalcArrData.length" @selected="selectedHandler">
+                                        <template v-slot:listcontent="props">
+                                            <template v-if="listenCalcArrData.length > 0">
+                                                <template v-for="(item, key) in listenCalcArrData">
+                                                    <tr class="lin" :class="{'selected': key === props.selectedIndex}" :key="key" @click="clickdulu(item)">
+                                                        <td style="width: 50%;">
+                                                            <!-- <small>{{item.geolocation_subdistrict_name}}</small> <br>
+                                                            <small>{{item.geolocation_district_name}}</small> <br> -->
+                                                            <small>{{item.geolocation_location_name}}</small>
+                                                        </td>
+                                                        <td>
+                                                            <small>{{item.geolocation_subdistrict_zip_code}}</small>
+                                                        </td>
+                                                        <td>
+                                                            <small>{{item.geolocation_subdistrict_tarif_code}}</small>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </template>
+
+                                            <template v-else>
+                                                <tr>Data not found</tr>
+                                            </template>
+                                        </template>
+                                </with-keyboard-control>
+                            
+                            
                         </tbody>
                         
                         
@@ -51,6 +59,7 @@
                             :formKey="''"
                             :valueData="listConnote"
                             :selectedValue="''"
+                            :tabindex="-1"
                             :isMultiple="false"
                             @updateValue="selectConnote" />
                     </div>
@@ -76,14 +85,14 @@
                             item !== 'chargeable_weight'">
                                 <tr :key="i">
                                     <td>{{objectKeys[item].label}}</td>
-                                    <td>{{objectKeys[item].value}}</td>
+                                    <td>{{moneyformat(objectKeys[item].value)}}</td>
                                 </tr>
                             </template>
                         </template>
                         <hr>
                         <tr>
                             <td><h3>Grand Total</h3></td>
-                            <td><h3>{{listenGrandTotal}}</h3></td>
+                            <td><h3>{{moneyformat(listenGrandTotal)}}</h3></td>
                         </tr>
                     </table>
                 </div>
@@ -96,11 +105,13 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TransactionMixin from "@/mixins/transaction.js"
 import Selector from "@/components/input/select"
+import WithKeyBoardControll from "@/views/transaction/calc/withkeyboardcontrol"
 export default {
     name: "calc-transaction",
     mixins: [master, TransactionMixin],
     components: {
         "selector": Selector,
+        "with-keyboard-control": WithKeyBoardControll
     },
     data() {
         return {
@@ -108,12 +119,15 @@ export default {
             Keys: [],
             objectKeys: {},
             destinationCode: '',
-            listConnote: []
+            listConnote: [],
         }
     },
     computed: {
         listenTransactionConnote () {
             return this.$store.getters.getTransaction.transaction.connote
+        },
+        listenTransactionConnoteLength () {
+            return this.$store.getters.getTransaction.transaction.connote.length
         },
         listenCalcComponentSwitch() {
             return this.$store.getters.getTransaction.calc_component.switch
@@ -135,40 +149,39 @@ export default {
             return this.$store.getters.getTransaction.package.package_surcharge.valueData
         },
 
-        listenCalculatorChargeableWeight () {
-            return this.$store.getters.getTransaction.calculator.chargeable_weight.value
-        },
-        listenConnoteKoliItem () {
-            return this.$store.getters.getTransaction.connote_koli_item
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
         },
     },
     watch: {
         listenCalcComponentSwitch: function(val) {
             if(val !== undefined) {
                 this.switch_component = val
+                if(val == true) {
+                    let self = this
+                    setTimeout(function(){ self.$refs.keyboardControll.addKeyHandler() }, 100);
+                } else {
+                    this.$refs.keyboardControll.removeKeyHandler()
+                }
             }
         },
 
-        listenPackageService: function (n,o) {
+        // listenPackageService: function (n,o) {
+        //     if(n !== o) {
+        //         this.calculation()
+        //     }
+        // },
+        listenTransactionConnoteLength: function (n,o) {
             if(n !== o) {
-                this.calculation()
-            }
-        },
-        listenCalculatorChargeableWeight: function (val) {
-            if(val) {
-                this.calculation()
-            }
-        },
-        listenConnoteKoliItem: function (val) {
-            if(val) {
-                this.calculation()
-            }
-        },
-        listenTransactionConnote: function (n,o) {
-            if(n.length !== o.length) {
+                console.log('+++ calc listen list connote +++', n)
                 this.prosesListConnote()
             }
-        }
+        },
+        listenCalcArrData: function (arr) {
+            if(arr.length == 1) {
+                this.selectedHandler(0)
+            }
+        },
     },
     methods: {
         initialize() {
@@ -182,20 +195,38 @@ export default {
                     this.objectKeys = {}
                 }
         },
+        selectedHandler(index) {
+            if(index !== null) {
+                let data = this.listenCalcArrData.filter(item => item.index == index)
+                this.clickdulu(data[0])
+            }
+            this.$store.dispatch('SET_CALC_COMPONENT_SWITCH', false)
+            this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", [])
+        },
         prosesListConnote() {
             let listconnote = this.listenTransactionConnote
-            if(listconnote > 0) {
+            if(listconnote.length > 0) {
                 let arr = []
-                listconnote.map(item => {
+                listconnote.map((item,i) => {
                     let obj = {}
-                    obj['label'] = `connote number: ${item.connote_number}`
-                    obj['value'] = item.connote_number
+                    obj['label'] = `connote ${i + 1} | ${item.connote_number ? 'No: '+item.connote_number:''}`
+                    obj['value'] = i
+                    obj['index'] = i
+
+                    arr.push(obj)
                 })
                 this.listConnote = arr
+            } else {
+                this.listConnote = [{'label': 'Package Empty', 'value':'-'}]
             }
+            console.log('Calculate === list === Connote', this.listConnote)
         },
-        selectConnote(k, value) {
+        selectConnote(key, value) {
+            let index = 0
+            this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, value)
+            this.$store.dispatch(`SWITCH_CONNOTE_ACTIVE`, value)
 
+            console.log('list connote koli => ', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
         },
         clickdulu(item){
             switch(this.listenCalcPrefix) {
@@ -216,46 +247,17 @@ export default {
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE_destinationCode`, item.geolocation_subdistrict_tarif_code)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, item.geolocation_location_name)
 
-                    this.getShippingService()
+                    // this.getShippingService()
                     break;
                 default:
                     console.log('meong')
                     // code block
             }
         },
-        async getShippingService() {
-            await axios
-                .get(this.URL.tariff_shipping_service + 
-                `?n=1&destination=${this.destinationCode}`, 
-                this.Helper.header())
-                .then(res => {
-                    console.log('getShippingService', res.data.data)
-                    let data = res.data.data
-                    let arr = []
-                    data.map(item => {
-                        let obj = {}
-                        obj['label'] = item.service_name
-                        obj['value'] = item.tariff_service_code
-                        obj['data'] = item
-                        obj['tarif'] = item.tariff_amount_1
-                        
-                        arr.push(obj)
-                    })
-                    console.log('getShippingService arr', arr)
-                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
-                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
-                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])
-                    // this.loading = false
-                }).catch(err => {
-                    // this.loading = false
-                    this.checkAuth(err.response.status)
-                    // this.openNotification('danger', 'Failed to populate country list', err)
-                })
-        },
-
     },
     mounted() {
         this.initialize()
+        this.prosesListConnote()
     },
 }
 </script>
@@ -271,6 +273,7 @@ export default {
             table{
                 position: relative;
                 width: 100%;
+                text-transform: capitalize;
                 tr{
                     td{
                         &:last-of-type{
@@ -295,6 +298,9 @@ export default {
                 }
             }
             
+            .selected{
+                background-color: #eaeaea;
+            }
         }
     }
 </style>

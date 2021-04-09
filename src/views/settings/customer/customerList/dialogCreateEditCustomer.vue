@@ -2,6 +2,7 @@
     <dialog-master 
     :actived="listenActive" 
     width="lg"
+    :loading="listenLoading"
     :closeDialog="cancel">
 
         <template v-slot:header>
@@ -75,7 +76,8 @@ export default {
     data() {
         return {
             form: {},
-            customer_id: ''
+            customer_id: '',
+            loading:false,
         }
     },
     computed: {
@@ -87,7 +89,10 @@ export default {
         },
         listenDataItem() {
             return this.dataItem
-        }
+        },
+        listenLoading(){
+            return this.loading
+        },
     },
     watch: {
         dataItem: function (val) {
@@ -100,10 +105,9 @@ export default {
         formData(form){
             this.form = form
             if(this.customer_id !== undefined && this.customer_id !== '') {
-                    console.log('update')
+                    this.loading=true;
                     this.updateData()
             } else {
-                    console.log('create new')
                     this.addData()
             }
         },
@@ -116,10 +120,10 @@ export default {
             this.customer_id = ""
         },
         async getDataSubdistrict(){
-            this.loadingDataRole = true
+            this.loading = true
             await axios
                 .get(this.URL.geolocation_subdistrict + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -137,17 +141,17 @@ export default {
                         this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
-                    this.loadingDataRole = false
+                    this.loading = false
                 }).catch(err => {
-                    this.loadingDataRole = false
+                    this.loading = false
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
         async getDataCustomerType(){
-            this.loadingDataRole = true
+            this.loading = true
             await axios
                 .get(this.URL.customer_type + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -165,50 +169,59 @@ export default {
                         this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
-                    this.loadingDataRole = false
+                    this.loading = false
                 }).catch(err => {
-                    this.loadingDataRole = false
+                    this.loading = false
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
         async getDataNodeId(){
-            this.loadingDataRole = true
+            this.loading = true
             await axios
                 .get(this.URL.node + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
+                    console.log(res.data.data,'him')
                     if(res.data.data.length > 0) {
                         let arr = []
+                        let arr_n = []
                         res.data.data.map(item => {
                             let obj = {}
+                            let obj_n = {}
                             obj["label"] = item.node_name
                             obj["value"] = item.default_node_link_id
 
+                            obj_n["label"] = item.node_name
+                            obj_n["value"] = item.node_id
+
                             arr.push(obj)
+                            arr_n.push(obj_n)
                         })
                         this.dataRole = arr
-                        this.$store.dispatch("SET_CUSTOMER_CUSTOMER_DEFAULT_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_CUSTOMER_CUSTOMER_DEFAULT_NODE_ID_ArrData", arr_n.length > 0 ? arr_n : null)
+                        this.$store.dispatch("SET_CUSTOMER_N_ArrData", arr_n.length > 0 ? arr_n : null)
                     } else {
                         this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
-                    this.loadingDataRole = false
+                    this.loading = false
                 }).catch(err => {
-                    this.loadingDataRole = false
+                    this.loading = false
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
         async updateData(){
             await axios
                 .put(
-                    this.URL.customer + `/${this.customer_id}?n=1`,
+                    this.URL.customer + `/${this.customer_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
+                    this.loading = false
                     this.openNotification(null, 'Update success', 'Update customer is success')
                 }).catch(err => {
                     this.loading = false
@@ -221,7 +234,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.customer + `?n=1`,
+                    this.URL.customer + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -239,7 +252,8 @@ export default {
         cancel() {
             this.handleClearForm()
             this.closeDialog()
-        }
+        },
+        
     },
     mounted() {
         this.getDataNodeId()

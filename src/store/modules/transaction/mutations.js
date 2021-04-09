@@ -144,6 +144,48 @@ export default {
         state.package.package_jumlah.valueData = payload
     },
 
+    SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE(state, payload) {
+        state.package.package_insured_goods_value.value = payload
+    },
+    SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE_ValueData(state, payload) {
+        state.package.package_insured_goods_value.valueData = payload
+    },
+
+    SET_PACKAGE_PACKAGE_DISKON(state, payload) {
+        state.package.package_diskon.value = payload
+    },
+    SET_PACKAGE_PACKAGE_DISKON_ValueData(state, payload) {
+        state.package.package_diskon.valueData = payload
+    },
+
+    SET_PACKAGE_PACKAGE_INSTRUKSI(state, payload) {
+        state.package.package_instruksi.value = payload
+    },
+    SET_PACKAGE_PACKAGE_INSTRUKSI_ValueData(state, payload) {
+        state.package.package_instruksi.valueData = payload
+    },
+
+    SET_PACKAGE_PACKAGE_TIDAK_ASURANSI(state, payload) {
+        state.package.package_tidak_asuransi.value = payload
+    },
+    SET_PACKAGE_PACKAGE_TIDAK_ASURANSI_ValueData(state, payload) {
+        state.package.package_tidak_asuransi.valueData = payload
+    },
+
+    SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU(state, payload) {
+        state.package.package_tidak_packing_kayu.value = payload
+    },
+    SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU_ValueData(state, payload) {
+        state.package.package_tidak_packing_kayu.valueData = payload
+    },
+
+    SET_PACKAGE_PACKAGE_DO_RETURN(state, payload) {
+        state.package.package_do_return.value = payload
+    },
+    SET_PACKAGE_PACKAGE_DO_RETURN_ValueData(state, payload) {
+        state.package.package_do_return.valueData = payload
+    },
+
 
     // Switch Calc component
     SET_CALC_COMPONENT_ARRDATA(state, payload) {
@@ -151,6 +193,9 @@ export default {
     },
     SET_CALC_COMPONENT_SWITCH(state, payload) {
         state.calc_component.switch = payload
+        if(payload == false) {
+            state.calc_component.arrData = []
+        }
     },
     SET_CALC_COMPONENT_PREFIX(state, payload) {
         state.calc_component.prefix = payload
@@ -264,9 +309,25 @@ export default {
     },
 
 
+    SET_CONNOTE_BPIK(state, payload) {
+        let index = state.connote_index_active
+        state.transaction.connote[index].connote_bpik = payload
+    },
     
-    SET_TEMP_KOLI_ITEM(state, payload) {
-        state.temp_koli_item = payload
+    SET_CONNOTE_KOLI_ITEM_EMPTY(state, payload) {
+        let arr = [
+            {
+              koli_id: '',
+              height: 0,
+              length: 0,
+              width: 0,
+              volume_weight: 0,
+              actual_weight: 1,
+              surcharge_id: [],
+              description: ' '
+            }
+          ]
+        state.connote_koli_item = arr
     },
     SET_CONNOTE_KOLI_ITEM(state, payload) {
         state.connote_koli_item = payload
@@ -275,18 +336,27 @@ export default {
         state.connote_koli_item[payload.index][payload.key] = payload.value
     },
 
-    SET_PROSES_CONNOTE_TOTAL_BIAYA(state, payload) {
-        state.proses_connote['total_biaya'] = payload
-    },
-    SET_PROSES_CONNOTE_PROPERTY(state, payload) {
-        state.proses_connote[payload.key] = payload.value
-    },
-    MERGE_PROSES_CONNOTE(state, payload) {
-        state.proses_connote.connote_koli_item = state.connote_koli_item
-    },
-    MERGE_PROSES_CONNOTE_TO_TRANSACTION_CONNOTE(state, payload) {
-        state.transaction.connote.push(state.proses_connote)
-    },
+    // SET_PROSES_CONNOTE_EMPTY(state, payload) {
+    //     let obj = {
+    //         connote_number: '',
+    //         connote_shipper_customer_id: '',
+    //         connote_receiver_customer_id: '',
+    //         is_insured: true,
+    //         is_need_do_return: false,
+    //         connote_koli_item: [],
+    //         connote_bpik:[],
+    //         total_biaya: 0,
+    //         connote_index: ''
+    //       }
+    //     state.proses_connote = obj
+    // },
+    // SET_PROSES_CONNOTE_TOTAL_BIAYA(state, payload) {
+    //     state.proses_connote['total_biaya'] = payload
+    // },
+    // SET_PROSES_CONNOTE_PROPERTY(state, payload) {
+    //     state.proses_connote[payload.key] = payload.value
+    // },
+    
 
     SET_TRANSACTION_CONNOTE_TOTAL_BIAYA(state, payload) {
         state.transaction.connote[payload.index]['total_biaya'] = payload.value
@@ -297,11 +367,238 @@ export default {
 
     
 
-    MERGE_TRANSACTION_CONNOTE(state, payload) {
-        state.transaction.connote[payload.index].connote_koli_item = state.connote_koli_item
+    // MERGE_TRANSACTION_CONNOTE(state, payload) {
+    //     state.transaction.connote[payload.index].connote_koli_item = state.connote_koli_item
+    // },
+    // PUSH_CONNOTE_TO_TRANSACTION(state, payload) {
+    //     state.transaction.connote.push(proses_connote)
+    // },
+
+
+    // new code
+
+    SET_CONNOTE_INDEX_ACTIVE(state, payload) {
+        state.connote_index_active = payload
     },
-    PUSH_CONNOTE_TO_TRANSACTION(state, payload) {
-        state.transaction.connote.push(proses_connote)
+
+    SET_CONNOTE_DATA(state, payload) {
+        state.transaction.connote[state.connote_index_active][payload.key] = payload.value
+    },
+
+    SET_CONNOTE_DATA_KOLI(state, payload) {
+        state.transaction.connote[state.connote_index_active]['connote_koli_item'] = payload
+    },
+    
+    ADD_MORE_CONNOTE(state, payload) {
+        let data = state.connote_template
+        state.transaction.connote.push(data)
+    },
+
+    FILL_TRANSACTION_DATA(state, payload) {
+        state.transaction[payload.key] = payload.value
+    },
+
+    FILL_CONNOTE_NUMBER(state, payload) {
+        let index = state.connote_index_active
+        state.transaction.connote[index].connote_number = payload
+    },
+
+    SWITCH_CONNOTE_ACTIVE(state, payload) {
+        let index = state.connote_index_active
+        let data = state.transaction.connote[index] || {}
+
+        if(Object.keys(data).length > 0) {
+            // ORIGIN
+            Object.keys(state.origin).map(item => {
+                if(data.hasOwnProperty(state.origin[item].key)){
+                    if(state.origin[item]['typeData'].includes("Number")) {
+                        state.origin[item].value = data[state.origin[item].key] || 0
+                    } else if (state.origin[item]['typeData'].includes("Array")) {
+                        state.origin[item].value = data[state.origin[item].key] || []
+                    } else if (state.origin[item]['typeData'].includes("Boolean")) {
+                        state.origin[item].value = data[state.origin[item].key] || false
+                    } else {
+                        state.origin[item].value = data[state.origin[item].key] || ''
+                    }
+                } else if(item == 'origin_onchange_address'){
+                    if(data.hasOwnProperty('connote_shipper_administrative_address')) {
+                        state.origin[item].value = data['connote_shipper_administrative_address'] || ''
+                    }
+                }
+            })
+
+            // DESTINATION
+            Object.keys(state.destination).map(item => {
+                if(data.hasOwnProperty(state.destination[item].key)){
+                    if(state.destination[item]['typeData'].includes("Number")) {
+                        state.destination[item].value = data[state.destination[item].key] || 0
+                    } else if (state.destination[item]['typeData'].includes("Array")) {
+                        state.destination[item].value = data[state.destination[item].key] || []
+                    } else if (state.destination[item]['typeData'].includes("Boolean")) {
+                        state.destination[item].value = data[state.destination[item].key] || false
+                    } else {
+                        state.destination[item].value = data[state.destination[item].key] || ''
+                    }
+                } else if(item == 'destination_onchange_address') {
+                    //connote_receiver_administrative_address
+                    if(data.hasOwnProperty('connote_receiver_administrative_address')) {
+                        state.destination[item].value = data['connote_receiver_administrative_address'] || ''
+                    }
+                } else if(item == 'destination_zip_code') {
+                    if(data.hasOwnProperty(state.destination[item]['input'][0].key)) {
+                        state.destination[item]['input'][0].value = data[state.destination[item]['input'][0].key] || ''
+                    }
+                    if(data.hasOwnProperty(state.destination[item]['input'][1].key)) {
+                        state.destination[item]['input'][1].value = data[state.destination[item]['input'][1].key] || ''
+                    }
+                }
+            })
+
+
+            // PACKAGE
+            Object.keys(state.package).map(item => {
+                if(state.package[item].key.includes("koli_")) {
+                    if(state.package[item].key == 'koli_jumlah') {
+                        state.package[item].value = data['connote_koli_item'].length
+                    } else if(state.package[item].key == 'koli_description') {
+                        state.package[item].value = data['connote_koli_item'][0]['description'] || ''
+                    } else if(state.package[item].key == 'koli_weight') {
+                        state.package[item].value = data['connote_koli_item'][0]['koli_actual_weight'] || 0
+                    } else {
+                        state.package[item].value = data['connote_koli_item'][0][state.package[item].key] || 0
+                    }
+                } else if(state.package[item].key !== 'koli_jumlah' && data.hasOwnProperty(state.package[item].key)){
+                    if(state.package[item]['typeData'].includes("Number")) {
+                        state.package[item].value = data[state.package[item].key] || 0
+                    } else if (state.package[item]['typeData'].includes("Array")) {
+                        state.package[item].value = data[state.package[item].key] || []
+                    } else if (state.package[item]['typeData'].includes("Boolean")) {
+                        state.package[item].value = data[state.package[item].key] || false
+                    } else {
+                        state.package[item].value = data[state.package[item].key].toLowerCase() || ''
+                    }
+                }
+
+            })
+        }
+
+    },
+
+    EMPTY_TRANSACTION_DATA_CONNOTE(state, payload) {
+        Object.keys(state.origin).map(item => {
+            if(state.origin[item].hasOwnProperty('value')){
+                state.origin[item].value = ''
+            }
+        })
+
+        console.log('clear calculator', )
+        state.calculator['actual_weight'].value = 1
+        state.calculator['volume_weight'].value = 0
+        state.calculator['chargeable_weight'].value = 1
+
+        state.calculator['biaya_kirim'].value = 0
+        state.calculator['handling_charge'].value = 0
+        state.calculator['surcharge'].value = 0
+
+        state.calculator['surcharge_manual'].value = 0
+        state.calculator['airline_document'].value = 0
+        state.calculator['shipper_declaration'].value = 0
+
+        state.calculator['adm_karantina'].value = 0
+        state.calculator['pelepasan_karantina'].value = 0
+        state.calculator['asuransi'].value = 0
+
+        state.calculator['adm_asuransi'].value = 0
+        state.calculator['diskon'].value = 0
+        state.calculator['total_biaya'].value = 0
+
+        // Object.keys(state.calculator).map(item => {
+
+        //     switch(true) {
+        //         case state.calculator[item]['typeData'].includes("Number"):
+                    
+        //                 state.calculator[item].value = 0
+                    
+        //             break;
+        //         default:
+        //     }
+        //     if(item == 'actual_weight' || item == 'chargeable_weight' ){
+        //         state.calculator[item].value = 1
+        //     }
+        // })
+
+        Object.keys(state.destination).map(item => {
+            switch(item) {
+                case "destination_type":
+                    if(state.destination[item].hasOwnProperty('value')){
+                        state.destination[item].value = 'rumah'
+                    }
+                    break;
+                case "destination_zip_code":
+                    if(state.destination[item].hasOwnProperty('input')){
+                        state.destination[item]['input'][0].value = ''
+                        state.destination[item]['input'][1].value = ''
+                    }
+                    break;
+                default:
+                    if(state.destination[item].hasOwnProperty('value')){
+                        state.destination[item].value = ''
+                    }
+                    // code block
+            }
+        })
+
+        Object.keys(state.package).map(item => {
+            switch(true) {
+                case state.package[item]['typeData'].includes("Number"):
+                    if(state.package[item].hasOwnProperty('value')){
+                        
+                            state.package[item].value = 0
+                        
+                    }
+                    break;
+                case state.package[item]['typeData'].includes("Boolean"):
+                    if(state.package[item].hasOwnProperty('value')){
+                        state.package[item].value = false
+                    }
+                    break;
+                case state.package[item]['typeData'].includes("Array"):
+                    if(state.package[item].hasOwnProperty('value')){
+                        state.package[item].value = []
+                    }
+                    break;
+                case state.package[item]['key'] == 'connote_service_code':
+                    console.log('connote_service_code =', state.package[item]['key'])
+                    if(state.package[item].hasOwnProperty('value')){
+                        state.package[item].value = ''
+                        state.package[item].valueData = {}
+                        state.package[item].arrData = [
+                            {
+                              'label': 'null',
+                              'value': 'null',
+                              'data': {},
+                              'tarif': 0
+                            }
+                          ]
+                    }
+                    console.log('state.package[item] ====', state.package[item])
+                    
+                    break;
+                default:
+                    if(state.package[item].hasOwnProperty('value')){
+                        state.package[item].value = ''
+                    }
+                    // code block
+            }
+
+            if(item == 'package_dimensi_weight' || item == 'package_jumlah') {
+                state.package[item].value = 1
+            }
+
+        })  
+    },
+    CLEAR_TRANSACTION_DATA_CONNOTE(state, payload) {
+        state.transaction = state.transaction_TEMPLATE
     }
 
 

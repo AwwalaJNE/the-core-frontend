@@ -69,7 +69,7 @@
                                 <el-upload
                                     class="upload-demo"
                                     drag
-                                    action="https://jsonplaceholder.typicode.com/posts/"
+                                    action=""
                                     :before-upload="beforeUpload"
                                     multiple>
                                     <i class="el-icon-upload"></i>
@@ -132,7 +132,8 @@ export default {
             InputKeys: [],
             datacolumn: [],
             dataTable: [],
-            progress: 0
+            progress: 0,
+            keys:[]
         }
     },
     computed: {
@@ -164,7 +165,7 @@ export default {
                     if(item.status == true) {
                         await axios
                         .post(
-                            this.URL[this.selectedInputType] +`?n=1`, 
+                            this.URL[this.selectedInputType] +`?n=${this.listenNodeId}`, 
                             JSON.stringify(item),
                             this.Helper.header())
                         .then(res => {
@@ -201,7 +202,6 @@ export default {
         handleDownload(){
 
             var ws_name = "SheetJS";
-
             /* make worksheet */
             var ws_data = [];
             ws_data.push(this.keys)
@@ -233,14 +233,25 @@ export default {
             this.selectedInputType = val
             this.datacolumn = []
             this.InputObject = this.$store.getters.getInputs[val] || {}
-            this.keys = Object.keys(this.InputObject)
+            let objkeys = []
+            Object.keys(this.InputObject).map(item => {
+                if(this.InputObject[item].hasOwnProperty('uploadInput') && this.InputObject[item].uploadInput == false) {
+
+                } else {
+                    objkeys.push(item)
+                }
+            })
+
+            this.keys = objkeys //Object.keys(this.InputObject)
             if (this.keys.length > 0) {
                 this.keys.map(item => {
                     let obj = {}
-                    obj["label"] = this.InputObject[item].label.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, " ")
-                    obj["key"] = this.InputObject[item].key
-                    obj["width"] = "auto"
-
+                    
+                        obj["label"] = this.InputObject[item].label !== undefined ? this.InputObject[item].label.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, " ") : ''
+                        obj["key"] = this.InputObject[item].key
+                        obj["width"] = "auto"
+                    
+                    
                     this.datacolumn.push(obj)                    
                 })
                 let statusColumn = [
@@ -319,7 +330,7 @@ export default {
             let rule = ''
             console.log('item', item)
             for(let inp of keys) {
-                rule = this.InputObject[inp].rule
+                rule = this.InputObject[inp].rule || ''
                 switch(true) {
                     case rule.includes("required"):
                         if(item.hasOwnProperty(inp) == false) {

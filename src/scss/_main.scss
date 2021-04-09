@@ -4,6 +4,13 @@ html,body{
     padding: 0;
     margin: 0;
 }
+.skip_pointer {
+    // pointer-events: none; 
+    // input{
+    //     pointer-events: none; 
+    // }
+    // opacity: 0.5;
+}
 * {
     box-sizing: border-box;
 }
@@ -126,4 +133,74 @@ ul{
 }
 .vs-button{
     max-width: 187px !important;
+}
+
+.vs-icon-check span .line1{
+    width: 6px;
+}
+
+.vs-table{
+    table{
+        text-align: left;
+        .md_5{
+            width: calc(100% / 5) !important;
+        }
+        .md{
+            width: calc(100% / 6) !important;
+        }
+        .sm{
+            width: calc(100% / 7) !important;
+        }
+        .sm_75{
+            width: calc(100% / 7.5) !important;
+        }
+        .xs_8{
+            width: calc(100% / 8) !important;
+        }
+        .xs{
+            width: calc(100% / 10) !important;
+        }
+        .xxs{
+            width: calc(100% / 12) !important;
+        }
+        .auto{
+            width: auto;
+        }
+        .vs-table__td{
+            padding: 10px 5px;
+        }
+    }
+}
+
+.el-time-panel{
+    z-index: 99999 !important;
+}
+
+.vs-button{
+    &:focus-within{
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 2px;
+    }
+}
+
+.el-autocomplete{
+    width: 100%;
+    .el-input__inner{
+        background: rgba(var(--vs-gray-2), 1);
+        color: rgba(var(--vs-text), 1);
+        border-color: transparent !important;
+        border-radius: 10px;
+        margin-bottom: 1em;
+        padding: 7px 13px;
+        height: 35px;
+        line-height: 35px;
+        &:focus{
+            border-color: transparent !important;
+        }
+    }
+}
+
+.vs-table table .vs-table__td{
+    white-space: pre-line;
 }

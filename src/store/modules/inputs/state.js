@@ -1,4 +1,4 @@
-// rule : "required|min_value:8"
+// rule : "required|min:8"
 
 export default {
   user: {
@@ -32,7 +32,7 @@ export default {
     password: {
       label: "Password",
       key: "password",
-      rule: "min_value:8",
+      rule: "min:8",
       typeInput: "text|password",
       typeData: "String",
       valueData: null,
@@ -48,7 +48,18 @@ export default {
       valueData: null,
       value: ''
     },
+    user_node_id: {
+      label: "Node*",
+      key: "user_node_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
   },
+
   role: {
     user_role_name: {
       label: "Role*",
@@ -149,6 +160,149 @@ export default {
       valueData: true,
       value: true
     },
+  },
+
+  //employee
+  employee: {
+    employee_nik: {
+      label: "NIK",
+      key: "employee_nik",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_name: {
+      label: "Name",
+      key: "employee_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_phone_number: {
+      label: "Phone Number",
+      key: "employee_phone_number",
+      rule: "required|numeric|min:8",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_no_sim: {
+      label: "No. SIM",
+      key: "employee_no_sim",
+      rule: "required|numeric|min:8",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    employee_no_ktp: {
+      label: "No. KTP",
+      key: "employee_no_ktp",
+      rule: "required|numeric|min:5",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_birth_place: {
+      label: "Birth Place",
+      key: "employee_birth_place",
+      rule: "required",
+      typeInput: "text",
+      width: '4',
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_birth_date: {
+      label: "Birth Date",
+      key: "employee_birth_date",
+      rule: "required",
+      typeInput: "date",
+      width: '4',
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    employee_gender: {
+      label: "Gender",
+      key: "employee_gender",
+      rule: "required",
+      width: '4',
+      typeInput: "select",
+      typeData: "String",
+      arrData: [ 
+        {
+          label: 'Laki Laki',
+          value: 'L'
+        },
+        {
+          label: 'Perempuan',
+          value: 'P'
+        },
+    ],
+      valueData: null,
+      value: ''
+    },
+    
+    employee_employement_status: {
+      label: "Employement Status",
+      key: "employee_employement_status",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      width: '6',
+      value: 'Fulltime'
+    },
+    employee_type_id: {
+      label: "Employee Type / Role",
+      key: "employee_type_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      width: '6',
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    // employee_node_id: {
+    //   label: "Work Location",
+    //   key: "employee_node_id",
+    //   rule: "required",
+    //   typeInput: "select",
+    //   typeData: "String",
+    //   width: '6',
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
+    employee_node_id: {
+      label: "Work Location",
+      key: "employee_node_id",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      width: '12',      
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      width: '12',
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    }
   },
 
   geolocation_city: {
@@ -465,6 +619,27 @@ export default {
     },
     
   },
+  customer_type: {
+    customer_type_name: {
+      label: "Customer Type Name*",
+      key: "customer_type_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+    
+  },
 
   node: {
     node_name: {
@@ -526,6 +701,8 @@ export default {
     mapPicker:{
       // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
       typeInput: "mapPicker",
+      uploadInput: false,
+      label: ''
     },
     node_lat: {
       label: "Node latitude*",
@@ -692,7 +869,66 @@ export default {
     },
   },
 
+  nodeLink: {
+    node_link_origin_id: {
+      label: "origin",
+      key: "node_link_origin_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_link_destination_id: {
+      label: "Destination",
+      key: "node_link_destination_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_link_vehicle_mode_id: {
+      label: "Vehicle Type",
+      key: "node_link_vehicle_mode_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+
+  },
+
   tariff: {
+    tariff_group: {
+      label: "Tariff Group",
+      key: "tariff_group",
+      rule: "required",
+      visible: false,
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: null,
+          value: null
+        }
+      ],
+      valueData: null,
+      value: ''
+    },
     tariff_origin: {
       label: "Tariff origin*",
       key: "tariff_origin",
@@ -716,6 +952,7 @@ export default {
       key: "tariff_start_date",
       rule: "required",
       typeInput: "date",
+      width: '6',
       typeData: "String",
       valueData: null,
       value: ''
@@ -724,6 +961,7 @@ export default {
       label: "Tariff expiry date*",
       key: "tariff_expiry_date",
       rule: "required",
+      width: '6',
       typeInput: "date",
       typeData: "String",
       valueData: null,
@@ -1129,7 +1367,7 @@ export default {
 
   vehicle: {
     vehicle_name: {
-      label: "vehicle name*",
+      label: "Vehicle Name *",
       key: "vehicle_name",
       rule: "required",
       typeInput: "text",
@@ -1138,7 +1376,7 @@ export default {
       value: ''
     },
     vehicle_police_no: {
-      label: "Vehicle police no*",
+      label: "Vehicle No / Plate Number *",
       key: "vehicle_police_no",
       rule: "required",
       typeInput: "text",
@@ -1173,6 +1411,16 @@ export default {
       valueData: null,
       value: ''
     },
+    vehicle_mode_id: {
+      label: "Vehicle Mode",
+      key: "vehicle_mode_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     vehicle_type_id: {
       label: "Vehicle type",
       key: "vehicle_type_id",
@@ -1184,7 +1432,7 @@ export default {
       value: ''
     },
     vehicle_node_id: {
-      label: "vehicle node",
+      label: "Vehicle Node",
       key: "vehicle_node_id",
       rule: "",
       typeInput: "select",
@@ -1235,6 +1483,16 @@ export default {
       valueData: null,
       value: ''
     },
+    vehicle_mode_id: {
+      label: "Vehicle Mode",
+      key: "vehicle_mode_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     is_active: {
       label: "Active|Unactive",
       key: "is_active",
@@ -1245,5 +1503,908 @@ export default {
       value: true
     },
   },
+
+  pickup_request: {
+    node_request: {
+      label: "Select Link Request",
+      key: "node_request",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  },
+
+  //form pickup list
+  pickup_list: {
+    pickup_name: {
+      label: "Name*",
+      key: "pickup_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    pic_name: {
+      label: "PIC",
+      key: "pic_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    pickup_phone_number: {
+      label: "Phone*",
+      key: "pickup_phone_number",
+      rule: "required|phone",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    pickup_address: {
+      label: "Address*",
+      key: "pickup_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    pickup_date: {
+      label: "Date & Time",
+      key: "pickup_date",
+      rule: "required",
+      typeInput: "date",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    pickup_node_id_destination: {
+      label: "Request To",
+      key: "pickup_node_id_destination",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      query: "node_destination"
+    },
+    pickup_remarks: {
+      label: "Remark",
+      key: "pickup_remarks",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    vehicle_type_id: {
+      label: "vehicle node",
+      key: "vehicle_type_id",
+      rule: "",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    mapPicker:{
+      // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
+      typeInput: "mapPicker",
+    },
+    pickup_latitude: {
+      label: "Latitude*",
+      key: "pickup_latitude",
+      rule: "required|coordinate",
+      mapPicker: true,
+      typeInput: "text|latitude",
+      typeData: "Number",
+      valueData: 0,
+      value: 0
+    },
+    pickup_longitude: {
+      label: "Longitude*",
+      key: "pickup_longitude",
+      rule: "required|coordinate",
+      mapPicker: true,
+      typeInput: "text|longitude",
+      typeData: "Number",
+      valueData: 0,
+      value: 0
+    },
+    pickup_courier_user_id: {
+      label: "Courier",
+      key: "pickup_courier_user_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    pickup_schedule: {
+      label: "Set Schedule:",
+      key: "pickup_schedule",
+      rule: "required",
+      typeInput: "special_schedule",
+      typeData: "Array",
+      arrData: [],
+      valueData: null,
+      value: ''
+    }
+  },
+
+  //form pickup schedule
+  pickup_schedule: {
+    pickup_schedule_name: {
+      label: "Name*",
+      key: "pickup_schedule_name",
+      rule: "required|validString",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    pickup_schedule_phone_number: {
+      label: "Phone*",
+      key: "pickup_schedule_phone_number",
+      rule: "required|phone|min:8",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    pickup_schedule_address: {
+      label: "Address*",
+      key: "pickup_schedule_address",
+      rule: "required|validString",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+
+
+    pickup_schedule_node_id_destination: {
+      label: "Request To",
+      key: "pickup_schedule_node_id_destination",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    pickup_schedule_courier_employee_id: {
+      label: "Courier",
+      key: "pickup_schedule_courier_employee_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    pickup_schedule_remarks: {
+      label: "Remark",
+      key: "pickup_schedule_remarks",
+      rule: "required|validString",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    vehicle_type_id: {
+      label: "vehicle node",
+      key: "vehicle_type_id",
+      rule: "",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    mapPicker:{
+      // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
+      typeInput: "mapPicker",
+    },
+    pickup_schedule_latitude: {
+      label: "Latitude*",
+      key: "pickup_schedule_latitude",
+      rule: "required|coordinate",
+      mapPicker: true,
+      typeInput: "text|latitude",
+      typeData: "Number",
+      valueData: 0,
+      value: 0
+    },
+    pickup_schedule_longitude: {
+      label: "Longitude*",
+      key: "pickup_schedule_longitude",
+      rule: "required|coordinate",
+      mapPicker: true,
+      typeInput: "text|longitude",
+      typeData: "Number",
+      valueData: 0,
+      value: 0
+    },
+    pickup_schedule: {
+      label: "Set Schedule:",
+      key: "pickup_schedule",
+      rule: "required",
+      typeInput: "special_schedule",
+      typeData: "Array",
+      arrData: [],
+      valueData: null,
+      value: ''
+    }
+  },
+  //surat muatan
+  surat_muatan:{
+    manifest_number: {
+      label: "Manifest Number",
+      key: "manifest_number",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    manifest_method_id: {
+      label: "Moda",
+      key: "manifest_method_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_id_origin: {
+      label: "Origin",
+      key: "node_id_origin",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    dynamicinputcomponent_node_id_transit: {
+      label: "Transit",
+      key: "dynamicinputcomponent_node_id_transit",
+      rule:"",
+      typeInput: "dynamicinputcomponent",
+      typeData: "Array",
+      max: 3,
+      inputs: [ // template input yg di render tiap row
+        {
+          key: "node_id_transit",
+          typeInput: "autocomplete",
+          value: 'meong1',
+          query: "",
+          width: "12",
+        },
+      ],
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_id_transit: {
+      label: "Transit",
+      key: "node_id_transit",
+      rule:"",
+      typeInput: "null",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    // node_id_transit_2: {
+    //   label: "Transit",
+    //   key: "node_id_transit_2",
+    //   rule:"",
+    //   typeInput: "null",
+    //   typeData: "String",
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
+    // node_id_transit_3: {
+    //   label: "Transit",
+    //   key: "node_id_transit_3",
+    //   rule:"",
+    //   typeInput: "null",
+    //   typeData: "String",
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
+    node_id_destination: {
+      label: "Destination",
+      key: "node_id_destination",
+      rule:"",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    vehicle_mode_id: {
+      label: "Tipe",
+      key: "vehicle_mode_id",
+      rule:"",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    manifest_type_id: {
+      label: "Jenis Kiriman",
+      key: "manifest_type_id",
+      rule:"",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      visible: false,
+      valueData: null,
+      value: ''
+    },
+    vehicle_id: {
+      label: "Nama",
+      key: "vehicle_id",
+      rule:"",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    pic_employee_id: {
+      label: "Driver",
+      key: "pic_employee_id",
+      rule:"",
+      visible: true,
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    etd: {
+      label: "ETD",
+      key: "etd",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    eta: {
+      label: "ETA",
+      key: "eta",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+  },
+  surat_jalan:{
+    destination_id: {
+      label: "Destination",
+      key: "destination_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    // moda_angkutan_id: {
+    //   label: "Moda Angkutan",
+    //   key: "moda_angkutan_id",
+    //   rule:"required",
+    //   typeInput: "select",
+    //   typeData: "String",
+    //   width: "6",
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
+    no_moda_angkutan_id: {
+      label: "Nama Kendaraan",
+      key: "no_moda_angkutan_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+
+    etd: {
+      label: "ETD",
+      key: "etd",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      width: "6",
+      valueData: null,
+      value: ''
+    },
+    eta: {
+      label: "ETA",
+      key: "eta",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      width: "6",
+      valueData: null,
+      value: ''
+    },
+    driver_id: {
+      label: "Driver",
+      key: "driver_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [{
+        'label':null,
+        'value':0
+      }],
+      valueData: null,
+      value: ''
+    }
+  },
+
+  irreguralities_return_destination: {
+    destination_type: {
+      label: "",
+      key: "destination_type",
+      rule: "",
+      typeInput: "radio",
+      typeData: "String",
+      arrData: [
+        {
+          label: "Rumah",
+          value: "rumah"
+        },
+        {
+          label: "Kantor",
+          value: "kantor"
+        },
+      ],
+      isDisabled: true,
+      valueData: null,
+      value: 'rumah'
+    },
+    destination_name: {
+      label: "Nama Penerima*",
+      key: "destination_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    destination_phone: {
+      label: "Telepon Penerima*",
+      key: "destination_phone",
+      rule: "required|numeric|min:8",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    destination_address: {
+      label: "Alamat & Kode Pos Penerima",
+      key: "destination_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    destination_onchange_address: {
+      label: "Kelurahan / Kecamatan / Kota / Kode Pos*",
+      key: "destination_onchange_address",
+      rule: "required",
+      typeInput: "text|onchange|location_selector",
+      typeData: "String",
+      isDisabled: true,
+      arrData: [],
+      valueData: null,
+      onchange: true,
+      value: ''
+    },
+    destination_subdistrict_id: {
+      label: "Kode Pos*",
+      key: "destination_subdistrict_id",
+      rule: "",
+      isDisabled: true,
+      typeInput: "hidden|disabled|dotted",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    zip_code:{
+      label: "Kode Pos",
+      key: "zip_code",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_code: {
+      label: "Kode Tujuan*",
+      key: "tariff_code",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    }
+  },
+
+  cost_to_cost_setting:{
+    cost_owner_node_id: {
+      label: "Cost Owner",
+      key: "cost_owner_node_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "12",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    cost_payer_node_id: {
+      label: "Cost Payer",
+      key: "cost_payer_node_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "12",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    cost_group_code: {
+      label: "Cost Group",
+      key: "cost_group_code",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "12",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    dynamicinputcomponent_cost_to_cost_rule: {
+      label: "Add Rule",
+      key: "dynamicinputcomponent_cost_to_cost_rule",
+      rule:"",
+      typeInput: "dynamicinputcomponent",
+      typeData: "Array",
+      inputs: [ // template input yg di render tiap row
+        {
+          key: "rule_condition",
+          typeInput: "select",
+          value: 'meong1'
+        },
+        {
+          key: "condition",
+          typeInput: "select",
+          value: 'mimi1'
+        },
+        {
+          key: "rule_value",
+          typeInput: "text",
+          value: 'bbb'
+        }
+      ],
+      arrData: [
+        
+      ],
+      valueData: null,
+      value: ''
+    },
+
+    rule_condition: {
+      label: "Rules",
+      key: "rule_condition",
+      rule:"required",
+      typeInput: "select|hidden",
+      typeData: "String",
+      visible: false,
+      width: "4",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    condition: {
+      label: "Condition",
+      key: "condition",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      visible: false,
+      width: "4",
+      arrData: [
+        {
+          label: 'IS',
+          value: 'IS'
+        },
+        {
+          label: 'NOT',
+          value: 'NOT'
+        }
+      ],
+      valueData: null,
+      value: ''
+    },
+    rule_value: {
+      label: "Value",
+      key: "rule_value",
+      rule:"required",
+      typeInput: "text",
+      typeData: "String",
+      visible: false,
+      width: "4",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    cost_type_code: {
+      label: "Cost Type",
+      key: "cost_type_code",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "12",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+
+    dynamicinputcomponent_cost_to_cost_detail_value: {
+      label: "Add Cost",
+      key: "dynamicinputcomponent_cost_to_cost_detail_value",
+      rule:"",
+      typeInput: "dynamicinputcomponent",
+      typeData: "Array",
+      inputs: [ // template input yg di render tiap row
+        {
+          key: "min_kg",
+          typeInput: "text",
+          value: ''
+        },
+        {
+          key: "max_kg",
+          typeInput: "text",
+          value: ''
+        },
+        {
+          key: "cost_value",
+          typeInput: "text",
+          value: ''
+        }
+      ],
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+
+    min_kg: {
+      label: "Min(Kg)",
+      key: "min_kg",
+      rule: "required|numeric",
+      typeInput: "text",
+      visible: false,
+      typeData: "Number",
+      valueData: null,
+      value: '',
+      width: "4",
+    },
+    max_kg: {
+      label: "Max(Kg)",
+      key: "max_kg",
+      rule: "required|numeric",
+      typeInput: "text",
+      visible: false,
+      typeData: "Number",
+      valueData: null,
+      value: '',
+      width: "4",
+    },
+    cost_value: {
+      label: "Rp",
+      key: "cost_value",
+      rule: "required|numeric",
+      typeInput: "text",
+      visible: false,
+      typeData: "Number",
+      valueData: null,
+      value: '',
+      width: "4",
+    },
+    name: {
+      label: "Name",
+      key: "name",
+      rule:"required",
+      typeInput: "text",
+      typeData: "String",
+      width: "6",
+      valueData: null,
+      value: ''
+    },
+    tracking_type_name: {
+      label: "Activity",
+      key: "tracking_type_name",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+
+  },
+  cost_to_cost_report:{
+    cost_owner_node_id: {
+      label: "Cost Owner",
+      key: "cost_owner_node_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    cost_payer_node_id: {
+      label: "Cost Payer",
+      key: "cost_payer_node_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    cost_group_code: {
+      label: "Cost Group",
+      key: "cost_group_code",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    name: {
+      label: "Cost Name",
+      key: "name",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    date_from: {
+      label: "From",
+      key: "date_from",
+      rule:"required",
+      typeData: "String",
+      typeInput: "date",
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    date_to: {
+      label: "To",
+      key: "date_to",
+      rule:"required",
+      typeData: "String",
+      typeInput: "date",
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+
+  },
+  packingkayu:{
+    koli_number: {
+      label: "Koli Number*",
+      key: "koli_number",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    koli_actual_before: {
+      label: "Kg Before",
+      key: "koli_actual_before",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    koli_actual_weight: {
+      label: "Kg After",
+      key: "koli_actual_weight",
+      rule: "required",
+      isDisabled: false,
+      width: '6',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    koli_height: {
+      label: "Height",
+      key: "koli_height",
+      rule: "required",
+      isDisabled: false,
+      width: '6',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    koli_width: {
+      label: "Width",
+      key: "koli_width",
+      rule: "required",
+      isDisabled: false,
+      width: '6',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    koli_length: {
+      label: "Length",
+      key: "koli_length",
+      rule: "required",
+      isDisabled: false,
+      width: '6',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    }
+  }
   
 }

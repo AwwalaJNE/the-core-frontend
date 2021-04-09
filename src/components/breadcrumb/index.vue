@@ -13,17 +13,24 @@ export default {
     computed: {
         crumbs(){
             let pathArray = this.$route.path.split("/")
+            // console.log('pathArray', pathArray)
             pathArray.shift()
+            if(pathArray.length > 2){
+              pathArray = pathArray.slice(0, -1);
+            }
+            // console.log('pathArray l 2', pathArray)
+            let route = this.$route.matched.filter(item => item.path !== '')
             let breadcrumbs = pathArray.reduce((breadcrumbArray, path, idx) => {
-                breadcrumbArray.push({
-                path: path,
-                to: breadcrumbArray[idx - 1]
-                    ? "/" + breadcrumbArray[idx - 1].path + "/" + path
-                    : "/" + path,
-                text: this.$route.matched[idx].meta.breadCrumb || path,
-                });
-                return breadcrumbArray;
-            }, [])
+                  breadcrumbArray.push({
+                  path: path,
+                  to: breadcrumbArray[idx - 1]
+                      ? "/" + breadcrumbArray[idx - 1].path + "/" + path
+                      : "/" + path,
+                  text: route[idx] ? route[idx].meta.breadCrumb : null || path,
+                  });
+                  return breadcrumbArray;
+              }, [])
+              // console.log('breadcrumbs', breadcrumbs, route)
             return breadcrumbs;
         }
     },

@@ -53,7 +53,7 @@
                                 <div class="dataRole">
                                     <ul>
                                        <template v-for="(item,key) in dataRole">
-                                           <li :key="key" @click="getRolePermission(item.user_role_id)">{{item.user_role_name}}</li>
+                                           <li :key="key" :class="`${user_role_id == item.user_role_id ? 'active': ''}`" @click="getRolePermission(item.user_role_id)">{{item.user_role_name}}</li>
                                        </template> 
                                     </ul>
                                 </div>
@@ -72,6 +72,13 @@
                                 :page="pagination.page"
                                 :limit="pagination.limit"
                                 :hasAction="false"
+
+                                :isSearchAble="true"
+                                :isMultipleSelect="true"
+                                :selectedData="user_role_permission"
+
+                                @updateSelected="updateSelected"
+                                @updateValue="updateValue"
                                 />
                        </div>
                     </vs-col>
@@ -155,21 +162,48 @@ export default {
             keysPermission: {},
             datacolumn: [
                 {
+                    label: "Id",
+                    key: "user_permission_id",
+                    type: "text",
+                    hidden: true,
+                    width: "sm"
+                },
+                {
                     label: "Menu",
                     key: "user_permission_name",
                     type: "text",
                     width: "sm"
                 },
-                {
-                    label: "Select",
-                    key: "selected",
-                    type: "boolean",
-                    width: "xs"
-                },
+                // {
+                //     label: "Select",
+                //     key: "selected",
+                //     labelKey: "user_permission_id",
+                //     type: "boolean",
+                //     width: "xs"
+                // },
                 {
                     label: "Access Data",
-                    key: "permission_access_data",
-                    type: "selector",
+                    key: "access_data",
+                    type: "inputan",
+                    typeInput: "select",
+                    data: [
+                        {
+                            "label": "USER",
+                            "value": "USER"
+                        },
+                        {
+                            "label": "NODE",
+                            "value": "NODE"
+                        },
+                        {
+                            "label": "SAME-TLC",
+                            "value": "SAME-TLC"
+                        },
+                        {
+                            "label": "ALL",
+                            "value": "ALL"
+                        }
+                    ],
                     width: "auto"
                 }
             ],
@@ -182,7 +216,12 @@ export default {
                 page_size: 1,
                 page: 1
             },
-            refreshInject:""
+            refreshInject:"",
+            user_role_id: "",
+            user_role_permission: [],
+            permissionObject: {},
+
+            waitToRoleRenderer: true,
         }
     },
     methods: {
@@ -193,6 +232,7 @@ export default {
         searchValue (val) {
             this.tempSearch = val
             console.log("this.tempSearch = ",this.tempSearch)
+            this.getDataRole(this.tempSearch)
         },
         clearSearch() {
             this.$refs.searchInput.clear()
@@ -206,9 +246,9 @@ export default {
             this.title = item[0].title
 
             if(this.navActive === "k-PERMISSIONS") {
-                console.log('ini permission page')
+                // console.log('ini permission page')
                 this.getDataRole()
-                this.getDataPermission()
+                // this.getDataPermission()
             }
         },
         openDialog(){
@@ -220,7 +260,6 @@ export default {
                     this.dialogRole = true
                     break;
                 default:
-                    console.log('meong')
                     // code block
             }
             this.refreshInject = this.navActive
@@ -238,17 +277,22 @@ export default {
             this.pagination.page = val
         },
 
-        async getDataRole(){
+        async getDataRole(q){
             this.loadingDataRole = true
+            let query = "";
+            if(q !== undefined) {
+                query = q
+            }
             await axios
                 .get(this.URL.role + 
-                `?n=1&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+                    // console.log('role', res.data.data)
                     if(res.data.data.length > 0) {
                         this.dataRole = res.data.data
                     } else {
+                        this.dataRole = []
                         this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
@@ -259,75 +303,175 @@ export default {
                 })
         },
         async getDataPermission(){
-            this.loadingPermission = true
+            
             await axios
                 .get(this.URL.permission + 
-                `?n=1&sort_order=desc&&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log('getDataPermission',res.data.data)
+                    // console.log('getDataPermission',res.data.data)
                     if(res.data.data.length > 0) {
                         let data = res.data.data
+                        let temp = {}
                         data.map(item => {
+                            temp[item.user_permission_id] = item
+                            item["access_data"] = ""
                             item["selected"] = false
                         })
-                        this.permission = data
+                        // this.permission = data
                         this.permissionDisplay = data
-                        console.log('meong 1 ', this.permission)
+                        this.permissionObject = temp
+                        // console.log('meong 1 ', this.permission)
                     } else {
                         this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
                     }
                     
-                    this.loadingPermission = false
+                    
                 }).catch(err => {
                     this.loadingPermission = false
                     this.openNotification('danger', 'Failed to populate permission data', err)
                 })
         },
-
+        
         async getRolePermission(val){
-            console.log("user_role_id = ", val)
+            this.loadingPermission = true
+            this.waitToRoleRenderer = true
             await this.getDataPermission()
-            this.permissionDisplay = []
+            this.user_role_id = val
+            this.user_role_permission = []
+            // this.permissionDisplay = []
             this.keysPermission = {}
-            console.log('this.keysPermission meong', this.keysPermission)
+            // console.log('this.keysPermission meong', this.keysPermission)
             await axios
-                .get(this.URL.role + `/${val}/permission`, 
+                .get(this.URL.role + `/${val}/permission?n=${this.listenNodeId}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log('getRolePermission',res.data.data)
+                    // console.log('getRolePermission',res.data.data)
                     let temp = {}
+                    // let arr = []
                     let data = res.data.data.permission
                     if(data.length > 0) {
                         // meanwhile we create keys object of role permission to reduce time complexity 
                         // when comparing between permission and role permission data itself
                         data.map(item => {
-                            temp[item.pivot.user_permission_id] = item.user_permission_name
+                            // temp[item.pivot.user_permission_id] = item.user_permission_name
+
+                            let obj = {}
+                            obj["user_permission_id"] = item.pivot.user_permission_id
+                            obj["access_data"] = item.access_data
+                            temp[item.pivot.user_permission_id] = obj
+
+                            // arr.push(obj)
+                            // [{"user_permission_id":1,"access_data":"NODE"}]
                         })
                         this.keysPermission = temp
+                        
                     } else {
                         this.keysPermission = {}
                     }
                     this.filterNow()
+                    this.loadingPermission = false
                 })
                 .catch(err => {
+                    this.loadingPermission = false
                     // this.loadingDataRole = false
                     this.openNotification('danger', 'Failed to populate role permission data', err)
                 })
                 
-                console.log('filtered permission ', this.permission)
+                
+        },
+        updateSelected(arr){
+            this.user_role_permission = arr
+            this.user_role_permission.map(item => {
+                if(item["access_data"] == "") {
+                    item["access_data"] = "USER"
+                }
+            })
+
+            if(this.waitToRoleRenderer == false) {
+                this.updateRole()
+            }
+            
+            // console.log('update selected from table', arr)
+        },
+        updateValue(key, val, info){
+            let splitAction = key.split("|")[0] || null
+            let splitKey = key.split("|")[1] || null
+            // console.log('permissionObject', this.permissionObject, this.user_role_permission)
+            // console.log('this.keysPermission', this.keysPermission)
+            // console.log('table action', key,splitAction,splitKey, val, info)
+            
+            let obj = {}
+            switch(splitAction) {
+                
+                case "access_data":
+                    if(this.user_role_permission.length > 0) {
+                        this.user_role_permission.map(item => {
+                            if(item.user_permission_id == splitKey) {
+                                if(item.hasOwnProperty("access_data")){
+                                    item["access_data"] = val
+                                }
+                            }
+                        })
+
+                        if(this.waitToRoleRenderer == false) {
+                            this.updateRole()
+                        }
+                    }
+                    break;
+                default:
+                    console.log('meong')
+                    // code block
+            }
+            // console.log('new this.user_role_permission', this.user_role_permission)
+            
+            
+        },
+        async updateRole() {
+            if(this.permissionDisplay.length > 0 && this.waitToRoleRenderer == false) {
+                let data = {"permission": []}
+                data["permission"] = this.user_role_permission
+                // this.user_role_permission
+                await axios
+                .post(
+                    this.URL.role + `/${this.user_role_id}/permission?n=${this.listenNodeId}`,
+                    JSON.stringify(data), 
+                    this.Helper.header()
+                )
+                .then(res => {
+                    this.getRolePermission(this.user_role_id)
+                }).catch(err => {
+
+                })
+            }
         },
         filterNow(){
-            if(this.permission.length > 0) {
-                console.log('this.keysPermission before filter', this.keysPermission)
-                this.permission.map(item => {
+            if(this.permissionDisplay.length > 0) {
+                // console.log('this.keysPermission before filter', this.keysPermission)
+                let arr = []
+                this.permissionDisplay.map(item => {
                     if(this.keysPermission.hasOwnProperty(item.user_permission_id)) {
                         item["selected"] = true
+                        item["access_data"] = this.keysPermission[item.user_permission_id]["access_data"]
+                        arr.push(item)
                     } 
                 })
-                this.permissionDisplay = this.permission
-                console.log('this.keysPermission after filter', this.keysPermission)
+
+                // let obj = {}
+                //             obj["user_permission_id"] = item.pivot.user_permission_id
+                //             obj["access_data"] = item.access_data
+                
+                this.user_role_permission = arr
+                // this.permissionDisplay = this.permission
+                // console.log('this.keysPermission after filter', this.keysPermission, this.permissionDisplay, this.user_role_permission)
             }
+            
+            // quickfix issue jika input dalem table, akan men-trigger event updateValue karena ada perubahan state dari inputan saat render table
+            // issue ini bikin updateRole() dijalanin saat proses render table walaupun tidak ada ubahan 
+            let self = this
+            setTimeout(function(){ self.waitToRoleRenderer = false}, 800);
+
+            
         }
     },
 }
@@ -361,7 +505,7 @@ export default {
                     border-bottom: 1px solid #eee;
                     background-color: white;
                     transition: all .2s ease;
-                    &:hover{
+                    &:hover, &.active{
                         background-color: #f1f1f1;
                         transition: all .3s ease-in;
                     }

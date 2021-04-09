@@ -25,6 +25,7 @@
                                     :selectedValue="datanode[0].value"
                                     :isMultiple="false"
                                     :border="true"
+                                    :tabindex="-1"
                                     @updateValue="updateValue" />
                                 </template>
                             </vs-col>
@@ -45,33 +46,33 @@
                                     <template #tooltip>
                                     <div class="content-tooltip">
                                         <div class="body">
-                                        <div class="text">
+                                        <!-- <div class="text">
                                             Cosed Tasks
                                             <span>
                                             89
                                             </span>
-                                        </div>
-                                        <vs-avatar circle size="60">
+                                        </div> -->
+                                        <!-- <vs-avatar circle size="60"> -->
                                             <!-- <img src="/avatars/avatar-5.png" alt=""> -->
-                                            <i class='bx bx-user'></i>
-                                        </vs-avatar>
-                                        <div class="text">
+                                            <!-- <i class='bx bx-user'></i> -->
+                                        <!-- </vs-avatar>  -->
+                                        <!-- <div class="text">
                                             Open Tasks
                                             <span>
                                             8
                                             </span>
-                                        </div>
+                                        </div> -->
                                         </div>
                                         <footer>
-                                        <vs-button circle icon border>
+                                        <!-- <vs-button circle icon border>
                                             <i class='bx bxs-share-alt'></i>
-                                        </vs-button>
+                                        </vs-button> -->
                                         <vs-button circle @click="logout">
                                             Logout
                                         </vs-button>
-                                        <vs-button circle icon border>
+                                        <!-- <vs-button circle icon border>
                                             <i class='bx bx-like' ></i>
-                                        </vs-button>
+                                        </vs-button> -->
                                         </footer>
                                     </div>
                                     </template>
@@ -103,7 +104,7 @@ export default {
             activeSidebar: false,
             activeTooltip1: false,
             datanode: [],
-            selectedNode: this.$ls.get('node_id') || ''
+            selectedNode: ''
         }
     },
     computed: {
@@ -126,9 +127,9 @@ export default {
             this.$router.go()
         },
         updateValue(key,val) {
-            this.$ls.set('node_id', val)
-            let n = this.$ls.get('node_id')
-            this.$store.dispatch(`SET_USER_N`, val)
+            let node = this.datanode.filter(item => item.value == val)
+            this.$ls.set('node_id', node[0])
+            this.$store.dispatch(`SET_USER_N`, node[0])
         },
         init(){
             this.datanode = []
@@ -137,16 +138,19 @@ export default {
                             let obj = {}
                             obj["label"] = item.node_name
                             obj["value"] = item.node_id
+                            obj["node_code"] = item.node_code
 
                             this.datanode.push(obj)
             })
 
             let n = this.$ls.get('node_id')
             if(n == null) {
-                this.$ls.set('node_id', this.datanode[0].value)
-                this.$store.dispatch(`SET_USER_N`, this.datanode[0].value)
+                this.$ls.set('node_id', this.datanode[0])
+                this.selectedNode = this.datanode[0].value
+                this.$store.dispatch(`SET_USER_N`, this.datanode[0])
             } else {
                 this.$store.dispatch(`SET_USER_N`, n)
+                this.selectedNode = n.value
             }
         }
     },

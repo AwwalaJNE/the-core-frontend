@@ -12,7 +12,7 @@ export default {
     origin_phone: {
       label: "Telepon Pengirim*",
       key: "connote_shipper_phone_number",
-      rule: "required",
+      rule: "required|phone",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -52,6 +52,7 @@ export default {
       rule: "required",
       typeInput: "text|disabled|dotted",
       typeData: "String",
+      tabindex: -1,
       valueData: null,
       value: ''
     },
@@ -88,7 +89,7 @@ export default {
     destination_phone: {
       label: "Telepon Penerima*",
       key: "connote_receiver_phone_number",
-      rule: "required",
+      rule: "required|phone",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -126,6 +127,8 @@ export default {
     destination_zip_code: {
       typeInput: "row",
       col:6,
+      key: 'zip_code_and_destination_code',
+      tabindex: -1,
       input: [
         {
           label: "Kode Pos",
@@ -133,6 +136,7 @@ export default {
           rule: "required",
           typeInput: "text|disabled",
           typeData: "String",
+          tabindex: -1,
           valueData: null,
           value: ''
         },
@@ -142,6 +146,7 @@ export default {
           rule: "required",
           typeInput: "text|disabled",
           typeData: "String",
+          tabindex: -1,
           valueData: null,
           value: ''
         }
@@ -158,7 +163,7 @@ export default {
       typeInput: "text|col_left",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: " "
     },
     package_category: {
       label: "Kategori*",
@@ -218,27 +223,34 @@ export default {
       typeInput: "radio|col_left",
       typeData: "String",
       onchange: true,
-      arrData: [],
+      arrData: [
+        {
+          'label': 'null',
+          'value': 'null',
+          'data': {},
+          'tarif': 0
+        }
+      ],
       valueData: null,
       value: ''
     },
-    package_price: {
+    package_insured_goods_value: {
       label: "Nilai Barang",
       key: "insured_goods_value",
-      rule: "",
+      rule: "maxlength:20",
       typeInput: "text|col_left",
       typeData: "Number|money",
       valueData: null,
-      value: ''
+      value: 0
     },
     package_diskon: {
       label: "Diskon",
       key: "amount_discount",
-      rule: "",
+      rule: "maxlength:20",
       typeInput: "text|col_left",
       typeData: "Number|money",
       valueData: null,
-      value: ''
+      value: 0
     },
     package_instruksi: {
       label: "Instruksi Khusus",
@@ -247,23 +259,23 @@ export default {
       typeInput: "text|col_left",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: " "
     },
 
 
     package_jumlah: {
       label: "Jumlah*",
       key: "koli_jumlah",
-      rule: "required",
+      rule: "numeric|min_value:1",
       typeInput: "text|col_right",
       typeData: "Number",
       valueData: null,
-      value: '1'
+      value: 1
     },
     package_dimensi_weight: {
       label: "Weight*",
       key: "koli_weight",
-      rule: "",
+      rule: "decimal|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -272,7 +284,7 @@ export default {
     package_dimensi_length: {
       label: "Length",
       key: "koli_length",
-      rule: "",
+      rule: "decimal|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -281,7 +293,7 @@ export default {
     package_dimensi_width: {
       label: "Width",
       key: "koli_width",
-      rule: "",
+      rule: "decimal|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -290,7 +302,7 @@ export default {
     package_dimensi_height: {
       label: "Height",
       key: "koli_height",
-      rule: "",
+      rule: "decimal|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
@@ -346,21 +358,21 @@ export default {
     actual_weight: {
       label: "Actual Weight",
       key: "actual_weight",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 1
     },
     volume_weight: {
       label: "Volume Weight",
       key: "volume_weight",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     chargeable_weight: {
       label: "chargeable Weight",
       key: "chargeable_weight",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
@@ -368,84 +380,84 @@ export default {
     biaya_kirim: {
       label: "biaya kirim",
       key: "biaya_kirim",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     handling_charge: {
       label: "handling charge",
       key: "handling_charge",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     surcharge: {
       label: "surcharge",
       key: "surcharge",
-      typeData: "String",
+      typeData: "Number",
       valueData: [],
       value: 0
     },
     surcharge_manual: {
       label: "surcharge manual",
       key: "surcharge_manual",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     airline_document: {
       label: "airline document",
       key: "airline_document",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     shipper_declaration: {
       label: "shipper declaration",
       key: "shipper_declaration",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     adm_karantina: {
       label: "adm karantina",
       key: "adm_karantina",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     pelepasan_karantina: {
       label: "Pelepasan Karantina",
       key: "pelepasan_karantina",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     asuransi: {
       label: "Asuransi",
       key: "asuransi",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     adm_asuransi: {
       label: "adm asuransi",
       key: "adm_asuransi",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     diskon: {
       label: "diskon",
       key: "diskon",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
     total_biaya: {
       label: "total biaya",
       key: "total_biaya",
-      typeData: "String",
+      typeData: "Number",
       valueData: null,
       value: 0
     },
@@ -460,10 +472,11 @@ export default {
     volume_weight: 0.00,
     actual_weight: 1,
     surcharge_id: [],
+    is_packing_kayu: false,
+    is_packing_kayu_id: '',
     description: ''
   },
 
-  temp_koli_item: '',
   connote_koli_item: [
     {
       koli_id: '',
@@ -473,28 +486,188 @@ export default {
       volume_weight: 0,
       actual_weight: 1,
       surcharge_id: [],
+      is_packing_kayu: false,
+      is_packing_kayu_id: '',
       description: ''
     }
   ],
 
   // proses store connote untuk dimasukin ke transaction connote
+  
   proses_connote: {
     connote_number: '',
     connote_shipper_customer_id: '',
     connote_receiver_customer_id: '',
-    is_insured: false,
+    is_insured: true,
     is_need_do_return: false,
     connote_koli_item: [],
+    connote_bpik:[],
     total_biaya: 0,
     connote_index: ''
   },
-  
+  connote_index_active: 0,
+  connote_template: {
+    pra_connote: '',
+    single_connote_no: '',
+    connote_number: '',
+    connote_shipper_customer_id: '',
+    connote_shipper_name: '',
+    connote_shipper_phone_number: '',
+    connote_shipper_street_address:'',
+    connote_shipper_administrative_address: '',
+    connote_shipper_tariff_code: '',
+
+    connote_receiver_customer_id: '',
+    connote_receiver_address_type: 'rumah',
+    connote_receiver_zip_code: '',
+    connote_receiver_tariff_code: '',
+    connote_receiver_name: '',
+    connote_receiver_phone_number: '',
+    connote_receiver_street_address: '',
+    connote_receiver_administrative_address: '',
+
+    connote_bpik: [],
+    insured_goods_value: 0,
+    amount_discount: 0,
+    is_insured: false,
+    is_insurance_refused: false,
+    connote_refuse_wooden_package:false,
+    is_packing_kayu: false,
+    is_need_do_return: false,
+    connote_is_do_return: false,
+    connote_koli_item: [
+      {
+        koli_id: '',
+        height: 0,
+        length: 0,
+        width: 0,
+        volume_weight: 0,
+        actual_weight: 1,
+        surcharge_id: [],
+        is_packing_kayu: false,
+        is_packing_kayu_id: '',
+        description: ''
+      }
+    ],
+    connote_bpik:[],
+    total_biaya: 0,
+    connote_index: ''
+  },
+
+  transaction_TEMPLATE: {
+    transaction_id: '',
+    transaction_finished: false,
+    node_code: '',
+    connote: [
+      {
+        pra_connote: '',
+        single_connote_no: '',
+        connote_number: '',
+        connote_shipper_customer_id: '',
+        connote_shipper_name: '',
+        connote_shipper_phone_number: '',
+        connote_shipper_street_address:'',
+        connote_shipper_administrative_address: '',
+        connote_shipper_tariff_code: '',
+    
+        connote_receiver_customer_id: '',
+        connote_receiver_address_type: 'rumah',
+        connote_receiver_zip_code: '',
+        connote_receiver_tariff_code: '',
+        connote_receiver_name: '',
+        connote_receiver_phone_number: '',
+        connote_receiver_street_address: '',
+        connote_receiver_administrative_address: '',
+    
+        connote_bpik: [],
+        insured_goods_value: 0,
+        amount_discount: 0,
+        is_insurance_refused: false,
+        is_insured: false,
+        connote_refuse_wooden_package:false,
+        is_packing_kayu: false,
+        is_need_do_return: false,
+        connote_is_do_return: false,
+        connote_koli_item: [
+          {
+            koli_id: '',
+            height: 0,
+            length: 0,
+            width: 0,
+            volume_weight: 0,
+            actual_weight: 1,
+            surcharge_id: [],
+            is_packing_kayu: false,
+            is_packing_kayu_id: '',
+            description: ''
+          }
+        ],
+        connote_bpik:[],
+        total_biaya: 0,
+        connote_index: ''
+      },
+    ],
+    grand_total: 0,
+    discount: 0,
+    payment_method: ''
+  },
+
   transaction: {
     transaction_id: '',
     transaction_finished: false,
     node_code: '',
-    connote: [],
-    grand_total: 0
+    connote: [
+      {
+        pra_connote: '',
+        single_connote_no: '',
+        connote_number: '',
+        connote_shipper_customer_id: '',
+        connote_shipper_name: '',
+        connote_shipper_phone_number: '',
+        connote_shipper_street_address:'',
+        connote_shipper_administrative_address: '',
+        connote_shipper_tariff_code: '',
+    
+        connote_receiver_customer_id: '',
+        connote_receiver_address_type: 'rumah',
+        connote_receiver_zip_code: '',
+        connote_receiver_tariff_code: '',
+        connote_receiver_name: '',
+        connote_receiver_phone_number: '',
+        connote_receiver_street_address: '',
+        connote_receiver_administrative_address: '',
+    
+        connote_bpik: [],
+        insured_goods_value: 0,
+        amount_discount: 0,
+        is_insurance_refused: false, // gw juga ga faham kenapa req body dari backend mintra dobel2 gini x_x
+        is_insured: false,
+        is_packing_kayu: false,
+        connote_refuse_wooden_package:false,
+        is_need_do_return: false,
+        connote_is_do_return: false,
+        connote_koli_item: [
+          {
+            koli_id: '',
+            height: 0,
+            length: 0,
+            width: 0,
+            volume_weight: 0,
+            actual_weight: 1,
+            surcharge_id: [],
+            is_packing_kayu: false,
+            is_packing_kayu_id: '',
+            description: ''
+          }
+        ],
+        connote_bpik:[],
+        total_biaya: 0,
+        connote_index: ''
+      },
+    ],
+    grand_total: 0,
+    discount: 0,
+    payment_method: ''
   }
   
 

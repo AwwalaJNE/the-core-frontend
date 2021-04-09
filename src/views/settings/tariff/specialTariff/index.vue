@@ -45,27 +45,32 @@ export default {
             datacolumn: [
                 {
                     label: "ID",
-                    key: "tariff_special_id",
+                    key: "tariff_id",
                     width: "xs"
                 },
                 {
-                    label: "Tariff special name",
-                    key: "tariff_special_name",
+                    label: "Group",
+                    key: "tariff_group",
                     width: "auto"
                 },
                 {
-                    label: "Tariff special condition service code",
-                    key: "Tariff_special_condition_service_code",
+                    label: "Origin",
+                    key: "tariff_origin",
                     width: "auto"
                 },
                 {
-                    label: "Tariff special start date",
-                    key: "tariff_special_start_date",
+                    label: "Destination",
+                    key: "tariff_destination",
                     width: "auto"
                 },
                 {
-                    label: "Tariff special expiry date",
-                    key: "tariff_special_expiry_date",
+                    label: "Tariff service code",
+                    key: "tariff_service_code",
+                    width: "auto"
+                },
+                {
+                    label: "Tariff amount 1",
+                    key: "tariff_amount_1",
                     width: "auto"
                 },
             ],
@@ -74,7 +79,7 @@ export default {
             tempSearch: "",
             dialogTariffSpecial: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -98,8 +103,8 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.tariff_special + 
-                `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                .get(this.URL.tariff + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)

@@ -1,6 +1,66 @@
 <template >
     <div>
         <div class="box">
+            <div>
+                <vs-row justify="space-between">
+                    <vs-col xs="12" sm="3" lg="3">
+                        <h3 style="text-align:left;margin-top:8px;">Package Information</h3>
+                    </vs-col>
+                    <vs-col xs="12" sm="6" lg="6">
+                        <vs-row justify="flex-end">
+                            <vs-col xs="12" sm="4" lg="4">
+                                <vs-tooltip>
+                                    <vs-button
+                                        shadow
+                                        :active="false"
+                                        @click="openBpikComponent()"
+                                        :tabindex="-1"
+                                        style="float:right"
+                                    >
+                                        <i class='bx bx-plus'></i> BPIK
+                                    </vs-button>
+                                    <template #tooltip>
+                                        {{`Alt + f3 | Bpik`}}
+                                    </template>
+                                </vs-tooltip>
+                                
+                            </vs-col>
+                            <vs-col xs="12" sm="4" lg="4">
+                                <vs-tooltip>
+                                    <vs-button
+                                        shadow
+                                        :active="false"
+                                        @click="connoteNumberDialog('pra')"
+                                        :tabindex="-1"
+                                        style="float:right"
+                                    >
+                                        <i class='bx bx-plus'></i> Pra Connote
+                                    </vs-button>
+                                    <template #tooltip>
+                                        {{`Alt + f6 | Pra Connote`}}
+                                    </template>
+                                </vs-tooltip>
+                            </vs-col>
+                            <vs-col xs="12" sm="4" lg="4">
+                                <vs-tooltip>
+                                    <vs-button
+                                        shadow
+                                        :active="false"
+                                        @click="connoteNumberDialog('single')"
+                                        :tabindex="-1"
+                                        style="float:right"
+                                    >
+                                        <i class='bx bx-plus'></i> Single Connote
+                                    </vs-button>
+                                    <template #tooltip>
+                                        {{`Alt + f7 | Single Connote`}}
+                                    </template>
+                                </vs-tooltip>
+                            </vs-col>
+                        </vs-row>
+                    </vs-col>
+                </vs-row>
+            </div>
             <div class="con-form form-package">
                 <template v-if="Object.keys(InputObject).length > 0">
                     <vs-row justify="center">
@@ -13,19 +73,19 @@
                                 :typeInput="InputObject['package_description'].typeInput"
                                 @updateValue="updateValue" />
                             
-                            <p>{{InputObject['package_category'].label}}</p>
+                            <p style="margin:0;">{{InputObject['package_category'].label}}</p>
                             <selector 
                                 :ref="InputObject['package_category'].key"
                                 :name="''" 
                                 :rules="InputObject['package_category'].rule" 
-                                :formKey="InputObject['package_category'].key"
+                                :formKey="'package_category'"
                                 :valueData="InputObject['package_category'].arrData"
                                 :selectedValue="InputObject['package_category'].value"
                                 :isMultiple="false"
                                 @updateValue="updateValue" />
 
-                            <p>{{InputObject['package_service'].label}}</p>
-                            <template v-if="InputObject['package_service'].arrData.length > 0">
+                            <p style="margin:0;">{{InputObject['package_service'].label}}</p>
+                            <template v-if="InputObject['package_service'].arrData.length > 0 && InputObject['package_service'].arrData[0].value !== 'null'">
                                 <radio 
                                 :ref="InputObject['package_service'].key"
                                 :name="''" 
@@ -35,13 +95,14 @@
                                 :selectedValue="InputObject['package_service'].value"
                                 @updateValue="updateValue" />
                             </template>
-        
+                            <div class="mt-1"></div>
                             <input-general 
-                                :name="InputObject['package_price'].label" 
-                                :rules="InputObject['package_price'].rule" 
-                                :formKey="InputObject['package_price'].key"
-                                :valueData="InputObject['package_price'].value"
-                                :typeInput="InputObject['package_price'].typeInput"
+                                :name="InputObject['package_insured_goods_value'].label" 
+                                :rules="InputObject['package_insured_goods_value'].rule" 
+                                :formKey="InputObject['package_insured_goods_value'].key"
+                                :valueData="InputObject['package_insured_goods_value'].value"
+                                :typeInput="InputObject['package_insured_goods_value'].typeInput"
+                                :currencyMasking="true"
                                 @updateValue="updateValue" />
                             
                             <input-general 
@@ -50,6 +111,7 @@
                                 :formKey="InputObject['package_diskon'].key"
                                 :valueData="InputObject['package_diskon'].value"
                                 :typeInput="InputObject['package_diskon'].typeInput"
+                                :currencyMasking="true"
                                 @updateValue="updateValue" />
                             
                             <input-general 
@@ -62,13 +124,13 @@
                         </vs-col>
                         <vs-col xs="12" md="6" lg="6">
                             <vs-row>
-                                <vs-col xs="12" md="6" lg="6">
+                                <vs-col xs="12" md="3" lg="3">
                                     <input-general 
                                         :name="InputObject['package_jumlah'].label" 
                                         :rules="InputObject['package_jumlah'].rule" 
                                         :formKey="InputObject['package_jumlah'].key"
                                         :valueData="InputObject['package_jumlah'].value"
-                                        :typeInput="InputObject['package_jumlah'].typeInput"
+                                        :typeInput="'number'"
                                         @updateValue="updateValue" />
                                 </vs-col>
                                 <vs-col xs="12" md="6" lg="6">
@@ -124,37 +186,41 @@
                             </vs-row>  
 
                             <vs-row>
-                                <vs-col xs="12" md="6" lg="6">
-                                    <div class="chekboxgroup">
-                                        <checkbox
-                                            :formKey="InputObject['package_tidak_packing_kayu'].key"
-                                            :isChecked="InputObject['package_tidak_packing_kayu'].value"
-                                            :typeInput="InputObject['package_tidak_packing_kayu'].typeInput"
-                                            @updateValue="updateValue" /> 
-                                        <a href="javascript:void(0)">
-                                            <p>{{InputObject['package_tidak_packing_kayu'].titleLabel}}</p>
-                                        </a>
-                                    </div>
+                                <vs-col xs="12" md="5" lg="5">
+                                    <checkbox
+                                        formKey="package_tidak_packing_kayu"
+                                        :isChecked="InputObject['package_tidak_packing_kayu'].value"
+                                        :name="InputObject['package_tidak_packing_kayu'].titleLabel"
+                                        ref="package_tidak_packing_kayu_checkbox"
+                                        @updateValue="updateValue" /> 
+                                    <div class="mt-05"></div>
+                                    <checkbox
+                                        formKey="package_tidak_asuransi"
+                                        :isChecked="InputObject['package_tidak_asuransi'].value"
+                                        :name="InputObject['package_tidak_asuransi'].titleLabel"
+                                        ref="package_tidak_asuransi_checkbox"
+                                        @updateValue="updateValue" /> 
                                 </vs-col>
-                                <vs-col xs="12" md="6" lg="6">
-                                    <div class="chekboxgroup">
-                                        <checkbox
-                                            :formKey="InputObject['package_tidak_asuransi'].key"
-                                            :isChecked="InputObject['package_tidak_asuransi'].value"
-                                            :typeInput="InputObject['package_tidak_asuransi'].typeInput"
-                                            @updateValue="updateValue" /> 
-                                        <a href="javascript:void(0)">
-                                            <p>{{InputObject['package_tidak_asuransi'].titleLabel}}</p>
-                                        </a>
-                                    </div>
-                                </vs-col>
-                            </vs-row>
-
-                            <vs-row class="mt-1">
-                                <vs-col xs="12" md="6" lg="6">
+                                <vs-col xs="12" md="3" lg="3">
                                     <vs-button
                                         shadow
                                         :active="false"
+                                        @click="printASRdanSJ"
+                                        style="margin-top:0"
+                                        :disabled="btnPrintASRdanSJ == false"
+                                    >
+                                        <i class='bx bx-printer' style="margin-right:5px"></i> Print
+                                    </vs-button>
+                                </vs-col>
+                            </vs-row>
+
+                            <vs-row>
+                                <vs-col xs="12" md="5" lg="5">
+                                    <vs-button
+                                        style="margin-left:0"
+                                        shadow
+                                        :active="false"
+                                        :disabled="!disableBtnMultipleKoli"
                                         @click="openSurchargeDialog"
                                     >
                                         <i class='bx bx-plus' style="margin-right:5px"></i> SURCHARGE
@@ -168,8 +234,8 @@
                                             style="width: fit-content;"
                                             :key="key">
                                                 {{`${surchargeshow[item].surcharge_name} ${surchargeshow[item]['jumlah'] || ''}`}}
-                                                <template v-if="!surchargeshow[item].hasOwnProperty('jumlah')">
-                                                    <span class="vs-select__chips__chip__close" @click="removeSurcharge(item, 0)">
+                                                <template v-if="!surchargeshow[item].hasOwnProperty('jumlah') && !surchargeshow[item].surcharge_name.toLowerCase().includes('overweight')">
+                                                    <span class="vs-select__chips__chip__close" @click="removeSurcharge(item, 0, surchargeshow[item].surcharge_name)">
                                                         <i class="vs-icon-close vs-icon-hover-less"></i>
                                                     </span>
                                                 </template>
@@ -177,17 +243,14 @@
                                         </template>
                                     </div>
                                 </vs-col>
-                                <vs-col xs="12" md="6" lg="6">
-                                    <div class="chekboxgroup">
-                                        <checkbox
-                                            :formKey="InputObject['package_do_return'].key"
-                                            :isChecked="InputObject['package_do_return'].value"
-                                            :typeInput="InputObject['package_do_return'].typeInput"
-                                            @updateValue="updateValue" /> 
-                                        <a href="javascript:void(0)">
-                                            <p>{{InputObject['package_do_return'].titleLabel}}</p>
-                                        </a>
-                                    </div>
+                                <vs-col xs="12" md="4" lg="4">
+                                    <checkbox
+                                        style="margin-top:10px;margin-left: 18px;"
+                                        formKey="package_do_return"
+                                        :isChecked="InputObject['package_do_return'].value"
+                                        :name="InputObject['package_do_return'].titleLabel"
+                                        ref="package_do_return"
+                                        @updateValue="updateValue" />
                                 </vs-col>
                             </vs-row> 
 
@@ -197,9 +260,18 @@
             </div>
         </div>
 
+        <template>
+            <bpik
+            :closeDialog="closeBpikComponent"
+            :active="bpikComponent"
+            :arrData="[]"
+            />
+        </template>
+
         <dialog-surcharge
             :active="surchargeSelector" 
             :closeDialog="closeDialogSurcharge"
+            :koliObj="koliObj"
             :index="0"
             @updateValue="updateValue"
             />
@@ -207,25 +279,36 @@
             :active="dialogSettingMultipleKoli" 
             :closeDialog="closeSettingMultipleKoli"
             @prosesmultipleKoli="prosesmultipleKoli"
-            :arrData="listenDataMultipleKoli"
             :surchargeByID="surchargeByID"
             />
+        
+        <connote-number-dialog
+            :active="connote_number_dialog" 
+            :closeDialog="closeConnoteNumberDialog"
+            :title="connote_number_type"
+            :type="connote_number_type"
+            @updateValue="updateValue"
+        />
     </div>
 </template>
 <script>
+import axios from "axios";
+import master from "@/mixins/master"
 import TransactionMixin from "@/mixins/transaction.js"
 import FormMaster from "@/components/form/formMaster"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 import Switch from "@/components/input/switch"
 import Radio from "@/components/input/radio"
-import Checkbox from "@/components/input/checkbox"
+import Checkbox from "@/components/input/checkboxELUI"
+import BPIK from "@/views/transaction/package/bpik"
+import ConnoteNumberDialog from "@/views/transaction/connoteNumberDialog"
 
 import dialogMultipleKoli from "@/views/transaction/package/dialogMultipleKoli"
 import dialogSurcharge from "@/views/transaction/package/dialogSurcharge"
 export default {
     name: "package-information",
-    mixins: [TransactionMixin],
+    mixins: [master,TransactionMixin],
     components: {
         "form-master": FormMaster,
         "input-general": InputGeneral,
@@ -234,21 +317,36 @@ export default {
         "radio": Radio,
         "checkbox": Checkbox,
         "dialog-surcharge": dialogSurcharge,
-        "dialog-multipleKoli": dialogMultipleKoli
+        "dialog-multipleKoli": dialogMultipleKoli,
+        "bpik": BPIK,
+        "connote-number-dialog": ConnoteNumberDialog
     },
     data() {
         return {
             InputObject: {},
             surchargeSelector: false,
             dialogSettingMultipleKoli: false,
+            bpikComponent: false,
             surchargeByID: {},
             surchargeshow: {},
-            koliData: this.$store.getters['getTransaction']['template_koli'],
+            template_koli: this.$store.getters['getTransaction']['template_koli'],
             connote_koli_item: [],
+            koliObj: {},
             koliinput: 'text',
             disableBtnMultipleKoli: true,
-            meongData: '',
-            jumlahKoli: 1
+            jumlahKoli: 1,
+            current_index_koli: 0,
+            package_tidak_packing_kayu: false,
+            package_tidak_asuransi: false,
+
+            connote_number_type: '',
+            connote_number_dialog: false,
+
+            btnPrintASRdanSJ: false,
+            connote_koli_item_sebelum_surcharge_menyerang: [],
+            koli_b4_surcharge:{},
+            tempActualWeightPackingKayu: null,
+            tempvolumeWeightPackingKayu: null,
         }
     },
     computed: {
@@ -270,9 +368,15 @@ export default {
         listenJumlahPackage () {
             return this.$store.getters.getTransaction.package.package_jumlah.value
         },
-        listenDataMultipleKoli() {
-            return this.meongData
-        }
+        listenDestinationCode() {
+            return this.$store.getters.getTransaction.destination.destination_zip_code.input[1].value
+        },
+
+
+        // new code
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
+        },
     },
     watch: {
         listenPackageService: function (n,o) {
@@ -284,7 +388,19 @@ export default {
             if(n !== o) {
                 this.changeJumlah()
             }
-        }
+        },
+        listenConnoteIndexActive: function (n,o) {
+            if(n !== o) {
+                this.initialize()
+            }
+        },
+        listenDestinationCode: function (n,o) {
+            if(n !== o) {
+                if(n !== '') {
+                    this.getShippingService()
+                }
+            }
+        },
     },
     methods: {
         initialize() {
@@ -295,20 +411,104 @@ export default {
                 } else {
                     this.InputObject = {}
                 }
+            // this.connote_koli_item = this.listenConnoteKoliItem
 
-            // this.koliData = this.$store.getters['getTransaction']['template_koli']
-            // if(Object.keys(this.koliData).length > 0) {
-            //     this.connote_koli_item.push(this.koliData)
-            // }
-            this.connote_koli_item = this.listenConnoteKoliItem
-
+            // new code
+            this.connote_koli_item = this.test(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item)
+            this.wrapingSurcharge()
+        },
+        test(json) {
+            // untuk mutus hubungan sama store
+            return JSON.parse(JSON.stringify(json))
+        },
+        connoteNumberDialog(type) {
+            this.connote_number_type = type || 'pra'
+            this.connote_number_dialog = !this.connote_number_dialog
+        },
+        closeConnoteNumberDialog() {
+            this.connote_number_dialog = false
+        },
+        printASRdanSJ(){
+            this.printSPPAP()
+            let routeData = this.$router.resolve({name: 'printSPPAP'});
+            window.open(routeData.href, '_blank');
+        },
+        wrapingSurcharge() {
             let arrSurcharge = this.listenSurchargeList
             let surchargeByID = {}
             arrSurcharge.map(item => {
                 surchargeByID[item.surcharge_id] = item
             })
             this.surchargeByID = surchargeByID
+            // console.log('this.surchargeByID', this.surchargeByID)
             this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE_ValueData`, surchargeByID)
+        },
+        async getShippingService() {
+            let connote_number = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number || ''
+
+            await axios
+                .get(this.URL.tariff_shipping_service + 
+                `?n=${this.listenNodeId}&destination=${this.listenDestinationCode}`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log('getShippingService', res.data.data)
+                    let data = res.data.data
+                    let arr = []
+                    data.map(item => {
+                        let obj = {}
+                        obj['label'] = item.service_name
+                        obj['value'] = item.tariff_service_code.toLowerCase()
+                        obj['data'] = item
+                        obj['tarif'] = item.tariff_amount_1
+
+                        // tiering tarrif
+                        let tariffAkumulatif = {}
+                        let tariffStandar = {}
+                        let keys = Object.keys(item)
+
+                        // sudah dipastikan tiering sampe 50 biji
+                        for(let i=1; i <= 50; i++) {
+                            if(i == 1) {
+                                tariffStandar['weight'] = item[`tariff_weight_1`] || 0
+                                tariffStandar['value'] = item[`tariff_amount_1`] || 0
+                            } else {
+                                if(Number(item[`tariff_amount_${i}`]) != 0) {
+                                    tariffAkumulatif[item[`tariff_weight_${i}`]] = item[`tariff_amount_${i}`] || 0
+                                }
+                            }
+                        }
+                        
+                        obj['tariffAkumulatif'] = tariffAkumulatif
+                        obj['tariffStandar'] = tariffStandar
+                        
+                        if(item.tariff_service_code.toLowerCase().includes('reg')) {
+                            arr.unshift(obj)
+                        } else {
+                            arr.push(obj)
+                        }
+                        
+                    })
+                    console.log('getShippingService arr', arr)
+
+                    // if create new transaction
+                    // if(connote_number == ""){
+                        
+                    // }
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", arr[0])
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr.length > 0 ? arr : [])
+
+                    let node_code = this.listenNodeCode
+                    let self = this
+                    this.autoApply(node_code).then(() => {
+                        self.surchargeView()
+                    })
+                    // this.loading = false
+                }).catch(err => {
+                    // this.loading = false
+                    this.checkAuth(err.response)
+                    // this.openNotification('danger', 'Failed to populate country list', err)
+                })
         },
         changeJumlah() {
             if(this.listenJumlahPackage > 1) {
@@ -324,43 +524,69 @@ export default {
                 if(this.connote_koli_item.length > this.jumlahKoli) {
                     this.connote_koli_item.splice((this.connote_koli_item.length) - absValue,absValue)
                 } else if(this.jumlahKoli > this.connote_koli_item.length) {
-                    let templateKoli = {
-                        koli_id: '',
-                        height: 0,
-                        length: 0,
-                        width: 0,
-                        volume_weight: 0,
-                        actual_weight: 1,
-                        surcharge_id: [],
-                        description: ''
-                    }
                     for(let i=0; i < absValue; i++) {
-                        this.connote_koli_item.push(templateKoli)
+                        this.connote_koli_item.push(this.template_koli)
                     }
                 }
             }
-            
-            this.calcMultipleKoli()
+            this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
+            // this.calcDataKoli()
+            let node_code = this.listenNodeCode
+            let self = this
+            this.autoApply(node_code).then(() => {
+                self.surchargeView()
+                self.calculation()
+            })
         },
-        updateValue(key, value, value2 = null) {
-            console.log(key, value, value2)
+        updateValue(key, value, value2 = null, value3 = null) {
             switch(key) {
                 case "package_service":
-                    if(value2 !== null) {
+                    if(value2) {
                         this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", value2)
-
-                        // reset surcharge saat ganti service
-                        this.connote_koli_item.map(item => {
-                            item['surcharge_id'] = []
+                        this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", value)
+                        
+                        
+                        let node_code = this.listenNodeCode
+                        let self = this
+                        this.autoApply(node_code).then(() => {
+                            self.surchargeView()
+                            self.calculation()
                         })
-                        this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
-                        this.surchargeView()
-                        this.calculation()
+
+                        console.log('HASIL', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
+                        
+                        
                     }
+                    break;
+                case "package_category":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_CATEGORY", value)
+                    break;
+                case "insured_goods_value":
+                    if(this.package_tidak_asuransi == false) {
+                        let numb = this.moneyParsing(value)
+                        this.$store.dispatch("SET_CALCULATOR_ASURANSI", numb * 0.002)
+                    }
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE", value)
+                    
+                    this.calculation()
+                    break;
+                case "amount_discount":
+                    // let num = this.moneyParsing(value)
+                    let val = value ? value : 0
+                    this.$store.dispatch("SET_CALCULATOR_DISKON", value)
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_DISKON", value)
+                    
+                    this.calculation()
+                    break;
+                case "remarks":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_INSTRUKSI", value)
                     break;
                 case "koli_jumlah":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_JUMLAH", value)
                     this.jumlahKoli = value
+                    break;
+                case "koli_description":
+                    this.prosesKoli0("description", value, 0)
                     break;
                 case "koli_weight":
                     this.prosesKoli0("actual_weight", value, 0)
@@ -374,23 +600,60 @@ export default {
                 case "koli_height":
                     this.prosesKoli0("height", value, 0)
                     break;
-                case "handle_surcharge":
-                    console.log(key, value, value2 )
-                    let surcharge = value2
-                    let ids = []
-                    if(surcharge.length > 0){
-                        surcharge.map(item => ids.push(item.surcharge_id))
-                    }
-                    this.connote_koli_item[value].surcharge_id = ids
+                case "package_tidak_asuransi":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_TIDAK_ASURANSI", value)
+                    this.package_tidak_asuransi = value
 
-                    this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
-                    this.surchargeView()
+                    if(value == true) {
+                        this.$store.dispatch("SET_CALCULATOR_ASURANSI", 0)
+                        this.$store.dispatch("SET_CALCULATOR_ADM_ASURANSI", 0)
+                    } else {
+                        let insured_good_value = this.$store.getters.getTransaction.package.package_insured_goods_value.value
+                        
+                        let goods_value = this.moneyParsing(insured_good_value)
+                        this.$store.dispatch("SET_CALCULATOR_ASURANSI", goods_value * 0.002)
+                    }
                     this.calculation()
                     break;
+                case "package_tidak_packing_kayu":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU", value)
+                    this.package_tidak_packing_kayu = value
+                    this.tidakPackingKayuToggle()
+                    console.log('package_tidak_packing_kayu', value)
+                    break;
+                case "package_do_return":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_DO_RETURN", value)
+                    break;
+                case "handle_surcharge":
+                    this.connote_koli_item[value].surcharge_id = value2
+                    
+                    if(this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
+                        if(value3 !== null) {
+                            this.connote_koli_item[value].is_packing_kayu = true
+                            this.connote_koli_item[value].is_packing_kayu_id = value3
+                        } else {
+                            this.connote_koli_item[value].is_packing_kayu = false
+                        }
+                    }
+                    this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
+                    let node_code = this.listenNodeCode
+                    let self = this
+                    this.autoApply(node_code).then(() => {
+                        self.surchargeView()
+                        self.calculation()
+                    })
+                    break;
                 default:
-                    console.log('meong')
                     // code block
             }
+
+            
+            if(this.package_tidak_asuransi == true || this.package_tidak_packing_kayu == true) {
+                this.btnPrintASRdanSJ = true
+            } else {
+                this.btnPrintASRdanSJ = false
+            }
+            
         },
         prosesKoli0(key, value) {
             let service = this.listenPackageService.data || {}
@@ -401,102 +664,207 @@ export default {
             let volume_weight = 0
             
             if(Object.keys(service).length > 0) {
-                let service_volume_divider = service['service_volume_divider'].toString()
+                let service_volume_divider = Number(service['service_volume_divider'])
                 volume_weight = (this.connote_koli_item[0]['length'] * this.connote_koli_item[0]['width'] * this.connote_koli_item[0]['height']) / service_volume_divider 
-                volume_weight = volume_weight / 1000
             }
-            this.connote_koli_item[0]['volume_weight'] = volume_weight.toFixed(2)
             
+            this.connote_koli_item[0]['volume_weight'] = volume_weight.toFixed(2)
+            this.connote_koli_item_sebelum_surcharge_menyerang = this.connote_koli_item
+            // new code
+            this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
+            // this.calcDataKoli()
+            let node_code = this.listenNodeCode
+            let self = this
+            this.autoApply(node_code).then(() => {
+                self.surchargeView()
+                self.calculation()
+            })
+            
+        },
+        tidakPackingKayuToggle(){
+            let listKoli = this.connote_koli_item//this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
+            let tempKoliSurchargePackingKayu = {}
+            let service = this.listenPackageService.data || {}
 
-            let roundUp = this.round03(volume_weight.toFixed(2))
+            listKoli.map((item, i) => {
+                if(item.is_packing_kayu_id !== null && item.is_packing_kayu_id !== ''){
+                    tempKoliSurchargePackingKayu[i] = item.is_packing_kayu_id
+                }
+            })
 
-            let chargeable_weight = Math.max(this.connote_koli_item[0]['actual_weight'], roundUp).toFixed(2)
+            if(this.package_tidak_packing_kayu == true) {
+                this.tempKoliSurchargePackingKayu = tempKoliSurchargePackingKayu
 
-            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.connote_koli_item[0]['actual_weight'])
-            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.connote_koli_item[0]['volume_weight'])
-            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", chargeable_weight)  
-            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
+                console.log('this.tempKoliSurchargePackingKayu ====', this.tempKoliSurchargePackingKayu)
+                if (Object.keys(this.tempKoliSurchargePackingKayu).length > 0) {
+                    Object.keys(this.tempKoliSurchargePackingKayu).map(index => {
+                        if(listKoli[index]) {
+                            listKoli[index].surcharge_id = listKoli[index].surcharge_id.filter(sur => sur !== this.tempKoliSurchargePackingKayu[index])
+                            listKoli[index].is_packing_kayu_id = ''
+                            listKoli[index].is_packing_kayu = false
+
+                            let volume_weight = 0
+            
+                            if(Object.keys(service).length > 0) {
+                                let service_volume_divider = Number(service['service_volume_divider'])
+                                volume_weight = (listKoli[index]['length'] * listKoli[index]['width'] * listKoli[index]['height']) / service_volume_divider 
+                            }
+                            
+                            listKoli[index]['volume_weight'] = volume_weight.toFixed(2)
+
+                        }
+                        
+                    })
+                }
+                this.$store.dispatch('SET_CONNOTE_DATA', {'key':'is_packing_kayu','value': false})
+            } else {
+                if (Object.keys(this.tempKoliSurchargePackingKayu).length > 0) {
+                    Object.keys(this.tempKoliSurchargePackingKayu).map(index => {
+                        if(listKoli[index]) {
+                            listKoli[index].surcharge_id.push(this.tempKoliSurchargePackingKayu[index])
+                            listKoli[index].is_packing_kayu_id = this.tempKoliSurchargePackingKayu[index]
+                            listKoli[index].is_packing_kayu = true
+                        }
+                        
+                    })
+                }
+                this.$store.dispatch('SET_CONNOTE_DATA', {'key':'is_packing_kayu','value': true})
+                // clear
+                this.tempKoliSurchargePackingKayu = {}
+            }
+
+            this.$store.dispatch("SET_CONNOTE_DATA_KOLI", listKoli)
+            this.surchargeView()
+            this.calculation()
         },
 
         surchargeView(){
-            let koli = this.listenConnoteKoliItem
+            this.surchargeshow = {}
+            let koli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
+            
             let surchargeByID = this.surchargeByID
-            let view = {}
+            console.log('surchargeByID /////', surchargeByID)
+
             let jumlah = 1
-            if(koli.length > 1) {
-                koli.map(item => {
-                    let obj = {}
-                    if (item.surcharge_id.length > 0) {
-                        item.surcharge_id.map(itm => {
-                            if(surchargeByID.hasOwnProperty(itm)) {
-                                let data = surchargeByID[itm]
-                                if(view.hasOwnProperty(itm)){
-                                        jumlah += 1
+            let surcharge_view = {}
+                if(koli.length > 1) {
+                    koli.map(item => {
+                        let obj = {}
+                        if (item.surcharge_id.length > 0) {
+                            item.surcharge_id.map(itm => {
+                                if(surcharge_view.hasOwnProperty(itm)) {
+                                    let data = surchargeByID[itm]
+                                    jumlah += 1
+                                    data['jumlah'] = jumlah
+                                    surcharge_view[itm] = data
                                 } else {
-                                        jumlah = 1
+                                    let data = surchargeByID[itm]
+                                    data['jumlah'] = 1
+                                    surcharge_view[itm] = data
                                 }
-                                data['jumlah'] = jumlah
-                                view[itm] = data
-                            } else {
-                                let data = surchargeByID[itm]
-                                data['jumlah'] = 1
-                                view[itm] = data
-                            }
+                            })
+                        }
+                        
+                    })
+                } else {
+                    koli.map(item => {
+                        let obj = {}
+                        if (item.surcharge_id.length > 0) {
+                            item.surcharge_id.map(itm => {
+                                if(surchargeByID.hasOwnProperty(itm)) {
+                                    let data = surchargeByID[itm]
+                                    surcharge_view[itm] = data
+                                    console.log('AFFFF', this.surchargeshow)
+                                }
+                            })
+                        }
+                        
+                    })
+                }
 
-                            
-                            
-                        })
-                    }
-                    
-                })
-            } else {
-                koli.map(item => {
-                    let obj = {}
-                    if (item.surcharge_id.length > 0) {
-                        item.surcharge_id.map(itm => {
-                            if(surchargeByID.hasOwnProperty(itm)) {
-                                view[itm] = surchargeByID[itm]
-                            }
-                        })
-                    }
-                    
-                })
-            }
-
-            this.surchargeshow = view
-            console.log('this.surchargeshow', this.surchargeshow)
+            //     console.log('surchargeView', this.connote_koli_item,surchargeByID,this.surchargeshow)
+            
+            this.surchargeshow = surcharge_view
+            console.log('HIT surcharge view', this.surchargeshow)
+            
+            
+            // this.surchargeshow = view
+            
         },
         prosesmultipleKoli(val) {
             this.connote_koli_item = val
-            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
-            this.surchargeView()
-            this.calculation()
+            this.connote_koli_item_sebelum_surcharge_menyerang = val
+
+            this.$store.dispatch("SET_CONNOTE_DATA_KOLI", this.connote_koli_item)
+            // this.calcDataKoli()
+            let node_code = this.listenNodeCode
+            let self = this
+            this.autoApply(node_code).then(() => {
+                self.surchargeView()
+            })
+
+            this.$nextTick(() => {
+                this.calculation()
+            });
+            
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM_index", {"index": index, "key":key, "value":value})
         },
+        openBpikComponent(){
+            this.bpikComponent = !this.bpikComponent
+        },
+        closeBpikComponent(){
+            this.bpikComponent = false
+        },
         openSurchargeDialog(){
+            this.current_index_koli = 0
+            this.koliObj = this.connote_koli_item[0]
             this.surchargeSelector = true
         },
         closeDialogSurcharge() {
+            this.koliObj = {}
             this.surchargeSelector = false
         },
         openSettingMultipleKoli(){
-            let arr = JSON.stringify(this.connote_koli_item)
-            this.meongData = arr
-            this.$store.dispatch("SET_TEMP_KOLI_ITEM", arr)
             this.dialogSettingMultipleKoli = true
         },
         closeSettingMultipleKoli() {
-            this.meongData = ''
-            this.$store.dispatch("SET_TEMP_KOLI_ITEM", '')
             this.dialogSettingMultipleKoli = false
         },
-        removeSurcharge(id, index) {
-            let koli = this.listenConnoteKoliItem
+        removeSurcharge(id, index, name) {
+            let service = this.listenPackageService.data || {}
+            let koli = this.connote_koli_item
             koli[index].surcharge_id = koli[index].surcharge_id.filter(item => item != id)
-            this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", koli)
-            this.surchargeView()
-            this.calculation()
-        }
+            if(name.toLowerCase().includes('packing kayu')) {
+                if(koli[index].hasOwnProperty('is_packing_kayu_id')) {
+                    koli[index].is_packing_kayu_id = ''
+                    koli[index].is_packing_kayu = false
+                    let volume_weight = 0
+            
+                            if(Object.keys(service).length > 0) {
+                                let service_volume_divider = Number(service['service_volume_divider'])
+                                volume_weight = (koli[index]['length'] * koli[index]['width'] * koli[index]['height']) / service_volume_divider 
+                            }
+                            
+                    koli[index]['volume_weight'] = volume_weight.toFixed(2)
+                }
+            }
+            this.$store.dispatch("SET_CONNOTE_DATA_KOLI", koli)
+            let node_code = this.listenNodeCode
+            let self = this
+            this.autoApply(node_code).then(() => {
+                self.surchargeView()
+                self.calculation()
+            })
+        },
+        printSPPAP() {
+            this.$ls.set('printSPPAP', {})
+            let data = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
+            let obj = {}
+            obj['tidak_asuransi'] = this.package_tidak_asuransi//data.is_insured == false ? true : false
+            obj['tidak_packing_kayu'] = this.package_tidak_packing_kayu//data.is_packing_kayu == false ? true : false // nnti di update
+            this.$ls.set('printSPPAP', obj)
+            console.log('printSPPAP', obj, data.is_insured, data.is_packing_kayu)
+        },
     },
     mounted() {
         this.initialize()
@@ -508,9 +876,15 @@ export default {
         text-align: left;
         p{
             margin: .5em;
-            font-size: 14px;
+            font-size: 16px;
             &.surcharge{
                 margin: 0 .5em;
+            }
+        }
+        label{
+            font-size: 16px !important;
+            .el-checkbox__label{
+                font-size: 16px !important;
             }
         }
         .chekboxgroup{

@@ -88,7 +88,7 @@ export default {
             tempSearch: this.query ? this.query : "",
             dialogUser: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -104,7 +104,7 @@ export default {
             await axios
                 .get(
                     this.URL.user + 
-                    `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
@@ -122,6 +122,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
+                    this.checkAuth(err.response)
                     this.openNotification('danger', 'Failed to populate users list', err.response.data.message)
                 })
         },
@@ -140,15 +141,16 @@ export default {
         async actionRemove(val){
             await axios
                 .delete(
-                    this.URL.user + `/${val.user_id}`,
+                    this.URL.user + `/${val.user_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
-                    this.openNotification(null, 'Romove success', 'Romove role is success')
+                    this.openNotification(null, 'Romove success', 'Romove User is success')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Romove role is failed', err)
+                    this.checkAuth(err.response)
+                    this.openNotification('danger', 'Romove User is failed', err)
                 })
         },
         actionLimit(val){

@@ -12,11 +12,12 @@
               <span><b>Bag No. {{ bag_number }}</b></span>
             </vs-col>
             <vs-col xs="3" sm="3" lg="3" align="left">
-              <span><p>Service: REG</p></span>
-              <span><p>Destination: CGK</p></span>
+                <!-- <span><p>Service: REG</p></span> -->
+                <span><p>Destination: {{bag_destination}}</p></span>
+                <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
             </vs-col>
             <vs-col xs="3" sm="3" lg="3" align="left">
-              <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
+            
               <span><p>Total Weight: {{ total_weight }} Kg</p></span>
               <span><p>Actual Weight: {{ actual_weight }} Kg</p></span>
             </vs-col>
@@ -75,7 +76,7 @@ export default {
                 {
                     label: "No",
                     key: "no",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Item",
@@ -84,22 +85,22 @@ export default {
                 },
                 {
                     label: "Koli#",
-                    key: "koli_count",
+                    key: "no",
                     width: "xs"
                 },
                 {
                     label: "Of#",
-                    key: "koli_off",
+                    key: "bag_detail_qty",
                     width: "auto"
                 },
                 {
                     label: "Destination Code",
-                    key: "destination_tariff_code",
+                    key: "destination_code",
                     width: "auto"
                 },
                 {
                     label: "Service",
-                    key: "connote_chargeable_weight",
+                    key: "connote_service_code",
                     width: "auto"
                 },                
                 {
@@ -123,8 +124,9 @@ export default {
             total_weight :'',
             actual_weight :'',
             bag_detail_qty:'',
+            bag_destination:'',
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -141,12 +143,15 @@ export default {
 
             await axios
                 .get(
-                    this.URL.bag + '/'+bagId+`?n=1`,
+                    this.URL.bag + '/'+bagId+`?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.detail
+                    
                     arr.map((item, index)  => {
                       item["no"] = index+1
+                      item['destination_code'] = res.data.data.destination ? res.data.data.destination.node_code : ''
+                      item['bag_detail_qty'] = res.data.data.bag_detail_qty
                     })
                     this.getSummaryBag(res)
                   // arr.map(item => {
@@ -162,19 +167,19 @@ export default {
                     
                     this.loading = false
                 }).catch(err => {
-                  console.log(err)
+                    let errMessage = err.response ? err.response.data.message : 'Failed to populate bag'
                     this.loading = false
-                    this.$router.push('/inventory/bagging')
-                    // this.openNotification('danger', 'Failed to populate users list', err.response.data.message)
+                    this.openNotification('danger', 'Failed to populate bag', errMessage)
                 })
         },
 
         getSummaryBag(val){
           this.bag_number = val.data.data.bag_number
           this.bag_detail_qty = val.data.data.bag_detail_qty
-          this.total_connote = val.data.data.detail.length
+          this.total_connote = val.data.detail.length
           this.total_weight = val.data.data.bag_weight
           this.actual_weight = val.data.data.bag_weight
+          this.bag_destination = val.data.data.destination ? val.data.data.destination.node_code : ''
         },
         actionUpdate(val){
             if(this.dataTable.length > 0) {
@@ -191,15 +196,15 @@ export default {
         async actionRemove(val){
             await axios
                 .delete(
-                    this.URL.bag + `/${val.item_number}`,
+                    this.URL.bag+`/${val.bag_number}/detail/${val.bag_detail_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
-                    this.openNotification(null, 'Romove success', 'Romove role is success')
+                    this.openNotification('success', 'Romove success', 'Romove bag item successfully')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Romove role is failed', err)
+                    this.openNotification('danger', 'Romove bag item is failed', err)
                 })
         },
         actionLimit(val){

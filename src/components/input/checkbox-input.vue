@@ -42,16 +42,16 @@ export default {
 }
 </script>
 <style lang="scss">
-    .checkbox-inp{
-        .vs-icon-check span{
-            width: 11px;
-            margin-left: -1px;
-        }
-        // .vs-icon-check span .line1{
-        //     width: 4px;
-        // }
-        // .vs-icon-check span .line2{
-        //     width: 4px;
-        // }
-    }
+    // .checkbox-inp{
+    //     .vs-icon-check span{
+    //         width: 11px;
+    //         margin-left: -1px;
+    //     }
+    //     // .vs-icon-check span .line1{
+    //     //     width: 4px;
+    //     // }
+    //     // .vs-icon-check span .line2{
+    //     //     width: 4px;
+    //     // }
+    // }
 </style>

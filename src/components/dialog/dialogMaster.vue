@@ -1,11 +1,13 @@
 <template>
-    <vs-dialog 
+    <vs-dialog
     v-model="modalActive" 
-    prevent-close 
+    prevent-close
+    :loading="loadingActive"
+    :not-close="not_close"
     @close="closeDialog"
     :class="width">
         <template>
-          <h4 class="not-margin">
+          <h4 class="not-margin" style="font-size:18px">
             <slot name='header'></slot>
           </h4>
         </template>
@@ -28,24 +30,64 @@ export default {
     props: {
         actived: Boolean,
         closeDialog: Function,
-        width: String
+        width: String,
+        fullScreen: Boolean,
+        loading:Boolean,
+        not_close_option: Boolean
     },
     data() {
         return {
-            modalActive: false
+            modalActive: false,
+            loadingActive: false,
+            not_close: false
         }
     },
     watch: {
         actived: function(val) {
             if(val !== undefined) {
                 this.modalActive = val || false
+                this.$nextTick(() => {
+                    if(val == true) {
+                        this.addKeyHandler()
+                    } else {
+                        this.removeKeyHandler()
+                    }
+                });
+            }
+        },
+        loading: function(val) {
+          if(val !== undefined) {
+            this.loadingActive = val || false
+          }
+        },
+        not_close_option: function(val) {
+            if(val !== undefined) {
+                this.not_close = val || false
             }
         }
     },
     methods: {
         handleClose(){
             this.closeDialog()
+        },
+        keyHandler(e){
+            /**
+             * 27 - Esc
+             */
+            const key = e.which || e.keyCode;
+            if(key === 27) {
+                this.handleClose()
+            }
+        },
+        addKeyHandler() {
+            window.addEventListener("keydown", this.keyHandler);
+            console.log('inject dialog key handler add')
+        },
+        removeKeyHandler() {
+            window.removeEventListener("keydown", this.keyHandler);
+            console.log('dialog key handler destroy')
         }
+
     },
 }
 </script>
@@ -57,7 +99,7 @@ export default {
     }
 
     .vs-dialog-content{
-        &.lg{
+        &.md{
             @include for-phone-only{
                 // .vs-dialog {
                 //     min-width: 100%;
@@ -66,6 +108,18 @@ export default {
             @include for-desktop-up{
                 .vs-dialog {
                     min-width: 600px;
+                }
+            }
+        }
+        &.lg{
+            @include for-phone-only{
+                // .vs-dialog {
+                //     min-width: 100%;
+                // }
+            }
+            @include for-desktop-up{
+                .vs-dialog {
+                    min-width: 880px;
                 }
             }
         }

@@ -134,7 +134,7 @@ export default {
         async getDataCountry(){
             await axios
                 .get(this.URL.geolocation_country + 
-                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -159,7 +159,7 @@ export default {
         async getDataTimezone(){
             await axios
                 .get(this.URL.geolocation_timezone + 
-                `?n=1&sort_order=desc&limit=2000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -187,7 +187,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.geolocation_province + `/${this.geolocation_province_id}?n=1`,
+                    this.URL.geolocation_province + `/${this.geolocation_province_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -208,7 +208,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.geolocation_province + `?n=1`,
+                    this.URL.geolocation_province + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {

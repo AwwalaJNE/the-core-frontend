@@ -78,7 +78,7 @@ export default {
             tempSearch: this.query ? this.query : "",
             dialogRole: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -93,7 +93,7 @@ export default {
             }
             await axios
                 .get(this.URL.role + 
-                `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
@@ -109,6 +109,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
+                    this.checkAuth(err.response)
                     this.openNotification('danger', 'Failed to populate role list', err)
                 })
         },
@@ -127,7 +128,7 @@ export default {
         async actionRemove(val){
             await axios
                 .delete(
-                    this.URL.role + `/${val.user_role_id}`,
+                    this.URL.role + `/${val.user_role_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
@@ -135,6 +136,7 @@ export default {
                     this.openNotification(null, 'Success', 'Delete role is success')
                 }).catch(err => {
                     this.loading = false
+                    this.checkAuth(err.response)
                     this.openNotification('danger', 'Delete role is failed', err)
                 })
         },

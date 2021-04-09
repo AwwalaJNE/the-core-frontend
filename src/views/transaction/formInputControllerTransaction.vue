@@ -1,13 +1,15 @@
 <template>
-    <div>
+    <div class="customTransaction">
         <template v-if="Keys.length > 0 && Object.keys(InputObject).length > 0">
                 <vs-row v-for="(item, i) in Keys" :key="i">
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
                         <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
                             <input-general 
+                            :ref="InputObject[item].key"
                             :name="InputObject[item].label" 
                             :rules="InputObject[item].rule" 
-                            :formKey="InputObject[item].key"
+                            :formKey="item"
+                            :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
                             :valueData="InputObject[item].value"
                             :typeInput="InputObject[item].typeInput"
                             @updateValue="updateValue" 
@@ -20,6 +22,7 @@
                                         <input-general 
                                         :name="inp.label" 
                                         :rules="inp.rule" 
+                                        :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
                                         :formKey="inp.key"
                                         :valueData="inp.value"
                                         :typeInput="inp.typeInput"
@@ -30,10 +33,11 @@
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
                             <selector 
-                            :ref="InputObject[item].key"
+                            :ref="item"
                             :name="InputObject[item].label" 
                             :rules="InputObject[item].rule" 
-                            :formKey="InputObject[item].key"
+                            :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
+                            :formKey="item"
                             :valueData="InputObject[item].arrData"
                             :selectedValue="InputObject[item].value"
                             :isMultiple="false"
@@ -43,10 +47,11 @@
                             
                             <template v-if="InputObject[item].arrData.length > 0">
                                 <radio 
-                                :ref="InputObject[item].key"
+                                :ref="item"
                                 :name="''" 
                                 :rules="InputObject[item].rule" 
-                                :formKey="InputObject[item].key"
+                                :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
+                                :formKey="item"
                                 :valueData="InputObject[item].arrData"
                                 :selectedValue="InputObject[item].value"
                                 @updateValue="updateValue" />
@@ -57,7 +62,8 @@
                             :name="InputObject[item].label" 
                             :titleLabel="InputObject[item].titleLabel"
                             :rules="InputObject[item].rule" 
-                            :formKey="InputObject[item].key"
+                            :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
+                            :formKey="item"
                             :valueData="InputObject[item].value"
                             @updateValue="updateValue" />
                         </template>
@@ -113,12 +119,12 @@ export default {
     },
     methods: {
         initialize() {
+            // let obj = JSON.parse(JSON.stringify(this.$store.getters.getTransaction[this.listenTypeForm] || {}))
             let obj = this.listenTypeForm == 'origin' ? this.listenDataOrigin : this.listenTypeForm == 'destination' ? this.listenDataDestination : {}
 
                 if (Object.keys(obj).length > 0) {
                     this.Keys = Object.keys(obj)
                     this.InputObject = obj
-                    console.log('ini inputObject', this.InputObject)
                 } else {
                     this.Keys = []
                     this.InputObject = {}
@@ -147,24 +153,25 @@ export default {
         updateValue(type, val, info = {}) {
             let action = type.toUpperCase()
             let prefix = this.listenTypeForm.toUpperCase()
-            let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
-            if(err == true) {
-                console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
+            if(info.key !== 'connote_receiver_zip_code' && info.key !== 'connote_receiver_tariff_code') {
+                this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '')
             }
+            // let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
+            // if(err == true) {
+            //     console.log(`error input controller dispatch SET_USER_${action} | val ` + val)
+            // }
 
-            if(info.hasOwnProperty('key')) {
-                if(info.key.includes('connote_')) {
-                    this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':info.key, 'value':val})
-                }
-            }
-
-            console.log('ini inputan ->',type, val, info)
-
+            // if(info.hasOwnProperty('key')) {
+            //     if(info.key.includes('connote_')) {
+            //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':info.key, 'value':val})
+            //     }
+            // }
             if(info !== undefined && info.hasOwnProperty('typeInput')) {
                 if(info.typeInput.includes('calc_switch')){
                     this.$emit("searchTariffCode", this.listenTypeForm, val)
                 }
             }
+            this.$emit("onChangeCustom", type, val, info)
         },
         
         handleClearForm(){
@@ -178,7 +185,6 @@ export default {
                     }
             })
             this.form = {}
-            console.log('clear form', this.form, this.$store.getters[this.listenGettersPrefix][this.listenTypeForm])
         },
     },
     mounted() {
@@ -186,8 +192,16 @@ export default {
         this.$nextTick(() => {
             this.initializeDataItem()
         });
-        
-        console.log('form controller transaction')
     },
 }
 </script>
+<style lang="scss">
+    .customTransaction{
+        p,label{
+            font-size: 16px !important;
+        }
+        .validation p.err-message{
+            font-size: .8em !important;
+        }
+    }
+</style>

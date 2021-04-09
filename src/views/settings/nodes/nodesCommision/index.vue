@@ -71,7 +71,7 @@ export default {
             tempSearch: "",
             dialogGeolocation: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -87,7 +87,7 @@ export default {
             }
             await axios
                 .get(this.URL.node_commission + 
-                `?n=1&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)

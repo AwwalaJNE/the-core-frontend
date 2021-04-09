@@ -24,6 +24,15 @@ export default {
             active: false
         }
     },
+    // beforeRouteUpdate (to, from, next) {
+    //     this.active = false
+    //     next()
+    // },
+    // watch:{
+    //     $route (to, from){
+    //         this.active = false
+    //     }
+    // },
     methods: {
         sidabarAction(){
             this.active = !this.active

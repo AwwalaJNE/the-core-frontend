@@ -1,7 +1,8 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
-    width="lg"
+    width="md"
+    ref="cust"
     :closeDialog="cancel">
 
         <template v-slot:header>
@@ -10,41 +11,51 @@
 
         <template v-slot:content>
             <div>
-                <p>Group Multiple Filter</p>
-                <el-collapse v-model="activeNames">
                     <template v-if="Keys.length > 0">
-                        <el-collapse-item 
-                        v-for="(item,key) in Keys"
-                        :title="item" :name="item"
-                        :key="key">
-
-                            <template v-if="objData[item].length > 0">
-                                <template v-for="(sur,i) in objData[item]">
-                                    <template v-if="sur.service_relevant == true">
-                                        <vs-checkbox 
-                                        :val="sur" 
-                                        v-model="selectedData"
-                                        :key="i">
-                                            {{sur.surcharge_name}}
-                                        </vs-checkbox>
+                        <template v-for="(item,key) in Keys">
+                            <vs-row :key="key">
+                                <vs-col xs="12" sm="12" lg="12">
+                                    <checkbox
+                                        :formKey="`surcharge_type|${item}`"
+                                        :isChecked="listenOptions.includes(item)"
+                                        :name="item"
+                                        :ref="`surchargeType${item.replace(/\s+/g, '')}`"
+                                        
+                                        @updateValue="updateValue" /> 
+                                    <template v-if="(options.includes(item) && selectedRadio.hasOwnProperty(item))">
+                                        <vs-row>
+                                            <vs-col xs="1" sm="1" lg="1">
+                                            </vs-col>
+                                            <vs-col xs="11" sm="11" lg="11">
+                                                <template v-if="objData[item].length > 0">
+                                                    <radio 
+                                                            :ref="item"
+                                                            :name="''" 
+                                                            :rules="''" 
+                                                            :vertical="true"
+                                                            width="6"
+                                                            :formKey="`radio_surcharge|${item}`"
+                                                            :valueData="objData[item]"
+                                                            :selectedValue="selectedRadio[item] ? selectedRadio[item] :null"
+                                                            @updateValue="updateValue" />
+                                                    
+                                                    <!-- <template v-for="(sur,i) in objData[item]">
+                                                        <template v-if="sur.service_relevant == true">
+                                                            <vs-radio v-model="tempRadio" :val="sur.surcharge_id" :key ="i" @input="radioChange(item,tempRadio)">
+                                                                {{sur.surcharge_name}}
+                                                            </vs-radio>
+                                                        </template>
+                                                    </template> -->
+                                                </template>
+                                            </vs-col>
+                                        </vs-row>
                                     </template>
-                                    <template v-else>
-                                        <vs-checkbox 
-                                        :val="sur" 
-                                        v-model="selectedData"
-                                        disabled
-                                        :key="i">
-                                            {{sur.surcharge_name}}
-                                        </vs-checkbox>
-                                    </template>
-                                </template>
-                                
-
-                            </template>
-
-                        </el-collapse-item>
+                                    
+                                </vs-col>
+                            </vs-row>
+                        </template>
                     </template>
-                </el-collapse>
+                    
             </div>
         </template>
 
@@ -85,15 +96,38 @@
 </template>
 <script>
 import DialogMaster from "@/components/dialog/dialogMaster"
+import TransactionMixin from "@/mixins/transaction.js"
+import Checkbox from "@/components/input/checkboxELUI"
+import Radio from "@/components/input/radio"
 export default {
     name: "dialog-surcharge",
+    mixins: [TransactionMixin],
     components: {
         "dialog-master": DialogMaster,
+        "checkbox": Checkbox,
+        "radio": Radio,
     },
     props: {
         closeDialog: Function,
         active: Boolean,
-        index: [Number, String]
+        index: Number,
+        koliObj: Object
+    },
+    data() {
+        return {
+            activeNames: [],
+            objData: {},
+            Keys: [],
+            selectedData: [],
+            koli: {},
+
+            options: [],
+            selectedRadio: {
+                test: null
+            },
+            selectedPackingKayu_id: '',
+            tempRadio: ''
+        }
     },
     computed: {
         listenActive(){
@@ -111,17 +145,18 @@ export default {
         listenPackageService () {
             return this.$store.getters.getTransaction.package.package_service.valueData
         },
-        listenCalculatorChargeableWeight () {
-            return this.$store.getters.getTransaction.calculator.chargeable_weight.value
+
+        listenConnoteIndexActive () {
+            return this.$store.getters.getTransaction.connote_index_active
         },
-        
-    },
-    data() {
-        return {
-            activeNames: [],
-            objData: {},
-            Keys: [],
-            selectedData: []
+        listenCurrentIndexKoli () {
+            return this.index || 0
+        },
+        listenOptions() {
+            return this.options
+        },
+        listenkoliObj() {
+            return this.koliObj
         }
     },
     watch: {
@@ -129,45 +164,97 @@ export default {
             if(val != undefined) {
                 if(val == true) {
                     this.initialize()
+                    const cust = this.$refs.cust
+                    let el = cust.$scopedSlots.content()
+                    let self = this
+                    this.$nextTick(() => {
+                        // el[0].context.$refs.test.value = 'aaa'
+                        // console.log('input', el[0].context.$refs)
+                    //     // this.$refs.theInput.focus();
+                        let str = `el[0].context.$refs.surchargeType${this.Keys[0].replace(/\s+/g, '')}`
+                        let elInput = eval(str)[0]
+                        let Checkbox = elInput.$el.querySelector('input')
+                        console.log('DIALOG SURCHARGE el', el[0].context, str, Checkbox)
+                        // setTimeout(function(){ el[0].context.$refs.labelInput.$refs.generalInput.focus() }, 3000);
+                        
+
+                        
+                        // let Checkbox = el[0].context.$refs.labelInput.$refs.generalInput.$el.querySelector('input')
+                        // inputEl.focus();
+                        setTimeout(function(){ Checkbox.focus(); }, 100);
+                        
+                        
+                    });
                 }
             }
         },
-        listenPackageService: function (n,o) {
-            if(n !== o) {
-                this.initialize()
-            }
-        },
-        listenCalculatorChargeableWeight: function (n,o) {
-            if(n !== o) {
-                this.checkAutoApply()
-            }
-        },
+        // listenPackageService: function (n,o) {
+        //     if(n !== o) {
+        //         this.initialize()
+        //     }
+        // }
     },
     methods: {
         initialize() {
             // this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE`, [])
             let surcharge = this.listenSurchargeList
+            this.koli = this.listenkoliObj //this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item[this.listenCurrentIndexKoli] || {}
+            this.selectedRadio = {}
+            this.options = []
+            let selectedR = {}
+            let prev_surcharge_id = this.koli['surcharge_id'] || []
+            console.log('this.koli', this.koli, surcharge)
             let obj = {}
             surcharge.map(item => {
-                item['service_relevant'] = true
+                item['service_relevant'] = false
+
+                if(prev_surcharge_id.includes(item.surcharge_id)) {
+                    selectedR[item.surcharge_type_name] = item.surcharge_id
+                }
+
                 if(obj.hasOwnProperty(item.surcharge_type_name)) {
-                    let filter = this.filterSurcharge(item)
-                    obj[item.surcharge_type_name].push(filter)
+                    let filter = this.filterSurcharge(item, this.koli)
+                    if(filter.service_relevant == true) {
+                        filter['value'] = filter.surcharge_id
+                        filter['label'] = filter.surcharge_name
+                        obj[item.surcharge_type_name].push(filter)
+                    }
                 } else {
                     obj[item.surcharge_type_name] = []
-                    let filter = this.filterSurcharge(item)
-                    obj[item.surcharge_type_name].push(filter)
+                    let filter = this.filterSurcharge(item, this.koli)
+                    if(filter.service_relevant == true) {
+                        filter['value'] = filter.surcharge_id
+                        filter['label'] = filter.surcharge_name
+                        obj[item.surcharge_type_name].push(filter)
+                    }
                 }
             })
 
+            console.log('selectedR ========', selectedR)
+
             let keys = Object.keys(obj)
+            keys = keys.filter(item => !item.toLowerCase().includes('overweight'))
 
             if (keys.length > 0) {
                 this.objData = obj
                 this.Keys = keys
+
+                if(Object.keys(selectedR).length > 0) {
+                    this.options = Object.keys(selectedR)
+                    this.selectedRadio = selectedR
+                    // if(!this.options.includes(keys[0])) {
+                    //     this.options.push(keys[0])
+                    //     this.selectedRadio[keys[0]] = ""
+                    // }
+                } else {
+                    // this.options.push(keys[0])
+                    // this.selectedRadio[keys[0]] = obj[keys[0]].filter(item => item.service_relevant)[0].surcharge_id
+                }
+                
+                
             }
 
-            this.selectedData = this.listenPackageSurcharge
+            // this.selectedData = this.listenPackageSurcharge
 
             let activeSurchargeType = []
             this.listenPackageSurcharge.length > 0 && this.listenPackageSurcharge.map(item => {
@@ -175,58 +262,100 @@ export default {
             })
 
             this.activeNames = activeSurchargeType
+
+            console.log('this.Keys', this.Keys)
+            console.log('this.objData', this.objData)
+            console.log('this.selectedRadio', this.selectedRadio, obj['PACKING KAYU'])
+            console.log('this.activeNames', this.activeNames)
             
         },
-        filterSurcharge(obj) {
-            let filtered = {}
-            let service = this.listenPackageService
-             
+        radioChange(key, val){
+            console.log('radio change', key, val)
+        },
+        updateValue(key, value){
+            console.log('selected name', key, value)
+            switch(true) {
+                case key.includes('surcharge_type'):
+                    let split = key.split("|")[1]
+                    if(value == true) {
+                        if(this.options.includes(split) == false){
+                            this.options.push(split)
+                            this.selectedRadio[split] = ''
+                        }
+                    } else {
+                        if(this.options.includes(split) == true){
+                            let temp = this.options.filter(item => item !== split)
+                            this.options = temp
+                            if(this.selectedRadio.hasOwnProperty(split)) {
+                                delete this.selectedRadio[split]
 
-            if (Object.keys(service).length > 0) {
-                let surcharge_condition = obj['surcharge_condition'] || {}
-                if(surcharge_condition.hasOwnProperty('DESTINATION')) {
-                    if(Object.keys(service).length > 0) {
-                        if(service['data']['tariff_destination'].includes(surcharge_condition['DESTINATION'])) {
-                            obj['service_relevant'] = true
-                        } else {
-                            obj['service_relevant'] = false
+                                
+                            }
                         }
                     }
-                }
-                if(surcharge_condition.hasOwnProperty('FROM_BRANCH')) {
-                    if(Object.keys(service).length > 0) {
-                        if(service['data']['tariff_origin'].includes(surcharge_condition['FROM_BRANCH'])) {
-                            obj['service_relevant'] = true
-                        } else {
-                            obj['service_relevant'] = false
-                        }
+                    
+                    console.log('this.options === ', this.options)
+                    console.log('this.selectedRadio ===', this.selectedRadio)
+                    break;
+                case key.includes('radio_surcharge'):
+                    // this.selectedRadio
+                    let str = key.split("|")[1]
+
+                    let self = this
+                    let checkbox = `self.$refs.surchargeType${str.replace(/\s+/g, '')}`
+                    
+                    this.$nextTick(() => {
+                        let el = eval(checkbox)
+                    });
+                    
+
+                    if(this.options.includes(str) == false){
+                        this.options.push(str)
                     }
-                }
-                if(surcharge_condition.hasOwnProperty('SERVICE')) {
-                    if(Object.keys(service).length > 0) {
-                        if(service['data']['tariff_service_code'].includes(surcharge_condition['SERVICE'])) {
-                            obj['service_relevant'] = true
-                        } else {
-                            obj['service_relevant'] = false
-                        }
+
+                    if(this.selectedRadio.hasOwnProperty(str)) {
+                        this.selectedRadio[str] = value
                     }
-                }
+                    if(str.toLowerCase().includes('packing kayu')) {
+                        this.selectedPackingKayu_id = value
+                    }
+                    console.log('this.selectedRadio ===', this.selectedRadio)
+                    break;
+                default:
             }
-            
-            return obj
-
         },
-        checkAutoApply() {
-            let chargeable_weight = this.listenCalculatorChargeableWeight
-            
+        round03(numToRound){
+            let oo = numToRound | 0
+            let ooo = oo + 0.3
+            let res = oo
+            if(numToRound > ooo) {
+                res = res +1
+            } 
+            return res;
         },
+        
         cancel() {
             this.closeDialog()
+            this.selectedData = []
         },
         handleSubmit() {
-            // this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE`, [])
-            // this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE`, this.selectedData)
-            this.$emit("updateValue", "handle_surcharge",this.index, this.selectedData)
+            let key = Object.keys(this.selectedRadio)
+            if(key.length > 0 ) {
+                let arr = []
+                key.map(item => {
+                    if(this.selectedRadio[item] !== '') {
+                        arr.push(this.selectedRadio[item])
+                    }
+                })
+                console.log('arr radio', arr)
+                if(arr.length > 0) {
+                    this.$emit("updateValue", "handle_surcharge",this.index, arr, this.selectedPackingKayu_id)
+                    this.selectedRadio = {}
+                    this.selectedPackingKayu_id = ""
+                }
+            }
+            console.log('this.selectedRadio', this.selectedRadio, key)
+            
             this.closeDialog()
         }
     },

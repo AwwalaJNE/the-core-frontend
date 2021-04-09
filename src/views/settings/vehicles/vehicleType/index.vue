@@ -7,12 +7,17 @@
         :pageSize="pagination.page_size"
         :page="pagination.page"
         :limit="pagination.limit"
-        :hasAction="true"
+        :hasAction="false"
         :hasPagination="true"
-        @actionUpdate="actionUpdate"
+        
         @actionRemove="actionRemove"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
+
+        :customAction="true"
+        :customActionList="customActionList"
+        @actionUpdate="actionUpdate"
+
         />
 
         <dialog-create-edit-VehicleType
@@ -22,6 +27,15 @@
             title="Edit Vehicle Type"
             :dataItem="dataItem"
             />
+        
+        <dialog-confirm
+          :active="confirmDialog"
+          :closeDialog="closeDialogConfirm"
+          title="Vehicle Type"
+          :message="message"
+          @confirm="confirm"
+          @cancel="closeDialogConfirm"
+      />
     </div>
 </template>
 <script>
@@ -29,6 +43,8 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import dialogCreateEditVehicleType from "@/views/settings/vehicles/vehicleType/dialogCreateEditVehicleType"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
+
 export default {
     name:"vehicle-type",
     mixins: [master],
@@ -37,7 +53,8 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
-        "dialog-create-edit-VehicleType": dialogCreateEditVehicleType
+        "dialog-create-edit-VehicleType": dialogCreateEditVehicleType,
+        "dialog-confirm": DialogConfirm
     },
     data() {
         return {
@@ -53,16 +70,36 @@ export default {
                     key: "vehicle_type_name",
                     width: "md"
                 },
+                {
+                    label: "Vehicle mode name",
+                    key: "vehicle_mode_name",
+                    width: "md"
+                },
+            ],
+            customActionList: [
+              {
+                label: 'Edit',
+                key: 'edit',
+                attribute: '',
+              },
+              {
+                label: 'Remove',
+                key: 'remove',
+                attribute: 'danger',
+              }
             ],
             loading: false,
             dataItem: {},
             tempSearch: "",
             dialogVehicleType: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
-            }
+            },
+            confirmDialog: false,
+            message: "",
+            tempData: {}
         }
     },
     watch: {
@@ -84,10 +121,10 @@ export default {
             }
             await axios
                 .get(this.URL.vehicle_type + 
-                `?n=1&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+                    
                     this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
@@ -105,36 +142,50 @@ export default {
                     this.openNotification('danger', 'Failed to populate Vehicle mode list', err)
                 })
         },
-        actionUpdate(val){
-            if(this.dataTable.length > 0) {
-                let obj = this.dataTable.filter(item => {
-                    return item.vehicle_type_id === val.vehicle_type_id
-                })
-                this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
-                this.$nextTick(() => {
-                    this.dialogVehicleType = true
-                });
+        actionUpdate(val, key){
+            switch(key) {
+                case "edit":
+                    if(this.dataTable.length > 0) {
+                        let obj = this.dataTable.filter(item => {
+                            return item.vehicle_type_id === val.vehicle_type_id
+                        })
+                        this.dataItem = obj[0]
+                        
+                        this.$nextTick(() => {
+                            this.dialogVehicleType = true
+                        });
+                    }
+                    break;
+                case "remove":
+                    this.tempData = val
+                    this.confirmDialog = true
+                    this.message = `Are you sure want to delete vehicle type ${val.vehicle_type_name}`
+                   break;
+                default:
+                    console.log('meong')
+                    // code block
             }
+            
         },
+        
         closeDialogConfirm(){
-            this.confirmDialog = false
+          this.confirmDialog = false
         },
         confirm(val) {
-            if(val) {
-
-            }
+          if(val) {
+              this.confirmDialog = false
+              this.actionRemove()
+          }
         },
         async actionRemove(val){
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.vehicle_type + `/${val.vehicle_type_id}`,
+                    this.URL.vehicle_type + `/${this.tempData.vehicle_type_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.refresh()
-                    this.openNotification(null, 'Delete success', 'Delete Vehicle mode is success')
+                    this.openNotification(null, 'Delete success', 'Delete vehicle type is success')
                 }).catch(err => {
                     this.loading = false
                     this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
@@ -150,7 +201,7 @@ export default {
             this.refresh()
         },
         refresh(){
-            console.log("refresh")
+            
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogVehicleType() {

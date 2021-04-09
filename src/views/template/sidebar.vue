@@ -4,7 +4,7 @@
       <vs-sidebar
         absolute
         v-model="active"
-        :open="expand"
+        :open="isExpand"
         @update:open="actionSidebar"
         @input="redirect"
         >
@@ -54,33 +54,18 @@
                 </vs-sidebar-group>
             </template>
             <template v-else>
-              <router-link :to="item.url" :key="key">
-                <vs-sidebar-item :id="item.label.trim()">
-                  <template #icon>
-                    <i :class="`bx ${item.icon !== null ? item.icon:''}`"></i>
-                  </template>
-                  {{item.label}}
+                <vs-sidebar-item :id="item.label.trim()" :key="key">
+                    <template #icon>
+                        <i :class="`bx ${item.icon !== null ? item.icon:''}`"></i>
+                    </template>
+                    <router-link :to="item.url" :key="key">
+                        <p>{{item.label}}</p>
+                    </router-link>
                 </vs-sidebar-item>
-              </router-link>
             </template>
         </template>
 
-        <template #footer>
-          <vs-row justify="space-between">
-            <vs-avatar badge-color="danger" badge-position="top-right">
-              <i class='bx bx-bell' ></i>
-
-              <template #badge>
-                28
-              </template>
-            </vs-avatar>
-
-            <vs-avatar>
-              <!-- <img src="/avatars/avatar-5.png" alt=""> -->
-              <i class='bx bx-user'></i>
-            </vs-avatar>
-          </vs-row>
-        </template>
+        
       </vs-sidebar>
     </div>
 </template>
@@ -103,7 +88,7 @@ export default {
             menus: [
                 {
                     label: 'New Transaction',
-                    url: '/new-transactions',
+                    url: '/transaction/new-transactions',
                     icon: 'bx-archive',
                     children: []
                 },
@@ -124,7 +109,7 @@ export default {
                         },
                         {
                             label: 'Upload Transaction',
-                            url: '/upload/connote',
+                            url: '/transaction/upload-connote',
                             icon: 'bx-upload'
                         },
                     ]
@@ -183,21 +168,21 @@ export default {
                             url: '/transport/packingkayu',
                             icon: ''
                         },
-                        {
-                            label: 'Transport Booking',
-                            url: '/transport/booking',
-                            icon: ''
-                        },
-                        {
-                            label: 'Transport Manifest',
-                            url: '/transport/manifest',
-                            icon: ''
-                        },
-                        {
-                            label: 'Transport Manifest Pickup',
-                            url: '/transport/manifest_pickup',
-                            icon: ''
-                        },
+                        // {
+                        //     label: 'Transport Booking',
+                        //     url: '/transport/booking',
+                        //     icon: ''
+                        // },
+                        // {
+                        //     label: 'Transport Manifest',
+                        //     url: '/transport/manifest',
+                        //     icon: ''
+                        // },
+                        // {
+                        //     label: 'Transport Manifest Pickup',
+                        //     url: '/transport/manifest_pickup',
+                        //     icon: ''
+                        // },
                         {
                             label: 'Surat Jalan',
                             url: '/transport/manifest-jalan',
@@ -205,7 +190,7 @@ export default {
                         },
                         {
                             label: 'Surat Muatan',
-                            url: '/transport/manifest-new',
+                            url: '/transport/manifest',
                             icon: ''
                         },
                     ]
@@ -242,6 +227,11 @@ export default {
                             url: '/undelivered',
                             icon: ''
                         },
+                        {
+                          label: 'Cod History',
+                          url: '/delivery/cod_history',
+                          icon: ''
+                        },
                     ]
                 },
                 {
@@ -267,11 +257,6 @@ export default {
                         {
                             label: 'Settings Nodes',
                             url: '/settings/nodes',
-                            icon: ''
-                        },
-                        {
-                            label: 'Settings Links',
-                            url: '/settings/links',
                             icon: ''
                         },
                         {
@@ -370,9 +355,15 @@ export default {
             ]
         }
     },
+    watch:{
+        expand: function(val){
+            this.isExpand = val
+        }
+    },
     methods: {
         redirect(val){
             console.log('meong', val)
+            this.isExpand = false
             // this.$router.push(`${val}`)
         }
     },

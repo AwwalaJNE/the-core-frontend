@@ -1,9 +1,9 @@
 <template>
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
-            <vs-row>
+            <vs-row :style="vertical == true ? 'flex-direction: column !important;':''">
                 <template v-if="DataArr.length > 0">
-                    <vs-col xs="6" :w="3" v-for="(item,key) in DataArr" :key="key">
+                    <vs-col xs="6" :w="width ? width : 3" v-for="(item,key) in DataArr" :key="key">
                         <vs-radio 
                         style="margin-top:.5em"
                         v-model="value" 
@@ -15,7 +15,6 @@
                     </vs-col>
                 </template>
             </vs-row>
-
         </template>
     </inputan>
     
@@ -35,7 +34,9 @@ export default {
         selectedValue: [String, Number],
         formKey: String,
         typeInput: String,
-        border: Boolean
+        border: Boolean,
+        vertical: Boolean,
+        width: [String, Number]
     },
     data() {
         return {
@@ -68,7 +69,7 @@ export default {
         value: function(n, o) {
             if (n !== o) {
                 let data = this.DataArr.filter(item => item.value == n)
-                this.$emit("updateValue", this.listenFormKey, data[0].value)
+                this.$emit("updateValue", this.listenFormKey, n, data[0])
             }
         }
         // loadingData: function (val) {
@@ -92,9 +93,9 @@ export default {
         // closeLoading(){
         //     this.loadingInjector !== null ? this.loadingInjector.close() : null
         // },
-        updateValue(val){
-            this.$emit("updateValue", this.listenFormKey, val)
-        }
+        // updateValue(val){
+        //     this.$emit("updateValue", this.listenFormKey, val)
+        // }
     },
 }
 </script>
@@ -111,4 +112,41 @@ export default {
             transform: translate(-3%, -28px) !important;
         }
     }
+    .vs-radio-content{
+            justify-content: left !important;
+        &:focus-within{
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 2px;
+        }
+        label{
+            font-size: 14px;
+        }
+        // .vs-radio:focus{
+        //     border: 1px solid black;
+        // }
+        .vs-radio__effect::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            border-radius: 50%;
+        border: .1px solid rgba($color: #7a99ee, $alpha: 0.8);
+        filter: blur(0);
+        transform-origin: 50%;
+            display: block;
+        }
+        &.active:focus-within{
+           .vs-radio__effect::before{
+               border-color: transparent;
+                filter: blur(1px);
+                transform: scale(3);
+                transition: 800ms transform ease, 2100ms blur ease, 900ms border-color ease;
+                transition-delay: 100ms;
+
+            }
+        }
+    }
+    
 </style>

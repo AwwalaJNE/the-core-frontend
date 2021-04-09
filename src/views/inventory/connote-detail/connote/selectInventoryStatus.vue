@@ -1,116 +1,168 @@
+<!--
+    - @desc component yang handle crud frontend connote item
+    - @param -
+    - @emit -
+    - @props -
+-->
+
 <template>
-  <inputan :name="name" :rules="rules">
-    <template v-slot:inputan="props">
-      <vs-select
-          class="m-select"
-          filter
-          :multiple="listenIsMultiple"
-          :placeholder="name"
-          :label="name"
-          v-model="value"
-          :border="border"
-          @change="updateStatusinventory"
-          :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
-      >
-        <template v-if="DataArr.length > 0">
-          <vs-option
-              v-for="(item,key) in DataArr"
-              :key="key"
-              :label="item.label"
-              :value="item.value">
-            {{item.label}}
-          </vs-option>
-        </template>
+    <div>
+        <table-master
+        :dataTable="dataTable" 
+        :dataColumn="datacolumn" 
+        :tableLoading="loading"
+        :pageSize="pagination.page_size"
+        :page="pagination.page"
+        :limit="pagination.limit"
+        :hasAction="false"
+        :hasLinked="['koli_number']"
+        :hasPagination="true"
+        @actionUpdate="actionUpdate"
+        @actionRemove="actionRemove"
+        @actionLimit="actionLimit"
+        @actionPagination="actionPagination"
+        @handleEdit="showData"
+        />
 
-      </vs-select>
-    </template>
-  </inputan>
-
+    </div>
 </template>
 <script>
-import Inputan from "@/components/input/inputan"
+import axios from "axios";
+import master from "@/mixins/master"
+import TableMaster from "@/components/table/tableMaster.vue"
 export default {
-  name:"all-status",
-  components: {
-    "inputan": Inputan
-  },
-  props: {
-    name: String,
-    rules: String,
-    valueData: Array,
-    // loadingData: Boolean,
-    selectedValue: [Array, String, Number],
-    formKey: String,
-    isMultiple: Boolean,
-    border: Boolean
-  },
-  data() {
-    return {
-      DataArr: this.valueData ? this.valueData : [
-        {
-          label: 'All Status',
-          value: '-'
-        },
-        {
-          label: 'Confirmed',
-          value: '1'
-        },
-        {
-          label: 'Unconfirmed',
-          value: '0'
-        }
-      ],
-      value: this.selectedValue ? this.selectedValue :"-",
-      arrValue: this.selectedValue ? this.selectedValue : [ {
-        value: "-",
-        label: "All Status"
-      }],
-    }
-  },
-  computed: {
-    listenFormKey(){
-      return this.formKey || ''
-    },
-    listenIsMultiple(){
-      return this.isMultiple ? this.isMultiple : false
-    }
-  },
-  watch: {
-    valueData: function (val) {
-      if (val != undefined) {
-        this.DataArr = val
-        // this.DataArr.length > 0 ? this.loading = false : this.loading = true
-      }
-    },
-    selectedValue: function (val) {
-      if (val != undefined) {
-        if(this.isMultiple == false) {
-          this.value = val
-        } else {
-          this.arrValue = val
-        }
-      }
-    },
-  },
-  methods: {
-    updateStatusinventory(val){
-      this.$emit("updateStatusinventory", this.listenFormKey, val)
-    }
-  },
+    name:"list-user",
+    mixins: [master],
+    props: {
+        query: String,
+        queryBag: String,
+        queryInventory: String
 
+    },
+    components: {
+        "table-master" : TableMaster
+    },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag, this.statusinventory)
+                }
+            }
+        }
+
+    },
+    data() {
+        return {
+            dataTable: [],
+            datacolumn: [
+                {
+                    label: "ID",
+                    key: "counter",
+                    width: "xs"
+                },
+                {
+                    label: "Date/Time",
+                    key: "activity_date",
+                    width: "sm"
+                },
+                {
+                    label: "PIC",
+                    key: "user_name",
+                    width: "xs"
+                },
+                {
+                    label: "Node",
+                    key: "node_name",
+                    width: "sm"
+                },
+                {
+                    label: "Activity",
+                    key: "activity_code",
+                    width: "auto"
+                },
+                {
+                    label: "Description",
+                    key: "activity_description",
+                    width: "auto"
+                },
+                
+            ],
+            loading: false,
+            dataItem: {},
+            tempSearch: this.query ? this.query : "",
+            dialogUser: false,
+            connote_number:"",
+            pagination: {
+                limit:20,
+                page_size: 1,
+                page: 1
+            }
+        }
+    },
+    methods: {
+        async getTableData(limit,page,q) {
+            this.loading = true
+            let query = "";
+            if(q !== undefined) {
+                query = q
+            }
+           
+            await axios
+                .get(
+                    this.URL.connote +
+                    `/${this.connote_number}/activity?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
+                    this.Helper.header())
+                .then(res => {
+                    let arr = res.data.data
+                    arr.map((item, index) => {
+                        item["counter"] = index+1
+                    })
+                    this.dataTable = arr
+                    this.pagination.page = res.data.hasOwnProperty('meta') ? res.data.meta.current_page : 1
+                    this.pagination.limit = res.data.hasOwnProperty('meta') ? parseInt(res.data.meta.per_page) : 20
+                    this.pagination.page_size = res.data.hasOwnProperty('meta') ? res.data.meta.last_page : 1
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to populate activity list', err)
+                })
+        },
+        actionUpdate(val){
+            
+        },
+        async actionRemove(val){
+            
+        },
+        actionLimit(val){
+            this.pagination.limit = val
+            this.pagination.page = 1
+            this.refresh()
+        },
+        actionPagination(val) {
+            this.pagination.page = val
+            this.refresh()
+        },
+        refresh(val){
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        },
+        closeDialogUser(){
+            this.dialogUser = false
+        },
+        showData(){
+
+        },
+        getParamRoute(){
+          if(this.$route.params.id){
+            console.log(this.$route.params.id,'conno');
+            this.connote_number = this.$route.params.id
+          }
+        },
+    },
+    mounted() {
+        this.getParamRoute()
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+    },
 }
 </script>
-<style lang="scss">
-.m-select{
-  &.vs-select-content{
-    max-width: unset;
-    margin: 10px 0;
-  }
-  .vs-select__label--label{
-    transform: translate(-3px, -28px) !important;
-  }
-  .vs-select.activeOptions .vs-select__input:focus ~ .vs-select__label--label {
-    transform: translate(-3%, -28px) !important;
-  }
-}
-</style>
