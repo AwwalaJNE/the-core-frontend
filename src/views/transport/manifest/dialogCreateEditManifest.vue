@@ -374,6 +374,9 @@ export default {
                     arr.push(obj)
                   })
                   this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", arr.length > 0 ? arr : null)
+                } else {
+                  this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "")
+                  this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", [])
                 }
 
               }).catch(err => {
