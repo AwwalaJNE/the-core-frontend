@@ -226,7 +226,8 @@ export default {
             name: 'printGeneral', 
             params: { 
                 'id': this.bag_id, 
-                'type': 'bag'
+                'type': 'bag',
+                'node_id': this.listenNodeId,
             } 
         });
         window.open(routeData.href, '_blank');

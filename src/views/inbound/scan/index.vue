@@ -101,7 +101,9 @@ export default {
     },
     methods: {
         refresh(){
+          if(this.inbound_id  !==  "") {
             this.$refs.inboundInformation.refresh() // trigger function refresh form dari luar component list
+          }
         },
         searchValue (val) {
             this.tempSearch = val
@@ -139,13 +141,13 @@ export default {
                 this.inbound_id = res.data.data.inbound_id
                 this.refresh()
                 this.handlerClearForm()
-                this.openNotification(null, 'Success', 'Receiving is success')
+                this.openNotification(null, 'Success', 'Receiving Success!')
               }).catch(err => {
                 console.log(err,'err receiving');
                 this.loading = false
                 this.refresh()
                 this.handlerClearForm()
-                this.openNotification('danger', 'Receiving is failed', err)
+                this.openNotification('danger', 'Receiving Failed!', err.response.data.message)
               })
         },
         back(){
