@@ -377,6 +377,9 @@ export default {
                 } else {
                   this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "")
                   this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", [])
+
+                  this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID", "")
+                  this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", [])
                 }
 
               }).catch(err => {
@@ -427,6 +430,9 @@ export default {
                         })
                         // this.dataNodeType = arr
                         this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                      this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID", "")
+                      this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", [])
                     }
 
                 }).catch(err => {
