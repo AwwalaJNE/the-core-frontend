@@ -5,7 +5,7 @@
         class="inline-input"
         v-model="value"
         :fetch-suggestions="querySearch"
-        :placeholder="`Cari ${name}`"
+        :placeholder="`Search ${name}`"
         :trigger-on-focus="false"
         @select="handleSelect"
         @input="updateValue"
