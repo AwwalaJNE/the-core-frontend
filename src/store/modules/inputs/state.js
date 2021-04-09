@@ -2350,9 +2350,9 @@ export default {
       valueData: null,
       value: ''
     },
-    koli_actual_before: {
+    koli_actual_weight: {
       label: "Kg Before",
-      key: "koli_actual_before",
+      key: "koli_actual_weight",
       rule: "required",
       isDisabled: true,
       width: '6',
@@ -2361,9 +2361,9 @@ export default {
       valueData: null,
       value: ''
     },
-    koli_actual_weight: {
+    koli_packing_kayu_weight: {
       label: "Kg After",
-      key: "koli_actual_weight",
+      key: "koli_packing_kayu_weight",
       rule: "required",
       isDisabled: false,
       width: '6',

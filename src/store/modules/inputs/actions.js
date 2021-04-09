@@ -1836,13 +1836,6 @@ export default {
     commit('SET_PACKINGKAYU_KOLI_NUMBER_ValueData', payload)
   },
 
-  SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE({ commit }, payload) {
-    commit('SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE', payload)
-  },
-  SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE_ValueData({ commit }, payload) {
-    commit('SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE_ValueData', payload)
-  },
-
   SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT({ commit }, payload) {
     commit('SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT', payload)
   },
@@ -1850,6 +1843,13 @@ export default {
     commit('SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT_ValueData', payload)
   },
 
+  SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT({ commit }, payload) {
+    commit('SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT', payload)
+  },
+  SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT_ValueData({ commit }, payload) {
+    commit('SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT_ValueData', payload)
+  },
+    
   SET_PACKINGKAYU_KOLI_HEIGHT({ commit }, payload) {
     commit('SET_PACKINGKAYU_KOLI_HEIGHT', payload)
   },

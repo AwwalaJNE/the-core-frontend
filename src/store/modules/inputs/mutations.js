@@ -2001,14 +2001,6 @@ export default {
   SET_PACKINGKAYU_KOLI_NUMBER_ValueData(state, payload) {
     state.packingkayu.koli_number.valueData = payload
   },
-
-  SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE(state, payload) {
-    state.packingkayu.koli_actual_before.value = payload
-  },
-  SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE_ValueData(state, payload) {
-    state.packingkayu.koli_actual_before.valueData = payload
-  },
-
   SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT(state, payload) {
     state.packingkayu.koli_actual_weight.value = payload
   },
@@ -2016,6 +2008,13 @@ export default {
     state.packingkayu.koli_actual_weight.valueData = payload
   },
 
+  SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT(state, payload) {
+    state.packingkayu.koli_packing_kayu_weight.value = payload
+  },
+  SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT_ValueData(state, payload) {
+    state.packingkayu.koli_packing_kayu_weight.valueData = payload
+  },
+  
   SET_PACKINGKAYU_KOLI_HEIGHT(state, payload) {
     state.packingkayu.koli_height.value = payload
   },
