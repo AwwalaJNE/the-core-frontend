@@ -164,9 +164,9 @@ export default {
             this.autoCompleteUrl = url
         },
         formData(form){
-            if (this.listenDataItem && this.listenDataItem.hasOwnProperty('pickup_courier_employee_id') && this.listenDataItem['pickup_courier_employee_id'] != null && this.listenDataItem['pickup_courier_employee_id'] != "") {
+            if (this.listenDataItem && this.listenDataItem.hasOwnProperty('pickup_courier_user_id') && this.listenDataItem['pickup_courier_user_id'] != null && this.listenDataItem['pickup_courier_user_id'] != "") {
                 if(this.pickup_number !== undefined && this.pickup_number !== '') {
-                    if (Number(this.listenDataItem['pickup_courier_employee_id']) === Number(form['pickup_courier_employee_id'])) {
+                    if (Number(this.listenDataItem['pickup_courier_user_id']) === Number(form['pickup_courier_user_id'])) {
                         form['pickup_status'] = this.listenDataItem['pickup_status']
                     } else {
                         form['pickup_status'] = 'HANDOVER'
@@ -174,9 +174,9 @@ export default {
                 } else {
                     form['pickup_status'] = 'ASSIGNED'
                 }
-            } else if (this.listenDataItem && this.listenDataItem.hasOwnProperty('pickup_courier_employee_id')) {
+            } else if (this.listenDataItem && this.listenDataItem.hasOwnProperty('pickup_courier_user_id')) {
                 form['pickup_status'] = this.listenDataItem['pickup_status']
-            } else if (!this.listenDataItem && form['pickup_courier_employee_id'] != null && form['pickup_courier_employee_id'] != '') {
+            } else if (!this.listenDataItem && form['pickup_courier_user_id'] != null && form['pickup_courier_user_id'] != '') {
                 form['pickup_status'] = 'ASSIGNED'
             }
           this.form = form
@@ -185,7 +185,11 @@ export default {
           if(minute < 10){
             minute = '0'+minute
           }
-          let time = current.getHours() + ":" + minute;
+          let hour = current.getHours()
+          if(hour < 10){
+            hour = '0'+hour
+          }
+          let time = hour + ":" + minute;          
           this.form.pickup_date = this.form.pickup_date + ' '+time
 
             if (this.form.hasOwnProperty("pickup_node_id_destination") && this.form.pickup_node_id_destination) {
@@ -197,10 +201,16 @@ export default {
             this.hasClicked = true;
           if(this.pickup_number !== undefined && this.pickup_number !== '') {
             this.form.pickup_number = this.pickup_number
+
+            this.form.pickup_courier_employee_id = null
+            this.form.pickup_courier_employee_code = null
             this.updateData()
           } else {
             this.node_id = this.listenNodeId
             this.form.pickup_node_id_requestor = this.node_id
+            
+            this.form.pickup_courier_employee_id = null
+            this.form.pickup_courier_employee_code = null
             this.addData()
           }
 
@@ -239,24 +249,23 @@ export default {
             }
         },
 
-        async getDataEmployee(){
+        async getDataCourier(){
             await axios
-                .get(this.URL.employee +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                .get(this.URL.pickup_courier +`?n=${this.listenNodeId}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.employee_name
-                            obj["value"] = item.employee_id
+                            // obj["label"] = item.employee_name
+                            // obj["value"] = item.employee_id
+                            obj["label"] = item.user_login + ' - ' + item.user_name;
+                            obj["value"] = item.user_id
 
                             arr.push(obj)
                         })
-                        this.$store.dispatch("SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        this.$store.dispatch("SET_PICKUP_LIST_PICKUP_COURIER_USER_ID_ArrData", arr.length > 0 ? arr : null)
                     }
 
                 }).catch(err => {
@@ -380,7 +389,7 @@ export default {
         this.initialize()
         // this.getDataNodeDestination()
         this.getDataVehicleType()
-        this.getDataEmployee()
+        this.getDataCourier()
     },
 }
 </script>
