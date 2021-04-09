@@ -578,11 +578,13 @@ export default {
           this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", "")
           this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", {})
 
+          this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", [])
+
           this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_MODE_ID", "")
-          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData", [{label: null, value: null, data: {}}])
+          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData", [])
 
           this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "")
-          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", [{label: null, value: null, data: {}}])
+          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", [])
 
         },
         handleEta(dateTime, amount){
