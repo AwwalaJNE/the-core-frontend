@@ -49,10 +49,10 @@ export default {
       value: ''
     },
     user_node_id: {
-      label: "Node*",
+      label: "User Node",
       key: "user_node_id",
       rule: "required",
-      typeInput: "select",
+      typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
       valueData: null,

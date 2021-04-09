@@ -13,6 +13,8 @@
                     ref="formUserController"
                     @formData="formData"
                     :dataItem="listenDataItem"
+                    :querySearch="querySearch"
+                    @inputFocus="inputFocus"
                     typeForm="user"
                 />
             </div>
@@ -74,7 +76,8 @@ export default {
             user_id: '',
             dataRole: [],
             loadingDataRole: false,
-            loadingDataNode: false
+            loadingDataNode: false,
+            autoComplateUrl: null
         }
     },
     computed: {
@@ -97,24 +100,21 @@ export default {
         active: function (val) {
             if (val == true) {
                 this.getDataRole()
-                this.getDataNode()
             }
         }
     },
     methods: {
         formData(form){
-            
+            form['user_node_id'] = form['user_node_id']['node_id'];
 
             if(this.user_id !== undefined && this.user_id !== '') {
-                    console.log('update')
                     let obj = form
                     if(obj["password"] == '') {
                         delete obj.password
                     }
                     this.form = obj
                     this.updateData()
-            } else {
-                    console.log('create new')
+            } else {                    
                     this.form = form
                     this.addData()
             }
@@ -127,11 +127,32 @@ export default {
             this.form = {}
             this.user_id = ""
         },
+        querySearch(queryString, cb){
+            axios.get(this.autoComplateUrl +`?n=${this.listenNodeId}&s=${queryString}`,
+                this.Helper.header()
+            )
+            .then(res => {
+                let result = res.data.data
+                let suggestions = [];
+                result.length > 0 && result.map(item => {
+                    suggestions.push({
+                        value: item['node_name'],
+                        data: item
+                    });
+                });
+                cb(suggestions);
+                })
+            .catch();
+        },
+        inputFocus(obj){
+            if(obj.key == 'user_node_id'){
+                this.autoComplateUrl = this.URL.node;
+            }
+        },
         async getDataRole(){
             this.loadingDataRole = true
             await axios
-                .get(this.URL.role + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
+                .get(this.URL.role + `?n=${this.listenNodeId}&limit=-1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -155,33 +176,6 @@ export default {
                     this.checkAuth(err.response)
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
-        },
-        async getDataNode(){
-          this.loadingDataNode = true
-          await axios
-              .get(this.URL.node +
-                  `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                  this.Helper.header())
-              .then(res => {
-                if(res.data.data.length > 0) {
-                  let arr = []
-                  res.data.data.map(item => {
-                    let obj = {}
-                    obj["label"] = item.node_name
-                    obj["value"] = item.node_id
-
-                    arr.push(obj)
-                  })
-                  console.log(arr)
-                  this.$store.dispatch("SET_USER_USER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
-                }
-
-                this.loadingDataNode = false
-              }).catch(err => {
-                this.loadingDataNode = false
-                this.checkAuth(err.response)
-                // this.openNotification('danger', 'Failed to collect role list', err)
-              })
         },
         async updateData() {
             await axios
