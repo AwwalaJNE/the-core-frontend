@@ -74,6 +74,10 @@ export default {
     //PICKUP SCHEDULE
     pickup_schedule: api + "pickup-schedule",
 
+    // PICKUP COURIER
+    pickup_courier: api + "pickup-courier",    
+
+
     //INBOUND
     inbound: api + "inbound",
 

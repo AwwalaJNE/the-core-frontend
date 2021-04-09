@@ -1161,15 +1161,26 @@ export default {
     commit('SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ArrData', payload)
   },
 
-  SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID({ commit }, payload) {
-    commit('SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID', payload)
+  // SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID({ commit }, payload) {
+  //   commit('SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID', payload)
+  // },
+  // SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ValueData({ commit }, payload) {
+  //   commit('SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ValueData', payload)
+  // },
+  // // type select perlu data array
+  // SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData({ commit }, payload) {
+  //   commit('SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData', payload)
+  // },
+
+  SET_PICKUP_LIST_PICKUP_COURIER_USER_ID({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_COURIER_USER_ID', payload)
   },
-  SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ValueData({ commit }, payload) {
-    commit('SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ValueData', payload)
+  SET_PICKUP_LIST_PICKUP_COURIER_USER_ID_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_COURIER_USER_ID_ValueData', payload)
   },
   // type select perlu data array
-  SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData({ commit }, payload) {
-    commit('SET_PICKUP_LIST_PICKUP_COURIER_EMPLOYEE_ID_ArrData', payload)
+  SET_PICKUP_LIST_PICKUP_COURIER_USER_ID_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_PICKUP_COURIER_USER_ID_ArrData', payload)
   },
 
   SET_PICKUP_LIST_PICKUP_REMARKS({ commit }, payload) {
