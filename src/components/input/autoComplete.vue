@@ -1,6 +1,6 @@
 <template>
     <div style="text-align:left">
-        <label v-text="`${name}`" style="font-size:12px;"></label>
+        <small style="padding-left:10px;">{{name}}</small>
         <el-autocomplete
         class="inline-input"
         v-model="value"
