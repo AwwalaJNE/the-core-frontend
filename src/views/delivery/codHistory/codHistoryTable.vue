@@ -131,7 +131,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'COD History data is empty!', ' Please create a new data')
+                        // this.openNotification('warn', 'COD History data is empty!', ' Please create a new data')
                     }
                     
                     this.loading = false

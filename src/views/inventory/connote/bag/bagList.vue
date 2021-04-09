@@ -136,7 +136,7 @@ export default {
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
                     if(res.data.data.length == 0) {
-                        this.openNotification('warn', 'Failed to populate roles data', ' data is empty or not found, please check your keyword in the input search')
+                        // this.openNotification('warn', 'Failed to populate roles data', ' data is empty or not found, please check your keyword in the input search')
                     }
                     
                     this.loading = false

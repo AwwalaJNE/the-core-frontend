@@ -100,7 +100,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'surcharge type data is empty!', ' Please create a new surcharge type data')
+                        // this.openNotification('warn', 'surcharge type data is empty!', ' Please create a new surcharge type data')
                     }
                     
                     this.loading = false

@@ -114,7 +114,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'City data is empty!', ' Please create a new city data')
+                        // this.openNotification('warn', 'City data is empty!', ' Please create a new city data')
                     }
                     
                     this.loading = false

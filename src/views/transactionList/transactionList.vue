@@ -163,7 +163,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Transaction data is empty!', ' Please create a new Transaction data')
+                        // this.openNotification('warn', 'Transaction data is empty!', ' Please create a new Transaction data')
                     }
                     
                     this.loading = false

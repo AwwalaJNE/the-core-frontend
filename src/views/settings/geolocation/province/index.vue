@@ -108,7 +108,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'provinces data is empty!', ' Please create a new province data')
+                        // this.openNotification('warn', 'provinces data is empty!', ' Please create a new province data')
                     }
                     
                     this.loading = false

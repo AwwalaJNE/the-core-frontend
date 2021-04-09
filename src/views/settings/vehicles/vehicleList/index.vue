@@ -116,7 +116,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Vehicle data is empty!', ' Please create a new Vehicle data')
+                        // this.openNotification('warn', 'Vehicle data is empty!', ' Please create a new Vehicle data')
                     }
                     
                     this.loading = false

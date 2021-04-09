@@ -138,7 +138,7 @@ export default {
                         this.dataRole = arr
                         this.$store.dispatch("SET_CUSTOMER_CUSTOMER_SUBDISTRICT_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                     this.loading = false
@@ -166,7 +166,7 @@ export default {
                         this.dataRole = arr
                         this.$store.dispatch("SET_CUSTOMER_CUSTOMER_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                     this.loading = false
@@ -202,7 +202,7 @@ export default {
                         this.$store.dispatch("SET_CUSTOMER_CUSTOMER_DEFAULT_NODE_ID_ArrData", arr_n.length > 0 ? arr_n : null)
                         this.$store.dispatch("SET_CUSTOMER_N_ArrData", arr_n.length > 0 ? arr_n : null)
                     } else {
-                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                     this.loading = false

@@ -180,7 +180,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Irreguralities Hold data is empty!', ' Please create Irreguralities Hold data')
+                        // this.openNotification('warn', 'Irreguralities Hold data is empty!', ' Please create Irreguralities Hold data')
                     }
                     
                     this.loading = false

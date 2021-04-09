@@ -209,7 +209,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Surat Jalan data is empty!', ' Please create a new Surat Jalan data')
+                        // this.openNotification('warn', 'Surat Jalan data is empty!', ' Please create a new Surat Jalan data')
                     }
                     
                     this.loading = false

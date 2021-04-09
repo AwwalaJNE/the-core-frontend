@@ -199,7 +199,7 @@ export default {
                     }
 
                     if(needValidation == true) {
-                        this.openNotification('warn', `${inputan} koli ke ${indexKoli + 1} kosong`, `${inputan} tidak boleh kosong`)
+                        // this.openNotification('warn', `${inputan} koli ke ${indexKoli + 1} kosong`, `${inputan} tidak boleh kosong`)
                     } else {
                         this.createConnote2()
                     }

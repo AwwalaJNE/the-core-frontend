@@ -96,7 +96,7 @@ export default {
                        
 
                     } else {
-                        this.openNotification('warn', 'node config is empty!', ' Please create a new config')
+                        // this.openNotification('warn', 'node config is empty!', ' Please create a new config')
                     }
                     
                     this.loading = false
@@ -124,7 +124,7 @@ export default {
                        
                         this.openNotification('success', 'config is update!', ' Thanks')
                     } else {
-                        this.openNotification('warn', 'config is empty!', ' Please create a new config')
+                        // this.openNotification('warn', 'config is empty!', ' Please create a new config')
                     }
                     
                     this.loading = false

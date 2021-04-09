@@ -205,7 +205,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Pickup request is empty!', ' Please create a new Pickup request')
+                        // this.openNotification('warn', 'Pickup request is empty!', ' Please create a new Pickup request')
                     }
                     
                     this.loading = false

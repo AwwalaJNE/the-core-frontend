@@ -116,7 +116,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'tariff special data is empty!', ' Please create a new tariff special data')
+                        // this.openNotification('warn', 'tariff special data is empty!', ' Please create a new tariff special data')
                     }
                     
                     this.loading = false

@@ -98,7 +98,7 @@ export default {
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
-                        this.openNotification('warn', 'node commission data is empty!', ' Please create a new node commission')
+                        // this.openNotification('warn', 'node commission data is empty!', ' Please create a new node commission')
                     }
                     
                     this.loading = false

@@ -167,7 +167,7 @@ export default {
                         this.dataRole = arr
                         this.$store.dispatch("SET_USER_USER_ROLE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                     this.loadingDataRole = false
