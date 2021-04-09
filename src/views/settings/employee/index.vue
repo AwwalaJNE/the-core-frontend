@@ -81,11 +81,11 @@ export default {
                     key: "k-EMPLOYEE",
                     title: "Employee"
                 },
-                // {
-                //     label: "EMPLOYEE TYPE",
-                //     key: "k-EMPLOYEE_TYPE",
-                //     title: "Employee Type"
-                // },
+                {
+                    label: "EMPLOYEE TYPE",
+                    key: "k-EMPLOYEE_TYPE",
+                    title: "Employee Type"
+                },
             ],
             title:"Employee",
             navActive: "k-EMPLOYEE",

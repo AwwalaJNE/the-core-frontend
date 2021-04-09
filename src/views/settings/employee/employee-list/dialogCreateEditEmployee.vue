@@ -14,6 +14,7 @@
                     ref="formEmployeeController"
                     @formData="formData"
                     :dataItem="listenDataItem"
+                    :querySearch="querySearch"
                     typeForm="employee"
                 />
             </div>
@@ -109,6 +110,7 @@ export default {
     },
     methods: {
         formData(form){
+          form['employee_node_id'] = form['employee_node_id']['node_id'];
           this.form = form
           if(this.employee_id !== undefined && this.employee_id !== '') {
             this.form.employee_id = this.employee_id
@@ -128,11 +130,26 @@ export default {
             this.form = {}
             this.employee_id = ""
         },
+        querySearch(queryString, cb){
+            axios.get(this.URL.node +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
+            .then(res => {
+                let result = res.data.data
+                let suggestions = [];
+                result.length > 0 && result.map(item => {
+                    console.log(item);
+                    suggestions.push({
+                        value: item['node_name'],
+                        data: item
+                    });
+                });
+                cb(suggestions);
+                })
+            .catch(error => console.log("error", error));
+        },
 
         async getDataEmployeeType(){
             await axios
-                .get(this.URL.employee_type +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                .get(this.URL.employee_type + `?n=${this.listenNodeId}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -153,7 +170,7 @@ export default {
         async getDataNode(){
             await axios
                 .get(this.URL.node +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                `?n=${this.listenNodeId}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
