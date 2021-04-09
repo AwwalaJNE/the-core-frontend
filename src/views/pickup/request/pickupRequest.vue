@@ -8,13 +8,14 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :pickupListAction="true"
-        :cancelRequestAction="true"
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
-        @actionPrint="actionPrint"
         @actionCancel="actionCancel"
+
+        :customAction="true"
+        :customActionList="customActionList"
+        @actionUpdate="actionUpdate"
         />
 
       <!-- dialog confirm cancel pickup request-->
@@ -95,6 +96,22 @@ export default {
                 width: "auto"
               },
             ],
+            customActionList: [
+              {
+                label: 'Print',
+                key: 'print',
+                attribute: '',
+                option: {
+                  type: 'redirect',
+
+                }
+              },
+              {
+                label: 'Cancel',
+                key: 'cancel',
+                attribute: '',
+              }
+            ],
             loading: false,
             dataItem: {},
             tempSearch: "",
@@ -134,6 +151,28 @@ export default {
         }
     },
     methods: {
+        actionUpdate(val, key) {
+          switch(key) {
+                case "print":
+                    // console.log('print', val)
+                    let routeData = this.$router.resolve({ 
+                      name: 'printGeneral', 
+                      params: { 
+                          'id': val.pickup_number, 
+                          'type': 'pickup',
+                          'node_id':this.listenNodeId
+                      } 
+                    });
+                    window.open(routeData.href, '_blank');
+                    break;
+                case 'cancel':
+                  this.pickupData = val;
+                  this.activeDialogCancel = true;
+                default:
+                    console.log('meong')
+                    // code block
+            }
+        },
         async getTableData(limit,page,q, from, to) {
             this.loading = true
             let query = "";
@@ -172,7 +211,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', 'Failed to populate pickup request', err)
                 })
         },
 
@@ -196,18 +235,10 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
         actionPrint(row){
-          let routeData = this.$router.resolve({ 
-            name: 'printGeneral', 
-            params: { 
-                'id': row.pickup_number, 
-                'type': 'pickup'
-            } 
-          });
-          window.open(routeData.href, '_blank');
+          
         },
         actionCancel(row){
-          this.pickupData = row;
-          this.activeDialogCancel = true;
+          
         },
         async updateData(form, pickup_number){
           await axios
