@@ -1,5 +1,5 @@
 <template>
-    <div style="text-align:left">
+    <div style="text-align:left;">
         <small style="padding-left:10px;">{{name}}</small>
         <el-autocomplete
         class="inline-input"
