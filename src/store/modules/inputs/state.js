@@ -1619,9 +1619,9 @@ export default {
       valueData: 0,
       value: 0
     },
-    pickup_courier_employee_id: {
+    pickup_courier_user_id: {
       label: "Courier",
-      key: "pickup_courier_employee_id",
+      key: "pickup_courier_user_id",
       rule: "required",
       typeInput: "select",
       typeData: "String",
