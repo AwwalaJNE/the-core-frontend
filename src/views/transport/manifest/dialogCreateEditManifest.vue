@@ -161,6 +161,7 @@ export default {
             vehicle_type_id: "",
             node_id_origin: "",
             vehicle_id: "",
+            manifest_method_id: "",
 
             autoComplateUrl: '',
             itterateUrlAutoComplete: '',
@@ -505,6 +506,10 @@ export default {
 
         onChangeOrigin(type, val, info = {}){
           // console.log('type', type , val, info)
+          if(this.manifest_method_id !== "" && type == 'manifest_method_id') {
+              this.manifest_method_id !== val && this.resetForm()
+              // setTimeout(function(){ }, 3000);
+          }
           switch(type) {
             case 'vehicle_mode_id':
               if(info.hasOwnProperty('data')) {
@@ -513,6 +518,7 @@ export default {
               }
               break
             case 'manifest_method_id':
+              this.manifest_method_id = val
               if(type == 'manifest_method_id' && val == 1){
                 this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false)
                 // this.jenisKiriman(true);
@@ -560,6 +566,23 @@ export default {
               console.log(info)
 
           }
+
+        },
+        resetForm(){
+          // this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", [{label: null, value: null, data: {}}])
+          this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", "")
+          this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", {})
+
+          this.$store.dispatch("SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT", [])
+
+          this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", "")
+          this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", {})
+
+          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_MODE_ID", "")
+          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData", [{label: null, value: null, data: {}}])
+
+          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "")
+          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", [{label: null, value: null, data: {}}])
 
         },
         handleEta(dateTime, amount){
