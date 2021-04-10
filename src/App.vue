@@ -14,6 +14,9 @@ export default {
 </script>
 
 <style lang="scss">
+html{
+	font-family: "NunitoSans-Regular";
+}
 #app {
   font-family: "NunitoSans-Regular";
   -webkit-font-smoothing: antialiased;
