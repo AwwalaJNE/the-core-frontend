@@ -48,14 +48,14 @@ export default {
                 },
                 {
                     label: "Status Delivery",
-                    key: "status",
+                    key: "status_delivery",
                     type: "inputan",
                     typeInput: "select",
                     data: 
                         {
-                            label: null,
-                            value: null
-                        },
+                      label:null,
+                      value:null
+                    },
                     selectedValue : "status_code"
                 },
 
@@ -143,7 +143,7 @@ export default {
                 .then(res => {
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
-                      item['status_subtype'] = item.status ? item.status.status_subtype : ''
+                      item['status_subtype'] = item.status_delivery ? item.status_delivery : item.status.status_subtype
                       item['status_code'] = item.status ? item.status.status_code : ''
                     })
                     this.$emit('reload', res.data.data);
@@ -163,7 +163,7 @@ export default {
 
         updateValue(key, val){
           key = key.split('|');
-            if(key[0] && key[0] == 'status'){
+            if(key[0] && key[0] == 'status_delivery'){
               this.form = {
                 koli_number : key[1],
                 status : val,
@@ -207,7 +207,7 @@ export default {
                         })
 
                         this.datacolumn.map(item => {
-                            if(item.key == 'status') {
+                            if(item.key == 'status_delivery') {
                               console.log('asd')
                                 item.data = arr
                             }
