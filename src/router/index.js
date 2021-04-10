@@ -126,6 +126,8 @@ import CostToCostReport from "@/views/costToCost/report"
 // === setting kurs ===
 import SettingExchangeRate from "@/views/settings/exchange_rate"
 
+// === setting Access Token ===
+import SettingAccessToken from "@/views/settings/access_token"
 
 
 Vue.use(VueRouter)
@@ -578,6 +580,15 @@ const routes = [
         path: "/settings/exchangerate",
         name: "SettingExchangeRate",
         component: SettingExchangeRate,
+        meta: {
+            requiresAuth: true,
+            breadCrumb: "setting"
+        }
+      },
+      {
+        path: "/settings/access-token",
+        name: "SettingAccessToken",
+        component: SettingAccessToken,
         meta: {
             requiresAuth: true,
             breadCrumb: "setting"

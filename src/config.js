@@ -139,6 +139,12 @@ export default {
     packing_kayu: api + "packingkayu",
 
     //cashless
-    cashless: api + "cashless"
+    cashless: api + "cashless",
+
+    //profile
+    profile: api + "profile",
+
+    //reset-token
+    reset_token: api + "reset-token"        
 
 }
