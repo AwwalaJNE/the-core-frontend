@@ -68,6 +68,8 @@ export default {
     //PICKUP
     pickup: api + "pickup",
 
+    pickup_courier: api + "pickup-courier",
+
     //PICKUP REQUEST
     pickup_request: api + "pickup-request",
 
