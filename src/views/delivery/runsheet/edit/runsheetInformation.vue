@@ -184,8 +184,6 @@ export default {
               }).catch(err => {
                 console.log(err,'err receiving');
                 this.loading = false
-                this.refresh()
-                this.openNotification('danger', 'Update is failed', err)
               })
         },
         async getStatus() {
