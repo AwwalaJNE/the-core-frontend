@@ -211,7 +211,7 @@ export default {
                     let arr = res.data.data
                     arr.map(item => {
                         item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
-                        item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED') ? true : false
+                        item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE') ? true : false
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
