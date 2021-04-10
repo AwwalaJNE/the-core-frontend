@@ -143,7 +143,7 @@ export default {
                 .then(res => {
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
-                      item['status_subtype'] = item.status_delivery ? item.status_delivery : item.status.status_subtype
+                      item['status_subtype'] = item.status_delivery ? item.status_delivery : ''
                       item['status_code'] = item.status ? item.status.status_code : ''
                     })
                     this.$emit('reload', res.data.data);
@@ -173,7 +173,6 @@ export default {
             }
         },
         async updateInbound() {
-          console.log(this.delivery_runsheet_number, 'asdasd')
           await axios
               .put(this.URL.delivery + `/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),

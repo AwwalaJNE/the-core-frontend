@@ -311,7 +311,7 @@ export default {
 
         async getDataEmployee(){
             await axios
-                .get(this.URL.employee +
+                .get(this.URL.pickup_courier +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
                 this.Helper.header())
                 .then(res => {
@@ -319,8 +319,8 @@ export default {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.employee_name
-                            obj["value"] = item.employee_id
+                            obj["label"] = item.user_name
+                            obj["value"] = item.user_login
 
                             arr.push(obj)
                         })

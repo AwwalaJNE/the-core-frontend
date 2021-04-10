@@ -1227,6 +1227,32 @@ export default {
   },
   //END PICKUP LIST
 
+  //PIKCUP LIST CANCEL
+  SET_PICKUP_LIST_CANCEL_STATUS({ commit }, payload) {
+    commit('SET_PICKUP_LIST_CANCEL_STATUS', payload)
+  },
+  SET_PICKUP_LIST_CANCEL_STATUS_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_CANCEL_STATUS_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_PICKUP_LIST_CANCEL_STATUS_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_CANCEL_STATUS_ArrData', payload)
+  },
+  //END PICKUP LIST CANCEL
+
+  //PIKCUP REQUEST CANCEL
+  SET_PICKUP_REQUEST_CANCEL_STATUS({ commit }, payload) {
+    commit('SET_PICKUP_REQUEST_CANCEL_STATUS', payload)
+  },
+  SET_PICKUP_REQUEST_CANCEL_STATUS_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_REQUEST_CANCEL_STATUS_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_PICKUP_REQUEST_CANCEL_STATUS_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_REQUEST_CANCEL_STATUS_ArrData', payload)
+  },
+  //END PICKUP REQUEST CANCEL
+
   /* PICKUP SCHEDULE START */
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME', payload)
