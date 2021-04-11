@@ -11,8 +11,8 @@
             </vs-col>
         </vs-row>
         <section class="new-transaction mt-1">
-            <vs-row justify="space-between">
-                        <vs-col xs="6" sm="3" lg="3">
+            <vs-row justify="flex-start">
+                        <vs-col xs="6" sm="2" lg="2">
                             <form @submit.prevent="processBookingCode">
                                 <!-- <input-general 
                                 name="Masukan Kode Booking"
@@ -20,20 +20,31 @@
                                 formKey="bookingCode"
                                 :valueData="''"
                                 typeInput="text"
+                                :disabled="hasCodeBooking"
                                 @updateValue="updateValue" /> -->
                                 <vs-input border type="text"
                                     v-model="bookingCode"
                                     label-placeholder="Masukkan Code Booking"
                                     :autofocus="true"
+                                    :disabled="hasCodeBooking"
                                     ref="inputCodeBooking">
                                 </vs-input>
                             </form>
+                        </vs-col>
+                        <vs-col xs="2" sm="2" lg="2">
+                            <template v-if="hasCodeBooking">
+                                <div style="position:absolute;left:-10px; top:15px;">
+                                    <span class="vs-select__chips__chip__close" @click="removeBookingCode">
+                                        <i class="vs-icon-close vs-icon-hover-less"></i>
+                                    </span>
+                                </div>
+                            </template>
                         </vs-col>
             </vs-row>
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="9" lg="9">
                     <div>
-                        <template v-if="rerender == false">
+                        <template>
                             <form-master ref="formTransaction" @onSubmit="onSubmit">
                                 <template v-slot:inputValidator>
                                     <div>
@@ -153,6 +164,7 @@ export default {
             koli_number: '',
             legacySystemHTML: '',
             bookingCode: '',
+            hasCodeBooking: false,
 
             prosesConnote: {},
             tempConnote: {},
@@ -184,7 +196,7 @@ export default {
                     // quick fix required koli input dalem dialog multikoli
                     let dataConnote = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
                     for(let i=0; i<= dataConnote['connote_koli_item'].length-1;i++) {
-                        console.log('koli curr', dataConnote['connote_koli_item'][i])
+                        // console.log('koli curr', dataConnote['connote_koli_item'][i])
                         if(dataConnote['connote_koli_item'][i]['description'] == '') {
                                     needValidation = true
                                     indexKoli = i
@@ -220,6 +232,14 @@ export default {
                     // code block
             }
         },
+
+        removeBookingCode() {
+            if(this.hasCodeBooking == true) {
+                this.refreshTransactionStore()
+            }
+            this.hasCodeBooking = false
+            this.bookingCode = ""
+        },
         
         async processBookingCode(){
           await axios
@@ -230,6 +250,10 @@ export default {
                 // console.log('res processBookingCode', res.data.data)
                 if(res.data.data) {
                     let data = res.data.data
+
+                    
+                    this.hasCodeBooking = true
+                    
                 
                     this.$store.dispatch(`FILL_CONNOTE_NUMBER`, data.booking_connote_number)
 
@@ -282,11 +306,11 @@ export default {
             this.prosesDataTransaction['connote'] = arr
             this.prosesDataTransaction['node_code'] = this.listenNodeCode
 
-            console.log('==== transaction collectData ====', this.prosesDataTransaction)
+            // console.log('==== transaction collectData ====', this.prosesDataTransaction)
         },
 
         async createConnote2() {
-            this.rerender = true
+            // this.rerender = true
             await axios
                 .post(
                     this.URL.connote + `?n=${this.listenNodeId}`,
@@ -295,27 +319,30 @@ export default {
                 ).then(res => {
                     if(res.status == 200){
                         this.prosesDataTransaction = {}
-                        console.log('res connote ========>', res)
+                        // console.log('res connote ========>', res)
                         this.tempConnote = res.data.data
                         this.handleDataTransaction()
+                        this.wrapKoliNumber()
+
                         if(this.typeAction == 'addconnote') {
-                            this.refreshTransactionStore()
+                            this.refreshTransactionFields()
                             this.$refs.originComponent.setFocus()
                         } else {
+                            
                             this.getDataKoli()
                             this.$nextTick(() => {
                                 this.openPaymentDialog()
                             });
                         }
-                        this.rerender = false
+                        // this.rerender = false
                     }
                 }).catch(err => {
-                    this.rerender = false
+                    // this.rerender = false
                 })
         },
 
         handleDataTransaction() {
-            console.log('ADMORE CONNOTE ===> ', this.tempConnote)
+            // console.log('ADMORE CONNOTE ===> ', this.tempConnote)
             let current_connote = {}
             Object.keys(this.tempConnote).length > 0 && Object.keys(this.tempConnote).map(item => {
                 if(item !== 'shipper_geolocation' && 
@@ -373,7 +400,7 @@ export default {
             let test = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction.connote))
             test[this.listenConnoteActive] = current_connote
 
-            console.log('handleDataTransaction ++++=? ', test)
+            // console.log('handleDataTransaction ++++=? ', test)
 
 
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':this.tempConnote['transaction_id']})
@@ -390,12 +417,12 @@ export default {
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
             }
 
-            this.wrapKoliNumber()
+            
         },
 
         wrapKoliNumber() {
             let connote = this.$store.getters.getTransaction.transaction.connote
-            console.log('+++++++++WRAP KOLI+++++++++',connote)
+            // console.log('+++++++++WRAP KOLI+++++++++',connote)
             this.koli_number = ''
             let str = []
             connote.map(conot => {
@@ -410,7 +437,7 @@ export default {
                 }
             })
             this.koli_number = str.toString()
-            console.log('this.koli_number', this.koli_number)
+            // console.log('this.koli_number', this.koli_number)
         },
 
         fillTransactionData(data){
@@ -476,7 +503,7 @@ export default {
             let lastIndex = this.dataTransaction['connote'].length - 1
             this.dataTransaction['connote'][lastIndex] = res_connote
 
-            console.log('CCCConote', this.dataTransaction, res_connote)
+            // console.log('CCCConote', this.dataTransaction, res_connote)
 
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':this.dataTransaction['transaction_id']})
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'connote', 'value':this.dataTransaction['connote']})
@@ -561,21 +588,36 @@ export default {
             console.log('inject transaction key handler add')
         },
         removeKeyHandler() {
-            window.removeEventListener("keydown", this.keyHandler);
-            console.log('transaction key handler destroy')
+            // window.removeEventListener("keydown", this.keyHandler);
+            console.log('transaction key handler destroyyy')
         }
 
         
     },
     mounted() {
         this.addKeyHandler()
+
+        // mixin->transaction
+        this.getDefaultState()
+        
+
         this.$nextTick(() => {
             let inputCodeBooking = this.$refs.inputCodeBooking
             setTimeout(function(){ inputCodeBooking.$el.querySelector('input').focus() }, 100);
         })
     },
+    beforeRouteLeave (to, from, next) {
+        console.log("beforeRouteEnter", to, from)
+        this.refreshTransactionStore()
+        next();
+    },
+    // beforeRouteUpdate(to, from, next) {
+    //     console.log("beforeRouteUpdate", to, from)
+    //     this.refreshTransactionStore()
+    //     next();
+    // },
     destroyed() {
-        this.removeKeyHandler();
+        // this.removeKeyHandler();
     }
 }
 </script>

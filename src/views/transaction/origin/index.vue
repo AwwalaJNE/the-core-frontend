@@ -43,7 +43,15 @@
             </vs-row>
         </div>
         <div class="con-form">
-            <template v-if="listenforcererender == true">
+            <form-input-controller 
+                        ref="formTransactionOriginController"
+                        @formData="formData"
+                        :dataItem="listenDataItem"
+                        @searchTariffCode="searchTariffCode"
+                        @onChangeCustom="onChangeCustom"
+                        typeForm="origin"
+                    />
+            <!-- <template v-if="listenforcererender == true">
                 <transition>
                     loading ...
                 </transition>
@@ -59,7 +67,7 @@
                         typeForm="origin"
                     />
                 </transition>
-            </template>
+            </template> -->
         </div>
 
         <customerByPhone
@@ -88,7 +96,8 @@ export default {
             dialogGetCustomer: false,
             dataItem: null,
             forcererender: false,
-            customer:""
+            customer:"",
+            defaultOrigin:""
         }
     },
     computed: {
@@ -100,19 +109,18 @@ export default {
         }
     },
     methods: {
+        getDefaultState() {
+            // console.log('get default', this.$store.state.transaction.calc_component)
+            this.defaultOrigin = this.putusin(this.$store.state.transaction.origin)
+        },
+        putusin(obj) {
+            // remove data binding
+            // JSON.parse(JSON.stringify(obj))
+            return JSON.stringify(obj)
+        },
         removeCustomer(){
-            this.forcererender = true
-            this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, "")
-            this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, "")
-            this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, "")
-            this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, "")
-            this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, "")
-            this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, "")
-
             this.customer = ""
-
-            let self = this
-            setTimeout(function(){ self.forcererender = false }, 100);
+            this.$store.dispatch("RESET_STATE", {'key': 'origin','state': this.defaultOrigin})
         },
         setFocus(){
             let inp = this.$refs.formTransactionOriginController.$refs.connote_shipper_name[0]
@@ -183,6 +191,9 @@ export default {
                 
             }
         }
+    },
+    created() {
+        this.getDefaultState()
     },
 }
 </script>

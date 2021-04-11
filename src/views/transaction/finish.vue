@@ -55,7 +55,7 @@ export default {
         window.document.onkeydown = function(evt) {
             evt = evt || window.event;
             if (evt.keyCode == 32) {
-                self.$router.push({ name: 'new-transactions'});
+                self.$router.replace({ name: 'new-transactions'});
             }
         };
     },

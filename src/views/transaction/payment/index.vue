@@ -130,7 +130,7 @@ import TransactionMixin from "@/mixins/transaction.js"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
     name: "dialog-payment",
-    mixins: [master],
+    mixins: [master, TransactionMixin],
     components: {
         "dialog-master": DialogMaster,
     },
@@ -299,8 +299,10 @@ export default {
                     this.connote_qty= 0
                     this.price= 0
                     this.discount= 0  
-                    this.$store.dispatch("CLEAR_TRANSACTION_DATA_CONNOTE", true)
-                    this.$store.dispatch("EMPTY_TRANSACTION_DATA_CONNOTE", true)
+                    // this.$store.dispatch("CLEAR_TRANSACTION_DATA_CONNOTE", true)
+                    // this.$store.dispatch("EMPTY_TRANSACTION_DATA_CONNOTE", true)
+                    // this.refreshTransactionStore()
+
                     this.$router.push({ name: 'transactionComplete', params: { id: this.transaction_id } });
                     this.openNotification(null, 'Success', 'Payment success')
                 }).catch(err => {

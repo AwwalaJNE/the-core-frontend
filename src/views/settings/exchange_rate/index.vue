@@ -141,7 +141,7 @@ export default {
     
 }
 </script>
-<style>
+<style lang="scss">
     .kurs{
         border-bottom: 1px dotted rgb(0, 0, 0);
     }
@@ -149,6 +149,6 @@ export default {
         margin-top:50px;
     }
     .box  .vs-input__label {
-    left: 4px;
-}
+        left: 4px;
+    }
 </style>

@@ -414,7 +414,7 @@ export default {
             // this.connote_koli_item = this.listenConnoteKoliItem
 
             // new code
-            this.connote_koli_item = this.test(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item)
+            this.connote_koli_item = this.test(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || [])
             this.wrapingSurcharge()
         },
         test(json) {
@@ -451,7 +451,7 @@ export default {
                 `?n=${this.listenNodeId}&destination=${this.listenDestinationCode}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log('getShippingService', res.data.data)
+                    // console.log('getShippingService', res.data.data)
                     let data = res.data.data
                     let arr = []
                     data.map(item => {
@@ -488,7 +488,7 @@ export default {
                         }
                         
                     })
-                    console.log('getShippingService arr', arr)
+                    // console.log('getShippingService arr', arr)
 
                     // if create new transaction
                     // if(connote_number == ""){
@@ -553,7 +553,7 @@ export default {
                             self.calculation()
                         })
 
-                        console.log('HASIL', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
+                        // console.log('HASIL', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
                         
                         
                     }
@@ -565,6 +565,8 @@ export default {
                     if(this.package_tidak_asuransi == false) {
                         let numb = this.moneyParsing(value)
                         this.$store.dispatch("SET_CALCULATOR_ASURANSI", numb * 0.002)
+                    } else {
+                        this.$store.dispatch("SET_CALCULATOR_ASURANSI", 0)
                     }
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_INSURED_GOODS_VALUE", value)
                     
@@ -619,7 +621,7 @@ export default {
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_TIDAK_PACKING_KAYU", value)
                     this.package_tidak_packing_kayu = value
                     this.tidakPackingKayuToggle()
-                    console.log('package_tidak_packing_kayu', value)
+                    // console.log('package_tidak_packing_kayu', value)
                     break;
                 case "package_do_return":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_DO_RETURN", value)
@@ -695,7 +697,7 @@ export default {
             if(this.package_tidak_packing_kayu == true) {
                 this.tempKoliSurchargePackingKayu = tempKoliSurchargePackingKayu
 
-                console.log('this.tempKoliSurchargePackingKayu ====', this.tempKoliSurchargePackingKayu)
+                // console.log('this.tempKoliSurchargePackingKayu ====', this.tempKoliSurchargePackingKayu)
                 if (Object.keys(this.tempKoliSurchargePackingKayu).length > 0) {
                     Object.keys(this.tempKoliSurchargePackingKayu).map(index => {
                         if(listKoli[index]) {
@@ -743,7 +745,7 @@ export default {
             let koli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item
             
             let surchargeByID = this.surchargeByID
-            console.log('surchargeByID /////', surchargeByID)
+            // console.log('surchargeByID /////', surchargeByID)
 
             let jumlah = 1
             let surcharge_view = {}
@@ -774,7 +776,7 @@ export default {
                                 if(surchargeByID.hasOwnProperty(itm)) {
                                     let data = surchargeByID[itm]
                                     surcharge_view[itm] = data
-                                    console.log('AFFFF', this.surchargeshow)
+                                    // console.log('AFFFF', this.surchargeshow)
                                 }
                             })
                         }
@@ -785,7 +787,7 @@ export default {
             //     console.log('surchargeView', this.connote_koli_item,surchargeByID,this.surchargeshow)
             
             this.surchargeshow = surcharge_view
-            console.log('HIT surcharge view', this.surchargeshow)
+            // console.log('HIT surcharge view', this.surchargeshow)
             
             
             // this.surchargeshow = view
@@ -863,7 +865,7 @@ export default {
             obj['tidak_asuransi'] = this.package_tidak_asuransi//data.is_insured == false ? true : false
             obj['tidak_packing_kayu'] = this.package_tidak_packing_kayu//data.is_packing_kayu == false ? true : false // nnti di update
             this.$ls.set('printSPPAP', obj)
-            console.log('printSPPAP', obj, data.is_insured, data.is_packing_kayu)
+            // console.log('printSPPAP', obj, data.is_insured, data.is_packing_kayu)
         },
     },
     mounted() {
