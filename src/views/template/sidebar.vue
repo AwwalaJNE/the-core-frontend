@@ -367,7 +367,7 @@ export default {
     },
     methods: {
         redirect(val){
-            console.log('meong', val)
+            console.log('meong menu',val,' visited')
             this.isExpand = false
             // this.$router.push(`${val}`)
         }

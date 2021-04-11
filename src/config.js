@@ -1,4 +1,6 @@
 const api = process.env.VUE_APP_API;
+const urlFOrmated = new URL(api);
+
 
 // console.log('process.env.VUE_APP_API',process.env.VUE_APP_API);
 export default {
@@ -145,6 +147,9 @@ export default {
     profile: api + "profile",
 
     //reset-token
-    reset_token: api + "reset-token"        
+    reset_token: api + "reset-token",
+
+    //apidoc
+    apidoc: urlFOrmated.origin + "/docs",
 
 }

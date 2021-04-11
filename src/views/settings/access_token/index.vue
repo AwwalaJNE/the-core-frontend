@@ -11,38 +11,64 @@
     <vs-row>
       <vs-col xs="12" sm="12" lg="12">
         <div class="box">
-            <div style="margin-top:10px">
-          <vs-tooltip :success="tokenCopied" :danger="tokenCopied === false" circle>
-            <vs-input
-              v-model="user_access_token"
-              label="Access Token"
-              readonly
-              id="tokenField"
-              v-clipboard:copy="user_access_token"
-              v-clipboard:success="onCopy"
-              v-clipboard:error="onError"
-            />
-            <template #tooltip>
-              {{ toolTipMessage ? toolTipMessage : "Click to copy" }}
-            </template>
-          </vs-tooltip>
-            </div>
-          <vs-button @click="resetConfirmation" style="margin-top:10px">
-            Reset Token
-          </vs-button>
+          <vs-row>
+            <vs-col xs="12" sm="12" md="7" lg="7">
+              <div style="margin-top: 10px">
+                <vs-tooltip
+                  :success="tokenCopied"
+                  :danger="tokenCopied === false"
+                  circle
+                >
+                  <vs-input
+                    v-model="user_access_token"
+                    label="Access Token"
+                    readonly
+                    id="tokenField"
+                    v-clipboard:copy="user_access_token"
+                    v-clipboard:success="onCopy"
+                    v-clipboard:error="onError"
+                  />
+                  <template #tooltip>
+                    {{ toolTipMessage ? toolTipMessage : "Click to copy" }}
+                  </template>
+                </vs-tooltip>
+              </div>
+            </vs-col>
+
+            <vs-col xs="12" sm="12" md="7" lg="7">
+              <div style="text-align: right; margin-top: 10px">
+                <vs-button @click="openApidoc" style="margin-top: 10px;right:0;position:absolute" transparent border>
+                  How to use this token?
+                </vs-button>
+              </div>
+            </vs-col>
+
+            <vs-col xs="12" sm="12" md="12" lg="12">
+              <vs-button @click="resetConfirmation" style="margin-top: 10px">
+                Reset Token
+              </vs-button>
+            </vs-col>
+          </vs-row>
         </div>
       </vs-col>
     </vs-row>
 
     <dialog-confirm
-          :active="confirmModalActive"
-          :closeDialog="() => {this.confirmModalActive = false}"
-          title="Are you sure ?"
-          message="You want to generate a new access token ?"
-          @confirm="resetToken"
-          @cancel="() => {this.confirmModalActive = false}"
-      />
-
+      :active="confirmModalActive"
+      :closeDialog="
+        () => {
+          this.confirmModalActive = false;
+        }
+      "
+      title="Are you sure ?"
+      message="You want to generate a new access token ?"
+      @confirm="resetToken"
+      @cancel="
+        () => {
+          this.confirmModalActive = false;
+        }
+      "
+    />
   </div>
 </template>
 <script>
@@ -55,8 +81,8 @@ export default {
   name: "access-token",
   mixins: [master],
   components: {
-    "breadcrumb": Breadcrumb,
-    "dialog-confirm": DialogConfirm
+    breadcrumb: Breadcrumb,
+    "dialog-confirm": DialogConfirm,
   },
   data() {
     return {
@@ -102,45 +128,46 @@ export default {
             "Failed!",
             "Failed to populate data!"
           );
+          this.checkAuth(err.response);
         });
     },
-    resetConfirmation(){
-        this.confirmModalActive=true;
+    resetConfirmation() {
+      this.confirmModalActive = true;
     },
     async resetToken() {
-        this.confirmModalActive = false;
+      this.confirmModalActive = false;
       this.loading = true;
       await axios
-        .post(this.URL.reset_token + `?n=${this.listenNodeId}`,{},this.Helper.header())
+        .post(
+          this.URL.reset_token + `?n=${this.listenNodeId}`,
+          {},
+          this.Helper.header()
+        )
         .then((res) => {
           this.user_access_token = res.data.data.user_access_token;
           this.loading = false;
-          this.openNotification(
-            "success",
-            "Success!",
-            "Reset token success!"
-          );
+          this.openNotification("success", "Success!", "Reset token success!");
         })
         .catch((err) => {
           this.loading = false;
-          this.openNotification(
-            "danger",
-            "Failed!",
-            "Reset Token Failed!"
-          );
+          this.openNotification("danger", "Failed!", "Reset Token Failed!");
+          this.checkAuth(err.response);
         });
+    },
+    openApidoc() {
+      window.open(this.URL.apidoc, "_blank");
     },
     onCopy: function (e) {
       this.toolTipMessage = "Token Copied To Clipboard!";
       this.tokenCopied = true;
       setTimeout(() => {
-          this.tokenCopied = null
-      this.toolTipMessage = null;          
+        this.tokenCopied = null;
+        this.toolTipMessage = null;
       }, 1000);
     },
     onError: function (e) {
-        this.tokenCopied = false;
-        this.toolTipMessage = "Failed to copy token!";        
+      this.tokenCopied = false;
+      this.toolTipMessage = "Failed to copy token!";
       console.log(e);
     },
   },
@@ -158,7 +185,7 @@ export default {
   cursor: pointer;
 }
 
-.box{
-    min-height: 150px;
+.box {
+  min-height: 150px;
 }
 </style>
