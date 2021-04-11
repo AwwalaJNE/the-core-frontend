@@ -131,7 +131,7 @@ export default {
             }
             @include for-desktop-up{
                 .vs-dialog {
-                    min-width: 85%;
+                    min-width: 90%;
                 }
             }
         }

@@ -12,6 +12,7 @@ export default {
 	name: "App",
 	mounted() {
 		console.log('TOLONG GIMANA CARANYA CEK AUTH DISINI :(');
+		console.log('CEK DI MIXIN KANG, ITU ADA HELPER UNTUK AMBIL TOKEN BUAT HEADER');
 	}
 }
 </script>
