@@ -22,7 +22,7 @@
                                     <selector 
                                     ref="node_selector"
                                     :valueData="datanode"
-                                    :selectedValue="datanode[0].value"
+                                    :selectedValue="selectedNode"
                                     :isMultiple="false"
                                     :border="true"
                                     :tabindex="-1"
@@ -130,6 +130,7 @@ export default {
             let node = this.datanode.filter(item => item.value == val)
             this.$ls.set('node_id', node[0])
             this.$store.dispatch(`SET_USER_N`, node[0])
+            this.$router.go(0)
         },
         init(){
             let userObjLocalStorage = JSON.parse(localStorage.getItem('vuejs__user')).value;

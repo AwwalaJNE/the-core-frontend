@@ -556,65 +556,6 @@ export default {
     connote_index: ''
   },
 
-  // saat ini untuk CLEAR_TRANSACTION_DATA_CONNOTE
-  // transaction_TEMPLATE: {
-  //   transaction_id: '',
-  //   transaction_finished: false,
-  //   node_code: '',
-  //   connote: [
-  //     {
-  //       pra_connote: '',
-  //       single_connote_no: '',
-  //       connote_number: '',
-  //       connote_shipper_customer_id: '',
-  //       connote_shipper_name: '',
-  //       connote_shipper_phone_number: '',
-  //       connote_shipper_street_address:'',
-  //       connote_shipper_administrative_address: '',
-  //       connote_shipper_tariff_code: '',
-    
-  //       connote_receiver_customer_id: '',
-  //       connote_receiver_address_type: 'rumah',
-  //       connote_receiver_zip_code: '',
-  //       connote_receiver_tariff_code: '',
-  //       connote_receiver_name: '',
-  //       connote_receiver_phone_number: '',
-  //       connote_receiver_street_address: '',
-  //       connote_receiver_administrative_address: '',
-    
-  //       connote_bpik: [],
-  //       insured_goods_value: 0,
-  //       amount_discount: 0,
-  //       is_insurance_refused: false,
-  //       is_insured: false,
-  //       connote_refuse_wooden_package:false,
-  //       is_packing_kayu: false,
-  //       is_need_do_return: false,
-  //       connote_is_do_return: false,
-  //       connote_koli_item: [
-  //         {
-  //           koli_id: '',
-  //           height: 0,
-  //           length: 0,
-  //           width: 0,
-  //           volume_weight: 0,
-  //           actual_weight: 1,
-  //           surcharge_id: [],
-  //           is_packing_kayu: false,
-  //           is_packing_kayu_id: '',
-  //           description: ''
-  //         }
-  //       ],
-  //       connote_bpik:[],
-  //       total_biaya: 0,
-  //       connote_index: ''
-  //     },
-  //   ],
-  //   grand_total: 0,
-  //   discount: 0,
-  //   payment_method: ''
-  // },
-
   transaction: {
     transaction_id: '',
     transaction_finished: false,
