@@ -118,6 +118,7 @@ export default {
                     let arr = res.data.data
                     arr.map((item, index) => {
                         item["counter"] = index+1
+                        item["node_name"] = item["node_name"]+" ("+item["node_type_name"]+")"
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.hasOwnProperty('meta') ? res.data.meta.current_page : 1
