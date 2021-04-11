@@ -129,6 +129,9 @@ import SettingExchangeRate from "@/views/settings/exchange_rate"
 // === setting Access Token ===
 import SettingAccessToken from "@/views/settings/access_token"
 
+// === profile ===
+import Profile from "@/views/auth/profile"
+
 
 Vue.use(VueRouter)
 
@@ -143,6 +146,15 @@ const routes = [
     name: 'main',
     component: Content,
     children: [
+      {
+        path: "profile",
+        name: "profile",
+        component: Profile,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "User Profile"
+        }
+      },
       {
         path: "settings",
         name: "settings",

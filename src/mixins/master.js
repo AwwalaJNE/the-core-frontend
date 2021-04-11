@@ -68,7 +68,6 @@ const Master = {
             })
         },
         checkAuth(res) {
-            console.log('res', res.data)
             if(res.status === 401) {
                 localStorage.clear();
                 this.$router.go()

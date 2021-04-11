@@ -79,8 +79,8 @@ export default {
 
                     // console.log('token local', token)
 
-                    // this.$router.push({ name: "users"});
-                    this.$router.replace('/settings/users')
+                    this.$router.push({ name: "profile"});
+                    // this.$router.replace('/settings/users')
                     
                 }).catch(err => {
                     console.log('err', err)

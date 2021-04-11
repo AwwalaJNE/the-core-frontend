@@ -2440,6 +2440,44 @@ export default {
       valueData: null,
       value: ''
     }
+  },
+  profile:{
+    user_name: {
+      label: "Full Name",
+      key: "user_name",
+      rule:"required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    user_login: {
+      label: "Username",
+      key: "user_login",
+      rule:"required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    password: {
+      label: "Password",
+      key: "password",
+      rule:"",
+      typeInput: "text|password",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    user_email: {
+      label: "Email",
+      key: "user_email",
+      rule:"",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
   }
   
 }
