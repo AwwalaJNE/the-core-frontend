@@ -38,15 +38,15 @@
             
         />
 
-      <!-- dialog confirm cancel pickup-->
-      <dialog-confirm
-          :active="activeDialogCancel"
-          :loading="activeLoadingCancel"
-          :closeDialog="closeDialogConfirmCancel"
-          title="Cancel Pickup"
-          message="Are you sure you want to cancel Pickup ?"
-          @confirm="confirmCancel"
-          @cancel="closeDialogConfirmCancel"
+
+      <!--Create pickup Request-->
+      <dialogPickupListCancel
+          :active="dialogPickupListCancel"
+          :loading="dialogPickupListCancelLoading"
+          :pickupNumber="pickupNumber"
+          @refresh="refresh"
+          :closeDialog="closeDialogPickupListCancel"
+          title="Cancel Pickup List"
       />
     </div>
 </template>
@@ -57,6 +57,7 @@ import TableMaster from "@/components/table/tableMaster.vue"
 import DialogCreatePickupList from "@/views/pickup/list/dialogCreateEditPickupList"
 import DialogPicked from "@/views/pickup/list/dialogPicked"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
+import dialogCancelPickupList from "@/views/pickup/list/dialogCancelPickupList";
 
 export default {
     name:"pickup-requestlist",
@@ -71,13 +72,14 @@ export default {
         "table-master" : TableMaster,
         "dialogCreatePickupList": DialogCreatePickupList,
         "DialogPicked": DialogPicked,
-        "dialog-confirm": DialogConfirm
+        "dialog-confirm": DialogConfirm,
+        "dialogPickupListCancel": dialogCancelPickupList
     },
     data() {
         return {
             //cancel pickup
-            activeDialogCancel:false,
-            activeLoadingCancel:false,
+            dialogPickupListCancel:false,
+            dialogPickupListCancelLoading:false,
 
             dataTable: [],
             dialogPickupList:false,
@@ -139,6 +141,7 @@ export default {
             node_filter: "",
             temp_pickup_status:'',
             dialogTariff: false,
+            pickupNumber:null,
             pagination: {
                 limit:20,
                 page_size: 1,
@@ -208,7 +211,7 @@ export default {
                     let arr = res.data.data
                     arr.map(item => {
                         item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
-                        item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED') ? true : false
+                        item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE') ? true : false
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
@@ -217,7 +220,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Pickup data is empty!', ' Please create a new pickup data')
+                        // this.openNotification('warn', 'Pickup data is empty!', ' Please create a new pickup data')
                     }
                     
                     this.loading = false
@@ -269,8 +272,9 @@ export default {
           this.dialogPickedActive = true;
         },
         actionCancel(val){
-          this.pickupData = val;
-          this.activeDialogCancel = true;
+          this.pickupNumber = val.pickup_number
+          this.dialogPickupListCancel = true;
+
         },
 
         //cancel pickup
@@ -286,8 +290,8 @@ export default {
             this.updateData(formupdate, pickup_number)
           }
         },
-        closeDialogConfirmCancel(){
-          this.activeDialogCancel = false
+      closeDialogPickupListCancel(){
+          this.dialogPickupListCancel = false
           this.activeLoadingCancel=false
         },
         async updateData(form, pickup_number){

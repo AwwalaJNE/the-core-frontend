@@ -133,7 +133,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Vehicle mode data is empty!', ' Please create a new Vehicle mode data')
+                        // this.openNotification('warn', 'Vehicle mode data is empty!', ' Please create a new Vehicle mode data')
                     }
                     
                     this.loading = false

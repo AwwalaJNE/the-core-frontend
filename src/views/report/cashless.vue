@@ -190,7 +190,7 @@ export default {
                     this.keysData.push(obj)
                     this.handleClearForm()
                     this.closeLoading()
-                    this.openNotification('danger', 'Scan failed', err)
+                    this.openNotification('danger', 'Failed!', (err.response.data.message ?? 'System Err').toUpperCase())
                 })
         },
         handleClearForm(){

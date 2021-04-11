@@ -102,7 +102,7 @@ export default {
                   width: "sm"
                 },
                 {
-                    label: "Kg",
+                    label: "Max Weight",
                     key: "max_weight",
                     width: "auto"
                 },
@@ -204,7 +204,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Surat Muatan data is empty!', ' Please create Surat Muatan data')
+                        // this.openNotification('warn', 'Surat Muatan data is empty!', ' Please create Surat Muatan data')
                     }
                     
                     this.loading = false
@@ -291,7 +291,8 @@ export default {
           name: 'printGeneral', 
           params: { 
               'id': row.manifest_number, 
-              'type': 'manifest'
+              'type': 'manifest',
+              'node_id': this.listenNodeId
           } 
         });
         window.open(routeData.href, '_blank');

@@ -1,4 +1,6 @@
 const api = process.env.VUE_APP_API;
+const urlFOrmated = new URL(api);
+
 
 // console.log('process.env.VUE_APP_API',process.env.VUE_APP_API);
 export default {
@@ -67,6 +69,8 @@ export default {
 
     //PICKUP
     pickup: api + "pickup",
+
+    pickup_courier: api + "pickup-courier",
 
     //PICKUP REQUEST
     pickup_request: api + "pickup-request",
@@ -137,6 +141,15 @@ export default {
     packing_kayu: api + "packingkayu",
 
     //cashless
-    cashless: api + "cashless"
+    cashless: api + "cashless",
+
+    //profile
+    profile: api + "profile",
+
+    //reset-token
+    reset_token: api + "reset-token",
+
+    //apidoc
+    apidoc: urlFOrmated.origin + "/docs",
 
 }

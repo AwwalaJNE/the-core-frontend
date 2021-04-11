@@ -196,7 +196,7 @@ export default {
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
-                        this.openNotification('warn', 'Irreguralities Cancel data is empty!', ' Please create Irreguralities Cancel data')
+                        // this.openNotification('warn', 'Irreguralities Cancel data is empty!', ' Please create Irreguralities Cancel data')
                     }
                     
                     this.loading = false

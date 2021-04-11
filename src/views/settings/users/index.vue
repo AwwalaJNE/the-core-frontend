@@ -293,7 +293,7 @@ export default {
                         this.dataRole = res.data.data
                     } else {
                         this.dataRole = []
-                        this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                     this.loadingDataRole = false
@@ -323,7 +323,7 @@ export default {
                         this.permissionObject = temp
                         // console.log('meong 1 ', this.permission)
                     } else {
-                        this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
+                        // this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
                     }
                     
                     

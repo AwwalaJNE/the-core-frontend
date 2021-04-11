@@ -67,8 +67,8 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Connote / Koli Number",
-                    key: "connote_number",
+                    label: "Koli Number",
+                    key: "koli_number",
                     width: "xs"
                 },
                 {
@@ -78,7 +78,7 @@ export default {
                 },
                 {
                     label: "Kg After",
-                    key: "koli_after",
+                    key: "koli_packing_kayu_weight",
                     width: "auto"
                 },
                 {
@@ -103,7 +103,7 @@ export default {
                 },
                 {
                     label: "Agent/KP/Cust",
-                    key: "base_tariff_tariff",
+                    key: "node_name",
                     width: "auto"
                 },
             ],

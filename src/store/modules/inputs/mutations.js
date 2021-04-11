@@ -1263,6 +1263,34 @@ export default {
   },
   //END PICKUP LIST
 
+  //START PICKUP LIST CANCEL
+  SET_PICKUP_LIST_CANCEL_STATUS(state, payload) {
+    state.pickup_list_cancel.status.value = payload
+  },
+  SET_PICKUP_LIST_CANCEL_STATUS_ValueData(state, payload) {
+    state.pickup_list_cancel.status.valueData = payload
+  },
+  SET_PICKUP_LIST_CANCEL_STATUS_ArrData(state, payload) {
+    state.pickup_list_cancel.status.hasOwnProperty('arrData') ?
+      state.pickup_list_cancel.status.arrData = payload :
+      state.pickup_list_cancel.status.arrData = []
+  },
+  //END PICKUP LIST CANCEL
+
+  //START PICKUP REQUEST CANCEL
+  SET_PICKUP_REQUEST_CANCEL_STATUS(state, payload) {
+    state.pickup_request_cancel.status.value = payload
+  },
+  SET_PICKUP_REQUEST_CANCEL_STATUS_ValueData(state, payload) {
+    state.pickup_request_cancel.status.valueData = payload
+  },
+  SET_PICKUP_REQUEST_CANCEL_STATUS_ArrData(state, payload) {
+    state.pickup_request_cancel.status.hasOwnProperty('arrData') ?
+      state.pickup_request_cancel.status.arrData = payload :
+      state.pickup_request_cancel.status.arrData = []
+  },
+  //END PICKUP REQUEST CANCEL
+
   //pickup schedule start
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME(state, payload) {
     state.pickup_schedule.pickup_schedule_name.value = payload
@@ -1380,6 +1408,13 @@ export default {
   },
   SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData(state, payload) {
     state.surat_muatan.manifest_number.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_MAX_WEIGHT(state, payload) {
+    state.surat_muatan.max_weight.value = payload
+  },
+  SET_SURAT_MUATAN_MAX_WEIGHT_ValueData(state, payload) {
+    state.surat_muatan.max_weight.valueData = payload
   },
 
   SET_SURAT_MUATAN_MANIFEST_METHOD_ID(state, payload) {
@@ -2001,14 +2036,6 @@ export default {
   SET_PACKINGKAYU_KOLI_NUMBER_ValueData(state, payload) {
     state.packingkayu.koli_number.valueData = payload
   },
-
-  SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE(state, payload) {
-    state.packingkayu.koli_actual_before.value = payload
-  },
-  SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE_ValueData(state, payload) {
-    state.packingkayu.koli_actual_before.valueData = payload
-  },
-
   SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT(state, payload) {
     state.packingkayu.koli_actual_weight.value = payload
   },
@@ -2016,6 +2043,13 @@ export default {
     state.packingkayu.koli_actual_weight.valueData = payload
   },
 
+  SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT(state, payload) {
+    state.packingkayu.koli_packing_kayu_weight.value = payload
+  },
+  SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT_ValueData(state, payload) {
+    state.packingkayu.koli_packing_kayu_weight.valueData = payload
+  },
+  
   SET_PACKINGKAYU_KOLI_HEIGHT(state, payload) {
     state.packingkayu.koli_height.value = payload
   },

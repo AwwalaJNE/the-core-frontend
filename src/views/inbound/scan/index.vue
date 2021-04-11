@@ -101,7 +101,9 @@ export default {
     },
     methods: {
         refresh(){
+          if(this.inbound_id  !==  "") {
             this.$refs.inboundInformation.refresh() // trigger function refresh form dari luar component list
+          }
         },
         searchValue (val) {
             this.tempSearch = val
@@ -136,16 +138,22 @@ export default {
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
-                this.inbound_id = res.data.data.inbound_id
+                  let message = 'TANPA : SM / SJ / PICKUP';
+                  let typeNotif = null;
+                if(res.data.data.inbound_id){
+                  typeNotif = 'success';                  
+                  message = null;
+                  this.inbound_id = res.data.data.inbound_id
+                }
                 this.refresh()
                 this.handlerClearForm()
-                this.openNotification(null, 'Success', 'Receiving is success')
+                this.openNotification(typeNotif, 'Receiving Success!', message)
               }).catch(err => {
                 console.log(err,'err receiving');
                 this.loading = false
                 this.refresh()
                 this.handlerClearForm()
-                this.openNotification('danger', 'Receiving is failed', err)
+                this.openNotification('danger', 'Receiving Failed!', err.response.data.message)
               })
         },
         back(){

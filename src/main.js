@@ -9,6 +9,8 @@ import 'element-ui/lib/theme-chalk/index.css';
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
 import VueCurrencyInput from 'vue-currency-input'
+import VueClipboard from 'vue-clipboard2'
+
 
 // import VueMoment from 'vue-moment'
 // import moment from 'moment-timezone'
@@ -29,6 +31,7 @@ Vue.use(TimePicker)
 Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(CheckboxButton)
+Vue.use(VueClipboard)
 
 const pluginOptions = {
   /* see config reference https://dm4t2.github.io/vue-currency-input/config/*/

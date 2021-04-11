@@ -142,7 +142,7 @@ export default {
                         
                     } else {
                         this.dataTable = [];
-                        this.openNotification('warn', 'Customer data is empty!', ' Please create a new Customer')
+                        // this.openNotification('warn', 'Customer data is empty!', ' Please create a new Customer')
                     }
                     
                     this.loading = false

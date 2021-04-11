@@ -176,7 +176,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Irreguralities Return data is empty!', ' Please create Irreguralities Return data')
+                        // this.openNotification('warn', 'Irreguralities Return data is empty!', ' Please create Irreguralities Return data')
                     }
                     
                     this.loading = false

@@ -88,7 +88,7 @@ export default {
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
-                        this.openNotification('warn', 'Node type data is empty!', ' Please create a new node type')
+                        // this.openNotification('warn', 'Node type data is empty!', ' Please create a new node type')
                     }
                     
                     this.loading = false

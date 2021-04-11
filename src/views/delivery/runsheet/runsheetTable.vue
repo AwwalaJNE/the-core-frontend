@@ -141,7 +141,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'Delivery Runsheet data is empty!', ' Please create a new data')
+                        // this.openNotification('warn', 'Delivery Runsheet data is empty!', ' Please create a new data')
                     }
                     
                     this.loading = false

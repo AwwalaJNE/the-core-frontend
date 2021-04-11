@@ -1227,6 +1227,32 @@ export default {
   },
   //END PICKUP LIST
 
+  //PIKCUP LIST CANCEL
+  SET_PICKUP_LIST_CANCEL_STATUS({ commit }, payload) {
+    commit('SET_PICKUP_LIST_CANCEL_STATUS', payload)
+  },
+  SET_PICKUP_LIST_CANCEL_STATUS_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_CANCEL_STATUS_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_PICKUP_LIST_CANCEL_STATUS_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_LIST_CANCEL_STATUS_ArrData', payload)
+  },
+  //END PICKUP LIST CANCEL
+
+  //PIKCUP REQUEST CANCEL
+  SET_PICKUP_REQUEST_CANCEL_STATUS({ commit }, payload) {
+    commit('SET_PICKUP_REQUEST_CANCEL_STATUS', payload)
+  },
+  SET_PICKUP_REQUEST_CANCEL_STATUS_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_REQUEST_CANCEL_STATUS_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_PICKUP_REQUEST_CANCEL_STATUS_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_REQUEST_CANCEL_STATUS_ArrData', payload)
+  },
+  //END PICKUP REQUEST CANCEL
+
   /* PICKUP SCHEDULE START */
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME', payload)
@@ -1339,6 +1365,13 @@ export default {
   },
   SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData', payload)
+  },
+
+  SET_SURAT_MUATAN_MAX_WEIGHT({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MAX_WEIGHT', payload)
+  },
+  SET_SURAT_MUATAN_MAX_WEIGHT_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MAX_WEIGHT_ValueData', payload)
   },
 
   SET_SURAT_MUATAN_MANIFEST_METHOD_ID({ commit }, payload) {
@@ -1836,13 +1869,6 @@ export default {
     commit('SET_PACKINGKAYU_KOLI_NUMBER_ValueData', payload)
   },
 
-  SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE({ commit }, payload) {
-    commit('SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE', payload)
-  },
-  SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE_ValueData({ commit }, payload) {
-    commit('SET_PACKINGKAYU_KOLI_ACTUAL_BEFORE_ValueData', payload)
-  },
-
   SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT({ commit }, payload) {
     commit('SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT', payload)
   },
@@ -1850,6 +1876,13 @@ export default {
     commit('SET_PACKINGKAYU_KOLI_ACTUAL_WEIGHT_ValueData', payload)
   },
 
+  SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT({ commit }, payload) {
+    commit('SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT', payload)
+  },
+  SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT_ValueData({ commit }, payload) {
+    commit('SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT_ValueData', payload)
+  },
+    
   SET_PACKINGKAYU_KOLI_HEIGHT({ commit }, payload) {
     commit('SET_PACKINGKAYU_KOLI_HEIGHT', payload)
   },

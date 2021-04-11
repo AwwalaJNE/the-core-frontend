@@ -161,6 +161,7 @@ export default {
                     let arr = res.data.data
                     arr.map(item => {
                         item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
+                        item["packing_kayu_type"] = item.packing_kayu_type != null ? 'PK-'+item.packing_kayu_type : '-'                        
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page

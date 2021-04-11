@@ -105,7 +105,7 @@ export default {
                 this.DataArr.push(obj)
               })
             } else {
-              this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
+              // this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
             }
 
           }).catch(err => {

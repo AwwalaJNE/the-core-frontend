@@ -209,7 +209,7 @@ export default {
             let url = ""
             switch(info["key"]) {
                 case "node_id_origin":
-                    url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
+                    url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&vehicle_mode_id=' +this.vehicle_mode_id
                     this.autoComplateUrl = url
                     break;
                 case "node_id_destination":
@@ -262,7 +262,6 @@ export default {
             .catch(error => console.log("error", error));
         },
         formData(form){
-          console.log('form',form)
           form['node_id_origin'] = form['node_id_origin']['node_id']
           form['node_id_destination'] = form['node_id_destination']['node_id']
 
@@ -286,6 +285,8 @@ export default {
           if (this.form.eta > this.form.etd) {
             if(this.manifest_number !== undefined && this.manifest_number !== '') {
               this.form.manifest_number = this.manifest_number
+              this.form.etd = moment(this.form.etd).format('YYYY-MM-DD HH:mm:ss');
+              this.form.eta = moment(this.form.eta).format('YYYY-MM-DD HH:mm:ss');              
               this.updateData()
             } else {
               this.node_id = this.listenNodeId
@@ -368,7 +369,7 @@ export default {
                   let arr = []
                   res.data.data.map(item => {
                     let obj = {}
-                    obj["label"] = `${item.vehicle_name} | Police number: ${item.vehicle_police_no}`
+                    obj["label"] = `${item.vehicle_name} (${item.vehicle_police_no})`
                     obj["value"] = item.vehicle_id
 
                     arr.push(obj)

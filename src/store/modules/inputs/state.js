@@ -1746,6 +1746,32 @@ export default {
       value: ''
     }
   },
+
+  pickup_list_cancel: {
+    status: {
+      label: "Reason",
+      key: "status",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    }
+  },
+
+  pickup_request_cancel: {
+    status: {
+      label: "Reason",
+      key: "status",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    }
+  },
   //surat muatan
   surat_muatan:{
     manifest_number: {
@@ -1756,6 +1782,15 @@ export default {
       typeData: "String",
       valueData: null,
       value: ''
+    },
+    max_weight: {
+      label: "Max Weight",
+      key: "max_weight",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      valueData: null,
+      value: null
     },
     manifest_method_id: {
       label: "Moda",
@@ -2350,9 +2385,9 @@ export default {
       valueData: null,
       value: ''
     },
-    koli_actual_before: {
+    koli_actual_weight: {
       label: "Kg Before",
-      key: "koli_actual_before",
+      key: "koli_actual_weight",
       rule: "required",
       isDisabled: true,
       width: '6',
@@ -2361,9 +2396,9 @@ export default {
       valueData: null,
       value: ''
     },
-    koli_actual_weight: {
+    koli_packing_kayu_weight: {
       label: "Kg After",
-      key: "koli_actual_weight",
+      key: "koli_packing_kayu_weight",
       rule: "required",
       isDisabled: false,
       width: '6',

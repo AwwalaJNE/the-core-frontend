@@ -69,7 +69,10 @@ const Master = {
         },
         checkAuth(res) {
             console.log('res', res.data)
-            if(res.data.reason) {
+            if(res.status === 401) {
+                localStorage.clear();
+                this.$router.go()
+            } else if(res.data.reason) {
                 let reason = res.data.reason.toLowerCase()
                 switch(true) {
                     case reason.includes("unauthenticated"):

@@ -170,7 +170,7 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        this.openNotification('warn', 'tariff data is empty!', ' Please create cost to cost data')
+                        // this.openNotification('warn', 'tariff data is empty!', ' Please create cost to cost data')
                     }
                     
                     this.loading = false

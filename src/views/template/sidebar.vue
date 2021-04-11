@@ -235,58 +235,6 @@ export default {
                     ]
                 },
                 {
-                    label: 'Settings',
-                    url: null,
-                    icon: '',
-                    children: [
-                        {
-                            label: 'Settings Tariff',
-                            url: '/settings/tariff',
-                            icon: ''
-                        },
-                        {
-                            label: 'Settings Surcharge',
-                            url: '/settings/surcharge',
-                            icon: ''
-                        },
-                        {
-                            label: 'Settings Geolocation',
-                            url: '/settings/geolocation',
-                            icon: ''
-                        },
-                        {
-                            label: 'Settings Nodes',
-                            url: '/settings/nodes',
-                            icon: ''
-                        },
-                        {
-                            label: 'Settings Vehicles',
-                            url: '/settings/vehicles',
-                            icon: ''
-                        },
-                        {
-                            label: 'Settings Users',
-                            url: '/settings/users',
-                            icon: ''
-                        },
-                        {
-                            label: 'Settings Employee',
-                            url: '/settings/employee',
-                            icon: ''
-                        },
-                        {
-                            label: 'Settings Customer',
-                            url: '/settings/customer',
-                            icon: ''
-                        },
-                        {
-                            label: 'Settings Exchange Rate',
-                            url: '/settings/exchangerate',
-                            icon: ''
-                        },
-                    ]
-                },
-                {
                     label: 'Report',
                     url: null,
                     icon: '',
@@ -352,6 +300,63 @@ export default {
                         },
                     ]
                 },
+                {
+                    label: 'Settings',
+                    url: null,
+                    icon: '',
+                    children: [
+                        {
+                            label: 'Settings Tariff',
+                            url: '/settings/tariff',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Surcharge',
+                            url: '/settings/surcharge',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Geolocation',
+                            url: '/settings/geolocation',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Nodes',
+                            url: '/settings/nodes',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Vehicles',
+                            url: '/settings/vehicles',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Users',
+                            url: '/settings/users',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Employee',
+                            url: '/settings/employee',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Customer',
+                            url: '/settings/customer',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Exchange Rate',
+                            url: '/settings/exchangerate',
+                            icon: ''
+                        },
+                        {
+                            label: 'Settings Access Token',
+                            url: '/settings/access-token',
+                            icon: ''
+                        },
+                    ]
+                },
             ]
         }
     },
@@ -362,7 +367,7 @@ export default {
     },
     methods: {
         redirect(val){
-            console.log('meong', val)
+            console.log('meong menu',val,' visited')
             this.isExpand = false
             // this.$router.push(`${val}`)
         }

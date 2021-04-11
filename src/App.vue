@@ -10,10 +10,16 @@ import './assets/fonts/_fonts.scss'
 import 'boxicons/css/boxicons.min.css'
 export default {
 	name: "App",
+	mounted() {
+		console.log('TOLONG GIMANA CARANYA CEK AUTH DISINI :(');
+	}
 }
 </script>
 
 <style lang="scss">
+html{
+	font-family: "NunitoSans-Regular";
+}
 #app {
   font-family: "NunitoSans-Regular";
   -webkit-font-smoothing: antialiased;
