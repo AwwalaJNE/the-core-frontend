@@ -469,10 +469,15 @@ export default {
         commit('SWITCH_CONNOTE_ACTIVE', payload)
     },
 
-    EMPTY_TRANSACTION_DATA_CONNOTE({ commit }, payload) {
-        commit('EMPTY_TRANSACTION_DATA_CONNOTE', payload)
-    },
-    CLEAR_TRANSACTION_DATA_CONNOTE({ commit }, payload) {
-        commit('CLEAR_TRANSACTION_DATA_CONNOTE', payload)
-    },
+    // EMPTY_TRANSACTION_DATA_CONNOTE({ commit }, payload) {
+    //     commit('EMPTY_TRANSACTION_DATA_CONNOTE', payload)
+    // },
+    // CLEAR_TRANSACTION_DATA_CONNOTE({ commit }, payload) {
+    //     commit('CLEAR_TRANSACTION_DATA_CONNOTE', payload)
+    // },
+    RESET_STATE({ commit }, payload) {
+        if(payload && Object.keys(payload).length > 0) {
+            commit('RESET_STATE', {'key': payload.key,'state': payload.state})
+        }
+    }
 }

@@ -17,6 +17,13 @@ const TransactionMixin = {
             BASE_TARIFF: 0,
 
             koliBeforeSurcharge: {},
+
+            defaultCalculator: {},
+            defaultDestination: {},
+            defaultOrigin: {},
+            defaultPackage: {},
+            defaultTransaction: {},
+            defaultCalcComponent: {}
         }
     },
     computed: {
@@ -63,7 +70,7 @@ const TransactionMixin = {
                 let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
 
                 let filterAutoSurcharge = this.listenSurchargeList || []
-                console.log('listKoli', listKoli)
+                // console.log('listKoli', listKoli)
                 try {
                     if(listKoli.length > 0) {
                         let hasPackingKayu = false
@@ -103,7 +110,7 @@ const TransactionMixin = {
                                                 alreadyHasOverWeight = true
                                             } 
                                             if(this.listenPackageSurchargeByID[itm]['surcharge_type_name'].toLowerCase().includes('packing kayu')) {
-                                                console.log('HAS PACKING KAYU')
+                                                // console.log('HAS PACKING KAYU')
                                                 hasPackingKayu = true
                                             }
                                         }
@@ -382,7 +389,7 @@ const TransactionMixin = {
                                                 
                                                     if(this.koliBeforeSurcharge.hasOwnProperty(indexKoli)) {
                                                         // if(this.koliBeforeSurcharge[indexKoli].surchargeId !== su_id) {
-                                                            console.log('beda surcharge',this.koliBeforeSurcharge[indexKoli].surchargeId,su_id)
+                                                            // console.log('beda surcharge',this.koliBeforeSurcharge[indexKoli].surchargeId,su_id)
                                                             koli.actual_weight = this.koliBeforeSurcharge[indexKoli].value
                                                             koli_actual_weight = Number(koli['actual_weight'])
                                                         // } 
@@ -393,7 +400,7 @@ const TransactionMixin = {
                                                             objData['surchargeId'] = su_id
                                                             this.koliBeforeSurcharge[indexKoli] = objData
                                                     }
-                                                    console.log('BEFORE SURCHARGE CALCULATED', this.koliBeforeSurcharge, su_id)
+                                                    // console.log('BEFORE SURCHARGE CALCULATED', this.koliBeforeSurcharge, su_id)
                                                 
                                                 
                                                 let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
@@ -469,18 +476,20 @@ const TransactionMixin = {
             //     TOTAL_BIAYA = TOTAL_BIAYA - diskon
             // }
             
+            if(Object.keys(tarifData).length > 0) {
+                this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.SUM_ACTUAL_WEIGHT)
+                this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.SUM_VOLUME_WEIGHT)
+                this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.SUM_CHARGEBLE_WEIGHT)
+                
+                this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", this.BASE_TARIFF)
+                this.$store.dispatch("SET_CALCULATOR_SURCHARGE", SUM_BIAYA_LAIN)
+                this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", SUM_HANDLING_CHARGE)
+                this.$store.dispatch("SET_CALCULATOR_TOTAL_BIAYA", TOTAL_BIAYA)
+                // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
+                this.$store.dispatch('SET_CONNOTE_DATA', {'key':'total_biaya','value': TOTAL_BIAYA})
+                this.calculateGrandTotal()
+            }
             
-            this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.SUM_ACTUAL_WEIGHT)
-            this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.SUM_VOLUME_WEIGHT)
-            this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.SUM_CHARGEBLE_WEIGHT)
-            
-            this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", this.BASE_TARIFF)
-            this.$store.dispatch("SET_CALCULATOR_SURCHARGE", SUM_BIAYA_LAIN)
-            this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", SUM_HANDLING_CHARGE)
-            this.$store.dispatch("SET_CALCULATOR_TOTAL_BIAYA", TOTAL_BIAYA)
-            // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
-            this.$store.dispatch('SET_CONNOTE_DATA', {'key':'total_biaya','value': TOTAL_BIAYA})
-            this.calculateGrandTotal()
         },
 
         diskonCalc(base_tariff, diskon){
@@ -499,30 +508,35 @@ const TransactionMixin = {
 
             let tariffStandar = service['tariffStandar'] || {}
             let tariffAkumulatif = service['tariffAkumulatif'] || {}
-            
-            processTariff = Number(tariffStandar['value']) * (weight <= Number(tariffStandar['weight']) ? weight : Number(tariffStandar['weight']))
-            if(weight > tariffStandar['weight']){
-                let Processweight = Math.abs(Number(tariffStandar['weight']) - Number(weight))
-                let sisa = 0
-                let keys = Object.keys(tariffAkumulatif)
-                let temp = 0
-                for(let i=0; i <= keys.length -1 ; i++) {
-                    let calc = (Number(Processweight) - Number(keys[i])) < 0 ? 0 : (Number(Processweight) - Number(keys[i]))
-                    if(calc !== 0) {
-                        let abs = Math.abs(Number(Processweight) - Number(keys[i]))
-                        Processweight = abs
-                        temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(keys[i]))
-                        
-                    } else {
-                        temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(Processweight))
-                        sumTariffAkumulatif = Number(sumTariffAkumulatif) + temp
-                        break
-                    }   
+
+            // console.log('tariff tiering nihh >>>', wg, service)
+
+            if(Object.keys(service).length > 0) {
+                // console.log('tariff tiering nihh kondisi oke>>>', Object.keys(service).length)
+                processTariff = Number(tariffStandar['value']) * (weight <= Number(tariffStandar['weight']) ? weight : Number(tariffStandar['weight']))
+                if(weight > tariffStandar['weight']){
+                    let Processweight = Math.abs(Number(tariffStandar['weight']) - Number(weight))
+                    let sisa = 0
+                    let keys = Object.keys(tariffAkumulatif)
+                    let temp = 0
+                    for(let i=0; i <= keys.length -1 ; i++) {
+                        let calc = (Number(Processweight) - Number(keys[i])) < 0 ? 0 : (Number(Processweight) - Number(keys[i]))
+                        if(calc !== 0) {
+                            let abs = Math.abs(Number(Processweight) - Number(keys[i]))
+                            Processweight = abs
+                            temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(keys[i]))
+                            
+                        } else {
+                            temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(Processweight))
+                            sumTariffAkumulatif = Number(sumTariffAkumulatif) + temp
+                            break
+                        }   
+                    }
                 }
+
+                processTariff = Number(processTariff) + Number(sumTariffAkumulatif)
             }
-
-            processTariff = Number(processTariff) + Number(sumTariffAkumulatif)
-
+            
             return processTariff
             
         },
@@ -538,12 +552,78 @@ const TransactionMixin = {
             }
             return res;
         },
+        getDefaultState() {
+            // console.log('get default', this.$store.state.transaction.calc_component)
+            this.defaultCalculator = this.putusin(this.$store.state.transaction.calculator)
+            this.defaultDestination = this.putusin(this.$store.state.transaction.destination)
+            this.defaultOrigin = this.putusin(this.$store.state.transaction.origin)
+            this.defaultPackage = this.putusin(this.$store.state.transaction.package)
+            this.defaultCalcComponent = this.putusin(this.$store.state.transaction.calc_component)
+            this.defaultTransaction = this.putusin(this.$store.state.transaction.transaction)
+        },
+        putusin(obj) {
+            // remove data binding
+            // JSON.parse(JSON.stringify(obj))
+            return JSON.stringify(obj)
+        },
+        refreshStateCustom(key) {
+            switch(true) {
+                case key.includes("transaction"):
+                    this.$store.dispatch("RESET_STATE", {'key': 'transaction','state': this.defaultTransaction})
+                    break;
+                case key.includes("calculator"):
+                    this.$store.dispatch("RESET_STATE", {'key': 'calculator','state': this.defaultCalculator})
+                    break;
+                case key.includes("destination"):
+                    this.$store.dispatch("RESET_STATE", {'key': 'destination','state': this.defaultDestination})
+                    break;
+                case key.includes("origin"):
+                    this.$store.dispatch("RESET_STATE", {'key': 'origin','state': this.defaultOrigin})
+                    break;
+                case key.includes("package"):
+                    this.$store.dispatch("RESET_STATE", {'key': 'package','state': this.defaultPackage})
+                    break;
+                default:
+            }
+        },
+        refreshTransactionFields() {
+            this.$store.dispatch("RESET_STATE", {'key': 'calculator','state': this.defaultCalculator})
+            this.$store.dispatch("RESET_STATE", {'key': 'destination','state': this.defaultDestination})
+            this.$store.dispatch("RESET_STATE", {'key': 'origin','state': this.defaultOrigin})
+
+            this.$store.dispatch("RESET_STATE", {'key': 'package','state': this.defaultPackage})
+            
+            let self = this
+            setTimeout(function(){ self.$store.dispatch("RESET_STATE", {'key': 'calc_component','state': self.defaultCalcComponent}) }, 200);
+        },
         refreshTransactionStore() {
-            this.$store.dispatch("EMPTY_TRANSACTION_DATA_CONNOTE", true)
+
+            this.BIAYA_LAIN = 0
+            this.HANDLING_CHARGE = 0
+            this.SUM_CHARGEBLE_WEIGHT = 0
+            this.SUM_ACTUAL_WEIGHT = 0
+            this.SUM_VOLUME_WEIGHT = 0
+            this.BASE_TARIFF = 0
+
+            this.$store.dispatch("RESET_STATE", {'key': 'transaction','state': this.defaultTransaction})
+            this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, 0)
+            this.$store.dispatch("RESET_STATE", {'key': 'calculator','state': this.defaultCalculator})
+
+            this.$store.dispatch("RESET_STATE", {'key': 'destination','state': this.defaultDestination})
+            this.$store.dispatch("RESET_STATE", {'key': 'origin','state': this.defaultOrigin})
+
+            this.$store.dispatch("RESET_STATE", {'key': 'package','state': this.defaultPackage})
+            
+            let self = this
+            setTimeout(function(){ self.$store.dispatch("RESET_STATE", {'key': 'calc_component','state': self.defaultCalcComponent}) }, 200);
+            
+            
+            
+            // this.$store.dispatch("EMPTY_TRANSACTION_DATA_CONNOTE", true)
         },
         clearTransactionStore() {
-            this.$store.dispatch("CLEAR_TRANSACTION_DATA_CONNOTE", true)
-        }
+            // this.$store.dispatch("CLEAR_TRANSACTION_DATA_CONNOTE", true)
+        },
     },
 }
 

@@ -484,121 +484,17 @@ export default {
 
     },
 
-    EMPTY_TRANSACTION_DATA_CONNOTE(state, payload) {
-        Object.keys(state.origin).map(item => {
-            if(state.origin[item].hasOwnProperty('value')){
-                state.origin[item].value = ''
-            }
-        })
+    // CLEAR_TRANSACTION_DATA_CONNOTE(state, payload) {
+    //     state.transaction = state.transaction_TEMPLATE
+    // },
 
-        console.log('clear calculator', )
-        state.calculator['actual_weight'].value = 1
-        state.calculator['volume_weight'].value = 0
-        state.calculator['chargeable_weight'].value = 1
+    RESET_STATE(state, payload) {
+        console.log("mutation reset", payload)
 
-        state.calculator['biaya_kirim'].value = 0
-        state.calculator['handling_charge'].value = 0
-        state.calculator['surcharge'].value = 0
-
-        state.calculator['surcharge_manual'].value = 0
-        state.calculator['airline_document'].value = 0
-        state.calculator['shipper_declaration'].value = 0
-
-        state.calculator['adm_karantina'].value = 0
-        state.calculator['pelepasan_karantina'].value = 0
-        state.calculator['asuransi'].value = 0
-
-        state.calculator['adm_asuransi'].value = 0
-        state.calculator['diskon'].value = 0
-        state.calculator['total_biaya'].value = 0
-
-        // Object.keys(state.calculator).map(item => {
-
-        //     switch(true) {
-        //         case state.calculator[item]['typeData'].includes("Number"):
-                    
-        //                 state.calculator[item].value = 0
-                    
-        //             break;
-        //         default:
-        //     }
-        //     if(item == 'actual_weight' || item == 'chargeable_weight' ){
-        //         state.calculator[item].value = 1
-        //     }
-        // })
-
-        Object.keys(state.destination).map(item => {
-            switch(item) {
-                case "destination_type":
-                    if(state.destination[item].hasOwnProperty('value')){
-                        state.destination[item].value = 'rumah'
-                    }
-                    break;
-                case "destination_zip_code":
-                    if(state.destination[item].hasOwnProperty('input')){
-                        state.destination[item]['input'][0].value = ''
-                        state.destination[item]['input'][1].value = ''
-                    }
-                    break;
-                default:
-                    if(state.destination[item].hasOwnProperty('value')){
-                        state.destination[item].value = ''
-                    }
-                    // code block
-            }
-        })
-
-        Object.keys(state.package).map(item => {
-            switch(true) {
-                case state.package[item]['typeData'].includes("Number"):
-                    if(state.package[item].hasOwnProperty('value')){
-                        
-                            state.package[item].value = 0
-                        
-                    }
-                    break;
-                case state.package[item]['typeData'].includes("Boolean"):
-                    if(state.package[item].hasOwnProperty('value')){
-                        state.package[item].value = false
-                    }
-                    break;
-                case state.package[item]['typeData'].includes("Array"):
-                    if(state.package[item].hasOwnProperty('value')){
-                        state.package[item].value = []
-                    }
-                    break;
-                case state.package[item]['key'] == 'connote_service_code':
-                    console.log('connote_service_code =', state.package[item]['key'])
-                    if(state.package[item].hasOwnProperty('value')){
-                        state.package[item].value = ''
-                        state.package[item].valueData = {}
-                        state.package[item].arrData = [
-                            {
-                              'label': 'null',
-                              'value': 'null',
-                              'data': {},
-                              'tarif': 0
-                            }
-                          ]
-                    }
-                    console.log('state.package[item] ====', state.package[item])
-                    
-                    break;
-                default:
-                    if(state.package[item].hasOwnProperty('value')){
-                        state.package[item].value = ''
-                    }
-                    // code block
-            }
-
-            if(item == 'package_dimensi_weight' || item == 'package_jumlah') {
-                state.package[item].value = 1
-            }
-
-        })  
-    },
-    CLEAR_TRANSACTION_DATA_CONNOTE(state, payload) {
-        state.transaction = state.transaction_TEMPLATE
+        if(payload && payload.state != undefined) {
+            let parse = JSON.parse(payload.state)
+            Object.assign(state[`${payload.key}`], parse)
+        }
     }
 
 

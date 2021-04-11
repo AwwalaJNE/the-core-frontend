@@ -75,6 +75,7 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
+// import TransactionMixin from "@/mixins/transaction.js"
 import customerByPhone from "@/views/transaction/customerByPhone"
 import FormInputController from "@/views/transaction/formInputControllerTransaction"
 export default {
@@ -90,7 +91,11 @@ export default {
             dataItem: null,
             forcererender: false,
             destinationCode: '',
-            customer:""
+            customer:"",
+
+            defaultCalculator:"",
+            defaultDestination:"",
+            defaultPackage:""
         }
     },
     computed: {
@@ -102,25 +107,24 @@ export default {
         }
     },
     methods: {
+        getDefaultState() {
+            // console.log('get default', this.$store.state.transaction.calc_component)
+            this.defaultCalculator = this.putusin(this.$store.state.transaction.calculator)
+            this.defaultDestination = this.putusin(this.$store.state.transaction.destination)
+            this.defaultPackage = this.putusin(this.$store.state.transaction.package)
+            
+        },
+        putusin(obj) {
+            // remove data binding
+            // JSON.parse(JSON.stringify(obj))
+            return JSON.stringify(obj)
+        },
         removeCustomer(){
-            this.forcererender = true
-            let zipndestiCode = {'zip_code' : "", 'destination_code': ""}
-            this.$store.dispatch(`SET_DESTINATION_DESTINATION_TYPE`, "")
-            this.$store.dispatch(`SET_DESTINATION_DESTINATION_NAME`, "")
-            this.$store.dispatch(`SET_DESTINATION_DESTINATION_PHONE`, "")
-            this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, "")
-            this.$store.dispatch(`SET_DESTINATION_DESTINATION_SUBDISTRICT_ID`, "")
-            this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, "")
-            this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE`, zipndestiCode)
-
-            this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", {})
-            this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", {})
-            this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", [])
-
             this.customer = ""
-
-            let self = this
-            setTimeout(function(){ self.forcererender = false }, 100);
+            this.$store.dispatch("RESET_STATE", {'key': 'destination','state': this.defaultDestination})
+            this.$store.dispatch("RESET_STATE", {'key': 'package','state': this.defaultPackage})
+            this.$store.dispatch("RESET_STATE", {'key': 'calculator','state': this.defaultCalculator})
+            
         },
         setFocus(){
             let inp = this.$refs.formTransactionDestinationController.$refs.connote_receiver_name[0]
@@ -189,7 +193,7 @@ export default {
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_ONCHANGE_ADDRESS`, value.geolocation_location_name)
                 this.$store.dispatch(`SET_DESTINATION_DESTINATION_ZIP_CODE`, zipndestiCode)
 
-                this.customer = value2
+                !fromBooking ? this.customer = value2 : ''
                 // let self = this
                 // this.$nextTick(() => {
                 //     this.getShippingService(booking_connote_service_code, fromBooking)
@@ -237,6 +241,9 @@ export default {
                     // this.openNotification('danger', 'Failed to populate country list', err)
                 })
         },
+    },
+    created() {
+        this.getDefaultState()
     },
 }
 </script>
