@@ -1,7 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
-    width="lg"
+    width="xl"
     :closeDialog="cancel" class="custom-width">
 
         <template v-slot:header>
@@ -55,6 +55,10 @@
                       :hasPagination="false"
                       @actionPagination="actionPagination"
                   />
+                  <!-- klo mau ada action remove 
+                    :customAction="true"
+                      :customActionList="customActionList"
+                      @actionUpdate="actionUpdate" -->
                 </vs-row>
               </vs-col>
             </vs-row>
@@ -137,12 +141,12 @@ export default {
               {
                 label: "Type",
                 key: "type",
-                width: "auto"
+                width: "xs"
               },
               {
                 label: "Weight (Kg)",
                 key: "bag_weight",
-                width: "auto"
+                width: "xs"
               },
               {
                 label: "Destination",
@@ -150,6 +154,13 @@ export default {
                 width: "xs"
               }
             ],
+            // customActionList: [
+            //   {
+            //     label: 'Remove',
+            //     key: 'remove',
+            //     attribute: 'danger',
+            //   }
+            // ],
             loading:false,
             pagination: {
               limit:5,
@@ -192,17 +203,44 @@ export default {
             if(val !== undefined) {
                 this.node_id = val.node_id
                 this.manifest_number = val.manifest_number
+                this.initDataItem()
+                console.log('init dataItem', val)
             }
         },
 
     },
     methods: {
-        initialize(){
+        initDataItem(){
+            console.log('init dataItem', this.dataItem)
+            if(this.dataItem.hasOwnProperty("detail")) {
+              let arr = []
+              this.dataItem["detail"].map(data => {
+                if(data.item_number) {
+                  data["bag_number"] = data.item_number
+                  data["type"] = data.item_type
+                  data["bag_weight"] = data.total_weight
+                  arr.push(data)
+                }
+              })
+
+              this.dataTable = arr
+            }
             // siapin url untuk input autocomplete
             // let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
             // this.autoComplateUrl = url
             // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_URL", url)
         },
+        // actionUpdate(val, key) {
+        //   switch(key) {
+        //         case 'remove':
+        //           let filter = this.dataTable.filter(item => item.bag_number !== val.bag_number)
+        //           this.dataTable = filter
+        //           console.log('filter', val, filter)
+        //         default:
+        //             console.log('meong')
+        //             // code block
+        //     }
+        // },
         inputFocus(info){
           console.log('focus to', info)
           if(info && info.hasOwnProperty("key")) {
@@ -277,6 +315,8 @@ export default {
                                             form["dynamicinputcomponent_node_id_transit"][2]["inputs"][0]["data"]["node_id"] : ""
             }
           }
+          form["vehicle_type_id"] = form["vehicle_mode_id"]
+          // form["max_weight"] = 1
 
 
           this.form = form
@@ -297,7 +337,7 @@ export default {
             this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')
           }
 
-          // console.log('this.form',this.form)
+          console.log('this.form',this.form)
         },
         handleSubmit(){
             this.$refs.formSuratMuatanController.handleSubmit() // trigger function submit form dari luar component formInputController
@@ -388,32 +428,6 @@ export default {
               })
         },
 
-        // async getDataNodeorigin(){
-        //     await axios
-        //         .get(this.URL.node + `/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-        //         this.Helper.header())
-        //         .then(res => {
-        //             if(res.data.data.length > 0) {
-        //                 let arr = []
-        //                 res.data.data.map(item => {
-        //                     let obj = {}
-        //                     obj["label"] = item.node_name
-        //                     obj["value"] = item.node_id
-
-        //                     arr.push(obj)
-        //                 })
-        //                 // this.dataNodeType = arr
-        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData", arr.length > 0 ? arr : null)
-        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_ArrData", arr.length > 0 ? arr : null)
-        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_2_ArrData", arr.length > 0 ? arr : null)
-        //                 this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_TRANSIT_3_ArrData", arr.length > 0 ? arr : null)
-        //             }
-                    
-        //         }).catch(err => {
-        //             // this.openNotification('danger', 'Failed to collect role list', err)
-        //         })
-        // },
-
         async getDataEmployee(){
           //this.URL.employee + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`
             await axios
@@ -442,6 +456,7 @@ export default {
         },
       
         async updateData(){
+            this.form.manifest_item = this.dataTable
             await axios
                 .put(
                     this.URL.surat_muatan + `/${this.manifest_number}?n=${this.listenNodeId}`,
@@ -463,8 +478,7 @@ export default {
         async addData() {
             // console.log('form', this.form)
             this.form.manifest_item = this.dataTable
-            this.form.vehicle_type_id = this.form.vehicle_mode_id
-            this.form.max_weight = 1
+            
             await axios
                 .post(
                     this.URL.surat_muatan + `?n=${this.listenNodeId}`,
@@ -624,11 +638,6 @@ export default {
         }
     },
     mounted() {
-        // this.getDataNodeorigin()
-        // this.getDataNodeDestination()
-        // this.getDataVehicleType()
-        // this.getDataVehicle()
-
         this.getDataVehicleMode()
         // this.getDataEmployee()
     },
@@ -636,9 +645,9 @@ export default {
 </script>
 <style lang="scss">
 @media (min-width: 1200px){
-  .vs-dialog-content.custom-width .vs-dialog{
-    min-width: 1000px;
-  }
+  // .vs-dialog-content.custom-width .vs-dialog{
+  //   min-width: 1100px;
+  // }
 }
 
 </style>

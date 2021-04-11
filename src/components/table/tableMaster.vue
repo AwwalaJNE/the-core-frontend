@@ -684,7 +684,7 @@ export default {
                     max-width: 300px;
                     .vs-table__th__content{
                         float: right;
-                        width: 280px;
+                        width: 100%;
                         position: relative;
                         // max-width: 280px !important;
                     }
