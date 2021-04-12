@@ -1026,7 +1026,7 @@ export default {
   },
   SET_VEHICLE_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_MODE_ID_ArrData', payload)
-  },  
+  },
 
   SET_VEHICLE_VEHICLE_TYPE_ID({ commit }, payload) {
     commit('SET_VEHICLE_VEHICLE_TYPE_ID', payload)
@@ -1882,7 +1882,7 @@ export default {
   SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT_ValueData({ commit }, payload) {
     commit('SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT_ValueData', payload)
   },
-    
+
   SET_PACKINGKAYU_KOLI_HEIGHT({ commit }, payload) {
     commit('SET_PACKINGKAYU_KOLI_HEIGHT', payload)
   },
@@ -2002,4 +2002,35 @@ export default {
     commit('SET_EMPLOYEE_IS_ACTIVE_ValueData', payload)
   },
   //====== end employee ======
+  
+  //====== PROFILE PAGE ======  
+
+  SET_PROFILE_USER_NAME({ commit }, payload) {
+    commit('SET_PROFILE_USER_NAME', payload)
+  },
+  SET_PROFILE_USER_NAME_ValueData({ commit }, payload) {
+    commit('SET_PROFILE_USER_NAME_ValueData', payload)
+  },
+
+  SET_PROFILE_USER_LOGIN({ commit }, payload) {
+    commit('SET_PROFILE_USER_LOGIN', payload)
+  },
+  SET_PROFILE_USER_LOGIN_ValueData({ commit }, payload) {
+    commit('SET_PROFILE_USER_LOGIN_ValueData', payload)
+  },
+
+  SET_PROFILE_PASSWORD({ commit }, payload) {
+    commit('SET_PROFILE_PASSWORD', payload)
+  },
+  SET_PROFILE_PASSWORD_ValueData({ commit }, payload) {
+    commit('SET_PROFILE_PASSWORD_ValueData', payload)
+  },
+
+  SET_PROFILE_USER_EMAIL({ commit }, payload) {
+    commit('SET_PROFILE_USER_EMAIL', payload)
+  },
+  SET_PROFILE_USER_EMAIL_ValueData({ commit }, payload) {
+    commit('SET_PROFILE_USER_EMAIL_ValueData', payload)
+  },
+  //====== END PROFILE PAGE ======    
 }

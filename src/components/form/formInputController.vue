@@ -4,7 +4,7 @@
             <template v-if="Keys.length > 0 && Object.keys(InputObject).length > 0">
                 <vs-row>
                     <template v-for="(item, keys) in Keys">
-                        <vs-col justify="space-between" :key="keys" :w="InputObject[item].width || 12">
+                        <vs-col justify="space-between" :key="keys" :w="InputObject[item].width || 12" :offset="InputObject[item].offset || null" style="margin-top:10px">
                             
                             <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
                                 <template v-if="InputObject[item].hasOwnProperty('visible')">
@@ -174,6 +174,7 @@
                                 </template>
                             </template>
                         </vs-col>
+                        <vs-col v-if="InputObject[item].reduce" :key="'reducer'+keys" :w="InputObject[item].reduce || null" />
                     </template>
                 </vs-row>
             </template>
@@ -275,6 +276,7 @@ export default {
                         // console.log('itemAlt', itemAlt)
                         if(this.listenDataItem.hasOwnProperty(itemAlt)){
                             this.$store.dispatch(`SET_${prefix}_${action}`, this.listenDataItem[itemAlt])
+                            console.log(`SET_${prefix}_${action}`, this.listenDataItem[itemAlt])
                             
                         }
                     }

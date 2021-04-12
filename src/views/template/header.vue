@@ -1,23 +1,23 @@
 <template>
     
-        <header class="header shadoww">
+        <header class="header shadow">
             <div class="container">
                 <vs-row justify="space-between">
-                    <vs-col vs-type="flex" vs-justify="end" vs-align="center" xs="3" sm="3" lg="3">
-                        <vs-row>
-                            <vs-col vs-type="flex" vs-justify="end" vs-align="center" w="2">
+                    <vs-col xs="12" sm="12" lg="3">
+                        <vs-row justify="space-between">
+                            <vs-col xs="1" sm="1" lg="3">
                                 <vs-button @click="clickProps" size="l" dark shadow icon>
                                     <i class='bx bx-menu'></i>
                                 </vs-button>
                             </vs-col>
-                            <vs-col vs-type="flex" vs-justify="end" vs-align="center" w="4">
+                            <vs-col xs="1" sm="1" lg="9" style="text-align:right">
                                 <Logo />
                             </vs-col>
                         </vs-row>
                     </vs-col>
-                    <vs-col vs-type="flex" vs-justify="end" vs-align="center" xs="9" sm="6" lg="6">
+                    <vs-col xs="12" sm="12" lg="8">
                         <vs-row justify="flex-end">
-                            <vs-col vs-align="center" xs="3" sm="3" lg="3">
+                            <vs-col xs="10" sm="10" lg="4">
                                 <template v-if="datanode.length > 0">
                                     <selector 
                                     ref="node_selector"
@@ -29,48 +29,31 @@
                                     @updateValue="updateValue" />
                                 </template>
                             </vs-col>
-                            <vs-col vs-align="center" xs="1" sm="1" lg="1">
-                                
-
-                               
-
-                            </vs-col>
-                            <vs-col vs-align="center" xs="1" sm="1" lg="1">
-                                
-
+                            <vs-col xs="1" sm="1" lg="1" style="margin-left:10px">                            
                                 <vs-tooltip bottom shadow interactivity not-hover v-model="activeTooltip1">
                                     <vs-avatar class="cus_avatar" @click="activeTooltip1=!activeTooltip1">
-                                    <!-- <img src="/avatars/avatar-5.png" alt=""> -->
                                         <i class='bx bx-user'></i>
                                     </vs-avatar>
                                     <template #tooltip>
                                     <div class="content-tooltip">
                                         <div class="body">
+                                        <vs-avatar circle size="60">
+                                            <i class='bx bx-user'></i>
+                                        </vs-avatar> 
                                         <div class="text">
-                                            <i v-html="`${userAuthFullName}`" />
-                                            <span v-html="`${userAuthLoginName}`" />
-                                        </div>
-                                        <!-- <vs-avatar circle size="60"> -->
-                                            <!-- <img src="/avatars/avatar-5.png" alt=""> -->
-                                            <!-- <i class='bx bx-user'></i> -->
-                                        <!-- </vs-avatar>  -->
-                                        <!-- <div class="text">
-                                            Open Tasks
+                                            {{userAuthFullName}}
                                             <span>
-                                            8
+                                            {{userAuthLoginName}}
                                             </span>
-                                        </div> -->
+                                        </div>
                                         </div>
                                         <footer>
-                                        <!-- <vs-button circle icon border>
-                                            <i class='bx bxs-share-alt'></i>
-                                        </vs-button> -->
-                                        <vs-button circle @click="logout">
+                                        <vs-button circle @click="goToProfile">
+                                            Edit Profile
+                                        </vs-button>
+                                        <vs-button circle @click="logout"  danger>
                                             Logout
                                         </vs-button>
-                                        <!-- <vs-button circle icon border>
-                                            <i class='bx bx-like' ></i>
-                                        </vs-button> -->
                                         </footer>
                                     </div>
                                     </template>
@@ -125,6 +108,10 @@ export default {
         logout() {
             localStorage.clear();
             this.$router.go()
+        },
+        goToProfile() {
+            if (this.$route.name !== 'profile') this.$router.push(path)
+            this.$router.push({ name: 'profile', params: { } });
         },
         updateValue(key,val) {
             let node = this.datanode.filter(item => item.value == val)

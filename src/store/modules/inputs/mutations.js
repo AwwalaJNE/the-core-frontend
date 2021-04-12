@@ -1053,7 +1053,7 @@ export default {
     state.vehicle.vehicle_type_id.hasOwnProperty('arrData') ?
       state.vehicle.vehicle_type_id.arrData = payload :
       state.vehicle.vehicle_type_id.arrData = []
-  },  
+  },
 
   SET_VEHICLE_VEHICLE_MODE_ID(state, payload) {
     state.vehicle.vehicle_mode_id.value = payload
@@ -2049,7 +2049,7 @@ export default {
   SET_PACKINGKAYU_KOLI_PACKING_KAYU_WEIGHT_ValueData(state, payload) {
     state.packingkayu.koli_packing_kayu_weight.valueData = payload
   },
-  
+
   SET_PACKINGKAYU_KOLI_HEIGHT(state, payload) {
     state.packingkayu.koli_height.value = payload
   },
@@ -2173,5 +2173,33 @@ export default {
     state.employee.is_active.valueData = payload
   },
   //===== end employee ======
+
+  SET_PROFILE_USER_NAME(state, payload) {
+    state.profile.user_name.value = payload
+  },
+  SET_PROFILE_USER_NAME_ValueData(state, payload) {
+    state.profile.user_name.valueData = payload
+  },
+
+  SET_PROFILE_USER_LOGIN(state, payload) {
+    state.profile.user_login.value = payload
+  },
+  SET_PROFILE_USER_LOGIN_ValueData(state, payload) {
+    state.profile.user_login.valueData = payload
+  },
+
+  SET_PROFILE_PASSWORD(state, payload) {
+    state.profile.password.value = payload
+  },
+  SET_PROFILE_PASSWORD_ValueData(state, payload) {
+    state.profile.password.valueData = payload
+  },
+
+  SET_PROFILE_USER_EMAIL(state, payload) {
+    state.profile.user_email.value = payload
+  },
+  SET_PROFILE_USER_EMAIL_ValueData(state, payload) {
+    state.profile.user_email.valueData = payload
+  },
 
 }
