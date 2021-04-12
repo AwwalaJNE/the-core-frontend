@@ -124,12 +124,15 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    
-                    this.dataTable = res.data.data
-
-                        this.pagination.page = res.data.meta.current_page
-                        this.pagination.limit = parseInt(res.data.meta.per_page)
-                        this.pagination.page_size = res.data.meta.last_page
+                    const arr = res.data.data
+                    arr.map(item=>{
+                      item['vehicle_mode_name'] = item.vehicle_mode ? item.vehicle_mode.vehicle_mode_name  : '-'
+                    })
+                    this.dataTable = arr
+                  
+                    this.pagination.page = res.data.meta.current_page
+                    this.pagination.limit = parseInt(res.data.meta.per_page)
+                    this.pagination.page_size = res.data.meta.last_page
                     if(res.data.data.length > 0) {
                         
                     } else {
