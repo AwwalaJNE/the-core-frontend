@@ -125,7 +125,7 @@ export default {
         if (this.form['bag_number'].length > 0) {
           this.updateData() // trigger function submit form dari luar component formMaster
         } else {
-          this.openNotification(null, 'Choose Bag', 'List bag cannot empty')
+          this.openNotification(null, 'Choose Bag', 'List bag cannot be empty')
         }
     },
 
@@ -161,7 +161,10 @@ export default {
     updateValue(val){
     },
     scanBag(){
-      this.bag_picked.push(this.scan_bag);
+      let hasData = this.bagNumberList.some(item => item.value == this.scan_bag)
+      if(hasData) {
+        this.bag_picked.push(this.scan_bag);
+      }
       this.scan_bag='';
     },
 
