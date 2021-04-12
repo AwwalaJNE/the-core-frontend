@@ -41,7 +41,7 @@ export default {
                 {
                     label: "Nama Kurir",
                     key: "courier_employee_name",
-                    width: "xs"
+                    width: "lg"
                 },
                 {
                     label: "Total Connotes",
@@ -51,7 +51,7 @@ export default {
                 {
                     label: "Total COD",
                     key: "count_cod",
-                    width: "xs"
+                    width: "sm"
                 },
             ],
             loading: false,
@@ -169,19 +169,19 @@ export default {
         },
         async updateData(){
           await axios
-              .put(
-                  this.URL.delivery_cod + `?n=${this.listenNodeId}`,
+              .post(
+                  this.URL.delivery_cod_collect + `?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
                 this.$emit("refresh")
-                this.openNotification(null, 'Collect success', 'Collect is success')
-                this.form={}
+                this.openNotification(null, 'SUCCESS!', 'Cod Collected!')
+                this.refresh()
               }).catch(err => {
                 this.loading = false
                 this.$emit("refresh")
-                this.openNotification('danger', 'Collect failed', err)
-                this.form={}
+                this.openNotification('danger', 'Failed!', err)
+                this.refresh()
               })
         },
 
