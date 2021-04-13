@@ -188,7 +188,7 @@ export default {
 
                     self.timerOke =  setTimeout(function(){ 
                         self.$emit("searchTariffCode", self.listenTypeForm, val)
-                    }, 600);
+                    }, 400);
                 }
             }
         },

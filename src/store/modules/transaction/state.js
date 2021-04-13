@@ -405,20 +405,20 @@ export default {
       valueData: null,
       value: 0
     },
-    airline_document: {
-      label: "airline document",
-      key: "airline_document",
-      typeData: "Number",
-      valueData: null,
-      value: 0
-    },
-    shipper_declaration: {
-      label: "shipper declaration",
-      key: "shipper_declaration",
-      typeData: "Number",
-      valueData: null,
-      value: 0
-    },
+    // airline_document: {
+    //   label: "airline document",
+    //   key: "airline_document",
+    //   typeData: "Number",
+    //   valueData: null,
+    //   value: 0
+    // },
+    // shipper_declaration: {
+    //   label: "shipper declaration",
+    //   key: "shipper_declaration",
+    //   typeData: "Number",
+    //   valueData: null,
+    //   value: 0
+    // },
     adm_karantina: {
       label: "adm karantina",
       key: "adm_karantina",

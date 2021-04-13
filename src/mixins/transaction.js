@@ -159,13 +159,15 @@ const TransactionMixin = {
 
         filterSurcharge(obj, koli, node_code) {
             let service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
+            let tarifData = this.listenPackageService.data || {}
             let status = false
             let listkoli = koli || []
             let node = node_code || ''
-            
+            // console.log('tarifData filter surcharge', tarifData)
             try {
                 if (Object.keys(service).length > 0) {
                     let surcharge_condition = obj['surcharge_condition'] || {}
+                    // console.log("surcharge_condition", surcharge_condition)
                     
                     // console.log('--- Surcharge -> '+obj['surcharge_name']+'----------', surcharge_condition, this.koli, this.listenCurrentIndexKoli)
                             if(Object.keys(surcharge_condition).length > 0) {
@@ -175,6 +177,22 @@ const TransactionMixin = {
                                         
                                         let operator = Object.keys(item)[0]
                                         let objective2 = item[operator] !== undefined ? item[operator] : ''
+
+                                        
+                                        if(objective1.toLowerCase().includes('geolocation_is_intl')) {
+                                            console.log('geolocation_is_intl', item, objective1, objective2)
+                                            if(tarifData.hasOwnProperty('is_intl')) {
+                                                // if(tarifData['is_intl'] == objective1['geolocation_is_intl']) {
+
+                                                // }
+                                                if(tarifData['is_intl'] == objective1['geolocation_is_intl']) {
+                                                    tempStatus = tempStatus !== null ? tempStatus && true : true
+                                                } else {
+                                                    tempStatus = tempStatus !== null ? tempStatus && false : false
+                                                }
+                                            }
+                                        }
+                                        
 
                                         if(objective1.toLowerCase().includes('connote_service_code')) {
                                             if(service.toLowerCase().includes(objective2.toLowerCase())) {
