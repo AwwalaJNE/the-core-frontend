@@ -209,7 +209,8 @@ export default {
            this.cost_to_cost_id = val.cost_to_cost_id;
         },
         actionUpdate(val){
-          console.log(val,'val up print')
+          let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.cost_report_id, 'type': 'costing-report'} });
+          window.open(routeData.href, '_blank');
         },
         async removeCosting(){
             await axios
