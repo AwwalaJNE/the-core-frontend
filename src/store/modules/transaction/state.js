@@ -168,7 +168,7 @@ export default {
     package_category: {
       label: "Kategori*",
       key: "connote_category",
-      rule: "required",
+      rule: "",
       typeInput: "select|col_left",
       typeData: "String",
       arrData: [
