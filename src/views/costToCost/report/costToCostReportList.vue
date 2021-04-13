@@ -209,7 +209,7 @@ export default {
            this.cost_to_cost_id = val.cost_to_cost_id;
         },
         actionUpdate(val){
-          let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.cost_report_id, 'type': 'costing-report'} });
+          let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.cost_report_id, 'type': 'costing-report', 'node_id':this.listenNodeId} });
           window.open(routeData.href, '_blank');
         },
         async removeCosting(){
