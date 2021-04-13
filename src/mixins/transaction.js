@@ -180,11 +180,9 @@ const TransactionMixin = {
 
                                         
                                         if(objective1.toLowerCase().includes('geolocation_is_intl')) {
-                                            console.log('geolocation_is_intl', item, objective1, objective2)
+                                            // console.log('geolocation_is_intl', item, objective1, objective2)
                                             if(tarifData.hasOwnProperty('is_intl')) {
-                                                // if(tarifData['is_intl'] == objective1['geolocation_is_intl']) {
-
-                                                // }
+                                                
                                                 if(tarifData['is_intl'] == objective1['geolocation_is_intl']) {
                                                     tempStatus = tempStatus !== null ? tempStatus && true : true
                                                 } else {
