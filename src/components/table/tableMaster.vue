@@ -195,6 +195,7 @@
                                                     <vs-button
                                                         block
                                                         flat
+                                                        :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                                         :danger="actionItem.attribute.toLowerCase().includes('danger') ? true : false"
                                                         :warn="actionItem.attribute.toLowerCase().includes('warn') ? true : false"
                                                         :active="true"
@@ -347,7 +348,7 @@
                                     type="submit"
                                     @click="actionPicked(item)"
                                 >
-                                  Picked
+                                  Picking
                                 </vs-button>
                               </vs-col>
                               <vs-col w="4">

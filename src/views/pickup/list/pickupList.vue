@@ -101,13 +101,18 @@ export default {
                     width: "auto"
                 },
                 {
-                  label: "Bags",
+                  label: "Bag",
                   key: "total_bag",
                   width: "auto"
                 },
                 {
+                  label: "Koli",
+                  key: "total_koli",
+                  width: "auto"
+                },
+                {
                   label: "Picked",
-                  key: "total_bag_picked",
+                  key: "total_picked",
                   width: "auto"
                 },
                 {
@@ -117,12 +122,7 @@ export default {
                 },
                 {
                     label: "Pickup Time",
-                    key: "pickup_date",
-                    width: "auto"
-                },
-                {
-                    label: "Type",
-                    key: "pickup_type",
+                    key: "pickup_picked_time",
                     width: "auto"
                 },
                 {
@@ -204,13 +204,14 @@ export default {
             }
             await axios
                 .get(this.URL.pickup +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&pickup_status=${status_pickup}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                `?n=${this.listenNodeId}&pickup_status=${status_pickup}&s=${query}`,
                 this.Helper.header())
                 .then(res => {
                     // this.dataTable = res.data.data
                     let arr = res.data.data
                     arr.map(item => {
-                        item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
+                        item.total_unpicked = parseInt(item.total_bag) + parseInt(item.total_koli);
+                        item.total_picked = item.total_picked+" / "+item.total_unpicked;
                         item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE') ? true : false
                     })
                     this.dataTable = arr
@@ -250,7 +251,6 @@ export default {
         },
 
         refresh(){
-            console.log("refresh")
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
 

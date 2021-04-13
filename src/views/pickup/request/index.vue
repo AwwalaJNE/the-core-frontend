@@ -1,13 +1,13 @@
 <template>
     <div>
         <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
+            <vs-col xs="6" sm="6" lg="6">
                 <div class="titlePage">
                     <breadcrumb />
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
-            <vs-col xs="6" sm="3" lg="3">
+            <vs-col xs="6" sm="6" lg="6">
                 <div style="position:relative;display:flex;justify-content: flex-end;">
                     <div style="width: 100px;padding-right: 5px;">
                         <vs-button

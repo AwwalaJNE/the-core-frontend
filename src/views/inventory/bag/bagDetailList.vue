@@ -85,12 +85,12 @@ export default {
                 },
                 {
                     label: "Koli#",
-                    key: "no",
+                    key: "koli_qty",
                     width: "xs"
                 },
                 {
                     label: "Of#",
-                    key: "bag_detail_qty",
+                    key: "koli_sequence",
                     width: "auto"
                 },
                 {
@@ -150,7 +150,7 @@ export default {
                     
                     arr.map((item, index)  => {
                       item["no"] = index+1
-                      item['destination_code'] = res.data.data.destination ? res.data.data.destination.node_code : ''
+                      item['destination_code'] = res.data.data.destination ? res.data.data.destination.node_code : item.connote_receiver_tariff_code
                       item['bag_detail_qty'] = res.data.data.bag_detail_qty
                     })
                     this.getSummaryBag(res)
@@ -199,13 +199,17 @@ export default {
                     this.URL.bag+`/${val.bag_number}/detail/${val.bag_detail_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+                    if(res.data.detail.length > 0){
                     this.refresh()
+                    }else{
+                        this.$router.push({ name: 'InventoryBag', params: { } });
+                    }
                     this.openNotification('success', 'Romove success', 'Romove bag item successfully')
                 }).catch(err => {
                     this.loading = false
                     this.openNotification('danger', 'Romove bag item is failed', err)
                 })
+                detail
         },
         actionLimit(val){
             this.pagination.limit = val

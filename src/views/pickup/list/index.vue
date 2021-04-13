@@ -67,7 +67,7 @@
                           :border="true"
                           @change="updateNode"
                       >
-                        <template v-if="DataStatus.length > 0">
+                        <template>
                           <vs-option
                               v-for="(item,key) in DataStatus"
                               :key="key"
@@ -188,7 +188,7 @@ export default {
           this.loading = true
           await axios
               .get(this.URL.status +
-                  `?status_type=pickup&n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+                  `?status_type=pickup&n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&s=`,
                   this.Helper.header())
               .then(res => {
                 console.log('status', res)
