@@ -19,7 +19,7 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 export default {
-    name:"Inbound-Incoming",
+    name:"Inbound-Detail",
     mixins: [master],
     props: {
         dataTableProp: [Array, Object],
@@ -30,27 +30,23 @@ export default {
     },
     data() {
         return {
-            dataTable: this.dataTableProp,
+            dataTable: [],
             datacolumn: [
                 {
-                    label: "Manifest No.",
-                    key: "inbound_number",
+                    label: "No item.",
+                    key: "item_number",
                     width: "xs"
                 },
                 {
-                    label: "Received",
-                    key: "total_received",
+                    label: "Item type",
+                    key: "item_type",
                     width: "xxs"
-                },
-                {
-                  label: "Unreceived",
-                  key: "total_unreceived",
-                  width: "xxs"
                 },
 
                 {
-                  label: "Status",
-                  key: "status_received",
+                  label: "Status receiving",
+                  key: "is_received",
+                  type: 'status',
                   width: "xxs"
                 },
             ],
@@ -68,19 +64,23 @@ export default {
     watch: {
         dataTableProp: function(val) {
             if(val != undefined) {
-                this.dataTable = val   
+                this.initialize(val[0])
             }
         },
     },
     methods: {
-        
+        initialize(obj) {
+            if(obj.hasOwnProperty("detail_incoming")) {
+                this.dataTable = obj["detail_incoming"]
+            }
+        },
         actionDetail(row){
           this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
         }
 
     },
     mounted() {
-        // this.getTableData()
+        this.initialize(this.listendataTableProp[0])
     }
 }
 </script>

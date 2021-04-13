@@ -47,8 +47,20 @@
                 <div class="nav-box">
                   <template>
                     <transition name="slide-fade">
-                      <template v-if="this.inbound_id">
-                          <InboundInformation :ref="'inboundInformation'"   :query="tempSearch" :inboundId="inbound_id"/>
+                      <template v-if="loading == false">
+                          <InboundInformation :ref="'inboundInformation'" :dataTableProp="dataTable" :loading="loading"/>
+                      </template>
+                    </transition>
+                  </template>
+                </div>
+              </div>
+              <div class="box information" style="padding-top: 1px !important;margin-top: 10px !important;">
+                <h4 align="left">Inbound Detail</h4>
+                <div class="nav-box">
+                  <template>
+                    <transition name="slide-fade">
+                      <template v-if="loading == false">
+                          <InboundDetail :ref="'inboundDetail'" :dataTableProp="dataTable" :loading="loading"/>
                       </template>
                     </transition>
                   </template>
@@ -78,6 +90,7 @@ import SearchInput from "@/components/search/searchInput"
 import dateRange from "@/components/daterange/index"
 
 import InboundInformation from "@/views/inbound/scan/inboundInformation"
+import InboundDetail from "@/views/inbound/scan/inboundDetail"
 
 
 export default {
@@ -87,39 +100,44 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "InboundInformation": InboundInformation,
+        "InboundDetail": InboundDetail
     },
     data() {
         return {
             title:"Receiving",
-            tempSearch: "",
-            tempDate: [],
-            dialogPickupRequest:false,
+            // tempSearch: "",
+            // tempDate: [],
+            // dialogPickupRequest:false,
             item_no:'',
             form:{},
-            inbound_id:''
+            inbound_id:'',
+
+            loading: false,
+            dataTable: []
         }
     },
     methods: {
         refresh(){
-          if(this.inbound_id  !==  "") {
-            this.$refs.inboundInformation.refresh() // trigger function refresh form dari luar component list
-          }
+          
+            
+            this.getTableData() // trigger function refresh form dari luar component list
+          
         },
-        searchValue (val) {
-            this.tempSearch = val
-        },
-        searchDate (val) {
-          this.tempDate = val
-        },
-        clearSearch() {
-            this.$refs.searchInput.clear()
-        },
-        closeDialogPickupRequest() {
-          this.dialogPickupRequest = false
-        },
-        openDialog(){
-            this.dialogPickupRequest = true
-        },
+        // searchValue (val) {
+        //     this.tempSearch = val
+        // },
+        // searchDate (val) {
+        //   this.tempDate = val
+        // },
+        // clearSearch() {
+        //     this.$refs.searchInput.clear()
+        // },
+        // closeDialogPickupRequest() {
+        //   this.dialogPickupRequest = false
+        // },
+        // openDialog(){
+        //     this.dialogPickupRequest = true
+        // },
         updateValue(){
           this.form.item_no = this.item_no
           this.processInbond();
@@ -128,6 +146,7 @@ export default {
           if(this.$route.params.inbound_id){
             this.inbound_id = parseInt(this.$route.params.inbound_id)
             this.tempSearch = this.inbound_id.toString()
+            this.refresh()
             console.log(this.inbound_id,'asd')
           }
         },
@@ -156,6 +175,29 @@ export default {
                 this.openNotification('danger', 'Receiving Failed!', err.response.data.message)
               })
         },
+
+        async getTableData() {
+            this.loading = true
+            this.dataTable = []
+            await axios
+                .get(this.URL.inbound +
+                `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}`,
+                this.Helper.header())
+                .then(res => {
+                    let data=[res.data.data]
+                    data.map(item=>{
+                      item['total_received'] = item.total_received.toString()
+                      item['total_unreceived'] = item.total_unreceived.toString()
+                    })
+                    this.dataTable = data
+
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to populate Inbound list', err)
+                })
+        },
+
         back(){
           this.$router.push('/inbound/prealert')
         },
