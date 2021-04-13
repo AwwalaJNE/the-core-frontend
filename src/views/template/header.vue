@@ -181,12 +181,9 @@ export default {
         }
 
         .m-select.vs-select-content{
-            margin: 0;
-            position: relative;
-            top: 6px;
+            margin-top: 6px;
         }
         .cus_avatar{
-            position: relative;
             top: 4px;
         }
 

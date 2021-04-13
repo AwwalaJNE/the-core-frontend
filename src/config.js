@@ -153,4 +153,8 @@ export default {
     //apidoc
     apidoc: urlFOrmated.origin + "/docs",
 
+    //user_history
+    user_history: api + "auth-history-tracker",
+
+
 }

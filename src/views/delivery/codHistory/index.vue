@@ -14,10 +14,10 @@
             <div class="box view">
               <div class="nav-box">
                 <vs-row justify>
-                  <vs-col xs="2" sm="2" lg="2">
+                  <vs-col xs="12" sm="6" lg="3">
                     <daterange-filter @searchDate="searchDate"/>
                   </vs-col>
-                  <vs-col xs="6" sm="3" lg="3" offset="7"  class="mb-15">
+                  <vs-col xs="12" sm="6" lg="9" class="mb-15">
                     <search-input ref="searchInput" @searchValue="searchValue"/>
                   </vs-col>
                 </vs-row>
