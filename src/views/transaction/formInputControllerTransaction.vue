@@ -97,7 +97,8 @@ export default {
         return {
             Keys: [],
             InputObject: {},
-            form: {}
+            form: {},
+            timerOke: null,
         }
     },
     computed: {
@@ -166,12 +167,30 @@ export default {
             //         this.$store.dispatch(`SET_PROSES_CONNOTE_PROPERTY`, {'key':info.key, 'value':val})
             //     }
             // }
+            this.debounce(type, val, info)
+            // if(info !== undefined && info.hasOwnProperty('typeInput')) {
+            //     if(info.typeInput.includes('calc_switch')){
+            //         let self = this
+            //         // debounce delay when typing, in milliseconds
+            //         setTimeout(function(){ self.$emit("searchTariffCode", self.listenTypeForm, val) }, 300);
+            //     }
+            // }
+            this.$emit("onChangeCustom", type, val, info)
+        },
+
+        debounce(type, val, info = {}) {
+            let self = this
+
             if(info !== undefined && info.hasOwnProperty('typeInput')) {
                 if(info.typeInput.includes('calc_switch')){
-                    this.$emit("searchTariffCode", this.listenTypeForm, val)
+                // debounce delay when typing, in milliseconds
+                    clearTimeout(self.timerOke);
+
+                    self.timerOke =  setTimeout(function(){ 
+                        self.$emit("searchTariffCode", self.listenTypeForm, val)
+                    }, 600);
                 }
             }
-            this.$emit("onChangeCustom", type, val, info)
         },
         
         handleClearForm(){

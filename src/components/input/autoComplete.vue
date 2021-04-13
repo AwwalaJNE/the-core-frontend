@@ -7,6 +7,7 @@
         :fetch-suggestions="querySearch"
         :placeholder="`Search ${name}`"
         :trigger-on-focus="false"
+        debounce="400"
         @select="handleSelect"
         @input="updateValue"
         @focus="inputFocus"

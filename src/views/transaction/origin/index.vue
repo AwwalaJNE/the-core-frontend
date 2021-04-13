@@ -149,7 +149,7 @@ export default {
                         arr.map((item, key) => {
                             item['index'] = key
                         })
-                        this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", arr.length > 0 ? arr : [])
+                        this.$store.dispatch("SET_CALC_COMPONENT_ARRDATA", arr)
                     }
                     // this.loading = false
                 }).catch(err => {
