@@ -9,12 +9,12 @@
     <vs-col xs="12" lg="12">
       <div class="box">
         <vs-row>
-          <vs-col xs="2" sm="2" md="2" lg="2" class="avatar-column">
+          <vs-col xs="12" sm="3" lg="2" class="avatar-column">
             <div style="background: #ccc; min-height: 220px; width: 100%">
               <box-icon name="user" size="lg" border="circle" color="white" />
             </div>
           </vs-col>
-          <vs-col xs="12" sm="12" md="10" lg="10" style="padding-left: 30px">
+          <vs-col xs="12" sm="9" lg="10" style="padding-left: 30px">
             <template v-for="index in [1, 2, 3, 4]">
               <div
                 v-if="fetchingData"

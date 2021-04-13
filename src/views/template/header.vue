@@ -3,14 +3,14 @@
         <header class="header shadow">
             <div class="container">
                 <vs-row justify="space-between">
-                    <vs-col xs="12" sm="12" lg="3">
+                    <vs-col xs="12" sm="12" lg="2">
                         <vs-row justify="space-between">
-                            <vs-col xs="1" sm="1" lg="3">
+                            <vs-col xs="9" sm="9" lg="3">
                                 <vs-button @click="clickProps" size="l" dark shadow icon>
                                     <i class='bx bx-menu'></i>
                                 </vs-button>
                             </vs-col>
-                            <vs-col xs="1" sm="1" lg="9" style="text-align:right">
+                            <vs-col xs="3" sm="3" lg="9">
                                 <Logo />
                             </vs-col>
                         </vs-row>
@@ -110,8 +110,7 @@ export default {
             this.$router.go()
         },
         goToProfile() {
-            if (this.$route.name !== 'profile') this.$router.push(path)
-            this.$router.push({ name: 'profile', params: { } });
+            if (this.$route.name !== 'profile') this.$router.push({ name: 'profile', params: { } });
         },
         updateValue(key,val) {
             let node = this.datanode.filter(item => item.value == val)
@@ -157,7 +156,6 @@ export default {
 </script>
 <style lang="scss">
     .header{
-        position: absolute;
         width: 100%;
         left: 0;
         top: 0;
@@ -173,12 +171,10 @@ export default {
             font-size: 1.5rem;
         }
         .logo{
-            position: absolute;
-            left: 0;
-            top: .8em;
-            width: 60px;
+            padding-top: 10px;
+            max-height:50px;
         }
-        &.shadow{
+        shadow{
             -webkit-box-shadow: 0px 3px 33px -12px rgba(0,0,0,0.42);
             -moz-box-shadow: 0px 3px 33px -12px rgba(0,0,0,0.42);
             box-shadow: 0px 3px 33px -12px rgba(0,0,0,0.42);

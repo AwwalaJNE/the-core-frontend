@@ -51,7 +51,7 @@ export default {
                 {
                     label: "Vehicle mode name",
                     key: "vehicle_mode_name",
-                    width: "xs"
+                    width: "sm"
                 },
             ],
             loading: false,

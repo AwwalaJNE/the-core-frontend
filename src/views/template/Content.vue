@@ -49,8 +49,7 @@ export default {
 <style lang="scss">
     // custume styling
     .marginHeader{
-        position: relative;
         width: 100%;
-        height: 4.5em;
+        height: 1em;
     }
 </style>

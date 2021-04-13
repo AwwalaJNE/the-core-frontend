@@ -70,8 +70,6 @@ export default {
     //PICKUP
     pickup: api + "pickup",
 
-    pickup_courier: api + "pickup-courier",
-
     //PICKUP REQUEST
     pickup_request: api + "pickup-request",
 
@@ -104,10 +102,13 @@ export default {
     delivery_return : api + "delivery/return",
 
     //delivery cod
-    delivery_cod : api + "delivery/cod",
+    delivery_cod : api + "cod",
+    
+    //delivery cod collect
+    delivery_cod_collect : api + "cod-collect",
 
     //delivery cod history
-    delivery_cod_history : api + "delivery/cod/history",
+    delivery_cod_history : api + "cod-history",
 
     //SURAT MUATAN
     surat_muatan: api + "manifest",
