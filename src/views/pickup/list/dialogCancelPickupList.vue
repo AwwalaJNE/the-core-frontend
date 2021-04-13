@@ -101,11 +101,12 @@ export default {
     },
 
     watch: {
-        dataItem: function (val) {
-            if(val !== undefined) {
-                this.tariff_special_id = val.tariff_special_id
-            }
-        }
+        active: function(val, old) {
+          if(val){
+      this.getStatus();
+          }
+        },
+
     },
     methods: {
         handleSubmit(){
@@ -153,7 +154,7 @@ export default {
           this.loading = true
           await axios
               .get(this.URL.status +
-                  `?status_type=PICKUP-CANCEL&n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+                  `?status_type=PICKUP-CANCEL&n=${this.listenNodeId}&sort_order=desc&&limit=100&page=1&s=`,
                   this.Helper.header())
               .then(res => {
                 if(res.data.data.length > 0) {
@@ -177,7 +178,6 @@ export default {
         },
     },
     mounted() {
-      this.getStatus();
     }
 }
 </script>

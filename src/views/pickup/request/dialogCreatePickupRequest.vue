@@ -98,15 +98,15 @@ export default {
         },
     },
     mounted() {
-      this.getTableData();
+    //   this.getTableData();
     },
-    watch: {
-        dataItem: function (val) {
-            if(val !== undefined) {
-                this.tariff_special_id = val.tariff_special_id
-            }
+    watch: { 
+      	active: function(newVal, oldVal) { // watch it
+          if(newVal){
+              this.getTableData();
+          }
         }
-    },
+      },
     methods: {
         handleSubmit(){
             this.$refs.formUserPickupRequestController.handleSubmit() // trigger function submit form dari luar component formInputController

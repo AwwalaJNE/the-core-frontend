@@ -156,6 +156,13 @@ export default {
                 this.pickup_number = val.pickup_number
             }
         },
+        active: function (val) {
+            if(val) {
+                this.getDataVehicleType()
+                this.getDataCourier()
+            }
+        },
+
 
     },
     methods: {
@@ -388,8 +395,6 @@ export default {
     mounted() {
         this.initialize()
         // this.getDataNodeDestination()
-        this.getDataVehicleType()
-        this.getDataCourier()
     },
 }
 </script>

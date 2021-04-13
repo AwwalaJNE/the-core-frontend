@@ -65,13 +65,18 @@ export default {
                 width: "auto"
               },
               {
-                label: "Bags",
+                label: "Bag",
                 key: "total_bag",
                 width: "auto"
               },
               {
+                label: "Koli",
+                key: "total_koli",
+                width: "auto"
+              },
+              {
                 label: "Picked",
-                key: "total_bag_picked",
+                key: "total_picked",
                 width: "auto"
               },
               {
@@ -194,11 +199,13 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
-                      item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
+                      // item["pickup_courier_employee_name"] = (item.user_courier) ? item.employee_courier.employee_name: null
+                        item.total_unpicked = parseInt(item.total_bag) + parseInt(item.total_koli);
+                        item.total_picked = item.total_picked+" / "+item.total_unpicked;
                       item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE') ? true : false
                     })
+                    console.log(arr);
                     this.dataTable = arr
-                    console.log('arrrrrr',arr);
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page

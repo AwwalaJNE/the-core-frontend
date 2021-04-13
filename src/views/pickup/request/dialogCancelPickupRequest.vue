@@ -101,9 +101,10 @@ export default {
     },
 
     watch: {
-        dataItem: function (val) {
-            if(val !== undefined) {
-            }
+        active: function(newVal, oldVal) { // watch it
+          if(newVal){
+              this.getStatus();
+          }
         }
     },
     methods: {
@@ -177,7 +178,7 @@ export default {
         },
     },
     mounted() {
-      this.getStatus();
+    //   this.getStatus();
     }
 }
 </script>
