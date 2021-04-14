@@ -113,7 +113,6 @@ export default {
         },
         confirm(val) {
           if(val) {
-            console.log(val,'asdasdasd')
             this.activeLoadingCashRegister=true
             this.addData()
           }
@@ -124,7 +123,6 @@ export default {
                   this.URL.cash_register +`?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),this.Helper.header())
               .then(res => {
-                console.log('res', res)
                 this.loading=false
                 this.activeLoadingCashRegister=false
                 this.closeDialogConfirm()
