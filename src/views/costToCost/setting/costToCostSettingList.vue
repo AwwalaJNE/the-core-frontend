@@ -190,8 +190,12 @@ export default {
           if(this.dataTable.length > 0) {
             this.dataItem = val
             this.dataItem.cost_to_cost_id = val.cost_to_cost_id
-            this.dataItem.cost_owner_node_id = parseInt(val.cost_owner_node_id)
-            this.dataItem.cost_payer_node_id = parseInt(val.cost_payer_node_id)
+            this.dataItem.cost_owner_node_id = val["owner_name"]
+            this.dataItem.cost_payer_node_id = val["payer_name"]
+
+            this.$store.dispatch(`SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ValueData`, val["cost_owner"][0]) // asumsi ada flag node_name (samain dg querysearch. klo mau dinamis pakein prop aja)
+            this.$store.dispatch(`SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ValueData`, val["cost_payer"][0]) // asumsi ada flag node_name
+
             console.log(this.dataItem,'item')
             this.$nextTick(() => {
               this.dialogNewEditCostingSetting = true

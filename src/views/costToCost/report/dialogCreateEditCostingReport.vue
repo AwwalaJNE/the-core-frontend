@@ -15,6 +15,10 @@
                     @formData="formData"
                     :dataItem="listenDataItem"
                     typeForm="cost_to_cost_report"
+
+                    :querySearch="querySearch"
+                    @onChangeCustom="onChangeCustom"
+                    @inputFocus="inputFocus"
                 />
             </div>
         </template>
@@ -92,6 +96,7 @@ export default {
                     "value" : "OUTBOUND"
                 }
             ],
+            autoComplateUrl: ""
         }
     },
     computed: {
@@ -114,14 +119,18 @@ export default {
     },
     methods: {
         formData(form){
-          this.node_id = this.listenNodeId
-          this.form = form
-          if(this.cost_report_id !== undefined && this.cost_report_id !== ''){
-            // this.updateData()
-            console.log('update')
-          }else{
-            this.addData()
-          } 
+        
+            form["cost_owner_node_id"] = form["cost_owner_node_id"]["node_id"]
+            form["cost_payer_node_id"] = form["cost_payer_node_id"]["node_id"]
+            this.node_id = this.listenNodeId
+            this.form = form
+            if(this.cost_report_id !== undefined && this.cost_report_id !== ''){
+                // this.updateData()
+                // console.log('update')
+            }else{
+                this.addData()
+            } 
+            //   console.log('FORM', form)
 
         },
         handleSubmit(){
@@ -139,6 +148,41 @@ export default {
         },
         closeGetCustomer() {
           this.dialogGetCustomer = false
+        },
+        querySearch(queryString, cb){
+            
+            // let flag = this.listenFlag
+            // console.log('autocomplete url', flag)
+            // console.log('meanwhile from prop was', this.listenUrl)
+            axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
+            .then(res => {
+                let result = res.data.data
+                // console.log('result',result)
+                let suggestions = [];
+
+                result.length > 0 && result.map(item => {
+                    if(item.hasOwnProperty('node_name')) {
+                        suggestions.push({
+                                value: item['node_name'],
+                                data: item
+                        });
+                    }
+                })
+                
+
+                // console.log('suggestions', suggestions)
+
+                cb(suggestions);
+                })
+            .catch(error => console.log("error", error));
+        },
+        onChangeCustom(type, val, info = {}){
+            // console.log('type',type, val, info)
+
+            
+        },
+        inputFocus() {
+            // untuk trigger perubahan url autocomplete
         },
         updateValue(key,value) {
 
@@ -199,6 +243,9 @@ export default {
         }
     },
     mounted() {
+        let url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+        this.autoComplateUrl = url
+
         this.initForm()
         this.getDataNode()
     },

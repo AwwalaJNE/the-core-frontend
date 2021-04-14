@@ -15,6 +15,8 @@
                     @formData="formData"
                     :dataItem="listenDataItem"
                     typeForm="cost_to_cost_setting"
+
+                    :querySearch="querySearch"
                 />
             </div>
         </template>
@@ -92,6 +94,7 @@ export default {
                     "value" : "OUTBOUND"
                 }
             ],
+            autoComplateUrl: ""
         }
     },
     computed: {
@@ -114,7 +117,7 @@ export default {
     },
     methods: {
         formData(form){
-                          console.log(form,'asd');
+            // console.log(form,'FORM');
             if(form != undefined){
                 let cost_value =[]
                 form.dynamicinputcomponent_cost_to_cost_detail_value.map((item, index) =>{
@@ -136,6 +139,8 @@ export default {
                     cost_rule.push(obj_rule)
 
                 })
+                form["cost_owner_node_id"] = form["cost_owner_node_id"]["node_id"]
+                form["cost_payer_node_id"] = form["cost_payer_node_id"]["node_id"]
               
               this.form = form
               this.form.rule = cost_rule
@@ -143,7 +148,7 @@ export default {
             }
 
             if(this.cosToCostId !== undefined && this.cosToCostId !== ''){
-                // this.updateData()
+                this.updateData()
             }else{
                 this.addData()
             } 
@@ -173,32 +178,59 @@ export default {
         initForm(){
            this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ArrData", this.listcostGroup.length > 0 ? this.listcostGroup : null)
         },
-        async getDataNode(){
-            await axios
-                .get(this.URL.node +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.node_name
-                            obj["value"] = item.node_id
+        querySearch(queryString, cb){
+            
+            // let flag = this.listenFlag
+            // console.log('autocomplete url', flag)
+            // console.log('meanwhile from prop was', this.listenUrl)
+            axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
+            .then(res => {
+                let result = res.data.data
+                // console.log('result',result)
+                let suggestions = [];
 
-                            arr.push(obj)
-                        })
-                        // this.dataNodeType = arr
-                        this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
-                        this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                result.length > 0 && result.map(item => {
+                    if(item.hasOwnProperty('node_name')) {
+                        suggestions.push({
+                                value: item['node_name'],
+                                data: item
+                        });
                     }
-                    
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
                 })
+                
+
+                // console.log('suggestions', suggestions)
+
+                cb(suggestions);
+                })
+            .catch(error => console.log("error", error));
         },
+        // async getDataNode(){
+        //     await axios
+        //         .get(this.URL.node +
+        //         `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+        //         this.Helper.header())
+        //         .then(res => {
+        //             if(res.data.data.length > 0) {
+        //                 let arr = []
+        //                 res.data.data.map(item => {
+        //                     let obj = {}
+        //                     obj["label"] = item.node_name
+        //                     obj["value"] = item.node_id
+
+        //                     arr.push(obj)
+        //                 })
+        //                 // this.dataNodeType = arr
+        //                 this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+        //                 this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+        //             } else {
+        //                 // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+        //             }
+                    
+        //         }).catch(err => {
+        //             // this.openNotification('danger', 'Failed to collect role list', err)
+        //         })
+        // },
         async getCostingRules(){
             await axios
                 .get(this.URL.cost_to_cost_rules +
@@ -278,7 +310,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.cost_to_cost + `/${this.node_id}`,
+                    this.URL.cost_to_cost + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -318,8 +350,11 @@ export default {
         }
     },
     mounted() {
+        let url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+        this.autoComplateUrl = url
+
         this.initForm()
-        this.getDataNode()
+        // this.getDataNode()
         this.getCostingRules()
         this.getCostingType()
         this.getActivityType()
