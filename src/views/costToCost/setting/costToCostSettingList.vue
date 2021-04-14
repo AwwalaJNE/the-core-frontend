@@ -34,6 +34,7 @@
             :closeDialog="closeDialogNewEditCostingSetting"
             title="Edit Cost To Cost Setting"
             :dataItem="dataItem"
+            btnBlue="Edit"
         />
 
     </div>
@@ -152,7 +153,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', 'Failed to populate Data', err)
                 })
         },
 
