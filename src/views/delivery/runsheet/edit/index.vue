@@ -15,7 +15,10 @@
             <vs-col lg="12" sm="12" xs="12">
               <div class="box information" style="padding-top: 1px !important;">
                 <p align="left"><b>Courier</b></p>
-                <p align="left">{{dataDelivery.employee_code }} ({{dataDelivery.employee_name}})</p>
+                <template v-if="dataDelivery.length > 0">
+                  <p align="left">{{dataDelivery[0].employee_code }} ({{dataDelivery[0].employee_name}})</p>
+                </template>
+
                 <div class="nav-box">
                   <vs-row>
                     <vs-col xs="4" sm="4" lg="4" style="margin-top: 2em">
@@ -56,7 +59,7 @@
                       <template>
                         <transition name="slide-fade">
                           <template>
-                            <RunsheetInformation :ref="'runsheetInformation'"   @reload="reloadSummary" :query="tempSearch" :deliveryNumber="delivery_runsheet_number" :employeeId="employee_id" />
+                            <RunsheetInformation :ref="'runsheetInformation'"   @reload="reloadSummary" :query="tempSearch" :deliveryNumber="delivery_runsheet_number"  />
                           </template>
                         </transition>
                       </template>
@@ -116,7 +119,7 @@ export default {
             form:{},
             delivery_runsheet_number:'',
             employee_id:'',
-            dataDelivery:'',
+            dataDelivery: [],
             summary: [],
         }
     },
@@ -138,6 +141,10 @@ export default {
           data_summary.total_connote = val.length
           data_summary.date = date
           this.summary.push(data_summary)
+          let datacour = {}
+          datacour.employee_code = val[0].employee_courier.employee_code
+          datacour.employee_name = val[0].employee_courier.employee_name
+          this.dataDelivery.push(datacour)
 
         },
         searchValue (val) {
@@ -164,8 +171,8 @@ export default {
         getParamRoute(){
           if(this.$route.params.employee_id){
             this.employee_id = this.$route.params.employee_id.toString()
-            this.dataDelivery = this.$route.params.data
-            this.delivery_runsheet_number = this.dataDelivery.delivery_runsheet_number.toString()
+            // this.dataDelivery = this.$route.params.data
+            // this.delivery_runsheet_number = this.dataDelivery.delivery_runsheet_number.toString()
           }
         },
         async processInbond() {
@@ -189,7 +196,7 @@ export default {
           this.$router.push('/delivery/runsheet')
         },
         print(){
-          let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': this.delivery_runsheet_number, 'type': 'delivery'} });
+          let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': this.employee_id, 'type': 'delivery', 'node_id':this.listenNodeId} });
           window.open(routeData.href, '_blank');
         }
 

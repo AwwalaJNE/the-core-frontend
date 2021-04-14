@@ -205,7 +205,6 @@ export default {
 
                         this.datacolumn.map(item => {
                             if(item.key == 'status_delivery') {
-                              console.log('asd')
                                 item.data = arr
                             }
                         })
@@ -237,13 +236,20 @@ export default {
         refresh(){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
+        getParamRoute(){
+          if(this.$route.params.employee_id){
+            this.employee_id = this.$route.params.employee_id
+            console.log(this.employee_id,'nah ini')
+          }
+        },
 
 
 
     },
     mounted() {
         this.getStatus()
-        // this.refresh()
+        this.getParamRoute()
+        this.refresh()
     }
 }
 </script>
