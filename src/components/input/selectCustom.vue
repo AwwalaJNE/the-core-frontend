@@ -1,15 +1,16 @@
 <template>
-  <div>
-    <vs-select filter placeholder="Filter" v-model="data">
+  <div class="center con-selects">
+    <vs-select 
+    filter 
+    placeholder="Filter" 
+    v-model="value">
       <vs-option
-        :key="key"
-        v-for="(item, key) in data"
+        v-for="item in dataItem"
+        :key="item.value"
+        :label="item.label"
         :value="item.value"
-        :label="item.text"
-        @change="eventDong"
-        @formchange="eventDong"
       >
-        {{item.text}}
+        {{ item.label }}
       </vs-option>
     </vs-select>
   </div>
@@ -19,53 +20,24 @@ export default {
   name: "select-custom",
   components: {},
   props: {
-    // name: String,
-    // rules: String,
-    // data: Array,
-    // dataObj: [Object, String, Array],
-    // loadingData: Boolean,
-    // selectedValue: [Array, String, Number],
-    // formKey: String,
-    // isMultiple: Boolean,
-    // border: Boolean,
-    // placeholder: String,
-    // tabindex: [Number, String],
+    dataItem: Array,
   },
-  data() {
-    return {
-        data:[
-            {
-                text:'Node JS',
-                value:1
-            },
-            {
-                text:'Vue',
-                value:2
-            },
-            {
-                text:'Python',
-                value:3
-            },
-            {
-                text:`Java`,
-                value:4
-            },
-            {
-                text:`Php`,
-                value:5
-            }
-        ]
-    };
-  },
-  watch: {
-      data: function (val) {
-          console.log(val.length);
-        },
-  },
+  data: () => ({
+    value: null,
+  }),
   methods: {
-      eventDong:() =>{
-          console.log('sss');
-      }
+    // async dataItem() {
+    //   return [
+    //     { value: 1, label: "Vuesax" },
+    //     { value: 2, label: "Vue" },
+    //     { value: 3, label: "Javascript" },
+    //     { value: 4, label: "Sass" },
+    //     { value: 5, label: "Typescript" },
+    //     { value: 6, label: "Webpack" },
+    //     { value: 7, label: "Nodejs" },
+    //   ];
+    // },
   },
+  mounted() {},
 };
 </script>

@@ -10,7 +10,7 @@
       <div class="box" style="text-align: left">
         <vs-row>
           <vs-col xs="12" sm="12" lg="12">
-              <select-custom
+              <select-custom :dataItem="dataItem"
               />
           </vs-col>
         </vs-row>
@@ -42,6 +42,15 @@ export default {
   data() {
     return {
       title: "Canvas Page",
+      dataItem: [
+        { value: 1, label: "Vuesax" },
+        { value: 2, label: "Vue" },
+        { value: 3, label: "Javascript" },
+        { value: 4, label: "Sass" },
+        { value: 5, label: "Typescript" },
+        { value: 6, label: "Webpack" },
+        { value: 7, label: "Nodejs" },
+      ]
     };
   },
   methods: {

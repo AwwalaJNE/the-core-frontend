@@ -146,7 +146,11 @@ export default {
       this.$refs.formProfileController.handleSubmit();
     },
     async updateProfile(form) {
-      const updateLoading = this.$vs.loading();
+      const updateLoading = this.$vs.loading({
+                type:'scale',
+                text: 'Loading...',
+                background: '#EAEAEA',
+            });
       let data = form;
       if (
         data.password == "" ||

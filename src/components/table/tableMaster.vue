@@ -597,7 +597,9 @@ export default {
         loadingHandler(){
             this.refloading = this.$vs.loading({
                 target: this.$refs.tablee,
-                color: '#333'
+                type:'scale',
+                text: 'Loading...',
+                background: '#EAEAEA',
             })
         },
         closeLoading(){

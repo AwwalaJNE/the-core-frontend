@@ -547,7 +547,16 @@ const routes = [
         }
       },
       {
-        path: "/delivery/runsheet/edit/:employee_id",
+        path: "/delivery/runsheet/:employee_id",
+        name: "delivery-runsheet-new",
+        component: DeliveryRunsheetEdit,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Delivery Assign"
+        }
+      },
+      {
+        path: "/delivery/runsheet/:employee_id/edit/:delivery_runsheet_number",
         name: "delivery-runsheet-edit",
         component: DeliveryRunsheetEdit,
         meta: {

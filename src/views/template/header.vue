@@ -6,7 +6,7 @@
                     <vs-col xs="12" sm="12" lg="2">
                         <vs-row justify="space-between">
                             <vs-col xs="9" sm="9" lg="3">
-                                <vs-button @click="clickProps" size="l" dark shadow icon>
+                                <vs-button @click="clickProps" size="l" flat icon>
                                     <i class='bx bx-menu'></i>
                                 </vs-button>
                             </vs-col>

@@ -46,6 +46,7 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import dateRange from "@/components/daterange/index"
+import moment from "moment";
 
 import DeliveryRunsheetTable from "@/views/delivery/runsheet/runsheetTable"
 
@@ -65,7 +66,7 @@ export default {
         return {
             title:"Assign",
             tempSearch: "",
-            tempDate: [],
+            tempDate: moment().format('YYYY-MM-DD'),
             DataNode:[],
             node_request:'',
             node_origin:'',
@@ -85,11 +86,6 @@ export default {
         clearSearch() {
             this.$refs.searchInput.clear()
         },
-
-        openDialog(){
-            this.$router.push('/inbound/prealert/scan')
-        },
-
         async getDataNodeType() {
           this.loading = true
           await axios
@@ -120,7 +116,7 @@ export default {
 
     },
     mounted() {
-        this.getDataNodeType()
+        // this.getDataNodeType()
     }
 }
 </script>
