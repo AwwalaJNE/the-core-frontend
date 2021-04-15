@@ -161,14 +161,19 @@ export default {
         },
 
 
-        updateValue(key, val){
+        updateValue(key, val, info){
           key = key.split('|');
             if(key[0] && key[0] == 'status_delivery'){
-              this.form = {
-                koli_number : key[1],
-                status : val,
-                delivery_runsheet_number:this.delivery_runsheet_number
-              }
+              this.dataTable.map((item, index)=>{
+                if(key[1] === item.koli_number){
+                  this.delivery_runsheet_number = this.dataTable[index].delivery_runsheet_number
+                  this.form = {
+                    koli_number : key[1],
+                    status : val,
+                    delivery_runsheet_number:this.delivery_runsheet_number
+                  }
+                }
+              })
               this.updateInbound();
             }
         },
@@ -239,7 +244,6 @@ export default {
         getParamRoute(){
           if(this.$route.params.employee_id){
             this.employee_id = this.$route.params.employee_id
-            console.log(this.employee_id,'nah ini')
           }
         },
 
