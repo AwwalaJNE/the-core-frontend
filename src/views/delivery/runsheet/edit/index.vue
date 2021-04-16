@@ -263,7 +263,7 @@ export default {
       let routeData = this.$router.resolve({
         name: "printGeneral",
         params: {
-          id: this.employee_id,
+          id: this.delivery_runsheet_number,
           type: "delivery",
           node_id: this.listenNodeId,
         },
