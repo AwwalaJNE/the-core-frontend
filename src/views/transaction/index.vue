@@ -325,8 +325,8 @@ export default {
                         this.wrapKoliNumber()
 
                         if(this.typeAction == 'addconnote') {
-                            this.refreshTransactionFields()
-                            this.$refs.originComponent.setFocus()
+                            // this.refreshTransactionFields()
+                            // this.$refs.originComponent.setFocus()
                         } else {
                             
                             this.getDataKoli()
@@ -415,6 +415,16 @@ export default {
             if(this.typeAction == 'addconnote') {
                 this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
+
+                let self = this
+                setTimeout(function(){ 
+                    self.refreshTransactionFields()
+                    self.$refs.originComponent.setFocus()
+
+                    self.$store.dispatch(`SET_PACKAGE_PACKAGE_DESCRIPTION`, "")
+                    self.$store.dispatch(`SET_PACKAGE_PACKAGE_DESCRIPTION_ValueData`, "")
+                }, 1000);
+                
             }
 
             
