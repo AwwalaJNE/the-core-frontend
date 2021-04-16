@@ -8,7 +8,7 @@
         @update:open="actionSidebar"
         @input="redirect"
         >
-        <template>
+        <template #logo>
           <div class="box-logo">
               <Logo />
           </div>
@@ -379,11 +379,6 @@ export default {
     .vs-sidebar-content{
         box-shadow:unset;
         border-radius:0 !important;
-        .box-logo{
-            position: relative;
-            width: 100%;
-            margin: 2em 0;
-        }
         .vs-sidebar__group__content{
             .v-enter-to{}
             .vs-sidebar__item__text{

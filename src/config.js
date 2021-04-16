@@ -156,5 +156,8 @@ export default {
     //user_history
     user_history: api + "auth-history-tracker",
 
+    //pod
+    pod : api + "pod",
+
 
 }

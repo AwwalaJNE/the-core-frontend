@@ -186,7 +186,6 @@ export default {
             axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
-                // console.log('result',result)
                 let suggestions = [];
 
                 result.length > 0 && result.map(item => {
@@ -310,14 +309,14 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.cost_to_cost + `?n=${this.listenNodeId}`,
+                    this.URL.cost_to_cost + `/${this.cosToCostId}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Update success', 'Update cost_to_cost is success')
+                    this.openNotification(null, 'Update success', 'Update Costing Setting is Success')
                 }).catch(err => {
                     this.loading = false
                     this.closeDialog()
@@ -326,7 +325,6 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
             await axios
                 .post(
                     this.URL.cost_to_cost + `?n=${this.listenNodeId}`,

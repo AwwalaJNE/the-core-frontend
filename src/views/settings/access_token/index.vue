@@ -12,7 +12,7 @@
       <vs-col xs="12" sm="12" lg="12">
         <div class="box">
           <vs-row>
-            <vs-col xs="12" sm="12" md="10" lg="7">
+            <vs-col xs="12" sm="12" lg="12">
               <div style="margin-top: 10px">
                 <vs-tooltip
                   :success="tokenCopied"
@@ -35,7 +35,7 @@
               </div>
             </vs-col>
 
-            <vs-col xs="12" sm="12" md="10" lg="7">
+            <vs-col xs="12" sm="12" lg="12">
               <div style="text-align: right; margin-top: 10px">
                 <vs-button @click="openApidoc" style="margin-top: 10px;right:0;position:absolute" transparent border>
                   How to use this token?
@@ -43,7 +43,7 @@
               </div>
             </vs-col>
 
-            <vs-col xs="12" sm="12" md="12" lg="12">
+            <vs-col xs="12" sm="12" lg="12">
               <vs-button @click="resetConfirmation" style="margin-top: 10px">
                 Reset Token
               </vs-button>
@@ -103,7 +103,11 @@ export default {
   methods: {
     pageLoadingModal(loading) {
       if (loading) {
-        this.pageLoading = this.$vs.loading();
+        this.pageLoading = this.$vs.loading({
+          type:'scale',
+          text: 'Loading...',
+          background: '#EAEAEA',
+        });
       } else {
         if (this.pageLoading) {
           this.pageLoading.close();

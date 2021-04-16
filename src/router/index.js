@@ -132,6 +132,9 @@ import SettingAccessToken from "@/views/settings/access_token"
 // === profile ===
 import Profile from "@/views/auth/profile"
 
+// === blank ===
+import BlankPage from "@/views/example/blank"
+
 
 Vue.use(VueRouter)
 
@@ -153,6 +156,15 @@ const routes = [
         meta: { 
           requiresAuth: true,
           breadCrumb: "User Profile"
+        }
+      },
+      {
+        path: "blank",
+        name: "blank",
+        component: BlankPage,
+        meta: { 
+          requiresAuth: true,
+          breadCrumb: "Example Blank Page"
         }
       },
       {
@@ -535,7 +547,16 @@ const routes = [
         }
       },
       {
-        path: "/delivery/runsheet/edit/:employee_id",
+        path: "/delivery/runsheet/:employee_id",
+        name: "delivery-runsheet-new",
+        component: DeliveryRunsheetEdit,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Delivery Assign"
+        }
+      },
+      {
+        path: "/delivery/runsheet/:employee_id/edit/:delivery_runsheet_number",
         name: "delivery-runsheet-edit",
         component: DeliveryRunsheetEdit,
         meta: {

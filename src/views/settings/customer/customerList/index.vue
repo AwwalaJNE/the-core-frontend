@@ -151,18 +151,23 @@ export default {
                     this.openNotification('danger', 'Failed to populate customer list', err)
                 })
         },
-        actionUpdate(val){
-            if(this.dataTable.length > 0) {
-                let obj = this.dataTable.filter(item => {
-                    item['n'] = parseInt(item.customer_node_id)
-                    return item.customer_id === val.customer_id
-                })
-                this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
-                this.$nextTick(() => {
+        async getCustomerById(customer_id) {
+            await axios
+                .get(this.URL.customer + `/${customer_id}?n=${this.listenNodeId}`, 
+                this.Helper.header())
+                .then(res => {
+                    this.dataItem = res.data.data
                     this.dialogCustomer = true
-                });
-            }
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to populate customer list', err)
+                })
+        },
+        actionUpdate(val){
+            this.dataItem = null
+            let customer_id = val.customer_id;
+            this.getCustomerById(customer_id)
         },
         actionRemove(val){
             this.customer_id = val.customer_id

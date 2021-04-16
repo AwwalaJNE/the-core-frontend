@@ -96,8 +96,12 @@ export default {
     },
     watch: {
         dataItem: function (val) {
-            if(val !== undefined) {
+            if(val != undefined && val != null && val != '') {
                 this.customer_id = val.customer_id
+                this.getDataNodeId()
+                this.getDataCustomerType()
+                this.getDataSubdistrict()
+
             }
         }
     },
@@ -123,7 +127,7 @@ export default {
             this.loading = true
             await axios
                 .get(this.URL.geolocation_subdistrict + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -151,7 +155,7 @@ export default {
             this.loading = true
             await axios
                 .get(this.URL.customer_type + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=100&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -179,7 +183,7 @@ export default {
             this.loading = true
             await axios
                 .get(this.URL.node + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res.data.data,'him')
@@ -256,9 +260,9 @@ export default {
         
     },
     mounted() {
-        this.getDataNodeId()
-        this.getDataCustomerType()
-        this.getDataSubdistrict()
+        // this.getDataNodeId()
+        // this.getDataCustomerType()
+        // this.getDataSubdistrict()
     },
 }
 </script>

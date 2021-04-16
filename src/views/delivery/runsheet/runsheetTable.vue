@@ -8,7 +8,7 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :hasLinked="['employee_code']"
+        :hasLinked="['employee_name']"
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
@@ -26,7 +26,7 @@ export default {
     mixins: [master],
     props: {
         query: String,
-        dateFilter: Array,
+        dateFilter: String,
         node:String
     },
     components: {
@@ -37,7 +37,12 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "ID",
+                    label: "Runsheet #",
+                    key: "delivery_runsheet_number",
+                    width: "md"
+                },
+                {
+                    label: "Courier Code",
                     key: "employee_code",
                     width: "xs"
                 },
@@ -47,32 +52,41 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Total Connotes",
-                    key: "count_connote",
+                    label: "Total Koli",
+                    key: "total_koli",
+                    width: "xs"
+                },
+                // {
+                //   label: "Cod",
+                //   key: "total_cod",
+                //   width: "xs"
+                // },
+                // {
+                //   label: "Cod Collected",
+                //   key: "total_cod_collected",
+                //   width: "xs"
+                // },
+                {
+                    label: "Delivered",
+                    key: "total_delivered",
                     width: "xs"
                 },
                 {
-                    label: "Done",
-                    key: "total_done",
+                    label: "Undelivered",
+                    key: "total_undelivered",
                     width: "xs"
                 },
                 {
-                    label: "Depart",
-                    key: "total_depart",
-                    width: "xs"
-                },
-                {
-                  label: "Ready To Depart",
-                  key: "total_ready_to_depart",
-                  width: "auto"
-                },
+                  label: "Undeliver Receiving",
+                  key: "total_undelivery_received",
+                  width: "xs"
+                }
             ],
             loading: false,
             dataItem: {},
             tempSearch: "",
             tempDate: [],
-            startDate: "",
-            endDate: "",
+            date: "",
             dialogTariff: false,
             pagination: {
                 limit:5,
@@ -92,11 +106,6 @@ export default {
         },
         dateFilter: function(val, old) {
           if(val !== undefined) {
-            this.tempDate = val
-            if(this.tempDate !== old ) {
-              this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
-              this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
-            }
             this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
           }
         },
@@ -124,26 +133,12 @@ export default {
             }
             await axios
                 .get(this.URL.courier_delivery +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                `?n=${this.listenNodeId}&s=${query}&date_filter=${this.dateFilter}`,
                 this.Helper.header())
-                .then(res => {
-                    this.dataTable = res.data.data
-                  console.log(this.dataTable,'data')
-                    this.dataTable.map(item=>{
-                      item['count_connote'] = item.delivery[0] ? item.delivery[0].count_connote : '0'
-                      item['total_depart'] = item.delivery[0] ? item.delivery[0].total_depart : '0'
-                      item['total_ready_to_depart'] = item.delivery[0] ? item.delivery[0].total_ready_to_depart : '0'
-                      item['delivery_runsheet_number'] = item.delivery[0] ? item.delivery[0].delivery_runsheet_number : 0
+                .then(res => { 
+                    this.dataTable = res.data.data.map((value)=>{
+                        return value
                     })
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
-                    if(res.data.data.length > 0) {
-                        
-                    } else {
-                        // this.openNotification('warn', 'Delivery Runsheet data is empty!', ' Please create a new data')
-                    }
-                    
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
@@ -167,12 +162,19 @@ export default {
         },
 
         refresh(){
-            console.log("refresh")
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
 
         actionDetail(row){
-          this.$router.push({ name: 'delivery-runsheet-edit', params: { employee_id: row.employee_id,  data: row} });
+            let params = {
+                employee_id: row.employee_id,
+            }
+            let routeName = 'delivery-runsheet-new'
+            if(row.delivery_runsheet_number){
+                params.delivery_runsheet_number = row.delivery_runsheet_number;
+                routeName = 'delivery-runsheet-edit';                
+            }
+            this.$router.push({ name: routeName, params: params });            
         }
 
     },

@@ -215,6 +215,8 @@ export default {
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
+
+                    this.dialogCancelActive = false
                     this.openNotification(null, 'Success', 'Create new cancel connote is success')
                 }).catch(err => {
                     this.loading = false

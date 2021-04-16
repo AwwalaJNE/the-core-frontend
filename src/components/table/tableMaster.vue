@@ -107,12 +107,12 @@
                                                     <div style="margin-top:10px;">
                                                         <!-- {{`${column.key}|${item[listenColumn[0].key]}`}} -->
                                                         <!-- "`${column.key}|${item[listenColumn[0].key]}`" kesepakatan bersama column key 0 adalah id -->
-                                                        <selector 
+                                                        <selector
                                                         :name="column.label" 
                                                         :rules="''" 
                                                         :formKey="`${column.key}|${item[listenColumn[0].key]}`"
                                                         :valueData="column.data"
-                                                        :selectedValue="item[column.key]"
+                                                        :selectedValue="item[column.selectedValue] ? item[column.selectedValue] : item[column.key]"
                                                         :isMultiple="false"
                                                         :dataObj="item"
                                                         autocomplete="off"
@@ -597,7 +597,9 @@ export default {
         loadingHandler(){
             this.refloading = this.$vs.loading({
                 target: this.$refs.tablee,
-                color: '#333'
+                type:'scale',
+                text: 'Loading...',
+                background: '#EAEAEA',
             })
         },
         closeLoading(){
