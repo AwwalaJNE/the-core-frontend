@@ -38,6 +38,7 @@
                                     
                                 </template>
                             </template>
+                            
                             <template v-else-if="InputObject[item].typeInput.toLowerCase() == 'date'">
                             <input-general
                                 :name="InputObject[item].label"
@@ -75,6 +76,17 @@
                                         @updateValue="updateValue" />
                                     </div>
                                 </template>
+                            </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('multipleselector')">
+                                <asynchronousSelect 
+                                        :ref="InputObject[item].key"
+                                        :name="InputObject[item].label" 
+                                        :rules="InputObject[item].rule" 
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].arrData"
+                                        :selectedValue="InputObject[item].value"
+                                        :url="asynchronousSelect_url"
+                                        @updateValue="updateValue" />
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
                                 <template v-if="InputObject[item].hasOwnProperty('visible')">
@@ -191,6 +203,7 @@ import DateTime from "@/components/input/dateTime"
 import Radio from "@/components/input/radio"
 import AutoComplete from "@/components/input/autoComplete"
 import iterateSelector from "@/components/input/iterateInput2"
+import asynchronousSelect from "@/components/input/asynchronousSelect"
 export default {
     name:"input-controller",
     components: {
@@ -202,7 +215,8 @@ export default {
         "iterate-selector": iterateSelector,
         "date-time": DateTime,
         "radio": Radio,
-        "auto-complete": AutoComplete
+        "auto-complete": AutoComplete,
+        "asynchronousSelect": asynchronousSelect
     },
     props: {
         arrData: Array,
@@ -210,6 +224,7 @@ export default {
         dataItem: Object,
         getters: String,
         submitByEnter: Boolean,
+        asynchronousSelect_url: String,
         querySearch: Function, // klo ada auto complete [required]
         itterateUrlAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         itterateFlagAutoComplete: String // klo pke itterate component dan ada auto complete [required]

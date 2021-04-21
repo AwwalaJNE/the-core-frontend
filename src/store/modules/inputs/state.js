@@ -2307,6 +2307,17 @@ export default {
 
   },
   cost_to_cost_report:{
+    // contohmultipleselectasync: {
+    //   label: "multiple select node contoh",
+    //   key: "contohmultipleselectasync",
+    //   rule:"",
+    //   typeInput: "multipleSelector",
+    //   typeData: "String",
+    //   width: "6",
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
     cost_owner_node_id: {
       label: "Cost Owner",
       key: "cost_owner_node_id",
