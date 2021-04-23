@@ -456,9 +456,24 @@ export default {
   SET_NODE_NODE_TARIFF_CODE_ValueData({ commit }, payload) {
     commit('SET_NODE_NODE_TARIFF_CODE_ValueData', payload)
   },
-  // type select perlu data array
-  SET_NODE_NODE_TARIFF_CODE_ArrData({ commit }, payload) {
-    commit('SET_NODE_NODE_TARIFF_CODE_ArrData', payload)
+
+
+  // SET_NODE_NODE_TARIFF_CODE({ commit }, payload) {
+  //   commit('SET_NODE_NODE_TARIFF_CODE', payload)
+  // },
+  // SET_NODE_NODE_TARIFF_CODE_ValueData({ commit }, payload) {
+  //   commit('SET_NODE_NODE_TARIFF_CODE_ValueData', payload)
+  // },
+  // // type select perlu data array
+  // SET_NODE_NODE_TARIFF_CODE_ArrData({ commit }, payload) {
+  //   commit('SET_NODE_NODE_TARIFF_CODE_ArrData', payload)
+  // },
+
+  SET_NODE_TARIFF_GROUP({ commit }, payload) {
+    commit('SET_NODE_TARIFF_GROUP', payload)
+  },
+  SET_NODE_TARIFF_GROUP_ValueData({ commit }, payload) {
+    commit('SET_NODE_TARIFF_GROUP_ValueData', payload)
   },
 
   SET_NODE_NODE_LAT({ commit }, payload) {

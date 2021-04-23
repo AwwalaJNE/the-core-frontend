@@ -643,7 +643,7 @@ export default {
 
   node: {
     node_name: {
-      label: "Node name*",
+      label: "Node Name*",
       key: "node_name",
       rule: "required",
       typeInput: "text",
@@ -652,7 +652,7 @@ export default {
       value: ''
     },
     node_type_id: {
-      label: "Node type",
+      label: "Node Type*",
       key: "node_type_id",
       rule: "required",
       typeInput: "select",
@@ -662,7 +662,7 @@ export default {
       value: ''
     },
     node_phone: {
-      label: "Node phone*",
+      label: "Node Phone*",
       key: "node_phone",
       rule: "required",
       typeInput: "text",
@@ -671,7 +671,7 @@ export default {
       value: ''
     },
     node_npwp: {
-      label: "Node npwp*",
+      label: "Node NPWP*",
       key: "node_npwp",
       rule: "required",
       typeInput: "text",
@@ -680,7 +680,7 @@ export default {
       value: ''
     },
     node_code: {
-      label: "Node code*",
+      label: "Node Code*",
       key: "node_code",
       rule: "required",
       typeInput: "text",
@@ -689,15 +689,24 @@ export default {
       value: ''
     },
     node_tariff_code: {
-      label: "Tariff code",
+      label: "Tariff Code",
       key: "node_tariff_code",
       rule: "required",
-      typeInput: "select",
+      typeInput: "text",
       typeData: "String",
       arrData: [],
       valueData: null,
       value: ''
     },
+    tariff_group: {
+      label: "Tariff group",
+      key: "tariff_group",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },    
     mapPicker:{
       // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
       typeInput: "mapPicker",

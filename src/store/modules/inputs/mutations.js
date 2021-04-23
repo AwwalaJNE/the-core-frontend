@@ -469,12 +469,19 @@ export default {
   SET_NODE_NODE_TARIFF_CODE_ValueData(state, payload) {
     state.node.node_tariff_code.valueData = payload
   },
-  SET_NODE_NODE_TARIFF_CODE_ArrData(state, payload) {
-    state.node.node_tariff_code.hasOwnProperty('arrData') ?
-      state.node.node_tariff_code.arrData = payload :
-      state.node.node_tariff_code.arrData = []
-  },
+  // SET_NODE_NODE_TARIFF_CODE_ArrData(state, payload) {
+  //   state.node.node_tariff_code.hasOwnProperty('arrData') ?
+  //     state.node.node_tariff_code.arrData = payload :
+  //     state.node.node_tariff_code.arrData = []
+  // },
 
+  SET_NODE_TARIFF_GROUP(state, payload) {
+    state.node.tariff_group.value = payload
+  },
+  SET_NODE_TARIFF_GROUP_ValueData(state, payload) {
+    state.node.tariff_group.valueData = payload
+  },
+  
   SET_NODE_NODE_LAT(state, payload) {
     state.node.node_lat.value = payload
   },
