@@ -1973,6 +1973,14 @@ export default {
 
 
   //======= Cost To Cost Report =======
+  // SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC(state, payload) {
+  //   state.cost_to_cost_report.contohmultipleselectasync.value = payload
+  // },
+  // SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC_ValueData(state, payload) {
+  //   state.cost_to_cost_report.contohmultipleselectasync.valueData = payload
+  // },
+
+
   SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID(state, payload) {
     state.cost_to_cost_report.cost_owner_node_id.value = payload
   },

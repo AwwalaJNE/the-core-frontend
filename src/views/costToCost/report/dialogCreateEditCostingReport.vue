@@ -16,6 +16,7 @@
                     :dataItem="listenDataItem"
                     typeForm="cost_to_cost_report"
 
+                    :asynchronousSelect_url="autoComplateUrl"
                     :querySearch="querySearch"
                     @onChangeCustom="onChangeCustom"
                     @inputFocus="inputFocus"

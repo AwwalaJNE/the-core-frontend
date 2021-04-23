@@ -4,7 +4,7 @@ import 'vuesax/dist/vuesax.css' //Vuesax styles
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { Upload, Autocomplete, Collapse, CollapseItem, DatePicker, TimePicker, CheckboxGroup, Checkbox, CheckboxButton} from 'element-ui';
+import { Upload, Autocomplete, Collapse, CollapseItem, DatePicker, TimePicker, CheckboxGroup, Checkbox, CheckboxButton, Select, Option, FormItem} from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
@@ -32,6 +32,9 @@ Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(CheckboxButton)
 Vue.use(VueClipboard)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(FormItem)
 
 const pluginOptions = {
   /* see config reference https://dm4t2.github.io/vue-currency-input/config/*/

@@ -1818,6 +1818,14 @@ export default {
 
 
   //======= ACTION COSTING REPORT=======
+  // SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC({ commit }, payload) {
+  //   commit('SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC', payload)
+  // },
+  // SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC_ValueData({ commit }, payload) {
+  //   commit('SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC_ValueData', payload)
+  // },
+
+
   SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID({ commit }, payload) {
     commit('SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID', payload)
   },
