@@ -114,17 +114,11 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
-                    if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
-                        this.pagination.page_size = res.data.meta.last_page
-                    } else {
-                        // this.openNotification('warn', 'Node data is empty!', ' Please create a new node')
-                    }
-                    
+                        this.pagination.page_size = res.data.meta.last_page                    
                     this.loading = false
                 }).catch(err => {
                     this.loading = false

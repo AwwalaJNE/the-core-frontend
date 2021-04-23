@@ -1,17 +1,17 @@
 <template>
     <div>
         <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
+            <vs-col xs="6" sm="6" lg="9">
                 <div class="titlePage">
                     <breadcrumb />
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
-            <vs-col xs="6" sm="3" lg="3">
-                <vs-button 
+            <vs-col xs="6" sm="6" lg="3">
+                <!-- <vs-button 
                 class="--primary"
                 @click="actionDetail"
-                >PRINT</vs-button>
+                >PRINT</vs-button> -->
             </vs-col>
         </vs-row>
         <section class="users">

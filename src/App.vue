@@ -8,9 +8,12 @@
 <script>
 import './assets/fonts/_fonts.scss'
 import 'boxicons/css/boxicons.min.css'
+import master from "@/mixins/master"
 export default {
 	name: "App",
+    mixins: [master],	
 	mounted() {
+		// this.checkAuthRequest()
 		console.log('TOLONG GIMANA CARANYA CEK AUTH DISINI :(');
 		console.log('CEK DI MIXIN KANG, ITU ADA HELPER UNTUK AMBIL TOKEN BUAT HEADER');
 	}
@@ -19,10 +22,10 @@ export default {
 
 <style lang="scss">
 html{
-	font-family: "NunitoSans-Regular";
+	font-family: "OpenSans-Regular";
 }
 #app {
-  font-family: "NunitoSans-Regular";
+  font-family: "OpenSans-Regular";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -39,7 +42,17 @@ html{
 	}
   }
   p,span,a,small{
+	  font-family: "OpenSans-Regular";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+  }
+  button{
 	  font-family: "NunitoSans-Regular";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+  }
+  input[type="date"], input[type="text"]{
+	  font-family: "OpenSans-Regular";
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
   }

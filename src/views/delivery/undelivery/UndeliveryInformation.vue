@@ -83,7 +83,7 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.delivery_return +
+                .get(this.URL.undelivery +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {

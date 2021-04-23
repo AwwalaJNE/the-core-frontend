@@ -9,6 +9,7 @@
 import URL from "@/config.js";
 import helper from "@/helper.js";
 import moment from "moment"
+import axios from "axios"
 // import { parse } from "vue-currency-input";
 const Master = {
     data() {
@@ -86,6 +87,15 @@ const Master = {
             //     localStorage.clear();
             //     this.$router.go()
             // }
+        },
+        async checkAuthRequest() {
+            // 
+            await axios
+                .get(this.URL.check_auth,
+                    this.Helper.headerLogin()).catch(err => {
+                    //     console.log(err.response)
+                    // this.checkAuth(err.response)
+                })            
         },
         addToObject(obj, key, value, index) {
             // Create a temp object and index variable

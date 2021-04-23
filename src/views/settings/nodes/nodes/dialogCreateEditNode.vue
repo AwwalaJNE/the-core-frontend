@@ -80,6 +80,12 @@ export default {
     },
     computed: {
         listenActive(){
+            if(this.active){
+                this.getDataNodeType()
+                // this.getDataNode()
+                // this.getDataAltAddress()
+                
+            }
             return this.active
         },
         listenTitle(){
@@ -255,10 +261,8 @@ export default {
         }
     },
     mounted() {
-        this.getDataNodeType()
-        this.getDataTariff()
-        this.getDataNode()
-        this.getDataAltAddress()
+        // this.getDataNodeType()
+        // this.getDataTariff()
     },
 }
 </script>

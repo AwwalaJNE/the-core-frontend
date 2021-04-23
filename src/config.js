@@ -159,5 +159,13 @@ export default {
     //pod
     pod : api + "pod",
 
+    //undel
+    undelivery : api + "undelivery",
+
+    //check-auth
+    check_auth : api + "check-auth",    
+
+    
+    
 
 }

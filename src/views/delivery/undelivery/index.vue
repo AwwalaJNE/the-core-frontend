@@ -123,7 +123,7 @@ export default {
         async processUndelivery() {
           console.log('form', this.form)
           await axios
-              .post(this.URL.delivery_return + `?n=${this.listenNodeId}`,
+              .post(this.URL.undelivery + `?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
@@ -149,6 +149,7 @@ export default {
 
     },
     mounted() {
+      this.refresh()
     }
 }
 </script>

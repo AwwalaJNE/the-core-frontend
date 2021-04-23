@@ -58,11 +58,6 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "ID",
-                    key: "counter",
-                    width: "xs"
-                },
-                {
                     label: "Date/Time",
                     key: "activity_date",
                     width: "sm"
@@ -75,12 +70,12 @@ export default {
                 {
                     label: "Node",
                     key: "node_name",
-                    width: "sm"
+                    width: "auto"
                 },
                 {
                     label: "Activity",
                     key: "activity_code",
-                    width: "auto"
+                    width: "sm"
                 },
                 {
                     label: "Description",

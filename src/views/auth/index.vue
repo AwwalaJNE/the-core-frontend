@@ -1,7 +1,7 @@
 <template>
     <vs-row justify="center">
-        <vs-col xs="12" sm="3" lg="3">
-            <div class="box login" style="margin-top:30%">
+        <vs-col xs="12" sm="12" lg="4">
+            <div class="box login_box" style="margin-top:50px !important">
 
                 <logo />
 
@@ -59,6 +59,11 @@ export default {
             this.login()
         },
         async login() {
+            const loading = this.$vs.loading({
+                type:'scale',
+                text: 'Checking credentials...',
+                background: '#EAEAEA',
+            })
             await axios
                 .post(
                     this.URL.login,
@@ -79,10 +84,12 @@ export default {
 
                     // console.log('token local', token)
 
+                    loading.close();
                     this.$router.push({ name: "profile"});
                     // this.$router.replace('/settings/users')
                     
                 }).catch(err => {
+                    loading.close();
                     console.log('err', err)
                     this.openNotification('danger', 'Login failed', err ? err : 'something went wrong')
                 })
@@ -100,8 +107,21 @@ export default {
 }
 </script>
 <style lang="scss">
-    .login{
-        width: 30%;
-        margin-bottom: 2em;
-    }
+body{
+    background: #EAEAEA;
+}
+
+.login-box {
+	width: 100px;
+	height: 100px;
+	background-color: red;
+	
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+  	
+	margin: auto;
+}
 </style>

@@ -3,7 +3,7 @@
         <vs-col xs="12" sm="12" lg="12">
             <div class="map_picker">
                 <div class="query_map">
-                    <div>Search desired location</div>
+                    <!-- <div>Search desired location</div>
                     <el-autocomplete
                     class="inline-input"
                     v-model="locationName"
@@ -11,7 +11,7 @@
                     placeholder="Please Input"
                     :trigger-on-focus="false"
                     @select="handleSelect"
-                    ></el-autocomplete>
+                    ></el-autocomplete> -->
                 </div>
                 
                 <div ref="map_general" id="map_general" style="width: 100%; height: 250px;z-index:1;position:relative; display:block; overflow:hidden;"></div>
@@ -85,7 +85,7 @@ export default {
             if (curLocation[0] == 0 && curLocation[1] == 0) {
                 curLocation = [-6.21462,106.84513];
             }
-            console.log('curLocation --> ', curLocation)
+            
             // document.getElementById("map_general").innerHTML =
             // "<div id='map' style='width: 100%; height: 100%;'></div>";
             this.$refs.map_general.innerHTML =
@@ -131,7 +131,7 @@ export default {
         querySearch(queryString, cb){
             axios.get('https://geocode.search.hereapi.com/v1/geocode?apiKey=5TeU1RNyTobul0RE74e0Xw3wmqC3JZL7w1sZ87oRkEU&q=' + queryString.replace(" ", "+")).then(res => {
                 let result = res.data
-                console.log('result',result)
+                
                 let suggestions = [];
 
                 if (result["items"] != undefined && result["items"].length > 0) {
@@ -143,7 +143,7 @@ export default {
                     });
                 }
 
-                console.log('suggestions', suggestions)
+                
 
                 cb(suggestions);
                 })
@@ -183,14 +183,14 @@ export default {
                 `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?prox=${self.latitude}%2C${self.longitude}%2C250&mode=retrieveAddresses&maxresults=1&gen=9&apiKey=5TeU1RNyTobul0RE74e0Xw3wmqC3JZL7w1sZ87oRkEU&q=`
                 ).then(res => {
                     let result = res;
-                    console.log('result',result)
+                    
                     let address_data =
                         result["data"]["Response"]["View"].length > 0 ? result["data"]["Response"]["View"][0]["Result"][0]["Location"] : "";
                     self.locationName = address_data.Address.Label;
                 })
             .catch(error => console.log("error", error));
 
-            console.log('self.locationName', self.locationName)
+            
         },
         handleSelect(item) {
             let self = this
@@ -225,10 +225,10 @@ export default {
         setTimeout(function(){ 
             self.latitude= self.lat
             self.longitude= self.lon
-            console.log('we hit map component', self.latitude, self.longitude)
+            
             self.getCoordinates()
             self.$nextTick(_ => {
-                console.log('we hit map component 222', self.latitude, self.longitude)
+                
                 self.setMarker()
                 // self.getCurrentLocation()
             });
