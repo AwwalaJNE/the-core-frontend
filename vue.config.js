@@ -2,7 +2,7 @@ const ExtractTextPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
 const host = '0.0.0.0'
-const port = 8080
+const port = 3000
 
 module.exports = {
   lintOnSave: false,

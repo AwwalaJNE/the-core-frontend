@@ -165,6 +165,9 @@ export default {
     //check-auth
     check_auth : api + "check-auth",    
 
+    //tariff-group
+    tariff_group : api + "tariff-group",    
+
     
     
 

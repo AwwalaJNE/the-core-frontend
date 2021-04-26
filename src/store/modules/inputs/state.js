@@ -926,18 +926,27 @@ export default {
       label: "Tariff Group",
       key: "tariff_group",
       rule: "required",
-      visible: false,
-      typeInput: "select",
+      typeInput: "text",
       typeData: "String",
-      arrData: [
-        {
-          label: null,
-          value: null
-        }
-      ],
       valueData: null,
       value: ''
     },
+    // tariff_group: {
+    //   label: "Tariff Group",
+    //   key: "tariff_group",
+    //   rule: "required",
+    //   visible: false,
+    //   typeInput: "select",
+    //   typeData: "String",
+    //   arrData: [
+    //     {
+    //       label: null,
+    //       value: null
+    //     }
+    //   ],
+    //   valueData: null,
+    //   value: ''
+    // },
     tariff_origin: {
       label: "Tariff origin*",
       key: "tariff_origin",

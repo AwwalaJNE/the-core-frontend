@@ -95,6 +95,8 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.user_id = val.user_id
+                this.getUserDetail()
+                // this.user_node_id = val.user_nodes
             }
         },
         active: function (val) {
@@ -105,8 +107,9 @@ export default {
     },
     methods: {
         formData(form){
-            form['user_node_id'] = form['user_node_id']['node_id'];
-
+            // form['user_node_id'] = form['user_node_id']['node_id'];
+            console.log(JSON.stringify(form));
+            return ;
             if(this.user_id !== undefined && this.user_id !== '') {
                     let obj = form
                     if(obj["password"] == '') {
@@ -155,7 +158,6 @@ export default {
                 .get(this.URL.role + `?n=${this.listenNodeId}&limit=-1`, 
                 this.Helper.header())
                 .then(res => {
-                    if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
@@ -165,16 +167,23 @@ export default {
                             arr.push(obj)
                         })
                         this.dataRole = arr
-                        this.$store.dispatch("SET_USER_USER_ROLE_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
+                        this.$store.dispatch("SET_USER_USER_ROLE_ID_ArrData", arr)
                     
                     this.loadingDataRole = false
                 }).catch(err => {
                     this.loadingDataRole = false
-                    this.checkAuth(err.response)
                     // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getUserDetail(){
+            this.loadingDataRole = true
+            await axios
+                .get(this.URL.user + `/${this.user_id}?n=${this.listenNodeId}`, 
+                this.Helper.header())
+                .then(res => {
+                    console.log(res.data);
+                }).catch(err => {
+                        this.openNotification('danger', 'Failed!', 'Failed to get data user')
                 })
         },
         async updateData() {

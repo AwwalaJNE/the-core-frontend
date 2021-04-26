@@ -27,9 +27,36 @@
             <div class="box view">
                 <div class="nav-box">
                     <vs-row justify="space-between">
-                        <vs-col xs="6" sm="9" lg="9">
+                        <vs-col xs="6" sm="9" lg="7">
                             <nav-item :navItem="navItemm" @activeTab="activeTab" />
                         </vs-col>
+                        <vs-col xs="2" sm="2" lg="2" >
+                    <template v-if="arrFilterTariffGroup">
+                      <vs-select
+                          class="m-select"
+                          filter
+                          :multiple="false"
+                          placeholder="Tariff Group"
+                          v-model="filterTariffGroup"
+                          :border="true"
+                          @change="(asas) =>{
+                              console.log(asas);
+                          }"
+                      >
+                        <template>
+                          <vs-option
+                              v-for="(item,key) in arrFilterTariffGroup"
+                              :key="key"
+                              :label="item.label"
+                              :value="item.value">
+                            {{item.label}}
+                          </vs-option>
+                        </template>
+
+                      </vs-select>
+
+                    </template>
+                  </vs-col>
                         <vs-col xs="6" sm="3" lg="3">
                             <search-input ref="searchInput" @searchValue="searchValue"/>
                         </vs-col>
@@ -40,11 +67,11 @@
                         <base-tariff :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
-                <template v-else-if="navActive === 'k-SPECIAL-TARIFF'">
+                <!-- <template v-else-if="navActive === 'k-SPECIAL-TARIFF'">
                     <transition name="slide-fade">
                         <special-tariff :ref="navActive" :query="tempSearch"/>
                     </transition>
-                </template>
+                </template> -->
 
             </div>
         </section>
@@ -96,23 +123,39 @@ export default {
                     key: "k-BASE-TARIFF",
                     title: "Base Tariff List"
                 },
-                {
-                    label: "SPECIAL TARIFF",
-                    key: "k-SPECIAL-TARIFF",
-                    title: "Special Tariff List"
-                },
+                // {
+                //     label: "SPECIAL TARIFF",
+                //     key: "k-SPECIAL-TARIFF",
+                //     title: "Special Tariff List"
+                // },
             ],
             title:"Tariff",
             navActive: "k-BASE-TARIFF",
             tempSearch: "",
             dialogTariff: false,
-            dialogTariffSpecial: false
+            dialogTariffSpecial: false,
+            arrFilterTariffGroup:null,
+            filterTariffGroup:null,
         }
     },
     methods: {
         refresh(){
             let el = this.refreshInject
+            this.getTariffGroup()
             this.$refs[el].refresh() // trigger function refresh form dari luar component list
+        },
+        async getTariffGroup(){
+            console.log('getTariffGroup');
+            await axios.get(this.URL.tariff_group +`?n=${this.listenNodeId}`,this.Helper.header())
+            .then(res => {
+                this.arrFilterTariffGroup = res.data.data.map(function(value){
+                    return {
+                        label:value.tariff_group,
+                        value:value.tariff_group
+                    };
+                });
+                console.log('getTariffGroup',this.arrFilterTariffGroup)
+            });
         },
         searchValue (val) {
             this.tempSearch = val

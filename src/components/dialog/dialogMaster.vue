@@ -81,11 +81,11 @@ export default {
         },
         addKeyHandler() {
             window.addEventListener("keydown", this.keyHandler);
-            console.log('inject dialog key handler add')
+            // console.log('inject dialog key handler add')
         },
         removeKeyHandler() {
             window.removeEventListener("keydown", this.keyHandler);
-            console.log('dialog key handler destroy')
+            // console.log('dialog key handler destroy')
         }
 
     },

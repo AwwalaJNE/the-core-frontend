@@ -306,7 +306,7 @@ export default {
             
             await axios
                 .get(this.URL.permission + 
-                `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1`, 
+                `?n=${this.listenNodeId}&limit=-1`, 
                 this.Helper.header())
                 .then(res => {
                     // console.log('getDataPermission',res.data.data)
@@ -346,23 +346,14 @@ export default {
                 .get(this.URL.role + `/${val}/permission?n=${this.listenNodeId}`, 
                 this.Helper.header())
                 .then(res => {
-                    // console.log('getRolePermission',res.data.data)
                     let temp = {}
-                    // let arr = []
                     let data = res.data.data.permission
                     if(data.length > 0) {
-                        // meanwhile we create keys object of role permission to reduce time complexity 
-                        // when comparing between permission and role permission data itself
                         data.map(item => {
-                            // temp[item.pivot.user_permission_id] = item.user_permission_name
-
                             let obj = {}
                             obj["user_permission_id"] = item.pivot.user_permission_id
                             obj["access_data"] = item.access_data
                             temp[item.pivot.user_permission_id] = obj
-
-                            // arr.push(obj)
-                            // [{"user_permission_id":1,"access_data":"NODE"}]
                         })
                         this.keysPermission = temp
                         
@@ -374,7 +365,6 @@ export default {
                 })
                 .catch(err => {
                     this.loadingPermission = false
-                    // this.loadingDataRole = false
                     this.openNotification('danger', 'Failed to populate role permission data', err)
                 })
                 
@@ -391,16 +381,10 @@ export default {
             if(this.waitToRoleRenderer == false) {
                 this.updateRole()
             }
-            
-            // console.log('update selected from table', arr)
         },
         updateValue(key, val, info){
             let splitAction = key.split("|")[0] || null
             let splitKey = key.split("|")[1] || null
-            // console.log('permissionObject', this.permissionObject, this.user_role_permission)
-            // console.log('this.keysPermission', this.keysPermission)
-            // console.log('table action', key,splitAction,splitKey, val, info)
-            
             let obj = {}
             switch(splitAction) {
                 
@@ -420,10 +404,7 @@ export default {
                     }
                     break;
                 default:
-                    console.log('meong')
-                    // code block
             }
-            // console.log('new this.user_role_permission', this.user_role_permission)
             
             
         },
@@ -431,7 +412,6 @@ export default {
             if(this.permissionDisplay.length > 0 && this.waitToRoleRenderer == false) {
                 let data = {"permission": []}
                 data["permission"] = this.user_role_permission
-                // this.user_role_permission
                 await axios
                 .post(
                     this.URL.role + `/${this.user_role_id}/permission?n=${this.listenNodeId}`,
@@ -447,7 +427,6 @@ export default {
         },
         filterNow(){
             if(this.permissionDisplay.length > 0) {
-                // console.log('this.keysPermission before filter', this.keysPermission)
                 let arr = []
                 this.permissionDisplay.map(item => {
                     if(this.keysPermission.hasOwnProperty(item.user_permission_id)) {
@@ -456,18 +435,10 @@ export default {
                         arr.push(item)
                     } 
                 })
-
-                // let obj = {}
-                //             obj["user_permission_id"] = item.pivot.user_permission_id
-                //             obj["access_data"] = item.access_data
                 
                 this.user_role_permission = arr
-                // this.permissionDisplay = this.permission
-                // console.log('this.keysPermission after filter', this.keysPermission, this.permissionDisplay, this.user_role_permission)
             }
             
-            // quickfix issue jika input dalem table, akan men-trigger event updateValue karena ada perubahan state dari inputan saat render table
-            // issue ini bikin updateRole() dijalanin saat proses render table walaupun tidak ada ubahan 
             let self = this
             setTimeout(function(){ self.waitToRoleRenderer = false}, 800);
 

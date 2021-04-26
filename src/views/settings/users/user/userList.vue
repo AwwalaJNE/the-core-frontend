@@ -73,13 +73,13 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Node",
-                    key: "user_nodes",
-                    width: "auto"
-                },
-                {
                     label: "Roles",
                     key: "user_role_name",
+                    width: "sm"
+                },
+                {
+                    label: "Node",
+                    key: "user_nodes",
                     width: "auto"
                 },
             ],
@@ -109,7 +109,13 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
-                        item["user_nodes"] = item.user_nodes.toString()
+                        item["user_nodes"] = item.user_nodes.map((nodes,index) => {
+                            let newline = "\n";
+                            if(index == 0){
+                                newline = "";
+                            }
+                            return newline+'- '+nodes.node_name;
+                        }).toString()
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
@@ -132,7 +138,7 @@ export default {
                     return item.user_id === val.user_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+                // console.log(this.dataItem, 'nihh val', val)
                 this.$nextTick(() => {
                     this.dialogUser = true
                 });
@@ -144,7 +150,6 @@ export default {
                     this.URL.user + `/${val.user_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.refresh()
                     this.openNotification(null, 'Romove success', 'Romove User is success')
                 }).catch(err => {

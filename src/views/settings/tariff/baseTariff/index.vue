@@ -45,9 +45,9 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "ID",
-                    key: "tariff_id",
-                    width: "xs"
+                    label: "Tariff Group",
+                    key: "tariff_group",
+                    width: "sm"
                 },
                 {
                     label: "Origin",
@@ -208,7 +208,6 @@ export default {
             this.refresh()
         },
         refresh(){
-            console.log("refresh")
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogTariff() {
