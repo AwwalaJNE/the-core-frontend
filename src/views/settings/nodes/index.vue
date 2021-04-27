@@ -82,6 +82,12 @@
             :closeDialog="closeDialogNodeCommision"
             title="Create Node Commision"
             />
+        <dialog-create-edit-alternate-address
+            :active="dialogAlternateAddress" 
+            @refresh="refresh"
+            :closeDialog="closeDialogAlternateAddress"
+            title="Create Alternate Address"
+            />
         <dialog-create-edit-node-link
             :active="dialogNodeLink"
             @refresh="refresh"
@@ -104,6 +110,7 @@ import DialogCreateEditNode from "@/views/settings/nodes/nodes/dialogCreateEditN
 import DialogCreateEditNodeLink from "@/views/settings/nodes/nodeLink/dialogCreateEditNodeLink"
 import dialogCreateEditNodeType from "@/views/settings/nodes/types/dialogCreateEditNodeType"
 import dialogCreateEditNodeCommission from "@/views/settings/nodes/nodesCommision/dialogCreateEditNodeCommission"
+import dialogCreateAltAddress from "@/views/settings/nodes/alternateAddress/dialogCreateAltAddress"
 
 
 export default {
@@ -120,7 +127,8 @@ export default {
         "dialog-create-edit-node": DialogCreateEditNode,
         "dialog-create-edit-node-link": DialogCreateEditNodeLink,
         "dialog-create-edit-node-type": dialogCreateEditNodeType,
-        "dialog-create-edit-node-commision":dialogCreateEditNodeCommission
+        "dialog-create-edit-node-commision":dialogCreateEditNodeCommission,
+        "dialog-create-edit-alternate-address": dialogCreateAltAddress
         // "role-list": RoleList,
         // "dialog-create-edit-user": DialogCreateEditUser,
         // "dialog-create-edit-role": DialogCreateEditRole
@@ -216,6 +224,9 @@ export default {
         },
         closeDialogNodeCommision() {
             this.dialogNodeCommision = false
+        },
+        closeDialogAlternateAddress() {
+            this.dialogAlternateAddress = false
         },
         closeDialogNodeLink() {
             this.dialogNodeLink = false
