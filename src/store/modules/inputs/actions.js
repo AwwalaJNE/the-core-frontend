@@ -555,6 +555,166 @@ export default {
     commit('SET_NODE_TYPE_IS_ACTIVE_ValueData', payload)
   },
 
+
+  // node commision
+  SET_NODE_COMMISSION_NODE_ID({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_ID', payload)
+  },
+  SET_NODE_COMMISSION_NODE_ID_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_ID_ValueData', payload)
+  },
+    // type select perlu data array
+  SET_NODE_COMMISSION_NODE_ID_ArrData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_ID_ArrData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_SERVICE_CODE({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_SERVICE_CODE', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_SERVICE_CODE_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_SERVICE_CODE_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_TYPE({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_TYPE', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_TYPE_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_TYPE_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_DAILY({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_DAILY', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_DAILY_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_DAILY_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_1({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_1', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_1_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_1_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_1({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_1', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_1_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_1_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_2({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_2', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_2_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_2_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_2({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_2', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_2_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_2_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_3({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_3', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_3_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_3_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_3({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_3', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_3_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_3_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_4({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_4', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_4_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_4_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_4({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_4', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_4_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_4_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_5({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_5', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_5_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_5_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_5({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_5', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_5_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_5_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_6({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_6', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_6_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_6_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_6({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_6', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_6_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_6_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_7({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_7', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_7_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_7_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_7({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_7', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_7_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_7_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_8({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_8', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_8_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_8_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_8({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_8', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_8_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_8_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_9({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_9', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_9_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_9_ValueData', payload)
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_9({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_9', payload)
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_9_ValueData({ commit }, payload) {
+    commit('SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_9_ValueData', payload)
+  },
+
   // node alt address
   SET_NODE_ALTERNATE_ADDRESS_NODE_ID({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ID', payload)

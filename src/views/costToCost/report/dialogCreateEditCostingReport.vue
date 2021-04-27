@@ -192,32 +192,32 @@ export default {
         initForm(){
            this.$store.dispatch("SET_COST_TO_COST_REPORT_COST_GROUP_CODE_ArrData", this.listcostGroup.length > 0 ? this.listcostGroup : null)
         },
-        async getDataNode(){
-            await axios
-                .get(this.URL.node +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.node_name
-                            obj["value"] = item.node_id
+        // async getDataNode(){
+        //     await axios
+        //         .get(this.URL.node +
+        //         `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+        //         this.Helper.header())
+        //         .then(res => {
+        //             if(res.data.data.length > 0) {
+        //                 let arr = []
+        //                 res.data.data.map(item => {
+        //                     let obj = {}
+        //                     obj["label"] = item.node_name
+        //                     obj["value"] = item.node_id
 
-                            arr.push(obj)
-                        })
-                        // this.dataNodeType = arr
-                        this.$store.dispatch("SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
-                        this.$store.dispatch("SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
+        //                     arr.push(obj)
+        //                 })
+        //                 // this.dataNodeType = arr
+        //                 this.$store.dispatch("SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+        //                 this.$store.dispatch("SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+        //             } else {
+        //                 // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+        //             }
                     
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
+        //         }).catch(err => {
+        //             // this.openNotification('danger', 'Failed to collect role list', err)
+        //         })
+        // },
       
         async addData() {
             console.log('form', this.form)
@@ -248,7 +248,7 @@ export default {
         this.autoComplateUrl = url
 
         this.initForm()
-        this.getDataNode()
+        // this.getDataNode()
     },
 }
 </script>

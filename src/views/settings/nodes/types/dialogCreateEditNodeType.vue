@@ -41,7 +41,7 @@
                     type="submit"
                     @click="handleSubmit"
                     >
-                        Add
+                        {{btnBlue || 'Add'}}
                     </vs-button>
                 </vs-col>
             </vs-row>
@@ -68,6 +68,8 @@ export default {
        active: Boolean,
        title: String,
        dataItem: Object,
+       btnRed: String,
+       btnBlue: String
     },
     data() {
         return {

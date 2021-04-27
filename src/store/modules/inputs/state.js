@@ -815,6 +815,230 @@ export default {
     },
   },
 
+  node_commission: {
+    node_id: {
+      label: "Node",
+      key: "node_id",
+      rule:"required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      width: "12",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_commision_service_code: {
+      label: "Node Commision Service Code*",
+      key: "node_commision_service_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_type: {
+      label: "Node Commision Type*",
+      key: "node_commision_type",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_daily: {
+      label: "Node Commision Daily*",
+      key: "node_commision_daily",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_1: {
+      label: "Node Commision 1*",
+      key: "node_commision_1",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_amount_1: {
+      label: "Node Commision amount 1*",
+      key: "node_commision_amount_1",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: 0
+    },
+    node_commision_2: {
+      label: "Node Commision 2*",
+      key: "node_commision_2",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_amount_2: {
+      label: "Node Commision amount 2*",
+      key: "node_commision_amount_2",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: 0
+    },
+    node_commision_3: {
+      label: "Node Commision 3*",
+      key: "node_commision_3",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_amount_3: {
+      label: "Node Commision amount 3*",
+      key: "node_commision_amount_3",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: 0
+    },
+    node_commision_4: {
+      label: "Node Commision 4*",
+      key: "node_commision_4",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_amount_4: {
+      label: "Node Commision amount 4*",
+      key: "node_commision_amount_4",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: 0
+    },
+    node_commision_5: {
+      label: "Node Commision 5*",
+      key: "node_commision_5",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_amount_5: {
+      label: "Node Commision amount 5*",
+      key: "node_commision_amount_5",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: 0
+    },
+    node_commision_6: {
+      label: "Node Commision 6*",
+      key: "node_commision_6",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_amount_6: {
+      label: "Node Commision amount 6*",
+      key: "node_commision_amount_6",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: 0
+    },
+    node_commision_7: {
+      label: "Node Commision 7*",
+      key: "node_commision_7",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_amount_7: {
+      label: "Node Commision amount 7*",
+      key: "node_commision_amount_7",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: 0
+    },
+    node_commision_8: {
+      label: "Node Commision 8*",
+      key: "node_commision_8",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_amount_8: {
+      label: "Node Commision amount 8*",
+      key: "node_commision_amount_8",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: 0
+    },
+    node_commision_9: {
+      label: "Node Commision 9*",
+      key: "node_commision_9",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
+    node_commision_amount_9: {
+      label: "Node Commision amount 9*",
+      key: "node_commision_amount_9",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: 0
+    },
+  },
+
   node_alternate_address: {
     node_id: {
       label: "Node",

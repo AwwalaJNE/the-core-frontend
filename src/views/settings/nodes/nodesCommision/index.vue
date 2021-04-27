@@ -7,34 +7,55 @@
         :pageSize="pagination.page_size"
         :page="pagination.page"
         :limit="pagination.limit"
-        :hasAction="true"
         :hasPagination="true"
-        @actionUpdate="actionUpdate"
-        @actionRemove="actionRemove"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
+
+        :customAction="true"
+        :customActionList="customActionList"
+        @actionUpdate="actionUpdate"
         />
 
         <!--Create User Dialog end-->
-            <!-- <dialog-create-edit-role 
-            :active="dialogRole" 
-            :closeDialogRole="closeDialogRole"
-            :refresh="refresh"
-            title="Edit role"
+            <dialog-create-edit
+            :active="dialogCreateEdit" 
+            :closeDialog="closeDialogCreateEdit"
+            @refresh="refresh"
+            title="Node Commision"
             :dataItem="dataItem"
-            /> -->
+            btnBlue="Edit"
+            />
+
+            <!-- dialog confirm remove Costing-->
+            <dialog-confirm
+            :active="activeDialogRemove"
+            :loading="activeLoadingRemove"
+            :closeDialog="closeDialogConfirmRemove"
+            title="Remove Node Commision"
+            message="Are you sure you want to Remove Node Commision ?"
+            @confirm="confirmRemove"
+            @cancel="closeDialogConfirmRemove"
+            />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import dialogCreateEditNodeCommission from "@/views/settings/nodes/nodesCommision/dialogCreateEditNodeCommission"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 export default {
     name:"node-commision-list",
     mixins: [master],
+    props: {
+        query: String,
+        dateFilter: Array,
+        node:String
+    },
     components: {
         "table-master" : TableMaster,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-create-edit": dialogCreateEditNodeCommission,
+        "dialog-confirm" : DialogConfirm
     },
     data() {
         return {
@@ -66,18 +87,49 @@ export default {
                     width: "auto"
                 },
             ],
+            customActionList: [
+              {
+                label: 'Edit',
+                key: 'edit',
+                attribute: '',
+              },
+              {
+                label: 'Remove',
+                key: 'remove',
+                attribute: 'danger',
+              }
+            ],
             loading: false,
             dataItem: {},
             tempSearch: "",
-            dialogGeolocation: false,
+            dialogCreateEdit: false,
             pagination: {
                 limit:20,
                 page_size: 1,
                 page: 1
-            }
+            },
+            activeDialogRemove:false,
+            activeLoadingRemove:false,
+            node_commission_id: ""
         }
     },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
+            }
+        },
+        
+        
+    },
     methods: {
+        refresh(){
+            console.log("refresh")
+            this.getTableData(this.pagination.limit, this.pagination.page)
+        },
         async getTableData(limit,page,q) {
             this.loading = true
             let query = "";
@@ -107,11 +159,59 @@ export default {
                     this.openNotification('danger', 'Failed to populate node commission list', err)
                 })
         },
-        actionUpdate(){
+        actionUpdate(val, key) {
+            switch(key) {
+                case "edit":
+                    if(this.dataTable.length > 0) {
+                        this.dataItem = val
+                        // this.dataItem.node_commission_id = val.node_commission_id
+                        
 
+                        console.log(this.dataItem,'item')
+                        this.$nextTick(() => {
+                            this.dialogCreateEdit = true
+                        });
+                    }
+                    break;
+                case "remove":
+                    this.node_commission_id = val.node_commission_id;
+                    this.node_commission_id != "" && this.node_commission_id != undefined ? this.activeDialogRemove = true : this.openNotification('warn', 'Node type remove is failed', '')
+                    break;
+                default:
+                    //
+            }
         },
-        actionRemove(){
-
+        confirmRemove() {
+          this.activeLoadingRemove = true;
+          this.removeCommision();
+        },
+        closeDialogConfirmRemove(){
+          this.activeDialogRemove = false
+          this.activeLoadingRemove=false
+          this.node_commission_id = ""
+        },
+        closeDialogCreateEdit() {
+            this.dialogCreateEdit = false
+            this.dataItem = {}
+            this.node_commission_id = ""
+        },
+        async removeCommision(){
+            await axios
+                .delete(
+                    this.URL.node_commission + `/${this.node_commission_id}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    console.log('res', res)
+                    this.refresh()
+                    this.closeDialogConfirmRemove();
+                    this.openNotification(null, 'Romove success', 'Node type is success')
+                    
+                }).catch(err => {
+                    this.loading = false
+                     this.closeDialogConfirmRemove();
+                    this.openNotification('danger', 'Node type is failed', err)
+                   
+                })
         },
         actionLimit(val){
             this.pagination.limit = val

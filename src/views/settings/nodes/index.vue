@@ -76,6 +76,12 @@
             :closeDialog="closeDialogNodeType"
             title="Create Node Type"
             />
+        <dialog-create-edit-node-commision
+            :active="dialogNodeCommision" 
+            @refresh="refresh"
+            :closeDialog="closeDialogNodeCommision"
+            title="Create Node Commision"
+            />
         <dialog-create-edit-node-link
             :active="dialogNodeLink"
             @refresh="refresh"
@@ -97,6 +103,7 @@ import Types from "@/views/settings/nodes/types"
 import DialogCreateEditNode from "@/views/settings/nodes/nodes/dialogCreateEditNode"
 import DialogCreateEditNodeLink from "@/views/settings/nodes/nodeLink/dialogCreateEditNodeLink"
 import dialogCreateEditNodeType from "@/views/settings/nodes/types/dialogCreateEditNodeType"
+import dialogCreateEditNodeCommission from "@/views/settings/nodes/nodesCommision/dialogCreateEditNodeCommission"
 
 
 export default {
@@ -113,6 +120,7 @@ export default {
         "dialog-create-edit-node": DialogCreateEditNode,
         "dialog-create-edit-node-link": DialogCreateEditNodeLink,
         "dialog-create-edit-node-type": dialogCreateEditNodeType,
+        "dialog-create-edit-node-commision":dialogCreateEditNodeCommission
         // "role-list": RoleList,
         // "dialog-create-edit-user": DialogCreateEditUser,
         // "dialog-create-edit-role": DialogCreateEditRole
@@ -151,8 +159,8 @@ export default {
             tempSearch: "",
             dialogNode: false,
             dialogNodeLink: false,
-            dialogALTERNATEADDRESS: false,
-            dialogNODESCOMMISION: false,
+            dialogAlternateAddress: false,
+            dialogNodeCommision: false,
             dialogNodeType: false
         }
     },
@@ -186,10 +194,10 @@ export default {
                     this.dialogNodeType = true
                     break;
                 case "k-NODES-COMMISION":
-                    this.dialogNODESCOMMISION = true
+                    this.dialogNodeCommision = true
                     break;
                 case "k-ALTERNATE-ADDRESS":
-                    this.dialogALTERNATEADDRESS = true
+                    this.dialogAlternateAddress = true
                     break;
                 case "k-NODE-LINK":
                   this.dialogNodeLink = true
@@ -205,6 +213,9 @@ export default {
         },
         closeDialogNodeType() {
             this.dialogNodeType = false
+        },
+        closeDialogNodeCommision() {
+            this.dialogNodeCommision = false
         },
         closeDialogNodeLink() {
             this.dialogNodeLink = false

@@ -24,6 +24,7 @@
             @refresh="refresh"
             title="Node Type"
             :dataItem="dataItem"
+            btnBlue="Edit"
             />
 
             <!-- dialog confirm remove Costing-->

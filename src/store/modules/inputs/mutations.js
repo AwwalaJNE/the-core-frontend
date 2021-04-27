@@ -560,6 +560,166 @@ export default {
   SET_NODE_TYPE_IS_ACTIVE_ValueData(state, payload) {
     state.node_type.is_active.valueData = payload
   },
+
+  // node commision
+  SET_NODE_COMMISSION_NODE_ID(state, payload) {
+    state.node_commission.node_id.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_ID_ValueData(state, payload) {
+    state.node_commission.node_id.valueData = payload
+  },
+  SET_NODE_COMMISSION_NODE_ID_ArrData(state, payload) {
+    state.node_commission.node_id.hasOwnProperty('arrData') ?
+    state.node_commission.node_id.arrData = payload :
+    state.node_commission.node_id.arrData = []
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_SERVICE_CODE(state, payload) {
+    state.node_commission.node_commision_service_code.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_SERVICE_CODE_ValueData(state, payload) {
+    state.node_commission.node_commision_service_code.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_TYPE(state, payload) {
+    state.node_commission.node_commision_type.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_TYPE_ValueData(state, payload) {
+    state.node_commission.node_commision_type.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_DAILY(state, payload) {
+    state.node_commission.node_commision_daily.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_DAILY_ValueData(state, payload) {
+    state.node_commission.node_commision_daily.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_1(state, payload) {
+    state.node_commission.node_commision_1.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_1_ValueData(state, payload) {
+    state.node_commission.node_commision_1.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_1(state, payload) {
+    state.node_commission.node_commision_amount_1.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_1_ValueData(state, payload) {
+    state.node_commission.node_commision_amount_1.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_2(state, payload) {
+    state.node_commission.node_commision_2.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_2_ValueData(state, payload) {
+    state.node_commission.node_commision_2.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_2(state, payload) {
+    state.node_commission.node_commision_amount_2.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_2_ValueData(state, payload) {
+    state.node_commission.node_commision_amount_2.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_3(state, payload) {
+    state.node_commission.node_commision_3.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_3_ValueData(state, payload) {
+    state.node_commission.node_commision_3.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_3(state, payload) {
+    state.node_commission.node_commision_amount_3.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_3_ValueData(state, payload) {
+    state.node_commission.node_commision_amount_3.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_4(state, payload) {
+    state.node_commission.node_commision_4.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_4_ValueData(state, payload) {
+    state.node_commission.node_commision_4.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_4(state, payload) {
+    state.node_commission.node_commision_amount_4.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_4_ValueData(state, payload) {
+    state.node_commission.node_commision_amount_4.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_5(state, payload) {
+    state.node_commission.node_commision_5.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_5_ValueData(state, payload) {
+    state.node_commission.node_commision_5.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_5(state, payload) {
+    state.node_commission.node_commision_amount_5.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_5_ValueData(state, payload) {
+    state.node_commission.node_commision_amount_5.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_6(state, payload) {
+    state.node_commission.node_commision_6.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_6_ValueData(state, payload) {
+    state.node_commission.node_commision_6.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_6(state, payload) {
+    state.node_commission.node_commision_amount_6.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_6_ValueData(state, payload) {
+    state.node_commission.node_commision_amount_6.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_7(state, payload) {
+    state.node_commission.node_commision_7.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_7_ValueData(state, payload) {
+    state.node_commission.node_commision_7.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_7(state, payload) {
+    state.node_commission.node_commision_amount_7.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_7_ValueData(state, payload) {
+    state.node_commission.node_commision_amount_7.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_8(state, payload) {
+    state.node_commission.node_commision_8.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_8_ValueData(state, payload) {
+    state.node_commission.node_commision_8.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_8(state, payload) {
+    state.node_commission.node_commision_amount_8.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_8_ValueData(state, payload) {
+    state.node_commission.node_commision_amount_8.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_9(state, payload) {
+    state.node_commission.node_commision_9.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_9_ValueData(state, payload) {
+    state.node_commission.node_commision_9.valueData = payload
+  },
+    
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_9(state, payload) {
+    state.node_commission.node_commision_amount_9.value = payload
+  },
+  SET_NODE_COMMISSION_NODE_COMMISION_AMOUNT_9_ValueData(state, payload) {
+    state.node_commission.node_commision_amount_9.valueData = payload
+  },
     
 
   // node alt address
