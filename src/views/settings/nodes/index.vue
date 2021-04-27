@@ -70,6 +70,12 @@
             :closeDialog="closeDialogNode"
             title="Create Node"
             />
+        <dialog-create-edit-node-type
+            :active="dialogNodeType" 
+            @refresh="refresh"
+            :closeDialog="closeDialogNodeType"
+            title="Create Node Type"
+            />
         <dialog-create-edit-node-link
             :active="dialogNodeLink"
             @refresh="refresh"
@@ -90,6 +96,7 @@ import NodesCommision from "@/views/settings/nodes/nodesCommision"
 import Types from "@/views/settings/nodes/types"
 import DialogCreateEditNode from "@/views/settings/nodes/nodes/dialogCreateEditNode"
 import DialogCreateEditNodeLink from "@/views/settings/nodes/nodeLink/dialogCreateEditNodeLink"
+import dialogCreateEditNodeType from "@/views/settings/nodes/types/dialogCreateEditNodeType"
 
 
 export default {
@@ -105,6 +112,7 @@ export default {
         "types": Types,
         "dialog-create-edit-node": DialogCreateEditNode,
         "dialog-create-edit-node-link": DialogCreateEditNodeLink,
+        "dialog-create-edit-node-type": dialogCreateEditNodeType,
         // "role-list": RoleList,
         // "dialog-create-edit-user": DialogCreateEditUser,
         // "dialog-create-edit-role": DialogCreateEditRole
@@ -194,6 +202,9 @@ export default {
         },
         closeDialogNode() {
             this.dialogNode = false
+        },
+        closeDialogNodeType() {
+            this.dialogNodeType = false
         },
         closeDialogNodeLink() {
             this.dialogNodeLink = false

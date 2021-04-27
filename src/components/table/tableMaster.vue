@@ -93,13 +93,13 @@
                                         </template>
                                     </vs-td>
                                 </template>
-                                <template v-else-if="column.type !== undefined && column.type.toLowerCase() === 'boolean'">
+                                <template v-else-if="column.type !== undefined && column.type.toLowerCase().includes('boolean')">
                                     <vs-td :key="key" :class="column.width ? column.width : ''">
                                         
-                                        <checkbox :isChecked="item[column.key]" :formKey="`${column.key}|${item[listenColumn[0].key]}`" :dataObj="item" @updateValue="updateValue"/>
+                                        <checkbox :isChecked="item[column.key]" :isDisabled="column.type.toLowerCase().includes('disabled')" :formKey="`${column.key}|${item[listenColumn[0].key]}`" :dataObj="item" @updateValue="updateValue"/>
                                     </vs-td>
                                 </template>
-                                <template v-else-if="column.type !== undefined && column.type.toLowerCase() === 'inputan'">
+                                <template v-else-if="column.type !== undefined && column.type.toLowerCase().includes('inputan')">
                                     <vs-td :key="key" :class="column.width ? column.width : ''">
                                         <template v-if="column.typeInput !== undefined && column.typeInput.toLowerCase() === 'select'">
                                             <template v-if="column.data !== undefined && Array.isArray(column.data)">

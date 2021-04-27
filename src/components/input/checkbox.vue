@@ -1,6 +1,6 @@
 <template>
     <div class="checkbox-inp">
-      <vs-checkbox ref="vuesaxCheckbox" v-model="option1" @input="updateValue">
+      <vs-checkbox ref="vuesaxCheckbox" :disabled="listenIsDisabled" v-model="option1" @input="updateValue">
           {{listenName}}
       </vs-checkbox>
     </div>
@@ -12,7 +12,8 @@ export default {
         isChecked: Boolean,
         formKey: String,
         dataObj: [Object, String, Array],
-        name: String
+        name: String,
+        isDisabled: Boolean
     },
     data() {
         return {
@@ -29,6 +30,9 @@ export default {
     computed: {
         listenFormKey(){
             return this.formKey
+        },
+        listenIsDisabled(){
+            return this.isDisabled
         },
         listenName(){
             return this.name || ''

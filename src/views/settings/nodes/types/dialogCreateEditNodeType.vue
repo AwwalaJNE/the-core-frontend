@@ -10,10 +10,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formGeoLocationCityController"
+                    ref="formNodeTypeController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="geolocation_city"
+                    typeForm="node_type"
                 />
             </div>
         </template>
@@ -41,7 +41,7 @@
                     type="submit"
                     @click="handleSubmit"
                     >
-                        {{btnBlue || 'Add'}}
+                        Add
                     </vs-button>
                 </vs-col>
             </vs-row>
@@ -57,7 +57,7 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-geo-city",
+    name:"dialog-create-edit-node-type",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
@@ -68,14 +68,11 @@ export default {
        active: Boolean,
        title: String,
        dataItem: Object,
-       btnRed: String,
-       btnBlue: String
     },
     data() {
         return {
             form: {},
-            formRole: this.$store.getters.getInputs.geolocation_city ? this.$store.getters.getInputs.geolocation_city : {},
-            geolocation_city_id: ''
+            node_type_id: ''
         }
     },
     computed: {
@@ -92,14 +89,14 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.geolocation_city_id = val.geolocation_city_id
+                this.node_type_id = val.node_type_id
             }
         }
     },
     methods: {
         formData(form){
             this.form = form
-            if(this.geolocation_city_id !== undefined && this.geolocation_city_id !== '') {
+            if(this.node_type_id !== undefined && this.node_type_id !== '') {
                     console.log('update')
                     this.updateData()
             } else {
@@ -107,42 +104,18 @@ export default {
             }
         },
         handleSubmit(){
-            this.$refs.formGeoLocationCityController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formNodeTypeController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formGeoLocationCityController.handleClearForm()
+            this.$refs.formNodeTypeController.handleClearForm()
             this.form = {}
-            this.geolocation_city_id = ""
+            this.node_type_id = ""
         },
-        async getDataProvince(){
-            await axios
-                .get(this.URL.geolocation_province + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.geolocation_province_name
-                            obj["value"] = item.geolocation_province_id
-
-                            arr.push(obj)
-                        })
-
-                        this.$store.dispatch("SET_GEOLOCATION_CITY_GEOLOCATION_PROVINCE_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
-                    
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
+        
         async updateData(){
             await axios
                 .put(
-                    this.URL.geolocation_city + `/${this.geolocation_city_id}?n=${this.listenNodeId}`,
+                    this.URL.node_type + `/${this.node_type_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -163,7 +136,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.geolocation_city + `?n=${this.listenNodeId}`,
+                    this.URL.node_type + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -186,7 +159,6 @@ export default {
         }
     },
     mounted() {
-        this.getDataProvince()
     },
 }
 </script>

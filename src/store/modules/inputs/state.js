@@ -794,6 +794,27 @@ export default {
     },
   },
 
+  node_type: {
+    node_type_name: {
+      label: "Node type name*",
+      key: "node_type_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
+
   node_alternate_address: {
     node_id: {
       label: "Node",

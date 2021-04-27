@@ -546,6 +546,22 @@ export default {
     state.node.is_active.valueData = payload
   },
 
+  // node type
+  SET_NODE_TYPE_NODE_TYPE_NAME(state, payload) {
+    state.node_type.node_type_name.value = payload
+  },
+  SET_NODE_TYPE_NODE_TYPE_NAME_ValueData(state, payload) {
+    state.node_type.node_type_name.valueData = payload
+  },
+    
+  SET_NODE_TYPE_IS_ACTIVE(state, payload) {
+    state.node_type.is_active.value = payload
+  },
+  SET_NODE_TYPE_IS_ACTIVE_ValueData(state, payload) {
+    state.node_type.is_active.valueData = payload
+  },
+    
+
   // node alt address
   SET_NODE_ALTERNATE_ADDRESS_NODE_ID(state, payload) {
     state.node_alternate_address.node_id.value = payload

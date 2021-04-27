@@ -540,6 +540,21 @@ export default {
     commit('SET_NODE_IS_ACTIVE_ValueData', payload)
   },
 
+  // node type
+  SET_NODE_TYPE_NODE_TYPE_NAME({ commit }, payload) {
+    commit('SET_NODE_TYPE_NODE_TYPE_NAME', payload)
+  },
+  SET_NODE_TYPE_NODE_TYPE_NAME_ValueData({ commit }, payload) {
+    commit('SET_NODE_TYPE_NODE_TYPE_NAME_ValueData', payload)
+  },
+    
+  SET_NODE_TYPE_IS_ACTIVE({ commit }, payload) {
+    commit('SET_NODE_TYPE_IS_ACTIVE', payload)
+  },
+  SET_NODE_TYPE_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_NODE_TYPE_IS_ACTIVE_ValueData', payload)
+  },
+
   // node alt address
   SET_NODE_ALTERNATE_ADDRESS_NODE_ID({ commit }, payload) {
     commit('SET_NODE_ALTERNATE_ADDRESS_NODE_ID', payload)
