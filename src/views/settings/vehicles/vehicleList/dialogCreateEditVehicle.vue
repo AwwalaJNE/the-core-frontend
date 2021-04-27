@@ -14,6 +14,8 @@
                     @formData="formData"
                     :dataItem="listenDataItem"
                     typeForm="vehicle"
+
+                    :querySearch="querySearch"
                     @onChangeCustom="onFormChanged"
                 />
             </div>
@@ -75,7 +77,8 @@ export default {
     data() {
         return {
             form: {},
-            vehicle_id: ''
+            vehicle_id: '',
+            autoComplateUrl: ""
         }
     },
     computed: {
@@ -99,7 +102,7 @@ export default {
         },
         active: function (val) {
             if (val == true) {
-                this.getNode()
+                // this.getNode()
                 this.getVehicleMode()
                 if(this.vehicle_mode_id != null && this.vehicle_mode_id != '' && this.vehicle_mode_id != 'undefined'){
                     this.getVehicleType(this.vehicle_mode_id)
@@ -109,6 +112,7 @@ export default {
     },
     methods: {
         formData(form){
+            form["vehicle_node_id"] = form["vehicle_node_id"]["node_id"]
             this.form = form
             if(this.vehicle_id !== undefined && this.vehicle_id !== '') {                    
                     this.updateData()
@@ -134,29 +138,56 @@ export default {
             this.form = {}
             this.vehicle_id = ""
         },
-        async getNode(){
-            await axios
-                .get(this.URL.node + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=50&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.node_name
-                            obj["value"] = item.node_id
+        querySearch(queryString, cb){
+            
+            // let flag = this.listenFlag
+            // console.log('autocomplete url', flag)
+            // console.log('meanwhile from prop was', this.listenUrl)
+            axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
+            .then(res => {
+                let result = res.data.data
+                // console.log('result',result)
+                let suggestions = [];
 
-                            arr.push(obj)
-                        })
-
-                        this.$store.dispatch("SET_VEHICLE_VEHICLE_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+                result.length > 0 && result.map(item => {
+                    if(item.hasOwnProperty('node_name')) {
+                        suggestions.push({
+                                value: item['node_name'],
+                                data: item
+                        });
                     }
-                    
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
                 })
+                
+
+                // console.log('suggestions', suggestions)
+
+                cb(suggestions);
+                })
+            .catch(error => console.log("error", error));
         },
+        // async getNode(){
+        //     await axios
+        //         .get(this.URL.node + 
+        //         `?n=${this.listenNodeId}&sort_order=desc&limit=50&page=1`, 
+        //         this.Helper.header())
+        //         .then(res => {
+        //             if(res.data.data.length > 0) {
+        //                 let arr = []
+        //                 res.data.data.map(item => {
+        //                     let obj = {}
+        //                     obj["label"] = item.node_name
+        //                     obj["value"] = item.node_id
+
+        //                     arr.push(obj)
+        //                 })
+
+        //                 this.$store.dispatch("SET_VEHICLE_VEHICLE_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+        //             }
+                    
+        //         }).catch(err => {
+        //             // this.openNotification('danger', 'Failed to collect role list', err)
+        //         })
+        // },
         async getVehicleMode(){
             await axios
                 .get(this.URL.vehicle_mode + 
@@ -264,6 +295,8 @@ export default {
         }
     },
     mounted() {
+        let url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+        this.autoComplateUrl = url
     },
 }
 </script>

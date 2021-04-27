@@ -1,5 +1,3 @@
-import { ADD_NAME } from '../../mutations-type'
-
 export default {
   // ==== user ====
   SET_USER_USER_NAME(state, payload) {

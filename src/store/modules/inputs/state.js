@@ -1453,7 +1453,7 @@ export default {
       label: "Vehicle Node",
       key: "vehicle_node_id",
       rule: "",
-      typeInput: "select",
+      typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
       valueData: null,

@@ -133,6 +133,11 @@ export default {
                 this.dataItem = obj[0]
                 this.dataItem.vehicle_mode_id = this.dataItem.vehicle_type.vehicle_mode_id
                 
+                // perlu object node id dari BE
+                // this.dataItem.vehicle_node_id = this.dataItem["vehicle_node_name"]
+
+                // this.$store.dispatch(`SET_VEHICLE_VEHICLE_NODE_ID_ValueData`, val["cost_owner"][0]) // asumsi ada flag node_name (samain dg querysearch. klo mau dinamis pakein prop aja)
+                
                 this.$nextTick(() => {
                     this.dialogVehicle = true
                 });
