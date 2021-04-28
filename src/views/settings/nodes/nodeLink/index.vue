@@ -113,6 +113,16 @@ export default {
             })
             // console.log(obj,'obj')
             this.dataItem = obj[0]
+            this.dataItem.node_link_vehicle_mode_id = this.dataItem["vehicle_mode"]["vehicle_mode_name"] ? this.dataItem["vehicle_mode"]["vehicle_mode_name"] : this.dataItem["node_link_vehicle_mode_id"]
+            this.dataItem.node_link_origin_id = this.dataItem["node_origin"]["node_name"] ? this.dataItem["node_origin"]["node_name"] : this.dataItem["node_link_origin_id"]
+            this.dataItem.node_link_destination_id = this.dataItem["node_destination"]["node_name"] ? this.dataItem["node_destination"]["node_name"] : this.dataItem["node_link_destination_id"]
+
+            this.$store.dispatch(`SET_NODELINK_NODE_LINK_ORIGIN_ID_ValueData`, this.dataItem["node_origin"]) // asumsi ada flag node_name (samain dg querysearch. klo mau dinamis pakein prop aja)
+            this.$store.dispatch(`SET_NODELINK_NODE_LINK_DESTINATION_ID_ValueData`, this.dataItem["node_destination"]) // asumsi ada flag node_name
+            this.$store.dispatch(`SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ValueData`, this.dataItem["vehicle_mode"]) // asumsi ada flag node_name
+            
+
+
             console.log(this.dataItem, 'nihh val', val, this.dataItem['node_link_origin_id'])
             this.$nextTick(() => {
               this.dialogNodeLink = true
