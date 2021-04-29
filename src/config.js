@@ -166,9 +166,10 @@ export default {
     check_auth : api + "check-auth",    
 
     //tariff-group
-    tariff_group : api + "tariff-group",    
-
+    tariff_group : api + "tariff-group",
     
+    //pickup-origin
+    pickup_origin : api + "pickup-origin",
     
 
 }

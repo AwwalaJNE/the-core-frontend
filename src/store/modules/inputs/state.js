@@ -1906,6 +1906,16 @@ export default {
 
   //form pickup schedule
   pickup_schedule: {
+    pickup_schedule_node_id_origin: {
+      label: "Pickup Schedule Origin",
+      key: "pickup_schedule_node_id_origin",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     pickup_schedule_name: {
       label: "Name*",
       key: "pickup_schedule_name",
@@ -1933,8 +1943,6 @@ export default {
       valueData: null,
       value: ''
     },
-
-
     pickup_schedule_node_id_destination: {
       label: "Request To",
       key: "pickup_schedule_node_id_destination",

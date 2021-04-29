@@ -29,6 +29,7 @@
                     ref="formPickupScheduleController"
                     @formData="formData"
                     :dataItem="listenDataItem"
+                    :querySearch="querySearch"
                     typeForm="pickup_schedule"
                 />
 
@@ -217,6 +218,23 @@ export default {
                     }
                 })
             }
+        },
+        querySearch(queryString, cb){
+            axios.get(this.URL.pickup_origin+`?n=${this.listenNodeId}&s=${queryString}`,
+                this.Helper.header()
+            )
+            .then(res => {
+                let result = res.data.data
+                let suggestions = [];
+                result.map(item => {
+                    suggestions.push({
+                        value: item['node_name'],
+                        data: item
+                    });
+                });
+                cb(suggestions);
+            })
+            .catch();
         },
         formData(form){
           this.form = form

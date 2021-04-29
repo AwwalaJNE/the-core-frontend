@@ -45,14 +45,9 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "ID",
-                    key: "node_id",
-                    width: "xs"
-                },
-                {
                     label: "Code",
                     key: "node_code",
-                    width: "auto"
+                    width: "sm"
                 },
                 {
                     label: "Name",

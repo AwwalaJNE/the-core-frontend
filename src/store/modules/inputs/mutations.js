@@ -1512,7 +1512,19 @@ export default {
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_DATE_ValueData(state, payload) {
     state.pickup_schedule.pickup_schedule_date.valueData = payload
   },
-
+  
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN(state, payload) {
+    state.pickup_schedule.pickup_schedule_node_id_origin.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_node_id_origin.valueData = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN_ArrData(state, payload) {
+    state.pickup_schedule.pickup_schedule_node_id_origin.hasOwnProperty('arrData') ?
+      state.pickup_schedule.pickup_schedule_node_id_origin.arrData = payload :
+      state.pickup_schedule.pickup_schedule_node_id_origin.arrData = []
+  },
+  
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION(state, payload) {
     state.pickup_schedule.pickup_schedule_node_id_destination.value = payload
   },

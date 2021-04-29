@@ -1483,6 +1483,17 @@ export default {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_DATE_ValueData', payload)
   },
 
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN', payload)
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN_ValueData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN_ArrData({ commit }, payload) {
+    commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN_ArrData', payload)
+  },
+  
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION({ commit }, payload) {
     commit('SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION', payload)
   },
