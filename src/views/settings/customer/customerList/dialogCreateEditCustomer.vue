@@ -15,6 +15,7 @@
                     ref="formUserCustomerController"
                     @formData="formData"
                     :dataItem="listenDataItem"
+                    :querySearch="querySearch"
                     typeForm="customer"
                 />
             </div>
@@ -78,6 +79,7 @@ export default {
             form: {},
             customer_id: '',
             loading:false,
+            autoComplateUrl: "",
         }
     },
     computed: {
@@ -98,15 +100,23 @@ export default {
         dataItem: function (val) {
             if(val != undefined && val != null && val != '') {
                 this.customer_id = val.customer_id
-                this.getDataNodeId()
+            }
+        },
+        active: function (val) {
+            if(val == true) {
+                let url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+                this.autoComplateUrl = url
+
+                // this.getDataNodeId()
                 this.getDataCustomerType()
                 this.getDataSubdistrict()
-
             }
         }
     },
     methods: {
         formData(form){
+            form["n"] = form["n"]["node_id"]
+            form["customer_default_node_id"] = form["customer_default_node_id"]["node_id"]
             this.form = form
             if(this.customer_id !== undefined && this.customer_id !== '') {
                     this.loading=true;
@@ -122,6 +132,33 @@ export default {
             this.$refs.formUserCustomerController.handleClearForm()
             this.form = {}
             this.customer_id = ""
+        },
+        querySearch(queryString, cb){
+            
+            // let flag = this.listenFlag
+            // console.log('autocomplete url', flag)
+            // console.log('meanwhile from prop was', this.listenUrl)
+            axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
+            .then(res => {
+                let result = res.data.data
+                // console.log('result',result)
+                let suggestions = [];
+
+                result.length > 0 && result.map(item => {
+                    if(item.hasOwnProperty("node_name")) {
+                        suggestions.push({
+                                value: item["node_name"],
+                                data: item
+                        });
+                    }
+                })
+                
+
+                // console.log('suggestions', suggestions)
+
+                cb(suggestions);
+                })
+            .catch(error => console.log("error", error));
         },
         async getDataSubdistrict(){
             this.loading = true
@@ -139,7 +176,7 @@ export default {
 
                             arr.push(obj)
                         })
-                        this.dataRole = arr
+                        
                         this.$store.dispatch("SET_CUSTOMER_CUSTOMER_SUBDISTRICT_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
@@ -167,7 +204,7 @@ export default {
 
                             arr.push(obj)
                         })
-                        this.dataRole = arr
+                        
                         this.$store.dispatch("SET_CUSTOMER_CUSTOMER_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
@@ -179,42 +216,42 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-        async getDataNodeId(){
-            this.loading = true
-            await axios
-                .get(this.URL.node + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    console.log(res.data.data,'him')
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        let arr_n = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            let obj_n = {}
-                            obj["label"] = item.node_name
-                            obj["value"] = item.default_node_link_id
+        // async getDataNodeId(){
+        //     this.loading = true
+        //     await axios
+        //         .get(this.URL.node + 
+        //         `?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`, 
+        //         this.Helper.header())
+        //         .then(res => {
+        //             console.log(res.data.data,'him')
+        //             if(res.data.data.length > 0) {
+        //                 let arr = []
+        //                 let arr_n = []
+        //                 res.data.data.map(item => {
+        //                     let obj = {}
+        //                     let obj_n = {}
+        //                     obj["label"] = item.node_name
+        //                     obj["value"] = item.default_node_link_id
 
-                            obj_n["label"] = item.node_name
-                            obj_n["value"] = item.node_id
+        //                     obj_n["label"] = item.node_name
+        //                     obj_n["value"] = item.node_id
 
-                            arr.push(obj)
-                            arr_n.push(obj_n)
-                        })
-                        this.dataRole = arr
-                        this.$store.dispatch("SET_CUSTOMER_CUSTOMER_DEFAULT_NODE_ID_ArrData", arr_n.length > 0 ? arr_n : null)
-                        this.$store.dispatch("SET_CUSTOMER_N_ArrData", arr_n.length > 0 ? arr_n : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
+        //                     arr.push(obj)
+        //                     arr_n.push(obj_n)
+        //                 })
+                        
+        //                 this.$store.dispatch("SET_CUSTOMER_CUSTOMER_DEFAULT_NODE_ID_ArrData", arr_n.length > 0 ? arr_n : null)
+        //                 this.$store.dispatch("SET_CUSTOMER_N_ArrData", arr_n.length > 0 ? arr_n : null)
+        //             } else {
+        //                 // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+        //             }
                     
-                    this.loading = false
-                }).catch(err => {
-                    this.loading = false
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
+        //             this.loading = false
+        //         }).catch(err => {
+        //             this.loading = false
+        //             // this.openNotification('danger', 'Failed to collect role list', err)
+        //         })
+        // },
         async updateData(){
             await axios
                 .put(
