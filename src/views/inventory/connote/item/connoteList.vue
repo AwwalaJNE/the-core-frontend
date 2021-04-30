@@ -134,10 +134,16 @@ export default {
                 limit:20,
                 page_size: 1,
                 page: 1
-            }
+            },
+            loadInterval: null
         }
     },
     methods: {
+        pollData () {
+            this.loadInterval = setInterval(() => {
+                this.refresh()
+            }, 60000) // 1 menit
+        },
         async getTableData(limit,page,q, statusBag, statusInventory) {
             this.loading = true
             let query = "";
@@ -224,7 +230,11 @@ export default {
         },
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory)
+        // this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory)
+        this.pollData()
     },
+    beforeDestroy () {
+        clearInterval(this.loadInterval) // prevent memory leaks
+    }
 }
 </script>
