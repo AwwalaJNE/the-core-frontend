@@ -230,7 +230,7 @@ export default {
         },
     },
     mounted() {
-        // this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory)
         this.pollData()
     },
     beforeDestroy () {
