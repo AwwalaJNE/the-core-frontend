@@ -63,8 +63,13 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Username",
+                    label: "Name",
                     key: "user_name",
+                    width: "sm"
+                },
+                {
+                    label: "Username",
+                    key: "user_login",
                     width: "sm"
                 },
                 {

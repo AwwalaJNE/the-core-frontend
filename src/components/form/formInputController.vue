@@ -346,7 +346,7 @@ export default {
                 
             }
             
-            console.log('form input component', type, val, obj)
+            // console.log('form input component', type, val, obj)
             if(obj.hasOwnProperty('typeInput')) {
                 if(obj['typeInput'] == 'autocomplete') {
                     try {

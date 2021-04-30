@@ -76,7 +76,7 @@ export default {
                 },
                 {
                     label: "Courier",
-                    key: "pickup_courier_employee_name",
+                    key: "pickup_user_courier_name",
                     width: "auto"
                 },
                 {
@@ -153,7 +153,8 @@ export default {
 
                     let arr = res.data.data
                     arr.map(item => {
-                      item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
+                      item["pickup_user_courier_name"] = (item.user_courier) ? item.user_courier.user_name: null                      
+                      // item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
                       item["destination_node_name"] = (item.destination) ? item.destination.node_name: null
                     })
 

@@ -1919,7 +1919,7 @@ export default {
     pickup_schedule_name: {
       label: "Name*",
       key: "pickup_schedule_name",
-      rule: "required|validString",
+      rule: "required",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -1928,7 +1928,7 @@ export default {
     pickup_schedule_phone_number: {
       label: "Phone*",
       key: "pickup_schedule_phone_number",
-      rule: "required|phone|min:8",
+      rule: "required|min:8",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -1937,7 +1937,7 @@ export default {
     pickup_schedule_address: {
       label: "Address*",
       key: "pickup_schedule_address",
-      rule: "required|validString",
+      rule: "required",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -1953,9 +1953,9 @@ export default {
       valueData: null,
       value: ''
     },
-    pickup_schedule_courier_employee_id: {
+    pickup_schedule_user_courier_id: {
       label: "Courier",
-      key: "pickup_schedule_courier_employee_id",
+      key: "pickup_schedule_user_courier_id",
       rule: "required",
       typeInput: "select",
       typeData: "String",
