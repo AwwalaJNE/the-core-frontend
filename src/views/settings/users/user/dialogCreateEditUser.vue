@@ -107,9 +107,7 @@ export default {
     },
     methods: {
         formData(form){
-            // form['user_node_id'] = form['user_node_id']['node_id'];
-            console.log(JSON.stringify(form));
-            return ;
+            form['user_node_id'] = form['user_node_id']['node_id'];
             if(this.user_id !== undefined && this.user_id !== '') {
                     let obj = form
                     if(obj["password"] == '') {

@@ -1512,7 +1512,19 @@ export default {
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_DATE_ValueData(state, payload) {
     state.pickup_schedule.pickup_schedule_date.valueData = payload
   },
-
+  
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN(state, payload) {
+    state.pickup_schedule.pickup_schedule_node_id_origin.value = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_node_id_origin.valueData = payload
+  },
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_ORIGIN_ArrData(state, payload) {
+    state.pickup_schedule.pickup_schedule_node_id_origin.hasOwnProperty('arrData') ?
+      state.pickup_schedule.pickup_schedule_node_id_origin.arrData = payload :
+      state.pickup_schedule.pickup_schedule_node_id_origin.arrData = []
+  },
+  
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION(state, payload) {
     state.pickup_schedule.pickup_schedule_node_id_destination.value = payload
   },
@@ -1558,16 +1570,16 @@ export default {
     state.pickup_schedule.pickup_schedule_longitude.valueData = payload
   },
 
-  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID(state, payload) {
-    state.pickup_schedule.pickup_schedule_courier_employee_id.value = payload
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_USER_COURIER_ID(state, payload) {
+    state.pickup_schedule.pickup_schedule_user_courier_id.value = payload
   },
-  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ValueData(state, payload) {
-    state.pickup_schedule.pickup_schedule_courier_employee_id.valueData = payload
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_USER_COURIER_ID_ValueData(state, payload) {
+    state.pickup_schedule.pickup_schedule_user_courier_id.valueData = payload
   },
-  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ArrData(state, payload) {
-    state.pickup_schedule.pickup_schedule_courier_employee_id.hasOwnProperty('arrData') ?
-      state.pickup_schedule.pickup_schedule_courier_employee_id.arrData = payload :
-      state.pickup_schedule.pickup_schedule_courier_employee_id.arrData = []
+  SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_USER_COURIER_ID_ArrData(state, payload) {
+    state.pickup_schedule.pickup_schedule_user_courier_id.hasOwnProperty('arrData') ?
+      state.pickup_schedule.pickup_schedule_user_courier_id.arrData = payload :
+      state.pickup_schedule.pickup_schedule_user_courier_id.arrData = []
   },
 
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE(state, payload) {

@@ -29,7 +29,9 @@
                     ref="formPickupScheduleController"
                     @formData="formData"
                     :dataItem="listenDataItem"
+                    :querySearch="querySearch"
                     typeForm="pickup_schedule"
+                    @onChangeCustom="onChangeCustom"
                 />
 
                 <template v-if="listenwithSchedule">
@@ -198,6 +200,15 @@ export default {
 
             }
         },
+        active: function (active) {
+            if(active){
+        this.getDataNodeDestination()
+        this.getDataVehicleType()
+        this.getDataCourier()
+
+
+            }
+        }
 
     },
     methods: {
@@ -217,6 +228,46 @@ export default {
                     }
                 })
             }
+        },
+        onChangeCustom(type, val, info = {}){
+            switch(type) {
+                case 'pickup_schedule_node_id_origin':
+                    if(info.hasOwnProperty('data')) {
+                        
+                        this.pickup_schedule_node_id_origin = info.data.node_id || null
+                        this.getDataNodeDestination(info.data.node_id || null)
+                        
+                        this.$store.dispatch(`SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME`, info.data.node_name || '')
+                        this.$store.dispatch(`SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PHONE_NUMBER`, info.data.node_phone || '')
+                        this.$store.dispatch(`SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ADDRESS`, info.data.default_node_alternate_address.node_alternate_address_address || '')                        
+                        this.$store.dispatch(`SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LATITUDE`, info.data.default_node_alternate_address.node_alternate_address_latitude || '')
+                        this.$store.dispatch(`SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_LONGITUDE`, info.data.default_node_alternate_address.node_alternate_address_longitude || '')
+                        
+                        
+                    }
+                break
+                case 'pickup_schedule_node_id_destination':
+                    this.getDataCourier(val || null)
+                break
+                
+            }
+        },
+        querySearch(queryString, cb){
+            axios.get(this.URL.pickup_origin+`?n=${this.listenNodeId}&s=${queryString}`,
+                this.Helper.header()
+            )
+            .then(res => {
+                let result = res.data.data
+                let suggestions = [];
+                result.map(item => {
+                    suggestions.push({
+                        value: item['node_name'],
+                        data: item
+                    });
+                });
+                cb(suggestions);
+            })
+            .catch();
         },
         formData(form){
           this.form = form
@@ -297,9 +348,9 @@ export default {
 
             } else if(Object.keys(value).length > 0 && key == 'customer') {
                 this.forcererender = true
-                this.$store.dispatch(`SET_PICKUP_LIST_PICKUP_NAME`, value.customer_name)
-                this.$store.dispatch(`SET_PICKUP_LIST_PICKUP_PHONE_NUMBER`, value.customer_phone)
-                this.$store.dispatch(`SET_PICKUP_LIST_PICKUP_ADDRESS`, value.geolocation_location_name)
+                this.$store.dispatch(`SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME`, value.customer_name)
+                this.$store.dispatch(`SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_PHONE_NUMBER`, value.customer_phone)
+                this.$store.dispatch(`SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_ADDRESS`, value.geolocation_location_name)
 
                 // let self = this
                 // setTimeout(function(){ self.forcererender = false }, 100);
@@ -309,10 +360,11 @@ export default {
             }
         },
 
-        async getDataEmployee(){
+        async getDataCourier(node_destination = null){
+            node_destination = node_destination!= null ? node_destination : this.listenNodeId;
             await axios
-                .get(this.URL.pickup_courier +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                .get(this.URL.node +
+                `/${node_destination}/pickup-courier?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -320,11 +372,11 @@ export default {
                         res.data.data.map(item => {
                             let obj = {}
                             obj["label"] = item.user_name
-                            obj["value"] = item.user_login
+                            obj["value"] = item.user_id
 
                             arr.push(obj)
                         })
-                        this.$store.dispatch("SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_COURIER_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_USER_COURIER_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -357,13 +409,14 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-        async getDataNodeDestination(){
+        async getDataNodeDestination(node_origin = null){
+            node_origin = node_origin == null ? this.listenNodeId : node_origin;
             await axios
                 .get(this.URL.node +
-                `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                `/${node_origin}/destination-link?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
                 this.Helper.header())
                 .then(res => {
-                    if(res.data.data.length > 0) {
+
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
@@ -374,10 +427,10 @@ export default {
                         })
                         // this.dataNodeType = arr
                         this.$store.dispatch("SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
-                    
+                        this.$store.dispatch("SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION", null)
+                        this.$store.dispatch("SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NODE_ID_DESTINATION_ValueData", null)
+                        
+                        
                 }).catch(err => {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
@@ -395,7 +448,7 @@ export default {
                     this.openNotification(null, 'Update success', 'Update pickup is success')
                 }).catch(err => {
                     this.loading = false
-                    this.closeDialog()
+                    // this.closeDialog()
                     this.$emit("refresh")
                     this.openNotification('danger', 'Update failed', err)
                 })
@@ -414,7 +467,7 @@ export default {
                     this.openNotification(null, 'Create Success', 'Create new node is success')
                 }).catch(err => {
                     this.loading = false
-                    this.closeDialog()
+                    // this.closeDialog()
                     this.$emit("refresh")
                     this.openNotification('danger', 'Create failed', err)
                 })
@@ -425,9 +478,6 @@ export default {
         }
     },
     mounted() {
-        this.getDataNodeDestination()
-        this.getDataVehicleType()
-        this.getDataEmployee()
 
         this.initialize()
     },
