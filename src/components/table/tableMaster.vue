@@ -172,6 +172,7 @@
                                 <vs-button
                                     block
                                     flat
+                                    :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                     :active="true"
                                     @click="actionUpdate(item)"
                                     >

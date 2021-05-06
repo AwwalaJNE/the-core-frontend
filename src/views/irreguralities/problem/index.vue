@@ -58,7 +58,7 @@
                     :page="pagination.page"
                     :limit="pagination.limit"
                     :customBtn="true"
-                    customBtn_label="APPROVE"
+                    customBtn_label="Edit"
                     :hasPagination="true"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"

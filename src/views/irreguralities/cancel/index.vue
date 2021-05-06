@@ -124,7 +124,7 @@ export default {
                     width: "md"
                 },
                 {
-                    label: "Connote",
+                    label: "Koli",
                     key: "koli_number",
                     width: "auto"
                 },
@@ -136,6 +136,16 @@ export default {
                 {
                     label: "User",
                     key: "user_name",
+                    width: "auto"
+                },
+                {
+                    label: "Approved at",
+                    key: "approved_at",
+                    width: "auto"
+                },
+                {
+                    label: "Approved By",
+                    key: "approve",
                     width: "auto"
                 },
             ],
@@ -189,7 +199,8 @@ export default {
                     if(res.data.data.length > 0) {
                         let arr = res.data.data
                         arr.map(item => {
-                            item["isDisabled"] = item.disable_button_approve ? true : false;
+                            item["isDisabled"] = item.approved_by != null && item.approved_by != '' ? true : false;
+                            item["approve"] = item.approved_by != null && item.approved_by != '' ? item.user_approve.user_name : '-';
                         })
                         this.dataTable = arr
                         this.pagination.page = res.data.meta.current_page
@@ -265,21 +276,21 @@ export default {
         async approveIrreg(formUpdate, irregularity_id) {
             this.loading = true
             await axios
-            .put(
-                this.URL.irregularities + `/${irregularity_id}?n=${this.listenNodeId}`,
+            .post(
+                this.URL.irregularities + `/${irregularity_id}/approve?n=${this.listenNodeId}`,
                 JSON.stringify(formUpdate), 
                 this.Helper.header())
             .then(res => {
                 this.closeDialogApproveCancel()
-                this.loading = false
                 this.refresh()
                 this.openNotification(null, 'Success', 'Cancel approved')
             }).catch(err => {
                 this.closeDialogApproveCancel()
-                this.loading = false
                 this.refresh()
                 this.openNotification('danger', 'Cannot approve cancel irregularity', err.response ? err.response.data.message : 'something went wrong')
             })
+            this.loading = false
+            return true;
         },
         closeDialogApproveCancel(){
             this.dataItem = {};
