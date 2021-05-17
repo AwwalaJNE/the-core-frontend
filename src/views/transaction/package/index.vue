@@ -97,6 +97,13 @@
                             </template>
                             <div class="mt-1"></div>
                             <input-general 
+                                :name="InputObject['package_cod'].label" 
+                                :rules="InputObject['package_cod'].rule" 
+                                :formKey="InputObject['package_cod'].key"
+                                :valueData="InputObject['package_cod'].value"
+                                :typeInput="InputObject['package_cod'].typeInput"
+                                @updateValue="updateValue" /> 
+                            <input-general 
                                 :name="InputObject['package_insured_goods_value'].label" 
                                 :rules="InputObject['package_insured_goods_value'].rule" 
                                 :formKey="InputObject['package_insured_goods_value'].key"
@@ -625,6 +632,9 @@ export default {
                     break;
                 case "package_do_return":
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_DO_RETURN", value)
+                    break;
+                case "amount_cod":
+                    this.$store.dispatch("SET_PACKAGE_PACKAGE_COD", value)
                     break;
                 case "handle_surcharge":
                     this.connote_koli_item[value].surcharge_id = value2

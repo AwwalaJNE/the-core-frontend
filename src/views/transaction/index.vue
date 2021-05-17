@@ -236,6 +236,8 @@ export default {
         removeBookingCode() {
             if(this.hasCodeBooking == true) {
                 this.refreshTransactionStore()
+                this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, false)
+                this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD`, 0)
             }
             this.hasCodeBooking = false
             this.bookingCode = ""
@@ -264,6 +266,7 @@ export default {
                     this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, data.booking_connote_shipper_geolocation_subdistrict_id)
                     this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, data.booking_connote_shipper_administrative_address)
                     this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, data.booking_connote_shipper_zip_code)
+                    this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, true)
 
                     // destination
                     let destinationObj = {}

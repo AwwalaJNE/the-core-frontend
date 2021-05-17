@@ -186,6 +186,26 @@ export default {
         state.package.package_do_return.valueData = payload
     },
 
+    SET_PACKAGE_PACKAGE_COD(state, payload) {
+        state.package.package_cod.value = payload
+    },
+    SET_PACKAGE_PACKAGE_COD_Visible(state, payload) {
+        let str = state.package.package_cod.typeInput
+        if(payload == true) {
+            if(str.includes("hidden|")) {
+                str = str.replace('hidden|','')
+            }
+        } else {
+            if(!str.includes("hidden|")) {
+                str = 'hidden|' + str
+            }
+        }
+        state.package.package_cod.typeInput = str
+    },
+    SET_PACKAGE_PACKAGE_COD_ValueData(state, payload) {
+        state.package.package_cod.valueData = payload
+    },
+
 
     // Switch Calc component
     SET_CALC_COMPONENT_ARRDATA(state, payload) {

@@ -348,6 +348,15 @@ export default {
       valueData: false,
       value: false
     },
+    package_cod: {
+      label: "Amount Cod*",
+      key: "amount_cod",
+      rule: "numeric|maxlength:20",
+      typeInput: "hidden|text|col_right",
+      typeData: "Number",
+      valueData: null,
+      value: 0
+    },
   },
   calc_component: {
     arrData: [],
@@ -551,6 +560,7 @@ export default {
         description: ''
       }
     ],
+    amount_cod: 0,
     connote_bpik:[],
     total_biaya: 0,
     connote_index: ''
@@ -604,6 +614,7 @@ export default {
             description: ''
           }
         ],
+        amount_cod: 0,
         connote_bpik:[],
         total_biaya: 0,
         connote_index: ''
