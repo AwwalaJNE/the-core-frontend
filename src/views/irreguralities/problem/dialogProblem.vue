@@ -12,7 +12,6 @@
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="12" lg="12">
                     <template v-if="loading == false && status_code_arr.length > 0">
-                        <pre>{{dataItem}}</pre>
                         <selector 
                             :ref="''"
                             name="Status Code" 
