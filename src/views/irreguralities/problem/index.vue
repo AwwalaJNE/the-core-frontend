@@ -57,11 +57,13 @@
                     :pageSize="pagination.page_size"
                     :page="pagination.page"
                     :limit="pagination.limit"
-                    :customBtn="true"
-                    customBtn_label="Edit"
                     :hasPagination="true"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
+
+                    :customAction="true"
+                    :customActionList="customActionList"
+                    @actionUpdate="actionUpdate"
                     />
                 </div>
             </div>
@@ -69,8 +71,9 @@
         </section>
 
         <dialog-return
-            :active="dialogCancelActive" 
+            :active="dialogProblem" 
             :closeDialog="closeDialog"
+            :dataItem="dataItem"
             @updateValue="updateValue"
         />
     </div>
@@ -120,10 +123,28 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Status Description",
+                    key: "irregularity_status_description",
+                    width: "auto"
+                },
+                {
+                    label: "Remark",
+                    key: "remark",
+                    width: "auto"
+                },
+                {
                     label: "User",
                     key: "user_name",
                     width: "auto"
                 },
+            ],
+            dataItem: {},
+            customActionList: [
+              {
+                label: 'Edit',
+                key: 'edit',
+                attribute: '',
+              },
             ],
             loading:false,
             pagination: {
@@ -132,7 +153,7 @@ export default {
                 page: 1
             },
             form: {},
-            dialogCancelActive: false,
+            dialogProblem: false,
         }
     },
     methods: {
@@ -199,10 +220,11 @@ export default {
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
-                    this.dialogCancelActive = false
+                    this.dialogProblem = false
                     this.openNotification(null, 'Success', 'Create new cancel connote is success')
                 }).catch(err => {
                     this.loading = false
+                    this.dialogProblem = false
                     this.refresh()
 
                     this.openNotification('danger', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
@@ -211,6 +233,20 @@ export default {
         searchValue (val) {
             this.tempSearch = val
             this.refresh()
+        },
+        actionUpdate(val, key) {
+            switch(key) {
+                case "edit":
+                    if(this.dataTable.length > 0) {
+                        this.dataItem = val
+                        console.log(this.dataItem,'item')
+                        this.$nextTick(() => {
+                            this.dialogProblem = true
+                        });
+                    }
+                    break;
+                default:
+            }
         },
         updateValue(key, val) {
             switch(key) {
@@ -240,11 +276,11 @@ export default {
             this.refresh()
         },
         closeDialog() {
-            this.dialogCancelActive = false
+            this.dialogProblem = false
         },
         openDialog() {
             if(this.koliCode !== '') {
-                this.dialogCancelActive = true
+                this.dialogProblem = true
             }
         }
     },
