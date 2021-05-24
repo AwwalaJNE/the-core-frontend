@@ -59,6 +59,7 @@
                     :limit="pagination.limit"
                     :customBtn="true"
                     customBtn_label="Edit"
+                    @actionUpdate="editIrreg"
                     :hasPagination="true"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
@@ -68,8 +69,8 @@
             
         </section>
 
-        <dialog-return
-            :active="dialogCancelActive" 
+        <dialog-problem
+            :active="dialogProblemActive" 
             :closeDialog="closeDialog"
             @updateValue="updateValue"
         />
@@ -85,7 +86,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
 
-import DialogReturn from "@/views/irreguralities/problem/dialogProblem"
+import DialogProblem from "@/views/irreguralities/problem/dialogProblem"
 export default {
     name:"irregularities-problem",
     mixins:[master],
@@ -95,7 +96,7 @@ export default {
         "search-input": SearchInput,
         "date-time": DateTime,
         "table-master" : TableMaster,
-        "dialog-return": DialogReturn,
+        "dialog-problem": DialogProblem,
     },
     data() {
         return {
@@ -132,7 +133,7 @@ export default {
                 page: 1
             },
             form: {},
-            dialogCancelActive: false,
+            dialogProblemActive: false,
         }
     },
     methods: {
@@ -152,6 +153,17 @@ export default {
 
             
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
+        },
+        async editIrreg(val){
+            
+            if(this.dataTable.length > 0) {
+              //dibuat untuk approve saja jadi gapake switch case
+            this.dataItem = val;
+            console.log(this.dataItem);
+            this.$nextTick(() => {
+                this.dialogProblemActive = true;
+            });
+          }
         },
         async getTableData(limit,page,q, from, to, node) {
             this.loading = true
@@ -199,7 +211,7 @@ export default {
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
-                    this.dialogCancelActive = false
+                    this.dialogProblemActive = false
                     this.openNotification(null, 'Success', 'Create new cancel connote is success')
                 }).catch(err => {
                     this.loading = false
@@ -240,11 +252,11 @@ export default {
             this.refresh()
         },
         closeDialog() {
-            this.dialogCancelActive = false
+            this.dialogProblemActive = false
         },
         openDialog() {
             if(this.koliCode !== '') {
-                this.dialogCancelActive = true
+                this.dialogProblemActive = true
             }
         }
     },
