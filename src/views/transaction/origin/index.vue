@@ -145,7 +145,7 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
-                    if(res.status == 200 && arr.length > 0) {
+                    if(res.status == 200) {
                         arr.map((item, key) => {
                             item['index'] = key
                         })

@@ -261,6 +261,17 @@ export default {
     SET_PACKAGE_PACKAGE_DO_RETURN_ValueData({ commit }, payload) {
         commit('SET_PACKAGE_PACKAGE_DO_RETURN_ValueData', payload)
     },
+
+    SET_PACKAGE_PACKAGE_COD({ commit, dispatch }, payload) {
+        commit('SET_PACKAGE_PACKAGE_COD', payload)
+        dispatch('SET_CONNOTE_DATA', {'key':'amount_cod','value': payload})
+    },
+    SET_PACKAGE_PACKAGE_COD_Visible({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_COD_Visible', payload)
+    },
+    SET_PACKAGE_PACKAGE_COD_ValueData({ commit }, payload) {
+        commit('SET_PACKAGE_PACKAGE_COD_ValueData', payload)
+    },
     
 
 

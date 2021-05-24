@@ -57,21 +57,34 @@
                     :pageSize="pagination.page_size"
                     :page="pagination.page"
                     :limit="pagination.limit"
+<<<<<<< HEAD
                     :customBtn="true"
                     customBtn_label="Edit"
                     @actionUpdate="editIrreg"
+=======
+>>>>>>> ced2db04429c7e08c441340daac549e7cc492569
                     :hasPagination="true"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
+
+                    :customAction="true"
+                    :customActionList="customActionList"
+                    @actionUpdate="actionUpdate"
                     />
                 </div>
             </div>
             
         </section>
 
+<<<<<<< HEAD
         <dialog-problem
             :active="dialogProblemActive" 
+=======
+        <dialog-return
+            :active="dialogProblem" 
+>>>>>>> ced2db04429c7e08c441340daac549e7cc492569
             :closeDialog="closeDialog"
+            :dataItem="dataItem"
             @updateValue="updateValue"
         />
     </div>
@@ -121,10 +134,28 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Status Description",
+                    key: "irregularity_status_description",
+                    width: "auto"
+                },
+                {
+                    label: "Remark",
+                    key: "remark",
+                    width: "auto"
+                },
+                {
                     label: "User",
                     key: "user_name",
                     width: "auto"
                 },
+            ],
+            dataItem: {},
+            customActionList: [
+              {
+                label: 'Edit',
+                key: 'edit',
+                attribute: '',
+              },
             ],
             loading:false,
             pagination: {
@@ -133,7 +164,11 @@ export default {
                 page: 1
             },
             form: {},
+<<<<<<< HEAD
             dialogProblemActive: false,
+=======
+            dialogProblem: false,
+>>>>>>> ced2db04429c7e08c441340daac549e7cc492569
         }
     },
     methods: {
@@ -211,10 +246,15 @@ export default {
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
+<<<<<<< HEAD
                     this.dialogProblemActive = false
+=======
+                    this.dialogProblem = false
+>>>>>>> ced2db04429c7e08c441340daac549e7cc492569
                     this.openNotification(null, 'Success', 'Create new cancel connote is success')
                 }).catch(err => {
                     this.loading = false
+                    this.dialogProblem = false
                     this.refresh()
 
                     this.openNotification('danger', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
@@ -223,6 +263,20 @@ export default {
         searchValue (val) {
             this.tempSearch = val
             this.refresh()
+        },
+        actionUpdate(val, key) {
+            switch(key) {
+                case "edit":
+                    if(this.dataTable.length > 0) {
+                        this.dataItem = val
+                        console.log(this.dataItem,'item')
+                        this.$nextTick(() => {
+                            this.dialogProblem = true
+                        });
+                    }
+                    break;
+                default:
+            }
         },
         updateValue(key, val) {
             switch(key) {
@@ -252,11 +306,19 @@ export default {
             this.refresh()
         },
         closeDialog() {
+<<<<<<< HEAD
             this.dialogProblemActive = false
         },
         openDialog() {
             if(this.koliCode !== '') {
                 this.dialogProblemActive = true
+=======
+            this.dialogProblem = false
+        },
+        openDialog() {
+            if(this.koliCode !== '') {
+                this.dialogProblem = true
+>>>>>>> ced2db04429c7e08c441340daac549e7cc492569
             }
         }
     },
