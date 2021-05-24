@@ -57,32 +57,23 @@
                     :pageSize="pagination.page_size"
                     :page="pagination.page"
                     :limit="pagination.limit"
-<<<<<<< HEAD
                     :customBtn="true"
                     customBtn_label="Edit"
                     @actionUpdate="editIrreg"
-=======
->>>>>>> ced2db04429c7e08c441340daac549e7cc492569
                     :hasPagination="true"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
 
                     :customAction="true"
                     :customActionList="customActionList"
-                    @actionUpdate="actionUpdate"
                     />
                 </div>
             </div>
             
         </section>
 
-<<<<<<< HEAD
         <dialog-problem
             :active="dialogProblemActive" 
-=======
-        <dialog-return
-            :active="dialogProblem" 
->>>>>>> ced2db04429c7e08c441340daac549e7cc492569
             :closeDialog="closeDialog"
             :dataItem="dataItem"
             @updateValue="updateValue"
@@ -164,11 +155,7 @@ export default {
                 page: 1
             },
             form: {},
-<<<<<<< HEAD
             dialogProblemActive: false,
-=======
-            dialogProblem: false,
->>>>>>> ced2db04429c7e08c441340daac549e7cc492569
         }
     },
     methods: {
@@ -246,11 +233,7 @@ export default {
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
-<<<<<<< HEAD
                     this.dialogProblemActive = false
-=======
-                    this.dialogProblem = false
->>>>>>> ced2db04429c7e08c441340daac549e7cc492569
                     this.openNotification(null, 'Success', 'Create new cancel connote is success')
                 }).catch(err => {
                     this.loading = false
@@ -306,19 +289,11 @@ export default {
             this.refresh()
         },
         closeDialog() {
-<<<<<<< HEAD
             this.dialogProblemActive = false
         },
         openDialog() {
             if(this.koliCode !== '') {
                 this.dialogProblemActive = true
-=======
-            this.dialogProblem = false
-        },
-        openDialog() {
-            if(this.koliCode !== '') {
-                this.dialogProblem = true
->>>>>>> ced2db04429c7e08c441340daac549e7cc492569
             }
         }
     },
