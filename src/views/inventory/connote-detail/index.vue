@@ -326,7 +326,8 @@ export default {
                 name: 'printGeneral', 
                 params: { 
                     'id': this.connote_number, 
-                    'type': 'bpik'
+                    'type': 'bpik',
+                    'node_id': this.listenNodeId
                 } 
             });
             window.open(routeData.href, '_blank');

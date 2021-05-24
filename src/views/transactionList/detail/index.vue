@@ -106,7 +106,7 @@ export default {
         },
         printAll() {
             if(this.koli_number.length > 0) {
-              let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': this.koli_number, 'type': 'koli'} });
+              let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': this.koli_number, 'type': 'koli', 'node_id': this.listenNodeId} });
               window.open(routeData.href, '_blank');
             }
         }

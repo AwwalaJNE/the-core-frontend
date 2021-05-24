@@ -161,7 +161,7 @@ export default {
         },
 
         actionDetail(row){
-          let routeData = this.$router.resolve(`/print/${row.cash_register_number}/cash-register`);
+          let routeData = this.$router.resolve(`/print/${row.cash_register_number}/cash-register?n=${this.listenNodeId}`);
           window.open(routeData.href, '_blank');
         }
 
