@@ -238,7 +238,14 @@ export default {
                           }
                       })
                     }
-                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': kolinumber, 'type': 'koli', 'node_id': this.listenNodeId } });
+                    let routeData = this.$router.resolve({
+                      name: 'printGeneral',
+                      params: {
+                        'id': kolinumber,
+                        'type': 'koli',
+                        'node_id': this.listenNodeId
+                      } 
+                    });
                     window.open(routeData.href, '_blank');
                     break;
                 case "void":
