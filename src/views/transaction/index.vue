@@ -314,6 +314,7 @@ export default {
 
         async createConnote2() {
             // this.rerender = true
+            this.openLoading()
             await axios
                 .post(
                     this.URL.connote + `?n=${this.listenNodeId}`,
@@ -341,9 +342,11 @@ export default {
                     } else {
                         this.openNotification('danger', 'Transaction failed', err.response ? err.response.data.message : 'something went wrong')
                     }
+                    this.closeLoading()
                 }).catch(err => {
                     // this.rerender = false
                     this.openNotification('danger', 'Transaction failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.closeLoading()
                 })
         },
 
