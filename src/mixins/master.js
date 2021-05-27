@@ -16,7 +16,8 @@ const Master = {
         return {
             URL : null,
             Helper: null,
-            day:null
+            day:null,
+            Loading: null
         }
     },
     computed: {
@@ -55,6 +56,16 @@ const Master = {
             
             return numb
             
+        },
+        openLoading(msg) {
+            this.Loading = this.$vs.loading({
+                type:'scale',
+                text: msg ? msg :'Please wait...',
+                background: '#EAEAEA',
+            })
+        },
+        closeLoading() {
+            this.Loading.close()
         },
         openNotification(type = null, title,msg) {
             // type success, danger, warn
