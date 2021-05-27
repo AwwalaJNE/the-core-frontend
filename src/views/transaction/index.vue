@@ -338,9 +338,12 @@ export default {
                             });
                         }
                         // this.rerender = false
+                    } else {
+                        this.openNotification('danger', 'Transaction failed', err.response ? err.response.data.message : 'something went wrong')
                     }
                 }).catch(err => {
                     // this.rerender = false
+                    this.openNotification('danger', 'Transaction failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
 
