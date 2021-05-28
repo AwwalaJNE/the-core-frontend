@@ -495,7 +495,7 @@ export default {
                     } else if (state.package[item]['typeData'].includes("Boolean")) {
                         state.package[item].value = data[state.package[item].key] || false
                     } else {
-                        state.package[item].value = data[state.package[item].key].toLowerCase() || ''
+                        state.package[item].value = data[state.package[item].key] ? data[state.package[item].key].toLowerCase() : ''
                     }
                 }
 

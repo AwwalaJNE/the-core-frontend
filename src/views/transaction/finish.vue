@@ -56,6 +56,7 @@ export default {
             evt = evt || window.event;
             if (evt.keyCode == 32) {
                 self.$router.replace({ name: 'new-transactions'});
+                self.$router.go()
             }
         };
     },
