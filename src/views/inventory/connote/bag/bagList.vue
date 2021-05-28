@@ -97,7 +97,7 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "With User",
+                    label: "With Courier",
                     key: "current_user",
                     width: "auto"
                 }
