@@ -281,8 +281,11 @@ export default {
                     destinationObj['booking_connote_service_code'] = data.booking_connote_service_code
                     this.$refs.destinationComponent.updateValue('detination', destinationObj, true)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, data.booking_connote_receiver_street_address)
+                } else {
+                    this.openNotification('danger', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
                 }
               }).catch(err => {
+                  this.openNotification('danger', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
                 // this.openNotification('danger', 'Failed to collect role list', err)
               })
         },
