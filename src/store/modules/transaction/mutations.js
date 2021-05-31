@@ -191,15 +191,23 @@ export default {
     },
     SET_PACKAGE_PACKAGE_COD_Visible(state, payload) {
         let str = state.package.package_cod.typeInput
+        let rule = state.package.package_cod.rule
         if(payload == true) {
             if(str.includes("hidden|")) {
                 str = str.replace('hidden|','')
+            }
+            if(!rule.includes("required|")) {
+                rule = 'required|' + rule
             }
         } else {
             if(!str.includes("hidden|")) {
                 str = 'hidden|' + str
             }
+            if(rule.includes("required|")) {
+                rule = rule.replace('required|', '')
+            }
         }
+        state.package.package_cod.rule = rule
         state.package.package_cod.typeInput = str
     },
     SET_PACKAGE_PACKAGE_COD_ValueData(state, payload) {
