@@ -109,11 +109,19 @@ export default {
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
+                    
                     if(res.status == 200) {
                         let data = res.data.data
-                        this.$emit("updateValue", this.listenType, data, null,this.value)
-                        this.value = ""
-                        this.closeDialog()
+                        // quickfix dapet hasil response type datanya beda. kalo kosong type array, kalo ada datanya type object
+                        if(data.length !== 0) {
+                            this.$emit("updateValue", this.listenType, data, null,this.value)
+                            this.value = ""
+                            this.closeDialog()
+                        } else {
+                            this.openNotification('warn', 'Customer not found')
+                        }
+                        
+                        
                     }
                 }).catch(err => {
                     this.checkAuth(err.response.status)
