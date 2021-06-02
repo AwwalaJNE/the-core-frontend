@@ -11,10 +11,11 @@
 
         <template v-slot:content>
             <div>
+                <!-- <pre>{{listenDataItem}}</pre> -->
                 <form-input-controller 
                     ref="formSuratJalan"
                     @formData="formData"
-                    :dataItem="listenDataItem"
+                    :dataItem="editData"
                     typeForm="surat_jalan"
                     @onChangeCustom="onChangeCustom"
                 />
@@ -150,6 +151,8 @@ export default {
             no_moda_angkutan_id: null,
             etd:null,
             estimated_time_in_hour:null,
+
+            editData: {}
         }
     },
     computed: {
@@ -163,12 +166,14 @@ export default {
             return this.title
         },
         listenDataItem() {
-            if (this.dataItem && !this.dataItem.hasOwnProperty("destination_id")) {
-                this.dataItem["destination_id"] = this.dataItem.node_id_destination
-                this.dataItem["moda_angkutan_id"] = this.dataItem.vehicle_mode_id
-                this.dataItem["no_moda_angkutan_id"] = this.dataItem.vehicle_id
-                this.dataItem["manifest_do_item"] = this.dataItem.detail
-                this.dataItem["driver_id"] = parseInt(this.dataItem.pic_employee_id)
+            if (this.dataItem) {
+            //     this.dataItem['destination_id'] = val['destination'] ? val['destination']['node_id'] : ''
+            // this.dataItem['no_moda_angkutan_id'] = val['vehicle'] ? val['vehicle']['vehicle_id'] : ''
+                // this.dataItem["destination_id"] = this.dataItem.node_id_destination
+                // this.dataItem["moda_angkutan_id"] = this.dataItem.vehicle_mode_id
+                // this.dataItem["no_moda_angkutan_id"] = this.dataItem.vehicle_id
+                // this.dataItem["manifest_do_item"] = this.dataItem.detail
+                // this.dataItem["driver_id"] = parseInt(this.dataItem.pic_employee_id)
             }
 
             return this.dataItem
@@ -182,6 +187,14 @@ export default {
             if(val !== undefined) {
                 this.manifest_delivery_id = val.manifest_do_number
                 this.dataTable = val.detail
+                this.editData = val
+
+                // this.editData["destination_id"] = val.node_id_destination ? val.node_id_destination : ''
+                // this.editData["moda_angkutan_id"] = val.vehicle_mode_id ? val.vehicle_mode_id : ''
+                // this.editData["no_moda_angkutan_id"] = val.vehicle_id ? val.vehicle_id : ''
+                // this.editData["manifest_do_item"] = val.detail ? val.detail : ''
+                // this.editData["driver_id"] = val.pic_employee_id ? parseInt(val.pic_employee_id) : ''
+
             }
         },
         active: function (val) {
@@ -483,8 +496,9 @@ export default {
         },
     },
     mounted() {
-      // this.getDestination()
-      // this.getNoModeAngkutan()
+    //   this.getDestination()
+    //   this.getNoModeAngkutan()
+    //   this.getDriver()
     },
 }
 </script>

@@ -3,7 +3,7 @@
         <template v-if="DataArr.length > 0">
             <inputan :name="name" :rules="rules">
                 <template v-slot:inputan="props">
-                    <vs-select
+                    <!-- <vs-select
                         class="m-select"
                         autocomplete="off"
                         filter
@@ -26,10 +26,23 @@
                             </vs-option>
                         
                         
-                    </vs-select>
+                    </vs-select> -->
+                    <span>{{name}}</span>
+                    <el-select 
+                    v-model="value" 
+                    :placeholder="placeholder"
+                    :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
+                        <el-option
+                        v-for="(item,key) in DataArr"
+                        :key="key"
+                        :label="item.label"
+                        :value="item.value">
+                        </el-option>
+                    </el-select>
                 </template>
             </inputan>
         </template>
+        <!-- {{value}} -->
     </div>
 </template>
 <script>
