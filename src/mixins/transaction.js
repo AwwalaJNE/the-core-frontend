@@ -167,7 +167,6 @@ const TransactionMixin = {
             try {
                 if (Object.keys(service).length > 0) {
                     let surcharge_condition = obj['surcharge_condition'] || {}
-                    // console.log("surcharge_condition", surcharge_condition)
                     
                     // console.log('--- Surcharge -> '+obj['surcharge_name']+'----------', surcharge_condition, this.koli, this.listenCurrentIndexKoli)
                             if(Object.keys(surcharge_condition).length > 0) {
@@ -286,18 +285,19 @@ const TransactionMixin = {
                                                 let value1 = Number(max)
                                                 let value2 = Number(objective2)
 
-                                                if(operator.includes('<')) {
-                                                    value1 = Number(objective2)
-                                                    value2 = Number(max)
-                                                }
+                                                // if(operator.includes('<')) {
+                                                //     value1 = Number(objective2)
+                                                //     value2 = Number(max)
+                                                // }
 
                                                 let str = `${value1} ${operator} ${value2}`
                                                 tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
-                                                // console.log('Surcharge name = ', obj['surcharge_name'])
-                                                // console.log('proses condition', objective1, objective2,str,value1,operator,value2, status)
+                                                // console.log('Surcharge name = ', obj['surcharge_name'], eval(str))
+                                                // console.log('proses condition', objective1, objective2,str,value1,operator,value2, status, tempStatus)
                                                 // console.log('END ///')
                                             }
                                         }
+                                        
                                     })
 
                                 })
@@ -306,7 +306,7 @@ const TransactionMixin = {
                                 }
                             }
                     obj['service_relevant'] = status
-                    // console.log('=================== obj', obj)
+                    console.log('=================== Hasil obj>>>', obj)
                 }
             } catch (error) {
                 console.log('error', error)
