@@ -30,7 +30,9 @@
                     <span>{{name}}</span>
                     <el-select 
                     v-model="value" 
+                    class="m-select"
                     :placeholder="placeholder"
+                    @change="updateValue"
                     :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                         <el-option
                         v-for="(item,key) in DataArr"
@@ -145,6 +147,20 @@ export default {
         }
         .vs-select.activeOptions .vs-select__input:focus ~ .vs-select__label--label {
             transform: translate(-3%, -28px) !important;
+        }
+
+        &.el-input{
+            &.el-input--suffix{
+                .el-input__suffix{
+                    .el-input__suffix-inner{
+                        position: relative;
+                        top: 8px;
+                    }
+                }
+            }
+        }
+        .el-input__icon{
+            height: auto;
         }
     }
 </style>
