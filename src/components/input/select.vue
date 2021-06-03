@@ -152,7 +152,7 @@ export default {
             margin-bottom: 0;
         }
 
-        .el-input{
+        &.el-input{
             &.el-input--suffix{
                 .el-input__suffix{
                     .el-input__suffix-inner{
