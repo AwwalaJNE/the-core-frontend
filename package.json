@@ -16,9 +16,11 @@
     "lint": "stylelint '**/*.vue' '**/*.scss' --fix scss"
   },
   "dependencies": {
+    "@sentry/tracing": "^6.5.1",
+    "@sentry/vue": "^6.5.1",
     "@vue/eslint-config-airbnb": "^4.0.1",
     "@yaireo/tagify": "^3.21.4",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "boxicons": "^2.0.5",
     "core-js": "^3.1.2",
     "element-ui": "^2.14.0",
@@ -40,8 +42,8 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",
-    "@vue/cli-plugin-unit-jest": "^4.0.0",
-    "@vue/cli-service": "^4.0.0",
+    "@vue/cli-plugin-unit-jest": "^3.12.1",
+    "@vue/cli-service": "^3.12.1",
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-eslint": "^10.0.3",
     "babel-preset-airbnb": "^4.1.0",
@@ -51,7 +53,7 @@
     "eslint-plugin-vue": "^5.2.3",
     "pug-plain-loader": "^1.0.0",
     "sass-loader": "^8.0.0",
-    "stylelint-config-standard": "^19.0.0",
+    "stylelint-config-standard": "^18.3.0",
     "stylelint-processor-html": "^1.0.0",
     "vue-template-compiler": "^2.6.10"
   },
