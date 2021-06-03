@@ -27,7 +27,7 @@
                         
                         
                     </vs-select> -->
-                    <span>{{name}}</span>
+                    <span class="c-label">{{name}}</span>
                     <el-select 
                     v-model="value" 
                     class="m-select"
@@ -148,8 +148,11 @@ export default {
         .vs-select.activeOptions .vs-select__input:focus ~ .vs-select__label--label {
             transform: translate(-3%, -28px) !important;
         }
+        &.el-select .el-input .el-input__inner{
+            margin-bottom: 0;
+        }
 
-        &.el-input{
+        .el-input{
             &.el-input--suffix{
                 .el-input__suffix{
                     .el-input__suffix-inner{
@@ -163,4 +166,12 @@ export default {
             height: auto;
         }
     }
+    .c-label{
+            font-size: 0.75rem;
+            /* left: 0px; */
+            position: relative;
+            align-content: start;
+            display: block;
+            padding: 4px 7px;
+        }
 </style>
