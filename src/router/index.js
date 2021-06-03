@@ -579,7 +579,7 @@ const routes = [
         component: DeliveryUndelivery,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Delivery /Undelivered Receiving"
+          breadCrumb: "Undelivery / Undelivery Receiving"
         }
       },
       {

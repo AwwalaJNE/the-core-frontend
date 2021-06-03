@@ -44,9 +44,9 @@ export default {
                   width: "xs"
                 },
                 {
-                    label: "Vehicle Type",
-                    key: "transaction_id",
-                    width: "xs"
+                  label: "Vehicle",
+                  key: "vehicle",
+                  width: "xs"
                 },
                 {
                     label: "From",
@@ -70,13 +70,8 @@ export default {
                 },
                 {
                   label: "Unreceive",
-                  key: "transaction_date",
+                  key: "",
                   width: "auto"
-                },
-                {
-                  label: "Vehicle No",
-                  key: "vehicle_type_name",
-                  width: "xs"
                 },
                 {
                   label: "PIC",
@@ -171,6 +166,10 @@ export default {
                       item['inbound_eta'] = this.dateConvert(item['inbound_eta'])
                       item['inbound_etd'] = this.dateConvert(item['inbound_etd'])
                       item['departed_at'] = this.dateConvert(item['departed_at'])
+                      item['vehicle'] = item['vehicle_type_name']
+                      if(item['vehicle_name'] != null){
+                        item['vehicle'] = item['vehicle'] + '('+item['vehicle_name']+')'
+                      }
                       total = Number(total) + Number(item.transaction_amount);
                     })
                     this.pagination.page = res.data.meta.current_page

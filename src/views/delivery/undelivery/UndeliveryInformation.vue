@@ -39,7 +39,7 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Bag / Connote",
+                    label: "Connote / Koli",
                     key: "koli_number",
                     width: "xxs"
                 },

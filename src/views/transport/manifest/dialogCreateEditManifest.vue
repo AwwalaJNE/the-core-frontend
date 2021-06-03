@@ -33,7 +33,7 @@
                         border
                         type="text"
                         v-model="item_code"
-                        label-placeholder="Masukkan code BAG / Connote"
+                        label-placeholder="Masukkan noomor bag"
                         v-on:keyup.enter="updateValue"
                         :autofocus="true"
                         ref="formInputItemManifest">
@@ -150,7 +150,7 @@ export default {
               },
               {
                 label: "Destination",
-                key: "destination",
+                key: "destination_name",
                 width: "xs"
               }
             ],
@@ -493,7 +493,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.message : 'something went wrong',err)
                 })
         },
         cancel() {
@@ -514,6 +514,8 @@ export default {
                 let arr = res.data.data
                 arr.map(item => {
                   item["type"] = 'Bag'
+                  item["type"] = 'Bag'
+                  item['destination_name'] = item['destination']['node_tariff_code']
                 })
                 this.dataTable = this.dataTable.concat(arr)
                 // console.log(this.dataTable,'data')

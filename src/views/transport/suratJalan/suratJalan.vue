@@ -76,6 +76,11 @@ export default {
                 width: "auto"
               },
               {
+                label: "Driver",
+                key: "driver_name",
+                width: "xs"
+              },
+              {
                 label: "Mode#",
                 key: "vehicle_mode_name",
                 width: "auto"
@@ -201,6 +206,7 @@ export default {
                       item["node_id_origin_name"] = (item.origin) ? item.origin.node_name: null
                       item["node_id_destination_name"] = (item.destination) ? item.destination.node_name: null
                       item["driver_id"] = (item.pic_employee_id) ? item.pic_employee_id: null
+                      item["driver_name"] = (item.pic) ? item.pic.employee_name: null
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
