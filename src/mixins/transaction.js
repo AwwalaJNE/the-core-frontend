@@ -548,22 +548,19 @@ const TransactionMixin = {
                         try{
                             // jika ada surcharge formula yg memberi efek pada calculation
                             if(Object.keys(perubahan).length > 0) { // if perubahan != {} (empty object)
-                                switch(true) {
-                                    case perubahan.hasOwnProperty('chargeble_weight'):
-                                        KOLI_CHARGEBLE_WEIGHT = perubahan['chargeble_weight']
-                                        // this.BASE_TARIFF = this.tarifTiering(SUM_CHARGEBLE_WEIGHT)
-                                    break;
-                                    case perubahan.hasOwnProperty('surcharge'):
-                                        tempbiaya = perubahan['surcharge']
-                                    break;
-                                    case perubahan.hasOwnProperty('handling_charge'):
-                                        temp_handling_charge = perubahan['handling_charge']
-                                    break;
-                                    case perubahan.hasOwnProperty('volume_weight'):
-                                        koli.volume_weight = perubahan['volume_weight']
-                                    break;
-                                    default:
+                                if (perubahan.hasOwnProperty('chargeble_weight')) {
+                                    KOLI_CHARGEBLE_WEIGHT = perubahan['chargeble_weight']
                                 }
+                                if (perubahan.hasOwnProperty('surcharge')) {
+                                    tempbiaya = perubahan['surcharge']
+                                }
+                                if (perubahan.hasOwnProperty('handling_charge')) {
+                                    temp_handling_charge = perubahan['handling_charge']
+                                }
+                                if (perubahan.hasOwnProperty('volume_weight')) {
+                                    koli.volume_weight = perubahan['volume_weight']
+                                }
+                                
                             }
                         }
                         catch (err) {
