@@ -333,73 +333,74 @@ const TransactionMixin = {
             });
         },
 
-        surchargeCalculation(koli, chargeble_weight = null) {
+        surchargeCalculation(koli, dataSurcharge = {} , formula = '',chargeble_weight = null) {
             let surchargeByID = this.listenPackageSurchargeByID
             let ngubah = {}
             let str = ''
             if(koli.surcharge_id && koli.surcharge_id.length > 0) {
                 try {
-                    koli.surcharge_id.map(su_id => {
-                        let dataSurcharge = surchargeByID[su_id] || {}
-                        console.log("dataSurcharge", dataSurcharge)
+                    // koli.surcharge_id.map(su_id => {
+                    //     let dataSurcharge = surchargeByID[su_id] || {}
+                    //     console.log("dataSurcharge", dataSurcharge)
                         
-                        Object.keys(dataSurcharge['surcharge_formula']).map(formula => {
-                            // chargeble_weight ==>
-                            if(formula.toLowerCase() == 'chargeble_weight') {
-                                console.log('formula chargeble_weight', formula.toLowerCase() == 'chargeble_weight')
-                                    if(chargeble_weight != null) {
-                                        str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? 
-                                                dataSurcharge['surcharge_formula'][formula].toLowerCase() : 
-                                                dataSurcharge['surcharge_formula'][formula]
-                                        let evalchargeable_weight = eval(str)
+                        
+                    // })
+                    // Object.keys(dataSurcharge['surcharge_formula']).map(formula => {
+                        // chargeble_weight ==>
+                        if(formula.toLowerCase() == 'chargeble_weight') {
+                            console.log('formula chargeble_weight', formula.toLowerCase() == 'chargeble_weight')
+                                if(chargeble_weight != null) {
+                                    str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? 
+                                            dataSurcharge['surcharge_formula'][formula].toLowerCase() : 
+                                            dataSurcharge['surcharge_formula'][formula]
+                                    let evalchargeable_weight = eval(str)
 
-                                        // let base_tariff = this.tarifTiering(evalchargeable_weight)
+                                    
+                                    ngubah['chargeble_weight'] = evalchargeable_weight
+                                    
+                                    // ngubah['base_tariff'] = base_tariff
+                                }
+                        }
 
-                                        ngubah['chargeble_weight'] = evalchargeable_weight
-                                        // ngubah['base_tariff'] = base_tariff
-                                    }
-                            }
+                        // surcharge ==>
+                        else if(formula.toLowerCase().includes('surcharge')) {
+                            console.log('formula surcharge', formula.toLowerCase().includes('surcharge'))
+                                if(chargeble_weight != null) {
+                                    let base_tariff = this.tarifTiering(chargeble_weight)
+                                    str = dataSurcharge['surcharge_formula'][formula].toLowerCase() 
+                                    let evalSurcharge = eval(str)
+                                    console.log('str evalSurcharge', str, evalSurcharge, base_tariff, chargeble_weight) 
+                                    ngubah['surcharge'] = evalSurcharge
+                                }
+                        }
 
-                            // surcharge ==>
-                            if(formula.toLowerCase().includes('surcharge')) {
-                                console.log('formula surcharge', formula.toLowerCase().includes('surcharge'))
-                                    if(chargeble_weight != null) {
-                                        let base_tariff = this.tarifTiering(chargeble_weight)
-                                        str = dataSurcharge['surcharge_formula'][formula].toLowerCase() 
-                                        let evalSurcharge = eval(str)
-                                        console.log('str evalSurcharge', str, evalSurcharge, base_tariff, chargeble_weight) 
-                                        ngubah['surcharge'] = evalSurcharge
-                                    }
-                            }
+                        // handling_charge ==>
+                        else if (formula.toLowerCase() == 'handling_charge') {
+                            let handling_charge = Number(dataSurcharge['surcharge_formula'][formula])
+                            ngubah['handling_charge'] = handling_charge
+                        }
 
-                            // handling_charge ==>
-                            if (formula.toLowerCase() == 'handling_charge') {
-                                let handling_charge = Number(dataSurcharge['surcharge_formula'][formula])
-                                ngubah['handling_charge'] = handling_charge
-                            }
+                        // adm_karantina ==>
+                        else if (formula.toLowerCase() == 'adm_karantina') {
+                            let adm_karantina = Number(dataSurcharge['adm_karantina'][formula])
+                            ngubah['adm_karantina'] = adm_karantina
+                        }
 
-                            // adm_karantina ==>
-                            if (formula.toLowerCase() == 'adm_karantina') {
-                                let adm_karantina = Number(dataSurcharge['adm_karantina'][formula])
-                                ngubah['adm_karantina'] = adm_karantina
-                            }
+                        // volume_weight ==>
+                        else if (formula.toLowerCase() == 'volume_weight') {
+                            let koli_length = Number(koli.length)
+                            let koli_width = Number(koli.width)
+                            let koli_height = Number(koli.height)
+                            // let oooppi = "(koli_length+5)"
+                            let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
 
-                            // volume_weight ==>
-                            if (formula.toLowerCase() == 'volume_weight') {
-                                let koli_length = Number(koli.length)
-                                let koli_width = Number(koli.width)
-                                let koli_height = Number(koli.height)
-                                // let oooppi = "(koli_length+5)"
-                                let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
-
-                                let volume_weight = evalactual_weight.toFixed(2)
-                                ngubah['volume_weight'] = volume_weight
-                            }
+                            let volume_weight = evalactual_weight.toFixed(2)
+                            ngubah['volume_weight'] = volume_weight
+                        }
 
 
-                            
-                        })
-                    })
+                        
+                    // })
                 } catch (err) {
                     console.log('surchargeCalculation err', err)
                 }
@@ -446,7 +447,7 @@ const TransactionMixin = {
                     let koli_volume_weight = vw
                     
                     let koli_actual_weight = Number(koli['actual_weight'])
-                    let chargeble_weight = Number(Math.max(koli_actual_weight, Number(this.round03(koli_volume_weight))).toFixed(2))
+                    // let chargeble_weight = Number(Math.max(koli_actual_weight, Number(this.round03(koli_volume_weight))).toFixed(2))
 
                     let tempbiaya = 0
                     let temp_handling_charge = 0
@@ -552,32 +553,53 @@ const TransactionMixin = {
                     
                     if(koli.surcharge_id && koli.surcharge_id.length > 0) {
                         
-                        let perubahan = this.surchargeCalculation(
-                                                koli, 
-                                                chargeble_weight,
-                                                ) || {}
+                        
                         
                         try{
-                            // jika ada surcharge formula yg memberi efek pada calculation
-                            if(Object.keys(perubahan).length > 0) { // if perubahan != {} (empty object)
-                                if (perubahan.hasOwnProperty('chargeble_weight')) {
-                                    KOLI_CHARGEBLE_WEIGHT = perubahan['chargeble_weight']
-                                }
-                                if (perubahan.hasOwnProperty('surcharge')) {
-                                    tempbiaya = perubahan['surcharge']
-                                }
-                                if (perubahan.hasOwnProperty('handling_charge')) {
-                                    temp_handling_charge = perubahan['handling_charge']
-                                }
-                                if (perubahan.hasOwnProperty('adm_karantina')) {
-                                    temp_adm_karantina = perubahan['adm_karantina']
-                                }
-                                if (perubahan.hasOwnProperty('volume_weight')) {
-                                    koli.volume_weight = perubahan['volume_weight']
-                                }
+                            // array koli surcharge (tiap koli bisa punya banyak surcharge)
+                            koli.surcharge_id.map(su_id => {
+                                let dataSurcharge = surchargeByID[su_id] || {}
+                                console.log("dataSurcharge", dataSurcharge)
+
+                                // Object dari surcharge formula (tiap surcharge bisa merubah banyak hal)
+                                Object.keys(dataSurcharge['surcharge_formula']).map(formula => {
+                                    let perubahan = this.surchargeCalculation(
+                                        koli, 
+                                        dataSurcharge,
+                                        formula,
+                                        KOLI_CHARGEBLE_WEIGHT,
+                                        )
+                                    
+                                        console.log('obj perubahan', perubahan)
+                                    
+                                    // jika ada surcharge formula yg memberi efek pada calculation
+                                    if(Object.keys(perubahan).length > 0) { // if perubahan != {} (empty object)
+                                        if (perubahan.hasOwnProperty('chargeble_weight')) {
+                                            console.log('koli di surchargeCalculation =>', koli_actual_weight, KOLI_CHARGEBLE_WEIGHT)
+                                            let valCH = perubahan['chargeble_weight']
+
+                                            KOLI_CHARGEBLE_WEIGHT = Number(Math.max(KOLI_CHARGEBLE_WEIGHT, valCH).toFixed(2))
+                                            console.log('KOLI_CHARGEBLE_WEIGHT >>>>>>>>>>>>>>>>>', KOLI_CHARGEBLE_WEIGHT)
+                                        }
+                                        if (perubahan.hasOwnProperty('surcharge')) {
+                                            tempbiaya = perubahan['surcharge']
+                                        }
+                                        if (perubahan.hasOwnProperty('handling_charge')) {
+                                            temp_handling_charge = perubahan['handling_charge']
+                                        }
+                                        if (perubahan.hasOwnProperty('adm_karantina')) {
+                                            temp_adm_karantina = perubahan['adm_karantina']
+                                        }
+                                        if (perubahan.hasOwnProperty('volume_weight')) {
+                                            koli.volume_weight = perubahan['volume_weight']
+                                        }
+                                        
+                                        
+                                    }
+                                })
                                 
-                                
-                            }
+                            })
+                            
                         }
                         catch (err) {
                             console.log('implementasi perubahan err', err)
