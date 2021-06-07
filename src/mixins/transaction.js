@@ -575,11 +575,9 @@ const TransactionMixin = {
                                     // jika ada surcharge formula yg memberi efek pada calculation
                                     if(Object.keys(perubahan).length > 0) { // if perubahan != {} (empty object)
                                         if (perubahan.hasOwnProperty('chargeble_weight')) {
-                                            console.log('koli di surchargeCalculation =>', koli_actual_weight, KOLI_CHARGEBLE_WEIGHT)
-                                            let valCH = perubahan['chargeble_weight']
+                                            let valCW = perubahan['chargeble_weight']
 
-                                            KOLI_CHARGEBLE_WEIGHT = Number(Math.max(KOLI_CHARGEBLE_WEIGHT, valCH).toFixed(2))
-                                            console.log('KOLI_CHARGEBLE_WEIGHT >>>>>>>>>>>>>>>>>', KOLI_CHARGEBLE_WEIGHT)
+                                            KOLI_CHARGEBLE_WEIGHT = Number(Math.max(KOLI_CHARGEBLE_WEIGHT, valCW).toFixed(2))
                                         }
                                         if (perubahan.hasOwnProperty('surcharge')) {
                                             tempbiaya = perubahan['surcharge']
