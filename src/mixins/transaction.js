@@ -372,11 +372,19 @@ const TransactionMixin = {
                                     }
                             }
 
+                            // handling_charge ==>
                             if (formula.toLowerCase() == 'handling_charge') {
                                 let handling_charge = Number(dataSurcharge['surcharge_formula'][formula])
                                 ngubah['handling_charge'] = handling_charge
                             }
 
+                            // adm_karantina ==>
+                            if (formula.toLowerCase() == 'adm_karantina') {
+                                let adm_karantina = Number(dataSurcharge['adm_karantina'][formula])
+                                ngubah['adm_karantina'] = adm_karantina
+                            }
+
+                            // volume_weight ==>
                             if (formula.toLowerCase() == 'volume_weight') {
                                 let koli_length = Number(koli.length)
                                 let koli_width = Number(koli.width)
@@ -387,6 +395,8 @@ const TransactionMixin = {
                                 let volume_weight = evalactual_weight.toFixed(2)
                                 ngubah['volume_weight'] = volume_weight
                             }
+
+
                             
                         })
                     })
@@ -415,6 +425,7 @@ const TransactionMixin = {
 
             let SUM_BIAYA_LAIN = 0
             let SUM_HANDLING_CHARGE = 0
+            let SUM_ADM_KARANTINA = 0
             let TOTAL_BIAYA = 0
 
             let SUM_CHARGEBLE_WEIGHT = 0
@@ -439,6 +450,7 @@ const TransactionMixin = {
 
                     let tempbiaya = 0
                     let temp_handling_charge = 0
+                    let temp_adm_karantina = 0
                     let temp_chargeable_weight = 0
                     let reCompare = false
 
@@ -557,9 +569,13 @@ const TransactionMixin = {
                                 if (perubahan.hasOwnProperty('handling_charge')) {
                                     temp_handling_charge = perubahan['handling_charge']
                                 }
+                                if (perubahan.hasOwnProperty('adm_karantina')) {
+                                    temp_adm_karantina = perubahan['adm_karantina']
+                                }
                                 if (perubahan.hasOwnProperty('volume_weight')) {
                                     koli.volume_weight = perubahan['volume_weight']
                                 }
+                                
                                 
                             }
                         }
