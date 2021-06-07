@@ -371,6 +371,22 @@ const TransactionMixin = {
                                         ngubah['surcharge'] = evalSurcharge
                                     }
                             }
+
+                            if (formula.toLowerCase() == 'handling_charge') {
+                                let handling_charge = Number(dataSurcharge['surcharge_formula'][formula])
+                                ngubah['handling_charge'] = handling_charge
+                            }
+
+                            if (formula.toLowerCase() == 'volume_weight') {
+                                let koli_length = Number(koli.length)
+                                let koli_width = Number(koli.width)
+                                let koli_height = Number(koli.height)
+                                // let oooppi = "(koli_length+5)"
+                                let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
+
+                                let volume_weight = evalactual_weight.toFixed(2)
+                                ngubah['volume_weight'] = volume_weight
+                            }
                             
                         })
                     })
@@ -539,6 +555,12 @@ const TransactionMixin = {
                                     break;
                                     case perubahan.hasOwnProperty('surcharge'):
                                         tempbiaya = perubahan['surcharge']
+                                    break;
+                                    case perubahan.hasOwnProperty('handling_charge'):
+                                        temp_handling_charge = perubahan['handling_charge']
+                                    break;
+                                    case perubahan.hasOwnProperty('volume_weight'):
+                                        koli.volume_weight = perubahan['volume_weight']
                                     break;
                                     default:
                                 }
