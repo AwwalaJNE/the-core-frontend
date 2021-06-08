@@ -49,8 +49,14 @@
               :active="true"
               type="submit"
               @click="handleSubmit"
-              >Save</vs-button
-            >
+              >Save</vs-button>
+
+               <!-- <vs-button
+              block
+              flat
+              type="submit"
+              @click="throwError"
+              >Throw</vs-button> -->
           </vs-col>
         </vs-row>
       </div>
@@ -142,6 +148,10 @@ export default {
     };
   },
   methods: {
+    throwError: function() {
+      alert('throw')
+        throw new Error('Sentry Error Local')
+    },
     handleSubmit() {
       this.$refs.formProfileController.handleSubmit();
     },

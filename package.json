@@ -16,8 +16,6 @@
     "lint": "stylelint '**/*.vue' '**/*.scss' --fix scss"
   },
   "dependencies": {
-    "@sentry/tracing": "^6.5.1",
-    "@sentry/vue": "^6.5.1",
     "@vue/eslint-config-airbnb": "^4.0.1",
     "@yaireo/tagify": "^3.21.4",
     "axios": "^0.21.1",

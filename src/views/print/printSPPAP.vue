@@ -13,13 +13,13 @@
                             <li class="jss12 jss15 jss19" style="padding-bottom: 0px; padding-top: 0px;">
                             <label class="jss22" style="padding-bottom: 0px; padding-top: 0px;">
                                 <input type="checkbox" class="cb" :checked="packing_kayu" readonly="readonly" @click.prevent='0'>
-                                <span class="jss58 jss67 jss24">Packing Kayu</span>
+                                <span class="jss58 jss67 jss24">Tidak Packing Kayu</span>
                             </label>
                             </li>
                             <li class="jss12 jss15 jss19" style="padding-bottom: 0px; padding-top: 0px;">
                             <label class="jss22" style="padding-bottom: 0px; padding-top: 0px;">
                                 <input type="checkbox" class="cb" :checked="asuransi" readonly="readonly" @click.prevent='0'>
-                                <span class="jss58 jss67 jss24">Asuransi</span>
+                                <span class="jss58 jss67 jss24">Tidak Asuransi</span>
                             </label>
                             </li>
                         </ul>
