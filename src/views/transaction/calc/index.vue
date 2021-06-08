@@ -66,30 +66,35 @@
                     <table>
                         <template v-if="Object.keys(objectKeys).length > 0">
                             <tr>
-                                <td>{{objectKeys['actual_weight'].label}}</td>
+                                <td style="padding:5px">{{objectKeys['actual_weight'].label}}</td>
                                 <td>{{objectKeys['actual_weight'].value}}</td>
                             </tr>
                             <tr>
-                                <td>{{objectKeys['volume_weight'].label}}</td>
+                                <td style="padding:5px">{{objectKeys['volume_weight'].label}}</td>
                                 <td>{{objectKeys['volume_weight'].value}}</td>
                             </tr>
                             <tr>
-                                <td>{{objectKeys['chargeable_weight'].label}}</td>
+                                <td style="padding:5px">{{objectKeys['chargeable_weight'].label}}</td>
                                 <td>{{objectKeys['chargeable_weight'].value}}</td>
                             </tr>
                         </template>
-                        <hr>
+                            <tr>
+                                <td colspan="2" style="border-bottom:solid 1px #AAA; padding: 5px 2px"></td>
+                            </tr>
                         <template v-for="(item, i) in Keys">
                             <template v-if="item !== 'actual_weight' && 
                             item !== 'volume_weight' && 
                             item !== 'chargeable_weight'">
                                 <tr :key="i">
-                                    <td>{{objectKeys[item].label}}</td>
+                                    <td style="padding:5px">{{objectKeys[item].label}}</td>
                                     <td>{{moneyformat(objectKeys[item].value)}}</td>
                                 </tr>
                             </template>
                         </template>
-                        <hr>
+                        <!-- <hr> -->
+                            <tr>
+                                <td colspan="2" style="border-bottom:solid 1px #AAA; padding: 5px 2px"></td>
+                            </tr>
                         <tr>
                             <td><h3>Grand Total</h3></td>
                             <td><h3>{{moneyformat(listenGrandTotal)}}</h3></td>
