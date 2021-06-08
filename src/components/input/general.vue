@@ -26,7 +26,7 @@
                         :type="'text'"
                         :label="name"
                         :label-placeholder="name"
-                        v-currency
+                        
                         v-model="value"
                         :disabled="isDisabled"
                         :autofocus="isFocusToInput"
