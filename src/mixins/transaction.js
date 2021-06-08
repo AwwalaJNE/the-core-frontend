@@ -444,7 +444,7 @@ const TransactionMixin = {
                     }
                             
 
-                    let koli_volume_weight = vw
+                    let koli_volume_weight = Number(vw.toFixed(2))
                     
                     let koli_actual_weight = Number(koli['actual_weight'])
                     // let chargeble_weight = Number(Math.max(koli_actual_weight, Number(this.round03(koli_volume_weight))).toFixed(2))
@@ -539,22 +539,12 @@ const TransactionMixin = {
                     //             koli_actual_weight = Number(koli['actual_weight'])
                     //     } 
                     // }
-                    this.SUM_VOLUME_WEIGHT = this.SUM_VOLUME_WEIGHT + Number(koli_volume_weight.toFixed(2))
+                    
                     let roundUp = Number(this.round03(koli_volume_weight))
                     let KOLI_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, roundUp).toFixed(2))
-                    // this.SUM_CHARGEBLE_WEIGHT = this.SUM_CHARGEBLE_WEIGHT + KOLI_CHARGEBLE_WEIGHT
-                    // SUM_CHARGEBLE_WEIGHT = SUM_CHARGEBLE_WEIGHT + KOLI_CHARGEBLE_WEIGHT
-                    // if(Object.keys(tarifData).length > 0) {
-                    //     // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
-                    //     base_tariff = this.tarifTiering(KOLI_CHARGEBLE_WEIGHT)
-                    //     // this.BASE_TARIFF = this.diskonCalc(this.BASE_TARIFF,diskon)
-                    // }
-                    console.log('SUM_CHARGEBLE_WEIGHT', SUM_CHARGEBLE_WEIGHT, KOLI_CHARGEBLE_WEIGHT)
                     
-                    if(koli.surcharge_id && koli.surcharge_id.length > 0) {
-                        
-                        
-                        
+                    
+                    if(koli.surcharge_id && koli.surcharge_id.length > 0) {    
                         try{
                             // array koli surcharge (tiap koli bisa punya banyak surcharge)
                             koli.surcharge_id.map(su_id => {
@@ -589,7 +579,10 @@ const TransactionMixin = {
                                             temp_adm_karantina = perubahan['adm_karantina']
                                         }
                                         if (perubahan.hasOwnProperty('volume_weight')) {
+                                            koli_volume_weight = perubahan['volume_weight']
                                             koli.volume_weight = perubahan['volume_weight']
+
+                                            KOLI_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, koli_volume_weight).toFixed(2))
                                         }
                                         
                                         
@@ -608,8 +601,7 @@ const TransactionMixin = {
                     
 
                     // koli total calculator
-                    
-
+                    this.SUM_VOLUME_WEIGHT = this.SUM_VOLUME_WEIGHT + Number(koli_volume_weight)
                     this.SUM_ACTUAL_WEIGHT = this.SUM_ACTUAL_WEIGHT + koli_actual_weight
                     SUM_CHARGEBLE_WEIGHT = SUM_CHARGEBLE_WEIGHT + KOLI_CHARGEBLE_WEIGHT
                     SUM_BIAYA_LAIN = SUM_BIAYA_LAIN + tempbiaya
