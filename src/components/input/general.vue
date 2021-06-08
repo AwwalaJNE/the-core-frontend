@@ -19,12 +19,13 @@
                     />
                 </template>
                 <template v-else-if="listenCurrencyMasking">
+                    <!-- v-currency -->
                     <vs-input
                         :class="`mt-input`"
                         :type="'text'"
                         :label="name"
                         :label-placeholder="name"
-                        v-currency
+                        
                         v-model="value"
                         :disabled="isDisabled"
                         :autofocus="isFocusToInput"
