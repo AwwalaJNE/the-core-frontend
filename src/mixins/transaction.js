@@ -582,7 +582,8 @@ const TransactionMixin = {
                                             koli_volume_weight = perubahan['volume_weight']
                                             koli.volume_weight = perubahan['volume_weight']
 
-                                            KOLI_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, koli_volume_weight).toFixed(2))
+                                            let round = Number(this.round03(koli_volume_weight))
+                                            KOLI_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, round).toFixed(2))
                                         }
                                         
                                         
