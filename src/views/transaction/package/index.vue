@@ -138,6 +138,7 @@
                                         :formKey="InputObject['package_jumlah'].key"
                                         :valueData="InputObject['package_jumlah'].value"
                                         :typeInput="'number'"
+                                        :minValue="1"
                                         @updateValue="updateValue" />
                                 </vs-col>
                                 <vs-col xs="12" md="6" lg="6">

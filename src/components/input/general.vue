@@ -8,6 +8,7 @@
                         :type="listenTypeInput.includes('password') == true ? 'password' : 'text'"
                         :placeholder="name"
                         v-model="value"
+                        :min="listenMinValue"
                         :disabled="isDisabled"
                         :autofocus="isFocusToInput"
                         :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
@@ -34,6 +35,7 @@
                         @focus="focus(true)"
                         @blur="focus(false)"
                         ref="generalInput"
+                        :min="listenMinValue"
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                     />
                 </template>
@@ -68,6 +70,7 @@
                         @focus="focus(true)"
                         @blur="focus(false)"
                         ref="generalInput"
+                        :min="listenMinValue"
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                     />
                 </template>
@@ -86,6 +89,7 @@ export default {
         formKey: String,
         typeInput: String,
         prefix: String,
+        minValue: Number,
         placeholderGabung: Boolean,
         focusToInput: Boolean,
         tabindex: [Number, String],
@@ -102,6 +106,9 @@ export default {
     computed: {
         listenFormKey(){
             return this.formKey
+        },
+        listenMinValue(){
+            return this.minValue
         },
         listenTypeInput() {
             return this.typeInput
