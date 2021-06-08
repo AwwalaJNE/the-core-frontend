@@ -10,20 +10,6 @@ import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
 import VueCurrencyInput from 'vue-currency-input'
 import VueClipboard from 'vue-clipboard2'
-import * as Sentry from "@sentry/vue";
-import { Integrations } from "@sentry/tracing";
-
-Sentry.init({
-  Vue,
-  dsn: "https://c876c363c9c4408da1b1df6e0ebbdf1b@o196773.ingest.sentry.io/5798472",
-  integrations: [new Integrations.BrowserTracing()],
-
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
-  logErrors:true
-});
 
 
 // import VueMoment from 'vue-moment'

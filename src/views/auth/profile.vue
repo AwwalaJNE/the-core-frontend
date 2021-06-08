@@ -51,12 +51,12 @@
               @click="handleSubmit"
               >Save</vs-button>
 
-               <vs-button
+               <!-- <vs-button
               block
               flat
               type="submit"
               @click="throwError"
-              >Throw</vs-button>
+              >Throw</vs-button> -->
           </vs-col>
         </vs-row>
       </div>
