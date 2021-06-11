@@ -334,7 +334,6 @@ const TransactionMixin = {
         },
 
         surchargeCalculation(koli, dataSurcharge = {} , formula = '', chargeble_weight = null, koli_actual_weight = null) {
-            let surchargeByID = this.listenPackageSurchargeByID
             let ngubah = {}
             let str = ''
             if(koli.surcharge_id && koli.surcharge_id.length > 0) {
@@ -428,8 +427,7 @@ const TransactionMixin = {
                         let service_volume_divider = Number(service['service_volume_divider'])
                         vw = (koli['length'] * koli['width'] * koli['height']) / service_volume_divider 
                     }
-                            
-
+                         
                     let koli_volume_weight = Number(vw.toFixed(2))
                     
                     let koli_actual_weight = Number(koli['actual_weight'])
@@ -439,96 +437,9 @@ const TransactionMixin = {
                     let temp_handling_charge = 0
                     let temp_adm_karantina = 0
                     let temp_chargeable_weight = 0
-                    let reCompare = false
-
-                    
-
-                    // if(koli.surcharge_id && koli.surcharge_id.length > 0) {
-                    //     // untuk hitung surcharge formula yg memberi efek ke chargeble_weight
-                    //     let chargeble_weight = Number(Math.max(koli_actual_weight, Number(this.round03(koli_volume_weight))).toFixed(2))
-                    //     // let chargeble_weight = this.SUM_CHARGEBLE_WEIGHT
-                        
-                    //     let base_tariff = this.BASE_TARIFF 
-                        
-                    //     // console.log('base_tariff', this.BASE_TARIFF )
-                    //     let temp_actual = 0
-                    //     koli.surcharge_id.map(su_id => {
-                    //         let dataSurcharge = surchargeByID[su_id] || {}
-                            
-                    //         if(Object.keys(dataSurcharge).length > 0) {
-                    //             if(dataSurcharge.hasOwnProperty('surcharge_formula')) {
-                    //                 Object.keys(dataSurcharge['surcharge_formula']).map(formula => {
-                    //                     if(dataSurcharge['surcharge_formula'].hasOwnProperty(formula)) {
-                    //                         if(formula.toLowerCase() == 'chargeble_weight') {
-                    //                             let str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? dataSurcharge['surcharge_formula'][formula].toLowerCase() : dataSurcharge['surcharge_formula'][formula]
-                    //                             let evalchargeable_weight = eval(str)
-                    //                             this.SUM_CHARGEBLE_WEIGHT = evalchargeable_weight
-                    //                             // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
-                    //                             this.BASE_TARIFF = this.tarifTiering(this.SUM_CHARGEBLE_WEIGHT)
-                    //                             // this.BASE_TARIFF = this.diskonCalc(this.BASE_TARIFF,diskon)
-                    //                             base_tariff = this.BASE_TARIFF
-                    //                             // console.log('CHARGEBLE_WEIGHT', str, chargeble_weight,evalchargeable_weight, this.SUM_CHARGEBLE_WEIGHT, base_tariff)
-                    //                         } else if (formula.toLowerCase() == 'surcharge') {
-                    //                             let evalSurcharge = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
-                    //                             // tempbiaya = Number(evalSurcharge)
-                    //                             tempbiaya = tempbiaya + Number(evalSurcharge)
-                    //                         } else if (formula.toLowerCase() == 'handling_charge') {
-                    //                             temp_handling_charge = Number(dataSurcharge['surcharge_formula'][formula])
-                    //                         } else if(formula.toLowerCase() == 'koli_actual_weight') {
-
-                                                
-                    //                             // surcharge formula ada yg merubah actual weight, akan issue jika surcharge yg dipilih tersebut dihapus/diganti namun actual weight sudah terlanjur kena efek
-                    //                             // maka perlu penampungan sementara 
-                                                
-                    //                                 if(this.koliBeforeSurcharge.hasOwnProperty(indexKoli)) {
-                    //                                     // if(this.koliBeforeSurcharge[indexKoli].surchargeId !== su_id) {
-                    //                                         // console.log('beda surcharge',this.koliBeforeSurcharge[indexKoli].surchargeId,su_id)
-                    //                                         koli.actual_weight = this.koliBeforeSurcharge[indexKoli].value
-                    //                                         koli_actual_weight = Number(koli['actual_weight'])
-                    //                                     // } 
-                    //                                 } else {
-                    //                                     let objData = {}
-                    //                                         objData['key'] = 'actual_weight'
-                    //                                         objData['value'] = Number(koli['actual_weight'])
-                    //                                         objData['surchargeId'] = su_id
-                    //                                         this.koliBeforeSurcharge[indexKoli] = objData
-                    //                                 }
-                    //                                 // console.log('BEFORE SURCHARGE CALCULATED', this.koliBeforeSurcharge, su_id)
-                                                
-                                                
-                    //                             let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
-                    //                             koli_actual_weight = evalactual_weight
-                    //                             koli.actual_weight = koli_actual_weight
-                    //                             // reCompare = true
-                    //                             // console.log('ACTUAL_WEIGHT', evalactual_weight)
-                    //                         } else if(formula.toLowerCase() == 'volume_weight') {
-                    //                             let koli_length = Number(koli.length)
-                    //                             let koli_width = Number(koli.width)
-                    //                             let koli_height = Number(koli.height)
-                    //                             // let oooppi = "(koli_length+5)"
-                    //                             let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
-                                                
-                    //                             koli_volume_weight = evalactual_weight
-                    //                             koli.volume_weight = koli_volume_weight.toFixed(2)
-                    //                             // console.log('VOLUME CHANGED to be', dataSurcharge['surcharge_formula'][formula].toLowerCase(), koli_length, koli_width, koli_height,evalactual_weight)
-                    //                         }
-                    //                     }
-                    //                 })
-                                    
-                    //             }
-                    //         }
-                    //     })
-                        
-                    // } else {
-                    //     if(this.koliBeforeSurcharge.hasOwnProperty(indexKoli)) {
-                    //             koli.actual_weight = this.koliBeforeSurcharge[indexKoli].value
-                    //             koli_actual_weight = Number(koli['actual_weight'])
-                    //     } 
-                    // }
                     
                     let roundUp = Number(this.round03(koli_volume_weight))
                     let KOLI_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, roundUp).toFixed(2))
-                    
                     
                     if(koli.surcharge_id && koli.surcharge_id.length > 0) {    
                         try{
@@ -624,8 +535,6 @@ const TransactionMixin = {
  
                 })
 
-                // let reCompareWeight = Number(Math.max(this.SUM_ACTUAL_WEIGHT, this.SUM_CHARGEBLE_WEIGHT).toFixed(2))
-                // this.SUM_CHARGEBLE_WEIGHT = this.round03(reCompareWeight) 
                 this.SUM_CHARGEBLE_WEIGHT = SUM_CHARGEBLE_WEIGHT
 
                 if(Object.keys(tarifData).length > 0) {
