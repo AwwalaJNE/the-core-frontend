@@ -333,7 +333,7 @@ const TransactionMixin = {
             });
         },
 
-        surchargeCalculation(koli, dataSurcharge = {} , formula = '',chargeble_weight = null) {
+        surchargeCalculation(koli, dataSurcharge = {} , formula = '', chargeble_weight = null, koli_actual_weight = null) {
             let surchargeByID = this.listenPackageSurchargeByID
             let ngubah = {}
             let str = ''
@@ -378,6 +378,12 @@ const TransactionMixin = {
 
                                 let volume_weight = evalactual_weight.toFixed(2)
                                 ngubah['volume_weight'] = volume_weight
+                                break;
+                            case formula.toLowerCase() == 'koli_actual_weight':
+                                if(koli_actual_weight != null) {
+                                    let actual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
+                                    ngubah['koli_actual_weight'] = actual_weight
+                                }
                                 break;
                             default:
                         }
@@ -538,6 +544,7 @@ const TransactionMixin = {
                                         dataSurcharge,
                                         formula,
                                         KOLI_CHARGEBLE_WEIGHT,
+                                        koli_actual_weight
                                         )
                                     
                                         console.log('obj perubahan', perubahan)
@@ -565,6 +572,26 @@ const TransactionMixin = {
                                             let round = Number(this.round03(koli_volume_weight))
                                             KOLI_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, round).toFixed(2))
                                         }
+                                        if (perubahan.hasOwnProperty('koli_actual_weight')) {
+                                            // surcharge formula ada yg merubah actual weight, akan issue jika surcharge yg dipilih tersebut dihapus/diganti namun actual weight sudah terlanjur kena efek
+                                            // maka perlu penampungan sementara 
+                                                
+                                            if(this.koliBeforeSurcharge.hasOwnProperty(indexKoli)) {
+                                                // console.log('beda surcharge',this.koliBeforeSurcharge[indexKoli].surchargeId,su_id)
+                                                koli.actual_weight = this.koliBeforeSurcharge[indexKoli].value
+                                                koli_actual_weight = Number(koli['actual_weight'])
+                                            } else {
+                                                let objData = {}
+                                                objData['key'] = 'actual_weight'
+                                                objData['value'] = Number(koli['actual_weight'])
+                                                objData['surchargeId'] = su_id
+                                                this.koliBeforeSurcharge[indexKoli] = objData
+                                            }
+                                            // console.log('BEFORE SURCHARGE CALCULATED', this.koliBeforeSurcharge, su_id)
+                                            
+                                                koli_actual_weight = perubahan['koli_actual_weight']
+                                                koli.actual_weight = koli_actual_weight
+                                        }
                                         
                                         
                                     }
@@ -576,6 +603,11 @@ const TransactionMixin = {
                         catch (err) {
                             console.log('implementasi perubahan err', err)
                         }
+                    } else {
+                        if(this.koliBeforeSurcharge.hasOwnProperty(indexKoli)) {
+                            koli.actual_weight = this.koliBeforeSurcharge[indexKoli].value
+                            koli_actual_weight = Number(koli['actual_weight'])
+                        } 
                     }
 
                     
