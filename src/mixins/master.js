@@ -33,8 +33,8 @@ const Master = {
     },
     methods: {
         moneyformat(number){
-            // let val = number != 0 ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number) : 'Rp 0'
-            return number //val
+            let val = number != 0 ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number) : 'Rp 0'
+            return val
         },
         moneyParsing(str) {
             
