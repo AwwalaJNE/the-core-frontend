@@ -14,8 +14,8 @@ export default {
     mixins: [master],	
 	mounted() {
 		// this.checkAuthRequest()
-		console.log('TOLONG GIMANA CARANYA CEK AUTH DISINI :(');
-		console.log('CEK DI MIXIN KANG, ITU ADA HELPER UNTUK AMBIL TOKEN BUAT HEADER');
+		// console.log('TOLONG GIMANA CARANYA CEK AUTH DISINI :(');
+		// console.log('CEK DI MIXIN KANG, ITU ADA HELPER UNTUK AMBIL TOKEN BUAT HEADER');
 	}
 }
 </script>

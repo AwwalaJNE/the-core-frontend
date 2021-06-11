@@ -572,6 +572,7 @@ export default {
                 case "insured_goods_value":
                     if(this.package_tidak_asuransi == false) {
                         let numb = this.moneyParsing(value)
+                        console.log('moneyParsing numb', numb)
                         this.$store.dispatch("SET_CALCULATOR_ASURANSI", numb * 0.002)
                     } else {
                         this.$store.dispatch("SET_CALCULATOR_ASURANSI", 0)
@@ -581,9 +582,10 @@ export default {
                     this.calculation()
                     break;
                 case "amount_discount":
-                    // let num = this.moneyParsing(value)
+                    let num = this.moneyParsing(value)
                     let val = value ? value : 0
-                    this.$store.dispatch("SET_CALCULATOR_DISKON", value)
+                    console.log("SET_PACKAGE_PACKAGE_DISKON", num);
+                    this.$store.dispatch("SET_CALCULATOR_DISKON", num)
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_DISKON", value)
                     
                     this.calculation()
