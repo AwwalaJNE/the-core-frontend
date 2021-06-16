@@ -349,7 +349,7 @@ const TransactionMixin = {
         surchargeCalculation(koli, dataSurcharge = {} , formula = '', chargeble_weight = null, koli_actual_weight = null) {
             let ngubah = {}
             let str = ''
-            
+
             let koli_length = Number(koli.length)
             let koli_width = Number(koli.width)
             let koli_height = Number(koli.height)
@@ -373,7 +373,7 @@ const TransactionMixin = {
                                     let base_tariff = this.tarifTiering(chargeble_weight)
                                     str = dataSurcharge['surcharge_formula'][formula].toLowerCase() 
                                     let evalSurcharge = eval(str)
-                                    console.log('str evalSurcharge', str, evalSurcharge, base_tariff, chargeble_weight) 
+                                    console.log('str evalSurcharge', str, evalSurcharge, base_tariff, chargeble_weight, koli_length, koli_width, koli_height) 
                                     ngubah['surcharge'] = evalSurcharge
                                 }
                                 break;
