@@ -349,6 +349,7 @@ const TransactionMixin = {
         surchargeCalculation(koli, dataSurcharge = {} , formula = '', chargeble_weight = null, koli_actual_weight = null) {
             let ngubah = {}
             let str = ''
+            
             let koli_length = Number(koli.length)
             let koli_width = Number(koli.width)
             let koli_height = Number(koli.height)
