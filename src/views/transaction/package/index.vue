@@ -231,7 +231,7 @@
                                         :disabled="!disableBtnMultipleKoli"
                                         @click="openSurchargeDialog"
                                     >
-                                        <i class='bx bx-plus' style="margin-right:5px"></i> SURCHARGE
+                                        <i class='bx bx-plus' style="margin-right:5px"></i> SURCHARGE / PACKING KAYU
                                     </vs-button>
                                     <div>
                                         <template v-if="Object.keys(surchargeshow).length > 0">
