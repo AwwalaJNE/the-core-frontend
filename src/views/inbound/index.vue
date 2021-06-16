@@ -28,18 +28,18 @@
               <div class="nav-box">
                 <vs-row justify>
                   <vs-col xs="2" sm="2" lg="2">
-                    <template v-if="DataNode.length > 0">
+                    <template v-if="DataNode.length > 1">
                       <vs-select
                           class="m-select"
                           filter
                           :multiple="false"
                           autocomplete="off"
-                          placeholder="All Nodes"
+                          
                           v-model="node_request"
                           :border="true"
                           @change="updateNode"
                       >
-                        <template v-if="DataNode.length > 0">
+                        <template v-if="DataNode.length > 1">
                           <vs-option
                               v-for="(item,key) in DataNode"
                               :key="key"
@@ -145,7 +145,12 @@ export default {
             title:"Inbound Incoming",
             tempSearch: "",
             tempDate: [],
-            DataNode:[],
+            DataNode:[
+              {
+                label: "All Nodes",
+                value: ""
+              }
+            ],
             nodeOrigin:[],
             nodeDestination:[],
             node_request:'',
