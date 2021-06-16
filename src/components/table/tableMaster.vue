@@ -176,7 +176,7 @@
                                     :active="true"
                                     @click="actionUpdate(item)"
                                     >
-                                    {{customBtn_label}}
+                                    <span>{{customBtn_label}}</span>
                                 </vs-button>    
                             </vs-td>
                                 
@@ -196,13 +196,14 @@
                                                     <vs-button
                                                         block
                                                         flat
+                                                        size="small"
                                                         :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                                         :danger="actionItem.attribute.toLowerCase().includes('danger') ? true : false"
                                                         :warn="actionItem.attribute.toLowerCase().includes('warn') ? true : false"
                                                         :active="true"
                                                         @click="actionUpdate(item, actionItem.key)"
                                                     >
-                                                        {{actionItem.label}}
+                                                        <span>{{actionItem.label}}</span>
                                                     </vs-button>
                                                 </vs-col>
                                             </template>
@@ -220,23 +221,24 @@
                                             block
                                             
                                             flat
+                                            size="small"
                                             :active="true"
                                             @click="actionUpdate(item)"
                                         >
-                                            Edit
+                                            <span>Edit</span>
                                         </vs-button>
                                     </vs-col>
                                     <vs-col w="4">
                                         <vs-button
                                             block
                                             danger
-                                            
+                                            size="small"
                                             flat
                                             :active="true"
                                             type="submit"
                                             @click="actionRemove(item)"
                                         >
-                                            Remove
+                                            <span>Remove</span>
                                         </vs-button>
                                     </vs-col>
                                 </vs-row>
@@ -248,13 +250,13 @@
                             <vs-col w="4">
                               <vs-button
                                   block
-                                  
+                                  size="small"
                                   flat
                                   :active="true"
                                   type="submit"
                                   @click="actionRemove(item)"
                               >
-                                Remove
+                                <span>Remove</span>
                               </vs-button>
                             </vs-col>
                           </vs-row>
@@ -268,13 +270,13 @@
                                 <vs-button
                                     block
                                     warn
-                                    
+                                    size="small"
                                     flat
                                     :active="true"
                                     type="submit"
                                     @click="actionAvoid(item)"
                                 >
-                                  Avoid
+                                  <span>Avoid</span>
                                 </vs-button>
                               </vs-col>
                             </template>
@@ -283,12 +285,12 @@
                               <vs-col w="4">
                                 <vs-button
                                     block
-                                    
+                                    size="small"
                                     flat
                                     :active="true"
                                     @click="actionUpdate(item)"
                                 >
-                                  Edit
+                                  <span>Edit</span>
                                 </vs-button>
                               </vs-col>
                             </template>
@@ -297,12 +299,12 @@
                             <vs-col w="4">
                               <vs-button
                                   block
-                                  
+                                  size="small"
                                   flat
                                   :active="true"
                                   @click="actionPrint(item)"
                               >
-                                Print
+                                <span>Print</span>
                               </vs-button>
                             </vs-col>
                           </vs-row>
@@ -318,23 +320,23 @@
                                 <vs-button
                                     block
                                     :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
-                                    
+                                    size="small"
                                     flat
                                     :active="true"
                                     @click="actionCancel(item)"
                                 >
-                                  Cancel
+                                  <span>Cancel</span>
                                 </vs-button>
                               </vs-col>
                               <vs-col w="4">
                                 <vs-button
                                     block
-                                    
+                                    size="small"
                                     flat
                                     :active="true"
                                     @click="actionPrint(item)"
                                 >
-                                  Print
+                                  <span>Print</span>
                                 </vs-button>
                               </vs-col>
                             </template>
@@ -345,11 +347,12 @@
                                     warn
                                     :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                     flat
+                                    size="small"
                                     :active="true"
                                     type="submit"
                                     @click="actionPicked(item)"
                                 >
-                                  Picking
+                                  <span>Picking</span>
                                 </vs-button>
                               </vs-col>
                               <vs-col w="4">
@@ -357,10 +360,11 @@
                                     block
                                     :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                     flat
+                                    size="small"
                                     :active="true"
                                     @click="actionUpdate(item)"
                                 >
-                                  Edit
+                                  <span>Edit</span>
                                 </vs-button>
                               </vs-col>
 
@@ -369,10 +373,11 @@
                                     block
                                     :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                     flat
+                                    size="small"
                                     :active="true"
                                     @click="actionCancel(item)"
                                 >
-                                  Cancel
+                                  <span>Cancel</span>
                                 </vs-button>
                               </vs-col>
                             </template>
@@ -387,13 +392,13 @@
                             <vs-col w="4">
                               <vs-button
                                   block
-
+                                  size="small"
                                   flat
                                   :active="true"
                                   type="submit"
                                   @click="actionCollect(item)"
                               >
-                                Collect
+                                <span>Collect</span>
                               </vs-button>
                             </vs-col>
                           </vs-row>

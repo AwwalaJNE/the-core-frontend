@@ -33,7 +33,7 @@
                         border
                         type="text"
                         v-model="item_code"
-                        label-placeholder="Masukkan noomor bag"
+                        label-placeholder="Masukkan nomor bag"
                         v-on:keyup.enter="updateValue"
                         :autofocus="true"
                         ref="formInputItemManifest">
@@ -515,13 +515,14 @@ export default {
                 arr.map(item => {
                   item["type"] = 'Bag'
                   item["type"] = 'Bag'
-                  item['destination_name'] = item['destination']['node_tariff_code']
+                  item['destination_name'] = item['destination'] ? item['destination']['node_tariff_code'] : ''
                 })
                 this.dataTable = this.dataTable.concat(arr)
                 // console.log(this.dataTable,'data')
               }
-
+              this.item_code = ''
             }).catch(err => {
+              this.item_code = ''
               this.openNotification('danger', 'Koli / Connote not found', err)
             })
         },
