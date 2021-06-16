@@ -4,13 +4,13 @@
             <div class="container">
                 <vs-row justify="space-between">
                     <vs-col xs="12" sm="12" lg="2">
-                        <vs-row justify="space-between">
-                            <vs-col xs="9" sm="9" lg="3">
+                        <vs-row>
+                            <vs-col xs="3" sm="3" lg="3">
                                 <vs-button @click="clickProps" size="l" flat icon>
                                     <i class='bx bx-menu'></i>
                                 </vs-button>
                             </vs-col>
-                            <vs-col xs="3" sm="3" lg="9">
+                            <vs-col xs="3" sm="3" lg="3">
                                 <Logo />
                             </vs-col>
                         </vs-row>
