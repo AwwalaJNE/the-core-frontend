@@ -173,6 +173,16 @@ export default {
       valueData: null,
       value: ''
     },
+    employee_code: {
+      label: "Employee Code",
+      key: "employee_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",    
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     employee_name: {
       label: "Name",
       key: "employee_name",

@@ -2282,6 +2282,13 @@ export default {
     state.employee.employee_nik.valueData = payload
   },
 
+  SET_EMPLOYEE_EMPLOYEE_CODE(state, payload) {
+    state.employee.employee_code.value = payload
+  },
+  SET_EMPLOYEE_EMPLOYEE_CODE_ValueData(state, payload) {
+    state.employee.employee_code.valueData = payload
+  },
+
   SET_EMPLOYEE_EMPLOYEE_NAME(state, payload) {
     state.employee.employee_name.value = payload
   },

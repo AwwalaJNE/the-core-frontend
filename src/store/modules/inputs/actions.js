@@ -2122,6 +2122,13 @@ export default {
     commit('SET_EMPLOYEE_EMPLOYEE_NIK_ValueData', payload)
   },
 
+  SET_EMPLOYEE_EMPLOYEE_CODE({ commit }, payload) {
+    commit('SET_EMPLOYEE_EMPLOYEE_CODE', payload)
+  },
+  SET_EMPLOYEE_EMPLOYEE_CODE_ValueData({ commit }, payload) {
+    commit('SET_EMPLOYEE_EMPLOYEE_CODE_ValueData', payload)
+  },
+
   SET_EMPLOYEE_EMPLOYEE_NAME({ commit }, payload) {
     commit('SET_EMPLOYEE_EMPLOYEE_NAME', payload)
   },

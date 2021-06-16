@@ -51,7 +51,7 @@
                             <template v-else-if="InputObject[item].typeInput.toLowerCase() == 'datetime'">
                                 <template v-if="InputObject[item].hasOwnProperty('visible')">
                                     <template v-if="InputObject[item]['visible'] == true">
-                                        <div style="margin-top:16px;">
+                                        <div>
                                             <date-time
                                             :name="InputObject[item].label"
                                             :rules="InputObject[item].rule"
@@ -66,7 +66,7 @@
                                     </template>
                                 </template>
                                 <template v-else>
-                                    <div style="margin-top:16px;">
+                                    <div>
                                         <date-time
                                         :name="InputObject[item].label"
                                         :rules="InputObject[item].rule"
@@ -91,7 +91,7 @@
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
                                 <template v-if="InputObject[item].hasOwnProperty('visible')">
                                     <template v-if="InputObject[item]['visible'] == true">
-                                        <div style="margin-top:16px;">
+                                        <div>
                                             <selector 
                                             :ref="InputObject[item].key"
                                             :name="InputObject[item].label" 
@@ -108,7 +108,7 @@
                                     </template>
                                 </template>
                                 <template v-else>
-                                    <div style="margin-top:16px;">
+                                    <div>
                                         <selector 
                                         :ref="InputObject[item].key"
                                         :name="InputObject[item].label" 
