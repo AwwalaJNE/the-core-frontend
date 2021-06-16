@@ -72,7 +72,9 @@ export default {
         if(this.item_code !== null){
           this.item_number = this.item_code
         }
-       
+        this.$nextTick(() => {
+          this.handleClearForm()
+        });
       },
 
       handleClearForm(){
