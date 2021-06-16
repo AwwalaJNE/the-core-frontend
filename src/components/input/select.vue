@@ -37,8 +37,8 @@
                         <el-option
                         v-for="(item,key) in DataArr"
                         :key="key"
-                        :label="item.label"
-                        :value="item.value">
+                        :label="String(item.label)"
+                        :value="String(item.value)">
                         </el-option>
                     </el-select>
                 </template>

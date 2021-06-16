@@ -141,6 +141,7 @@ export default {
         },
         actionUpdate(val){
           if(this.dataTable.length > 0) {
+            // val["employee_node_id"] = val[""]
             this.dataItem = val
             console.log(this.dataItem,'item')
             this.$nextTick(() => {

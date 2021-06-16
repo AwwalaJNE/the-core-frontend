@@ -13,7 +13,7 @@
                 <form-input-controller 
                     ref="formEmployeeController"
                     @formData="formData"
-                    :dataItem="listenDataItem"
+                    :dataItem="editData"
                     :querySearch="querySearch"
                     typeForm="employee"
                 />
@@ -86,6 +86,7 @@ export default {
             form: {},
             node_id: '',
             employee_id:'',
+            editData: {}
         }
     },
     computed: {
@@ -104,9 +105,14 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.employee_id = val.employee_id
+                this.editData = val
             }
         },
-
+        active: function (val) {
+            if(val == true) {
+                this.getDataEmployeeType()
+            }
+        }
     },
     methods: {
         formData(form){
@@ -167,27 +173,27 @@ export default {
                 })
         },
         
-        async getDataNode(){
-            await axios
-                .get(this.URL.node +
-                `?n=${this.listenNodeId}`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.node_name
-                            obj["value"] = item.node_id
+        // async getDataNode(){
+        //     await axios
+        //         .get(this.URL.node +
+        //         `?n=${this.listenNodeId}`,
+        //         this.Helper.header())
+        //         .then(res => {
+        //             if(res.data.data.length > 0) {
+        //                 let arr = []
+        //                 res.data.data.map(item => {
+        //                     let obj = {}
+        //                     obj["label"] = item.node_name
+        //                     obj["value"] = item.node_id
 
-                            arr.push(obj)
-                        })
-                        // this.dataNodeType = arr
-                        this.$store.dispatch("SET_EMPLOYEE_EMPLOYEE_NODE_ID_ArrData", arr.length > 0 ? arr : null)
-                    }
+        //                     arr.push(obj)
+        //                 })
+        //                 // this.dataNodeType = arr
+        //                 this.$store.dispatch("SET_EMPLOYEE_EMPLOYEE_NODE_ID_ArrData", arr.length > 0 ? arr : null)
+        //             }
                     
-                })
-        },
+        //         })
+        // },
         async updateData(){
             await axios
                 .put(
@@ -231,8 +237,8 @@ export default {
         }
     },
     mounted() {
-        this.getDataEmployeeType()
-        this.getDataNode()
+        
+        // this.getDataNode()
     },
 }
 </script>
