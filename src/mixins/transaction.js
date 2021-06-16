@@ -349,6 +349,9 @@ const TransactionMixin = {
         surchargeCalculation(koli, dataSurcharge = {} , formula = '', chargeble_weight = null, koli_actual_weight = null) {
             let ngubah = {}
             let str = ''
+            let koli_length = Number(koli.length)
+            let koli_width = Number(koli.width)
+            let koli_height = Number(koli.height)
             if(koli.surcharge_id && koli.surcharge_id.length > 0) {
                 try {
                         switch(true) {
@@ -382,9 +385,6 @@ const TransactionMixin = {
                                 ngubah['adm_karantina'] = adm_karantina
                                 break;
                             case formula.toLowerCase() == 'volume_weight':
-                                let koli_length = Number(koli.length)
-                                let koli_width = Number(koli.width)
-                                let koli_height = Number(koli.height)
                                 // let oooppi = "(koli_length+5)"
                                 let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
 
@@ -516,7 +516,7 @@ const TransactionMixin = {
                                                 koli_actual_weight = perubahan['koli_actual_weight']
                                                 koli.actual_weight = koli_actual_weight
 
-                                                // KOLI_CHARGEBLE_WEIGHT = Number(Math.max(KOLI_CHARGEBLE_WEIGHT, perubahan['koli_actual_weight']).toFixed(2))
+                                                KOLI_CHARGEBLE_WEIGHT = Number(Math.max(perubahan['koli_actual_weight'], Number(this.round03(koli_volume_weight))).toFixed(2))
                                         }
                                         
                                         
