@@ -127,8 +127,8 @@ export default {
                 node.length > 0 && node.map(item => {
                             let obj = {}
                             obj["label"] = item.node_name
-                            obj["value"] = item.node_id
-                            obj["node_code"] = item.node_code
+                            obj["value"] = String(item.node_id)
+                            obj["node_code"] = String(item.node_code)
 
                             this.datanode.push(obj)
             })
@@ -136,11 +136,11 @@ export default {
             let n = this.$ls.get('node_id')
             if(n == null) {
                 this.$ls.set('node_id', this.datanode[0])
-                this.selectedNode = this.datanode[0].value
+                this.selectedNode = String(this.datanode[0].value)
                 this.$store.dispatch(`SET_USER_N`, this.datanode[0])
             } else {
                 this.$store.dispatch(`SET_USER_N`, n)
-                this.selectedNode = n.value
+                this.selectedNode = String(n.value)
             }
         }
     },
