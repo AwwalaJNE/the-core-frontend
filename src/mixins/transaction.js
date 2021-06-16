@@ -159,6 +159,9 @@ const TransactionMixin = {
 
         filterSurcharge(obj, koli, node_code) {
             let service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
+            let selectedServiceData = this.$store.getters.getTransaction.package["package_service"]["valueData"] || {}
+            let selectedService = selectedServiceData['label'].toLowerCase()
+            
             let tarifData = this.listenPackageService.data || {}
             let status = false
             let listkoli = koli || []
@@ -192,13 +195,23 @@ const TransactionMixin = {
                                         
 
                                         if(objective1.toLowerCase().includes('connote_service_code')) {
-                                            if(service.toLowerCase().includes(objective2.toLowerCase())) {
-                                                tempStatus = tempStatus !== null ? tempStatus && true : true
-                                            } else {
-                                                tempStatus = tempStatus !== null ? tempStatus && false : false
+                                            // if(service.toLowerCase().includes(objective2.toLowerCase())) {
+                                            //     tempStatus = tempStatus !== null ? tempStatus && true : true
+                                            // } else {
+                                            //     tempStatus = tempStatus !== null ? tempStatus && false : false
+                                            // }
+                                            if(operator === '=') {
+                                                operator = '=='
                                             }
-                                            // console.log('Surcharge name = ', obj['surcharge_name'])
-                                            // console.log('proses condition', objective1, service, objective2.toLowerCase(), tempStatus)
+                                            let str = `'${selectedService}' ${operator} '${objective2.toLowerCase()}'`
+                                            let evalstr = eval(str)
+
+                                            tempStatus = tempStatus !== null ? tempStatus && evalstr : false
+
+
+                                            // console.log('Surcharge name = ', obj['surcharge_name'],)
+                                            // console.log('SERVICE CODE STR >>>', str, evalstr)
+                                            // console.log('proses condition', objective1, service, operator, objective2.toLowerCase(), tempStatus)
                                             // console.log('END ///')
                                         } 
                                         if (objective1.toLowerCase().includes('connote_shipper_tlc')) {
