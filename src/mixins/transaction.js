@@ -206,7 +206,7 @@ const TransactionMixin = {
                                             let str = `'${selectedService}' ${operator} '${objective2.toLowerCase()}'`
                                             let evalstr = eval(str)
 
-                                            tempStatus = tempStatus !== null ? tempStatus && evalstr : false
+                                            tempStatus = tempStatus !== null ? tempStatus && evalstr : evalstr
 
 
                                             // console.log('Surcharge name = ', obj['surcharge_name'],)
@@ -515,6 +515,8 @@ const TransactionMixin = {
                                             
                                                 koli_actual_weight = perubahan['koli_actual_weight']
                                                 koli.actual_weight = koli_actual_weight
+
+                                                // KOLI_CHARGEBLE_WEIGHT = Number(Math.max(KOLI_CHARGEBLE_WEIGHT, perubahan['koli_actual_weight']).toFixed(2))
                                         }
                                         
                                         
@@ -540,7 +542,7 @@ const TransactionMixin = {
                     // koli total calculator
                     this.SUM_VOLUME_WEIGHT = this.SUM_VOLUME_WEIGHT + Number(koli_volume_weight)
                     this.SUM_ACTUAL_WEIGHT = this.SUM_ACTUAL_WEIGHT + koli_actual_weight
-                    SUM_CHARGEBLE_WEIGHT = SUM_CHARGEBLE_WEIGHT + KOLI_CHARGEBLE_WEIGHT
+                    SUM_CHARGEBLE_WEIGHT = SUM_CHARGEBLE_WEIGHT + Number(this.round03(KOLI_CHARGEBLE_WEIGHT))
                     SUM_BIAYA_LAIN = SUM_BIAYA_LAIN + tempbiaya
                     SUM_HANDLING_CHARGE = SUM_HANDLING_CHARGE + temp_handling_charge
 
