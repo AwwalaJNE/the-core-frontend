@@ -499,6 +499,7 @@ export default {
         cancel() {
             this.handleClearForm()
             this.closeDialog()
+            this.dataTable = []
         },
         updateValue(val){
           this.getDataManifest(this.item_code)
