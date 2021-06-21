@@ -213,6 +213,7 @@ export default {
                 }
             })
 
+            console.log('form', form, this.vehicle_max_weight, weight)
             if(this.vehicle_max_weight >= weight) {
                 let obj = {}
                 obj['node_id_origin'] = this.listenNodeId
@@ -239,7 +240,7 @@ export default {
                     this.openNotification('warning', 'Wrong Input in ETA/ETD field', 'ETA must more than ETD')
                 }
             } else {
-                // this.openNotification('warn', 'Melebihi berat', 'Berat muatan melebihi batas berat kendaraan')
+                this.openNotification('warn', 'Melebihi berat', 'Berat muatan melebihi batas berat kendaraan')
             }
         },
         onChangeCustom(type, val, obj){
