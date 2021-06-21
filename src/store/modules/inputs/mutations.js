@@ -1730,32 +1730,32 @@ export default {
       state.surat_muatan.node_id_destination.arrData = []
   },
 
-  SET_SURAT_MUATAN_VEHICLE_MODE_ID(state, payload) {
-    state.surat_muatan.vehicle_mode_id.value = payload
+  SET_SURAT_MUATAN_VEHICLE_TYPE_ID(state, payload) {
+    state.surat_muatan.vehicle_type_id.value = payload
   },
-  SET_SURAT_MUATAN_VEHICLE_MODE_ID_ValueData(state, payload) {
-    state.surat_muatan.vehicle_mode_id.valueData = payload
+  SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ValueData(state, payload) {
+    state.surat_muatan.vehicle_type_id.valueData = payload
   },
-  SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData(state, payload) {
-    state.surat_muatan.vehicle_mode_id.hasOwnProperty('arrData') ?
-      state.surat_muatan.vehicle_mode_id.arrData = payload :
-      state.surat_muatan.vehicle_mode_id.arrData = []
+  SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ArrData(state, payload) {
+    state.surat_muatan.vehicle_type_id.hasOwnProperty('arrData') ?
+      state.surat_muatan.vehicle_type_id.arrData = payload :
+      state.surat_muatan.vehicle_type_id.arrData = []
   },
 
-  SET_SURAT_MUATAN_MANIFEST_TYPE_ID(state, payload) {
-    state.surat_muatan.manifest_type_id.value = payload
-  },
-  SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible(state, payload) {
-    state.surat_muatan.manifest_type_id.visible = payload
-  },
-  SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData(state, payload) {
-    state.surat_muatan.manifest_type_id.valueData = payload
-  },
-  SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData(state, payload) {
-    state.surat_muatan.manifest_type_id.hasOwnProperty('arrData') ?
-      state.surat_muatan.manifest_type_id.arrData = payload :
-      state.surat_muatan.manifest_type_id.arrData = []
-  },
+  // SET_SURAT_MUATAN_MANIFEST_TYPE_ID(state, payload) {
+  //   state.surat_muatan.manifest_type_id.value = payload
+  // },
+  // SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible(state, payload) {
+  //   state.surat_muatan.manifest_type_id.visible = payload
+  // },
+  // SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData(state, payload) {
+  //   state.surat_muatan.manifest_type_id.valueData = payload
+  // },
+  // SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData(state, payload) {
+  //   state.surat_muatan.manifest_type_id.hasOwnProperty('arrData') ?
+  //     state.surat_muatan.manifest_type_id.arrData = payload :
+  //     state.surat_muatan.manifest_type_id.arrData = []
+  // },
 
   SET_SURAT_MUATAN_VEHICLE_ID(state, payload) {
     state.surat_muatan.vehicle_id.value = payload

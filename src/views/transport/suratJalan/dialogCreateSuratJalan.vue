@@ -188,6 +188,10 @@ export default {
                 this.manifest_delivery_id = val.manifest_do_number
                 this.dataTable = val.detail
                 this.editData = val
+                this.no_moda_angkutan_id = val['no_moda_angkutan_id'] ? val['no_moda_angkutan_id'] : null
+                if(this.no_moda_angkutan_id != null) {
+                    this.getDriver()
+                }
 
                 // this.editData["destination_id"] = val.node_id_destination ? val.node_id_destination : ''
                 // this.editData["moda_angkutan_id"] = val.vehicle_mode_id ? val.vehicle_mode_id : ''
@@ -244,7 +248,7 @@ export default {
             }
         },
         onChangeCustom(type, val, obj){
-            // console.log('onchange',type, val, obj)
+            console.log('onchange',type, val, obj)
             switch(type) {
                 case "no_moda_angkutan_id":
                     if(typeof obj === 'object') {

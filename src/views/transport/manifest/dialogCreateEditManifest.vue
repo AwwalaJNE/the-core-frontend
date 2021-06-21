@@ -189,7 +189,7 @@ export default {
             return this.title
         },
         listenDataItem() {
-            return this.dataItem
+            return this.dataItem || {}
         },
         listenItterateUrlAutoComplete() {
             return this.itterateUrlAutoComplete
@@ -200,21 +200,55 @@ export default {
     },
     watch: {
         dataItem: function (val) {
-            if(val !== undefined) {
-                this.node_id = val.node_id
-                this.manifest_number = val.manifest_number
-                this.initDataItem()
-                console.log('init dataItem', val)
-            }
+            // console.log('WATCH dataItem', val)
+            // if(val !== undefined) {
+            //     this.node_id = val.node_id
+            //     this.manifest_number = val.manifest_number
+
+            //     this.vehicle_mode_id = val['vehicle_mode_id'] ? val['vehicle_mode_id'] : null
+                
+
+            //     this.vehicle_type_id = val['vehicle_type_id'] ? val['vehicle_type_id'] : null
+                
+
+            //     this.initDataItem()
+                
+                
+            //     // console.log('init dataItem', val)
+            // }
         },
+        active: function (val) {
+            if (val == true) {
+              this.getDataVehicleMode()
+
+              if(Object.keys(this.listenDataItem).length > 0 ) { // if this.listenDataItem ada isinya
+                
+                this.initDataItem()
+                
+                // console.log('init dataItem', val)
+              }
+            }
+        }
 
     },
     methods: {
         initDataItem(){
-            console.log('init dataItem', this.dataItem)
-            if(this.dataItem.hasOwnProperty("detail")) {
+            this.node_id = this.listenDataItem.node_id
+            this.manifest_number = this.listenDataItem.manifest_number
+
+            this.vehicle_mode_id = this.listenDataItem['vehicle_mode_id'] ? this.listenDataItem['vehicle_mode_id'] : null
+            this.vehicle_type_id = this.listenDataItem['vehicle_type_id'] ? this.listenDataItem['vehicle_type_id'] : null
+
+            if(this.vehicle_mode_id != null && this.vehicle_mode_id != '' ) {
+                this.getDataVehicleType()
+            }
+            if(this.vehicle_type_id != null && this.vehicle_mode_id != '') {
+                this.getDataVehicle()
+            }
+
+            if(this.listenDataItem.hasOwnProperty("detail")) {
               let arr = []
-              this.dataItem["detail"].map(data => {
+              this.listenDataItem["detail"].map(data => {
                 if(data.item_number) {
                   data["bag_number"] = data.item_number
                   data["type"] = data.item_type
@@ -225,6 +259,7 @@ export default {
 
               this.dataTable = arr
             }
+            console.log('init listenDataItem, bag', this.listenDataItem, this.dataTable)
             // siapin url untuk input autocomplete
             // let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
             // this.autoComplateUrl = url
@@ -242,7 +277,7 @@ export default {
         //     }
         // },
         inputFocus(info){
-          console.log('focus to', info)
+          // console.log('focus to', info)
           if(info && info.hasOwnProperty("key")) {
             let url = ""
             switch(info["key"]) {
@@ -315,7 +350,7 @@ export default {
                                             form["dynamicinputcomponent_node_id_transit"][2]["inputs"][0]["data"]["node_id"] : ""
             }
           }
-          form["vehicle_type_id"] = form["vehicle_mode_id"]
+          // form["vehicle_type_id"] = form["vehicle_mode_id"]
           // form["max_weight"] = 1
 
 
@@ -393,7 +428,7 @@ export default {
                 } else {
                   arr = [{label: null, value: null, data: {}}]
                 }
-                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData", arr)
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ArrData", arr)
               }).catch(err => {
                 // this.openNotification('danger', 'Failed to collect role list', err)
               })
@@ -539,7 +574,7 @@ export default {
               // setTimeout(function(){ }, 3000);
           }
           switch(type) {
-            case 'vehicle_mode_id':
+            case 'vehicle_type_id':
               if(info.hasOwnProperty('data')) {
                 this.vehicle_type_id = info.data.vehicle_type_id || ''
                 this.getDataVehicle()
@@ -591,7 +626,7 @@ export default {
 
               break;
             default:
-              console.log(info)
+              // console.log(info)
 
           }
 
@@ -608,8 +643,8 @@ export default {
 
           this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", [])
 
-          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_MODE_ID", "")
-          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData", [])
+          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_TYPE_ID", "")
+          this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ArrData", [])
 
           this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "")
           this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", [])
@@ -621,28 +656,28 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_ETA", dateEta)
           }
         },
-        jenisKiriman(type){
-          let arr = [
-            {
-              label:"DG",
-              value:1,
-            },{
-              label:"Genko",
-              value:2,
-            },{
-              label:"GoSynergy",
-              value:3,
-            },{
-              label:"Special Cargo",
-              value:4,
-            }
-          ];
-          this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible", type)
-          this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
-        }
+        // jenisKiriman(type){
+        //   let arr = [
+        //     {
+        //       label:"DG",
+        //       value:1,
+        //     },{
+        //       label:"Genko",
+        //       value:2,
+        //     },{
+        //       label:"GoSynergy",
+        //       value:3,
+        //     },{
+        //       label:"Special Cargo",
+        //       value:4,
+        //     }
+        //   ];
+        //   this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible", type)
+        //   this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
+        // }
     },
     mounted() {
-        this.getDataVehicleMode()
+        
         // this.getDataEmployee()
     },
 }

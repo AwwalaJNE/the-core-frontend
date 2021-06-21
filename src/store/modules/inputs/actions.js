@@ -1657,32 +1657,32 @@ export default {
     commit('SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData', payload)
   },
 
-  SET_SURAT_MUATAN_VEHICLE_MODE_ID({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_VEHICLE_MODE_ID', payload)
+  SET_SURAT_MUATAN_VEHICLE_TYPE_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_TYPE_ID', payload)
   },
-  SET_SURAT_MUATAN_VEHICLE_MODE_ID_ValueData({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_VEHICLE_MODE_ID_ValueData', payload)
-  },
-  // type select perlu data array
-  SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_VEHICLE_MODE_ID_ArrData', payload)
-  },
-
-  SET_SURAT_MUATAN_MANIFEST_TYPE_ID({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID', payload)
-  },
-
-  SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible', payload)
-  },
-
-  SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData', payload)
+  SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ValueData', payload)
   },
   // type select perlu data array
-  SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData', payload)
+  SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ArrData', payload)
   },
+
+  // SET_SURAT_MUATAN_MANIFEST_TYPE_ID({ commit }, payload) {
+  //   commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID', payload)
+  // },
+
+  // SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible({ commit }, payload) {
+  //   commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_visible', payload)
+  // },
+
+  // SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData({ commit }, payload) {
+  //   commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ValueData', payload)
+  // },
+  // // type select perlu data array
+  // SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData({ commit }, payload) {
+  //   commit('SET_SURAT_MUATAN_MANIFEST_TYPE_ID_ArrData', payload)
+  // },
 
   SET_SURAT_MUATAN_VEHICLE_ID({ commit }, payload) {
     commit('SET_SURAT_MUATAN_VEHICLE_ID', payload)

@@ -2153,9 +2153,9 @@ export default {
       valueData: null,
       value: ''
     },
-    vehicle_mode_id: {
+    vehicle_type_id: {
       label: "Tipe",
-      key: "vehicle_mode_id",
+      key: "vehicle_type_id",
       rule:"",
       typeInput: "select",
       typeData: "String",
@@ -2163,17 +2163,17 @@ export default {
       valueData: null,
       value: ''
     },
-    manifest_type_id: {
-      label: "Jenis Kiriman",
-      key: "manifest_type_id",
-      rule:"",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      visible: false,
-      valueData: null,
-      value: ''
-    },
+    // manifest_type_id: {
+    //   label: "Jenis Kiriman",
+    //   key: "manifest_type_id",
+    //   rule:"",
+    //   typeInput: "select",
+    //   typeData: "String",
+    //   arrData: [],
+    //   visible: false,
+    //   valueData: null,
+    //   value: ''
+    // },
     vehicle_id: {
       label: "Nama",
       key: "vehicle_id",
