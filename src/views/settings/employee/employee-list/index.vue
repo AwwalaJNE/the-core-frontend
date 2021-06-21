@@ -141,8 +141,10 @@ export default {
         },
         actionUpdate(val){
           if(this.dataTable.length > 0) {
-            // val["employee_node_id"] = val[""]
+            val["employee_node_id"] = val["node"] ? val["node"]["node_name"] : ''
             this.dataItem = val
+
+            this.$store.dispatch(`SET_EMPLOYEE_EMPLOYEE_NODE_ID_ValueData`, val["node"])
             console.log(this.dataItem,'item')
             this.$nextTick(() => {
               this.dialogEmployee = true

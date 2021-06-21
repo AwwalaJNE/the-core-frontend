@@ -468,6 +468,7 @@ export default {
                         obj['value'] = item.tariff_service_code.toLowerCase()
                         obj['data'] = item
                         obj['tarif'] = item.tariff_amount_1
+                        obj['tariff_calculation_type'] = item.tariff_calculation_type
 
                         // tiering tarrif
                         let tariffAkumulatif = {}
