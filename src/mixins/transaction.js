@@ -644,7 +644,7 @@ const TransactionMixin = {
                             let Processweight = Math.abs(Number(tariffStandar['weight']) - Number(weight))
                             let sisa = 0
                             let keys = Object.keys(tariffAkumulatif)
-                            let temp = 0
+                            let temp = Number(tariffStandar['value'])
                             for(let i=0; i <= keys.length -1 ; i++) {
                                 let calc = (Number(Processweight) - Number(keys[i])) < 0 ? 0 : (Number(Processweight) - Number(keys[i]))
                                 if(calc !== 0) {
@@ -657,9 +657,7 @@ const TransactionMixin = {
                                     break
                                 }   
                             }
-                            if(temp != 0) {
-                                processTariff = temp * weight
-                            }
+                            processTariff = temp * weight
                         } else {
                             processTariff = Number(tariffStandar['value']) * weight
                         }
