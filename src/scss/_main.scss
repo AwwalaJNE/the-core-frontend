@@ -212,8 +212,13 @@ ul{
         // height: 35px !important;
         line-height: 35px;
         &:focus{
-            border-color: transparent !important;
+            // border-color: rgba(var(--vs-gray-2), 1) !important;
         }
+        
+    }
+    &:focus-within {
+        border: 1px solid black;
+        border-radius: 10px;
     }
     .el-select__tags{
         transform: translateY(-68%) !important;
