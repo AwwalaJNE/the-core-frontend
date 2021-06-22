@@ -29,6 +29,7 @@
                                     :active="false"
                                     @click="openGetCustomer"
                                     :tabindex="-1"
+                                    class="withFocus"
                                     style="margin:10px auto 0;"
                                 >
                                     <i class='bx bx-user'></i>

@@ -147,6 +147,7 @@
                                         :active="false"
                                         @click="openSettingMultipleKoli"
                                         style="margin-top:1.5em"
+                                        class="withFocus"
                                         :disabled="disableBtnMultipleKoli"
                                     >
                                         <i class='bx bx-layer-plus' style="margin-right:5px"></i> Atur Berat
@@ -215,6 +216,7 @@
                                         :active="false"
                                         @click="printASRdanSJ"
                                         style="margin-top:0"
+                                        class="withFocus"
                                         :disabled="btnPrintASRdanSJ == false"
                                     >
                                         <i class='bx bx-printer' style="margin-right:5px"></i> Print
@@ -228,6 +230,7 @@
                                         style="margin-left:0"
                                         shadow
                                         :active="false"
+                                        class="withFocus"
                                         :disabled="!disableBtnMultipleKoli"
                                         @click="openSurchargeDialog"
                                     >

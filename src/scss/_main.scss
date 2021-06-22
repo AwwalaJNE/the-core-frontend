@@ -177,10 +177,12 @@ ul{
 }
 
 .vs-button{
-    &:focus-within{
-        border: 1px solid black;
-        // border-radius: 5px;
-        // padding: 0;
+    &.withFocus {
+        &:focus-within{
+            border: 1px solid black;
+            // border-radius: 5px;
+            // padding: 0;
+        }
     }
 }
 
