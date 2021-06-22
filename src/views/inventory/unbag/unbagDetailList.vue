@@ -139,35 +139,37 @@ export default {
                     JSON.stringify(form),
                     this.Helper.header())
                 .then(res => {
-                  if(res.data.data.is_unbagged == 1){
-                    this.dataTable = []
-                    this.dataTableBag = []
-                    this.handleClearData()
-                    this.openNotification('success', 'Unbagging is Success')
-                   
-                  }else{
-                    let arr = [];
-                    let arrBag = [];
-                    let dataBag = {};
-                  
-                    dataBag['no'] = 1
-                    dataBag['item_number'] = res.data.data.bag_number
-                    this.bag_number = res.data.data.bag_number
-                    this.getSummaryBag(res)
-                    arrBag.push(dataBag)
-                    if(res.data.data.koli_detail && res.data.data.koli_detail.length > 0) {
-                      arr = res.data.data.koli_detail
-                      arr.map((item, index)  => {
-                        item["no"] = index+1
-                        item["item_number"] = item.koli_number
-                      })
-                      this.dataTable = arr
-                    }else{
+                  if(res.data.data.bag_number != undefined) { // response dari BE jika data kosong bentuknya [] array kosong :( harusnya kan object
+                      if(res.data.data.is_unbagged == 1){
                         this.dataTable = []
-                    }
-                    this.dataTableBag = arrBag
+                        this.dataTableBag = []
+                        this.handleClearData()
+                        this.openNotification('success', 'Unbagging is Success')
+                      
+                      }else{
+                        let arr = [];
+                        let arrBag = [];
+                        let dataBag = {};
+                      
+                        dataBag['no'] = 1
+                        dataBag['item_number'] = res.data.data.bag_number
+                        this.bag_number = res.data.data.bag_number
+                        this.getSummaryBag(res)
+                        arrBag.push(dataBag)
+                        if(res.data.data.koli_detail && res.data.data.koli_detail.length > 0) {
+                          arr = res.data.data.koli_detail
+                          arr.map((item, index)  => {
+                            item["no"] = index+1
+                            item["item_number"] = item.koli_number
+                          })
+                          this.dataTable = arr
+                        }else{
+                            this.dataTable = []
+                        }
+                        this.dataTableBag = arrBag
+                      }
                   }
-                    
+                  
                     this.loading = false
                 }).catch(err => {
                   console.log(err.response)
@@ -178,10 +180,16 @@ export default {
         },
 
         getSummaryBag(val){
-          this.total_bag = 1
-          this.total_connote = val.data.data.bag_detail_qty
-          this.total_confirmed = val.data.data.koli_detail ? (this.total_connote - val.data.data.koli_detail.length) : 0 
-          
+          console.log("getSummaryBag", val)
+          if(val.data != undefined ){ // response dari BE jika data kosong bentuknya [] array kosong :( harusnya kan object
+            this.total_bag = 1
+            // this.total_connote = val.data.data.bag_detail_qty
+            // this.total_confirmed = val.data.data.koli_detail ? (this.total_connote - val.data.data.koli_detail.length) : 0 
+            this.total_connote = val.data.data.koli_detail.length
+            this.total_confirmed = val.data.data.unbagging_summary[0]["total_confirmed"]
+          } else {
+            this.openNotification('danger', 'Bag empty', 'Bag empty')
+          }
         },
         handleClearData(){
           this.bag_number=""
