@@ -538,7 +538,15 @@ export default {
             this.dataTable = []
         },
         updateValue(val){
-          this.getDataManifest(this.item_code)
+          
+          let hasData = this.dataTable.filter(item => item["bag_number"] == this.item_code)
+          console.log('data >>',this.dataTable, hasData, this.item_code)
+          if(hasData.length == 0) {
+            this.getDataManifest(this.item_code)
+          } else {
+            this.openNotification('warning','Bag sudah ada', 'Bag sudah ada di dalam list')
+          }
+          
         },
 
         async getDataManifest(val){
@@ -551,11 +559,12 @@ export default {
                 let arr = res.data.data
                 arr.map(item => {
                   item["type"] = 'Bag'
-                  item["type"] = 'Bag'
                   item['destination_name'] = item['destination'] ? item['destination']['node_tariff_code'] : ''
                 })
                 this.dataTable = this.dataTable.concat(arr)
                 // console.log(this.dataTable,'data')
+              } else {
+                this.openNotification('danger', 'Bag tidak ditemukan', 'Bag yang dicari tidak ditemukan')
               }
               this.item_code = ''
             }).catch(err => {
