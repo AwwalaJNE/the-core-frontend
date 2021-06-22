@@ -6,10 +6,10 @@
                     <vs-col xs="12" sm="12" lg="2">
                         <vs-row>
                             <vs-col xs="3" sm="3" lg="3">
-                                <!-- <vs-button @click="clickProps" size="l" :active="true" border icon>
+                                <vs-button @click="clickProps" size="l" :active="true" border icon>
                                     <i class='bx bx-menu'></i>
-                                </vs-button> -->
-                                <div class="burger_custom" @click="clickProps"><i class='bx bx-menu'></i></div>
+                                </vs-button>
+                                <!-- <div class="burger_custom" @click="clickProps"><i class='bx bx-menu'></i></div> -->
                             </vs-col>
                             <vs-col xs="3" sm="3" lg="3">
                                 <Logo />
