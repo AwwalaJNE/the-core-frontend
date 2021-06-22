@@ -520,11 +520,11 @@ const routes = [
       },
       {
         path: "/inbound/prealert",
-        name: "InboundIncoming",
+        name: "Receiving",
         component: InboundIncoming,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Inbound Incoming"
+          breadCrumb: "Receiving"
         }
       },
       {

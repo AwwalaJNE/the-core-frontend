@@ -6,9 +6,10 @@
                     <vs-col xs="12" sm="12" lg="2">
                         <vs-row>
                             <vs-col xs="3" sm="3" lg="3">
-                                <vs-button @click="clickProps" size="l" flat icon>
+                                <!-- <vs-button @click="clickProps" size="l" :active="true" border icon>
                                     <i class='bx bx-menu'></i>
-                                </vs-button>
+                                </vs-button> -->
+                                <div class="burger_custom" @click="clickProps"><i class='bx bx-menu'></i></div>
                             </vs-col>
                             <vs-col xs="3" sm="3" lg="3">
                                 <Logo />
@@ -163,6 +164,19 @@ export default {
         min-height: 1.5em;
         padding: .5em 0;
         background-color: $bgWhite;
+        .burger_custom{
+            margin: auto;
+            margin-top: .3em;
+            padding: .2em 0;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(var(--vs-primary), 1);
+            background: rgba(var(--vs-primary), 1);
+            color: #fff;
+            font-size: 24px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
         .vs-col{
             padding-left: 0;
             padding-right: 0;
@@ -256,5 +270,7 @@ export default {
     padding-bottom: 5px;
     padding-left: 8px;
   }
+
+  
 }
 </style>

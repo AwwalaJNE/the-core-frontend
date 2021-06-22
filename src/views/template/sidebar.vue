@@ -196,16 +196,10 @@ export default {
                     ]
                 },
                 {
-                    label: 'Inbound',
-                    url: null,
+                    label: 'Receiving',
+                    url: '/inbound/prealert',
                     icon: '',
-                    children: [
-                        {
-                            label: 'Inbound Incoming',
-                            url: '/inbound/prealert',
-                            icon: ''
-                        },
-                    ]
+                    children: []
                 },
                 {
                     label: 'Delivery',
