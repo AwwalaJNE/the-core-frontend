@@ -190,14 +190,20 @@
                                             <template v-for="(actionItem, keyActionItem) in listCustomActionList">
                                                 <vs-col w="3" :key ="keyActionItem">
                                                     <!-- <template v-if="actionItem.hasOwnProperty('option')">
-                                                        
+                                                        item.isDisabled == true
+                                                        item.hasOwnProperty('isDisabled') ? item.isDisabled == true : false
+                                                        item["button_status"][actionItem.key.toLowerCase()]
                                                     </template> -->
 
                                                     <vs-button
                                                         block
                                                         flat
                                                         size="small"
-                                                        :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
+                                                        :disabled="item.hasOwnProperty('isDisabled') ? item.isDisabled == true : item.hasOwnProperty('button_status') ? 
+                                                        (item['button_status'].hasOwnProperty([actionItem.key.toLowerCase()]) ? 
+                                                        (item['button_status'][actionItem.key.toLowerCase()] == false ? true :false) 
+                                                        : false) 
+                                                        : false"
                                                         :danger="actionItem.attribute.toLowerCase().includes('danger') ? true : false"
                                                         :warn="actionItem.attribute.toLowerCase().includes('warn') ? true : false"
                                                         :active="true"

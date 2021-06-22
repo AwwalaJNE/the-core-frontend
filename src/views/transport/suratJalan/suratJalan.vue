@@ -200,14 +200,40 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
-                    console.log('manifest_delivery_order', arr, res)
+                    let buttonStatus = {
+                          //'print': true, // tombol print default true
+                          'depart': true,
+                          'cancel': true
+                        }
+                    
                     arr.map(item => {
                       item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
                       item["node_id_origin_name"] = (item.origin) ? item.origin.node_name: null
                       item["node_id_destination_name"] = (item.destination) ? item.destination.node_name: null
                       item["driver_id"] = (item.pic_employee_id) ? item.pic_employee_id: null
                       item["driver_name"] = (item.pic) ? item.pic.employee_name: null
+
+                      if(item.hasOwnProperty('status')) {
+                        // let btns = Object.keys(buttonStatus).toString() // biar jadi "depart,cancel"
+                        let str = item["status"].toLowerCase()
+                        // if(btns.includes(status)){ // jika status sudah == action button maka button disabled (dalam artian SJ ini sudah dilakuan action tsb dan button disabled)
+                        //   buttonStatus['status'] = false
+                        // }
+                        console.log("button status",str, str.includes("depart"))
+                        if(str.includes("depart") == true) {
+                          console.log("button status",str, str.includes("depart"))
+                          buttonStatus["depart"] = false
+                          item["button_status"] = buttonStatus
+                        }
+                        if(str.includes("cancel") == true) {
+                          // console.log("button status",str, str.includes("cancel"))
+                          buttonStatus["cancel"] = false
+                          item["button_status"] = buttonStatus
+                        }
+                        
+                      }
                     })
+                    console.log('manifest_delivery_order', arr, res)
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
