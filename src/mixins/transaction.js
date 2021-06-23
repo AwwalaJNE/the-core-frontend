@@ -609,7 +609,7 @@ const TransactionMixin = {
             let tariffAkumulatif = service['tariffAkumulatif'] || {}
             let tariffType = service['tariff_calculation_type'] || ''
 
-            console.log('tariff tiering nihh >>>', wg, service)
+            // console.log('tariff tiering nihh >>>', wg, service)
 
             if(Object.keys(service).length > 0) {
                 // console.log('tariff tiering nihh kondisi oke>>>', Object.keys(service).length)
@@ -663,7 +663,7 @@ const TransactionMixin = {
                         }
                         break;
                     case tariffType.toLowerCase() == 'flat':
-                        processTariff = Number(tariffStandar['value']) * weight
+                        processTariff = Number(tariffStandar['value'])
                         break;
                     case tariffType.toLowerCase() == 'fix':
                         processTariff = Number(tariffStandar['value'])
