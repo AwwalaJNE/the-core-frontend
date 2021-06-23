@@ -29,7 +29,18 @@
                                     @updateValue="updateValue" />
                                 </template>
                             </vs-col>
-                            <vs-col xs="1" sm="1" lg="1" style="margin-left:10px">                            
+                            <vs-col xs="1" sm="1" lg="1">
+                                <vs-avatar class="cus_search" @click="openDialog">
+                                    <i class='bx bx-search'></i>
+                                </vs-avatar>
+                                <!--Dialog Search General-->
+                                <search-general
+                                    :active="dialogSearchGeneral"
+                                    :closeDialog="closeDialogSearchGeneral"
+                                    title=""
+                                />
+                            </vs-col>
+                            <vs-col xs="1" sm="1" lg="1">                            
                                 <vs-tooltip bottom shadow interactivity not-hover v-model="activeTooltip1">
                                     <vs-avatar class="cus_avatar" @click="activeTooltip1=!activeTooltip1">
                                         <i class='bx bx-user'></i>
@@ -71,11 +82,15 @@
 <script>
 import Logo from "@/components/logo/logo.vue"
 import Selector from "@/components/input/select"
+import SearchInput from "@/components/search/searchInput"
+import SearchGeneral from "@/components/search/searchGeneral"
 export default {
     name:"main-header",
     components: {
         "Logo": Logo,
         "selector": Selector,
+        "search-input": SearchInput,
+        "search-general": SearchGeneral,
     },
     props: {
         clickProps: Function
@@ -84,6 +99,8 @@ export default {
         return {
             activeSidebar: false,
             activeTooltip1: false,
+            dialogSearchGeneral:false,
+            tempSearch: "",
             datanode: [],
             selectedNode: '',
             userAuthFullName:'',
@@ -102,6 +119,18 @@ export default {
         // },
     },
     methods: {
+        searchValue (val) {
+            this.tempSearch = val
+        },
+        clearSearch() {
+            this.$refs.searchInput.clear()
+        },
+        closeDialogSearchGeneral() {
+          this.dialogSearchGeneral = false
+        },
+        openDialog(){
+            this.dialogSearchGeneral = true
+        },
         updateValue(){
 
         },
@@ -186,6 +215,10 @@ export default {
         .cus_avatar{
             top: 4px;
         }
+        .cus_search{
+            top: 4px;
+            margin: 0 auto;
+        }        
 
         @include for-phone-only{
             min-height: 1em;
