@@ -77,6 +77,7 @@
                                 block
                                 flat
                                 :active="true"
+                                :disabled="disabledAddmore"
                                 type="submit"
                                 @click="addMoreConnote()"
                                 >
@@ -165,6 +166,7 @@ export default {
             legacySystemHTML: '',
             bookingCode: '',
             hasCodeBooking: false,
+            disabledAddmore: false,
 
             prosesConnote: {},
             tempConnote: {},
@@ -239,9 +241,6 @@ export default {
                 this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, false)
                 this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD`, 0)
             }
-            this.$nextTick(() => {
-                this.$refs.originComponent.setFocus() 
-            });
             this.hasCodeBooking = false
             this.bookingCode = ""
         },
@@ -284,10 +283,6 @@ export default {
                     destinationObj['booking_connote_service_code'] = data.booking_connote_service_code
                     this.$refs.destinationComponent.updateValue('detination', destinationObj, true)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, data.booking_connote_receiver_street_address)
-
-                    this.$nextTick(() => {
-                       this.$refs.originComponent.setFocus() 
-                    });
                 } else {
                     this.openNotification('danger', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
                 }
@@ -302,9 +297,18 @@ export default {
             this.$refs.formTransaction.formSubmit()
         },
         createTransaction() {
-            this.typeAction = 'finish'
+          let dataTransaction = this.$store.getters.getTransaction.transaction
+          // if(this.dataTransaction.hasOwnProperty("transaction_id") && this.dataTransaction.hasOwnProperty("transaction_finished")) {
+          console.log("click finish",dataTransaction)
+            if(dataTransaction["transaction_id"] !== "" && dataTransaction["transaction_finished"] == true) {
+              this.openPaymentDialog()
+            } else {
+              this.typeAction = 'finish'
+              
+              this.$refs.formTransaction.formSubmit()
+            }
+          // }
             
-            this.$refs.formTransaction.formSubmit()
         },
         collectData() {
             this.tempConnote = {}
@@ -444,6 +448,8 @@ export default {
                     self.$store.dispatch(`SET_PACKAGE_PACKAGE_DESCRIPTION_ValueData`, "")
                 }, 1000);
                 
+            } else if(this.typeAction == 'finish') {
+              this.disabledAddmore = true
             }
 
             
