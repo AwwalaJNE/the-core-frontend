@@ -657,9 +657,9 @@ const TransactionMixin = {
                                     break
                                 }   
                             }
-                            processTariff = temp * weight
+                            processTariff = temp 
                         } else {
-                            processTariff = Number(tariffStandar['value']) * weight
+                            processTariff = Number(tariffStandar['value']) 
                         }
                         break;
                     case tariffType.toLowerCase() == 'flat':
