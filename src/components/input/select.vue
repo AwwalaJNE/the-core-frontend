@@ -30,6 +30,7 @@
                     <span class="c-label">{{name}}</span>
                     <el-select 
                     v-model="value" 
+                    filterable 
                     class="m-select"
                     :placeholder="placeholder"
                     @change="updateValue"

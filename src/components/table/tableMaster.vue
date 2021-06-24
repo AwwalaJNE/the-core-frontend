@@ -131,6 +131,22 @@
 
                                             @updateValue="updateValue" />
                                         </template>
+                                        <template v-else-if="column.typeInput !== undefined && column.typeInput.toLowerCase().includes('autocomplete')">
+                                            <template v-if="querySearch !== undefined">
+                                                <auto-complete
+                                                :name="column.label"
+                                                :rules="column.rule"
+                                                :formKey="column.key"
+                                                :valueData="column.value"
+                                                :url="column.url"
+                                                :flag="column.flag"
+                                                :querySearch="querySearch"
+                                                :selectedValue="column.value"
+                                                :typeInput="column.typeInput"
+                                                @updateValue="updateValue" 
+                                                @inputFocus="onfocuslah"/>
+                                            </template>
+                                        </template>
                                     </vs-td>
                                 </template>
                                 <template v-else-if="column.type !== undefined && column.type.toLowerCase() === 'status'">
@@ -480,6 +496,7 @@ import Pagination from "@/components/pagination/pagination.vue"
 import Checkbox from "@/components/input/checkbox.vue"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
+import AutoComplete from "@/components/input/autoComplete"
 export default {
     name:"tabelMaster",
     components: {
@@ -487,6 +504,7 @@ export default {
         "checkbox" : Checkbox,
         "input-general": InputGeneral,
         "selector": Selector,
+        "auto-complete": AutoComplete,
     },
     props: {
         dataTable: Array,
@@ -517,6 +535,8 @@ export default {
 
         customAction: Boolean,
         customActionList: Array, 
+        
+        querySearch: Function, // klo ada auto complete [required]
     },
     data() {
         return {
@@ -648,6 +668,13 @@ export default {
         },
         actionCancel(val) {
           this.$emit("actionCancel", val)
+        },
+        
+        onfocuslah(info) {
+            if(info.typeInput !== '' && info.typeInput.includes('location_selector')) {
+              this.$emit("onFocus_location_selector", info)
+            }
+            this.$emit("inputFocus", info)
         },
 
         updateValue(key, val, info = {}, dataObj){
