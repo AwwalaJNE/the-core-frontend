@@ -74,6 +74,14 @@ export default {
           width: "xxs",
         },
         {
+          label: "Received by",
+          key: "received_by",
+          type: "inputan",
+          typeInput: "text",
+          data: "",
+          width: "md",
+        },
+        {
           label: "Status",
           key: "status_delivery_description",
           width: "xxs",

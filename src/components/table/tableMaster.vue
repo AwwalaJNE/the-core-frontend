@@ -104,7 +104,7 @@
                                         <template v-if="column.typeInput !== undefined && column.typeInput.toLowerCase() === 'select'">
                                             <template v-if="column.data !== undefined && Array.isArray(column.data)">
                                                 <template v-if="column.data.length > 0">
-                                                    <div style="margin-top:10px;">
+                                                    <div>
                                                         <!-- {{`${column.key}|${item[listenColumn[0].key]}`}} -->
                                                         <!-- "`${column.key}|${item[listenColumn[0].key]}`" kesepakatan bersama column key 0 adalah id -->
                                                         <selector
@@ -122,14 +122,15 @@
                                             </template>
                                         </template>
                                         <template v-else-if="column.typeInput !== undefined && column.typeInput.toLowerCase() === 'text'">
+                                          <div style="margin-top:20px">
                                             <input-general 
                                             :name="column.label"
                                             :rules="''"
                                             :formKey="`${column.key}|${item[listenColumn[0].key]}`"
                                             :valueData="''"
                                             :typeInput="'text'"
-
                                             @updateValue="updateValue" />
+                                          </div>
                                         </template>
                                         <template v-else-if="column.typeInput !== undefined && column.typeInput.toLowerCase().includes('autocomplete')">
                                             <template v-if="querySearch !== undefined">
