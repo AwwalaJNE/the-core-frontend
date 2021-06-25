@@ -1,10 +1,10 @@
 <template>
   <div>
-    <template v-if="loadStatus == false">
+    <template v-if="listenLoading == false">
       <table-master
-        :dataTable="dataDelivery.delivery"
+        :dataTable="listenDataDelivery"
         :dataColumn="datacolumn"
-        :tableLoading="loading"
+        :tableLoading="listenLoading"
         :pageSize="pagination.page_size"
         :page="pagination.page"
         :limit="pagination.limit"
@@ -23,6 +23,7 @@ export default {
   name: "Inbound-Incoming",
   mixins: [master],
   props: {
+    loading: Boolean,
     query: String,
     employeeId: String,
     deliveryNumber: String,
@@ -75,7 +76,7 @@ export default {
         },
         {
           label: "Received by",
-          key: "received_by",
+          key: "receiver_name",
           type: "inputan",
           typeInput: "text",
           data: "",
@@ -87,7 +88,6 @@ export default {
           width: "xxs",
         },
       ],
-      loading: false,
       dataItem: {},
       tempSearch: "",
       tempDate: [],
@@ -103,6 +103,15 @@ export default {
       },
       loadStatus: false,
     };
+  },
+  computed:{
+    listenLoading() {
+      return this.loading
+    },
+    listenDataDelivery() {
+      console.log("data delivery item", this.dataDelivery)
+      return this.dataDelivery["delivery"] ? this.dataDelivery["delivery"] : []
+    }
   },
   watch: {
     query: function (val, old) {
@@ -133,20 +142,35 @@ export default {
   },
   methods: {
     updateValue(key, val, info) {
+      // console.log("Update runsheet", key, val, info)
       key = key.split("|");
       let column_change = key[0];
       let koli_number = key[1];
-      if (column_change && column_change == "status_delivery") {
-        //   this.dataTable.map((item, index)=>{
-        //     if(key[1] === item.koli_number){
-        //       this.delivery_runsheet_number = this.dataTable[index].delivery_runsheet_number
-        //     }
-        //   })
-        this.$emit("updatePOD", {
-          koli_number: koli_number,
-          status: val,
-        });
+      let obj = {}
+      obj["koli_number"] = koli_number
+      
+      // if (column_change && column_change == "status_delivery") {
+      //     this.dataTable.map((item, index)=>{
+      //       if(key[1] === item.koli_number){
+      //         this.delivery_runsheet_number = this.dataTable[index].delivery_runsheet_number
+      //       }
+      //     })
+      //     obj["status"] = val
+      // }
+      switch (true) {
+        case column_change && column_change == "status_delivery":
+            obj["status"] = val
+          break;
+        case column_change && column_change == "remarks":
+            obj["remarks"] = val
+          break;
+        case column_change && column_change == "receiver_name":
+            obj["receiver_name"] = val
+          break;
+        default:
+      
       }
+      this.$emit("updatePOD", obj, info);
     },
     closeDialogConfirm() {
       this.confirmDialog = false;

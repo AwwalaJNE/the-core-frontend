@@ -82,6 +82,7 @@
                           :ref="'runsheetInformation'"
                           @updatePOD="updatePOD"
                           :query="tempSearch"
+                          :loading="loadingRunsheet"
                           :deliveryNumber="delivery_runsheet_number"
                         />
                       </template>
@@ -139,7 +140,13 @@ export default {
       summary: [],
       arrStatus: null,
       dataDeliverySummary: null,
+      loadingRunsheet: false
     };
+  },
+  watch: {
+    '$route' (to, froms) {
+      console.log("route changes",to,froms)
+    }
   },
   methods: {
     refresh() {
@@ -174,9 +181,13 @@ export default {
       this.employee_id = this.$route.params.employee_id.toString();
       if (this.$route.name == "delivery-runsheet-edit") {
         this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number.toString();
+        
+        this.getDataDelivery();
+        this.getStatus();
       }
     },
     async scanConnote() {
+      this.loadingRunsheet = true
       await axios
         .post(
           this.URL.employee +
@@ -190,9 +201,10 @@ export default {
           this.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number.toString();
           
           this.openNotification(null, "Success", "");
+          this.loadingRunsheet = false
         })
         .catch((err) => {
-          
+          this.loadingRunsheet = false
           this.openNotification("danger", "", err.response.data.message);
         });
     },
@@ -216,6 +228,7 @@ export default {
         });
     },
     async getDataDelivery() {
+      this.loadingRunsheet = true
       await axios
         .get(
           this.URL.employee +
@@ -226,16 +239,18 @@ export default {
           this.dataDelivery = res.data.data;
           this.dataDeliverySummary = res.data.summary;
           this.delivery_runsheet_number = res.data.summary.delivery_runsheet_number.toString();
-          
+          this.loadingRunsheet = false
         })
         .catch((err) => {
+          this.loadingRunsheet = false
           // this.openNotification('danger', 'Failed to populate status', err)
         });
     },
-    async updatePOD(dataPOD) {
+    async updatePOD(dataPOD, info) {
+      console.log("updatePOD", dataPOD, info)
       if (this.delivery_runsheet_number) {
         dataPOD.delivery_runsheet_number = this.delivery_runsheet_number;
-
+      
         await axios
           .put(
             this.URL.delivery +
@@ -273,8 +288,6 @@ export default {
   },
   mounted() {
     this.getParamRoute();
-    this.getDataDelivery();
-    this.getStatus();
   },
 };
 </script>
