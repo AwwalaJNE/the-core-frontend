@@ -29,6 +29,9 @@ const Master = {
         },
         listenNodeCode() {
             return this.$store.getters.getUser['node_id'].node_code
+        },
+        listenUserRole() {
+            return this.$store.getters.getUser['user_data'].role
         }
     },
     methods: {

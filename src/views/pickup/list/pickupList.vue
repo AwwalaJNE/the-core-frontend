@@ -255,7 +255,10 @@ export default {
         },
 
         actionUpdate(val){
-          if(this.dataTable.length > 0) {
+          let userRole = this.listenUserRole["user_role_code"] ? this.listenUserRole["user_role_code"].toLowerCase() : ""
+          
+          console.log("update with role", userRole)
+          if(this.dataTable.length > 0 && !userRole.includes("courier")) {
             val["pickup_node_id_destination"] = val["node_destination"] ? val["node_destination"]["node_name"] : ""     
             this.dataItem = val
             this.dataItem.pickup_date = (val.pickup_date) ? val.pickup_date.substring(0,10) : val.pickup_date
@@ -272,9 +275,11 @@ export default {
           this.dialogPickedActive = true;
         },
         actionCancel(val){
-          this.pickupNumber = val.pickup_number
-          this.dialogPickupListCancel = true;
-
+          let userRole = this.listenUserRole["user_role_code"] ? this.listenUserRole["user_role_code"].toLowerCase() : ""
+          if(!userRole.includes("courier")) {
+            this.pickupNumber = val.pickup_number
+            this.dialogPickupListCancel = true;
+          }
         },
 
         //cancel pickup
