@@ -11,7 +11,7 @@
           v-model="scan_bag"
           v-on:keyup.enter="scanBag"
           :autofocus="true"
-          placeholder="Input / scan bag number"
+          placeholder="Input / scan item number"
         />
       </vs-col>
       <div class="dialog-content-row center">
@@ -122,14 +122,14 @@ export default {
         pickup_number: this.pickup_number,
         item_number: this.item_picked,
       };
-      console.log(this.item_picked);
+      // console.log(this.item_picked);
       if (this.item_picked.length > 0) {
         this.updateData() // trigger function submit form dari luar component formMaster
       } else {
         this.openNotification(
           "danger",
-          "Scan Bag!",
-          "List bag cannot be empty"
+          "Scan Item!",
+          "List item cannot be empty"
         );
       }
       this.btnLoading = false;      
