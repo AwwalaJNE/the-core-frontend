@@ -56,6 +56,27 @@
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                     />
                 </template>
+                <template v-else-if="isOnlyNumber == true">
+                  <!-- .replace(/^0+/, '') -->
+                    <vs-input
+                        :class="`mt-input`"
+                        :type="listenTypeInput ? listenTypeInput.includes('password') == true ? 'password' : listenTypeInput : 'text'"
+                        :label="name"
+                        placeholder="0"
+                        v-model="value"
+                        :autofocus="isFocusToInput"
+                        :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                        :disabled="isDisabled"
+                        @input="updateValue"
+                        @focus="focus(true)"
+                        @blur="focus(false)"
+                        ref="generalInput"
+                        @keydown="onlyNumberValidate"
+                        @keyup="handlerZero(value)"
+                        :min="listenMinValue"
+                        :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                    />
+                </template>
                 <template v-else>
                     <vs-input
                         :class="`mt-input`"
@@ -93,7 +114,8 @@ export default {
         placeholderGabung: Boolean,
         focusToInput: Boolean,
         tabindex: [Number, String],
-        currencyMasking: Boolean
+        currencyMasking: Boolean,
+        onlyNumber: Boolean
     },
     components: {
         "inputan": Inputan
@@ -112,6 +134,9 @@ export default {
         },
         listenTypeInput() {
             return this.typeInput
+        },
+        isOnlyNumber() {
+          return this.onlyNumber
         },
         isDisabled() {
             return this.typeInput.includes('disabled')
@@ -141,6 +166,58 @@ export default {
         }
     },
     methods: {
+        handlerZero(val) {
+          // console.log("handlerZero", val)
+          if(val) {
+            if(val.match(/^0+\d/)){
+                this.value = parseFloat(val)
+            }
+          }
+          
+          
+          // let value = val
+          // if(value != "0.") {
+          //   value = value.replace(/^0+/, '')
+          //   this.value = value
+          // }
+        },
+        onlyNumberValidate(evt){
+          let theEvent = evt || window.event;
+          console.log("evt", evt, this.value)
+          
+          // backspace	8
+          // tab	9
+          // enter	13
+          // shift	16
+          // delete	46
+          // titik	190
+          // left 37
+          // right 39
+          if(evt.keyCode != "9" && evt.keyCode != "8" && evt.keyCode != "190" && evt.keyCode != "16" && evt.keyCode != "37" && evt.keyCode != "39") {
+            let key = null
+            // Handle paste
+            // if (theEvent.type === 'paste') {
+            //     key = event.clipboardData.getData('text/plain');
+            // } else {
+            // // Handle key press
+            //     key = theEvent.keyCode || theEvent.which;
+            //     key = String.fromCharCode(key);
+            // }
+            
+            // Handle key press
+            key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            let regex = /[0-9]|\./;
+            if( !regex.test(key) ) {
+              theEvent.returnValue = false;
+              if(theEvent.preventDefault) theEvent.preventDefault();
+            }
+            
+            
+            
+          }
+          
+        },
         focus(status){
             let info = {}
             info['name'] = this.name

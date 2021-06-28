@@ -440,6 +440,9 @@ const TransactionMixin = {
                     if(Object.keys(service).length > 0) {
                         let service_volume_divider = Number(service['service_volume_divider'])
                         vw = (koli['length'] * koli['width'] * koli['height']) / service_volume_divider 
+                        if(vw !== 0 && vw < 0.01) {
+                          vw = 0.01
+                        }
                     }
                          
                     let koli_volume_weight = Number(vw.toFixed(2))
