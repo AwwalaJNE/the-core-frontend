@@ -127,8 +127,10 @@
                                             :name="column.label"
                                             :rules="''"
                                             :formKey="`${column.key}|${item[listenColumn[0].key]}`"
-                                            :valueData="''"
+                                            :valueData="`${item[column.key] ? item[column.key] : ''}`"
                                             :typeInput="'text'"
+                                            :dataObj="item"
+                                            :isdebounce="true"
                                             @updateValue="updateValue" />
                                           </div>
                                         </template>
@@ -684,7 +686,7 @@ export default {
                     this.selected.push(dataObj)
                 }
             }
-            this.$emit("updateValue", key, val, info)
+            this.$emit("updateValue", key, val, info, dataObj)
         },
 
         updateSelected() {

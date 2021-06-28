@@ -77,6 +77,24 @@
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                     />
                 </template>
+                <template v-else-if="withDebounce == true">
+                    <vs-input
+                        :class="`mt-input`"
+                        :type="listenTypeInput ? listenTypeInput.includes('password') == true ? 'password' : listenTypeInput : 'text'"
+                        :label="name"
+                        :label-placeholder="name"
+                        v-model="value"
+                        :autofocus="isFocusToInput"
+                        :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                        :disabled="isDisabled"
+                        @input="updateValueDebounced"
+                        @focus="focus(true)"
+                        @blur="focus(false)"
+                        ref="generalInput"
+                        :min="listenMinValue"
+                        :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                    />
+                </template>
                 <template v-else>
                     <vs-input
                         :class="`mt-input`"
@@ -115,7 +133,9 @@ export default {
         focusToInput: Boolean,
         tabindex: [Number, String],
         currencyMasking: Boolean,
-        onlyNumber: Boolean
+        onlyNumber: Boolean,
+        dataObj: [Object, Array],
+        isdebounce: Boolean
     },
     components: {
         "inputan": Inputan
@@ -123,6 +143,7 @@ export default {
     data() {
         return {
             value: this.valueData,
+            debouncedInput: this.valueData
         }
     },
     computed: {
@@ -155,6 +176,12 @@ export default {
         },
         listenCurrencyMasking() {
             return this.currencyMasking
+        },
+        listenDataObj() {
+            return this.dataObj || {}
+        },
+        withDebounce() {
+            return this.isdebounce
         }
     },
     watch: {
@@ -163,9 +190,21 @@ export default {
                 this.value = val
                 this.updateValue()
             }
-        }
+        },
     },
     methods: {
+        debounce (delay = 5000, cb) {
+          var timeoutID = null
+          return function () {
+            clearTimeout(timeoutID)
+            // var args = arguments
+            // var that = this
+            timeoutID = setTimeout(function () {
+              // fn.apply(that, args)
+              cb(delay);
+            }, delay)
+          }
+        },
         handlerZero(val) {
           // console.log("handlerZero", val)
           if(val) {
@@ -173,13 +212,6 @@ export default {
                 this.value = parseFloat(val)
             }
           }
-          
-          
-          // let value = val
-          // if(value != "0.") {
-          //   value = value.replace(/^0+/, '')
-          //   this.value = value
-          // }
         },
         onlyNumberValidate(evt){
           let theEvent = evt || window.event;
@@ -234,8 +266,21 @@ export default {
             info['typeInput'] = this.listenTypeInput
             info['status'] = status
 
-            this.$emit("updateValue", this.listenFormKey, this.value, info)
+            this.$emit("updateValue", this.listenFormKey, this.value, info, this.listenDataObj)
         },
+        updateValueDebounced(val){
+          let timeoutID = null
+          let self = this
+          
+          clearTimeout(timeoutID)
+          // var args = arguments
+          // var that = this
+          timeoutID = setTimeout(function () {
+            // fn.apply(that, args)
+            self.updateValue()
+          }, 1500)
+        },
+        
     },
 }
 </script>
