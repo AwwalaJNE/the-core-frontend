@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="listenLoading == false">
+    <template>
       <table-master
         :dataTable="listenDataDelivery"
         :dataColumn="datacolumn"
@@ -149,34 +149,36 @@ export default {
       // let koli_number = key[1];
       
       if(item !== null) {
-        let obj = {}
-        obj["koli_number"] = item["koli_number"]
-        // obj["status"] = item["status_code"] || ''
         
-        // if (column_change && column_change == "status_delivery") {
-        //     this.dataTable.map((item, index)=>{
-        //       if(key[1] === item.koli_number){
-        //         this.delivery_runsheet_number = this.dataTable[index].delivery_runsheet_number
-        //       }
-        //     })
-        //     obj["status"] = val
-        // }
-        switch (true) {
-          case column_change && column_change == "status_delivery":
-              obj["status"] = val
-            break;
-          case column_change && column_change == "remarks":
-              obj["remarks"] = val
-            break;
-          case column_change && column_change == "receiver_name":
-              obj["receiver_name"] = val
-            break;
-          default:
-        
-        }
-        
-        this.$emit("updatePOD", obj, info);
       }
+      
+      let obj = {}
+      obj["koli_number"] = item["koli_number"]
+      obj["status"] = item["status_code"] || ''
+      
+      // if (column_change && column_change == "status_delivery") {
+      //     this.dataTable.map((item, index)=>{
+      //       if(key[1] === item.koli_number){
+      //         this.delivery_runsheet_number = this.dataTable[index].delivery_runsheet_number
+      //       }
+      //     })
+      //     obj["status"] = val
+      // }
+      switch (true) {
+        case column_change && column_change == "status_delivery":
+            obj["status"] = val
+          break;
+        case column_change && column_change == "remarks":
+            obj["remarks"] = val
+          break;
+        case column_change && column_change == "receiver_name":
+            obj["receiver_name"] = val
+          break;
+        default:
+      
+      }
+      
+      this.$emit("updatePOD", obj, info);
       
       
     },
