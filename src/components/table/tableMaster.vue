@@ -10,8 +10,38 @@
     }
     - @props {
         - width: String | 'md','sm','xs','xxs','auto'
-        - dataTable: Array,
-        - dataColumn: Array,
+        - dataTable: Array Object,
+        - dataColumn: Array Object,
+          [
+            {
+              label: "contoh column normal",
+              key: "column_normal",
+              width: "xs",
+            },
+            {
+              label: "contoh column dg inputan text",
+              key: "contoh_text_input",
+              type: "inputan",
+              typeInput: "text",
+              data: "",
+              width: "md",
+            },
+            {
+              label: "contoh column dg inputan selector",
+              key: "contoh_selector_input",
+              type: "inputan",
+              typeInput: "select",
+              injectedData: false,   // boolean jika false akan ambil list data selector dari key data dari sini (kalo data fixed). 
+              // kalo true akan ambil dari array item dataTable (case ada filter berdasarkan sesuatu nnti di-feed kedalam array item tsb dg nama key column ini) 
+              data: [{
+                label: null,
+                value: null,
+              }],
+              selectedValue: "status_code",
+              width: "md",
+            },
+            ...
+          ]
         - tableLoading: Boolean,
         - pageSize: [Number, String],
         - page: [Number, String],
@@ -102,6 +132,8 @@
                                 <template v-else-if="column.type !== undefined && column.type.toLowerCase().includes('inputan')">
                                     <vs-td :key="key" :class="column.width ? column.width : ''">
                                         <template v-if="column.typeInput !== undefined && column.typeInput.toLowerCase() === 'select'">
+                                          
+                                            <!-- jika data fixed langsung aja ngambil dari obj key data dari column  -->
                                             <template v-if="column.data !== undefined && Array.isArray(column.data)">
                                                 <template v-if="column.data.length > 0">
                                                     <div>
@@ -130,7 +162,7 @@
                                             :valueData="`${item[column.key] ? item[column.key] : ''}`"
                                             :typeInput="'text'"
                                             :dataObj="item"
-                                            :isdebounce="true"
+                                            :enter_to_update="true"
                                             @updateValue="updateValue" />
                                           </div>
                                         </template>

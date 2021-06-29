@@ -52,10 +52,11 @@ export default {
           key: "status_delivery",
           type: "inputan",
           typeInput: "select",
-          data: {
+          
+          data: [{
             label: null,
             value: null,
-          },
+          }],
           selectedValue: "status_code",
           width: "md",
         },
@@ -150,7 +151,7 @@ export default {
       if(item !== null) {
         let obj = {}
         obj["koli_number"] = item["koli_number"]
-        obj["status"] = item["status_code"] || ''
+        // obj["status"] = item["status_code"] || ''
         
         // if (column_change && column_change == "status_delivery") {
         //     this.dataTable.map((item, index)=>{

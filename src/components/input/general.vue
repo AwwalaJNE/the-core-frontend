@@ -95,6 +95,25 @@
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                     />
                 </template>
+                <template v-else-if="isenter_to_update == true">
+                  <form @submit.prevent="enterUpdate">
+                    <vs-input
+                        :class="`mt-input`"
+                        :type="listenTypeInput ? listenTypeInput.includes('password') == true ? 'password' : listenTypeInput : 'text'"
+                        :label="name"
+                        :label-placeholder="name"
+                        v-model="value"
+                        :autofocus="isFocusToInput"
+                        :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                        :disabled="isDisabled"
+                        @focus="focus(true)"
+                        @blur="focus(false)"
+                        ref="generalInput"
+                        :min="listenMinValue"
+                        :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                    />
+                  </form>
+                </template>
                 <template v-else>
                     <vs-input
                         :class="`mt-input`"
@@ -135,7 +154,8 @@ export default {
         currencyMasking: Boolean,
         onlyNumber: Boolean,
         dataObj: [Object, Array],
-        isdebounce: Boolean
+        isdebounce: Boolean,
+        enter_to_update: Boolean
     },
     components: {
         "inputan": Inputan
@@ -182,6 +202,9 @@ export default {
         },
         withDebounce() {
             return this.isdebounce
+        },
+        isenter_to_update() {
+            return this.enter_to_update
         }
     },
     watch: {
@@ -267,6 +290,9 @@ export default {
             info['status'] = status
 
             this.$emit("updateValue", this.listenFormKey, this.value, info, this.listenDataObj)
+        },
+        enterUpdate() {
+          this.updateValue()
         },
         updateValueDebounced(val){
           let timeoutID = null
