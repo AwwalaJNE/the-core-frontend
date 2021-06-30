@@ -133,8 +133,51 @@
                                     <vs-td :key="key" :class="column.width ? column.width : ''">
                                         <template v-if="column.typeInput !== undefined && column.typeInput.toLowerCase() === 'select'">
                                           
+                                          <template v-if="column.hasOwnProperty('injectedData')">
+                                            
+                                            <!-- memastikan ada data array dari item dataTable -->
+                                            <template v-if="column['injectedData'] == true && Array.isArray(item[column.key])"> 
+                                              <template v-if="item[column.key].length > 0">
+                                                  <div>
+                                                      <!-- {{`${column.key}|${item[listenColumn[0].key]}`}} -->
+                                                      <!-- "`${column.key}|${item[listenColumn[0].key]}`" kesepakatan bersama column key 0 adalah id -->
+                                                      <selector
+                                                      :name="column.label" 
+                                                      :rules="''" 
+                                                      :formKey="`${column.key}|${item[listenColumn[0].key]}`"
+                                                      :valueData="item[column.key]"
+                                                      :selectedValue="item[column.selectedValue] ? item[column.selectedValue] : ''"
+                                                      :isMultiple="false"
+                                                      :dataObj="item"
+                                                      autocomplete="off"
+                                                      @updateValue="updateValue" />
+                                                  </div>
+                                              </template>
+                                            </template>
                                             <!-- jika data fixed langsung aja ngambil dari obj key data dari column  -->
-                                            <template v-if="column.data !== undefined && Array.isArray(column.data)">
+                                            <template v-else-if="column['injectedData'] == false && column.data !== undefined && Array.isArray(column.data)">
+                                                
+                                                <template v-if="column.data.length > 0">
+                                                    <div>
+                                                        <!-- {{`${column.key}|${item[listenColumn[0].key]}`}} -->
+                                                        <!-- "`${column.key}|${item[listenColumn[0].key]}`" kesepakatan bersama column key 0 adalah id -->
+                                                        <selector
+                                                        :name="column.label" 
+                                                        :rules="''" 
+                                                        :formKey="`${column.key}|${item[listenColumn[0].key]}`"
+                                                        :valueData="column.data"
+                                                        :selectedValue="item[column.selectedValue] ? item[column.selectedValue] : item[column.key]"
+                                                        :isMultiple="false"
+                                                        :dataObj="item"
+                                                        autocomplete="off"
+                                                        @updateValue="updateValue" />
+                                                    </div>
+                                                </template>
+                                            </template>
+                                              
+                                          </template>
+                                            <!-- jika data fixed langsung aja ngambil dari obj key data dari column  -->
+                                            <template v-else-if="column.data !== undefined && Array.isArray(column.data)">
                                                 <template v-if="column.data.length > 0">
                                                     <div>
                                                         <!-- {{`${column.key}|${item[listenColumn[0].key]}`}} -->

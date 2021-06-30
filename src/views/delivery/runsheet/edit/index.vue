@@ -57,7 +57,7 @@
                         <!-- <li>Date : {{ dataDelivery.delivery[0].date }}</li> -->
                         <li>
                           Total :
-                          {{ dataDelivery.delivery.length + " Connotes" }}
+                          {{ dataDelivery.length + " Connotes" }}
                         </li>
                         <li>
                           Expectations COD :
@@ -139,14 +139,10 @@ export default {
       dataDelivery: [],
       summary: [],
       arrStatus: null,
+      statusObj: {},
       dataDeliverySummary: null,
       loadingRunsheet: false
     };
-  },
-  watch: {
-    '$route' (to, froms) {
-      console.log("route changes",to,froms)
-    }
   },
   methods: {
     refresh() {
@@ -181,9 +177,7 @@ export default {
       this.employee_id = this.$route.params.employee_id.toString();
       if (this.$route.name == "delivery-runsheet-edit") {
         this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number.toString();
-        
         this.getDataDelivery();
-        this.getStatus();
       }
     },
     async scanConnote() {
@@ -196,7 +190,7 @@ export default {
           this.Helper.header()
         )
         .then((res) => {
-          this.dataDelivery = res.data.data;
+          this.dataDelivery = this.processDataDelivery(res.data.data)
           this.dataDeliverySummary = res.data.summary;
           this.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number.toString();
           
@@ -216,12 +210,27 @@ export default {
           this.Helper.header()
         )
         .then((res) => {
+          let statusObj = {}
           this.arrStatus = res.data.data.map((item) => {
             let obj = {};
             obj.label = item.status_description + "(" + item.status_code + ")";
             obj.value = item.status_code;
+            obj["data"] = item
+            
+            if(item.hasOwnProperty("status_condition")) {
+              if(statusObj.hasOwnProperty(item["status_condition"].toLowerCase())) {
+                statusObj[item["status_condition"].toLowerCase()].push(obj)
+              } else {
+                statusObj[item["status_condition"].toLowerCase()] = [obj]
+              }
+            
+            }
+            
             return obj;
           });
+          this.statusObj = statusObj
+          this.getParamRoute();
+          // console.log("statusObj", statusObj)
         })
         .catch((err) => {
           // this.openNotification('danger', 'Failed to populate status', err)
@@ -236,7 +245,8 @@ export default {
           this.Helper.header()
         )
         .then((res) => {
-          this.dataDelivery = res.data.data;
+          this.dataDelivery = this.processDataDelivery(res.data.data)
+          
           this.dataDeliverySummary = res.data.summary;
           this.delivery_runsheet_number = res.data.summary.delivery_runsheet_number.toString();
           this.loadingRunsheet = false
@@ -246,8 +256,28 @@ export default {
           // this.openNotification('danger', 'Failed to populate status', err)
         });
     },
+    processDataDelivery(data) {
+      // console.log("dapet data", data)
+      let status = this.statusObj || {}
+      let delivery = data["delivery"] ? data["delivery"] : []
+      delivery.map((item) => {
+        item["status_delivery"] = []
+        if(item.hasOwnProperty("koli_number")) {
+          if(item["koli_number"].toLowerCase().includes("rt")) {
+            item["status_delivery"] = [...status["rt"], ...status["all"]]
+          } else {
+            item["status_delivery"] = [...status["normal"], ...status["all"]]
+          }
+        }
+      })
+      // console.log(" processDataDelivery : status =>", status)
+      // console.log(" processDataDelivery : delivery =>", delivery)
+      
+      return delivery
+      
+    },
     async updatePOD(dataPOD, info) {
-      console.log("updatePOD", dataPOD, info)
+      // console.log("updatePOD", dataPOD, info)
       if (this.delivery_runsheet_number) {
         dataPOD.delivery_runsheet_number = this.delivery_runsheet_number;
       
@@ -287,7 +317,7 @@ export default {
     },
   },
   mounted() {
-    this.getParamRoute();
+    this.getStatus();
   },
 };
 </script>

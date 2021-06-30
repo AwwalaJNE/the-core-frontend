@@ -2,7 +2,7 @@
   <div>
     <template>
       <table-master
-        :dataTable="listenDataDelivery"
+        :dataTable="dataTable"
         :dataColumn="datacolumn"
         :tableLoading="listenLoading"
         :pageSize="pagination.page_size"
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      dataTable: [],
+      dataTable: this.dataDelivery || [],
       datacolumn: [
         {
           label: "Connote Number",
@@ -52,7 +52,7 @@ export default {
           key: "status_delivery",
           type: "inputan",
           typeInput: "select",
-          
+          injectedData: true,
           data: [{
             label: null,
             value: null,
@@ -76,7 +76,7 @@ export default {
           width: "xxs",
         },
         {
-          label: "Received by",
+          label: "Receiver name",
           key: "receiver_name",
           type: "inputan",
           typeInput: "text",
@@ -111,7 +111,7 @@ export default {
     },
     listenDataDelivery() {
       console.log("data delivery item", this.dataDelivery)
-      return this.dataDelivery["delivery"] ? this.dataDelivery["delivery"] : []
+      return this.dataDelivery
     }
   },
   watch: {
@@ -140,6 +140,11 @@ export default {
         }
       }
     },
+    dataDelivery: function (val) {
+      if (val !== undefined) {
+        this.dataTable = val
+      }
+    }
   },
   methods: {
     updateValue(key, val, info, item = null) {
@@ -192,11 +197,11 @@ export default {
     },
   },
   mounted() {
-    this.datacolumn.map((item) => {
-      if (item.key == "status_delivery") {
-        item.data = this.arrStatus;
-      }
-    });
+    // this.datacolumn.map((item) => {
+    //   if (item.key == "status_delivery") {
+    //     item.data = this.arrStatus;
+    //   }
+    // });
 
     this.getParamRoute();
   },
