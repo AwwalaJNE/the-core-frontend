@@ -259,30 +259,30 @@ export default {
                     this.hasCodeBooking = true
                     
                 
-                    this.$store.dispatch(`FILL_CONNOTE_NUMBER`, data.booking_connote_number)
+                    this.$store.dispatch(`FILL_CONNOTE_NUMBER`, data.booking_connote_number || "")
 
                     // Origin
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, data.booking_connote_shipper_name)
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, data.booking_connote_shipper_phone_number)
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, data.booking_connote_shipper_street_address)
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, data.booking_connote_shipper_geolocation_subdistrict_id)
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, data.booking_connote_shipper_administrative_address)
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, data.booking_connote_shipper_zip_code)
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, data.booking_connote_shipper_name || "")
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, data.booking_connote_shipper_phone_number || "")
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, data.booking_connote_shipper_street_address || "")
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, data.booking_connote_shipper_geolocation_subdistrict_id || "")
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, data.booking_connote_shipper_administrative_address || "")
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, data.booking_connote_shipper_zip_code || "")
                     this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, true)
 
                     // destination
                     let destinationObj = {}
-                    destinationObj['customer_address_type'] = data.booking_connote_receiver_address_type
-                    destinationObj['geolocation_subdistrict_zip_code'] = data.booking_connote_receiver_zip_code
-                    destinationObj['geolocation_subdistrict_tarif_code'] = data.booking_connote_receiver_tariff_code
-                    destinationObj['customer_name'] = data.booking_connote_receiver_name
-                    destinationObj['customer_phone'] = data.booking_connote_receiver_phone_number
+                    destinationObj['customer_address_type'] = data.booking_connote_receiver_address_type || ""
+                    destinationObj['geolocation_subdistrict_zip_code'] = data.booking_connote_receiver_zip_code || ""
+                    destinationObj['geolocation_subdistrict_tarif_code'] = data.booking_connote_receiver_tariff_code || ""
+                    destinationObj['customer_name'] = data.booking_connote_receiver_name || ""
+                    destinationObj['customer_phone'] = data.booking_connote_receiver_phone_number || ""
                     
-                    destinationObj['customer_subdistrict_id'] = data.booking_connote_receiver_geolocation_subdistrict_id
-                    destinationObj['geolocation_location_name'] = data.booking_connote_receiver_administrative_address
-                    destinationObj['booking_connote_service_code'] = data.booking_connote_service_code
+                    destinationObj['customer_subdistrict_id'] = data.booking_connote_receiver_geolocation_subdistrict_id || ""
+                    destinationObj['geolocation_location_name'] = data.booking_connote_receiver_administrative_address || ""
+                    destinationObj['booking_connote_service_code'] = data.booking_connote_service_code || ""
                     this.$refs.destinationComponent.updateValue('detination', destinationObj, true)
-                    this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, data.booking_connote_receiver_street_address)
+                    this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, data.booking_connote_receiver_street_address || "")
                 } else {
                     this.openNotification('danger', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
                 }
