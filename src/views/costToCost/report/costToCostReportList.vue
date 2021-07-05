@@ -1,5 +1,6 @@
 <template>
     <div>
+      <!-- action table ini bisa diganti pke customActionList contohnya kaya di views/transport/suratJalan.vue -->
         <table-master 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 

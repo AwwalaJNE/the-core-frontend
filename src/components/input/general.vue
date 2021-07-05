@@ -283,14 +283,16 @@ export default {
             setTimeout(function(){ self.$emit("inputFocus", info) }, 200);
         },
         updateValue(){
-            let prevdata = this.valueData || ""
+            let prevdata = this.valueData != undefined && this.valueData != null ? this.valueData.toString() : ""
+            let currentValue = this.value.toString()
+            
             let info = {}
             info['name'] = this.name
             info['key'] = this.listenFormKey
             info['typeInput'] = this.listenTypeInput
             info['status'] = status
             
-            if(prevdata.toLowerCase() !== this.value.toLowerCase()) {
+            if(prevdata.toLowerCase() !== currentValue.toLowerCase()) {
               this.$emit("updateValue", this.listenFormKey, this.value, info, this.listenDataObj)
             }
 

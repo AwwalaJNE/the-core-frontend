@@ -202,7 +202,7 @@ export default {
             if (this.form.hasOwnProperty("pickup_node_id_destination") && this.form.pickup_node_id_destination) {
                 let objDestination = this.form.pickup_node_id_destination.node_id
                 this.form['pickup_node_id_destination'] = objDestination
-            } else if (this.listenDataItem.hasOwnProperty('pickup_node_id_destination')) {
+            } else if (this.listenDataItem && this.listenDataItem.hasOwnProperty('pickup_node_id_destination')) {
                 this.form['pickup_node_id_destination'] = Number(this.listenDataItem.pickup_node_id_destination)
             }
             this.hasClicked = true;
@@ -382,9 +382,10 @@ export default {
                 }).catch(err => {
                     this.loading = false
                     this.hasClicked = false;
+                    let message = err.response.data ? err.response.data.message : 'Create Failed'
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create failed', err)
+                    this.openNotification('danger', 'Create failed', message)
                 })
         },
         cancel() {
