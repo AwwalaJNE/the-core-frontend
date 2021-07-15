@@ -506,7 +506,7 @@ const TransactionMixin = {
                                                 
                                             if(this.koliBeforeSurcharge.hasOwnProperty(indexKoli)) {
                                                 // console.log('beda surcharge',this.koliBeforeSurcharge[indexKoli].surchargeId,su_id)
-                                                koli.actual_weight = this.koliBeforeSurcharge[indexKoli].value
+                                                // koli.actual_weight = this.koliBeforeSurcharge[indexKoli].value
                                                 koli_actual_weight = Number(koli['actual_weight'])
                                             } else {
                                                 let objData = {}
@@ -518,7 +518,7 @@ const TransactionMixin = {
                                             // console.log('BEFORE SURCHARGE CALCULATED', this.koliBeforeSurcharge, su_id)
                                             
                                                 koli_actual_weight = perubahan['koli_actual_weight']
-                                                koli.actual_weight = koli_actual_weight
+                                                // koli.actual_weight = koli_actual_weight
 
                                                 KOLI_CHARGEBLE_WEIGHT = Number(Math.max(perubahan['koli_actual_weight'], Number(this.round03(koli_volume_weight))).toFixed(2))
                                         }
@@ -535,7 +535,7 @@ const TransactionMixin = {
                         }
                     } else {
                         if(this.koliBeforeSurcharge.hasOwnProperty(indexKoli)) {
-                            koli.actual_weight = this.koliBeforeSurcharge[indexKoli].value
+                            // koli.actual_weight = this.koliBeforeSurcharge[indexKoli].value
                             koli_actual_weight = Number(koli['actual_weight'])
                         } 
                     }

@@ -341,7 +341,7 @@
                         class="vs-select__chips__chip"
                         style="width: fit-content;"
                       >
-                        {{ `${surchargeshow[item].surcharge_name} ${surchargeshow[item]['jumlah'] || ''}` }}
+                        {{ `${surchargeshow[item].surcharge_name} | ${surchargeshow[item]['jumlah'] || ''}x` }}
                         <template v-if="!surchargeshow[item].hasOwnProperty('jumlah') && !surchargeshow[item].surcharge_name.toLowerCase().includes('overweight')">
                           <span
                             class="vs-select__chips__chip__close"
@@ -909,7 +909,7 @@ export default {
     prosesmultipleKoli(val) {
       this.connote_koli_item = val
       this.connote_koli_item_sebelum_surcharge_menyerang = val
-
+      
       this.$store.dispatch('SET_CONNOTE_DATA_KOLI', this.connote_koli_item)
       // this.calcDataKoli()
       const node_code = this.listenNodeCode
