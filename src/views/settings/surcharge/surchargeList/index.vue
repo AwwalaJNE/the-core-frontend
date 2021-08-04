@@ -23,12 +23,24 @@
             title="Edit Surcharge"
             :dataItem="dataItem"
             />
+
+      <!-- dialog confirm remove surcharge-->
+            <dialog-confirm
+                :active="activeDialogRemove"
+                :loading="activeLoadingRemove"
+                :closeDialog="closeDialogConfirmRemove"
+                title="Remove Surcharge"
+                message="Are you sure you want to Remove Surcharge ?"
+                @confirm="confirmRemove"
+                @cancel="closeDialogConfirmRemove"
+            />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import dialogCreateEditSurcharge from "@/views/settings/surcharge/surchargeList/dialogCreateEditSurcharge"
 export default {
     name:"surcharge-list",
@@ -38,10 +50,13 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
+        "dialog-confirm": DialogConfirm,
         "dialog-create-edit-Surcharge": dialogCreateEditSurcharge
     },
     data() {
         return {
+            activeDialogRemove:false,
+            activeLoadingRemove:false,
             dataTable: [],
             datacolumn: [
                 {
@@ -62,6 +77,7 @@ export default {
             ],
             loading: false,
             dataItem: {},
+            surcharge_id:'',
             tempSearch: this.query ? this.query : "",
             dialogSurcharge: false,
             pagination: {
@@ -142,17 +158,26 @@ export default {
 
             }
         },
-        async actionRemove(val){
+        actionRemove(val){
+          this.activeDialogRemove = true;
+          this.surcharge_id = val.surcharge_id;
+        },
+        confirmRemove(){
+          this.removeSurcharge();
+        },
+        async removeSurcharge(){
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.geolocation_city + `/${val.surcharge_id}`,
+                    this.URL.surcharge + `/${this.surcharge_id}/?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     this.refresh()
-                    this.openNotification(null, 'Delete success', 'Delete city is success')
+                    this.closeDialogConfirmRemove();
+                    this.openNotification(null, 'Delete success', 'Delete surcharge is success')
                 }).catch(err => {
                     this.loading = false
+                    this.closeDialogConfirmRemove();
                     this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
@@ -170,6 +195,10 @@ export default {
         },
         closeDialogSurcharge() {
             this.dialogSurcharge = false
+        },
+        closeDialogConfirmRemove(){
+          this.activeDialogRemove=false
+          this.activeLoadingRemove=false
         }
     },
     mounted() {
