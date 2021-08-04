@@ -64,11 +64,11 @@ export default {
                 {
                     label: "Node",
                     key: "node_commision_node",
-                    width: "xs"
+                    width: "auto"
                 },
                 {
                     label: "Service",
-                    key: "node_commision_service",
+                    key: "node_commision_service_code",
                     width: "auto"
                 },
                 {
@@ -145,7 +145,9 @@ export default {
                     console.log(res)
                     if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
-
+                        this.dataTable.map(item=>{
+                          item['node_commision_node'] = item.node.node_name
+                        })
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
