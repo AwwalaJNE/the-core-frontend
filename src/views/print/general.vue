@@ -64,7 +64,7 @@ export default {
             this.val = this.$route.params.id
             this.type = this.$route.params.type
             this.node_id = this.$route.params.node_id
-            console.log(this.$route.params.node_id,'node')
+            // console.log(this.$route.params.node_id,'node')
             this.getDataPrint()
           }
         },
@@ -76,7 +76,7 @@ export default {
                 `/${this.val}/${this.type}?n=${this.node_id}`,
                 this.Helper.header())
                 .then(res => {
-					console.log('getDataPrint', res.data)
+					// console.log('getDataPrint', res.data)
                     this.html = res.data.html 
 
                     let iframe = document.getElementById('iframe')
