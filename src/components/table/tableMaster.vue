@@ -633,7 +633,7 @@ export default {
             search: '',
 
             localPage: 1,
-            localmax: 20,
+            localmax: 1000,
         }
     },
     computed: {

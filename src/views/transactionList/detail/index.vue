@@ -46,12 +46,13 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import dateRange from "@/components/daterange/index"
-
+import master from "@/mixins/master"
 import TransactionDetailList from "@/views/transactionList/detail/transactionDetailList"
 
 
 export default {
     name:"transaction-index",
+    mixins: [master],
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
