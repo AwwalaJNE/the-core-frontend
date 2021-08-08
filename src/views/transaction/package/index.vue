@@ -654,7 +654,7 @@ export default {
         self.calculation()
       })
     },
-    updateValue(key, value, value2 = null, value3 = null) {
+    updateValue(key, value, value2 = null, value3 = null, value4 = null) {
       switch (key) {
         case 'package_service':
           if (value2) {
@@ -746,14 +746,20 @@ export default {
           this.$store.dispatch('SET_PACKAGE_PACKAGE_COD', value)
           break
         case 'handle_surcharge':
+          console.log("handle surcharge", value, value2, value3, value4)
           this.connote_koli_item[value].surcharge_id = value2
+          
+          if(value4 != null && this.connote_koli_item[value].hasOwnProperty("surcharge_manual")) {
+            this.connote_koli_item[value].surcharge_manual = value4
+          }
 
           if (this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
-            if (value3 !== null) {
+            if (value3 !== null && value3 !== "") {
               this.connote_koli_item[value].is_packing_kayu = true
               this.connote_koli_item[value].is_packing_kayu_id = value3
             } else {
               this.connote_koli_item[value].is_packing_kayu = false
+              this.connote_koli_item[value].is_packing_kayu_id = ""
             }
           }
           this.$store.dispatch('SET_CONNOTE_DATA_KOLI', this.connote_koli_item)
@@ -909,7 +915,7 @@ export default {
     prosesmultipleKoli(val) {
       this.connote_koli_item = val
       this.connote_koli_item_sebelum_surcharge_menyerang = val
-      
+      console.log("proses multi koli", val)
       this.$store.dispatch('SET_CONNOTE_DATA_KOLI', this.connote_koli_item)
       // this.calcDataKoli()
       const node_code = this.listenNodeCode

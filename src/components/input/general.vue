@@ -3,10 +3,11 @@
         <template v-slot:inputan="props">
             <template v-if="isHidden == false">
                 <template v-if="isPlaceholderGabung">
-                    <vs-input
+                    <!-- <vs-input
                         :class="`mt-input`"
                         :type="listenTypeInput.includes('password') == true ? 'password' : 'text'"
                         :placeholder="name"
+                        :border="isBorder"
                         v-model="value"
                         :min="listenMinValue"
                         :disabled="isDisabled"
@@ -17,6 +18,20 @@
                         @blur="focus(false)"
                         ref="generalInput"
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                    /> -->
+                    <vs-input 
+                    border 
+                    :type="listenTypeInput.includes('password') == true ? 'password' : 'text'"
+                    v-model="value"
+                    :min="listenMinValue"
+                    :disabled="isDisabled"
+                    :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                    @input="updateValue"
+                    @focus="focus(true)"
+                    @blur="focus(false)"
+                    ref="generalInput"
+                    :placeholder="name" 
+                    :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                     />
                 </template>
                 <template v-else-if="listenCurrencyMasking">
@@ -120,6 +135,7 @@
                         :type="listenTypeInput ? listenTypeInput.includes('password') == true ? 'password' : listenTypeInput : 'text'"
                         :label="name"
                         :label-placeholder="name"
+                        :border="isBorder"
                         v-model="value"
                         :autofocus="isFocusToInput"
                         :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
@@ -155,7 +171,8 @@ export default {
         onlyNumber: Boolean,
         dataObj: [Object, Array],
         isdebounce: Boolean,
-        enter_to_update: Boolean
+        enter_to_update: Boolean,
+        border: Boolean
     },
     components: {
         "inputan": Inputan
@@ -205,6 +222,9 @@ export default {
         },
         isenter_to_update() {
             return this.enter_to_update
+        },
+        isBorder() {
+          return this.border || false
         }
     },
     watch: {

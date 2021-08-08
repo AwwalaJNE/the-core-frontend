@@ -338,7 +338,7 @@ export default {
                     break;
                 case key.includes("handle_surcharge"):
                     
-
+                    console.log('multi koli surcharge', value, value2, value3)
                     if(this.connote_koli_item[value].hasOwnProperty('surcharge_id')) {
                         this.connote_koli_item[value].surcharge_id = value2
                     }

@@ -105,8 +105,7 @@ const TransactionMixin = {
                                                     prepareSurchargeID = surcharge.hasOwnProperty('surcharge_id') ? surcharge['surcharge_id'] : ''
                                                 }
                                             }
-                                        }
-                                        
+                                        } 
                                     })
 
                                     // console.log('prepareSurchargeID', prepareSurchargeID)
@@ -170,7 +169,8 @@ const TransactionMixin = {
             try {
                 if (Object.keys(service).length > 0) {
                     let surcharge_condition = obj['surcharge_condition'] || {}
-                    
+                    let surcharge_type = obj['surcharge_type_name'].toLowerCase() || ''
+                    let has_surcharge_manual = surcharge_type.includes("manual") ? true : false
                     // console.log('--- Surcharge -> '+obj['surcharge_name']+'----------', surcharge_condition, this.koli, this.listenCurrentIndexKoli)
                             if(Object.keys(surcharge_condition).length > 0) {
                                 let tempStatus = null
@@ -185,7 +185,7 @@ const TransactionMixin = {
                                             // console.log('geolocation_is_intl', item, objective1, objective2)
                                             if(tarifData.hasOwnProperty('is_intl')) {
                                                 
-                                                if(tarifData['is_intl'] == objective1['geolocation_is_intl']) {
+                                                if(tarifData['is_intl'] == objective1['geolocation_is_intl']) { // cek is_intl dari data tarif dg geolocation_is_intl surcharge condition nilainya == 1
                                                     tempStatus = tempStatus !== null ? tempStatus && true : true
                                                 } else {
                                                     tempStatus = tempStatus !== null ? tempStatus && false : false
@@ -317,6 +317,9 @@ const TransactionMixin = {
                                 if(tempStatus !== null) {
                                     status = tempStatus
                                 }
+                            } else if (has_surcharge_manual) {
+                              // hardcode jika ada surchrage manual
+                              status = true
                             }
                     obj['service_relevant'] = status
                     // console.log('=================== Hasil obj>>>', obj)
@@ -346,59 +349,65 @@ const TransactionMixin = {
             });
         },
 
-        surchargeCalculation(koli, dataSurcharge = {} , formula = '', chargeble_weight = null, koli_actual_weight = null) {
+        surchargeCalculation(koli, dataSurcharge = {} , formula = '', chargeble_weight = null, koli_actual_weight = null, surcharge_manual = null) {
             let ngubah = {}
             let str = ''
 
             let koli_length = Number(koli.length)
             let koli_width = Number(koli.width)
             let koli_height = Number(koli.height)
+            
+            
             if(koli.surcharge_id && koli.surcharge_id.length > 0) {
-                try {
-                        switch(true) {
-                            case formula.toLowerCase() == 'chargeble_weight':
-                                console.log('formula chargeble_weight', formula.toLowerCase() == 'chargeble_weight')
-                                if(chargeble_weight != null) {
-                                    str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? 
-                                            dataSurcharge['surcharge_formula'][formula].toLowerCase() : 
-                                            dataSurcharge['surcharge_formula'][formula]
-                                    let evalchargeable_weight = eval(str)
-                                    
-                                    ngubah['chargeble_weight'] = evalchargeable_weight
-                                }
-                                break;
-                            case formula.toLowerCase().includes('surcharge'):
-                                console.log('formula surcharge', formula.toLowerCase().includes('surcharge'))
-                                if(chargeble_weight != null) {
-                                    let base_tariff = this.tarifTiering(chargeble_weight)
-                                    str = dataSurcharge['surcharge_formula'][formula].toLowerCase() 
-                                    let evalSurcharge = eval(str)
-                                    console.log('str evalSurcharge', str, evalSurcharge, base_tariff, chargeble_weight, koli_length, koli_width, koli_height) 
-                                    ngubah['surcharge'] = evalSurcharge
-                                }
-                                break;
-                            case formula.toLowerCase() == 'handling_charge':
-                                let handling_charge = Number(dataSurcharge['surcharge_formula'][formula])
-                                ngubah['handling_charge'] = handling_charge
-                                break;
-                            case formula.toLowerCase() == 'adm_karantina':
-                                let adm_karantina = Number(dataSurcharge['adm_karantina'][formula])
-                                ngubah['adm_karantina'] = adm_karantina
-                                break;
-                            case formula.toLowerCase() == 'volume_weight':
-                                // let oooppi = "(koli_length+5)"
-                                let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
-
-                                let volume_weight = evalactual_weight.toFixed(2)
-                                ngubah['volume_weight'] = volume_weight
-                                break;
-                            case formula.toLowerCase() == 'koli_actual_weight':
-                                if(koli_actual_weight != null) {
-                                    let actual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
-                                    ngubah['koli_actual_weight'] = actual_weight
-                                }
-                                break;
-                            default:
+                try {   
+                        if(formula.toLowerCase() == 'surcharge_manual') {
+                          ngubah['surcharge_manual'] = true
+                        } else {
+                          switch(true) {
+                              case formula.toLowerCase() == 'chargeble_weight':
+                                  console.log('formula chargeble_weight', formula.toLowerCase() == 'chargeble_weight')
+                                  if(chargeble_weight != null) {
+                                      str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? 
+                                              dataSurcharge['surcharge_formula'][formula].toLowerCase() : 
+                                              dataSurcharge['surcharge_formula'][formula]
+                                      let evalchargeable_weight = eval(str)
+                                      
+                                      ngubah['chargeble_weight'] = evalchargeable_weight
+                                  }
+                                  break;
+                              case formula.toLowerCase().includes('surcharge'):
+                                  console.log('formula surcharge', formula.toLowerCase().includes('surcharge'))
+                                  if(chargeble_weight != null) {
+                                      let base_tariff = this.tarifTiering(chargeble_weight)
+                                      str = dataSurcharge['surcharge_formula'][formula].toLowerCase() 
+                                      let evalSurcharge = eval(str)
+                                      console.log('str evalSurcharge', str, evalSurcharge, base_tariff, chargeble_weight, koli_length, koli_width, koli_height) 
+                                      ngubah['surcharge'] = evalSurcharge
+                                  }
+                                  break;
+                              case formula.toLowerCase() == 'handling_charge':
+                                  let handling_charge = Number(dataSurcharge['surcharge_formula'][formula])
+                                  ngubah['handling_charge'] = handling_charge
+                                  break;
+                              case formula.toLowerCase() == 'adm_karantina':
+                                  let adm_karantina = Number(dataSurcharge['adm_karantina'][formula])
+                                  ngubah['adm_karantina'] = adm_karantina
+                                  break;
+                              case formula.toLowerCase() == 'volume_weight':
+                                  // let oooppi = "(koli_length+5)"
+                                  let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
+  
+                                  let volume_weight = evalactual_weight.toFixed(2)
+                                  ngubah['volume_weight'] = volume_weight
+                                  break;
+                              case formula.toLowerCase() == 'koli_actual_weight':
+                                  if(koli_actual_weight != null) {
+                                      let actual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
+                                      ngubah['koli_actual_weight'] = actual_weight
+                                  }
+                                  break;
+                              default:
+                          }
                         }
                 } catch (err) {
                     console.log('surchargeCalculation err', err)
@@ -431,6 +440,8 @@ const TransactionMixin = {
             let SUM_CHARGEBLE_WEIGHT = 0
             let base_tariff = 0
             
+            let SUM_SURCHARGE_MANUAL = 0
+            
             
             if(listKoli.length > 0) {
                 listKoli.map((koli, indexKoli) => {
@@ -449,7 +460,9 @@ const TransactionMixin = {
                     
                     let koli_actual_weight = Number(koli['actual_weight'])
                     // let chargeble_weight = Number(Math.max(koli_actual_weight, Number(this.round03(koli_volume_weight))).toFixed(2))
-
+                    let surcharge_manual = koli['surcharge_manual']
+                    SUM_SURCHARGE_MANUAL = SUM_SURCHARGE_MANUAL + surcharge_manual
+                    
                     let tempbiaya = 0
                     let temp_handling_charge = 0
                     let temp_adm_karantina = 0
@@ -565,7 +578,7 @@ const TransactionMixin = {
                 this.BASE_TARIFF = base_tariff
 
                 
-                TOTAL_BIAYA = this.BASE_TARIFF + SUM_HANDLING_CHARGE + SUM_BIAYA_LAIN
+                TOTAL_BIAYA = this.BASE_TARIFF + SUM_HANDLING_CHARGE + SUM_BIAYA_LAIN + SUM_SURCHARGE_MANUAL
             }
 
             let ASURANSI = this.$store.getters.getTransaction.calculator.asuransi.value
@@ -586,6 +599,7 @@ const TransactionMixin = {
                 this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", this.BASE_TARIFF)
                 this.$store.dispatch("SET_CALCULATOR_SURCHARGE", SUM_BIAYA_LAIN)
                 this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", SUM_HANDLING_CHARGE)
+                this.$store.dispatch("SET_CALCULATOR_SURCHARGE_MANUAL", SUM_SURCHARGE_MANUAL)
                 this.$store.dispatch("SET_CALCULATOR_TOTAL_BIAYA", TOTAL_BIAYA)
                 // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
                 this.$store.dispatch('SET_CONNOTE_DATA', {'key':'total_biaya','value': TOTAL_BIAYA})

@@ -22,34 +22,66 @@
                                         :ref="`surchargeType${item.replace(/\s+/g, '')}`"
                                         
                                         @updateValue="updateValue" /> 
-                                    <template v-if="(options.includes(item) && selectedRadio.hasOwnProperty(item))">
+                                      <!-- selectedRadio.hasOwnProperty(item) -->
+                                    <template v-if="(options.includes(item))">
                                         <vs-row>
                                             <vs-col xs="1" sm="1" lg="1">
                                             </vs-col>
-                                            <vs-col xs="11" sm="11" lg="11">
-                                                <template v-if="objData[item].length > 0">
-                                                    <radio 
-                                                            :ref="item"
-                                                            :name="''" 
-                                                            :rules="''" 
-                                                            :vertical="true"
-                                                            width="6"
-                                                            :formKey="`radio_surcharge|${item}`"
-                                                            :valueData="objData[item]"
-                                                            :selectedValue="selectedRadio[item] ? selectedRadio[item] :null"
-                                                            @updateValue="updateValue" />
-                                                    
-                                                    <!-- <template v-for="(sur,i) in objData[item]">
-                                                        <template v-if="sur.service_relevant == true">
-                                                            <vs-radio v-model="tempRadio" :val="sur.surcharge_id" :key ="i" @input="radioChange(item,tempRadio)">
-                                                                {{sur.surcharge_name}}
-                                                            </vs-radio>
-                                                        </template>
-                                                    </template> -->
-                                                </template>
-                                            </vs-col>
+                                            <template v-if="item.toLowerCase().includes('manual')">
+                                              <vs-col xs="11" sm="11" lg="11">
+                                                <!-- <input-general
+                                                  name="Surcharge manual"
+                                                  :rules="options.includes(item) ? 'required' : ''"
+                                                  :form-key="`surcharge_manual|${item}`"
+                                                  :value-data="manual"
+                                                  type-input="text"
+                                                  :border="true"
+                                                  :placeholderGabung="true"
+                                                  @updateValue="updateValue"
+                                                /> -->
+                                                <form @submit.prevent="processSurchargeManual">
+                                                    <input-general
+                                                      name="Surcharge manual"
+                                                      :rules="options.includes(item) ? 'required|numeric' : 'numeric'"
+                                                      :form-key="`surcharge_manual|${item}`"
+                                                      :value-data="manual"
+                                                      type-input="text"
+                                                      :border="true"
+                                                      :placeholderGabung="true"
+                                                      @updateValue="updateValue"
+                                                    />
+                                                </form>
+                                              </vs-col>
+                                            </template>
+                                            
+                                            <template v-else>
+                                              <vs-col xs="11" sm="11" lg="11">
+                                                  <template v-if="objData[item].length > 0">
+                                                      <radio 
+                                                              :ref="item"
+                                                              :name="''" 
+                                                              :rules="''" 
+                                                              :vertical="true"
+                                                              width="6"
+                                                              :formKey="`radio_surcharge|${item}`"
+                                                              :valueData="objData[item]"
+                                                              :selectedValue="selectedRadio[item] ? selectedRadio[item] :null"
+                                                              @updateValue="updateValue" />
+                                                      
+                                                      <!-- <template v-for="(sur,i) in objData[item]">
+                                                          <template v-if="sur.service_relevant == true">
+                                                              <vs-radio v-model="tempRadio" :val="sur.surcharge_id" :key ="i" @input="radioChange(item,tempRadio)">
+                                                                  {{sur.surcharge_name}}
+                                                              </vs-radio>
+                                                          </template>
+                                                      </template> -->
+                                                  </template>
+                                              </vs-col>
+                                            </template>
                                         </vs-row>
                                     </template>
+                                    <!-- jika surcharge manual maka inputan muncul -->
+                                    
                                     
                                 </vs-col>
                             </vs-row>
@@ -99,6 +131,7 @@ import DialogMaster from "@/components/dialog/dialogMaster"
 import TransactionMixin from "@/mixins/transaction.js"
 import Checkbox from "@/components/input/checkboxELUI"
 import Radio from "@/components/input/radio"
+import InputGeneral from '@/components/input/general'
 export default {
     name: "dialog-surcharge",
     mixins: [TransactionMixin],
@@ -106,6 +139,7 @@ export default {
         "dialog-master": DialogMaster,
         "checkbox": Checkbox,
         "radio": Radio,
+        'input-general': InputGeneral,
     },
     props: {
         closeDialog: Function,
@@ -120,7 +154,7 @@ export default {
             Keys: [],
             selectedData: [],
             koli: {},
-
+            manual: "",
             options: [],
             selectedRadio: {
                 test: null
@@ -174,7 +208,7 @@ export default {
                         let str = `el[0].context.$refs.surchargeType${this.Keys[0].replace(/\s+/g, '')}`
                         let elInput = eval(str)[0]
                         let Checkbox = elInput.$el.querySelector('input')
-                        console.log('DIALOG SURCHARGE el', el[0].context, str, Checkbox)
+                        // console.log('DIALOG SURCHARGE el', el[0].context, str, Checkbox)
                         // setTimeout(function(){ el[0].context.$refs.labelInput.$refs.generalInput.focus() }, 3000);
                         
 
@@ -230,7 +264,7 @@ export default {
                 }
             })
 
-            console.log('selectedR ========', selectedR)
+            // console.log('selectedR ========', selectedR)
 
             let keys = Object.keys(obj)
             keys = keys.filter(item => !item.toLowerCase().includes('overweight'))
@@ -238,6 +272,8 @@ export default {
             if (keys.length > 0) {
                 this.objData = obj
                 this.Keys = keys
+                
+                console.log("this.objData", this.objData)
 
                 if(Object.keys(selectedR).length > 0) {
                     this.options = Object.keys(selectedR)
@@ -263,20 +299,32 @@ export default {
 
             this.activeNames = activeSurchargeType
 
-            console.log('this.Keys', this.Keys)
-            console.log('this.objData', this.objData)
-            console.log('this.selectedRadio', this.selectedRadio, obj['PACKING KAYU'])
-            console.log('this.activeNames', this.activeNames)
+            // console.log('this.Keys', this.Keys)
+            // console.log('this.objData', this.objData)
+            // console.log('this.selectedRadio', this.selectedRadio, obj['PACKING KAYU'])
+            // console.log('this.activeNames', this.activeNames)
             
+        },
+        processSurchargeManual() {
+          
         },
         radioChange(key, val){
             console.log('radio change', key, val)
         },
         updateValue(key, value){
             console.log('selected name', key, value)
+            let split = key.split("|")[1]
             switch(true) {
+                case key.includes('surcharge_manual'):
+                    // semi hardcode surcharge manual
+                    let id_surcharge_manual = this.objData[split]
+                    this.selectedRadio[split] = id_surcharge_manual[0]["value"]
+                    this.manual = value
+                    // 
+                    // console.log('this.options === ', this.options)
+                    // console.log('this.selectedRadio ===', this.selectedRadio)
+                    break;
                 case key.includes('surcharge_type'):
-                    let split = key.split("|")[1]
                     if(value == true) {
                         if(this.options.includes(split) == false){
                             this.options.push(split)
@@ -288,14 +336,17 @@ export default {
                             this.options = temp
                             if(this.selectedRadio.hasOwnProperty(split)) {
                                 delete this.selectedRadio[split]
-
-                                
                             }
+                        }
+                        
+                        if(split.toLowerCase().includes("manual")) {
+                          this.manual = ""
                         }
                     }
                     
-                    console.log('this.options === ', this.options)
-                    console.log('this.selectedRadio ===', this.selectedRadio)
+                    // console.log('this.options === ', this.options)
+                    // console.log('this.options has input_general =>', input_general)
+                    // console.log('this.selectedRadio ===', this.selectedRadio)
                     break;
                 case key.includes('radio_surcharge'):
                     // this.selectedRadio
@@ -319,10 +370,13 @@ export default {
                     if(str.toLowerCase().includes('packing kayu')) {
                         this.selectedPackingKayu_id = value
                     }
-                    console.log('this.selectedRadio ===', this.selectedRadio)
+                    // console.log('this.options === ', this.options)
+                    // console.log('this.selectedRadio ===', this.selectedRadio)
                     break;
                 default:
             }
+            
+            this.prosesSurcharge()
         },
         round03(numToRound){
             let oo = numToRound | 0
@@ -338,24 +392,30 @@ export default {
             this.closeDialog()
             this.selectedData = []
         },
+        prosesSurcharge(){
+          let key = Object.keys(this.selectedRadio)
+          let arr = []
+          key.map(item => {
+              if(this.selectedRadio[item] !== '') {
+                  arr.push(this.selectedRadio[item])
+              }
+          })
+          let manual = this.manual == "" ? 0 : parseInt(this.manual)
+          this.$emit("updateValue", "handle_surcharge",this.index, arr, this.selectedPackingKayu_id, manual)
+          // this.selectedRadio = {}
+          this.selectedPackingKayu_id = ""
+          // if(key.length > 0 ) {
+          // 
+          //     console.log('arr radio', arr)
+          //     if(arr.length > 0) {
+          // 
+          //     }
+          // }
+          // console.log('this.selectedRadio', this.selectedRadio, key)
+        },
         handleSubmit() {
-            let key = Object.keys(this.selectedRadio)
-            if(key.length > 0 ) {
-                let arr = []
-                key.map(item => {
-                    if(this.selectedRadio[item] !== '') {
-                        arr.push(this.selectedRadio[item])
-                    }
-                })
-                console.log('arr radio', arr)
-                if(arr.length > 0) {
-                    this.$emit("updateValue", "handle_surcharge",this.index, arr, this.selectedPackingKayu_id)
-                    this.selectedRadio = {}
-                    this.selectedPackingKayu_id = ""
-                }
-            }
-            console.log('this.selectedRadio', this.selectedRadio, key)
-            
+          
+          this.prosesSurcharge()
             this.closeDialog()
         }
     },
@@ -364,3 +424,11 @@ export default {
     },
 }
 </script>
+<style lang="scss">
+  .with--placeholder{
+    .vs-input__label{
+      // opacity: 0.4;
+      // visibility: visible;
+    }
+  }
+</style>
