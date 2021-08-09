@@ -264,6 +264,26 @@ const TransactionMixin = {
                                                 }
                                             }
                                         }
+                                        
+                                        if(objective1.toLowerCase().includes('volume_weight')) {
+                                          if(Object.keys(listkoli).length > 0) {
+                                            let volume_weight = Number(listkoli['volume_weight'])
+                                            let actual_weight = Number(listkoli['actual_weight'])
+                                            let roundUp = this.round03(volume_weight)
+                                            
+                                            let value1 = roundUp
+                                            let value2 = typeof objective2 == 'number' ? objective2 : actual_weight
+                                            
+                                            let str = `${value1} ${operator} ${value2}`
+                                            tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
+                                            
+                                            console.log('Surcharge name = ', obj['surcharge_name'])
+                                            console.log('proses condition', objective1, objective2,operator)
+                                            console.log("STR :: ", str, eval(str))
+                                            console.log("temp Status", tempStatus)
+                                            console.log('END ///')
+                                          }
+                                        }
 
                                         if(objective1.toLowerCase().includes('chargeble_weight')) {
                                             if(Object.keys(listkoli).length > 0) {
