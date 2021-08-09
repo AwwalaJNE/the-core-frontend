@@ -233,7 +233,7 @@ export default {
                     ];
                     this.destinationData = dataDestination
                     let special_tariff = response.special_tariff ? response.special_tariff : 0;
-                    let total =parseInt(response.amount_adm_insurance )+parseInt(response.amount_insurance) + parseInt(response.amount_surcharge) + parseInt(response.amount_total_price)
+                    let total =parseInt(response.amount_total_price)
                     let packing=[
                         {
                             key:'Packing Kayu',
@@ -254,7 +254,7 @@ export default {
                         
                         {
                             key:'Subtotal',
-                            value:this.moneyformat(response.amount_total_price),
+                            value:this.moneyformat(response.amount_tariff),
                         },
                         {
                             key:'Special Tariff',
