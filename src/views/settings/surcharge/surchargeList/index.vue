@@ -22,6 +22,7 @@
             @refresh="refresh"
             title="Edit Surcharge"
             :dataItem="dataItem"
+            btnBlue="Edit"
             />
 
       <!-- dialog confirm remove surcharge-->

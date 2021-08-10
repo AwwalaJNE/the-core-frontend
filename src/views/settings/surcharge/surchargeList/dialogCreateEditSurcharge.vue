@@ -104,7 +104,6 @@ export default {
         formData(form){
             this.form = form
             if(this.surcharge_id !== undefined && this.surcharge_id !== '') {
-                    console.log('update')
                     this.updateData()
             } else {
                     this.addData()
@@ -150,21 +149,19 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Update role is success')
+                    this.openNotification(null, 'Success', 'Update surcharge is success')
                 }).catch(err => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update role is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', 'Update surcharge is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         async addData() {
-            console.log('form', this.form)
             await axios
                 .post(
                     this.URL.surcharge + `?n=${this.listenNodeId}`,
