@@ -244,7 +244,7 @@
                                     </vs-td>
                                 </template>
                                 <template v-else>
-                                    <vs-td :key="key" :class="column.width ? column.width : ''">
+                                    <vs-td :key="key" :class="column.width ? column.width : ''" class="manual-padding">
                                         <template v-if="split(column.key).length == 2 && item.hasOwnProperty(split(column.key)[0])">
                                             {{ item.hasOwnProperty(split(column.key)[0]) ? item[split(column.key)[0]][split(column.key)[1]] : '' }}
                                         </template>
@@ -836,8 +836,14 @@ export default {
             }
         }
     }
+
     .text-link{
       color: rgb(53, 92, 255);
       cursor:pointer;
     }
+    .manual-padding{
+      padding-bottom: 0px;
+    }
+
+
 </style>
