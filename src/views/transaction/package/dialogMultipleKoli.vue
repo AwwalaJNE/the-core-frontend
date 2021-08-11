@@ -12,85 +12,93 @@
 
             <template v-slot:content>
                 <div>
-                    <vs-table  ref="tableColom">
-                        <template #thead>
-                        <vs-tr>
-                            <vs-th>
-                                No.
-                            </vs-th>
-                            <template v-for="(item, key) in tableHeader">
-                                <vs-th :key="key" :class="item.width ? item.width : ''">
-                                    {{item.label}}
+                  <form-master ref="formMaster" @onSubmit="onSubmit" :submitByEnter="submit_Enter">
+                      <template v-slot:inputValidator>
+                        <vs-table  ref="tableColom">
+                            <template #thead>
+                            <vs-tr>
+                                <vs-th>
+                                    No.
                                 </vs-th>
+                                <template v-for="(item, key) in tableHeader">
+                                    <vs-th :key="key" :class="item.width ? item.width : ''">
+                                        {{item.label}}
+                                    </vs-th>
+                                </template>
+                                
+                                <vs-th>
+                                    Action
+                                </vs-th>
+                            </vs-tr>
                             </template>
-                            
-                            <vs-th>
-                                Action
-                            </vs-th>
-                        </vs-tr>
-                        </template>
-                        <template #tbody>
-
-                            <template v-if="connote_koli_item.length > 0">
-                                <vs-tr
-                                    v-for="(item,key) in connote_koli_item"
-                                    :key="key"
-                                    :data="key"
-                                >
-                                    <vs-td>
-                                        {{Number(key) + 1}}    
-                                    </vs-td>
-                                    <template v-for="(item_h, i) in tableHeader">
-                                        <vs-td
-                                            :key="i"
-                                            :class="item.width ? item.width : ''"
+                            <template #tbody>
+    
+                                <template v-if="connote_koli_item.length > 0">
+                                  
+                                        <vs-tr
+                                            v-for="(item,key) in connote_koli_item"
+                                            :key="key"
+                                            :data="key"
                                         >
-                                            <template v-if="Array.isArray(item[item_h.key])">
-                                                <template v-if="item[item_h.key].length > 0">
-                                                    <span 
-                                                    v-for="(itm, i) in item[item_h.key]"
-                                                    :data-value="itm" 
-                                                    class="vs-select__chips__chip"
-                                                    style="width: fit-content;"
-                                                    :key="i">
-                                                        {{surchargeByID[itm].surcharge_name}}
-                                                        <template v-if="!surchargeByID[itm].surcharge_name.toLowerCase().includes('overweight')">
-                                                            <span class="vs-select__chips__chip__close" @click="removeSurcharge(itm, key, surchargeByID[itm].surcharge_name)">
-                                                                <i class="vs-icon-close vs-icon-hover-less"></i>
+                                            <vs-td>
+                                                {{Number(key) + 1}}    
+                                            </vs-td>
+                                            <template v-for="(item_h, i) in tableHeader">
+                                                <vs-td
+                                                    :key="i"
+                                                    :class="item.width ? item.width : ''"
+                                                >
+                                                    <template v-if="Array.isArray(item[item_h.key])">
+                                                        <template v-if="item[item_h.key].length > 0">
+                                                            <span 
+                                                            v-for="(itm, i) in item[item_h.key]"
+                                                            :data-value="itm" 
+                                                            class="vs-select__chips__chip"
+                                                            style="width: fit-content;"
+                                                            :key="i">
+                                                                {{surchargeByID[itm].surcharge_name}}
+                                                                <template v-if="!surchargeByID[itm].surcharge_name.toLowerCase().includes('overweight')">
+                                                                    <span class="vs-select__chips__chip__close" @click="removeSurcharge(itm, key, surchargeByID[itm].surcharge_name)">
+                                                                        <i class="vs-icon-close vs-icon-hover-less"></i>
+                                                                    </span>
+                                                                </template>
                                                             </span>
                                                         </template>
-                                                    </span>
-                                                </template>
-                                                <hr>
+                                                        <hr>
+                                                    </template>
+                                                    <template v-else>
+                                                        <input-general 
+                                                        :name="item_h.label" 
+                                                        :rules="item_h.rule" 
+                                                        :formKey="`${item_h.key}|${key}`"
+                                                        :valueData="item[item_h.key]"
+                                                        :typeInput="`text${item_h.hasOwnProperty('disabled') ? item_h.disabled == true ? '|disabled' : '' : ''}`"
+                                                        :ref="`${item_h.key}${key}`"
+                                                        :id="`${item_h.key}${key}`"
+                                                        @updateValue="updateValue" />
+                                                    </template>
+                                                </vs-td>
                                             </template>
-                                            <template v-else>
-                                                <input-general 
-                                                :name="item_h.label" 
-                                                :rules="item_h.rule" 
-                                                :formKey="`${item_h.key}|${key}`"
-                                                :valueData="item[item_h.key]"
-                                                :typeInput="`text${item_h.hasOwnProperty('disabled') ? item_h.disabled == true ? '|disabled' : '' : ''}`"
-                                                :ref="`${item_h.key}${key}`"
-                                                :id="`${item_h.key}${key}`"
-                                                @updateValue="updateValue" />
-                                            </template>
-                                        </vs-td>
-                                    </template>
+                                            
+                                            <vs-td>
+                                                <vs-button
+                                                    shadow
+                                                    :active="false"
+                                                    @click="openSurchargeDialog(key)"
+                                                >
+                                                    <i class='bx bx-plus' style="margin-right:5px"></i> SURCHARGE
+                                                </vs-button>
+                                            </vs-td>
+                                            
+                                        </vs-tr>
+                                      
                                     
-                                    <vs-td>
-                                        <vs-button
-                                            shadow
-                                            :active="false"
-                                            @click="openSurchargeDialog(key)"
-                                        >
-                                            <i class='bx bx-plus' style="margin-right:5px"></i> SURCHARGE
-                                        </vs-button>
-                                    </vs-td>
-                                    
-                                </vs-tr>
+                                </template>
                             </template>
-                        </template>
-                    </vs-table>
+                        </vs-table>
+                      </template>
+                  </form-master>
+                    
                 </div>
             </template>
 
@@ -115,7 +123,7 @@
                         flat
                         :active="true"
                         type="submit"
-                        @click="handleSubmit"
+                        @click="formSubmit"
                         >
                             Submit
                         </vs-button>
@@ -134,6 +142,7 @@
     </div>
 </template>
 <script>
+import FormMaster from "@/components/form/formMaster"
 import TransactionMixin from "@/mixins/transaction.js"
 import DialogMaster from "@/components/dialog/dialogMaster"
 import InputGeneral from "@/components/input/general"
@@ -142,6 +151,7 @@ export default {
     name: "multiple-koli",
     mixins: [TransactionMixin],
     components: {
+        "form-master": FormMaster,
         "dialog-master": DialogMaster,
         "input-general": InputGeneral,
         "dialog-surcharge": dialogSurcharge,
@@ -297,6 +307,24 @@ export default {
         },
         cancel() {
             this.closeDialog()
+        },
+        formSubmit(){
+            this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster
+        },
+        onSubmit(refs){
+                refs.form.validate().then(success => {
+                    if (!success) {
+                        console.log('err form niih')
+                        return;
+                    } else {
+                      this.handleSubmit()
+                    }
+
+                    // Wait until the models are updated in the UI
+                    this.$nextTick(() => {
+                        refs.form.reset();
+                    });
+                });
         },
         handleSubmit() {
             
