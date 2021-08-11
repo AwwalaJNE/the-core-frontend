@@ -754,7 +754,7 @@ export default {
           }
 
           if (this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
-            if (value3 !== null && value3 !== "") {
+            if (value3 !== null || value3 !== "") {
               this.connote_koli_item[value].is_packing_kayu = true
               this.connote_koli_item[value].is_packing_kayu_id = value3
             } else {

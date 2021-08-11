@@ -652,53 +652,78 @@ const TransactionMixin = {
                 // console.log('tariff tiering nihh kondisi oke>>>', Object.keys(service).length)
 
                 switch(true) {
-                    case tariffType.toLowerCase() == 'increment':
-                        processTariff = Number(tariffStandar['value']) * (weight <= Number(tariffStandar['weight']) ? weight : Number(tariffStandar['weight']))
-                        if(weight > tariffStandar['weight']){
-                            let Processweight = Math.abs(Number(tariffStandar['weight']) - Number(weight))
+                    case tariffType.toLowerCase() == 'increment' || tariffType.toLowerCase() == 'semi-flat':
+                        console.log("tariffAkumulatif", tariffAkumulatif)
+                        console.log("tariffStandar", tariffStandar)
+                        let keys = Object.keys(tariffAkumulatif)
+                        let Processweight = Math.abs(Number(tariffStandar['weight']) - Number(weight))
+                        
+                        if(keys.length > 0){
+                          if(weight > Number(tariffStandar['weight'])) {
+                            processTariff = Number(tariffStandar['value'])
+                            // processTariff = Number(tariffStandar['value']) * (weight <= Number(tariffStandar['weight']) ? weight : Number(tariffStandar['weight']))
+                            // let Processweight = Math.abs(Number(tariffStandar['weight']) - Number(weight))
                             let sisa = 0
-                            let keys = Object.keys(tariffAkumulatif)
+                            
                             let temp = 0
+                            console.log("Processweight", Processweight)
                             for(let i=0; i <= keys.length -1 ; i++) {
                                 let calc = (Number(Processweight) - Number(keys[i])) < 0 ? 0 : (Number(Processweight) - Number(keys[i]))
+                                console.log("inside LOOP calc", calc)
                                 if(calc !== 0) {
                                     let abs = Math.abs(Number(Processweight) - Number(keys[i]))
                                     Processweight = abs
                                     temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(keys[i]))
-                                    
+                                    console.log("inside LOOP calc !== 0 > abs", abs)
+                                    console.log("inside LOOP calc !== 0 > keys[i]", keys[i])
+                                    console.log("inside LOOP calc !== 0 > tariffAkumulatif[keys[i]]", Number(tariffAkumulatif[keys[i]]))
+                                    console.log("inside LOOP calc !== 0 > Processweight", Processweight)
+                                    console.log("inside LOOP calc !== 0 > END !!! temp", temp)
                                 } else {
+                                    console.log("inside LOOP calc == 0 > Processweight", Processweight)
+                                    console.log("inside LOOP calc == 0 > tariffAkumulatif[keys[i]]", Number(tariffAkumulatif[keys[i]]))
+                                    console.log("inside LOOP calc == 0 > temp", temp)
                                     temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(Processweight))
                                     sumTariffAkumulatif = Number(sumTariffAkumulatif) + temp
+                                    console.log("inside LOOP calc == 0 > END !!! sumTariffAkumulatif", sumTariffAkumulatif)
                                     break
                                 }   
                             }
+                            console.log("processTariff, sumTariffAkumulatif",processTariff, sumTariffAkumulatif)
+                            console.log("Number(processTariff) + Number(sumTariffAkumulatif)",Number(processTariff) + Number(sumTariffAkumulatif))
+                            processTariff = Number(processTariff) + Number(sumTariffAkumulatif)
+                          } else {
+                            processTariff =  Number(tariffStandar['value'])
+                          }
+                        } else {
+                            processTariff =  Number(tariffStandar['value']) * weight
                         }
 
-                        processTariff = Number(processTariff) + Number(sumTariffAkumulatif)
+                        console.log("processTariff >>>", processTariff)
                         break;
-                    case tariffType.toLowerCase() == 'semi-flat':
-                        if(weight > tariffStandar['weight']){
-                            let Processweight = Math.abs(Number(tariffStandar['weight']) - Number(weight))
-                            let sisa = 0
-                            let keys = Object.keys(tariffAkumulatif)
-                            let temp = Number(tariffStandar['value'])
-                            for(let i=0; i <= keys.length -1 ; i++) {
-                                let calc = (Number(Processweight) - Number(keys[i])) < 0 ? 0 : (Number(Processweight) - Number(keys[i]))
-                                if(calc !== 0) {
-                                    let abs = Math.abs(Number(Processweight) - Number(keys[i]))
-                                    Processweight = abs
-                                    temp = temp + Number(tariffAkumulatif[keys[i]])
-                                    
-                                } else {
-                                    temp = temp + Number(tariffAkumulatif[keys[i]]) 
-                                    break
-                                }   
-                            }
-                            processTariff = temp 
-                        } else {
-                            processTariff = Number(tariffStandar['value']) 
-                        }
-                        break;
+                    // case tariffType.toLowerCase() == 'semi-flat':
+                    //     if(weight > tariffStandar['weight']){
+                    //         let Processweight = Math.abs(Number(tariffStandar['weight']) - Number(weight))
+                    //         let sisa = 0
+                    //         let keys = Object.keys(tariffAkumulatif)
+                    //         let temp = Number(tariffStandar['value'])
+                    //         for(let i=0; i <= keys.length -1 ; i++) {
+                    //             let calc = (Number(Processweight) - Number(keys[i])) < 0 ? 0 : (Number(Processweight) - Number(keys[i]))
+                    //             if(calc !== 0) {
+                    //                 let abs = Math.abs(Number(Processweight) - Number(keys[i]))
+                    //                 Processweight = abs
+                    //                 temp = temp + Number(tariffAkumulatif[keys[i]])
+                    // 
+                    //             } else {
+                    //                 temp = temp + Number(tariffAkumulatif[keys[i]]) 
+                    //                 break
+                    //             }   
+                    //         }
+                    //         processTariff = temp 
+                    //     } else {
+                    //         processTariff = Number(tariffStandar['value']) 
+                    //     }
+                    //     break;
                     case tariffType.toLowerCase() == 'flat':
                         processTariff = Number(tariffStandar['value'])
                         break;

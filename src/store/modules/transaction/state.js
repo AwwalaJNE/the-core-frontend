@@ -275,7 +275,7 @@ export default {
     package_dimensi_weight: {
       label: "Weight*",
       key: "koli_weight",
-      rule: "decimal|min_value:0",
+      rule: "required|decimal|min_value:0",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
