@@ -108,7 +108,6 @@ export default {
             form["node_id"] = form["node_id"]["node_id"]
             this.form = form
             if(this.node_commission_id !== undefined && this.node_commission_id !== '') {
-                    console.log('update')
                     this.updateData()
             } else {
                     this.addData()
@@ -158,7 +157,6 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
@@ -172,24 +170,22 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
             await axios
                 .post(
                     this.URL.node_commission + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Create new role is success')
+                    this.openNotification(null, 'Success', 'Create new Node Commission is success')
                 }).catch(err => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create new role is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', 'Create new Node Commission is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {
