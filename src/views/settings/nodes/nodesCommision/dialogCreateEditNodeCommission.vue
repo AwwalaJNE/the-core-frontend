@@ -105,8 +105,8 @@ export default {
     },
     methods: {
         formData(form){
-            form["node_id"] = form["node_id"]["node_id"]
-            this.form = form
+          form["node_id"] = this.dataItem.node_id
+          this.form = form
             if(this.node_commission_id !== undefined && this.node_commission_id !== '') {
                     this.updateData()
             } else {
@@ -149,18 +149,18 @@ export default {
                 })
             .catch(error => console.log("error", error));
         },
-        
+
         async updateData(){
             await axios
                 .put(
                     this.URL.node_commission + `/${this.node_commission_id}?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
+                    JSON.stringify(this.form),
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Update role is success')
+                    this.openNotification(null, 'Success', 'Update Node Commission is success')
                 }).catch(err => {
                     this.loading = false
                     this.handleClearForm()

@@ -169,6 +169,7 @@ export default {
                         // this.dataItem.node_commission_id = val.node_commission_id
                         
 
+                        this.dataItem.node_id = val.node_id.toString();
                         console.log(this.dataItem,'item')
                         this.$nextTick(() => {
                             this.dialogCreateEdit = true
