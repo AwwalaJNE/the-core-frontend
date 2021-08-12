@@ -12,7 +12,7 @@
 
             <template v-slot:content>
                 <div>
-                  <form-master ref="formMaster" @onSubmit="onSubmit" :submitByEnter="submit_Enter">
+                  <form-master ref="formMaster" @onSubmit="onSubmit">
                       <template v-slot:inputValidator>
                         <vs-table  ref="tableColom">
                             <template #thead>
