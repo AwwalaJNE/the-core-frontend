@@ -117,7 +117,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.surcharge_type + `/${this.surcharge_type_id }`,
+                    this.URL.surcharge_type + `/${this.surcharge_type_id }/?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {

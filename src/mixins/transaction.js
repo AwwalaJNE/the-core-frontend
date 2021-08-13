@@ -175,164 +175,178 @@ const TransactionMixin = {
                             if(Object.keys(surcharge_condition).length > 0) {
                                 let tempStatus = null
                                 Object.keys(surcharge_condition).map(objective1 => {
-                                    surcharge_condition[objective1].map( item => {
-                                        
-                                        let operator = Object.keys(item)[0]
-                                        let objective2 = item[operator] !== undefined ? item[operator] : ''
-
-                                        
-                                        if(objective1.toLowerCase().includes('geolocation_is_intl')) {
-                                            // console.log('geolocation_is_intl', item, objective1, objective2)
-                                            if(tarifData.hasOwnProperty('is_intl')) {
-                                                
-                                                if(tarifData['is_intl'] == objective1['geolocation_is_intl']) { // cek is_intl dari data tarif dg geolocation_is_intl surcharge condition nilainya == 1
-                                                    tempStatus = tempStatus !== null ? tempStatus && true : true
-                                                } else {
-                                                    tempStatus = tempStatus !== null ? tempStatus && false : false
-                                                }
-                                            }
-                                        }
-                                        
-
-                                        if(objective1.toLowerCase().includes('connote_service_code')) {
-                                            // if(service.toLowerCase().includes(objective2.toLowerCase())) {
-                                            //     tempStatus = tempStatus !== null ? tempStatus && true : true
-                                            // } else {
-                                            //     tempStatus = tempStatus !== null ? tempStatus && false : false
-                                            // }
-                                            if(operator === '=') {
-                                                operator = '=='
-                                            }
-                                            let str = `'${selectedService}' ${operator} '${objective2.toLowerCase()}'`
-                                            let evalstr = eval(str)
-
-                                            tempStatus = tempStatus !== null ? tempStatus && evalstr : evalstr
-
-
-                                            // console.log('Surcharge name = ', obj['surcharge_name'],)
-                                            // console.log('SERVICE CODE STR >>>', str, evalstr)
-                                            // console.log('proses condition', objective1, service, operator, objective2.toLowerCase(), tempStatus)
-                                            // console.log('END ///')
-                                        } 
-                                        if (objective1.toLowerCase().includes('connote_shipper_tlc')) {
-                                            if(node.toLowerCase().includes(objective2.toLowerCase())) {
-                                                tempStatus = tempStatus !== null ? tempStatus && true : true
-                                            } else {
-                                                tempStatus = tempStatus !== null ? tempStatus && false : false
-                                            }
-                                            // console.log('Surcharge name = ', obj['surcharge_name'])
-                                            // console.log('proses condition', objective1, node, objective2.toLowerCase(), tempStatus)
-                                            // console.log('END ///')
-                                        } 
-
-                                        if(Object.keys(listkoli).length > 0) {
-                                            if(!objective1.toLowerCase().includes('actual_weight') && !objective1.toLowerCase().includes('length')) {
-                                                let con1 = objective1.toLowerCase().replace("koli_", "")
-                                                let con2 = typeof objective2 !== 'number' ? objective2.toLowerCase().replace("koli_", "") : ''
-
-                                                let value1 = Number(listkoli[con1]) || ''
-                                                let value2 = Number(listkoli[con2]) || ''
-                                                
-                                                if(value1 !== '' && value2 !== '') {
-                                                    let str = `value1 ${operator} value2`
-                                                    tempStatus = tempStatus !== null ? tempStatus !== null ? tempStatus && eval(str) : eval(str) : eval(str)
-                                                    // console.log('Surcharge name = ', obj['surcharge_name'])
-                                                    // console.log('proses condition', objective1, objective2,str,value1,operator,value2, status)
-                                                    // console.log('END ///')
-                                                }
-                                            }
-                                        }
-
-                                        if(objective1.toLowerCase().includes('actual_weight')) {
-                                            obj['KOLI_ACTUAL_WEIGHT'] = objective2
-                                            if(Object.keys(listkoli).length > 0) {
-                                                let actual_weight = Number(listkoli['actual_weight'])
-                                                let value1 = actual_weight
-                                                let value2 = objective2
-
-                                                // if(operator.includes('<')) {
-                                                //     value1 = objective2
-                                                //     value2 = actual_weight
-                                                // }
-
-                                                if(typeof objective2 == 'number') {
-                                                    let str = `${value1} ${operator} ${value2}`
-                                                    tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
-                                                    // console.log('Surcharge name = ', obj['surcharge_name'], objective2, eval(str))
-                                                    // console.log('proses condition', objective1, objective2,str,value1,operator,value2, eval(str))
-                                                    // console.log('END ///')
-                                                }
-                                            }
-                                        }
-                                        
-                                        if(objective1.toLowerCase().includes('volume_weight')) {
-                                          if(Object.keys(listkoli).length > 0) {
-                                            let volume_weight = Number(listkoli['volume_weight'])
-                                            let actual_weight = Number(listkoli['actual_weight'])
-                                            let roundUp = this.round03(volume_weight)
-                                            
-                                            let value1 = roundUp
-                                            let value2 = typeof objective2 == 'number' ? objective2 : actual_weight
-                                            
-                                            let str = `${value1} ${operator} ${value2}`
-                                            tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
-                                            
-                                            console.log('Surcharge name = ', obj['surcharge_name'])
-                                            console.log('proses condition', objective1, objective2,operator)
-                                            console.log("STR :: ", str, eval(str))
-                                            console.log("temp Status", tempStatus)
-                                            console.log('END ///')
+                                    if(surcharge_condition.hasOwnProperty(objective1)) {
+                                      surcharge_condition[objective1].map( item => {
+                                          
+                                          let operator = Object.keys(item)[0]
+                                          let objective2 = item[operator] !== undefined ? item[operator] : ''
+  
+                                          
+                                          if(objective1.toLowerCase().includes('geolocation_is_intl')) {
+                                              // console.log('geolocation_is_intl', item, objective1, objective2)
+                                              if(tarifData.hasOwnProperty('is_intl')) {
+                                                  
+                                                  if(tarifData['is_intl'] == objective1['geolocation_is_intl']) { // cek is_intl dari data tarif dg geolocation_is_intl surcharge condition nilainya == 1
+                                                      tempStatus = tempStatus !== null ? tempStatus && true : true
+                                                  } else {
+                                                      tempStatus = tempStatus !== null ? tempStatus && false : false
+                                                  }
+                                              }
                                           }
-                                        }
-
-                                        if(objective1.toLowerCase().includes('chargeble_weight')) {
+                                          
+                                          if(objective1.toLowerCase().includes('is_darat')) {
+                                            if(tarifData.hasOwnProperty('is_darat')) {
+                                              let tarifData_isdarat = tarifData['is_darat'] != undefined && tarifData['is_darat'] != '' ? tarifData['is_darat'].toString() : ''
+                                              let surcharge_condition = objective1['is_darat'] != undefined && objective1['is_darat'] != '' ? objective1['is_darat'].toString() : ''
+                                              if(tarifData_isdarat == surcharge_condition) {
+                                                tempStatus = tempStatus !== null ? tempStatus && true : true
+                                              } else {
+                                                tempStatus = tempStatus !== null ? tempStatus && false : false
+                                              }
+                                              
+                                            }
+                                          }
+                                          
+  
+                                          if(objective1.toLowerCase().includes('connote_service_code')) {
+                                              // if(service.toLowerCase().includes(objective2.toLowerCase())) {
+                                              //     tempStatus = tempStatus !== null ? tempStatus && true : true
+                                              // } else {
+                                              //     tempStatus = tempStatus !== null ? tempStatus && false : false
+                                              // }
+                                              if(operator === '=') {
+                                                  operator = '=='
+                                              }
+                                              let str = `'${selectedService}' ${operator} '${objective2.toLowerCase()}'`
+                                              let evalstr = eval(str)
+  
+                                              tempStatus = tempStatus !== null ? tempStatus && evalstr : evalstr
+  
+  
+                                              // console.log('Surcharge name = ', obj['surcharge_name'],)
+                                              // console.log('SERVICE CODE STR >>>', str, evalstr)
+                                              // console.log('proses condition', objective1, service, operator, objective2.toLowerCase(), tempStatus)
+                                              // console.log('END ///')
+                                          } 
+                                          if (objective1.toLowerCase().includes('connote_shipper_tlc')) {
+                                              if(node.toLowerCase().includes(objective2.toLowerCase())) {
+                                                  tempStatus = tempStatus !== null ? tempStatus && true : true
+                                              } else {
+                                                  tempStatus = tempStatus !== null ? tempStatus && false : false
+                                              }
+                                              // console.log('Surcharge name = ', obj['surcharge_name'])
+                                              // console.log('proses condition', objective1, node, objective2.toLowerCase(), tempStatus)
+                                              // console.log('END ///')
+                                          } 
+  
+                                          if(Object.keys(listkoli).length > 0) {
+                                              if(!objective1.toLowerCase().includes('actual_weight') && !objective1.toLowerCase().includes('length')) {
+                                                  let con1 = objective1.toLowerCase().replace("koli_", "")
+                                                  let con2 = typeof objective2 !== 'number' ? objective2.toLowerCase().replace("koli_", "") : ''
+  
+                                                  let value1 = Number(listkoli[con1]) || ''
+                                                  let value2 = Number(listkoli[con2]) || ''
+                                                  
+                                                  if(value1 !== '' && value2 !== '') {
+                                                      let str = `value1 ${operator} value2`
+                                                      tempStatus = tempStatus !== null ? tempStatus !== null ? tempStatus && eval(str) : eval(str) : eval(str)
+                                                      // console.log('Surcharge name = ', obj['surcharge_name'])
+                                                      // console.log('proses condition', objective1, objective2,str,value1,operator,value2, status)
+                                                      // console.log('END ///')
+                                                  }
+                                              }
+                                          }
+  
+                                          if(objective1.toLowerCase().includes('actual_weight')) {
+                                              obj['KOLI_ACTUAL_WEIGHT'] = objective2
+                                              if(Object.keys(listkoli).length > 0) {
+                                                  let actual_weight = Number(listkoli['actual_weight'])
+                                                  let value1 = actual_weight
+                                                  let value2 = objective2
+  
+                                                  // if(operator.includes('<')) {
+                                                  //     value1 = objective2
+                                                  //     value2 = actual_weight
+                                                  // }
+  
+                                                  if(typeof objective2 == 'number') {
+                                                      let str = `${value1} ${operator} ${value2}`
+                                                      tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
+                                                      // console.log('Surcharge name = ', obj['surcharge_name'], objective2, eval(str))
+                                                      // console.log('proses condition', objective1, objective2,str,value1,operator,value2, eval(str))
+                                                      // console.log('END ///')
+                                                  }
+                                              }
+                                          }
+                                          
+                                          if(objective1.toLowerCase().includes('volume_weight')) {
                                             if(Object.keys(listkoli).length > 0) {
-                                                let volume_weight = Number(listkoli['volume_weight'])
-                                                let actual_weight = Number(listkoli['actual_weight'])
-                                                let roundUp = this.round03(volume_weight)
-                                                let chargeble_weight = 0
-                                                chargeble_weight = Number(Math.max(actual_weight, roundUp).toFixed(2))
-                                                
-
-                                                let value1 = chargeble_weight
-                                                let value2 = objective2
-
-                                                // if(operator.includes('<')) {
-                                                //     value1 = objective2
-                                                //     value2 = chargeble_weight
-                                                // }
-
-                                                if(typeof objective2 == 'number') {
-                                                    let str = `${value1} ${operator} ${value2}`
-                                                    tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
-                                                    // console.log('Surcharge name = ', obj['surcharge_name'])
-                                                    // console.log('proses condition', objective1, objective2,str,value1,operator,value2, status)
-                                                    // console.log('END ///')
-                                                }
+                                              let volume_weight = Number(listkoli['volume_weight'])
+                                              let actual_weight = Number(listkoli['actual_weight'])
+                                              let roundUp = this.round03(volume_weight)
+                                              
+                                              let value1 = roundUp
+                                              let value2 = typeof objective2 == 'number' ? objective2 : actual_weight
+                                              
+                                              let str = `${value1} ${operator} ${value2}`
+                                              tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
+                                              
+                                              // console.log('Surcharge name = ', obj['surcharge_name'])
+                                              // console.log('proses condition', objective1, objective2,operator)
+                                              // console.log("STR :: ", str, eval(str))
+                                              // console.log("temp Status", tempStatus)
+                                              // console.log('END ///')
                                             }
-                                        }
-                                        if(objective1.toLowerCase() == 'length') {
-                                            if(Object.keys(this.koli).length > 0) {
-                                                let max = Number(Math.max(Number(Math.max(this.koli['length'], this.koli['width'])), this.koli['height']))
-                                                
-                                                let value1 = Number(max)
-                                                let value2 = Number(objective2)
-
-                                                // if(operator.includes('<')) {
-                                                //     value1 = Number(objective2)
-                                                //     value2 = Number(max)
-                                                // }
-
-                                                let str = `${value1} ${operator} ${value2}`
-                                                tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
-                                                // console.log('Surcharge name = ', obj['surcharge_name'], eval(str))
-                                                // console.log('proses condition', objective1, objective2,str,value1,operator,value2, status, tempStatus)
-                                                // console.log('END ///')
-                                            }
-                                        }
-                                        
-                                    })
-
+                                          }
+  
+                                          if(objective1.toLowerCase().includes('chargeble_weight')) {
+                                              if(Object.keys(listkoli).length > 0) {
+                                                  let volume_weight = Number(listkoli['volume_weight'])
+                                                  let actual_weight = Number(listkoli['actual_weight'])
+                                                  let roundUp = this.round03(volume_weight)
+                                                  let chargeble_weight = 0
+                                                  chargeble_weight = Number(Math.max(actual_weight, roundUp).toFixed(2))
+                                                  
+  
+                                                  let value1 = chargeble_weight
+                                                  let value2 = objective2
+  
+                                                  // if(operator.includes('<')) {
+                                                  //     value1 = objective2
+                                                  //     value2 = chargeble_weight
+                                                  // }
+  
+                                                  if(typeof objective2 == 'number') {
+                                                      let str = `${value1} ${operator} ${value2}`
+                                                      tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
+                                                      // console.log('Surcharge name = ', obj['surcharge_name'])
+                                                      // console.log('proses condition', objective1, objective2,str,value1,operator,value2, status)
+                                                      // console.log('END ///')
+                                                  }
+                                              }
+                                          }
+                                          if(objective1.toLowerCase() == 'length') {
+                                              if(Object.keys(this.koli).length > 0) {
+                                                  let max = Number(Math.max(Number(Math.max(this.koli['length'], this.koli['width'])), this.koli['height']))
+                                                  
+                                                  let value1 = Number(max)
+                                                  let value2 = Number(objective2)
+  
+                                                  // if(operator.includes('<')) {
+                                                  //     value1 = Number(objective2)
+                                                  //     value2 = Number(max)
+                                                  // }
+  
+                                                  let str = `${value1} ${operator} ${value2}`
+                                                  tempStatus = tempStatus !== null ? tempStatus && eval(str) : eval(str)
+                                                  // console.log('Surcharge name = ', obj['surcharge_name'], eval(str))
+                                                  // console.log('proses condition', objective1, objective2,str,value1,operator,value2, status, tempStatus)
+                                                  // console.log('END ///')
+                                              }
+                                          }
+                                          
+                                      })
+                                    }
                                 })
                                 if(tempStatus !== null) {
                                     status = tempStatus
@@ -394,6 +408,15 @@ const TransactionMixin = {
                                       
                                       ngubah['chargeble_weight'] = evalchargeable_weight
                                   }
+                                  break;
+                              case formula.toLowerCase() == 'fix_chargeble_weight':
+                                    let fix_chargeble_weight = null
+                                    str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? 
+                                            dataSurcharge['surcharge_formula'][formula].toLowerCase() : 
+                                            dataSurcharge['surcharge_formula'][formula]
+                                    let evalfixchargeable_weight = eval(str)
+                                    ngubah[`${formula.toLowerCase()}`] = evalfixchargeable_weight
+                                    
                                   break;
                               case formula.toLowerCase().includes('surcharge'):
                                   console.log('formula surcharge', formula.toLowerCase().includes('surcharge'))
@@ -461,9 +484,11 @@ const TransactionMixin = {
             let base_tariff = 0
             
             let SUM_SURCHARGE_MANUAL = 0
+            let fixed_chargeble_weight = false
             
             
             if(listKoli.length > 0) {
+                fixed_chargeble_weight = false
                 listKoli.map((koli, indexKoli) => {
                     // koli hitung satuan
                     let vw = 0
@@ -494,6 +519,7 @@ const TransactionMixin = {
                     if(koli.surcharge_id && koli.surcharge_id.length > 0) {    
                         try{
                             // array koli surcharge (tiap koli bisa punya banyak surcharge)
+                            
                             koli.surcharge_id.map(su_id => {
                                 let dataSurcharge = surchargeByID[su_id] || {}
                                 console.log("dataSurcharge", dataSurcharge)
@@ -516,6 +542,12 @@ const TransactionMixin = {
                                             let valCW = perubahan['chargeble_weight']
 
                                             KOLI_CHARGEBLE_WEIGHT = Number(Math.max(KOLI_CHARGEBLE_WEIGHT, valCW).toFixed(2))
+                                        }
+                                        if (perubahan.hasOwnProperty('fix_chargeble_weight')) {
+                                            let valCW = perubahan['fix_chargeble_weight']
+
+                                            KOLI_CHARGEBLE_WEIGHT = Number(valCW.toFixed(2))
+                                            fixed_chargeble_weight = true
                                         }
                                         if (perubahan.hasOwnProperty('surcharge')) {
                                             tempbiaya = perubahan['surcharge']
@@ -579,7 +611,12 @@ const TransactionMixin = {
                     // koli total calculator
                     this.SUM_VOLUME_WEIGHT = this.SUM_VOLUME_WEIGHT + Number(koli_volume_weight)
                     this.SUM_ACTUAL_WEIGHT = this.SUM_ACTUAL_WEIGHT + koli_actual_weight
-                    SUM_CHARGEBLE_WEIGHT = SUM_CHARGEBLE_WEIGHT + Number(this.round03(KOLI_CHARGEBLE_WEIGHT))
+                    if(fixed_chargeble_weight == true) {
+                      SUM_CHARGEBLE_WEIGHT = Number(this.round03(KOLI_CHARGEBLE_WEIGHT))
+                    } else {
+                      SUM_CHARGEBLE_WEIGHT = SUM_CHARGEBLE_WEIGHT + Number(this.round03(KOLI_CHARGEBLE_WEIGHT))
+                    }
+                    
                     SUM_BIAYA_LAIN = SUM_BIAYA_LAIN + tempbiaya
                     SUM_HANDLING_CHARGE = SUM_HANDLING_CHARGE + temp_handling_charge
 
