@@ -197,8 +197,8 @@ const TransactionMixin = {
                                           if(objective1.toLowerCase().includes('is_darat')) {
                                             if(tarifData.hasOwnProperty('is_darat')) {
                                               let tarifData_isdarat = tarifData['is_darat'] != undefined && tarifData['is_darat'] != '' ? tarifData['is_darat'].toString() : ''
-                                              let surcharge_condition = objective1['is_darat'] != undefined && objective1['is_darat'] != '' ? objective1['is_darat'].toString() : ''
-                                              if(tarifData_isdarat == surcharge_condition) {
+                                              // let sC = surcharge_condition[objective1] != undefined && surcharge_condition[objective1] != '' ? surcharge_condition[objective1].toString() : ''
+                                              if(tarifData_isdarat == objective2) {
                                                 tempStatus = tempStatus !== null ? tempStatus && true : true
                                               } else {
                                                 tempStatus = tempStatus !== null ? tempStatus && false : false
