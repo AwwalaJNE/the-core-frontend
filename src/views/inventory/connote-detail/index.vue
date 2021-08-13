@@ -257,8 +257,8 @@ export default {
                             value:this.moneyformat(response.amount_tariff),
                         },
                         {
-                            key:'Special Tariff',
-                            value:response.special_tariff,
+                            key:'Special Tariff Discount',
+                            value:this.moneyformat(response.amount_discount),
                         },
                         {
                             key:'Total',
