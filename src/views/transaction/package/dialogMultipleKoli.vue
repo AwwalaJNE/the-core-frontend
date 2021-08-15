@@ -344,7 +344,7 @@ export default {
             this.koliObj = {}
             this.surchargeSelector = false
         },
-        updateValue(key, value, value2 = null, value3 = null) {
+        updateValue(key, value, value2 = null, value3 = null, value4 = null) {
             let str = key.split("|")
             let index = str[1]
             // this.$emit("prosesmultipleKoli", str[0],index, value)
@@ -367,6 +367,11 @@ export default {
                 case key.includes("handle_surcharge"):
                     
                     console.log('multi koli surcharge', value, value2, value3)
+                    if(value4 != null && this.connote_koli_item[value].hasOwnProperty("surcharge_manual")) {
+                      this.connote_koli_item[value].surcharge_manual = value4
+                    }
+
+                    
                     if(this.connote_koli_item[value].hasOwnProperty('surcharge_id')) {
                         this.connote_koli_item[value].surcharge_id = value2
                     }
