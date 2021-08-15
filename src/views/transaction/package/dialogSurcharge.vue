@@ -56,7 +56,7 @@
                                             
                                             <template v-else>
                                               <vs-col xs="11" sm="11" lg="11">
-                                                  <template v-if="objData[item].length > 0">
+                                                  <template v-if="objData[item] !== undefined ? objData[item].length > 0 : false">
                                                       <radio 
                                                               :ref="item"
                                                               :name="''" 
@@ -160,7 +160,8 @@ export default {
                 test: null
             },
             selectedPackingKayu_id: '',
-            tempRadio: ''
+            tempRadio: '',
+            hidden: {}
         }
     },
     computed: {
@@ -239,27 +240,32 @@ export default {
             let prev_surcharge_id = this.koli['surcharge_id'] || []
             console.log('this.koli', this.koli, surcharge)
             let obj = {}
+            let hidden = {}
             surcharge.map(item => {
                 item['service_relevant'] = false
+                item['visible'] = true // default true | jika ada surcharge condition yg ditentukan dengan selected surcharge type
+                let filter = this.filterSurcharge(item, this.koli)
 
                 if(prev_surcharge_id.includes(item.surcharge_id)) {
                     selectedR[item.surcharge_type_name] = item.surcharge_id
                 }
-
+                
                 if(obj.hasOwnProperty(item.surcharge_type_name)) {
-                    let filter = this.filterSurcharge(item, this.koli)
-                    if(filter.service_relevant == true) {
+                    if(filter.service_relevant == true && filter.visible == true) {
                         filter['value'] = filter.surcharge_id
                         filter['label'] = filter.surcharge_name
                         obj[item.surcharge_type_name].push(filter)
+                    } else if (filter.visible == false) {
+                        hidden[item.surcharge_type_name] = filter
                     }
                 } else {
-                    obj[item.surcharge_type_name] = []
-                    let filter = this.filterSurcharge(item, this.koli)
-                    if(filter.service_relevant == true) {
+                    if(filter.service_relevant == true && filter.visible == true) {
+                        obj[item.surcharge_type_name] = []
                         filter['value'] = filter.surcharge_id
                         filter['label'] = filter.surcharge_name
                         obj[item.surcharge_type_name].push(filter)
+                    } else if (filter.visible == false) {
+                        hidden[item.surcharge_type_name] = filter
                     }
                 }
             })
@@ -268,16 +274,15 @@ export default {
 
             let keys = Object.keys(obj)
             keys = keys.filter(item => !item.toLowerCase().includes('overweight'))
+            this.hidden = hidden
 
             if (keys.length > 0) {
                 this.objData = obj
                 this.Keys = keys
-                
-                console.log("this.objData", this.objData)
-
                 if(Object.keys(selectedR).length > 0) {
                     this.options = Object.keys(selectedR)
                     this.selectedRadio = selectedR
+                    this.processSurchargeType()
                     // if(!this.options.includes(keys[0])) {
                     //     this.options.push(keys[0])
                     //     this.selectedRadio[keys[0]] = ""
@@ -290,23 +295,40 @@ export default {
                 
             }
 
-            // this.selectedData = this.listenPackageSurcharge
+            
 
-            let activeSurchargeType = []
-            this.listenPackageSurcharge.length > 0 && this.listenPackageSurcharge.map(item => {
-                activeSurchargeType.push(item.surcharge_type_name)
-            })
-
-            this.activeNames = activeSurchargeType
-
-            // console.log('this.Keys', this.Keys)
+            // console.log('this.options', this.options)
             // console.log('this.objData', this.objData)
-            // console.log('this.selectedRadio', this.selectedRadio, obj['PACKING KAYU'])
-            // console.log('this.activeNames', this.activeNames)
+            // console.log('this.selectedRadio', this.selectedRadio)
             
         },
-        processSurchargeManual() {
+        processSurchargeType() {
+          // jika ada surcharge condition yg ditentukan dengan selected surcharge type
+          // this.selectedRadio
+          // console.log("this.hidden", this.hidden)
           
+          let addKey = {}
+          let hidden = Object.keys(this.hidden)
+          hidden.map(item => {
+              let filter = this.filterSurcharge(this.hidden[item], this.koli, null, this.options)
+              if(filter.visible == true) {
+                // filter['value'] = filter.surcharge_id
+                // filter['label'] = filter.surcharge_name
+                // addKey[item.surcharge_type_name] = filter
+                if(!this.Keys.includes(filter.surcharge_type_name)) {
+                  this.Keys.push(filter.surcharge_type_name)
+                }
+                
+                // console.log("INI VISIBLE", filter, this.Keys)
+              } else {
+                this.Keys = this.Keys.filter(itm => {
+                    return itm !== filter.surcharge_type_name
+                })
+                if(this.selectedRadio.hasOwnProperty(filter.surcharge_type_name)) {
+                    delete this.selectedRadio[filter.surcharge_type_name]
+                }
+              }
+          })
         },
         radioChange(key, val){
             console.log('radio change', key, val)
@@ -329,6 +351,10 @@ export default {
                         if(this.options.includes(split) == false){
                             this.options.push(split)
                             this.selectedRadio[split] = ''
+                            
+                            if(this.hidden.hasOwnProperty(split)) {
+                              this.selectedRadio[split] = this.hidden[split]['surcharge_id']
+                            }
                         }
                     } else {
                         if(this.options.includes(split) == true){
@@ -376,7 +402,9 @@ export default {
                 default:
             }
             
+            this.processSurchargeType()
             this.prosesSurcharge()
+            
         },
         round03(numToRound){
             let oo = numToRound | 0

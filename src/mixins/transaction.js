@@ -156,13 +156,14 @@ const TransactionMixin = {
             }
         },
 
-        filterSurcharge(obj, koli, node_code) {
+        filterSurcharge(obj, koli, node_code, selected_surchargeType = null) {
             let service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
             let selectedServiceData = this.$store.getters.getTransaction.package["package_service"]["valueData"] || {}
             let selectedService = selectedServiceData['label'].toLowerCase()
             
             let tarifData = this.listenPackageService.data || {}
             let status = false
+            let visible = true
             let listkoli = koli || []
             let node = node_code || ''
             // console.log('tarifData filter surcharge', tarifData)
@@ -174,6 +175,7 @@ const TransactionMixin = {
                     // console.log('--- Surcharge -> '+obj['surcharge_name']+'----------', surcharge_condition, this.koli, this.listenCurrentIndexKoli)
                             if(Object.keys(surcharge_condition).length > 0) {
                                 let tempStatus = null
+                                let tempVisible = null
                                 Object.keys(surcharge_condition).map(objective1 => {
                                     if(surcharge_condition.hasOwnProperty(objective1)) {
                                       surcharge_condition[objective1].map( item => {
@@ -194,6 +196,29 @@ const TransactionMixin = {
                                               }
                                           }
                                           
+                                          if(objective1.toLowerCase().includes('surcharge_type')) {
+                                            // console.log('Surcharge FILTER selected Surcharge = ', selected_surchargeType)
+                                            if(selected_surchargeType == null) {
+                                              tempVisible = false
+                                              tempStatus = false
+                                            } 
+                                            else {
+                                              // console.log('Surcharge FILTER name = ', obj['surcharge_name'], tempVisible)
+                                              // console.log('Surcharge FILTER = ', objective1, objective2,surcharge_condition[objective1])
+                                            
+                                              if(selected_surchargeType.includes(objective2) == true) {
+                                                
+                                                tempVisible = true
+                                                tempStatus = true
+                                              } else {
+                                                tempVisible = false
+                                                tempStatus = false
+                                              }
+                                            }
+                                            
+                                            
+                                          }
+                                          
                                           if(objective1.toLowerCase().includes('is_darat')) {
                                             if(tarifData.hasOwnProperty('is_darat')) {
                                               let tarifData_isdarat = tarifData['is_darat'] != undefined && tarifData['is_darat'] != '' ? tarifData['is_darat'].toString() : ''
@@ -204,6 +229,10 @@ const TransactionMixin = {
                                                 tempStatus = tempStatus !== null ? tempStatus && false : false
                                               }
                                               
+                                              // console.log('Surcharge name = ', obj['surcharge_name'], objective1, objective2,surcharge_condition[objective1])
+                                              // console.log('tarifData_isdarat', tarifData_isdarat)
+                                              // // console.log('surcharge_condition', sC)
+                                              // console.log('proses condition', objective1, tarifData, tempStatus)
                                             }
                                           }
                                           
@@ -351,11 +380,15 @@ const TransactionMixin = {
                                 if(tempStatus !== null) {
                                     status = tempStatus
                                 }
+                                if(tempVisible !== null) {
+                                    visible = tempVisible
+                                }
                             } else if (has_surcharge_manual) {
                               // hardcode jika ada surchrage manual
                               status = true
                             }
                     obj['service_relevant'] = status
+                    obj['visible'] = visible
                     // console.log('=================== Hasil obj>>>', obj)
                 }
             } catch (error) {
@@ -418,6 +451,42 @@ const TransactionMixin = {
                                     ngubah[`${formula.toLowerCase()}`] = evalfixchargeable_weight
                                     
                                   break;
+                              case formula.toLowerCase() == 'adm_karantina':
+                                    let adm_karantina = null
+                                    str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? 
+                                            dataSurcharge['surcharge_formula'][formula].toLowerCase() : 
+                                            dataSurcharge['surcharge_formula'][formula]
+                                    let evaladm_karantina = eval(str)
+                                    ngubah[`${formula.toLowerCase()}`] = evaladm_karantina
+                                        
+                                  break;
+                              case formula.toLowerCase() == 'pelepasan_karantina':
+                                    let pelepasan_karantina = null
+                                    str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? 
+                                            dataSurcharge['surcharge_formula'][formula].toLowerCase() : 
+                                            dataSurcharge['surcharge_formula'][formula]
+                                    let evalpelepasan_karantina = eval(str)
+                                    ngubah[`${formula.toLowerCase()}`] = evalpelepasan_karantina
+                                            
+                                  break;
+                              case formula.toLowerCase() == 'air_line_document':
+                                    let air_line_document = null
+                                    str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? 
+                                            dataSurcharge['surcharge_formula'][formula].toLowerCase() : 
+                                            dataSurcharge['surcharge_formula'][formula]
+                                    let evalair_line_document = eval(str)
+                                    ngubah[`${formula.toLowerCase()}`] = evalair_line_document
+                                  
+                                  break;
+                              case formula.toLowerCase() == 'shipper_declaration':
+                                    let shipper_declaration = null
+                                    str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? 
+                                            dataSurcharge['surcharge_formula'][formula].toLowerCase() : 
+                                            dataSurcharge['surcharge_formula'][formula]
+                                    let evalshipper_declaration = eval(str)
+                                    ngubah[`${formula.toLowerCase()}`] = evalshipper_declaration
+                                  
+                                  break;
                               case formula.toLowerCase().includes('surcharge'):
                                   console.log('formula surcharge', formula.toLowerCase().includes('surcharge'))
                                   if(chargeble_weight != null) {
@@ -432,10 +501,10 @@ const TransactionMixin = {
                                   let handling_charge = Number(dataSurcharge['surcharge_formula'][formula])
                                   ngubah['handling_charge'] = handling_charge
                                   break;
-                              case formula.toLowerCase() == 'adm_karantina':
-                                  let adm_karantina = Number(dataSurcharge['adm_karantina'][formula])
-                                  ngubah['adm_karantina'] = adm_karantina
-                                  break;
+                              // case formula.toLowerCase() == 'adm_karantina':
+                              //     let adm_karantina = Number(dataSurcharge['adm_karantina'][formula])
+                              //     ngubah['adm_karantina'] = adm_karantina
+                              //     break;
                               case formula.toLowerCase() == 'volume_weight':
                                   // let oooppi = "(koli_length+5)"
                                   let evalactual_weight = eval(dataSurcharge['surcharge_formula'][formula].toLowerCase())
@@ -479,6 +548,9 @@ const TransactionMixin = {
             let SUM_HANDLING_CHARGE = 0
             let SUM_ADM_KARANTINA = 0
             let TOTAL_BIAYA = 0
+            let SUM_PELEPASAN_KARANTINA = 0
+            let SUM_AIR_LINE_DOCUMENT = 0
+            let SUM_SHIPPER_DECLARATION = 0
 
             let SUM_CHARGEBLE_WEIGHT = 0
             let base_tariff = 0
@@ -512,6 +584,9 @@ const TransactionMixin = {
                     let temp_handling_charge = 0
                     let temp_adm_karantina = 0
                     let temp_chargeable_weight = 0
+                    let temp_pelepasan_karantina = 0
+                    let temp_air_line_document = 0
+                    let temp_shipper_declaration = 0
                     
                     let roundUp = Number(this.round03(koli_volume_weight))
                     let KOLI_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, roundUp).toFixed(2))
@@ -558,6 +633,18 @@ const TransactionMixin = {
                                         if (perubahan.hasOwnProperty('adm_karantina')) {
                                             temp_adm_karantina = perubahan['adm_karantina']
                                         }
+                                        if (perubahan.hasOwnProperty('pelepasan_karantina')) {
+                                            temp_pelepasan_karantina = perubahan['pelepasan_karantina']
+                                        }
+                                        
+                                        if (perubahan.hasOwnProperty('air_line_document')) {
+                                            temp_air_line_document = perubahan['air_line_document']
+                                        }
+                                        if (perubahan.hasOwnProperty('shipper_declaration')) {
+                                            temp_shipper_declaration = perubahan['shipper_declaration']
+                                        }
+                                        
+                                        
                                         if (perubahan.hasOwnProperty('volume_weight')) {
                                             koli_volume_weight = perubahan['volume_weight']
                                             koli.volume_weight = perubahan['volume_weight']
@@ -619,7 +706,10 @@ const TransactionMixin = {
                     
                     SUM_BIAYA_LAIN = SUM_BIAYA_LAIN + tempbiaya
                     SUM_HANDLING_CHARGE = SUM_HANDLING_CHARGE + temp_handling_charge
-
+                    SUM_ADM_KARANTINA = SUM_ADM_KARANTINA + temp_adm_karantina
+                    SUM_PELEPASAN_KARANTINA = SUM_PELEPASAN_KARANTINA + temp_pelepasan_karantina
+                    SUM_AIR_LINE_DOCUMENT = SUM_AIR_LINE_DOCUMENT + temp_air_line_document
+                    SUM_SHIPPER_DECLARATION = SUM_SHIPPER_DECLARATION + temp_shipper_declaration 
                     
  
                 })
@@ -635,7 +725,14 @@ const TransactionMixin = {
                 this.BASE_TARIFF = base_tariff
 
                 
-                TOTAL_BIAYA = this.BASE_TARIFF + SUM_HANDLING_CHARGE + SUM_BIAYA_LAIN + SUM_SURCHARGE_MANUAL
+                TOTAL_BIAYA = this.BASE_TARIFF + 
+                              SUM_HANDLING_CHARGE + 
+                              SUM_BIAYA_LAIN + 
+                              SUM_SURCHARGE_MANUAL + 
+                              SUM_ADM_KARANTINA + 
+                              SUM_PELEPASAN_KARANTINA + 
+                              SUM_AIR_LINE_DOCUMENT + 
+                              SUM_SHIPPER_DECLARATION
             }
 
             let ASURANSI = this.$store.getters.getTransaction.calculator.asuransi.value
@@ -654,6 +751,13 @@ const TransactionMixin = {
                 this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.SUM_CHARGEBLE_WEIGHT)
                 
                 this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", this.BASE_TARIFF)
+                this.$store.dispatch("SET_CALCULATOR_ADM_KARANTINA", SUM_ADM_KARANTINA)
+                
+                this.$store.dispatch("SET_CALCULATOR_PELEPASAN_KARANTINA", SUM_PELEPASAN_KARANTINA)
+                
+                this.$store.dispatch("SET_CALCULATOR_AIRLINE_DOCUMENT", SUM_AIR_LINE_DOCUMENT)
+                this.$store.dispatch("SET_CALCULATOR_SHIPPER_DECLARATION", SUM_SHIPPER_DECLARATION)
+                
                 this.$store.dispatch("SET_CALCULATOR_SURCHARGE", SUM_BIAYA_LAIN)
                 this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", SUM_HANDLING_CHARGE)
                 this.$store.dispatch("SET_CALCULATOR_SURCHARGE_MANUAL", SUM_SURCHARGE_MANUAL)
