@@ -7,11 +7,12 @@
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
-            <vs-col xs="6" sm="6" lg="3">
-                <!-- <vs-button 
-                class="--primary"
-                @click="actionDetail"
-                >PRINT</vs-button> -->
+            <vs-col xs="1" sm="1" lg="1" align="right">
+                <vs-button 
+                square
+                block
+                @click="actionPrint"
+                >PRINT BPIK</vs-button>
             </vs-col>
         </vs-row>
         <section class="users">
@@ -321,7 +322,7 @@ export default {
                     this.openNotification('danger', 'Failed to populate list', err)
                 })
         },
-        actionDetail(){
+        actionPrint(){
             let routeData = this.$router.resolve({ 
                 name: 'printGeneral', 
                 params: { 

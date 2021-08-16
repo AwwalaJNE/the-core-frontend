@@ -103,7 +103,7 @@
                                 Close
                             </vs-button>
                         </vs-col>
-                        <vs-col w="1" justify="flex-end">
+                        <!-- <vs-col w="1" justify="flex-end">
                             <router-link :to="{ name: 'printBpik'}" target="_blank">
                                 <vs-button
                                 transparent
@@ -116,7 +116,7 @@
                                     Print
                                 </vs-button>
                             </router-link>
-                        </vs-col>
+                        </vs-col> -->
                     </vs-row>
                 </div>
             </template>
