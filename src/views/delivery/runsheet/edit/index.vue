@@ -15,10 +15,10 @@
           <div class="box information" style="padding-top: 1px !important">
             <p align="left"><b>Courier</b></p>
             <template v-if="dataDelivery">
+
               <p align="left">
-                {{ dataDelivery.employee_code }} ({{
-                  dataDelivery.employee_name
-                }})
+                {{ dataDelivery[0] ? dataDelivery[0].employee_code : null }}
+                ({{dataDelivery[0] ? dataDelivery[0].employee_name : '-' }})
               </p>
             </template>
 
@@ -191,6 +191,11 @@ export default {
         )
         .then((res) => {
           this.dataDelivery = this.processDataDelivery(res.data.data)
+          this.dataDelivery.map((item) => {
+            item.employee_name = res.data.data.employee_name
+          })
+          this.dataDelivery.employee_name = res.data.data.employee_name ? res.data.data.employee_name : null;
+          this.dataDelivery.employee_code = res.data.data.employee_code ? res.data.data.employee_code : null;
           this.dataDeliverySummary = res.data.summary;
           this.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number.toString();
           
@@ -269,6 +274,8 @@ export default {
             item["status_delivery"] = [...status["normal"], ...status["all"]]
           }
         }
+        item['employee_name'] = data.employee_name
+        item['employee_code'] = data.employee_code
       })
       // console.log(" processDataDelivery : status =>", status)
       // console.log(" processDataDelivery : delivery =>", delivery)
