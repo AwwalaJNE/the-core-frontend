@@ -27,21 +27,47 @@
                         
                         
                     </vs-select> -->
-                    <span class="c-label">{{name}}</span>
-                    <el-select 
-                    v-model="value" 
-                    filterable 
-                    class="m-select"
-                    :placeholder="placeholder"
-                    @change="updateValue"
-                    :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
-                        <el-option
-                        v-for="(item,key) in DataArr"
-                        :key="key"
-                        :label="String(item.label)"
-                        :value="String(item.value)">
-                        </el-option>
-                    </el-select>
+                    <template v-if="listenHiddenTitle == false">
+                      <span class="c-label">{{name}}</span>
+                    </template>
+                    
+                    <template v-if="listenIsMultiple == true">
+                      <el-select 
+                      v-model="arrValue" 
+                      filterable
+                      multiple
+                      collapse-tags
+                      class="m-select"
+                      :placeholder="placeholder"
+                      :disabled="listenIsDisabled"
+                      @change="updateValue"
+                      :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
+                          <el-option
+                          v-for="(item,key) in DataArr"
+                          :key="key"
+                          :label="item.label"
+                          :value="item.value">
+                          </el-option>
+                      </el-select>
+                    </template>
+                    <template v-else>
+                      <el-select 
+                      v-model="value" 
+                      filterable
+                      class="m-select"
+                      :placeholder="placeholder"
+                      :disabled="listenIsDisabled"
+                      @change="updateValue"
+                      :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
+                          <el-option
+                          v-for="(item,key) in DataArr"
+                          :key="key"
+                          :label="item.label"
+                          :value="item.value">
+                          </el-option>
+                      </el-select>
+                    </template>
+                    
                 </template>
             </inputan>
         </template>
@@ -66,7 +92,9 @@ export default {
         isMultiple: Boolean,
         border: Boolean,
         placeholder:String,
-        tabindex: [Number, String]
+        tabindex: [Number, String],
+        disabled: Boolean,
+        hiddenTitle: Boolean
     },
     data() {
         return {
@@ -91,6 +119,12 @@ export default {
         },
         listenTabIndex() {
             return this.tabindex
+        },
+        listenIsDisabled() {
+            return this.disabled ? this.disabled : false
+        },
+        listenHiddenTitle() {
+            return this.hiddenTitle ? this.hiddenTitle : false
         },
     },
     watch: {
@@ -131,8 +165,10 @@ export default {
         //     this.loadingInjector !== null ? this.loadingInjector.close() : null
         // },
         updateValue(val){
+            let dataValue = this.listenIsMultiple == false ? this.value : this.arrValue
+            
             let obj = this.DataArr.filter(item => item.value == val)[0]
-            this.$emit("updateValue", this.listenFormKey, val, obj, this.dataObj)
+            this.$emit("updateValue", this.listenFormKey, dataValue, obj, this.dataObj)
         }
     },
 }

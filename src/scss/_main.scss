@@ -223,7 +223,11 @@ ul{
         border-radius: 10px;
     }
     .el-select__tags{
-        transform: translateY(-68%) !important;
+        transform: translateY(-45%) !important;
+        height: auto;
+        max-width: 200px;
+        word-wrap: break-word;
+        white-space: break-spaces;
     }
 }
 .el-popper[x-placement^=bottom]{

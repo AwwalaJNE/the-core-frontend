@@ -1,4 +1,35 @@
 export default {
+  // Bagging
+  SET_BAGGING_destination_selected(state, payload) {
+    state.bagging.destination.selected = payload
+  },
+  SET_BAGGING_destination_dataArray(state, payload) {
+    if(payload !== undefined) {
+        let data = payload.length > 0 ? payload : [
+          {
+            "label": null,
+            "value": null
+          }
+        ]
+        state.bagging.destination.dataArray = data
+    }
+  },
+  
+  SET_BAGGING_service_selected(state, payload) {
+    state.bagging.service.selected = payload
+  },
+  SET_BAGGING_service_dataArray(state, payload) {
+    if(payload !== undefined && typeof payload == "array") {
+        let data = payload.length > 0 ? payload : [
+          {
+            "label": null,
+            "value": null
+          }
+        ]
+        state.bagging.service.dataArray = data
+    }
+  },
+  
   // ==== user ====
   SET_USER_USER_NAME(state, payload) {
     state.user.user_name.value = payload

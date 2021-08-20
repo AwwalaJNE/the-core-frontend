@@ -1,4 +1,20 @@
 export default {
+  // bagging
+  SET_BAGGING_destination_selected({ commit }, payload) {
+    commit('SET_BAGGING_destination_selected', payload)
+  },
+  SET_BAGGING_destination_dataArray({ commit }, payload) {
+    commit('SET_BAGGING_destination_dataArray', payload)
+  },
+  
+  SET_BAGGING_service_selected({ commit }, payload) {
+    commit('SET_BAGGING_service_selected', payload)
+  },
+  SET_BAGGING_service_dataArray({ commit }, payload) {
+    commit('SET_BAGGING_service_dataArray', payload)
+  },
+  
+  
   // ==== user ====
   SET_USER_USER_NAME({ commit }, payload) {
     commit('SET_USER_USER_NAME', payload)

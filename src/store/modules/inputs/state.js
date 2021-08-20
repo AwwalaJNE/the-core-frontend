@@ -1,6 +1,26 @@
 // rule : "required|min:8"
 
 export default {
+  bagging: {
+    destination: {
+      selected: [],
+      dataArray: [
+        {
+          "label": null,
+          "value": null
+        }
+      ]
+    },
+    service: {
+      selected: [],
+      dataArray: [
+        {
+          "label": null,
+          "value": null
+        }
+      ]
+    }
+  },
   user: {
     user_login: {
       label: "User login*",
