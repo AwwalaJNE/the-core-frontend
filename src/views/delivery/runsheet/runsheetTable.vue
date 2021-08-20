@@ -168,6 +168,8 @@ export default {
         actionDetail(row){
             let params = {
                 employee_id: row.employee_id,
+                employee_code: row.employee_code,
+                employee_name: row.employee_name,
             }
             let routeName = 'delivery-runsheet-new'
             if(row.delivery_runsheet_number){

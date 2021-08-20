@@ -14,13 +14,13 @@
         <vs-col lg="12" sm="12" xs="12">
           <div class="box information" style="padding-top: 1px !important">
             <p align="left"><b>Courier</b></p>
-            <template v-if="dataDelivery">
+            <template v-if="dataDelivery || employee_data">
               <p align="left">
-                {{ dataDelivery.employee_code }} ({{
-                  dataDelivery.employee_name
-                }})
+                {{ dataDelivery[0] ? dataDelivery[0].employee_code : employee_data.employee_code }}
+                ({{dataDelivery[0] ? dataDelivery[0].employee_name : employee_data.employee_name }})
               </p>
             </template>
+
 
             <div class="nav-box">
               <vs-row>
@@ -136,6 +136,7 @@ export default {
       form: {},
       delivery_runsheet_number: "",
       employee_id: "",
+      employee_data: {},
       dataDelivery: [],
       summary: [],
       arrStatus: null,
@@ -175,9 +176,14 @@ export default {
     },
     getParamRoute() {
       this.employee_id = this.$route.params.employee_id.toString();
+
+      this.employee_data.employee_name = this.$route.params.employee_name
+      this.employee_data.employee_code = this.$route.params.employee_code
+
       if (this.$route.name == "delivery-runsheet-edit") {
         this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number.toString();
         this.getDataDelivery();
+
       }
     },
     async scanConnote() {
@@ -191,6 +197,11 @@ export default {
         )
         .then((res) => {
           this.dataDelivery = this.processDataDelivery(res.data.data)
+          this.dataDelivery.map((item) => {
+            item.employee_name = res.data.data.employee_name
+          })
+          this.dataDelivery.employee_name = res.data.data.employee_name ? res.data.data.employee_name : null;
+          this.dataDelivery.employee_code = res.data.data.employee_code ? res.data.data.employee_code : null;
           this.dataDeliverySummary = res.data.summary;
           this.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number.toString();
           
@@ -269,6 +280,8 @@ export default {
             item["status_delivery"] = [...status["normal"], ...status["all"]]
           }
         }
+        item['employee_name'] = data.employee_name
+        item['employee_code'] = data.employee_code
       })
       // console.log(" processDataDelivery : status =>", status)
       // console.log(" processDataDelivery : delivery =>", delivery)
