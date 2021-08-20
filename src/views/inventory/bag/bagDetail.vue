@@ -48,8 +48,30 @@
           </template>
         </vs-col>
         
+        <!--input service type -->
+        <vs-col xs="12" sm="2" lg="2">
+          <template>
+            <div class="center in-get-bag">
+             <vs-col lg="12">
+               <selector 
+               ref="service"
+               name="service" 
+               rules="" 
+               placeholder="Select service"
+               formKey="service"
+               :valueData="listenServiceTypeArr"
+               :selectedValue="listenServiceType"
+               :isMultiple="true"
+               :disabled="is_disabled"
+               :hiddenTitle="true"
+               @updateValue="updateValue" />
+             </vs-col>
+            </div>
+          </template>
+        </vs-col>
+        
         <!--input update location -->
-        <!-- <vs-col xs="12" sm="2" lg="2">
+        <vs-col xs="12" sm="2" lg="2">
           <template>
             <div class="center in-get-bag">
               <vs-col lg="12">
@@ -81,30 +103,8 @@
 
             </div>
           </template>
-        </vs-col> -->
-        
-        <!--input service type -->
-        <vs-col xs="12" sm="2" lg="2">
-          <template>
-            <div class="center in-get-bag">
-             <vs-col lg="12">
-               <selector 
-               ref="service"
-               name="service" 
-               rules="" 
-               placeholder="Select service"
-               formKey="service"
-               :valueData="listenServiceTypeArr"
-               :selectedValue="listenServiceType"
-               :isMultiple="true"
-               :disabled="is_disabled"
-               :hiddenTitle="true"
-               @updateValue="updateValue" />
-             </vs-col>
-            </div>
-          </template>
         </vs-col>
-
+        
         <!--input update weight -->
         <vs-col xs="12" sm="2" lg="2">
           <template>
@@ -218,7 +218,7 @@ export default {
       this.bag_id = this.$route.params.id
       this.form={
           bag_number : this.bag_id,
-          destination_node_id : this.listenDestination,
+          destination : this.listenDestination,
           service: this.listenServiceType
       }
     },
@@ -256,36 +256,36 @@ export default {
           })
     },
 
-    // async getNodeLink() {
-    //   this.loading = true
-    //   await axios
-    //       .get(this.URL.node +
-    //           `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
-    //           this.Helper.header())
-    //       .then(res => {
-    //           res.data.data.map(item => {
-    //             let obj = {}
-    //             obj["label"] = item.node_name
-    //             obj["value"] = Number(item.node_id)
-    // 
-    //             this.DataNode.push(obj)
-    //           })
-    // 
-    // 
-    //         this.loading = false
-    //       }).catch(err => {
-    //         this.loading = false
-    //         this.openNotification('danger', 'Failed to populate node list', err)
-    //       })
-    // },
-    // updateNode(){
-    //   this.form={
-    //       bag_number : this.bag_id,
-    //       destination_node_id : this.node_request
-    //   }
-    //   this.loading = true
-    //   // this.putBag();
-    // },
+    async getNodeLink() {
+      this.loading = true
+      await axios
+          .get(this.URL.node +
+              `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+              this.Helper.header())
+          .then(res => {
+              res.data.data.map(item => {
+                let obj = {}
+                obj["label"] = item.node_name
+                obj["value"] = Number(item.node_id)
+    
+                this.DataNode.push(obj)
+              })
+    
+    
+            this.loading = false
+          }).catch(err => {
+            this.loading = false
+            this.openNotification('danger', 'Failed to populate node list', err)
+          })
+    },
+    updateNode(){
+      this.form={
+          bag_number : this.bag_id,
+          destination_node_id : this.node_request
+      }
+      this.loading = true
+      this.putBag();
+    },
     async putBag(){
       await axios
           .put(this.URL.bag+'/'+this.bag_id+`?n=${this.listenNodeId}`, 
@@ -318,7 +318,7 @@ export default {
   },
   mounted() {
     this.getBagIdParam()
-    // this.getNodeLink()
+    this.getNodeLink()
   }
 }
 </script>

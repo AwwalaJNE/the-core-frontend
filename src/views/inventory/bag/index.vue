@@ -108,10 +108,16 @@ export default {
             is_disabled: false,
             
             destination: [],
-            destinationArray: [{
-              "label":null,
-              "value":null
-            }],
+            destinationArray: [
+              {
+                "label":"Jabodetabek",
+                "value":"Jabodetabek"
+              },
+              {
+                "label":"Domestik",
+                "value":"Domestik"
+              }
+            ],
             
             service: [],
             serviceArray: [
@@ -136,7 +142,11 @@ export default {
     },
     methods: {
       updateValue(){
-        this.form.item_number = this.item_code
+        this.form={
+            item_number: this.item_code,
+            destination : this.destination,
+            service: this.service
+        }
         this.ProccessBagging()
       },
       handleClearForm(){
@@ -154,75 +164,6 @@ export default {
         }
         
       },
-      
-      async getNodeLinkDestination() {
-        this.loading = true
-        // if(this.destinationArray[0].value == null) {
-        //   this.destinationArray = []
-        // }
-        await axios
-            .get(this.URL.node +
-                `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
-                this.Helper.header())
-            .then(res => {
-                let arr = []
-                
-                res.data.data.map(item => {
-                  let obj = {}
-                  obj["label"] = item.node_name
-                  obj["value"] = item.node_id
-                  
-                  arr.push(obj)
-                })
-                
-                if(arr.length > 0) {
-                  this.destinationArray = arr
-                } else {
-                  this.destinationArray = [{
-                    "label":null,
-                    "value":null
-                  }]
-                }
-                console.log("this.destinationArray", this.destinationArray)
-                
-                this.$store.dispatch("SET_BAGGING_destination_dataArray", arr )
-                this.$store.dispatch("SET_BAGGING_service_dataArray", this.serviceArray )
-              this.loading = false
-            }).catch(err => {
-              this.loading = false
-              // this.openNotification('danger', 'Failed to populate node list', err)
-            })
-      },
-      
-      // async getListservice() {
-      //   this.loading = true
-      //   if(this.serviceArray[0].value == null) {
-      //     this.serviceArray = []
-      //   }
-      //   await axios
-      //       .get(this.URL.service + `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
-      //           this.Helper.header())
-      //       .then(res => {
-      //           let arr = []
-      // 
-      //           res.data.data.map(item => {
-      //             let obj = {}
-      //             obj["label"] = item.service_service_code
-      //             obj["value"] = item.service_id
-      // 
-      //             arr.push(obj)
-      //           })
-      // 
-      //           this.serviceArray = arr
-      // 
-      //           this.$store.dispatch("SET_BAGGING_service_dataArray", arr )
-      //         this.loading = false
-      //       }).catch(err => {
-      //         this.loading = false
-      //         // this.openNotification('danger', 'Failed to populate node list', err)
-      //       })
-      // },
-      
       async ProccessBagging(){
         await axios
             .post(this.URL.bag+`?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header())
@@ -239,7 +180,8 @@ export default {
       }
     },
     mounted() {
-      this.getNodeLinkDestination()
+      this.$store.dispatch("SET_BAGGING_destination_dataArray", this.destinationArray )
+      this.$store.dispatch("SET_BAGGING_service_dataArray", this.serviceArray )
     }
 }
 </script>
