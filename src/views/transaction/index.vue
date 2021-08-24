@@ -328,8 +328,17 @@ export default {
 
         async createConnote2() {
             // this.rerender = true
+            let has_bpik = false
+            if(this.prosesDataTransaction['connote'][0].hasOwnProperty('connote_bpik')) {
+              if(this.prosesDataTransaction['connote'][0]['connote_bpik'].length > 0) {
+                has_bpik = true
+              }
+            }
+            console.log("")
+            
             this.openLoading()
             await axios
+                
                 .post(
                     this.URL.connote + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.prosesDataTransaction), 
@@ -337,7 +346,7 @@ export default {
                 ).then(res => {
                     if(res.status == 200){
                         this.prosesDataTransaction = {}
-                        // console.log('res connote ========>', res)
+                        console.log('res connote ========>', res)
                         this.tempConnote = res.data.data
                         this.handleDataTransaction()
                         this.wrapKoliNumber()
@@ -348,6 +357,13 @@ export default {
                         } else {
                             
                             this.getDataKoli()
+                            if(has_bpik == true) {
+                              let self = this
+                              setTimeout(function(){ 
+                                self.printBPIK(res.data.data["connote_number"])
+                              }, 1000);
+                            }
+                            
                             this.$nextTick(() => {
                                 this.openPaymentDialog()
                             });
@@ -362,6 +378,41 @@ export default {
                     this.openNotification('danger', 'Transaction failed', err.response ? err.response.data.message : 'something went wrong')
                     this.closeLoading()
                 })
+        },
+        
+        async printBPIK(connote_id){
+            let routeData = this.$router.resolve({ 
+                name: 'printGeneral', 
+                params: { 
+                    'id': connote_id, 
+                    'type': 'bpik',
+                    'node_id': this.listenNodeId
+                } 
+            });
+            window.open(routeData.href, '_blank');
+            // await axios
+            //           .get(this.URL.print + 
+            //           `/${connote_id}/bpik?n=${this.listenNodeId}`,
+            //           this.Helper.header())
+            //           .then(res => {
+            //               this.html = res.data.html 
+            // 
+            //               this.$nextTick(() => {
+            //                   var bpikWindow = window.open("", "MsgWindow", "width=800,height=600");
+            //                   bpikWindow.document.write(`${this.legacySystemHTML}`);
+            //                   bpikWindow.document.close();
+            //                   // bpikWindow.focus();
+            //                   // window action print setelah 3s
+            //                   // setTimeout(function(){ bpikWindow.print(); }, 3000);
+            //               });
+            // 
+            //           }).then(() => { 
+            //             // setTimeout(function(){ window.print(); }, 1000);
+            //           }).catch(err => {
+            //               this.loading = false
+            //               this.err = err.response.data.message || 'Invalid'
+            // 
+            //           })
         },
 
         handleDataTransaction() {
@@ -556,35 +607,35 @@ export default {
         },
 
         async getDataKoli() {
-			let self = this
-			await axios
-                .get(this.URL.print + 
-                `/${this.koli_number}/koli?n=${this.listenNodeId}`, 
-                this.Helper.header())
-                .then(res => {
-					// console.log('getDataKoli', res.data.html)
-                    this.legacySystemHTML = res.data.html
+    			let self = this
+    			await axios
+                    .get(this.URL.print + 
+                    `/${this.koli_number}/koli?n=${this.listenNodeId}`, 
+                    this.Helper.header())
+                    .then(res => {
+    					// console.log('getDataKoli', res.data.html)
+                        this.legacySystemHTML = res.data.html
 
-                    this.$nextTick(() => {
-                        var myWindow = window.open("", "MsgWindow", "width=600,height=400");
-                        myWindow.document.write(`${this.legacySystemHTML}`);
-                        myWindow.document.close();
-                        myWindow.focus();
-                        // window action print setelah 3s
-                        setTimeout(function(){ myWindow.print(); }, 3000);
-                    });
-                    
-					
-					// document.appendChild(div)
-					
-                    // this.res = res.data.data
-                }).catch(err => {
-                    // this.loading = false
-                    // this.checkAuth(err.response)
-					// this.openNotification('danger', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
-                    // this.openNotification('danger', 'Failed to populate country list', err)
-                })
-		},
+                        this.$nextTick(() => {
+                            var myWindow = window.open("", "MsgWindow", "width=600,height=400");
+                            myWindow.document.write(`${this.legacySystemHTML}`);
+                            myWindow.document.close();
+                            // myWindow.focus();
+                            // window action print setelah 3s
+                            // setTimeout(function(){ myWindow.print(); }, 3000);
+                        });
+                        
+    					
+    					// document.appendChild(div)
+    					
+                        // this.res = res.data.data
+                    }).catch(err => {
+                        // this.loading = false
+                        // this.checkAuth(err.response)
+    					// this.openNotification('danger', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
+                        // this.openNotification('danger', 'Failed to populate country list', err)
+                    })
+    		},
 
         keyHandler(e) {
             /**

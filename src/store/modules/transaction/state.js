@@ -539,7 +539,6 @@ export default {
     connote_receiver_street_address: '',
     connote_receiver_administrative_address: '',
 
-    connote_bpik: [],
     insured_goods_value: 0,
     amount_discount: 0,
     is_insured: false,
@@ -594,7 +593,6 @@ export default {
         connote_receiver_street_address: '',
         connote_receiver_administrative_address: '',
     
-        connote_bpik: [],
         insured_goods_value: 0,
         amount_discount: 0,
         is_insurance_refused: false, // gw juga ga faham kenapa req body dari backend mintra dobel2 gini x_x
