@@ -119,9 +119,9 @@ export default {
     methods: {
         refresh(){
           
-            
-            this.getTableData() // trigger function refresh form dari luar component list
-          
+
+              this.getTableData() // trigger function refresh form dari luar component list
+
         },
         // searchValue (val) {
         //     this.tempSearch = val
@@ -181,20 +181,20 @@ export default {
             this.dataTable = []
             await axios
                 .get(this.URL.inbound +
-                `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}`,
-                this.Helper.header())
+                    `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}`,
+                    this.Helper.header())
                 .then(res => {
-                    let data=[res.data.data]
-                    data.map(item=>{
-                      item['total_received'] = item.total_received.toString()
-                      item['total_unreceived'] = item.total_unreceived.toString()
-                    })
-                    this.dataTable = data
+                  let data=[res.data.data]
+                  data.map(item=>{
+                    item['total_received'] = item.total_received.toString()
+                    item['total_unreceived'] = item.total_unreceived.toString()
+                  })
+                  this.dataTable = data
 
-                    this.loading = false
+                  this.loading = false
                 }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Failed to populate Inbound list', err)
+                  this.loading = false
+                    // this.openNotification('danger', 'Failed to populate Inbound list', err)
                 })
         },
 

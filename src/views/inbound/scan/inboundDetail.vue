@@ -70,9 +70,12 @@ export default {
     },
     methods: {
         initialize(obj) {
-            if(obj.hasOwnProperty("detail_incoming")) {
+            if(obj != undefined){
+              if(obj.hasOwnProperty("detail_incoming")) {
                 this.dataTable = obj["detail_incoming"]
+              }
             }
+
         },
         actionDetail(row){
           this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
