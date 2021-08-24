@@ -748,19 +748,18 @@ export default {
         case 'handle_surcharge':
           console.log("handle surcharge", value, value2, value3, value4)
           this.connote_koli_item[value].surcharge_id = value2
-          
-          if(value4 != null && this.connote_koli_item[value].hasOwnProperty("surcharge_manual")) {
-            this.connote_koli_item[value].surcharge_manual = value4
-          }
-
+           
           if (this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
-            if (value3 !== null || value3 !== "") {
+            if (value3 !== null && value3 !== "") {
               this.connote_koli_item[value].is_packing_kayu = true
               this.connote_koli_item[value].is_packing_kayu_id = value3
             } else {
               this.connote_koli_item[value].is_packing_kayu = false
               this.connote_koli_item[value].is_packing_kayu_id = ""
             }
+          }
+          if(this.connote_koli_item[value].hasOwnProperty("surcharge_manual")) {
+            this.connote_koli_item[value].surcharge_manual = value4 != null ? value4 : ""
           }
           this.$store.dispatch('SET_CONNOTE_DATA_KOLI', this.connote_koli_item)
           const node_code = this.listenNodeCode

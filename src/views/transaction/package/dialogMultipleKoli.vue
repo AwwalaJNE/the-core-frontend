@@ -366,20 +366,26 @@ export default {
                     break;
                 case key.includes("handle_surcharge"):
                     
-                    console.log('multi koli surcharge', value, value2, value3)
-                    if(value4 != null && this.connote_koli_item[value].hasOwnProperty("surcharge_manual")) {
-                      this.connote_koli_item[value].surcharge_manual = value4
+                    console.log('multi koli surcharge', value, value2, value3, value4)
+                    
+                    if (this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
+                      if (value3 !== null && value3 !== "") {
+                        this.connote_koli_item[value].is_packing_kayu = true
+                        this.connote_koli_item[value].is_packing_kayu_id = value3
+                      } else {
+                        this.connote_koli_item[value].is_packing_kayu = false
+                        this.connote_koli_item[value].is_packing_kayu_id = ""
+                      }
                     }
-
+                    if(this.connote_koli_item[value].hasOwnProperty("surcharge_manual")) {
+                      this.connote_koli_item[value].surcharge_manual = value4 != null ? value4 : ""
+                    }
                     
                     if(this.connote_koli_item[value].hasOwnProperty('surcharge_id')) {
                         this.connote_koli_item[value].surcharge_id = value2
                     }
-
-                    if(this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
-                        this.connote_koli_item[value].is_packing_kayu_id = value3
-                    }
-
+                    
+                    console.log("this.connote_koli_item[value] >", this.connote_koli_item[value])
 
                     // this.$emit("prosesmultipleKoli", this.connote_koli_item)
                     // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)

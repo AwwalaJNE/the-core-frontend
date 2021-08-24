@@ -443,8 +443,9 @@ export default {
         },
         handleSubmit() {
           
-          this.prosesSurcharge()
+          // this.prosesSurcharge()
             this.closeDialog()
+          
         }
     },
     mounted() {
