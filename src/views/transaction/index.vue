@@ -73,6 +73,7 @@
                         <vs-row justify="flex-end" style="top:-13px">
                             <vs-col xs="6" sm="2" lg="2">
                                 <vs-button
+                                class="outline"
                                 transparent
                                 block
                                 flat
@@ -86,6 +87,7 @@
                             </vs-col>
                             <vs-col xs="6" sm="2" lg="2">
                                 <vs-button
+                                class="outline"
                                 transparent
                                 block
                                 flat
@@ -707,3 +709,11 @@ export default {
     }
 }
 </script>
+<style scoped>
+.outline:focus {
+  background-color: #153478;
+}
+.outline:hover {
+  background-color: #153478;
+}
+</style>
