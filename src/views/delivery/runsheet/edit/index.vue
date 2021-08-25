@@ -14,10 +14,10 @@
         <vs-col lg="12" sm="12" xs="12">
           <div class="box information" style="padding-top: 1px !important">
             <p align="left"><b>Courier</b></p>
-            <template v-if="dataDelivery || employee_data">
+            <template>
               <p align="left">
-                {{ dataDelivery[0] ? dataDelivery[0].employee_code : employee_data.employee_code }}
-                ({{dataDelivery[0] ? dataDelivery[0].employee_name : employee_data.employee_name }})
+                {{ employee_code }}
+                ({{ employee_name }})
               </p>
             </template>
 
@@ -45,7 +45,7 @@
                   </template>
                 </vs-col>
                 <vs-col xs="4" sm="4" lg="4" offset="2">
-                  <template v-if="dataDelivery && dataDeliverySummary">
+                  <template v-if="dataDelivery.length > 0">
                     <div class="left">
                       <ul style="float: left; text-align: left">
                         <li>
@@ -142,7 +142,11 @@ export default {
       arrStatus: null,
       statusObj: {},
       dataDeliverySummary: null,
-      loadingRunsheet: false
+      loadingRunsheet: false,
+      employee_code: "",
+      employee_name: "",
+      
+      loadingCourier: false
     };
   },
   methods: {
@@ -176,15 +180,34 @@ export default {
     },
     getParamRoute() {
       this.employee_id = this.$route.params.employee_id.toString();
-
-      this.employee_data.employee_name = this.$route.params.employee_name
-      this.employee_data.employee_code = this.$route.params.employee_code
-
+      this.getCourier()
+      // this.employee_data.employee_name = this.$route.params.employee_name
+      // this.employee_data.employee_code = this.$route.params.employee_code
+      
       if (this.$route.name == "delivery-runsheet-edit") {
         this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number.toString();
         this.getDataDelivery();
 
       }
+    },
+    async getCourier() {
+      this.loadingCourier = true
+      await axios
+        .get(
+          this.URL.employee +
+            `/${this.employee_id}?n=${this.listenNodeId}`,
+          this.Helper.header()
+        )
+        .then((res) => {
+            let data = res.data.data
+            this.employee_code = data["employee_name"] 
+            this.employee_name = data["employee_code"]
+          this.loadingCourier = false
+        })
+        .catch((err) => {
+          this.loadingCourier = true
+          // this.openNotification('danger', 'Failed to populate status', err)
+        });
     },
     async scanConnote() {
       this.loadingRunsheet = true
@@ -210,7 +233,7 @@ export default {
         })
         .catch((err) => {
           this.loadingRunsheet = false
-          this.openNotification("danger", "", err.response.data.message);
+          // this.openNotification("danger", "", err.response.data.message);
         });
     },
     async getStatus() {
@@ -228,7 +251,7 @@ export default {
             obj.value = item.status_code;
             obj["data"] = item
             
-            if(item.hasOwnProperty("status_condition")) {
+            if(item.hasOwnProperty("status_condition") && item["status_condition"] !== null) {
               if(statusObj.hasOwnProperty(item["status_condition"].toLowerCase())) {
                 statusObj[item["status_condition"].toLowerCase()].push(obj)
               } else {
@@ -240,7 +263,7 @@ export default {
             return obj;
           });
           this.statusObj = statusObj
-          this.getParamRoute();
+          
           // console.log("statusObj", statusObj)
         })
         .catch((err) => {
@@ -268,7 +291,6 @@ export default {
         });
     },
     processDataDelivery(data) {
-      // console.log("dapet data", data)
       let status = this.statusObj || {}
       let delivery = data["delivery"] ? data["delivery"] : []
       delivery.map((item) => {
@@ -331,6 +353,7 @@ export default {
   },
   mounted() {
     this.getStatus();
+    this.getParamRoute();
   },
 };
 </script>
