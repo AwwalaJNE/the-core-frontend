@@ -55,7 +55,8 @@ export default {
             val: '',
             type: '',
             err: '',
-            node_id: ''
+            node_id: '',
+            dom: null
         }
     },
     methods: {
@@ -69,70 +70,107 @@ export default {
           }
         },
         async getDataPrint() {
-			let self = this
-            this.loading = true
-			await axios
-                .get(this.URL.print + 
-                `/${this.val}/${this.type}?n=${this.node_id}`,
-                this.Helper.header())
-                .then(res => {
-					// console.log('getDataPrint', res.data)
-                    this.html = res.data.html 
+    			let self = this
+                this.loading = true
+    			await axios
+                    .get(this.URL.print + 
+                    `/${this.val}/${this.type}?n=${this.node_id}`,
+                    this.Helper.header())
+                    .then(res => {
+    					// console.log('getDataPrint', res.data)
+                        this.html = res.data.html 
 
-                    // let iframe = document.getElementById('iframe')
-                    // iframe.contentWindow.document.write(this.html);
-                    
-                    var printIFrame = document.createElement('iframe');
-                    document.body.appendChild(printIFrame);
-                    printIFrame.style.position = 'absolute';
-                    printIFrame.style.top = 0;
-                    printIFrame.style.left = 0;
-                    printIFrame.style.border = 0;
-                    printIFrame.style.height = '100%';
-                    printIFrame.style.width = '100%';
-                    printIFrame.style.overflow = 'auto';
-                    var frameWindow = printIFrame.contentWindow || printIFrame.contentDocument || printIFrame;
-                    var wdoc = frameWindow.document || frameWindow.contentDocument || frameWindow;
-                    wdoc.write(this.html);
-                    wdoc.close();
-                    frameWindow.focus();
-                    try {
-                        // Fix for IE11 - printng the whole page instead of the iframe content
-                        // if (!frameWindow.document.execCommand('print', false, null)) {
-                        //     // document.execCommand returns false if it failed -http://stackoverflow.com/a/21336448/937891
-                        // 
-                        //     setTimeout(function(){ frameWindow.print(); }, 5000);
-                        // }
-                        // focus body as it is losing focus in iPad and content not getting printed
-                        document.body.focus();
-                        setTimeout(function(){ frameWindow.print(); }, 3000);
-                    }
-                    catch (e) {
+                        // let iframe = document.getElementById('iframe')
+                        // iframe.contentWindow.document.write(this.html);
                         
-                        // setTimeout(function(){ frameWindow.print(); }, 1000);
-                    }
-                    // frameWindow.close();
-                    // setTimeout(function() {
-                    //     printIFrame.parentElement.removeChild(printIFrame);
-                    // }, 3000); 
-                    
-                    
-                    this.loading = false
-                }).then(() => { 
-                  // setTimeout(function(){ window.print(); }, 1000);
-                }).catch(err => {
-                    this.loading = false
-                    this.err = err.response.data.message || 'Invalid'
-                    // this.loading = false
-                    // this.checkAuth(err.response)
-					// this.openNotification('danger', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
-                    // this.openNotification('danger', 'Failed to populate country list', err)
-                })
-		}
+                        var printIFrame = document.createElement('iframe');
+                        document.body.appendChild(printIFrame);
+                        printIFrame.style.position = 'absolute';
+                        printIFrame.style.top = 0;
+                        printIFrame.style.left = 0;
+                        printIFrame.style.marginTop = 0;
+                        printIFrame.style.marginBottom = 0;
+                        printIFrame.style.border = 0;
+                        printIFrame.style.height = '100%';
+                        printIFrame.style.width = '100%';
+                        printIFrame.style.overflow = 'auto';
+                        
+                        // let test = printIFrame.getElementsByClassName("sheet");
+                        // let doc = test.contentDocument;
+                        // doc.style.background = '#f00';
+                        // printIFrame.getElementsByClassName('sheet').style.background = '#f00';
+                        
+                        var frameWindow = printIFrame.contentWindow || printIFrame.contentDocument || printIFrame;
+                        var wdoc = frameWindow.document || frameWindow.contentDocument || frameWindow;
+                        wdoc.write(this.html);
+                        wdoc.close();
+                        frameWindow.focus();
+                        
+                        // this.addKeyHandler()
+                        
+                        this.dom = frameWindow
+                        this.dom.addEventListener("keydown", this.keyHandler);
+                        try {
+                            // Fix for IE11 - printng the whole page instead of the iframe content
+                            // if (!frameWindow.document.execCommand('print', false, null)) {
+                            //     // document.execCommand returns false if it failed -http://stackoverflow.com/a/21336448/937891
+                            // 
+                            //     setTimeout(function(){ frameWindow.print(); }, 5000);
+                            // }
+                            // focus body as it is losing focus in iPad and content not getting printed
+                            document.body.focus();
+                            setTimeout(function(){ frameWindow.print(); }, 3000);
+                            
+                        }
+                        catch (e) {
+                            
+                            // setTimeout(function(){ frameWindow.print(); }, 1000);
+                        }
+                        // frameWindow.close();
+                        // setTimeout(function() {
+                        //     printIFrame.parentElement.removeChild(printIFrame);
+                        // }, 3000); 
+                        
+                        
+                        this.loading = false
+                    }).then(() => { 
+                      // setTimeout(function(){ window.print(); }, 1000);
+                    }).catch(err => {
+                        this.loading = false
+                        this.err = err.response.data.message || 'Invalid'
+                        // this.loading = false
+                        // this.checkAuth(err.response)
+    					          // this.openNotification('danger', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
+                        // this.openNotification('danger', 'Failed to populate country list', err)
+                    })
+    		},
+        // addKeyHandler() {
+        //   if(this.dom !== null) {
+        //     this.dom.addEventListener("keydown", this.keyHandler);
+        //   }
+        // },
+        keyHandler(e) {
+          // 17 - ctrl
+          // 80 - p
+          const key = e.which || e.keyCode;
+          if(e.ctrlKey && key === 17) {
+            this.dom.print();
+          }
+          // if(key === 17)
+        },
+        removeKeyHandler() {
+          if(this.dom !== null) {
+            this.dom.removeEventListener("keydown", this.keyHandler);
+          }
+        }
     },
     mounted() {
+        
         this.getParamRoute()
     },
+    destroyed() {
+        this.removeKeyHandler();
+    }
 }
 </script>
 <style lang="scss">
