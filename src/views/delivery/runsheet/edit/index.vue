@@ -226,9 +226,9 @@ export default {
           this.dataDelivery.employee_name = res.data.data.employee_name ? res.data.data.employee_name : null;
           this.dataDelivery.employee_code = res.data.data.employee_code ? res.data.data.employee_code : null;
           this.dataDeliverySummary = res.data.summary;
-          this.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number.toString();
+          this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
           
-          this.openNotification(null, "Success", "");
+          this.openNotification(null, "Success", "Update success");
           this.loadingRunsheet = false
         })
         .catch((err) => {
