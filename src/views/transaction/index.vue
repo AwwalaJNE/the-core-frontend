@@ -87,6 +87,7 @@
                             </vs-col>
                             <vs-col xs="6" sm="2" lg="2">
                                 <vs-button
+                                id="btnFinish"
                                 class="outline"
                                 transparent
                                 block
@@ -94,6 +95,7 @@
                                 :active="true"
                                 type="submit"
                                 @click="createTransaction()"
+                                v-on:keydown.tab="disable_tab_button"
                                 >
                                     FINISH
                                 </vs-button>
@@ -183,6 +185,12 @@ export default {
         },
         closePaymentDialog() {
             this.dialogPayment = false
+        },
+        disable_tab_button() {
+          setTimeout(function () {
+            document.getElementById("btnFinish").focus();
+          }, 10);
+
         },
         onSubmit(refs){
             // console.log('onsubmit form controller', refs)
