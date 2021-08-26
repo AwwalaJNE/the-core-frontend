@@ -74,7 +74,7 @@
                 <vs-col lg="12" sm="12" xs="12" style="margin-top: 2em">
                   <template>
                     <transition name="slide-fade">
-                      <template>
+                      <template v-if="listenDataDelivery.length > 0">
                         <RunsheetInformation
                           v-if="arrStatus && dataDelivery"
                           :dataDelivery="dataDelivery"
@@ -148,6 +148,11 @@ export default {
       
       loadingCourier: false
     };
+  },
+  computed: {
+    listenDataDelivery() {
+      return this.dataDelivery
+    }
   },
   methods: {
     refresh() {
@@ -263,7 +268,7 @@ export default {
             return obj;
           });
           this.statusObj = statusObj
-          
+          this.getParamRoute(); // perlu data status dulu sebelum getDataDelivery didalam getParamRoute {fix issue data tidak tampil}
           // console.log("statusObj", statusObj)
         })
         .catch((err) => {
@@ -295,6 +300,7 @@ export default {
       let delivery = data["delivery"] ? data["delivery"] : []
       delivery.map((item) => {
         item["status_delivery"] = []
+        item["is_disabled_input"] = false
         if(item.hasOwnProperty("koli_number")) {
           if(item["koli_number"].toLowerCase().includes("rt")) {
             item["status_delivery"] = [...status["rt"], ...status["all"]]
@@ -302,11 +308,25 @@ export default {
             item["status_delivery"] = [...status["normal"], ...status["all"]]
           }
         }
+        if(item.hasOwnProperty("status")) {
+          // item["is_disabled_input"] = item
+          if(item["status"] !== null && typeof item["status"] == 'object') {
+              if(item["status"].hasOwnProperty('status_subtype')) {
+                item["is_disabled_input"] = item["status"]["status_subtype"] !== null ||
+                                              item["status"]["status_subtype"] !== "" ?
+                                              true : false
+              }
+          }
+          console.log("item status", item["status"])
+        }
+        // if(item.hasOwnProperty('status')) {
+        
+        // }
         item['employee_name'] = data.employee_name
         item['employee_code'] = data.employee_code
       })
-      // console.log(" processDataDelivery : status =>", status)
-      // console.log(" processDataDelivery : delivery =>", delivery)
+      console.log(" processDataDelivery : status =>", status)
+      console.log(" processDataDelivery : delivery =>", delivery)
       
       return delivery
       
@@ -353,7 +373,7 @@ export default {
   },
   mounted() {
     this.getStatus();
-    this.getParamRoute();
+    
   },
 };
 </script>

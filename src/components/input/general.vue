@@ -172,7 +172,7 @@ export default {
         dataObj: [Object, Array],
         isdebounce: Boolean,
         enter_to_update: Boolean,
-        border: Boolean
+        border: Boolean,
     },
     components: {
         "inputan": Inputan

@@ -149,6 +149,7 @@
                                                       :selectedValue="item[column.selectedValue] ? item[column.selectedValue] : ''"
                                                       :isMultiple="false"
                                                       :dataObj="item"
+                                                      :disabled="column.hasOwnProperty('disabled_input') ? item[column.disabled_input]: false"
                                                       autocomplete="off"
                                                       @updateValue="updateValue" />
                                                   </div>
@@ -169,6 +170,7 @@
                                                         :selectedValue="item[column.selectedValue] ? item[column.selectedValue] : item[column.key]"
                                                         :isMultiple="false"
                                                         :dataObj="item"
+                                                        :disabled="column.hasOwnProperty('disabled_input') ? item[column.disabled_input]: false"
                                                         autocomplete="off"
                                                         @updateValue="updateValue" />
                                                     </div>
@@ -191,6 +193,7 @@
                                                         :isMultiple="false"
                                                         :dataObj="item"
                                                         autocomplete="off"
+                                                        :disabled="column.hasOwnProperty('disabled_input') ? item[column.disabled_input]: false"
                                                         @updateValue="updateValue" />
                                                     </div>
                                                 </template>
@@ -203,7 +206,7 @@
                                             :rules="''"
                                             :formKey="`${column.key}|${item[listenColumn[0].key]}`"
                                             :valueData="`${item[column.key] ? item[column.key] : ''}`"
-                                            :typeInput="'text'"
+                                            :typeInput="'text' + `|${column.hasOwnProperty('disabled_input') ? item[column.disabled_input] == true ? 'disabled' : '' : ''}`"
                                             :dataObj="item"
                                             :enter_to_update="true"
                                             @updateValue="updateValue" />
@@ -641,8 +644,8 @@ export default {
             return this.dataColumn
         },
         listenDataTable() {
-            // console.log('computed master table data', this.dataTable)
-            // console.log("-----------------")
+            console.log('computed master table data', this.dataTable)
+            console.log("-----------------")
             return this.dataTable
         },
         listenTableLoading() {

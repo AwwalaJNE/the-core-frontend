@@ -58,6 +58,7 @@ export default {
             value: null,
           }],
           selectedValue: "status_code",
+          disabled_input: "is_disabled_input",
           width: "md",
         },
 
@@ -66,6 +67,7 @@ export default {
           key: "remarks",
           type: "inputan",
           typeInput: "text",
+          disabled_input: "is_disabled_input",
           data: "",
           width: "md",
         },
@@ -80,6 +82,7 @@ export default {
           key: "receiver_name",
           type: "inputan",
           typeInput: "text",
+          disabled_input: "is_disabled_input",
           data: "",
           width: "md",
         },
