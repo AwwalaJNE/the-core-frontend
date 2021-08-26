@@ -95,7 +95,7 @@
                                 :active="true"
                                 type="submit"
                                 @click="createTransaction()"
-                                v-on:keydown.tab="disable_tab_button"
+                                v-on:keydown.tab="disable_tab_button($event)"
                                 >
                                     FINISH
                                 </vs-button>
@@ -186,10 +186,8 @@ export default {
         closePaymentDialog() {
             this.dialogPayment = false
         },
-        disable_tab_button() {
-          setTimeout(function () {
-            document.getElementById("btnFinish").focus();
-          }, 10);
+        disable_tab_button(event) {
+          event.preventDefault();
 
         },
         onSubmit(refs){
