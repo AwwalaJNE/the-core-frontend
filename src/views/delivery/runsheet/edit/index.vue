@@ -311,9 +311,9 @@ export default {
         if(item.hasOwnProperty("status")) {
           // item["is_disabled_input"] = item
           if(item["status"] !== null && typeof item["status"] == 'object') {
-              if(item["status"].hasOwnProperty('status_subtype')) {
-                item["is_disabled_input"] = item["status"]["status_subtype"] !== null ||
-                                              item["status"]["status_subtype"] !== "" ?
+              if(item["status"].hasOwnProperty('status_code')) {
+                item["is_disabled_input"] = item["status"]["status_code"] !== null ||
+                                              item["status"]["status_code"] !== "" ?
                                               true : false
               }
           }
