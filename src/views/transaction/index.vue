@@ -291,6 +291,7 @@ export default {
                     destinationObj['booking_connote_service_code'] = data.booking_connote_service_code || ""
                     this.$refs.destinationComponent.updateValue('detination', destinationObj, true)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, data.booking_connote_receiver_street_address || "")
+                    this.$refs.originComponent.$el.querySelector("input").focus();
                 } else {
                     this.openNotification('danger', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
                 }
