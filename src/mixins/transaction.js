@@ -92,7 +92,6 @@ const TransactionMixin = {
                                     filterAutoSurcharge.map(surcharge => {
                                         if (surcharge.hasOwnProperty('surcharge_condition') && surcharge['surcharge_type_name'].toLowerCase().includes('overweight')){
                                             let obj = this.filterSurcharge(surcharge, koli, node_code)
-                                            // console.log('auto complete surcharge', obj)
                                             
                                             if(obj['service_relevant'] == true) {
                                                 if(obj.hasOwnProperty("KOLI_ACTUAL_WEIGHT")) {
@@ -108,7 +107,6 @@ const TransactionMixin = {
                                         } 
                                     })
 
-                                    // console.log('prepareSurchargeID', prepareSurchargeID)
                                 }
 
                                 if(koli.hasOwnProperty('surcharge_id')) {
@@ -252,10 +250,6 @@ const TransactionMixin = {
                                               tempStatus = tempStatus !== null ? tempStatus && evalstr : evalstr
   
   
-                                              // console.log('Surcharge name = ', obj['surcharge_name'],)
-                                              // console.log('SERVICE CODE STR >>>', str, evalstr)
-                                              // console.log('proses condition', objective1, service, operator, objective2.toLowerCase(), tempStatus)
-                                              // console.log('END ///')
                                           } 
                                           if (objective1.toLowerCase().includes('connote_shipper_tlc')) {
                                               if(node.toLowerCase().includes(objective2.toLowerCase())) {
@@ -581,6 +575,8 @@ const TransactionMixin = {
                     SUM_SURCHARGE_MANUAL = SUM_SURCHARGE_MANUAL + surcharge_manual
                     
                     let tempbiaya = 0
+                    let compare_surcharge = []
+                    let highest_surcharge = 0
                     let temp_handling_charge = 0
                     let temp_adm_karantina = 0
                     let temp_chargeable_weight = 0
@@ -679,6 +675,9 @@ const TransactionMixin = {
                                     }
                                 })
                                 
+                                compare_surcharge.push(tempbiaya)
+                                highest_surcharge = Math.max.apply(null, compare_surcharge)
+                                
                             })
                             
                         }
@@ -704,7 +703,7 @@ const TransactionMixin = {
                       SUM_CHARGEBLE_WEIGHT = SUM_CHARGEBLE_WEIGHT + Number(this.round03(KOLI_CHARGEBLE_WEIGHT))
                     }
                     
-                    SUM_BIAYA_LAIN = SUM_BIAYA_LAIN + tempbiaya
+                    SUM_BIAYA_LAIN = SUM_BIAYA_LAIN + highest_surcharge
                     SUM_HANDLING_CHARGE = SUM_HANDLING_CHARGE + temp_handling_charge
                     SUM_ADM_KARANTINA = SUM_ADM_KARANTINA + temp_adm_karantina
                     SUM_PELEPASAN_KARANTINA = SUM_PELEPASAN_KARANTINA + temp_pelepasan_karantina
