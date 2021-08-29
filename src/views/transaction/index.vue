@@ -95,7 +95,7 @@
                                 :active="true"
                                 type="submit"
                                 @click="createTransaction()"
-                                v-on:keydown.tab="disable_tab_button"
+                                v-on:keydown.tab="disable_tab_button($event)"
                                 >
                                     FINISH
                                 </vs-button>
@@ -186,10 +186,8 @@ export default {
         closePaymentDialog() {
             this.dialogPayment = false
         },
-        disable_tab_button() {
-          setTimeout(function () {
-            document.getElementById("btnFinish").focus();
-          }, 10);
+        disable_tab_button(event) {
+          event.preventDefault();
 
         },
         onSubmit(refs){
@@ -293,6 +291,7 @@ export default {
                     destinationObj['booking_connote_service_code'] = data.booking_connote_service_code || ""
                     this.$refs.destinationComponent.updateValue('detination', destinationObj, true)
                     this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, data.booking_connote_receiver_street_address || "")
+                    this.$refs.originComponent.$el.querySelector("input").focus();
                 } else {
                     this.openNotification('danger', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
                 }
