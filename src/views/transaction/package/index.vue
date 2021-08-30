@@ -219,7 +219,6 @@
                     :form-key="InputObject['package_dimensi_weight'].key"
                     :value-data="InputObject['package_dimensi_weight'].value"
                     :type-input="koliinput"
-                    :onlyNumber="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -234,7 +233,6 @@
                     :form-key="InputObject['package_dimensi_length'].key"
                     :value-data="InputObject['package_dimensi_length'].value"
                     :type-input="koliinput"
-                    :onlyNumber="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -249,7 +247,6 @@
                     :form-key="InputObject['package_dimensi_width'].key"
                     :value-data="InputObject['package_dimensi_width'].value"
                     :type-input="koliinput"
-                    :onlyNumber="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -264,7 +261,6 @@
                     :form-key="InputObject['package_dimensi_height'].key"
                     :value-data="InputObject['package_dimensi_height'].value"
                     :type-input="koliinput"
-                    :onlyNumber="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -447,7 +443,7 @@ export default {
       template_koli: this.$store.getters.getTransaction.template_koli,
       connote_koli_item: [],
       koliObj: {},
-      koliinput: 'text',
+      koliinput: 'number',
       disableBtnMultipleKoli: true,
       jumlahKoli: 1,
       current_index_koli: 0,
@@ -632,7 +628,7 @@ export default {
         this.koliinput += `|disabled`
       } else {
         this.disableBtnMultipleKoli = true
-        this.koliinput = 'text'
+        this.koliinput = 'number'
       }
 
       if (this.jumlahKoli > 0) {
