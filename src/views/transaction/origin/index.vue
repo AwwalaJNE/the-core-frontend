@@ -30,6 +30,7 @@
                                     @click="openGetCustomer"
                                     :tabindex="-1"
                                     class="withFocus"
+                                    :disabled="listeninputDisabled"
                                     style="margin:10px auto 0;"
                                 >
                                     <i class='bx bx-user'></i>
@@ -48,6 +49,7 @@
                         ref="formTransactionOriginController"
                         @formData="formData"
                         :dataItem="listenDataItem"
+                        :inputDisabled="listeninputDisabled"
                         @searchTariffCode="searchTariffCode"
                         @onChangeCustom="onChangeCustom"
                         typeForm="origin"
@@ -92,6 +94,9 @@ export default {
         "form-input-controller": FormInputController, 
         "customerByPhone": customerByPhone
     },
+    props: {
+        inputDisabled: Boolean,
+    },
     data() {
         return {
             dialogGetCustomer: false,
@@ -107,6 +112,9 @@ export default {
         },
         listenforcererender() {
             return this.forcererender
+        },
+        listeninputDisabled() {
+          return this.inputDisabled
         }
     },
     methods: {

@@ -11,7 +11,7 @@
                             :formKey="item"
                             :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
                             :valueData="InputObject[item].value"
-                            :typeInput="InputObject[item].typeInput"
+                            :typeInput="InputObject[item].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
                             @updateValue="updateValue" 
                             @inputFocus="onfocuslah" />
                         </template>
@@ -25,7 +25,7 @@
                                         :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
                                         :formKey="inp.key"
                                         :valueData="inp.value"
-                                        :typeInput="inp.typeInput"
+                                        :typeInput="inp.typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
                                         @updateValue="updateValue" />
                                     </vs-col>
                                 </template>
@@ -41,6 +41,7 @@
                             :valueData="InputObject[item].arrData"
                             :selectedValue="InputObject[item].value"
                             :isMultiple="false"
+                            :disabled="listeninputDisabled"
                             @updateValue="updateValue" />
                         </template>
                         <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('radio')">
@@ -54,6 +55,7 @@
                                 :formKey="item"
                                 :valueData="InputObject[item].arrData"
                                 :selectedValue="InputObject[item].value"
+                                :disabled="listeninputDisabled"
                                 @updateValue="updateValue" />
                             </template>
                         </template>
@@ -65,6 +67,7 @@
                             :tabindex="InputObject[item].tabindex ? InputObject[item].tabindex : ''"
                             :formKey="item"
                             :valueData="InputObject[item].value"
+                            :disabled="listeninputDisabled"
                             @updateValue="updateValue" />
                         </template>
                     </vs-col>
@@ -91,7 +94,8 @@ export default {
         arrData: Array,
         typeForm: String,
         dataItem: Object,
-        getters: String
+        getters: String,
+        inputDisabled: Boolean,
     },
     data() {
         return {
@@ -117,6 +121,9 @@ export default {
         listenGettersPrefix() {
             return this.getters || 'getTransaction' // defaultnya akan mengarah ke transaction getters
         },
+        listeninputDisabled() {
+          return this.inputDisabled || false
+        }
     },
     methods: {
         initialize() {

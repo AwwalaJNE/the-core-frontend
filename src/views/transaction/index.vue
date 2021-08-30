@@ -51,17 +51,17 @@
                                         <vs-row justify="space-between">
                                             <vs-col xs="12" sm="6" lg="6">
                                                 <div ref="test" tabindex="1"></div>
-                                                <origin ref="originComponent"/>
+                                                <origin ref="originComponent" :inputDisabled="inputDisabled"/>
                                             </vs-col>
                                             <vs-col xs="12" sm="6" lg="6">
                                                 <div ref="test2" tabindex="2"></div>
-                                                <destination ref="destinationComponent"/>
+                                                <destination ref="destinationComponent" :inputDisabled="inputDisabled"/>
                                             </vs-col>
                                         </vs-row>
                                         <vs-row justify="space-between" class="mb-2" style="margin-top:10px">
                                             <vs-col xs="12" sm="12" lg="12">
                                                 <div ref="test3" tabindex="11"></div>
-                                                <package ref="packageComponent"/>
+                                                <package ref="packageComponent" :inputDisabled="inputDisabled"/>
                                             </vs-col>
                                         </vs-row>
                                     </div>
@@ -176,7 +176,8 @@ export default {
             tempConnote: {},
             prosesDataTransaction: {},
 
-            rerender: false
+            rerender: false,
+            inputDisabled: false
         }
     },
     methods: {
@@ -191,7 +192,7 @@ export default {
 
         },
         onSubmit(refs){
-            // console.log('onsubmit form controller', refs)
+            console.log('onsubmit form controller finished', refs)
                 refs.form.validate().then(success => {
                     if (!success) {
                         console.log('err niih')
@@ -221,7 +222,7 @@ export default {
                     }
 
                     if(needValidation == true) {
-                        // this.openNotification('warn', `${inputan} koli ke ${indexKoli + 1} kosong`, `${inputan} tidak boleh kosong`)
+                        this.openNotification('warn', `Multi koli pada input '${inputan}' urutan ke ${indexKoli + 1} kosong`, `input ${inputan} tidak boleh kosong`)
                     } else {
                         this.createConnote2()
                     }
@@ -308,12 +309,12 @@ export default {
         createTransaction() {
           let dataTransaction = this.$store.getters.getTransaction.transaction
           // if(this.dataTransaction.hasOwnProperty("transaction_id") && this.dataTransaction.hasOwnProperty("transaction_finished")) {
-          console.log("click finish",dataTransaction)
+          
             if(dataTransaction["transaction_id"] !== "" && dataTransaction["transaction_finished"] == true) {
               this.openPaymentDialog()
             } else {
               this.typeAction = 'finish'
-              
+              console.log("click finish",dataTransaction)
               this.$refs.formTransaction.formSubmit()
             }
           // }
@@ -372,7 +373,7 @@ export default {
                                 self.printBPIK(res.data.data["connote_number"])
                               }, 1000);
                             }
-                            
+                            this.inputDisabled = true
                             this.$nextTick(() => {
                                 this.openPaymentDialog()
                             });
