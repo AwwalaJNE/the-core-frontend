@@ -209,6 +209,10 @@ export default {
           value: 'Gadget & Aksesoris'
         },
         {
+          label: 'Special Cargo',
+          value: 'special cargo'
+        },
+        {
           label: 'Lain Lain',
           value: 'lain lain'
         },

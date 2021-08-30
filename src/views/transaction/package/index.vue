@@ -29,6 +29,7 @@
                     :active="false"
                     :tabindex="-1"
                     style="float:right"
+                    :disabled="listeninputDisabled"
                     @click="openBpikComponent()"
                   >
                     <i class="bx bx-plus" /> BPIK
@@ -49,6 +50,7 @@
                     :active="false"
                     :tabindex="-1"
                     style="float:right"
+                    :disabled="listeninputDisabled"
                     @click="connoteNumberDialog('pra')"
                   >
                     <i class="bx bx-plus" /> Pra Connote
@@ -69,6 +71,7 @@
                     :active="false"
                     :tabindex="-1"
                     style="float:right"
+                    :disabled="listeninputDisabled"
                     @click="connoteNumberDialog('single')"
                   >
                     <i class="bx bx-plus" /> Single Connote
@@ -95,7 +98,7 @@
                 :rules="InputObject['package_description'].rule"
                 :form-key="InputObject['package_description'].key"
                 :value-data="InputObject['package_description'].value"
-                :type-input="InputObject['package_description'].typeInput"
+                :type-input="InputObject['package_description'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
                 @updateValue="updateValue"
               />
 
@@ -109,6 +112,7 @@
                 :form-key="'package_category'"
                 :value-data="InputObject['package_category'].arrData"
                 :selected-value="InputObject['package_category'].value"
+                :disabled="listeninputDisabled"
                 :is-multiple="false"
                 @updateValue="updateValue"
               />
@@ -124,6 +128,7 @@
                   form-key="package_service"
                   :value-data="InputObject['package_service'].arrData"
                   :selected-value="InputObject['package_service'].value"
+                  :disabled="listeninputDisabled"
                   @updateValue="updateValue"
                 />
               </template>
@@ -133,7 +138,7 @@
                 :rules="InputObject['package_cod'].rule"
                 :form-key="InputObject['package_cod'].key"
                 :value-data="InputObject['package_cod'].value"
-                :type-input="InputObject['package_cod'].typeInput"
+                :type-input="InputObject['package_cod'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
                 @updateValue="updateValue"
               />
               <input-general
@@ -141,7 +146,7 @@
                 :rules="InputObject['package_insured_goods_value'].rule"
                 :form-key="InputObject['package_insured_goods_value'].key"
                 :value-data="InputObject['package_insured_goods_value'].value"
-                :type-input="InputObject['package_insured_goods_value'].typeInput"
+                :type-input="InputObject['package_insured_goods_value'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
                 :currency-masking="true"
                 @updateValue="updateValue"
               />
@@ -151,7 +156,7 @@
                 :rules="InputObject['package_diskon'].rule"
                 :form-key="InputObject['package_diskon'].key"
                 :value-data="InputObject['package_diskon'].value"
-                :type-input="InputObject['package_diskon'].typeInput"
+                :type-input="InputObject['package_diskon'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
                 :currency-masking="true"
                 @updateValue="updateValue"
               />
@@ -161,7 +166,7 @@
                 :rules="InputObject['package_instruksi'].rule"
                 :form-key="InputObject['package_instruksi'].key"
                 :value-data="InputObject['package_instruksi'].value"
-                :type-input="InputObject['package_instruksi'].typeInput"
+                :type-input="InputObject['package_instruksi'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
                 @updateValue="updateValue"
               />
             </vs-col>
@@ -181,7 +186,7 @@
                     :rules="InputObject['package_jumlah'].rule"
                     :form-key="InputObject['package_jumlah'].key"
                     :value-data="InputObject['package_jumlah'].value"
-                    :type-input="'number'"
+                    :type-input="'number' +`${listeninputDisabled == true ? '|disabled':''}`"
                     :min-value="1"
                     @updateValue="updateValue"
                   />
@@ -218,7 +223,7 @@
                     :rules="InputObject['package_dimensi_weight'].rule"
                     :form-key="InputObject['package_dimensi_weight'].key"
                     :value-data="InputObject['package_dimensi_weight'].value"
-                    :type-input="koliinput"
+                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -232,7 +237,7 @@
                     :rules="InputObject['package_dimensi_length'].rule"
                     :form-key="InputObject['package_dimensi_length'].key"
                     :value-data="InputObject['package_dimensi_length'].value"
-                    :type-input="koliinput"
+                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -246,7 +251,7 @@
                     :rules="InputObject['package_dimensi_width'].rule"
                     :form-key="InputObject['package_dimensi_width'].key"
                     :value-data="InputObject['package_dimensi_width'].value"
-                    :type-input="koliinput"
+                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -260,7 +265,8 @@
                     :rules="InputObject['package_dimensi_height'].rule"
                     :form-key="InputObject['package_dimensi_height'].key"
                     :value-data="InputObject['package_dimensi_height'].value"
-                    :type-input="koliinput"
+                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                    
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -277,6 +283,7 @@
                     form-key="package_tidak_packing_kayu"
                     :is-checked="InputObject['package_tidak_packing_kayu'].value"
                     :name="InputObject['package_tidak_packing_kayu'].titleLabel"
+                    :disabled="listeninputDisabled"
                     @updateValue="updateValue"
                   />
                   <div class="mt-05" />
@@ -285,6 +292,7 @@
                     form-key="package_tidak_asuransi"
                     :is-checked="InputObject['package_tidak_asuransi'].value"
                     :name="InputObject['package_tidak_asuransi'].titleLabel"
+                    :disabled="listeninputDisabled"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -320,7 +328,7 @@
                     shadow
                     :active="false"
                     class="withFocus"
-                    :disabled="!disableBtnMultipleKoli"
+                    :disabled="!disableBtnMultipleKoli || listeninputDisabled == true"
                     @click="openSurchargeDialog"
                   >
                     <i
@@ -361,6 +369,7 @@
                     form-key="package_do_return"
                     :is-checked="InputObject['package_do_return'].value"
                     :name="InputObject['package_do_return'].titleLabel"
+                    :disabled="listeninputDisabled"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -431,6 +440,9 @@ export default {
     'bpik': BPIK,
     'connote-number-dialog': ConnoteNumberDialog,
   },
+  props: {
+      inputDisabled: Boolean,
+  },
   mixins: [master, TransactionMixin],
   data() {
     return {
@@ -488,6 +500,9 @@ export default {
     listenConnoteIndexActive() {
       return this.$store.getters.getTransaction.connote_index_active
     },
+    listeninputDisabled() {
+      return this.inputDisabled || false
+    }
   },
   watch: {
     listenPackageService(n, o) {

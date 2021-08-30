@@ -1,6 +1,6 @@
 <template>
     <div @keyup.enter="keyHandler" style="text-align: left;">
-        <el-checkbox ref="elBoxc" v-model="option1" @change="updateValue">{{listenName}}</el-checkbox>
+        <el-checkbox ref="elBoxc" :disabled="listenIsDisabled" v-model="option1" @change="updateValue">{{listenName}}</el-checkbox>
     </div>
 </template>
 <script>
@@ -9,7 +9,8 @@ export default {
     props: {
         isChecked: Boolean,
         formKey: String,
-        name: String
+        name: String,
+        disabled: Boolean
     },
     data() {
         return {
@@ -29,6 +30,9 @@ export default {
         },
         listenName(){
             return this.name || ''
+        },
+        listenIsDisabled(){
+            return this.disabled || false
         },
     },
     methods: {
