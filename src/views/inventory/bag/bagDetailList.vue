@@ -147,10 +147,11 @@ export default {
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.detail
-                    
+                    let bag_des = res.data.data.destination ? res.data.data.destination.node_code  : '-'
+                    console.log(arr, 'klas')
                     arr.map((item, index)  => {
                       item["no"] = index+1
-                      item['destination_code'] = res.data.data.destination ? res.data.data.destination.node_code : item.connote_receiver_tariff_code
+                      item['destination_code'] = item.connote_receiver_tariff_code ?  item.connote_receiver_tariff_code : bag_des
                       item['bag_detail_qty'] = res.data.data.bag_detail_qty
                     })
                     this.getSummaryBag(res)
