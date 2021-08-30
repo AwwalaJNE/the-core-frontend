@@ -8,6 +8,7 @@
                         style="margin-top:.5em"
                         v-model="value" 
                         :val="item.value" 
+                        :disabled="listenIsDisabled"
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                         :key="key">
                             {{item.label}}
@@ -36,7 +37,8 @@ export default {
         typeInput: String,
         border: Boolean,
         vertical: Boolean,
-        width: [String, Number]
+        width: [String, Number],
+        disabled: Boolean
     },
     data() {
         return {
@@ -52,7 +54,10 @@ export default {
         },
         listenIsMultiple(){
             return this.isMultiple ? this.isMultiple : false
-        }
+        },
+        listenIsDisabled(){
+            return this.disabled || false
+        },
     },
     watch: {
         valueData: function (val) {

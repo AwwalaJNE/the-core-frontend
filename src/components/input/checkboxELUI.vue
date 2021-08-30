@@ -32,7 +32,7 @@ export default {
             return this.name || ''
         },
         listenIsDisabled(){
-            return this.disabled
+            return this.disabled || false
         },
     },
     methods: {
