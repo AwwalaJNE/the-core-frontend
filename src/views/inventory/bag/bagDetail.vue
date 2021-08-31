@@ -42,8 +42,7 @@
                formKey="destination"
                :valueData="regionalArray"
                :selectedValue="regional"
-               :isMultiple="true"
-               :disabled="is_disabled"
+               :disabled="true"
                @updateValue="updateValue" />
              </vs-col>
             </div>
@@ -64,7 +63,8 @@
                :valueData="serviceArray"
                :selectedValue="service"
                :isMultiple="true"
-               :disabled="is_disabled"
+               :disabled="true"
+               :collapseTags="false"
                @updateValue="updateValue" />
              </vs-col>
             </div>
@@ -195,14 +195,14 @@ export default {
       
       regional: "",
       regionalArray: [{
-        "label":null,
-        "value":null
+        "label": "All",
+        "value": "all"
       }],
       
       service: [],
       serviceArray: [{
-        "label":null,
-        "value":null
+        "label":"All",
+        "value":"all"
       }],
       
       loading: true
@@ -251,9 +251,37 @@ export default {
       
       // this.regional
       // this.regionalArray
+      let regional = data.validation ? data.validation : []
+      if(regional.length > 0) {
+        let obj = {}
+        obj["label"] = regional[0].destination ? regional[0].destination : '-' 
+        obj["value"] = regional[0].destination ? regional[0].destination : '-' 
+        this.regionalArray.push(obj)
+        
+        this.regional = regional[0].destination ? regional[0].destination : '-' 
+      } else {
+        this.regional = "all"
+      }
       
       // this.service
       // this.serviceArray
+      let service = data.validation_service ? data.validation_service : []
+      if(service.length > 0) {
+        let arr = []
+        service.map(item => {
+          let obj = {}
+          obj["label"] = item
+          obj["value"] = item
+          arr.push(obj)
+        })
+        this.serviceArray = [...this.serviceArray, ...arr]
+        this.service = service
+      } else {
+        this.service = ["all"]
+      }
+      
+      
+      
       this.loading = loading
     },
     getBagIdParam(){

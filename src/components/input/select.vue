@@ -36,7 +36,7 @@
                       v-model="arrValue" 
                       filterable
                       multiple
-                      collapse-tags
+                      :collapse-tags="listenIsCollapseTags"
                       class="m-select"
                       :placeholder="placeholder"
                       :disabled="listenIsDisabled"
@@ -94,7 +94,8 @@ export default {
         placeholder:String,
         tabindex: [Number, String],
         disabled: Boolean,
-        hiddenTitle: Boolean
+        hiddenTitle: Boolean,
+        collapseTags: Boolean
     },
     data() {
         return {
@@ -125,6 +126,9 @@ export default {
         },
         listenHiddenTitle() {
             return this.hiddenTitle ? this.hiddenTitle : false
+        },
+        listenIsCollapseTags() {
+            return this.collapseTags ? this.collapseTags : false
         },
     },
     watch: {
