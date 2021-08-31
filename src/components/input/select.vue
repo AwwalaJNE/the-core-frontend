@@ -210,5 +210,6 @@ export default {
             align-content: start;
             display: block;
             padding: 4px 7px;
+            text-align: left;
         }
 </style>

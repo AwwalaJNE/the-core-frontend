@@ -9,8 +9,8 @@
       </vs-col>
     </vs-row>
     <section class="bagging">
-      <vs-row>
-        <vs-col xs="12" sm="3" lg="3">
+      <vs-row justify="space-between">
+        <vs-col xs="12" sm="2" lg="2">
           <template>
             <div class="center in-get-bag">
               <vs-col lg="12">
@@ -25,6 +25,9 @@
             </div>
           </template>
         </vs-col>
+      </vs-row>
+      
+      <vs-row style="margin-top:1em">
         
         <!--input destination -->
         <vs-col xs="12" sm="2" lg="2">
@@ -33,7 +36,7 @@
              <vs-col lg="12">
                <selector 
                ref="destination"
-               name="destination" 
+               name="Regional" 
                rules="" 
                placeholder="Select Location"
                formKey="destination"
@@ -41,7 +44,6 @@
                :selectedValue="listenDestination"
                :isMultiple="true"
                :disabled="is_disabled"
-               :hiddenTitle="true"
                @updateValue="updateValue" />
              </vs-col>
             </div>
@@ -55,7 +57,7 @@
              <vs-col lg="12">
                <selector 
                ref="service"
-               name="service" 
+               name="Service" 
                rules="" 
                placeholder="Select service"
                formKey="service"
@@ -63,7 +65,6 @@
                :selectedValue="listenServiceType"
                :isMultiple="true"
                :disabled="is_disabled"
-               :hiddenTitle="true"
                @updateValue="updateValue" />
              </vs-col>
             </div>
@@ -75,7 +76,7 @@
           <template>
             <div class="center in-get-bag">
               <vs-col lg="12">
-                    
+                      <span class="c-label">Destination</span>
                       <vs-select
                           class="m-select"
                           filter
@@ -84,6 +85,7 @@
                           v-model="node_request"
                           :border="true"
                           autocomplete="off"
+                          disabled
                           @change="updateNode"
                       >
                         <template v-if="listenDataNOde.length > 0">
@@ -110,9 +112,11 @@
           <template>
             <div class="center in-get-bag">
              <vs-col lg="8">
+               <span class="c-label">Weight</span>
                <vs-input border type="text"
                          v-model="weight"
-                         label-placeholder="Weight"
+                         placeholder="Weight"
+                         disabled
                          v-on:keyup.enter="updateValue"
                          ref="formInputBagging" icon-after>
                  <template #icon>Kg</template>
@@ -124,7 +128,8 @@
 
         <vs-col xs="12" sm="3" lg="3" >
           <template>
-            <div class="center in-get-bag" style="float: right; width: 100%">
+            <vs-button @click="actionDetail">Print</vs-button>
+            <!-- <div class="center in-get-bag">
               <vs-row>
                 <vs-col lg="6" align="">
                 </vs-col>
@@ -132,7 +137,7 @@
                   <vs-button @click="actionDetail">Print</vs-button>
                 </vs-col>
               </vs-row>
-            </div>
+            </div> -->
           </template>
         </vs-col>
       </vs-row>
@@ -256,28 +261,28 @@ export default {
           })
     },
 
-    async getNodeLink() {
-      this.loading = true
-      await axios
-          .get(this.URL.node +
-              `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
-              this.Helper.header())
-          .then(res => {
-              res.data.data.map(item => {
-                let obj = {}
-                obj["label"] = item.node_name
-                obj["value"] = Number(item.node_id)
-    
-                this.DataNode.push(obj)
-              })
-    
-    
-            this.loading = false
-          }).catch(err => {
-            this.loading = false
-            this.openNotification('danger', 'Failed to populate node list', err)
-          })
-    },
+    // async getNodeLink() {
+    //   this.loading = true
+    //   await axios
+    //       .get(this.URL.node +
+    //           `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+    //           this.Helper.header())
+    //       .then(res => {
+    //           res.data.data.map(item => {
+    //             let obj = {}
+    //             obj["label"] = item.node_name
+    //             obj["value"] = Number(item.node_id)
+    // 
+    //             this.DataNode.push(obj)
+    //           })
+    // 
+    // 
+    //         this.loading = false
+    //       }).catch(err => {
+    //         this.loading = false
+    //         this.openNotification('danger', 'Failed to populate node list', err)
+    //       })
+    // },
     updateNode(){
       this.form={
           bag_number : this.bag_id,
@@ -318,7 +323,7 @@ export default {
   },
   mounted() {
     this.getBagIdParam()
-    this.getNodeLink()
+    // this.getNodeLink()
   }
 }
 </script>
