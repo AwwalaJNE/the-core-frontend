@@ -148,7 +148,8 @@ export default {
                 .then(res => {
                     let arr = res.data.detail
                     let bag_des = res.data.data.destination ? res.data.data.destination.node_code  : '-'
-                    console.log(arr, 'klas')
+                    
+                    // console.log(arr, res,'klas')
                     arr.map((item, index)  => {
                       item["no"] = index+1
                       item['destination_code'] = item.connote_receiver_tariff_code ?  item.connote_receiver_tariff_code : bag_des
@@ -167,9 +168,11 @@ export default {
                     // }
                     
                     this.loading = false
+                    this.$emit("getResponse", res.data, this.loading)
                 }).catch(err => {
                     let errMessage = err.response ? err.response.data.message : 'Failed to populate bag'
                     this.loading = false
+                    this.$emit("getResponse", {}, this.loading)
                     this.openNotification('danger', 'Failed to populate bag', errMessage)
                 })
         },

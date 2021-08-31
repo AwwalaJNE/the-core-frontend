@@ -70,7 +70,7 @@
                 </template>
               </vs-col>
               
-              <vs-col xs="12" sm="2" lg="2">
+              <!-- <vs-col xs="12" sm="2" lg="2">
                 <template>
                   <div class="center in-get-bag">
                     <span class="c-label">Weight</span>
@@ -83,7 +83,7 @@
                     </vs-input>
                   </div>
                 </template>
-              </vs-col>
+              </vs-col> -->
               
               
             </vs-row>
@@ -148,11 +148,11 @@ export default {
             regionalArray: [
               {
                 "label":"Jabodetabek",
-                "value":"Jabodetabek"
+                "value":"jabodetabek"
               },
               {
                 "label":"Domestik",
-                "value":"Domestik"
+                "value":"domestik"
               }
             ],
             
@@ -183,7 +183,7 @@ export default {
               },
             ],
             destination: "",
-            weight: null,
+            // weight: null,
             loading: false
             
         }
@@ -219,9 +219,9 @@ export default {
             destination : this.regional,
             service: this.service
         }
-        if(this.weight !== null) {
-          this.form["bag_weight"] = parseInt(this.weight)
-        }
+        // if(this.weight !== null) {
+        //   this.form["bag_weight"] = parseInt(this.weight)
+        // }
         if(this.destination !== "") {
           this.form["destination_node_id"] = this.destination
         }
