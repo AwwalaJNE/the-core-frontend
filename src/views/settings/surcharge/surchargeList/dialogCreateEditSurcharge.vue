@@ -103,6 +103,12 @@ export default {
     methods: {
         formData(form){
             this.form = form
+            // this.form.hasOwnProperty('surcharge_condition') ? this.form['surcharge_condition'] = JSON.parse(this.form['surcharge_condition']) : ''
+            // this.form.hasOwnProperty('surcharge_formula') ? this.form['surcharge_formula'] = JSON.parse(this.form['surcharge_formula']) : ''
+            
+            // this.form['surcharge_condition'] = this.form['surcharge_condition'].toString()
+            // this.form['surcharge_formula'] = this.form['surcharge_formula'].toString()
+            console.log("this.form", this.form)
             if(this.surcharge_id !== undefined && this.surcharge_id !== '') {
                     this.updateData()
             } else {
@@ -128,7 +134,7 @@ export default {
                         res.data.data.map(item => {
                             let obj = {}
                             obj["label"] = item.surcharge_type_name
-                            obj["value"] = item.surcharge_type_id
+                            obj["value"] = item.surcharge_type_id.toString()
 
                             arr.push(obj)
                         })
