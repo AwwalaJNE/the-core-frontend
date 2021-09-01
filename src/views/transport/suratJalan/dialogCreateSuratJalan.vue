@@ -447,9 +447,13 @@ export default {
             
         },
         async getDataSuratMuatan(){
+          let manifest_do_number = "";
+          if(this.editData && this.editData.hasOwnProperty('manifest_do_number')){
+            manifest_do_number  = this.editData.manifest_do_number;
+          }
           await axios
               .get(this.URL.manifest_do +
-                  `/scan?n=${this.listenNodeId}&item_no=${this.suratMuatan}`,
+                  `/scan?n=${this.listenNodeId}&item_no=${this.suratMuatan}&manifest_do_number=${manifest_do_number}`,
                   this.Helper.header())
               .then(res => {
                 if(res.data.data) {
