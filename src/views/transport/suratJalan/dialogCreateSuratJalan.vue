@@ -453,7 +453,7 @@ export default {
           }
           await axios
               .get(this.URL.manifest_do +
-                  `/scana?n=${this.listenNodeId}&item_no=${this.suratMuatan}&manifest_do_number=${manifest_do_number}`,
+                  `/scan?n=${this.listenNodeId}&item_no=${this.suratMuatan}&manifest_do_number=${manifest_do_number}`,
                   this.Helper.header())
               .then(res => {
                 if(res.data.data) {
