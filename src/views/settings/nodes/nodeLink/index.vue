@@ -34,6 +34,9 @@ import DialogCreateEditNodeLink from "@/views/settings/nodes/nodeLink/dialogCrea
 export default {
     name:"Node-Link",
     mixins: [master],
+    props: {
+      query: String
+    },
     components: {
         "table-master" : TableMaster,
         "dialog-create-edit-node-link":DialogCreateEditNodeLink,
@@ -66,7 +69,7 @@ export default {
             ],
             loading: false,
             dataItem: {},
-            tempSearch: "",
+            tempSearch: this.query ? this.query : "",
             dialogNodeLink: false,
             pagination: {
                 limit:20,
@@ -74,6 +77,16 @@ export default {
                 page: 1
             }
         }
+    },
+    watch: {
+      query: function(val, old) {
+        if(val !== undefined) {
+          this.tempSearch = val
+          if(this.tempSearch !== old) {
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
+          }
+        }
+      }
     },
     methods: {
         async getTableData(limit,page,q) {
@@ -88,17 +101,17 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
                     if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
-
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
-                        // this.openNotification('warn', 'Node type data is empty!', ' Please create a new node type')
+                      this.dataTable = []
+                      this.pagination.page = 1
+                      this.pagination.limit = 20
+                      this.pagination.page_size = 1
                     }
-                    
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
