@@ -103,6 +103,7 @@
                     flat
                     :active="true"
                     @click="cancel"
+                    style="display: none"
                     >
                         Cancel
                     </vs-button>
