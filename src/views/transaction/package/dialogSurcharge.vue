@@ -115,6 +115,8 @@
                     flat
                     :active="true"
                     type="submit"
+                    class="outline"
+                    v-on:keydown.tab="disable_tab_button($event)"
                     @click="handleSubmit"
                     >
                         Submit
@@ -303,6 +305,10 @@ export default {
             // console.log('this.selectedRadio', this.selectedRadio)
             
         },
+        disable_tab_button(event) {
+          event.preventDefault();
+
+        },
         processSurchargeType() {
           // jika ada surcharge condition yg ditentukan dengan selected surcharge type
           // this.selectedRadio
@@ -461,4 +467,9 @@ export default {
       // visibility: visible;
     }
   }
+  .outline {
+  &:focus, &:hover {
+    background-color: #153478;
+  }
+}
 </style>
