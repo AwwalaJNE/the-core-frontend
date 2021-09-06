@@ -65,7 +65,7 @@ export default {
                 text: 'Checking credentials...',
                 background: '#EAEAEA',
             })
-            
+            this.form["kucing"] ="meong"
             await axios
                 .post(
                     this.URL.login,
