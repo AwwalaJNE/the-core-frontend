@@ -67,7 +67,7 @@ export default {
             await axios
                 .post(
                     this.URL.login,
-                    JSON.stringify(this.form), 
+                    this.form, 
                     this.Helper.headerLogin())
                 .then(res => {
                     if(res.status == 200) {
