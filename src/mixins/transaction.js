@@ -566,8 +566,8 @@ const TransactionMixin = {
                           vw = 0.01
                         }
                     }
-                         
-                    let koli_volume_weight = Number(vw.toFixed(2))
+                    let roundUp = Number(this.round03(Number(vw.toFixed(2))))
+                    let koli_volume_weight = roundUp
                     
                     let koli_actual_weight = Number(koli['actual_weight'])
                     // let chargeble_weight = Number(Math.max(koli_actual_weight, Number(this.round03(koli_volume_weight))).toFixed(2))
@@ -584,7 +584,7 @@ const TransactionMixin = {
                     let temp_air_line_document = 0
                     let temp_shipper_declaration = 0
                     
-                    let roundUp = Number(this.round03(koli_volume_weight))
+                    
                     let KOLI_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, roundUp).toFixed(2))
                     
                     if(koli.surcharge_id && koli.surcharge_id.length > 0) {    
@@ -881,15 +881,30 @@ const TransactionMixin = {
         },
 
         round03(numToRound){
-            let oo = numToRound | 0
-            let ooo = oo + 0.3
-            let res = oo
-            if(numToRound > ooo) {
-                res = res +1
-            } else if (numToRound < 1) {
-                res = 1
+            // let oo = numToRound || 0
+            let integers = 0;
+            if(numToRound == 0) {
+              // integers = 0
+            } else {
+              let limit_dec = 0.3
+              integers = Math.floor(numToRound);
+              let decimal  = numToRound - integers;
+              if(decimal > limit_dec){
+                  integers = integers + 1;
+              }
+              integers = integers <= 0 ? 1 : integers;
             }
-            return res;
+            
+            return integers;
+            // let ooo = oo + 0.3
+            // let res = oo
+            // if(numToRound > ooo) {
+            //     res = res +1
+            // } else if (numToRound < 1) {
+            //     res = 1
+            // }
+            // console.log("round03", numToRound, oo, ooo, res)
+            // return res;
         },
         getDefaultState() {
             // console.log('get default', this.$store.state.transaction.calc_component)
