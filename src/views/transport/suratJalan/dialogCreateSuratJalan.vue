@@ -473,7 +473,10 @@ export default {
                 }
 
               }).catch(err => {
-                // this.openNotification('danger', 'Failed to collect role list', err)
+                if(err){
+                  let message = err.response.data ? err.response.data.message : 'failed Load Data';
+                  this.openNotification('warn', 'Information', message)
+                }
               })
         },
         async getDriver() {

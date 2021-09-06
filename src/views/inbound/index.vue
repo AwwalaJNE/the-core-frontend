@@ -4,7 +4,7 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{title}}</h2>
+                    <h2>{{title + this.getNodeTypeLogin()}}</h2>
                 </div>
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
@@ -142,7 +142,7 @@ export default {
     },
     data() {
         return {
-            title:"Inbound Incoming",
+            title:"Receiving ",
             tempSearch: "",
             tempDate: [],
             DataNode:[
@@ -251,8 +251,12 @@ export default {
         updateNode(val){
 
         },
+        getNodeTypeLogin(){
+          return this.listenActiveUser.nodes[0].node_type ? this.listenActiveUser.nodes[0].node_type.node_type_name.toLowerCase() : '';
+        },
 
     },
+
     mounted() {
         this.getDataNodeType()
         this.getDataOrigin()
