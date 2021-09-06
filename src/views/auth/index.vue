@@ -58,12 +58,14 @@ export default {
             this.form = form
             this.login()
         },
+        
         async login() {
             const loading = this.$vs.loading({
                 type:'scale',
                 text: 'Checking credentials...',
                 background: '#EAEAEA',
             })
+            
             await axios
                 .post(
                     this.URL.login,
@@ -75,14 +77,6 @@ export default {
                         this.$ls.set('user', res.data.data.user)
                         this.$ls.set('config', res.data.data.config)
                     }
-                    // localStorage.setItem("tokenBearer", res.data.data.token);
-                    // localStorage.setItem("UserID", res.data.data.user.user_id);
-
-                    // this.$ls.set('tokenBearer', res.data.data.token)
-                    // this.$ls.set('UserID', res.data.data.user.user_id)
-                    // let token = this.$ls.get('tokenBearer')
-
-                    // console.log('token local', token)
 
                     loading.close();
                     this.$router.push({ name: "profile"});
