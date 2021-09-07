@@ -125,10 +125,12 @@ export default {
             this.form = {}
         },
         async updateData() {
+
             await axios
                 .post(
                     this.URL.pickup + `/${this.pickup_number}/cancel?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
+                    this.form,
+                    // JSON.stringify(this.form),
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
