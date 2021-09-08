@@ -819,6 +819,8 @@ const TransactionMixin = {
                                     console.log("inside LOOP calc !== 0 > tariffAkumulatif[keys[i]]", Number(tariffAkumulatif[keys[i]]))
                                     console.log("inside LOOP calc !== 0 > Processweight", Processweight)
                                     console.log("inside LOOP calc !== 0 > END !!! temp", temp)
+                                    temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(Processweight))
+                                    sumTariffAkumulatif = Number(sumTariffAkumulatif) + temp
                                 } else {
                                     console.log("inside LOOP calc == 0 > Processweight", Processweight)
                                     console.log("inside LOOP calc == 0 > tariffAkumulatif[keys[i]]", Number(tariffAkumulatif[keys[i]]))
