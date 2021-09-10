@@ -318,12 +318,10 @@ export default {
               this.form,
               this.Helper.header())
           .then(res => {
-            console.log('res',res)
             this.handleClearForm()
-            this.openNotification('Success', 'Success', 'Add Bagging is success')
+            this.openNotification('success', 'Success', 'Add Bagging is success')
             this.$refs.detailbagList.refresh()
           }).catch(err => {
-            console.log(err)
             this.loading = false
             this.handleClearForm()
             this.openNotification('danger', err.response ? err.response.data.message : 'something went wrong')
