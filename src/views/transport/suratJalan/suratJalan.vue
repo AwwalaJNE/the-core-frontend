@@ -210,7 +210,7 @@ export default {
                       item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
                       item["node_id_origin_name"] = (item.origin) ? item.origin.node_name: null
                       item["node_id_destination_name"] = (item.destination) ? item.destination.node_name: null
-                      item["driver_id"] = (item.pic_employee_id) ? item.pic_employee_id: null
+                      item["driver_id"] = (item.pic_employee_id) ? parseInt(item.pic_employee_id): null
                       item["driver_name"] = (item.pic) ? item.pic.employee_name: null
 
                       if(item.hasOwnProperty('status')) {
@@ -292,10 +292,10 @@ export default {
           if(this.dataTable.length > 0) {
             this.dataItem = val
             this.dataItem["destination_id"] = val.node_id_destination ? val.node_id_destination : ''
-                this.dataItem["moda_angkutan_id"] = val.vehicle_mode_id ? val.vehicle_mode_id : ''
-                this.dataItem["no_moda_angkutan_id"] = val.vehicle_id ? val.vehicle_id : ''
+                this.dataItem["moda_angkutan_id"] = val.vehicle_mode_id ? parseInt(val.vehicle_mode_id) : ''
+                this.dataItem["no_moda_angkutan_id"] = val.vehicle_id ? parseInt(val.vehicle_id) : ''
                 this.dataItem["manifest_do_item"] = val.detail ? val.detail : ''
-                this.dataItem["driver_id"] = val.pic_employee_id ? val.pic_employee_id : ''
+                this.dataItem["driver_id"] = val.pic_employee_id ? parseInt(val.pic_employee_id) : ''
 
             this.$nextTick(() => {
               this.dialogSuratJalan = true

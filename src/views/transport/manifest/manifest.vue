@@ -241,7 +241,11 @@ export default {
         actionUpdate(val){
           if(this.dataTable.length > 0) {
             val["node_id_origin"] = val["origin_name"] 
-            val["node_id_destination"] = val["destination_name"]          
+            val["node_id_destination"] = val["destination_name"]
+            val['manifest_method_id'] = parseInt(val['manifest_method_id'])
+            val['vehicle_id'] = parseInt(val['vehicle_id'])
+            val['vehicle_type_id'] = parseInt(val['vehicle_type_id'])
+            console.log(val,'bagus')
             this.dataItem = val
 
             this.$store.dispatch(`SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData`, val["origin"])
