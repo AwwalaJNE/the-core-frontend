@@ -467,7 +467,7 @@ export default {
                     obj['total_koli'] = data.total_koli
                     obj['item_type'] = data.item_type
 
-                    this.dataTable.push(obj)
+                    this.validateTempItemSJ(obj)
 
                     this.suratMuatan = ''
                 }
@@ -506,6 +506,21 @@ export default {
             
           
         },
+
+        validateTempItemSJ(itemSJ){
+          if(Object.keys(this.dataTable).length === 0){
+              this.dataTable.push(itemSJ);
+          }else{
+            this.dataTable.map(item => {
+              if(item.item_number !== itemSJ.item_number)  {
+                this.dataTable.push(itemSJ);
+              }else{
+                this.openNotification('warn', 'Information', 'item '+itemSJ.item_number+ ' already exists')
+              }
+            })
+          }
+
+        }
     },
     mounted() {
     //   this.getDestination()
