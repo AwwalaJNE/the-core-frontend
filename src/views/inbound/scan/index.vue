@@ -12,7 +12,7 @@
 
         <section>
           <vs-row>
-            <vs-col lg="7" sm="7" xs="7">
+            <vs-col lg="6" sm="6" xs="6">
               <div class="box information" style="padding-top: 1px !important;">
                 <h4 align="left">List of Bags</h4>
                 <div class="nav-box">
@@ -41,7 +41,7 @@
             </vs-col>
 
             <!-- col for detail unreceive item-->
-            <vs-col lg="5" sm="5" xs="5">
+            <vs-col lg="6" sm="6" xs="6">
               <div class="box information" style="padding-top: 1px !important;">
                 <h4 align="left">Information SM/SJ/Pickup Number</h4>
                 <div class="nav-box">
