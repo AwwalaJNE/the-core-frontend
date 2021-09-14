@@ -59,6 +59,8 @@
                     :limit="pagination.limit"
                     :customBtn="true"
                     customBtn_label="Unhold"
+                    @actionUpdate="editIrreg"
+
                     :hasPagination="true"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
@@ -189,6 +191,17 @@ export default {
                     this.openNotification('danger', 'Failed to populate Irreguralities Hold', err)
                 })
         },
+        async editIrreg(val){
+            
+            if(this.dataTable.length > 0) {
+              //dibuat untuk approve saja jadi gapake switch case
+            this.dataItem = val;
+            console.log(this.dataItem);
+            this.$nextTick(() => {
+                this.dialogCancelActive = true;
+            });
+          }
+        },
         async handleSubmit() {
             console.log('this.form', this.form)
             await axios
@@ -210,6 +223,20 @@ export default {
         searchValue (val) {
             this.tempSearch = val
             this.refresh()
+        },
+        actionUpdate(val, key) {
+            switch(key) {
+                case "edit":
+                    if(this.dataTable.length > 0) {
+                        this.dataItem = val
+                        console.log(this.dataItem,'item')
+                        this.$nextTick(() => {
+                            this.dialogProblem = true
+                        });
+                    }
+                    break;
+                default:
+            }
         },
         updateValue(key, val) {
             switch(key) {
