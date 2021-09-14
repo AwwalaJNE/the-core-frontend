@@ -57,8 +57,6 @@
                     :pageSize="pagination.page_size"
                     :page="pagination.page"
                     :limit="pagination.limit"
-                    :customBtn="true"
-                    customBtn_label="Edit"
                     @actionUpdate="editIrreg"
                     :hasPagination="true"
                     @actionLimit="actionLimit"
