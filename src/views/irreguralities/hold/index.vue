@@ -70,19 +70,19 @@
             
         </section>
 
-<!--        <dialog-hold-->
-<!--            :active="dialogCancelActive" -->
-<!--            :closeDialog="closeDialog"-->
-<!--            @updateValue="updateValue"-->
-<!--        />-->
-        <dialog-confirm
+        <dialog-hold
             :active="dialogCancelActive"
-            :loading="dialogLoadingCancelActive"
             :closeDialog="closeDialog"
+            @updateValue="updateValue"
+        />
+        <dialog-confirm
+            :active="dialogConfirmCancelActive"
+            :loading="dialogLoadingCancelActive"
+            :closeDialog="closeDialogConfirmRemove"
             title="Unhold Irregularity ?"
             message="Are you sure you want to Unhold Irregularity ?"
             @confirm="confirmRemove"
-            @cancel="closeDialog"
+            @cancel="closeDialogConfirmRemove"
         />
     </div>
 </template>
@@ -113,6 +113,7 @@ export default {
     data() {
         return {
             koliCode: "",
+            dialogConfirmCancelActive:false,
             dialogLoadingCancelActive:false,
             dateRange: [],
             tempSearch: "",
@@ -214,7 +215,7 @@ export default {
             this.dataItem = val;
             console.log(this.dataItem);
             this.$nextTick(() => {
-                this.dialogCancelActive = true;
+                this.dialogConfirmCancelActive = true;
             });
           }
         },
@@ -283,6 +284,13 @@ export default {
         },
         closeDialog() {
             this.dialogCancelActive = false
+        },
+        closeDialog() {
+          this.dialogCancelActive = false
+        },
+        closeDialogConfirmRemove(){
+          this.dialogConfirmCancelActive = false
+          this.dialogLoadingCancelActive=false
         },
         openDialog() {
             if(this.koliCode !== '') {
