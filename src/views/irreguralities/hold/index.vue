@@ -70,10 +70,19 @@
             
         </section>
 
-        <dialog-hold
-            :active="dialogCancelActive" 
+<!--        <dialog-hold-->
+<!--            :active="dialogCancelActive" -->
+<!--            :closeDialog="closeDialog"-->
+<!--            @updateValue="updateValue"-->
+<!--        />-->
+        <dialog-confirm
+            :active="dialogCancelActive"
+            :loading="dialogLoadingCancelActive"
             :closeDialog="closeDialog"
-            @updateValue="updateValue"
+            title="Unhold Irregularity ?"
+            message="Are you sure you want to Unhold Irregularity ?"
+            @confirm="confirmRemove"
+            @cancel="closeDialog"
         />
     </div>
 </template>
@@ -88,6 +97,7 @@ import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
 
 import DialogHold from "@/views/irreguralities/hold/dialogHold"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 export default {
     name:"irregularities-hold",
     mixins:[master],
@@ -98,10 +108,12 @@ export default {
         "date-time": DateTime,
         "table-master" : TableMaster,
         "dialog-hold": DialogHold,
+        "dialog-confirm": DialogConfirm
     },
     data() {
         return {
             koliCode: "",
+            dialogLoadingCancelActive:false,
             dateRange: [],
             tempSearch: "",
             dataTable: [],
@@ -138,6 +150,10 @@ export default {
         }
     },
     methods: {
+        confirmRemove() {
+          this.dialogLoadingCancelActive=true
+          this.UnholdIrregularity()
+        },
         refresh(){
             console.log("refresh")
             let d = new Date()
@@ -272,6 +288,29 @@ export default {
             if(this.koliCode !== '') {
                 this.dialogCancelActive = true
             }
+        },
+
+        async UnholdIrregularity(){
+          let form ={};
+          let iregularity_id = this.dataItem.irregularity_id ? this.dataItem.irregularity_id : null;
+          this.dataItem.irregularity_type = 'UNHOLD';
+          form = this.dataItem;
+          await axios
+              .post(
+                  this.URL.irregularities + `/${iregularity_id}/unhold?n=${this.listenNodeId}`,
+                  JSON.stringify(form),
+                  this.Helper.header())
+              .then(res => {
+                console.log('res', res)
+                this.refresh()
+                this.dialogCancelActive = false
+                this.dialogLoadingCancelActive = false
+                this.openNotification(null, 'Success', 'Unhold irregularity is success')
+              }).catch(err => {
+                this.dialogLoadingCancelActive = false
+                this.refresh()
+                this.openNotification('danger', 'Unhold irregularity failed', err.response ? err.response.data.message : 'something went wrong')
+              })
         }
     },
     mounted() {
