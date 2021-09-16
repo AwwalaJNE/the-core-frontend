@@ -204,24 +204,23 @@ export default {
     },
     methods: {
         formData(form){
-
             let obj = {}
             obj['connote_number'] = this.connote_number
             obj['irregularity_type'] = this.dataItem['irregularity_type']
             obj['irregularity_status_code'] = this.dataItem['irregularity_status_code']
             obj['irregularity_status_description'] = this.dataItem['irregularity_status_description']
-            obj['remark'] = this.remark
+            obj['remark'] = this.dataItem.remark
 
             let connote = {}
             // connote = {...form}
-            connote['connote_receiver_tariff_code'] = this.dataItem['tariff_code']
-            connote['connote_receiver_zip_code'] = this.dataItem['zip_code']
-            connote['connote_receiver_administrative_address'] = this.dataItem['connote_receiver_administrative_address']
-            connote['connote_receiver_street_address'] = this.dataItem['destination_address']
-            connote['connote_receiver_customer_id'] = this.dataItem['user_id']
-            connote['connote_receiver_name'] = this.dataItem['destination_name']
-            connote['connote_receiver_phone_number'] = this.dataItem['destination_phone']
-            connote['connote_receiver_address_type'] = this.dataItem['destination_type']
+            connote['connote_receiver_tariff_code'] = form.tariff_code ? form.tariff_code : this.dataItem['tariff_code']
+            connote['connote_receiver_zip_code'] = form.zip_code ? form.zip_code :  this.dataItem['zip_code']
+            connote['connote_receiver_administrative_address'] = form.connote_receiver_administrative_address ? form.connote_receiver_administrative_address : this.dataItem['connote_receiver_administrative_address']
+            connote['connote_receiver_street_address'] = form.destination_address ? form.destination_address : this.dataItem['destination_address']
+            connote['connote_receiver_customer_id'] = form.user_id ? form.user_id : this.dataItem['user_id']
+            connote['connote_receiver_name'] = form.destination_name ? form.destination_name : this.dataItem['destination_name']
+            connote['connote_receiver_phone_number'] = form.destination_phone ? form.destination_phone : this.dataItem['destination_phone']
+            connote['connote_receiver_address_type'] = form.destination_type ? form.destination_type : this.dataItem['destination_type']
 
             obj['connote'] = connote
 
@@ -277,8 +276,16 @@ export default {
                     this.connote_number= val
                     this.scanConnote()
                     break;
+                case "remark":
+                  this.dataItem.remark= val
+                  break;
+                case "status_code":
+                    this.dataItem.irregularity_status_code = info.item.status_code
+                    this.dataItem.irregularity_type = info.item.status_subtype
+                    this.dataItem.irregularity_status_description =info.item.status_description
+                  break;
                 default:
-                    console.log('meong')
+                    console.log(key,'meong', val)
                     // code block
             }
         },
