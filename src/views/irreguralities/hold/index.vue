@@ -311,7 +311,7 @@ export default {
               .then(res => {
                 console.log('res', res)
                 this.refresh()
-                this.dialogCancelActive = false
+                this.dialogConfirmCancelActive = false
                 this.dialogLoadingCancelActive = false
                 this.openNotification(null, 'Success', 'Unhold irregularity is success')
               }).catch(err => {
