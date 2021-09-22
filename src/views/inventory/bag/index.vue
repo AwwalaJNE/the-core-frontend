@@ -173,7 +173,12 @@ export default {
               {
                 "label":"JTR",
                 "value":"jtr"
+              },
+              {
+                "label":"SPS",
+                "value":"sps"
               }
+
             ],
             
             destinationArray: [
