@@ -63,6 +63,11 @@ export default {
                     width: "sm"
                 },
                 {
+                  label: "Connote Number",
+                  key: "koli_number",
+                  width: "sm",
+                },
+                {
                     label: "PIC",
                     key: "user_name",
                     width: "xs"
