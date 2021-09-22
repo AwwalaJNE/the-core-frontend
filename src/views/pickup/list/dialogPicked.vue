@@ -177,6 +177,8 @@ export default {
         if (!dataFoundFromPicked) {
           this.item_picked.push(this.scan_bag);
         }
+      }else{
+        this.openNotification("danger", "Select item is failed", "Bag or Connote not found!");
       }
       this.scan_bag=null;
     },
