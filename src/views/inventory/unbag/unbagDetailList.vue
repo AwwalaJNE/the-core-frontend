@@ -32,7 +32,7 @@
     <vs-col xs="12" sm="6" lg="6">
       <div class="box view">
         <div class="summary-unbag">
-          <span class="subtitle" align="right"><p>{{total_confirmed}}/{{total_connote}}</p></span>
+          <span class="subtitle" align="right"><p>{{ total_connote_in_bag - total_confirmed }}/{{ total_connote_in_bag }}</p></span>
           <span class="title" align="right"><h4>Connote Scanned</h4></span>
         </div>
         <table-master
@@ -91,6 +91,7 @@ export default {
             bag_number:"",
             item_number :'',
             total_connote :0,
+            total_connote_in_bag :0,
             total_bag :0,
             total_confirmed :0,
             pagination: {
@@ -132,6 +133,8 @@ export default {
             }
             if(this.bag_number !== null || this.bag_number !== undefined){
               form.bag_number = this.bag_number
+              console.log(form.bag_number.length, form.item_number.length)
+              form.bag_number.length === form.item_number.length ? (this.total_connote_in_bag = 0) : this.total_connote_in_bag;
             }
             await axios
                 .post(
@@ -139,36 +142,48 @@ export default {
                     JSON.stringify(form),
                     this.Helper.header())
                 .then(res => {
-                  if(res.data.data.bag_number != undefined) { // response dari BE jika data kosong bentuknya [] array kosong :( harusnya kan object
-                      if(res.data.data.is_unbagged == 1){
-                        this.dataTable = []
-                        this.dataTableBag = []
-                        this.handleClearData()
-                        this.openNotification('success', 'Unbagging is Success')
-                      
-                      }else{
-                        let arr = [];
-                        let arrBag = [];
-                        let dataBag = {};
-                      
-                        dataBag['no'] = 1
-                        dataBag['item_number'] = res.data.data.bag_number
-                        this.bag_number = res.data.data.bag_number
-                        this.getSummaryBag(res)
-                        arrBag.push(dataBag)
-                        if(res.data.data.koli_detail && res.data.data.koli_detail.length > 0) {
-                          arr = res.data.data.koli_detail
-                          arr.map((item, index)  => {
-                            item["no"] = index+1
-                            item["item_number"] = item.koli_number
-                          })
-                          this.dataTable = arr
-                        }else{
-                            this.dataTable = []
+                    if(res.data.data.bag_number != undefined) { // response dari BE jika data kosong bentuknya [] array kosong :( harusnya kan object
+                        let itemNumberLength = form.item_number.length;
+                        console.log("item", itemNumberLength);
+                        if (this.total_connote_in_bag == 0) {
+                            let totalItem = res.data.data.hasOwnProperty("koli_detail")
+                            ? itemNumberLength > 11 
+                                ? Object.keys(res.data.data.koli_detail).length + 1 
+                                : Object.keys(res.data.data.koli_detail).length
+                                : 1;
+                            this.total_connote_in_bag = totalItem;
+                        } else {
+                          this.total_connote_in_bag;
                         }
-                        this.dataTableBag = arrBag
-                      }
-                  }
+                          if(res.data.data.is_unbagged == 1){
+                            this.dataTable = []
+                            this.dataTableBag = []
+                            this.handleClearData()
+                            this.openNotification('success', 'Unbagging is Success')
+                          
+                          }else{
+                            let arr = [];
+                            let arrBag = [];
+                            let dataBag = {};
+                          
+                            dataBag['no'] = 1
+                            dataBag['item_number'] = res.data.data.bag_number
+                            this.bag_number = res.data.data.bag_number
+                            this.getSummaryBag(res)
+                            arrBag.push(dataBag)
+                            if(res.data.data.koli_detail && res.data.data.koli_detail.length > 0) {
+                              arr = res.data.data.koli_detail
+                              arr.map((item, index)  => {
+                                item["no"] = index+1
+                                item["item_number"] = item.koli_number
+                              })
+                              this.dataTable = arr
+                            }else{
+                                this.dataTable = []
+                            }
+                            this.dataTableBag = arrBag
+                          }
+                    }
                   
                     this.loading = false
                 }).catch(err => {
@@ -195,7 +210,10 @@ export default {
           this.bag_number=""
           this.item_number =""
           this.total_connote =0
-          this.total_bag =0,
+          setTimeout(() => {
+                this.total_connote_in_bag = 0
+            }, 1500)
+          this.total_bag =0
           this.total_confirmed =0
         },
         actionUpdate(val){
