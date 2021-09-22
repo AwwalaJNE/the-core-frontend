@@ -119,6 +119,11 @@ export default {
                     width: "auto"
                 },
                 {
+                  label: "Cancel",
+                  key: "is_void_status",
+                  width: "auto"
+                },
+                {
                     label: "Status",
                     key: "is_confirmed",
                     width: "auto"
@@ -167,7 +172,8 @@ export default {
                     let arr = res.data.data
                     arr.map(item => {
                         item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
-                        item["packing_kayu_type"] = item.packing_kayu_type != null ? 'PK-'+item.packing_kayu_type : '-'                        
+                        item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
+                        item["packing_kayu_type"] = item.packing_kayu_type != null ? 'PK-'+item.packing_kayu_type : '-'
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
