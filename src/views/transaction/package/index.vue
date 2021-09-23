@@ -954,6 +954,7 @@ export default {
     closeDialogSurcharge() {
       this.koliObj = {}
       this.surchargeSelector = false
+      this.$refs.package_do_return.$el.querySelector("input").focus();
     },
     openSettingMultipleKoli() {
       this.dialogSettingMultipleKoli = true
