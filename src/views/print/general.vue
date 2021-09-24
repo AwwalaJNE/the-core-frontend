@@ -153,7 +153,7 @@ export default {
           // 17 - ctrl
           // 80 - p
           const key = e.which || e.keyCode;
-          if(e.ctrlKey && key === 17) {
+          if(e.ctrlKey && key === 17 && key === 80) {
             this.dom.print();
           }
           // if(key === 17)
