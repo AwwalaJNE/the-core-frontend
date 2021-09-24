@@ -238,7 +238,7 @@ export default {
         })
         .catch((err) => {
           this.loadingRunsheet = false
-          // this.openNotification("danger", "", err.response.data.message);
+          this.openNotification("danger", "", err.response.data.message);
         });
     },
     async getStatus() {
