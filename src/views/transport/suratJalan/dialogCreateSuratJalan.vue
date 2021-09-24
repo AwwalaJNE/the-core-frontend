@@ -186,7 +186,13 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.manifest_delivery_id = val.manifest_do_number
+
                 this.dataTable = val.detail
+                this.dataTable.map(item => {
+                  if(item.item_type == 'SM') {
+                    item.destination = item.manifest.destination ? item.manifest.destination.node_tariff_code : item.manifest.destination.node_code
+                  }
+                })
                 this.editData = val
                 this.no_moda_angkutan_id = val['no_moda_angkutan_id'] ? val['no_moda_angkutan_id'] : null
                 if(this.no_moda_angkutan_id != null) {
