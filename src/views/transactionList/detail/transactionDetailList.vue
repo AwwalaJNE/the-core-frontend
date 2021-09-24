@@ -125,6 +125,12 @@ export default {
                   key: "amount_total_price",
                   width: "auto"
                 },
+                {
+                  label: "Cancel",
+                  key: "is_void_status",
+                  width: "auto"
+                },
+
 
             ],
             customActionList: [
@@ -180,7 +186,17 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     let arr =res.data.data.connote
-
+                    arr.map((item) => {
+                      item["isDisabled"] = item.is_void == true ? true : false;
+                      item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
+                      // setTimeout(() => {
+                      //   console.log("refs", this.$parent.$refs.btnPrintAll.$el.disabled);
+                      //   item["isDisabled"] =
+                      //     item.is_void == true
+                      //       ? (this.$parent.$refs.btnPrintAll.$el.disabled = true)
+                      //       : (this.$parent.$refs.btnPrintAll.$el.disabled = false);
+                      // }, 1000);
+                    });
                     this.dataTable = arr
                     this.$emit("printAllData", this.dataTable)
 
@@ -218,6 +234,7 @@ export default {
         },
         closeDialogAvoid() {
           this.dialogAvoidActive = false
+          this.refresh()
         },
         actionAvoid(){
           console.log('gas')

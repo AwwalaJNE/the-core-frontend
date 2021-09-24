@@ -10,6 +10,7 @@
             <vs-col xs="1" sm="1" lg="1" align="right">
               <div class="btn-print-all">
                 <vs-button
+                    ref="btnPrintAll"
                     square
                     block
                     @click="printAll"
