@@ -312,16 +312,27 @@ export default {
           // item["is_disabled_input"] = item
           if(item["status"] !== null && typeof item["status"] == 'object') {
               if(item["status"].hasOwnProperty('status_code')) {
-                item["is_disabled_input"] = item["status"]["status_code"] !== null ||
-                                              item["status"]["status_code"] !== "" ?
-                                              true : false
+                item["is_disabled_input_status"] = item["status"]["status_code"] !== null || item["status"]["status_code"] !== "" ? true : false
               }
           }
           console.log("item status", item["status"])
         }
-        // if(item.hasOwnProperty('status')) {
-        
-        // }
+        if(item.hasOwnProperty("status_code")){
+          console.log('sugab', item.hasOwnProperty("status_code"))
+          if(item["status_code"] !== null && typeof item["status_code"] == 'string') {
+            item["is_disabled_input_status"] = item["status_code"] !== null || item["status_code"] !== "" ? true : false
+          }
+        }
+        if(item.hasOwnProperty("remarks")){
+          if(item["remarks"] !== null) {
+            item["is_disabled_input_remarks"] = item["remarks"] !== null || item["remarks"] !== "" ? true : false
+          }
+        }
+        if(item.hasOwnProperty("receiver_name")){
+          if(item["receiver_name"] !== null) {
+            item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false
+          }
+        }
         item['employee_name'] = data.employee_name
         item['employee_code'] = data.employee_code
       })
