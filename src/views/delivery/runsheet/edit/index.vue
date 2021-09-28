@@ -343,10 +343,11 @@ export default {
       
     },
     async updatePOD(dataPOD, info) {
-      // console.log("updatePOD", dataPOD, info)
       if (this.delivery_runsheet_number) {
         dataPOD.delivery_runsheet_number = this.delivery_runsheet_number;
-      
+        if(this.employee_id != null || this.employee_id != ''){
+          dataPOD.courier_employee_id = this.employee_id
+        }
         await axios
           .put(
             this.URL.delivery +
