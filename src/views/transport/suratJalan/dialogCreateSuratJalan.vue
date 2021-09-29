@@ -192,7 +192,13 @@ export default {
                   if(item.item_type == 'SM') {
                     item.destination = item.manifest.destination ? item.manifest.destination.node_tariff_code : item.manifest.destination.node_code
                   }
+                  if(val.status == "DEPARTED"){
+                    item.button_status = {
+                      'remove': false,
+                    }
+                  }
                 })
+
                 this.editData = val
                 this.no_moda_angkutan_id = val['no_moda_angkutan_id'] ? val['no_moda_angkutan_id'] : null
                 if(this.no_moda_angkutan_id != null) {
