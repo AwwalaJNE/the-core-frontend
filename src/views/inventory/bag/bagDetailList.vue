@@ -94,6 +94,11 @@ export default {
                     width: "auto"
                 },
                 {
+                  label: "Weight",
+                  key: "koli_actual_weight",
+                  width: "auto"
+                },
+                {
                     label: "Destination Code",
                     key: "destination_code",
                     width: "auto"
