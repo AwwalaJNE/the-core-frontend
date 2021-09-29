@@ -217,13 +217,15 @@ export default {
     methods: {
         formData(form){
             let weight = 0
-            this.dataTable.map(item => {    
+            this.dataTable.map(item => {
                 if(item.total_weight) {
                     weight =+ item.total_weight
                 }
             })
 
-            console.log('form', form, this.vehicle_max_weight, weight)
+            if(this.editData.max_weight > 0 && this.vehicle_max_weight < 1){
+              this.vehicle_max_weight = this.editData.max_weight;
+            }
             if(this.vehicle_max_weight >= weight) {
                 let obj = {}
                 obj['node_id_origin'] = this.listenNodeId

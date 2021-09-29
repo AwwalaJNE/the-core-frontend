@@ -296,7 +296,8 @@ export default {
                 this.dataItem["no_moda_angkutan_id"] = val.vehicle_id ? parseInt(val.vehicle_id) : ''
                 this.dataItem["manifest_do_item"] = val.detail ? val.detail : ''
                 this.dataItem["driver_id"] = val.pic_employee_id ? parseInt(val.pic_employee_id) : ''
-
+                this.dataItem["max_weight"] = val.max_weight
+                this.dataItem["driver_id"] = val.driver_id ? parseInt(val.driver_id) : ''
             this.$nextTick(() => {
               this.dialogSuratJalan = true
             });
