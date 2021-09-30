@@ -160,23 +160,23 @@ export default {
             serviceArray: [
               {
                 "label":"REG",
-                "value":"reg"
+                "value":"REG"
               },
               {
                 "label":"YES",
-                "value":"yes"
+                "value":"YES"
               },
               {
                 "label":"OKE",
-                "value":"oke"
+                "value":"OKE"
               },
               {
                 "label":"JTR",
-                "value":"jtr"
+                "value":"jTR"
               },
               {
                 "label":"SPS",
-                "value":"sps"
+                "value":"SPS"
               }
 
             ],
