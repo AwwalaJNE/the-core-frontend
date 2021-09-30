@@ -151,6 +151,7 @@ export default {
   },
   methods: {
     updateValue(key, val, info, item = null) {
+      val = val.toUpperCase();
       console.log("Update runsheet", key, val, info, item)
       key = key.split("|");
       let column_change = key[0];
@@ -185,10 +186,9 @@ export default {
         default:
       
       }
-      
       this.$emit("updatePOD", obj, info);
-      
-      
+
+
     },
     closeDialogConfirm() {
       this.confirmDialog = false;

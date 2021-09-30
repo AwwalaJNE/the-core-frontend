@@ -224,15 +224,15 @@ export default {
           this.Helper.header()
         )
         .then((res) => {
-          this.dataDelivery = this.processDataDelivery(res.data.data)
-          this.dataDelivery.map((item) => {
-            item.employee_name = res.data.data.employee_name
-          })
+          // this.dataDelivery = this.processDataDelivery(res.data.data)
+          // this.dataDelivery.map((item) => {
+          //   item.employee_name = res.data.data.employee_name
+          // })
           this.dataDelivery.employee_name = res.data.data.employee_name ? res.data.data.employee_name : null;
           this.dataDelivery.employee_code = res.data.data.employee_code ? res.data.data.employee_code : null;
           this.dataDeliverySummary = res.data.summary;
           this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
-          
+          this.getDataDelivery();
           this.openNotification(null, "Success", "Update success");
           this.loadingRunsheet = false
         })
@@ -343,30 +343,37 @@ export default {
       
     },
     async updatePOD(dataPOD, info) {
-      if (this.delivery_runsheet_number) {
-        dataPOD.delivery_runsheet_number = this.delivery_runsheet_number;
-        if(this.employee_id != null || this.employee_id != ''){
-          dataPOD.courier_employee_id = this.employee_id
+        if(dataPOD.remarks || dataPOD.receiver_name || dataPOD.status) {
+
+          if (this.delivery_runsheet_number) {
+            dataPOD.delivery_runsheet_number = this.delivery_runsheet_number;
+            if (this.employee_id != null || this.employee_id != '') {
+              dataPOD.courier_employee_id = this.employee_id
+            }
+            await axios
+                .put(
+                    this.URL.delivery +
+                    `/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`,
+                    JSON.stringify(dataPOD),
+                    this.Helper.header()
+                )
+                .then((res) => {
+                  this.getDataDelivery();
+                  this.form = {};
+                  this.openNotification(null, "Success", "POD UPDATED!");
+                })
+                .catch((err) => {
+                  console.log('eror');
+                  console.log(err.response);
+                  this.openNotification('danger', err.response.data.message, err.response.data.message);
+                });
+          } else {
+            this.openNotification('danger', "Failed", "Runsheet unavailable!");
+          }
+
         }
-        await axios
-          .put(
-            this.URL.delivery +
-              `/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`,
-            JSON.stringify(dataPOD),
-            this.Helper.header()
-          )
-          .then((res) => {
-            this.getDataDelivery();
-            this.openNotification(null, "Success", "POD UPDATED!");
-          })
-          .catch((err) => {
-            console.log('eror');
-            console.log(err.response);
-                    this.openNotification('danger', err.response.data.message, err.response.data.message);
-          });
-      }else{
-        this.openNotification('danger', "Failed", "Runsheet unavailable!");
-      }
+
+
     },
     back() {
       this.$router.push("/delivery/runsheet");
