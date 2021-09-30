@@ -113,7 +113,8 @@ export default {
             inbound_id:'',
 
             loading: false,
-            dataTable: []
+            dataTable: [],
+            inboundDetailData : []
         }
     },
     methods: {
@@ -164,8 +165,44 @@ export default {
                   message = null;
                   this.inbound_id = res.data.data.inbound_id
                 }
-                this.refresh()
-                this.handlerClearForm()
+                if(this.inbound_id === ''){
+                  let detail = [];
+                  this.inboundDetailData = res.data.data
+                  if(this.inboundDetailData.hasOwnProperty('bag_number')){
+                    detail = [
+                      {
+                        detail_incoming :[
+                          {
+                            item_number : this.inboundDetailData.bag_number,
+                            item_type : "BAG",
+                            is_received : 1
+                          }
+                        ]
+
+                      }
+                    ]
+                  }else{
+                    detail = [
+                      {
+                        detail_incoming :[
+                          {
+                            item_number : this.inboundDetailData.koli_number,
+                            item_type : "KOLI",
+                            is_received : 1
+                          }
+                        ]
+
+                      }
+                    ]
+                  }
+                  this.dataTable = detail;
+                  console.log(this.dataTable,'li')
+                }else{
+
+                  this.refresh()
+                  this.handlerClearForm()
+                }
+
                 this.openNotification(typeNotif, 'Receiving Success!', message)
               }).catch(err => {
                 console.log(err,'err receiving');
@@ -179,23 +216,29 @@ export default {
         async getTableData() {
             this.loading = true
             this.dataTable = []
-            await axios
-                .get(this.URL.inbound +
-                    `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-                  let data=[res.data.data]
-                  data.map(item=>{
-                    item['total_received'] = item.total_received.toString()
-                    item['total_unreceived'] = item.total_unreceived.toString()
-                  })
-                  this.dataTable = data
+            if(this.inbound_id === ''){
 
-                  this.loading = false
-                }).catch(err => {
-                  this.loading = false
+
+            }else{
+              await axios
+                  .get(this.URL.inbound +
+                      `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}`,
+                      this.Helper.header())
+                  .then(res => {
+                    let data=[res.data.data]
+                    data.map(item=>{
+                      item['total_received'] = item.total_received.toString()
+                      item['total_unreceived'] = item.total_unreceived.toString()
+                    })
+                    this.dataTable = data
+
+                    this.loading = false
+                  }).catch(err => {
+                    this.loading = false
                     // this.openNotification('danger', 'Failed to populate Inbound list', err)
-                })
+                  })
+            }
+
         },
 
         back(){
