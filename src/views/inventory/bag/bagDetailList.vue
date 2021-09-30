@@ -159,6 +159,7 @@ export default {
                       item["no"] = index+1
                       item['destination_code'] = item.connote_receiver_tariff_code ?  item.connote_receiver_tariff_code : bag_des
                       item['bag_detail_qty'] = res.data.data.bag_detail_qty
+                      item["isDisabled"] = item.is_confirmed == 0 ? true : false;
                     })
                     this.getSummaryBag(res)
                   // arr.map(item => {

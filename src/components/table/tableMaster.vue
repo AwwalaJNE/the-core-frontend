@@ -356,6 +356,7 @@
                                   size="small"
                                   flat
                                   :active="true"
+                                  :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                   type="submit"
                                   @click="actionRemove(item)"
                               >
