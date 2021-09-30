@@ -253,6 +253,7 @@ export default {
 
         closeDialogConfirm(){
             this.confirmDialog = false
+            this.refresh();
         },
 
         actionUpdate(val, key) {
@@ -367,9 +368,11 @@ export default {
         closeDialogConfirmCancel(){
           this.activeDialogCancel = false
           this.activeLoadingCancel=false
+          this.refresh();
         },
         closeDialogSuratJalan() {
           this.dialogSuratJalan = false
+          this.refresh();
         },
 
     },

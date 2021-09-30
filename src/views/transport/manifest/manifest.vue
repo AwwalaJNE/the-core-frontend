@@ -217,9 +217,11 @@ export default {
 
         closeDialogConfirmPicked(){
             this.dialogPickedActive = false
+            this.refresh();
         },
         closeDialogPickupList() {
           this.dialogManifestList = false
+          this.refresh();
         },
 
         actionLimit(val){
@@ -269,6 +271,7 @@ export default {
         closeDialogConfirmCancel(){
           this.activeDialogCancel = false
           this.activeLoadingCancel=false
+          this.refresh();
         },
         async cancelData(form, surat_muatan){
           await axios
