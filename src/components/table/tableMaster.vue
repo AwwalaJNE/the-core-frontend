@@ -848,6 +848,9 @@ export default {
     .manual-padding{
       padding-bottom: 0px;
     }
+    .vs-table__th{
+      padding: 10px 5px !important;
+    }
 
 
 </style>
