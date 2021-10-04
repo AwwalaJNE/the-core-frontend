@@ -77,7 +77,7 @@ export default {
                     width: "xs"
                 },
                 {
-                  label: "Undeliver Receiving",
+                  label: "Undelivered Receiving",
                   key: "total_undelivery_received",
                   width: "xs"
                 }
