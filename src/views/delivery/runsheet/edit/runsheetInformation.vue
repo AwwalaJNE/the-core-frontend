@@ -176,17 +176,25 @@ export default {
       switch (true) {
         case column_change && column_change == "status_delivery":
             obj["status"] = val
+            this.$emit("updatePOD", obj, info);
           break;
         case column_change && column_change == "remarks":
             obj["remarks"] = val
+            if(item.hasOwnProperty('remarks') && val != item.remarks){
+              this.$emit("updatePOD", obj, info);
+            }
+
           break;
         case column_change && column_change == "receiver_name":
             obj["receiver_name"] = val
+            if(item.hasOwnProperty('receiver_name') && val != item.receiver_name){
+              this.$emit("updatePOD", obj, info);
+            }
           break;
         default:
       
       }
-      this.$emit("updatePOD", obj, info);
+      // this.$emit("updatePOD", obj, info);
 
 
     },

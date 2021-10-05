@@ -315,10 +315,8 @@ export default {
                 item["is_disabled_input_status"] = item["status"]["status_code"] !== null || item["status"]["status_code"] !== "" ? true : false
               }
           }
-          console.log("item status", item["status"])
         }
         if(item.hasOwnProperty("status_code")){
-          console.log('sugab', item.hasOwnProperty("status_code"))
           if(item["status_code"] !== null && typeof item["status_code"] == 'string') {
             item["is_disabled_input_status"] = item["status_code"] !== null || item["status_code"] !== "" ? true : false
           }
