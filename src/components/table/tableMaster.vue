@@ -841,7 +841,9 @@ export default {
         }
     }
 
-    .text-link{
+    span.text-link {
+      display: inline-block;
+      padding-top: 18px;
       color: rgb(53, 92, 255);
       cursor:pointer;
     }
