@@ -961,6 +961,7 @@ export default {
     },
     closeSettingMultipleKoli() {
       this.dialogSettingMultipleKoli = false
+      this.$refs.package_tidak_packing_kayu_checkbox.$el.querySelector("input").focus();
     },
     removeSurcharge(id, index, name) {
       const service = this.listenPackageService.data || {}

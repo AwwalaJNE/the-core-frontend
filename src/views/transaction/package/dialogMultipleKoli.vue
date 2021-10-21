@@ -107,6 +107,7 @@
                     <vs-col w="2" justify="flex-end">
                         <vs-button
                         transparent
+                        class="outline-cancel"
                         block
                         danger
                         flat
@@ -119,10 +120,12 @@
                     <vs-col w="2" justify="flex-end">
                         <vs-button
                         transparent
+                        class="outline-submit"
                         block
                         flat
                         :active="true"
                         type="submit"
+                        v-on:keydown.tab="disable_tab_button($event)"
                         @click="formSubmit"
                         >
                             Submit
@@ -304,6 +307,10 @@ export default {
             })
 
             this.connote_koli_item = arr
+        },
+        disable_tab_button(event) {
+          event.preventDefault();
+
         },
         cancel() {
             this.closeDialog()
@@ -510,3 +517,17 @@ export default {
     },
 }
 </script>
+<style scoped>
+.outline-submit:focus {
+  background-color: #153478;
+}
+.outline-submit:hover {
+  background-color: #153478;
+}
+.outline-cancel:focus {
+  background-color: #FF000E;
+}
+.outline-cancel:hover {
+  background-color: #FF000E;
+}
+</style>
