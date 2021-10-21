@@ -141,6 +141,9 @@ export default {
         // },
         updateValue(){
           this.form.item_no = this.item_no
+          this.$refs.formInputInbound.$el.querySelector("input").focus();
+          this.$refs.formInputInbound.$el.querySelector("input").select();
+          //formInputInbound
           this.processInbond();
         },
         getParamRoute(){
