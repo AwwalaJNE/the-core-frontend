@@ -160,6 +160,15 @@ export default {
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
+              if (res.data.data.is_delivered == 1) {
+
+                this.openNotification(
+                  "danger",
+                  "Receiving Failed!",
+                  "Item has been delivered"
+                );
+                console.log("received");
+              }else{
                   let message = 'TANPA : SM / SJ / PICKUP';
                   let typeNotif = null;
                 if(res.data.data.inbound_id){
@@ -206,6 +215,7 @@ export default {
                 }
 
                 this.openNotification(typeNotif, 'Receiving Success!', message)
+              }
               }).catch(err => {
                 console.log(err,'err receiving');
                 this.loading = false
