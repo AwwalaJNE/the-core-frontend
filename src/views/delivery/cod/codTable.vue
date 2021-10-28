@@ -23,6 +23,7 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import moment from "moment";
 export default {
     name:"delivery-runsheet",
     mixins: [master],
@@ -59,8 +60,8 @@ export default {
             form:{},
             tempSearch: "",
             tempDate: [],
-            startDate: "",
-            endDate: "",
+            startDate: moment().format('YYYY-MM-DD'),
+            endDate: moment().format('YYYY-MM-DD'),
             dialogTariff: false,
             pagination: {
                 limit:5,
@@ -115,6 +116,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
+
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
                       item['courier_employee_name'] = item.employee_courier.employee_name
