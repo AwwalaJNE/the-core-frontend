@@ -191,6 +191,7 @@ export default {
       
       if (this.$route.name == "delivery-runsheet-edit") {
         this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number.toString();
+        this.tempDate = this.$route.params.date_filter.toString();
         this.getDataDelivery();
 
       }
@@ -286,7 +287,7 @@ export default {
       await axios
         .get(
           this.URL.employee +
-            `/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}`,
+            `/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&date_filter=${this.tempDate}`,
           this.Helper.header()
         )
         .then((res) => {
