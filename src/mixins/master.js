@@ -73,7 +73,7 @@ const Master = {
         openNotification(type = null, title,msg) {
             // type success, danger, warn
             const noti = this.$vs.notification({
-                duration: 6000,
+                duration: type == 'danger' ? 15000 : 6000,
                 progress: 'auto',
                 color: type,
                 position: 'top-right',
