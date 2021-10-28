@@ -72,7 +72,6 @@ const Master = {
         },
         openNotification(type = null, title,msg) {
             // type success, danger, warn
-            console.log("typenotif", type)
             const noti = this.$vs.notification({
                 duration: type == 'danger' ? 15000 : 6000,
                 progress: 'auto',
