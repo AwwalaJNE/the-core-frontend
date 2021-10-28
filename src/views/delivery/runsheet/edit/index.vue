@@ -228,13 +228,19 @@ export default {
           // this.dataDelivery.map((item) => {
           //   item.employee_name = res.data.data.employee_name
           // })
-          this.dataDelivery.employee_name = res.data.data.employee_name ? res.data.data.employee_name : null;
-          this.dataDelivery.employee_code = res.data.data.employee_code ? res.data.data.employee_code : null;
-          this.dataDeliverySummary = res.data.summary;
-          this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
-          this.getDataDelivery();
-          this.openNotification(null, "Success", "Update success");
-          this.loadingRunsheet = false
+          if(res.data.hasOwnProperty('summary')){
+            this.dataDelivery.employee_name = res.data.data.employee_name ? res.data.data.employee_name : null;
+            this.dataDelivery.employee_code = res.data.data.employee_code ? res.data.data.employee_code : null;
+            this.dataDeliverySummary = res.data.summary;
+            this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
+            this.getDataDelivery();
+            this.openNotification(null, "Success", "Update success");
+            this.loadingRunsheet = false
+          }else{
+            this.getDataDelivery();
+            this.openNotification(null, "Success", res.data.message);
+            this.loadingRunsheet = false
+          }
         })
         .catch((err) => {
           this.loadingRunsheet = false
