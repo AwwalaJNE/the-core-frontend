@@ -67,6 +67,11 @@ export default {
                 //   width: "xs"
                 // },
                 {
+                    label: "Open",
+                    key: "total_open",
+                    width: "xs"
+                },
+                {
                     label: "Delivered",
                     key: "total_delivered",
                     width: "xs"
