@@ -179,6 +179,7 @@ export default {
             let routeName = 'delivery-runsheet-new'
             if(row.delivery_runsheet_number){
                 params.delivery_runsheet_number = row.delivery_runsheet_number;
+                params.date_filter = this.dateFilter;
                 routeName = 'delivery-runsheet-edit';                
             }
             this.$router.push({ name: routeName, params: params });            
