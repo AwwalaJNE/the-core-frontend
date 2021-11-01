@@ -12,7 +12,7 @@
 
         <section>
           <vs-row>
-            <vs-col lg="7" sm="7" xs="7">
+            <vs-col lg="6" sm="6" xs="6">
               <div class="box information" style="padding-top: 1px !important;">
                 <div class="nav-box">
                   <vs-row>
@@ -40,13 +40,18 @@
             </vs-col>
 
             <!-- col for detail unreceive item-->
-            <vs-col lg="5" sm="5" xs="5">
+            <vs-col lg="6" sm="6" xs="6">
               <div class="box information" style="padding-top: 1px !important;">
-                <h5 align="left">List Connote Undelivered</h5>
+              <vs-row>
+                <vs-col>
+                <h5 align="left">List Connote Undelivered ({{ this.totalConnote ? this.totalConnote : 0 }})</h5>
+                </vs-col>
+              </vs-row>
+
                 <div class="nav-box">
                   <template>
                     <transition name="slide-fade">
-                          <UndeliveryInformation :ref="'undeliveryInformation'"   :query="tempSearch"/>
+                          <UndeliveryInformation :ref="'undeliveryInformation'"   :query="tempSearch" v-on:total-connote="getTotal"/>
                     </transition>
                   </template>
                 </div>
@@ -93,7 +98,8 @@ export default {
             dialogPickupRequest:false,
             item_no:'',
             form:{},
-            inbound_number:''
+            inbound_number:'',
+            totalConnote:0,
         }
     },
     methods: {
@@ -118,6 +124,9 @@ export default {
         updateValue(){
           this.form.koli_number = this.item_no
           this.processUndelivery();
+        },
+        getTotal(tot) {
+          this.totalConnote = tot
         },
 
         async processUndelivery() {

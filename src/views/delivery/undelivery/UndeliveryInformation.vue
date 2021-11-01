@@ -57,7 +57,7 @@ export default {
             endDate: "",
             dialogTariff: false,
             pagination: {
-                limit:5,
+                limit:1000,
                 page_size: 1,
                 page: 1
             }
@@ -88,6 +88,24 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     this.dataTable = res.data.data
+                    let cour = [];
+                    let dataCour = res.data.data
+                    const map = new Map();
+                    for (const item of dataCour) {
+                        if(!map.has(item.courier_employee_id)){
+                            map.set(item.courier_employee_id, true);    // set any value to Map
+                            cour.push({
+                                value: item.employee_courier.employee_id,
+                                text: item.employee_courier.employee_name
+                            });
+                        }
+                    }
+                    console.log("courrrr",cour);
+                    console.log("res.data.data",res.data.data);
+                    this.$nextTick(() => {
+                      this.$emit('cour-list', cour);
+                      this.$emit('total-connote', res.data.data.length);
+                    });
                     let no = 1;
                     this.dataTable.map(item=>{
                       item['no'] = no
