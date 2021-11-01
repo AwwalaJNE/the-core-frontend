@@ -12,10 +12,10 @@
 
         <section>
           <vs-row>
-            <vs-col lg="6" sm="6" xs="6">
+            <vs-col lg="6" sm="6" xs="12">
               <div class="box information" style="padding-top: 1px !important;">
                 <div class="nav-box">
-                  <vs-row>
+                  <vs-row justify="space-around">
                     <vs-col xs="6" sm="6" lg="6" style="margin-top: 2em">
                       <template>
                         <div class="center">
@@ -40,13 +40,13 @@
             </vs-col>
 
             <!-- col for detail unreceive item-->
-            <vs-col lg="6" sm="6" xs="6">
+            <vs-col lg="6" sm="6" xs="12">
               <div class="box information" style="padding-top: 1px !important;">
               <vs-row style="padding-top:5px" justify="space-between">
-                <vs-col lg="6" sm="6" xs="12">
+                <vs-col lg="7" sm="6" xs="12" w="3">
                   <h5 align="left">List Connote Undelivered ({{ this.totalConnote ? this.totalConnote : 0 }})</h5>
                 </vs-col>
-                <vs-col lg="6" sm="6" xs="12" style="margin-top:5px; align-items: right;">
+                <vs-col lg="5" sm="6" xs="12" style="margin-top:5px; align-items: right;">
                   <vs-select
                     filter
                     placeholder="Filter"
