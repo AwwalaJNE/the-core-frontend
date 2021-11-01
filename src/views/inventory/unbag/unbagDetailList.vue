@@ -147,9 +147,7 @@ export default {
                         console.log("item", itemNumberLength);
                         if (this.total_connote_in_bag == 0) {
                             let totalItem = res.data.data.hasOwnProperty("koli_detail")
-                            ? itemNumberLength > 11 
-                                ? Object.keys(res.data.data.koli_detail).length + 1 
-                                : Object.keys(res.data.data.koli_detail).length
+                            ? Object.keys(res.data.data.koli_detail).length
                                 : 1;
                             this.total_connote_in_bag = totalItem;
                         } else {
@@ -210,9 +208,7 @@ export default {
           this.bag_number=""
           this.item_number =""
           this.total_connote =0
-          setTimeout(() => {
-                this.total_connote_in_bag = 0
-            }, 1500)
+          this.total_connote_in_bag = 0
           this.total_bag =0
           this.total_confirmed =0
         },
