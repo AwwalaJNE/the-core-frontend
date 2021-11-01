@@ -143,7 +143,7 @@ export default {
           this.form.item_no = this.item_no
           this.processInbond();
           this.$refs.formInputInbound.$el.querySelector("input").focus();
-          this.$refs.formInputInbound.$el.querySelector("input").select();
+          this.handlerClearForm()
         },
         getParamRoute(){
           if(this.$route.params.inbound_id){
