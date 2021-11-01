@@ -25,6 +25,7 @@ export default {
     mixins: [master],
     props: {
         query: String,
+        courr: Number,
     },
     components: {
         "table-master" : TableMaster
@@ -72,6 +73,18 @@ export default {
                 }
             }
         },
+        courr: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if (this.tempSearch == 0) {
+                    this.tempSearch = ""
+                }
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                    this.tempSearch = val
+                }
+            }
+        },
     },
     methods: {
         async getTableData(limit,page,q) {
@@ -91,17 +104,21 @@ export default {
                     let cour = [];
                     let dataCour = res.data.data
                     const map = new Map();
-                    for (const item of dataCour) {
-                        if(!map.has(item.courier_employee_id)){
-                            map.set(item.courier_employee_id, true);    // set any value to Map
-                            cour.push({
-                                value: item.employee_courier.employee_id,
-                                text: item.employee_courier.employee_name
+                    cour.push({
+                                'value': 0,
+                                'text': 'All'
                             });
+                    if (cour.length == 1 && cour.length > 0) {
+                        for (const item of dataCour) {
+                            if(!map.has(item.courier_employee_id)){
+                                map.set(item.courier_employee_id, true);    // set any value to Map
+                                cour.push({
+                                    value: item.employee_courier.employee_id,
+                                    text: item.employee_courier.employee_name
+                                });
+                            }
                         }
                     }
-                    console.log("courrrr",cour);
-                    console.log("res.data.data",res.data.data);
                     this.$nextTick(() => {
                       this.$emit('cour-list', cour);
                       this.$emit('total-connote', res.data.data.length);

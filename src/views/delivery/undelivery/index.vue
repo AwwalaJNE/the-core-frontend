@@ -42,16 +42,27 @@
             <!-- col for detail unreceive item-->
             <vs-col lg="6" sm="6" xs="6">
               <div class="box information" style="padding-top: 1px !important;">
-              <vs-row>
-                <vs-col>
-                <h5 align="left">List Connote Undelivered ({{ this.totalConnote ? this.totalConnote : 0 }})</h5>
+              <vs-row style="padding-top:5px" justify="space-between">
+                <vs-col lg="6" sm="6" xs="12">
+                  <h5 align="left">List Connote Undelivered ({{ this.totalConnote ? this.totalConnote : 0 }})</h5>
+                </vs-col>
+                <vs-col lg="6" sm="6" xs="12" style="margin-top:5px; align-items: right;">
+                  <vs-select
+                    filter
+                    placeholder="Filter"
+                    v-model="courierSel"
+                  >
+                    <vs-option :key="index" :label="item.text" :value="item.value" v-for="item,index in courArray">
+                      {{item.text}}
+                    </vs-option>
+                  </vs-select>
                 </vs-col>
               </vs-row>
 
                 <div class="nav-box">
                   <template>
                     <transition name="slide-fade">
-                          <UndeliveryInformation :ref="'undeliveryInformation'"   :query="tempSearch" v-on:total-connote="getTotal"/>
+                          <UndeliveryInformation :ref="'undeliveryInformation'"   :query="tempSearch" :courr="courierSel" v-on:cour-list="getCourrier" v-on:total-connote="getTotal"/>
                     </transition>
                   </template>
                 </div>
@@ -100,6 +111,8 @@ export default {
             form:{},
             inbound_number:'',
             totalConnote:0,
+            courierSel:0,
+            courArray:[],
         }
     },
     methods: {
@@ -127,6 +140,9 @@ export default {
         },
         getTotal(tot) {
           this.totalConnote = tot
+        },
+        getCourrier(datas){
+          this.courArray = datas
         },
 
         async processUndelivery() {
