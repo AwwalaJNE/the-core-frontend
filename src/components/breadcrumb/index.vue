@@ -2,7 +2,7 @@
     <div class="breadcrumb">
         <template v-for="(item,i) in crumbs">
             <span :key="i">
-                {{`${i == 0 ? '': ' / '}`+item.text}}
+                {{`${i == 0 ? '': ' / '}`+item.text.replace('-','/')}}
             </span>
         </template>
     </div>

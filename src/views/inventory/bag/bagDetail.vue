@@ -232,7 +232,7 @@ export default {
       
       console.log("dapet nih kedepan", data, loading)
       let arr = data.detail
-      let bag_des = data.data.destination ? data.data.destination.node_code  : null
+      let bag_des = data.data ? data.data.destination.node_code  : null
       
       
       // this.DataNode

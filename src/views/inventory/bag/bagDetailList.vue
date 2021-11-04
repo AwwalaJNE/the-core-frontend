@@ -145,14 +145,13 @@ export default {
             if(bag !== undefined) {
               bagId = bag
             }
-
             await axios
                 .get(
-                    this.URL.bag + '/'+bagId+`?n=${this.listenNodeId}`,
+                    this.URL.bag + '/'+bagId.replace('/','-')+`?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.detail
-                    let bag_des = res.data.data.destination ? res.data.data.destination.node_code  : '-'
+                    let bag_des = res.data.dat ? res.data.data.destination.node_code  : '-'
                     
                     // console.log(arr, res,'klas')
                     arr.map((item, index)  => {
