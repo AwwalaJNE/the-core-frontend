@@ -155,6 +155,7 @@ export default {
         },
         async processInbond() {
           console.log('form', this.form)
+          this.openNotification(null, "Processing", `${this.form.item_no ? this.form.item_no : 'Item' } is in process`);
           await axios
               .post(this.URL.receiving + `?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),
