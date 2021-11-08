@@ -84,8 +84,8 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Date",
-                    key: "created_at",
+                    label: "Receiving Date",
+                    key: "received_at",
                     width: "xs"
                 },
                 {
