@@ -356,12 +356,17 @@ export default {
     },
     watch:{
         expand: function(val){
+          if(this.isExpand === false && val === false){
+            this.isExpand = true
+          }else if(this.isExpand === true && val === true){
+            this.isExpand = false
+          }else{
             this.isExpand = val
+          }
         }
     },
     methods: {
         redirect(val){
-            console.log('meong menu',val,' visited')
             this.isExpand = false
             // this.$router.push(`${val}`)
         }

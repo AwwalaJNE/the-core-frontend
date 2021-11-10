@@ -150,17 +150,16 @@ export default {
             this.inbound_id = parseInt(this.$route.params.inbound_id)
             this.tempSearch = this.inbound_id.toString()
             this.refresh()
-            console.log(this.inbound_id,'asd')
           }
         },
         async processInbond() {
-          console.log('form', this.form)
-          this.openNotification(null, "Processing", `${this.form.item_no ? this.form.item_no : 'Item' } is in process`);
+          this.openProgress(null, "Processing", `${this.form.item_no ? this.form.item_no : 'Item' } is in process`);
           await axios
               .post(this.URL.receiving + `?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
+                this.closeProgress();
               if (res.data.data.is_delivered == 1) {
 
                 this.openNotification(
@@ -214,15 +213,21 @@ export default {
                   this.refresh()
                   this.handlerClearForm()
                 }
+                setTimeout(()=>{
+                  this.openNotification(typeNotif, 'Receiving Success!', message)
+                },300);
 
-                this.openNotification(typeNotif, 'Receiving Success!', message)
               }
               }).catch(err => {
-                console.log(err,'err receiving');
+                this.closeProgress();
                 this.loading = false
                 this.refresh()
                 this.handlerClearForm()
-                this.openNotification('danger', 'Receiving Failed!', err.response.data.message)
+                setTimeout(()=>{
+                  this.openNotification('danger', 'Receiving Failed!', err.response.data.message)
+                },300);
+
+
               })
         },
 

@@ -17,7 +17,8 @@ const Master = {
             URL : null,
             Helper: null,
             day:null,
-            Loading: null
+            Loading: null,
+            alert:null
         }
     },
     computed: {
@@ -73,7 +74,7 @@ const Master = {
         openNotification(type = null, title,msg) {
             // type success, danger, warn
             const noti = this.$vs.notification({
-                duration: type == 'danger' ? 60000 : 6000,
+                duration: type == 'danger' ? 6000 : 6000,
                 progress: 'auto',
                 color: type,
                 position: 'top-right',
@@ -82,6 +83,22 @@ const Master = {
                 icon: `<i class="bx ${type == 'success' ? 'bx-select-multiple':'bx-error'}" ></i>`
             })
         },
+        openProgress(type = null, title,msg) {
+            // type success, danger, warn
+            this.alert = this.$vs.notification({
+                duration: type == 'danger' ? 3000 : 3000,
+                progress: 'auto',
+                color: type,
+                position: 'top-right',
+                title: title,
+                text: msg,
+                icon: `<i class="bx ${type == 'success' ? 'bx-select-multiple':'bx-error'}" ></i>`
+            })
+        },
+        closeProgress() {
+            this.alert.close();
+        },
+
         checkAuth(res) {
             if(res.status === 401) {
                 localStorage.clear();
