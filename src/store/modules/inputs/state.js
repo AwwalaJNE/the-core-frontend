@@ -52,7 +52,7 @@ export default {
     password: {
       label: "Password",
       key: "password",
-      rule: "min:8",
+      rule: "min:7",
       typeInput: "text|password",
       typeData: "String",
       valueData: null,
