@@ -61,7 +61,7 @@
                         </li>
                         <li>
                           Expectations COD :
-                          {{ dataDeliverySummary.amount_cod }}
+                          {{ moneyformat(dataDeliverySummary.amount_cod) }}
                         </li>
                       </ul>
                     </div>
