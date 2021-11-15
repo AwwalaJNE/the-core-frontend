@@ -117,6 +117,7 @@ import NavItem from "@/components/navbar/navTab";
 import Breadcrumb from "@/components/breadcrumb/index";
 
 import RunsheetInformation from "@/views/delivery/runsheet/edit/runsheetInformation";
+import moment from "moment";
 
 export default {
   name: "delivery-runsheet-edit",
@@ -188,10 +189,11 @@ export default {
       this.getCourier()
       // this.employee_data.employee_name = this.$route.params.employee_name
       // this.employee_data.employee_code = this.$route.params.employee_code
-      
+
       if (this.$route.name == "delivery-runsheet-edit") {
         this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number.toString();
-        this.tempDate = this.$route.params.date_filter.toString();
+        this.tempDate = this.$route.params.date_filter != undefined ? this.$route.params.date_filter.toString() : moment().format('YYYY-MM-DD');
+
         this.getDataDelivery();
 
       }
@@ -397,7 +399,7 @@ export default {
   },
   mounted() {
     this.getStatus();
-    
+
   },
 };
 </script>

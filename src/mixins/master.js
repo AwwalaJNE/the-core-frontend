@@ -102,13 +102,13 @@ const Master = {
         checkAuth(res) {
             if(res.status === 401) {
                 localStorage.clear();
-                this.$router.go()
+                this.$router.push('/login')
             } else if(res.data.reason) {
                 let reason = res.data.reason.toLowerCase()
                 switch(true) {
                     case reason.includes("unauthenticated"):
                         localStorage.clear();
-                        this.$router.go()
+                        this.$router.push('/login')
                         break;
                     default:
                         // code block
@@ -122,10 +122,10 @@ const Master = {
         async checkAuthRequest() {
             // 
             await axios
-                .get(this.URL.check_auth,
-                    this.Helper.headerLogin()).catch(err => {
-                    //     console.log(err.response)
-                    // this.checkAuth(err.response)
+                .get(this.URL.check_auth+"?n="+this.listenNodeId,
+                    this.Helper.header()).catch(err => {
+                        // console.log(err.response)
+                    this.checkAuth(err.response)
                 })            
         },
         addToObject(obj, key, value, index) {
