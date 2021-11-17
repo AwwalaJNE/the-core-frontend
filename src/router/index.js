@@ -644,7 +644,7 @@ const routes = [
     component: PrintBPIK
   },
   {
-    path: '/print/:id/:type/:node_id?',
+    path: '/print/:id/:type/:node_id?/:employee_id?',
     name: 'printGeneral',
     component: printGeneral
   },

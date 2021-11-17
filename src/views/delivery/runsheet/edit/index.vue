@@ -391,6 +391,7 @@ export default {
         params: {
           id: this.delivery_runsheet_number,
           type: "delivery",
+          employee_id: this.employee_id,
           node_id: this.listenNodeId,
         },
       });

@@ -56,6 +56,7 @@ export default {
             type: '',
             err: '',
             node_id: '',
+            employee_id:'',
             dom: null
         }
     },
@@ -65,16 +66,23 @@ export default {
             this.val = this.$route.params.id
             this.type = this.$route.params.type
             this.node_id = this.$route.params.node_id
-            // console.log(this.$route.params.node_id,'node')
+            this.employee_id = this.$route.params.employee_id
             this.getDataPrint()
           }
         },
         async getDataPrint() {
+          let url_print = null;
+          if(this.type =='delivery'){
+            url_print = this.URL.print +
+                `/${this.val}/${this.employee_id}/${this.type}?n=${this.node_id}`
+          }else{
+            url_print= this.URL.print +
+            `/${this.val}/${this.type}?n=${this.node_id}`
+          }
     			let self = this
                 this.loading = true
     			await axios
-                    .get(this.URL.print + 
-                    `/${this.val}/${this.type}?n=${this.node_id}`,
+                    .get(url_print,
                     this.Helper.header())
                     .then(res => {
     					// console.log('getDataPrint', res.data)
