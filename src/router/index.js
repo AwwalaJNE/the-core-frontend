@@ -132,6 +132,8 @@ import SettingAccessToken from "@/views/settings/access_token"
 // === profile ===
 import Profile from "@/views/auth/profile"
 
+// === Dashboard ===
+import DashboardSmartPoint from "@/views/dashboard/smartpoint"
 // === blank ===
 import BlankPage from "@/views/example/blank"
 
@@ -625,6 +627,15 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadCrumb: "setting"
+        }
+      },
+      {
+        path: "/dashboard/smartpoint",
+        name: "DashboardSmartPoint",
+        component: DashboardSmartPoint,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Dashboard"
         }
       },
     ],

@@ -297,7 +297,7 @@ export default {
                 {
                     label: 'Settings',
                     url: null,
-                    icon: '',
+                    icon: 'bx-cog',
                     children: [
                         {
                             label: 'Settings Tariff',
@@ -350,6 +350,18 @@ export default {
                             icon: ''
                         },
                     ]
+                },
+                {
+                  label: 'Dashboard',
+                  url: null,
+                  icon: 'bx-pie-chart-alt',
+                  children: [
+                    {
+                      label: 'Dashboard Smart Point',
+                      url: '/dashboard/smartpoint',
+                      icon: ''
+                    }
+                  ]
                 },
             ]
         }
