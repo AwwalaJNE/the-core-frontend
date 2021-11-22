@@ -98,7 +98,26 @@ const Master = {
         closeProgress() {
             this.alert.close();
         },
+        resetDateTime(date = new Date()){
+            Date.prototype.resetTime= function(){
+                this.setHours('00')
+                this.setMinutes('00')
+                this.setSeconds('00')
+                return this;
+            }
 
+            return new Date(date).resetTime()
+        },
+        defaultDateTime(date = new Date()){
+            Date.prototype.defaultTime= function(){
+                this.setHours('23')
+                this.setMinutes('59')
+                this.setSeconds('59')
+                return this;
+            }
+
+            return new Date(date).defaultTime()
+        },
         checkAuth(res) {
             if(res.status === 401) {
                 localStorage.clear();

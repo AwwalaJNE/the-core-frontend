@@ -1,17 +1,20 @@
 <template>
     <div>
-        <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
-                <div class="titlePage">
-                    <breadcrumb />
-                </div>
-            </vs-col>
-        </vs-row>
+      <vs-row justify>
+        <vs-col xs="6" sm="4" lg="4">
+          <div class="titlePage">
+            <breadcrumb />
+            <h2>{{title}}</h2>
+          </div>
+        </vs-col>
+        <vs-col justify="flex-end" offset="4" xs="6" sm="4" lg="4" >
+            <daterange-filter @searchDate="searchDate"/>
+        </vs-col>
+      </vs-row>
         <section class="bagging">
             <vs-row>
                 <template>
-
-                  <iframe src="http://149.129.235.228:5601/app/kibana#/dashboard/3d9ff930-468d-11ec-82a4-67317a14521b?embed=true&_g=(refreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-30d%2Cto%3Anow))" height="1000" width="100%"></iframe>
+                  <iframe id="dashboard_iframe" :src="this.url_dashboard" height="900" width="100%"></iframe>
                 </template>
             </vs-row>
         </section>
@@ -22,13 +25,15 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import Breadcrumb from "@/components/breadcrumb/index"
-
+import dateRange from "@/components/daterange/index"
+import moment from "moment";
 
 export default {
     name:"DashboardSmartPoint",
     mixins: [master],
     components: {
-        "breadcrumb": Breadcrumb
+        "breadcrumb": Breadcrumb,
+      "daterange-filter": dateRange,
     },
     data() {
         return {
@@ -37,11 +42,26 @@ export default {
             item_number:'',
             form:{},
             loaded: false,
-
+            tempSearch: "",
+            tempDate: [
+                moment(this.resetDateTime(new Date())).format("YYYY-MM-DDTHH:mm:ss"),
+                moment(this.defaultDateTime(new Date())).format("YYYY-MM-DDTHH:mm:ss")
+            ],
+            url_dashboard :""
 
         }
     },
     methods: {
+      searchDate (val) {
+        this.tempDate = val
+
+        let startDate = moment(this.tempDate[0]).format("YYYY-MM-DDTHH:mm:ss")
+        let endDate = moment(this.defaultDateTime(this.tempDate[1])).format("YYYY-MM-DDTHH:mm:ss")
+        this.updateUrl(startDate, endDate);
+      },
+      updateUrl(startDate, endDate){
+        this.url_dashboard = "https://kibananoauth.jne.app/app/kibana#/dashboard/3d9ff930-468d-11ec-82a4-67317a14521b?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:'"+startDate+"Z',to:'"+endDate+"Z'))"
+      },
       updateValue(){
         this.form.item_number = this.item_code
         if(this.item_code !== null){
@@ -58,6 +78,9 @@ export default {
       },
       
     },
+    created() {
+      this.updateUrl(this.tempDate[0], this.tempDate[1]);
+    }
 }
 </script>
 <style lang="scss">
@@ -71,6 +94,9 @@ export default {
     }
     .mt-2{
       margin-top: 20px;
+    }
+    .mr-10{
+      margin-right: 30px;
     }
     iframe{
       border: none;
