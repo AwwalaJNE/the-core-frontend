@@ -77,7 +77,7 @@ export default {
     pickup_schedule: api + "pickup-schedule",
 
     // PICKUP COURIER
-    pickup_courier: api + "pickup-courier",    
+    pickup_courier: api + "pickup-courier",
 
 
     //INBOUND
@@ -103,7 +103,7 @@ export default {
 
     //delivery cod
     delivery_cod : api + "cod",
-    
+
     //delivery cod collect
     delivery_cod_collect : api + "cod-collect",
 
@@ -122,16 +122,16 @@ export default {
 
     //cost to cost
     cost_to_cost: api + "cost-to-cost",
-    
+
     //cost to cost
     cost_to_cost_rules: api + "cost-to-cost-rules",
-    
+
     //cost to cost
     cost_to_cost_type: api + "cost-to-cost-type",
-    
+
     //cost to cost Report
     cost_to_cost_report: api + "cost-to-cost-report",
-    
+
     //cost to cost
     activity_type: api + "activity-type",
 
@@ -163,13 +163,16 @@ export default {
     undelivery : api + "undelivery",
 
     //check-auth
-    check_auth : api + "check-auth",    
+    check_auth : api + "check-auth",
 
     //tariff-group
     tariff_group : api + "tariff-group",
-    
+
     //pickup-origin
     pickup_origin : api + "pickup-origin",
-    
+
+    //resync runsheet
+    resync_runsheet : api + "resync/delivery",
+
 
 }

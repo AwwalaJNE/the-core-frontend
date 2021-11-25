@@ -65,15 +65,17 @@
             </template>
         </template>
 
-        
+
       </vs-sidebar>
     </div>
 </template>
 
 <script>
 import Logo from "../../components/logo/logo.vue"
+import master from "@/mixins/master"
 export default {
     name:"Sidebar",
+    mixins: [master],
     components: {
         Logo: Logo
     },
@@ -83,6 +85,7 @@ export default {
     },
     data() {
         return {
+            nodeTypeCode:null,
             active: 'home',
             isExpand: false,
             menus: [
@@ -352,17 +355,17 @@ export default {
                     ]
                 },
                 {
-                  label: 'Dashboard',
-                  url: null,
-                  icon: 'bx-pie-chart-alt',
-                  children: [
-                    {
-                      label: 'Dashboard Smart Point',
-                      url: '/dashboard/smartpoint',
-                      icon: ''
-                    }
-                  ]
-                },
+                    label: 'Admin',
+                    url: null,
+                    icon: 'bx-user',
+                    children: [
+                        {
+                            label: 'Resync Runsheet',
+                            url: '/resync/runsheet',
+                            icon: ''
+                        },
+                    ]
+                }
             ]
         }
     },
@@ -381,8 +384,33 @@ export default {
         redirect(val){
             this.isExpand = false
             // this.$router.push(`${val}`)
-        }
+        },
+        listenNodeType(){
+            this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
+        },
+        customFilter(){
+            switch (this.nodeTypeCode) {
+                case 'SP':
+                    this.menus.push({
+                        label: 'Dashboard',
+                        url: null,
+                        icon: 'bx-pie-chart-alt',
+                        children: [{
+                            label: 'Smart Point',
+                            url: '/dashboard/smartpoint',
+                            icon: ''
+                        }]
+                    })
+                    break;
+            }
+        },
+
     },
+    mounted() {
+        this.listenNodeType()
+        this.customFilter()
+    }
+
 }
 </script>
 
@@ -403,7 +431,7 @@ export default {
                 }
             }
         }
-        
+
         &.reduce{
             .box-logo{
                 margin: 1em 0;
@@ -411,7 +439,7 @@ export default {
         }
         a{
             color: rgba(var(--vs-text), 1);
-            &.router-link-exact-active, 
+            &.router-link-exact-active,
             &.router-link-active,
             &.focus,
             &.active,
