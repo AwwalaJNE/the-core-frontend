@@ -134,6 +134,9 @@ import Profile from "@/views/auth/profile"
 
 // === Dashboard ===
 import DashboardSmartPoint from "@/views/dashboard/smartpoint"
+
+// === Resync Runsheet ===
+import ResyncRunsheet from "@/views/admin/resyncRunsheet"
 // === blank ===
 import BlankPage from "@/views/example/blank"
 
@@ -145,7 +148,7 @@ const routes = [
     path: '*',
     name: 'NotFound',
     component: NotFound,
-  }, 
+  },
   {
     path: '/',
     name: 'main',
@@ -155,7 +158,7 @@ const routes = [
         path: "profile",
         name: "profile",
         component: Profile,
-        meta: { 
+        meta: {
           requiresAuth: true,
           breadCrumb: "User Profile"
         }
@@ -164,7 +167,7 @@ const routes = [
         path: "blank",
         name: "blank",
         component: BlankPage,
-        meta: { 
+        meta: {
           requiresAuth: true,
           breadCrumb: "Example Blank Page"
         }
@@ -178,7 +181,7 @@ const routes = [
             path: "users",
             name: "users",
             component: Users,
-            meta: { 
+            meta: {
               requiresAuth: true,
               breadCrumb: "Users"
             }
@@ -187,7 +190,7 @@ const routes = [
             path: "geolocation",
             name: "Geolocation",
             component: Geolocation,
-            meta: { 
+            meta: {
               requiresAuth: true,
               breadCrumb: "Geolocation"
             }
@@ -196,7 +199,7 @@ const routes = [
             path: "nodes",
             name: "Nodes",
             component: Nodes,
-            meta: { 
+            meta: {
               requiresAuth: true,
               breadCrumb: "Nodes"
             }
@@ -205,7 +208,7 @@ const routes = [
             path: "tariff",
             name: "Tariff",
             component: Tariff,
-            meta: { 
+            meta: {
               requiresAuth: true,
               breadCrumb: "Tariff"
             }
@@ -214,7 +217,7 @@ const routes = [
             path: "employee",
             name: "Employee",
             component: Employee,
-            meta: { 
+            meta: {
               requiresAuth: true,
               breadCrumb: "Employee"
             }
@@ -223,7 +226,7 @@ const routes = [
             path: "vehicles",
             name: "Vehicles",
             component: Vehicles,
-            meta: { 
+            meta: {
               requiresAuth: true,
               breadCrumb: "Vehicles"
             }
@@ -232,7 +235,7 @@ const routes = [
             path: "customer",
             name: "Customer",
             component: Customer,
-            meta: { 
+            meta: {
               requiresAuth: true,
               breadCrumb: "Customer"
             }
@@ -241,13 +244,13 @@ const routes = [
             path: "surcharge",
             name: "Surcharge",
             component: Surcharge,
-            meta: { 
+            meta: {
               requiresAuth: true,
               breadCrumb: "Surcharge"
             }
           },
         ],
-        meta: { 
+        meta: {
           requiresAuth: true,
           breadCrumb: "Settings"
         }
@@ -261,7 +264,7 @@ const routes = [
             path: "new-transactions",
             name: "new-transactions",
             component: Transaction,
-            meta: { 
+            meta: {
               requiresAuth: true,
               breadCrumb: "New Transaction"
             }
@@ -270,7 +273,7 @@ const routes = [
             path: "upload-connote",
             name: "UploadConnote",
             component: UploadTransaction,
-            meta: { 
+            meta: {
               requiresAuth: true,
               breadCrumb: "Upload Connote"
             }
@@ -279,7 +282,7 @@ const routes = [
             path: "complete/:id",
             name: "transactionComplete",
             component: TransactionFinish,
-            meta: { 
+            meta: {
               requiresAuth: true,
               breadCrumb: "Transaction Complete"
             }
@@ -294,7 +297,7 @@ const routes = [
             }
           },
         ],
-        meta: { 
+        meta: {
           requiresAuth: true,
           breadCrumb: "Transaction"
         }
@@ -313,7 +316,7 @@ const routes = [
               breadCrumb: "Transaction List"
             }
           },
-          
+
           {
             path: "cashregister",
             name: "cashRegister",
@@ -324,7 +327,7 @@ const routes = [
             }
           },
         ],
-        meta: { 
+        meta: {
           requiresAuth: true,
           breadCrumb: "Sales"
         }
@@ -370,19 +373,19 @@ const routes = [
               breadCrumb: "hold"
             }
           },
-          
+
         ],
-        meta: { 
+        meta: {
           requiresAuth: true,
           breadCrumb: "Irreguralities"
         }
       },
-      
+
       {
         path: "/report/cashless",
         name: "CashLess",
         component: CashLess,
-        meta: { 
+        meta: {
           requiresAuth: true,
           breadCrumb: "Report"
         }
@@ -391,7 +394,7 @@ const routes = [
         path: "/report/packinglist",
         name: "Packinglist",
         component: PackingList,
-        meta: { 
+        meta: {
           requiresAuth: true,
           breadCrumb: "report"
         }
@@ -400,17 +403,17 @@ const routes = [
         path: "/upload",
         name: "Upload",
         component: Upload,
-        meta: { 
+        meta: {
           requiresAuth: true,
           breadCrumb: "Upload"
         }
       },
-      
+
       {
         path: "/inventory/item",
         name: "InventoryItem",
         component: InventoryItem,
-        meta: { 
+        meta: {
           requiresAuth: true,
           breadCrumb: "inventory Item"
         }
@@ -442,7 +445,7 @@ const routes = [
           breadCrumb: "bagging detail"
         }
       },
-      
+
       {
         path: "inventory/unbagging",
         name: "unbagging",
@@ -638,8 +641,17 @@ const routes = [
           breadCrumb: "Dashboard"
         }
       },
+        {
+            path: "/resync/runsheet",
+            name: "ResyncRunsheet",
+            component: ResyncRunsheet,
+            meta: {
+                requiresAuth: true,
+                breadCrumb: "Admin"
+            }
+        },
     ],
-    meta: { 
+    meta: {
       requiresAuth: true,
       breadCrumb: "main"
     }
@@ -677,7 +689,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   let path = to.path;
   let token= localStorage.getItem("vuejs__tokenBearer")
-  
+
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if(token == null) {
       next({
