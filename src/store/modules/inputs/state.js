@@ -198,7 +198,7 @@ export default {
       key: "employee_code",
       rule: "required",
       typeInput: "text",
-      typeData: "String",    
+      typeData: "String",
       arrData: [],
       valueData: null,
       value: ''
@@ -266,7 +266,7 @@ export default {
       width: '4',
       typeInput: "select",
       typeData: "String",
-      arrData: [ 
+      arrData: [
         {
           label: 'Laki Laki',
           value: 'L'
@@ -279,7 +279,7 @@ export default {
       valueData: null,
       value: ''
     },
-    
+
     employee_employement_status: {
       label: "Employement Status",
       key: "employee_employement_status",
@@ -318,7 +318,7 @@ export default {
       rule: "required",
       typeInput: "autocomplete",
       typeData: "String",
-      width: '12',      
+      width: '12',
       arrData: [],
       valueData: null,
       value: ''
@@ -647,7 +647,7 @@ export default {
       valueData: null,
       value: ''
     },
-    
+
   },
   customer_type: {
     customer_type_name: {
@@ -668,7 +668,7 @@ export default {
       valueData: true,
       value: true
     },
-    
+
   },
 
   node: {
@@ -736,7 +736,7 @@ export default {
       typeData: "String",
       valueData: null,
       value: ''
-    },    
+    },
     mapPicker:{
       // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
       typeInput: "mapPicker",
@@ -766,7 +766,7 @@ export default {
     default_node_link_id: {
       label: "Default node link*",
       key: "default_node_link_id",
-      rule: "required",
+      rule: "",
       typeInput: "select",
       typeData: "String",
       arrData: [],
@@ -776,12 +776,12 @@ export default {
     default_node_alternate_address_id: {
       label: "Default node alternate address",
       key: "default_node_alternate_address_id",
-      rule: "required",
+      rule: "",
       typeInput: "select",
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '1'
     },
     node_allow_special_cargo: {
       titleLabel: "Special cargo",
@@ -1108,7 +1108,7 @@ export default {
       valueData: null,
       value: ''
     },
-    
+
     mapPicker:{
       // define mapPicker hanya untuk menunjukan urutan map akan ditampilkan
       typeInput: "mapPicker",
@@ -1317,7 +1317,7 @@ export default {
     },
   },
 
-  
+
   tariff_special: {
     tariff_special_name: {
       label: "Tariff special name*",
@@ -2460,7 +2460,7 @@ export default {
         }
       ],
       arrData: [
-        
+
       ],
       valueData: null,
       value: ''
@@ -2791,5 +2791,5 @@ export default {
       value: ''
     },
   }
-  
+
 }
