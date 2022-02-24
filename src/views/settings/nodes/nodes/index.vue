@@ -137,7 +137,7 @@ export default {
         async actionRemove(val){
             await axios
                 .delete(
-                    this.URL.node + `/${val.node_id}`,
+                    this.URL.node + `/${val.node_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
