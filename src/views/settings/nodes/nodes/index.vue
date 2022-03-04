@@ -162,6 +162,7 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogNode() {
+            this.$store.dispatch("SET_NODE_NODE_ID_visible", false)
             this.dialogNode = false
         }
     },

@@ -672,6 +672,17 @@ export default {
   },
 
   node: {
+    node_id: {
+      label: "Node ID",
+      key: "node_id",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      visible: false,
+      valueData: null,
+      value: '',
+
+    },
     node_name: {
       label: "Node Name*",
       key: "node_name",

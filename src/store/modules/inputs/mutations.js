@@ -452,6 +452,15 @@ export default {
   //======= END Customer Type =======
 
   // ==== Node ====
+  SET_NODE_NODE_ID(state, payload) {
+    state.node.node_id.value = payload
+  },
+  SET_NODE_NODE_ID_visible(state, payload) {
+    state.node.node_id.visible = payload
+  },
+  SET_NODE_NODE_ID_ValueData(state, payload) {
+    state.node.node_id.valueData = payload
+  },
   SET_NODE_NODE_NAME(state, payload) {
     state.node.node_name.value = payload
   },

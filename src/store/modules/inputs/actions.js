@@ -427,6 +427,16 @@ export default {
 
 
   // ==== Node ====
+  SET_NODE_NODE_ID({ commit }, payload) {
+    commit('SET_NODE_NODE_ID', payload)
+  },
+  SET_NODE_NODE_ID_visible({ commit }, payload) {
+    commit('SET_NODE_NODE_ID_visible', payload)
+  },
+  SET_NODE_NODE_ID_ValueData({ commit }, payload) {
+    commit('SET_NODE_NODE_ID_ValueData', payload)
+  },
+
   SET_NODE_NODE_NAME({ commit }, payload) {
     commit('SET_NODE_NODE_NAME', payload)
   },
