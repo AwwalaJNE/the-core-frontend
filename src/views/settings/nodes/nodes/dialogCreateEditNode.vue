@@ -107,11 +107,12 @@ export default {
         formData(form){
             this.form = form
             if(this.node_id !== undefined && this.node_id !== '') {
-                    console.log('update')
-                    this.updateData()
+                if(this.form.hasOwnProperty('node_id')){
+                  delete this.form.node_id
+                }
+                this.updateData()
             } else {
-                    console.log('create new')
-                    this.addData()
+                this.addData()
             }
         },
         handleSubmit(){
@@ -236,6 +237,7 @@ export default {
                     this.$emit("refresh")
                     this.openNotification('danger', 'Update failed', err.response.data.message)
                 })
+
         },
         async addData() {
             console.log('form', this.form)
