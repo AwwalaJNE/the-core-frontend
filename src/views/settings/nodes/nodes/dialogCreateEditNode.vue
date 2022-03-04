@@ -99,6 +99,7 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.node_id = val.node_id
+                this.$store.dispatch("SET_NODE_NODE_ID_visible", true)
             }
         }
     },
