@@ -6,6 +6,9 @@
     "Odon",
     "Bagus"
   ],
+  "engines": {
+    "node": "10.13.0"
+  },
   "main": "server.js",
   "description": "Core",
   "private": true,
