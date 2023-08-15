@@ -13,7 +13,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "stylelint '**/*.vue' '**/*.scss' --fix scss"
+    "lint": "stylelint '**/*.vue' '**/*.scss' --fix scss",
+    "build:digitalocean": "npm install --production=false && npm run build && npm ci",
+
   },
   "dependencies": {
     "@vue/eslint-config-airbnb": "^4.0.1",
