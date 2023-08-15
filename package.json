@@ -17,7 +17,7 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "stylelint '**/*.vue' '**/*.scss' --fix scss",
-    "build:digitalocean": "npm install --production=false && npm run build && npm ci",
+    "build:digitalocean": "npm install --production=false && npm run build && npm ci"
 
   },
   "dependencies": {
