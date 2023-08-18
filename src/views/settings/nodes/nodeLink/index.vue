@@ -74,7 +74,7 @@ export default {
             pagination: {
                 limit:20,
                 page_size: 1,
-                page: 1
+                page: 2
             }
         }
     },

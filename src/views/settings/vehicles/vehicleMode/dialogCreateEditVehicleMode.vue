@@ -117,7 +117,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.vehicle_mode + `/${this.vehicle_mode_id}`,
+                    this.URL.vehicle_mode + `/${this.vehicle_mode_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -138,7 +138,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.vehicle_mode,
+                    this.URL.vehicle_mode + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
