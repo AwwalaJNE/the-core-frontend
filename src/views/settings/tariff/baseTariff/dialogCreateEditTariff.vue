@@ -147,7 +147,7 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.tariff + `/${this.tariff_id}`,
+                    this.URL.tariff + `/${this.tariff_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -168,7 +168,7 @@ export default {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.tariff,
+                    this.URL.tariff + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
