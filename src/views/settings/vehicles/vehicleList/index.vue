@@ -155,7 +155,7 @@ export default {
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.vehicle + `/${val.vehicle_id}`,
+                    this.URL.vehicle + `/${val.vehicle_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     

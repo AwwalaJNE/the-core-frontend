@@ -132,7 +132,7 @@ export default {
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.surcharge_type + `/${val.surcharge_type_id}`,
+                    this.URL.surcharge_type + `/${val.surcharge_type_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     this.refresh()

@@ -23,12 +23,24 @@
             title="Edit Tariff"
             :dataItem="dataItem"
             />
+
+        <!-- dialog confirm remove tariff-->
+        <dialog-confirm
+                :active="activeDialogTariff"
+                :loading="activeLoadingTariff"
+                :closeDialog="closeDialogConfirmTariff"
+                title="Remove Tariff"
+                message="Are you sure you want to Remove Tariff ?"
+                @confirm="confirmTariff"
+                @cancel="closeDialogConfirmTariff"
+            />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import dialogCreateEditTariff from "@/views/settings/tariff/baseTariff/dialogCreateEditTariff"
 export default {
     name:"base-tariff-list",
@@ -38,10 +50,13 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
+        "dialog-confirm": DialogConfirm,
         "dialog-create-edit-Tariff": dialogCreateEditTariff
     },
     data() {
         return {
+            activeDialogTariff:false,
+            activeLoadingTariff:false,
             dataTable: [],
             datacolumn: [
                 {
@@ -183,18 +198,27 @@ export default {
 
             }
         },
-        async actionRemove(val){
+        actionRemove(val){
+          this.activeDialogTariff = true;
+          this.tariff_id = val.tariff_id;
+        },
+        confirmTariff(){
+          this.removeTariff();
+        },
+        async removeTariff(){
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.tariff + `/${val.tariff_id}`,
+                    this.URL.tariff + `/${this.tariff_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
+                    this.closeDialogConfirmTariff();
                     this.openNotification(null, 'Delete success', 'Delete tariff is success')
                 }).catch(err => {
                     this.loading = false
+                    this.closeDialogConfirmTariff();
                     this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
@@ -212,6 +236,10 @@ export default {
         },
         closeDialogTariff() {
             this.dialogTariff = false
+        },
+        closeDialogConfirmTariff(){
+          this.activeDialogTariff=false
+          this.activeLoadingTariff=false
         }
     },
     mounted() {

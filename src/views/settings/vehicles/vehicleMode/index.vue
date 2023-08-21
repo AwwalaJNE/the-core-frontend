@@ -129,7 +129,7 @@ export default {
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.vehicle_mode + `/${val.vehicle_mode_id}`,
+                    this.URL.vehicle_mode + `/${val.vehicle_mode_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
