@@ -492,9 +492,13 @@ const TransactionMixin = {
                                   }
                                   break;
                               case formula.toLowerCase() == 'handling_charge':
-                                  let handling_charge = Number(dataSurcharge['surcharge_formula'][formula])
-                                  ngubah['handling_charge'] = handling_charge
-                                  break;
+                                let handling_charge = Number(dataSurcharge['surcharge_formula'][formula])
+                                if (!isNaN(handling_charge)) {
+                                    ngubah['handling_charge'] = handling_charge;
+                                } else {
+                                    ngubah['handling_charge'] = 0; 
+                                }
+                                break;
                               // case formula.toLowerCase() == 'adm_karantina':
                               //     let adm_karantina = Number(dataSurcharge['adm_karantina'][formula])
                               //     ngubah['adm_karantina'] = adm_karantina
