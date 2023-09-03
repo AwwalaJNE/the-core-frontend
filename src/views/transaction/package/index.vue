@@ -699,10 +699,13 @@ export default {
           this.calculation()
           break
         case 'amount_discount':
-          const num = this.moneyParsing(value)
+          let num = this.moneyParsing(value)
           const val = value || 0
-          console.log('SET_PACKAGE_PACKAGE_DISKON', num)
-          this.$store.dispatch('SET_CALCULATOR_DISKON', num)
+          if(num < 1){
+            num = 0
+          }
+          // console.log('SET_PACKAGE_PACKAGE_DISKON', num, value, val)
+          this.$store.dispatch('SET_CALCULATOR_DISKON', value)
           this.$store.dispatch('SET_PACKAGE_PACKAGE_DISKON', value)
 
           this.calculation()

@@ -183,13 +183,16 @@ export default {
 
     SET_PACKAGE_PACKAGE_DISKON({ commit, dispatch }, payload) {
         commit('SET_PACKAGE_PACKAGE_DISKON', payload)
-        let numb = 0
+            let numb = 0
             if(payload !== '' && typeof payload == 'string') {
                 let txt = payload.split(".")[0]
                 // console.log('money str', str,txt)
                 numb = txt.match(/\d/g);
                 numb = numb.join("");
             }
+           if (numb < 1){
+               numb = 0
+           }
         dispatch('SET_CONNOTE_DATA', {'key':'amount_discount','value': numb})
     },
     SET_PACKAGE_PACKAGE_DISKON_ValueData({ commit }, payload) {

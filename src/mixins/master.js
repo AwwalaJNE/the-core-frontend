@@ -52,14 +52,17 @@ const Master = {
             if(typeof str == 'string') {
                 if(str !== '') {
                     let txt = str.split(".")[0]
-                    // console.log('money str', str,txt)
-                    numb = txt.match(/\d/g);
-                    numb = numb.join("");
+                    if(txt < 1 ){
+                        txt = 0
+                    }else{
+                        // console.log('money str1', str,txt)
+                        numb = txt.match(/\d/g);
+                        numb = numb.join("");
+                    }
                 }
             }
-            
             return numb
-            
+
         },
         openLoading(msg) {
             this.Loading = this.$vs.loading({
