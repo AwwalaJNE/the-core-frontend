@@ -213,24 +213,19 @@ export default {
                       item["driver_id"] = (item.pic_employee_id) ? parseInt(item.pic_employee_id): null
                       item["driver_name"] = (item.pic) ? item.pic.employee_name: null
 
-                      if(item.hasOwnProperty('status')) {
-                        // let btns = Object.keys(buttonStatus).toString() // biar jadi "depart,cancel"
-                        let str = item["status"].toLowerCase()
-                        // if(btns.includes(status)){ // jika status sudah == action button maka button disabled (dalam artian SJ ini sudah dilakuan action tsb dan button disabled)
-                        //   buttonStatus['status'] = false
-                        // }
-                        console.log("button status",str, str.includes("depart"))
-                        if(str.includes("depart") == true) {
-                          console.log("button status",str, str.includes("depart"))
-                          buttonStatus["depart"] = false
-                          item["button_status"] = buttonStatus
-                        }
-                        if(str.includes("cancel") == true) {
-                          // console.log("button status",str, str.includes("cancel"))
-                          buttonStatus["cancel"] = false
-                          item["button_status"] = buttonStatus
-                        }
-                        
+                      if (item.hasOwnProperty('status') && item["status"] !== null) {
+                          let str = item["status"].toLowerCase();
+                          console.log("button status", str, str.includes("depart"));
+                          if (str.includes("depart")) {
+                              console.log("button status", str, str.includes("depart"));
+                              buttonStatus["depart"] = false;
+                              item["button_status"] = buttonStatus;
+                          }
+                          if (str.includes("cancel")) {
+                              // console.log("button status", str, str.includes("cancel"))
+                              buttonStatus["cancel"] = false;
+                              item["button_status"] = buttonStatus;
+                          }
                       }
                     })
                     console.log('manifest_delivery_order', arr, res)
