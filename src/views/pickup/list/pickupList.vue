@@ -12,11 +12,13 @@
         :pickupListAction="true"
         :updateAction="true"
         :hasPagination="true"
+        :hasLinked="['total_picked']"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @actionUpdate="actionUpdate"
         @actionPicked="actionPicked"
         @actionCancel="actionCancel"
+        @handleEdit="handleEdit"
         />
 
       <!--Create pickup List-->
@@ -39,6 +41,15 @@
             
         />
 
+         <!--dialog picked show bag/connote -->
+      <DialogPickedShow
+          :active="dialogPickedShowActive"
+          @refresh="refresh"
+          :closeDialog="closeDialogShowConfirmPicked"
+          title="List of Bags Picking"
+          :pickupData="pickupData"
+        />
+
 
       <!--Create pickup Request-->
       <dialogPickupListCancel
@@ -57,6 +68,7 @@ import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import DialogCreatePickupList from "@/views/pickup/list/dialogCreateEditPickupList"
 import DialogPicked from "@/views/pickup/list/dialogPicked"
+import DialogPickedShow from "@/views/pickup/list/dialogPickedShow"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 import dialogCancelPickupList from "@/views/pickup/list/dialogCancelPickupList";
 
@@ -73,6 +85,7 @@ export default {
         "table-master" : TableMaster,
         "dialogCreatePickupList": DialogCreatePickupList,
         "DialogPicked": DialogPicked,
+        "DialogPickedShow": DialogPickedShow,
         "dialog-confirm": DialogConfirm,
         "dialogPickupListCancel": dialogCancelPickupList
     },
@@ -85,6 +98,7 @@ export default {
             dataTable: [],
             dialogPickupList:false,
             dialogPickedActive: false,
+            dialogPickedShowActive: false,
             datacolumn: [
                 {
                     label: "Request Date",
@@ -235,6 +249,9 @@ export default {
         closeDialogConfirmPicked(){
             this.dialogPickedActive = false
         },
+        closeDialogShowConfirmPicked(){
+            this.dialogPickedShowActive = false
+        },
         closeDialogPickupList() {
           this.dialogPickupList = false
           this.dataItem = {}
@@ -268,6 +285,14 @@ export default {
 
             this.$nextTick(() => {
               this.dialogPickupList = true
+            });
+          }
+        },
+        handleEdit(val){
+          if(this.dataTable.length > 0) {
+            this.pickupData = val
+            this.$nextTick(() => {
+              this.dialogPickedShowActive = true
             });
           }
         },
