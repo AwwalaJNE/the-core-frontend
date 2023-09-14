@@ -219,7 +219,7 @@ export default {
             }
             await axios
                 .get(this.URL.pickup +
-                `?n=${this.listenNodeId}&pickup_status=${status_pickup}&s=${query}`,
+                `?n=${this.listenNodeId}&pickup_status=${status_pickup}&page=${page}&s=${query}`,
                 this.Helper.header())
                 .then(res => {
                     // this.dataTable = res.data.data
