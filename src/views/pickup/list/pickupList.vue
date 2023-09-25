@@ -131,6 +131,11 @@ export default {
                   width: "auto"
                 },
                 {
+                  label: "Total Weight (Kg)",
+                  key: "total_weight",
+                  width: "auto"
+                },
+                {
                   label: "Courier",
                   key: "user_name",
                   width: "auto"
@@ -227,7 +232,13 @@ export default {
                     arr.map(item => {
                         item.total_unpicked = parseInt(item.total_bag) + parseInt(item.total_koli);
                         item.total_picked = item.total_picked+" / "+item.total_unpicked;
+                        if (item.total_weight !== null) {
+                          item.total_weight = item.total_weight;
+                        } else {
+                          item.total_weight = "";
+                        }
                         item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE') ? true : false
+                        console.log(item, item.pickup_detail[0].total_weight, item.total_picked_weight, 'data');
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
