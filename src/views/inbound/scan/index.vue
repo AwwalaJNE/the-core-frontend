@@ -147,7 +147,7 @@ export default {
         },
         getParamRoute(){
           if(this.$route.params.inbound_id){
-            this.inbound_id = parseInt(this.$route.params.inbound_id)
+            this.inbound_id = this.$route.params.inbound_id.toString()
             this.tempSearch = this.inbound_id.toString()
             this.refresh()
           }
@@ -234,6 +234,7 @@ export default {
         async getTableData() {
             this.loading = true
             this.dataTable = []
+            const inboundId = this.inbound_id.toString()
             if(this.inbound_id === ''){
 
 
