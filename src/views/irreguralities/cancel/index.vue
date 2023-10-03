@@ -268,7 +268,7 @@ export default {
         confirmApprove(val) {
           if(val) {
             let formUpdate = {}
-            let irregularity_id = this.dataItem.irregularity_id
+            let irregularity_id = this.dataItem.irregularity_id.toString()
             this.loadingApproveActive = true;
             this.approveIrreg(formUpdate, irregularity_id)
           }
