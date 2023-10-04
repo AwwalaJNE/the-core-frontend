@@ -24,7 +24,7 @@ deploy dev:
       - echo "$SSH_PRIVATE_KEY_DEV" >> ~/.ssh/id_dsa
       - chmod 600 ~/.ssh/id_dsa
       - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-      - rsync -rav --delete dist/ root@149.129.247.176:/var/www/html/the-core-frontend-v2//dist
+      - rsync -rav --delete dist/ root@149.129.247.176:/var/www/html/the-core-frontend-v2/dist
       - ls -la      
   only :
     - development
