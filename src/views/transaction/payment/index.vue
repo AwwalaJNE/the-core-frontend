@@ -23,9 +23,9 @@
                         <p>Total Price</p>
                         <h3>{{moneyformat(grand_total)}}</h3>
                         <br>
-                        <p>Special Tariff Discount</p>
+                        <!-- <p>Special Tariff Discount</p>
                         <h3>{{moneyformat(discount)}}</h3>
-                        <br>
+                        <br> -->
                         <p>Total After Discount</p>
                         <h3>{{moneyformat(price)}}</h3>
                     </vs-col>
