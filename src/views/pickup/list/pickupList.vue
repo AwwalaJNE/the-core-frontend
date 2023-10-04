@@ -79,7 +79,8 @@ export default {
         query: String,
         dateFilter: Array,
         node:String,
-        status_pickup:String
+        status_pickup:String,
+        courier_pickup:String/Number
     },
     components: {
         "table-master" : TableMaster,
@@ -160,6 +161,7 @@ export default {
             endDate: "",
             node_filter: "",
             temp_pickup_status:'',
+            temp_pickup_courier:'',
             dialogTariff: false,
             pickupNumber:null,
             pagination: {
@@ -197,21 +199,32 @@ export default {
           }
         },
         status_pickup: function(val, old) {
-          if(val !== undefined) {
-            this.temp_pickup_status = val
-            if(this.temp_pickup_status !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter, val)
+            if (val !== undefined) {
+                this.temp_pickup_status = val;
+                if (this.temp_pickup_status !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter, val, this.temp_pickup_courier);
+                }
+                console.log(this.temp_pickup_status, 'status');
             }
-          }
+        },
+        courier_pickup: function(val, old) {
+            if (val !== undefined) {
+                this.temp_pickup_courier = val;
+                if (this.temp_pickup_courier !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter, this.temp_pickup_status, val);
+                }
+                console.log(this.temp_pickup_courier, 'kurir');
+            }
         },
     },
     methods: {
-        async getTableData(limit,page,q, from, to, node, status=null) {
+        async getTableData(limit,page,q, from, to, node, status=null, courier=null) {
             this.loading = true
             let query = "";
             let startDate = "";
             let endDate = "";
             let status_pickup=''
+            let courier_pickup=''
             if(q !== undefined) {
                 query = q
             }
@@ -219,15 +232,20 @@ export default {
               startDate = from
               endDate = to
             }
+          
             if(status !== undefined && status !== null) {
               status_pickup = status
-            }
+            } 
+            if(courier !== undefined && courier !== null) {
+              courier_pickup = courier
+            } 
+            // pickupStatus = status !== undefined && status !== null ? status : courier_pickup;
             await axios
                 .get(this.URL.pickup +
-                `?n=${this.listenNodeId}&pickup_status=${status_pickup}&page=${page}&s=${query}`,
+                `?n=${this.listenNodeId}&pickup_status=${status_pickup}&pickup_courier=${courier_pickup}&page=${page}&s=${query}`,
                 this.Helper.header())
                 .then(res => {
-                    // this.dataTable = res.data.data
+                    // this.dataTable = res.data.data 
                     let arr = res.data.data
                     arr.map(item => {
                         item.total_unpicked = parseInt(item.total_bag) + parseInt(item.total_koli);

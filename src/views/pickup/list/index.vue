@@ -81,14 +81,35 @@
 
                     </template>
                   </vs-col>
-                  <vs-col offset="2" xs="6" sm="4" lg="4" class="mb-15" align="right">
+                  <vs-col xs="3" sm="3" lg="3">
+                    <template v-if="DataCourier.length > 0">
+                      <vs-select 
+                       class="m-select"
+                       filter
+                       :multiple="false"
+                       placeholder="All Courier"
+                       v-model="courier_pickup"
+                       :border="true"
+                       @change="updateNode">
+                        <template>
+                          <vs-option v-for="(item,key) in DataCourier"
+                          :key="key"
+                          :label="item.label"
+                          :value="item.value">
+                            {{ item.label }}
+                          </vs-option>
+                        </template>
+                      </vs-select>
+                    </template>
+                  </vs-col>
+                  <vs-col offset="2" xs="2" sm="2" lg="2" align="right">
                     <search-input ref="searchInput" @searchValue="searchValue"/>
                   </vs-col>
                 </vs-row>
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <PickupList :ref="'transactionList'"  :status_pickup="status_pickup" :node="node_request" :dateFilter="tempDate" :query="tempSearch"/>
+                        <PickupList :ref="'transactionList'" :status_pickup="status_pickup" :courier_pickup="courier_pickup" :node="node_request" :dateFilter="tempDate" :query="tempSearch"/>
                     </transition>
                 </template>
             </div>
@@ -134,8 +155,10 @@ export default {
             dialogPickupList:false,
             // DataNode:[],
             DataStatus:[],
+            DataCourier:[],
             node_request:'',
             status_pickup:'',
+            courier_pickup:''
         }
     },
     methods: {
@@ -208,10 +231,34 @@ export default {
                 this.openNotification('danger', 'Failed to populate node list', err)
               })
         },
+        async getDataCourier(){
+            this.loading = true
+            await axios
+                .get(this.URL.pickup_courier +`?n=${this.listenNodeId}`,
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.user_login + ' - ' + item.user_name + ' - ' + item.user_id;
+                            obj["value"] = item.user_id
+
+                            console.log(this.DataCourier,'test');
+                            this.DataCourier.push(obj)
+                        })
+                        this.$store.dispatch("SET_PICKUP_LIST_PICKUP_COURIER_USER_ID_ArrData", arr.length > 0 ? arr : null)
+                    }
+
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
     },
   mounted() {
       // this.getTableData()
       this.getPickupStatus()
+      this.getDataCourier()
   }
 }
 </script>
