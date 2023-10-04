@@ -259,7 +259,7 @@ export default {
                       name: 'printGeneral',
                       params: {
                         'id': kolinumber,
-                        'type': 'koli',
+                        'type': 'koli-reprint',
                         'node_id': this.listenNodeId
                       } 
                     });
