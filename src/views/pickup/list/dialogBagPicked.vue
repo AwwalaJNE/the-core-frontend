@@ -88,20 +88,21 @@ export default {
   },
   watch: {
     pickupData: function (val) {
+      console.log("why",val)
       if (val !== undefined) {
         if (this.dataitem !== val) {
           let arr = [];
-          val.pickup_detail.map((item) => {
+          val.pickup_detail.filter(item => item.item_type === 'BAG').map((item) => {
               let obj = {};
               obj["label"] = item.item_number;
               obj["value"] = item.item_number;
               obj["is_picked"] = item.is_picked;
+              obj["item_type"] = item.item_type;
               arr.push(obj);
             
           });
           this.bagNumberList = arr;
           this.pickup_number = val.pickup_number;
-
           const selectedItems = this.bagNumberList.filter(item => item.is_picked > 0);
           this.selectedValues = selectedItems.map(item => item.value);
           this.item_picked = this.selectedValues;
@@ -110,6 +111,7 @@ export default {
       }
     },
   },
+  //buatkan pickup_detail yang muncul hanya untuk item_type nya BAG
   methods: {
     handleSubmit() {
       this.btnLoading = true
