@@ -251,9 +251,11 @@
                                         <template v-if="split(column.key).length == 2 && item.hasOwnProperty(split(column.key)[0])">
                                             {{ item.hasOwnProperty(split(column.key)[0]) ? item[split(column.key)[0]][split(column.key)[1]] : '' }}
                                         </template>
-                                        <!--column custom linked -->
-                                        <template v-else-if="hasLinked !== undefined && hasLinked.length > 0 && column.key !== undefined && column.key.toLowerCase() === hasLinked[0]">
-                                        <span class="text-link" @click="handleEdit(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
+                                        <template v-else-if="hasLinked !== undefined && hasLinked.length > 0 && column.key !== undefined && hasLinked.includes(column.key.toLowerCase())">
+                                            <span class="text-link"  @click="handleEdit(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
+                                        </template>
+                                        <template v-else-if="hasLinked2 !== undefined && hasLinked2.length > 0 && column.key !== undefined && hasLinked2.includes(column.key.toLowerCase())">
+                                            <span class="text-link"  @click="handleEdit2(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
                                         </template>
                                         <template v-else>
                                             {{ item[column.key] ? item[column.key] : '' }}
@@ -599,6 +601,7 @@ export default {
         hasPagination: Boolean,
         expandable: Boolean,
         hasLinked:Array,
+        hasLinked2:Array,
         removeOnly: Boolean,
         printAction: Boolean,
         pickupListAction:Boolean,
@@ -774,6 +777,9 @@ export default {
 
         handleEdit(val) {
           this.$emit("handleEdit", val);
+        },
+        handleEdit2(val, key) {
+            this.$emit("handleEdit2", val);
         },
     },
     mounted() {

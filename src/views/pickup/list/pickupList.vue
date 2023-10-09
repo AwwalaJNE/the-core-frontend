@@ -12,13 +12,15 @@
         :pickupListAction="true"
         :updateAction="true"
         :hasPagination="true"
-        :hasLinked="['total_picked']"
+        :hasLinked="['total_picked_bag']"
+        :hasLinked2="['total_picked_koli']"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @actionUpdate="actionUpdate"
         @actionPicked="actionPicked"
         @actionCancel="actionCancel"
         @handleEdit="handleEdit"
+        @handleEdit2="handleEditKoli"
         />
 
       <!--Create pickup List-->
@@ -42,12 +44,20 @@
         />
 
          <!--dialog picked show bag/connote -->
-      <DialogPickedShow
+      <DialogBagPicked
           :active="dialogPickedShowActive"
           @refresh="refresh"
           :closeDialog="closeDialogShowConfirmPicked"
           title="List of Bags Picking"
           :pickupData="pickupData"
+        />
+
+        <DialogKoliPicked
+          :active="dialogPickedKoliActive"
+          @refresh="refresh"
+          :closeDialog="closeDialogKoliConfirmPicked"
+          title="List of Koli Picked"
+          :pickupDataKoli="pickupDataKoli"
         />
 
 
@@ -68,7 +78,8 @@ import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import DialogCreatePickupList from "@/views/pickup/list/dialogCreateEditPickupList"
 import DialogPicked from "@/views/pickup/list/dialogPicked"
-import DialogPickedShow from "@/views/pickup/list/dialogPickedShow"
+import DialogBagPicked from "@/views/pickup/list/dialogBagPicked"
+import DialogKoliPicked from "@/views/pickup/list/dialogKoliPicked"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 import dialogCancelPickupList from "@/views/pickup/list/dialogCancelPickupList";
 
@@ -86,7 +97,8 @@ export default {
         "table-master" : TableMaster,
         "dialogCreatePickupList": DialogCreatePickupList,
         "DialogPicked": DialogPicked,
-        "DialogPickedShow": DialogPickedShow,
+        "DialogBagPicked": DialogBagPicked,
+        "DialogKoliPicked": DialogKoliPicked,
         "dialog-confirm": DialogConfirm,
         "dialogPickupListCancel": dialogCancelPickupList
     },
@@ -100,6 +112,7 @@ export default {
             dialogPickupList:false,
             dialogPickedActive: false,
             dialogPickedShowActive: false,
+            dialogPickedKoliActive: false,
             datacolumn: [
                 {
                     label: "Request Date",
@@ -127,8 +140,13 @@ export default {
                   width: "auto"
                 },
                 {
-                  label: "Picked",
-                  key: "total_picked",
+                  label: "Bag Picked",
+                  key: "total_picked_bag",
+                  width: "auto"
+                },
+                {
+                  label: "Koli Picked",
+                  key: "total_picked_koli",
                   width: "auto"
                 },
                 {
@@ -155,6 +173,7 @@ export default {
             loading: false,
             dataItem: {},
             pickupData:{},
+            pickupDataKoli:{},
             tempSearch: "",
             tempDate: [],
             startDate: "",
@@ -248,8 +267,10 @@ export default {
                     // this.dataTable = res.data.data 
                     let arr = res.data.data
                     arr.map(item => {
-                        item.total_unpicked = parseInt(item.total_bag) + parseInt(item.total_koli);
-                        item.total_picked = item.total_picked+" / "+item.total_unpicked;
+                        item.total_unpicked_bag = parseInt(item.total_bag);
+                        item.total_unpicked_koli = parseInt(item.total_koli);
+                        item.total_picked_bag = item.total_picked_bag+" / "+item.total_unpicked_bag;
+                        item.total_picked_koli = item.total_picked_koli+" / "+item.total_unpicked_koli;
                         if (item.total_weight !== null) {
                           item.total_weight = item.total_weight;
                         } else {
@@ -280,6 +301,9 @@ export default {
         },
         closeDialogShowConfirmPicked(){
             this.dialogPickedShowActive = false
+        },
+        closeDialogKoliConfirmPicked(){
+            this.dialogPickedKoliActive = false
         },
         closeDialogPickupList() {
           this.dialogPickupList = false
@@ -322,6 +346,14 @@ export default {
             this.pickupData = val
             this.$nextTick(() => {
               this.dialogPickedShowActive = true
+            });
+          }
+        },
+        handleEditKoli(val){
+          if(this.dataTable.length > 0) {
+            this.pickupDataKoli = val
+            this.$nextTick(() => {
+              this.dialogPickedKoliActive = true
             });
           }
         },
