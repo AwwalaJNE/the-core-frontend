@@ -84,7 +84,7 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Koli#",
+                    label: "Quantity",
                     key: "koli_qty",
                     width: "xs"
                 },
