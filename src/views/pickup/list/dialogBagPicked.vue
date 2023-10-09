@@ -106,12 +106,10 @@ export default {
           const selectedItems = this.bagNumberList.filter(item => item.is_picked > 0);
           this.selectedValues = selectedItems.map(item => item.value);
           this.item_picked = this.selectedValues;
-          // console.log(this.pickup_number, this.bagNumberList, this.selectedValues, 'test');
         }
       }
     },
   },
-  //buatkan pickup_detail yang muncul hanya untuk item_type nya BAG
   methods: {
     handleSubmit() {
       this.btnLoading = true
