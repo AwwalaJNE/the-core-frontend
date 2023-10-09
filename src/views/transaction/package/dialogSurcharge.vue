@@ -325,6 +325,10 @@ export default {
                 if(!this.Keys.includes(filter.surcharge_type_name)) {
                   this.Keys.push(filter.surcharge_type_name)
                 }
+                //jika menggunakan via udara(DG), DG DOKUMENT FEE otomatis ikut 
+                if(filter.surcharge_type_name === "DG DOCUMENT FEE") {
+                    this.selectedRadio[item] = this.hidden[item]['surcharge_id']
+                }
                 
                 // console.log("INI VISIBLE", filter, this.Keys)
               } else {
