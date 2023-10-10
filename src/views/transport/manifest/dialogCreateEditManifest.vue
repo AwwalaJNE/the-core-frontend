@@ -173,7 +173,8 @@ export default {
             node_id_origin: "",
             vehicle_id: "",
             manifest_method_id: "",
-
+            flight_number:'',
+            flight_schedule:'',
             autoComplateUrl: '',
             itterateUrlAutoComplete: '',
             itterateFlagAutoComplete: 'node_name',
@@ -492,6 +493,7 @@ export default {
         },
       
         async updateData(){
+            console.log('ckck', this.dataTable)
             this.form.manifest_item = this.dataTable
             await axios
                 .put(
@@ -594,10 +596,14 @@ export default {
               this.manifest_method_id = val
               if(type == 'manifest_method_id' && val == 1){
                 this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false)
+                this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true)
+                this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", true)
                 // this.jenisKiriman(true);
               }else if (type == 'manifest_method_id' && val != 1){
                 // this.jenisKiriman(false);
                 this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true)
+                this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false)
+                this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false)
               }
               if(info.hasOwnProperty('data')) {
                 this.vehicle_mode_id = info.data.vehicle_mode_id || ''
@@ -687,7 +693,6 @@ export default {
         // }
     },
     mounted() {
-        
         // this.getDataEmployee()
     },
 }

@@ -2114,6 +2114,26 @@ export default {
       valueData: null,
       value: ''
     },
+    flight_number: {
+      label: "Flight Number",
+      key: "flight_number",
+      rule: "required",
+      visible: false,
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    flight_schedule: {
+      label: "Flight Schedule",
+      key: "flight_schedule",
+      rule: "",
+      visible: false,
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
     node_id_origin: {
       label: "Origin",
       key: "node_id_origin",

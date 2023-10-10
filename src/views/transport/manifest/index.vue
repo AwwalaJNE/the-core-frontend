@@ -110,6 +110,8 @@ export default {
         },
         openDialog(){
             this.dialogSuratMuatan = true
+            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false)
+            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false)
         },
         updateNode(val){
 
