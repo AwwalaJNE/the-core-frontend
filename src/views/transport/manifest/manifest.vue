@@ -251,7 +251,7 @@ export default {
             val['flight_schedule'] = val['flight_schedule']
             console.log(val,'bagus')
             this.dataItem = val
-            if (parseIntval['manifest_method_id'] === 1) {
+            if (parseInt['manifest_method_id'] === 1) {
               this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true)
               this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", true)
               this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData", val["origin"])
