@@ -1643,6 +1643,26 @@ export default {
     state.surat_muatan.manifest_number.valueData = payload
   },
 
+  SET_SURAT_MUATAN_FLIGHT_NUMBER(state, payload) {
+    state.surat_muatan.flight_number.value = payload
+  },
+  SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData(state, payload) {
+    state.surat_muatan.flight_number.valueData = payload
+  },
+  SET_SURAT_MUATAN_FLIGHT_NUMBER_visible(state, payload) {
+    state.surat_muatan.flight_number.visible = payload
+  },
+
+  SET_SURAT_MUATAN_FLIGHT_SCHEDULE(state, payload) {
+    state.surat_muatan.flight_schedule.value = payload
+  },
+  SET_SURAT_MUATAN_FLIGHT_SCHEDULE_ValueData(state, payload) {
+    state.surat_muatan.flight_schedule.valueData = payload
+  },
+  SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible(state, payload) {
+    state.surat_muatan.flight_schedule.visible = payload
+  },
+
   SET_SURAT_MUATAN_MAX_WEIGHT(state, payload) {
     state.surat_muatan.max_weight.value = payload
   },

@@ -1728,12 +1728,37 @@ export default {
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible({ commit }, payload) {
     commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible', payload)
   },
+
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ValueData', payload)
   },
   // type select perlu data array
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_FLIGHT_NUMBER({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_FLIGHT_NUMBER', payload)
+  },
+
+  SET_SURAT_MUATAN_FLIGHT_NUMBER_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_FLIGHT_NUMBER_visible', payload)
+  },
+
+  SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData', payload)
+  },
+
+  SET_SURAT_MUATAN_FLIGHT_SCHEDULE({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_FLIGHT_SCHEDULE', payload)
+  },
+
+  SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible', payload)
+  },
+
+  SET_SURAT_MUATAN_FLIGHT_SCHEDULE_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_FLIGHT_SCHEDULE_ValueData', payload)
   },
 
   SET_SURAT_MUATAN_ETD({ commit }, payload) {
