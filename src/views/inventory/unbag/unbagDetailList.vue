@@ -7,7 +7,7 @@
 <template>
   <vs-row>
     <vs-col xs="12" sm="6" lg="6" >
-      <div class="box view">
+      <div class="box view" >
         <div class="summary-unbag">
           <span class="subtitle" align="right"><p>{{total_bag}}</p></span>
           <span class="title" align="right"><h4>Unbagged</h4></span>
@@ -29,7 +29,7 @@
       </div>
 
     </vs-col>
-    <vs-col xs="12" sm="6" lg="6">
+    <vs-col xs="12" sm="6" lg="6" >
       <div class="box view">
         <div class="summary-unbag">
           <span class="subtitle" align="right"><p>{{ total_connote_in_bag - total_connote }}/{{ total_connote_in_bag }}</p></span>
@@ -127,6 +127,7 @@ export default {
             this.loading = true
             let form = {};
             let itemNumber = "";
+            console.log(this.item_number,'ini item number');
             if(this.item_number !== undefined) {
               itemNumber = this.item_number
               form.item_number = this.item_number
