@@ -100,6 +100,16 @@ export default {
                     label: "With Courier",
                     key: "current_user",
                     width: "auto"
+                },
+                {
+                    label: "Surat Muatan",
+                    key: "surat_muatan",
+                    width: "auto"
+                },
+                {
+                    label: "Surat Jalan",
+                    key: "surat_jalan",
+                    width: "auto"
                 }
             ],
             loading: false,
