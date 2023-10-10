@@ -36,7 +36,7 @@
              <vs-col lg="12">
                <selector 
                ref="destination"
-               name="Regional" 
+               name="Routing" 
                rules="" 
                placeholder="Select Location"
                formKey="destination"
@@ -48,29 +48,6 @@
             </div>
           </template>
         </vs-col>
-        
-        <!--input service type -->
-        <vs-col xs="12" sm="2" lg="2">
-          <template>
-            <div class="center in-get-bag">
-             <vs-col lg="12">
-               <selector 
-               ref="service"
-               name="Service" 
-               rules="" 
-               placeholder="Select service"
-               formKey="service"
-               :valueData="serviceArray"
-               :selectedValue="service"
-               :isMultiple="true"
-               :disabled="true"
-               :collapseTags="false"
-               @updateValue="updateValue" />
-             </vs-col>
-            </div>
-          </template>
-        </vs-col>
-        
         <!--input update location -->
         <vs-col xs="12" sm="2" lg="2">
           <template v-if="loading == false">
@@ -108,6 +85,28 @@
             </div>
           </template>
         </vs-col>
+        <!--input service type -->
+        <vs-col xs="12" sm="2" lg="2">
+          <template>
+            <div class="center in-get-bag">
+             <vs-col lg="12">
+               <selector 
+               ref="service"
+               name="Service" 
+               rules="" 
+               placeholder="Select service"
+               formKey="service"
+               :valueData="serviceArray"
+               :selectedValue="service"
+               :isMultiple="true"
+               :disabled="true"
+               :collapseTags="false"
+               @updateValue="updateValue" />
+             </vs-col>
+            </div>
+          </template>
+        </vs-col>
+        
         
         <!--input update weight -->
         <vs-col xs="12" sm="2" lg="2">
