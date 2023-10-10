@@ -15,7 +15,7 @@
                   <div class="center in-get-bag">
                     <vs-input border type="text"
                               v-model="item_code"
-                              label-placeholder="Masukkan code BAG / Connote"
+                              :label-placeholder="inputLabelPlaceholder"
                               :autofocus="true"
                               @keyup.enter.native="updateValue"
                               ref="formInputUnbagging">
@@ -61,7 +61,8 @@ export default {
             title: "Unbagging",
             item_code:'',
             item_number:'',
-            form:{}
+            form:{},
+            inputLabelPlaceholder: "Masukan code BAG"
 
 
         }
@@ -71,6 +72,7 @@ export default {
         this.form.item_number = this.item_code
         if(this.item_code !== null){
           this.item_number = this.item_code
+          this.inputLabelPlaceholder = "Masukan code CONNOTE"
         }
         this.$nextTick(() => {
           this.handleClearForm()

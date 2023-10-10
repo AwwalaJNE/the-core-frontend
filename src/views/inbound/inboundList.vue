@@ -50,7 +50,7 @@ export default {
                 },
                 {
                     label: "From",
-                    key: "ibound_node_name_origin",
+                    key: "inbound_node_name_origin",
                     width: "xs"
                 },
                 {
