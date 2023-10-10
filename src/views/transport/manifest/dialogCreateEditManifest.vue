@@ -237,7 +237,7 @@ export default {
             this.node_id = this.listenDataItem.node_id
             this.manifest_number = this.listenDataItem.manifest_number
 
-            this.vehicle_mode_id = this.listenDataItem['vehicle_mode_id'] ? this.listenDataItem['vehicle_mode_id'] : null
+            this.vehicle_mode_id = this.listenDataItem['manifest_method']['vehicle_mode_id']
             this.vehicle_type_id = this.listenDataItem['vehicle_type_id'] ? this.listenDataItem['vehicle_type_id'] : null
 
             if(this.vehicle_mode_id != null && this.vehicle_mode_id != '' ) {
@@ -494,6 +494,14 @@ export default {
       
         async updateData(){
             console.log('ckck', this.dataTable)
+            console.log('this.formssssss', this.vehicle_mode_id, this.form)
+            if (this.vehicle_mode_id) {
+              this.form.vehicle_mode_id = this.vehicle_mode_id //remove if vehicle_mode_id not editable
+            }
+            if (this.vehicle_mode_id !== 1) {
+              this.form.flight_number = null
+              this.form.flight_schedule = null
+            }
             this.form.manifest_item = this.dataTable
             await axios
                 .put(
