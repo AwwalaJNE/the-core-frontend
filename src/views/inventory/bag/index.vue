@@ -18,9 +18,9 @@
                    <vs-col lg="12">
                      <selector 
                      ref="destination"
-                     name="Regional" 
+                     name="Routing" 
                      rules="" 
-                     placeholder="Select regional"
+                     placeholder="Select routing"
                      formKey="regional"
                      :valueData="regionalArray"
                      :selectedValue="regional"
@@ -30,7 +30,24 @@
                   </div>
                 </template>
               </vs-col>
-              
+              <vs-col xs="12" sm="2" lg="2">
+                <template>
+                  <div class="center in-get-bag">
+                   <vs-col lg="12">
+                     <selector 
+                     ref="destination"
+                     name="Destination" 
+                     rules="" 
+                     placeholder="Select destination"
+                     formKey="destination"
+                     :valueData="destinationArray"
+                     :selectedValue="destination"
+                     
+                     @updateValue="updateFilter" />
+                   </vs-col>
+                  </div>
+                </template>
+              </vs-col>
               <vs-col xs="12" sm="2" lg="2">
                 <template>
                   <div class="center in-get-bag">
@@ -51,24 +68,7 @@
                 </template>
               </vs-col>
               
-              <vs-col xs="12" sm="2" lg="2">
-                <template>
-                  <div class="center in-get-bag">
-                   <vs-col lg="12">
-                     <selector 
-                     ref="destination"
-                     name="Destination" 
-                     rules="" 
-                     placeholder="Select destination"
-                     formKey="destination"
-                     :valueData="destinationArray"
-                     :selectedValue="destination"
-                     
-                     @updateValue="updateFilter" />
-                   </vs-col>
-                  </div>
-                </template>
-              </vs-col>
+              
               
               <!-- <vs-col xs="12" sm="2" lg="2">
                 <template>
@@ -147,8 +147,8 @@ export default {
             regional: "",
             regionalArray: [
               {
-                "label":"Jabodetabek",
-                "value":"jabodetabek"
+                "label":"Intercity",
+                "value":"intercity"
               },
               {
                 "label":"Domestik",
