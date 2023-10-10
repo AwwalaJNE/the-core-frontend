@@ -2127,7 +2127,7 @@ export default {
     flight_schedule: {
       label: "Flight Schedule",
       key: "flight_schedule",
-      rule: "",
+      rule: "required",
       visible: false,
       typeInput: "datetime",
       typeData: "String",

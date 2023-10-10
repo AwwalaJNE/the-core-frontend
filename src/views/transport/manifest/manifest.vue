@@ -247,18 +247,15 @@ export default {
             val['manifest_method_id'] = parseInt(val['manifest_method_id'])
             val['vehicle_id'] = parseInt(val['vehicle_id'])
             val['vehicle_type_id'] = parseInt(val['vehicle_type_id'])
-            val['vehicle_mode_id'] = parseInt(val['vehicle_mode_id'])
             val['flight_number'] = val['flight_number']
             val['flight_schedule'] = val['flight_schedule']
             console.log(val,'bagus')
             this.dataItem = val
-            if (val['vehicle_mode_id'] === 1) {
-              console.log('mode', val['vehicle_mode_id'])
+            if (parseIntval['manifest_method_id'] === 1) {
               this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true)
               this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", true)
               this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData", val["origin"])
             }else{
-              console.log('mode', val['vehicle_mode_id'])
               this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false)
               this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false)
               this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData", val["origin"])
