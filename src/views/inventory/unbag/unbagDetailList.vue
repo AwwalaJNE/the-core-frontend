@@ -6,7 +6,7 @@
 -->
 <template>
   <vs-row>
-    <vs-col xs="12" sm="6" lg="6" v-if="this.item_number === '' || this.item_number !== undefined" >
+    <vs-col xs="12" sm="6" lg="6" >
       <div class="box view" >
         <div class="summary-unbag">
           <span class="subtitle" align="right"><p>{{total_bag}}</p></span>
@@ -29,7 +29,7 @@
       </div>
 
     </vs-col>
-    <vs-col xs="12" sm="6" lg="6" v-show="this.item_number === undefined || this.item_number !== ''">
+    <vs-col xs="12" sm="6" lg="6" >
       <div class="box view">
         <div class="summary-unbag">
           <span class="subtitle" align="right"><p>{{ total_connote_in_bag - total_connote }}/{{ total_connote_in_bag }}</p></span>
