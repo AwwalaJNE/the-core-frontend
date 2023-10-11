@@ -1923,6 +1923,20 @@ export default {
       state.surat_jalan.driver_id.arrData = payload :
       state.surat_jalan.driver_id.arrData = []
   },
+  SET_SURAT_JALAN_MANIFEST_LOV(state, payload) {
+    state.surat_jalan.manifest_lov.value = payload
+  },
+  SET_SURAT_JALAN_MANIFEST_LOV_ValueData(state, payload) {
+    state.surat_jalan.manifest_lov.valueData = payload
+  },
+  SET_SURAT_JALAN_MANIFEST_LOV_visible(state, payload) {
+    state.surat_jalan.manifest_lov.visible = payload
+  },
+  SET_SURAT_JALAN_MANIFEST_LOV_ArrData(state, payload) {
+    state.surat_jalan.MANIFEST_lov.hasOwnProperty('arrData') ?
+      state.surat_jalan.MANIFEST_lov.arrData = payload
+      : state.surat_jalan.MANIFEST_lov.arrData = []
+  },
 
   /* SURAT JALAN END */
 

@@ -151,7 +151,7 @@ export default {
             no_moda_angkutan_id: null,
             etd:null,
             estimated_time_in_hour:null,
-
+            manifest_lov: '',
             editData: {}
         }
     },
@@ -243,13 +243,16 @@ export default {
                 obj['eta'] = form.eta
                 obj['vehicle_type_id'] = this.vehicle_type_id
                 obj['max_weight'] = this.vehicle_max_weight
-                
+                obj['manifest_lov'] = this.manifest_lov
                 obj['manifest_do_item'] = this.dataTable
 
                 this.form = obj
                 
                 if (this.form.eta > this.form.etd) {
                     if(this.manifest_delivery_id !== undefined && this.manifest_delivery_id !== '') {
+                        if (this.vehicle_type_id === '' || this.vehicle_type_id === undefined || this.vehicle_type_id === null) {
+                            this.form.vehicle_type_id = this.dataItem.vehicle_type_id ? parseInt(this.dataItem.vehicle_type_id) : this.dataItem.vehicle_type_id
+                        }
                         this.updateData()
                     } else {
                         this.addData()
@@ -285,8 +288,9 @@ export default {
                 case "etd":
                   this.etd = val
                   let dateEta = this.handleEta(this.etd, this.estimated_time_in_hour)
-
                   break;
+                case "manifest_lov":
+                  this.manifest_lov = val
                 default:
                     console.log('meong')
                     // code block
