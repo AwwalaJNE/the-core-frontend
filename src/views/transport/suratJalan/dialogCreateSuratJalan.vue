@@ -152,6 +152,7 @@ export default {
             etd:null,
             estimated_time_in_hour:null,
             manifest_lov: '',
+            destinationUnlock: '',
             manifest_lov_list: [
                 {
                     label: 'All',
@@ -296,10 +297,9 @@ export default {
                       this.estimated_time_in_hour = obj['item']['estimated_time_in_hour']
                       this.handleEta(this.etd, this.estimated_time_in_hour)
                     }
+                    this.destinationUnlock = parseInt(obj['value'])
                   }
-                  if (obj.value && (obj.value !== ''|| obj.value !== undefined || obj.value !== null)) {
-                    this.isDestinationDisable = ''
-                  }
+                  this.isDestinationDisableCheck()
                   break;
                 case "etd":
                   this.etd = val
@@ -312,6 +312,7 @@ export default {
                             this.$store.dispatch("SET_SURAT_JALAN_MANIFEST_LOV_ValueData", obj['value'])
                         }
                     }
+                    this.isDestinationDisableCheck()
                 default:
                     console.log('meong')
                     // code block
@@ -450,11 +451,16 @@ export default {
             }
         },
         isDestinationDisableCheck(){
-            console.log(this.dataItem, 'aaaaa')
             if (!this.dataItem) {
                 this.isDestinationDisable = 'disabled'
             }
-            if (this.dataItem && this.dataItem.node_id_destination) {
+            if (!this.manifest_lov) {
+                this.isDestinationDisable = 'disabled'  
+            }
+            if (this.manifest_lov && this.destinationUnlock) {
+                this.isDestinationDisable = ''
+            }
+            if (this.dataItem && this.dataItem.node_id_destination && this.manifest_lov) {
                 this.isDestinationDisable = ''
             }
         },
@@ -511,12 +517,19 @@ export default {
         },
         async getDataSuratMuatan(){
           let manifest_do_number = "";
+          let destination_id = "";
           if(this.editData && this.editData.hasOwnProperty('manifest_do_number')){
             manifest_do_number  = this.editData.manifest_do_number;
           }
+          if(this.editData && this.editData.hasOwnProperty('destination_id')){
+            destination_id  = parseInt(this.editData.destination_id);
+          }
+          if (!destination_id) {
+            destination_id = this.destinationUnlock
+          }
           await axios
               .get(this.URL.manifest_do +
-                  `/scan?n=${this.listenNodeId}&item_no=${this.suratMuatan}&manifest_do_number=${manifest_do_number}`,
+                  `/scan?n=${this.listenNodeId}&item_no=${this.suratMuatan}&manifest_do_number=${manifest_do_number}&manifest_destination=${destination_id}&manifest_lov=${this.manifest_lov}`,
                   this.Helper.header())
               .then(res => {
                 if(res.data.data) {
