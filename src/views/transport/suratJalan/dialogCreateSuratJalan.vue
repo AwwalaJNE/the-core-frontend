@@ -29,7 +29,7 @@
                                 rules=""
                                 formKey="scanBag"
                                 :valueData="suratMuatan"
-                                typeInput="text"
+                                :typeInput="`text|${isDestinationDisable}`"
                                 @updateValue="updateValue" />
                             </form>
                         </vs-col>
@@ -162,7 +162,8 @@ export default {
                     value: 'SAME DESTINATION'
                 },
             ],
-            editData: {}
+            editData: {},
+            isDestinationDisable: ''
         }
     },
     computed: {
@@ -228,6 +229,7 @@ export default {
               this.getDestination()
               this.getNoModeAngkutan()
               this.getLov()
+              this.isDestinationDisableCheck()
             }
         }
     },
@@ -294,6 +296,9 @@ export default {
                       this.estimated_time_in_hour = obj['item']['estimated_time_in_hour']
                       this.handleEta(this.etd, this.estimated_time_in_hour)
                     }
+                  }
+                  if (obj.value && (obj.value !== ''|| obj.value !== undefined || obj.value !== null)) {
+                    this.isDestinationDisable = ''
                   }
                   break;
                 case "etd":
@@ -440,6 +445,18 @@ export default {
                 arr.push(obj)
             })
             this.$store.dispatch("SET_SURAT_JALAN_MANIFEST_LOV_ArrData", arr.length > 0 ? arr : null)
+            if (this.dataItem && this.dataItem.manifest_lov) {
+                this.manifest_lov = this.dataItem.manifest_lov
+            }
+        },
+        isDestinationDisableCheck(){
+            console.log(this.dataItem, 'aaaaa')
+            if (!this.dataItem) {
+                this.isDestinationDisable = 'disabled'
+            }
+            if (this.dataItem && this.dataItem.node_id_destination) {
+                this.isDestinationDisable = ''
+            }
         },
         // async getModeAngkutan() {
         //     await axios
