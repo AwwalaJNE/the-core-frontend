@@ -2325,17 +2325,17 @@ export default {
       label: "LOV",
       key: "manifest_lov",
       rule: "required",
-      typeInput: "select|col_left",
+      typeInput: "select",
       typeData: "String",
       width: "6",
       arrData: [
         {
-          label: 'All',
-          value: 'all'
+          label: 'ALL',
+          value: 'ALL'
         },
         {
-          label: 'Same Destination',
-          value: 'same_destination'
+          label: 'SAME DESTINATION',
+          value: 'SAME DESTINATION'
         },
       ],
       valueData: null,

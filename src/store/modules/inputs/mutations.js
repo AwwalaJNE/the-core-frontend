@@ -1933,9 +1933,9 @@ export default {
     state.surat_jalan.manifest_lov.visible = payload
   },
   SET_SURAT_JALAN_MANIFEST_LOV_ArrData(state, payload) {
-    state.surat_jalan.MANIFEST_lov.hasOwnProperty('arrData') ?
-      state.surat_jalan.MANIFEST_lov.arrData = payload
-      : state.surat_jalan.MANIFEST_lov.arrData = []
+    state.surat_jalan.manifest_lov.hasOwnProperty('arrData') ?
+      state.surat_jalan.manifest_lov.arrData = payload
+      : state.surat_jalan.manifest_lov.arrData = []
   },
 
   /* SURAT JALAN END */
