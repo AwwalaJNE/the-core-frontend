@@ -1835,6 +1835,21 @@ export default {
   SET_SURAT_JALAN_DRIVER_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_JALAN_DRIVER_ID_ArrData', payload)
   },
+  SET_SURAT_JALAN_MANIFEST_LOV({ commit }, payload) {
+    commit('SET_SURAT_JALAN_MANIFEST_LOV', payload)
+  },
+
+  SET_SURAT_JALAN_MANIFEST_LOV_visible({ commit }, payload) {
+    commit('SET_SURAT_JALAN_MANIFEST_LOV_visible', payload)
+  },
+
+  SET_SURAT_JALAN_MANIFEST_LOV_ValueData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_MANIFEST_LOV_ValueData', payload)
+  },
+
+  SET_SURAT_JALAN_MANIFEST_LOV_ArrData({ commit }, payload) {
+    commit('SET_SURAT_JALAN_MANIFEST_LOV_ArrData', payload)
+  },
   /* SURAT JALAN END */
 
   /* IRREGULARITIES RETURN*/

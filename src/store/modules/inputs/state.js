@@ -2320,6 +2320,28 @@ export default {
       valueData: null,
       value: ''
     },
+
+    manifest_lov: {
+      label: "LOV",
+      key: "manifest_lov",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      width: "6",
+      arrData: [
+        {
+          label: 'ALL',
+          value: 'ALL'
+        },
+        {
+          label: 'SAME DESTINATION',
+          value: 'SAME DESTINATION'
+        },
+      ],
+      valueData: null,
+      value: ''
+    },
+
     driver_id: {
       label: "Driver",
       key: "driver_id",

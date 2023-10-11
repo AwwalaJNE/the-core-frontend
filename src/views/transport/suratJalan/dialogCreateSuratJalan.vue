@@ -151,7 +151,17 @@ export default {
             no_moda_angkutan_id: null,
             etd:null,
             estimated_time_in_hour:null,
-
+            manifest_lov: '',
+            manifest_lov_list: [
+                {
+                    label: 'All',
+                    value: 'ALL'
+                },
+                {
+                    label: 'SAME DESTINATION',
+                    value: 'SAME DESTINATION'
+                },
+            ],
             editData: {}
         }
     },
@@ -217,6 +227,7 @@ export default {
             if (val == true) {
               this.getDestination()
               this.getNoModeAngkutan()
+              this.getLov()
             }
         }
     },
@@ -243,13 +254,16 @@ export default {
                 obj['eta'] = form.eta
                 obj['vehicle_type_id'] = this.vehicle_type_id
                 obj['max_weight'] = this.vehicle_max_weight
-                
+                obj['manifest_lov'] = this.manifest_lov
                 obj['manifest_do_item'] = this.dataTable
 
                 this.form = obj
                 
                 if (this.form.eta > this.form.etd) {
                     if(this.manifest_delivery_id !== undefined && this.manifest_delivery_id !== '') {
+                        if (this.vehicle_type_id === '' || this.vehicle_type_id === undefined || this.vehicle_type_id === null) {
+                            this.form.vehicle_type_id = this.dataItem.vehicle_type_id ? parseInt(this.dataItem.vehicle_type_id) : this.dataItem.vehicle_type_id
+                        }
                         this.updateData()
                     } else {
                         this.addData()
@@ -285,8 +299,14 @@ export default {
                 case "etd":
                   this.etd = val
                   let dateEta = this.handleEta(this.etd, this.estimated_time_in_hour)
-
                   break;
+                case "manifest_lov":
+                    if(typeof obj === 'object') {
+                        if(obj.hasOwnProperty('value')) {
+                            this.manifest_lov = obj['value']
+                            this.$store.dispatch("SET_SURAT_JALAN_MANIFEST_LOV_ValueData", obj['value'])
+                        }
+                    }
                 default:
                     console.log('meong')
                     // code block
@@ -408,6 +428,18 @@ export default {
                 }).catch(err => {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
+        },
+
+        getLov(){
+            let arr = []
+            this.manifest_lov_list.map(item => {
+                let obj = {}
+                obj["label"] = item.label
+                obj["value"] = item.value
+
+                arr.push(obj)
+            })
+            this.$store.dispatch("SET_SURAT_JALAN_MANIFEST_LOV_ArrData", arr.length > 0 ? arr : null)
         },
         // async getModeAngkutan() {
         //     await axios
