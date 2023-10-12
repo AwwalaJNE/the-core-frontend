@@ -104,11 +104,39 @@
                   <vs-col xs="6" sm="3" lg="3" offset="1"  class="mb-15">
                     <search-input ref="searchInput" @searchValue="searchValue"/>
                   </vs-col>
+                  <vs-col xs="2" sm="2" lg="2">
+                    <inputan :name="name" :rules="rules">
+                      <template v-slot:inputan="props">
+                        <vs-select
+                            class="m-select"
+                            filter
+                            :multiple="listenIsMultiple"
+                            :placeholder="name"
+                            :label="name"
+                            v-model="value"
+                            :border="border"
+                            @change="updateStatusInbound"
+                            :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                        >
+                          <template v-if="DataArr.length > 0">
+                            <vs-option
+                                v-for="(item,key) in DataArr"
+                                :key="key"
+                                :label="item.label"
+                                :value="item.value">
+                              {{item.label}}
+                            </vs-option>
+                          </template>
+
+                        </vs-select>
+                      </template>
+                    </inputan>
+                  </vs-col>
                 </vs-row>
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <InboundIncoming :ref="'inboundIncoming'"   :nodeType="node_request" :origin="node_origin" :destination="node_destination" :query="tempSearch"/>
+                        <InboundIncoming :ref="'inboundIncoming'"   :nodeType="node_request" :received="value" :origin="node_origin" :destination="node_destination" :query="tempSearch"/>
                     </transition>
                 </template>
 
@@ -125,7 +153,7 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import dateRange from "@/components/daterange/index"
-
+import Inputan from "@/components/input/inputan"
 import InboundIncoming from "@/views/inbound/inboundList"
 
 
@@ -139,6 +167,16 @@ export default {
         "search-input": SearchInput,
         "daterange-filter": dateRange,
         "InboundIncoming": InboundIncoming,
+        "inputan": Inputan
+    },
+    props: {
+      name: String,
+      rules: String,
+      valueData: Array,
+      selectedValue: [Array, String, Number],
+      formKey: String,
+      isMultiple: Boolean,
+      border: Boolean
     },
     data() {
         return {
@@ -155,8 +193,51 @@ export default {
             nodeDestination:[],
             node_request:'',
             node_origin:'',
-            node_destination:''
+            node_destination:'',
+            DataArr: this.valueData ? this.valueData : [
+              {
+                label: 'All Status',
+                value: '-'
+              },
+              {
+                label: 'Complete',
+                value: '1'
+              },
+              {
+                label: 'Outstanding',
+                value: '0'
+              }
+            ],
+            value: this.selectedValue ? this.selectedValue :"-",
+            arrValue: this.selectedValue ? this.selectedValue : [ {
+              value: "-",
+              label: "All Status"
+            }],
         }
+    },
+    computed: {
+      listenFormKey(){
+        return this.formKey || ''
+      },
+      listenIsMultiple(){
+        return this.isMultiple ? this.isMultiple : false
+      }
+    },
+    watch: {
+      valueData: function (val) {
+        if (val != undefined) {
+          this.DataArr = val
+        }
+      },
+      selectedValue: function (val) {
+        if (val != undefined) {
+          if(this.isMultiple == false) {
+            this.value = val
+          } else {
+            this.arrValue = val
+          }
+        }
+      },
     },
     methods: {
         refresh(){
@@ -254,6 +335,9 @@ export default {
         getNodeTypeLogin(){
           return this.listenActiveUser.nodes[0].node_type ? this.listenActiveUser.nodes[0].node_type.node_type_name.toLowerCase() : '';
         },
+        updateStatusInbound(val){
+          this.$emit("updateStatusInbound", this.listenFormKey, val)
+        }
 
     },
 
