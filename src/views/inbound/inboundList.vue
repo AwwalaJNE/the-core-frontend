@@ -29,7 +29,8 @@ export default {
         dateFilter: Array,
         nodeType:String,
         origin:String/Number,
-        destination:String
+        destination:String,
+        received:String/Number
     },
     components: {
         "table-master" : TableMaster
@@ -69,11 +70,6 @@ export default {
                     width: "xs"
                 },
                 {
-                  label: "Unreceive",
-                  key: "",
-                  width: "auto"
-                },
-                {
                   label: "PIC",
                   key: "carrier_employee_name",
                   width: "xs"
@@ -93,6 +89,11 @@ export default {
                   key: "departed_at",
                   width: "xs"
                 },
+                {
+                  label: "Status",
+                  key: "is_confirmed",
+                  width: "auto"
+                },
             ],
             loading: false,
             dataItem: {},
@@ -106,7 +107,8 @@ export default {
                 limit:20,
                 page_size: 1,
                 page: 1
-            }
+            },
+            statusReceived:"",
         }
     },
     watch: {
@@ -123,6 +125,14 @@ export default {
             this.node_type = val
             if(this.node_type !== old) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val)
+            }
+          }
+        },
+        received: function(val, old) {
+          if(val !== undefined) {
+            this.statusReceived = val
+            if(this.statusReceived !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.node_type, this.nodeOrigin, this.nodeDestination, val)
             }
           }
         },
@@ -144,19 +154,23 @@ export default {
         },
     },
     methods: {
-        async getTableData(limit,page,q, origin, destination,node_type) {
+        async getTableData(limit,page,q, origin, destination,node_type,statusReceived) {
             this.loading = true
             let query = "";
             let startDate = "";
             let endDate = "";
+            let isReceived = "";
             if(q !== undefined) {
                 query = q
             }
 
-
+            
+            if(statusReceived !== undefined && statusReceived !== '-') {
+              isReceived = statusReceived
+            }
             await axios
                 .get(this.URL.inbound_incoming +
-                `?n=${this.listenNodeId}&type=${node_type}&origin=${origin}&destination=${destination}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
+                `?n=${this.listenNodeId}&type=${node_type}&is_confirmed=${isReceived}&origin=${origin}&destination=${destination}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
                 this.Helper.header())
                 .then(res => {
 
@@ -166,6 +180,7 @@ export default {
                       item['inbound_eta'] = this.dateConvert(item['inbound_eta'])
                       item['inbound_etd'] = this.dateConvert(item['inbound_etd'])
                       item['departed_at'] = this.dateConvert(item['departed_at'])
+                      item['is_confirmed'] = item.is_confirmed == 1 ? 'Complete' : 'Outstanding'
                       item['vehicle'] = item['vehicle_type_name']
                       if(item['vehicle_name'] != null){
                         item['vehicle'] = item['vehicle'] + '('+item['vehicle_name']+')'
