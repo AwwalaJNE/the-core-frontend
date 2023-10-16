@@ -64,6 +64,9 @@ export default {
     cash_register: api + "cash-register",
     payment: api + "payment",
 
+    //  inventory Vehicle
+    inventory_vehicle: api + "inventory-vehicle",
+
     // PRINT
     print: api + "print",
 

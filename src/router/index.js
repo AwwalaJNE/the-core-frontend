@@ -82,6 +82,9 @@ import TransportPackingKayu from "@/views/transport/transportPackingKayu"
 // === Transport Surat Jalan ===
 import TransportSuratJalan from "@/views/transport/suratJalan"
 
+// === Transport Inventory Vehicle ===
+import TransportInventoryVehicle from "@/views/transport/inventoryVehicle"
+
 // === Inbound Incoming ===
 import InboundIncoming from "@/views/inbound"
 
@@ -513,6 +516,15 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Surat Jalan"
+            }
+          },
+          {
+            path: "inventory-vehicle",
+            name: "inventoryVehicle",
+            component: TransportInventoryVehicle,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Inventory Vehicle"
             }
           },
 

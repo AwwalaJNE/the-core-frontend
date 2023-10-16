@@ -102,7 +102,7 @@
                       </vs-select>
                     </template>
                   </vs-col>
-                  <vs-col offset="2" xs="2" sm="2" lg="2" align="right">
+                  <vs-col xs="2" sm="2" lg="2" align="right">
                     <search-input ref="searchInput" @searchValue="searchValue"/>
                   </vs-col>
                 </vs-row>

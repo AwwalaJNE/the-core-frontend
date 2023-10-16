@@ -187,6 +187,11 @@ export default {
                         //     icon: ''
                         // },
                         {
+                            label: 'Inventory Vehicle',
+                            url: '/transport/inventory-vehicle',
+                            icon: ''
+                        },
+                        {
                             label: 'Surat Jalan',
                             url: '/transport/manifest-jalan',
                             icon: ''
