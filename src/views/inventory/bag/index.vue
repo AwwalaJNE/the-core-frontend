@@ -30,7 +30,7 @@
                   </div>
                 </template>
               </vs-col>
-              <vs-col xs="12" sm="2" lg="2">
+              <vs-col xs="12" sm="3" lg="3">
                 <template>
                   <div class="center in-get-bag">
                    <vs-col lg="12">
@@ -136,6 +136,14 @@ export default {
         "breadcrumb": Breadcrumb,
         "selector": Selector,
     },
+    watch: {
+      regional(newRegional, oldRegional) {
+        if (newRegional !== oldRegional) {
+          this.getNodeLink()
+          this.getNodeIntracity()
+        }
+      },
+    },
     data() {
         return {
             title: "Bagging",
@@ -147,12 +155,20 @@ export default {
             regional: "",
             regionalArray: [
               {
+                "label":"Intracity",
+                "value":"intracity"
+              },
+              {
                 "label":"Intercity",
                 "value":"intercity"
               },
               {
                 "label":"Domestik",
                 "value":"domestik"
+              },
+              {
+                "label":"International",
+                "value":"international"
               }
             ],
             
@@ -326,12 +342,39 @@ export default {
       
                   arr.push(obj)
                 })
-                this.destinationArray = arr
+                if (this.regional !== 'intracity' && this.regional !== '') {
+                  this.destinationArray = arr
+                }
       
               this.loading = false
             }).catch(err => {
               this.loading = false
               this.openNotification('danger', 'Failed to populate node list', err)
+            })
+      },
+      async getNodeIntracity() {
+        this.loading = true
+        await axios
+            .get(this.URL.node +
+                `/${this.listenNodeId}/destination-intracity?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+                this.Helper.header())
+            .then(res => {
+                let arr = []
+                res.data.data.map(item => {
+                  let obj = {}
+                  obj["label"] = item.node_name
+                  obj["value"] = Number(item.node_id)
+      
+                  arr.push(obj)
+                })
+                if (this.regional === 'intracity') {
+                  this.destinationArray = arr
+                }
+      
+              this.loading = false
+            }).catch(err => {
+              this.loading = false
+              this.openNotification('danger', 'Failed to populate node Intracity list', err)
             })
       },
       updateValue(){
@@ -388,6 +431,7 @@ export default {
     },
     mounted() {
       this.getNodeLink()
+      this.getNodeIntracity()
       // this.$store.dispatch("SET_BAGGING_destination_dataArray", this.regionalArray )
       // this.$store.dispatch("SET_BAGGING_service_dataArray", this.serviceArray )
     }
