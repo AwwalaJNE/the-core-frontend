@@ -77,6 +77,10 @@
                                 <td style="padding:5px">{{objectKeys['chargeable_weight'].label}}</td>
                                 <td>{{objectKeys['chargeable_weight'].value}}</td>
                             </tr>
+                            <tr>
+                                <td style="padding:5px">{{objectKeys['surcharge_packing'].label}}</td>
+                                <td>{{moneyformat(objectKeys['surcharge_packing'].value)}}</td>
+                            </tr>
                         </template>
                             <tr>
                                 <td colspan="2" style="border-bottom:solid 1px #AAA; padding: 5px 2px"></td>
@@ -84,7 +88,8 @@
                         <template v-for="(item, i) in Keys">
                             <template v-if="item !== 'actual_weight' && 
                             item !== 'volume_weight' && 
-                            item !== 'chargeable_weight'">
+                            item !== 'chargeable_weight' && 
+                            item !== 'surcharge_packing'">
                                 <tr :key="i">
                                     <td style="padding:5px">{{objectKeys[item].label}}</td>
                                     <td>{{moneyformat(objectKeys[item].value)}}</td>

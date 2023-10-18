@@ -317,6 +317,12 @@ export default {
     SET_CALCULATOR_BIAYA_KIRIM_ValueData({ commit }, payload) {
         commit('SET_CALCULATOR_BIAYA_KIRIM_ValueData', payload)
     },
+    SET_CALCULATOR_SURCHARGE_PACKING({ commit }, payload) {
+        commit('SET_CALCULATOR_SURCHARGE_PACKING', payload)
+    },
+    SET_CALCULATOR_SURCHARGE_PACKING_ValueData({ commit }, payload) {
+        commit('SET_CALCULATOR_SURCHARGE_PACKING_ValueData', payload)
+    },
         
     SET_CALCULATOR_HANDLING_CHARGE({ commit }, payload) {
         commit('SET_CALCULATOR_HANDLING_CHARGE', payload)
