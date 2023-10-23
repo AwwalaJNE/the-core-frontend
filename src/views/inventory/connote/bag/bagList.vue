@@ -156,7 +156,7 @@ export default {
                             })
                         }
                         el.surat_muatan = el.surat_muatan.join(", ")
-                        el.surat_jalan = el.surat_jalan.toString()
+                        el.surat_jalan = el.surat_jalan.join(", ")
                     });
                     this.dataTable = res.data.data
 
