@@ -552,6 +552,7 @@ const TransactionMixin = {
 
             let SUM_CHARGEBLE_WEIGHT = 0
             let base_tariff = 0
+            let surcharge_packing = 0
             
             let SUM_SURCHARGE_MANUAL = 0
             let fixed_chargeble_weight = false
@@ -721,10 +722,17 @@ const TransactionMixin = {
                 if(Object.keys(tarifData).length > 0) {
                     // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
                     base_tariff = this.tarifTiering(SUM_CHARGEBLE_WEIGHT)
+                    let isPackingKayuValues = listKoli.map(item => item.is_packing_kayu)
+                    if (isPackingKayuValues.includes(true)) {
+                        surcharge_packing = tarifData['tarif']
+                    } else {
+                        surcharge_packing = 0
+                    }
                     // this.BASE_TARIFF = this.diskonCalc(this.BASE_TARIFF,diskon)
                 }
 
                 this.BASE_TARIFF = base_tariff
+                this.SURCHARGE_PACKING = surcharge_packing
 
                 
                 TOTAL_BIAYA = this.BASE_TARIFF + 
@@ -752,6 +760,7 @@ const TransactionMixin = {
                 this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", this.SUM_VOLUME_WEIGHT)
                 this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", this.SUM_CHARGEBLE_WEIGHT)
                 
+                this.$store.dispatch("SET_CALCULATOR_SURCHARGE_PACKING", this.SURCHARGE_PACKING )
                 this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", this.BASE_TARIFF)
                 this.$store.dispatch("SET_CALCULATOR_ADM_KARANTINA", SUM_ADM_KARANTINA)
                 

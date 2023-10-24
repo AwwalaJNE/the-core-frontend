@@ -389,6 +389,13 @@ export default {
       valueData: null,
       value: 0
     },
+    surcharge_packing: {
+      label: "surcharge packing kayu",
+      key: "surcharge_packing",
+      typeData: "Number",
+      valueData: null,
+      value: 0
+    },
 
     biaya_kirim: {
       label: "biaya kirim",

@@ -258,6 +258,12 @@ export default {
     SET_CALCULATOR_BIAYA_KIRIM_ValueData(state, payload) {
         state.calculator.biaya_kirim.valueData = payload
     },
+    SET_CALCULATOR_SURCHARGE_PACKING(state, payload) {
+        state.calculator.surcharge_packing.value = payload
+    },
+    SET_CALCULATOR_SURCHARGE_PACKING_ValueData(state, payload) {
+        state.calculator.surcharge_packing.valueData = payload
+    },
         
     SET_CALCULATOR_HANDLING_CHARGE(state, payload) {
         state.calculator.handling_charge.value = payload
