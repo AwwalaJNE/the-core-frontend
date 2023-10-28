@@ -34,7 +34,9 @@ export default {
     name:"Role-list",
     mixins: [master],
     props: {
-        query: String
+        query: String,
+        bagDestination: String,
+        bagRouting: String
     },
     components: {
         "table-master" : TableMaster,
@@ -53,6 +55,14 @@ export default {
             this.bagFilter = val
             if(this.bagFilter !== old) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val)
+            }
+          }
+        },
+        bagRouting: function(val, old) {
+          if(val !== undefined) {
+            this.routingFilter = val
+            if(this.routingFilter !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val,this.routingFilter )
             }
           }
         }
@@ -116,6 +126,7 @@ export default {
             dataItem: {},
             tempSearch: this.query ? this.query : "",
             bagFilter: this.bagDestination ? this.bagDestination : "",
+            routingFilter: this.bagRouting ? this.bagRouting : "",
             dialogRole: false,
             pagination: {
                 limit:20,
@@ -125,19 +136,23 @@ export default {
         }
     },
     methods: {
-        async getTableData(limit,page,q, bagDestination) {
+        async getTableData(limit,page,q, bagDestination, bagRouting) {
             this.loading = true
             let query = "";
             let bagDes = "";
+            let bagRout= "";
             if(q !== undefined) {
                 query = q
             }
             if(bagDestination !== undefined) {
               bagDes = bagDestination
             }
+            if(bagRouting !== undefined && bagRouting !== '-') {
+              bagRout = bagRouting
+            }
             await axios
                 .get(this.URL.bag +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}`,
                 this.Helper.header())
                 .then(res => {
                     res.data.data.forEach(el => {
@@ -200,14 +215,14 @@ export default {
         },
         refresh(){
             console.log("refresh")
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter)
         },
         closeDialogRole() {
             this.dialogRole = false
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter)
     },
 }
 </script>
