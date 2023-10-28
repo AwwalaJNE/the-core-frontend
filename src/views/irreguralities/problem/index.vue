@@ -59,6 +59,7 @@
                     :limit="pagination.limit"
                     @actionUpdate="editIrreg"
                     :hasPagination="true"
+                    :hasLinked3="['image']"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
 
@@ -120,6 +121,11 @@ export default {
                 {
                     label: "Connote",
                     key: "koli_number",
+                    width: "100px"
+                },
+                {
+                    label: "Gambar",
+                    key: "image",
                     width: "auto"
                 },
                 {
