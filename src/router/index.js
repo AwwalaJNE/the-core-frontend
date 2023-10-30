@@ -119,6 +119,7 @@ import irreguralitiesCancel from "@/views/irreguralities/cancel"
 import irreguralitiesReturn from "@/views/irreguralities/return"
 import irreguralitiesProblem from "@/views/irreguralities/problem"
 import irreguralitiesHold from "@/views/irreguralities/hold"
+import irreguralitiesFailed from "@/views/irreguralities/failed"
 
 // === Cost To Cost ===
 import CostToCostSetting from "@/views/costToCost/setting"
@@ -376,7 +377,15 @@ const routes = [
               breadCrumb: "hold"
             }
           },
-
+          {
+            path: "failed",
+            name: "irreguralities-failed",
+            component: irreguralitiesFailed,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "failed"
+            }
+          },
         ],
         meta: {
           requiresAuth: true,

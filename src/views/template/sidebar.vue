@@ -278,6 +278,11 @@ export default {
                             url: '/irreguralities/hold',
                             icon: ''
                         },
+                        {
+                            label: 'Irreguralities - Failed',
+                            url: '/irreguralities/failed',
+                            icon: ''
+                        },
                     ]
                 },
                 {

@@ -1512,6 +1512,20 @@ export default {
   },
   //END PICKUP REQUEST CANCEL
 
+  //START PICKUP REQUEST FAILED
+  SET_PICKUP_REQUEST_FAILED_STATUS(state, payload) {
+    state.pickup_request_failed.status.value = payload
+  },
+  SET_PICKUP_REQUEST_FAILED_STATUS_ValueData(state, payload) {
+    state.pickup_request_failed.status.valueData = payload
+  },
+  SET_PICKUP_REQUEST_FAILED_STATUS_ArrData(state, payload) {
+    state.pickup_request_failed.status.hasOwnProperty('arrData') ?
+      state.pickup_request_failed.status.arrData = payload :
+      state.pickup_request_failed.status.arrData = []
+  },
+  //END PICKUP REQUEST FAILED
+
   //pickup schedule start
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME(state, payload) {
     state.pickup_schedule.pickup_schedule_name.value = payload
