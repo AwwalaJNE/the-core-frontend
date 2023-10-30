@@ -35,7 +35,7 @@ export default {
     mixins: [master],
     props: {
         query: String,
-        bagDestination: String,
+        bagDestination: [],
         bagRouting: String
     },
     components: {
@@ -62,7 +62,7 @@ export default {
           if(val !== undefined) {
             this.routingFilter = val
             if(this.routingFilter !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val,this.routingFilter )
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, val )
             }
           }
         }
@@ -144,7 +144,7 @@ export default {
             if(q !== undefined) {
                 query = q
             }
-            if(bagDestination !== undefined) {
+            if(bagDestination !== undefined && bagDestination !== '-') {
               bagDes = bagDestination
             }
             if(bagRouting !== undefined && bagRouting !== '-') {

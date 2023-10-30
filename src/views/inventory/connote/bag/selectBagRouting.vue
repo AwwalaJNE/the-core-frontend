@@ -53,19 +53,19 @@ export default {
         },
         {
           label: 'Intracity',
-          value: 'intracity'
+          value: 'INTRACITY'
         },
         {
           label: 'Intercity',
-          value: 'intercity'
+          value: 'INTERCITY'
         },
         {
           label: 'Domestik',
-          value: 'domestik'
+          value: 'DOMESTIK'
         },
         {
           label: 'International',
-          value: 'international'
+          value: 'INTERNATIONAL'
         }
       ],
       value: this.selectedValue ? this.selectedValue :"-",

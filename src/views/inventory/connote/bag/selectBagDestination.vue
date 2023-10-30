@@ -4,21 +4,22 @@
       <vs-select
           class="m-select"
           filter
-          :multiple="listenIsMultiple"
-          :placeholder="name"
+          :multiple="true"
+          placeholder="All Destination"
           :label="name"
-          v-model="value"
+          v-model="arrValue"
           :border="border"
           @change="updateBagDestination"
-          :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+          :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
       >
         <template v-if="DataArr.length > 0">
           <vs-option
-              v-for="(item,key) in DataArr"
+              v-for="(item, key) in DataArr"
               :key="key"
               :label="item.label"
-              :value="item.value">
-            {{item.label}}
+              :value="item.value"
+          >
+            {{ item.label }}
           </vs-option>
         </template>
 
@@ -32,7 +33,7 @@ import axios from "axios";
 import master from "@/mixins/master"
 import Inputan from "@/components/input/inputan"
 export default {
-  name:"All-Bag",
+  name:"All-Destination",
   mixins: [master],
   components: {
     "inputan": Inputan
@@ -56,7 +57,10 @@ export default {
         }
       ],
       value: this.selectedValue ? this.selectedValue :"-",
-      arrValue: this.selectedValue ? this.selectedValue : [],
+      arrValue: this.selectedValue ? this.selectedValue : [ {
+        value: "-",
+        label: "All Routing"
+      }],
     }
   },
   computed: {
@@ -99,7 +103,7 @@ export default {
               data.map(item => {
                 let obj = {}
                 obj["label"] = item.node_code
-                obj["value"] = item.node_code
+                obj["value"] = item.node_id
 
 
                 this.DataArr.push(obj)
