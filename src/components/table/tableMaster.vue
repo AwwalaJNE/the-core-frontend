@@ -257,6 +257,14 @@
                                         <template v-else-if="hasLinked2 !== undefined && hasLinked2.length > 0 && column.key !== undefined && hasLinked2.includes(column.key.toLowerCase())">
                                             <span class="text-link"  @click="handleEdit2(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
                                         </template>
+                                        <template v-else-if="column.key === 'is_confirmed'">
+                                            <span v-if="item[column.key] === 'Confirmed'" class="greenBackground">{{item[column.key] }}</span>
+                                            <span v-else>{{item[column.key] }}</span>
+                                        </template>
+                                        <template v-else-if="column.key === 'current_location_type'">
+                                            <span v-if="item[column.key] === 'KURIR'" class="blueBackground">{{item[column.key] }}</span>
+                                            <span v-else>{{item[column.key] }}</span>
+                                        </template>
                                         <template v-else>
                                             {{ item[column.key] ? item[column.key] : '' }}
                                         </template>
@@ -858,6 +866,18 @@ export default {
     }
     .vs-table__th{
       padding: 10px 5px !important;
+    }
+    .greenBackground {
+        background-color: rgb(21, 224, 21);
+        color: rgb(255, 255, 255);
+        padding: 5px 5px !important;
+        border-radius: 3px;
+    }
+    .blueBackground {
+        background-color: rgb(88, 113, 255);
+        color: rgb(255, 255, 255);
+        padding: 5px 5px !important;
+        border-radius: 3px;
     }
 
 
