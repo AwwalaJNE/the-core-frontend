@@ -277,7 +277,7 @@ export default {
                           item.total_weight = "";
                         }
                         item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE') ? true : false
-                        console.log(item, item.pickup_detail[0].total_weight, item.total_picked_weight, 'data');
+                        // console.log(item, item.total_weight, item.total_picked_weight, 'data');
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
