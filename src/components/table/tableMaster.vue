@@ -257,6 +257,9 @@
                                         <template v-else-if="hasLinked2 !== undefined && hasLinked2.length > 0 && column.key !== undefined && hasLinked2.includes(column.key.toLowerCase())">
                                             <span class="text-link"  @click="handleEdit2(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
                                         </template>
+                                        <template v-else-if="hasLinked3 !== undefined && hasLinked3.length > 0 && column.key !== undefined && hasLinked3.includes(column.key.toLowerCase()) && (!item.hasOwnProperty('is_kurir_user') || !item.is_kurir_user)">
+                                            <span class="text-link"  @click="handleEdit3(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
+                                        </template>
                                         <template v-else>
                                             {{ item[column.key] ? item[column.key] : '' }}
                                         </template>
@@ -447,45 +450,77 @@
                               </vs-col>
                             </template>
                             <template v-else>
-                              <vs-col w="4">
-                                <vs-button
-                                    block
-                                    warn
-                                    :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
-                                    flat
-                                    size="small"
-                                    :active="true"
-                                    type="submit"
-                                    @click="actionPicked(item)"
+                                <vs-col 
+                                    w="4"
+                                    v-if="!item.hasOwnProperty('is_kurir_user') || !item.is_kurir_user"
                                 >
-                                  <span>Picking</span>
-                                </vs-button>
-                              </vs-col>
-                              <vs-col w="4">
-                                <vs-button
-                                    block
-                                    :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
-                                    flat
-                                    size="small"
-                                    :active="true"
-                                    @click="actionUpdate(item)"
+                                    <vs-button
+                                        block
+                                        danger
+                                        :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
+                                        flat
+                                        size="small"
+                                        :active="true"
+                                        @click="actionFailed(item)"
+                                    >
+                                        <span>Failed</span>
+                                    </vs-button>
+                                </vs-col>
+                                <vs-col 
+                                    w="4"
+                                    v-if="!item.hasOwnProperty('is_CT_user') || !item.is_CT_user"
                                 >
-                                  <span>Edit</span>
-                                </vs-button>
-                              </vs-col>
+                                    <vs-button
+                                        block
+                                        :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
+                                        flat
+                                        size="small"
+                                        :active="true"
+                                        @click="actionApprove(item)"
+                                    >
+                                        <span>Approve</span>
+                                    </vs-button>
+                                </vs-col>
+                                
+                                <vs-col w="4">
+                                    <vs-button
+                                        block
+                                        warn
+                                        :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
+                                        flat
+                                        size="small"
+                                        :active="true"
+                                        type="submit"
+                                        @click="actionPicked(item)"
+                                    >
+                                        <span>Picking</span>
+                                    </vs-button>
+                                </vs-col>
+                                <vs-col w="4">
+                                    <vs-button
+                                        block
+                                        :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
+                                        flat
+                                        size="small"
+                                        :active="true"
+                                        @click="actionUpdate(item)"
+                                    >
+                                        <span>Edit</span>
+                                    </vs-button>
+                                </vs-col>
 
-                              <vs-col w="4">
-                                <vs-button
-                                    block
-                                    :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
-                                    flat
-                                    size="small"
-                                    :active="true"
-                                    @click="actionCancel(item)"
-                                >
-                                  <span>Cancel</span>
-                                </vs-button>
-                              </vs-col>
+                                <vs-col w="4">
+                                    <vs-button
+                                        block
+                                        :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
+                                        flat
+                                        size="small"
+                                        :active="true"
+                                        @click="actionCancel(item)"
+                                    >
+                                        <span>Cancel</span>
+                                    </vs-button>
+                                </vs-col>
                             </template>
 
                           </vs-row>
@@ -602,6 +637,7 @@ export default {
         expandable: Boolean,
         hasLinked:Array,
         hasLinked2:Array,
+        hasLinked3:Array,
         removeOnly: Boolean,
         printAction: Boolean,
         pickupListAction:Boolean,
@@ -622,6 +658,9 @@ export default {
         customActionList: Array, 
         
         querySearch: Function, // klo ada auto complete [required]
+
+        isKurirAccount: Boolean,
+        isControlTowerAccount: Boolean
     },
     data() {
         return {
@@ -748,6 +787,12 @@ export default {
         },
         
         //pickup list action picked
+        actionFailed(val) {
+          this.$emit("actionFailed", val)
+        },
+        actionApprove(val) {
+          this.$emit("actionApprove", val)
+        },
         actionPicked(val) {
           this.$emit("actionPicked", val)
         },
@@ -780,6 +825,9 @@ export default {
         },
         handleEdit2(val, key) {
             this.$emit("handleEdit2", val);
+        },
+        handleEdit3(val, key) {
+            this.$emit("handleEdit3", val);
         },
     },
     mounted() {
@@ -827,6 +875,7 @@ export default {
                         max-width: 280px;
                         position: relative;
                         justify-content: flex-end;
+                        flex-wrap: nowrap;
                     }
                 }
                 .vs-table__th__content{

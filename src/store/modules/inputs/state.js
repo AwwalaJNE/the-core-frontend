@@ -2084,7 +2084,7 @@ export default {
       value: ''
     }
   },
-  pickup_request_failed: {
+  pickup_list_failed: {
     status: {
       label: "Reason",
       key: "status",

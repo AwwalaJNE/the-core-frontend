@@ -25,17 +25,6 @@
           :closeDialog="closeDialogPickuprequestCancel"
           title="Cancel Pickup Request"
       />
-
-      <!--Failed pickup Request-->
-      <dialogPickupRequestFailed
-          :active="dialogPickupRequestFailed"
-          :loading="dialogPickupRequestFailedLoading"
-          :pickupNumber="pickupNumber"
-          @refresh="refresh"
-          :closeDialog="closeDialogPickuprequestFailed"
-          title="Failed Pickup Request"
-      />
-
     </div>
 </template>
 <script>
@@ -43,7 +32,6 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import dialogCancelPickupRequest from "@/views/pickup/request/dialogCancelPickupRequest";
-import dialogFailedPickupRequest from "@/views/pickup/request/dialogFailedPickupRequest";
 export default {
     name:"pickup-requestlist",
     mixins: [master],
@@ -54,7 +42,6 @@ export default {
     components: {
         "table-master" : TableMaster,
         "dialogPickupRequestCancel": dialogCancelPickupRequest,
-        "dialogPickupRequestFailed": dialogFailedPickupRequest
     },
     data() {
         return {
@@ -113,20 +100,6 @@ export default {
             ],
             customActionList: [
               {
-                label: 'Confirm',
-                key: 'confirmation_failed_pickup',
-                attribute: '',
-                option: {
-                  type: 'redirect',
-
-                }
-              },
-              {
-                label: 'Failed Pickup',
-                key: 'failed',
-                attribute: '',
-              },
-              {
                 label: 'Print',
                 key: 'print',
                 attribute: '',
@@ -154,11 +127,10 @@ export default {
             },
             dialogPickupRequestCancel:false,
             dialogPickupRequestCancelLoading:false,
-            dialogPickupRequestFailed:false,
-            dialogPickupRequestFailedLoading:false,
             pickupData:{},
             pickupNumber:'',
-            form:{}
+            form:{},
+            user_role_id: ''
         }
     },
     watch: {
@@ -200,13 +172,6 @@ export default {
                   this.pickupNumber = val.pickup_number;
                   this.dialogPickupRequestCancel = true;
                   break;
-                case 'failed':
-                  this.pickupNumber = val.pickup_number;
-                  this.dialogPickupRequestFailed = true;
-                  break;
-                case 'confirmation_failed_pickup':
-                  this.redirectToWhatsapp(val);
-                  break;
                 default:
                     console.log('meong')
                     // code block
@@ -238,7 +203,6 @@ export default {
                         item.total_picked = item.total_picked+" / "+item.total_unpicked;
                       item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE') ? true : false
                     })
-                    console.log("TST", arr);
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -299,18 +263,6 @@ export default {
         closeDialogPickuprequestCancel(){
           this.dialogPickupRequestCancel = false
           this.dialogPickupRequestCancelLoading=false
-        },
-
-        closeDialogPickuprequestFailed(){
-          this.dialogPickupRequestFailed = false
-          this.dialogPickupRequestFailedLoading=false
-        },
-
-        redirectToWhatsapp(row) {
-          let courierPhoneNumber = row.pickup_phone_number;
-          let encodeMessage = encodeURIComponent("Halo, apa benar terjadi overload dan anda melakukan request untuk gagal pickup?");
-          let whatsappURL = `https://wa.me/${courierPhoneNumber}?text=${encodeMessage}`
-          window.open(whatsappURL, '_blank');
         },
     },
     mounted() {

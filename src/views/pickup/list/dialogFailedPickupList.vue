@@ -11,10 +11,10 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formPickupRequestFailedController"
+                    ref="formPickupListFailedController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="pickup_request_failed"
+                    typeForm="pickup_list_failed"
                 />
             </div>
         </template>
@@ -58,7 +58,7 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-pickupRequest",
+    name:"dialog-failed-pickupRequest",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
@@ -101,49 +101,51 @@ export default {
     },
 
     watch: {
-        active: function(newVal, oldVal) { // watch it
+        active: function(newVal, oldVal) {
           if(newVal){
-              this.getStatus();
+            this.getStatus();
           }
         }
+
     },
     methods: {
         handleSubmit(){
-            this.$refs.formPickupRequestFailedController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formPickupListFailedController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         formData(form){
             this.form = form
             this.form.pickup_failed_reason = form.status
-            this.loading = true
             this.pickup_number = this.pickupNumber
+            this.form.pickup_node_id_destination = form.node_request
+            this.loading = true
             this.updateData()
         },
         
         handleClearForm(){
-            this.$refs.formPickupRequestFailedController.handleClearForm()
+            this.$refs.formPickupListFailedController.handleClearForm()
             this.pickup_number=''
             this.form = {}
         },
         async updateData() {
-
+            console.log("HALO2", this.pickup_number, this.listenNodeId, this.form)
             await axios
                 .post(
-                    this.URL.pickup + `/${this.pickup_number}/failed?n=${this.listenNodeId}`,
-                    this.form,
-                    // JSON.stringify(this.form),
+                    this.URL.pickup + `/${this.pickup_number}/request-failed?n=${this.listenNodeId}`,
+                    this.form, 
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
                     this.closeDialog()
                     this.loading = false
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Failed pickup request is success')
-                }).catch(err => {
+                    this.openNotification(null, 'Success', 'Request Failed Pickup is success, Waiting for Approval')
+                })
+                .catch(err => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Failed pickup request is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', 'Request Failed Pickup is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {
@@ -169,18 +171,18 @@ export default {
                         arr.push(obj)
                     })
 
-                  this.$store.dispatch("SET_PICKUP_REQUEST_FAILED_STATUS_ArrData", arr.length > 0 ? arr : null)
+                  this.$store.dispatch("SET_PICKUP_LIST_FAILED_STATUS_ArrData", arr.length > 0 ? arr : null)
                 }
 
                 this.loading = false
-              }).catch(err => {
+              })
+              .catch(err => {
                 this.loading = false
                 this.openNotification('danger', 'Failed to populate status list', err)
               })
         },
     },
     mounted() {
-    //   this.getStatus();
     }
 }
 </script>

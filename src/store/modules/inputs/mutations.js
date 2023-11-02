@@ -1498,6 +1498,20 @@ export default {
   },
   //END PICKUP LIST CANCEL
 
+  //START PICKUP LIST FAILED
+  SET_PICKUP_LIST_FAILED_STATUS(state, payload) {
+    state.pickup_list_failed.status.value = payload
+  },
+  SET_PICKUP_LIST_FAILED_STATUS_ValueData(state, payload) {
+    state.pickup_list_failed.status.valueData = payload
+  },
+  SET_PICKUP_LIST_FAILED_STATUS_ArrData(state, payload) {
+    state.pickup_list_failed.status.hasOwnProperty('arrData') ?
+      state.pickup_list_failed.status.arrData = payload :
+      state.pickup_list_failed.status.arrData = []
+  },
+  //END PICKUP LIST FAILED
+
   //START PICKUP REQUEST CANCEL
   SET_PICKUP_REQUEST_CANCEL_STATUS(state, payload) {
     state.pickup_request_cancel.status.value = payload
@@ -1511,20 +1525,6 @@ export default {
       state.pickup_request_cancel.status.arrData = []
   },
   //END PICKUP REQUEST CANCEL
-
-  //START PICKUP REQUEST FAILED
-  SET_PICKUP_REQUEST_FAILED_STATUS(state, payload) {
-    state.pickup_request_failed.status.value = payload
-  },
-  SET_PICKUP_REQUEST_FAILED_STATUS_ValueData(state, payload) {
-    state.pickup_request_failed.status.valueData = payload
-  },
-  SET_PICKUP_REQUEST_FAILED_STATUS_ArrData(state, payload) {
-    state.pickup_request_failed.status.hasOwnProperty('arrData') ?
-      state.pickup_request_failed.status.arrData = payload :
-      state.pickup_request_failed.status.arrData = []
-  },
-  //END PICKUP REQUEST FAILED
 
   //pickup schedule start
   SET_PICKUP_SCHEDULE_PICKUP_SCHEDULE_NAME(state, payload) {
