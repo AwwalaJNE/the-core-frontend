@@ -85,6 +85,11 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Status Code",
+                    key: "irregularity_status_code",
+                    width: "auto"
+                },
+                {
                     label: "User",
                     key: "user_name",
                     width: "auto"
@@ -129,6 +134,7 @@ export default {
               startDate = from
               endDate = to
             }
+            // TODO: Check this path
             await axios
                 .get(this.URL.irregularities +
                 `?n=${this.listenNodeId}&irregularity_type=FAILED&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
@@ -136,16 +142,12 @@ export default {
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = res.data.data
-                        arr.map(item => {
-                            item["isDisabled"] = item.approved_by != null && item.approved_by != '' ? true : false;
-                            item["approve"] = item.approved_by != null && item.approved_by != '' ? item.user_approve.user_name : '-';
-                        })
                         this.dataTable = arr
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
-                        // this.openNotification('warn', 'Irreguralities Failed data is empty!', ' Please create Irreguralities Failed data')
+                        this.openNotification('warn', 'Irreguralities Failed data is empty!', '')
                     }
                     
                     this.loading = false
