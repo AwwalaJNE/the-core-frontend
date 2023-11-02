@@ -323,22 +323,22 @@ export default {
                         item["is_disabled_failed_button"] = false
                         item["is_disabled_approve_button"] = false
 
+                        item["request_failed_by"] = item.pickup_status == 'WAITING APPROVAL' ? item.user_courier : ""
+                        item["approve_failed_by"] = item.pickup_status == 'FAILED' ? item.node_destination : ""
+
                         if (item["is_kurir_user"]) {
                           if (item.pickup_status == 'WAITING APPROVAL' || item.pickup_status == 'FAILED'){
                             item["is_disabled_failed_button"] = true;
                           }
                         } 
                         
-                        if (item["is_CT_user"] && item.pickup_status == 'FAILED') {
-                          item["is_disabled_approve_button"] = true;
+                        if (item["is_CT_user"]) {
+                          if (item.pickup_status == 'FAILED') {
+                            item["is_disabled_approve_button"] = true;
+                          }
                         }
 
-                        item["request_failed_by"] = item.pickup_status == 'WAITING APPROVAL' ? item.user_courier : ""
-                        item["approve_failed_by"] = item.pickup_status == 'FAILED' ? item.node_destination : ""
-                        // item["isDisabled"] = item.pickup_status == 'WAITING APPROVAL'
-                        // item["approve"] = item.approved_by != null && item.approved_by != '' ? item.user_approve.user_name : '-';
-                        item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE' || item["is_disabled_approve_button"] || item["is_disabled_failed_button"]) ? true : false
-                        // console.log(item, item.pickup_detail[0].total_weight, item.total_picked_weight, 'data');
+                        item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE' || item["is_disabled_failed_button"] || item["is_disabled_approve_button"]) ? true : false;
                     })
                     this.dataTable = arr
                     console.log("XXXX", arr)

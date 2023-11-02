@@ -452,7 +452,7 @@
                             <template v-else>
                                 <vs-col 
                                     w="4"
-                                    v-if="!item.hasOwnProperty('is_kurir_user') || !item.is_kurir_user"
+                                    v-if="!item.hasOwnProperty('is_kurir_user') || item.is_kurir_user"
                                 >
                                     <vs-button
                                         block
@@ -468,11 +468,11 @@
                                 </vs-col>
                                 <vs-col 
                                     w="4"
-                                    v-if="!item.hasOwnProperty('is_CT_user') || !item.is_CT_user"
+                                    v-if="(!item.hasOwnProperty('is_CT_user') || item.is_CT_user)"
                                 >
                                     <vs-button
                                         block
-                                        :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
+                                        :disabled="(item.hasOwnProperty('isDisabled') && item.isDisabled == true) || !item.request_failed_by"
                                         flat
                                         size="small"
                                         :active="true"
