@@ -40,6 +40,7 @@
                      rules="" 
                      placeholder="Select destination"
                      formKey="destination"
+                     :loading="loading"
                      :valueData="destinationArray"
                      :selectedValue="destination"
                      
@@ -150,6 +151,7 @@ export default {
             item_code:'',
             form:{},
             loading: false,
+            loadingData: false,
             is_disabled: false,
             
             regional: "",
@@ -321,12 +323,12 @@ export default {
             ],
             destination: "",
             // weight: null,
-            loading: false
             
         }
     },
     methods: {
       async getNodeLink() {
+        if (this.regional !== 'intracity' && this.regional !== '') {
         this.loading = true
         
         await axios
@@ -351,8 +353,10 @@ export default {
               this.loading = false
               this.openNotification('danger', 'Failed to populate node list', err)
             })
+      }
       },
       async getNodeIntracity() {
+        if (this.regional === 'intracity') {
         this.loading = true
         await axios
             .get(this.URL.node +
@@ -376,6 +380,7 @@ export default {
               this.loading = false
               this.openNotification('danger', 'Failed to populate node Intracity list', err)
             })
+        }
       },
       updateValue(){
         this.form={
