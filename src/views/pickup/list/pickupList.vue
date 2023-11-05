@@ -195,11 +195,6 @@ export default {
                     key: "pickup_status",
                     width: "auto"
                 },
-                // {
-                //     label: "Approve",
-                //     key: "approve",
-                //     width: "auto"
-                // },
             ],
             loading: false,
             dataItem: {},
@@ -317,8 +312,8 @@ export default {
                           item.total_weight = "";
                         }
 
-                        item["is_kurir_user"] = userRole.includes("courier") || ""
-                        item["is_CT_user"] = userRole.includes("pum") || ""
+                        item["is_kurir_user"] = userRole.includes("courier") || false
+                        item["is_CT_user"] = userRole.includes("pum") || false
 
                         item["is_disabled_failed_button"] = false
                         item["is_disabled_approve_button"] = false
@@ -341,7 +336,6 @@ export default {
                         item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE' || item["is_disabled_failed_button"] || item["is_disabled_approve_button"]) ? true : false;
                     })
                     this.dataTable = arr
-                    console.log("XXXX", arr)
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
@@ -371,7 +365,31 @@ export default {
             }
             let pickup_number = this.dataItem.pickup_number
             this.loadingApproveActive = true;
+
+            const connoteNumbers = [];
+            const irregularitiesList = [];
+
+            for (const detail of this.dataItem.pickup_detail) {
+              if (detail.item_type === "KOLI") {
+                connoteNumbers.push(detail.item_number);
+              }
+            }
+
+            const commonData = {
+              "irregularity_status_code": "TESTFAILED01",
+              "irregularity_type": "FAILED",
+              "remark": "Failed Pickup"
+            };
+
+            for (const connoteNumber of connoteNumbers) {
+              const irregularity = {
+                "connote_number": connoteNumber,
+                ...commonData
+              };
+              irregularitiesList.push(irregularity);
+            }
             this.approveFailedPickup(formUpdate, pickup_number)
+            this.addDataToIrregularFailed(irregularitiesList.splice(0, 3))
           }
         },
         async approveFailedPickup(formUpdate, pickup_number) {
@@ -394,7 +412,25 @@ export default {
           this.loading = false
           return true;
         },
+        async addDataToIrregularFailed(irregularitiesList) {
+          try {
+            for (const item of irregularitiesList) {
+              const response = await axios.post(
+                this.URL.irregularities + `/failed?n=${this.listenNodeId}`,
+                item,
+                this.Helper.header()
+              );
+            }
 
+            this.closeDialogApproveCancel();
+            this.refresh();
+            this.openNotification(null, 'Success', 'Added to Irregularities - Failed is success');
+          } catch (error) {
+            this.closeDialogApproveCancel()
+            this.refresh()
+            this.openNotification('danger', 'Added to Irregularities - Failed is failed', error.response ? error.response.data.message : 'something went wrong')
+          }
+        },
         closeDialogConfirmPicked(){
             this.dialogPickedActive = false
         },

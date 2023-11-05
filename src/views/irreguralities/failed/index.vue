@@ -90,6 +90,16 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Status Description",
+                    key: "irregularity_status_description",
+                    width: "auto"
+                },
+                {
+                    label: "Remark",
+                    key: "remark",
+                    width: "auto"
+                },
+                {
                     label: "User",
                     key: "user_name",
                     width: "auto"
