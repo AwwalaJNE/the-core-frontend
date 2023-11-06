@@ -575,7 +575,8 @@ const TransactionMixin = {
                     
                     let koli_actual_weight = Number(koli['actual_weight'])
                     // let chargeble_weight = Number(Math.max(koli_actual_weight, Number(this.round03(koli_volume_weight))).toFixed(2))
-                    let surcharge_manual = koli['surcharge_manual'] ? koli['surcharge_manual'] : koli['koli_surcharge'][0]['surcharge_amount']
+                    // let surcharge_manual = koli['surcharge_manual'] ? koli['surcharge_manual'] : koli['koli_surcharge'][0]['surcharge_amount']
+                    let surcharge_manual = koli['surcharge_manual']
                     SUM_SURCHARGE_MANUAL = SUM_SURCHARGE_MANUAL + surcharge_manual
                     
                     let tempbiaya = 0
