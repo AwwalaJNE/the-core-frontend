@@ -531,6 +531,7 @@ const TransactionMixin = {
         calculation(){
             // rumit cuuk
             let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
+            console.log("XYZ listkoli", listKoli, this.listenConnoteIndexActive)
             let diskon = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].amount_discount
             diskon = this.moneyParsing(diskon)
             let surchargeByID = this.listenPackageSurchargeByID
@@ -576,8 +577,14 @@ const TransactionMixin = {
                     let koli_actual_weight = Number(koli['actual_weight'])
                     // let chargeble_weight = Number(Math.max(koli_actual_weight, Number(this.round03(koli_volume_weight))).toFixed(2))
                     // let surcharge_manual = koli['surcharge_manual'] ? koli['surcharge_manual'] : koli['koli_surcharge'][0]['surcharge_amount']
-                    let surcharge_manual = koli['surcharge_manual']
-                    SUM_SURCHARGE_MANUAL = SUM_SURCHARGE_MANUAL + surcharge_manual
+                    
+                    // TODO: Check surcharge_manual
+                    let surcharge_manual = koli['surcharge_manual'] 
+                        ? koli['surcharge_manual']
+                        : koli['koli_surcharge']
+                            ? parseInt(koli['koli_surcharge'][0]['surcharge_amount'])
+                            : 0
+                    SUM_SURCHARGE_MANUAL += surcharge_manual
                     
                     let tempbiaya = 0
                     let compare_surcharge = []
