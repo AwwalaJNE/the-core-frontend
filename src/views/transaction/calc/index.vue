@@ -235,8 +235,105 @@ export default {
             let index = 0
             this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, value)
             this.$store.dispatch(`SWITCH_CONNOTE_ACTIVE`, value)
+            console.log("data",this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]);
+            if(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number!=''){
+                this.connote_number = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number;
+                this.processBookingCode()
+            }
 
             console.log('list connote koli => ', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
+        },
+        async getShippingService(booking_connote_service_code, fromBooking = false) {
+            console.log("apakah jalan")
+            await axios
+                .get(this.URL.tariff_shipping_service + 
+                `?n=${this.listenNodeId}&destination=${this.destinationCode}`, 
+                this.Helper.header())
+                .then(res => {
+                    // console.log('getShippingService', res.data.data)
+                    let data = res.data.data
+                    let arr = []
+                    data.map(item => {
+                        let obj = {}
+                        obj['label'] = item.service_name
+                        obj['value'] = item.tariff_service_code
+                        obj['data'] = item
+                        obj['tarif'] = item.tariff_amount_1
+                        console.log(obj)
+                        console.log("ini bukan",booking_connote_service_code,item.tariff_service_code)
+                        if(item.tariff_service_code==booking_connote_service_code){
+                            console.log("masuk",obj)
+                            this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", obj)
+                            console.log('getShippingService arr', obj)
+                        }
+                        
+                    })
+                    console.log('getShippingService arr', arr)
+                   
+                    //this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
+                    
+                    //this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr)
+
+                 
+                    // this.loading = false
+                }).catch(err => {
+                    // this.loading = false
+                    this.checkAuth(err.response.status)
+                    // this.openNotification('danger', 'Failed to populate country list', err)
+                })
+        },
+        async processBookingCode(){
+           
+          await axios
+              .get(this.URL.booking_connote +
+                  `/${this.connote_number}?n=${this.listenNodeId}`,
+                  this.Helper.header())
+              .then(res => {
+                // console.log('res processBookingCode', res.data.data)
+                if(res.data.data) {
+                    let data = res.data.data
+                    console.log(data)
+                    if(data.connote_number){
+                       
+                        this.$store.dispatch(`FILL_CONNOTE_NUMBER`, data.connote_number || "")
+
+                        // Origin
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, data.connote_shipper_name || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, data.connote_shipper_phone_number || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, data.connote_shipper_street_address || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, data.connote_shipper_geolocation_subdistrict_id || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, data.connote_shipper_administrative_address || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, data.connote_shipper_zip_code || "")
+                        this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, true)
+
+                        // destination
+                        let destinationObj = {}
+                        destinationObj['customer_address_type'] = data.connote_receiver_address_type || ""
+                        destinationObj['geolocation_subdistrict_zip_code'] = data.connote_receiver_zip_code || ""
+                        destinationObj['geolocation_subdistrict_tarif_code'] = data.connote_receiver_tariff_code || ""
+                        destinationObj['customer_name'] = data.connote_receiver_name || ""
+                        destinationObj['customer_phone'] = data.connote_receiver_phone_number || ""
+                        
+                        destinationObj['customer_subdistrict_id'] = data.connote_receiver_geolocation_subdistrict_id || ""
+                        destinationObj['geolocation_location_name'] = data.connote_receiver_administrative_address || ""
+                        destinationObj['connote_service_code'] = data.connote_service_code || ""
+                        this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, data.connote_receiver_street_address || "")
+                        this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code = data.connote_service_code
+                        this.destinationCode = data.connote_receiver_tariff_code
+                        //this.getShippingService(data.connote_service_code)
+                        this.calculation()
+                      
+                    }
+
+                    
+                    
+                } else {
+                    this.openNotification('danger', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
+                }
+              }).catch(err => {
+                 
+                this.openNotification('danger', 'Failed to collect role list', err)
+              })
         },
         clickdulu(item){
             switch(this.listenCalcPrefix) {
