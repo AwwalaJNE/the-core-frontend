@@ -157,7 +157,7 @@ const TransactionMixin = {
         filterSurcharge(obj, koli, node_code, selected_surchargeType = null) {
             let service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
             let selectedServiceData = this.$store.getters.getTransaction.package["package_service"]["valueData"] || {}
-            let selectedService = selectedServiceData['label'].toLowerCase()
+            let selectedService = service
             
             let tarifData = this.listenPackageService.data || {}
             let status = false
@@ -393,6 +393,7 @@ const TransactionMixin = {
             return obj
         },
 
+
         calculateGrandTotal() {
             let listConnote = this.$store.getters.getTransaction.transaction.connote
             let GTOTAL = 0
@@ -567,17 +568,19 @@ const TransactionMixin = {
                     if(Object.keys(service).length > 0) {
                         let service_volume_divider = Number(service['service_volume_divider'])
                         vw = (koli['length'] * koli['width'] * koli['height']) / service_volume_divider 
+                        
                         if(vw !== 0 && vw < 0.01) {
                           vw = 0.01
                         }
                     }
                     let roundUp = Number(this.round03(Number(vw.toFixed(2))))
+                    
                     let koli_volume_weight = roundUp
                     
                     let koli_actual_weight = Number(koli['actual_weight'])
                     // let chargeble_weight = Number(Math.max(koli_actual_weight, Number(this.round03(koli_volume_weight))).toFixed(2))
-                    let surcharge_manual = koli['surcharge_manual']
-                    SUM_SURCHARGE_MANUAL = SUM_SURCHARGE_MANUAL + surcharge_manual
+                    //let surcharge_manual = koli['surcharge_manual'] ? koli['surcharge_manual'] : koli['koli_surcharge'][0]['surcharge_amount']
+                   // SUM_SURCHARGE_MANUAL = SUM_SURCHARGE_MANUAL + surcharge_manual
                     
                     let tempbiaya = 0
                     let compare_surcharge = []
@@ -591,6 +594,8 @@ const TransactionMixin = {
                     
                     
                     let KOLI_CHARGEBLE_WEIGHT = Number(Math.max(koli_actual_weight, roundUp).toFixed(2))
+
+                   
                     
                     if(koli.surcharge_id && koli.surcharge_id.length > 0) {    
                         try{
@@ -720,6 +725,8 @@ const TransactionMixin = {
 
                 this.SUM_CHARGEBLE_WEIGHT = SUM_CHARGEBLE_WEIGHT
 
+               
+
                 if(Object.keys(tarifData).length > 0) {
                     // this.BASE_TARIFF = tarifData.tarif * this.SUM_CHARGEBLE_WEIGHT
                     base_tariff = this.tarifTiering(SUM_CHARGEBLE_WEIGHT)
@@ -755,6 +762,12 @@ const TransactionMixin = {
             // if(TOTAL_BIAYA > diskon) {
             //     TOTAL_BIAYA = TOTAL_BIAYA - diskon
             // }
+            console.log("uu",SUM_CHARGEBLE_WEIGHT)
+            if(SUM_CHARGEBLE_WEIGHT===0){
+                TOTAL_BIAYA = 0
+                this.BASE_TARIFF = 0
+            }
+            
             
             if(Object.keys(tarifData).length > 0) {
                 this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", this.SUM_ACTUAL_WEIGHT)
@@ -855,6 +868,7 @@ const TransactionMixin = {
                         }
 
                         console.log("processTariff >>>", processTariff)
+
                         break;
                     // case tariffType.toLowerCase() == 'semi-flat':
                     //     if(weight > tariffStandar['weight']){

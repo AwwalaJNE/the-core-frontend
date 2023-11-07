@@ -213,6 +213,7 @@ export default {
             }
         },
         async getShippingService(booking_connote_service_code, fromBooking = false) {
+            console.log("apakah jalan")
             await axios
                 .get(this.URL.tariff_shipping_service + 
                 `?n=${this.listenNodeId}&destination=${this.destinationCode}`, 
