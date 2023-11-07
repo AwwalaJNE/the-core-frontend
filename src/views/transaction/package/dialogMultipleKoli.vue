@@ -442,6 +442,11 @@ export default {
                     this.connote_koli_item[index]['volume_weight'] = volume_weight.toFixed(2)
                 }
             }
+            else if (name.toLowerCase().includes('surcharge manual')) {
+                if(this.connote_koli_item[index].hasOwnProperty('surcharge_manual')) {
+                    this.connote_koli_item[index].surcharge_manual = 0;
+                }
+            }
 
             // this.$emit("prosesmultipleKoli", this.connote_koli_item)
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)

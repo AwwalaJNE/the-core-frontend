@@ -140,6 +140,24 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}`,
                 this.Helper.header())
                 .then(res => {
+                    res.data.data.forEach(el => {
+                        el.surat_muatan = []
+                        el.surat_jalan = []
+                        if (el.sj_detail.length > 0) {
+                            el.sj_detail.forEach(sj => {
+                                el.surat_jalan.push(sj.manifest_do_number)
+                            });
+                            
+                        }
+                        
+                        if (el.sm_detail.length > 0) {
+                            el.sm_detail.forEach(sm => {
+                                el.surat_muatan.push(sm.manifest_number)
+                            })
+                        }
+                        el.surat_muatan = el.surat_muatan.join(", ")
+                        el.surat_jalan = el.surat_jalan.join(", ")
+                    });
                     this.dataTable = res.data.data
 
                     this.pagination.page = res.data.meta.current_page

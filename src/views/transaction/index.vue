@@ -209,15 +209,35 @@ export default {
                     for(let i=0; i<= dataConnote['connote_koli_item'].length-1;i++) {
                         // console.log('koli curr', dataConnote['connote_koli_item'][i])
                         if(dataConnote['connote_koli_item'][i]['description'] == '') {
-                                    needValidation = true
-                                    indexKoli = i
-                                    inputan = 'Description'
-                                    break;
+                            needValidation = true
+                            indexKoli = i
+                            inputan = 'Description'
+                            break;
                         } else if(dataConnote['connote_koli_item'][i]['actual_weight'] == '') {
                             needValidation = true
                             indexKoli = i
                             inputan = 'Weight'
                             break;
+                        }
+                        else if(dataConnote['connote_koli_item'][i]['is_packing_kayu']) {
+                            if (dataConnote['connote_koli_item'][i]['height'] == 0) {
+                                needValidation = true
+                                indexKoli = i
+                                inputan = 'height'
+                                break;
+                            }
+                            else if (dataConnote['connote_koli_item'][i]['length'] == 0) {
+                                needValidation = true
+                                indexKoli = i
+                                inputan = 'length'
+                                break;
+                            }
+                            else if (dataConnote['connote_koli_item'][i]['width'] == 0) {
+                                needValidation = true
+                                indexKoli = i
+                                inputan = 'width'
+                                break;
+                            }
                         }
                     }
 
