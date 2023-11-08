@@ -233,9 +233,10 @@ export default {
         },
         selectConnote(key, value) {
             let index = 0
+            this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteIndexActive)
             this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, value)
             this.$store.dispatch(`SWITCH_CONNOTE_ACTIVE`, value)
-            console.log("data",this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]);
+            
             if(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number!=''){
                 this.connote_number = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number;
                 this.processBookingCode()

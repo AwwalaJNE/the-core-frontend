@@ -471,6 +471,9 @@ export default {
     SET_CONNOTE_INDEX_ACTIVE({ commit }, payload) {
         commit('SET_CONNOTE_INDEX_ACTIVE', payload)
     },
+    SET_PREVIOUS_CONNOTE_INDEX_ACTIVE({ commit }, payload) {
+        commit('SET_PREVIOUS_CONNOTE_INDEX_ACTIVE', payload)
+    },
     ADD_MORE_CONNOTE({ commit }, payload) {
         commit('ADD_MORE_CONNOTE', payload)
     },

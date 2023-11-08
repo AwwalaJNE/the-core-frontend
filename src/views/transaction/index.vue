@@ -147,6 +147,9 @@ export default {
         listenConnoteActive () {
             return this.$store.getters.getTransaction.connote_index_active
         },
+        listenPreviousConnoteActive () {
+            return this.$store.getters.getTransaction.previous_connote_index_active
+        },
         listenDestination () {
             return this.$store.getters.getTransaction.destination
         },
@@ -348,6 +351,8 @@ export default {
 
             // hanya kirim connote yg belom/mau dibuat
             let dataConnote = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]))
+            // dataConnote = JSON.parse(JSON.stringify(this.$store.state.transaction.connote_template))
+
             let arr = []
             arr.push(dataConnote)
             this.prosesDataTransaction['connote'] = arr
@@ -506,9 +511,8 @@ export default {
 
             // console.log('handleDataTransaction ++++=? ', test)
 
-
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':this.tempConnote['transaction_id']})
-            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'connote', 'value':test})
+            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'connote', 'value': test})
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value': this.typeAction == 'finish' ? true : false }) // this.tempConnote['transaction_finished']
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'node_code', 'value':this.listenNodeCode})
 
@@ -519,14 +523,12 @@ export default {
             if(this.typeAction == 'addconnote') {
                 this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
+                this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive)
 
                 let self = this
                 setTimeout(function(){ 
                     self.refreshTransactionFields()
                     self.$refs.originComponent.setFocus()
-
-                    self.$store.dispatch(`SET_PACKAGE_PACKAGE_DESCRIPTION`, "")
-                    self.$store.dispatch(`SET_PACKAGE_PACKAGE_DESCRIPTION_ValueData`, "")
                 }, 1000);
                 
             } else if(this.typeAction == 'finish') {
@@ -633,6 +635,7 @@ export default {
             if(this.typeAction == 'addconnote') {
                 this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
+                this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive)
             }
         },
 
@@ -715,7 +718,6 @@ export default {
 
         // mixin->transaction
         this.getDefaultState()
-        
 
         this.$nextTick(() => {
             let inputCodeBooking = this.$refs.inputCodeBooking

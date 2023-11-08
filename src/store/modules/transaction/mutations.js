@@ -415,6 +415,10 @@ export default {
         state.connote_index_active = payload
     },
 
+    SET_PREVIOUS_CONNOTE_INDEX_ACTIVE(state, payload) {
+        state.previous_connote_index_active = payload
+    },
+
     SET_CONNOTE_DATA(state, payload) {
         state.transaction.connote[state.connote_index_active][payload.key] = payload.value
     },

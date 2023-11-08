@@ -500,6 +500,9 @@ export default {
     listenConnoteIndexActive() {
       return this.$store.getters.getTransaction.connote_index_active
     },
+    listenPreviousConnoteIndexActive() {
+      return this.$store.state.transaction.previous_connote_index_active
+    },
     listeninputDisabled() {
       return this.inputDisabled || false
     }
@@ -533,6 +536,7 @@ export default {
   },
   methods: {
     initialize() {
+      console.log("123a", this.listenConnoteIndexActive, this.listenPreviousConnoteIndexActive)
       const obj = this.$store.getters.getTransaction.package || {}
       if (Object.keys(obj).length > 0) {
         const keys = Object.keys(obj)
@@ -543,7 +547,14 @@ export default {
       // this.connote_koli_item = this.listenConnoteKoliItem
 
       // new code
-      this.connote_koli_item = this.test(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || [])
+      if (this.listenConnoteIndexActive == this.listenPreviousConnoteIndexActive) {
+        this.connote_koli_item = this.test(this.$store.state.transaction.connote_koli_item || [])
+      }
+      else {
+        this.connote_koli_item = this.test(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || [])
+      }
+      
+      // console.log("123d", this.listenConnoteIndexActive)
       this.wrapingSurcharge()
     },
     test(json) {
@@ -718,6 +729,7 @@ export default {
           this.jumlahKoli = value
           break
         case 'koli_description':
+        this.$store.dispatch('SET_PACKAGE_PACKAGE_DESCRIPTION', value)
           this.prosesKoli0('description', value, 0)
           break
         case 'koli_weight':
