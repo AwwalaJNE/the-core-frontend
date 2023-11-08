@@ -209,6 +209,7 @@ export default {
                     let inputan = ''
                     // quick fix required koli input dalem dialog multikoli
                     let dataConnote = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
+                    console.log("INI", dataConnote)
                     for(let i=0; i<= dataConnote['connote_koli_item'].length-1;i++) {
                         // console.log('koli curr', dataConnote['connote_koli_item'][i])
                         if(dataConnote['connote_koli_item'][i]['description'] == '') {
@@ -222,7 +223,7 @@ export default {
                             inputan = 'Weight'
                             break;
                         }
-                        else if(dataConnote['connote_koli_item'][i]['is_packing_kayu']) {
+                        else if(dataConnote['connote_koli_item'][i]['is_packing_kayu'] !== null && dataConnote['connote_koli_item'][i]['is_packing_kayu'] == true) {
                             if (dataConnote['connote_koli_item'][i]['height'] == 0) {
                                 needValidation = true
                                 indexKoli = i
@@ -525,6 +526,13 @@ export default {
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
                 this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive)
 
+                console.log("123 Jumlah connote", (this.$store.getters.getTransaction.transaction.connote).length, (this.listenConnoteActive))
+
+                if (this.listenConnoteActive !== (this.$store.getters.getTransaction.transaction.connote).length - 1) {
+                    this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive - 1)
+                    this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, (this.$store.getters.getTransaction.transaction.connote).length - 1)
+                }
+                
                 let self = this
                 setTimeout(function(){ 
                     self.refreshTransactionFields()
