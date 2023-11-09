@@ -98,6 +98,7 @@ export default {
         active: function (val) {
             if (val == true) {
                 this.getDataVehicleMode()
+                this.getDataCustomer()
             }
         }
     },
@@ -140,6 +141,30 @@ export default {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                     
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataCustomer(){
+            await axios
+                .get(this.URL.customer + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.customer_code + ' ( ' + item.customer_name + ' ) ' + '||' + item.customer_id
+                            obj["value"] = String(item.customer_id)
+                            console.log(obj["value"],'value tarif');
+                            arr.push(obj)
+                        })
+
+                        this.$store.dispatch("SET_TARIFF_TARIFF_CUSTOMER_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
                 }).catch(err => {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })

@@ -1233,6 +1233,16 @@ export default {
     //   valueData: null,
     //   value: ''
     // },
+    tariff_customer_id: {
+      label: "Tariff Customer Code*",
+      key: "tariff_customer_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     tariff_origin: {
       label: "Tariff origin*",
       key: "tariff_origin",

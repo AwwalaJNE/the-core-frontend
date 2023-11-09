@@ -947,6 +947,18 @@ export default {
       state.tariff.tariff_vehicle_mode_id.arrData = []
   },
 
+  SET_TARIFF_TARIFF_CUSTOMER_ID(state, payload) {
+    state.tariff.tariff_customer_id.value = payload
+  },
+  SET_TARIFF_TARIFF_CUSTOMER_ID_ValueData(state, payload) {
+    state.tariff.tariff_customer_id.valueData = payload
+  },
+  SET_TARIFF_TARIFF_CUSTOMER_ID_ArrData(state, payload) {
+    state.tariff.tariff_customer_id.hasOwnProperty('arrData') ?
+      state.tariff.tariff_customer_id.arrData = payload :
+      state.tariff.tariff_customer_id.arrData = []
+  },
+
   SET_TARIFF_TARIFF_AMOUNT_1(state, payload) {
     state.tariff.tariff_amount_1.value = payload
   },

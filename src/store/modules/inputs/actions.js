@@ -919,6 +919,17 @@ export default {
     commit('SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ArrData', payload)
   },
 
+  SET_TARIFF_TARIFF_CUSTOMER_ID({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_CUSTOMER_ID', payload)
+  },
+  SET_TARIFF_TARIFF_CUSTOMER_ID_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_CUSTOMER_ID_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_TARIFF_TARIFF_CUSTOMER_ID_ArrData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_CUSTOMER_ID_ArrData', payload)
+  },
+
   SET_TARIFF_TARIFF_AMOUNT_1({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_AMOUNT_1', payload)
   },
