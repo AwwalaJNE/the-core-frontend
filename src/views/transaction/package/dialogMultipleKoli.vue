@@ -358,6 +358,9 @@ export default {
             switch(true) {
                 case key.includes("description"):
                     this.prosesKoli("description", value, index)
+                    if (index == 0) {
+                        this.$store.dispatch('SET_PACKAGE_PACKAGE_DESCRIPTION', value)
+                    }
                     break;
                 case key.includes("actual_weight"):
                     this.prosesKoli("actual_weight", value, index)

@@ -162,6 +162,12 @@ export default {
         listenConnoteIndexActive () {
             return this.$store.getters.getTransaction.connote_index_active
         },
+        listenPreviousConnoteIndexActive () {
+            return this.$store.getters.getTransaction.previous_connote_index_active
+        },
+        listenConnoteLength () {
+            return (this.$store.getters.getTransaction.transaction.connote).length
+        },
     },
     data() {
         return {
@@ -346,13 +352,11 @@ export default {
         },
         collectData() {
             this.tempConnote = {}
-            let dataTransaction = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction))
-            this.prosesDataTransaction = dataTransaction
+            this.prosesDataTransaction = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction))
             this.prosesDataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
 
             // hanya kirim connote yg belom/mau dibuat
             let dataConnote = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]))
-            // dataConnote = JSON.parse(JSON.stringify(this.$store.state.transaction.connote_template))
 
             let arr = []
             arr.push(dataConnote)
@@ -510,7 +514,7 @@ export default {
             let test = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction.connote))
             test[this.listenConnoteActive] = current_connote
 
-            // console.log('handleDataTransaction ++++=? ', test)
+            let connote_koli_item = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.connote_koli_item))
 
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':this.tempConnote['transaction_id']})
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'connote', 'value': test})
@@ -522,7 +526,7 @@ export default {
             // // - add obj data connote template
             // // - connote index active + 1.
             if(this.typeAction == 'addconnote') {
-                this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
+                this.$store.dispatch(`ADD_MORE_CONNOTE`, this.listenConnoteActive + 1)
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
                 this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive)
 
@@ -641,7 +645,7 @@ export default {
             // - add obj data connote template
             // - connote index active + 1.
             if(this.typeAction == 'addconnote') {
-                this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
+                this.$store.dispatch(`ADD_MORE_CONNOTE`, this.listenConnoteActive + 1)
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
                 this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive)
             }
