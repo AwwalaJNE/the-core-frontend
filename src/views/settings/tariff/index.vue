@@ -72,6 +72,11 @@
                         <special-tariff :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template> -->
+                <template v-if="navActive === 'k-DISCOUNT'">
+                    <transition name="slide-fade">
+                        <discount-tariff :ref="navActive" :query="tempSearch"/>
+                    </transition>
+                </template>
 
             </div>
         </section>
@@ -90,6 +95,13 @@
             :closeDialog="closeDialogTariffSpecial"
             title="Create Tariff Special"
             />
+        <!--Create SpecialTariff-->
+            <dialog-create-edit-Discounttariff
+            :active="dialogDiscount" 
+            @refresh="refresh"
+            :closeDialog="closeDialogDiscount"
+            title="Create Discount"
+            />
     </div>
 </template>
 <script>
@@ -99,9 +111,11 @@ import SearchInput from "@/components/search/searchInput"
 
 import BaseTariff from "@/views/settings/tariff/baseTariff"
 import SpecialTariff from "@/views/settings/tariff/specialTariff"
+import DiscountTariff from "@/views/settings/tariff/discountTariff"
 
 import dialogCreateEditTariff from "@/views/settings/tariff/baseTariff/dialogCreateEditTariff"
 import dialogCreateEditSpecialTariff from "@/views/settings/tariff/specialTariff/dialogCreateEditSpecialTariff"
+import dialogCreateEditDiscountTariff from "@/views/settings/tariff/discountTariff/dialogCreateEditDiscountTariff"
 
 export default {
     name:"tariff-index",
@@ -111,9 +125,11 @@ export default {
         "search-input": SearchInput,
         "base-tariff": BaseTariff,
         "special-tariff": SpecialTariff,
+        "discount-tariff": DiscountTariff,
         // "role-list": RoleList,
         "dialog-create-edit-Tariff": dialogCreateEditTariff,
-        "dialog-create-edit-SpecialTariff": dialogCreateEditSpecialTariff
+        "dialog-create-edit-SpecialTariff": dialogCreateEditSpecialTariff,
+        "dialog-create-edit-Discounttariff": dialogCreateEditDiscountTariff,
     },
     data() {
         return {
@@ -128,12 +144,18 @@ export default {
                 //     key: "k-SPECIAL-TARIFF",
                 //     title: "Special Tariff List"
                 // },
+                {
+                    label: "DISCOUNT",
+                    key: "k-DISCOUNT",
+                    title: "Discount List"
+                }
             ],
             title:"Tariff",
             navActive: "k-BASE-TARIFF",
             tempSearch: "",
             dialogTariff: false,
             dialogTariffSpecial: false,
+            dialogDiscount: false,
             arrFilterTariffGroup:null,
             filterTariffGroup:null,
         }
@@ -181,6 +203,8 @@ export default {
                 case "k-SPECIAL-TARIFF":
                     this.dialogTariffSpecial = true
                     break;
+                case "k-DISCOUNT":
+                    this.dialogDiscount = true
                 default:
                     console.log('meong')
                     // code block
@@ -193,6 +217,9 @@ export default {
         closeDialogTariffSpecial() {
             this.dialogTariffSpecial = false
         },
+        closeDialogDiscount(){
+            this.dialogDiscount = false
+        }
     },
 }
 </script>

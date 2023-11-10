@@ -968,6 +968,95 @@ export default {
     state.tariff.is_active.valueData = payload
   },
 
+  //Discount Tariff
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_ORIGIN(state, payload) {
+    state.tariff_discount.discount_tariff_origin.value = payload
+  },
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_ORIGIN_ValueData(state, payload) {
+    state.tariff_discount.discount_tariff_origin.valueData = payload
+  },
+
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_DESTINATION(state, payload) {
+    state.tariff_discount.discount_tariff_destination.value = payload
+  },
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_DESTINATION_ValueData(state, payload) {
+    state.tariff_discount.discount_tariff_destination.valueData = payload
+  },
+
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_SERVICE_CODE(state, payload) {
+    state.tariff_discount.discount_tariff_service_code.value = payload
+  },
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_SERVICE_CODE_ValueData(state, payload) {
+    state.tariff_discount.discount_tariff_service_code.valueData = payload
+  },
+
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_PERSENTASE(state, payload) {
+    state.tariff_discount.discount_tariff_persentase.value = payload
+  },
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_PERSENTASE_ValueData(state, payload) {
+    state.tariff_discount.discount_tariff_persentase.valueData = payload
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_1(state, payload) {
+    state.tariff_discount.up_to_amount_1.value = payload
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_1_ValueData(state, payload) {
+    state.tariff_discount.up_to_amount_1.valueData = payload
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_1(state, payload) {
+    state.tariff_discount.up_to_discount_1.value = payload
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_1_ValueData(state, payload) {
+    state.tariff_discount.up_to_discount_1.valueData = payload
+  },
+
+  //
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_2(state, payload) {
+    state.tariff_discount.up_to_amount_2.value = payload
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_2_ValueData(state, payload) {
+    state.tariff_discount.up_to_amount_2.valueData = payload
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_2(state, payload) {
+    state.tariff_discount.up_to_discount_2.value = payload
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_2_ValueData(state, payload) {
+    state.tariff_discount.up_to_discount_2.valueData = payload
+  },
+
+  //
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_3(state, payload) {
+    state.tariff_discount.up_to_amount_3.value = payload
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_3_ValueData(state, payload) {
+    state.tariff_discount.up_to_amount_3.valueData = payload
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_3(state, payload) {
+    state.tariff_discount.up_to_discount_3.value = payload
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_3_ValueData(state, payload) {
+    state.tariff_discount.up_to_discount_3.valueData = payload
+  },
+
+
+  //
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_4(state, payload) {
+    state.tariff_discount.up_to_amount_4.value = payload
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_4_ValueData(state, payload) {
+    state.tariff_discount.up_to_amount_4.valueData = payload
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_4(state, payload) {
+    state.tariff_discount.up_to_discount_4.value = payload
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_4_ValueData(state, payload) {
+    state.tariff_discount.up_to_discount_4.valueData = payload
+  },
+
   // tariff special
   SET_TARIFF_SPECIAL_TARIFF_SPECIAL_NAME(state, payload) {
     state.tariff_special.tariff_special_name.value = payload

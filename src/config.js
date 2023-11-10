@@ -40,6 +40,7 @@ export default {
     // tariff
     tariff: api + "tariff",
     tariff_special: api + "tariff-special",
+    discount_tariff: api + "discount-tariff",
 
     //surcharge
     surcharge: api + "surcharge",
