@@ -155,7 +155,7 @@ export default {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.customer_code + ' ( ' + item.customer_name + ' ) ' + '||' + item.customer_id
+                            obj["label"] = item.customer_code + ' ( ' + item.customer_name + ' ) '
                             obj["value"] = String(item.customer_id)
                             console.log(obj["value"],'value tarif');
                             arr.push(obj)
