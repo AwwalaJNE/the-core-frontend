@@ -557,12 +557,12 @@ export default {
       // this.connote_koli_item = this.listenConnoteKoliItem
 
       // new code
-      // if (this.listenConnoteIndexActive == this.listenPreviousConnoteIndexActive) {
-      //   this.connote_koli_item = this.test(this.$store.state.transaction.connote_koli_item || [])
-      // }
-      // else {
+      if (this.listenConnoteIndexActive == this.listenPreviousConnoteIndexActive) {
+        this.connote_koli_item = this.test(this.$store.state.transaction.connote_koli_item || [])
+      }
+      else {
         this.connote_koli_item = this.test(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || [])
-      // }
+      }
       
       // console.log("123d", this.listenConnoteIndexActive)
       this.wrapingSurcharge()

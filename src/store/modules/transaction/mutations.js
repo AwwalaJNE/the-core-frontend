@@ -445,6 +445,8 @@ export default {
         let index = state.connote_index_active
         let data = state.transaction.connote[index] || {}
 
+        console.log("xyz data", data)
+
         if(Object.keys(data).length > 0) {
             // ORIGIN
             Object.keys(state.origin).map(item => {
@@ -544,7 +546,7 @@ export default {
                         } else if(state.package[item].key == 'koli_description') {
                             state.package[item].value = data['connote_koli_item'][0]['description'] || ''
                         } else if(state.package[item].key == 'koli_weight') {
-                            state.package[item].value = data['connote_koli_item'][0]['koli_actual_weight'] || 0
+                            state.package[item].value = data['connote_koli_item'][0]['actual_weight'] || 0
                         } else {
                             state.package[item].value = data['connote_koli_item'][0][state.package[item].key] || 0
                         }
