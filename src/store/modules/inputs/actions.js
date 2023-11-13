@@ -444,6 +444,18 @@ export default {
     commit('SET_NODE_NODE_NAME_ValueData', payload)
   },
 
+  //node customer code
+  SET_NODE_NODE_CUSTOMER_CODE({ commit }, payload) {
+    commit('SET_NODE_NODE_CUSTOMER_CODE', payload)
+  },
+  SET_NODE_NODE_CUSTOMER_CODE_ValueData({ commit }, payload) {
+    commit('SET_NODE_NODE_CUSTOMER_CODE_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_NODE_NODE_CUSTOMER_CODE_ArrData({ commit }, payload) {
+    commit('SET_NODE_NODE_CUSTOMER_CODE_ArrData', payload)
+  },
+  
   SET_NODE_NODE_TYPE_ID({ commit }, payload) {
     commit('SET_NODE_NODE_TYPE_ID', payload)
   },

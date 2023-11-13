@@ -468,6 +468,19 @@ export default {
     state.node.node_name.valueData = payload
   },
 
+  //node customer node
+  SET_NODE_NODE_CUSTOMER_CODE(state, payload) {
+    state.node.node_customer_code.value = payload
+  },
+  SET_NODE_NODE_CUSTOMER_CODE_ValueData(state, payload) {
+    state.node.node_customer_code.valueData = payload
+  },
+  SET_NODE_NODE_CUSTOMER_CODE_ArrData(state, payload) {
+    state.node.node_customer_code.hasOwnProperty('arrData') ?
+      state.node.node_customer_code.arrData = payload :
+      state.node.node_customer_code.arrData = []
+  },
+
   SET_NODE_NODE_TYPE_ID(state, payload) {
     state.node.node_type_id.value = payload
   },
