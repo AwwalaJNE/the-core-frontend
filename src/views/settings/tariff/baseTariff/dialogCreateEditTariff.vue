@@ -156,12 +156,12 @@ export default {
                         res.data.data.map(item => {
                             let obj = {}
                             obj["label"] = item.customer_code + ' ( ' + item.customer_name + ' ) '
-                            obj["value"] = String(item.customer_id)
+                            obj["value"] = item.customer_code
                             console.log(obj["value"],'value tarif');
                             arr.push(obj)
                         })
 
-                        this.$store.dispatch("SET_TARIFF_TARIFF_CUSTOMER_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch("SET_TARIFF_TARIFF_CUSTOMER_CODE_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }

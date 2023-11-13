@@ -19,7 +19,7 @@
         <dialog-create-edit-Tariff
             :active="dialogTariff" 
             :closeDialog="closeDialogTariff"
-            :refresh="refresh"
+            @refresh="refresh"
             title="Edit Tariff"
             :dataItem="dataItem"
             />
@@ -86,7 +86,7 @@ export default {
                 },
                 {
                     label: "Tariff Customer Code",
-                    key: "customer_name",
+                    key: "tariff_customer_code",
                     width: "auto"
                 }
             ],

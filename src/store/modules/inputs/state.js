@@ -1233,9 +1233,9 @@ export default {
     //   valueData: null,
     //   value: ''
     // },
-    tariff_customer_id: {
+    tariff_customer_code: {
       label: "Tariff Customer Code*",
-      key: "tariff_customer_id",
+      key: "tariff_customer_code",
       rule: "required",
       typeInput: "select",
       typeData: "String",
