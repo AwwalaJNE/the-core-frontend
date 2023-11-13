@@ -157,7 +157,6 @@ export default {
                             let obj = {}
                             obj["label"] = item.customer_code + ' ( ' + item.customer_name + ' ) '
                             obj["value"] = item.customer_code
-                            console.log(obj["value"],'value tarif');
                             arr.push(obj)
                         })
 
