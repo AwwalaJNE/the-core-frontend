@@ -1236,7 +1236,7 @@ export default {
     tariff_customer_code: {
       label: "Tariff Customer Code*",
       key: "tariff_customer_code",
-      rule: "required",
+      rule: "",
       typeInput: "select",
       typeData: "String",
       arrData: [],
