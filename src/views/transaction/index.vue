@@ -354,11 +354,11 @@ export default {
         },
 
         handleBlurCustomerCode() {
-            this.$store.dispatch("SET_TRANSACTION_CUSTOMER_CODE", this.customerCode);
+            this.$store.dispatch("SET_CUSTOMER_CODE_TARIFF", this.customerCode);
         },
         handleInputCustomerCode() {
             setTimeout(() => {
-                this.$store.dispatch("SET_TRANSACTION_CUSTOMER_CODE", this.customerCode);
+                this.$store.dispatch("SET_CUSTOMER_CODE_TARIFF", this.customerCode);
             }, 1000);
         },
         async getCustomerCode() {

@@ -516,7 +516,7 @@ export default {
       return this.inputDisabled || false
     },
     listenCustomerCode () {
-      return this.$store.getters.getTransaction.transaction.transaction_customer_code
+      return this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]['customer_code_tariff']
     },
   },
   watch: {
@@ -606,9 +606,10 @@ export default {
     async getShippingService() {
       const connote_number = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number || ''
 
+      console.log("INIX1", this.listenCustomerCode)
       await axios
         .get(`${this.URL.tariff_shipping_service
-        }?n=${this.listenNodeId}&destination=${this.listenDestinationCode}&tariff_customer_code=${this.listenCustomerCode}`,
+        }?n=${this.listenNodeId}&destination=${this.listenDestinationCode}&customer_code_tariff=${this.listenCustomerCode}`,
         this.Helper.header())
         .then((res) => {
           // console.log('getShippingService', res.data.data)
