@@ -636,8 +636,9 @@ export default {
     ],
     grand_total: 0,
     discount: 0,
-    payment_method: ''
-  }
+    payment_method: '',
+    transaction_customer_code: ''
+  },
   
 
 }

@@ -399,6 +399,9 @@ export default {
         state.transaction.grand_total = payload
     },
 
+    SET_TRANSACTION_CUSTOMER_CODE(state, payload) {
+        state.transaction.transaction_customer_code = payload
+    },
     
 
     // MERGE_TRANSACTION_CONNOTE(state, payload) {
