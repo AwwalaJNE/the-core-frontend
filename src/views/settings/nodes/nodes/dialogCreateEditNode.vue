@@ -82,6 +82,7 @@ export default {
         listenActive(){
             if(this.active){
                 this.getDataNodeType()
+                this.getDataCustomer()
                 // this.getDataNode()
                 // this.getDataAltAddress()
                 
@@ -218,6 +219,29 @@ export default {
                     
                 }).catch(err => {
                     // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataCustomer(){
+            await axios
+                .get(this.URL.customer + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.customer_code + ' ( ' + item.customer_name + ' ) '
+                            obj["value"] = item.customer_code
+                            arr.push(obj)
+                        })
+
+                        this.$store.dispatch("SET_NODE_NODE_CUSTOMER_CODE_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                }).catch(err => {
+                    this.openNotification('danger', 'Failed to get Customer Code list', err)
                 })
         },
         async updateData(){

@@ -692,6 +692,16 @@ export default {
       valueData: null,
       value: ''
     },
+    node_customer_code: {
+      label: "Node Customer Code",
+      key: "node_customer_code",
+      rule: "",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     node_type_id: {
       label: "Node Type*",
       key: "node_type_id",
