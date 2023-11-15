@@ -399,6 +399,10 @@ export default {
         state.transaction.grand_total = payload
     },
 
+    SET_CUSTOMER_CODE_TARIFF(state, payload) {
+        state.transaction.connote[state.connote_index_active]['customer_code_tariff'] = payload
+        console.log("INIX", state, payload)
+    },
     
 
     // MERGE_TRANSACTION_CONNOTE(state, payload) {

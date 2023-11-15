@@ -40,6 +40,16 @@
                                 </div>
                             </template>
                         </vs-col>
+
+                <vs-col xs="6" sm="2" lg="2">
+                    <vs-input border type="text"
+                        v-model="customerCode"
+                        label-placeholder="Customer Code"
+                        ref="inputCustomerCode"
+                        @blur="handleBlurCustomerCode"
+                        @input="handleInputCustomerCode"
+                        ></vs-input>
+                </vs-col>
             </vs-row>
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="9" lg="9">
@@ -168,6 +178,9 @@ export default {
         listenConnoteLength () {
             return (this.$store.getters.getTransaction.transaction.connote).length
         },
+        listenNodeLabel() {
+            return this.$store.getters.getUser.node_id.label
+        },
     },
     data() {
         return {
@@ -179,6 +192,8 @@ export default {
             legacySystemHTML: '',
             bookingCode: '',
             hasCodeBooking: false,
+
+            customerCode: '',
             disabledAddmore: false,
 
             prosesConnote: {},
@@ -190,6 +205,9 @@ export default {
         }
     },
     methods: {
+        initialize() {
+            this.getCustomerCode()
+        },
         openPaymentDialog(){
             this.dialogPayment = true
         },
@@ -268,6 +286,9 @@ export default {
                 case "bookingCode":
                     this.bookingCode = val
                     break;
+                case "customerCode":
+                    this.customerCode = val
+                    break;
                 default:
                     console.log('meong')
                     // code block
@@ -330,6 +351,28 @@ export default {
                   this.openNotification('danger', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
                 // this.openNotification('danger', 'Failed to collect role list', err)
               })
+        },
+
+        handleBlurCustomerCode() {
+            this.$store.dispatch("SET_CUSTOMER_CODE_TARIFF", this.customerCode);
+        },
+        handleInputCustomerCode() {
+            setTimeout(() => {
+                this.$store.dispatch("SET_CUSTOMER_CODE_TARIFF", this.customerCode);
+            }, 1000);
+        },
+        async getCustomerCode() {
+            await axios
+                .get(this.URL.node + 
+                `?n=${this.listenNodeId}&sort_order=desc&s=${this.listenNodeLabel}`, 
+                this.Helper.header())
+                .then(res => {
+                    this.customerCode = res.data.data[0]['node_customer_code']
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to populate node list', err.response.data.message)
+                })
         },
 
         addMoreConnote() {
@@ -731,9 +774,14 @@ export default {
         // mixin->transaction
         this.getDefaultState()
 
+        this.initialize()
+
         this.$nextTick(() => {
             let inputCodeBooking = this.$refs.inputCodeBooking
             setTimeout(function(){ inputCodeBooking.$el.querySelector('input').focus() }, 100);
+
+            let inputCustomerCode = this.$refs.inputCustomerCode
+            setTimeout(function(){ inputCustomerCode.$el.querySelector('input').focus() }, 100);
         })
     },
     beforeRouteLeave (to, from, next) {

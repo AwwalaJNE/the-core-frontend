@@ -631,13 +631,14 @@ export default {
         amount_cod: 0,
         connote_bpik:[],
         total_biaya: 0,
-        connote_index: ''
+        connote_index: '',
+        customer_code_tariff: ''
       },
     ],
     grand_total: 0,
     discount: 0,
     payment_method: ''
-  }
+  },
   
 
 }

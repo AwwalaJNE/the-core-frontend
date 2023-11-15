@@ -449,6 +449,9 @@ export default {
     SET_TRANSACTION_GRAND_TOTAL({ commit }, payload) {
         commit('SET_TRANSACTION_GRAND_TOTAL', payload)
     },
+    SET_CUSTOMER_CODE_TARIFF({ commit }, payload) {
+        commit('SET_CUSTOMER_CODE_TARIFF', payload)
+    },
 
     
 

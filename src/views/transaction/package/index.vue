@@ -514,7 +514,10 @@ export default {
     },
     listeninputDisabled() {
       return this.inputDisabled || false
-    }
+    },
+    listenCustomerCode () {
+      return this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]['customer_code_tariff']
+    },
   },
   watch: {
     listenPackageService(n, o) {
@@ -533,6 +536,13 @@ export default {
       }
     },
     listenDestinationCode(n, o) {
+      if (n !== o) {
+        if (n !== '') {
+          this.getShippingService()
+        }
+      }
+    },
+    listenCustomerCode(n, o) {
       if (n !== o) {
         if (n !== '') {
           this.getShippingService()
@@ -596,67 +606,69 @@ export default {
     async getShippingService() {
       const connote_number = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number || ''
 
+      console.log("INIX1", this.listenCustomerCode)
       await axios
-      .get(`${this.URL.tariff_shipping_service
-      }?n=${this.listenNodeId}&destination=${this.listenDestinationCode}`,
-      this.Helper.header())
-      .then((res) => {
-        // console.log('getShippingService', res.data.data)
-        const { data } = res.data
-        const arr = []
-        data.map((item) => {
-          const obj = {}
-          obj.label = item.service_name
-          obj.value = item.tariff_service_code.toLowerCase()
-          obj.data = item
-          obj.tarif = item.tariff_amount_1
-          obj.tariff_calculation_type = item.tariff_calculation_type
+        .get(`${this.URL.tariff_shipping_service
+        }?n=${this.listenNodeId}&destination=${this.listenDestinationCode}&customer_code_tariff=${this.listenCustomerCode}`,
+        this.Helper.header())
+        .then((res) => {
+          // console.log('getShippingService', res.data.data)
+          const { data } = res.data
+          const arr = []
+          data.map((item) => {
+            const obj = {}
+            obj.label = item.service_name
+            obj.value = item.tariff_service_code.toLowerCase()
+            obj.data = item
+            obj.tarif = item.tariff_amount_1
+            obj.tariff_calculation_type = item.tariff_calculation_type
 
-          // tiering tarrif
-          const tariffAkumulatif = {}
-          const tariffStandar = {}
-          const keys = Object.keys(item)
+            // tiering tarrif
+            const tariffAkumulatif = {}
+            const tariffStandar = {}
+            const keys = Object.keys(item)
 
-          // sudah dipastikan tiering sampe 50 biji
-          for (let i = 1; i <= 50; i++) {
-            if (i == 1) {
-              tariffStandar.weight = item.tariff_weight_1 || 0
-              tariffStandar.value = item.tariff_amount_1 || 0
-            } else if (Number(item[`tariff_amount_${i}`]) != 0) {
-              tariffAkumulatif[item[`tariff_weight_${i}`]] = item[`tariff_amount_${i}`] || 0
+            // sudah dipastikan tiering sampe 50 biji
+            for (let i = 1; i <= 50; i++) {
+              if (i == 1) {
+                tariffStandar.weight = item.tariff_weight_1 || 0
+                tariffStandar.value = item.tariff_amount_1 || 0
+              } else if (Number(item[`tariff_amount_${i}`]) != 0) {
+                tariffAkumulatif[item[`tariff_weight_${i}`]] = item[`tariff_amount_${i}`] || 0
+              }
             }
-          }
 
-          obj.tariffAkumulatif = tariffAkumulatif
-          obj.tariffStandar = tariffStandar
+            obj.tariffAkumulatif = tariffAkumulatif
+            obj.tariffStandar = tariffStandar
 
-          if (item.tariff_service_code.toLowerCase().includes('reg')) {
-            arr.unshift(obj)
-          } else {
-            arr.push(obj)
-          }
+            if (item.tariff_service_code.toLowerCase().includes('reg')) {
+              arr.unshift(obj)
+            } else {
+              arr.push(obj)
+            }
+          })
+          // console.log('getShippingService arr', arr)
+
+          // if create new transaction
+          // if(connote_number == ""){
+
+          // }
+          this.$store.dispatch('SET_PACKAGE_PACKAGE_SERVICE', arr.length > 0 ? arr[0].value : '')
+          this.$store.dispatch('SET_PACKAGE_PACKAGE_SERVICE_ValueData', arr[0])
+          this.$store.dispatch('SET_PACKAGE_PACKAGE_SERVICE_arrData', arr.length > 0 ? arr : [])
+
+          const node_code = this.listenNodeCode
+          const self = this
+          this.autoApply(node_code).then(() => {
+            self.surchargeView()
+          })
+          // this.loading = false
+        }).catch((err) => {
+          // this.loading = false
+          this.checkAuth(err.response)
+          // this.openNotification('danger', 'Failed to populate country list', err)
         })
-        // console.log('getShippingService arr', arr)
-
-        // if create new transaction
-        // if(connote_number == ""){
-
-        // }
-        this.$store.dispatch('SET_PACKAGE_PACKAGE_SERVICE', arr.length > 0 ? arr[0].value : '')
-        this.$store.dispatch('SET_PACKAGE_PACKAGE_SERVICE_ValueData', arr[0])
-        this.$store.dispatch('SET_PACKAGE_PACKAGE_SERVICE_arrData', arr.length > 0 ? arr : [])
-
-        const node_code = this.listenNodeCode
-        const self = this
-        this.autoApply(node_code).then(() => {
-          self.surchargeView()
-        })
-        // this.loading = false
-      }).catch((err) => {
-        // this.loading = false
-        this.checkAuth(err.response)
-        // this.openNotification('danger', 'Failed to populate country list', err)
-      })
+      
     },
     changeJumlah() {
       if (this.listenJumlahPackage > 1) {
