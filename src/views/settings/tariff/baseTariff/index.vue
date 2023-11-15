@@ -19,7 +19,7 @@
         <dialog-create-edit-Tariff
             :active="dialogTariff" 
             :closeDialog="closeDialogTariff"
-            :refresh="refresh"
+            @refresh="refresh"
             title="Edit Tariff"
             :dataItem="dataItem"
             />
@@ -84,6 +84,11 @@ export default {
                     key: "tariff_amount_1",
                     width: "auto"
                 },
+                {
+                    label: "Tariff Customer Code",
+                    key: "tariff_customer_code",
+                    width: "auto"
+                }
             ],
             loading: false,
             dataItem: {},
@@ -115,7 +120,7 @@ export default {
             }
             await axios
                 .get(this.URL.tariff + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=asc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
