@@ -51,13 +51,14 @@
                       </el-select>
                     </template>
                     <template v-else>
-                      <el-select 
+                     <el-select
                       v-model="value" 
                       filterable
                       class="m-select"
                       :placeholder="placeholder"
                       :disabled="listenIsDisabled"
                       @change="updateValue"
+                      :loading="loadingActive"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                           <el-option
                           v-for="(item,key) in DataArr"
@@ -87,6 +88,7 @@ export default {
         valueData: Array,
         dataObj: [Object, String, Array],
         // loadingData: Boolean,
+        loading: Boolean,
         selectedValue: [Array, String, Number],
         formKey: String,
         isMultiple: Boolean,
@@ -107,6 +109,7 @@ export default {
             ],
             value: this.selectedValue ? this.selectedValue :"",
             arrValue: this.selectedValue ? this.selectedValue : [],
+            loadingActive: false,
             // loading: true,
             // loadingInjector : null
         }
@@ -146,6 +149,12 @@ export default {
                     this.arrValue = val
                 }
             }
+        },
+        loading: function(val) {
+          if(val !== undefined) {
+            this.loadingActive = val || false
+          }
+          console.log('loading', val);
         },
         // loadingData: function (val) {
         //     if(val != undefined) {
