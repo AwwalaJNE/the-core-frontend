@@ -4,22 +4,21 @@
       <vs-select
           class="m-select"
           filter
-          :multiple="true"
-          placeholder="All Destination"
+          :multiple="listenIsMultiple"
+          :placeholder="name"
           :label="name"
-          v-model="arrValue"
+          v-model="value"
           :border="border"
-          @change="updateBagDestination"
-          :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+          @change="updateBagRouting"
+          :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
       >
         <template v-if="DataArr.length > 0">
           <vs-option
-              v-for="(item, key) in DataArr"
+              v-for="(item,key) in DataArr"
               :key="key"
               :label="item.label"
-              :value="item.value"
-          >
-            {{ item.label }}
+              :value="item.value">
+            {{item.label}}
           </vs-option>
         </template>
 
@@ -29,12 +28,9 @@
 
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
 import Inputan from "@/components/input/inputan"
 export default {
-  name:"All-Destination",
-  mixins: [master],
+  name:"All-Routing",
   components: {
     "inputan": Inputan
   },
@@ -52,8 +48,24 @@ export default {
     return {
       DataArr: this.valueData ? this.valueData : [
         {
-          label: 'All Destination',
+          label: 'All Routing',
           value: '-'
+        },
+        {
+          label: 'Intracity',
+          value: 'INTRACITY'
+        },
+        {
+          label: 'Intercity',
+          value: 'INTERCITY'
+        },
+        {
+          label: 'Domestik',
+          value: 'DOMESTIK'
+        },
+        {
+          label: 'International',
+          value: 'INTERNATIONAL'
         }
       ],
       value: this.selectedValue ? this.selectedValue :"-",
@@ -89,37 +101,10 @@ export default {
     },
   },
   methods: {
-    updateBagDestination(val){
-      this.$emit("updateBagDestination", this.listenFormKey, val)
-    },
-    async getDataDestination(){
-      await axios
-          .get(this.URL.node +
-              `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1`,
-              this.Helper.header())
-          .then(res => {
-            if(res.data.data.length > 0) {
-              let data = res.data.data
-              data.map(item => {
-                let obj = {}
-                obj["label"] = item.node_code
-                obj["value"] = item.node_id
-
-
-                this.DataArr.push(obj)
-              })
-            } else {
-              // this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
-            }
-
-          }).catch(err => {
-            this.openNotification('danger', 'Failed to populate permission data', err)
-          })
-    },
+    updateBagRouting(val){
+      this.$emit("updateBagRouting", this.listenFormKey, val)
+    }
   },
-  mounted(){
-    this.getDataDestination()
-  }
 
 }
 </script>

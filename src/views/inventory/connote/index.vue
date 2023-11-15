@@ -47,9 +47,16 @@
                                   :border="true"
                                   @updateBagDestination="updateBagDestination" />
                             </vs-col>
+                            <vs-col vs-align="center" xs="3" sm="3" lg="2">
+                              <select-bag-routing
+                                  ref="bag_routing"
+                                  :isMultiple="false"
+                                  :border="true"
+                                  @updateBagRouting="updateBagRouting" />
+                            </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <bag-list :ref="navActive" :bagDestination="bagDestination" :query="tempSearch"/>
+                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :query="tempSearch"/>
                             </transition>
                         </template>
                         
@@ -72,6 +79,7 @@ import Selector from "@/components/input/select"
 import SelectBagStatusVue from "@/views/inventory/connote/item/selectBagStatus"
 import SelectInventoryVue from "@/views/inventory/connote/item/selectInventoryStatus"
 import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDestination"
+import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
 
 // Connote
 import ConnoteList from "@/views/inventory/connote/item/connoteList"
@@ -92,6 +100,7 @@ export default {
         "select-status-bag": SelectBagStatusVue,
         "select-status-inventory": SelectInventoryVue,
         "select-bag-destination": SelectBagDestinationVue,
+        "select-bag-routing": SelectBagRouting
     },
     data() {
         return {
@@ -150,6 +159,7 @@ export default {
             status_bag:"",
             statusinventory:"",
             bagDestination:"",
+            bagRouting:"",
             destination_tlc: [{
               label: 'All Destination',
               value: ''
@@ -166,6 +176,9 @@ export default {
         },
         updateBagDestination(key,val) {
           this.bagDestination = val
+        },
+        updateBagRouting(key,val){
+            this.bagRouting = val
         },
         refresh(){
             let el = this.refreshInject
