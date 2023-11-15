@@ -68,6 +68,25 @@
                   </div>
                 </template>
               </vs-col>
+              <vs-col xs="12" sm="3" lg="3">
+                <template v-if="this.listenActiveUser['user_role_id'] == 4">
+                <!-- <template> -->
+                  <div class="center in-get-bag">
+                   <vs-col lg="12">
+                     <selector 
+                     ref="employee"
+                     name="Courier Delivery" 
+                     rules="" 
+                     placeholder="Select Courier Delivery"
+                     formKey="employee"
+                     :valueData="employeeArray"
+                     :selectedValue="employee"
+                     
+                     @updateValue="updateFilter" />
+                   </vs-col>
+                  </div>
+                </template>
+              </vs-col>
               
               
               
@@ -382,6 +401,25 @@ export default {
             })
         }
       },
+      async getemployee(){
+          await axios
+                .get(this.URL.employee +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                this.Helper.header())
+                .then(res => {
+                        res.data.data.filter(item => item.employee_type_id == 5).map(item => {
+                            let obj = {}
+                            obj["label"] = item.employee_name + ' (' + item.employee_nik + ' ) ' + item.employee_type_id
+                            obj["value"] = item.employee_id
+
+                            this.employeeArray.push(obj)
+                        })
+
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to populate employee list', err)
+                })
+        },
       updateValue(){
         this.form={
             item_number: this.item_code,
@@ -393,6 +431,10 @@ export default {
         // }
         if(this.destination !== "") {
           this.form["destination_node_id"] = this.destination
+        }
+        // jika user type inbound, kirim payload employee_id(kurir delivery) 
+        if (this.listenActiveUser['user_role_id'] == 4){
+          this.form["employee_id"] = this.employee
         }
         this.ProccessBagging()
       },
@@ -414,6 +456,9 @@ export default {
                 break;
             case key.toLowerCase().includes('destination'):
                 this.destination = value
+                break;
+            case key.toLowerCase().includes('employee'):
+                this.employee = value
                 break;
             default:
         }
@@ -437,6 +482,7 @@ export default {
     mounted() {
       this.getNodeLink()
       this.getNodeIntracity()
+      this.getemployee()
       // this.$store.dispatch("SET_BAGGING_destination_dataArray", this.regionalArray )
       // this.$store.dispatch("SET_BAGGING_service_dataArray", this.serviceArray )
     }
