@@ -342,6 +342,8 @@ export default {
             ],
             destination: "",
             // weight: null,
+            employee: "",
+            employeeArray: []
             
         }
     },
