@@ -133,6 +133,7 @@ export default {
     },
 
     SET_PACKAGE_PACKAGE_SERVICE({ commit, dispatch }, payload) {
+        console.log("why",payload)
         commit('SET_PACKAGE_PACKAGE_SERVICE', payload)
         dispatch('SET_CONNOTE_DATA', {'key':'connote_service_code','value': payload})
     },
@@ -469,6 +470,9 @@ export default {
 
     SET_CONNOTE_INDEX_ACTIVE({ commit }, payload) {
         commit('SET_CONNOTE_INDEX_ACTIVE', payload)
+    },
+    SET_PREVIOUS_CONNOTE_INDEX_ACTIVE({ commit }, payload) {
+        commit('SET_PREVIOUS_CONNOTE_INDEX_ACTIVE', payload)
     },
     ADD_MORE_CONNOTE({ commit }, payload) {
         commit('ADD_MORE_CONNOTE', payload)

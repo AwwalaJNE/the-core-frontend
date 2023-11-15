@@ -233,10 +233,54 @@ export default {
         },
         selectConnote(key, value) {
             let index = 0
+            this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteIndexActive)
             this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, value)
             this.$store.dispatch(`SWITCH_CONNOTE_ACTIVE`, value)
+            
+            if(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number!=''){
+                this.connote_number = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number;
+            }
 
             console.log('list connote koli => ', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
+        },
+        async getShippingService(booking_connote_service_code, fromBooking = false) {
+            console.log("apakah jalan")
+            await axios
+                .get(this.URL.tariff_shipping_service + 
+                `?n=${this.listenNodeId}&destination=${this.destinationCode}`, 
+                this.Helper.header())
+                .then(res => {
+                    // console.log('getShippingService', res.data.data)
+                    let data = res.data.data
+                    let arr = []
+                    data.map(item => {
+                        let obj = {}
+                        obj['label'] = item.service_name
+                        obj['value'] = item.tariff_service_code
+                        obj['data'] = item
+                        obj['tarif'] = item.tariff_amount_1
+                        console.log(obj)
+                        console.log("ini bukan",booking_connote_service_code,item.tariff_service_code)
+                        if(item.tariff_service_code==booking_connote_service_code){
+                            console.log("masuk",obj)
+                            this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", obj)
+                            console.log('getShippingService arr', obj)
+                        }
+                        
+                    })
+                    console.log('getShippingService arr', arr)
+                   
+                    //this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
+                    
+                    //this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr)
+
+                 
+                    // this.loading = false
+                }).catch(err => {
+                    // this.loading = false
+                    this.checkAuth(err.response.status)
+                    // this.openNotification('danger', 'Failed to populate country list', err)
+                })
         },
         clickdulu(item){
             switch(this.listenCalcPrefix) {

@@ -528,6 +528,7 @@ export default {
     connote_index: ''
   },
   connote_index_active: 0,
+  previous_connote_index_active: 0,
 
   // untuk ADD_MORE_CONNOTE
   connote_template: {

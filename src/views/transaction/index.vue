@@ -147,6 +147,9 @@ export default {
         listenConnoteActive () {
             return this.$store.getters.getTransaction.connote_index_active
         },
+        listenPreviousConnoteActive () {
+            return this.$store.getters.getTransaction.previous_connote_index_active
+        },
         listenDestination () {
             return this.$store.getters.getTransaction.destination
         },
@@ -158,6 +161,12 @@ export default {
         },
         listenConnoteIndexActive () {
             return this.$store.getters.getTransaction.connote_index_active
+        },
+        listenPreviousConnoteIndexActive () {
+            return this.$store.getters.getTransaction.previous_connote_index_active
+        },
+        listenConnoteLength () {
+            return (this.$store.getters.getTransaction.transaction.connote).length
         },
     },
     data() {
@@ -206,18 +215,39 @@ export default {
                     let inputan = ''
                     // quick fix required koli input dalem dialog multikoli
                     let dataConnote = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
+                    console.log("INI", dataConnote)
                     for(let i=0; i<= dataConnote['connote_koli_item'].length-1;i++) {
                         // console.log('koli curr', dataConnote['connote_koli_item'][i])
                         if(dataConnote['connote_koli_item'][i]['description'] == '') {
-                                    needValidation = true
-                                    indexKoli = i
-                                    inputan = 'Description'
-                                    break;
+                            needValidation = true
+                            indexKoli = i
+                            inputan = 'Description'
+                            break;
                         } else if(dataConnote['connote_koli_item'][i]['actual_weight'] == '') {
                             needValidation = true
                             indexKoli = i
                             inputan = 'Weight'
                             break;
+                        }
+                        else if(dataConnote['connote_koli_item'][i]['is_packing_kayu'] !== null && dataConnote['connote_koli_item'][i]['is_packing_kayu'] == true) {
+                            if (dataConnote['connote_koli_item'][i]['height'] == 0) {
+                                needValidation = true
+                                indexKoli = i
+                                inputan = 'height'
+                                break;
+                            }
+                            else if (dataConnote['connote_koli_item'][i]['length'] == 0) {
+                                needValidation = true
+                                indexKoli = i
+                                inputan = 'length'
+                                break;
+                            }
+                            else if (dataConnote['connote_koli_item'][i]['width'] == 0) {
+                                needValidation = true
+                                indexKoli = i
+                                inputan = 'width'
+                                break;
+                            }
                         }
                     }
 
@@ -322,12 +352,12 @@ export default {
         },
         collectData() {
             this.tempConnote = {}
-            let dataTransaction = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction))
-            this.prosesDataTransaction = dataTransaction
+            this.prosesDataTransaction = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction))
             this.prosesDataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
 
             // hanya kirim connote yg belom/mau dibuat
             let dataConnote = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]))
+
             let arr = []
             arr.push(dataConnote)
             this.prosesDataTransaction['connote'] = arr
@@ -484,11 +514,10 @@ export default {
             let test = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction.connote))
             test[this.listenConnoteActive] = current_connote
 
-            // console.log('handleDataTransaction ++++=? ', test)
-
+            let connote_koli_item = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.connote_koli_item))
 
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':this.tempConnote['transaction_id']})
-            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'connote', 'value':test})
+            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'connote', 'value': test})
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value': this.typeAction == 'finish' ? true : false }) // this.tempConnote['transaction_finished']
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'node_code', 'value':this.listenNodeCode})
 
@@ -497,16 +526,21 @@ export default {
             // // - add obj data connote template
             // // - connote index active + 1.
             if(this.typeAction == 'addconnote') {
-                this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
+                this.$store.dispatch(`ADD_MORE_CONNOTE`, this.listenConnoteActive + 1)
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
+                this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive)
 
+                console.log("123 Jumlah connote", (this.$store.getters.getTransaction.transaction.connote).length, (this.listenConnoteActive))
+
+                if (this.listenConnoteActive !== (this.$store.getters.getTransaction.transaction.connote).length - 1) {
+                    this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive - 1)
+                    this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, (this.$store.getters.getTransaction.transaction.connote).length - 1)
+                }
+                
                 let self = this
                 setTimeout(function(){ 
                     self.refreshTransactionFields()
                     self.$refs.originComponent.setFocus()
-
-                    self.$store.dispatch(`SET_PACKAGE_PACKAGE_DESCRIPTION`, "")
-                    self.$store.dispatch(`SET_PACKAGE_PACKAGE_DESCRIPTION_ValueData`, "")
                 }, 1000);
                 
             } else if(this.typeAction == 'finish') {
@@ -611,8 +645,9 @@ export default {
             // - add obj data connote template
             // - connote index active + 1.
             if(this.typeAction == 'addconnote') {
-                this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
+                this.$store.dispatch(`ADD_MORE_CONNOTE`, this.listenConnoteActive + 1)
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
+                this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive)
             }
         },
 
@@ -695,7 +730,6 @@ export default {
 
         // mixin->transaction
         this.getDefaultState()
-        
 
         this.$nextTick(() => {
             let inputCodeBooking = this.$refs.inputCodeBooking

@@ -452,12 +452,23 @@ export default {
       bpikComponent: false,
       surchargeByID: {},
       surchargeshow: {},
-      template_koli: this.$store.getters.getTransaction.template_koli,
+      template_koli:  {
+        koli_id: '',
+        height: 0,
+        length: 0,
+        width: 0,
+        volume_weight: 0.00,
+        actual_weight: 1,
+        surcharge_id: [],
+        surcharge_manual: 0,
+        is_packing_kayu: false,
+        is_packing_kayu_id: '',
+        description: ''
+      },
       connote_koli_item: [],
       koliObj: {},
       koliinput: 'number',
       disableBtnMultipleKoli: true,
-      jumlahKoli: 1,
       current_index_koli: 0,
       package_tidak_packing_kayu: false,
       package_tidak_asuransi: false,
@@ -470,6 +481,7 @@ export default {
       koli_b4_surcharge: {},
       tempActualWeightPackingKayu: null,
       tempvolumeWeightPackingKayu: null,
+      listenJumlahPackage: null
     }
   },
   computed: {
@@ -488,9 +500,6 @@ export default {
     listenConnoteKoliItem() {
       return this.$store.getters.getTransaction.connote_koli_item
     },
-    listenJumlahPackage() {
-      return this.$store.getters.getTransaction.package.package_jumlah.value
-    },
     listenDestinationCode() {
       return this.$store.getters.getTransaction.destination.destination_zip_code.input[1].value
     },
@@ -499,6 +508,9 @@ export default {
     // new code
     listenConnoteIndexActive() {
       return this.$store.getters.getTransaction.connote_index_active
+    },
+    listenPreviousConnoteIndexActive() {
+      return this.$store.state.transaction.previous_connote_index_active
     },
     listeninputDisabled() {
       return this.inputDisabled || false
@@ -533,6 +545,8 @@ export default {
   },
   methods: {
     initialize() {
+      this.listenJumlahPackage = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item.length;
+      console.log("123a", this.listenConnoteIndexActive, this.listenPreviousConnoteIndexActive)
       const obj = this.$store.getters.getTransaction.package || {}
       if (Object.keys(obj).length > 0) {
         const keys = Object.keys(obj)
@@ -543,7 +557,14 @@ export default {
       // this.connote_koli_item = this.listenConnoteKoliItem
 
       // new code
-      this.connote_koli_item = this.test(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || [])
+      if (this.listenConnoteIndexActive == this.listenPreviousConnoteIndexActive) {
+        this.connote_koli_item = this.test(this.$store.state.transaction.connote_koli_item || [])
+      }
+      else {
+        this.connote_koli_item = this.test(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || [])
+      }
+      
+      // console.log("123d", this.listenConnoteIndexActive)
       this.wrapingSurcharge()
     },
     test(json) {
@@ -646,16 +667,18 @@ export default {
         this.koliinput = 'number'
       }
 
-      if (this.jumlahKoli > 0) {
-        const absValue = Math.abs(this.jumlahKoli - this.connote_koli_item.length)
-        if (this.connote_koli_item.length > this.jumlahKoli) {
+      if (this.listenJumlahPackage > 0) {
+        const absValue = Math.abs(this.listenJumlahPackage - this.connote_koli_item.length)
+        if (this.connote_koli_item.length > this.listenJumlahPackage) {
           this.connote_koli_item.splice((this.connote_koli_item.length) - absValue, absValue)
-        } else if (this.jumlahKoli > this.connote_koli_item.length) {
+        } 
+        else if (this.listenJumlahPackage > this.connote_koli_item.length) {
           for (let i = 0; i < absValue; i++) {
             this.connote_koli_item.push(this.template_koli)
           }
         }
       }
+
       this.$store.dispatch('SET_CONNOTE_DATA_KOLI', this.connote_koli_item)
       // this.calcDataKoli()
       const node_code = this.listenNodeCode
@@ -715,9 +738,10 @@ export default {
           break
         case 'koli_jumlah':
           this.$store.dispatch('SET_PACKAGE_PACKAGE_JUMLAH', value)
-          this.jumlahKoli = value
+          this.listenJumlahPackage = value
           break
         case 'koli_description':
+          this.$store.dispatch('SET_PACKAGE_PACKAGE_DESCRIPTION', value)
           this.prosesKoli0('description', value, 0)
           break
         case 'koli_weight':
@@ -984,6 +1008,10 @@ export default {
           koli[index].volume_weight = volume_weight.toFixed(2)
         }
       }
+      else if (name.toLowerCase().includes('surcharge manual')) {
+        koli[index].surcharge_manual = 0
+      }
+
       this.$store.dispatch('SET_CONNOTE_DATA_KOLI', koli)
       const node_code = this.listenNodeCode
       const self = this

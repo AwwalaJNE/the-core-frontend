@@ -415,6 +415,10 @@ export default {
         state.connote_index_active = payload
     },
 
+    SET_PREVIOUS_CONNOTE_INDEX_ACTIVE(state, payload) {
+        state.previous_connote_index_active = payload
+    },
+
     SET_CONNOTE_DATA(state, payload) {
         state.transaction.connote[state.connote_index_active][payload.key] = payload.value
     },
@@ -440,6 +444,8 @@ export default {
     SWITCH_CONNOTE_ACTIVE(state, payload) {
         let index = state.connote_index_active
         let data = state.transaction.connote[index] || {}
+
+        console.log("xyz data", data)
 
         if(Object.keys(data).length > 0) {
             // ORIGIN
@@ -486,36 +492,79 @@ export default {
                         state.destination[item]['input'][1].value = data[state.destination[item]['input'][1].key] || ''
                     }
                 }
-            })
+            })    
 
-
-            // PACKAGE
-            Object.keys(state.package).map(item => {
-                if(state.package[item].key.includes("koli_")) {
-                    if(state.package[item].key == 'koli_jumlah') {
-                        state.package[item].value = data['connote_koli_item'].length
-                    } else if(state.package[item].key == 'koli_description') {
-                        state.package[item].value = data['connote_koli_item'][0]['description'] || ''
-                    } else if(state.package[item].key == 'koli_weight') {
-                        state.package[item].value = data['connote_koli_item'][0]['koli_actual_weight'] || 0
-                    } else {
-                        state.package[item].value = data['connote_koli_item'][0][state.package[item].key] || 0
+            if (data['connote_koli_item'].length == 1) {
+                Object.keys(state.package).map(item => {
+                    if(state.package[item].key.includes("koli_")) {
+                        if(state.package[item].key == 'koli_jumlah') {
+                            state.package[item].value = data['connote_koli_item'].length
+                        } else if(state.package[item].key == 'koli_description') {
+                            state.package[item].value = data['connote_koli_item'][0]['description'] || ''
+                        } else if(state.package[item].key == 'koli_weight') {
+                            state.package[item].value = data['connote_koli_item'][0]['koli_actual_weight'] || 0
+                        } else {
+                            state.package[item].value = data['connote_koli_item'][0][state.package[item].key] || 0
+                        }
+                    } 
+                    else if(state.package[item].key !== 'koli_jumlah' && data.hasOwnProperty(state.package[item].key)){
+                        if(state.package[item]['typeData'].includes("Number")) {
+                            state.package[item].value = data[state.package[item].key] || 0
+                        } else if (state.package[item]['typeData'].includes("Array")) {
+                            state.package[item].value = data[state.package[item].key] || []
+                        } else if (state.package[item]['typeData'].includes("Boolean")) {
+                            state.package[item].value = data[state.package[item].key] || false
+                        } else {
+                            state.package[item].value = data[state.package[item].key] ? data[state.package[item].key].toLowerCase() : ''
+                        }
                     }
-                } else if(state.package[item].key !== 'koli_jumlah' && data.hasOwnProperty(state.package[item].key)){
-                    if(state.package[item]['typeData'].includes("Number")) {
-                        state.package[item].value = data[state.package[item].key] || 0
-                    } else if (state.package[item]['typeData'].includes("Array")) {
-                        state.package[item].value = data[state.package[item].key] || []
-                    } else if (state.package[item]['typeData'].includes("Boolean")) {
-                        state.package[item].value = data[state.package[item].key] || false
-                    } else {
-                        state.package[item].value = data[state.package[item].key] ? data[state.package[item].key].toLowerCase() : ''
-                    }
+                })
+            } else {
+                let tempData = []
+                for (let i = 0; i < data['connote_koli_item'].length; i++) {
+                    Object.keys(state.template_koli).forEach(item => {
+                        const indexSurchargeManual = data['connote_koli_item'][i]['koli_surcharge'].findIndex(item => item.surcharge_amount_formula && item.surcharge_amount_formula.includes('SURCHARGE_MANUAL'));
+                        if (item === 'surcharge_manual') {
+                            if (indexSurchargeManual !== -1) {
+                                state.template_koli[item] = parseInt(data['connote_koli_item'][i]['koli_surcharge'][indexSurchargeManual]['surcharge_amount']) || 0;
+                            } else {
+                                state.template_koli[item] = 0;
+                            }
+                        } else {
+                            state.template_koli[item] = data['connote_koli_item'][i][item] || state.template_koli[item];
+                        }
+                    });
+                    tempData.push({ ...state.template_koli });
                 }
 
-            })
-        }
+                state.transaction.connote[index].connote_koli_item = tempData
 
+                Object.keys(state.package).map(item => {
+                    if(state.package[item].key.includes("koli_")) {
+                        if(state.package[item].key == 'koli_jumlah') {
+                            state.package[item].value = data['connote_koli_item'].length
+                        } else if(state.package[item].key == 'koli_description') {
+                            state.package[item].value = data['connote_koli_item'][0]['description'] || ''
+                        } else if(state.package[item].key == 'koli_weight') {
+                            state.package[item].value = data['connote_koli_item'][0]['actual_weight'] || 0
+                        } else {
+                            state.package[item].value = data['connote_koli_item'][0][state.package[item].key] || 0
+                        }
+                    } 
+                    else if(state.package[item].key !== 'koli_jumlah' && data.hasOwnProperty(state.package[item].key)){
+                        if(state.package[item]['typeData'].includes("Number")) {
+                            state.package[item].value = data[state.package[item].key] || 0
+                        } else if (state.package[item]['typeData'].includes("Array")) {
+                            state.package[item].value = data[state.package[item].key] || []
+                        } else if (state.package[item]['typeData'].includes("Boolean")) {
+                            state.package[item].value = data[state.package[item].key] || false
+                        } else {
+                            state.package[item].value = data[state.package[item].key] ? data[state.package[item].key].toLowerCase() : ''
+                        }
+                    }
+                })
+            }                    
+        }
     },
 
     // CLEAR_TRANSACTION_DATA_CONNOTE(state, payload) {
