@@ -1348,6 +1348,129 @@ export default {
     },
   },
 
+  tariff_discount: {
+    discount_tariff_origin: {
+      label: "Discount Tariff Origin*",
+      key: "discount_tariff_origin",
+      rule: "required",
+      typeInput: "text",
+      width: '6',
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    discount_tariff_destination: {
+      label: "Discount Tariff Destination*",
+      key: "discount_tariff_destination",
+      rule: "required",
+      typeInput: "text",
+      width: '6',
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    discount_tariff_service_code: {
+      label: "Discount Tariff service code*",
+      key: "discount_tariff_service_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    discount_tariff_persentase: {
+      label: "Daily Diskon (%)*",
+      key: "discount_tariff_persentase",
+      rule: "required",
+      typeInput: "text",
+      width: '6',
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    up_to_amount_1: {
+      label: "Up To Amount 1*",
+      key: "up_to_amount_1",
+      rule: "required",
+      typeInput: "text",
+      width: "6",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    up_to_discount_1: {
+      label: "Up To Discount 1*",
+      key: "up_to_discount_1",
+      rule: "required",
+      typeInput: "text",
+      width: "6",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    up_to_amount_2: {
+      label: "Up To Amount 2",
+      key: "up_to_amount_2",
+      rule: "required",
+      typeInput: "text",
+      width: "6",
+      typeData: "Number",
+      valueData: null,
+      value: '',
+      border: 5
+    },
+    up_to_discount_2: {
+      label: "Up To Discount 2",
+      key: "up_to_discount_2",
+      rule: "required",
+      typeInput: "text",
+      width: "6",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    up_to_amount_3: {
+      label: "Up To Amount 3",
+      key: "up_to_amount_3",
+      rule: "required",
+      typeInput: "text",
+      width: "6",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    up_to_discount_3: {
+      label: "Up To Discount 3",
+      key: "up_to_discount_3",
+      rule: "required",
+      typeInput: "text",
+      width: "6",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    up_to_amount_4: {
+      label: "Up To Amount 4",
+      key: "up_to_amount_4",
+      rule: "required",
+      typeInput: "text",
+      width: "6",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+    up_to_discount_4: {
+      label: "Up To Discount 4",
+      key: "up_to_discount_4",
+      rule: "required",
+      typeInput: "text",
+      width: "6",
+      typeData: "Number",
+      valueData: null,
+      value: ''
+    },
+  },
 
   tariff_special: {
     tariff_special_name: {
