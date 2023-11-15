@@ -444,6 +444,18 @@ export default {
     commit('SET_NODE_NODE_NAME_ValueData', payload)
   },
 
+  //node customer code
+  SET_NODE_NODE_CUSTOMER_CODE({ commit }, payload) {
+    commit('SET_NODE_NODE_CUSTOMER_CODE', payload)
+  },
+  SET_NODE_NODE_CUSTOMER_CODE_ValueData({ commit }, payload) {
+    commit('SET_NODE_NODE_CUSTOMER_CODE_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_NODE_NODE_CUSTOMER_CODE_ArrData({ commit }, payload) {
+    commit('SET_NODE_NODE_CUSTOMER_CODE_ArrData', payload)
+  },
+  
   SET_NODE_NODE_TYPE_ID({ commit }, payload) {
     commit('SET_NODE_NODE_TYPE_ID', payload)
   },
@@ -919,6 +931,17 @@ export default {
     commit('SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ArrData', payload)
   },
 
+  SET_TARIFF_TARIFF_CUSTOMER_CODE({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_CUSTOMER_CODE', payload)
+  },
+  SET_TARIFF_TARIFF_CUSTOMER_CODE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_CUSTOMER_CODE_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_TARIFF_TARIFF_CUSTOMER_CODE_ArrData({ commit }, payload) {
+    commit('SET_TARIFF_TARIFF_CUSTOMER_CODE_ArrData', payload)
+  },
+
   SET_TARIFF_TARIFF_AMOUNT_1({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_AMOUNT_1', payload)
   },
@@ -938,6 +961,91 @@ export default {
   },
   SET_TARIFF_IS_ACTIVE_ValueData({ commit }, payload) {
     commit('SET_TARIFF_IS_ACTIVE_ValueData', payload)
+  },
+
+  // Discount Tariff
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_ORIGIN({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_ORIGIN', payload)
+  },
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_ORIGIN_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_ORIGIN_ValueData', payload)
+  },
+
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_DESTINATION({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_DESTINATION', payload)
+  },
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_DESTINATION_ValueData', payload)
+  },
+
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_SERVICE_CODE({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_SERVICE_CODE', payload)
+  },
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_SERVICE_CODE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_SERVICE_CODE_ValueData', payload)
+  },
+
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_PERSENTASE({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_PERSENTASE', payload)
+  },
+  SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_PERSENTASE_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_DISCOUNT_TARIFF_PERSENTASE_ValueData', payload)
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_1({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_1', payload)
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_1_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_1_ValueData', payload)
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_1({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_1', payload)
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_1_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_1_ValueData', payload)
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_2({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_2', payload)
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_2_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_2_ValueData', payload)
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_2({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_2', payload)
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_2_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_2_ValueData', payload)
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_3({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_3', payload)
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_3_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_3_ValueData', payload)
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_3({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_3', payload)
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_3_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_3_ValueData', payload)
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_4({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_4', payload)
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_4_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_AMOUNT_4_ValueData', payload)
+  },
+
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_4({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_4', payload)
+  },
+  SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_4_ValueData({ commit }, payload) {
+    commit('SET_TARIFF_DISCOUNT_UP_TO_DISCOUNT_4_ValueData', payload)
   },
 
   // tariff special

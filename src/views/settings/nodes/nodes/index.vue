@@ -74,6 +74,11 @@ export default {
                     key: "node_remark",
                     width: "auto"
                 },
+                {
+                    label: "Customer Code",
+                    key: "node_customer_code",
+                    width: "auto"
+                }
             ],
             loading: false,
             dataItem: {},

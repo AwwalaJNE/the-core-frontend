@@ -13,7 +13,7 @@
                     ref="formTariffController"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    typeForm="tariff"
+                    typeForm="tariff_discount"
                 />
             </div>
         </template>
@@ -57,7 +57,7 @@ import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-tariff",
+    name:"dialog-create-edit-tariff-discount",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
@@ -75,7 +75,7 @@ export default {
         return {
             form: {},
             formRole: this.$store.getters.getInputs.geolocation_city ? this.$store.getters.getInputs.geolocation_city : {},
-            tariff_id: ''
+            discount_tariff_id: ''
         }
     },
     computed: {
@@ -92,20 +92,20 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.tariff_id = val.tariff_id
+                this.discount_tariff_id = val.discount_tariff_id
             }
         },
-        active: function (val) {
-            if (val == true) {
-                this.getDataVehicleMode()
-                this.getDataCustomer()
-            }
-        }
+        // active: function (val) {
+        //     if (val == true) {
+        //         this.getDataVehicleMode()
+        //         this.getDataCustomer()
+        //     }
+        // }
     },
     methods: {
         formData(form){
             this.form = form
-            if(this.tariff_id !== undefined && this.tariff_id !== '') {
+            if(this.discount_tariff_id !== undefined && this.discount_tariff_id !== '') {
                     console.log('update')
                     this.updateData()
             } else {
@@ -118,60 +118,12 @@ export default {
         handleClearForm(){
             this.$refs.formTariffController.handleClearForm()
             this.form = {}
-            this.tariff_id = ""
-        },
-        async getDataVehicleMode(){
-            await axios
-                .get(this.URL.vehicle_mode + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.vehicle_mode_name
-                            obj["value"] = item.vehicle_mode_id
-
-                            arr.push(obj)
-                        })
-
-                        this.$store.dispatch("SET_TARIFF_TARIFF_VEHICLE_MODE_ID_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
-                    
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
-        },
-        async getDataCustomer(){
-            await axios
-                .get(this.URL.customer + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.customer_code + ' ( ' + item.customer_name + ' ) '
-                            obj["value"] = item.customer_code
-                            arr.push(obj)
-                        })
-
-                        this.$store.dispatch("SET_TARIFF_TARIFF_CUSTOMER_CODE_ArrData", arr.length > 0 ? arr : null)
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
-                }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
+            this.discount_tariff_id = ""
         },
         async updateData(){
             await axios
                 .put(
-                    this.URL.tariff + `/${this.tariff_id}?n=${this.listenNodeId}`,
+                    this.URL.discount_tariff + `/${this.discount_tariff_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -179,20 +131,20 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Update role is success')
+                    this.openNotification(null, 'Success', 'Update discount tariff is success')
                 }).catch(err => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update role is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', 'Update discount tariff is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         async addData() {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.tariff + `?n=${this.listenNodeId}`,
+                    this.URL.discount_tariff + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -200,13 +152,13 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Create new role is success')
+                    this.openNotification(null, 'Success', 'Create new discount tariff is success')
                 }).catch(err => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create new role is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', 'Create new discount tariff is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {

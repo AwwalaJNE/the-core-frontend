@@ -40,6 +40,16 @@
                                 </div>
                             </template>
                         </vs-col>
+
+                <vs-col xs="6" sm="2" lg="2">
+                    <vs-input border type="text"
+                        v-model="customerCode"
+                        label-placeholder="Customer Code"
+                        ref="inputCustomerCode"
+                        @blur="handleBlurCustomerCode"
+                        @input="handleInputCustomerCode"
+                        ></vs-input>
+                </vs-col>
             </vs-row>
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="9" lg="9">
@@ -147,6 +157,9 @@ export default {
         listenConnoteActive () {
             return this.$store.getters.getTransaction.connote_index_active
         },
+        listenPreviousConnoteActive () {
+            return this.$store.getters.getTransaction.previous_connote_index_active
+        },
         listenDestination () {
             return this.$store.getters.getTransaction.destination
         },
@@ -159,6 +172,15 @@ export default {
         listenConnoteIndexActive () {
             return this.$store.getters.getTransaction.connote_index_active
         },
+        listenPreviousConnoteIndexActive () {
+            return this.$store.getters.getTransaction.previous_connote_index_active
+        },
+        listenConnoteLength () {
+            return (this.$store.getters.getTransaction.transaction.connote).length
+        },
+        listenNodeLabel() {
+            return this.$store.getters.getUser.node_id.label
+        },
     },
     data() {
         return {
@@ -170,6 +192,8 @@ export default {
             legacySystemHTML: '',
             bookingCode: '',
             hasCodeBooking: false,
+
+            customerCode: '',
             disabledAddmore: false,
 
             prosesConnote: {},
@@ -181,6 +205,9 @@ export default {
         }
     },
     methods: {
+        initialize() {
+            this.getCustomerCode()
+        },
         openPaymentDialog(){
             this.dialogPayment = true
         },
@@ -206,18 +233,39 @@ export default {
                     let inputan = ''
                     // quick fix required koli input dalem dialog multikoli
                     let dataConnote = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
+                    console.log("INI", dataConnote)
                     for(let i=0; i<= dataConnote['connote_koli_item'].length-1;i++) {
                         // console.log('koli curr', dataConnote['connote_koli_item'][i])
                         if(dataConnote['connote_koli_item'][i]['description'] == '') {
-                                    needValidation = true
-                                    indexKoli = i
-                                    inputan = 'Description'
-                                    break;
+                            needValidation = true
+                            indexKoli = i
+                            inputan = 'Description'
+                            break;
                         } else if(dataConnote['connote_koli_item'][i]['actual_weight'] == '') {
                             needValidation = true
                             indexKoli = i
                             inputan = 'Weight'
                             break;
+                        }
+                        else if(dataConnote['connote_koli_item'][i]['is_packing_kayu'] !== null && dataConnote['connote_koli_item'][i]['is_packing_kayu'] == true) {
+                            if (dataConnote['connote_koli_item'][i]['height'] == 0) {
+                                needValidation = true
+                                indexKoli = i
+                                inputan = 'height'
+                                break;
+                            }
+                            else if (dataConnote['connote_koli_item'][i]['length'] == 0) {
+                                needValidation = true
+                                indexKoli = i
+                                inputan = 'length'
+                                break;
+                            }
+                            else if (dataConnote['connote_koli_item'][i]['width'] == 0) {
+                                needValidation = true
+                                indexKoli = i
+                                inputan = 'width'
+                                break;
+                            }
                         }
                     }
 
@@ -237,6 +285,9 @@ export default {
             switch(key) {
                 case "bookingCode":
                     this.bookingCode = val
+                    break;
+                case "customerCode":
+                    this.customerCode = val
                     break;
                 default:
                     console.log('meong')
@@ -302,6 +353,28 @@ export default {
               })
         },
 
+        handleBlurCustomerCode() {
+            this.$store.dispatch("SET_CUSTOMER_CODE_TARIFF", this.customerCode);
+        },
+        handleInputCustomerCode() {
+            setTimeout(() => {
+                this.$store.dispatch("SET_CUSTOMER_CODE_TARIFF", this.customerCode);
+            }, 1000);
+        },
+        async getCustomerCode() {
+            await axios
+                .get(this.URL.node + 
+                `?n=${this.listenNodeId}&sort_order=desc&s=${this.listenNodeLabel}`, 
+                this.Helper.header())
+                .then(res => {
+                    this.customerCode = res.data.data[0]['node_customer_code']
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to populate node list', err.response.data.message)
+                })
+        },
+
         addMoreConnote() {
             this.typeAction = 'addconnote'
             this.$refs.formTransaction.formSubmit()
@@ -322,12 +395,12 @@ export default {
         },
         collectData() {
             this.tempConnote = {}
-            let dataTransaction = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction))
-            this.prosesDataTransaction = dataTransaction
+            this.prosesDataTransaction = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction))
             this.prosesDataTransaction['transaction_finished'] = this.typeAction == 'finish' ? true : false
 
             // hanya kirim connote yg belom/mau dibuat
             let dataConnote = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]))
+
             let arr = []
             arr.push(dataConnote)
             this.prosesDataTransaction['connote'] = arr
@@ -484,11 +557,10 @@ export default {
             let test = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.transaction.connote))
             test[this.listenConnoteActive] = current_connote
 
-            // console.log('handleDataTransaction ++++=? ', test)
-
+            let connote_koli_item = JSON.parse(JSON.stringify(this.$store.getters.getTransaction.connote_koli_item))
 
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_id', 'value':this.tempConnote['transaction_id']})
-            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'connote', 'value':test})
+            this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'connote', 'value': test})
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'transaction_finished', 'value': this.typeAction == 'finish' ? true : false }) // this.tempConnote['transaction_finished']
             this.$store.dispatch(`FILL_TRANSACTION_DATA`, {'key':'node_code', 'value':this.listenNodeCode})
 
@@ -497,16 +569,21 @@ export default {
             // // - add obj data connote template
             // // - connote index active + 1.
             if(this.typeAction == 'addconnote') {
-                this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
+                this.$store.dispatch(`ADD_MORE_CONNOTE`, this.listenConnoteActive + 1)
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
+                this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive)
 
+                console.log("123 Jumlah connote", (this.$store.getters.getTransaction.transaction.connote).length, (this.listenConnoteActive))
+
+                if (this.listenConnoteActive !== (this.$store.getters.getTransaction.transaction.connote).length - 1) {
+                    this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive - 1)
+                    this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, (this.$store.getters.getTransaction.transaction.connote).length - 1)
+                }
+                
                 let self = this
                 setTimeout(function(){ 
                     self.refreshTransactionFields()
                     self.$refs.originComponent.setFocus()
-
-                    self.$store.dispatch(`SET_PACKAGE_PACKAGE_DESCRIPTION`, "")
-                    self.$store.dispatch(`SET_PACKAGE_PACKAGE_DESCRIPTION_ValueData`, "")
                 }, 1000);
                 
             } else if(this.typeAction == 'finish') {
@@ -611,8 +688,9 @@ export default {
             // - add obj data connote template
             // - connote index active + 1.
             if(this.typeAction == 'addconnote') {
-                this.$store.dispatch(`ADD_MORE_CONNOTE`, true)
+                this.$store.dispatch(`ADD_MORE_CONNOTE`, this.listenConnoteActive + 1)
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
+                this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive)
             }
         },
 
@@ -695,11 +773,15 @@ export default {
 
         // mixin->transaction
         this.getDefaultState()
-        
+
+        this.initialize()
 
         this.$nextTick(() => {
             let inputCodeBooking = this.$refs.inputCodeBooking
             setTimeout(function(){ inputCodeBooking.$el.querySelector('input').focus() }, 100);
+
+            let inputCustomerCode = this.$refs.inputCustomerCode
+            setTimeout(function(){ inputCustomerCode.$el.querySelector('input').focus() }, 100);
         })
     },
     beforeRouteLeave (to, from, next) {

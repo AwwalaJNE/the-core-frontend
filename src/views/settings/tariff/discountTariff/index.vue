@@ -16,21 +16,21 @@
         @actionPagination="actionPagination"
         />
 
-        <dialog-create-edit-Tariff
-            :active="dialogTariff" 
-            :closeDialog="closeDialogTariff"
+        <dialog-create-edit-discount-tariff
+            :active="dialogDiscountTariff" 
+            :closeDialog="closeDialogTariffDiscount"
             @refresh="refresh"
-            title="Edit Tariff"
+            title="Edit Discount Tariff"
             :dataItem="dataItem"
             />
 
-        <!-- dialog confirm remove tariff-->
+        <!-- dialog confirm remove discount tariff-->
         <dialog-confirm
-                :active="activeDialogTariff"
+                :active="activeDialogDiscountTariff"
                 :loading="activeLoadingTariff"
-                :closeDialog="closeDialogConfirmTariff"
-                title="Remove Tariff"
-                message="Are you sure you want to Remove Tariff ?"
+                :closeDialog="closeDialogTariffDiscount"
+                title="Remove Discount Tariff"
+                message="Are you sure you want to Remove Discount Tariff ?"
                 @confirm="confirmTariff"
                 @cancel="closeDialogConfirmTariff"
             />
@@ -41,9 +41,9 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
-import dialogCreateEditTariff from "@/views/settings/tariff/baseTariff/dialogCreateEditTariff"
+import dialogCreateEditDiscountTariff from "@/views/settings/tariff/discountTariff/dialogCreateEditDiscountTariff"
 export default {
-    name:"base-tariff-list",
+    name:"discount-tariff-list",
     mixins: [master],
     props: {
         query: String
@@ -51,49 +51,39 @@ export default {
     components: {
         "table-master" : TableMaster,
         "dialog-confirm": DialogConfirm,
-        "dialog-create-edit-Tariff": dialogCreateEditTariff
+        "dialog-create-edit-discount-tariff": dialogCreateEditDiscountTariff
     },
     data() {
         return {
-            activeDialogTariff:false,
+            activeDialogDiscountTariff:false,
             activeLoadingTariff:false,
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Tariff Group",
-                    key: "tariff_group",
+                    label: "Origin",
+                    key: "discount_tariff_origin",
                     width: "sm"
                 },
                 {
-                    label: "Origin",
-                    key: "tariff_origin",
-                    width: "auto"
-                },
-                {
                     label: "Destination",
-                    key: "tariff_destination",
+                    key: "discount_tariff_destination",
                     width: "auto"
                 },
                 {
-                    label: "Tariff service code",
-                    key: "tariff_service_code",
+                    label: "Service",
+                    key: "discount_tariff_service_code",
                     width: "auto"
                 },
                 {
-                    label: "Tariff amount 1",
-                    key: "tariff_amount_1",
+                    label: "Daily Discount (%)",
+                    key: "discount_tariff_persentase",
                     width: "auto"
                 },
-                {
-                    label: "Tariff Customer Code",
-                    key: "tariff_customer_code",
-                    width: "auto"
-                }
             ],
             loading: false,
             dataItem: {},
             tempSearch: "",
-            dialogTariff: false,
+            dialogDiscountTariff: false,
             pagination: {
                 limit:20,
                 page_size: 1,
@@ -119,38 +109,36 @@ export default {
                 query = q
             }
             await axios
-                .get(this.URL.tariff + 
+                .get(this.URL.discount_tariff + 
                 `?n=${this.listenNodeId}&sort_order=asc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
                     this.dataTable = res.data.data
                     this.dataTable.length > 0 && this.dataTable.map((item) => {
-                        let tariff_amount = []
-                        let tariff_weight = []
+                        let up_to_amount = []
+                        let up_to_discount = []
                         let iterate = 1
                         let children = {}
                         let keys = Object.keys(item)
 
                         keys.map((header, i) => {
-                            if(header.includes('_amount_') || header.includes('_weight_')) {
-                                if(item.hasOwnProperty(`tariff_amount_${iterate}`)) {
+                            if(header.includes('_amount_') || header.includes('_discount_')) {
+                                if(item.hasOwnProperty(`up_to_amount_${iterate}`)) {
                                         let obj = {}
-                                        let val = item[`tariff_amount_${iterate}`]
-                                        val != undefined && val != null && val != 0 ? 
-                                        obj[`tariff_amount_${iterate}`] = item[`tariff_amount_${iterate}`] : obj
+                                        let val = item[`up_to_amount_${iterate}`];
+                                        obj[`up_to_amount_${iterate}`] = val !== undefined ? val : 0;
 
-                                        tariff_amount.push(obj)
+                                        up_to_amount.push(obj)
                                         
                                 } 
-                                if(item.hasOwnProperty(`tariff_weight_${iterate}`)) {
+                                if(item.hasOwnProperty(`up_to_discount_${iterate}`)) {
                                         let obj = {}
-                                        let val = item[`tariff_weight_${iterate}`]
-                                        val != undefined && val != null && val != 0 ? 
-                                        obj[`tariff_weight_${iterate}`] = item[`tariff_weight_${iterate}`] : obj
+                                        let val = item[`up_to_discount_${iterate}`];
+                                        obj[`up_to_discount_${iterate}`] = val !== undefined ? val : 0;
                                         
                                         
-                                        tariff_weight.push(obj)
+                                        up_to_discount.push(obj)
                                         
                                 }
                                 iterate++
@@ -158,8 +146,8 @@ export default {
                             
                         })
 
-                        children['tariff_amount'] = tariff_amount
-                        children['tariff_weight'] = tariff_weight
+                        children['up_to_amount'] = up_to_amount
+                        children['up_to_discount'] = up_to_discount
 
 
                         item['children'] = children
@@ -186,12 +174,12 @@ export default {
         actionUpdate(val){
             if(this.dataTable.length > 0) {
                 let obj = this.dataTable.filter(item => {
-                    return item.tariff_id === val.tariff_id
+                    return item.discount_tariff_id === val.discount_tariff_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+                // console.log(this.dataItem, 'nihh val', val)
                 this.$nextTick(() => {
-                    this.dialogTariff = true
+                    this.dialogDiscountTariff = true
                 });
             }
         },
@@ -204,8 +192,8 @@ export default {
             }
         },
         actionRemove(val){
-          this.activeDialogTariff = true;
-          this.tariff_id = val.tariff_id;
+          this.activeDialogDiscountTariff = true;
+          this.discount_tariff_id = val.discount_tariff_id;
         },
         confirmTariff(){
           this.removeTariff();
@@ -214,7 +202,7 @@ export default {
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.tariff + `/${this.tariff_id}?n=${this.listenNodeId}`,
+                    this.URL.discount_tariff + `/${this.discount_tariff_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
@@ -239,11 +227,11 @@ export default {
         refresh(){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
-        closeDialogTariff() {
-            this.dialogTariff = false
+        closeDialogTariffDiscount() {
+            this.dialogDiscountTariff = false
         },
         closeDialogConfirmTariff(){
-          this.activeDialogTariff=false
+          this.activeDialogDiscountTariff=false
           this.activeLoadingTariff=false
         }
     },

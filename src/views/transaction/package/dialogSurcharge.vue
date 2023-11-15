@@ -297,6 +297,8 @@ export default {
                 
                 
             }
+            
+            this.manual = this.koli['surcharge_manual']
 
             
 
@@ -456,6 +458,7 @@ export default {
           
           // this.prosesSurcharge()
             this.closeDialog()
+            this.manual = ""
           
         }
     },
