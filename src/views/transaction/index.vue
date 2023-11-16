@@ -12,7 +12,7 @@
         </vs-row>
         <section class="new-transaction mt-1">
             <vs-row justify="flex-start">
-                        <vs-col xs="6" sm="2" lg="2">
+                        <vs-col xs="6" sm="2" lg="3">
                             <form @submit.prevent="processBookingCode">
                                 <!-- <input-general 
                                 name="Masukan Kode Booking"
@@ -24,7 +24,7 @@
                                 @updateValue="updateValue" /> -->
                                 <vs-input border type="text"
                                     v-model="bookingCode"
-                                    label-placeholder="Masukkan Code Booking"
+                                    label-placeholder="Masukkan Code Booking  / Connote Number Untuk Perbaharui Data"
                                     :autofocus="true"
                                     :disabled="hasCodeBooking"
                                     ref="inputCodeBooking">
@@ -314,36 +314,68 @@ export default {
                 // console.log('res processBookingCode', res.data.data)
                 if(res.data.data) {
                     let data = res.data.data
-
-                    
-                    this.hasCodeBooking = true
+                    if(data.transaction_id){
+                        this.hasCodeBooking = true
                     
                 
-                    this.$store.dispatch(`FILL_CONNOTE_NUMBER`, data.booking_connote_number || "")
+                        this.$store.dispatch(`FILL_CONNOTE_NUMBER`, data.connote_number || "")
 
-                    // Origin
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, data.booking_connote_shipper_name || "")
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, data.booking_connote_shipper_phone_number || "")
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, data.booking_connote_shipper_street_address || "")
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, data.booking_connote_shipper_geolocation_subdistrict_id || "")
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, data.booking_connote_shipper_administrative_address || "")
-                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, data.booking_connote_shipper_zip_code || "")
-                    this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, true)
+                        // Origin
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, data.connote_shipper_name || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, data.connote_shipper_phone_number || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, data.connote_shipper_street_address || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, data.connote_shipper_geolocation_subdistrict_id || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, data.connote_shipper_administrative_address || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, data.connote_shipper_zip_code || "")
+                        this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, true)
 
-                    // destination
-                    let destinationObj = {}
-                    destinationObj['customer_address_type'] = data.booking_connote_receiver_address_type || ""
-                    destinationObj['geolocation_subdistrict_zip_code'] = data.booking_connote_receiver_zip_code || ""
-                    destinationObj['geolocation_subdistrict_tarif_code'] = data.booking_connote_receiver_tariff_code || ""
-                    destinationObj['customer_name'] = data.booking_connote_receiver_name || ""
-                    destinationObj['customer_phone'] = data.booking_connote_receiver_phone_number || ""
+                        // destination
+                        let destinationObj = {}
+                        destinationObj['customer_address_type'] = data.connote_receiver_address_type || ""
+                        destinationObj['geolocation_subdistrict_zip_code'] = data.connote_receiver_zip_code || ""
+                        destinationObj['geolocation_subdistrict_tarif_code'] = data.connote_receiver_tariff_code || ""
+                        destinationObj['customer_name'] = data.connote_receiver_name || ""
+                        destinationObj['customer_phone'] = data.connote_receiver_phone_number || ""
+                        
+                        destinationObj['customer_subdistrict_id'] = data.connote_receiver_geolocation_subdistrict_id || ""
+                        destinationObj['geolocation_location_name'] = data.connote_receiver_administrative_address || ""
+                        destinationObj['connote_service_code'] = data.connote_service_code || ""
+                        this.$refs.destinationComponent.updateValue('detination', destinationObj, true)
+                        this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, data.connote_receiver_street_address || "")
+                        this.$refs.originComponent.$el.querySelector("input").focus();
+                    }else{
+                        this.hasCodeBooking = true
                     
-                    destinationObj['customer_subdistrict_id'] = data.booking_connote_receiver_geolocation_subdistrict_id || ""
-                    destinationObj['geolocation_location_name'] = data.booking_connote_receiver_administrative_address || ""
-                    destinationObj['booking_connote_service_code'] = data.booking_connote_service_code || ""
-                    this.$refs.destinationComponent.updateValue('detination', destinationObj, true)
-                    this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, data.booking_connote_receiver_street_address || "")
-                    this.$refs.originComponent.$el.querySelector("input").focus();
+                
+                        this.$store.dispatch(`FILL_CONNOTE_NUMBER`, data.booking_connote_number || "")
+
+                        // Origin
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, data.booking_connote_shipper_name || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_PHONE`, data.booking_connote_shipper_phone_number || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_ADDRESS`, data.booking_connote_shipper_street_address || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`, data.booking_connote_shipper_geolocation_subdistrict_id || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`, data.booking_connote_shipper_administrative_address || "")
+                        this.$store.dispatch(`SET_ORIGIN_ORIGIN_ZIP_CODE`, data.booking_connote_shipper_zip_code || "")
+                        this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, true)
+
+                        // destination
+                        let destinationObj = {}
+                        destinationObj['customer_address_type'] = data.booking_connote_receiver_address_type || ""
+                        destinationObj['geolocation_subdistrict_zip_code'] = data.booking_connote_receiver_zip_code || ""
+                        destinationObj['geolocation_subdistrict_tarif_code'] = data.booking_connote_receiver_tariff_code || ""
+                        destinationObj['customer_name'] = data.booking_connote_receiver_name || ""
+                        destinationObj['customer_phone'] = data.booking_connote_receiver_phone_number || ""
+                        
+                        destinationObj['customer_subdistrict_id'] = data.booking_connote_receiver_geolocation_subdistrict_id || ""
+                        destinationObj['geolocation_location_name'] = data.booking_connote_receiver_administrative_address || ""
+                        destinationObj['booking_connote_service_code'] = data.booking_connote_service_code || ""
+                        this.$refs.destinationComponent.updateValue('detination', destinationObj, true)
+                        this.$store.dispatch(`SET_DESTINATION_DESTINATION_ADDRESS`, data.booking_connote_receiver_street_address || "")
+                        this.$refs.originComponent.$el.querySelector("input").focus();
+                    }
+
+                    
+                    
                 } else {
                     this.openNotification('danger', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
                 }
