@@ -2227,6 +2227,18 @@ export default {
       value: ''
     }
   },
+  pickup_list_failed: {
+    status: {
+      label: "Reason",
+      key: "status",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    }
+  },
   //surat muatan
   surat_muatan:{
     manifest_number: {

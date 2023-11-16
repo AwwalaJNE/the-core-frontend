@@ -11,7 +11,6 @@
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
-
         :customAction="true"
         :customActionList="customActionList"
         @actionUpdate="actionUpdate"
@@ -26,7 +25,6 @@
           :closeDialog="closeDialogPickuprequestCancel"
           title="Cancel Pickup Request"
       />
-
     </div>
 </template>
 <script>
@@ -43,7 +41,7 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
-        "dialogPickupRequestCancel": dialogCancelPickupRequest
+        "dialogPickupRequestCancel": dialogCancelPickupRequest,
     },
     data() {
         return {
@@ -131,7 +129,8 @@ export default {
             dialogPickupRequestCancelLoading:false,
             pickupData:{},
             pickupNumber:'',
-            form:{}
+            form:{},
+            user_role_id: ''
         }
     },
     watch: {
@@ -204,7 +203,6 @@ export default {
                         item.total_picked = item.total_picked+" / "+item.total_unpicked;
                       item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE') ? true : false
                     })
-                    console.log(arr);
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -266,8 +264,6 @@ export default {
           this.dialogPickupRequestCancel = false
           this.dialogPickupRequestCancelLoading=false
         },
-
-
     },
     mounted() {
         this.refresh()
@@ -278,5 +274,8 @@ export default {
   .el-picker-panel__content, .el-date-range-picker__content{
     font-family: "NunitoSans-Regular";
     -webkit-font-smoothing: antialiased;
+  }
+  .btn_action {
+    align-items: center !important;
   }
 </style>

@@ -14,13 +14,17 @@
         :hasPagination="true"
         :hasLinked="['total_picked_bag']"
         :hasLinked2="['total_picked_koli']"
+        :hasLinked3="['user_name']"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @actionUpdate="actionUpdate"
         @actionPicked="actionPicked"
         @actionCancel="actionCancel"
+        @actionFailed="actionFailed"
+        @actionApprove="actionApprove"
         @handleEdit="handleEdit"
         @handleEdit2="handleEditKoli"
+        @handleEdit3="handleRedirectToWhatsApp"
         />
 
       <!--Create pickup List-->
@@ -70,6 +74,26 @@
           :closeDialog="closeDialogPickupListCancel"
           title="Cancel Pickup List"
       />
+
+      <!--Failed pickup List-->
+      <dialogPickupListFailed
+          :active="dialogPickupListFailed"
+          :loading="dialogPickupListFailedLoading"
+          :pickupNumber="pickupNumber"
+          @refresh="refresh"
+          :closeDialog="closeDialogPickupListFailed"
+          title="Failed Pickup List"
+      />
+
+      <dialog-confirm
+          :active="dialogApproveActive"
+          :loading="loadingApproveActive"
+          :closeDialog="closeDialogApproveCancel"
+          title="Approve Failed Pickup"
+          message="Are you sure you want to approve failed pickup ?"
+          @confirm="confirmApprove"
+          @cancel="closeDialogApproveCancel"
+      />
     </div>
 </template>
 <script>
@@ -82,6 +106,7 @@ import DialogBagPicked from "@/views/pickup/list/dialogBagPicked"
 import DialogKoliPicked from "@/views/pickup/list/dialogKoliPicked"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 import dialogCancelPickupList from "@/views/pickup/list/dialogCancelPickupList";
+import dialogFailedPickupList from "@/views/pickup/list/dialogFailedPickupList";
 
 export default {
     name:"pickup-requestlist",
@@ -94,14 +119,15 @@ export default {
         courier_pickup:String/Number
     },
     components: {
-        "table-master" : TableMaster,
-        "dialogCreatePickupList": DialogCreatePickupList,
-        "DialogPicked": DialogPicked,
-        "DialogBagPicked": DialogBagPicked,
-        "DialogKoliPicked": DialogKoliPicked,
-        "dialog-confirm": DialogConfirm,
-        "dialogPickupListCancel": dialogCancelPickupList
-    },
+    "table-master": TableMaster,
+    "dialogCreatePickupList": DialogCreatePickupList,
+    "DialogPicked": DialogPicked,
+    "DialogBagPicked": DialogBagPicked,
+    "DialogKoliPicked": DialogKoliPicked,
+    "dialog-confirm": DialogConfirm,
+    "dialogPickupListCancel": dialogCancelPickupList,
+    "dialogPickupListFailed": dialogFailedPickupList
+},
     data() {
         return {
             //cancel pickup
@@ -187,7 +213,14 @@ export default {
                 limit:20,
                 page_size: 1,
                 page: 1
-            }
+            },
+            isKurirAccount: true,
+
+            dialogApproveActive: false,
+            loadingApproveActive: false,
+
+            dialogPickupListFailed:false,
+            dialogPickupListFailedLoading:false,
         }
     },
     watch: {
@@ -258,7 +291,7 @@ export default {
             if(courier !== undefined && courier !== null) {
               courier_pickup = courier
             } 
-            // pickupStatus = status !== undefined && status !== null ? status : courier_pickup;
+
             await axios
                 .get(this.URL.pickup +
                 `?n=${this.listenNodeId}&pickup_status=${status_pickup}&pickup_courier=${courier_pickup}&page=${page}&s=${query}`,
@@ -266,6 +299,8 @@ export default {
                 .then(res => {
                     // this.dataTable = res.data.data 
                     let arr = res.data.data
+                    let userRole = this.listenUserRole["user_role_code"] ? this.listenUserRole["user_role_code"].toLowerCase() : ""
+                    
                     arr.map(item => {
                         item.total_unpicked_bag = parseInt(item.total_bag);
                         item.total_unpicked_koli = parseInt(item.total_koli);
@@ -276,8 +311,29 @@ export default {
                         } else {
                           item.total_weight = "";
                         }
-                        item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE') ? true : false
-                        // console.log(item, item.total_weight, item.total_picked_weight, 'data');
+
+                        item["is_kurir_user"] = userRole.includes("courier") || false
+                        item["is_CT_user"] = userRole.includes("pum") || false
+
+                        item["is_disabled_failed_button"] = false
+                        item["is_disabled_approve_button"] = false
+
+                        item["request_failed_by"] = item.pickup_status == 'WAITING APPROVAL' ? item.user_courier : ""
+                        item["approve_failed_by"] = item.pickup_status == 'FAILED' ? item.node_destination : ""
+
+                        if (item["is_kurir_user"]) {
+                          if (item.pickup_status == 'WAITING APPROVAL' || item.pickup_status == 'FAILED'){
+                            item["is_disabled_failed_button"] = true;
+                          }
+                        } 
+                        
+                        if (item["is_CT_user"]) {
+                          if (item.pickup_status == 'FAILED') {
+                            item["is_disabled_approve_button"] = true;
+                          }
+                        }
+
+                        item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE' || item["is_disabled_failed_button"] || item["is_disabled_approve_button"]) ? true : false;
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
@@ -295,7 +351,86 @@ export default {
                     this.openNotification('danger', 'Failed to populate tariff list', err)
                 })
         },
+        closeDialogApproveCancel(){
+            this.dataItem = {};
+            this.loadingApproveActive = false
+            this.dialogApproveActive = false
+        },
+        confirmApprove(val) {
+          if(val) {
+            let formUpdate = {
+              'pickup_number' : this.dataItem.pickup_number,
+              'pickup_status' : 'FAILED',
+              'is_pickup_canceled'  : 1
+            }
+            let pickup_number = this.dataItem.pickup_number
+            this.loadingApproveActive = true;
 
+            const connoteNumbers = [];
+            const irregularitiesList = [];
+
+            for (const detail of this.dataItem.pickup_detail) {
+              if (detail.item_type === "KOLI") {
+                connoteNumbers.push(detail.item_number);
+              }
+            }
+
+            const commonData = {
+              "irregularity_status_code": "TESTFAILED01",
+              "irregularity_type": "FAILED",
+              "remark": "Failed Pickup"
+            };
+
+            for (const connoteNumber of connoteNumbers) {
+              const irregularity = {
+                "connote_number": connoteNumber,
+                ...commonData
+              };
+              irregularitiesList.push(irregularity);
+            }
+            this.approveFailedPickup(formUpdate, pickup_number)
+            this.addDataToIrregularFailed(irregularitiesList.splice(0, 3))
+          }
+        },
+        async approveFailedPickup(formUpdate, pickup_number) {
+          this.loading = true
+          await axios
+          .post(
+            this.URL.pickup + `/${pickup_number}/approve-failed?n=${this.listenNodeId}`,
+            JSON.stringify(formUpdate), 
+            this.Helper.header())
+          .then(res => {
+            this.closeDialogApproveCancel()
+            this.refresh()
+            this.openNotification(null, 'Success', 'Failed Pickup Approved')
+          })
+          .catch(err => {
+            this.closeDialogApproveCancel()
+            this.refresh()
+            this.openNotification('danger', 'Cannot approve failed pickup', err.response ? err.response.data.message : 'something went wrong')
+          })
+          this.loading = false
+          return true;
+        },
+        async addDataToIrregularFailed(irregularitiesList) {
+          try {
+            for (const item of irregularitiesList) {
+              const response = await axios.post(
+                this.URL.irregularities + `/failed?n=${this.listenNodeId}`,
+                item,
+                this.Helper.header()
+              );
+            }
+
+            this.closeDialogApproveCancel();
+            this.refresh();
+            this.openNotification(null, 'Success', 'Added to Irregularities - Failed is success');
+          } catch (error) {
+            this.closeDialogApproveCancel()
+            this.refresh()
+            this.openNotification('danger', 'Added to Irregularities - Failed is failed', error.response ? error.response.data.message : 'something went wrong')
+          }
+        },
         closeDialogConfirmPicked(){
             this.dialogPickedActive = false
         },
@@ -309,18 +444,15 @@ export default {
           this.dialogPickupList = false
           this.dataItem = {}
         },
-
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
         },
-
         actionPagination(val) {
             this.pagination.page = val
             this.refresh()
         },
-
         refresh(){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
@@ -357,9 +489,39 @@ export default {
             });
           }
         },
+        handleRedirectToWhatsApp(val) {
+          if(this.dataTable.length > 0) {
+            this.pickupData = val
+            this.$nextTick(() => {
+              let courierPhoneNumber = val.pickup_phone_number;
+              let encodeMessage = encodeURIComponent("Halo, apa benar terjadi overload dan anda melakukan request untuk gagal pickup?");
+              let whatsappURL = `https://wa.me/${courierPhoneNumber}?text=${encodeMessage}`
+              window.open(whatsappURL, '_blank');
+            });
+          }
+        },
         actionPicked(val){
           this.pickupData = val;
           this.dialogPickedActive = true;
+          console.log("HAI picked", val)
+        },
+        actionFailed(val) {
+          let userRole = this.listenUserRole["user_role_code"] ? this.listenUserRole["user_role_code"].toLowerCase() : ""
+          if(userRole.includes("courier")) {
+            this.dialogPickupListFailed = true;
+            this.pickupNumber = val.pickup_number;
+          }
+        },
+        actionApprove(val) {
+          let userRole = this.listenUserRole["user_role_code"] ? this.listenUserRole["user_role_code"].toLowerCase() : ""
+          
+          // TODO: Check for Control Tower User
+          if(this.dataTable.length > 0 && userRole.includes("pum")) {
+            this.dataItem = val;
+            this.$nextTick(() => {
+              this.dialogApproveActive = true;
+            });
+          }
         },
         actionCancel(val){
           let userRole = this.listenUserRole["user_role_code"] ? this.listenUserRole["user_role_code"].toLowerCase() : ""
@@ -367,6 +529,7 @@ export default {
             this.pickupNumber = val.pickup_number
             this.dialogPickupListCancel = true;
           }
+          console.log("HAI cancel", val, userRole)
         },
 
         //cancel pickup
@@ -382,9 +545,13 @@ export default {
             this.updateData(formupdate, pickup_number)
           }
         },
-      closeDialogPickupListCancel(){
+        closeDialogPickupListCancel(){
           this.dialogPickupListCancel = false
           this.activeLoadingCancel=false
+        },
+        closeDialogPickupListFailed(){
+          this.dialogPickupListFailed = false;
+          this.dialogPickupListFailedLoading = false;
         },
         async updateData(form, pickup_number){
           await axios
