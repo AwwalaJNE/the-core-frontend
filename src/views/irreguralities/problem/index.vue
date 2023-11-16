@@ -4,7 +4,7 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>Problem Connote</h2>
+                    <h2>Problem BAG / Connote</h2>
                 </div>
                 <div class="mt-2">
                     <vs-row justify="space-between">
@@ -12,7 +12,7 @@
                             <form @submit.prevent="openDialog">
                                 <vs-input border type="text"
                                     v-model="koliCode"
-                                    label-placeholder="Masukkan Nomer Connote"
+                                    label-placeholder="Masukkan Nomer BAG / Connote"
                                     :autofocus="true"
                                     ref="formInputUnbagging">
                                 </vs-input>
@@ -59,6 +59,7 @@
                     :limit="pagination.limit"
                     @actionUpdate="editIrreg"
                     :hasPagination="true"
+                    :hasLinked3="['image']"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
 
@@ -113,8 +114,18 @@ export default {
                     width: "md"
                 },
                 {
+                    label: "Bag Number",
+                    key: "bag_number",
+                    width: "auto"
+                },
+                {
                     label: "Connote",
                     key: "koli_number",
+                    width: "100px"
+                },
+                {
+                    label: "Gambar",
+                    key: "image",
                     width: "auto"
                 },
                 {
@@ -221,12 +232,17 @@ export default {
                     this.openNotification('danger', 'Failed to populate Irreguralities Problem', err)
                 })
         },
+        
         async handleSubmit() {
-            console.log('this.form', this.form)
+            const formData = new FormData();
+            for (const key in this.form) {
+                formData.append(key, this.form[key]);
+            }
+            console.log('this.form',formData, this.form)
             await axios
                 .post(
                     this.URL.irregularities + `?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
+                    formData, 
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)

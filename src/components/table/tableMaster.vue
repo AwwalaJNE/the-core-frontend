@@ -265,6 +265,13 @@
                                             <span v-if="item[column.key] === 'KURIR'" class="blueBackground">{{item[column.key] }}</span>
                                             <span v-else>{{item[column.key] }}</span>
                                         </template>
+                                        <template v-else-if="hasLinked3 !== undefined && hasLinked3.length > 0 && column.key !== undefined && hasLinked3.includes(column.key.toLowerCase())">
+                                            <img
+                                                style="width: 100px; height: 100px"
+                                                :src="item.image" 
+                                                :preview-src-list="srcList">
+                                            
+                                        </template>
                                         <template v-else>
                                             {{ item[column.key] ? item[column.key] : '' }}
                                         </template>
@@ -282,6 +289,15 @@
                                     :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                     :active="true"
                                     @click="actionUpdate(item)"
+                                    >
+                                    <span>{{customBtn_label}}</span>
+                                </vs-button>    
+                                <vs-button
+                                    block
+                                    flat
+                                    :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
+                                    :active="true"
+                                    @click="handleEdit3(item)"
                                     >
                                     <span>{{customBtn_label}}</span>
                                 </vs-button>    
@@ -610,6 +626,7 @@ export default {
         expandable: Boolean,
         hasLinked:Array,
         hasLinked2:Array,
+        hasLinked3:Array,
         removeOnly: Boolean,
         printAction: Boolean,
         pickupListAction:Boolean,
@@ -788,6 +805,11 @@ export default {
         },
         handleEdit2(val, key) {
             this.$emit("handleEdit2", val);
+        },
+        handleEdit3(val) {
+            alert("tes");
+            console.log(val)
+            window.open(val.image);
         },
     },
     mounted() {
