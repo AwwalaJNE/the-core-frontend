@@ -258,6 +258,7 @@
                                             <span class="text-link"  @click="handleEdit2(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
                                         </template>
                                         <template v-else-if="hasLinked3 !== undefined && hasLinked3.length > 0 && column.key !== undefined && hasLinked3.includes(column.key.toLowerCase()) && (!item.hasOwnProperty('is_kurir_user') || !item.is_kurir_user)">
+                                              <span class="text-link"  @click="handleEdit3(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
                                         </template>
                                         <template v-else-if="hasLinked4 !== undefined && hasLinked4.length > 0 && column.key !== undefined && hasLinked4.includes(column.key.toLowerCase())">
                                             <img
@@ -273,8 +274,8 @@
                                             <span v-else>{{item[column.key] }}</span>
                                         </template>
                                         <template v-else-if="column.key === 'current_location_type'">
-                                            <span v-if="item[column.key] === 'KURIR'" class="yellowBackground text-link"  @click="handleEdit3(item)"  >{{item[column.key] }}</span>
-                                            <span v-else class="text-link" @click="handleEdit3(item)">{{item[column.key] }}</span>
+                                            <span v-if="item[column.key] === 'KURIR'" class="redBackground" >{{item[column.key] }}</span>
+                                            <span v-else>{{item[column.key] }}</span>
                                         </template>
                                         <template v-else>
                                             {{ item[column.key] ? item[column.key] : '' }}
@@ -949,8 +950,8 @@ export default {
         padding: 5px 5px !important;
         border-radius: 3px;
     }
-    .yellowBackground {
-        background-color: rgb(255, 241, 46);
+    .redBackground {
+        background-color: rgb(255, 31, 31);
         color: rgb(255, 255, 255);
         padding: 5px 25px !important;
         border-radius: 3px;
