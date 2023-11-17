@@ -142,7 +142,7 @@ export default {
                     }
                     
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    this.openNotification('danger', 'You must have an access role Vehicle Mode list', err)
                 })
         },
         async getDataCustomer(){
@@ -165,7 +165,7 @@ export default {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    this.openNotification('danger', 'You must have an access role Customer list', err)
                 })
         },
         async updateData(){

@@ -259,29 +259,22 @@
                                         </template>
                                         <template v-else-if="hasLinked3 !== undefined && hasLinked3.length > 0 && column.key !== undefined && hasLinked3.includes(column.key.toLowerCase()) && (!item.hasOwnProperty('is_kurir_user') || !item.is_kurir_user)">
                                         </template>
-                                        <template v-else-if="column.key === 'is_confirmed'">
-                                            <span v-if="item[column.key] === 'Confirmed'" class="greenBackground">{{item[column.key] }}</span>
-                                            <span v-else>{{item[column.key] }}</span>
-                                        </template>
-                                        <template v-else-if="column.key === 'current_location_type'">
-                                            <span v-if="item[column.key] === 'KURIR'" class="blueBackground">{{item[column.key] }}</span>
-                                            <span v-else>{{item[column.key] }}</span>
-                                            <span class="text-link"  @click="handleEdit3(item)">{{  item[column.key] ? item[column.key] : '' }}</span>
-                                        </template>
-                                        <template v-else-if="column.key === 'is_confirmed'">
-                                            <span v-if="item[column.key] === 'Confirmed'" class="greenBackground">{{item[column.key] }}</span>
-                                            <span v-else>{{item[column.key] }}</span>
-                                        </template>
-                                        <template v-else-if="column.key === 'current_location_type'">
-                                            <span v-if="item[column.key] === 'KURIR'" class="blueBackground">{{item[column.key] }}</span>
-                                            <span v-else>{{item[column.key] }}</span>
-                                        </template>
-                                        <template v-else-if="hasLinked3 !== undefined && hasLinked3.length > 0 && column.key !== undefined && hasLinked3.includes(column.key.toLowerCase())">
+                                        <template v-else-if="hasLinked4 !== undefined && hasLinked4.length > 0 && column.key !== undefined && hasLinked4.includes(column.key.toLowerCase())">
                                             <img
                                                 style="width: 100px; height: 100px"
                                                 :src="item.image" 
-                                                :preview-src-list="srcList">
-                                            
+                                                @click="handlePictureCardPreview(item)">
+                                                <el-dialog :visible.sync="dialogVisible">
+                                                    <img width="100%" :src="dialogImageUrl" alt="">
+                                                </el-dialog>
+                                        </template>
+                                        <template v-else-if="column.key === 'is_confirmed'">
+                                            <span v-if="item[column.key] === 'Confirmed'" class="greenBackground">{{item[column.key] }}</span>
+                                            <span v-else>{{item[column.key] }}</span>
+                                        </template>
+                                        <template v-else-if="column.key === 'current_location_type'">
+                                            <span v-if="item[column.key] === 'KURIR'" class="yellowBackground text-link"  @click="handleEdit3(item)"  >{{item[column.key] }}</span>
+                                            <span v-else class="text-link" @click="handleEdit3(item)">{{item[column.key] }}</span>
                                         </template>
                                         <template v-else>
                                             {{ item[column.key] ? item[column.key] : '' }}
@@ -648,6 +641,7 @@ import Checkbox from "@/components/input/checkbox.vue"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 import AutoComplete from "@/components/input/autoComplete"
+import { Dialog } from 'element-ui'
 export default {
     name:"tabelMaster",
     components: {
@@ -656,6 +650,7 @@ export default {
         "input-general": InputGeneral,
         "selector": Selector,
         "auto-complete": AutoComplete,
+        'el-dialog': Dialog
     },
     props: {
         dataTable: Array,
@@ -670,6 +665,7 @@ export default {
         hasLinked:Array,
         hasLinked2:Array,
         hasLinked3:Array,
+        hasLinked4:Array,
         removeOnly: Boolean,
         printAction: Boolean,
         pickupListAction:Boolean,
@@ -712,6 +708,8 @@ export default {
 
             localPage: 1,
             localmax: 1000,
+            dialogImageUrl: '',
+            dialogVisible: false,
         }
     },
     computed: {
@@ -861,6 +859,11 @@ export default {
         handleEdit3(val, key) {
             this.$emit("handleEdit3", val);
         },
+        handlePictureCardPreview(val) {
+            console.log(val,'ini val');
+            this.dialogImageUrl = val.image;
+            this.dialogVisible = true;
+        }
     },
     mounted() {
         this.handleColumnsOrder()
@@ -946,10 +949,10 @@ export default {
         padding: 5px 5px !important;
         border-radius: 3px;
     }
-    .blueBackground {
-        background-color: rgb(88, 113, 255);
+    .yellowBackground {
+        background-color: rgb(255, 241, 46);
         color: rgb(255, 255, 255);
-        padding: 5px 5px !important;
+        padding: 5px 25px !important;
         border-radius: 3px;
     }
 

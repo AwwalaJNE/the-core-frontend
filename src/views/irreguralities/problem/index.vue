@@ -59,7 +59,7 @@
                     :limit="pagination.limit"
                     @actionUpdate="editIrreg"
                     :hasPagination="true"
-                    :hasLinked3="['image']"
+                    :hasLinked4="['image']"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
 
