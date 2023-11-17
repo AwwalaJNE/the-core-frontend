@@ -157,7 +157,7 @@ const TransactionMixin = {
         filterSurcharge(obj, koli, node_code, selected_surchargeType = null) {
             let service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
             let selectedServiceData = this.$store.getters.getTransaction.package["package_service"]["valueData"] || {}
-            let selectedService = service
+            let selectedService = selectedServiceData['label'].toLowerCase()
             
             let tarifData = this.listenPackageService.data || {}
             let status = false
