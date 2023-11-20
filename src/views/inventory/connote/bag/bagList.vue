@@ -46,7 +46,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.bagFilter)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.bagFilter,this.routingFilter)
                 }
             }
         },
@@ -54,7 +54,7 @@ export default {
           if(val !== undefined) {
             this.bagFilter = val
             if(this.bagFilter !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val,this.routingFilter)
             }
           }
         },

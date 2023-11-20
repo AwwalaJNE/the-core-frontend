@@ -1,29 +1,34 @@
 <template>
   <inputan :name="name" :rules="rules">
     <template v-slot:inputan="props">
-      <vs-select
+      <el-select
           class="m-select"
-          filter
           :multiple="true"
-          placeholder="All Destination"
           :label="name"
-          v-model="arrValue"
           :border="border"
           @change="updateBagDestination"
           :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+          v-model="value"
+          multiple
+          filterable
+          remote
+          reserve-keyword
+          placeholder="Code Destination"
+          :remote-method="remoteMethod"
+          :loading="loading"
       >
         <template v-if="DataArr.length > 0">
-          <vs-option
-              v-for="(item, key) in DataArr"
-              :key="key"
+          <el-option
+              v-for="item in options"
+              :key="item.key"
               :label="item.label"
               :value="item.value"
           >
             {{ item.label }}
-          </vs-option>
+          </el-option>
         </template>
 
-      </vs-select>
+      </el-select>
     </template>
   </inputan>
 
@@ -53,14 +58,21 @@ export default {
       DataArr: this.valueData ? this.valueData : [
         {
           label: 'All Destination',
-          value: '-'
+          value: ''
         }
       ],
       value: this.selectedValue ? this.selectedValue :"-",
       arrValue: this.selectedValue ? this.selectedValue : [ {
         value: "-",
-        label: "All Routing"
+        label: "All Destination"
       }],
+      loading: false,
+      options:  this.valueData ? this.valueData : [
+        {
+          label: 'All Destination',
+          value: ''
+        }
+      ]
     }
   },
   computed: {
@@ -75,6 +87,7 @@ export default {
     valueData: function (val) {
       if (val != undefined) {
         this.DataArr = val
+        this.options = val
         // this.DataArr.length > 0 ? this.loading = false : this.loading = true
       }
     },
@@ -107,6 +120,7 @@ export default {
 
 
                 this.DataArr.push(obj)
+                this.options = this.DataArr
               })
             } else {
               // this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
@@ -116,9 +130,26 @@ export default {
             this.openNotification('danger', 'Failed to populate permission data', err)
           })
     },
+    remoteMethod(query) {
+      if (query !== '') {
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+          // console.log(this.valueData,this.DataArr,'ini valuedata');
+          this.options = this.DataArr.filter(item => {
+            return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
+          });
+        }, 200);
+      } else {
+        this.options = [];
+      }
+    }
   },
-  mounted(){
-    this.getDataDestination()
+  mounted() {
+    this.getDataDestination();
+    this.arrValue = this.DataArr.map(item => {
+      return { value: `value:${item}`, label: `label:${item}` };
+    });
   }
 
 }

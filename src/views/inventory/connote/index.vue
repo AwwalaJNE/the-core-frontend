@@ -40,7 +40,7 @@
                         </template>
                         <template v-if="navActive === 'k-BAG'">
                           <vs-row >
-                            <vs-col vs-align="center" xs="3" sm="3" lg="2">
+                            <vs-col vs-align="center" xs="3" sm="3" lg="3">
                               <select-bag-destination
                                   ref="bag_destination"
                                   :isMultiple="false"
