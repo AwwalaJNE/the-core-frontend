@@ -21,29 +21,13 @@
         <table-master 
           :dataTable="bagNumberList" 
           :dataColumn="datacolumn" 
-          :tableLoading="loading"
-          :page="pagination.page"
-          :limit="pagination.limit"
+          :tableLoading="loadingSelectedData"
           :hasAction="false"
           :hasPagination="false"
           :expandable="true"
           :isMultipleSelect="true"
           :selectedData="item_picked"
         />
-        <!-- <vs-row class="dialog-content">
-          <template v-if="bagNumberList.length > 0">
-            <vs-row v-for="(item, key) in bagNumberList" :key="key">
-              <vs-checkbox
-                style="margin-top: 0.5em"
-                v-model="item_picked"
-                :val="item.value"
-                :key="key"
-              >
-                {{ item.label }}
-              </vs-checkbox>
-            </vs-row>
-          </template>
-        </vs-row> -->
       </div>
     </template>
   </dialog-master>
@@ -104,99 +88,115 @@ export default {
         page_size: 1,
         page: 1
       },
+      loadingSelectedData:true,
     };
   },
   watch: {
-    'pickupData': {
+    pickupData: {
       async handler(val) {
-        if (val !== null && val !== undefined) {
-          if (val.pickup_detail !== null && val.pickup_detail !== undefined) {
-            const bagNumberList = val.pickup_detail
-              .filter(item => item?.item_type === 'BAG')
-              .map(item => ({
-                label: item.item_number,
-                value: item.item_number,
-                is_picked: item.is_picked,
-                item_type: item.item_type,
-              }));
-
-            this.bagNumberList = bagNumberList;
-
-            if (this.bagNumberList.length > 0) {
-              await Promise.all(
-                this.bagNumberList.map(async item => {
-                  this.bag_id = item.value;
-                  await this.getDataBagDetail(this.bag_id);
-
-                  const objchild = {
-                    No: [],
-                    Connote: [],
-                    Koli: [],
-                    Origin: [],
-                    Destination: [],
-                  };
-
-                  if (this.dataTable !== null && this.dataTable !== undefined) {
-                    this.dataTable.forEach(dataTableItem => {
-                      objchild.No.push(dataTableItem.no || "");
-                      objchild.Connote.push(dataTableItem.item_number || "");
-                      objchild.Koli.push(dataTableItem.koli_qty || "");
-                      objchild.Origin.push(dataTableItem.origin_code || "");
-                      objchild.Destination.push(dataTableItem.destination_code || "");
-                    });
-
-                    item.children = objchild;
-                  }
-                })
-
-              );
-
-              this.item_picked = this.bagNumberList.filter(item => item.is_picked > 0);
-            }
-
-          }
+        try {
+          await this.handlePickupData(val);
+          console.log("this.item_picked", this.item_picked);
+        } catch (error) {
+          console.error('Error handling pickupData:', error);
         }
       },
-      immediate: true,
     },
   },
-
-
-
   methods: {
+    async handlePickupData(val) {
+      if (val !== null && val !== undefined && val.pickup_detail !== null && val.pickup_detail !== undefined) {
+        this.bagNumberList = this.createBagNumberList(val.pickup_detail);
+
+        if (this.bagNumberList.length > 0) {
+          await Promise.all(this.bagNumberList.map(async item => {
+            this.bag_id = item.value;
+            await this.getDataBagDetail(this.bag_id);
+            this.populateItemChildren(item);
+          }));
+
+          this.item_picked = this.bagNumberList.map(item => ({
+            children: item.children,
+            label: item.label,
+            value: item.value,
+            is_picked: item.is_picked,
+            item_type: item.item_type,
+          }));
+        }
+      }
+    },
+    createBagNumberList(pickupDetail) {
+      return pickupDetail
+        .filter(item => item?.item_type === 'BAG')
+        .map(item => ({
+          label: item.item_number,
+          value: item.item_number,
+          is_picked: item.is_picked,
+          item_type: item.item_type,
+          children: {
+            No: [],
+            Connote: [],
+            Koli: ["loading"],
+            Origin: [],
+            Destination: [],
+          },
+        }));
+    },
+    populateItemChildren(item) {
+      const objchild = {
+        No: [],
+        Connote: [],
+        Koli: [],
+        Origin: [],
+        Destination: [],
+      };
+
+      if (this.dataTable !== null && this.dataTable !== undefined) {
+        this.dataTable.forEach(dataTableItem => {
+          objchild.No.push(dataTableItem.no || "");
+          objchild.Connote.push(dataTableItem.item_number || "");
+          objchild.Koli.push(dataTableItem.koli_qty || "");
+          objchild.Origin.push(dataTableItem.origin_code || "");
+          objchild.Destination.push(dataTableItem.destination_code || "");
+        });
+
+        item.children = objchild;
+      }
+    },
     async getDataBagDetail(bagId) {
       this.loading = true;
 
-      await axios
-        .get(
+      try {
+        const res = await axios.get(
           this.URL.bag + '/' + bagId.replace('/', '-') + `?n=${this.listenNodeId}`,
           this.Helper.header()
-        )
-        .then(res => {
-          let bag_des = res.data.data && res.data.data.destination ? res.data.data.destination.node_code : '-';
-          let bag_or = res.data.data?.destination?.node_code ? res.data.data.destination.node_code : '-';
-          let arr = res.data.detail;
+        );
 
-          arr.map((item, index) => {
-            item["no"] = index + 1;
-            item['destination_code'] = item.connote_receiver_tariff_code ? item.connote_receiver_tariff_code : bag_des;
-            item['origin_code'] = bag_or;
-            item['bag_detail_qty'] = res.data.data.bag_detail_qty;
-            item["isDisabled"] = item.is_confirmed == 0 ? true : false;
-          });
+        let data = res.data;
+        let bag_des = data.data && data.data.destination ? data.data.destination.node_code : '-';
+        let arr = data.detail;
 
-          this.dataTable = arr;
+        arr.forEach((item, index) => {
+          item["no"] = index + 1;
+          item['destination_code'] = item.destination_code ? item.destination_code : bag_des;
+          item['origin_code'] = item.origin_code ? item.origin_code : '-' ;
+          item['bag_detail_qty'] = data.data.bag_detail_qty;
+          item["isDisabled"] = item.is_confirmed == 0 ? true : false;
+        });
 
-          this.loading = false;
-          this.$emit("getResponse", res.data, this.loading);
-        })
-        .catch(err => {
-          let errMessage = err.response ? err.response.data.message : 'Failed to populate bag'
-          this.loading = false
-          this.$emit("getResponse", {}, this.loading)
-          this.openNotification('danger', 'Failed to populate bag', errMessage)
-        })
+        this.dataTable = arr;
+
+        this.loading = false;
+        this.$emit("getResponse", data, this.loading);
+
+      } catch (err) {
+        let errMessage = err.response ? err.response.data.message : 'Failed to populate bag';
+        this.loading = false;
+        this.$emit("getResponse", {}, this.loading);
+        this.openNotification('danger', 'Failed to populate bag', errMessage);
+      }
     },
+
     async updateData() {
       await axios
         .post(
