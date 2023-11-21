@@ -108,7 +108,7 @@ export default {
     async getDataDestination(){
       await axios
           .get(this.URL.node +
-              `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1`,
+              `?n=${this.listenNodeId}&sort_order=desc&&limit=10441&page=1`,
               this.Helper.header())
           .then(res => {
             if(res.data.data.length > 0) {
