@@ -60,8 +60,8 @@ export default {
             form:{},
             tempSearch: "",
             tempDate: [],
-            startDate: moment().format('YYYY-MM-DD'),
-            endDate: moment().format('YYYY-MM-DD'),
+            startDate: "",
+            endDate: "",
             dialogTariff: false,
             pagination: {
                 limit:5,

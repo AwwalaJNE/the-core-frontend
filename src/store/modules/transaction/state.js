@@ -356,7 +356,7 @@ export default {
       label: "Amount Cod*",
       key: "amount_cod",
       rule: "numeric|maxlength:20",
-      typeInput: "hidden|text|col_right",
+      typeInput: "text|col_right",
       typeData: "Number",
       valueData: null,
       value: 0

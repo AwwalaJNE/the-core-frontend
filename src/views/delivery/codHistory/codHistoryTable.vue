@@ -56,7 +56,7 @@ export default {
                 },
                 {
                     label: "Collected By",
-                    key: "collector_name",
+                    key: "user_login",
                     width: "xs"
                 },
             ],
