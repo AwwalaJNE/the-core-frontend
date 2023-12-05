@@ -135,6 +135,7 @@
                         :type="listenTypeInput ? listenTypeInput.includes('password') == true ? 'password' : listenTypeInput : 'text'"
                         :label="name"
                         :label-placeholder="name"
+                        :placeholder="placeholder"
                         :border="isBorder"
                         v-model="value"
                         :autofocus="isFocusToInput"
@@ -173,6 +174,7 @@ export default {
         isdebounce: Boolean,
         enter_to_update: Boolean,
         border: Boolean,
+        placeholder: String
     },
     components: {
         "inputan": Inputan
@@ -225,7 +227,10 @@ export default {
         },
         isBorder() {
           return this.border || false
-        }
+        },
+        listenPlaceholder() {
+            return this.placeholder
+        },
     },
     watch: {
         valueData: function(val){
@@ -299,6 +304,7 @@ export default {
             info['key'] = this.listenFormKey
             info['typeInput'] = this.listenTypeInput
             info['status'] = status
+            info['placeholder'] = this.placeholder
             let self = this
             setTimeout(function(){ self.$emit("inputFocus", info) }, 200);
         },

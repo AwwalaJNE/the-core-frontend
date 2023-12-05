@@ -31,6 +31,7 @@
                                     :formKey="InputObject[item].key"
                                     :valueData="InputObject[item].value"
                                     :typeInput="InputObject[item].typeInput"
+                                    :placeholder="InputObject[item].placeholder"
                                     @updateValue="updateValue" 
                                     @inputFocus="onfocuslah"/>
                                 </template>
