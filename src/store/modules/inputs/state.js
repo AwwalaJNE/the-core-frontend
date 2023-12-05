@@ -483,7 +483,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan Nama Customer'
     },
     customer_code: {
       label: "Customer code*",
@@ -492,7 +493,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan Kode Customer'
     },
     customer_date_of_birth: {
       label: "Customer date of birth",
@@ -501,7 +503,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan Tanggal Lahir'
     },
     customer_address: {
       label: "Customer address*",
@@ -510,7 +513,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan alamat customer'
     },
     customer_subdistrict_id: {
       label: "Customer subdistrict*",
@@ -529,7 +533,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan email customer'
     },
     customer_phone: {
       label: "Customer phone*",
@@ -538,7 +543,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan nomor telepon customer'
     },
     customer_type_id: {
       label: "Customer type*",
@@ -557,7 +563,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan nomor fax customer'
     },
     customer_identity_card_number: {
       label: "Customer identity card number*",
@@ -566,7 +573,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan nomor kartu identitas customer'
     },
     customer_tax_number: {
       label: "Customer tax number*",
@@ -575,7 +583,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan tax number customer'
     },
     customer_tax_number_address: {
       label: "Customer tax number address*",
@@ -584,7 +593,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan alamat nomor tax'
     },
     customer_commodity: {
       label: "Customer commodity*",
@@ -593,7 +603,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan komoditas customer'
     },
     customer_default_node_id: {
       label: "Customer default node",
@@ -636,7 +647,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan type alamat (rumah / kantor)'
     },
     customer_corporate_credit: {
       label: "Customer corporate credit*",
@@ -645,7 +657,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      placeholder: 'Masukan akun kredit korporat',
     },
 
   },
