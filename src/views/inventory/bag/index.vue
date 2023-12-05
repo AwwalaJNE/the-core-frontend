@@ -197,15 +197,15 @@ export default {
             serviceArray: [
               {
                 "label":"REG",
-                "value":"REG"
+                "value":"REG23"
               },
               {
                 "label":"YES",
-                "value":"YES"
+                "value":"YES23"
               },
               {
                 "label":"OKE",
-                "value":"OKE"
+                "value":"OKE23"
               },
               {
                 "label":"JTR",
@@ -213,23 +213,7 @@ export default {
               },
               {
                 "label":"SPS",
-                "value":"SPS"
-              },
-              {
-                "label":"OKE23",
-                "value":"OKE23"
-              },
-              {
-                "label":"REG23",
-                "value":"REG23"
-              },
-              {
-                "label":"SPS23",
                 "value":"SPS23"
-              },
-              {
-                "label":"YES23",
-                "value":"YES23"
               },
               {
                 "label":"JTR23",
@@ -264,15 +248,15 @@ export default {
                 "value":"CML_CTC"
               },
               {
-                "label":"CTC23",
+                "label":"CTC",
                 "value":"CTC23"
               },
               {
-                "label":"CTCJTR23",
+                "label":"CTCJTR",
                 "value":"CTCJTR23"
               },
               {
-                "label":"CTCSPS23",
+                "label":"CTCSPS",
                 "value":"CTCSPS23"
               },
               {
@@ -284,7 +268,7 @@ export default {
                 "value":"CTCTRC15"
               },
               {
-                "label":"CTCYES23",
+                "label":"CTCYES",
                 "value":"CTCYES23"
               },
               {
