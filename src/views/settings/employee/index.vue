@@ -26,18 +26,25 @@
         <section class="nodes">
             <div class="box view">
                 <div class="nav-box">
-                    <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                    <vs-row justify="space-between">
+                        <vs-col xs="6" sm="9" lg="9">
+                            <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                        </vs-col>
+                        <vs-col xs="6" sm="3" lg="3">
+                            <search-input ref="searchInput" @searchValue="searchValue"/>
+                        </vs-col>
+                    </vs-row>
                 </div>
                 <template v-if="navActive === 'k-EMPLOYEE'">
                     <transition name="slide-fade">
-                        <employee-list :ref="navActive"  />
+                        <employee-list :ref="navActive" :query="tempSearch" />
                     </transition>
                 </template>
-                <!-- <template v-else-if="navActive === 'k-EMPLOYEE_TYPE'">
+                <template v-else-if="navActive === 'k-EMPLOYEE_TYPE'">
                     <transition name="slide-fade">
-                        <employee-type :ref="navActive"  />
+                        <employee-type :ref="navActive"  :query="tempSearch"/>
                     </transition>
-                </template> -->
+                </template>
 
             </div>
         </section>
@@ -56,10 +63,14 @@
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 
+import SearchInput from "@/components/search/searchInput"
+
+
 import EmployeeList from "@/views/settings/employee/employee-list"
+import EmployeeType from "@/views/settings/employee/employee-type"
+
 import DialogCreateEditEmployee from "@/views/settings/employee/employee-list/dialogCreateEditEmployee"
 
-import EmployeeType from "@/views/settings/employee/employee-type"
 
 
 export default {
@@ -67,6 +78,7 @@ export default {
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
+        "search-input": SearchInput,
         "employee-list": EmployeeList,
         "employee-type": EmployeeType,
         // "role-list": RoleList,
@@ -89,10 +101,23 @@ export default {
             ],
             title:"Employee",
             navActive: "k-EMPLOYEE",
-            dialogEmployee:false
+            dialogEmployee:false,
+            tempSearch:'',
+            refreshInject:""
         }
     },
     methods: {
+        refresh(){
+            let el = this.refreshInject
+            this.$refs[el].refresh() // trigger function refresh form dari luar component list
+        },
+        searchValue (val) {
+            this.tempSearch = val
+            console.log("this.tempSearch kocak = ",this.tempSearch)
+        },
+        clearSearch() {
+            this.$refs.searchInput.clear()
+        },
         activeTab(val) {
             this.navActive = val
             console.log(this.navActive)
@@ -114,10 +139,6 @@ export default {
                     // code block
             }
             this.refreshInject = this.navActive
-        },
-         refresh(){
-            let el = this.refreshInject
-            this.$refs[el].refresh() // trigger function refresh form dari luar component list
         },
         closeDialogEmployee(){
             this.dialogEmployee = false

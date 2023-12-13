@@ -57,6 +57,9 @@ import DialogCreateEditEmployee from "@/views/settings/employee/employee-list/di
 export default {
     name:"employee-list",
     mixins: [master],
+    props: {
+        query: String
+    },
     components: {
         "table-master" : TableMaster,
         "dialog-confirm": DialogConfirm,
@@ -106,10 +109,21 @@ export default {
             }
         }
     },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
+            }
+        }
+    },
     methods: {
         async getTableData(limit,page,q) {
             this.loading = true
             let query = "";
+            console.log(q,'qqqqq nih')
             if(q !== undefined) {
                 this.tempSearch = q
                 query = q
@@ -119,7 +133,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+                    console.log(res,'ini apa sih')
                     if(res.data.data.length > 0) {
                         res.data.data.map(item=>{
                             item['node_name'] = item.node ? item.node.node_name : '-'
@@ -130,6 +144,7 @@ export default {
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
+                        this.dataTable = [];
                         // this.openNotification('warn', 'node commission data is empty!', ' Please create a new node commission')
                     }
                     
