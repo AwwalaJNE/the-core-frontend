@@ -36,34 +36,38 @@ export default {
         "table-master" : TableMaster,
         // "dialog-create-edit-role": DialogCreateEditRole
     },
+    props: {
+        query: String
+    },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.tempSearch = val
+                if(this.tempSearch !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                }
+            }
+        }
+    },
     data() {
         return {
             dataTable: [],
             datacolumn: [
                 {
                     label: "ID",
-                    key: "employee_id",
+                    key: "employee_type_id",
                     width: "xs"
                 },
                 {
-                    label: "First Name",
-                    key: "node_commision_service",
+                    label: "Status",
+                    key: "employee_type_name",
                     width: "auto"
                 },
+               
                 {
-                    label: "Last Name",
-                    key: "node_commision_daily",
-                    width: "auto"
-                },
-                {
-                    label: "Location",
-                    key: "node_commision_amount1",
-                    width: "auto"
-                },
-                {
-                    label: "Courier Code",
-                    key: "node_commision_amount2",
-                    width: "auto"
+                    label: "Status",
+                    key: "is_active",
+                    width: "sm"
                 },
             ],
             loading: false,
@@ -91,6 +95,10 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
+                    let arr = res.data.data
+                    arr.map(item =>{
+                      item['is_active'] = item.is_active === true ? 'Active' : 'Inactive'
+                    })
                     if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
 
@@ -124,7 +132,7 @@ export default {
         },
     },
     mounted() {
-        // this.getTableData(this.pagination.limit,this.pagination.page)
+        this.getTableData(this.pagination.limit,this.pagination.page)
     },
 }
 </script>
