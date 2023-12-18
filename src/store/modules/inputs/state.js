@@ -334,6 +334,26 @@ export default {
       value: true
     }
   },
+  employee_type: {
+    employee_type_name: {
+      label: "Employee Type Name*",
+      key: "employee_type_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
 
   geolocation_city: {
     geolocation_province_id: {
@@ -681,7 +701,6 @@ export default {
       valueData: true,
       value: true
     },
-
   },
 
   node: {
