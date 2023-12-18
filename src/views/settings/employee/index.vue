@@ -40,7 +40,7 @@
                         <employee-list :ref="navActive" :query="tempSearch" />
                     </transition>
                 </template>
-                <template v-else-if="navActive === 'k-EMPLOYEE_TYPE'">
+                <template v-else-if="navActive === 'k-EMPLOYEE-TYPE'">
                     <transition name="slide-fade">
                         <employee-type :ref="navActive"  :query="tempSearch"/>
                     </transition>
@@ -52,11 +52,24 @@
         
         <!--Create Employee-->
             <dialog-create-edit-employee
-            :active="dialogEmployee" 
+                :active="dialogEmployee"
+                @refresh="refresh"
+                :closeDialog="closeDialogEmployee"
+                title="New employee"
+            />
+            <dialog-create-edit-employee-type
+                :active="dialogEmployeeType" 
+                @refresh="refresh"
+                :closeDialog="closeDialogEmployeeType"
+                title="New employee Type"
+            />
+        <!--Create User Dialog end-->
+            <!-- <dialog-create-edit-role 
+            :active="dialogRole" 
             @refresh="refresh"
             :closeDialog="closeDialogEmployee"
             title="Create Employee"
-            />
+            /> -->
     </div>
 </template>
 <script>
@@ -70,6 +83,7 @@ import EmployeeList from "@/views/settings/employee/employee-list"
 import EmployeeType from "@/views/settings/employee/employee-type"
 
 import DialogCreateEditEmployee from "@/views/settings/employee/employee-list/dialogCreateEditEmployee"
+import DialogCreateEditEmployeeType from "@/views/settings/employee/employee-type/dialogCreateEditEmployeeType"
 
 
 
@@ -81,9 +95,8 @@ export default {
         "search-input": SearchInput,
         "employee-list": EmployeeList,
         "employee-type": EmployeeType,
-        // "role-list": RoleList,
         "dialog-create-edit-employee": DialogCreateEditEmployee,
-        // "dialog-create-edit-role": DialogCreateEditRole
+        "dialog-create-edit-employee-type": DialogCreateEditEmployeeType,
     },
     data() {
         return {
@@ -95,7 +108,7 @@ export default {
                 },
                 {
                     label: "EMPLOYEE TYPE",
-                    key: "k-EMPLOYEE_TYPE",
+                    key: "k-EMPLOYEE-TYPE",
                     title: "Employee Type"
                 },
             ],
@@ -103,6 +116,7 @@ export default {
             navActive: "k-EMPLOYEE",
             dialogEmployee:false,
             tempSearch:'',
+            dialogEmployeeType: false,
             refreshInject:""
         }
     },
@@ -113,7 +127,7 @@ export default {
         },
         searchValue (val) {
             this.tempSearch = val
-            console.log("this.tempSearch kocak = ",this.tempSearch)
+            console.log("this.tempSearch = ",this.tempSearch)
         },
         clearSearch() {
             this.$refs.searchInput.clear()
@@ -142,7 +156,10 @@ export default {
         },
         closeDialogEmployee(){
             this.dialogEmployee = false
-        }
+        },
+        closeDialogEmployeeType() {
+            this.dialogEmployeeType = false
+        },
     },
 }
 </script>
