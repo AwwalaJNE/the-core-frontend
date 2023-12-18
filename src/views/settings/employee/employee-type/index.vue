@@ -82,7 +82,7 @@ export default {
                
                 {
                     label: "Status",
-                    key: "is_active",
+                    key: "status",
                     width: "sm"
                 },
             ],
@@ -112,7 +112,7 @@ export default {
                     console.log(res)
                     let arr = res.data.data
                     arr.map(item =>{
-                      item['is_active'] = item.is_active === true ? 'Active' : 'Inactive'
+                      item['status'] = item.is_active === true ? 'Active' : 'Inactive'
                     })
                     if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
