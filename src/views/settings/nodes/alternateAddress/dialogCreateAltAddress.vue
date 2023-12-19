@@ -360,10 +360,9 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.node_alternate_address,
+                    this.URL.node_alternate_address + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
