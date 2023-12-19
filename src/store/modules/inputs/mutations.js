@@ -436,17 +436,17 @@ export default {
 
   //======= START Customer Type =======
   SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME(state, payload) {
-    state.customer_type.customer_type_name.value = payload
+    state.employee_type.employee_type_name.value = payload
   },
   SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME_ValueData(state, payload) {
-    state.customer_type.customer_type_name.valueData = payload
+    state.employee_type.employee_type_name.valueData = payload
   },
 
   SET_CUSTOMER_TYPE_IS_ACTIVE(state, payload) {
-    state.customer_type.is_active.value = payload
+    state.employee_type.is_active.value = payload
   },
   SET_CUSTOMER_TYPE_IS_ACTIVE_ValueData(state, payload) {
-    state.customer_type.is_active.valueData = payload
+    state.employee_type.is_active.valueData = payload
   },
 
   //======= END Customer Type =======
@@ -2583,6 +2583,23 @@ export default {
     state.employee.is_active.valueData = payload
   },
   //===== end employee ======
+
+  //======= START Employee Type =======
+  SET_EMPLOYEE_TYPE_EMPLOYEE_TYPE_NAME(state, payload) {
+    state.employee_type.employee_type_name.value = payload
+  },
+  SET_EMPLOYEE_TYPE_EMPLOYEE_TYPE_NAME_ValueData(state, payload) {
+    state.employee_type.employee_type_name.valueData = payload
+  },
+
+  SET_EMPLOYEE_TYPE_IS_ACTIVE(state, payload) {
+    state.employee_type.is_active.value = payload
+  },
+  SET_EMPLOYEE_TYPE_IS_ACTIVE_ValueData(state, payload) {
+    state.employee_type.is_active.valueData = payload
+  },
+
+  //======= END Employee Type =======
 
   SET_PROFILE_USER_NAME(state, payload) {
     state.profile.user_name.value = payload

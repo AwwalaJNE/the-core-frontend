@@ -1,7 +1,9 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
-    :closeDialog="closeDialogRole">
+    width="sm"
+    :loading="listenLoading"
+    :closeDialog="cancel">
 
         <template v-slot:header>
             {{listenTitle}}
@@ -9,23 +11,12 @@
 
         <template v-slot:content>
             <div>
-                <form-master ref="formMaster" @onSubmit="onSubmit">
-                    <template v-slot:inputValidator>
-                        <input-general 
-                        name="Role" 
-                        rules="required" 
-                        formKey="user_role_name"
-                        :valueData="form.user_role_name"
-                        @updateValue="updateValue" />
-
-                        <input-general 
-                        name="Role code" 
-                        rules="required" 
-                        formKey="user_role_code"
-                        :valueData="form.user_role_code"
-                        @updateValue="updateValue" />
-                    </template>
-                </form-master>
+                <form-input-controller 
+                    ref="formEmployeeTypeController"
+                    @formData="formData"
+                    :dataItem="listenDataItem"
+                    typeForm="employee_type"
+                />
             </div>
         </template>
 
@@ -52,7 +43,7 @@
                     type="submit"
                     @click="handleSubmit"
                     >
-                        Add
+                        {{btnBlue || 'Add'}}
                     </vs-button>
                 </vs-col>
             </vs-row>
@@ -65,23 +56,29 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import FormMaster from "@/components/form/formMaster"
-import InputGeneral from "@/components/input/general"
+import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
 export default {
-    name:"dialog-create-edit-role",
+    name:"dialog-create-edit-employee-type",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
-        "form-master": FormMaster,
-        "input-general": InputGeneral     
+        "form-input-controller": FormInputController,    
     },
     props: {
-       closeDialogRole: Function, 
-       refresh: Function,
+       closeDialog: Function,
        active: Boolean,
        title: String,
-       dataItem: Object
+       dataItem: Object,
+       btnRed: String,
+       btnBlue: String
+    },
+    data() {
+        return {
+            form: {},
+            employee_type_id: '',
+            loading:false,
+        }
     },
     computed: {
         listenActive(){
@@ -89,111 +86,88 @@ export default {
         },
         listenTitle(){
             return this.title
-        }
-    },
-    data() {
-        return {
-            form: {
-                user_role_name:'',
-                user_role_code:''
-            },
-            user_role_id: ''
-        }
+        },
+        listenDataItem() {
+            return this.dataItem
+        },
+        listenLoading(){
+            return this.loading
+        },
     },
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.form.user_role_name = val.user_role_name
-                this.form.user_role_code = val.user_role_code
-                this.user_role_id = val.user_role_id
-                console.log(this.dataItem, 'nihh watch')
-                console.log(this.form, 'form')
-                
-            }
+                this.employee_type_id = val.employee_type_id
+            } 
         }
     },
     methods: {
-        updateValue(type, val) {
-            let err = this.form[`${type}`] !== undefined ? this.form[type] = val : true
-            if(err == true) {
-                console.log(`error this.form[${type}] | val ` + val + this.form[`${type}`])
+        formData(form){
+            this.form = form
+            console.log(this.form, 'form', form)
+           
+            if(this.employee_type_id !== undefined && this.employee_type_id !== '') {
+                     this.loading=true;
+                    this.updateData()
+            } else {
+                    this.addData()
             }
         },
         handleSubmit(){
-            this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster
+            this.$refs.formEmployeeTypeController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
-        onSubmit(refs){
-            console.log('onsubmit', refs)
-                refs.form.validate().then(success => {
-                if (!success) {
-                    console.log('err niih')
-                return;
-                }
-
-                console.log('this.user_role_id',this.user_role_id)
-                if(this.user_role_id !== undefined && this.user_role_id !== '') {
-                    console.log('update')
-                    this.updateData()
-                } else {
-                    console.log('create new')
-                    this.addData()
-                }
-
-                // Wait until the models are updated in the UI
-                this.$nextTick(() => {
-                    refs.form.reset();
-                });
-            });
+        handleClearForm(){
+            this.$refs.formEmployeeTypeController.handleClearForm()
+            this.form = {}
+            this.employee_type_id = ""
         },
         async updateData(){
             await axios
                 .put(
-                    this.URL.role + `/${this.user_role_id}?n=${this.listenNodeId}`,
+                    this.URL.employee_type + `/${this.employee_type_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
-                    this.form.user_role_name = ''
-                    this.form.user_role_code = ''
-                    this.user_role_id = ''
-                    this.closeDialogRole()
-                    this.refresh()
-                    this.openNotification(null, 'Success', 'Update role is success')
+                    this.handleClearForm()
+                    this.closeDialog()
+                    this.$emit("refresh")
+                    this.loading = false
+                    this.openNotification(null, 'Update success', 'Update employee is success')
                 }).catch(err => {
                     this.loading = false
-                    this.closeDialogRole()
-                    this.refresh()
-                    this.openNotification('danger', 'Update role is failed', err)
+                    this.closeDialog()
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Update employee is failed', err)
                 })
         },
         async addData() {
             console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.role + `?n=${this.listenNodeId}`,
+                    this.URL.employee_type + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
-                    this.form.user_role_name = ''
-                    this.form.user_role_code = ''
-                    this.closeDialogRole()
-                    this.refresh()
-                    this.openNotification(null, 'Success', 'Create new role is success')
+                    this.handleClearForm()
+                    this.closeDialog()
+                    this.$emit("refresh")
+                     this.loading=true;
+                    this.openNotification(null, 'Create Success', 'Create new employee is success')
                 }).catch(err => {
                     this.loading = false
-                    this.closeDialogRole()
-                    this.refresh()
+                    this.closeDialog()
+                    this.$emit("refresh")
                     this.openNotification('danger', 'Create new role is failed', err)
                 })
         },
         cancel() {
             
-            this.form.user_role_name = ''
-            this.form.user_role_code = ''
-            
-            this.closeDialogRole()
-        }
+            this.handleClearForm()
+            this.closeDialog()
+        },  
+    },
+    
+    mounted() {
     },
 }
 </script>

@@ -2405,6 +2405,23 @@ export default {
     commit('SET_EMPLOYEE_IS_ACTIVE_ValueData', payload)
   },
   //====== end employee ======
+
+  // ======= START Employee Type =======
+  SET_EMPLOYEE_TYPE_EMPLOYEE_TYPE_NAME({ commit }, payload) {
+    commit('SET_EMPLOYEE_TYPE_EMPLOYEE_TYPE_NAME', payload)
+  },
+  SET_EMPLOYEE_TYPE_EMPLOYEE_TYPE_NAME_ValueData({ commit }, payload) {
+    commit('SET_EMPLOYEE_TYPE_EMPLOYEE_TYPE_NAME_ValueData', payload)
+  },
+
+  SET_EMPLOYEE_TYPE_IS_ACTIVE({ commit }, payload) {
+    commit('SET_EMPLOYEE_TYPE_IS_ACTIVE', payload)
+  },
+  SET_EMPLOYEE_TYPE_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_EMPLOYEE_TYPE_IS_ACTIVE_ValueData', payload)
+  },
+
+  // ======= END Employee Type =======
   
   //====== PROFILE PAGE ======  
 
