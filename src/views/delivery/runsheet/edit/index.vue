@@ -21,61 +21,28 @@
               </p>
             </template>
 
-            <template>
-              <div class="center in-get-bag">
-                <vs-row style="margin-top:1em">
-                  <vs-col xs="12" sm="6" lg="2">
-                    <vs-radio
-                      v-model="radio_option"
-                      val="connote">
-                      Connote (buat orion)
-                    </vs-radio>
-                  </vs-col>
-                  <vs-col xs="12" sm="6" lg="2">
-                    <vs-radio
-                      v-model="radio_option"
-                      val="koli">
-                      Koli
-                    </vs-radio>
-                  </vs-col>
-                </vs-row>
-              </div>
-            </template>
+
             <div class="nav-box">
               <vs-row>
                 <vs-col xs="4" sm="4" lg="4" style="margin-top: 2em">
-                  <div v-if="radio_option === 'koli'" class="center">
-                    <vs-input
-                      border
-                      type="text"
-                      v-model="item_no"
-                      label-placeholder="Scan Koli here"
-                      v-on:keyup.enter="updateValue"
-                      autofocus
-                      icon-after
-                      ref="formInputConnote"
-                    >
-                      <template #icon>
-                        <i class="bx bx-file"></i>
-                      </template>
-                    </vs-input>
-                  </div>
-                  <div v-else class="center">
+                  <template>
+                    <div class="center">
                       <vs-input
                         border
                         type="text"
-                        v-model="item_no_orion"
-                        label-placeholder="Scan Connote here (buat orion)"
-                        v-on:keyup.enter="updateValueOrion"
+                        v-model="item_no"
+                        label-placeholder="Scan Connote here"
+                        v-on:keyup.enter="updateValue"
                         autofocus
                         icon-after
-                        ref="formInputConnoteOrion"
+                        ref="formInputConnote"
                       >
                         <template #icon>
                           <i class="bx bx-file"></i>
                         </template>
                       </vs-input>
                     </div>
+                  </template>
                 </vs-col>
                 <vs-col xs="4" sm="4" lg="4" offset="2">
                   <template v-if="dataDelivery.length > 0">
@@ -179,7 +146,6 @@ export default {
       loadingRunsheet: false,
       employee_code: "",
       employee_name: "",
-      radio_option: "connote",
       
       loadingCourier: false
     };
@@ -213,13 +179,6 @@ export default {
     },
     updateValue() {
       this.form.koli_number = this.item_no;
-      // this.form.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number
-      this.form.courier_employee_id = this.employee_id;
-      this.scanConnote();
-      this.item_no = null;
-    },
-    updateValueOrion() {
-      this.form.koli_number = this.item_no_orion + "00";
       // this.form.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number
       this.form.courier_employee_id = this.employee_id;
       this.scanConnote();
@@ -260,7 +219,6 @@ export default {
     },
     async scanConnote() {
       this.loadingRunsheet = true
-      console.log("123", this.form)
       await axios
         .post(
           this.URL.employee +
