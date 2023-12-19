@@ -15,26 +15,49 @@
             <vs-col lg="6" sm="6" xs="12">
               <div class="box information" style="padding-top: 1px !important;">
                 <div class="nav-box">
-                  <vs-row>
-                    <vs-col xs="6" sm="6" lg="6" style="margin-top: 2em">
-                      <template>
-                        <div class="center">
-                          <vs-input border type="text"
-                                    v-model="item_no"
-                                    label-placeholder="Masukkan Connote"
-                                    v-on:keyup.enter="updateValue"
-                                    autofocus
-                                    icon-after
-                                    ref="formInputInbound">
-                            <template #icon>
-                              <i class='bx bx-file'></i>
-                            </template>
-                          </vs-input>
-                        </div>
-                      </template>
+                    <vs-row>
+                  <!-- <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
+                        <template>
+                          <div class="center">
+                            <vs-input border type="text"
+                                      v-model="item_no"
+                                      label-placeholder="Masukkan Nomor Runsheet"
+                                      v-on:keyup.enter="updateValue"
+                                      autofocus
+                                      icon-after
+                                      ref="formInputRunsheet">
+                            </vs-input>
+                          </div>
+                        </template>
+                      </vs-col> -->
+                  <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
+                    <template>
+                      <div class="center">
+                        <vs-input border type="text" v-model="no_runsheet" label-placeholder="Masukkan Number Runsheet" autofocus icon-after ref="formInputInbound">
+                          <template #icon>
+                            <i class='bx bx-file'> </i>
+                          </template>
+                        </vs-input>
+                      </div>
+                    </template>
+                  </vs-col>
+                  <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
+                    <template>
+                      <div class="center">
+                        <vs-input border type="text" v-model="item_no" label-placeholder="Masukkan Koli" autofocus icon-after ref="formInputInbound">
+                          <template #icon>
+                            <i class='bx bxs-file'> </i>
+                          </template>
+                        </vs-input>
+                      </div>
+                    </template>
+                  </vs-col>
+                  <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
+                    <vs-button square active @click="updateValue">
+                      Update<i class="bx bxs-chevron-right"> </i>
+                  </vs-button>
                     </vs-col>
-
-                  </vs-row>
+                </vs-row>
                 </div>
               </div>
             </vs-col>
@@ -108,6 +131,7 @@ export default {
             tempDate: [],
             dialogPickupRequest:false,
             item_no:'',
+            no_runsheet:'',
             form:{},
             inbound_number:'',
             totalConnote:0,
@@ -136,6 +160,7 @@ export default {
         },
         updateValue(){
           this.form.koli_number = this.item_no
+          this.form.orion_number_runsheet = this.no_runsheet
           this.processUndelivery();
         },
         getTotal(tot) {
@@ -154,7 +179,7 @@ export default {
               .then(res => {
                 console.log(res,'res receiving');
                 this.refresh()
-                this.handleClearForm();
+                this.handleClearForm()
                 this.openNotification(null, 'Success', 'Receiving is success')
               }).catch(err => {
                 console.log(err,'err receiving');
@@ -169,7 +194,8 @@ export default {
         },
         handleClearForm(){
           this.form = {}
-          this.item_no = ""
+          this.item_no = "",
+          this.no_runsheet= ""
         },
 
     },
