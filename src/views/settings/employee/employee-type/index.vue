@@ -71,7 +71,7 @@ export default {
             datacolumn: [
                 {
                     label: "ID",
-                    key: "employee_type_id",
+                    key: "table_id",
                     width: "xs"
                 },
                 {
@@ -111,8 +111,9 @@ export default {
                 .then(res => {
                     console.log(res)
                     let arr = res.data.data
-                    arr.map(item =>{
-                      item['status'] = item.is_active === true ? 'Active' : 'Inactive'
+                    arr.map((item, idx) =>{
+                        item['table_id'] = idx+1
+                        item['status'] = item.is_active === true ? 'Active' : 'Inactive'
                     })
                     if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
