@@ -8,6 +8,26 @@
                 </div>
             </vs-col>
         </vs-row>
+        <template>
+          <div class="center in-get-bag">
+            <vs-row style="margin-top:1em">
+              <vs-col xs="12" sm="4" lg="2">
+                <vs-radio
+                  v-model="radio_option"
+                  val="connote">
+                  Connote (Orion)
+                </vs-radio>
+              </vs-col>
+              <vs-col xs="12" sm="4" lg="2">
+                <vs-radio
+                  v-model="radio_option"
+                  val="koli">
+                  Koli
+                </vs-radio>
+              </vs-col>
+            </vs-row>
+          </div>
+        </template>
         <section class="bagging">
             <vs-row>
               <vs-col xs="2" sm="2" lg="2">
@@ -62,8 +82,8 @@ export default {
             item_code:'',
             item_number:'',
             form:{},
-            inputLabelPlaceholder: "Masukan code BAG"
-
+            inputLabelPlaceholder: "Masukan code BAG",
+            radio_option: 'connote'
 
         }
     },
@@ -71,8 +91,19 @@ export default {
       updateValue(){
         this.form.item_number = this.item_code
         if(this.item_code !== null){
-          this.item_number = this.item_code
-          this.inputLabelPlaceholder = "Masukan code CONNOTE"
+          if (this.inputLabelPlaceholder.includes("CONNOTE")) {
+            this.item_number = this.item_code + "00"
+          }
+          else if (this.inputLabelPlaceholder.includes("KOLI")) {
+            this.item_number = this.item_code
+          }
+
+          if (this.radio_option === "connote") {
+            this.inputLabelPlaceholder = "Masukan code CONNOTE (ORION)"
+          }
+          else if (this.radio_option === "koli") {
+            this.inputLabelPlaceholder = "Masukan code KOLI"
+          }
         }
         this.$nextTick(() => {
           this.handleClearForm()
