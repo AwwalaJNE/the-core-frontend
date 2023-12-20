@@ -91,11 +91,9 @@ export default {
       updateValue(){
         this.form.item_number = this.item_code
         if(this.item_code !== null){
+          this.item_number = this.item_code
           if (this.inputLabelPlaceholder.includes("CONNOTE")) {
             this.item_number = this.item_code + "00"
-          }
-          else if (this.inputLabelPlaceholder.includes("KOLI")) {
-            this.item_number = this.item_code
           }
 
           if (this.radio_option === "connote") {
