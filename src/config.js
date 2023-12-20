@@ -178,5 +178,6 @@ export default {
     //resync runsheet
     resync_runsheet : api + "resync/delivery",
 
-
+    //sequence orion
+    sequence_orion : "http://10.18.3.36:9763/services/omc.HTTPEndpoint/f_moc_seq_no",
 }

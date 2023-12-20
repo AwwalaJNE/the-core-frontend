@@ -17,5 +17,13 @@ export default {
               Accept: "application/json"
             }
           }
+    },
+    headerSequenceOrion() {
+      return {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json"
+        }
+      }
     }
 }

@@ -34,7 +34,18 @@
                         </div>
                       </template>
                     </vs-col>
-
+                    <vs-col xs="6" sm="6" lg="6">
+                      <div>
+                        <vs-button
+                          style="margin:5px auto 0;"
+                          square
+                          active
+                          @click="getOrionSequence"
+                        >
+                          GET ORION SEQUENCE
+                        </vs-button>
+                      </div>
+                    </vs-col>
                   </vs-row>
                 </div>
               </div>
@@ -114,7 +125,13 @@ export default {
 
             loading: false,
             dataTable: [],
-            inboundDetailData : []
+            inboundDetailData : [],
+
+            orion_payload: {
+              p_seq_no: "ODCMS11033",
+              p_branch: "CORE000"
+            },
+            sequence_orion: "none"
         }
     },
     methods: {
@@ -151,6 +168,19 @@ export default {
             this.tempSearch = this.inbound_id.toString()
             this.refresh()
           }
+        },
+        getBranchCode() {
+          if (isLocalStorage()) {
+            let node_id = localStorage.getItem("vuejs__node_id")
+            if (node_id) {
+              this.orion_payload.p_branch = node_id.value.node_code
+            }
+          }
+        },
+        transformSequence(orion_sequence) {
+          const [prefix, middle, suffix] = orion_sequence.split("/")
+          const coreSequence = `${prefix}-${middle}-C${suffix}`
+          return coreSequence
         },
         async processInbond() {
           this.openProgress(null, "Processing", `${this.form.item_no ? this.form.item_no : 'Item' } is in process`);
@@ -241,7 +271,7 @@ export default {
             }else{
               await axios
                   .get(this.URL.inbound +
-                      `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}`,
+                      `/${this.inbound_id}/inbound-status/${this.sequence_orion}?n=${this.listenNodeId}`,
                       this.Helper.header())
                   .then(res => {
                     let data=[res.data.data]
@@ -260,6 +290,27 @@ export default {
 
         },
 
+        async getOrionSequence() {
+            this.loading = true
+            if(this.orion_payload.p_branch !== ''){
+              await axios
+                .post(
+                  this.URL.sequence_orion,
+                  new URLSearchParams(this.orion_payload),
+                  this.Helper.headerSequenceOrion())
+                .then(res => {
+                  if(res.status == 200) {
+                      this.sequence_orion = this.transformSequence(res.data.Entries.Entry[0].val)
+                  }
+                  this.loading = false
+                  this.openNotification("success", "Success!", "Orion sequence number saved!");
+                }).catch(err => {
+                  this.loading = false
+                  this.openNotification('danger', 'Failed to get sequence Orion,', err ? err : 'Something went wrong')
+                })
+            }
+        },
+
         back(){
           this.$router.push('/inbound/prealert')
         },
@@ -270,6 +321,7 @@ export default {
     },
     mounted() {
       this.getParamRoute()
+      // this.getBranchCode()
     }
 }
 </script>
