@@ -131,7 +131,7 @@ export default {
               p_seq_no: "ODCMS11033",
               p_branch: "CORE000"
             },
-            sequence_orion: ""
+            sequence_orion: "none"
         }
     },
     methods: {
@@ -179,7 +179,7 @@ export default {
         },
         transformSequence(orion_sequence) {
           const [prefix, middle, suffix] = orion_sequence.split("/")
-          const coreSequence = `${prefix}/${middle}/C${suffix}`
+          const coreSequence = `${prefix}-${middle}-C${suffix}`
           return coreSequence
         },
         async processInbond() {
@@ -271,7 +271,7 @@ export default {
             }else{
               await axios
                   .get(this.URL.inbound +
-                      `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}`,
+                      `/${this.inbound_id}/inbound-status/${this.sequence_orion}?n=${this.listenNodeId}`,
                       this.Helper.header())
                   .then(res => {
                     let data=[res.data.data]
