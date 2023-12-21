@@ -59,7 +59,8 @@
                    rules="" 
                    placeholder="Select service"
                    formKey="service"
-                   :valueData="serviceArray"
+                   :loading="loading"
+                   :valueData="serviceArrayNew"
                    :selectedValue="service"
                    :isMultiple="true"
                    
@@ -232,7 +233,7 @@ export default {
             }
           ],
           
-          service: [],
+          service: "",
           serviceArray: [
             {
               "label":"REG",
@@ -356,11 +357,17 @@ export default {
             },
 
           ],
-          
-          destinationArray: [
+          serviceArrayNew : [
             {
               "label": null,
               "value": null
+            },
+          ],
+          
+          destinationArray: [
+            {
+              "label": "",
+              "value": ""
             },
           ],
           destination: "",
@@ -443,6 +450,28 @@ export default {
                   this.loading = false
                   this.openNotification('danger', 'Failed to populate employee list', err)
               })
+      },
+      async getService(){
+        
+      this.loading = true
+        await axios
+              .get(this.URL.service +
+              `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+              this.Helper.header())
+              .then(res => {
+                      res.data.data.map(item => {
+                          let obj = {}
+                          obj["label"] = item.service_name
+                          obj["value"] = item.service_code
+
+                          this.serviceArrayNew.push(obj)
+                      })
+
+                      this.loading = false
+          }).catch(err => {
+            this.loading = false
+            this.openNotification('danger', 'Failed to populate service list', err)
+          })
       },
     updateRadio(){
       this.form={
@@ -543,6 +572,7 @@ export default {
     this.getNodeLink()
     this.getNodeIntracity()
     this.getemployee()
+    this.getService()
     // this.$store.dispatch("SET_BAGGING_destination_dataArray", this.regionalArray )
     // this.$store.dispatch("SET_BAGGING_service_dataArray", this.serviceArray )
   }

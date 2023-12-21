@@ -40,6 +40,7 @@
                       class="m-select"
                       :placeholder="placeholder"
                       :disabled="listenIsDisabled"
+                      :loading="loadingActive"
                       @change="updateValue"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                           <el-option
