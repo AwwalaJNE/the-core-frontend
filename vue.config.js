@@ -1,3 +1,4 @@
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const ExtractTextPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
@@ -18,6 +19,15 @@ module.exports = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
       'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+    },
+    proxy: {
+      '/sequence-orion': {
+        target: 'http://10.18.3.36:9763/services/omc.HTTPEndpoint/f_moc_seq_no',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/sequence-orion': '',
+        },
+      },
     },
   },
   runtimeCompiler: true,
