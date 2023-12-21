@@ -294,7 +294,7 @@ export default {
             if(this.orion_payload.p_branch !== ''){
               await axios
                 .post(
-                  this.URL.sequence_orion,
+                  "/sequence-orion",
                   new URLSearchParams(this.orion_payload),
                   this.Helper.headerSequenceOrion())
                 .then(res => {
