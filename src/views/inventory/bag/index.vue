@@ -22,7 +22,7 @@
                    rules="" 
                    placeholder="Select routing"
                    formKey="regional"
-                   :valueData="regionalArray"
+                   :valueData="filteredRegionalArray"
                    :selectedValue="regional"
                    
                    @updateValue="updateFilter" />
@@ -31,7 +31,7 @@
               </template>
             </vs-col>
             <vs-col xs="12" sm="3" lg="3">
-              <template>
+              <template  v-if="this.regional !== 'all_routing'">
                 <div class="center in-get-bag">
                  <vs-col lg="12">
                    <selector 
@@ -45,6 +45,20 @@
                    :selectedValue="destination"
                    
                    @updateValue="updateFilter" />
+                 </vs-col>
+                </div>
+              </template>
+              <template v-else>
+                <div class=" in-get-bag">
+                 <vs-col lg="12">
+                  <div class="title my-5 text-lg font-semibold text-gray-700" style="text-transform: lowercase; font-size: 14px; text-align: left;  padding-top: 10px;">Destination All</div>
+                  <el-autocomplete
+                    name="Destination"
+                    v-model="searchTerm"
+                    :fetch-suggestions="querySearchAsync"
+                    placeholder="Search Destination"
+                    @select="handleSelect"
+                  />
                  </vs-col>
                 </div>
               </template>
@@ -187,6 +201,7 @@ import master from "@/mixins/master"
 import Breadcrumb from "@/components/breadcrumb/index"
 import Selector from "@/components/input/select"
 import FormInputController from "@/components/form/formInputController"
+import AutoComplete from "@/components/input/autoComplete"
 
 export default {
   name:"InventoryBagging",
@@ -194,6 +209,7 @@ export default {
   components: {
       "breadcrumb": Breadcrumb,
       "selector": Selector,
+      "auto-complete": AutoComplete,
   },
   watch: {
     regional(newRegional, oldRegional) {
@@ -215,6 +231,10 @@ export default {
           
           regional: "",
           regionalArray: [
+            {
+              "label":"All Routing",
+              "value":"all_routing"
+            },
             {
               "label":"Intracity",
               "value":"intracity"
@@ -373,8 +393,17 @@ export default {
           destination: "",
           // weight: null,
           employee: "",
-          employeeArray: []
+          employeeArray: [],
+          searchTerm: '',
+          timeout: null,
+          links: []
       }
+  },
+  computed: {
+    filteredRegionalArray() {
+      // Select 'All Routing' ditampilkan ketika user role inbound(4)
+      return this.listenActiveUser.user_role_id === 4 ? this.regionalArray : this.regionalArray.filter(item => item.value !== 'all_routing');
+    },
   },
   methods: {
     async getNodeLink() {
@@ -461,7 +490,7 @@ export default {
               .then(res => {
                       res.data.data.map(item => {
                           let obj = {}
-                          obj["label"] = item.service_name
+                          obj["label"] = item.service_code
                           obj["value"] = item.service_code
 
                           this.serviceArrayNew.push(obj)
@@ -566,7 +595,36 @@ export default {
             this.handleClearForm()
             this.openNotification('danger', err.response ? err.response.data.message : 'something went wrong')
           })
-    }
+    },
+    querySearchAsync(queryString, cb) {
+      const url = this.URL.node +
+              `?n=${this.listenNodeId}&sort_order=desc&&limit=10&page=1&s=${queryString}`;
+
+      clearTimeout(this.timeout);
+
+      this.timeout = setTimeout(() => {
+        axios.get(url, this.Helper.header())
+          .then((response) => {
+            const results = response.data.data;
+            this.suggestions = results.map(item => ({
+              value: item.node_name,
+              node_id: item.node_id,
+            }));
+            cb(this.suggestions);
+          })
+          .catch((error) => { 
+            console.error('Error fetching suggestions:', error);
+          });
+      }, 300); // Adjust the delay as needed
+    },
+    createFilter(queryString) {
+      return (item) => {
+        return item.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
+      };
+    },
+    handleSelect(item) {
+      this.destination = item.node_id;
+    },
   },
   mounted() {
     this.getNodeLink()
