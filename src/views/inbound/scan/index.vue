@@ -270,7 +270,7 @@ export default {
             }else{
               await axios
                   .get(this.URL.inbound +
-                      `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}`,
+                      `/${this.inbound_id}/inbound-status/${this.sequence_orion}?n=${this.listenNodeId}`,
                       this.Helper.header())
                   .then(res => {
                     let data=[res.data.data]
