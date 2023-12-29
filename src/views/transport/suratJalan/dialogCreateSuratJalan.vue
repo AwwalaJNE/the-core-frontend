@@ -21,7 +21,7 @@
                 />
 
                 <div class="mt-2 mb-2">
-                    <vs-row justify="space-between">
+                    <vs-row align="center">
                         <vs-col xs="6" sm="3" lg="3">
                             <form @submit.prevent="getDataSuratMuatan">
                                 <input-general 
@@ -32,6 +32,11 @@
                                 :typeInput="`text|${isDestinationDisable}`"
                                 @updateValue="updateValue" />
                             </form>
+                        </vs-col>
+                        <vs-col xs="6" sm="3" lg="3">
+                            <vs-checkbox v-model="is_penerusan">
+                                Penerusan
+                            </vs-checkbox>
                         </vs-col>
                     </vs-row>
                     <table-master 
@@ -164,7 +169,8 @@ export default {
                 },
             ],
             editData: {},
-            isDestinationDisable: ''
+            isDestinationDisable: '',
+            is_penerusan: false,
         }
     },
     computed: {
@@ -217,6 +223,13 @@ export default {
                     this.getDriver()
                 }
 
+                if (val.sequence_orion) {
+                    this.is_penerusan = true
+                }
+                else if (!val.sequence_orion) {
+                    this.is_penerusan = false
+                }
+
                 // this.editData["destination_id"] = val.node_id_destination ? val.node_id_destination : ''
                 // this.editData["moda_angkutan_id"] = val.vehicle_mode_id ? val.vehicle_mode_id : ''
                 // this.editData["no_moda_angkutan_id"] = val.vehicle_id ? val.vehicle_id : ''
@@ -259,6 +272,7 @@ export default {
                 obj['max_weight'] = this.vehicle_max_weight
                 obj['manifest_lov'] = this.manifest_lov
                 obj['manifest_do_item'] = this.dataTable
+                obj['is_penerusan'] = this.is_penerusan
 
                 this.form = obj
                 
