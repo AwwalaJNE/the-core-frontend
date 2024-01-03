@@ -89,6 +89,11 @@
                           Action
                         </vs-th>
                       </template>
+                      <template v-if="runsheetAction == true">
+                        <vs-th class="action">
+                          Action
+                        </vs-th>
+                      </template>
                       <template v-if="printAction == true || avoidAction == true || codAction == true || customBtn == true || customAction == true">
                         <vs-th class="action">
                           Action
@@ -208,7 +213,6 @@
                                             :valueData="`${item[column.key] ? item[column.key] : ''}`"
                                             :typeInput="'text' + `|${column.hasOwnProperty('disabled_input') ? item[column.disabled_input] == true ? 'disabled' : '' : ''}`"
                                             :dataObj="item"
-                                            :enter_to_update="true"
                                             @updateValue="updateValue" />
                                           </div>
                                         </template>
@@ -390,12 +394,46 @@
                                   :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
                                   type="submit"
                                   @click="actionRemove(item)"
-                              >
+                                > 
                                 <span>Remove</span>
                               </vs-button>
                             </vs-col>
                           </vs-row>
                         </vs-td>
+                      </template>
+                      <template v-if="runsheetAction == true">
+                        <vs-td class="action">
+                          <vs-row justify="center" class="btn_action">
+                              <vs-col w="4">
+                                <vs-button
+                                    block
+                                    :disabled="item.hasOwnProperty('isDisabled') && item.isDisabled == true"
+                                    size="small"
+                                    flat
+                                    warn
+                                    :active="true"
+                                    @click="actionConfirmed(item)"
+                                >
+                                  <span>Confirmed</span>
+                                </vs-button>
+                              </vs-col>
+                              <vs-col 
+                                    w="4"
+                                    v-if="(!item.hasOwnProperty('is_CT_user') || item.is_CT_user)"
+                                >
+                                    <vs-button
+                                        block
+                                        :disabled="(item.hasOwnProperty('isDisabled') && item.isDisabled == true) || !item.request_failed_by"
+                                        flat
+                                        size="small"
+                                        :active="true"
+                                        @click="actionApprove(item)"
+                                    >
+                                        <span>Edit</span>
+                                    </vs-button>
+                                </vs-col>
+                            </vs-row>
+                            </vs-td>
                       </template>
                       <template v-if="printAction == true">
                         <vs-td class="action">
@@ -668,6 +706,7 @@ export default {
         hasLinked3:Array,
         hasLinked4:Array,
         removeOnly: Boolean,
+        runsheetAction: Boolean,
         printAction: Boolean,
         pickupListAction:Boolean,
         updateAction: Boolean,
@@ -802,6 +841,7 @@ export default {
             this.$emit("actionPagination", val)
         },
         actionUpdate(val, key) {
+            // console.log(val,key,'update');
             this.$emit("actionUpdate", val, key)
         },
         actionCollect(val) {
@@ -809,6 +849,10 @@ export default {
         },
         actionRemove(val) {
             this.$emit("actionRemove", val)
+        },
+        actionConfirmed(val, key) {
+            // console.log(val, key,'update action confirmed');
+            this.$emit("actionConfirmed", val, key)
         },
         actionPrint(val) {
           this.$emit("actionPrint", val)
@@ -839,9 +883,12 @@ export default {
         },
 
         updateValue(key, val, info = {}, dataObj){
+            // console.log(key, val, info = {}, dataObj,'update value');
             if(this.listenIsMultipleSelect == true && dataObj != undefined) {
+                console.log('unfined');
                 if(!!this.selected.includes(dataObj) == false) {
                     this.selected.push(dataObj)
+                    console.log('push');
                 }
             }
             this.$emit("updateValue", key, val, info, dataObj)
