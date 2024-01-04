@@ -2629,4 +2629,7 @@ export default {
     state.profile.user_email.valueData = payload
   },
 
+  SET_DELIVERY_NUMBER(state, payload) {
+    state.deliveryNumber = payload;
+  },
 }
