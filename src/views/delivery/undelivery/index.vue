@@ -7,6 +7,17 @@
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
+            <vs-col xs="4" sm="4" lg="4" align="right">
+              <div class="btn-print-all">
+                <vs-button class="btn-cash-register"
+                    square
+                    block
+                    @click="finishReceiving"
+                >
+                  Finish Receiving Runsheet
+                </vs-button>
+              </div>
+            </vs-col>
 
         </vs-row>
 
@@ -33,7 +44,7 @@
                   <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
                     <template>
                       <div class="center">
-                        <vs-input border type="text" v-model="no_runsheet" label-placeholder="Masukkan Number Runsheet" autofocus icon-after ref="formInputInbound">
+                        <vs-input border type="text" v-model="no_runsheet" :autofocus="true"  v-on:keyup.enter="scanKoli" label-placeholder="Scan Nomor Runsheet" autofocus icon-after ref="formInputInbound">
                           <template #icon>
                             <i class='bx bx-file'> </i>
                           </template>
@@ -44,7 +55,7 @@
                   <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
                     <template>
                       <div class="center">
-                        <vs-input border type="text" v-model="item_no" label-placeholder="Masukkan Koli" autofocus icon-after ref="formInputInbound">
+                        <vs-input border type="text" v-model="item_no" label-placeholder="Masukkan Koli" v-on:keyup.enter="updateValue" autofocus icon-after ref="formInputInbound">
                           <template #icon>
                             <i class='bx bxs-file'> </i>
                           </template>
@@ -52,14 +63,25 @@
                       </div>
                     </template>
                   </vs-col>
-                  <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
-                    <vs-button square active @click="updateValue">
-                      Update<i class="bx bxs-chevron-right"> </i>
-                  </vs-button>
-                    </vs-col>
                 </vs-row>
                 </div>
               </div>
+              <vs-col lg="12" sm="12" xs="12">
+                <div class="box information" style="padding-top: 1px !important;">
+                  <vs-row style="padding-top:5px" justify="space-around">
+                    <vs-col lg="12" sm="12" xs="12" w="3">
+                      <h5 align="left">List All Connote Runsheet</h5>
+                    </vs-col>
+                  </vs-row>
+                  <div class="nav-box">
+                    <template>
+                      <transition name="slide-fade">
+                            <ConnoteRunsheetInformation :ref="'ConnoteRunsheetInformation'"   :query="tempSearch" :courr="courierSel" v-on:cour-list="getCourrier" v-on:total-connote="getTotal"/>
+                      </transition>
+                    </template>
+                  </div>
+                </div>
+              </vs-col>
             </vs-col>
 
             <!-- col for detail unreceive item-->
@@ -102,6 +124,16 @@
 
         </section>
 
+        <!-- dialog confirm create receiving -->
+        <dialog-confirm
+            :active="activeDialogFinishReceiving"
+            :loading="activeLoadingFinishReceiving"
+            :closeDialog="closeDialogConfirm"
+            title="Finish Receiving Runsheet"
+            message="Are you sure you want to Finish Receiving Runsheet?"
+            @confirm="confirm"
+            @cancel="closeDialogConfirm"
+        />
 
     </div>
 </template>
@@ -114,6 +146,8 @@ import SearchInput from "@/components/search/searchInput"
 import dateRange from "@/components/daterange/index"
 
 import UndeliveryInformation from "@/views/delivery/undelivery/UndeliveryInformation"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
+import ConnoteRunsheetInformation from "@/views/delivery/undelivery/ConnoteRunsheetInformation"
 
 
 export default {
@@ -123,6 +157,8 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "UndeliveryInformation": UndeliveryInformation,
+        "dialog-confirm": DialogConfirm,
+        "ConnoteRunsheetInformation": ConnoteRunsheetInformation
     },
     data() {
         return {
@@ -137,12 +173,14 @@ export default {
             totalConnote:0,
             courierSel:0,
             courArray:[],
+            activeDialogFinishReceiving: false,
+            activeLoadingFinishReceiving: false
         }
     },
     methods: {
         refresh(){
             this.$refs.undeliveryInformation.refresh() // trigger function refresh form dari luar component list
-        },
+          },
         searchValue (val) {
             this.tempSearch = val
         },
@@ -160,8 +198,13 @@ export default {
         },
         updateValue(){
           this.form.koli_number = this.item_no
-          this.form.orion_number_runsheet = this.no_runsheet
           this.processUndelivery();
+        },
+        scanKoli(){
+          this.form.delivery_number_runsheet = this.no_runsheet
+          this.$store.commit('SET_DELIVERY_NUMBER', this.no_runsheet);
+          this.$refs.ConnoteRunsheetInformation.refresh();
+          this.confirm();
         },
         getTotal(tot) {
           this.totalConnote = tot
@@ -171,18 +214,15 @@ export default {
         },
 
         async processUndelivery() {
-          console.log('form', this.form)
           await axios
               .post(this.URL.undelivery + `?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
-                console.log(res,'res receiving');
                 this.refresh()
                 this.handleClearForm()
                 this.openNotification(null, 'Success', 'Receiving is success')
               }).catch(err => {
-                console.log(err,'err receiving');
                 this.loading = false
                 this.refresh()
                 this.handleClearForm();
@@ -197,7 +237,39 @@ export default {
           this.item_no = "",
           this.no_runsheet= ""
         },
-
+        finishReceiving(){
+          this.activeDialogFinishReceiving = true
+        },
+        closeDialogConfirm(){
+          this.activeDialogFinishReceiving = false
+        },
+        confirm(val) {
+          if(val) {
+            this.activeLoadingFinishReceiving=true
+            this.addData()
+          }
+        },
+        async addData() {
+          await axios
+              .post(this.URL.receiving_runsheet + `?n=${this.listenNodeId}`,
+                  JSON.stringify(this.form),
+                  this.Helper.header())
+              .then(res => {
+                this.$refs.ConnoteRunsheetInformation.refresh();
+                this.activeDialogFinishReceiving = false
+                this.activeLoadingFinishReceiving = false
+                this.handleClearForm()
+                this.openNotification(null, 'Success', 'Receiving Runsheet is success')
+                
+      this.refresh()
+              }).catch(err => {
+                this.activeDialogFinishReceiving = false
+                this.activeLoadingFinishReceiving = false
+                this.refresh()
+                // this.handleClearForm();
+                this.openNotification('danger', 'Mohon melakukan scan nomor runsheet terlebih dahulu', err)
+              })
+        },
     },
     mounted() {
       this.refresh()

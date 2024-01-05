@@ -2453,4 +2453,10 @@ export default {
     commit('SET_PROFILE_USER_EMAIL_ValueData', payload)
   },
   //====== END PROFILE PAGE ======    
+
+  //GET NUMBER RUNSHEET
+  SET_DELIVERY_NUMBER({ commit }, payload) {
+    console.log(payload,'deliveryNumber');
+    commit('SET_DELIVERY_NUMBER', payload);
+  },
 }

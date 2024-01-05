@@ -169,6 +169,9 @@ export default {
     //undel
     undelivery : api + "undelivery",
 
+    //Receiving Runsheet
+    receiving_runsheet : api + "receiving-runsheet",
+
     //check-auth
     check_auth : api + "check-auth",
 
