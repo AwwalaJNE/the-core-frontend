@@ -488,13 +488,15 @@ export default {
               `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
               this.Helper.header())
               .then(res => {
+              let arr = []
                       res.data.data.map(item => {
                           let obj = {}
                           obj["label"] = item.service_code
                           obj["value"] = item.service_code
 
-                          this.serviceArrayNew.push(obj)
+                          arr.push(obj)
                       })
+                      this.serviceArrayNew = arr
 
                       this.loading = false
           }).catch(err => {
