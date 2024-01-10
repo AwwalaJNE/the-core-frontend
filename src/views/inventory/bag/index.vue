@@ -74,7 +74,7 @@
                    placeholder="Select service"
                    formKey="service"
                    :loading="loading"
-                   :valueData="serviceArrayNew"
+                   :valueData="filteredServiceArray"
                    :selectedValue="service"
                    :isMultiple="true"
                    
@@ -379,8 +379,8 @@ export default {
           ],
           serviceArrayNew : [
             {
-              "label": null,
-              "value": null
+              "label":"All Service",
+              "value":"all_service"
             },
           ],
           
@@ -403,6 +403,10 @@ export default {
     filteredRegionalArray() {
       // Select 'All Routing' ditampilkan ketika user role inbound(4)
       return this.listenActiveUser.user_role_id === 4 ? this.regionalArray : this.regionalArray.filter(item => item.value !== 'all_routing');
+    },
+    filteredServiceArray() {
+      // Select 'All Service' ditampilkan ketika user role inbound(4)
+      return this.listenActiveUser.user_role_id === 4 ? this.serviceArrayNew : this.serviceArrayNew.filter(item => item.value !== 'all_service');
     },
   },
   methods: {
@@ -494,9 +498,8 @@ export default {
                           obj["label"] = item.service_code
                           obj["value"] = item.service_code
 
-                          arr.push(obj)
+                          this.serviceArrayNew.push(obj)
                       })
-                      this.serviceArrayNew = arr
 
                       this.loading = false
           }).catch(err => {
