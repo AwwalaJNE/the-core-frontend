@@ -406,7 +406,7 @@ export default {
     },
     filteredServiceArray() {
       // Select 'All Service' ditampilkan ketika user role inbound(4)
-      return this.listenActiveUser.user_role_id === 101 ? this.serviceArrayNew : this.serviceArrayNew.filter(item => item.value !== 'all_service');
+      return this.listenActiveUser.user_role_id === 4 ? this.serviceArrayNew : this.serviceArrayNew.filter(item => item.value !== 'all_service');
     },
   },
   methods: {
