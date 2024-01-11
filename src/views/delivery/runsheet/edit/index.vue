@@ -43,7 +43,7 @@
             </template>
             <div class="nav-box">
               <vs-row>
-                <vs-col xs="4" sm="4" lg="4" style="margin-top: 2em">
+                <vs-col xs="12" sm="4" lg="4" style="margin-top: 2em">
                   <div v-if="radio_option === 'koli'" class="center">
                     <vs-input
                       border
@@ -77,7 +77,41 @@
                       </vs-input>
                     </div>
                 </vs-col>
-                <vs-col xs="4" sm="4" lg="4" offset="2">
+                <vs-col xs="12" sm="4" lg="4" style="margin-top: 2em">
+                  <div v-if="radio_option === 'koli'" class="center">
+                    <vs-input
+                      border
+                      type="text"
+                      v-model="item_no_remove"
+                      label-placeholder="Remove Koli here"
+                      v-on:keyup.enter="removeValue"
+                      autofocus
+                      icon-after
+                      ref="formRemoveConnote"
+                    >
+                      <template #icon>
+                        <i class="bx bx-exit"></i>
+                      </template>
+                    </vs-input>
+                  </div>
+                  <div v-else class="center">
+                      <vs-input
+                        border
+                        type="text"
+                        v-model="item_no_orion_remove"
+                        label-placeholder="Remove Connote here (orion)"
+                        v-on:keyup.enter="removeValueOrion"
+                        autofocus
+                        icon-after
+                        ref="formRemoveConnoteOrion"
+                      >
+                        <template #icon>
+                          <i class="bx bx-exit"></i>
+                        </template>
+                      </vs-input>
+                    </div>
+                </vs-col>
+                <vs-col xs="12" sm="4" lg="4">
                   <template v-if="dataDelivery.length > 0">
                     <div class="left">
                       <ul style="float: left; text-align: left">
@@ -167,6 +201,9 @@ export default {
       tempDate: [],
       dialogPickupRequest: false,
       item_no: "",
+      item_no_remove: "",
+      item_no_orion_remove: "",
+      item_no_orion: "",
       form: {},
       delivery_runsheet_number: "",
       employee_id: "",
@@ -190,9 +227,9 @@ export default {
     }
   },
   methods: {
-    refresh() {
-      // this.$refs.runsheetInformation.refresh(); // trigger function refresh form dari luar component list
-    },
+    // refresh() {
+    //   this.$refs.runsheetInformation.refresh(); // trigger function refresh form dari luar component list
+    // },
     reload() {
       this.getDataDelivery();
     },
@@ -225,7 +262,23 @@ export default {
       this.scanConnote();
       this.item_no = null;
     },
+    removeValue() {
+      console.log(this.item_no_remove,'item nooo');
+      this.form.koli_number = this.item_no_remove;
+      // this.form.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number
+      this.form.courier_employee_id = this.employee_id;
+      this.removeConnote();
+      this.item_no_remove = null;
+    },
+    removeValueOrion() {
+      this.form.koli_number = this.item_no_orion_remove + "00";
+      // this.form.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number
+      this.form.courier_employee_id = this.employee_id;
+      this.removeConnote();
+      this.item_no_orion_remove = null;
+    },
     getParamRoute() {
+      console.log('hehe');
       this.employee_id = this.$route.params.employee_id.toString();
       this.getCourier()
       // this.employee_data.employee_name = this.$route.params.employee_name
@@ -292,6 +345,38 @@ export default {
           this.openNotification("danger", "", err.response.data.message);
         });
     },
+    async removeConnote() {
+      console.log("remove", this.form.koli_number)
+      this.loadingRunsheet = true
+      await axios
+        .delete(
+          this.URL.employee + `/${this.employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&koli_number=${this.form.koli_number}`,
+          this.Helper.header()
+        )
+        .then((res) => {
+          // this.dataDelivery = this.processDataDelivery(res.data.data)
+          // this.dataDelivery.map((item) => {
+          //   item.employee_name = res.data.data.employee_name
+          // })
+          if (res.data.hasOwnProperty('summary')) {
+            this.dataDelivery.employee_name = res.data.data.employee_name ? res.data.data.employee_name : null;
+            this.dataDelivery.employee_code = res.data.data.employee_code ? res.data.data.employee_code : null;
+            this.dataDeliverySummary = res.data.summary;
+            this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
+            this.getDataDelivery();
+            this.openNotification(null, "Success", "Remove koli success");
+            this.loadingRunsheet = false
+          } else {
+            this.getDataDelivery();
+            this.openNotification(null, "Success", res.data.message);
+            this.loadingRunsheet = false
+          }
+        })
+        .catch((err) => {
+          this.loadingRunsheet = false
+          this.openNotification("danger", "", err.response.data.message);
+        });
+    },
     async getStatus() {
       await axios
         .get(
@@ -327,6 +412,7 @@ export default {
         });
     },
     async getDataDelivery() {
+      console.log('masuk sini ya');
       this.loadingRunsheet = true
       await axios
         .get(
@@ -359,29 +445,29 @@ export default {
             item["status_delivery"] = [...status["normal"], ...status["all"]]
           }
         }
-        if(item.hasOwnProperty("status")) {
-          // item["is_disabled_input"] = item
-          if(item["status"] !== null && typeof item["status"] == 'object') {
-              if(item["status"].hasOwnProperty('status_code')) {
-                item["is_disabled_input_status"] = item["status"]["status_code"] !== null || item["status"]["status_code"] !== "" ? true : false
-              }
-          }
-        }
-        if(item.hasOwnProperty("status_code")){
-          if(item["status_code"] !== null && typeof item["status_code"] == 'string') {
-            item["is_disabled_input_status"] = item["status_code"] !== null || item["status_code"] !== "" ? true : false
-          }
-        }
-        if(item.hasOwnProperty("remarks")){
-          if(item["remarks"] !== null) {
-            item["is_disabled_input_remarks"] = item["remarks"] !== null || item["remarks"] !== "" ? true : false
-          }
-        }
-        if(item.hasOwnProperty("receiver_name")){
-          if(item["receiver_name"] !== null) {
-            item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false
-          }
-        }
+        // if(item.hasOwnProperty("status")) {
+        //   // item["is_disabled_input"] = item
+        //   if(item["status"] !== null && typeof item["status"] == 'object') {
+        //       if(item["status"].hasOwnProperty('status_code')) {
+        //         item["is_disabled_input_status"] = item["status"]["status_code"] !== null || item["status"]["status_code"] !== "" ? true : false
+        //       }
+        //   }
+        // }
+        // if(item.hasOwnProperty("status_code")){
+        //   if(item["status_code"] !== null && typeof item["status_code"] == 'string') {
+        //     item["is_disabled_input_status"] = item["status_code"] !== null || item["status_code"] !== "" ? true : false
+        //   }
+        // }
+        // if(item.hasOwnProperty("remarks")){
+        //   if(item["remarks"] !== null) {
+        //     item["is_disabled_input_remarks"] = item["remarks"] !== null || item["remarks"] !== "" ? true : false
+        //   }
+        // }
+        // if(item.hasOwnProperty("receiver_name")){
+        //   if(item["receiver_name"] !== null) {
+        //     item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false
+        //   }
+        // }
         item['employee_name'] = data.employee_name
         item['employee_code'] = data.employee_code
       })
@@ -392,6 +478,7 @@ export default {
       
     },
     async updatePOD(dataPOD, info) {
+      console.log(dataPOD,'ini data pod');
         if(dataPOD.remarks || dataPOD.receiver_name || dataPOD.status) {
 
           if (this.delivery_runsheet_number) {

@@ -10,7 +10,13 @@
         :limit="pagination.limit"
         :hasAction="false"
         :hasPagination="false"
+        @actionRemove="actionRemove"
         @updateValue="updateValue"
+        :customAction="true"
+        :customActionList="customActionList"
+        @actionUpdate="actionUpdate"
+
+
       />
     </template>
   </div>
@@ -90,7 +96,7 @@ export default {
           label: "Status",
           key: "status_delivery_description",
           width: "xxs",
-        },
+        }
       ],
       dataItem: {},
       tempSearch: "",
@@ -106,6 +112,23 @@ export default {
         page: 1,
       },
       loadStatus: false,
+      customActionList: [
+              {
+                label: 'Confirm',
+                key: 'confirm',
+                attribute: '',
+                option: {
+                  type: 'redirect',
+
+                }
+              },
+              {
+                label: 'Edit',
+                key: 'edit',
+                attribute: '',
+              }
+            ],
+            test: ""
     };
   },
   computed:{
@@ -130,7 +153,7 @@ export default {
       if (val !== undefined) {
         this.employee_id = val;
         if (this.employee_id !== old) {
-          //   this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
+            // this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
         }
       }
     },
@@ -152,7 +175,7 @@ export default {
   methods: {
     updateValue(key, val, info, item = null) {
       val = val.toUpperCase();
-      console.log("Update runsheet", key, val, info, item)
+      // console.log("Update runsheet", key,'|', val,'|', info, item)
       key = key.split("|");
       let column_change = key[0];
       // let koli_number = key[1];
@@ -163,16 +186,6 @@ export default {
       
       let obj = {}
       obj["koli_number"] = item["koli_number"]
-      // obj["status"] = item["status_code"] || ''
-      
-      // if (column_change && column_change == "status_delivery") {
-      //     this.dataTable.map((item, index)=>{
-      //       if(key[1] === item.koli_number){
-      //         this.delivery_runsheet_number = this.dataTable[index].delivery_runsheet_number
-      //       }
-      //     })
-      //     obj["status"] = val
-      // }
       switch (true) {
         case column_change && column_change == "status_delivery":
             obj["status"] = val
@@ -195,9 +208,80 @@ export default {
       
       }
       // this.$emit("updatePOD", obj, info);
+      // console.log(this.actionUpdate(key, val),'action updates');
 
 
     },
+    async runsheetAction(val, info) {
+      // console.log(val, info, "ini vall");
+      try {
+        const dataPOD = {
+          // Construct the payload to be sent in the request body
+          courier_employee_id: val.courier_employee_id,
+          delivery_runsheet_number: val.delivery_runsheet_number,
+          koli_number: val.koli_number,
+          status: val.status.status_code,
+          remarks: val.remarks,
+          receiver_name: val.receiver_name,
+        };
+        this.openNotification(
+          "success",
+          "POD UPDATED!",
+        );
+
+        // Send the values to the parent component
+        this.$emit("updatePOD", dataPOD, info);
+      } catch (err) {
+        this.loading = false;
+        this.openNotification(
+          "danger",
+          "Update POD is failed",
+          err.message || err
+        );
+      }
+    },
+    async actionRemove(val){
+      console.log(val,'ini data pod');
+            await axios
+                .delete(
+                  this.URL.employee + `/${val.courier_employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${val.delivery_runsheet_number}&koli_number=${val.koli_number}`,
+                    this.Helper.header())
+                .then(res => {
+                  
+                  console.log(res.data, res.data.data.length,Object.keys(res.data.data).length,'inires');
+                    if(Object.keys(res.data.data).length > 0){
+                    this.refresh()
+                    }else{
+                        this.$router.push({ name: 'DeliveryRunsheetEdit', params: { } });
+                    }
+                    this.openNotification('success', 'Romove success', 'Romove Koli number item successfully')
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Romove bag item is failed', err)
+                })
+                detail
+        },
+        actionUpdate(key, val) {
+          // console.log(key, val,'action update sj');
+          switch(val) {
+                case "confirm":
+                    console.log('confirms', key, val)
+                    // this.updateValue(key, val)
+                    // console.log(this.updateValue(key, val),'ini testing confirm');
+                    this.runsheetAction()
+                    break;
+                case "edit":
+                    this.edit()
+
+                    break;
+                case 'cancel':
+                  // this.manifest_do_number = val.manifest_do_number
+                  this.actionRemove()
+                default:
+                    console.log('meong')
+                    // code block
+            }
+        },
     closeDialogConfirm() {
       this.confirmDialog = false;
     },
