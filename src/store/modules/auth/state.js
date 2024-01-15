@@ -18,5 +18,14 @@ export default {
       valueData: null,
       value: ''
     },
+    ip_address: {
+      label: "IP Address",
+      key: "ip_address",
+      rule: "required",
+      typeInput: "disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
   }
 }

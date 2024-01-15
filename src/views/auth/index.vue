@@ -47,15 +47,24 @@ export default {
     },
     data() {
         return {
-            form: {}
+            form: {},
+            ipAddress :null
         }
     },
     methods: {
         handleSubmit(){
             this.$refs.formLoginController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
-        formData(form){
-            this.form = form
+        async formData(form){
+            try {
+                const response = await axios.get('https://api64.ipify.org?format=json')
+                this.form.ip_address = response.data.ip
+                this.form.password = form.password
+                this.form.user_login = form.user_login
+                this.login()
+            } catch (error) {
+                console.error('Error fetching IP address:', error)
+            }
             this.login()
         },
         
