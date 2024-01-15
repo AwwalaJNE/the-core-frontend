@@ -10,6 +10,20 @@
 
         <template v-slot:content>
             <div>
+                <vs-col lg="12">
+                   <selector 
+                   ref="ipAddress"
+                   name="IP Address" 
+                   rules="" 
+                   placeholder="Enter to select value"
+                   :valueData="ipAddressArray"
+                   key="ip_Address"
+                   :selectedValue="ipAddress"
+                   :isMultipleTag="true"
+                   @updateValue="updateFilter" />
+                 </vs-col>
+            </div>
+            <div>
                 <form-input-controller 
                     ref="formUserNodeController"
                     @formData="formData"
@@ -57,12 +71,14 @@ import axios from "axios";
 import master from "@/mixins/master"
 import FormInputController from "@/components/form/formInputController"
 import DialogMaster from "@/components/dialog/dialogMaster"
+import Selector from "@/components/input/select"
 export default {
     name:"dialog-create-edit-node",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,    
+        "form-input-controller": FormInputController,
+        "selector": Selector   
     },
     props: {
        closeDialog: Function,
@@ -74,8 +90,17 @@ export default {
     },
     data() {
         return {
-            form: {},
-            node_id: ''
+            form: {
+                ip_address: []
+            },
+            node_id: '',
+            ipAddress: '',
+            ipAddressArray: [
+            {
+              "label":"172.16.254.1.",
+              "value":"172.16.254.1."
+            }
+            ]
         }
     },
     computed: {
@@ -84,6 +109,7 @@ export default {
                 this.getDataNodeType()
                 this.getDataCustomer()
                 // this.getDataNode()
+               this.getIpAddress()
                 // this.getDataAltAddress()
                 
             }
@@ -105,8 +131,10 @@ export default {
         }
     },
     methods: {
-        formData(form){
+        formData(form,value){
             this.form = form
+            this.ipAddress = this.$store.getters.getInputs.value
+            console.log(form,value,this.ipAddress, ' ini forms');
             if(this.node_id !== undefined && this.node_id !== '') {
                 if(this.form.hasOwnProperty('node_id')){
                   delete this.form.node_id
@@ -140,6 +168,31 @@ export default {
                             arr.push(obj)
                         })
                         this.$store.dispatch("SET_NODE_DEFAULT_NODE_LINK_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    
+                }).catch(err => {
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getIpAddress(){
+            await axios
+                .get(this.URL.node + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=100000&page=1`, 
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            if (item.ip_address !== null) {  // Filter IP address yang tidak null
+                                let obj = {};
+                                obj["label"] = item.ip_address;
+                                obj["value"] = item.ip_address;
+                                arr.push(obj);
+                            }
+                        })
+                        this.$store.dispatch("SET_NODE_IP_ADDRESS_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
@@ -264,7 +317,7 @@ export default {
 
         },
         async addData() {
-            console.log('form', this.form)
+            console.log('forms', this.form)
             await axios
                 .post(
                     this.URL.node + `?n=${this.listenNodeId}`,
@@ -285,7 +338,24 @@ export default {
         cancel() {
             this.handleClearForm()
             this.closeDialog()
+        },
+        updateFilter(key, value) {
+        this.form.ip_address = value;
+        this.$store.dispatch("SET_NODE_IP_ADDRESS_ArrData",{ key, value })
+        console.log(this.form.ip_address,"regional", key, value)
+        switch(true) {
+            case key.toLowerCase().includes("ipAddress"):
+                this.ipAddress = value
+                console.log(value,'valuee');
+                // this.$store.dispatch("SET_BAGGING_destination_selected", this.regional )
+                break;
+            case key.toLowerCase().includes("service"):
+                this.service = value
+                // this.$store.dispatch("SET_BAGGING_service_selected", this.service )
+                break;
+            default:
         }
+        },
     },
     mounted() {
         // this.getDataNodeType()

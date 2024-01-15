@@ -175,7 +175,8 @@ export default {
   methods: {
     updateValue(key, val, info, item = null) {
       val = val.toUpperCase();
-      // console.log("Update runsheet", key,'|', val,'|', info, item)
+      const deliveryNumber = this.$store.getters.getInputs.remarks
+      // console.log("Update runsheet",deliveryNumber, key,'|', val,'|', info, item)
       key = key.split("|");
       let column_change = key[0];
       // let koli_number = key[1];
@@ -189,19 +190,20 @@ export default {
       switch (true) {
         case column_change && column_change == "status_delivery":
             obj["status"] = val
-            this.$emit("updatePOD", obj, info);
+            // this.$emit("updatePOD", obj, info);
           break;
         case column_change && column_change == "remarks":
             obj["remarks"] = val
             if(item.hasOwnProperty('remarks') && val != item.remarks){
-              this.$emit("updatePOD", obj, info);
+            console.log("Update runsheet",obj,'|', info, item)
+              this.$emit("runsheetAction", obj, info);
             }
 
           break;
         case column_change && column_change == "receiver_name":
             obj["receiver_name"] = val
             if(item.hasOwnProperty('receiver_name') && val != item.receiver_name){
-              this.$emit("updatePOD", obj, info);
+              // this.$emit("updatePOD", obj, info);
             }
           break;
         default:
@@ -213,7 +215,8 @@ export default {
 
     },
     async runsheetAction(val, info) {
-      // console.log(val, info, "ini vall");
+      const remarks = this.$store.getters.getInputs.remarks
+      console.log(val, info, "ini vall");
       try {
         const dataPOD = {
           // Construct the payload to be sent in the request body
@@ -221,7 +224,7 @@ export default {
           delivery_runsheet_number: val.delivery_runsheet_number,
           koli_number: val.koli_number,
           status: val.status.status_code,
-          remarks: val.remarks,
+          // remarks: remarks.key,
           receiver_name: val.receiver_name,
         };
         this.openNotification(
@@ -263,12 +266,13 @@ export default {
         },
         actionUpdate(key, val) {
           // console.log(key, val,'action update sj');
+      // console.log("Update runsheets",remarks)
           switch(val) {
                 case "confirm":
                     console.log('confirms', key, val)
                     // this.updateValue(key, val)
                     // console.log(this.updateValue(key, val),'ini testing confirm');
-                    this.runsheetAction()
+                    this.runsheetAction(key)
                     break;
                 case "edit":
                     this.edit()

@@ -31,6 +31,7 @@
                       <span class="c-label">{{name}}</span>
                     </template>
                     
+                    
                     <template v-if="listenIsMultiple == true">
                       <el-select 
                       v-model="arrValue" 
@@ -51,7 +52,31 @@
                           </el-option>
                       </el-select>
                     </template>
-                    <template v-else>
+                    <template v-else-if="listenIsMultipleTags == true">
+                        <el-select
+                            v-model="arrValue"
+                            multiple
+                            filterable
+                            allow-create
+                            default-first-option
+                            :reserve-keyword="false"
+                            :disabled="listenIsDisabled"
+                            class="m-select"
+                            :placeholder="placeholder"
+                            :loading="loadingActive"
+                            :is-Multiple-Tag="listenIsMultipleTags"
+                            @change="updateValue"
+                            :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                        >
+                            <el-option
+                                v-for="(item,key) in DataArr"
+                                :key="key"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </template>
+                    <template v-else-if="listenIsMultiple == false">
                      <el-select
                       v-model="value" 
                       filterable
@@ -93,6 +118,7 @@ export default {
         selectedValue: [Array, String, Number],
         formKey: String,
         isMultiple: Boolean,
+        isMultipleTag: Boolean,
         border: Boolean,
         placeholder:String,
         tabindex: [Number, String],
@@ -122,6 +148,10 @@ export default {
         listenIsMultiple(){
             return this.isMultiple ? this.isMultiple : false
         },
+        listenIsMultipleTags(){
+            console.log(this.isMultipleTag, 'is multiple tag');
+            return this.isMultipleTag ? this.isMultipleTag : false
+        },
         listenTabIndex() {
             return this.tabindex
         },
@@ -145,8 +175,10 @@ export default {
         selectedValue: function (val) {
             if (val != undefined) {
                 if(this.isMultiple == false) {
+                    console.log('is');
                     this.value = val
                 } else {
+                    console.log('isC');
                     this.arrValue = val
                 }
             }
@@ -179,9 +211,11 @@ export default {
         //     this.loadingInjector !== null ? this.loadingInjector.close() : null
         // },
         updateValue(val){
-            let dataValue = this.listenIsMultiple == false ? this.value : this.arrValue
+            let dataValue = this.listenIsMultiple == false && this.isMultipleTag === false ? this.value : this.arrValue
             
+            console.log(val,dataValue,"|",this.value ,this.listenIsMultiple,'-', this.arrValue ,'ini val');
             let obj = this.DataArr.filter(item => item.value == val)[0]
+            console.log("updateValue", this.listenFormKey, dataValue, obj, this.dataObj);
             this.$emit("updateValue", this.listenFormKey, dataValue, obj, this.dataObj)
         }
     },

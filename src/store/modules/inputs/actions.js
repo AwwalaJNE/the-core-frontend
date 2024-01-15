@@ -550,6 +550,17 @@ export default {
     commit('SET_NODE_DEFAULT_NODE_ALTERNATE_ADDRESS_ID_ArrData', payload)
   },
 
+  SET_NODE_IP_ADDRESS({ commit }, payload) {
+    commit('SET_NODE_IP_ADDRESS', payload)
+  },
+  SET_NODE_IP_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_NODE_IP_ADDRESS_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_NODE_IP_ADDRESS_ArrData({ commit }, payload) {
+    commit('SET_NODE_IP_ADDRESS_ArrData', payload)
+  },
+
   SET_NODE_NODE_ALLOW_SPECIAL_CARGO({ commit }, payload) {
     commit('SET_NODE_NODE_ALLOW_SPECIAL_CARGO', payload)
   },
@@ -2459,4 +2470,10 @@ export default {
     console.log(payload,'deliveryNumber');
     commit('SET_DELIVERY_NUMBER', payload);
   },
+
+  //input runsheet
+  UPDATE_FORM_DATA({ commit }, payload) {
+    console.log(payload,'payload');
+    commit('UPDATE_FORM_DATA', payload);
+  }
 }

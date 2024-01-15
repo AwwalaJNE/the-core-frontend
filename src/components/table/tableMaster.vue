@@ -893,6 +893,11 @@ export default {
             }
             this.$emit("updateValue", key, val, info, dataObj)
         },
+        updateFormValue(value, formKey) {
+            console.log(value, formKey,'UPDATE_FORM_DATA');
+      // Kirim aksi (action) ke Vuex store
+      this.$store.commit('UPDATE_FORM_DATA', { key: formKey, value });
+    },
 
         updateSelected() {
             this.$emit("updateSelected", this.selected)
