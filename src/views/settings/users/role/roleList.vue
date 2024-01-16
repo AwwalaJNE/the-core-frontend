@@ -71,6 +71,11 @@ export default {
                     label: "Roles",
                     key: "user_role_name",
                     width: "auto"
+                },
+                {
+                    label: "Role Code",
+                    key: "user_role_code",
+                    width: "auto"
                 }
             ],
             loading: false,
