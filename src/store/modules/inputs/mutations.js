@@ -571,6 +571,19 @@ export default {
       state.node.default_node_alternate_address_id.arrData = []
   },
 
+  SET_NODE_IP_ADDRESS(state, payload) {
+    state.node.ip_address.value = payload
+  },
+  SET_NODE_IP_ADDRESS_ValueData(state, payload) {
+    state.node.ip_address.valueData = payload
+  },
+  SET_NODE_IP_ADDRESS_ArrData(state, payload) {
+    console.log(state,payload,'SET_NODE_IP_ADDRESS_ArrData');
+    state.node.ip_address.hasOwnProperty('arrData') ?
+      state.node.ip_address.arrData = payload :
+      state.node.ip_address.arrData = []
+  },
+
   SET_NODE_NODE_ALLOW_SPECIAL_CARGO(state, payload) {
     state.node.node_allow_special_cargo.value = payload
   },
@@ -2632,4 +2645,9 @@ export default {
   SET_DELIVERY_NUMBER(state, payload) {
     state.deliveryNumber = payload;
   },
+
+  UPDATE_FORM_DATA(state, payload) {
+    console.log(state, payload, 'state');
+    state.remarks = payload;
+  }
 }

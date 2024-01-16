@@ -816,6 +816,16 @@ export default {
       valueData: 0,
       value: 0
     },
+    ip_address: {
+      label: "IP addresss",
+      key: "ip_address",
+      rule: "required",
+      typeInput: "selectMultipleTag",
+      typeData: "String",
+      arrData: [],
+      valueData: true,
+      value: true
+    },
     default_node_link_id: {
       label: "Default node link*",
       key: "default_node_link_id",

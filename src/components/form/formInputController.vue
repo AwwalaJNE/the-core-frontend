@@ -89,6 +89,19 @@
                                         :url="asynchronousSelect_url"
                                         @updateValue="updateValue" />
                             </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('selectMultipleTag')">
+                                    <div>
+                                        <selector 
+                                        :ref="InputObject[item].key"
+                                        :name="InputObject[item].label" 
+                                        :rules="InputObject[item].rule" 
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].arrData"
+                                        :selectedValue="InputObject[item].value"
+                                        :isMultiple="false"
+                                        @updateValue="updateValue" />i
+                                    </div>
+                            </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
                                 <template v-if="InputObject[item].hasOwnProperty('visible')">
                                     <template v-if="InputObject[item]['visible'] == true">
