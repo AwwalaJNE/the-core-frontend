@@ -93,6 +93,7 @@ export default {
                     label: 'New Transaction',
                     url: '/transaction/new-transactions',
                     icon: 'bx-archive',
+                    permission : 'create-transaction',
                     children: []
                 },
                 {
@@ -103,17 +104,21 @@ export default {
                         {
                             label: 'Transaction List',
                             url: '/sales/transaction',
-                            icon: 'bx-list-ol'
+                            icon: 'bx-list-ol',
+                            permission : 'read-transaction',
+
                         },
                         {
                             label: 'Cash Register',
                             url: '/sales/cashregister',
-                            icon: 'bx-money'
+                            icon: 'bx-money',
+                            permission : 'create-transaction',
                         },
                         {
                             label: 'Upload Transaction',
                             url: '/transaction/upload-connote',
-                            icon: 'bx-upload'
+                            icon: 'bx-upload',
+                            permission : 'create-transaction',
                         },
                     ]
                 },
@@ -124,17 +129,20 @@ export default {
                     children: [
                         {
                             label: 'Pickup Request',
+                            permission : 'create-pickup',
                             url: '/pickup/request',
                             icon: ''
                         },
                         {
                             label: 'Pickup Schedule',
+                            permission : 'create-pickup-schedule',
                             url: '/pickup/schedule',
                             icon: ''
                         },
                         {
                             label: 'Pickup List',
                             url: '/pickup/list',
+                            permission : 'read-pickup',
                             icon: ''
                         },
                     ]
@@ -335,27 +343,32 @@ export default {
                         {
                             label: 'Settings Vehicles',
                             url: '/settings/vehicles',
-                            icon: ''
+                            icon: '',
+                            permission: 'read-vehicle'
                         },
                         {
                             label: 'Settings Users',
                             url: '/settings/users',
-                            icon: ''
+                            icon: '',
+                            permission: 'read-user'
                         },
                         {
                             label: 'Settings Employee',
                             url: '/settings/employee',
-                            icon: ''
+                            icon: '',
+                            permission: 'read-employee'
                         },
                         {
                             label: 'Settings Customer',
                             url: '/settings/customer',
-                            icon: ''
+                            icon: '',
+                            permission: 'read-customer'
                         },
                         {
                             label: 'Settings Exchange Rate',
                             url: '/settings/exchangerate',
-                            icon: ''
+                            icon: '',
+                            permission: 'read-customer'
                         },
                         {
                             label: 'Settings Access Token',
@@ -396,6 +409,9 @@ export default {
             // this.$router.push(`${val}`)
         },
         listenNodeType(){
+            this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
+        },
+        loadPermission(){
             this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
         },
         customFilter(){
