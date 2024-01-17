@@ -94,6 +94,11 @@ export default {
                   key: "is_confirmed",
                   width: "auto"
                 },
+                {
+                  label: "Received At",
+                  key: "inbound_node_name_receiver",
+                  width: "auto"
+                },
             ],
             loading: false,
             dataItem: {},
