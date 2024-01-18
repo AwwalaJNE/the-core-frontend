@@ -148,6 +148,7 @@
                           :arrStatus="arrStatus"
                           :ref="'runsheetInformation'"
                           @updatePOD="updatePOD"
+                          @editPOD="editPOD"
                           :query="tempSearch"
                           :loading="loadingRunsheet"
                           :deliveryNumber="delivery_runsheet_number"
@@ -468,6 +469,8 @@ export default {
         //     item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false
         //   }
         // }
+        console.log(item["is_delivered"], 'data.is_delivered');
+        item["isDisabled"] = item["is_delivered"] == 1 ? true : false
         item['employee_name'] = data.employee_name
         item['employee_code'] = data.employee_code
       })
@@ -510,6 +513,35 @@ export default {
         }
 
 
+    },
+    async editPOD(val) {
+      const statusDelivery = this.$store.getters.getInputs.status_delivery.status === null ? val.status.status_code : this.$store.getters.getInputs.status_delivery.status;
+      const remarks = this.$store.getters.getInputs.remarks.remarks === null ? val.remarks : this.$store.getters.getInputs.remarks.remarks;
+      const receiverName = this.$store.getters.getInputs.receiver_name.receiver_name === null ? val.receiver_name : this.$store.getters.getInputs.receiver_name.receiver_name;
+      const dataPOD = {
+        courier_employee_id: val.courier_employee_id,
+        delivery_runsheet_number: val.delivery_runsheet_number,
+        koli_number: val.koli_number,
+        status: statusDelivery,
+        remarks: remarks,
+        receiver_name: receiverName,
+      };
+      await axios
+        .put(
+          this.URL.delivery +
+          `/${val.delivery_runsheet_number}/edit?n=${this.listenNodeId}`,
+          JSON.stringify(dataPOD),
+          this.Helper.header()
+        )
+        .then((res) => {
+          this.getDataDelivery();
+          this.form = {};
+          this.openNotification(null, "Success", "POD EDITED!");
+        })
+        .catch((err) => {
+          console.log(err.response);
+          this.openNotification('danger', 'EDIT FAILED !', err.response.data.message);
+        });
     },
     back() {
       this.$router.push("/delivery/runsheet");
