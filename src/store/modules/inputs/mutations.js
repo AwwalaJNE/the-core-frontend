@@ -2649,5 +2649,17 @@ export default {
   UPDATE_FORM_DATA(state, payload) {
     console.log(state, payload, 'state');
     state.remarks = payload;
-  }
+  },
+  SET_STATUS_DELIVERY(state, payload) {
+    console.log(payload,'STATUS DELIVERY');
+    state.status_delivery = payload;
+  },
+  SET_REMARKS(state, payload) {
+    console.log(payload,'SET_REMARKS');
+    state.remarks = payload;
+  },
+  SET_RECEIVER_NAME(state, payload) {
+    console.log(payload,'SET_RECEIVER_NAME');
+    state.receiver_name = payload;
+  },
 }

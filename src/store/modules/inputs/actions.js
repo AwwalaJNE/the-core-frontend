@@ -2475,5 +2475,15 @@ export default {
   UPDATE_FORM_DATA({ commit }, payload) {
     console.log(payload,'payload');
     commit('UPDATE_FORM_DATA', payload);
-  }
+  },
+
+  SET_STATUS_DELIVERY({ commit }, payload) {
+    commit("SET_STATUS_DELIVERY", payload);
+  },
+  SET_REMARKS({ commit }, payload) {
+    commit("SET_REMARKS", payload);
+  },
+  SET_RECEIVER_NAME({ commit }, payload) {
+    commit("SET_RECEIVER_NAME", payload);
+  },
 }
