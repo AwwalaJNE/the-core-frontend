@@ -8,20 +8,51 @@
         </div>
       </vs-col>
     </vs-row>
+
+    <template>
+      <div class="center in-get-bag">
+        <vs-row style="margin-top:2em">
+          <vs-col xs="12" sm="4" lg="2">
+            <vs-radio
+              v-model="radio_option"
+              val="connote">
+              Connote (Orion)
+            </vs-radio>
+          </vs-col>
+          <vs-col xs="12" sm="4" lg="2">
+            <vs-radio
+              v-model="radio_option"
+              val="koli">
+              Koli
+            </vs-radio>
+          </vs-col>
+        </vs-row>
+      </div>
+    </template>
+
     <section class="bagging">
       <vs-row justify="space-between">
         <vs-col xs="12" sm="2" lg="2">
           <template>
-            <div class="center in-get-bag">
-              <vs-col lg="12">
-                <vs-input border type="text"
-                          v-model="item_code"
-                          label-placeholder="Masukkan code BAG / Connote"
-                          v-on:keyup.enter="updateItemOnBag"
-                          ref="formInputBagging">
+            <div v-if="radio_option === 'connote'" class="center in-get-bag">
+              <vs-input border type="text"
+                v-model="item_code_orion"
+                label-placeholder="Masukkan Connote (Orion)"
+                v-on:keyup.enter="updateItemOnBagOrion"
+                :autofocus="true"
+                ref="formInputBagging">
 
-                </vs-input>
-              </vs-col>
+              </vs-input>
+            </div>
+            <div v-else class="center in-get-bag">
+              <vs-input border type="text"
+                v-model="item_code"
+                label-placeholder="Masukkan code BAG / Koli"
+                v-on:keyup.enter="updateItemOnBag"
+                :autofocus="true"
+                ref="formInputBagging">
+
+              </vs-input>
             </div>
           </template>
         </vs-col>
@@ -175,7 +206,9 @@ export default {
   },
   data() {
     return {
+      radio_option: "connote",
       title: "Bagging Detail",
+      item_code_orion: '',
       item_code:'',
       bag_id:'',
       weight:'',
@@ -296,6 +329,10 @@ export default {
       this.form.item_number = this.item_code
       this.ProccessAddBagItem()
     },
+    updateItemOnBagOrion() {
+      this.form.item_number = this.item_code_orion + "00"
+      this.ProccessAddBagItem()
+    },
     updateValue(){
       this.form={
           bag_number : this.bag_id,
@@ -308,6 +345,7 @@ export default {
     handleClearForm(){
       this.form = {}
       this.item_code='',
+      this.item_code_orion = ''
       this.weight =''
     },
     async ProccessAddBagItem(){
