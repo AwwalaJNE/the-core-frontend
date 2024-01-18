@@ -72,7 +72,7 @@ export default {
           label: "Remarks",
           key: "remarks",
           type: "inputan",
-          typeInput: "text",
+          typeInput: "textsubmit",
           disabled_input: "is_disabled_input_remarks",
           data: "",
           width: "md",
@@ -87,7 +87,7 @@ export default {
           label: "Receiver name",
           key: "receiver_name",
           type: "inputan",
-          typeInput: "text",
+          typeInput: "textsubmit",
           disabled_input: "is_disabled_input_reveiver",
           data: "",
           width: "md",
@@ -120,7 +120,7 @@ export default {
                 option: {
                   type: 'redirect',
 
-                }
+                },
               },
               {
                 label: 'Edit',
@@ -190,19 +190,22 @@ export default {
       switch (true) {
         case column_change && column_change == "status_delivery":
             obj["status"] = val
+            this.$store.dispatch("SET_STATUS_DELIVERY", obj);
             // this.$emit("updatePOD", obj, info);
           break;
         case column_change && column_change == "remarks":
             obj["remarks"] = val
             if(item.hasOwnProperty('remarks') && val != item.remarks){
-            console.log("Update runsheet",obj,'|', info, item)
-              this.$emit("runsheetAction", obj, info);
+            // console.log("Update runsheet",obj,'|', info, item)
+            this.$store.dispatch("SET_REMARKS", obj);
+              // this.$emit("updatePOD", obj, info);
             }
 
           break;
         case column_change && column_change == "receiver_name":
             obj["receiver_name"] = val
             if(item.hasOwnProperty('receiver_name') && val != item.receiver_name){
+            this.$store.dispatch("SET_RECEIVER_NAME", obj);
               // this.$emit("updatePOD", obj, info);
             }
           break;
@@ -215,17 +218,18 @@ export default {
 
     },
     async runsheetAction(val, info) {
-      const remarks = this.$store.getters.getInputs.remarks
-      console.log(val, info, "ini vall");
       try {
+        const statusDelivery = this.$store.getters.getInputs.status_delivery.status;
+        const remarks = this.$store.getters.getInputs.remarks.remarks;
+        const receiverName = this.$store.getters.getInputs.receiver_name.receiver_name;
         const dataPOD = {
           // Construct the payload to be sent in the request body
           courier_employee_id: val.courier_employee_id,
           delivery_runsheet_number: val.delivery_runsheet_number,
           koli_number: val.koli_number,
-          status: val.status.status_code,
-          // remarks: remarks.key,
-          receiver_name: val.receiver_name,
+          status:  statusDelivery,
+          remarks: remarks,
+          receiver_name: receiverName,
         };
         this.openNotification(
           "success",
@@ -242,6 +246,9 @@ export default {
           err.message || err
         );
       }
+    },
+    async edit(val) {
+        this.$emit("editPOD", val);
     },
     async actionRemove(val){
       console.log(val,'ini data pod');
@@ -265,22 +272,15 @@ export default {
                 detail
         },
         actionUpdate(key, val) {
-          // console.log(key, val,'action update sj');
-      // console.log("Update runsheets",remarks)
           switch(val) {
                 case "confirm":
                     console.log('confirms', key, val)
-                    // this.updateValue(key, val)
-                    // console.log(this.updateValue(key, val),'ini testing confirm');
                     this.runsheetAction(key)
                     break;
                 case "edit":
-                    this.edit()
+                    this.edit(key)
 
                     break;
-                case 'cancel':
-                  // this.manifest_do_number = val.manifest_do_number
-                  this.actionRemove()
                 default:
                     console.log('meong')
                     // code block

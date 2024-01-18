@@ -216,6 +216,18 @@
                                             @updateValue="updateValue" />
                                           </div>
                                         </template>
+                                        <template v-else-if="column.typeInput !== undefined && column.typeInput.toLowerCase() === 'textsubmit'">
+                                          <div style="margin-top:20px">
+                                            <input-general 
+                                            :name="column.label"
+                                            :rules="''"
+                                            :formKey="`${column.key}|${item[listenColumn[0].key]}`"
+                                            :valueData="`${item[column.key] ? item[column.key] : ''}`"
+                                            :typeInput="'text' + `|${column.hasOwnProperty('disabled_input') ? item[column.disabled_input] == true ? 'disabled' : '' : ''}`"
+                                            :dataObj="item"
+                                            @updateValue="updateValue" />
+                                          </div>
+                                        </template>
                                         <template v-else-if="column.typeInput !== undefined && column.typeInput.toLowerCase().includes('autocomplete')">
                                             <template v-if="querySearch !== undefined">
                                                 <auto-complete
