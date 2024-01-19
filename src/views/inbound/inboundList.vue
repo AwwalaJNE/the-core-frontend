@@ -30,7 +30,8 @@ export default {
         nodeType:String,
         origin:String/Number,
         destination:String,
-        received:String/Number
+        received:String/Number,
+        prealert:String/Number
     },
     components: {
         "table-master" : TableMaster
@@ -114,6 +115,7 @@ export default {
                 page: 1
             },
             statusReceived:"",
+            prealertFilter:""
         }
     },
     watch: {
@@ -121,7 +123,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type,this.prealertFilter)
                 }
             }
         },
@@ -129,7 +131,7 @@ export default {
           if(val !== undefined) {
             this.node_type = val
             if(this.node_type !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter)
             }
           }
         },
@@ -137,7 +139,7 @@ export default {
           if(val !== undefined) {
             this.statusReceived = val
             if(this.statusReceived !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.node_type, this.nodeOrigin, this.nodeDestination, val)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.node_type, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter)
             }
           }
         },
@@ -145,7 +147,7 @@ export default {
           if(val !== undefined) {
             this.nodeOrigin = val
             if(this.nodeOrigin !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type,this.prealertFilter)
             }
           }
         },
@@ -153,18 +155,27 @@ export default {
           if(val !== undefined) {
             this.nodeDestination = val
             if(this.nodeDestination !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type,this.prealertFilter)
+            }
+          }
+        },
+        prealert: function(val, old) {
+          if(val !== undefined) {
+            this.prealertFilter = val
+            if(this.prealertFilter !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived,val)
             }
           }
         },
     },
     methods: {
-        async getTableData(limit,page,q, origin, destination,node_type,statusReceived) {
+        async getTableData(limit,page,q, origin, destination,node_type,statusReceived, prealertFilter) {
             this.loading = true
             let query = "";
             let startDate = "";
             let endDate = "";
             let isReceived = "";
+            let isPrealert = "";
             if(q !== undefined) {
                 query = q
             }
@@ -173,20 +184,25 @@ export default {
             if(statusReceived !== undefined && statusReceived !== '-') {
               isReceived = statusReceived
             }
+            if(prealertFilter !== undefined && prealertFilter !== '-') {
+              isPrealert = prealertFilter
+            }
             await axios
                 .get(this.URL.inbound_incoming +
-                `?n=${this.listenNodeId}&type=${node_type}&is_confirmed=${isReceived}&origin=${origin}&destination=${destination}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
+                `?n=${this.listenNodeId}&type=${node_type}&is_confirmed=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
                 this.Helper.header())
                 .then(res => {
 
                     let total = 0
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
+                      console.log(isPrealert,'isPrealert');
                       item['inbound_eta'] = this.dateConvert(item['inbound_eta'])
                       item['inbound_etd'] = this.dateConvert(item['inbound_etd'])
                       item['departed_at'] = this.dateConvert(item['departed_at'])
                       item['is_confirmed'] = item.is_confirmed == 1 ? 'Complete' : 'Outstanding'
                       item['vehicle'] = item['vehicle_type_name']
+                      item['inbound_total_bag'] = isPrealert == 'bag' ? 'list_bag_number' : item['inbound_total_bag']
                       if(item['vehicle_name'] != null){
                         item['vehicle'] = item['vehicle'] + '('+item['vehicle_name']+')'
                       }

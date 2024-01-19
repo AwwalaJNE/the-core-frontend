@@ -561,6 +561,27 @@ export default {
     commit('SET_NODE_IP_ADDRESS_ArrData', payload)
   },
 
+  SET_NODE_PRE_ALERT_SM({ commit }, payload) {
+    commit('SET_NODE_PRE_ALERT_SM', payload)
+  },
+  SET_NODE_PRE_ALERT_SM_ValueData({ commit }, payload) {
+    commit('SET_NODE_PRE_ALERT_SM_ValueData', payload)
+  },
+
+  SET_NODE_PRE_ALERT_SJ({ commit }, payload) {
+    commit('SET_NODE_PRE_ALERT_SJ', payload)
+  },
+  SET_NODE_PRE_ALERT_SJ_ValueData({ commit }, payload) {
+    commit('SET_NODE_PRE_ALERT_SJ_ValueData', payload)
+  },
+
+  SET_NODE_PRE_ALERT_BAG({ commit }, payload) {
+    commit('SET_NODE_PRE_ALERT_BAG', payload)
+  },
+  SET_NODE_PRE_ALERT_BAG_ValueData({ commit }, payload) {
+    commit('SET_NODE_PRE_ALERT_BAG_ValueData', payload)
+  },
+
   SET_NODE_NODE_ALLOW_SPECIAL_CARGO({ commit }, payload) {
     commit('SET_NODE_NODE_ALLOW_SPECIAL_CARGO', payload)
   },

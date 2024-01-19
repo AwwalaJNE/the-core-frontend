@@ -132,11 +132,38 @@
                       </template>
                     </inputan>
                   </vs-col>
+                  <vs-col xs="2" sm="2" lg="2">
+                    <inputan :name="name" :rules="rules">
+                      <template v-slot:inputan="props">
+                        <vs-select
+                            class="m-select"
+                            filter
+                            :placeholder="name"
+                            :label="name"
+                            v-model="values"
+                            :border="border"
+                            multiple
+                            :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                        >
+                          <template v-if="DataFilterPrealert.length > 0">
+                            <vs-option
+                                v-for="(item,key) in DataFilterPrealert"
+                                :key="key"
+                                :label="item.label"
+                                :value="item.value">
+                              {{item.label}}
+                            </vs-option>
+                          </template>
+
+                        </vs-select>
+                      </template>
+                    </inputan>
+                  </vs-col>
                 </vs-row>
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <InboundIncoming :ref="'inboundIncoming'"   :nodeType="node_request" :received="value" :origin="node_origin" :destination="node_destination" :query="tempSearch"/>
+                        <InboundIncoming :ref="'inboundIncoming'"   :nodeType="node_request" :received="value" :origin="node_origin" :destination="node_destination" :query="tempSearch" :prealert="values"/>
                     </transition>
                 </template>
 
@@ -206,6 +233,25 @@ export default {
               {
                 label: 'Outstanding',
                 value: '0'
+              }
+            ],
+            values: this.selectedValue ? this.selectedValue :"-",
+            DataFilterPrealert: this.valueData ? this.valueData : [
+              {
+                label: 'All Prealert',
+                value: '-'
+              },
+              {
+                label: 'SM',
+                value: 'sm'
+              },
+              {
+                label: 'SJ',
+                value: 'sj'
+              },
+              {
+                label: 'BAG',
+                value: 'bag'
               }
             ],
             value: this.selectedValue ? this.selectedValue :"-",

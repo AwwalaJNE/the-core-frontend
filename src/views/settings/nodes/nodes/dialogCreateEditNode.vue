@@ -100,7 +100,10 @@ export default {
               "label":"172.16.254.1.",
               "value":"172.16.254.1."
             }
-            ]
+            ],
+            pre_alert_sm: false,
+            pre_alert_sj: false,
+            pre_alert_bag: false
         }
     },
     computed: {
@@ -134,7 +137,7 @@ export default {
         formData(form,value){
             this.form = form
             this.ipAddress = this.$store.getters.getInputs.value
-            console.log(form,value,this.ipAddress, ' ini forms');
+            // console.log(form,value,this.ipAddress,this.form, ' ini forms');
             if(this.node_id !== undefined && this.node_id !== '') {
                 if(this.form.hasOwnProperty('node_id')){
                   delete this.form.node_id

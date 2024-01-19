@@ -89,7 +89,7 @@
                                         :url="asynchronousSelect_url"
                                         @updateValue="updateValue" />
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('selectMultipleTag')">
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('selectmultipletag')">
                                     <div>
                                         <selector 
                                         :ref="InputObject[item].key"
@@ -98,8 +98,8 @@
                                         :formKey="InputObject[item].key"
                                         :valueData="InputObject[item].arrData"
                                         :selectedValue="InputObject[item].value"
-                                        :isMultiple="false"
-                                        @updateValue="updateValue" />i
+                                        :isMultipleTag="true"
+                                        @updateValue="updateValue" />
                                     </div>
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
