@@ -132,6 +132,7 @@
             :key="key"
             :data="item"
             :is-selected="!!selected.includes(item)"
+            @click="onRowClick($event, item)"
           >
             <template v-if="listenIsMultipleSelect">
               <vs-td checkbox class="xs">
@@ -1063,6 +1064,11 @@ export default {
       type: Function,
       default: undefined,
     },
+
+    onRowClickCallback: {
+      type: Function,
+      default: undefined,
+    },
   },
   data() {
     return {
@@ -1262,6 +1268,16 @@ export default {
 
       if (typeof this.allCheckCallback === "function") {
         this.allCheckCallback(this.allCheck, this.selected);
+      }
+    },
+
+    onRowClick(event, item) {
+      // eslint-disable-next-line quotes
+      if (event.target?.tagName === "TD") {
+        // eslint-disable-next-line quotes
+        if (typeof this.onRowClickCallback === "function") {
+          this.onRowClickCallback(event, item, this.selected);
+        }
       }
     },
   },
