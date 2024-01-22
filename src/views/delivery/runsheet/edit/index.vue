@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/max-attributes-per-line -->
 <template>
   <div>
     <vs-row justify="space-between">
@@ -13,7 +14,9 @@
       <vs-row>
         <vs-col lg="12" sm="12" xs="12">
           <div class="box information" style="padding-top: 1px !important">
-            <p align="left"><b>Courier</b></p>
+            <p align="left">
+              <b>Courier</b>
+            </p>
             <template>
               <p align="left">
                 {{ employee_code }}
@@ -25,16 +28,12 @@
               <div class="center in-get-bag">
                 <vs-row style="margin-top:1em">
                   <vs-col xs="12" sm="6" lg="2">
-                    <vs-radio
-                      v-model="radio_option"
-                      val="connote">
+                    <vs-radio v-model="radio_option" val="connote">
                       Connote (orion)
                     </vs-radio>
                   </vs-col>
                   <vs-col xs="12" sm="6" lg="2">
-                    <vs-radio
-                      v-model="radio_option"
-                      val="koli">
+                    <vs-radio v-model="radio_option" val="koli">
                       Koli
                     </vs-radio>
                   </vs-col>
@@ -46,70 +45,70 @@
                 <vs-col xs="12" sm="3" lg="3" style="margin-top: 2em">
                   <div v-if="radio_option === 'koli'" class="center">
                     <vs-input
+                      ref="formInputConnote"
+                      v-model="item_no"
                       border
                       type="text"
-                      v-model="item_no"
                       label-placeholder="Scan Koli here"
-                      v-on:keyup.enter="updateValue"
                       autofocus
                       icon-after
-                      ref="formInputConnote"
+                      @keyup.enter="updateValue"
                     >
                       <template #icon>
-                        <i class="bx bx-file"></i>
+                        <i class="bx bx-file" />
                       </template>
                     </vs-input>
                   </div>
                   <div v-else class="center">
-                      <vs-input
-                        border
-                        type="text"
-                        v-model="item_no_orion"
-                        label-placeholder="Scan Connote here (orion)"
-                        v-on:keyup.enter="updateValueOrion"
-                        autofocus
-                        icon-after
-                        ref="formInputConnoteOrion"
-                      >
-                        <template #icon>
-                          <i class="bx bx-file"></i>
-                        </template>
-                      </vs-input>
-                    </div>
+                    <vs-input
+                      ref="formInputConnoteOrion"
+                      v-model="item_no_orion"
+                      border
+                      type="text"
+                      label-placeholder="Scan Connote here (orion)"
+                      autofocus
+                      icon-after
+                      @keyup.enter="updateValueOrion"
+                    >
+                      <template #icon>
+                        <i class="bx bx-file" />
+                      </template>
+                    </vs-input>
+                  </div>
                 </vs-col>
                 <vs-col xs="12" sm="3" lg="3" style="margin-top: 2em">
                   <div v-if="radio_option === 'koli'" class="center">
                     <vs-input
+                      ref="formRemoveConnote"
+                      v-model="item_no_remove"
                       border
                       type="text"
-                      v-model="item_no_remove"
                       label-placeholder="Remove Koli here"
-                      v-on:keyup.enter="removeValue"
                       autofocus
                       icon-after
-                      ref="formRemoveConnote"
+                      @keyup.enter="removeValue"
                     >
                       <template #icon>
-                        <i class="bx bx-exit"></i>
+                        <i class="bx bx-exit" />
                       </template>
                     </vs-input>
                   </div>
                   <div v-else class="center">
-                      <vs-input
-                        border
-                        type="text"
-                        v-model="item_no_orion_remove"
-                        label-placeholder="Remove Connote here (orion)"
-                        v-on:keyup.enter="removeValueOrion"
-                        autofocus
-                        icon-after
-                        ref="formRemoveConnoteOrion"
-                      >
-                        <template #icon>
-                          <i class="bx bx-exit"></i>
-                        </template>
-                      </vs-input>
-                    </div>
+                    <vs-input
+                      ref="formRemoveConnoteOrion"
+                      v-model="item_no_orion_remove"
+                      border
+                      type="text"
+                      label-placeholder="Remove Connote here (orion)"
+                      autofocus
+                      icon-after
+                      @keyup.enter="removeValueOrion"
+                    >
+                      <template #icon>
+                        <i class="bx bx-exit" />
+                      </template>
+                    </vs-input>
+                  </div>
                 </vs-col>
                 <vs-col xs="12" sm="3" lg="3">
                   <template v-if="dataDelivery.length > 0">
@@ -137,8 +136,13 @@
                 <vs-col xs="12" sm="3" lg="3">
                   <template v-if="dataDelivery.length > 0">
                     <div class="right text-right">
-                      <vs-button >
-                        <span style="float: right; text-align: right">Confirmed</span>
+                      <vs-button
+                        :loading="loadingConfirm"
+                        @click="confirmAction"
+                      >
+                        <span style="float: right; text-align: right">
+                          Confirmed
+                        </span>
                       </vs-button>
                     </div>
                   </template>
@@ -153,14 +157,15 @@
                       <template v-if="listenDataDelivery.length > 0">
                         <RunsheetInformation
                           v-if="arrStatus && dataDelivery"
-                          :dataDelivery="dataDelivery"
-                          :arrStatus="arrStatus"
                           :ref="'runsheetInformation'"
-                          @updatePOD="updatePOD"
-                          @editPOD="editPOD"
+                          :data-delivery="dataDelivery"
+                          :arr-status="arrStatus"
                           :query="tempSearch"
                           :loading="loadingRunsheet"
-                          :deliveryNumber="delivery_runsheet_number"
+                          :delivery-number="delivery_runsheet_number"
+                          @update-selected="updateSelected"
+                          @updatePOD="updatePOD"
+                          @editPOD="editPOD"
                         />
                       </template>
                     </transition>
@@ -178,32 +183,41 @@
           square
           active
           @click="print"
-          ><i class="bx bxs-printer"> </i> PRINT
+        >
+          <i class="bx bxs-printer" /> PRINT
         </vs-button>
-        <vs-button class="mt-1" style="float: right" square active @click="back"
-          ><i class="bx bx-left-arrow"> </i> BACK
+        <vs-button
+          class="mt-1"
+          style="float: right"
+          square
+          active
+          @click="back"
+        >
+          <i class="bx bx-left-arrow" /> BACK
         </vs-button>
       </vs-row>
     </section>
   </div>
 </template>
 <script>
+/* eslint-disable indent, semi, quotes, import/extensions, quote-props, operator-linebreak */
 import axios from "axios";
+import moment from "moment";
 import master from "@/mixins/master";
 import NavItem from "@/components/navbar/navTab";
 import Breadcrumb from "@/components/breadcrumb/index";
 
 import RunsheetInformation from "@/views/delivery/runsheet/edit/runsheetInformation";
-import moment from "moment";
 
 export default {
-  name: "delivery-runsheet-edit",
-  mixins: [master],
+  name: "DeliveryRunsheetEdit",
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     "nav-item": NavItem,
     breadcrumb: Breadcrumb,
-    RunsheetInformation: RunsheetInformation,
+    RunsheetInformation,
   },
+  mixins: [master],
   data() {
     return {
       title: "Edit Assign",
@@ -227,14 +241,20 @@ export default {
       employee_code: "",
       employee_name: "",
       radio_option: "connote",
-      
-      loadingCourier: false
+
+      loadingCourier: false,
+      loadingConfirm: false,
+
+      selectedUpdateItems: [],
     };
   },
   computed: {
     listenDataDelivery() {
-      return this.dataDelivery
-    }
+      return this.dataDelivery;
+    },
+  },
+  mounted() {
+    this.getStatus();
   },
   methods: {
     // refresh() {
@@ -266,14 +286,14 @@ export default {
       this.item_no = null;
     },
     updateValueOrion() {
-      this.form.koli_number = this.item_no_orion + "00";
+      this.form.koli_number = `${this.item_no_orion}00`;
       // this.form.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number
       this.form.courier_employee_id = this.employee_id;
       this.scanConnote();
       this.item_no = null;
     },
     removeValue() {
-      console.log(this.item_no_remove,'item nooo');
+      console.log(this.item_no_remove, "item nooo");
       this.form.koli_number = this.item_no_remove;
       // this.form.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number
       this.form.courier_employee_id = this.employee_id;
@@ -281,53 +301,53 @@ export default {
       this.item_no_remove = null;
     },
     removeValueOrion() {
-      this.form.koli_number = this.item_no_orion_remove + "00";
+      this.form.koli_number = `${this.item_no_orion_remove}00`;
       // this.form.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number
       this.form.courier_employee_id = this.employee_id;
       this.removeConnote();
       this.item_no_orion_remove = null;
     },
     getParamRoute() {
-      console.log('hehe');
+      console.log("hehe");
       this.employee_id = this.$route.params.employee_id.toString();
-      this.getCourier()
+      this.getCourier();
       // this.employee_data.employee_name = this.$route.params.employee_name
       // this.employee_data.employee_code = this.$route.params.employee_code
 
-      if (this.$route.name == "delivery-runsheet-edit") {
+      if (this.$route.name === "delivery-runsheet-edit") {
         this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number.toString();
-        this.tempDate = this.$route.params.date_filter != undefined ? this.$route.params.date_filter.toString() : moment().format('YYYY-MM-DD');
+        this.tempDate =
+          typeof this.$route.params.date_filter !== "undefined"
+            ? this.$route.params.date_filter.toString()
+            : moment().format("YYYY-MM-DD");
 
         this.getDataDelivery();
-
       }
     },
     async getCourier() {
-      this.loadingCourier = true
+      this.loadingCourier = true;
       await axios
         .get(
-          this.URL.employee +
-            `/${this.employee_id}?n=${this.listenNodeId}`,
+          `${this.URL.employee}/${this.employee_id}?n=${this.listenNodeId}`,
           this.Helper.header()
         )
         .then((res) => {
-            let data = res.data.data
-            this.employee_code = data["employee_name"] 
-            this.employee_name = data["employee_code"]
-          this.loadingCourier = false
+          const { data } = res.data;
+          this.employee_code = data.employee_name;
+          this.employee_name = data.employee_code;
+          this.loadingCourier = false;
         })
         .catch((err) => {
-          this.loadingCourier = true
+          this.loadingCourier = true;
           // this.openNotification('danger', 'Failed to populate status', err)
         });
     },
     async scanConnote() {
-      this.loadingRunsheet = true
-      console.log("123", this.form)
+      this.loadingRunsheet = true;
+      console.log("123", this.form);
       await axios
         .post(
-          this.URL.employee +
-            `/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}`,
+          `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}`,
           JSON.stringify(this.form),
           this.Helper.header()
         )
@@ -336,31 +356,35 @@ export default {
           // this.dataDelivery.map((item) => {
           //   item.employee_name = res.data.data.employee_name
           // })
-          if(res.data.hasOwnProperty('summary')){
-            this.dataDelivery.employee_name = res.data.data.employee_name ? res.data.data.employee_name : null;
-            this.dataDelivery.employee_code = res.data.data.employee_code ? res.data.data.employee_code : null;
+          if (res.data.hasOwnProperty("summary")) {
+            this.dataDelivery.employee_name = res.data.data.employee_name
+              ? res.data.data.employee_name
+              : null;
+            this.dataDelivery.employee_code = res.data.data.employee_code
+              ? res.data.data.employee_code
+              : null;
             this.dataDeliverySummary = res.data.summary;
             this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
             this.getDataDelivery();
             this.openNotification(null, "Success", "Update success");
-            this.loadingRunsheet = false
-          }else{
+            this.loadingRunsheet = false;
+          } else {
             this.getDataDelivery();
             this.openNotification(null, "Success", res.data.message);
-            this.loadingRunsheet = false
+            this.loadingRunsheet = false;
           }
         })
         .catch((err) => {
-          this.loadingRunsheet = false
+          this.loadingRunsheet = false;
           this.openNotification("danger", "", err.response.data.message);
         });
     },
     async removeConnote() {
-      console.log("remove", this.form.koli_number)
-      this.loadingRunsheet = true
+      console.log("remove", this.form.koli_number);
+      this.loadingRunsheet = true;
       await axios
         .delete(
-          this.URL.employee + `/${this.employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&koli_number=${this.form.koli_number}`,
+          `${this.URL.employee}/${this.employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&koli_number=${this.form.koli_number}`,
           this.Helper.header()
         )
         .then((res) => {
@@ -368,52 +392,59 @@ export default {
           // this.dataDelivery.map((item) => {
           //   item.employee_name = res.data.data.employee_name
           // })
-          if (res.data.hasOwnProperty('summary')) {
-            this.dataDelivery.employee_name = res.data.data.employee_name ? res.data.data.employee_name : null;
-            this.dataDelivery.employee_code = res.data.data.employee_code ? res.data.data.employee_code : null;
+          if (res.data.hasOwnProperty("summary")) {
+            this.dataDelivery.employee_name = res.data.data.employee_name
+              ? res.data.data.employee_name
+              : null;
+            this.dataDelivery.employee_code = res.data.data.employee_code
+              ? res.data.data.employee_code
+              : null;
             this.dataDeliverySummary = res.data.summary;
             this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
             this.getDataDelivery();
             this.openNotification(null, "Success", "Remove koli success");
-            this.loadingRunsheet = false
+            this.loadingRunsheet = false;
           } else {
             this.getDataDelivery();
             this.openNotification(null, "Success", res.data.message);
-            this.loadingRunsheet = false
+            this.loadingRunsheet = false;
           }
         })
         .catch((err) => {
-          this.loadingRunsheet = false
+          this.loadingRunsheet = false;
           this.openNotification("danger", "", err.response.data.message);
         });
     },
     async getStatus() {
       await axios
         .get(
-          this.URL.status +
-            `?status_type=DELIVERY&n=${this.listenNodeId}&limit=-1`,
+          `${this.URL.status}?status_type=DELIVERY&n=${this.listenNodeId}&limit=-1`,
           this.Helper.header()
         )
         .then((res) => {
-          let statusObj = {}
+          const statusObj = {};
           this.arrStatus = res.data.data.map((item) => {
-            let obj = {};
-            obj.label = item.status_description + "(" + item.status_code + ")";
+            const obj = {};
+            obj.label = `${item.status_description}(${item.status_code})`;
             obj.value = item.status_code;
-            obj["data"] = item
-            
-            if(item.hasOwnProperty("status_condition") && item["status_condition"] !== null) {
-              if(statusObj.hasOwnProperty(item["status_condition"].toLowerCase())) {
-                statusObj[item["status_condition"].toLowerCase()].push(obj)
+            obj.data = item;
+
+            if (
+              item.hasOwnProperty("status_condition") &&
+              item.status_condition !== null
+            ) {
+              if (
+                statusObj.hasOwnProperty(item.status_condition.toLowerCase())
+              ) {
+                statusObj[item.status_condition.toLowerCase()].push(obj);
               } else {
-                statusObj[item["status_condition"].toLowerCase()] = [obj]
+                statusObj[item.status_condition.toLowerCase()] = [obj];
               }
-            
             }
-            
+
             return obj;
           });
-          this.statusObj = statusObj
+          this.statusObj = statusObj;
           this.getParamRoute(); // perlu data status dulu sebelum getDataDelivery didalam getParamRoute {fix issue data tidak tampil}
           // console.log("statusObj", statusObj)
         })
@@ -422,37 +453,37 @@ export default {
         });
     },
     async getDataDelivery() {
-      console.log('masuk sini ya');
-      this.loadingRunsheet = true
+      console.log("masuk sini ya");
+      this.loadingRunsheet = true;
       await axios
         .get(
-          this.URL.employee +
-            `/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&date_filter=${this.tempDate}`,
+          `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&date_filter=${this.tempDate}`,
           this.Helper.header()
         )
         .then((res) => {
-          this.dataDelivery = this.processDataDelivery(res.data.data)
-          
+          this.dataDelivery = this.processDataDelivery(res.data.data);
+
           this.dataDeliverySummary = res.data.summary;
           this.delivery_runsheet_number = res.data.summary.delivery_runsheet_number.toString();
-          this.loadingRunsheet = false
+          this.loadingRunsheet = false;
         })
         .catch((err) => {
-          this.loadingRunsheet = false
+          this.loadingRunsheet = false;
           // this.openNotification('danger', 'Failed to populate status', err)
         });
     },
     processDataDelivery(data) {
-      let status = this.statusObj || {}
-      let delivery = data["delivery"] ? data["delivery"] : []
+      const status = this.statusObj || {};
+      const delivery = data.delivery ? data.delivery : [];
+      // eslint-disable-next-line array-callback-return
       delivery.map((item) => {
-        item["status_delivery"] = []
-        item["is_disabled_input"] = false
-        if(item.hasOwnProperty("koli_number")) {
-          if(item["koli_number"].toLowerCase().includes("rt")) {
-            item["status_delivery"] = [...status["rt"], ...status["all"]]
+        item.status_delivery = [];
+        item.is_disabled_input = false;
+        if (item.hasOwnProperty("koli_number")) {
+          if (item.koli_number.toLowerCase().includes("rt")) {
+            item.status_delivery = [...status.rt, ...status.all];
           } else {
-            item["status_delivery"] = [...status["normal"], ...status["all"]]
+            item.status_delivery = [...status.normal, ...status.all];
           }
         }
         // if(item.hasOwnProperty("status")) {
@@ -478,67 +509,79 @@ export default {
         //     item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false
         //   }
         // }
-        console.log(item["is_delivered"], 'data.is_delivered');
-        item["isDisabled"] = item["is_delivered"] == 1 ? true : false
-        item['employee_name'] = data.employee_name
-        item['employee_code'] = data.employee_code
-      })
-      console.log(" processDataDelivery : status =>", status)
-      console.log(" processDataDelivery : delivery =>", delivery)
-      
-      return delivery
-      
+        console.log(item.is_delivered, "data.is_delivered");
+        item.isDisabled = item.is_delivered === 1;
+        item.employee_name = data.employee_name;
+        item.employee_code = data.employee_code;
+      });
+      console.log(" processDataDelivery : status =>", status);
+      console.log(" processDataDelivery : delivery =>", delivery);
+
+      return delivery;
     },
     async updatePOD(dataPOD, info) {
-      console.log(dataPOD,'ini data pod');
-        if(dataPOD.remarks || dataPOD.receiver_name || dataPOD.status) {
-
-          if (this.delivery_runsheet_number) {
-            dataPOD.delivery_runsheet_number = this.delivery_runsheet_number;
-            if (this.employee_id != null || this.employee_id != '') {
-              dataPOD.courier_employee_id = this.employee_id
-            }
-            await axios
-                .put(
-                    this.URL.delivery +
-                    `/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`,
-                    JSON.stringify(dataPOD),
-                    this.Helper.header()
-                )
-                .then((res) => {
-                  this.getDataDelivery();
-                  this.form = {};
-                  this.openNotification(null, "Success", "POD UPDATED!");
-                })
-                .catch((err) => {
-                  console.log('eror');
-                  console.log(err.response);
-                  this.openNotification('danger', err.response.data.message, err.response.data.message);
-                });
-          } else {
-            this.openNotification('danger', "Failed", "Runsheet unavailable!");
+      console.log(dataPOD, "ini data pod");
+      if (dataPOD.remarks || dataPOD.receiver_name || dataPOD.status) {
+        if (this.delivery_runsheet_number) {
+          dataPOD.delivery_runsheet_number = this.delivery_runsheet_number;
+          if (this.employee_id != null || this.employee_id !== "") {
+            dataPOD.courier_employee_id = this.employee_id;
           }
 
+          this.loadingConfirm = true;
+
+          await axios
+            .put(
+              `${this.URL.delivery}/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`,
+              JSON.stringify(dataPOD),
+              this.Helper.header()
+            )
+            .then((res) => {
+              this.getDataDelivery();
+              this.form = {};
+              this.openNotification(null, "Success", "POD UPDATED!");
+            })
+            .catch((err) => {
+              console.log("eror");
+              console.log(err.response);
+              this.openNotification(
+                "danger",
+                err.response.data.message,
+                err.response.data.message
+              );
+            })
+            .finally(() => {
+              this.loadingConfirm = false;
+            });
+        } else {
+          this.openNotification("danger", "Failed", "Runsheet unavailable!");
         }
-
-
+      }
     },
     async editPOD(val) {
-      const statusDelivery = this.$store.getters.getInputs.status_delivery.status === null ? val.status.status_code : this.$store.getters.getInputs.status_delivery.status;
-      const remarks = this.$store.getters.getInputs.remarks.remarks === null ? val.remarks : this.$store.getters.getInputs.remarks.remarks;
-      const receiverName = this.$store.getters.getInputs.receiver_name.receiver_name === null ? val.receiver_name : this.$store.getters.getInputs.receiver_name.receiver_name;
+      const statusDelivery =
+        this.$store.getters.getInputs.status_delivery.status === null
+          ? val.status.status_code
+          : this.$store.getters.getInputs.status_delivery.status;
+      const remarks =
+        this.$store.getters.getInputs.remarks.remarks === null
+          ? val.remarks
+          : this.$store.getters.getInputs.remarks.remarks;
+      const receiverName =
+        this.$store.getters.getInputs.receiver_name.receiver_name === null
+          ? val.receiver_name
+          : this.$store.getters.getInputs.receiver_name.receiver_name;
       const dataPOD = {
         courier_employee_id: val.courier_employee_id,
         delivery_runsheet_number: val.delivery_runsheet_number,
         koli_number: val.koli_number,
         status: statusDelivery,
-        remarks: remarks,
+        remarks,
         receiver_name: receiverName,
       };
       await axios
         .put(
-          this.URL.delivery +
-          `/${val.delivery_runsheet_number}/edit?n=${this.listenNodeId}`,
+          `${this.URL.delivery}/${val.delivery_runsheet_number}/edit?n=${this.listenNodeId}`,
           JSON.stringify(dataPOD),
           this.Helper.header()
         )
@@ -549,14 +592,18 @@ export default {
         })
         .catch((err) => {
           console.log(err.response);
-          this.openNotification('danger', 'EDIT FAILED !', err.response.data.message);
+          this.openNotification(
+            "danger",
+            "EDIT FAILED !",
+            err.response.data.message
+          );
         });
     },
     back() {
       this.$router.push("/delivery/runsheet");
     },
     print() {
-      let routeData = this.$router.resolve({
+      const routeData = this.$router.resolve({
         name: "printGeneral",
         params: {
           id: this.delivery_runsheet_number,
@@ -567,10 +614,33 @@ export default {
       });
       window.open(routeData.href, "_blank");
     },
-  },
-  mounted() {
-    this.getStatus();
+    updateSelected(arr) {
+      this.selectedUpdateItems = arr;
+    },
+    confirmAction() {
+      if (this.selectedUpdateItems.length > 0) {
+        // this.$refs.runsheetInformation.runsheetAction(this.selectedUpdateItems);
+        this.selectedUpdateItems.forEach((item) => {
+          const dataPOD = {
+            // Construct the payload to be sent in the request body
+            courier_employee_id: item.courier_employee_id,
+            delivery_runsheet_number: item.delivery_runsheet_number,
+            koli_number: item.koli_number,
+            status: item.status.status_code,
+            remarks: item.remarks,
+            receiver_name: item.receiver_name,
+          };
 
+          this.updatePOD(dataPOD);
+        });
+      } else {
+        this.openNotification(
+          "danger",
+          "Failed",
+          "Please select at least one item"
+        );
+      }
+    },
   },
 };
 </script>
