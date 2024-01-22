@@ -376,25 +376,14 @@ export default {
     },
 
     onRowClickCallback(event, item, selected) {
-      if (selected) {
-        const filtered = this.$refs.tableMaster.selected.filter(
-          (item) => item.status_delivery_description === null
-        );
+      const filtered = this.$refs.tableMaster.selected.filter(
+        (item) => item.status_delivery_description === null
+      );
 
-        this.$refs.tableMaster.selected = filtered;
-        this.$refs.tableMaster.allCheck = filtered.length > 0;
+      this.$refs.tableMaster.selected = filtered;
+      this.$refs.tableMaster.allCheck = filtered.length > 0;
 
-        this.$emit("update-selected", filtered);
-      } else {
-        const filtered = this.$refs.tableMaster.selected.filter(
-          (item) => item.status_delivery_description === null
-        );
-
-        this.$refs.tableMaster.selected = filtered;
-        this.$refs.tableMaster.allCheck = filtered.length > 0;
-
-        this.$emit("update-selected", filtered);
-      }
+      this.$emit("update-selected", filtered);
     },
   },
 };
