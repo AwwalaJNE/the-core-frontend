@@ -116,24 +116,21 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     this.dataTable = res.data.data
-                    let cour = [];
-                    let dataCour = res.data.data
-                    const map = new Map();
-                    cour.push({
-                                'value': 0,
-                                'text': 'All'
-                            });
-                    this.$nextTick(() => {
-                      this.$emit('cour-list', cour);
-                      this.$emit('total-connote', res.data.data.length);
-                    });
                     let no = 1;
                     this.dataTable.map(item=>{
                       item['no'] = no
                       no++
                     })
-                    const hasNullStatus = this.dataTable.some(item => item.status === null);
-                    this.$store.dispatch('SET_FINISH_RECEIVING_BUTTON_VISIBILITY', !hasNullStatus);
+                    console.log(this.dataTable, 'datatable');
+                    let hasNullStatus = true;
+                    for (let i = 0; i < this.dataTable.length; i++){
+                        let item = this.dataTable[i];
+                        if (item['is_undelivered'] == 1 && item['is_undelivered_received'] == null) {
+                            hasNullStatus = false;
+                            break;
+                        }
+                    }
+                    this.$emit('tes', hasNullStatus);
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
