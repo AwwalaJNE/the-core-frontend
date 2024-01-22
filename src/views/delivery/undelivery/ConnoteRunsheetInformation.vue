@@ -59,6 +59,11 @@ export default {
                   key: "status",
                   width: "xxs"
                 },
+                {
+                  label: "Status Delivery",
+                  key: "status_delivery",
+                  width: "xxs"
+                },
             ],
             loading: false,
             dataItem: {},
@@ -127,6 +132,10 @@ export default {
                       item['no'] = no
                       no++
                     })
+                      // Tambahkan logika untuk menentukan apakah tombol harus ditampilkan atau tidak
+                    const hasNullStatus = this.dataTable.some(item => item.status === null);
+                    console.log(!hasNullStatus,'has');
+                    this.$store.dispatch('SET_FINISH_RECEIVING_BUTTON_VISIBILITY', !hasNullStatus);
                     console.log(res.data,'res.data.');
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)

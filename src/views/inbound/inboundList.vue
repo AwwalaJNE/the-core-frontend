@@ -187,6 +187,7 @@ export default {
                       item['departed_at'] = this.dateConvert(item['departed_at'])
                       item['is_confirmed'] = item.is_confirmed == 1 ? 'Complete' : 'Outstanding'
                       item['vehicle'] = item['vehicle_type_name']
+                      item['inbound_number'] = isPrealert.includes('bag') ? 'list bag number' : item['inbound_number']
                       if(item['vehicle_name'] != null){
                         item['vehicle'] = item['vehicle'] + '('+item['vehicle_name']+')'
                       }

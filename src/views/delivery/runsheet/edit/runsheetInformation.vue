@@ -1,23 +1,11 @@
 <template>
   <div>
     <template>
-      <table-master
-        :dataTable="dataTable"
-        :dataColumn="datacolumn"
-        :tableLoading="listenLoading"
-        :pageSize="pagination.page_size"
-        :page="pagination.page"
-        :limit="pagination.limit"
-        :hasAction="false"
-        :hasPagination="false"
-        @actionRemove="actionRemove"
-        @updateValue="updateValue"
-        :customAction="true"
-        :customActionList="customActionList"
-        @actionUpdate="actionUpdate"
-
-
-      />
+      <table-master :dataTable="dataTable" :dataColumn="datacolumn" :tableLoading="listenLoading"
+        :pageSize="pagination.page_size" :page="pagination.page" :limit="pagination.limit" :hasAction="false"
+        :hasPagination="false" @actionRemove="actionRemove" @updateValue="updateValue" :customAction="true"
+        :customActionList="customActionList" @actionUpdate="actionUpdate" :isMultipleSelectColoum="true"
+        @updateSelected="updateSelected" />
     </template>
   </div>
 </template>
@@ -43,6 +31,13 @@ export default {
     return {
       dataTable: this.dataDelivery || [],
       datacolumn: [
+        {
+          label: "Id",
+          key: "inbound_id",
+          type: "text",
+          hidden: true,
+          width: "sm"
+        },
         {
           label: "Connote Number",
           key: "koli_number",
@@ -113,25 +108,27 @@ export default {
       },
       loadStatus: false,
       customActionList: [
-              {
-                label: 'Confirm',
-                key: 'confirm',
-                attribute: '',
-                option: {
-                  type: 'redirect',
+        // {
+        //   label: 'Confirm',
+        //   key: 'confirm',
+        //   attribute: '',
+        //   option: {
+        //     type: 'redirect',
 
-                },
-              },
-              {
-                label: 'Edit',
-                key: 'edit',
-                attribute: '',
-              }
-            ],
-            test: ""
+        //   },
+        // },
+        {
+          label: 'Edit',
+          key: 'edit',
+          attribute: '',
+        }
+      ],
+      test: "",
+      waitToRoleRenderer: true,
+      arrayOfObjects: [],
     };
   },
-  computed:{
+  computed: {
     listenLoading() {
       return this.loading
     },
@@ -153,7 +150,7 @@ export default {
       if (val !== undefined) {
         this.employee_id = val;
         if (this.employee_id !== old) {
-            // this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
+          // this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
         }
       }
     },
@@ -175,47 +172,50 @@ export default {
   methods: {
     updateValue(key, val, info, item = null) {
       val = val.toUpperCase();
-      const deliveryNumber = this.$store.getters.getInputs.remarks
-      // console.log("Update runsheet",deliveryNumber, key,'|', val,'|', info, item)
+      const deliveryNumber = this.$store.getters.getInputs.remarks;
+      console.log("Update runsheet", deliveryNumber, key, '|', val, '|', info, item);
       key = key.split("|");
       let column_change = key[0];
-      // let koli_number = key[1];
-      
-      if(item !== null) {
-        
+      let koli_number = key[1];
+
+      if (item !== null) {
+        let obj = {
+          koli_number: item["koli_number"],
+        };
+
+        switch (true) {
+          case column_change && column_change == "status_delivery":
+            obj["status"] = val;
+            break;
+          case column_change && column_change == "remarks":
+            obj["remarks"] = val;
+            break;
+          case column_change && column_change == "receiver_name":
+            obj["receiver_name"] = val;
+            break;
+          default:
+            break;
+        }
+
+        // Cek apakah sudah ada objek dengan koli_number yang sama di dalam array
+        let existingIndex = this.arrayOfObjects.findIndex(
+          (element) => element.koli_number === obj.koli_number
+        );
+
+        // Jika ada, update objek yang sudah ada
+        if (existingIndex !== -1) {
+          this.$set(this.arrayOfObjects, existingIndex, obj);
+        } else {
+          this.arrayOfObjects.push(obj);
+        }
+
+        console.log("Updated array of objects:", this.arrayOfObjects);
+
+
+
+        // this.$store.dispatch("SET_RECEIVER_NAME", obj);
+
       }
-      
-      let obj = {}
-      obj["koli_number"] = item["koli_number"]
-      switch (true) {
-        case column_change && column_change == "status_delivery":
-            obj["status"] = val
-            this.$store.dispatch("SET_STATUS_DELIVERY", obj);
-            // this.$emit("updatePOD", obj, info);
-          break;
-        case column_change && column_change == "remarks":
-            obj["remarks"] = val
-            if(item.hasOwnProperty('remarks') && val != item.remarks){
-            // console.log("Update runsheet",obj,'|', info, item)
-            this.$store.dispatch("SET_REMARKS", obj);
-              // this.$emit("updatePOD", obj, info);
-            }
-
-          break;
-        case column_change && column_change == "receiver_name":
-            obj["receiver_name"] = val
-            if(item.hasOwnProperty('receiver_name') && val != item.receiver_name){
-            this.$store.dispatch("SET_RECEIVER_NAME", obj);
-              // this.$emit("updatePOD", obj, info);
-            }
-          break;
-        default:
-      
-      }
-      // this.$emit("updatePOD", obj, info);
-      // console.log(this.actionUpdate(key, val),'action updates');
-
-
     },
     async runsheetAction(val, info) {
       try {
@@ -227,7 +227,7 @@ export default {
           courier_employee_id: val.courier_employee_id,
           delivery_runsheet_number: val.delivery_runsheet_number,
           koli_number: val.koli_number,
-          status:  statusDelivery,
+          status: statusDelivery,
           remarks: remarks,
           receiver_name: receiverName,
         };
@@ -248,44 +248,57 @@ export default {
       }
     },
     async edit(val) {
-        this.$emit("editPOD", val);
+      this.$emit("editPOD", val);
     },
-    async actionRemove(val){
-      console.log(val,'ini data pod');
-            await axios
-                .delete(
-                  this.URL.employee + `/${val.courier_employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${val.delivery_runsheet_number}&koli_number=${val.koli_number}`,
-                    this.Helper.header())
-                .then(res => {
-                  
-                  console.log(res.data, res.data.data.length,Object.keys(res.data.data).length,'inires');
-                    if(Object.keys(res.data.data).length > 0){
-                    this.refresh()
-                    }else{
-                        this.$router.push({ name: 'DeliveryRunsheetEdit', params: { } });
-                    }
-                    this.openNotification('success', 'Romove success', 'Romove Koli number item successfully')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Romove bag item is failed', err)
-                })
-                detail
-        },
-        actionUpdate(key, val) {
-          switch(val) {
-                case "confirm":
-                    console.log('confirms', key, val)
-                    this.runsheetAction(key)
-                    break;
-                case "edit":
-                    this.edit(key)
+    async actionRemove(val) {
+      console.log(val, 'ini data pod');
+      await axios
+        .delete(
+          this.URL.employee + `/${val.courier_employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${val.delivery_runsheet_number}&koli_number=${val.koli_number}`,
+          this.Helper.header())
+        .then(res => {
 
-                    break;
-                default:
-                    console.log('meong')
-                    // code block
-            }
-        },
+          console.log(res.data, res.data.data.length, Object.keys(res.data.data).length, 'inires');
+          if (Object.keys(res.data.data).length > 0) {
+            this.refresh()
+          } else {
+            this.$router.push({ name: 'DeliveryRunsheetEdit', params: {} });
+          }
+          this.openNotification('success', 'Romove success', 'Romove Koli number item successfully')
+        }).catch(err => {
+          this.loading = false
+          this.openNotification('danger', 'Romove bag item is failed', err)
+        })
+      detail
+    },
+    actionUpdate(key, val) {
+      switch (val) {
+        case "confirm":
+          console.log('confirms', key, val)
+          this.runsheetAction(key)
+          break;
+        case "edit":
+          this.edit(key)
+
+          break;
+        default:
+          console.log('meong')
+        // code block
+      }
+    },
+    updateSelected(arr) {
+      console.log('masuk if', arr);
+      this.runsheetAction(arr)
+      // this.user_role_permission = arr
+      // this.user_role_permission.map(item => {
+      //   if (item["access_data"] == "") {
+      //     item["access_data"] = "USER"
+      //   }
+      // })
+
+      // if (this.waitToRoleRenderer == false) {
+      // }
+    },
     closeDialogConfirm() {
       this.confirmDialog = false;
     },

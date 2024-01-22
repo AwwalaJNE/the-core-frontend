@@ -13,6 +13,7 @@
                     square
                     block
                     @click="finishReceiving"
+                    v-if="isFinishReceivingButtonVisible"
                 >
                   Finish Receiving Runsheet
                 </vs-button>
@@ -174,7 +175,8 @@ export default {
             courierSel:0,
             courArray:[],
             activeDialogFinishReceiving: false,
-            activeLoadingFinishReceiving: false
+            activeLoadingFinishReceiving: false,
+            isFinishReceivingButtonVisible: false,
         }
     },
     methods: {
@@ -205,6 +207,7 @@ export default {
           this.$store.commit('SET_DELIVERY_NUMBER', this.no_runsheet);
           this.$refs.ConnoteRunsheetInformation.refresh();
           this.confirm();
+            this.checkRunsheetStatus();
         },
         getTotal(tot) {
           this.totalConnote = tot
@@ -238,7 +241,12 @@ export default {
           this.no_runsheet= ""
         },
         finishReceiving(){
+            this.checkRunsheetStatus();
           this.activeDialogFinishReceiving = true
+        },
+        async checkRunsheetStatus() {
+          const hasNullStatus = this.$store.getters.getInputs.isFinishReceivingButtonVisible
+          this.isFinishReceivingButtonVisible = hasNullStatus;
         },
         closeDialogConfirm(){
           this.activeDialogFinishReceiving = false
@@ -273,6 +281,10 @@ export default {
     },
     mounted() {
       this.refresh()
+      this.$on('toggle-finish-receiving-button', (isVisible) => {
+        console.log('masuk',isVisible);
+      this.isFinishReceivingButtonVisible = isVisible;
+    });
     }
 }
 </script>

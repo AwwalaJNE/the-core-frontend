@@ -65,6 +65,15 @@
                             />
                         </vs-th>
                     </template>
+                    <template v-if="listenIsMultipleSelectColoum">
+                        <vs-th>
+                            <vs-checkbox
+                                :indeterminate="selected.length == listenDataTable.length" v-model="allCheck"
+                                @change="selected = $vs.checkAll(selected, listenDataTable)"
+                            />
+                            <div style="margin-left: 10px;">All</div>
+                        </vs-th>
+                    </template>
                     
                     <template v-if="listenColumn.length > 0">
                         <template v-for="(item, key) of listenColumn">
@@ -111,6 +120,11 @@
                         :is-selected="!!selected.includes(item)"
                     >
                         <template v-if="listenIsMultipleSelect">
+                            <vs-td checkbox class="xs">
+                                <vs-checkbox :val="item" v-model="selected" @change="updateSelected"/>
+                            </vs-td>
+                        </template>
+                        <template v-if="listenIsMultipleSelectColoum">
                             <vs-td checkbox class="xs">
                                 <vs-checkbox :val="item" v-model="selected" @change="updateSelected"/>
                             </vs-td>
@@ -287,6 +301,10 @@
                                         </template>
                                         <template v-else-if="column.key === 'is_confirmed'">
                                             <span v-if="item[column.key] === 'Confirmed'" class="greenBackground">{{item[column.key] }}</span>
+                                            <span v-else>{{item[column.key] }}</span>
+                                        </template>
+                                        <template v-else-if="column.key === 'status_delivery'">
+                                            <span v-if="item[column.key] === 'DELIVERED'" class="greenBackground">{{item[column.key] }}</span>
                                             <span v-else>{{item[column.key] }}</span>
                                         </template>
                                         <template v-else-if="column.key === 'current_location_type'">
@@ -730,6 +748,7 @@ export default {
         customBtn_label: String,
 
         isMultipleSelect: Boolean,
+        isMultipleSelectColoum: Boolean,
         selectedData: Array,
         isSearchAble: Boolean,
         isLocalPagination: Boolean,
@@ -755,6 +774,7 @@ export default {
             refloading: null,
 
             allCheck: false,
+            selected: this.selectedData || [],
             selected: this.selectedData || [],
             search: '',
 
@@ -785,6 +805,9 @@ export default {
         listenIsMultipleSelect() {
             return this.isMultipleSelect
         },
+        listenIsMultipleSelectColoum() {
+            return this.isMultipleSelectColoum
+        },
         listenIsSearchAble() {
             return this.isSearchAble
         },
@@ -807,6 +830,7 @@ export default {
             }
         },
         selectedData: function(val) {
+            console.log(val,'selected data');
             if(val !== undefined) {
                 this.selected = val
                 console.log('this.selected', this.selected)
@@ -895,7 +919,7 @@ export default {
         },
 
         updateValue(key, val, info = {}, dataObj){
-            // console.log(key, val, info = {}, dataObj,'update value');
+            console.log(key, val, info = {}, dataObj,'update values');
             if(this.listenIsMultipleSelect == true && dataObj != undefined) {
                 console.log('unfined');
                 if(!!this.selected.includes(dataObj) == false) {
@@ -912,6 +936,7 @@ export default {
     },
 
         updateSelected() {
+            console.log(this.selected,'selected');
             this.$emit("updateSelected", this.selected)
         },
 
@@ -983,10 +1008,10 @@ export default {
                     justify-content: center;
                 }
             }
-            // .checkbox-inp .vs-icon-check span {
-            //     width: 8px;
-            //     margin-left: 0px;
-            // }
+            .checkbox-inp .vs-icon-check span {
+                width: 8px;
+                margin-left: 0px;
+            }
             .m-select.vs-select-content{
                 margin-bottom: 0;
             }

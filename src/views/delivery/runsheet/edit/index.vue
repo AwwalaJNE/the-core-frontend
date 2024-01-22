@@ -43,7 +43,7 @@
             </template>
             <div class="nav-box">
               <vs-row>
-                <vs-col xs="12" sm="4" lg="4" style="margin-top: 2em">
+                <vs-col xs="12" sm="3" lg="3" style="margin-top: 2em">
                   <div v-if="radio_option === 'koli'" class="center">
                     <vs-input
                       border
@@ -77,7 +77,7 @@
                       </vs-input>
                     </div>
                 </vs-col>
-                <vs-col xs="12" sm="4" lg="4" style="margin-top: 2em">
+                <vs-col xs="12" sm="3" lg="3" style="margin-top: 2em">
                   <div v-if="radio_option === 'koli'" class="center">
                     <vs-input
                       border
@@ -111,7 +111,7 @@
                       </vs-input>
                     </div>
                 </vs-col>
-                <vs-col xs="12" sm="4" lg="4">
+                <vs-col xs="12" sm="3" lg="3">
                   <template v-if="dataDelivery.length > 0">
                     <div class="left">
                       <ul style="float: left; text-align: left">
@@ -131,6 +131,15 @@
                           {{ moneyformat(dataDeliverySummary.amount_cod) }}
                         </li>
                       </ul>
+                    </div>
+                  </template>
+                </vs-col>
+                <vs-col xs="12" sm="3" lg="3">
+                  <template v-if="dataDelivery.length > 0">
+                    <div class="right text-right">
+                      <vs-button >
+                        <span style="float: right; text-align: right">Confirmed</span>
+                      </vs-button>
                     </div>
                   </template>
                 </vs-col>
