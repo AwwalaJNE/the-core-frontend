@@ -15,6 +15,7 @@
         :customAction="true"
         :customActionList="customActionList"
         :isMultipleSelectColoum="true"
+        :onRowClickCallback="onRowClickCallback"
         :allCheckCallback="onAllCheckCallback"
         @actionRemove="actionRemove"
         @updateValue="updateValue"
@@ -368,6 +369,28 @@ export default {
 
         this.$refs.tableMaster.selected = filtered;
         this.$refs.tableMaster.$vs.checkAll(filtered, this.dataTable);
+        this.$refs.tableMaster.allCheck = filtered.length > 0;
+
+        this.$emit("update-selected", filtered);
+      }
+    },
+
+    onRowClickCallback(event, item, selected) {
+      if (selected) {
+        const filtered = this.$refs.tableMaster.selected.filter(
+          (item) => item.status_delivery_description === null
+        );
+
+        this.$refs.tableMaster.selected = filtered;
+        this.$refs.tableMaster.allCheck = filtered.length > 0;
+
+        this.$emit("update-selected", filtered);
+      } else {
+        const filtered = this.$refs.tableMaster.selected.filter(
+          (item) => item.status_delivery_description === null
+        );
+
+        this.$refs.tableMaster.selected = filtered;
         this.$refs.tableMaster.allCheck = filtered.length > 0;
 
         this.$emit("update-selected", filtered);

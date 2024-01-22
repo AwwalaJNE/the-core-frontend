@@ -1272,8 +1272,12 @@ export default {
     },
 
     onRowClick(event, item) {
-      if (typeof this.onRowClickCallback === "function") {
-        this.onRowClickCallback(event, item);
+      // eslint-disable-next-line quotes
+      if (event.target?.tagName === "TD") {
+        // eslint-disable-next-line quotes
+        if (typeof this.onRowClickCallback === "function") {
+          this.onRowClickCallback(event, item, this.selected);
+        }
       }
     },
   },
