@@ -1,20 +1,39 @@
+<!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div>
     <template>
-      <table-master :dataTable="dataTable" :dataColumn="datacolumn" :tableLoading="listenLoading"
-        :pageSize="pagination.page_size" :page="pagination.page" :limit="pagination.limit" :hasAction="false"
-        :hasPagination="false" @actionRemove="actionRemove" @updateValue="updateValue" :customAction="true"
-        :customActionList="customActionList" @actionUpdate="actionUpdate" :isMultipleSelectColoum="true"
-        @updateSelected="updateSelected" />
+      <table-master
+        ref="tableMaster"
+        :dataTable="dataTable"
+        :dataColumn="datacolumn"
+        :tableLoading="listenLoading"
+        :pageSize="pagination.page_size"
+        :page="pagination.page"
+        :limit="pagination.limit"
+        :hasAction="false"
+        :hasPagination="false"
+        :customAction="true"
+        :customActionList="customActionList"
+        :isMultipleSelectColoum="true"
+        :allCheckCallback="onAllCheckCallback"
+        @actionRemove="actionRemove"
+        @updateValue="updateValue"
+        @actionUpdate="actionUpdate"
+        @updateSelected="updateSelected"
+      />
     </template>
   </div>
 </template>
 <script>
+/* eslint-disable semi, indent, quotes, import/extensions */
 import axios from "axios";
 import master from "@/mixins/master";
 import TableMaster from "@/components/table/tableMaster.vue";
 export default {
-  name: "Inbound-Incoming",
+  name: "InboundIncoming",
+  components: {
+    "table-master": TableMaster,
+  },
   mixins: [master],
   props: {
     loading: Boolean,
@@ -24,9 +43,7 @@ export default {
     arrStatus: Array,
     dataDelivery: [Object, Array],
   },
-  components: {
-    "table-master": TableMaster,
-  },
+  emits: ["update-selected"],
   data() {
     return {
       dataTable: this.dataDelivery || [],
@@ -36,7 +53,7 @@ export default {
           key: "inbound_id",
           type: "text",
           hidden: true,
-          width: "sm"
+          width: "sm",
         },
         {
           label: "Connote Number",
@@ -54,10 +71,12 @@ export default {
           type: "inputan",
           typeInput: "select",
           injectedData: true,
-          data: [{
-            label: null,
-            value: null,
-          }],
+          data: [
+            {
+              label: null,
+              value: null,
+            },
+          ],
           selectedValue: "status_code",
           disabled_input: "is_disabled_input_status",
           width: "md",
@@ -91,7 +110,7 @@ export default {
           label: "Status",
           key: "status_delivery_description",
           width: "xxs",
-        }
+        },
       ],
       dataItem: {},
       tempSearch: "",
@@ -118,10 +137,10 @@ export default {
         //   },
         // },
         {
-          label: 'Edit',
-          key: 'edit',
-          attribute: '',
-        }
+          label: "Edit",
+          key: "edit",
+          attribute: "",
+        },
       ],
       test: "",
       waitToRoleRenderer: true,
@@ -130,15 +149,15 @@ export default {
   },
   computed: {
     listenLoading() {
-      return this.loading
+      return this.loading;
     },
     listenDataDelivery() {
-      console.log("data delivery item", this.dataDelivery)
-      return this.dataDelivery
-    }
+      console.log("data delivery item", this.dataDelivery);
+      return this.dataDelivery;
+    },
   },
   watch: {
-    query: function (val, old) {
+    query(val, old) {
       if (val !== undefined) {
         this.tempSearch = val;
         if (this.tempSearch !== old) {
@@ -146,7 +165,7 @@ export default {
         }
       }
     },
-    employeeId: function (val, old) {
+    employeeId(val, old) {
       if (val !== undefined) {
         this.employee_id = val;
         if (this.employee_id !== old) {
@@ -154,7 +173,7 @@ export default {
         }
       }
     },
-    deliveryNumber: function (val, old) {
+    deliveryNumber(val, old) {
       if (val !== undefined) {
         this.delivery_runsheet_number = val;
 
@@ -163,66 +182,104 @@ export default {
         }
       }
     },
-    dataDelivery: function (val) {
+    dataDelivery(val) {
       if (val !== undefined) {
-        this.dataTable = val
+        this.dataTable = val;
       }
-    }
+    },
+  },
+  mounted() {
+    // this.datacolumn.map((item) => {
+    //   if (item.key == "status_delivery") {
+    //     item.data = this.arrStatus;
+    //   }
+    // });
+
+    this.getParamRoute();
   },
   methods: {
     updateValue(key, val, info, item = null) {
       val = val.toUpperCase();
       const deliveryNumber = this.$store.getters.getInputs.remarks;
-      console.log("Update runsheet", deliveryNumber, key, '|', val, '|', info, item);
+      console.log(
+        "Update runsheet",
+        deliveryNumber,
+        key,
+        "|",
+        val,
+        "|",
+        info,
+        item
+      );
       key = key.split("|");
-      let column_change = key[0];
-      let koli_number = key[1];
+      const column_change = key[0];
+      const koli_number = key[1];
 
-      let obj = {}
-      obj["koli_number"] = item["koli_number"]
+      const obj = {};
+      obj.koli_number = item.koli_number;
+
       switch (true) {
-        case column_change && column_change == "status_delivery":
-            obj["status"] = val
-            this.$store.dispatch("SET_STATUS_DELIVERY", obj);
-            // this.$emit("updatePOD", obj, info);
+        case column_change && column_change === "status_delivery":
+          obj.status = val;
+          item.status_delivery = val;
+          this.$store.dispatch("SET_STATUS_DELIVERY", obj);
+          // this.$emit("updatePOD", obj, info);
           break;
-        case column_change && column_change == "remarks":
-            obj["remarks"] = val
-            if(item.hasOwnProperty('remarks') && val != item.remarks){
+        case column_change && column_change === "remarks":
+          obj.remarks = val;
+          if (item.hasOwnProperty("remarks") && val != item.remarks) {
             // console.log("Update runsheet",obj,'|', info, item)
+            item.remarks = val;
             this.$store.dispatch("SET_REMARKS", obj);
-              // this.$emit("updatePOD", obj, info);
-            }
-            break;
-        case column_change && column_change == "receiver_name":
-            obj["receiver_name"] = val
-            if(item.hasOwnProperty('receiver_name') && val != item.receiver_name){
+            // this.$emit("updatePOD", obj, info);
+          }
+          break;
+        case column_change && column_change === "receiver_name":
+          obj.receiver_name = val;
+          if (
+            item.hasOwnProperty("receiver_name") &&
+            val !== item.receiver_name
+          ) {
+            item.receiver_name = val;
             this.$store.dispatch("SET_RECEIVER_NAME", obj);
-              // this.$emit("updatePOD", obj, info);
-            }
+            // this.$emit("updatePOD", obj, info);
+          }
           break;
         default:
-      
       }
+
+      const { selected } = this.$refs.tableMaster;
+
+      const find = selected.find((item) => item.koli_number === koli_number);
+
+      if (find) {
+        const index = selected.findIndex(
+          (item) => item.koli_number === koli_number
+        );
+
+        selected[index] = item;
+      }
+
+      this.$refs.tableMaster.selected = selected;
     },
     async runsheetAction(val, info) {
       try {
-        const statusDelivery = this.$store.getters.getInputs.status_delivery.status;
-        const remarks = this.$store.getters.getInputs.remarks.remarks;
-        const receiverName = this.$store.getters.getInputs.receiver_name.receiver_name;
+        const statusDelivery = this.$store.getters.getInputs.status_delivery
+          .status;
+        const { remarks } = this.$store.getters.getInputs.remarks;
+        const receiverName = this.$store.getters.getInputs.receiver_name
+          .receiver_name;
         const dataPOD = {
           // Construct the payload to be sent in the request body
           courier_employee_id: val.courier_employee_id,
           delivery_runsheet_number: val.delivery_runsheet_number,
           koli_number: val.koli_number,
           status: statusDelivery,
-          remarks: remarks,
+          remarks,
           receiver_name: receiverName,
         };
-        this.openNotification(
-          "success",
-          "POD UPDATED!",
-        );
+
+        this.openNotification("success", "POD UPDATED!");
 
         // Send the values to the parent component
         this.$emit("updatePOD", dataPOD, info);
@@ -239,44 +296,59 @@ export default {
       this.$emit("editPOD", val);
     },
     async actionRemove(val) {
-      console.log(val, 'ini data pod');
+      console.log(val, "ini data pod");
       await axios
         .delete(
-          this.URL.employee + `/${val.courier_employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${val.delivery_runsheet_number}&koli_number=${val.koli_number}`,
-          this.Helper.header())
-        .then(res => {
-
-          console.log(res.data, res.data.data.length, Object.keys(res.data.data).length, 'inires');
+          `${this.URL.employee}/${val.courier_employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${val.delivery_runsheet_number}&koli_number=${val.koli_number}`,
+          this.Helper.header()
+        )
+        .then((res) => {
+          console.log(
+            res.data,
+            res.data.data.length,
+            Object.keys(res.data.data).length,
+            "inires"
+          );
           if (Object.keys(res.data.data).length > 0) {
-            this.refresh()
+            this.refresh();
           } else {
-            this.$router.push({ name: 'DeliveryRunsheetEdit', params: {} });
+            this.$router.push({ name: "DeliveryRunsheetEdit", params: {} });
           }
-          this.openNotification('success', 'Romove success', 'Romove Koli number item successfully')
-        }).catch(err => {
-          this.loading = false
-          this.openNotification('danger', 'Romove bag item is failed', err)
+          this.openNotification(
+            "success",
+            "Romove success",
+            "Romove Koli number item successfully"
+          );
         })
-      detail
+        .catch((err) => {
+          this.loading = false;
+          this.openNotification("danger", "Romove bag item is failed", err);
+        });
     },
     actionUpdate(key, val) {
       switch (val) {
         case "confirm":
-          console.log('confirms', key, val)
-          this.runsheetAction(key)
+          console.log("confirms", key, val);
+          this.runsheetAction(key);
           break;
         case "edit":
-          this.edit(key)
+          this.edit(key);
 
           break;
         default:
-          console.log('meong')
+          console.log("meong");
         // code block
       }
     },
     updateSelected(arr) {
-      // console.log('masuk if', arr);
-      this.runsheetAction(arr)
+      const { selected } = this.$refs.tableMaster;
+      const filtered = selected.filter(
+        (item) => item.status_delivery_description !== null
+      );
+
+      this.$refs.tableMaster.selected = filtered;
+
+      this.$emit("update-selected", filtered);
     },
     closeDialogConfirm() {
       this.confirmDialog = false;
@@ -286,15 +358,20 @@ export default {
         this.employee_id = this.$route.params.employee_id;
       }
     },
-  },
-  mounted() {
-    // this.datacolumn.map((item) => {
-    //   if (item.key == "status_delivery") {
-    //     item.data = this.arrStatus;
-    //   }
-    // });
 
-    this.getParamRoute();
+    onAllCheckCallback(val, selected) {
+      if (val) {
+        const filtered = selected.filter(
+          (item) => item.status_delivery_description !== null
+        );
+
+        this.$refs.tableMaster.selected = filtered;
+        this.$refs.tableMaster.$vs.checkAll(filtered, this.dataTable);
+        this.$refs.tableMaster.allCheck = filtered.length > 0;
+
+        this.$emit("update-selected", filtered);
+      }
+    },
   },
 };
 </script>
