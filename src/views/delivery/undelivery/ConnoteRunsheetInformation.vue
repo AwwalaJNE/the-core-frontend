@@ -111,7 +111,7 @@ export default {
             }
             const deliveryNumber = this.$store.getters.getInputs.deliveryNumber
             await axios
-                .get(this.URL.receiving_runsheet + '/' + deliveryNumber +
+                .get(this.URL.receiving_runsheet + '/' + deliveryNumber.replaceAll("/", "-") +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
                 this.Helper.header())
                 .then(res => {
