@@ -2490,6 +2490,6 @@ export default {
     commit("SET_DELIVERY_DETAILS", payload);
   },
   SET_FINISH_RECEIVING_BUTTON_VISIBILITY({ commit }, payload) {
-    commit('SET_FINISH_RECEIVING_BUTTON_VISIBILITY', payload);
+    commit("SET_FINISH_RECEIVING_BUTTON_VISIBILITY", payload);
   },
 }
