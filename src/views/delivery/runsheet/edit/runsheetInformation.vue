@@ -344,7 +344,7 @@ export default {
     updateSelected(arr) {
       const { selected } = this.$refs.tableMaster;
       const filtered = selected.filter(
-        (item) => item.status_delivery_description !== null
+        (item) => item.status_delivery_description === null
       );
 
       this.$refs.tableMaster.selected = filtered;
@@ -363,7 +363,7 @@ export default {
     onAllCheckCallback(val, selected) {
       if (val) {
         const filtered = selected.filter(
-          (item) => item.status_delivery_description !== null
+          (item) => item.status_delivery_description === null
         );
 
         this.$refs.tableMaster.selected = filtered;
