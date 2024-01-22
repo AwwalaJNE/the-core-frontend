@@ -626,7 +626,7 @@ export default {
             courier_employee_id: item.courier_employee_id,
             delivery_runsheet_number: item.delivery_runsheet_number,
             koli_number: item.koli_number,
-            status: item.status.status_code,
+            status: item.status_code,
             remarks: item.remarks,
             receiver_name: item.receiver_name,
           };

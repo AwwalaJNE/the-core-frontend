@@ -221,7 +221,7 @@ export default {
       switch (true) {
         case column_change && column_change === "status_delivery":
           obj.status = val;
-          item.status_delivery = val;
+          item.status_code = val;
           this.$store.dispatch("SET_STATUS_DELIVERY", obj);
           // this.$emit("updatePOD", obj, info);
           break;
@@ -249,12 +249,13 @@ export default {
       }
 
       const { selected } = this.$refs.tableMaster;
-
-      const find = selected.find((item) => item.koli_number === koli_number);
+      const find = selected.find(
+        (item) => item.koli_number === obj.koli_number
+      );
 
       if (find) {
         const index = selected.findIndex(
-          (item) => item.koli_number === koli_number
+          (item) => item.koli_number === obj.koli_number
         );
 
         selected[index] = item;
