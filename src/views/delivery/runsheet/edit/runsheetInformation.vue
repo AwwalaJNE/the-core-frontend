@@ -178,43 +178,31 @@ export default {
       let column_change = key[0];
       let koli_number = key[1];
 
-      if (item !== null) {
-        let obj = {
-          koli_number: item["koli_number"],
-        };
-
-        switch (true) {
-          case column_change && column_change == "status_delivery":
-            obj["status"] = val;
+      let obj = {}
+      obj["koli_number"] = item["koli_number"]
+      switch (true) {
+        case column_change && column_change == "status_delivery":
+            obj["status"] = val
+            this.$store.dispatch("SET_STATUS_DELIVERY", obj);
+            // this.$emit("updatePOD", obj, info);
+          break;
+        case column_change && column_change == "remarks":
+            obj["remarks"] = val
+            if(item.hasOwnProperty('remarks') && val != item.remarks){
+            // console.log("Update runsheet",obj,'|', info, item)
+            this.$store.dispatch("SET_REMARKS", obj);
+              // this.$emit("updatePOD", obj, info);
+            }
             break;
-          case column_change && column_change == "remarks":
-            obj["remarks"] = val;
-            break;
-          case column_change && column_change == "receiver_name":
-            obj["receiver_name"] = val;
-            break;
-          default:
-            break;
-        }
-
-        // Cek apakah sudah ada objek dengan koli_number yang sama di dalam array
-        let existingIndex = this.arrayOfObjects.findIndex(
-          (element) => element.koli_number === obj.koli_number
-        );
-
-        // Jika ada, update objek yang sudah ada
-        if (existingIndex !== -1) {
-          this.$set(this.arrayOfObjects, existingIndex, obj);
-        } else {
-          this.arrayOfObjects.push(obj);
-        }
-
-        console.log("Updated array of objects:", this.arrayOfObjects);
-
-
-
-        // this.$store.dispatch("SET_RECEIVER_NAME", obj);
-
+        case column_change && column_change == "receiver_name":
+            obj["receiver_name"] = val
+            if(item.hasOwnProperty('receiver_name') && val != item.receiver_name){
+            this.$store.dispatch("SET_RECEIVER_NAME", obj);
+              // this.$emit("updatePOD", obj, info);
+            }
+          break;
+        default:
+      
       }
     },
     async runsheetAction(val, info) {
@@ -287,17 +275,8 @@ export default {
       }
     },
     updateSelected(arr) {
-      console.log('masuk if', arr);
+      // console.log('masuk if', arr);
       this.runsheetAction(arr)
-      // this.user_role_permission = arr
-      // this.user_role_permission.map(item => {
-      //   if (item["access_data"] == "") {
-      //     item["access_data"] = "USER"
-      //   }
-      // })
-
-      // if (this.waitToRoleRenderer == false) {
-      // }
     },
     closeDialogConfirm() {
       this.confirmDialog = false;
