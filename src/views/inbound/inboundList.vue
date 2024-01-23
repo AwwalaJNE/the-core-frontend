@@ -8,7 +8,7 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :hasLinked="['inbound_number']"
+        :hasLinked="['inbound_numbers']"
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
@@ -202,7 +202,8 @@ export default {
                       item['departed_at'] = this.dateConvert(item['departed_at'])
                       item['is_confirmed'] = item.is_confirmed == 1 ? 'Complete' : 'Outstanding'
                       item['vehicle'] = item['vehicle_type_name']
-                      item['inbound_number'] = isPrealert == 'bag' ? 'list bag number' : item['inbound_number']
+                      // item['is_prealert'] = isPrealert
+                      item['inbound_number'] = isPrealert == 'bag' ? item['bag_number'] : item['inbound_number']
                       if(item['vehicle_name'] != null){
                         item['vehicle'] = item['vehicle'] + '('+item['vehicle_name']+')'
                       }
