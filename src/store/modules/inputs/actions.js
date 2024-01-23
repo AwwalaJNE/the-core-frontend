@@ -2507,4 +2507,10 @@ export default {
   SET_RECEIVER_NAME({ commit }, payload) {
     commit("SET_RECEIVER_NAME", payload);
   },
+  SET_DELIVERY_DETAILS({ commit }, payload) {
+    commit("SET_DELIVERY_DETAILS", payload);
+  },
+  SET_FINISH_RECEIVING_BUTTON_VISIBILITY({ commit }, payload) {
+    commit("SET_FINISH_RECEIVING_BUTTON_VISIBILITY", payload);
+  },
 }

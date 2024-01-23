@@ -13,6 +13,7 @@
                     square
                     block
                     @click="finishReceiving"
+                    v-if="isFinishReceivingButtonVisible"
                 >
                   Finish Receiving Runsheet
                 </vs-button>
@@ -76,7 +77,7 @@
                   <div class="nav-box">
                     <template>
                       <transition name="slide-fade">
-                            <ConnoteRunsheetInformation :ref="'ConnoteRunsheetInformation'"   :query="tempSearch" :courr="courierSel" v-on:cour-list="getCourrier" v-on:total-connote="getTotal"/>
+                            <ConnoteRunsheetInformation :ref="'ConnoteRunsheetInformation'" @tes="checkRunsheetStatus" :query="tempSearch" :courr="courierSel" v-on:cour-list="getCourrier" v-on:total-connote="getTotal"/>
                       </transition>
                     </template>
                   </div>
@@ -174,12 +175,13 @@ export default {
             courierSel:0,
             courArray:[],
             activeDialogFinishReceiving: false,
-            activeLoadingFinishReceiving: false
+            activeLoadingFinishReceiving: false,
+            isFinishReceivingButtonVisible: false,
         }
     },
     methods: {
         refresh(){
-            this.$refs.undeliveryInformation.refresh() // trigger function refresh form dari luar component list
+            // this.$refs.undeliveryInformation.refresh() // trigger function refresh form dari luar component list
           },
         searchValue (val) {
             this.tempSearch = val
@@ -201,9 +203,11 @@ export default {
           this.processUndelivery();
         },
         scanKoli(){
+          this.checkRunsheetStatus();
           this.form.delivery_number_runsheet = this.no_runsheet
           this.$store.commit('SET_DELIVERY_NUMBER', this.no_runsheet);
           this.$refs.ConnoteRunsheetInformation.refresh();
+          this.$refs.undeliveryInformation.refresh()
           this.confirm();
         },
         getTotal(tot) {
@@ -219,7 +223,8 @@ export default {
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
-                this.refresh()
+                this.$refs.undeliveryInformation.refresh()
+                this.checkRunsheetStatus(res);
                 this.handleClearForm()
                 this.openNotification(null, 'Success', 'Receiving is success')
               }).catch(err => {
@@ -240,10 +245,14 @@ export default {
         finishReceiving(){
           this.activeDialogFinishReceiving = true
         },
+         checkRunsheetStatus(val) {
+          this.isFinishReceivingButtonVisible = val;
+        },
         closeDialogConfirm(){
           this.activeDialogFinishReceiving = false
         },
         confirm(val) {
+          console.log(val,'confirm');
           if(val) {
             this.activeLoadingFinishReceiving=true
             this.addData()
@@ -255,6 +264,7 @@ export default {
                   JSON.stringify(this.form),
                   this.Helper.header())
               .then(res => {
+                this.$refs.undeliveryInformation.refresh();
                 this.$refs.ConnoteRunsheetInformation.refresh();
                 this.activeDialogFinishReceiving = false
                 this.activeLoadingFinishReceiving = false
@@ -273,6 +283,10 @@ export default {
     },
     mounted() {
       this.refresh()
+      this.$on('toggle-finish-receiving-button', (isVisible) => {
+        console.log('masuk',isVisible);
+      this.isFinishReceivingButtonVisible = isVisible;
+    });
     }
 }
 </script>

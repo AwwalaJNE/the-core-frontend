@@ -174,13 +174,13 @@ export default {
                     type: "text",
                     width: "sm"
                 },
-                // {
-                //     label: "Select",
-                //     key: "selected",
-                //     labelKey: "user_permission_id",
-                //     type: "boolean",
-                //     width: "xs"
-                // },
+                {
+                    label: "Select",
+                    key: "selected",
+                    labelKey: "user_permission_id",
+                    type: "boolean",
+                    width: "xs"
+                },
                 {
                     label: "Access Data",
                     key: "access_data",

@@ -59,6 +59,11 @@ export default {
                   key: "status",
                   width: "xxs"
                 },
+                {
+                  label: "Status Delivery",
+                  key: "status_delivery",
+                  width: "xxs"
+                },
             ],
             loading: false,
             dataItem: {},
@@ -106,28 +111,26 @@ export default {
             }
             const deliveryNumber = this.$store.getters.getInputs.deliveryNumber
             await axios
-                .get(this.URL.receiving_runsheet + '/' + deliveryNumber +
+                .get(this.URL.receiving_runsheet + '/' + deliveryNumber.replaceAll("/", "-") +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
                 this.Helper.header())
                 .then(res => {
                     this.dataTable = res.data.data
-                    let cour = [];
-                    let dataCour = res.data.data
-                    const map = new Map();
-                    cour.push({
-                                'value': 0,
-                                'text': 'All'
-                            });
-                    this.$nextTick(() => {
-                      this.$emit('cour-list', cour);
-                      this.$emit('total-connote', res.data.data.length);
-                    });
                     let no = 1;
                     this.dataTable.map(item=>{
                       item['no'] = no
                       no++
                     })
-                    console.log(res.data,'res.data.');
+                    console.log(this.dataTable, 'datatable');
+                    let hasNullStatus = true;
+                    for (let i = 0; i < this.dataTable.length; i++){
+                        let item = this.dataTable[i];
+                        if (item['is_undelivered'] == 1 && item['is_undelivered_received'] == null) {
+                            hasNullStatus = false;
+                            break;
+                        }
+                    }
+                    this.$emit('tes', hasNullStatus);
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
