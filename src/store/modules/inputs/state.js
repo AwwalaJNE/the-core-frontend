@@ -820,11 +820,11 @@ export default {
       label: "IP addresss",
       key: "ip_address",
       rule: "required",
-      typeInput: "selectMultipleTag",
+      typeInput: "selectmultipletag",
       typeData: "String",
       arrData: [],
-      valueData: true,
-      value: true
+      valueData: null,
+      value: ''
     },
     default_node_link_id: {
       label: "Default node link*",
@@ -845,6 +845,40 @@ export default {
       arrData: [],
       valueData: null,
       value: '1'
+    },
+    pre_alert_sm: {
+      titleLabel: "is external",
+      titleLabel: "Pre Alert SM",
+      label: "Active|Unactive",
+      key: "pre_alert_sm",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      width: "3",
+      valueData: true,
+      value: true
+    },
+    pre_alert_sj: {
+      titleLabel: "Pre Alert SJ",
+      label: "Active|Unactive",
+      key: "pre_alert_sj",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      width: "3",
+      valueData: true,
+      value: true
+    },
+    pre_alert_bag: {
+      titleLabel: "Pre Alert BAG",
+      label: "Active|Unactive",
+      key: "pre_alert_bag",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      width: "3",
+      valueData: true,
+      value: true
     },
     node_allow_special_cargo: {
       titleLabel: "Special cargo",

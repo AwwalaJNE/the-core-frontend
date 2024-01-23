@@ -584,6 +584,27 @@ export default {
       state.node.ip_address.arrData = []
   },
 
+  SET_NODE_PRE_ALERT_SM(state, payload) {
+    state.node.pre_alert_sm.value = payload
+  },
+  SET_NODE_PRE_ALERT_SM_ValueData(state, payload) {
+    state.node.pre_alert_sm.valueData = payload
+  },
+  
+  SET_NODE_PRE_ALERT_SJ(state, payload) {
+    state.node.pre_alert_sj.value = payload
+  },
+  SET_NODE_PRE_ALERT_SJ_ValueData(state, payload) {
+    state.node.pre_alert_sj.valueData = payload
+  },
+
+  SET_NODE_PRE_ALERT_BAG(state, payload) {
+    state.node.pre_alert_bag.value = payload
+  },
+  SET_NODE_PRE_ALERT_BAG_ValueData(state, payload) {
+    state.node.pre_alert_bag.valueData = payload
+  },
+
   SET_NODE_NODE_ALLOW_SPECIAL_CARGO(state, payload) {
     state.node.node_allow_special_cargo.value = payload
   },
