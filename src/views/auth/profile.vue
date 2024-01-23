@@ -108,7 +108,17 @@
         </vs-table>
       </div>
     </vs-col> -->
+     <!-- dialog confirm create receiving -->
+      <dialog-confirm
+            :active="activeDialogFirstLogin"
+            :loading="activeLoadingFirstLogin"
+            :closeDialog="closeDialogConfirm"
+            title="Perbaharui Password !!"
+            message="Mohon melakukan pembaharuan password"
+            @cancel="closeDialogConfirm"
+        />
   </vs-row>
+  
 </template>
 <script>
 import axios from "axios";
@@ -116,6 +126,7 @@ import master from "@/mixins/master";
 import FormInputController from "@/components/form/formInputController";
 import { Skeleton } from "vue-loading-skeleton";
 import Breadcrumb from "@/components/breadcrumb/index";
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import moment from 'moment';
 
 export default {
@@ -125,6 +136,7 @@ export default {
     "form-input-controller": FormInputController,
     skeleton: Skeleton,
     breadcrumb: Breadcrumb,
+    "dialog-confirm": DialogConfirm,
   },
   computed: {
     listenActive() {
@@ -145,6 +157,8 @@ export default {
       dataHistoryFetched: false,
       fetchingDataHistory: true,      
       trackingHistory: null,
+      activeDialogFirstLogin: false,
+      activeLoadingFirstLogin: true
     };
   },
   methods: {
@@ -197,6 +211,7 @@ export default {
         .then((res) => {
           this.dataItem = res.data.data;
           this.dataFetched = true;
+          this.checkDialoglogin();
         })
         .catch((err) => {
           this.openNotification(
@@ -228,6 +243,19 @@ export default {
         });
       this.dataHistoryFetched = true;
       this.fetchingDataHistory = false;      
+    },
+    async checkDialoglogin(){
+      const firstLogin = this.$ls.get('firstLogin')
+      if (firstLogin == 1) {
+        console.log('true');
+        this.activeDialogFirstLogin = true
+      } else {
+        this.activeDialogFirstLogin = false
+      }
+      console.log(firstLogin, 'first_login');
+    },
+    closeDialogConfirm(){
+      this.activeDialogFirstLogin = false
     },
   },
   mounted() {
