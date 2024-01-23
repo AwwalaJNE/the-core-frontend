@@ -19,7 +19,6 @@
                 </vs-button>
               </div>
             </vs-col>
-
         </vs-row>
 
         <section>
@@ -27,44 +26,81 @@
             <vs-col lg="6" sm="6" xs="12">
               <div class="box information" style="padding-top: 1px !important;">
                 <div class="nav-box">
-                    <vs-row>
-                  <!-- <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
-                        <template>
-                          <div class="center">
-                            <vs-input border type="text"
-                                      v-model="item_no"
-                                      label-placeholder="Masukkan Nomor Runsheet"
-                                      v-on:keyup.enter="updateValue"
-                                      autofocus
-                                      icon-after
-                                      ref="formInputRunsheet">
-                            </vs-input>
-                          </div>
-                        </template>
-                      </vs-col> -->
-                  <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
-                    <template>
-                      <div class="center">
-                        <vs-input border type="text" v-model="no_runsheet" :autofocus="true"  v-on:keyup.enter="scanKoli" label-placeholder="Scan Nomor Runsheet" autofocus icon-after ref="formInputInbound">
-                          <template #icon>
-                            <i class='bx bx-file'> </i>
-                          </template>
-                        </vs-input>
-                      </div>
-                    </template>
-                  </vs-col>
-                  <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
-                    <template>
-                      <div class="center">
-                        <vs-input border type="text" v-model="item_no" label-placeholder="Masukkan Koli" v-on:keyup.enter="updateValue" autofocus icon-after ref="formInputInbound">
-                          <template #icon>
-                            <i class='bx bxs-file'> </i>
-                          </template>
-                        </vs-input>
-                      </div>
-                    </template>
-                  </vs-col>
-                </vs-row>
+                  <template>
+                    <div class="center in-get-bag">
+                      <vs-row style="margin-top:2em">
+                        <vs-col xs="12" sm="6" lg="5">
+                          <vs-radio
+                            v-model="radio_option"
+                            val="connote">
+                            Connote (Orion)
+                          </vs-radio>
+                        </vs-col>
+                        <vs-col xs="12" sm="6" lg="5">
+                          <vs-radio
+                            v-model="radio_option"
+                            val="koli">
+                            Koli
+                          </vs-radio>
+                        </vs-col>
+                      </vs-row>
+                    </div>
+                  </template>
+
+                  <vs-row justify="space-between">
+                    <vs-col>
+                      <template>
+                        <div v-if="radio_option === 'connote'" class="center in-get-bag-flex">
+                          <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
+                            <template>
+                              <div class="center">
+                                <vs-input border type="text" v-model="no_runsheet" :autofocus="true"  v-on:keyup.enter="scanKoli" label-placeholder="Scan Nomor Runsheet" autofocus icon-after ref="formInputInbound">
+                                  <template #icon>
+                                    <i class='bx bx-file'> </i>
+                                  </template>
+                                </vs-input>
+                              </div>
+                            </template>
+                          </vs-col>
+                          <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
+                            <template>
+                              <div class="center">
+                                <vs-input border type="text" v-model="item_no_orion" label-placeholder="Masukkan Connote" v-on:keyup.enter="updateValueOrion" autofocus icon-after ref="formInputInbound">
+                                  <template #icon>
+                                    <i class='bx bxs-file'> </i>
+                                  </template>
+                                </vs-input>
+                              </div>
+                            </template>
+                          </vs-col>
+                        </div>
+                        <div v-else class="center in-get-bag-flex">
+                          <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
+                            <template>
+                              <div class="center">
+                                <vs-input border type="text" v-model="no_runsheet" :autofocus="true"  v-on:keyup.enter="scanKoli" label-placeholder="Scan Nomor Runsheet" autofocus icon-after ref="formInputInbound">
+                                  <template #icon>
+                                    <i class='bx bx-file'> </i>
+                                  </template>
+                                </vs-input>
+                              </div>
+                            </template>
+                          </vs-col>
+                          <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
+                            <template>
+                              <div class="center">
+                                <vs-input border type="text" v-model="item_no" label-placeholder="Masukkan Koli" v-on:keyup.enter="updateValue" autofocus icon-after ref="formInputInbound">
+                                  <template #icon>
+                                    <i class='bx bxs-file'> </i>
+                                  </template>
+                                </vs-input>
+                              </div>
+                            </template>
+                          </vs-col>
+                        </div>
+                      </template>
+                    </vs-col>
+                  </vs-row>
                 </div>
               </div>
               <vs-col lg="12" sm="12" xs="12">
@@ -163,11 +199,13 @@ export default {
     },
     data() {
         return {
+            radio_option: "connote",
             title:"Undelivered Receiving",
             tempSearch: "",
             tempDate: [],
             dialogPickupRequest:false,
             item_no:'',
+            item_no_orion: '',
             no_runsheet:'',
             form:{},
             inbound_number:'',
@@ -200,6 +238,10 @@ export default {
         },
         updateValue(){
           this.form.koli_number = this.item_no
+          this.processUndelivery();
+        },
+        updateValueOrion(){
+          this.form.koli_number = this.item_no_orion + "00"
           this.processUndelivery();
         },
         scanKoli(){
@@ -239,7 +281,8 @@ export default {
         },
         handleClearForm(){
           this.form = {}
-          this.item_no = "",
+          this.item_no = ""
+          this.item_no_orion = ""
           this.no_runsheet= ""
         },
         finishReceiving(){
@@ -301,5 +344,9 @@ export default {
   }
   .nav-box{
     margin-top: 1em;
+  }
+  .in-get-bag-flex {
+    font-size: 16px;
+    display: flex;
   }
 </style>
