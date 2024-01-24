@@ -3074,6 +3074,17 @@ export default {
       valueData: null,
       value: ''
     },
+  },
+  profile_dialog:{
+    password: {
+      label: "Passwords",
+      key: "password",
+      rule:"",
+      typeInput: "text|password",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
   }
 
 }

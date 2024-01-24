@@ -85,7 +85,11 @@ export default {
                         this.$ls.set('user', res.data.data.user)
                         this.$ls.set('config', res.data.data.config)
                         this.$ls.set('permissions', res.data.data.user.permissions)
+                        this.$ls.set('firstLogin', res.data.data.is_first_login)
                     }
+                    // let isFirstLogin = res.data.data.is_first_login
+                        console.log(res.status, 'status');
+                    // this.$emit('firstLogin', isFirstLogin)
 
                     loading.close();
                     this.$router.push({ name: "profile"});

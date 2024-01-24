@@ -8,8 +8,9 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :hasLinked="['inbound_number']"
+        :hasLinked="hasLinkedItem"
         :hasPagination="true"
+        @hasLinkedItem="handleHasLinkedItem"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEdit="actionDetail"
@@ -31,7 +32,11 @@ export default {
         origin:String/Number,
         destination:String,
         received:String/Number,
-        prealert:String/Number
+        prealert:String/Number,
+        hasLinkedItem: {
+          type: Array,
+          default: () => ['inbound_number'],
+        }
     },
     components: {
         "table-master" : TableMaster
@@ -202,7 +207,8 @@ export default {
                       item['departed_at'] = this.dateConvert(item['departed_at'])
                       item['is_confirmed'] = item.is_confirmed == 1 ? 'Complete' : 'Outstanding'
                       item['vehicle'] = item['vehicle_type_name']
-                      item['inbound_number'] = isPrealert == 'bag' ? 'list bag number' : item['inbound_number']
+                      // item['is_prealert'] = isPrealert
+                      item['inbound_number'] = isPrealert == 'bag' ? item['bag_number'] : item['inbound_number']
                       if(item['vehicle_name'] != null){
                         item['vehicle'] = item['vehicle'] + '('+item['vehicle_name']+')'
                       }
@@ -246,7 +252,10 @@ export default {
 
         actionDetail(row){
           this.$router.push({ name: 'InboundIncomingScan', params: { inbound_id: row.inbound_id } });
-        }
+        },
+        handleHasLinkedItem(value) {
+          console.log('Received hasLinkedItem:', value);
+        },
 
     },
     mounted() {

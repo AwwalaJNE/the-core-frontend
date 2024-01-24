@@ -2663,6 +2663,15 @@ export default {
     state.profile.user_email.valueData = payload
   },
 
+  //Update Password
+  SET_PROFILE_DIALOG_PASSWORD(state, payload) {
+    state.profile_dialog.password.value = payload
+  },
+  SET_PROFILE_DIALOG_PASSWORD_ValueData(state, payload) {
+    state.profile_dialog.password.valueData = payload
+  },
+
+
   SET_DELIVERY_NUMBER(state, payload) {
     state.deliveryNumber = payload;
   },
@@ -2683,23 +2692,6 @@ export default {
   SET_RECEIVER_NAME(state, payload) {
     console.log(payload,'SET_RECEIVER_NAME');
     state.receiver_name = payload;
-  },
-  // SET_DELIVERY_DETAILS(state, payload) {
-  //   console.log(payload, 'SET_DELIVERY_DETAILS');
-  //   state.deliveryDetails = payload;
-  // },
-  SET_DELIVERY_DETAILS(state, payload) {
-    // Iterasi melalui objek perubahan dan menggabungkannya ke dalam state
-    for (const koliNumber in payload) {
-      if (payload.hasOwnProperty(koliNumber)) {
-        const changes = payload[koliNumber];
-        if (!state.multiple_changes.hasOwnProperty(koliNumber)) {
-          state.multiple_changes[koliNumber] = {};
-        }
-        // Merge objek perubahan ke dalam state berdasarkan koli_number
-        Object.assign(state.multiple_changes[koliNumber], changes);
-      }
-    }
   },
   SET_FINISH_RECEIVING_BUTTON_VISIBILITY(state, payload) {
     state.isFinishReceivingButtonVisible = payload;

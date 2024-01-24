@@ -143,6 +143,7 @@
                             v-model="values"
                             :border="border"
                             multiple
+                            @change="updatePrealert"
                             :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                         >
                           <template v-if="DataFilterPrealert.length > 0">
@@ -163,7 +164,7 @@
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <InboundIncoming :ref="'inboundIncoming'"   :nodeType="node_request" :received="value" :origin="node_origin" :destination="node_destination" :query="tempSearch" :prealert="values"/>
+                        <InboundIncoming :ref="'inboundIncoming'"   :nodeType="node_request" :received="value" :origin="node_origin" :destination="node_destination" :query="tempSearch" :prealert="values" :hasLinkedItem="hasLinkedItems"/>
                     </transition>
                 </template>
 
@@ -203,7 +204,8 @@ export default {
       selectedValue: [Array, String, Number],
       formKey: String,
       isMultiple: Boolean,
-      border: Boolean
+      border: Boolean,
+      hasLinkedItems: Array
     },
     data() {
         return {
@@ -383,6 +385,15 @@ export default {
         },
         updateStatusInbound(val){
           this.$emit("updateStatusInbound", this.listenFormKey, val)
+        },
+        updatePrealert(val){
+          console.log(val,'prealertmasuk');
+          const indexOfBag = val.indexOf('bag');
+          if (indexOfBag !== -1) {
+            console.log('"bag" ditemukan pada indeks:', indexOfBag);
+            this.hasLinkedItems = [];
+          }
+          
         }
 
     },
