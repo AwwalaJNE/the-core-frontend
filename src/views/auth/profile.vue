@@ -108,8 +108,8 @@
         </vs-table>
       </div>
     </vs-col> -->
-     <!-- dialog confirm create receiving -->
-      <dialog-confirm
+     <!-- dialog -->
+      <dialog-message-update-password
             :active="activeDialogFirstLogin"
             :loading="activeLoadingFirstLogin"
             :closeDialog="closeDialogConfirm"
@@ -126,7 +126,7 @@ import master from "@/mixins/master";
 import FormInputController from "@/components/form/formInputController";
 import { Skeleton } from "vue-loading-skeleton";
 import Breadcrumb from "@/components/breadcrumb/index";
-import DialogConfirm from "@/components/dialog/dialogConfirm"
+import DialogMessageUpdatePassword from "@/views/auth/dialogMessageLogin.vue"
 import moment from 'moment';
 
 export default {
@@ -136,7 +136,7 @@ export default {
     "form-input-controller": FormInputController,
     skeleton: Skeleton,
     breadcrumb: Breadcrumb,
-    "dialog-confirm": DialogConfirm,
+    "dialog-message-update-password": DialogMessageUpdatePassword,
   },
   computed: {
     listenActive() {

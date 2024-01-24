@@ -8,8 +8,9 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :hasLinked="['inbound_numbers']"
+        :hasLinked="hasLinkedItem"
         :hasPagination="true"
+        @hasLinkedItem="handleHasLinkedItem"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEdit="actionDetail"
@@ -31,7 +32,11 @@ export default {
         origin:String/Number,
         destination:String,
         received:String/Number,
-        prealert:String/Number
+        prealert:String/Number,
+        hasLinkedItem: {
+          type: Array,
+          default: () => ['inbound_number'],
+        }
     },
     components: {
         "table-master" : TableMaster
@@ -247,7 +252,10 @@ export default {
 
         actionDetail(row){
           this.$router.push({ name: 'InboundIncomingScan', params: { inbound_id: row.inbound_id } });
-        }
+        },
+        handleHasLinkedItem(value) {
+          console.log('Received hasLinkedItem:', value);
+        },
 
     },
     mounted() {

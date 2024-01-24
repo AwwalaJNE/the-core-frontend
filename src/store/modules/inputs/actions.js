@@ -2486,6 +2486,15 @@ export default {
   },
   //====== END PROFILE PAGE ======    
 
+  //====== PROFILE UPDATE PASSWORD ======  
+  SET_PROFILE_DIALOG_PASSWORD({ commit }, payload) {
+    commit('SET_PROFILE_DIALOG_PASSWORD', payload)
+  },
+  SET_PROFILE_DIALOG_PASSWORD_ValueData({ commit }, payload) {
+    commit('SET_PROFILE_DIALOG_PASSWORD_ValueData', payload)
+  },
+  //====== END PROFILE UPDATE PAGE ======    
+
   //GET NUMBER RUNSHEET
   SET_DELIVERY_NUMBER({ commit }, payload) {
     console.log(payload,'deliveryNumber');
@@ -2506,9 +2515,6 @@ export default {
   },
   SET_RECEIVER_NAME({ commit }, payload) {
     commit("SET_RECEIVER_NAME", payload);
-  },
-  SET_DELIVERY_DETAILS({ commit }, payload) {
-    commit("SET_DELIVERY_DETAILS", payload);
   },
   SET_FINISH_RECEIVING_BUTTON_VISIBILITY({ commit }, payload) {
     commit("SET_FINISH_RECEIVING_BUTTON_VISIBILITY", payload);
