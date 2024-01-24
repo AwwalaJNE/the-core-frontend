@@ -113,8 +113,7 @@
             :active="activeDialogFirstLogin"
             :loading="activeLoadingFirstLogin"
             :closeDialog="closeDialogConfirm"
-            title="Perbaharui Password !!"
-            message="Mohon melakukan pembaharuan password"
+            title="Mohon melakukan pembaharuan password !!"
             @cancel="closeDialogConfirm"
         />
   </vs-row>
