@@ -268,12 +268,12 @@ export default {
                 this.$refs.undeliveryInformation.refresh()
                 this.checkRunsheetStatus();
                 this.checkUndelStatus();
-                this.handleClearForm()
+                this.handleClearFormKoli()
                 this.openNotification(null, 'Success', 'Receiving is success')
               }).catch(err => {
                 this.loading = false
                 this.refresh()
-                this.handleClearForm();
+                // this.handleClearForm();
                 this.openNotification('danger', 'Receiving is failed', err)
               })
         },
@@ -285,6 +285,10 @@ export default {
           this.item_no = ""
           this.item_no_orion = ""
           this.no_runsheet= ""
+        },
+        handleClearFormKoli(){
+          this.item_no = ""
+          this.item_no_orion = ""
         },
         finishReceiving(){
           this.activeDialogFinishReceiving = true
