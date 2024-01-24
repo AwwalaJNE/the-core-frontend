@@ -392,9 +392,8 @@ export default {
           if (indexOfBag !== -1) {
             console.log('"bag" ditemukan pada indeks:', indexOfBag);
             this.hasLinkedItems = [];
-          } else {
-            this.hasLinkedItems = ['inobund_number'];
           }
+          
         }
 
     },
