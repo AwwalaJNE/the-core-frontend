@@ -121,13 +121,16 @@ export default {
                       item['no'] = no
                       no++
                     })
-                    // console.log(this.dataTable, 'datatable');
-                    let hasNullStatus = true;
-                    for (let i = 0; i < this.dataTable.length; i++){
-                        let item = this.dataTable[i];
-                        if (item['is_undelivered'] == 1 && item['is_undelivered_received'] == null) {
-                            hasNullStatus = false;
-                            break;
+                    let hasNullStatus = this.dataTable.length == 0;
+                    if (hasNullStatus) {
+                        hasNullStatus = false;
+                    } else {
+                        for (let i = 0; i < this.dataTable.length; i++){
+                            let item = this.dataTable[i];
+                            if (item['is_undelivered'] == 1 && item['is_undelivered_received'] == null && item['is_hrs' == 1]) {
+                                hasNullStatus = false;
+                                break;
+                            }
                         }
                     }
                     this.$emit('tes', hasNullStatus);

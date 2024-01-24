@@ -130,17 +130,8 @@ export default {
                       item['courier_employee_name'] = item.employee_courier.employee_name
                       no++
                     })
-                    let hasNullStatus = true;
-                    let showButton = this.dataTable.length == 0 ;
-                    for (let i = 0; i < this.dataTable.length; i++){
-                        console.log(this.dataTable.length,' dataTables');
-                        let item = this.dataTable[i];
-                        if (item['is_undelivered'] == 1 && item['is_undelivered_received'] == null) {
-                            hasNullStatus = false;
-                            break;
-                        }
-                    }
-                    console.log('hasNullStatus', showButton);
+                    let showButton = this.dataTable.length === 0;
+                    // console.log('hasNullStatus', showButton);
                     this.$emit('showButtons', showButton);
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)

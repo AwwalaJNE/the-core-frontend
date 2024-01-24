@@ -247,7 +247,6 @@ export default {
         scanKoli(){
           this.form.delivery_number_runsheet = this.no_runsheet
           this.$ls.set('deliveryNumber',this.no_runsheet)
-          // this.$store.commit('SET_DELIVERY_NUMBER', this.no_runsheet);
           this.$refs.ConnoteRunsheetInformation.refresh();
           this.$refs.undeliveryInformation.refresh()
           this.confirm();
@@ -267,7 +266,6 @@ export default {
               .then(res => {
                 this.$refs.undeliveryInformation.refresh()
                 this.checkRunsheetStatus();
-                this.checkUndelStatus();
                 this.handleClearFormKoli()
                 this.openNotification(null, 'Success', 'Receiving is success')
               }).catch(err => {
@@ -293,7 +291,7 @@ export default {
         finishReceiving(){
           this.activeDialogFinishReceiving = true
         },
-         checkRunsheetStatus(val) {
+        checkRunsheetStatus(val) {
           this.isFinishReceivingButtonVisible = val;
         },
         checkUndelStatus(val) {
@@ -322,6 +320,7 @@ export default {
                 this.$refs.ConnoteRunsheetInformation.refresh();
                 this.activeDialogFinishReceiving = false
                 this.activeLoadingFinishReceiving = false
+                this.isFinishReceivingButtonVisible = false;
                 this.handleClearForm()
                 this.openNotification(null, 'Success', 'Receiving Runsheet is success')
                 
