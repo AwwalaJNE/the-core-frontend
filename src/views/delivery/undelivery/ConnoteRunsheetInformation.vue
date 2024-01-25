@@ -109,7 +109,7 @@ export default {
             if(q !== undefined) {
                 query = q
             }
-            const deliveryNumber = this.$store.getters.getInputs.deliveryNumber
+            const deliveryNumber = this.$ls.get('deliveryNumber')
             await axios
                 .get(this.URL.receiving_runsheet + '/' + deliveryNumber.replaceAll("/", "-") +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
@@ -121,13 +121,16 @@ export default {
                       item['no'] = no
                       no++
                     })
-                    console.log(this.dataTable, 'datatable');
-                    let hasNullStatus = true;
-                    for (let i = 0; i < this.dataTable.length; i++){
-                        let item = this.dataTable[i];
-                        if (item['is_undelivered'] == 1 && item['is_undelivered_received'] == null) {
-                            hasNullStatus = false;
-                            break;
+                    let hasNullStatus = this.dataTable.length == 0;
+                    if (hasNullStatus) {
+                        hasNullStatus = false;
+                    } else {
+                        for (let i = 0; i < this.dataTable.length; i++){
+                            let item = this.dataTable[i];
+                            if (item['is_undelivered'] == 1 && item['is_undelivered_received'] == null && item['is_hrs' == 1]) {
+                                hasNullStatus = false;
+                                break;
+                            }
                         }
                     }
                     this.$emit('tes', hasNullStatus);

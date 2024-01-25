@@ -95,7 +95,7 @@ export default {
             if(q !== undefined) {
                 query = q
             }
-            const deliveryNumber = this.$store.getters.getInputs.deliveryNumber
+            const deliveryNumber = this.$ls.get('deliveryNumber')
             await axios
                 .get(this.URL.undelivery + '/' + deliveryNumber.replaceAll('/', '-') +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
@@ -130,15 +130,9 @@ export default {
                       item['courier_employee_name'] = item.employee_courier.employee_name
                       no++
                     })
-                    let hasNullStatus = true;
-                    for (let i = 0; i < this.dataTable.length; i++){
-                        let item = this.dataTable[i];
-                        if (item['is_undelivered'] == 1 && item['is_undelivered_received'] == null) {
-                            hasNullStatus = false;
-                            break;
-                        }
-                    }
-                    this.$emit('tes', hasNullStatus);
+                    let showButton = this.dataTable.length === 0;
+                    // console.log('hasNullStatus', showButton);
+                    this.$emit('showButtons', showButton);
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page

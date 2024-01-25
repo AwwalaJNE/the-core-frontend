@@ -144,7 +144,7 @@
                 <div class="nav-box">
                   <template>
                     <transition name="slide-fade">
-                          <UndeliveryInformation :ref="'undeliveryInformation'"   :query="tempSearch" :courr="courierSel" v-on:cour-list="getCourrier" v-on:total-connote="getTotal"/>
+                          <UndeliveryInformation :ref="'undeliveryInformation'"   @showButtons="checkUndelStatus" :query="tempSearch" :courr="courierSel" v-on:cour-list="getCourrier" v-on:total-connote="getTotal"/>
                     </transition>
                   </template>
                 </div>
@@ -245,9 +245,8 @@ export default {
           this.processUndelivery();
         },
         scanKoli(){
-          this.checkRunsheetStatus();
           this.form.delivery_number_runsheet = this.no_runsheet
-          this.$store.commit('SET_DELIVERY_NUMBER', this.no_runsheet);
+          this.$ls.set('deliveryNumber',this.no_runsheet)
           this.$refs.ConnoteRunsheetInformation.refresh();
           this.$refs.undeliveryInformation.refresh()
           this.confirm();
@@ -266,13 +265,13 @@ export default {
                   this.Helper.header())
               .then(res => {
                 this.$refs.undeliveryInformation.refresh()
-                this.checkRunsheetStatus(res);
-                this.handleClearForm()
+                this.checkRunsheetStatus();
+                this.handleClearFormKoli()
                 this.openNotification(null, 'Success', 'Receiving is success')
               }).catch(err => {
                 this.loading = false
                 this.refresh()
-                this.handleClearForm();
+                // this.handleClearForm();
                 this.openNotification('danger', 'Receiving is failed', err)
               })
         },
@@ -285,32 +284,43 @@ export default {
           this.item_no_orion = ""
           this.no_runsheet= ""
         },
+        handleClearFormKoli(){
+          this.item_no = ""
+          this.item_no_orion = ""
+        },
         finishReceiving(){
           this.activeDialogFinishReceiving = true
         },
-         checkRunsheetStatus(val) {
+        checkRunsheetStatus(val) {
+          this.isFinishReceivingButtonVisible = val;
+        },
+        checkUndelStatus(val) {
           this.isFinishReceivingButtonVisible = val;
         },
         closeDialogConfirm(){
           this.activeDialogFinishReceiving = false
         },
         confirm(val) {
-          console.log(val,'confirm');
           if(val) {
             this.activeLoadingFinishReceiving=true
             this.addData()
           }
         },
         async addData() {
+          const data = this.$ls.get('deliveryNumber')
+          const payload = {
+            delivery_number_runsheet: data
+          }
           await axios
               .post(this.URL.receiving_runsheet + `?n=${this.listenNodeId}`,
-                  JSON.stringify(this.form),
+                  JSON.stringify(payload),
                   this.Helper.header())
               .then(res => {
                 this.$refs.undeliveryInformation.refresh();
                 this.$refs.ConnoteRunsheetInformation.refresh();
                 this.activeDialogFinishReceiving = false
                 this.activeLoadingFinishReceiving = false
+                this.isFinishReceivingButtonVisible = false;
                 this.handleClearForm()
                 this.openNotification(null, 'Success', 'Receiving Runsheet is success')
                 
@@ -326,10 +336,6 @@ export default {
     },
     mounted() {
       this.refresh()
-      this.$on('toggle-finish-receiving-button', (isVisible) => {
-        console.log('masuk',isVisible);
-      this.isFinishReceivingButtonVisible = isVisible;
-    });
     }
 }
 </script>
