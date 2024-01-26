@@ -178,56 +178,20 @@ export default {
                   "Receiving Failed!",
                   "Item has been delivered"
                 );
-                console.log("received");
               }else{
                   let message = 'TANPA : SM / SJ / PICKUP';
                   let typeNotif = null;
+                  this.$ls.set('id_inbound',res.data.data.id_inbound)
                 if(res.data.data.inbound_id){
                   typeNotif = 'success';                  
                   message = null;
                   this.inbound_id = res.data.data.inbound_id
                 }
-                if(this.inbound_id === ''){
-                  let detail = [];
-                  this.inboundDetailData = res.data.data
-                  if(this.inboundDetailData.hasOwnProperty('bag_number')){
-                    detail = [
-                      {
-                        detail_incoming :[
-                          {
-                            item_number : this.inboundDetailData.bag_number,
-                            item_type : "BAG",
-                            is_received : 1
-                          }
-                        ]
-
-                      }
-                    ]
-                  }else{
-                    detail = [
-                      {
-                        detail_incoming :[
-                          {
-                            item_number : this.inboundDetailData.koli_number,
-                            item_type : "KOLI",
-                            is_received : 1
-                          }
-                        ]
-
-                      }
-                    ]
-                  }
-                  this.dataTable = detail;
-                  console.log(this.dataTable,'li')
-                }else{
-
                   this.refresh()
                   this.handlerClearForm()
-                }
                 setTimeout(()=>{
                   this.openNotification(typeNotif, 'Receiving Success!', message)
                 },300);
-
               }
               }).catch(err => {
                 this.closeProgress();
@@ -247,8 +211,26 @@ export default {
             this.dataTable = []
             const inboundId = this.inbound_id.toString()
             if(this.inbound_id === ''){
+              const id_inbound  = this.$ls.get('id_inbound');
+              const getInboundId = id_inbound.toString().toLowerCase();
+              // console.log(getInboundId,'id_inbound');
+              await axios
+                  .get(this.URL.inbound +
+                      `/${getInboundId}/inbound-status?n=${this.listenNodeId}`,
+                      this.Helper.header())
+                  .then(res => {
+                    let data=[res.data.data]
+                    data.map(item=>{
+                      item['total_received'] = item.total_received.toString()
+                      item['total_unreceived'] = item.total_unreceived.toString()
+                    })
+                    this.dataTable = data
 
-
+                    this.loading = false
+                  }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Failed to receiving ', err)
+                  })
             }else{
               await axios
                   .get(this.URL.inbound +
