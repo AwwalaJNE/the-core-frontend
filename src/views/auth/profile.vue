@@ -2,7 +2,7 @@
   <vs-row>
     <vs-col xs="12" sm="12" lg="12">
       <div class="titlePage">
-        <breadcrumb />
+        <Breadcrumb />
         <h2>{{ title }}</h2>
       </div>
     </vs-col>
@@ -13,7 +13,7 @@
             <h3>EDIT PROFILE</h3>
           </vs-col>
           <vs-col xs="12" sm="3" lg="3" class="avatar-column">
-            <skeleton v-if="fetchingData" height="220px" />
+            <Skeleton v-if="fetchingData" height="220px" />
             <div
               v-if="!fetchingData"
               style="background: #ccc; min-height: 220px; width: 100%"
@@ -28,30 +28,32 @@
                 :key="index"
                 style="margin-top: 10px !important"
               >
-                <skeleton height="25px" />
+                <Skeleton height="25px" />
               </div>
             </template>
             <form-input-controller
               v-if="dataFetched"
               ref="formProfileController"
+              type-form="profile"
+              :submit-by-enter="true"
+              :data-item="dataItem"
               @formData="updateProfile"
-              typeForm="profile"
-              :submitByEnter="true"
-              :dataItem="dataItem"
             />
           </vs-col>
           <vs-col w="12" style="min-height: 50px">
             <vs-button
-              style="right: 0; position: absolute"
               v-if="dataFetched"
+              style="right: 0; position: absolute"
               block
               flat
               :active="true"
               type="submit"
               @click="handleSubmit"
-              >Save</vs-button>
+            >
+              Save
+            </vs-button>
 
-               <!-- <vs-button
+            <!-- <vs-button
               block
               flat
               type="submit"
@@ -88,10 +90,10 @@
           <template #tbody>
             <vs-tr v-if="fetchingDataHistory">
               <vs-td>
-                <skeleton />
+                <Skeleton />
               </vs-td>
               <vs-td colspan="2">
-                <skeleton />
+                <Skeleton />
               </vs-td>
             </vs-tr>
             <vs-tr :key="i" v-for="(tr, i) in trackingHistory" :data="tr">
@@ -108,34 +110,41 @@
         </vs-table>
       </div>
     </vs-col> -->
-     <!-- dialog -->
-      <dialog-message-update-password
-            :active="activeDialogFirstLogin"
-            :loading="activeLoadingFirstLogin"
-            :closeDialog="closeDialogConfirm"
-            title="Mohon melakukan pembaharuan password !!"
-            @cancel="closeDialogConfirm"
-        />
+
+    <!-- Dialog if user should update their password -->
+    <DialogUpdatePassword />
   </vs-row>
-  
 </template>
 <script>
+/* eslint-disable indent, import/extensions, quotes, semi */
 import axios from "axios";
+import { Skeleton } from "vue-loading-skeleton";
+import moment from "moment";
 import master from "@/mixins/master";
 import FormInputController from "@/components/form/formInputController";
-import { Skeleton } from "vue-loading-skeleton";
 import Breadcrumb from "@/components/breadcrumb/index";
-import DialogMessageUpdatePassword from "@/views/auth/dialogMessageLogin.vue"
-import moment from 'moment';
+import DialogUpdatePassword from "./DialogUpdatePassword.vue";
 
 export default {
-  name: "profile",
-  mixins: [master],
+  name: "Profile",
   components: {
     "form-input-controller": FormInputController,
-    skeleton: Skeleton,
-    breadcrumb: Breadcrumb,
-    "dialog-message-update-password": DialogMessageUpdatePassword,
+    Skeleton,
+    Breadcrumb,
+    DialogUpdatePassword,
+  },
+  mixins: [master],
+  data() {
+    return {
+      title: "User Profile",
+      fetchingData: true,
+      dataFetched: false,
+      dataHistoryFetched: false,
+      fetchingDataHistory: true,
+      trackingHistory: null,
+      activeDialogFirstLogin: true,
+      activeLoadingFirstLogin: true,
+    };
   },
   computed: {
     listenActive() {
@@ -148,33 +157,25 @@ export default {
       return this.dataItem;
     },
   },
-  data() {
-    return {
-      title: "User Profile",
-      fetchingData: true,
-      dataFetched: false,
-      dataHistoryFetched: false,
-      fetchingDataHistory: true,      
-      trackingHistory: null,
-      activeDialogFirstLogin: false,
-      activeLoadingFirstLogin: true
-    };
+  mounted() {
+    this.getProfile();
+    // this.getHistory();
   },
   methods: {
-    throwError: function() {
-      alert('throw')
-        throw new Error('Sentry Error Local')
+    throwError() {
+      alert("throw");
+      throw new Error("Sentry Error Local");
     },
     handleSubmit() {
       this.$refs.formProfileController.handleSubmit();
     },
     async updateProfile(form) {
       const updateLoading = this.$vs.loading({
-                type:'scale',
-                text: 'Loading...',
-                background: '#EAEAEA',
-            });
-      let data = form;
+        type: "scale",
+        text: "Loading...",
+        background: "#EAEAEA",
+      });
+      const data = form;
       if (
         data.password == "" ||
         data.password == undefined ||
@@ -184,7 +185,7 @@ export default {
       }
       await axios
         .put(
-          this.URL.profile + `?n=${this.listenNodeId}`,
+          `${this.URL.profile}?n=${this.listenNodeId}`,
           data,
           this.Helper.header()
         )
@@ -206,7 +207,7 @@ export default {
     async getProfile() {
       this.fetchingData = true;
       await axios
-        .get(this.URL.profile + `?n=${this.listenNodeId}`, this.Helper.header())
+        .get(`${this.URL.profile}?n=${this.listenNodeId}`, this.Helper.header())
         .then((res) => {
           this.dataItem = res.data.data;
           this.dataFetched = true;
@@ -224,42 +225,29 @@ export default {
       this.fetchingData = false;
     },
     async getHistory() {
-      this.trackingHistory = null;      
+      this.trackingHistory = null;
       this.fetchingDataHistory = true;
       this.dataHistoryFetched = false;
       await axios
         .get(
-          this.URL.user_history + `?n=${this.listenNodeId}`,
+          `${this.URL.user_history}?n=${this.listenNodeId}`,
           this.Helper.header()
         )
         .then((res) => {
-          let data = res.data.data.map(function(value){
+          const data = res.data.data.map((value) => {
             value.created_at = moment(value.created_at).format("D/MM hh:mm");
-            return value
+            return value;
           });
 
           this.trackingHistory = data;
         });
       this.dataHistoryFetched = true;
-      this.fetchingDataHistory = false;      
+      this.fetchingDataHistory = false;
     },
-    async checkDialoglogin(){
-      const firstLogin = this.$ls.get('firstLogin')
-      if (firstLogin == 1) {
-        console.log('true');
-        this.activeDialogFirstLogin = true
-      } else {
-        this.activeDialogFirstLogin = false
-      }
-      console.log(firstLogin, 'first_login');
+    async checkDialoglogin() {},
+    closeDialogConfirm() {
+      this.activeDialogFirstLogin = false;
     },
-    closeDialogConfirm(){
-      this.activeDialogFirstLogin = false
-    },
-  },
-  mounted() {
-    this.getProfile();
-    // this.getHistory();
   },
 };
 </script>

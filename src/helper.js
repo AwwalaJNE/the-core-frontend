@@ -4,7 +4,7 @@ export default {
             headers: {
               // 'X-Auth-Key'  : Vue.ls.get('token'), 
               // Authorization: "Bearer " + Vue.ls.storage.tokenBearer,
-              Authorization: "Bearer " + JSON.parse(localStorage.getItem("vuejs__tokenBearer")).value,
+              Authorization: "Bearer " + JSON.parse(localStorage.getItem("vuejs__tokenBearer"))?.value,
               "Content-Type": "application/json",
               Accept: "application/json"
             }
