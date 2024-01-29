@@ -1227,7 +1227,6 @@ export default {
     },
 
     updateValue(key, val, info = {}, dataObj) {
-      console.log(key, val, (info = {}), dataObj, "update values");
       if (this.listenIsMultipleSelect == true && dataObj != undefined) {
         console.log("unfined");
         if (!!this.selected.includes(dataObj) == false) {
