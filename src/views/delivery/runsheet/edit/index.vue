@@ -499,16 +499,16 @@ export default {
         //     item["is_disabled_input_status"] = item["status_code"] !== null || item["status_code"] !== "" ? true : false
         //   }
         // }
-        // if(item.hasOwnProperty("remarks")){
-        //   if(item["remarks"] !== null) {
-        //     item["is_disabled_input_remarks"] = item["remarks"] !== null || item["remarks"] !== "" ? true : false
-        //   }
-        // }
-        // if(item.hasOwnProperty("receiver_name")){
-        //   if(item["receiver_name"] !== null) {
-        //     item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false
-        //   }
-        // }
+        if(item.hasOwnProperty("remarks")){
+          if(item["status_code"] == null) {
+            item["is_disabled_input_remarks"] = item["remarks"] !== null || item["remarks"] !== "" ? true : false
+          }
+        }
+        if(item.hasOwnProperty("receiver_name")){
+          if(item["status_code"] == null) {
+            item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false
+          }
+        }
         console.log(item.is_delivered, "data.is_delivered");
         item.isDisabled = item.is_delivered === 1;
         item.employee_name = data.employee_name;

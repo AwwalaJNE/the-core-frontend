@@ -212,10 +212,7 @@ export default {
         // },
         updateValue(val){
             let dataValue = this.listenIsMultiple == false && this.isMultipleTag === false ? this.value : this.arrValue
-            
-            console.log(val,dataValue,"|",this.value ,this.listenIsMultiple,'-', this.arrValue ,'ini val');
             let obj = this.DataArr.filter(item => item.value == val)[0]
-            console.log("updateValue", this.listenFormKey, dataValue, obj, this.dataObj);
             this.$emit("updateValue", this.listenFormKey, dataValue, obj, this.dataObj)
         }
     },

@@ -202,16 +202,6 @@ export default {
     updateValue(key, val, info, item = null) {
       val = val.toUpperCase();
       const deliveryNumber = this.$store.getters.getInputs.remarks;
-      console.log(
-        "Update runsheet",
-        deliveryNumber,
-        key,
-        "|",
-        val,
-        "|",
-        info,
-        item
-      );
       key = key.split("|");
       const column_change = key[0];
       const koli_number = key[1];
@@ -224,15 +214,16 @@ export default {
           obj.status = val;
           item.status_code = val;
           this.$store.dispatch("SET_STATUS_DELIVERY", obj);
-          // this.$emit("updatePOD", obj, info);
+          if (item.status_code !== null) {
+            this.$set(item, 'is_disabled_input_remarks', false);
+            this.$set(item, 'is_disabled_input_reveiver', false);
+          }
           break;
         case column_change && column_change === "remarks":
           obj.remarks = val;
           if (item.hasOwnProperty("remarks") && val != item.remarks) {
-            // console.log("Update runsheet",obj,'|', info, item)
             item.remarks = val;
             this.$store.dispatch("SET_REMARKS", obj);
-            // this.$emit("updatePOD", obj, info);
           }
           break;
         case column_change && column_change === "receiver_name":
@@ -243,7 +234,6 @@ export default {
           ) {
             item.receiver_name = val;
             this.$store.dispatch("SET_RECEIVER_NAME", obj);
-            // this.$emit("updatePOD", obj, info);
           }
           break;
         default:
