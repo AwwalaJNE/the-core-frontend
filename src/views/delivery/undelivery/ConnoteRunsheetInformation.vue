@@ -127,13 +127,14 @@ export default {
                     } else {
                         for (let i = 0; i < this.dataTable.length; i++){
                             let item = this.dataTable[i];
-                            if (item['is_undelivered'] == 1 && item['is_undelivered_received'] == null && item['is_hrs' == 1]) {
+                            if (item['is_undelivered'] == 1 && item['is_undelivered_received'] == null) {
                                 hasNullStatus = false;
                                 break;
                             }
                         }
                     }
                     this.$emit('tes', hasNullStatus);
+                    this.$store.dispatch("SET_ALL_RUNSHEET_ID_ValueData", this.dataTable)
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
