@@ -2696,4 +2696,7 @@ export default {
   SET_FINISH_RECEIVING_BUTTON_VISIBILITY(state, payload) {
     state.isFinishReceivingButtonVisible = payload;
   },
+  SET_ALL_RUNSHEET_ID_ValueData(state, payload) {
+    state.all_runsheet = payload
+  },
 }

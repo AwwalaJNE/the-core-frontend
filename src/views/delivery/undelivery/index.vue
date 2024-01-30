@@ -326,11 +326,12 @@ export default {
                 
       this.refresh()
               }).catch(err => {
+                let message = err.response.data ? err.response.data.message : 'Update Failed'
                 this.activeDialogFinishReceiving = false
                 this.activeLoadingFinishReceiving = false
                 this.refresh()
                 // this.handleClearForm();
-                this.openNotification('danger', 'Mohon melakukan scan nomor runsheet terlebih dahulu', err)
+                this.openNotification('danger','Update Failed', message)
               })
         },
     },

@@ -130,9 +130,15 @@ export default {
                       item['courier_employee_name'] = item.employee_courier.employee_name
                       no++
                     })
+                    let gets = this.$store.getters.getInputs.all_runsheet;
                     let showButton = this.dataTable.length === 0;
-                    // console.log('hasNullStatus', showButton);
-                    this.$emit('showButtons', showButton);
+                    let statusExists = gets.some(item => item.status === null);
+                    if (showButton && statusExists === true) {
+                        showButton = false;
+                    } else if (showButton && statusExists === false) {
+                        showButton = true;
+                    }
+                    this.$emit('showButtons',showButton);
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page

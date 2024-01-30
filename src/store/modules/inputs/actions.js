@@ -2519,4 +2519,10 @@ export default {
   SET_FINISH_RECEIVING_BUTTON_VISIBILITY({ commit }, payload) {
     commit("SET_FINISH_RECEIVING_BUTTON_VISIBILITY", payload);
   },
+
+  // All runsheet
+  SET_ALL_RUNSHEET_ID_ValueData({ commit }, payload) {
+    commit('SET_ALL_RUNSHEET_ID_ValueData', payload)
+  },
+  
 }
