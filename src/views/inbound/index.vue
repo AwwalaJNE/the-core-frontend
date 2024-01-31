@@ -132,7 +132,7 @@
                       </template>
                     </inputan>
                   </vs-col>
-                  <vs-col xs="2" sm="2" lg="2">
+                  <vs-col xs="3" sm="3" lg="3">
                     <inputan :name="name" :rules="rules">
                       <template v-slot:inputan="props">
                         <vs-select
@@ -312,7 +312,6 @@ export default {
                   `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
                   this.Helper.header())
               .then(res => {
-                console.log('link', res)
                 if(res.data.data.length > 0) {
                   res.data.data.map(item => {
                     let obj = {}
@@ -336,7 +335,6 @@ export default {
                   `/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
                   this.Helper.header())
               .then(res => {
-                console.log('link', res)
                 if(res.data.data.length > 0) {
                   res.data.data.map(item => {
                     let obj = {}
@@ -360,7 +358,6 @@ export default {
                   `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
                   this.Helper.header())
               .then(res => {
-                console.log('link', res)
                 if(res.data.data.length > 0) {
                   res.data.data.map(item => {
                     let obj = {}
@@ -387,12 +384,12 @@ export default {
           this.$emit("updateStatusInbound", this.listenFormKey, val)
         },
         updatePrealert(val){
-          console.log(val,'prealertmasuk');
           const indexOfBag = val.indexOf('bag');
           if (indexOfBag !== -1) {
-            console.log('"bag" ditemukan pada indeks:', indexOfBag);
             this.hasLinkedItems = [];
-          }
+          } else if (indexOfBag === -1) {
+            this.hasLinkedItems = ['inbound_number'];
+          } 
           
         }
 
