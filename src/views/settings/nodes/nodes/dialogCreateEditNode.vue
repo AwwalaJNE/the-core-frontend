@@ -10,20 +10,6 @@
 
         <template v-slot:content>
             <div>
-                <vs-col lg="12">
-                   <selector 
-                   ref="ipAddress"
-                   name="IP Address" 
-                   rules="" 
-                   placeholder="Enter to select value"
-                   :valueData="ipAddressArray"
-                   key="ip_Address"
-                   :selectedValue="ipAddress"
-                   :isMultipleTag="true"
-                   @updateValue="updateFilter" />
-                 </vs-col>
-            </div>
-            <div>
                 <form-input-controller 
                     ref="formUserNodeController"
                     @formData="formData"
