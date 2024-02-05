@@ -78,8 +78,18 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Roles",
+                    label: "Primary Roles",
                     key: "user_role_name",
+                    width: "sm"
+                },
+                {
+                    label: "Additional Roles",
+                    key: "user_additional_role_name",
+                    width: "sm"
+                },
+                {
+                    label: "Expiry Additional Roles",
+                    key: "user_expiry_additional_role",
                     width: "sm"
                 },
                 {

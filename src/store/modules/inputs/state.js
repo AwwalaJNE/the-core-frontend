@@ -59,12 +59,33 @@ export default {
       value: ''
     },
     user_role_id: {
-      label: "Role*",
+      label: "Primary Role*",
       key: "user_role_id",
       rule: "required",
       typeInput: "select",
       typeData: "String",
       arrData: [],
+      valueData: null,
+      value: ''
+    },
+    user_additional_role_id: {
+      label: "Additional Role",
+      key: "user_additional_role_id",
+      rule: "",
+      typeInput: "selectmultipletag",
+      width: '9',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    user_expiry_additional_role: {
+      label: "Date Expiry Additional Role",
+      key: "user_expiry_additional_role",
+      rule: "",
+      typeInput: "date",
+      width: '3',
+      typeData: "String",
       valueData: null,
       value: ''
     },
