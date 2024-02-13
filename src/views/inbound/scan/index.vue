@@ -22,7 +22,7 @@
                         <div class="center">
                           <vs-input border type="text"
                                     v-model="item_no"
-                                    label-placeholder="Masukkan code BAG / Connote"
+                                    label-placeholder="Masukkan code BAG / Connote / SM"
                                     v-on:keyup.enter="updateValue"
                                     autofocus
                                     icon-after
