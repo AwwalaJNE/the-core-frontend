@@ -563,7 +563,7 @@ export default {
         courier_employee_id: val.courier_employee_id,
         delivery_runsheet_number: val.delivery_runsheet_number,
         koli_number: val.koli_number,
-        status: val.status.status_code,
+        status: val.status_code,
         remarks: val.remarks,
         receiver_name: val.receiver_name,
       };
