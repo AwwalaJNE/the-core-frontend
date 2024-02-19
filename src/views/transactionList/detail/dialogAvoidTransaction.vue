@@ -50,7 +50,7 @@
               :loading="btnLoading"
               @click="handleSubmit"
           >
-            Void
+            Cancel
           </vs-button>
         </vs-col>
       </vs-row>

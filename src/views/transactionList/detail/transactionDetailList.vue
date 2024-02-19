@@ -25,7 +25,7 @@
           :active="dialogAvoidActive"
           @refresh="refresh"
           :closeDialog="closeDialogAvoid"
-          title="Void Transaction"
+          title="Cancel Transaction"
           :transactionId="transactionId"
           :connoteNumber="connote_number"
       />
@@ -135,7 +135,7 @@ export default {
             ],
             customActionList: [
               {
-                label: 'Void',
+                label: 'Cancel',
                 key: 'void',
                 attribute: 'warn',
               },
