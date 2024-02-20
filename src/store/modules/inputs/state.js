@@ -2318,7 +2318,7 @@ export default {
   //surat muatan
   surat_muatan:{
     manifest_number: {
-      label: "No Bag",
+      label: "No Surat Muatan",
       key: "manifest_number",
       rule: "",
       typeInput: "text",
