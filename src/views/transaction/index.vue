@@ -48,6 +48,7 @@
                         ref="inputCustomerCode"
                         @blur="handleBlurCustomerCode"
                         @input="handleInputCustomerCode"
+                        :disabled="isDisabled"
                         ></vs-input>
                 </vs-col>
             </vs-row>
@@ -181,6 +182,9 @@ export default {
         listenNodeLabel() {
             return this.$store.getters.getUser.node_id.label
         },
+        listenUserRole() {
+            return this.$store.getters.getUser['user_data'].role
+        }
     },
     data() {
         return {
@@ -201,7 +205,8 @@ export default {
             prosesDataTransaction: {},
 
             rerender: false,
-            inputDisabled: false
+            inputDisabled: false,
+            isDisabled: false
         }
     },
     methods: {
@@ -400,6 +405,13 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     this.customerCode = res.data.data[0]['node_customer_code']
+                    if (this.listenUserRole['user_role_code'] != 'MKT') {
+                        console.log('masuk');
+                        this.isDisabled = false
+                    } else {
+                        this.isDisabled = true
+                    }
+                    console.log(this.listenUserRole['user_role_code'],'response');
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
