@@ -43,6 +43,7 @@
 
                 <vs-col xs="6" sm="2" lg="2">
                     <vs-input border type="text"
+                        :autofocus="true"
                         v-model="customerCode"
                         label-placeholder="Customer Code"
                         ref="inputCustomerCode"
@@ -405,13 +406,6 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     this.customerCode = res.data.data[0]['node_customer_code']
-                    if (this.listenUserRole['user_role_code'] != 'MKT') {
-                        console.log('masuk');
-                        this.isDisabled = false
-                    } else {
-                        this.isDisabled = true
-                    }
-                    console.log(this.listenUserRole['user_role_code'],'response');
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
@@ -808,6 +802,11 @@ export default {
         removeKeyHandler() {
             // window.removeEventListener("keydown", this.keyHandler);
             console.log('transaction key handler destroyyy')
+        },
+        permissionCustomerCode(){
+            const permissions = this.$ls.get("permissions") || [];
+            this.isDisabled = permissions.includes('create-customer-code') ? false : true;
+            console.log(this.isDisabled,permissions.includes('create-customer-code'),permissions, 'test');
         }
 
         
@@ -827,6 +826,7 @@ export default {
             let inputCustomerCode = this.$refs.inputCustomerCode
             setTimeout(function(){ inputCustomerCode.$el.querySelector('input').focus() }, 100);
         })
+        this.permissionCustomerCode()
     },
     beforeRouteLeave (to, from, next) {
         console.log("beforeRouteEnter", to, from)
