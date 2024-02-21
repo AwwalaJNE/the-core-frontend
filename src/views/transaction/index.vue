@@ -109,7 +109,7 @@
                                 @click="createTransaction()"
                                 v-on:keydown.tab="disable_tab_button($event)"
                                 >
-                                    FINISH
+                                    APPROVE
                                 </vs-button>
                             </vs-col>
                         </vs-row>

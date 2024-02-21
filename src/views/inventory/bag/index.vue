@@ -401,12 +401,16 @@ export default {
   },
   computed: {
     filteredRegionalArray() {
-      // Select 'All Routing' ditampilkan ketika user role inbound(4)
-      return this.listenActiveUser.user_role_id === 4 ? this.regionalArray : this.regionalArray.filter(item => item.value !== 'all_routing');
+      // value 'All Routing' ditampilkan  berdasarkan permission role
+      const permissions = this.$ls.get('permissions') || [];
+      const isPermissions = permissions.includes('read-all-routing');
+      return isPermissions ? this.regionalArray : this.regionalArray.filter(item => item.value !== 'all_routing');
     },
     filteredServiceArray() {
-      // Select 'All Service' ditampilkan ketika user role inbound(4)
-      return this.listenActiveUser.user_role_id === 4 ? this.serviceArrayNew : this.serviceArrayNew.filter(item => item.value !== 'ALL_SERVICE');
+      // value 'All Service' ditampilkan  berdasarkan permission role
+      const permissions = this.$ls.get('permissions') || [];
+      const isPermissions = permissions.includes('read-all-service');
+      return isPermissions ? this.serviceArrayNew : this.serviceArrayNew.filter(item => item.value !== 'ALL_SERVICE');
     },
   },
   methods: {
