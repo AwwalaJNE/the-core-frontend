@@ -27,7 +27,7 @@
             <div class="box view">
               <div class="nav-box">
                 <vs-row justify>
-                  <vs-col xs="2" sm="2" lg="2">
+                  <vs-col xs="12" sm="2" lg="2">
                     <template v-if="DataNode.length > 1">
                       <vs-select
                           class="m-select"
@@ -53,7 +53,7 @@
 
                     </template>
                   </vs-col>
-                  <vs-col xs="3" sm="3" lg="3">
+                  <vs-col xs="12" sm="3" lg="3">
                     <template v-if="nodeOrigin.length > 0">
                       <vs-select
                           class="m-select"
@@ -78,7 +78,7 @@
 
                     </template>
                   </vs-col>
-                  <vs-col xs="3" sm="3" lg="3">
+                  <vs-col xs="12" sm="3" lg="3">
                     <template v-if="nodeDestination.length > 0">
                       <vs-select
                           class="m-select"
@@ -101,10 +101,10 @@
 
                     </template>
                   </vs-col>
-                  <vs-col xs="6" sm="3" lg="3" offset="1"  class="mb-15">
+                  <vs-col xs="12" sm="3" lg="3" offset="1" class="mb-15">
                     <search-input ref="searchInput" @searchValue="searchValue"/>
                   </vs-col>
-                  <vs-col xs="2" sm="2" lg="2">
+                  <vs-col xs="6" sm="4" lg="2">
                     <inputan :name="name" :rules="rules">
                       <template v-slot:inputan="props">
                         <vs-select
@@ -132,7 +132,7 @@
                       </template>
                     </inputan>
                   </vs-col>
-                  <vs-col xs="3" sm="3" lg="3">
+                  <vs-col xs="6" sm="4" lg="3" class="mb-2">
                     <inputan :name="name" :rules="rules">
                       <template v-slot:inputan="props">
                         <vs-select
