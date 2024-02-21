@@ -16,21 +16,21 @@
                     <div class="box view">
 
                         <vs-row justify="space-between">
-                            <vs-col xs="6" sm="9" lg="9">
+                            <vs-col xs="12" sm="9" lg="9">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
-                            <vs-col xs="6" sm="3" lg="3">
-                                <search-input ref="searchInput" @searchValue="searchValue"/>
+                            <vs-col xs="12" sm="3" lg="3">
+                                <search-input ref="searchInput" @searchValue="searchValue" class="search-input"/>
                             </vs-col>
                         </vs-row>
 
 
                         <template v-if="navActive === 'k-CONNOTE'">
                           <vs-row >
-                            <vs-col vs-align="center" xs="3" sm="3" lg="2">
+                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
                                 <select-status-bag ref="is_in_bag" :isMultiple="false" :border="true" @updateStatusBag="updateStatusBag" />
                             </vs-col>
-                            <vs-col vs-align="center" xs="3" sm="3" lg="2">
+                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
                                 <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
                             </vs-col>
                           </vs-row>
@@ -40,14 +40,14 @@
                         </template>
                         <template v-if="navActive === 'k-BAG'">
                           <vs-row >
-                            <vs-col vs-align="center" xs="3" sm="3" lg="3">
+                            <vs-col vs-align="center" xs="6" sm="4" lg="3">
                               <select-bag-destination
                                   ref="bag_destination"
                                   :isMultiple="false"
                                   :border="true"
                                   @updateBagDestination="updateBagDestination" />
                             </vs-col>
-                            <vs-col vs-align="center" xs="3" sm="3" lg="2">
+                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
                               <select-bag-routing
                                   ref="bag_routing"
                                   :isMultiple="false"
@@ -279,6 +279,11 @@ export default {
                         transition: all .3s ease-in;
                     }
                 }
+            }
+        }
+        .search-input{
+            @include for-phone-only{
+                margin-bottom: 1rem;
             }
         }
     }
