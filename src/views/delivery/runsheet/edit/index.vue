@@ -27,7 +27,7 @@
             <template>
               <div class="center in-get-bag">
                 <vs-row style="margin-top:1em">
-                  <vs-col xs="12" sm="6" lg="2">
+                  <vs-col xs="12" sm="6" lg="2" style="margin-bottom: 10px;">
                     <vs-radio v-model="radio_option" val="connote">
                       Connote (orion)
                     </vs-radio>
@@ -53,9 +53,10 @@
                       autofocus
                       icon-after
                       @keyup.enter="updateValue"
+                      @click-icon="$refs.cameraScanner.open('formInputConnote')"
                     >
                       <template #icon>
-                        <i class="bx bx-file" />
+                        <i class="bx bx-barcode-reader" />
                       </template>
                     </vs-input>
                   </div>
@@ -69,9 +70,12 @@
                       autofocus
                       icon-after
                       @keyup.enter="updateValueOrion"
+                      @click-icon="
+                        $refs.cameraScanner.open('formInputConnoteOrion')
+                      "
                     >
                       <template #icon>
-                        <i class="bx bx-file" />
+                        <i class="bx bx-barcode-reader" />
                       </template>
                     </vs-input>
                   </div>
@@ -87,9 +91,12 @@
                       autofocus
                       icon-after
                       @keyup.enter="removeValue"
+                      @click-icon="
+                        $refs.cameraScanner.open('formRemoveConnote')
+                      "
                     >
                       <template #icon>
-                        <i class="bx bx-exit" />
+                        <i class="bx bx-barcode-reader" />
                       </template>
                     </vs-input>
                   </div>
@@ -103,9 +110,12 @@
                       autofocus
                       icon-after
                       @keyup.enter="removeValueOrion"
+                      @click-icon="
+                        $refs.cameraScanner.open('formRemoveConnoteOrion')
+                      "
                     >
                       <template #icon>
-                        <i class="bx bx-exit" />
+                        <i class="bx bx-barcode-reader" />
                       </template>
                     </vs-input>
                   </div>
@@ -197,6 +207,8 @@
         </vs-button>
       </vs-row>
     </section>
+
+    <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
   </div>
 </template>
 <script>
@@ -206,6 +218,7 @@ import moment from "moment";
 import master from "@/mixins/master";
 import NavItem from "@/components/navbar/navTab";
 import Breadcrumb from "@/components/breadcrumb/index";
+import CameraScanner from "@/components/scanner/camera";
 
 import RunsheetInformation from "@/views/delivery/runsheet/edit/runsheetInformation";
 
@@ -216,6 +229,7 @@ export default {
     "nav-item": NavItem,
     breadcrumb: Breadcrumb,
     RunsheetInformation,
+    CameraScanner,
   },
   mixins: [master],
   data() {
@@ -499,14 +513,18 @@ export default {
         //     item["is_disabled_input_status"] = item["status_code"] !== null || item["status_code"] !== "" ? true : false
         //   }
         // }
-        if(item.hasOwnProperty("remarks")){
-          if(item["status_code"] == null) {
-            item["is_disabled_input_remarks"] = item["remarks"] !== null || item["remarks"] !== "" ? true : false
+        if (item.hasOwnProperty("remarks")) {
+          if (item["status_code"] == null) {
+            item["is_disabled_input_remarks"] =
+              item["remarks"] !== null || item["remarks"] !== "" ? true : false;
           }
         }
-        if(item.hasOwnProperty("receiver_name")){
-          if(item["status_code"] == null) {
-            item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false
+        if (item.hasOwnProperty("receiver_name")) {
+          if (item["status_code"] == null) {
+            item["is_disabled_input_reveiver"] =
+              item["receiver_name"] !== null || item["receiver_name"] !== ""
+                ? true
+                : false;
           }
         }
         console.log(item.is_delivered, "data.is_delivered");
@@ -627,6 +645,34 @@ export default {
           "Failed",
           "Please select at least one item"
         );
+      }
+    },
+
+    onCameraScannerGetData(data) {
+      if (data && data.event === "result") {
+        const result = data.data;
+
+        switch (data.namespace) {
+          case "formInputConnoteOrion":
+            this.item_no_orion = result.text;
+            this.updateValueOrion();
+            break;
+          case "formInputConnote":
+            this.item_no = result.text;
+            this.updateValue();
+            break;
+          case "formRemoveConnote":
+            this.item_no_remove = result.text;
+            this.removeValue();
+            break;
+          case "formRemoveConnoteOrion":
+            this.item_no_orion_remove = result.text;
+            this.removeValueOrion();
+            break;
+          default:
+            console.log("Unhandled event.", data);
+            break;
+        }
       }
     },
   },

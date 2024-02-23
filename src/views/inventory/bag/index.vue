@@ -12,7 +12,7 @@
           <vs-row>
             
             <!--input destination -->
-            <vs-col xs="12" sm="2" lg="2">
+            <vs-col xs="12" sm="3" lg="2">
               <template>
                 <div class="center in-get-bag">
                  <vs-col lg="12">
@@ -63,7 +63,7 @@
                 </div>
               </template>
             </vs-col>
-            <vs-col xs="12" sm="2" lg="2">
+            <vs-col xs="12" sm="3" lg="2">
               <template>
                 <div class="center in-get-bag">
                  <vs-col lg="12">
@@ -124,23 +124,23 @@
           </vs-row>
 
           <template>
-            <div class="center in-get-bag">
+            <div class="center in-get-bag mb-2">
               <vs-row style="margin-top:1em">
-                <vs-col xs="12" sm="4" lg="2">
+                <vs-col xs="4" sm="3" lg="2">
                   <vs-radio
                     v-model="radio_option"
                     val="connote">
                     Connote (Orion)
                   </vs-radio>
                 </vs-col>
-                <vs-col xs="12" sm="4" lg="2">
+                <vs-col xs="4" sm="3" lg="2">
                   <vs-radio
                     v-model="radio_option"
                     val="koli">
                     Koli
                   </vs-radio>
                 </vs-col>
-                <vs-col xs="12" sm="4" lg="2">
+                <vs-col xs="4" sm="3" lg="2">
                   <vs-radio
                     v-model="radio_option"
                     val="bag">

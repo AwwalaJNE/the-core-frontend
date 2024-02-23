@@ -12,14 +12,14 @@
     <template>
       <div class="center in-get-bag">
         <vs-row style="margin-top:2em">
-          <vs-col xs="12" sm="4" lg="2">
+          <vs-col xs="4" sm="4" lg="2">
             <vs-radio
               v-model="radio_option"
               val="connote">
               Connote (Orion)
             </vs-radio>
           </vs-col>
-          <vs-col xs="12" sm="4" lg="2">
+          <vs-col xs="4" sm="4" lg="2">
             <vs-radio
               v-model="radio_option"
               val="koli">
@@ -61,7 +61,7 @@
       <vs-row style="margin-top:1em">
         
         <!--input destination -->
-        <vs-col xs="12" sm="2" lg="2">
+        <vs-col xs="6" sm="3" lg="2">
           <template>
             <div class="center in-get-bag">
              <vs-col lg="12">
@@ -80,7 +80,7 @@
           </template>
         </vs-col>
         <!--input update location -->
-        <vs-col xs="12" sm="2" lg="2">
+        <vs-col xs="6" sm="2" lg="2">
           <template v-if="loading == false">
             <div class="center in-get-bag">
               <vs-col lg="12">
@@ -140,7 +140,7 @@
         
         
         <!--input update weight -->
-        <vs-col xs="12" sm="2" lg="2">
+        <vs-col xs="8" sm="3" lg="2">
           <template>
             <div class="center in-get-bag">
              <vs-col lg="8">
@@ -157,7 +157,7 @@
           </template>
         </vs-col>
 
-        <vs-col xs="12" sm="3" lg="3" >
+        <vs-col xs="4" sm="2" lg="3" class="mt-1">
           <template>
             <vs-button @click="actionDetail">Print</vs-button>
             <!-- <div class="center in-get-bag">

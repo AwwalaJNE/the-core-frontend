@@ -12,12 +12,12 @@
 
         <section>
           <vs-row>
-            <vs-col lg="6" sm="6" xs="6">
+            <vs-col lg="6" sm="6" xs="12">
               <div class="box information" style="padding-top: 1px !important;">
                 <h4 align="left">List of Bags</h4>
                 <div class="nav-box">
                   <vs-row>
-                    <vs-col xs="6" sm="6" lg="6">
+                    <vs-col xs="12" sm="12" lg="6">
                       <template>
                         <div class="center">
                           <vs-input border type="text"
@@ -40,7 +40,7 @@
             </vs-col>
 
             <!-- col for detail unreceive item-->
-            <vs-col lg="6" sm="6" xs="6">
+            <vs-col lg="6" sm="6" xs="12">
               <div class="box information" style="padding-top: 1px !important;">
                 <h4 align="left">Information SM/SJ/Pickup Number</h4>
                 <div class="nav-box">

@@ -18,7 +18,7 @@
 
 <template>
     <div class="left">
-        <vs-navbar left-collapsed v-model="active" @input="activeTab">
+        <vs-navbar right-collapsed v-model="active" @input="activeTab" >
             <template #left>
                 <vs-navbar-item 
                 v-for="(item,key) in listenNavItem"
