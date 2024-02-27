@@ -54,9 +54,16 @@
                                   :border="true"
                                   @updateBagRouting="updateBagRouting" />
                             </vs-col>
+                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
+                              <select-bag-tipe
+                                  ref="bag_tipe"
+                                  :isMultiple="false"
+                                  :border="true"
+                                  @updateBagTipe="updateBagTipe" />
+                            </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :query="tempSearch"/>
+                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch"/>
                             </transition>
                         </template>
                         
@@ -80,6 +87,7 @@ import SelectBagStatusVue from "@/views/inventory/connote/item/selectBagStatus"
 import SelectInventoryVue from "@/views/inventory/connote/item/selectInventoryStatus"
 import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDestination"
 import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
+import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
 
 // Connote
 import ConnoteList from "@/views/inventory/connote/item/connoteList"
@@ -100,7 +108,8 @@ export default {
         "select-status-bag": SelectBagStatusVue,
         "select-status-inventory": SelectInventoryVue,
         "select-bag-destination": SelectBagDestinationVue,
-        "select-bag-routing": SelectBagRouting
+        "select-bag-routing": SelectBagRouting,
+        "select-bag-tipe": SelectBagTipe
     },
     data() {
         return {
@@ -160,6 +169,7 @@ export default {
             statusinventory:"",
             bagDestination:"",
             bagRouting:"",
+            bagTipe:"",
             destination_tlc: [{
               label: 'All Destination',
               value: ''
@@ -179,6 +189,9 @@ export default {
         },
         updateBagRouting(key,val){
             this.bagRouting = val
+        },
+        updateBagTipe(key,val){
+            this.bagTipe = val
         },
         refresh(){
             let el = this.refreshInject
