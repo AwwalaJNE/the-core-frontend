@@ -139,6 +139,11 @@ export default {
                     label: "Surat Jalan",
                     key: "surat_jalan",
                     width: "auto"
+                },
+                {
+                    label: "Pra runsheet",
+                    key: "is_pra_runsheet",
+                    width: "auto"
                 }
             ],
             loading: false,

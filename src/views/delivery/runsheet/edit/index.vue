@@ -27,14 +27,19 @@
             <template>
               <div class="center in-get-bag">
                 <vs-row style="margin-top:1em">
-                  <vs-col xs="12" sm="6" lg="2" style="margin-bottom: 10px;">
-                    <vs-radio v-model="radio_option" val="connote">
+                  <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px;">
+                    <vs-radio v-model="radio_option" val="connote" @change="handleRadioChange">
                       Connote (orion)
                     </vs-radio>
                   </vs-col>
-                  <vs-col xs="12" sm="6" lg="2">
-                    <vs-radio v-model="radio_option" val="koli">
+                  <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px">
+                    <vs-radio v-model="radio_option" val="koli" @change="handleRadioChange">
                       Koli
+                    </vs-radio>
+                  </vs-col>
+                  <vs-col xs="12" sm="4" lg="3" >
+                    <vs-radio v-model="radio_option" val="bag" @change="handleRadioChange">
+                      Bag Pra Runsheet
                     </vs-radio>
                   </vs-col>
                 </vs-row>
@@ -42,6 +47,25 @@
             </template>
             <div class="nav-box">
               <vs-row>
+                <vs-col v-if="radio_option === 'bag'" xs="12" sm="3" lg="3" style="margin-top: 2em">
+                  <div class="center">
+                    <vs-input
+                      ref="formInputConnote"
+                      v-model="item_bag"
+                      border
+                      type="text"
+                      label-placeholder="Scan Bag disini"
+                      autofocus
+                      icon-after
+                      @keyup.enter="updateValueBag"
+                      @click-icon="$refs.cameraScanner.open('formInputConnote')"
+                    >
+                      <template #icon>
+                        <i class="bx bx-barcode-reader" />
+                      </template>
+                    </vs-input>
+                  </div>
+                </vs-col>
                 <vs-col xs="12" sm="3" lg="3" style="margin-top: 2em">
                   <div v-if="radio_option === 'koli'" class="center">
                     <vs-input
@@ -60,7 +84,7 @@
                       </template>
                     </vs-input>
                   </div>
-                  <div v-else class="center">
+                  <div v-else-if="radio_option === 'connote'" class="center">
                     <vs-input
                       ref="formInputConnoteOrion"
                       v-model="item_no_orion"
@@ -70,6 +94,25 @@
                       autofocus
                       icon-after
                       @keyup.enter="updateValueOrion"
+                      @click-icon="
+                        $refs.cameraScanner.open('formInputConnoteOrion')
+                      "
+                    >
+                      <template #icon>
+                        <i class="bx bx-barcode-reader" />
+                      </template>
+                    </vs-input>
+                  </div>
+                  <div v-else-if="radio_option === 'bag'" class="center">
+                    <vs-input
+                      ref="formInputConnoteOrion"
+                      v-model="item_no"
+                      border
+                      type="text"
+                      label-placeholder="Scan Koli disini "
+                      autofocus
+                      icon-after
+                      @keyup.enter="updateValue"
                       @click-icon="
                         $refs.cameraScanner.open('formInputConnoteOrion')
                       "
@@ -100,7 +143,7 @@
                       </template>
                     </vs-input>
                   </div>
-                  <div v-else class="center">
+                  <div v-else-if="radio_option === 'connote'" class="center">
                     <vs-input
                       ref="formRemoveConnoteOrion"
                       v-model="item_no_orion_remove"
@@ -110,6 +153,25 @@
                       autofocus
                       icon-after
                       @keyup.enter="removeValueOrion"
+                      @click-icon="
+                        $refs.cameraScanner.open('formRemoveConnoteOrion')
+                      "
+                    >
+                      <template #icon>
+                        <i class="bx bx-barcode-reader" />
+                      </template>
+                    </vs-input>
+                  </div>
+                  <div v-else-if="radio_option === 'bag'" class="center">
+                    <vs-input
+                      ref="formRemoveConnoteOrion"
+                      v-model="item_no_orion_remove"
+                      border
+                      type="text"
+                      label-placeholder="Hapus Koli disini"
+                      autofocus
+                      icon-after
+                      @keyup.enter="removeValue"
                       @click-icon="
                         $refs.cameraScanner.open('formRemoveConnoteOrion')
                       "
@@ -143,7 +205,7 @@
                     </div>
                   </template>
                 </vs-col>
-                <vs-col xs="12" sm="3" lg="3">
+                <vs-col xs="6" sm="2" lg="2">
                   <template v-if="dataDelivery.length > 0">
                     <div class="right text-right">
                       <vs-button
@@ -152,6 +214,20 @@
                       >
                         <span style="float: right; text-align: right">
                           Confirmed
+                        </span>
+                      </vs-button>
+                    </div>
+                  </template>
+                </vs-col>
+                <vs-col xs="6" sm="2" lg="1" class="mb-4">
+                  <template v-if="dataDelivery.length > 0">
+                    <div>
+                      <vs-button
+                        :loading="loadingConfirm"
+                        @click="confirmAction"
+                      >
+                        <span>
+                          Approve
                         </span>
                       </vs-button>
                     </div>
@@ -173,6 +249,7 @@
                           :query="tempSearch"
                           :loading="loadingRunsheet"
                           :delivery-number="delivery_runsheet_number"
+                          :radioOption="radio_option"
                           @update-selected="updateSelected"
                           @updatePOD="updatePOD"
                           @editPOD="editPOD"
@@ -232,6 +309,9 @@ export default {
     CameraScanner,
   },
   mixins: [master],
+  // props: {
+  //   radio_option: String
+  // },
   data() {
     return {
       title: "Edit Assign",
@@ -239,6 +319,7 @@ export default {
       tempDate: [],
       dialogPickupRequest: false,
       item_no: "",
+      item_bag: "",
       item_no_remove: "",
       item_no_orion_remove: "",
       item_no_orion: "",
@@ -268,6 +349,7 @@ export default {
     },
   },
   mounted() {
+    console.log('Nilai radioOption :', this.radio_option);
     this.getStatus();
   },
   methods: {
@@ -292,32 +374,45 @@ export default {
     openDialog() {
       this.dialogPickupRequest = true;
     },
-    updateValue() {
-      this.form.koli_number = this.item_no;
-      // this.form.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number
+    handleRadioChange(value) {
+      console.log(value,'radioOptions');
+    },
+    updateValueBag() {
+      console.log(this.radio_option,'radio');
+      this.form.bag_number = this.item_bag;
       this.form.courier_employee_id = this.employee_id;
+      this.item_no = null;
+      this.form.koli_number = null;
+      this.getKoli();
+    },
+    updateValue() {
+      console.log(this.radio_option,'radio');
+      this.form.koli_number = this.item_no;
+      this.form.courier_employee_id = this.employee_id;
+      this.form.bag_number = null;
       this.scanConnote();
       this.item_no = null;
     },
     updateValueOrion() {
+      console.log(this.radio_option,'radio');
       this.form.koli_number = `${this.item_no_orion}00`;
-      // this.form.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number
       this.form.courier_employee_id = this.employee_id;
+      this.form.bag_number = null;
       this.scanConnote();
       this.item_no = null;
     },
     removeValue() {
       console.log(this.item_no_remove, "item nooo");
       this.form.koli_number = this.item_no_remove;
-      // this.form.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number
       this.form.courier_employee_id = this.employee_id;
+      this.form.bag_number = null;
       this.removeConnote();
       this.item_no_remove = null;
     },
     removeValueOrion() {
       this.form.koli_number = `${this.item_no_orion_remove}00`;
-      // this.form.delivery_runsheet_number = this.dataDelivery.delivery[0].delivery_runsheet_number
       this.form.courier_employee_id = this.employee_id;
+      this.form.bag_number = null;
       this.removeConnote();
       this.item_no_orion_remove = null;
     },
@@ -355,6 +450,31 @@ export default {
           this.loadingCourier = true;
           // this.openNotification('danger', 'Failed to populate status', err)
         });
+    },
+    async getKoli() {
+      await axios
+        .get(
+          this.URL.bag + '/' + this.form.bag_number + `?n=${this.listenNodeId}`,
+          this.Helper.header())
+        .then(res => {
+          // console.log('res', res.data.detail)
+          const details = res.data.detail;
+          for (let detail of details) {
+            const item_number = detail.item_number;
+            const postData = {
+              bag_number: this.form.bag_number,
+              courier_employee_id: this.employee_id,
+              koli_number: item_number
+            };
+            this.scanBag(postData);
+          }
+          // console.log(postData,'postData');
+          // this.refresh()
+          this.openNotification('success', ' success', 'Romove bag item successfully')
+        }).catch(err => {
+          this.loading = false
+          this.openNotification('danger', ' bag item is failed', err)
+        })
     },
     async scanConnote() {
       this.loadingRunsheet = true;
