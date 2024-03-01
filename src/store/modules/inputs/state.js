@@ -68,6 +68,16 @@ export default {
       valueData: null,
       value: ''
     },
+    employee_id: {
+      label: "Employee Courier Delivery Name",
+      key: "employee_id",
+      rule: "",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     user_node_id: {
       label: "User Node",
       key: "user_node_id",
