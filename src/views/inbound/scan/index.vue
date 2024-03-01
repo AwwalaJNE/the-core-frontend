@@ -23,12 +23,13 @@
                           <vs-input border type="text"
                                     v-model="item_no"
                                     label-placeholder="Masukkan code BAG / Connote / SM"
-                                    v-on:keyup.enter="updateValue"
                                     autofocus
                                     icon-after
-                                    ref="formInputInbound">
+                                    ref="formInputInbound"
+                                    @keyup.enter.native="updateValue"
+                                    @click-icon="$refs.cameraScanner.open('formInputInbound')">
                             <template #icon>
-                              <i class='bx bx-file'></i>
+                              <i class="bx bx-barcode-reader"></i>
                             </template>
                           </vs-input>
                         </div>
@@ -76,6 +77,7 @@
           </vs-row>
 
         </section>
+        <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
 
 
     </div>
@@ -90,6 +92,7 @@ import dateRange from "@/components/daterange/index"
 
 import InboundInformation from "@/views/inbound/scan/inboundInformation"
 import InboundDetail from "@/views/inbound/scan/inboundDetail"
+import CameraScanner from "@/components/scanner/camera.vue";
 
 
 export default {
@@ -99,7 +102,8 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "InboundInformation": InboundInformation,
-        "InboundDetail": InboundDetail
+        "InboundDetail": InboundDetail,
+        CameraScanner,
     },
     data() {
         return {
@@ -258,7 +262,19 @@ export default {
         },
         handlerClearForm(){
           this.item_no = ''
-        }
+        },
+        onCameraScannerGetData(data) {
+          if (
+            // eslint-disable-next-line operator-linebreak
+            data &&
+            // eslint-disable-next-line operator-linebreak
+            data.event === "result" &&
+            data.namespace === "formInputInbound"
+          ) {
+            this.item_no = data.data.text;
+            this.updateValue();
+          }
+        },
 
     },
     mounted() {
