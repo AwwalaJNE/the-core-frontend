@@ -169,7 +169,7 @@
                             :autofocus="true"
                             ref="formInputBagging"
                             icon-after
-                            @keyup.enter.native="updateValueOrion"
+                            v-on:keyup.enter="updateValueOrion"
                             @click-icon="$refs.cameraScanner.open('formInputBagging')"
                             >
                             <template #icon>
@@ -186,7 +186,6 @@
                             :autofocus="true"
                             ref="formInputBagging"
                             icon-after
-                            @keyup.enter.native="updateValue"
                             @click-icon="$refs.cameraScanner.open('formInputBagging')"
                             >
                             <template #icon>
@@ -579,6 +578,7 @@ export default {
       this.ProccessBagging()
     },
     updateValueOrion(){
+      console.log(this.item_code_orion,'item_code_orion');
       this.form={
           item_number: this.item_code_orion + "00",
           destination : this.regional,
@@ -675,8 +675,13 @@ export default {
         data.namespace === "formInputBagging"
       ) {
         this.item_code = data.data.text;
-        this.updateValue();
-        this.updateValueOrion();
+        console.log(data,'camera',this.radio_option);
+        if (this.radio_option === "connote") {
+          this.item_code_orion = this.item_code;
+          this.updateValueOrion();
+        } else {
+          this.updateValue();
+        }
       }
     },
   },
