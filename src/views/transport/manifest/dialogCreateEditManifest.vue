@@ -219,6 +219,7 @@ export default {
     active: function(val) {
       if (val == true) {
         this.getDataVehicleMode();
+        this.originNode()
 
         if (Object.keys(this.listenDataItem).length > 0) {
           // if this.listenDataItem ada isinya
@@ -781,6 +782,14 @@ export default {
         default:
         // console.log(info)
       }
+    },
+    originNode(){
+      if (this.listenActiveUser.nodes.length > 0) {
+          const nodeName = this.listenActiveUser.nodes[0].node_name;
+          const nodeId = this.listenActiveUser.nodes[0].node_id;
+          this.node_id_origin = nodeId;
+          this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN', nodeName);
+        }
     },
     resetForm() {
       // this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", [{label: null, value: null, data: {}}])
