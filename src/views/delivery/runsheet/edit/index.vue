@@ -286,6 +286,11 @@
     </section>
 
     <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
+        <dialog-confirm
+            :active="dialogConfirmEmployee" 
+            :closeDialog="closeDialogConfirmEmployee"
+            @updateValue="updateValueBag"
+        />
   </div>
 </template>
 <script>
@@ -298,6 +303,7 @@ import Breadcrumb from "@/components/breadcrumb/index";
 import CameraScanner from "@/components/scanner/camera";
 
 import RunsheetInformation from "@/views/delivery/runsheet/edit/runsheetInformation";
+import DialogConfirm from "@/views/delivery/runsheet/edit/dialogConfirm";
 
 export default {
   name: "DeliveryRunsheetEdit",
@@ -307,6 +313,7 @@ export default {
     breadcrumb: Breadcrumb,
     RunsheetInformation,
     CameraScanner,
+    "dialog-confirm": DialogConfirm
   },
   mixins: [master],
   // props: {
@@ -341,6 +348,8 @@ export default {
       loadingConfirm: false,
 
       selectedUpdateItems: [],
+      dialogConfirmEmployee: false,
+      dialogLoadingEmployee: false
     };
   },
   computed: {
@@ -377,16 +386,14 @@ export default {
     handleRadioChange(value) {
       console.log(value,'radioOptions');
     },
-    updateValueBag() {
-      console.log(this.radio_option,'radio');
+    updateValueBag(val) {
       this.form.bag_number = this.item_bag;
       this.form.courier_employee_id = this.employee_id;
       this.item_no = null;
       this.form.koli_number = null;
-      this.getKoli();
+      this.getKoli(val);
     },
     updateValue() {
-      console.log(this.radio_option,'radio');
       this.form.koli_number = this.item_no;
       this.form.courier_employee_id = this.employee_id;
       this.form.bag_number = null;
@@ -394,7 +401,6 @@ export default {
       this.item_no = null;
     },
     updateValueOrion() {
-      console.log(this.radio_option,'radio');
       this.form.koli_number = `${this.item_no_orion}00`;
       this.form.courier_employee_id = this.employee_id;
       this.form.bag_number = null;
@@ -402,7 +408,6 @@ export default {
       this.item_no = null;
     },
     removeValue() {
-      console.log(this.item_no_remove, "item nooo");
       this.form.koli_number = this.item_no_remove;
       this.form.courier_employee_id = this.employee_id;
       this.form.bag_number = null;
@@ -417,7 +422,6 @@ export default {
       this.item_no_orion_remove = null;
     },
     getParamRoute() {
-      console.log("hehe");
       this.employee_id = this.$route.params.employee_id.toString();
       this.getCourier();
       // this.employee_data.employee_name = this.$route.params.employee_name
@@ -451,13 +455,16 @@ export default {
           // this.openNotification('danger', 'Failed to populate status', err)
         });
     },
-    async getKoli() {
+    closeDialogConfirmEmployee() {
+      this.dialogConfirmEmployee = false
+      this.dialogLoadingEmployee = false
+    },
+    async getKoli(val) {
       await axios
         .get(
-          this.URL.bag + '/' + this.form.bag_number + `?n=${this.listenNodeId}`,
+          this.URL.bag + '/' + this.form.bag_number + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`,
           this.Helper.header())
         .then(res => {
-          // console.log('res', res.data.detail)
           const details = res.data.detail;
           for (let detail of details) {
             const item_number = detail.item_number;
@@ -466,19 +473,26 @@ export default {
               courier_employee_id: this.employee_id,
               koli_number: item_number
             };
-            this.scanBag(postData);
+            this.validation_employee = val === false ? val : res.data.validation_employee;
+            if (this.validation_employee) {
+              this.dialogConfirmEmployee = true;
+            } else {
+              this.dialogConfirmEmployee = false;
+              this.scanConnote(postData);
+            }
           }
-          // console.log(postData,'postData');
           // this.refresh()
-          this.openNotification('success', ' success', 'Romove bag item successfully')
+          // this.openNotification('success', ' success', 'Insert bag item successfully')
         }).catch(err => {
           this.loading = false
           this.openNotification('danger', ' bag item is failed', err)
         })
     },
-    async scanConnote() {
+    async scanConnote(postData) {
       this.loadingRunsheet = true;
-      console.log("123", this.form);
+      if (postData) {
+        this.form = postData
+      }
       await axios
         .post(
           `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}`,

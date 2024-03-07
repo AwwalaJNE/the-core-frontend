@@ -53,19 +53,19 @@ export default {
         },
         {
           label: 'Bag pickup',
-          value: 'bag_pickup'
+          value: 'BAG_PICKUP'
         },
         {
           label: 'Bag Outbound',
-          value: 'bag_outbound'
+          value: 'OUTBOUND'
         },
         {
           label: 'Bag',
-          value: 'bag_tipe'
+          value: 'BAGS'
         },
         {
           label: 'Bag Pra Runsheet',
-          value: 'bag_pra_runsheet'
+          value: 'PRA_RUNSHEET'
         }
       ],
       value: this.selectedValue ? this.selectedValue :"-",

@@ -571,8 +571,7 @@ export default {
       if(this.destination !== "") {
         this.form["destination_node_id"] = this.destination
       }
-      // jika user type inbound, kirim payload employee_id(kurir delivery) 
-      if (this.listenActiveUser['user_role_id'] == 4){
+      if (this.checkPermission('read-courier-pra-runsheet')){
         this.form["employee_id"] = this.employee
       }
       this.ProccessBagging()
@@ -591,8 +590,7 @@ export default {
       if(this.destination !== "") {
         this.form["destination_node_id"] = this.destination
       }
-      // jika user type inbound, kirim payload employee_id(kurir delivery) 
-      if (this.listenActiveUser['user_role_id'] == 4){
+      if (this.checkPermission('read-courier-pra-runsheet')){
         this.form["employee_id"] = this.employee
       }
       this.ProccessBagging()
