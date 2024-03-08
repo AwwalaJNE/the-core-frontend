@@ -257,6 +257,9 @@ export default {
     },
     listenDestinationArr() {
       return this.$store.getters["getInputs"]["bagging"]["destination"]["dataArray"] || []
+    },
+    listenDataBag(){
+      return this.$ls.get('getDataBag')
     }
   },
   methods: {
@@ -317,20 +320,22 @@ export default {
       this.loading = loading
     },
     getBagIdParam(){
-      // console.log("listenDestination", this.listenDestination)
       this.bag_id = this.$route.params.id
       this.form={
           bag_number : this.bag_id,
           destination : this.listenDestination,
-          service: this.listenServiceType
+          service: this.listenServiceType,
+          is_pra_runsheet: this.listenDataBag.is_pra_runsheet
       }
     },
     updateItemOnBag() {
       this.form.item_number = this.item_code
+      this.form.is_pra_runsheet = this.listenDataBag.is_pra_runsheet
       this.ProccessAddBagItem()
     },
     updateItemOnBagOrion() {
       this.form.item_number = this.item_code_orion + "00"
+      this.form.is_pra_runsheet = this.listenDataBag.is_pra_runsheet
       this.ProccessAddBagItem()
     },
     updateValue(){

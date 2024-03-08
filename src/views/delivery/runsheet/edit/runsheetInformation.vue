@@ -43,6 +43,7 @@ export default {
     deliveryNumber: String,
     arrStatus: Array,
     dataDelivery: [Object, Array],
+    radioOption: String
   },
   emits: ["update-selected"],
   data() {
@@ -146,6 +147,7 @@ export default {
       test: "",
       waitToRoleRenderer: true,
       arrayOfObjects: [],
+      radio_option: ""
     };
   },
   computed: {
@@ -196,6 +198,7 @@ export default {
     //   }
     // });
 
+    console.log('Nilai radioOption di dalam komponen anak:', this.radioOption);
     this.getParamRoute();
   },
   methods: {

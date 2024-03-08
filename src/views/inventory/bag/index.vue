@@ -10,6 +10,11 @@
       </vs-row>
       <section class="bagging">
           <vs-row>
+            <vs-col xs="6" sm="3" lg="2" class="mt-2">
+              <vs-checkbox  v-model="is_pra_runsheet">
+                Pra Runsheet
+              </vs-checkbox>
+            </vs-col>
             
             <!--input destination -->
             <vs-col xs="12" sm="3" lg="2">
@@ -24,6 +29,7 @@
                    formKey="regional"
                    :valueData="filteredRegionalArray"
                    :selectedValue="regional"
+                   :disabled="is_pra_runsheet"
                    
                    @updateValue="updateFilter" />
                  </vs-col>
@@ -43,6 +49,7 @@
                    :loading="loading"
                    :valueData="destinationArray"
                    :selectedValue="destination"
+                   :disabled="is_pra_runsheet"
                    
                    @updateValue="updateFilter" />
                  </vs-col>
@@ -77,14 +84,15 @@
                    :valueData="filteredServiceArray"
                    :selectedValue="service"
                    :isMultiple="true"
+                   :disabled="is_pra_runsheet"
                    
                    @updateValue="updateFilter" />
                  </vs-col>
                 </div>
               </template>
             </vs-col>
-            <vs-col xs="12" sm="3" lg="3">
-              <template v-if="this.listenActiveUser['user_role_id'] == 4">
+            <vs-col xs="12" sm="3" lg="2">
+              <template v-if="checkPermission('read-courier-pra-runsheet')">
               <!-- <template> -->
                 <div class="center in-get-bag">
                  <vs-col lg="12">
@@ -158,9 +166,15 @@
                   <vs-input border type="text"
                             v-model="item_code_orion"
                             label-placeholder="Masukkan Connote (Orion)"
-                            v-on:keyup.enter="updateValueOrion"
                             :autofocus="true"
-                            ref="formInputBagging">
+                            ref="formInputBagging"
+                            icon-after
+                            v-on:keyup.enter="updateValueOrion"
+                            @click-icon="$refs.cameraScanner.open('formInputBagging')"
+                            >
+                            <template #icon>
+                              <i class="bx bx-barcode-reader"></i>
+                            </template>
 
                   </vs-input>
                 </div>
@@ -170,7 +184,13 @@
                             label-placeholder="Masukkan code Koli / Bag"
                             v-on:keyup.enter="updateValue"
                             :autofocus="true"
-                            ref="formInputBagging">
+                            ref="formInputBagging"
+                            icon-after
+                            @click-icon="$refs.cameraScanner.open('formInputBagging')"
+                            >
+                            <template #icon>
+                              <i class="bx bx-barcode-reader"></i>
+                            </template>
 
                   </vs-input>
                 </div>
@@ -192,7 +212,7 @@
             </vs-col>
           </vs-row>
       </section>
-
+      <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
   </div>
 </template>
 <script>
@@ -202,6 +222,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import Selector from "@/components/input/select"
 import FormInputController from "@/components/form/formInputController"
 import AutoComplete from "@/components/input/autoComplete"
+import CameraScanner from "@/components/scanner/camera.vue";
 
 export default {
   name:"InventoryBagging",
@@ -210,6 +231,7 @@ export default {
       "breadcrumb": Breadcrumb,
       "selector": Selector,
       "auto-complete": AutoComplete,
+      CameraScanner,
   },
   watch: {
     regional(newRegional, oldRegional) {
@@ -223,6 +245,7 @@ export default {
       return {
           title: "Bagging",
           item_code:'',
+          item_code_orion:  '',
           form:{},
           loading: false,
           loadingData: false,
@@ -396,7 +419,8 @@ export default {
           employeeArray: [],
           searchTerm: '',
           timeout: null,
-          links: []
+          links: [],
+          is_pra_runsheet: false
       }
   },
   computed: {
@@ -414,6 +438,10 @@ export default {
     },
   },
   methods: {
+    checkPermission(permission) {
+      const permissions = this.$ls.get('permissions') || [];
+      return permissions.includes(permission);
+    },
     async getNodeLink() {
       if (this.regional !== 'intracity' && this.regional !== '') {
       this.loading = true
@@ -515,7 +543,7 @@ export default {
       this.form={
           item_number: this.item_code,
           destination : this.regional,
-          service: this.service
+          service: this.service,
       }
       // if(this.weight !== null) {
       //   this.form["bag_weight"] = parseInt(this.weight)
@@ -530,10 +558,12 @@ export default {
       this.ProccessBagging()
     },
     updateValue(){
+      console.log(this.regional,this.service,this.item_code,'updateValue');
       this.form={
           item_number: this.item_code,
           destination : this.regional,
-          service: this.service
+          service: this.service,
+          is_pra_runsheet: this.is_pra_runsheet
       }
       // if(this.weight !== null) {
       //   this.form["bag_weight"] = parseInt(this.weight)
@@ -541,17 +571,18 @@ export default {
       if(this.destination !== "") {
         this.form["destination_node_id"] = this.destination
       }
-      // jika user type inbound, kirim payload employee_id(kurir delivery) 
-      if (this.listenActiveUser['user_role_id'] == 4){
+      if (this.checkPermission('read-courier-pra-runsheet')){
         this.form["employee_id"] = this.employee
       }
       this.ProccessBagging()
     },
     updateValueOrion(){
+      console.log(this.item_code_orion,'item_code_orion');
       this.form={
           item_number: this.item_code_orion + "00",
           destination : this.regional,
-          service: this.service
+          service: this.service,
+          is_pra_runsheet: this.is_pra_runsheet
       }
       // if(this.weight !== null) {
       //   this.form["bag_weight"] = parseInt(this.weight)
@@ -559,8 +590,7 @@ export default {
       if(this.destination !== "") {
         this.form["destination_node_id"] = this.destination
       }
-      // jika user type inbound, kirim payload employee_id(kurir delivery) 
-      if (this.listenActiveUser['user_role_id'] == 4){
+      if (this.checkPermission('read-courier-pra-runsheet')){
         this.form["employee_id"] = this.employee
       }
       this.ProccessBagging()
@@ -633,6 +663,24 @@ export default {
     },
     handleSelect(item) {
       this.destination = item.node_id;
+    },
+    onCameraScannerGetData(data) {
+      if (
+        // eslint-disable-next-line operator-linebreak
+        data &&
+        // eslint-disable-next-line operator-linebreak
+        data.event === "result" &&
+        data.namespace === "formInputBagging"
+      ) {
+        this.item_code = data.data.text;
+        console.log(data,'camera',this.radio_option);
+        if (this.radio_option === "connote") {
+          this.item_code_orion = this.item_code;
+          this.updateValueOrion();
+        } else {
+          this.updateValue();
+        }
+      }
     },
   },
   mounted() {

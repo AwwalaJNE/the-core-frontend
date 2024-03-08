@@ -36,7 +36,8 @@ export default {
     props: {
         query: String,
         bagDestination: [],
-        bagRouting: String
+        bagRouting: String,
+        bagTipe: String
     },
     components: {
         "table-master" : TableMaster,
@@ -63,6 +64,14 @@ export default {
             this.routingFilter = val
             if(this.routingFilter !== old) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, val )
+            }
+          }
+        },
+        bagTipe: function(val, old) {
+          if(val !== undefined) {
+            this.tipeBagFilter = val
+            if(this.tipeBagFilter !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter,this.routingFilter, val )
             }
           }
         }
@@ -102,6 +111,16 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Runsheet",
+                    key: "is_runsheet",
+                    width: "xs"
+                },
+                {
+                    label: "UnRunsheet",
+                    key: "is_UnRunsheet",
+                    width: "xs"
+                },
+                {
                     label: "Consolidation",
                     key: "is_consolidated",
                     width: "xs"
@@ -120,6 +139,11 @@ export default {
                     label: "Surat Jalan",
                     key: "surat_jalan",
                     width: "auto"
+                },
+                {
+                    label: "Pra runsheet",
+                    key: "is_pra_runsheet",
+                    width: "auto"
                 }
             ],
             loading: false,
@@ -127,6 +151,7 @@ export default {
             tempSearch: this.query ? this.query : "",
             bagFilter: this.bagDestination ? this.bagDestination : "",
             routingFilter: this.bagRouting ? this.bagRouting : "",
+            tipeBagFilter: this.bagTipe ? this.bagTipe : "",
             dialogRole: false,
             pagination: {
                 limit:20,
@@ -136,11 +161,12 @@ export default {
         }
     },
     methods: {
-        async getTableData(limit,page,q, bagDestination, bagRouting) {
+        async getTableData(limit,page,q, bagDestination, bagRouting, bagTipe) {
             this.loading = true
             let query = "";
             let bagDes = "";
             let bagRout= "";
+            let bagTipee= "";
             if(q !== undefined) {
                 query = q
             }
@@ -150,9 +176,12 @@ export default {
             if(bagRouting !== undefined && bagRouting !== '-') {
               bagRout = bagRouting
             }
+            if(bagTipe !== undefined && bagTipe !== '-') {
+              bagTipee = bagTipe
+            }
             await axios
                 .get(this.URL.bag +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}&tipe_bag=${bagTipee}`,
                 this.Helper.header())
                 .then(res => {
                     res.data.data.forEach(el => {
@@ -215,14 +244,14 @@ export default {
         },
         refresh(){
             console.log("refresh")
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter)
         },
         closeDialogRole() {
             this.dialogRole = false
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter)
     },
 }
 </script>
