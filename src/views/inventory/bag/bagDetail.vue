@@ -35,23 +35,22 @@
         <vs-col xs="12" sm="2" lg="2">
           <template>
             <div v-if="radio_option === 'connote'" class="center in-get-bag">
-              <vs-input border type="text"
-                v-model="item_code_orion"
-                label-placeholder="Masukkan Connote (Orion)"
-                v-on:keyup.enter="updateItemOnBagOrion"
-                :autofocus="true"
-                ref="formInputBagging">
+              <vs-input border type="text" v-model="item_code_orion" label-placeholder="Masukkan Connote (Orion)"
+                v-on:keyup.enter="updateItemOnBagOrion" icon-after :autofocus="true" ref="formInputBagging"
+                @click-icon="$refs.cameraScanner.open('formInputBagging')">
+                <template #icon>
+                  <i class="bx bx-barcode-reader"></i>
+                </template>
 
               </vs-input>
             </div>
             <div v-else class="center in-get-bag">
-              <vs-input border type="text"
-                v-model="item_code"
-                label-placeholder="Masukkan code BAG / Koli"
-                v-on:keyup.enter="updateItemOnBag"
-                :autofocus="true"
-                ref="formInputBagging">
-
+              <vs-input border type="text" v-model="item_code" label-placeholder="Masukkan code BAG / Koli"
+                v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBagging"
+                @click-icon="$refs.cameraScanner.open('formInputBagging')">
+                <template #icon>
+                  <i class="bx bx-barcode-reader"></i>
+                </template>
               </vs-input>
             </div>
           </template>
@@ -186,6 +185,7 @@
       </vs-col>
 
     </section>
+    <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
 
   </div>
 </template>
@@ -195,6 +195,7 @@ import master from "@/mixins/master"
 import Breadcrumb from "@/components/breadcrumb/index"
 import detailBagList from "@/views/inventory/bag/bagDetailList"
 import Selector from "@/components/input/select"
+import CameraScanner from "@/components/scanner/camera.vue";
 
 export default {
   name: "InventoryBaggingList",
@@ -203,6 +204,7 @@ export default {
     "breadcrumb": Breadcrumb,
     "detailbagList": detailBagList,
     "selector": Selector,
+    CameraScanner,
   },
   data() {
     return {
@@ -428,7 +430,18 @@ export default {
             } 
         });
         window.open(routeData.href, '_blank');
-    }
+    },
+    onCameraScannerGetData(data) {
+      if (data && data.event === "result" && data.namespace === "formInputBagging") {
+        this.item_code = data.data.text;
+        if (this.radio_option === "connote") {
+          this.item_code_orion = this.item_code;
+          this.updateItemOnBagOrion();
+        } else {
+          this.updateItemOnBag();
+        }
+      }
+    },
   },
   mounted() {
     this.getBagIdParam()
