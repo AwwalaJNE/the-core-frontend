@@ -149,7 +149,6 @@ export default {
             return this.isMultiple ? this.isMultiple : false
         },
         listenIsMultipleTags(){
-            console.log(this.isMultipleTag, 'is multiple tag');
             return this.isMultipleTag ? this.isMultipleTag : false
         },
         listenTabIndex() {

@@ -308,6 +308,12 @@ export default {
               icon: "",
               permission: "read-irreg",
             },
+            {
+              label: "Irreguralities - Tracing",
+              url: "/irreguralities/tracing",
+              icon: "",
+              permission: "read-irreg",
+            },
           ],
         },
         {

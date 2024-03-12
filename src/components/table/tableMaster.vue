@@ -100,6 +100,11 @@
                 Action
               </vs-th>
             </template>
+            <template v-if="tracingListAction == true">
+              <vs-th class="action">
+                Action
+              </vs-th>
+            </template>
             <template v-if="runsheetAction == true">
               <vs-th class="action">
                 Action
@@ -555,17 +560,6 @@
                 >
                   <span>{{ customBtn_label }}</span>
                 </vs-button>
-                <vs-button
-                  block
-                  flat
-                  :disabled="
-                    item.hasOwnProperty('isDisabled') && item.isDisabled == true
-                  "
-                  :active="true"
-                  @click="handleEdit3(item)"
-                >
-                  <span>{{ customBtn_label }}</span>
-                </vs-button>
               </vs-td>
             </template>
 
@@ -897,6 +891,61 @@
               </vs-td>
             </template>
 
+            <template v-if="tracingListAction == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                      <vs-button
+                        block
+                        :disabled="
+                          item.hasOwnProperty('isDisabled') &&
+                            item.isDisabled == true
+                        "
+                        size="small"
+                        flat
+                        :active="true"
+                        @click="actionAddRemark(item)"
+                      >
+                        <span>Remark</span>
+                      </vs-button>
+                    </vs-col>
+
+                    <vs-col w="4">
+                      <vs-button
+                        block
+                        :disabled="
+                          item.hasOwnProperty('isDisabled') &&
+                            item.isDisabled == true
+                        "
+                        flat
+                        size="small"
+                        :active="true"
+                        type="submit"
+                        @click="actionViewHistory(item)"
+                      >
+                        <span>History</span>
+                      </vs-button>
+                    </vs-col>
+                    <vs-col w="4">
+                      <vs-button
+                        block
+                        :disabled="
+                          item.hasOwnProperty('isDisabled') &&
+                            item.isDisabled == true
+                        "
+                        flat
+                        size="small"
+                        :active="true"
+                        type="submit"
+                        @click="actionMessages(item)"
+                      >
+                        <span>Messages</span>
+                      </vs-button>
+                    </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
+
             <template v-if="codAction == true">
               <vs-td class="action">
                 <vs-row justify="center" class="btn_action">
@@ -1038,6 +1087,7 @@ export default {
     runsheetAction: Boolean,
     printAction: Boolean,
     pickupListAction: Boolean,
+    tracingListAction: Boolean,
     updateAction: Boolean,
     avoidAction: Boolean,
     pickedAction: Boolean, //pickup list action picked
@@ -1214,6 +1264,16 @@ export default {
     },
     actionCancel(val) {
       this.$emit("actionCancel", val);
+    },
+
+    actionAddRemark(val) {
+      this.$emit("actionAddRemark", val);
+    },
+    actionViewHistory(val) {
+      this.$emit("actionViewHistory", val);
+    },
+    actionMessages(val) {
+      this.$emit("actionMessages", val);
     },
 
     onfocuslah(info) {
