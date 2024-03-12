@@ -105,7 +105,7 @@
                   </div>
                   <div v-else-if="radio_option === 'bag'" class="center">
                     <vs-input
-                      ref="formInputConnoteOrion"
+                      ref="formInputConnote"
                       v-model="item_no"
                       border
                       type="text"
@@ -114,7 +114,7 @@
                       icon-after
                       @keyup.enter="updateValue"
                       @click-icon="
-                        $refs.cameraScanner.open('formInputConnoteOrion')
+                        $refs.cameraScanner.open('formInputConnote')
                       "
                     >
                       <template #icon>
@@ -164,8 +164,8 @@
                   </div>
                   <div v-else-if="radio_option === 'bag'" class="center">
                     <vs-input
-                      ref="formRemoveConnoteOrion"
-                      v-model="item_no_orion_remove"
+                      ref="formRemoveConnote"
+                      v-model="item_no_remove"
                       border
                       type="text"
                       label-placeholder="Hapus Koli disini"
@@ -173,7 +173,7 @@
                       icon-after
                       @keyup.enter="removeValue"
                       @click-icon="
-                        $refs.cameraScanner.open('formRemoveConnoteOrion')
+                        $refs.cameraScanner.open('formRemoveConnote')
                       "
                     >
                       <template #icon>
@@ -485,7 +485,7 @@ export default {
           // this.openNotification('success', ' success', 'Insert bag item successfully')
         }).catch(err => {
           this.loading = false
-          this.openNotification('danger', ' bag item is failed', err)
+          this.openNotification('danger', ' Nomor bag item is failed', err)
         })
     },
     async scanConnote(postData) {

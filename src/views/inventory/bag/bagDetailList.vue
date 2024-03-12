@@ -153,7 +153,6 @@ export default {
                     let arr = res.data.detail
                     let bag_des = res.data.dat ? res.data.data.destination.node_code  : '-'
                     
-                    this.$ls.set('getDataBag',res.data.data);
                     // console.log(arr, res,'klas')
                     arr.map((item, index)  => {
                       item["no"] = index+1

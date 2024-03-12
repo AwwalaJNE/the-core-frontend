@@ -626,7 +626,9 @@ export default {
           .post(this.URL.bag+`?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header())
           .then(res => {
             let bagNumber = res.data.data.bag_number;
+            let is_pra_runsheet = res.data.data.is_pra_runsheet
             this.handleClearForm()
+            this.$store.dispatch("SET_IS_PRA_RUNSHEET_ValueData", is_pra_runsheet)
             this.openNotification(null, 'Success', 'Bagging is success')
             this.$router.push('/bagging-detail/'+bagNumber)
           }).catch(err => {

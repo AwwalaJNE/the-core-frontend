@@ -260,9 +260,6 @@ export default {
     listenDestinationArr() {
       return this.$store.getters["getInputs"]["bagging"]["destination"]["dataArray"] || []
     },
-    listenDataBag(){
-      return this.$ls.get('getDataBag')
-    }
   },
   methods: {
     getResponse(data, loading) {
@@ -270,6 +267,7 @@ export default {
       console.log("dapet nih kedepan", data, loading)
       let arr = data.detail
       let bag_des = data.data ? data.data.destination.node_code  : null
+      this.is_pra_runsheet = data.data.is_pra_runsheet
       
       
       // this.DataNode
@@ -321,23 +319,26 @@ export default {
       
       this.loading = loading
     },
+    getIsPraRunsheet(){
+      this.is_pra_runsheet = this.$store.getters.getInputs.is_pra_runsheet
+    },
     getBagIdParam(){
       this.bag_id = this.$route.params.id
       this.form={
           bag_number : this.bag_id,
           destination : this.listenDestination,
           service: this.listenServiceType,
-          is_pra_runsheet: this.listenDataBag.is_pra_runsheet
+          is_pra_runsheet: this.is_pra_runsheet
       }
     },
     updateItemOnBag() {
       this.form.item_number = this.item_code
-      this.form.is_pra_runsheet = this.listenDataBag.is_pra_runsheet
+      this.form.is_pra_runsheet = this.is_pra_runsheet
       this.ProccessAddBagItem()
     },
     updateItemOnBagOrion() {
       this.form.item_number = this.item_code_orion + "00"
-      this.form.is_pra_runsheet = this.listenDataBag.is_pra_runsheet
+      this.form.is_pra_runsheet = this.is_pra_runsheet
       this.ProccessAddBagItem()
     },
     updateValue(){
@@ -445,6 +446,7 @@ export default {
   },
   mounted() {
     this.getBagIdParam()
+    this.getIsPraRunsheet()
     // this.getNodeLink()
   }
 }
