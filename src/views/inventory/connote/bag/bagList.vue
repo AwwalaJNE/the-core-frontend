@@ -112,12 +112,12 @@ export default {
                 },
                 {
                     label: "Runsheet",
-                    key: "is_runsheet",
+                    key: "total_runsheet",
                     width: "xs"
                 },
                 {
                     label: "UnRunsheet",
-                    key: "is_UnRunsheet",
+                    key: "total_unRunsheet",
                     width: "xs"
                 },
                 {
@@ -187,6 +187,8 @@ export default {
                     res.data.data.forEach(el => {
                         el.surat_muatan = []
                         el.surat_jalan = []
+                        el.total_runsheet = 0
+                        el.total_unRunsheet = 0
                         if (el.sj_detail.length > 0) {
                             el.sj_detail.forEach(sj => {
                                 el.surat_jalan.push(sj.manifest_do_number)
@@ -197,6 +199,15 @@ export default {
                         if (el.sm_detail.length > 0) {
                             el.sm_detail.forEach(sm => {
                                 el.surat_muatan.push(sm.manifest_number)
+                            })
+                        }
+                        if (el.runsheet_detail.length > 0) {
+                            el.runsheet_detail.forEach(runsheet => {
+                                if (runsheet.status_delivery !== null) {
+                                    el.total_runsheet++ 
+                                } else {
+                                    el.total_unRunsheet++
+                                }
                             })
                         }
                         el.surat_muatan = el.surat_muatan.join(", ")

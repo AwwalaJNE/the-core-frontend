@@ -505,7 +505,7 @@ export default {
               .then(res => {
                       res.data.data.filter(item => item.employee_type_id == 5).map(item => {
                           let obj = {}
-                          obj["label"] = item.employee_name + ' (' + item.employee_nik + ' ) ' + item.employee_type_id
+                          obj["label"] = item.employee_name + ' (' + item.employee_nik + ' ) '
                           obj["value"] = item.employee_id
 
                           this.employeeArray.push(obj)
