@@ -9,13 +9,7 @@
           </vs-col>
       </vs-row>
       <section class="bagging">
-          <vs-row>
-            <vs-col xs="6" sm="3" lg="2" class="mt-2">
-              <vs-checkbox  v-model="is_pra_runsheet">
-                Pra Runsheet
-              </vs-checkbox>
-            </vs-col>
-            
+          <vs-row>            
             <!--input destination -->
             <vs-col xs="12" sm="3" lg="2">
               <template>
@@ -109,6 +103,11 @@
                  </vs-col>
                 </div>
               </template>
+            </vs-col>
+            <vs-col xs="6" sm="3" lg="2" class="mt-2">
+              <vs-checkbox  v-model="is_pra_runsheet">
+                Pra Runsheet
+              </vs-checkbox>
             </vs-col>
             
             
