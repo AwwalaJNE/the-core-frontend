@@ -12,7 +12,7 @@
         <template v-slot:content>
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="12" lg="12">
-                    <template v-if="loading == false && status_arr.length > 0">
+                    <template v-if="loadingStatus == false && status_arr.length > 0">
                         <selector 
                             :ref="''"
                             name="Status" 
@@ -21,32 +21,25 @@
                             :valueData="status_arr"
                             :selectedValue="''"
                             :isMultiple="false"
-                            @updateValue="updateValue" />
+                            @updateValue="updateValue" 
+                        />
                     </template>
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
-                    <template v-if="loading == false && status_arr.length > 0">
+                    <!-- TODO: change the includes -->
+                    <template v-if="loadingGudang == false && gudang_arr.length > 0 && status.includes('HOLD WH')">
                         <selector 
                             :ref="''"
                             name="Gudang" 
                             :rules="''" 
-                            formKey="status"
-                            :valueData="status_arr"
+                            formKey="gudang"
+                            :valueData="gudang_arr"
                             :selectedValue="''"
                             :isMultiple="false"
-                            @updateValue="updateValue" />
+                            @updateValue="updateValue" 
+                        />
                     </template>
                 </vs-col>
-                <!-- <vs-col xs="12" sm="12" lg="12">
-                    <input-general
-                        name="Remark"
-                        :rules="''"
-                        formKey="remark"
-                        :valueData="''"
-                        typeInput="text"
-                        @updateValue="updateValue" 
-                    />
-                </vs-col> -->
                 <vs-col xs="12" sm="12" lg="12">
                     <input-text-area 
                         id="remark"
@@ -122,6 +115,7 @@ export default {
         active: function (val) {
             if (val == true) {
                 this.getDataStatus()
+                this.getDataGudang()
             }
         }
     },
@@ -129,23 +123,32 @@ export default {
         return {
             form: {},
             status_arr: [],
-            irregularity_type: '',
-            irregularity_status: '',
+            gudang_arr: [],
+            status: '',
+            gudang: '',
             remark: '',
-            loading: true
+            loadingStatus: true,
+            loadingGudang: true
         }
     },
     methods: {
         updateValue(key, val, info){
             switch(key) {
                 case "status":
-                    
-                    let obj = this.status_arr.filter(item => item.value == val)[0]
-                    console.log('status', val, obj)
-                    if(Object.keys(obj).length > 0) {
-                        if(obj.hasOwnProperty('item')) {
-                            this.irregularity_type = obj.item.status_subtype || ''
-                            this.irregularity_status = obj.item.status || ''
+                    let obj_status = this.status_arr.filter(item => item.value == val)[0]
+
+                    if(Object.keys(obj_status).length > 0) {
+                        if(obj_status.hasOwnProperty('item')) {
+                            this.status = obj_status.item.lov_value || ''
+                        }
+                    }
+                    break;
+                case "gudang":
+                    let obj_gudang = this.gudang_arr.filter(item => item.value == val)[0]
+
+                    if(Object.keys(obj_gudang).length > 0) {
+                        if(obj_gudang.hasOwnProperty('item')) {
+                            this.gudang = obj_gudang.item.node_id || ''
                         }
                     }
                     break;
@@ -158,25 +161,20 @@ export default {
             }
         },
         async getDataStatus(){
-            this.loading = true
+            this.loadingStatus = true
             await axios
-                .get(this.URL.status + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-                this.Helper.header())
+                .get(this.URL.tracing_status + `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, this.Helper.header())
                 .then(res => {
+                    console.log("AW statu", res)
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
-                            if(item.hasOwnProperty('status_subtype')) {
-                                if(item['status_subtype'].toLowerCase().includes('cancel')) {
-                                    let obj = {}
-                                    obj["label"] = item.status_description
-                                    obj["value"] = item.status_id
-                                    obj["item"] = item
+                            let obj = {}
+                            obj["label"] = item.lov_value
+                            obj["value"] = item.lov_id
+                            obj["item"] = item
 
-                                    arr.push(obj)
-                                }
-                            }
+                            arr.push(obj)
                         })
 
                         if(arr.length == 0) {
@@ -188,23 +186,56 @@ export default {
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
-                    this.loading = false
+                    this.loadingStatus = false
                 }).catch(err => {
-                    this.loading = false
+                    this.loadingStatus = false
+                    // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataGudang(){
+            this.loadingGudang = true
+            await axios
+                .get(this.URL.tracing_warehouse + `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, this.Helper.header())
+                .then(res => {
+                    console.log("AW", res)
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.node_name
+                            obj["value"] = item.node_id
+                            obj["item"] = item
+
+                            arr.push(obj)
+                        })
+
+                        if(arr.length == 0) {
+                            arr = [{'label': null, 'value': null}]
+                        }
+
+                        this.gudang_arr = arr
+                        
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+                    this.loadingGudang = false
+                }).catch(err => {
+                    this.loadingGudang = false
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
         handleSubmit(){
             let form = {}
-            form['irregularity_type'] = this.irregularity_type
-            form['irregularity_status'] = this.irregularity_status
+            form['status'] = this.status
+            form['gudang'] = this.gudang
             form['remark'] = this.remark
+            console.log("Aww", form)
             this.$emit("updateValue", 'DIALOG_CANCEL',form)
         },
         handleClearForm(){
             this.form = {}
-            this.irregularity_type = ''
-            this.irregularity_status = ''
+            this.status = ''
+            this.gudang = ''
             this.remark= ''
         },
         cancel() {

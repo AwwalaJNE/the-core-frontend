@@ -348,7 +348,7 @@ export default {
         },
         showData(row) {
             // TODO: Change row.koli_number
-          this.$router.push(`/irreguralities/tracing/tracing-history/${row.koli_number}`);
+          this.$router.push(`/irreguralities/tracing/tracing-history/${row.item_number}`);
         },
         refresh(){
             let d = new Date()
@@ -420,44 +420,31 @@ export default {
             }
         },
         async scanConnote() {
-            this.loadingRunsheet = true;
-            console.log("123", this.form);
+            this.loadingScanConnote = true;
 
-            // TODO: CHANGE THIS API
             await axios
                 .post(
-                    `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}`,
+                    `${this.URL.tracing}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form),
                     this.Helper.header()
                 )
                 .then((res) => {
-                    if (res.data.hasOwnProperty("summary")) {
-                        this.dataDelivery.employee_name = res.data.data.employee_name ? res.data.data.employee_name : null;
-                        this.dataDelivery.employee_code = res.data.data.employee_code ? res.data.data.employee_code : null;
-                        this.dataDeliverySummary = res.data.summary;
-                        this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
-                        this.getDataDelivery();
-                        this.openNotification(null, "Success", "Update success");
-                        this.loadingRunsheet = false;
-                    } else {
-                        this.getDataDelivery();
-                        this.openNotification(null, "Success", res.data.message);
-                        this.loadingRunsheet = false;
-                    }
+                    this.openNotification(null, "Success", res.data.message);
+                    this.loadingScanConnote = false;
                 })
                 .catch((err) => {
-                    this.loadingRunsheet = false;
+                    this.loadingScanConnote = false;
                     this.openNotification("danger", "", err.response.data.message);
                 });
         },
         async removeConnote() {
-            console.log("remove", this.form.koli_number);
-            this.loadingRunsheet = true;
+            console.log("remove", this.form.item_number);
+            this.loadingScanConnote = true;
 
             // TODO: CHANGE THIS API
             await axios
                 .delete(
-                    `${this.URL.employee}/${this.employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&koli_number=${this.form.koli_number}`,
+                    `${this.URL.tracing}?n=${this.listenNodeId}}`,
                     this.Helper.header()
                 )
                 .then((res) => {
@@ -468,26 +455,26 @@ export default {
                         this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
                         this.getDataDelivery();
                         this.openNotification(null, "Success", "Remove koli success");
-                        this.loadingRunsheet = false;
+                        this.loadingScanConnote = false;
                     } else {
                         this.getDataDelivery();
                         this.openNotification(null, "Success", res.data.message);
-                        this.loadingRunsheet = false;
+                        this.loadingScanConnote = false;
                     }
                 })
                 .catch((err) => {
-                    this.loadingRunsheet = false;
+                    this.loadingScanConnote = false;
                     this.openNotification("danger", "", err.response.data.message);
                 });
         },
 
         updateValue() {
-            this.form.koli_number = this.item_no;
+            this.form.item_number = this.item_no;
             this.scanConnote();
             this.item_no = null;
         },
         updateValueOrion() {
-            this.form.koli_number = `${this.item_no_orion}00`;
+            this.form.item_number = `${this.item_no_orion}00`;
             this.scanConnote();
             this.item_no = null;
         },
