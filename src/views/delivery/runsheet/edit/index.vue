@@ -466,8 +466,10 @@ export default {
           this.Helper.header())
         .then(res => {
           const details = res.data.detail;
+          let index = 0;
           for (let detail of details) {
             const item_number = detail.item_number;
+            const detailsLength = details.length;
             const postData = {
               bag_number: this.form.bag_number,
               courier_employee_id: this.employee_id,
@@ -478,7 +480,16 @@ export default {
               this.dialogConfirmEmployee = true;
             } else {
               this.dialogConfirmEmployee = false;
-              this.scanConnote(postData);
+              // jika nomor runsheet kosong dan kirim data lebih dari 1
+              // set timeout untuk mendapatkan nomor runsheet yang sama
+              if (detailsLength > 1 && !this.delivery_runsheet_number && index > 0) {
+                setTimeout(() => {
+                    this.scanConnote(postData);
+                }, 5000);
+              } else {
+                  this.scanConnote(postData);
+              }
+              index++;
             }
           }
           // this.refresh()
