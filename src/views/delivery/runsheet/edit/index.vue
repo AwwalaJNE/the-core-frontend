@@ -28,17 +28,17 @@
               <div class="center in-get-bag">
                 <vs-row style="margin-top:1em">
                   <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px;">
-                    <vs-radio v-model="radio_option" val="connote" @change="handleRadioChange">
+                    <vs-radio v-model="radio_option" val="connote">
                       Connote (orion)
                     </vs-radio>
                   </vs-col>
                   <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px">
-                    <vs-radio v-model="radio_option" val="koli" @change="handleRadioChange">
+                    <vs-radio v-model="radio_option" val="koli">
                       Koli
                     </vs-radio>
                   </vs-col>
                   <vs-col xs="12" sm="4" lg="3" >
-                    <vs-radio v-model="radio_option" val="bag" @change="handleRadioChange">
+                    <vs-radio v-model="radio_option" val="bag">
                       Bag Pra Runsheet
                     </vs-radio>
                   </vs-col>
@@ -236,11 +236,14 @@
               </vs-row>
 
               <vs-row>
-                <!-- col for detail unreceive item-->
-                <vs-col lg="12" sm="12" xs="12" style="margin-top: 2em">
+                <!-- col for detail unreceive item--> 
+                <vs-col :lg="radio_option === 'bag' ? '8' : '12'" :sm="radio_option === 'bag' ? '8' : '12'" xs="12" style="margin-top: 2em;">
+                  <span v-if="radio_option === 'bag' &&  listenDataDelivery.length > 0" style="display: block; text-align: left; margin-bottom: 10px;">
+                    List of koli delivery
+                  </span>
                   <template>
                     <transition name="slide-fade">
-                      <template v-if="listenDataDelivery.length > 0">
+                      <template v-if="listenDataDelivery.length > 0 ">
                         <RunsheetInformation
                           v-if="arrStatus && dataDelivery"
                           :ref="'runsheetInformation'"
@@ -251,6 +254,29 @@
                           :delivery-number="delivery_runsheet_number"
                           :radioOption="radio_option"
                           @update-selected="updateSelected"
+                          @updatePOD="updatePOD"
+                          @editPOD="editPOD"
+                        />
+                      </template>
+                    </transition>
+                  </template>
+                </vs-col>
+                <vs-col :lg="listenDataDelivery.length === 0 ? 6 : 4" sm="4" xs="12" style="margin-top: 2em">
+                  <span v-if="radio_option === 'bag' && listenDataDeliveryCancel.length > 0 " style="display: block; text-align: left; margin-bottom: 10px;">
+                    List of connote delivery delete
+                  </span>
+                  <template>
+                    <transition name="slide-fade">
+                      <template v-if="listenDataDeliveryCancel.length > 0  && radio_option === 'bag'">
+                        <RunsheetInformationCancel
+                          v-if="arrStatus && dataDelivery"
+                          :ref="'runsheetInformationCancel'"
+                          :data-delivery="dataDeliveryCancel"
+                          :arr-status="arrStatus"
+                          :query="tempSearch"
+                          :loading="loadingRunsheet"
+                          :delivery-number="delivery_runsheet_number"
+                          :radioOption="radio_option"
                           @updatePOD="updatePOD"
                           @editPOD="editPOD"
                         />
@@ -303,6 +329,7 @@ import Breadcrumb from "@/components/breadcrumb/index";
 import CameraScanner from "@/components/scanner/camera";
 
 import RunsheetInformation from "@/views/delivery/runsheet/edit/runsheetInformation";
+import RunsheetInformationCancel from "@/views/delivery/runsheet/edit/runsheetInformationCancel";
 import DialogConfirm from "@/views/delivery/runsheet/edit/dialogConfirm";
 
 export default {
@@ -312,6 +339,7 @@ export default {
     "nav-item": NavItem,
     breadcrumb: Breadcrumb,
     RunsheetInformation,
+    RunsheetInformationCancel,
     CameraScanner,
     "dialog-confirm": DialogConfirm
   },
@@ -335,6 +363,7 @@ export default {
       employee_id: "",
       employee_data: {},
       dataDelivery: [],
+      dataDeliveryCancel: [],
       summary: [],
       arrStatus: null,
       statusObj: {},
@@ -356,9 +385,11 @@ export default {
     listenDataDelivery() {
       return this.dataDelivery;
     },
+    listenDataDeliveryCancel() {
+      return this.dataDeliveryCancel;
+    },
   },
   mounted() {
-    console.log('Nilai radioOption :', this.radio_option);
     this.getStatus();
   },
   methods: {
@@ -382,9 +413,6 @@ export default {
     },
     openDialog() {
       this.dialogPickupRequest = true;
-    },
-    handleRadioChange(value) {
-      console.log(value,'radioOptions');
     },
     updateValueBag(val) {
       this.form.bag_number = this.item_bag;
@@ -539,7 +567,7 @@ export default {
         });
     },
     async removeConnote() {
-      console.log("remove", this.form.koli_number);
+      // console.log("remove", this.form.koli_number);
       this.loadingRunsheet = true;
       await axios
         .delete(
@@ -612,15 +640,16 @@ export default {
         });
     },
     async getDataDelivery() {
-      console.log("masuk sini ya");
+      let deliveryCancel = this.radio_option === 'bag';
       this.loadingRunsheet = true;
       await axios
         .get(
-          `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&date_filter=${this.tempDate}`,
+          `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&date_filter=${this.tempDate}&deliveryCancel=${deliveryCancel}`,
           this.Helper.header()
         )
         .then((res) => {
           this.dataDelivery = this.processDataDelivery(res.data.data);
+          this.dataDeliveryCancel = this.processDataDeliveryCancel(res.data.data);
 
           this.dataDeliverySummary = res.data.summary;
           this.delivery_runsheet_number = res.data.summary.delivery_runsheet_number.toString();
@@ -666,24 +695,42 @@ export default {
         }
         if (item.hasOwnProperty("receiver_name")) {
           if (item["status_code"] == null) {
-            item["is_disabled_input_reveiver"] =
-              item["receiver_name"] !== null || item["receiver_name"] !== ""
-                ? true
-                : false;
+            item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false;
           }
         }
-        console.log(item.is_delivered, "data.is_delivered");
+        // console.log(item.is_delivered, "data.is_delivered");
         item.isDisabled = item.is_delivered === 1;
         item.employee_name = data.employee_name;
         item.employee_code = data.employee_code;
       });
-      console.log(" processDataDelivery : status =>", status);
-      console.log(" processDataDelivery : delivery =>", delivery);
+      // console.log(" processDataDelivery : status =>", status);
+      // console.log(" processDataDelivery : delivery =>", delivery);
 
       return delivery;
     },
+    processDataDeliveryCancel(data) {
+      const status = this.statusObj || {};
+      const deliveryCancel = data.delivery_cancel ? data.delivery_cancel : [];
+      deliveryCancel.map((item) => {
+        item.status_delivery = [];
+        item.is_disabled_input = false;
+        item["is_disabled_cancel"] = true;
+        if (item.hasOwnProperty("koli_number")) {
+          if (item.koli_number.toLowerCase().includes("rt")) {
+            item.status_delivery = [...status.rt, ...status.all];
+          } else {
+            item.status_delivery = [...status.normal, ...status.all];
+          }
+        }
+        item.isDisabled = item.is_delivered === 1;
+        item.employee_name = data.employee_name;
+        item.employee_code = data.employee_code;
+      });
+
+      return deliveryCancel;
+    },
     async updatePOD(dataPOD, info) {
-      console.log(dataPOD, "ini data pod");
+      // console.log(dataPOD, "ini data pod");
       if (dataPOD.remarks || dataPOD.receiver_name || dataPOD.status) {
         if (this.delivery_runsheet_number) {
           dataPOD.delivery_runsheet_number = this.delivery_runsheet_number;
@@ -821,6 +868,14 @@ export default {
       }
     },
   },
+  watch: {
+    radio_option(val) {
+      this.radio_option = val
+      if (this.radio_option == 'bag') {
+        this.getDataDelivery(val);
+      }
+    }
+  }
 };
 </script>
 <style lang="scss">
