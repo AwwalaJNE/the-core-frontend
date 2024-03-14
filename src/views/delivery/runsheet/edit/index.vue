@@ -224,7 +224,7 @@
                     <div>
                       <vs-button
                         :loading="loadingConfirm"
-                        @click="confirmAction"
+                        @click="approveAction"
                       >
                         <span>
                           Approve
@@ -263,7 +263,7 @@
                 </vs-col>
                 <vs-col :lg="listenDataDelivery.length === 0 ? 6 : 4" sm="4" xs="12" style="margin-top: 2em">
                   <span v-if="radio_option === 'bag' && listenDataDeliveryCancel.length > 0 " style="display: block; text-align: left; margin-bottom: 10px;">
-                    List of connote delivery delete
+                    List of koli delivery delete
                   </span>
                   <template>
                     <transition name="slide-fade">
@@ -839,6 +839,30 @@ export default {
         );
       }
     },
+    approveAction(){
+      this.updateApprove()
+    },
+
+    async updateApprove(){
+      this.data_runsheet = {
+        delivery_number_runsheet: this.delivery_runsheet_number,
+      };
+      await axios
+        .put(
+          `${this.URL.delivery}/${this.delivery_runsheet_number}/approve?n=${this.listenNodeId}`,
+          JSON.stringify(this.data_runsheet),
+          this.Helper.header()
+        )
+        .then((res) => {
+          this.form = {};
+          this.openNotification(null, "Success", "APPROVE EDITED!");
+        })
+        .catch((err) => {
+          console.log(err.response,'ress');
+          this.openNotification("danger", "approve FAILED !", err.response.data.message);
+        });
+    },
+    
 
     onCameraScannerGetData(data) {
       if (data && data.event === "result") {
