@@ -9,66 +9,49 @@
             Message Masking
         </template>
 
-        <template v-slot:content>
+        <template v-slot:content v-if="loadingMessage === false">
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="12" lg="12">
                     <input-general
                         name="Koli"
-                        :rules="''"
                         formKey="koli"
-                        :valueData="''"
-                        typeInput="text"
-                        @updateValue="updateValue" 
+                        type-input="text|disabled"
+                        :rules="''"
+                        :value-data="form.koli_number"
                     />
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
                     <input-general
-                        name="Date Created"
-                        :rules="''"
+                        name="Koli Created Date"
                         formKey="date_created"
-                        :valueData="''"
-                        typeInput="text"
-                        @updateValue="updateValue" 
+                        typeInput="text|disabled"
+                        :rules="''"
+                        :valueData="form.created_at"
                     />
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
                     <input-general
                         name="User"
-                        :rules="''"
                         formKey="user"
-                        :valueData="''"
-                        typeInput="text"
-                        @updateValue="updateValue" 
+                        typeInput="text|disabled"
+                        :rules="''"
+                        :valueData="form.user_login"
                     />
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
                     <input-general
                         name="Receiver Phone"
-                        :rules="''"
                         formKey="receiver_phone"
-                        :valueData="''"
-                        typeInput="text"
-                        @updateValue="updateValue" 
+                        typeInput="text|disabled"
+                        :rules="''"
+                        :valueData="form.receiver_phone_number"
                     />
                 </vs-col>
-                <!-- <vs-col xs="12" sm="12" lg="12">
-                    <input-general
-                        name="Message"
-                        :rules="''"
-                        formKey="message"
-                        :valueData="''"
-                        typeInput="text"
-                        @updateValue="updateValue" 
-                    />
-                    
-                </vs-col> -->
                 <vs-col xs="12" sm="12" lg="12">
                     <input-text-area 
                         id="message"
                         label="Message"
-                        v-model="message"
-                        :rows="5"
-                        :cols="50"
+                        v-model="form.message"
                     />
                 </vs-col>
             </vs-row>
@@ -107,13 +90,15 @@
 </template>
 <script>
 import axios from "axios";
-import master from "@/mixins/master"
-import InputGeneral from "@/components/input/general"
-import InputTextArea from "@/components/input/textArea"
-import Selector from "@/components/input/select"
-import DialogMaster from "@/components/dialog/dialogMaster"
+import master from "@/mixins/master";
+
+import DialogMaster from "@/components/dialog/dialogMaster";
+import InputGeneral from "@/components/input/general";
+import InputTextArea from "@/components/input/textArea";
+import Selector from "@/components/input/select";
+
 export default {
-    name:"irreguralities-cancel-dialog",
+    name:"rregularities-tracing-message-dialog",
     mixins:[master],
     components: {
         "input-general": InputGeneral,
@@ -127,104 +112,67 @@ export default {
        title: String,
     },
     computed: {
-        listenActive(){
-            return this.active
+        listenActive() {
+            return this.active;
         },
     },
     watch: {
         active: function (val) {
-            if (val == true) {
-                this.getDataKoli()
+            if (val === true) {
+                this.getDataMessage();
             }
         }
     },
     data() {
         return {
-            description: '',
-
-            form: {},
-            koli_arr: [],
-            irregularity_type: '',
-            irregularity_koli: '',
-            remark: '',
-            loading: true
+            koli_number: this.$route.params.id,
+            loadingMessage: true,
+            form: {
+                koli_number: '',
+                created_at: '',
+                receiver_phone_number: '',
+                user_login: '',
+                message: '' 
+            }
         }
     },
     methods: {
-        updateValue(key, val, info){
-            switch(key) {
-                case "koli":
-                    
-                    let obj = this.koli_arr.filter(item => item.value == val)[0]
-                    console.log('koli', val, obj)
-                    if(Object.keys(obj).length > 0) {
-                        if(obj.hasOwnProperty('item')) {
-                            this.irregularity_type = obj.item.koli_subtype || ''
-                            this.irregularity_koli = obj.item.koli || ''
-                        }
-                    }
-                    break;
-                case "remark":
-                    this.remark= val
-                    break;
-                default:
-                    console.log('meong')
-                    // code block
+        async getDataMessage() {
+            this.loadingMessage = true;
+            try {
+                const response = await axios.get(`${this.URL.tracing}/${this.koli_number}?n=${this.listenNodeId}`, this.Helper.header());
+                const data = response.data;
+                if (data) {
+                    const { koli_number, koli_created_at, receiver_phone_number, user_login, message_template } = data.data;
+
+                    let form = {
+                        koli_number: koli_number,
+                        created_at: koli_created_at,
+                        receiver_phone_number: receiver_phone_number,
+                        user_login: user_login,
+                        message: message_template
+                    };
+
+                    this.form = form;
+                } else {
+                    // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                }
+            } catch (err) {
+                this.openNotification('danger', 'Failed to get data', err);
+            } finally {
+                this.loadingMessage = false;
             }
         },
-        async getDataKoli(){
-            this.loading = true
-            await axios
-                .get(this.URL.koli + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            if(item.hasOwnProperty('koli_subtype')) {
-                                if(item['koli_subtype'].toLowerCase().includes('cancel')) {
-                                    let obj = {}
-                                    obj["label"] = item.koli_description
-                                    obj["value"] = item.koli_id
-                                    obj["item"] = item
-
-                                    arr.push(obj)
-                                }
-                            }
-                        })
-
-                        if(arr.length == 0) {
-                            arr = [{'label': null, 'value': null}]
-                        }
-
-                        this.koli_arr = arr
-                        
-                    } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
-                    }
-                    this.loading = false
-                }).catch(err => {
-                    this.loading = false
-                    // this.openNotification('danger', 'Failed to collect role list', err)
-                })
+        handleSubmit() {
+            console.log("ini submit", this.form);
+            this.$emit("updateValue", 'DIALOG_CANCEL',form);
         },
-        handleSubmit(){
-            let form = {}
-            form['irregularity_type'] = this.irregularity_type
-            form['irregularity_koli'] = this.irregularity_koli
-            form['remark'] = this.remark
-            this.$emit("updateValue", 'DIALOG_CANCEL',form)
-        },
-        handleClearForm(){
-            this.form = {}
-            this.irregularity_type = ''
-            this.irregularity_koli = ''
-            this.remark= ''
+        handleClearForm() {
+            this.form = {};
         },
         cancel() {
-            this.handleClearForm()
-            this.closeDialog()
+            this.handleClearForm();
+            this.closeDialog();
         }
     },
 }

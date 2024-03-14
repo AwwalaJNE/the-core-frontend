@@ -8,6 +8,7 @@
             :cols="cols"
             :placeholder="placeholder"
             class="text-area-input vs-input vs-input--control"
+            :disabled="disabled"
             @input="handleInput"
         ></textarea>
     </div>
@@ -39,6 +40,10 @@
       placeholder: {
         type: String,
         default: ''
+      },
+      disabled: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
