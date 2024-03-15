@@ -163,15 +163,28 @@ export default {
                 this.loadingMessage = false;
             }
         },
-        handleSubmit() {
-            console.log("ini submit", this.form);
-            this.$emit("updateValue", 'DIALOG_CANCEL',form);
-        },
-        handleClearForm() {
-            this.form = {};
+        async handleSubmit() {
+            await axios
+                .post(
+                    this.URL.tracing + `/${this.koli_number}/message?n=${this.listenNodeId}`,
+                    JSON.stringify({
+                        "message": this.form.message
+                    }), 
+                    this.Helper.header())
+                .then(res => {
+                    console.log('res', res)
+                    // this.refresh()
+
+                    this.cancel()
+                    this.openNotification(null, 'Success', 'Create new tracing message is success')
+                }).catch(err => {
+                    this.loadingMessage = false
+                    // this.refresh()
+                    this.openNotification('danger', 'Create new tracing message failed', err.response ? err.response.data.message : 'something went wrong')
+                })
         },
         cancel() {
-            this.handleClearForm();
+            this.form = {};
             this.closeDialog();
         }
     },
