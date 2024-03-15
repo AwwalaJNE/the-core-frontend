@@ -624,6 +624,8 @@ export default {
             obj["node_id_receiver"] = data.node_id_receiver;
             obj["total_koli"] = data.total_koli;
             obj["item_type"] = data.item_type;
+            obj["total_connote"] = data.total_connote;
+            obj["total_bag"] = data.total_bag;
 
             this.validateTempItemSJ(obj);
 
