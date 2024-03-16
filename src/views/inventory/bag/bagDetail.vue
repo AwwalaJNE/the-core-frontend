@@ -260,6 +260,9 @@ export default {
     listenDestinationArr() {
       return this.$store.getters["getInputs"]["bagging"]["destination"]["dataArray"] || []
     },
+    listenDataBag(){
+      return this.$ls.get('getDataBag')
+    }
   },
   methods: {
     getResponse(data, loading) {
@@ -321,6 +324,9 @@ export default {
     },
     getIsPraRunsheet(){
       this.is_pra_runsheet = this.$store.getters.getInputs.is_pra_runsheet
+      if (this.is_pra_runsheet == undefined) {
+        this.is_pra_runsheet = this.listenDataBag.is_pra_runsheet
+      }
     },
     getBagIdParam(){
       this.bag_id = this.$route.params.id

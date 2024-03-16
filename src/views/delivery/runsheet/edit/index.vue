@@ -207,12 +207,13 @@
                 </vs-col>
                 <vs-col xs="6" sm="2" lg="2">
                   <template v-if="dataDelivery.length > 0">
-                    <div class="right text-right">
+                    <div>
                       <vs-button
                         :loading="loadingConfirm"
                         @click="confirmAction"
+                        style="float: right"
                       >
-                        <span style="float: right; text-align: right">
+                        <span>
                           Confirmed
                         </span>
                       </vs-button>

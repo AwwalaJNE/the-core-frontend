@@ -116,7 +116,7 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "UnRunsheet",
+                    label: "Un Runsheet",
                     key: "total_unRunsheet",
                     width: "xs"
                 },
