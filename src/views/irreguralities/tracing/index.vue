@@ -202,12 +202,12 @@ export default {
                 },
                 {
                     label: "HRS",
-                    key: "hrs",
+                    key: "hrs_sequence",
                     width: "auto"
                 },
                 {
                     label: "HRI",
-                    key: "hri",
+                    key: "hri_sequence",
                     width: "auto"
                 },
                 {
@@ -217,7 +217,7 @@ export default {
                 },
                 {
                     label: "Shipper Phone",
-                    key: "shipper_phone",
+                    key: "shipper_phone_number",
                     width: "auto"
                 },
                 {
@@ -227,7 +227,7 @@ export default {
                 },
                 {
                     label: "Receiver Phone",
-                    key: "receiver_phone",
+                    key: "receiver_phone_number",
                     width: "auto"
                 },
                 {
@@ -250,7 +250,7 @@ export default {
         }
     },
     methods: {
-        async getTableData(limit,page,q, from, to, node) {
+        async getTableData(limit,page,q, from, to) {
             this.loading = true
             let query = "";
             let startDate = "";
@@ -266,19 +266,12 @@ export default {
             }
 
             await axios
-                .get(this.URL.irregularities +
-                `?n=${this.listenNodeId}&irregularity_type=CANCELED&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                .get(this.URL.tracing +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
-                        // TODO: change arr value
-                        let arr = res.data.data
-                        arr.map(item => {
-                            item["isDisabled"] = item.approved_by != null && item.approved_by != '' ? true : false;
-                            item["approve"] = item.approved_by != null && item.approved_by != '' ? item.user_approve.user_name : '-';
-                        })
-
-                        this.dataTable = arr
+                        this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -313,7 +306,6 @@ export default {
                 })
         },
         showData(row) {
-            // TODO: Change row.koli_number
           this.$router.push(`/irreguralities/tracing/tracing-history/${row.koli_number}`);
         },
         refresh(){
@@ -330,7 +322,9 @@ export default {
             }
 
             
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
+            // this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, "", "")
+
         },
         searchValue (val) {
             this.tempSearch = val
