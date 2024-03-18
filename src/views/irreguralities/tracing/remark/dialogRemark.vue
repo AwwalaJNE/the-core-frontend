@@ -10,10 +10,10 @@
             Add Remark
         </template>
 
-        <template v-slot:content v-if="loadingStatus === false">
+        <template v-slot:content>
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="12" lg="12">
-                    <template v-if="status_arr.length > 0">
+                    <template v-if="loadingStatus == false && status_arr.length > 0">
                         <selector 
                             :ref="''"
                             name="Status" 
@@ -27,8 +27,7 @@
                     </template>
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
-                    <!-- TODO: change the includes -->
-                    <template v-if="loadingGudang == false && gudang_arr.length > 0 && status.includes('HOLD WH')">
+                    <template v-if="loadingGudang == false && gudang_arr.length > 0 && status.includes('TS-04')">
                         <selector 
                             :ref="''"
                             name="Gudang" 
@@ -49,6 +48,11 @@
                         :rows="5"
                         :cols="50"
                     />
+                </vs-col>
+                <vs-col xs="12" sm="12" lg="12">
+                    <template v-if="gudang_arr.length === 0">
+                        <p class="no-warehouse"><b>Notes</b> : Status Hold WH tidak tersedia karena tidak terdapat gudang pada lokasi Anda</p>
+                    </template>
                 </vs-col>
             </vs-row>
         </template>
@@ -112,7 +116,7 @@ export default {
             return this.active
         },
         listenLoading(){
-            return this.loadingStatus && this.loadingGudang
+            return this.loadingStatus || this.loadingGudang || this.loadingRemark
         },
     },
     watch: {
@@ -125,14 +129,15 @@ export default {
     },
     data() {
         return {
-            form: {},
+            koli_number: this.$route.params.id,
             status_arr: [],
             gudang_arr: [],
             status: '',
             gudang: '',
             remark: '',
             loadingStatus: false,
-            loadingGudang: false
+            loadingGudang: false,
+            loadingRemark: false
         }
     },
     methods: {
@@ -143,7 +148,7 @@ export default {
 
                     if(Object.keys(obj_status).length > 0) {
                         if(obj_status.hasOwnProperty('item')) {
-                            this.status = obj_status.item.lov_value || ''
+                            this.status = obj_status.item.lov_value_code || ''
                         }
                     }
                     break;
@@ -157,11 +162,8 @@ export default {
                     }
                     break;
                 case "remark":
-                    this.remark= val
+                    this.remark = val
                     break;
-                default:
-                    console.log('meong')
-                    // code block
             }
         },
         async getDataStatus(){
@@ -169,13 +171,12 @@ export default {
             await axios
                 .get(this.URL.tracing_status + `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, this.Helper.header())
                 .then(res => {
-                    console.log("AW statu", res)
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
                             obj["label"] = item.lov_value
-                            obj["value"] = item.lov_id
+                            obj["value"] = item.lov_value_code
                             obj["item"] = item
 
                             arr.push(obj)
@@ -201,7 +202,6 @@ export default {
             await axios
                 .get(this.URL.tracing_warehouse + `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, this.Helper.header())
                 .then(res => {
-                    console.log("AW", res)
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
@@ -228,16 +228,32 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-        handleSubmit(){
-            let form = {}
-            form['status'] = this.status
-            form['gudang'] = this.gudang
-            form['remark'] = this.remark
-            console.log("Aww", form)
-            this.$emit("updateValue", 'DIALOG_CANCEL',form)
+        async handleSubmit(){
+            this.loadingRemark = true;
+
+            await axios
+                .post(
+                    this.URL.tracing + `/${this.koli_number}/remark?n=${this.listenNodeId}`,
+                    JSON.stringify({
+                        "status_code": this.status,
+                        "warehouse_node_id": this.gudang,
+                        "remark": this.remark
+                    }), 
+                    this.Helper.header())
+                .then(res => {
+                    console.log('res', res)
+                    // this.refresh()
+
+                    this.loadingRemark = false
+                    this.cancel()
+                    this.openNotification(null, 'Success', 'Create new tracing remark is success')
+                }).catch(err => {
+                    this.loadingRemark = false
+                    // this.refresh()
+                    this.openNotification('danger', 'Create new tracing remark failed', err.response ? err.response.data.message : 'something went wrong')
+                })
         },
         handleClearForm(){
-            this.form = {}
             this.status = ''
             this.gudang = ''
             this.remark= ''
@@ -249,3 +265,9 @@ export default {
     },
 }
 </script>
+<style scoped>
+.no-warehouse {
+    font-size: 11px;
+    text-align: start;
+}
+</style>
