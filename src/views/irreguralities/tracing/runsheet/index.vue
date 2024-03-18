@@ -18,7 +18,7 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 export default {
-    name:"Role-list",
+    name:"tracing-runsheet-list",
     mixins: [master],
     props: {
         query: String
