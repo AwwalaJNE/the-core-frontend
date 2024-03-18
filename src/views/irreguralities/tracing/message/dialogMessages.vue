@@ -1,6 +1,7 @@
 <template>
     <dialog-master 
         :actived="listenActive" 
+        :loading="listenLoading"
         :closeDialog="cancel"
         width="md"
     >
@@ -115,6 +116,9 @@ export default {
         listenActive() {
             return this.active;
         },
+        listenLoading(){
+            return this.loadingMessage
+        },
     },
     watch: {
         active: function (val) {
@@ -126,7 +130,7 @@ export default {
     data() {
         return {
             koli_number: this.$route.params.id,
-            loadingMessage: true,
+            loadingMessage: false,
             form: {
                 koli_number: '',
                 created_at: '',

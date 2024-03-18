@@ -125,12 +125,13 @@
                     <vs-row justify="space-between">
                         <vs-col xs="6" sm="6" lg="6">
                             <date-time
-                            :name="''"
-                            :rules="''"
-                            :formKey="'TRIGGER_DATE'"
-                            :valueData="dateRange"
-                            typeInput="daterange"
-                            @updateValue="updateValueDate" />
+                                :name="''"
+                                :rules="''"
+                                :formKey="'TRIGGER_DATE'"
+                                :valueData="dateRange"
+                                typeInput="daterange"
+                                @updateValue="updateValueDate" 
+                            />
                         </vs-col>
                         <vs-col xs="6" sm="3" lg="3">
                             <search-input ref="searchInput" @searchValue="searchValue"/>
@@ -272,41 +273,6 @@ export default {
                     if(res.data.data.length > 0) {
                         // TODO: change arr value
                         let arr = res.data.data
-                        // let arr = [
-                        //     {
-                        //         created_at: "2024-03-08 12:52:35",
-                        //         koli_number: "050023010460000500",
-                        //         hrs: "DPK/DRI/12345678",
-                        //         hri: "DPK/HRI/12345678",
-                        //         shipper_name: "shipper_name",
-                        //         shipper_phone: "081208120812",
-                        //         receiver_name: "receiver_name",
-                        //         receiver_phone: "081208120812",
-                        //         origin: "CGK10000",
-                        //         destination: "DPK10000",
-
-
-
-                        //         // "irregularity_id": "8354cb5a-b2ae-45e5-9564-2811be6f5db2",
-                        //         // "user_name": "CORESUPERADMIN",
-                        //         // "irregularity_type": "CANCELED",
-                        //         // "koli_number": "050023010460000500",
-                        //         // "irregularity_status_code": "CR1",
-                        //         // "irregularity_status_description": "CANCEL RETURN (CR1)",
-                        //         // "remark": "D",
-                        //         // "node_id": "2301",
-                        //         // "user_id": "1241",
-                        //         // "created_at": "2024-03-08 12:52:35",
-                        //         // "approved_at": null,
-                        //         // "approved_by": null,
-                        //         // "unhold_at": null,
-                        //         // "bag_number": null,
-                        //         // "image": "",
-                        //         // "user_approve": null,
-                        //         // "isDisabled": false,
-                        //         // "approve": "-"
-                        //     }
-                        // ]
                         arr.map(item => {
                             item["isDisabled"] = item.approved_by != null && item.approved_by != '' ? true : false;
                             item["approve"] = item.approved_by != null && item.approved_by != '' ? item.user_approve.user_name : '-';
@@ -439,7 +405,7 @@ export default {
         },
         async removeConnote() {
             this.loadingScanConnote = true;
-            
+
             await axios
                 .delete(
                     `${this.URL.tracing}/${this.form.item_number}?n=${this.listenNodeId}`,

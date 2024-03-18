@@ -32,8 +32,7 @@
                             </vs-col>
                         </vs-row>
 
-
-                        <template v-if="navActive === 'k-REMARKS'">
+                        <template v-if="navActive === 'k-REMARK'">
                             <vs-row >
                                 <vs-col xs="6" sm="6" lg="6">
                                     <date-time
@@ -68,7 +67,7 @@
                                         @updateValue="updateValue" 
                                     />
                                 </vs-col>
-                                <vs-col xs="6" sm="4" lg="3">
+                                <vs-col xs="6" sm="4" lg="2">
                                     <select-status-runsheet
                                         ref="bag_routing"
                                         :isMultiple="false"
@@ -171,9 +170,9 @@ export default {
         return {
             navItemm: [
                 {
-                    label: "REMARKS",
-                    key: "k-REMARKS",
-                    title: "Remarks List"
+                    label: "REMARK",
+                    key: "k-REMARK",
+                    title: "Remark List"
                 },
                 {
                     label: "RUNSHEET",
@@ -187,8 +186,8 @@ export default {
                 }
             ],
 
-            navActive: "k-REMARKS",
-            title: "Remarks List",
+            navActive: "k-REMARK",
+            title: "Remark List",
 
             permission: [],
             loadingPermission: false,
@@ -239,9 +238,8 @@ export default {
     },
     methods: {
         openDialogNewButton() {
-            console.log("PPP", this.navActive)
             switch(this.navActive) {
-                case "k-REMARKS":
+                case "k-REMARK":
                     this.dialogRemarkActive = true
                     break;
                 case "k-MESSAGE":
@@ -329,6 +327,7 @@ export default {
             }
 
             
+            // TODO: TEST THIS
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
         },
 

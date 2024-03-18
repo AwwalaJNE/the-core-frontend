@@ -1,6 +1,7 @@
 <template>
     <dialog-master 
         :actived="listenActive" 
+        :loading="listenLoading"
         :closeDialog="cancel"
         width="md"
     >
@@ -9,10 +10,10 @@
             Add Remark
         </template>
 
-        <template v-slot:content>
+        <template v-slot:content v-if="loadingStatus === false">
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="12" lg="12">
-                    <template v-if="loadingStatus == false && status_arr.length > 0">
+                    <template v-if="status_arr.length > 0">
                         <selector 
                             :ref="''"
                             name="Status" 
@@ -110,6 +111,9 @@ export default {
         listenActive(){
             return this.active
         },
+        listenLoading(){
+            return this.loadingStatus && this.loadingGudang
+        },
     },
     watch: {
         active: function (val) {
@@ -127,8 +131,8 @@ export default {
             status: '',
             gudang: '',
             remark: '',
-            loadingStatus: true,
-            loadingGudang: true
+            loadingStatus: false,
+            loadingGudang: false
         }
     },
     methods: {
