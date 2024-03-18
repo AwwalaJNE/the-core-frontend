@@ -174,11 +174,11 @@ export default {
         },
         selectedValue: function (val) {
             if (val != undefined) {
-                if(this.isMultiple == false) {
-                    console.log('is');
+                if(this.isMultiple == false && this.listenIsMultipleTags == false) {
                     this.value = val
+                } else if(this.listenIsMultipleTags == true) {
+                    this.arrValue = val.replace(/[\[\]"]+/g, '').split(',').map(item => item.trim());
                 } else {
-                    console.log('isC');
                     this.arrValue = val
                 }
             }
