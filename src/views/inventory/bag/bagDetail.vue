@@ -12,14 +12,14 @@
     <template>
       <div class="center in-get-bag">
         <vs-row style="margin-top:2em">
-          <vs-col xs="12" sm="4" lg="2">
+          <vs-col xs="4" sm="4" lg="2">
             <vs-radio
               v-model="radio_option"
               val="connote">
               Connote (Orion)
             </vs-radio>
           </vs-col>
-          <vs-col xs="12" sm="4" lg="2">
+          <vs-col xs="4" sm="4" lg="2">
             <vs-radio
               v-model="radio_option"
               val="koli">
@@ -35,23 +35,22 @@
         <vs-col xs="12" sm="2" lg="2">
           <template>
             <div v-if="radio_option === 'connote'" class="center in-get-bag">
-              <vs-input border type="text"
-                v-model="item_code_orion"
-                label-placeholder="Masukkan Connote (Orion)"
-                v-on:keyup.enter="updateItemOnBagOrion"
-                :autofocus="true"
-                ref="formInputBagging">
+              <vs-input border type="text" v-model="item_code_orion" label-placeholder="Masukkan Connote (Orion)"
+                v-on:keyup.enter="updateItemOnBagOrion" icon-after :autofocus="true" ref="formInputBagging"
+                @click-icon="$refs.cameraScanner.open('formInputBagging')">
+                <template #icon>
+                  <i class="bx bx-barcode-reader"></i>
+                </template>
 
               </vs-input>
             </div>
             <div v-else class="center in-get-bag">
-              <vs-input border type="text"
-                v-model="item_code"
-                label-placeholder="Masukkan code BAG / Koli"
-                v-on:keyup.enter="updateItemOnBag"
-                :autofocus="true"
-                ref="formInputBagging">
-
+              <vs-input border type="text" v-model="item_code" label-placeholder="Masukkan code BAG / Koli"
+                v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBagging"
+                @click-icon="$refs.cameraScanner.open('formInputBagging')">
+                <template #icon>
+                  <i class="bx bx-barcode-reader"></i>
+                </template>
               </vs-input>
             </div>
           </template>
@@ -61,7 +60,7 @@
       <vs-row style="margin-top:1em">
         
         <!--input destination -->
-        <vs-col xs="12" sm="2" lg="2">
+        <vs-col xs="6" sm="3" lg="2">
           <template>
             <div class="center in-get-bag">
              <vs-col lg="12">
@@ -80,7 +79,7 @@
           </template>
         </vs-col>
         <!--input update location -->
-        <vs-col xs="12" sm="2" lg="2">
+        <vs-col xs="6" sm="2" lg="2">
           <template v-if="loading == false">
             <div class="center in-get-bag">
               <vs-col lg="12">
@@ -140,7 +139,7 @@
         
         
         <!--input update weight -->
-        <vs-col xs="12" sm="2" lg="2">
+        <vs-col xs="8" sm="3" lg="2">
           <template>
             <div class="center in-get-bag">
              <vs-col lg="8">
@@ -157,7 +156,7 @@
           </template>
         </vs-col>
 
-        <vs-col xs="12" sm="3" lg="3" >
+        <vs-col xs="4" sm="2" lg="3" class="mt-1">
           <template>
             <vs-button @click="actionDetail">Print</vs-button>
             <!-- <div class="center in-get-bag">
@@ -186,6 +185,7 @@
       </vs-col>
 
     </section>
+    <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
 
   </div>
 </template>
@@ -195,6 +195,7 @@ import master from "@/mixins/master"
 import Breadcrumb from "@/components/breadcrumb/index"
 import detailBagList from "@/views/inventory/bag/bagDetailList"
 import Selector from "@/components/input/select"
+import CameraScanner from "@/components/scanner/camera.vue";
 
 export default {
   name: "InventoryBaggingList",
@@ -203,6 +204,7 @@ export default {
     "breadcrumb": Breadcrumb,
     "detailbagList": detailBagList,
     "selector": Selector,
+    CameraScanner,
   },
   data() {
     return {
@@ -257,6 +259,9 @@ export default {
     },
     listenDestinationArr() {
       return this.$store.getters["getInputs"]["bagging"]["destination"]["dataArray"] || []
+    },
+    listenDataBag(){
+      return this.$ls.get('getDataBag')
     }
   },
   methods: {
@@ -265,6 +270,7 @@ export default {
       console.log("dapet nih kedepan", data, loading)
       let arr = data.detail
       let bag_des = data.data ? data.data.destination.node_code  : null
+      this.is_pra_runsheet = data.data.is_pra_runsheet
       
       
       // this.DataNode
@@ -316,21 +322,29 @@ export default {
       
       this.loading = loading
     },
+    getIsPraRunsheet(){
+      this.is_pra_runsheet = this.$store.getters.getInputs.is_pra_runsheet
+      if (this.is_pra_runsheet == undefined) {
+        this.is_pra_runsheet = this.listenDataBag.is_pra_runsheet
+      }
+    },
     getBagIdParam(){
-      // console.log("listenDestination", this.listenDestination)
       this.bag_id = this.$route.params.id
       this.form={
           bag_number : this.bag_id,
           destination : this.listenDestination,
-          service: this.listenServiceType
+          service: this.listenServiceType,
+          is_pra_runsheet: this.is_pra_runsheet
       }
     },
     updateItemOnBag() {
       this.form.item_number = this.item_code
+      this.form.is_pra_runsheet = this.is_pra_runsheet
       this.ProccessAddBagItem()
     },
     updateItemOnBagOrion() {
       this.form.item_number = this.item_code_orion + "00"
+      this.form.is_pra_runsheet = this.is_pra_runsheet
       this.ProccessAddBagItem()
     },
     updateValue(){
@@ -423,10 +437,22 @@ export default {
             } 
         });
         window.open(routeData.href, '_blank');
-    }
+    },
+    onCameraScannerGetData(data) {
+      if (data && data.event === "result" && data.namespace === "formInputBagging") {
+        this.item_code = data.data.text;
+        if (this.radio_option === "connote") {
+          this.item_code_orion = this.item_code;
+          this.updateItemOnBagOrion();
+        } else {
+          this.updateItemOnBag();
+        }
+      }
+    },
   },
   mounted() {
     this.getBagIdParam()
+    this.getIsPraRunsheet()
     // this.getNodeLink()
   }
 }

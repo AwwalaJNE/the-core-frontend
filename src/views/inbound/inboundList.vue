@@ -71,6 +71,11 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Koli",
+                    key: "inbound_total_koli",
+                    width: "auto"
+                },
+                {
                     label: "Weight (Kg)",
                     key: "inbound_total_weight",
                     width: "xs"

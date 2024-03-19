@@ -77,6 +77,19 @@ export default {
       state.user.user_role_id.arrData = payload :
       state.user.user_role_id.arrData = []
   },
+  SET_USER_EMPLOYEE_ID(state, payload) {
+    state.user.employee_id.value = payload
+  },
+  // type select
+  SET_USER_EMPLOYEE_ID_ValueData(state, payload) {
+    state.user.employee_id.valueData = payload
+  },
+  // type select perlu data array
+  SET_USER_EMPLOYEE_ID_ArrData(state, payload) {
+    state.user.employee_id.hasOwnProperty('arrData') ?
+      state.user.employee_id.arrData = payload :
+      state.user.employee_id.arrData = []
+  },
   // type select
   SET_USER_USER_ADDITIONAL_ROLE_ID_ValueData(state, payload) {
     state.user.user_additional_role_id.valueData = payload
@@ -2717,5 +2730,8 @@ export default {
   },
   SET_ALL_RUNSHEET_ID_ValueData(state, payload) {
     state.all_runsheet = payload
+  },
+  SET_IS_PRA_RUNSHEET_ValueData(state, payload) {
+    state.is_pra_runsheet = payload;
   },
 }

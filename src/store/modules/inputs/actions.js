@@ -69,6 +69,17 @@ export default {
   SET_USER_USER_EXPIRY_ADDITIONAL_ROLE_ValueData({ commit }, payload) {
     commit('SET_USER_USER_EXPIRY_ADDITIONAL_ROLE_ValueData', payload)
   },
+
+  SET_USER_EMPLOYEE_ID({ commit }, payload) {
+    commit('SET_USER_EMPLOYEE_ID', payload)
+  },
+  SET_USER_EMPLOYEE_ID_ValueData({ commit }, payload) {
+    commit('SET_USER_EMPLOYEE_ID_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_USER_EMPLOYEE_ID_ArrData({ commit }, payload) {
+    commit('SET_USER_EMPLOYEE_ID_ArrData', payload)
+  },
   SET_USER_USER_NODE_ID_ValueData({ commit }, payload) {
     commit('SET_USER_USER_NODE_ID_ValueData', payload)
   },
@@ -2539,6 +2550,10 @@ export default {
   // All runsheet
   SET_ALL_RUNSHEET_ID_ValueData({ commit }, payload) {
     commit('SET_ALL_RUNSHEET_ID_ValueData', payload)
+  },
+  //Pra runsheet
+  SET_IS_PRA_RUNSHEET_ValueData({ commit }, payload) {
+    commit('SET_IS_PRA_RUNSHEET_ValueData', payload)
   },
   
 }

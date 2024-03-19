@@ -8,20 +8,20 @@
     <div>
         <div class="summary-bag">
           <vs-row>
-            <vs-col xs="3" sm="3" lg="3" align="left">
+            <vs-col xs="12" sm="3" lg="3" align="left" class="bag-no">
               <span><b>Bag No. {{ bag_number }}</b></span>
             </vs-col>
-            <vs-col xs="3" sm="3" lg="3" align="left">
+            <vs-col xs="12" sm="3" lg="3" align="left" >
                 <!-- <span><p>Service: REG</p></span> -->
                 <span><p>Destination: {{bag_destination}}</p></span>
                 <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
             </vs-col>
-            <vs-col xs="3" sm="3" lg="3" align="left">
+            <vs-col xs="12" sm="3" lg="3" align="left" >
             
               <span><p>Total Weight: {{ total_weight }} Kg</p></span>
               <span><p>Actual Weight: {{ actual_weight }} Kg</p></span>
             </vs-col>
-            <vs-col xs="3" sm="3" lg="3" align="right"><span><h1>{{ bag_detail_qty }}</h1></span><p>Bagged</p></vs-col>
+            <vs-col xs="12" sm="3" lg="3" align="right"><span><h1>{{ bag_detail_qty }}</h1></span><p>Bagged</p></vs-col>
           </vs-row>
         </div>
 
@@ -152,7 +152,8 @@ export default {
                 .then(res => {
                     let arr = res.data.detail
                     let bag_des = res.data.dat ? res.data.data.destination.node_code  : '-'
-                    
+                    this.$ls.set('getDataBag',res.data.data);
+
                     // console.log(arr, res,'klas')
                     arr.map((item, index)  => {
                       item["no"] = index+1
@@ -257,5 +258,16 @@ export default {
   }
   .summary-bag{
     margin-bottom: 40px;
+  }
+  .bag-detail {
+    @include for-phone-only {
+      text-align: right;
+    }
+  }
+  .bag-no {
+    @include for-phone-only {
+        text-align: center;
+        margin-bottom: 15px;
+    }
   }
 </style>

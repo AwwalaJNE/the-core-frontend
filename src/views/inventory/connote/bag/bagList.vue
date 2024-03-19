@@ -36,7 +36,8 @@ export default {
     props: {
         query: String,
         bagDestination: [],
-        bagRouting: String
+        bagRouting: String,
+        bagTipe: String
     },
     components: {
         "table-master" : TableMaster,
@@ -63,6 +64,14 @@ export default {
             this.routingFilter = val
             if(this.routingFilter !== old) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, val )
+            }
+          }
+        },
+        bagTipe: function(val, old) {
+          if(val !== undefined) {
+            this.tipeBagFilter = val
+            if(this.tipeBagFilter !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter,this.routingFilter, val )
             }
           }
         }
@@ -102,6 +111,16 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Runsheet",
+                    key: "total_runsheet",
+                    width: "xs"
+                },
+                {
+                    label: "Un Runsheet",
+                    key: "total_unRunsheet",
+                    width: "xs"
+                },
+                {
                     label: "Consolidation",
                     key: "is_consolidated",
                     width: "xs"
@@ -127,6 +146,7 @@ export default {
             tempSearch: this.query ? this.query : "",
             bagFilter: this.bagDestination ? this.bagDestination : "",
             routingFilter: this.bagRouting ? this.bagRouting : "",
+            tipeBagFilter: this.bagTipe ? this.bagTipe : "",
             dialogRole: false,
             pagination: {
                 limit:20,
@@ -136,11 +156,12 @@ export default {
         }
     },
     methods: {
-        async getTableData(limit,page,q, bagDestination, bagRouting) {
+        async getTableData(limit,page,q, bagDestination, bagRouting, bagTipe) {
             this.loading = true
             let query = "";
             let bagDes = "";
             let bagRout= "";
+            let bagTipee= "";
             if(q !== undefined) {
                 query = q
             }
@@ -150,14 +171,19 @@ export default {
             if(bagRouting !== undefined && bagRouting !== '-') {
               bagRout = bagRouting
             }
+            if(bagTipe !== undefined && bagTipe !== '-') {
+              bagTipee = bagTipe
+            }
             await axios
                 .get(this.URL.bag +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}&tipe_bag=${bagTipee}`,
                 this.Helper.header())
                 .then(res => {
                     res.data.data.forEach(el => {
                         el.surat_muatan = []
                         el.surat_jalan = []
+                        el.total_runsheet = 0
+                        el.total_unRunsheet = 0
                         if (el.sj_detail.length > 0) {
                             el.sj_detail.forEach(sj => {
                                 el.surat_jalan.push(sj.manifest_do_number)
@@ -168,6 +194,15 @@ export default {
                         if (el.sm_detail.length > 0) {
                             el.sm_detail.forEach(sm => {
                                 el.surat_muatan.push(sm.manifest_number)
+                            })
+                        }
+                        if (el.runsheet_detail.length > 0) {
+                            el.runsheet_detail.forEach(runsheet => {
+                                if (runsheet.status_delivery !== null) {
+                                    el.total_runsheet++ 
+                                } else {
+                                    el.total_unRunsheet++
+                                }
                             })
                         }
                         el.surat_muatan = el.surat_muatan.join(", ")
@@ -215,14 +250,14 @@ export default {
         },
         refresh(){
             console.log("refresh")
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter)
         },
         closeDialogRole() {
             this.dialogRole = false
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter)
     },
 }
 </script>

@@ -86,7 +86,18 @@ export default {
             form: {},
             node_id: '',
             employee_id:'',
-            editData: {}
+            editData: {},
+            employee_gender: '',
+            employee_gender_list: [
+                {
+                    label: 'Laki Laki',
+                    value: 'L'
+                },
+                {
+                    label: 'Perempuan',
+                    value: 'P'
+                }
+            ],
         }
     },
     computed: {
@@ -111,6 +122,7 @@ export default {
         active: function (val) {
             if(val == true) {
                 this.getDataEmployeeType()
+                this.getGender()
             }
         }
     },
@@ -172,7 +184,17 @@ export default {
 
                 })
         },
-        
+        getGender(){
+            let arr = []
+            this.employee_gender_list.map(item => {
+                let obj = {}
+                obj["label"] = item.label
+                obj["value"] = item.value
+
+                arr.push(obj)
+            })
+            this.$store.dispatch("SET_EMPLOYEE_EMPLOYEE_GENDER_ArrData", arr.length > 0 ? arr : null)
+        },
         // async getDataNode(){
         //     await axios
         //         .get(this.URL.node +
@@ -210,6 +232,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
+                    this.handleClearForm()
                     this.openNotification('danger', 'Update failed', messageErr)
                 })
         },
@@ -228,6 +251,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
+                    this.handleClearForm()
                     this.openNotification('danger', 'Create failed', err)
                 })
         },

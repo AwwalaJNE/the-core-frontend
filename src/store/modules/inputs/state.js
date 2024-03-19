@@ -79,21 +79,21 @@ export default {
       valueData: null,
       value: ''
     },
-    user_expiry_additional_role: {
-      label: "Date Expiry Additional Role",
-      key: "user_expiry_additional_role",
-      rule: "",
-      typeInput: "date",
-      width: '3',
-      typeData: "String",
-      valueData: null,
-      value: ''
-    },
     user_node_id: {
       label: "User Node",
       key: "user_node_id",
       rule: "required",
       typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    employee_id: {
+      label: "Employee Courier Delivery Name",
+      key: "employee_id",
+      rule: "",
+      typeInput: "select",
       typeData: "String",
       arrData: [],
       valueData: null,
@@ -2339,7 +2339,7 @@ export default {
   //surat muatan
   surat_muatan:{
     manifest_number: {
-      label: "No Bag",
+      label: "No Surat Muatan",
       key: "manifest_number",
       rule: "",
       typeInput: "text",

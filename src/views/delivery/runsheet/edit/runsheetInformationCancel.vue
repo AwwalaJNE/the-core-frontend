@@ -12,15 +12,7 @@
         :limit="pagination.limit"
         :hasAction="false"
         :hasPagination="false"
-        :customAction="true"
-        :customActionList="customActionList"
-        :isMultipleSelectColoum="true"
-        :onRowClickCallback="onRowClickCallback"
-        :allCheckCallback="onAllCheckCallback"
-        @actionRemove="actionRemove"
         @updateValue="updateValue"
-        @actionUpdate="actionUpdate"
-        @updateSelected="updateSelected"
       />
     </template>
   </div>
@@ -51,7 +43,7 @@ export default {
       dataTable: this.dataDelivery || [],
       datacolumn: [
         {
-          label: "Id",
+          label: "Ids",
           key: "inbound_id",
           type: "text",
           hidden: true,
@@ -80,7 +72,7 @@ export default {
             },
           ],
           selectedValue: "status_code",
-          disabled_input: "is_disabled_input_status",
+          disabled_input: "is_disabled_cancel",
           width: "md",
         },
 
@@ -89,7 +81,7 @@ export default {
           key: "remarks",
           type: "inputan",
           typeInput: "textsubmit",
-          disabled_input: "is_disabled_input_remarks",
+          disabled_input: "is_disabled_cancel",
           data: "",
           width: "md",
         },
@@ -104,7 +96,7 @@ export default {
           key: "receiver_name",
           type: "inputan",
           typeInput: "textsubmit",
-          disabled_input: "is_disabled_input_reveiver",
+          disabled_input: "is_disabled_cancel",
           data: "",
           width: "md",
         },
@@ -119,7 +111,6 @@ export default {
       tempDate: [],
       startDate: "",
       endDate: "",
-      dialogTariff: false,
       employee_id: "",
       delivery_runsheet_number: null,
       pagination: {
@@ -127,27 +118,6 @@ export default {
         page_size: 1,
         page: 1,
       },
-      loadStatus: false,
-      customActionList: [
-        // {
-        //   label: 'Confirm',
-        //   key: 'confirm',
-        //   attribute: '',
-        //   option: {
-        //     type: 'redirect',
-
-        //   },
-        // },
-        {
-          label: "Edit",
-          key: "edit",
-          attribute: "",
-        },
-      ],
-      test: "",
-      waitToRoleRenderer: true,
-      arrayOfObjects: [],
-      radio_option: ""
     };
   },
   computed: {
@@ -155,7 +125,6 @@ export default {
       return this.loading;
     },
     listenDataDelivery() {
-      console.log("data delivery item", this.dataDelivery);
       return this.dataDelivery;
     },
   },
@@ -192,13 +161,6 @@ export default {
     },
   },
   mounted() {
-    // this.datacolumn.map((item) => {
-    //   if (item.key == "status_delivery") {
-    //     item.data = this.arrStatus;
-    //   }
-    // });
-
-    console.log('Nilai radioOption di dalam komponen anak:', this.radioOption);
     this.getParamRoute();
   },
   methods: {
@@ -257,127 +219,12 @@ export default {
 
       this.$refs.tableMaster.selected = selected;
     },
-    async runsheetAction(val, info) {
-      try {
-        const statusDelivery = this.$store.getters.getInputs.status_delivery
-          .status;
-        const { remarks } = this.$store.getters.getInputs.remarks;
-        const receiverName = this.$store.getters.getInputs.receiver_name
-          .receiver_name;
-        const dataPOD = {
-          // Construct the payload to be sent in the request body
-          courier_employee_id: val.courier_employee_id,
-          delivery_runsheet_number: val.delivery_runsheet_number,
-          koli_number: val.koli_number,
-          status: statusDelivery,
-          remarks,
-          receiver_name: receiverName,
-        };
-
-        this.openNotification("success", "POD UPDATED!");
-
-        // Send the values to the parent component
-        this.$emit("updatePOD", dataPOD, info);
-      } catch (err) {
-        this.loading = false;
-        this.openNotification(
-          "danger",
-          "Update POD is failed",
-          err.message || err
-        );
-      }
-    },
-    async edit(val) {
-      this.$emit("editPOD", val);
-    },
-    async actionRemove(val) {
-      console.log(val, "ini data pod");
-      await axios
-        .delete(
-          `${this.URL.employee}/${val.courier_employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${val.delivery_runsheet_number}&koli_number=${val.koli_number}`,
-          this.Helper.header()
-        )
-        .then((res) => {
-          console.log(
-            res.data,
-            res.data.data.length,
-            Object.keys(res.data.data).length,
-            "inires"
-          );
-          if (Object.keys(res.data.data).length > 0) {
-            this.refresh();
-          } else {
-            this.$router.push({ name: "DeliveryRunsheetEdit", params: {} });
-          }
-          this.openNotification(
-            "success",
-            "Romove success",
-            "Romove Koli number item successfully"
-          );
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.openNotification("danger", "Romove bag item is failed", err);
-        });
-    },
-    actionUpdate(key, val) {
-      switch (val) {
-        case "confirm":
-          console.log("confirms", key, val);
-          this.runsheetAction(key);
-          break;
-        case "edit":
-          this.edit(key);
-
-          break;
-        default:
-          console.log("meong");
-        // code block
-      }
-    },
-    updateSelected(arr) {
-      const { selected } = this.$refs.tableMaster;
-      const filtered = selected.filter(
-        (item) => item.status_delivery_description === null
-      );
-
-      this.$refs.tableMaster.selected = filtered;
-
-      this.$emit("update-selected", filtered);
-    },
-    closeDialogConfirm() {
-      this.confirmDialog = false;
-    },
     getParamRoute() {
       if (this.$route.params.employee_id) {
         this.employee_id = this.$route.params.employee_id;
       }
     },
 
-    onAllCheckCallback(val, selected) {
-      if (val) {
-        const filtered = selected.filter(
-          (item) => item.status_delivery_description === null
-        );
-
-        this.$refs.tableMaster.selected = filtered;
-        this.$refs.tableMaster.$vs.checkAll(filtered, this.dataTable);
-        this.$refs.tableMaster.allCheck = filtered.length > 0;
-
-        this.$emit("update-selected", filtered);
-      }
-    },
-
-    onRowClickCallback(event, item, selected) {
-      const filtered = this.$refs.tableMaster.selected.filter(
-        (item) => item.status_delivery_description === null
-      );
-
-      this.$refs.tableMaster.selected = filtered;
-      this.$refs.tableMaster.allCheck = filtered.length > 0;
-
-      this.$emit("update-selected", filtered);
-    },
   },
 };
 </script>

@@ -102,6 +102,7 @@ export default {
         active: function (val) {
             if (val == true) {
                 this.getDataRole()
+                this.getDataEmployee()
             }
         }
     },
@@ -172,6 +173,30 @@ export default {
                 }).catch(err => {
                     this.loadingDataRole = false
                     // this.openNotification('danger', 'Failed to collect role list', err)
+                })
+        },
+        async getDataEmployee(){
+            await axios
+                .get(this.URL.employee +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.employee_name
+                            obj["value"] = item.employee_id
+
+                            arr.push(obj)
+                        })
+                        this.$store.dispatch("SET_USER_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null)
+                    } else {
+                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    }
+
+                }).catch(err => {
+                    this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
         async getUserDetail(){

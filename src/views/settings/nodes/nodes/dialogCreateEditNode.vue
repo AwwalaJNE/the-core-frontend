@@ -80,13 +80,8 @@ export default {
                 ip_address: []
             },
             node_id: '',
-            ipAddress: '',
-            ipAddressArray: [
-            {
-              "label":"172.16.254.1.",
-              "value":"172.16.254.1."
-            }
-            ],
+            ipAddress: [],
+            ipAddressArray: [],
             pre_alert_sm: false,
             pre_alert_sj: false,
             pre_alert_bag: false
@@ -172,15 +167,22 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            if (item.ip_address !== null) {  // Filter IP address yang tidak null
-                                let obj = {};
-                                obj["label"] = item.ip_address;
-                                obj["value"] = item.ip_address;
-                                arr.push(obj);
+                        let uniqueIPs = {};
+                        res.data.data.forEach(item => {
+                            if (item.ip_address !== null) {  
+                                let ipAddresses = item.ip_address.split(',').map(address => address.trim()); 
+                                ipAddresses.forEach(ip => {
+                                    let cleanedIP = ip.replace(/[\[\]"]+/g, '');
+                                    if (!uniqueIPs[cleanedIP]) {
+                                        let obj = {};
+                                        obj["label"] = cleanedIP;
+                                        obj["value"] = cleanedIP;
+                                        uniqueIPs[cleanedIP] = true; 
+                                    }
+                                });
                             }
-                        })
+                        });
+                        let arr = Object.keys(uniqueIPs).map(ip => ({ label: ip, value: ip }));
                         this.$store.dispatch("SET_NODE_IP_ADDRESS_ArrData", arr.length > 0 ? arr : null)
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')

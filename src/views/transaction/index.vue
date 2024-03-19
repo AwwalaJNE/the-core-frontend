@@ -43,11 +43,13 @@
 
                 <vs-col xs="6" sm="2" lg="2">
                     <vs-input border type="text"
+                        :autofocus="true"
                         v-model="customerCode"
                         label-placeholder="Customer Code"
                         ref="inputCustomerCode"
                         @blur="handleBlurCustomerCode"
                         @input="handleInputCustomerCode"
+                        :disabled="isDisabled"
                         ></vs-input>
                 </vs-col>
             </vs-row>
@@ -107,7 +109,7 @@
                                 @click="createTransaction()"
                                 v-on:keydown.tab="disable_tab_button($event)"
                                 >
-                                    FINISH
+                                    APPROVE
                                 </vs-button>
                             </vs-col>
                         </vs-row>
@@ -181,6 +183,9 @@ export default {
         listenNodeLabel() {
             return this.$store.getters.getUser.node_id.label
         },
+        listenUserRole() {
+            return this.$store.getters.getUser['user_data'].role
+        }
     },
     data() {
         return {
@@ -201,7 +206,8 @@ export default {
             prosesDataTransaction: {},
 
             rerender: false,
-            inputDisabled: false
+            inputDisabled: false,
+            isDisabled: false
         }
     },
     methods: {
@@ -796,6 +802,11 @@ export default {
         removeKeyHandler() {
             // window.removeEventListener("keydown", this.keyHandler);
             console.log('transaction key handler destroyyy')
+        },
+        permissionCustomerCode(){
+            const permissions = this.$ls.get("permissions") || [];
+            this.isDisabled = permissions.includes('create-customer-code') ? false : true;
+            console.log(this.isDisabled,permissions.includes('create-customer-code'),permissions, 'test');
         }
 
         
@@ -815,6 +826,7 @@ export default {
             let inputCustomerCode = this.$refs.inputCustomerCode
             setTimeout(function(){ inputCustomerCode.$el.querySelector('input').focus() }, 100);
         })
+        this.permissionCustomerCode()
     },
     beforeRouteLeave (to, from, next) {
         console.log("beforeRouteEnter", to, from)

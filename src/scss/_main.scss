@@ -47,6 +47,7 @@ a{
     transition: all .3 ease;
     @include for-phone-only{
         margin: auto .5em;
+        min-width: 200px;
     }
 }
 

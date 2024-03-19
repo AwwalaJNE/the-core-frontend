@@ -16,21 +16,21 @@
                     <div class="box view">
 
                         <vs-row justify="space-between">
-                            <vs-col xs="6" sm="9" lg="9">
+                            <vs-col xs="12" sm="9" lg="9">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
-                            <vs-col xs="6" sm="3" lg="3">
-                                <search-input ref="searchInput" @searchValue="searchValue"/>
+                            <vs-col xs="12" sm="3" lg="3">
+                                <search-input ref="searchInput" @searchValue="searchValue" class="search-input"/>
                             </vs-col>
                         </vs-row>
 
 
                         <template v-if="navActive === 'k-CONNOTE'">
                           <vs-row >
-                            <vs-col vs-align="center" xs="3" sm="3" lg="2">
+                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
                                 <select-status-bag ref="is_in_bag" :isMultiple="false" :border="true" @updateStatusBag="updateStatusBag" />
                             </vs-col>
-                            <vs-col vs-align="center" xs="3" sm="3" lg="2">
+                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
                                 <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
                             </vs-col>
                           </vs-row>
@@ -40,23 +40,30 @@
                         </template>
                         <template v-if="navActive === 'k-BAG'">
                           <vs-row >
-                            <vs-col vs-align="center" xs="3" sm="3" lg="3">
+                            <vs-col vs-align="center" xs="6" sm="4" lg="3">
                               <select-bag-destination
                                   ref="bag_destination"
                                   :isMultiple="false"
                                   :border="true"
                                   @updateBagDestination="updateBagDestination" />
                             </vs-col>
-                            <vs-col vs-align="center" xs="3" sm="3" lg="2">
+                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
                               <select-bag-routing
                                   ref="bag_routing"
                                   :isMultiple="false"
                                   :border="true"
                                   @updateBagRouting="updateBagRouting" />
                             </vs-col>
+                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
+                              <select-bag-tipe
+                                  ref="bag_tipe"
+                                  :isMultiple="false"
+                                  :border="true"
+                                  @updateBagTipe="updateBagTipe" />
+                            </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :query="tempSearch"/>
+                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch"/>
                             </transition>
                         </template>
                         
@@ -80,6 +87,7 @@ import SelectBagStatusVue from "@/views/inventory/connote/item/selectBagStatus"
 import SelectInventoryVue from "@/views/inventory/connote/item/selectInventoryStatus"
 import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDestination"
 import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
+import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
 
 // Connote
 import ConnoteList from "@/views/inventory/connote/item/connoteList"
@@ -100,7 +108,8 @@ export default {
         "select-status-bag": SelectBagStatusVue,
         "select-status-inventory": SelectInventoryVue,
         "select-bag-destination": SelectBagDestinationVue,
-        "select-bag-routing": SelectBagRouting
+        "select-bag-routing": SelectBagRouting,
+        "select-bag-tipe": SelectBagTipe
     },
     data() {
         return {
@@ -160,6 +169,7 @@ export default {
             statusinventory:"",
             bagDestination:"",
             bagRouting:"",
+            bagTipe:"",
             destination_tlc: [{
               label: 'All Destination',
               value: ''
@@ -179,6 +189,9 @@ export default {
         },
         updateBagRouting(key,val){
             this.bagRouting = val
+        },
+        updateBagTipe(key,val){
+            this.bagTipe = val
         },
         refresh(){
             let el = this.refreshInject
@@ -279,6 +292,11 @@ export default {
                         transition: all .3s ease-in;
                     }
                 }
+            }
+        }
+        .search-input{
+            @include for-phone-only{
+                margin-bottom: 1rem;
             }
         }
     }
