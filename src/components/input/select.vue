@@ -176,7 +176,10 @@ export default {
                 if(this.isMultiple == false && this.listenIsMultipleTags == false) {
                     this.value = val
                 } else if(this.listenIsMultipleTags == true) {
-                    this.arrValue = val.replace(/[\[\]"]+/g, '').split(',').map(item => item.trim());
+                    if (val.includes(',')) {
+                        val = val.replace(/[\[\]"]+/g, '').split(',').map(item => item.trim());
+                    }
+                    this.arrValue = val;
                 } else {
                     this.arrValue = val
                 }

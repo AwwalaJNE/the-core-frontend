@@ -59,31 +59,10 @@ export default {
       value: ''
     },
     user_role_id: {
-      label: "Primary Role*",
+      label: "Role*",
       key: "user_role_id",
       rule: "required",
       typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    user_additional_role_id: {
-      label: "Additional Role",
-      key: "user_additional_role_id",
-      rule: "",
-      typeInput: "selectmultipletag",
-      width: '9',
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    user_node_id: {
-      label: "User Node",
-      key: "user_node_id",
-      rule: "required",
-      typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
       valueData: null,
@@ -94,6 +73,16 @@ export default {
       key: "employee_id",
       rule: "",
       typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    user_node_id: {
+      label: "User Node",
+      key: "user_node_id",
+      rule: "required",
+      typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
       valueData: null,
