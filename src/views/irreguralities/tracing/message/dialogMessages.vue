@@ -176,14 +176,10 @@ export default {
                     }), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
-                    // this.refresh()
-
                     this.cancel()
                     this.openNotification(null, 'Success', 'Create new tracing message is success')
                 }).catch(err => {
                     this.loadingMessage = false
-                    // this.refresh()
                     this.openNotification('danger', 'Create new tracing message failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },

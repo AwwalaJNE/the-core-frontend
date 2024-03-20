@@ -241,15 +241,11 @@ export default {
                     }), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
-                    // this.refresh()
-
                     this.loadingRemark = false
                     this.cancel()
                     this.openNotification(null, 'Success', 'Create new tracing remark is success')
                 }).catch(err => {
                     this.loadingRemark = false
-                    // this.refresh()
                     this.openNotification('danger', 'Create new tracing remark failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
