@@ -3,7 +3,8 @@
 <template>
   <vs-dialog v-model="visible" class="my-dialog" not-close prevent-close>
     <template #header>
-      <h4 class="not-margin">Please Update Your Password</h4>
+      <h4 class="not-margin" v-if="profileData.last_password_updated_at !== null">Please Update Your Password</h4>
+      <h4 class="not-margin" v-else>Please Changes Your Password</h4>
     </template>
 
     <div class="con-form">
@@ -55,6 +56,8 @@
         </template>
       </vs-input>
     </div>
+
+    <p class="message-text-password" v-if="profileData.last_password_updated_at !== null"><b>Note</b> : Expired Password, Please Change Your Password</p>
 
     <template #footer>
       <div class="footer-dialog">
@@ -249,5 +252,11 @@ export default {
 
 .mb-5 {
   margin-bottom: 8px;
+}
+
+.message-text-password {
+  font-size: 10px;
+  text-align: justify;
+  margin-left: 12.5px;
 }
 </style>
