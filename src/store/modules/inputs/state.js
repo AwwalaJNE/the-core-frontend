@@ -68,6 +68,28 @@ export default {
       valueData: null,
       value: ''
     },
+    user_additional_role_id: {
+      label: "Additional Role",
+      key: "user_additional_role_id",
+      rule: "",
+      typeInput: "selectmultipletag",
+      width: '9',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    user_expiry_additional_role: {
+      label: "Date Expiry Additional Role",
+      key: "user_expiry_additional_role",
+      rule: "",
+      typeInput: "date",
+      width: '3',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     employee_id: {
       label: "Employee Courier Delivery Name",
       key: "employee_id",
