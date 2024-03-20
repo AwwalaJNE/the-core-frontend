@@ -291,14 +291,12 @@ export default {
                 })
         },
         async handleSubmit() {
-            console.log('this.form', this.form)
             await axios
                 .post(
                     this.URL.irregularities + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.refresh()
 
                     this.dialogRemarkActive = false
@@ -379,7 +377,6 @@ export default {
                         this.removeValueOrion();
                         break;
                     default:
-                        console.log("Unhandled event.", data);
                         break;
                 }
             }
