@@ -277,13 +277,17 @@ export default {
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
-                        // this.openNotification('warn', 'Irreguralities Cancel data is empty!', ' Please create Irreguralities Cancel data')
+                        this.dataTable = []
+                        
+                        if (query != "") {
+                            this.openNotification('danger', 'Irreguralities Tracing data is empty!', ' data is empty or not found, please check your keyword in the input search')
+                        }
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Irreguralities Cancel', err)
+                    this.openNotification('danger', 'Failed to populate Irreguralities Tracing', err)
                 })
         },
         async handleSubmit() {
@@ -306,13 +310,14 @@ export default {
                 })
         },
         showData(row) {
-          this.$router.push(`/irreguralities/tracing/tracing-history/${row.koli_number}`);
+            this.$router.push(`/irreguralities/tracing/${row.koli_number}/`);
+            this.refresh();
         },
         refresh(){
             let d = new Date()
             let from = ''
             let to = ''
-
+            
             if(this.dateRange.length > 0) {
                 from = moment(this.dateRange[0]).format("YYYY-MM-DD")
                 to = moment(this.dateRange[1]).format("YYYY-MM-DD")
@@ -327,14 +332,14 @@ export default {
 
         },
         searchValue (val) {
-            this.tempSearch = val
+            this.tempSearch = val;
             this.refresh()
         },
         updateValueDate(key, val) {
             switch(key) {
                 case "TRIGGER_DATE":
-                    this.dateRange = val
-                    this.refresh()
+                    this.dateRange = val;
+                    this.refresh();
                     break;
                 default:
                     break;
@@ -389,8 +394,14 @@ export default {
                     this.Helper.header()
                 )
                 .then((res) => {
-                    this.openNotification(null, "Success", res.data.message);
-                    this.loadingScanConnote = false;
+                    if (res.data.hasOwnProperty("summary")) {
+                        this.openNotification(null, "Success", "Remove koli success");
+                        this.loadingScanConnote = false;
+                    } else {
+                        this.openNotification(null, "Success", res.data.message);
+                        this.loadingScanConnote = false;
+                    }
+                    this.refresh();
                 })
                 .catch((err) => {
                     this.loadingScanConnote = false;
@@ -413,6 +424,8 @@ export default {
                         this.openNotification(null, "Success", res.data.message);
                         this.loadingScanConnote = false;
                     }
+
+                    this.refresh();
                 })
                 .catch((err) => {
                     this.loadingScanConnote = false;

@@ -391,36 +391,27 @@ const routes = [
           {
             path: "tracing",
             name: "irreguralities-tracing",
-            component: ContentChild,
-            children: [
-              {
-                path: "/",
-                name: "irreguralities-tracing",
-                component: irreguralitiesTracing,
-              },
-              {
-                path: "tracing-history/:id",
-                name: "irreguralities-tracing-detail",
-                component: irreguralitiesTracingHistory,
-                meta: {
-                  requiresAuth: true,
-                  breadCrumb: "Tracing History"
-                }
-              },
-            ],
+            component: irreguralitiesTracing,
             meta: {
               requiresAuth: true,
               breadCrumb: "tracing"
             },
           },
-          
+          {
+            path: "tracing/:id/",
+            name: "irreguralities-tracing-history",
+            component: irreguralitiesTracingHistory,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "tracing"
+            }
+          }
         ],
         meta: {
           requiresAuth: true,
           breadCrumb: "Irreguralities"
         }
       },
-
       {
         path: "/report/cashless",
         name: "CashLess",
