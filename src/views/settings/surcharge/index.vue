@@ -101,7 +101,7 @@ export default {
                     title: "Surcharge Type"
                 },
             ],
-            title:"Nodes",
+            title:"Surcharge List",
             navActive: "k-SURCHARGE",
             dialogSurcharge: false,
             dialogSurchargeType: false,

@@ -120,6 +120,8 @@ import irreguralitiesReturn from "@/views/irreguralities/return"
 import irreguralitiesProblem from "@/views/irreguralities/problem"
 import irreguralitiesHold from "@/views/irreguralities/hold"
 import irreguralitiesFailed from "@/views/irreguralities/failed"
+import irreguralitiesTracing from "@/views/irreguralities/tracing"
+import irreguralitiesTracingHistory from "@/views/irreguralities/tracing/tracingHistory"
 
 // === Cost To Cost ===
 import CostToCostSetting from "@/views/costToCost/setting"
@@ -386,13 +388,30 @@ const routes = [
               breadCrumb: "failed"
             }
           },
+          {
+            path: "tracing",
+            name: "irreguralities-tracing",
+            component: irreguralitiesTracing,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "tracing"
+            },
+          },
+          {
+            path: "tracing/:id/",
+            name: "irreguralities-tracing-history",
+            component: irreguralitiesTracingHistory,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "tracing"
+            }
+          }
         ],
         meta: {
           requiresAuth: true,
           breadCrumb: "Irreguralities"
         }
       },
-
       {
         path: "/report/cashless",
         name: "CashLess",

@@ -127,6 +127,15 @@ export default {
     //irregularities
     irregularities: api + "irregularities",
 
+    //tracing
+    tracing : api + "tracing",
+
+    //tracing_status
+    tracing_status : api + "tracing/status",
+
+    //tracing_warehouse
+    tracing_warehouse : api + "tracing/warehouse",
+
     //cost to cost
     cost_to_cost: api + "cost-to-cost",
 
