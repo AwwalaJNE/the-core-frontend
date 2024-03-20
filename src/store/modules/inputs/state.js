@@ -59,7 +59,7 @@ export default {
       value: ''
     },
     user_role_id: {
-      label: "Role*",
+      label: "Primary Role*",
       key: "user_role_id",
       rule: "required",
       typeInput: "select",
@@ -68,11 +68,12 @@ export default {
       valueData: null,
       value: ''
     },
-    employee_id: {
-      label: "Employee Courier Delivery Name",
-      key: "employee_id",
+    user_additional_role_id: {
+      label: "Additional Role",
+      key: "user_additional_role_id",
       rule: "",
-      typeInput: "select",
+      typeInput: "selectmultipletag",
+      width: '9',
       typeData: "String",
       arrData: [],
       valueData: null,
@@ -83,6 +84,16 @@ export default {
       key: "user_node_id",
       rule: "required",
       typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    employee_id: {
+      label: "Employee Courier Delivery Name",
+      key: "employee_id",
+      rule: "",
+      typeInput: "select",
       typeData: "String",
       arrData: [],
       valueData: null,

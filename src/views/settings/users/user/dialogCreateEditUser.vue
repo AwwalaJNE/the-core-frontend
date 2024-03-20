@@ -167,6 +167,7 @@ export default {
                         })
                         this.dataRole = arr
                         this.$store.dispatch("SET_USER_USER_ROLE_ID_ArrData", arr)
+                        this.$store.dispatch("SET_USER_USER_ADDITIONAL_ROLE_ID_ArrData", arr)
                     
                     this.loadingDataRole = false
                 }).catch(err => {
