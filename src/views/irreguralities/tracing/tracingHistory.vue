@@ -31,80 +31,44 @@
                                 <search-input ref="searchInput" @searchValue="searchValue" class="search-input"/>
                             </vs-col>
                         </vs-row>
-
+                        
+                        <vs-row>
+                            <date-time
+                                :name="''"
+                                :rules="''"
+                                :formKey="'TRIGGER_DATE'"
+                                :valueData="dateRange"
+                                typeInput="daterange"
+                                @updateValue="updateValue" 
+                            />
+                        </vs-row>
+                        
                         <template v-if="navActive === 'k-REMARK'">
-                            <vs-row >
-                                <vs-col xs="6" sm="6" lg="6">
-                                    <date-time
-                                        :name="''"
-                                        :rules="''"
-                                        :formKey="'TRIGGER_DATE'"
-                                        :valueData="dateRange"
-                                        typeInput="daterange"
-                                        @updateValue="updateValue" 
-                                    />
-                                </vs-col>
-                            </vs-row>
                             <transition name="slide-fade">
                                 <remark-list 
                                     :ref="navActive"  
-                                    :query="tempSearch" 
-                                    :queryInventory="statusinventory" 
-                                    :queryBag="status_bag" 
+                                    :query="tempSearch"
+                                    :dateFilter="dateRange"
                                 />
                             </transition>
                         </template>
 
                         <template v-if="navActive === 'k-RUNSHEET'">
-                            <vs-row justify="space-between">
-                                <vs-col xs="6" sm="6" lg="6">
-                                    <date-time
-                                        :name="''"
-                                        :rules="''"
-                                        :formKey="'TRIGGER_DATE'"
-                                        :valueData="dateRange"
-                                        typeInput="daterange"
-                                        @updateValue="updateValue" 
-                                    />
-                                </vs-col>
-                                <vs-col xs="6" sm="4" lg="2">
-                                    <select-status-runsheet
-                                        ref="bag_routing"
-                                        :isMultiple="false"
-                                        :border="true"
-                                        @updateStatusRunsheet="updateStatusRunsheet" 
-                                    />
-                                </vs-col>
-                            </vs-row>
                             <transition name="slide-fade">
                                 <runsheet-list
-                                    :ref="navActive" 
-                                    :bagDestination="bagDestination" 
-                                    :statusRunsheet="statusRunsheet" 
+                                    :ref="navActive"
                                     :query="tempSearch"
+                                    :dateFilter="dateRange"
                                 />
                             </transition>
                         </template>
 
                         <template v-if="navActive === 'k-MESSAGE'">
-                            <vs-row >
-                                <vs-col xs="6" sm="6" lg="6">
-                                    <date-time
-                                        :name="''"
-                                        :rules="''"
-                                        :formKey="'TRIGGER_DATE'"
-                                        :valueData="dateRange"
-                                        typeInput="daterange"
-                                        @updateValue="updateValue" 
-                                    />
-                                </vs-col>
-                            </vs-row>
                             <transition name="slide-fade">
                                 <message-list 
                                     :ref="navActive"  
-                                    :query="tempSearch" 
-                                    :queryInventory="statusinventory" 
-                                    :queryBag="status_bag" 
+                                    :query="tempSearch"
+                                    :dateFilter="dateRange"
                                 />
                             </transition>
                         </template>
@@ -113,22 +77,41 @@
                 </vs-col>
                 
             </vs-row>
+            <vs-row justify="flex-end">
+                <vs-button
+                    class="mt-1"
+                    style="float: right"
+                    square
+                    active
+                    @click="print"
+                >
+                    <i class="bx bxs-printer" /> PRINT
+                </vs-button>
+                <vs-button
+                    class="mt-1"
+                    style="float: right"
+                    square
+                    active
+                    @click="back"
+                >
+                    <i class="bx bx-left-arrow" /> BACK
+                </vs-button>
+            </vs-row>
         </section>
 
         <dialog-remark
             :active="dialogRemarkActive" 
             :closeDialog="closeDialogRemark"
-            @updateValue="updateValueRemark"
         />
 
         <dialog-messages
             :active="dialogMessageActive" 
             :closeDialog="closeDialogMessage"
-            @updateValue="updateValueMessage"
         />
 
     </div>
 </template>
+
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
@@ -142,7 +125,6 @@ import MessageList from "@/views/irreguralities/tracing/message/index"
 import RemarkList from "@/views/irreguralities/tracing/remark/index"
 import RunsheetList from "@/views/irreguralities/tracing/runsheet/index"
 import SearchInput from "@/components/search/searchInput"
-import SelectStatusRunsheet from "@/views/irreguralities/tracing/runsheet/selectStatusRunsheet"
 import Selector from "@/components/input/select"
 import TableMaster from "@/components/table/tableMaster.vue"
 
@@ -161,13 +143,14 @@ export default {
         "dialog-remark": DialogRemark,
 
         "runsheet-list": RunsheetList,
-        "select-status-runsheet": SelectStatusRunsheet,
 
         "message-list": MessageList,
         "dialog-messages": DialogMessages,
     },
     data() {
         return {
+            koli_number: this.$route.params.id,
+
             navItemm: [
                 {
                     label: "REMARK",
@@ -188,11 +171,6 @@ export default {
 
             navActive: "k-REMARK",
             title: "Remark List",
-
-            permission: [],
-            loadingPermission: false,
-            permissionDisplay: [],
-            keysPermission: {},
             datacolumn: [
                 {
                     label: "Menu",
@@ -213,27 +191,18 @@ export default {
                     width: "auto"
                 }
             ],
-            loading: false,
             tempSearch: "",
+            tempFrom: "",
+            tempTo: "",
             pagination: {
                 limit: 10,
                 page_size: 1,
                 page: 1
             },
-            refreshInject:"",
-            statusinventory:"",
-            bagDestination:"",
-            statusRunsheet:"",
-            destination_tlc: [{
-              label: 'All Destination',
-              value: ''
-            }],
-
             dialogRemarkActive: false,
             dialogMessageActive: false,
 
             dateRange: [],
-            status_bag:""
         }
     },
     methods: {
@@ -250,56 +219,8 @@ export default {
             }
         },
 
-        updateValueMessage(key, val) {
-            switch(key) {
-                case "TRIGGER_DATE":
-                    this.dateRange = val
-                    this.refresh()
-                    console.log('dateRange',this.dateRange)
-                    break;
-                case "DIALOG_CANCEL":
-                    this.form = val
-                    this.form['connote_number'] = this.koliCode
-                    this.handleSubmit()
-                    break;
-                default:
-                    console.log('meong')
-                    // code block
-            }
-        },
-
-        updateValueRemark(key, val) {
-            switch(key) {
-                case "TRIGGER_DATE":
-                    this.dateRange = val
-                    this.refresh()
-                    console.log('dateRange',this.dateRange)
-                    break;
-                case "DIALOG_CANCEL":
-                    this.form = val
-                    this.form['connote_number'] = this.koliCode
-                    this.handleSubmit()
-                    break;
-                default:
-                    console.log('meong')
-                    // code block
-            }
-        },
-
         updateValue(key, val) {
-            switch(key) {
-                case "TRIGGER_DATE":
-                    this.dateRange = val
-                    this.refresh()
-                    console.log('dateRange',this.dateRange)
-                    break;
-                default:
-                    console.log('meong')
-            }
-        },
-
-        updateStatusRunsheet(key,val){
-            this.statusRunsheet = val
+            this.dateRange = val || undefined
         },
 
         closeDialogRemark() {
@@ -308,36 +229,27 @@ export default {
         closeDialogMessage() {
             this.dialogMessageActive = false
         },
-
-        refresh(){
-            let el = this.refreshInject
-            this.$refs[el].refresh() // trigger function refresh form dari luar component list
-
-            console.log("refresh")
-            let d = new Date()
-            let from = ''
-            let to = ''
-
-            if(this.dateRange.length > 0) {
-                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
-                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
-            } else {
-                from = moment(d).format("YYYY-MM-DD")
-                to = moment(d).format("YYYY-MM-DD")
-            }
-
-            
-            // TODO: TEST THIS
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
+        print() {
+            const routeData = this.$router.resolve({
+                name: "printGeneral",
+                params: {
+                    id: this.koli_number,
+                    type: "tracing",
+                    node_id: this.listenNodeId,
+                },
+            });
+            window.open(routeData.href, "_blank");
         },
 
-        
+        back() {
+            this.$router.push("/irreguralities/tracing");
+        },
         searchValue (val) {
             this.tempSearch = val
-            console.log("this.tempSearch = ",this.tempSearch)
         },
         clearSearch() {
-            this.$refs.searchInput.clear()
+            this.$refs.searchInput.clear();
+            this.dateRange = [];
         },
         activeTab(val) {
             this.navActive = val
@@ -346,32 +258,7 @@ export default {
                 return item.key == val
             })
             this.title = item[0].title
-
-
         },
-        
-        actionLimit(val){
-            this.pagination.limit = val
-        },
-        actionPagination(val) {
-            this.pagination.page = val
-        },
-
-
-
-        filterNow(){
-            if(this.permission.length > 0) {
-                console.log('this.keysPermission before filter', this.keysPermission)
-                this.permission.map(item => {
-                    if(this.keysPermission.hasOwnProperty(item.user_permission_id)) {
-                        item["selected"] = true
-                    } 
-                })
-                this.permissionDisplay = this.permission
-                console.log('this.keysPermission after filter', this.keysPermission)
-            }
-        },
-
     },
 }
 </script>

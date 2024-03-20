@@ -3,7 +3,7 @@
         <table-master 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
-            :tableLoading="loading"
+            :tableLoading="loadingRemark"
             :pageSize="pagination.page_size"
             :page="pagination.page"
             :limit="pagination.limit"
@@ -16,12 +16,15 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
+import moment from "moment";
 import TableMaster from "@/components/table/tableMaster.vue"
+
 export default {
     name:"tracing-runsheet-list",
     mixins: [master],
     props: {
-        query: String
+        query: String,
+        dateFilter: Array
     },
     components: {
         "table-master" : TableMaster,
@@ -31,8 +34,23 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, "", "")
+                    this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
                 }
+            }
+        },
+        dateFilter: function(val, old) {
+            if (val !== undefined) {
+                this.dateRange = val;
+                this.startDate = this.dateRange[0] !== null ? moment(this.dateRange[0]).format("YYYY-MM-DD") : "";
+                this.endDate = this.dateRange[1] !== null ? moment(this.dateRange[1]).format("YYYY-MM-DD") : "";
+
+                if (old !== null && old !== undefined) {
+                    if (this.startDate !== old[0] || this.endDate !== old[1]) {
+                        this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate);
+                    }
+                }
+            } else {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, "", "");
             }
         },
     },
@@ -62,12 +80,15 @@ export default {
                     width: "auto"
                 }
             ],
-            loading: false,
+            loadingRemark: false,
             dataItem: {},
+            dateRange: [],
+            startDate: this.dateFilter[0] ? this.dateFilter[0] : "",
+            endDate: this.dateFilter[1] ? this.dateFilter[1] : "",
             tempSearch: this.query ? this.query : "",
             dialogRole: false,
             pagination: {
-                limit:20,
+                limit: 10,
                 page_size: 1,
                 page: 1
             }
@@ -75,7 +96,7 @@ export default {
     },
     methods: {
         async getTableData(limit,page,q, from, to) {
-            this.loading = true
+            this.loadingRemark = true
             let query = "";
             let startDate = "";
             let endDate = "";
@@ -94,54 +115,32 @@ export default {
                 `/${this.koli_number}/remark?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
-                    this.dataTable = res.data.data
+                    if(res.data.data.length > 0) {
+                        this.dataTable = res.data.data
 
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
-
-                    if(res.data.data.length == 0) {
+                        this.pagination.page = res.data.meta.current_page
+                        this.pagination.limit = parseInt(res.data.meta.per_page)
+                        this.pagination.page_size = res.data.meta.last_page
+                    } else {
+                        this.dataTable = []
+                        
                         if (query != "") {
-                            this.openNotification('danger', 'Failed to populate bag data', ' data is empty or not found, please check your keyword in the input search')
+                            this.openNotification('danger', 'Irreguralities Tracing data remark is empty!', ' data is empty or not found, please check your keyword in the input search')
                         }
                     }
-                    
-                    this.loading = false
+
+                    this.loadingRemark = false
                 }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Failed to populate bag list', err)
+                    this.loadingRemark = false
+                    this.openNotification('danger', 'Failed to populate Irreguralities Tracing data remark list', err)
                 })
-        },
-        actionPrint(val){
-            let routeData = this.$router.resolve({ 
-                name: 'printGeneral', 
-                params: { 
-                    'id': val.bag_number, 
-                    'type': 'bag',
-                    'node_id': this.listenNodeId
-                } 
-            });
-        window.open(routeData.href, '_blank');
-        },
-        actionLimit(val){
-            this.pagination.limit = val
-            this.pagination.page = 1
-            this.refresh()
-        },
-        actionPagination(val) {
-            this.pagination.page = val
-            this.refresh()
-        },
-        refresh(){
-            console.log("refresh")
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, "", "")
         },
         closeDialogRole() {
             this.dialogRole = false
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, "", "")
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
     },
 }
 </script>

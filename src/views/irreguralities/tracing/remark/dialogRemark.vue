@@ -133,7 +133,7 @@ export default {
             status_arr: [],
             gudang_arr: [],
             status: '',
-            gudang: '',
+            gudang: 0,
             remark: '',
             loadingStatus: false,
             loadingGudang: false,
