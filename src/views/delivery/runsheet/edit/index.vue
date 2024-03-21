@@ -205,7 +205,7 @@
                     </div>
                   </template>
                 </vs-col>
-                <vs-col xs="6" sm="2" lg="2">
+                <vs-col xs="6" sm="2" lg="1">
                   <template v-if="dataDelivery.length > 0">
                     <div>
                       <vs-button
@@ -226,6 +226,7 @@
                       <vs-button
                         :loading="loadingConfirm"
                         @click="approveAction"
+                        style="float: left"
                       >
                         <span>
                           Approve
@@ -235,13 +236,38 @@
                   </template>
                 </vs-col>
               </vs-row>
+              <div v-if="radio_option === 'bag' && listenDataDelivery.length > 0" style="margin-top: 10px;">
+                <vs-row justify="space-between">
+                  <vs-col xs="12" sm="9" lg="9">
+                    <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                  </vs-col>
+                </vs-row>
 
-              <vs-row>
+                <template v-if="navActive === 'k-LIST-DELIVERY'">
+                  <transition name="slide-fade">
+                    <template v-if="listenDataDelivery.length > 0">
+                      <RunsheetInformation v-if="arrStatus && dataDelivery" :ref="'runsheetInformation'"
+                        :data-delivery="dataDelivery" :arr-status="arrStatus" :query="tempSearch"
+                        :loading="loadingRunsheet" :delivery-number="delivery_runsheet_number"
+                        :radioOption="radio_option" @update-selected="updateSelected" @updatePOD="updatePOD"
+                        @editPOD="editPOD" />
+                    </template>
+                  </transition>
+                </template>
+                <template v-if="navActive === 'k-LIST-DELETE'">
+                  <transition name="slide-fade">
+                    <template v-if="radio_option === 'bag'">
+                      <RunsheetInformationCancel v-if="arrStatus && dataDelivery" :ref="'runsheetInformationCancel'"
+                        :data-delivery="dataDeliveryCancel" :arr-status="arrStatus" :query="tempSearch"
+                        :loading="loadingRunsheet" :delivery-number="delivery_runsheet_number"
+                        :radioOption="radio_option" @updatePOD="updatePOD" @editPOD="editPOD" />
+                    </template>
+                  </transition>
+                </template>
+              </div>
+              <vs-row v-if="radio_option !== 'bag'">
                 <!-- col for detail unreceive item--> 
-                <vs-col :lg="radio_option === 'bag' ? '8' : '12'" :sm="radio_option === 'bag' ? '8' : '12'" xs="12" style="margin-top: 2em;">
-                  <span v-if="radio_option === 'bag' &&  listenDataDelivery.length > 0" style="display: block; text-align: left; margin-bottom: 10px;">
-                    List of koli delivery
-                  </span>
+                <vs-col lg="12" :sm="12" xs="12" style="margin-top: 2em;">
                   <template>
                     <transition name="slide-fade">
                       <template v-if="listenDataDelivery.length > 0 ">
@@ -255,29 +281,6 @@
                           :delivery-number="delivery_runsheet_number"
                           :radioOption="radio_option"
                           @update-selected="updateSelected"
-                          @updatePOD="updatePOD"
-                          @editPOD="editPOD"
-                        />
-                      </template>
-                    </transition>
-                  </template>
-                </vs-col>
-                <vs-col :lg="listenDataDelivery.length === 0 ? 6 : 4" sm="4" xs="12" style="margin-top: 2em">
-                  <span v-if="radio_option === 'bag' && listenDataDeliveryCancel.length > 0 " style="display: block; text-align: left; margin-bottom: 10px;">
-                    List of koli delivery delete
-                  </span>
-                  <template>
-                    <transition name="slide-fade">
-                      <template v-if="listenDataDeliveryCancel.length > 0  && radio_option === 'bag'">
-                        <RunsheetInformationCancel
-                          v-if="arrStatus && dataDelivery"
-                          :ref="'runsheetInformationCancel'"
-                          :data-delivery="dataDeliveryCancel"
-                          :arr-status="arrStatus"
-                          :query="tempSearch"
-                          :loading="loadingRunsheet"
-                          :delivery-number="delivery_runsheet_number"
-                          :radioOption="radio_option"
                           @updatePOD="updatePOD"
                           @editPOD="editPOD"
                         />
@@ -379,7 +382,20 @@ export default {
 
       selectedUpdateItems: [],
       dialogConfirmEmployee: false,
-      dialogLoadingEmployee: false
+      dialogLoadingEmployee: false,
+      navItemm: [
+        {
+          label: "LIST DELIVERY",
+          key: "k-LIST-DELIVERY",
+          title: "Connote List"
+        },
+        {
+          label: "DELETE",
+          key: "k-LIST-DELETE",
+          title: "Bag List"
+        }
+      ],
+      navActive: "k-LIST-DELIVERY",
     };
   },
   computed: {
@@ -891,6 +907,13 @@ export default {
             break;
         }
       }
+    },
+    activeTab(val) {
+      this.navActive = val
+      let item = this.navItemm.filter(item => {
+        return item.key == val
+      })
+      this.title = item[0].title
     },
   },
   watch: {
