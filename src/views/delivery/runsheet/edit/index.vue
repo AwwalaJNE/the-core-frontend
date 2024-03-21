@@ -491,7 +491,7 @@ export default {
     async getKoli(val) {
       await axios
         .get(
-          this.URL.bag + '/' + this.form.bag_number + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`,
+          this.URL.bag + '/' + this.form.bag_number.replaceAll("/", "-") + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`,
           this.Helper.header())
         .then(res => {
           const details = res.data.detail;

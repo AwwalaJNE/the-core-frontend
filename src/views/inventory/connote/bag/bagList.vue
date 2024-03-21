@@ -226,7 +226,8 @@ export default {
                 })
         },
         actionDetail(val){
-          this.$router.push('/bagging-detail/'+val.bag_number.replace('/','-'))
+            let bag = val.bag_number.replaceAll("/", "-")
+            this.$router.push('/bagging-detail/'+bag)
         },
         actionPrint(val){
             let routeData = this.$router.resolve({ 
