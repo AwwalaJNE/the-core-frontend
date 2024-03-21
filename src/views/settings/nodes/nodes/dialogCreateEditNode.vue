@@ -92,9 +92,9 @@ export default {
             if(this.active){
                 this.getDataNodeType()
                 this.getDataCustomer()
-                // this.getDataNode()
+                this.getDataNode()
                this.getIpAddress()
-                // this.getDataAltAddress()
+                this.getDataAltAddress()
                 
             }
             return this.active
