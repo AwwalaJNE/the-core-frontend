@@ -124,7 +124,7 @@ export default {
         async actionRemove(val){
             await axios
                 .delete(
-                    this.URL.geolocation_country + `/${val.geolocation_country_id}`,
+                    this.URL.geolocation_country + `/${val.geolocation_country_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)

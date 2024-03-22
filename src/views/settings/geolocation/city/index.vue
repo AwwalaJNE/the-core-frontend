@@ -147,7 +147,7 @@ export default {
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.geolocation_city + `/${val.geolocation_city_id}`,
+                    this.URL.geolocation_city + `/${val.geolocation_city_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
