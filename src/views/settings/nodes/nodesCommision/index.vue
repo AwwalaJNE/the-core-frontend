@@ -146,7 +146,7 @@ export default {
                     if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
                         this.dataTable.map(item=>{
-                          item['node_commision_node'] = item.node.node_name
+                          item['node_commision_node'] = item.node != null ? item.node.node_name : ""
                         })
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
