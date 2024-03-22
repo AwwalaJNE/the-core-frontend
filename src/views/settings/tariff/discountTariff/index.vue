@@ -110,7 +110,7 @@ export default {
             }
             await axios
                 .get(this.URL.discount_tariff + 
-                `?n=${this.listenNodeId}&sort_order=asc&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
