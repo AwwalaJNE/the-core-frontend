@@ -105,7 +105,7 @@ export default {
     },
     methods: {
         formData(form){
-          form["node_id"] = this.dataItem.node_id
+          form["node_id"] = form['node_id']['node_id']
           this.form = form
             if(this.node_commission_id !== undefined && this.node_commission_id !== '') {
                     this.updateData()
