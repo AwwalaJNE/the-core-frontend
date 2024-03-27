@@ -149,7 +149,7 @@ export default {
             // this.confirmDialog = true
             await axios
                 .delete(
-                    this.URL.node_alternate_address + `/${val.node_alternate_address_id}`,
+                    this.URL.node_alternate_address + `/${val.node_alternate_address_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)

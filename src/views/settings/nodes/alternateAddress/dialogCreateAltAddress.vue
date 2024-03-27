@@ -118,12 +118,15 @@ export default {
                 obj['node_alternate_address_time_zone_id'] = obj['node_alternate_address_time_zone_id'].replace(/[&\/\\#,+()$~%._'":*?<>{}]/g, "/").toUpperCase() : 
                 obj['node_alternate_address_time_zone_id']
             
-            obj["node_alternate_address_subdistrict_id"] = obj["node_alternate_address_subdistrict_id"]["geolocation_subdistrict_id"]
+            // obj["node_alternate_address_subdistrict_id"] = obj["node_alternate_address_subdistrict_id"]["geolocation_subdistrict_id"]
             this.form = obj
             if(this.node_alternate_address_id !== undefined && this.node_alternate_address_id !== '') {
-                    console.log('update')
+                    // console.log('update')
+                    this.form['node_alternate_address_subdistrict_id'] = this.form['node_alternate_address_subdistrict_id'] ? this.form['node_alternate_address_subdistrict_id']['geolocation_subdistrict_id'] : this.dataItem.node_alternate_address_subdistrict_id;
+                    this.form['node_id'] = this.form['node_id'] ? this.form['node_id']["node_id"] : this.dataItem.node_id;
                     this.updateData()
             } else {
+                    this.form["node_alternate_address_subdistrict_id"] = this.form["node_alternate_address_subdistrict_id"]["geolocation_subdistrict_id"];
                     this.addData()
             }
         },
