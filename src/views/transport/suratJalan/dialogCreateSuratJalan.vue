@@ -230,6 +230,9 @@ export default {
         this.no_moda_angkutan_id = val["no_moda_angkutan_id"]
           ? val["no_moda_angkutan_id"]
           : null;
+        if (this.no_moda_angkutan_id != null) {
+          this.getDriver();
+        }
 
         if (val.sequence_orion) {
           this.is_penerusan = true;
@@ -250,7 +253,6 @@ export default {
         this.getNoModeAngkutan();
         this.getLov();
         this.isDestinationDisableCheck();
-        this.getDriver();
       }
     },
   },
@@ -327,6 +329,7 @@ export default {
             }
           }
           this.no_moda_angkutan_id = val;
+          this.getDriver();
           break;
         case "destination_id":
           if (typeof obj === "object") {
@@ -641,8 +644,8 @@ export default {
     async getDriver() {
       await axios
         .get(
-          this.URL.employee +
-            `/driver?n=${this.listenNodeId}`,
+          this.URL.vehicle +
+            `/${this.no_moda_angkutan_id}/driver?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
           this.Helper.header()
         )
         .then((res) => {
