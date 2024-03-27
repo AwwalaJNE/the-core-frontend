@@ -220,6 +220,7 @@ export default {
       if (val == true) {
         this.getDataVehicleMode();
         this.originNode()
+        this.getDataEmployee();
 
         if (Object.keys(this.listenDataItem).length > 0) {
           // if this.listenDataItem ada isinya
@@ -528,8 +529,8 @@ export default {
       //this.URL.employee + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`
       await axios
         .get(
-          this.URL.vehicle +
-            `/${this.vehicle_id}/driver?n=${this.listenNodeId}&sort_order=desc&limit=100&page=1`,
+          this.URL.employee +
+            `/driver?n=${this.listenNodeId}`,
           this.Helper.header()
         )
         .then((res) => {
@@ -747,7 +748,7 @@ export default {
           break;
         case "vehicle_id":
           this.vehicle_id = val;
-          this.getDataEmployee();
+          // this.getDataEmployee();
           break;
         case "node_id_origin":
           if (Object.keys(info).length > 0) {
