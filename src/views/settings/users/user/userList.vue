@@ -130,7 +130,10 @@ export default {
                                 newline = "";
                             }
                             return newline+'- '+nodes.node_name;
-                        }).toString()
+                        }).toString();
+                        if (item.user_additional_role_name && Array.isArray(item.user_additional_role_name)) {
+                            item.user_additional_role_name = item.user_additional_role_name.join(", ");
+                        }
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page

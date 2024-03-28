@@ -211,6 +211,10 @@ export default {
                 })
         },
         async updateData() {
+            if (this.form.user_additional_role_id.length === 0) {
+                this.form.user_expiry_additional_role = ""
+                this.form.user_additional_role_id = ""
+            }
             await axios
                 .put(
                     this.URL.user + `/${this.user_id}?n=${this.listenNodeId}`,
@@ -247,7 +251,7 @@ export default {
         cancel() {
             this.handleClearForm()
             this.closeDialogUser()
-        }
+        },
     },
     mounted() {
         
