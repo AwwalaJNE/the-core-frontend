@@ -2662,6 +2662,16 @@ export default {
       valueData: null,
       value: ''
     },
+    destination_email: {
+      label: "Email Penerima",
+      key: "destination_email",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      valueData: null,
+      value: ''
+    },
     destination_address: {
       label: "Alamat & Kode Pos Penerima",
       key: "destination_address",
