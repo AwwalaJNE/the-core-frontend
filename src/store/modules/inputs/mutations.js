@@ -2170,6 +2170,16 @@ export default {
     state.irreguralities_return_destination.destination_phone.valueData = payload
   },
 
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_EMAIL(state, payload) {
+    state.irreguralities_return_destination.destination_email.value = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_EMAIL_isDisabled(state, payload) {
+    state.irreguralities_return_destination.destination_email.isDisabled = payload
+  },
+  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_EMAIL_ValueData(state, payload) {
+    state.irreguralities_return_destination.destination_email.valueData = payload
+  },
+
   SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_ADDRESS(state, payload) {
     state.irreguralities_return_destination.destination_address.value = payload
   },

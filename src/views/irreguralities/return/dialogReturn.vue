@@ -76,7 +76,7 @@
                                             <selector 
                                             :ref="''"
                                             name="Status Code" 
-                                            :rules="''" 
+                                            :rules="'required'" 
                                             formKey="status_code"
                                             :valueData="status_code_arr"
                                             :selectedValue="selectedStatusCode"
@@ -88,7 +88,7 @@
                                 <vs-col xs="12" sm="12" lg="12">
                                     <input-general
                                     name="Remark"
-                                    :rules="''"
+                                    :rules="'required'"
                                     formKey="remark"
                                     :valueData="remark"
                                     typeInput="text"
@@ -210,6 +210,7 @@ export default {
             obj['irregularity_status_code'] = this.dataItem['irregularity_status_code']
             obj['irregularity_status_description'] = this.dataItem['irregularity_status_description']
             obj['remark'] = this.dataItem.remark
+            obj['edited'] = this.isEdit
 
             let connote = {}
             // connote = {...form}
@@ -221,8 +222,15 @@ export default {
             connote['connote_receiver_name'] = form.destination_name ? form.destination_name : this.dataItem['destination_name']
             connote['connote_receiver_phone_number'] = form.destination_phone ? form.destination_phone : this.dataItem['destination_phone']
             connote['connote_receiver_address_type'] = form.destination_type ? form.destination_type : this.dataItem['destination_type']
+            connote['connote_receiver_geolocation_subdistrict_id'] = this.dataItem['connote_receiver_geolocation_subdistrict_id']
+            connote['connote_receiver_administrative_address'] = this.dataItem['connote_receiver_administrative_address']
+            connote['connote_receiver_email'] = form.destination_email ? form.connote_receiver_email : this.dataItem['connote_receiver_email']
+            connote['connote_receiver_tlc'] = this.dataItem['connote_receiver_tlc']
+            connote['connote_receiver_city_zone'] = this.dataItem['connote_receiver_city_zone']
 
             obj['connote'] = connote
+
+            console.log("AWWALA", obj,form.destination_email,  this.dataItems )
 
             this.form = obj
             this.addData()
@@ -307,13 +315,18 @@ export default {
                         obj['destination_subdistrict_id'] = res.data.koli.connote.connote_shipper_geolocation_subdistrict_id || ''
                         obj['zip_code'] = res.data.koli.connote.connote_shipper_zip_code || ''
                         obj['tariff_code'] = res.data.koli.connote.connote_shipper_tariff_code || ''
+                        obj['connote_receiver_geolocation_subdistrict_id'] = res.data.koli.connote.connote_receiver_geolocation_subdistrict_id || ""
+                        obj['connote_receiver_administrative_address'] = res.data.koli.connote.connote_receiver_administrative_address || ''
+                        obj['connote_receiver_email'] = res.data.koli.connote.connote_receiver_email || ''
+                        obj['connote_receiver_tlc'] = res.data.koli.connote_receiver_tlc || ''
+                        obj['connote_receiver_city_zone'] = res.data.koli.connote_receiver_city_zone || ''
 
-                        obj['remark'] = res.data.remark || ''
+                        obj['remark'] = ''
                         obj['irregularity_id'] = res.data.irregularity_id || ''
                         obj['created_at'] = res.data.created_at || ''
                         obj['irregularity_status_code'] = res.data.irregularity_status_code || ''
                         obj['irregularity_status_description'] = res.data.irregularity_status_description || ''
-                        obj['irregularity_type'] = res.data.irregularity_type || ''
+                        obj['irregularity_type'] = ''
                         obj['koli_number'] = res.data.koli_number || ''
                         obj['node_id'] = res.data.node_id || ''
                         obj['unhold_at'] = res.data.unhold_at || ''
@@ -323,9 +336,6 @@ export default {
 
 
                         this.dataItem = obj
-
-                        this.selectedStatusCode = res.data.irregularity_status_code.toLowerCase() || ''
-                        this.remark = res.data.remark
                         this.node_id = res.data.node_id
 
                         if(res.data.koli.connote.hasOwnProperty('shipper_customer')) {
@@ -384,9 +394,9 @@ export default {
                         let arr = []
                         res.data.data.map(item => {
                             if(item.hasOwnProperty('status_subtype')) {
-                                if(item['status_subtype'].toLowerCase().includes('return')) {
+                                if(item['status_subtype'].toLowerCase() === 'return') {
                                     let obj = {}
-                                    obj["label"] = `${item.status_description} (${self.selectedStatusCode})`
+                                    obj["label"] = `${item.status_description}`
                                     obj["value"] = item.status_id
                                     obj["item"] = item
 
@@ -438,6 +448,7 @@ export default {
             this.remark = ''
             this.node_id = ''
             this.query = ''
+            this.edited = false
         },
         onFocusLocationSelector(info){
             console.log(info)
