@@ -468,17 +468,17 @@ export default {
 
   //======= START Customer Type =======
   SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME(state, payload) {
-    state.employee_type.employee_type_name.value = payload
+    state.customer_type.customer_type_name.value = payload
   },
   SET_CUSTOMER_TYPE_CUSTOMER_TYPE_NAME_ValueData(state, payload) {
-    state.employee_type.employee_type_name.valueData = payload
+    state.customer_type.customer_type_name.valueData = payload
   },
 
   SET_CUSTOMER_TYPE_IS_ACTIVE(state, payload) {
-    state.employee_type.is_active.value = payload
+    state.customer_type.is_active.value = payload
   },
   SET_CUSTOMER_TYPE_IS_ACTIVE_ValueData(state, payload) {
-    state.employee_type.is_active.valueData = payload
+    state.customer_type.is_active.valueData = payload
   },
 
   //======= END Customer Type =======

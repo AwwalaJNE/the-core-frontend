@@ -162,8 +162,8 @@ export default {
         },
         async getIpAddress(){
             await axios
-                .get(this.URL.node + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=100000&page=1`, 
+                .get(this.URL.node_ip_address + 
+                `?n=${this.listenNodeId}`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {

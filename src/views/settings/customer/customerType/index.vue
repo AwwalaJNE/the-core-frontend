@@ -44,7 +44,7 @@ import DialogCreateEditCustomerType from "@/views/settings/customer/customerType
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 
 export default {
-    name:"special-tariff-list",
+    name:"customer-type-list",
     mixins: [master],
     components: {
         "table-master" : TableMaster,
@@ -148,11 +148,11 @@ export default {
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.refresh()
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.refresh()
         },
         refresh(){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
@@ -187,7 +187,7 @@ export default {
         },
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        this.refresh()
     },
 }
 </script>

@@ -228,7 +228,7 @@ export default {
     employee_code: {
       label: "Employee Code",
       key: "employee_code",
-      rule: "required",
+      rule: "required|maxlength:10",
       typeInput: "text",
       typeData: "String",
       arrData: [],
