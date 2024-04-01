@@ -211,7 +211,7 @@ export default {
                 })
         },
         async updateData() {
-            if (this.form.user_additional_role_id.length === 0) {
+            if (this.form.user_additional_role_id.length && this.form.user_additional_role_id.length === 0) {
                 this.form.user_expiry_additional_role = ""
                 this.form.user_additional_role_id = ""
             }
