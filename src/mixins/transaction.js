@@ -844,6 +844,7 @@ const TransactionMixin = {
                                 let calc = (Number(Processweight) - Number(keys[i])) < 0 ? 0 : (Number(Processweight) - Number(keys[i]))
                                 console.log("inside LOOP calc", calc)
                                 if(calc !== 0) {
+                                    console.log("masuk if");
                                     let abs = Math.abs(Number(Processweight) - Number(keys[i]))
                                     Processweight = abs
                                     temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(keys[i]))
@@ -852,9 +853,11 @@ const TransactionMixin = {
                                     console.log("inside LOOP calc !== 0 > tariffAkumulatif[keys[i]]", Number(tariffAkumulatif[keys[i]]))
                                     console.log("inside LOOP calc !== 0 > Processweight", Processweight)
                                     console.log("inside LOOP calc !== 0 > END !!! temp", temp)
-                                    temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(Processweight))
-                                    sumTariffAkumulatif = Number(sumTariffAkumulatif) + temp
+                                    console.log("sevice",service);
+                                    // temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(Processweight))
+                                    // sumTariffAkumulatif = Number(sumTariffAkumulatif) + temp
                                 } else {
+                                    console.log("masuk else");
                                     console.log("inside LOOP calc == 0 > Processweight", Processweight)
                                     console.log("inside LOOP calc == 0 > tariffAkumulatif[keys[i]]", Number(tariffAkumulatif[keys[i]]))
                                     console.log("inside LOOP calc == 0 > temp", temp)
