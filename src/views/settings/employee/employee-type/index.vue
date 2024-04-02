@@ -19,7 +19,7 @@
             <dialog-create-edit-employee-type 
                 :active="dialogEmployeeType" 
                 :closeDialog="closeDialogEmployeeType"
-                :refresh="refresh"
+                @refresh="refresh"
                 title="Edit employee Type"
                 :dataItem="dataItem"
             />

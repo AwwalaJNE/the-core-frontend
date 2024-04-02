@@ -285,8 +285,6 @@ export default {
                     this.openNotification(null, 'Create Success', 'Create new customer is success')
                 }).catch(err => {
                     this.loading = false
-                    this.closeDialog()
-                    this.$emit("refresh")
                     this.openNotification('danger', 'Create failed', err)
                 })
         },

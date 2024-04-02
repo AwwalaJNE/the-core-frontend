@@ -18,7 +18,7 @@
         <dialog-create-edit-Vehicle
             :active="dialogVehicle" 
             :closeDialog="closeDialogVehicle"
-            :refresh="refresh"
+            @refresh="refresh"
             title="Edit Vehicle"
             :dataItem="dataItem"
             />
@@ -176,7 +176,7 @@ export default {
             this.refresh()
         },
         refresh(){
-            
+            console.log('masukkk');
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogVehicle() {

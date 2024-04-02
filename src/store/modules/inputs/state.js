@@ -552,7 +552,7 @@ export default {
       label: "Customer date of birth",
       key: "customer_date_of_birth",
       rule: "",
-      typeInput: "text",
+      typeInput: "date",
       typeData: "String",
       valueData: null,
       value: '',
@@ -703,14 +703,14 @@ export default {
       placeholder: 'Masukan type alamat (rumah / kantor)'
     },
     customer_corporate_credit: {
-      label: "Customer corporate credit*",
+      titleLabel: "Customer corporate credit*",
+      label: "True|False",
       key: "customer_corporate_credit",
       rule: "required",
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: '',
-      placeholder: 'Masukan akun kredit korporat',
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
     },
 
   },
