@@ -19,7 +19,7 @@
             <dialog-create-edit-customer 
                 :active="dialogCustomer" 
                 :closeDialog="closeDialogCustomer"
-                :refresh="refresh"
+                @refresh="refresh"
                 title="Edit customer"
                 :dataItem="dataItem"
                 btnBlue="Edit"

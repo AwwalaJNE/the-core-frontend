@@ -18,7 +18,7 @@
         <dialog-create-edit-VehicleMode
             :active="dialogVehicleMode" 
             :closeDialog="closeDialogVehicleMode"
-            :refresh="refresh"
+            @refresh="refresh"
             title="Edit Vehicle Mode"
             :dataItem="dataItem"
             />

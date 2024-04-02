@@ -23,7 +23,7 @@
         <dialog-create-edit-VehicleType
             :active="dialogVehicleType" 
             :closeDialog="closeDialogVehicleType"
-            :refresh="refresh"
+            @refresh="refresh"
             title="Edit Vehicle Type"
             :dataItem="dataItem"
             />
