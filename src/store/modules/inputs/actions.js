@@ -478,6 +478,43 @@ export default {
   SET_NODE_NODE_CUSTOMER_CODE_ValueData({ commit }, payload) {
     commit('SET_NODE_NODE_CUSTOMER_CODE_ValueData', payload)
   },
+
+  SET_NODE_REGIONAL_CODE({ commit }, payload) {
+    commit('SET_NODE_REGIONAL_CODE', payload)
+  },
+  SET_NODE_REGIONAL_CODE_ValueData({ commit }, payload) {
+    commit('SET_NODE_REGIONAL_CODE_ValueData', payload)
+  },
+
+  SET_NODE_BRANCH_CODE({ commit }, payload) {
+    commit('SET_NODE_BRANCH_CODE', payload)
+  },
+  SET_NODE_BRANCH_CODE_ValueData({ commit }, payload) {
+    commit('SET_NODE_BRANCH_CODE_ValueData', payload)
+  },
+
+  SET_NODE_ORIGIN_CODE({ commit }, payload) {
+    commit('SET_NODE_ORIGIN_CODE', payload)
+  },
+  SET_NODE_ORIGIN_CODE_ValueData({ commit }, payload) {
+    commit('SET_NODE_ORIGIN_CODE_ValueData', payload)
+  },
+
+  SET_NODE_SJ_SAME_PARENT({ commit }, payload) {
+    commit('SET_NODE_SJ_SAME_PARENT', payload)
+  },
+  SET_NODE_SJ_SAME_PARENT_ValueData({ commit }, payload) {
+    commit('SET_NODE_SJ_SAME_PARENT_ValueData', payload)
+  },
+
+  SET_NODE_SJ_DIFF_PARENT({ commit }, payload) {
+    commit('SET_NODE_SJ_DIFF_PARENT', payload)
+  },
+  SET_NODE_SJ_DIFF_PARENT_ValueData({ commit }, payload) {
+    commit('SET_NODE_SJ_DIFF_PARENT_ValueData', payload)
+  },
+
+
   // type select perlu data array
   SET_NODE_NODE_CUSTOMER_CODE_ArrData({ commit }, payload) {
     commit('SET_NODE_NODE_CUSTOMER_CODE_ArrData', payload)

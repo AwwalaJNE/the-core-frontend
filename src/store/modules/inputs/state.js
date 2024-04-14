@@ -803,6 +803,51 @@ export default {
       valueData: null,
       value: ''
     },
+    regional_code: {
+      label: "Regional Code*",
+      key: "regional_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    branch_code: {
+      label: "Branch Code*",
+      key: "branch_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    origin_code: {
+      label: "Origin Code*",
+      key: "origin_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    sj_same_parent: {
+      label: "SJ Same Parent*",
+      key: "sj_same_parent",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    sj_diff_parent: {
+      label: "SJ Diff Parent*",
+      key: "sj_diff_parent",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
     node_tariff_code: {
       label: "Tariff Code",
       key: "node_tariff_code",

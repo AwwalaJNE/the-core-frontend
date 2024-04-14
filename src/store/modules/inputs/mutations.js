@@ -513,6 +513,41 @@ export default {
       state.node.node_customer_code.arrData = []
   },
 
+  SET_NODE_REGIONAL_CODE(state, payload) {
+    state.node.regional_code.value = payload
+  },
+  SET_NODE_REGION_CODE_ValueData(state, payload) {
+    state.node.regional_code.valueData = payload
+  },
+
+  SET_NODE_BRANCH_CODE(state, payload) {
+    state.node.branch_code.value = payload
+  },
+  SET_NODE_BRANCH_CODE_ValueData(state, payload) {
+    state.node.branch_code.valueData = payload
+  },
+
+  SET_NODE_ORIGIN_CODE(state, payload) {
+    state.node.origin_code.value = payload
+  },
+  SET_NODE_ORIGIN_CODE_ValueData(state, payload) {
+    state.node.origin_code.valueData = payload
+  },
+
+  SET_NODE_SJ_SAME_PARENT(state, payload) {
+    state.node.sj_same_parent.value = payload
+  },
+  SET_NODE_SJ_SAME_PARENT_ValueData(state, payload) {
+    state.node.sj_same_parent.valueData = payload
+  },
+
+  SET_NODE_SJ_DIFF_PARENT(state, payload) {
+    state.node.sj_diff_parent.value = payload
+  },
+  SET_NODE_SJ_DIFF_PARENT_ValueData(state, payload) {
+    state.node.sj_diff_parent.valueData = payload
+  },
+
   SET_NODE_NODE_TYPE_ID(state, payload) {
     state.node.node_type_id.value = payload
   },
