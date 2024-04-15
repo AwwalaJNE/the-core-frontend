@@ -898,7 +898,7 @@ export default {
       key: "ip_address",
       rule: "required",
       typeInput: "selectmultipletag",
-      typeData: "String",
+      typeData: "Array",
       arrData: [],
       valueData: null,
       value: ''
