@@ -176,13 +176,7 @@ export default {
                 if(this.isMultiple == false && this.listenIsMultipleTags == false) {
                     this.value = val
                 } else if(this.listenIsMultipleTags == true) {
-                    if (this.formKey == 'ip_address' && val.includes(',')) {
-                        this.arrValue = val.replace(/[\[\]"]+/g, '').split(',').map(item => item.trim());
-                    } else if (this.formKey == 'ip_address' && !val.includes(',')) {
-                        this.arrValue = [val.replace(/[\[\]"]+/g, '').trim()];
-                    } else {
-                        this.arrValue = val;
-                    }
+                    this.arrValue = val;
                 } else {
                     this.arrValue = val
                 }
