@@ -1,7 +1,7 @@
 <template>
     <div>
         <template v-if="listInput.length > 0">
-            <vs-row justify="space-between" v-for="(item, index) in listInput" :key="index">
+            <vs-row justify="space-between" align="center" v-for="(item, index) in listInput" :key="index">
                
                 <template v-if="item.hasOwnProperty('inputs')">
                     <vs-col xs="10" sm="10" lg="10">
@@ -20,6 +20,41 @@
                                             :valueData="input.value"
                                             :typeInput="input.typeInput"
                                             @updateValue="updateValue" />
+                                    </template>
+                                    <template v-else-if="input.typeInput.toLowerCase() == 'date'">
+                                        <div class="dynamic-date">
+                                            <input-general
+                                            :name="InputObject[input.key].label"
+                                            :rules="InputObject[input.key].rule"
+                                            :formKey="`${index}|${input.key}`"
+                                            :valueData="input.value"
+                                            :typeInput="input.typeInput"
+                                            @updateValue="updateValue" />
+                                        </div>
+                                    </template>
+                                    <template v-else-if="input.typeInput.toLowerCase().includes('multipleselector')">
+                                        <asynchronousSelect 
+                                                :ref="input.key"
+                                                :name="InputObject[input.key].label" 
+                                                :rules="InputObject[input.key].rule" 
+                                                :formKey="`${index}|${input.key}`"
+                                                :valueData="InputObject[input.key].arrData"
+                                                :selectedValue="input.value"
+                                                :url="asynchronousSelect_url"
+                                                @updateValue="updateValue" />
+                                    </template>
+                                    <template v-else-if="input.typeInput.toLowerCase().includes('selectmultipletag')">
+                                            <div>
+                                                <selector 
+                                                :ref="input.key"
+                                                :name="InputObject[input.key].label" 
+                                                :rules="InputObject[input.key].rule" 
+                                                :formKey="`${index}|${input.key}`"
+                                                :valueData="InputObject[input.key].arrData"
+                                                :selectedValue="input.value"
+                                                :isMultipleTag="true"
+                                                @updateValue="updateValue" />
+                                            </div>
                                     </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('select')">
                                         <div class="mt-1">
@@ -85,6 +120,7 @@ import master from "@/mixins/master"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 import AutoComplete from "@/components/input/autoComplete"
+import asynchronousSelect from "@/components/input/asynchronousSelect"
 export default {
     name: "iterate-input",
     mixins: [master],
@@ -96,12 +132,14 @@ export default {
         addBtn: String,
         itterateUrlAutoComplete: String,
         itterateFlagAutoComplete: String,
-        fromKey: String
+        asynchronousSelect_url: String,
+        fromKey: String,
     },
     components: {
         "input-general": InputGeneral,
         "selector": Selector,
-        "auto-complete": AutoComplete
+        "auto-complete": AutoComplete,
+        "asynchronousSelect": asynchronousSelect
     },
     data() {
         return {
@@ -252,3 +290,16 @@ export default {
     },
 }
 </script>
+<style lang="scss">
+    .dynamic-date .validation {
+        .vs-input-parent {
+            margin-top: 14px;
+            .vs-input-content {
+                height: fit-content;
+                input {
+                    height: 40px;
+                }
+            }
+        }
+    }
+</style>

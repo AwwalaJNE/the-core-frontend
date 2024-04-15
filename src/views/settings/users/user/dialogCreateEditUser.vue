@@ -16,6 +16,7 @@
                     :querySearch="querySearch"
                     @inputFocus="inputFocus"
                     typeForm="user"
+                    :asynchronousSelect_url="autoComplateUrl"
                 />
             </div>
         </template>
@@ -108,7 +109,19 @@ export default {
     },
     methods: {
         formData(form){
-            form['user_node_id'] = form['user_node_id']['node_id'];
+            if (form.dynamicinputcomponent_user_additional_role) {
+                let additional_role = []
+                let additional_node = []
+                let expiry_additional_role = []
+                form.dynamicinputcomponent_user_additional_role.map((item, index) =>{
+                    additional_role.push(item.inputs[0].value)
+                    additional_node.push(item.inputs[1].value)
+                    expiry_additional_role.push(item.inputs[2].value)
+                })
+                form.user_additional_role_id = additional_role;
+                form.user_additional_node_id = additional_node;
+                form.user_expiry_additional_role = expiry_additional_role;
+            }
             if(this.user_id !== undefined && this.user_id !== '') {
                     let obj = form
                     if(obj["password"] == '') {
@@ -254,7 +267,8 @@ export default {
         },
     },
     mounted() {
-        
+        let url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+        this.autoComplateUrl = url
     },
 }
 </script>
