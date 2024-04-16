@@ -218,7 +218,17 @@ export default {
                 .get(this.URL.user + `/${this.user_id}?n=${this.listenNodeId}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res.data);
+                    let arr = []
+                    for (let i = 0; i < res.data.data.user_additional_role_id.length; i++) {
+                        let obj = {};
+
+                        obj["user_additional_role_id"] = res.data.data.user_additional_role_id[i]
+                        obj["user_additional_node_id"] = res.data.data.user_additional_node_id[i]
+                        obj["user_expiry_additional_role"] = res.data.data.user_expiry_additional_role[i]
+
+                        arr.push(obj)
+                    }
+                    this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE", arr)
                 }).catch(err => {
                         this.openNotification('danger', 'Failed!', 'Failed to get data user')
                 })
