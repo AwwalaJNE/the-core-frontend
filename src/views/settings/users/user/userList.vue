@@ -25,6 +25,7 @@
         <!--Create User Dialog end-->
             <dialog-create-edit-user
             :active="dialogUser" 
+            :openDialogUser="openDialogUser"
             :closeDialogUser="closeDialogUser"
             @refresh="refresh"
             btnBlue="Edit"
@@ -157,9 +158,6 @@ export default {
                 })
                 this.dataItem = obj[0]
                 // console.log(this.dataItem, 'nihh val', val)
-                this.$nextTick(() => {
-                    this.dialogUser = true
-                });
             }
         },
         async actionRemove(val){
@@ -190,6 +188,10 @@ export default {
         },
         closeDialogUser(){
             this.dialogUser = false
+            this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE", {})
+        },
+        openDialogUser(){
+            this.dialogUser = true
         }
     },
     mounted() {

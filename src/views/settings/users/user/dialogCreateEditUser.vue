@@ -62,6 +62,7 @@ export default {
         "form-input-controller": FormInputController,
     },
     props: {
+       openDialogUser: Function,
        closeDialogUser: Function, 
        refresh: Function,
        active: Boolean,
@@ -232,6 +233,9 @@ export default {
                 }).catch(err => {
                         this.openNotification('danger', 'Failed!', 'Failed to get data user')
                 })
+            this.$nextTick(() => {
+                this.openDialogUser()
+            });
         },
         async updateData() {
             if (this.form.user_additional_role_id && this.form.user_additional_role_id.length === 0) {
