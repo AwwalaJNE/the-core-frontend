@@ -63,7 +63,46 @@ export default {
       key: "user_role_id",
       rule: "required",
       typeInput: "select",
+      width: '8',
       typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    user_node_id: {
+      label: "User Node",
+      key: "user_node_id",
+      rule: "required",
+      typeInput: "multipleSelector",
+      width: '4',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    dynamicinputcomponent_user_additional_role: {
+      label: "Add Additional Role",
+      key: "dynamicinputcomponent_user_additional_role",
+      rule:"",
+      typeInput: "dynamicinputcomponent",
+      typeData: "Array",
+      inputs: [
+        {
+          key: "user_additional_role_id",
+          typeInput: "selectmultipletag",
+          value: ''
+        },
+        {
+          key: "user_additional_node_id",
+          typeInput: "multipleSelector",
+          value: ''
+        },
+        {
+          key: "user_expiry_additional_role",
+          typeInput: "date",
+          value: ''
+        }
+      ],
       arrData: [],
       valueData: null,
       value: ''
@@ -72,8 +111,20 @@ export default {
       label: "Additional Role",
       key: "user_additional_role_id",
       rule: "",
-      typeInput: "selectmultipletag",
-      width: '9',
+      typeInput: "selectmultipletag|hidden",
+      width: '4',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      visible: false
+    },
+    user_additional_node_id: {
+      label: "Additional Node",
+      key: "user_additional_node_id",
+      rule: "",
+      typeInput: "multipleSelector|hidden",
+      width: '4',
       typeData: "String",
       arrData: [],
       valueData: null,
@@ -83,8 +134,8 @@ export default {
       label: "Date Expiry Additional Role",
       key: "user_expiry_additional_role",
       rule: "",
-      typeInput: "date",
-      width: '3',
+      typeInput: "date|hidden",
+      width: '4',
       typeData: "String",
       arrData: [],
       valueData: null,
@@ -100,15 +151,14 @@ export default {
       valueData: null,
       value: ''
     },
-    user_node_id: {
-      label: "User Node",
-      key: "user_node_id",
-      rule: "required",
-      typeInput: "autocomplete",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
+    is_login_enable: {
+      label: "Enable Login|Disable Login",
+      key: "is_login_enable",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
     },
   },
 

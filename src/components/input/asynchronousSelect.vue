@@ -12,27 +12,29 @@
 -->
 <template>
 <div style="text-align:left;">
-    <small style="padding-left:10px;">{{name}}</small>
-    <el-select
-                        v-model="value"
-                        multiple
-                        filterable
-                        remote
-                        placeholder="Please enter a keyword"
-                        :remote-method="asynchronousSelect"
-                        @select="handleSelect"
-                        :loading="loading">
-                            <template v-if="options.length > 0">
-                                <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                                </el-option>
-                            </template>
-                            
-                    </el-select>
-                    </div>
+    <span class="c-label">{{name}}</span>
+    <div class="el-select-async">
+        <el-select
+            v-model="value"
+            multiple
+            filterable
+            remote
+            placeholder="Please enter a keyword"
+            :remote-method="asynchronousSelect"
+            @change="handleSelect"
+            :loading="loading">
+                <template v-if="options.length > 0">
+                    <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </template>
+                
+        </el-select>
+    </div>
+</div>
     <!-- <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
             <div style="text-align:left;">
@@ -78,7 +80,7 @@ export default {
     },
     data() {
         return {
-            value: this.selectedValue || null,
+            value: this.selectedValue ?? null,
             options: [{"label": null, "value": null}],
             loading: false,
         }
@@ -146,8 +148,29 @@ export default {
 
             console.log('this.listenFormKey, item.value, info', this.listenFormKey, item.value, info)
 
-            // this.$emit("updateValue", this.listenFormKey, item.value, info)
+            this.$emit("updateValue", this.listenFormKey, item, info)
         }
     }
 }
 </script>
+<style lang="scss">
+    .el-select-async{
+        .el-select {
+            .el-input .el-input__inner{
+                margin-bottom: 0 !important;
+                min-height: 40px;
+                height: fit-content;
+                padding: 0px 13px;
+            }
+            &:focus-within {
+                border: none !important;
+            }
+            .el-select__tags{
+                width: auto !important;
+                margin-top: -2px;
+                min-height: 40px !important;
+                height: fit-content !important;
+            }
+        }
+    }
+</style>

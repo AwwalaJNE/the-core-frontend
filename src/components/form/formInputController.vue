@@ -78,7 +78,7 @@
                                     </div>
                                 </template>
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('multipleselector')">
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('multipleselector') && !InputObject[item].typeInput.toLowerCase().includes('hidden')">
                                 <asynchronousSelect 
                                         :ref="InputObject[item].key"
                                         :name="InputObject[item].label" 
@@ -89,7 +89,7 @@
                                         :url="asynchronousSelect_url"
                                         @updateValue="updateValue" />
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('selectmultipletag')">
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('selectmultipletag') && !InputObject[item].typeInput.toLowerCase().includes('hidden')">
                                     <div>
                                         <selector 
                                         :ref="InputObject[item].key"
@@ -152,6 +152,7 @@
                                     :typeForm="listenTypeForm"
                                     :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
                                     :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
+                                    :asynchronousSelect_url="listenAsynchronousSelectUrl"
                                     @updateValue="updateValue"
                                     @inputFocus="onfocuslah"/>
                                 </template>
@@ -278,6 +279,9 @@ export default {
         },
         listenItterateFlagAutoComplete() {
             return this.itterateFlagAutoComplete
+        },
+        listenAsynchronousSelectUrl() {
+            return this.asynchronousSelect_url
         }
     },
     methods: {

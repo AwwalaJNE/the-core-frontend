@@ -34,11 +34,20 @@ export default {
   SET_USER_USER_ADDITIONAL_ROLE_ID({ commit }, payload) {
     commit('SET_USER_USER_ADDITIONAL_ROLE_ID', payload)
   },
+  SET_USER_USER_ADDITIONAL_NODE_ID({ commit }, payload) {
+    commit('SET_USER_USER_ADDITIONAL_NODE_ID', payload)
+  },
   SET_USER_USER_EXPIRY_ADDITIONAL_ROLE({ commit }, payload) {
     commit('SET_USER_USER_EXPIRY_ADDITIONAL_ROLE', payload)
   },
   SET_USER_USER_NODE_ID({ commit }, payload) {
     commit('SET_USER_USER_NODE_ID', payload)
+  },
+  SET_USER_IS_LOGIN_ENABLE({ commit }, payload) {
+    commit('SET_USER_IS_LOGIN_ENABLE', payload)
+  },
+  SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE({ commit }, payload) {
+    commit('SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE', payload)
   },
   SET_USER_USER_NAME_ValueData({ commit }, payload) {
     commit('SET_USER_USER_NAME_ValueData', payload)

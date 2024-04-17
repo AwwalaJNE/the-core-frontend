@@ -55,6 +55,12 @@ export default {
   SET_USER_USER_NODE_ID(state, payload) {
     state.user.user_node_id.value = payload
   },
+  SET_USER_USER_ADDITIONAL_NODE_ID(state, payload) {
+    state.user.user_additional_node_id.value = payload
+  },
+  SET_USER_IS_LOGIN_ENABLE(state, payload) {
+    state.user.is_login_enable.value = payload || false
+  },
   SET_USER_USER_NAME_ValueData(state, payload) {
     state.user.user_name.valueData = payload
   },
@@ -112,6 +118,38 @@ export default {
     state.user.user_node_id.hasOwnProperty('arrData') ?
       state.user.user_node_id.arrData = payload :
       state.user.user_node_id.arrData = []
+  },
+  SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE(state, payload) {
+    let arr = state.user.dynamicinputcomponent_user_additional_role.inputs
+    let final = []
+    if (payload && payload.length > 0) {
+      let obj = {}
+      let template = arr
+
+      payload.map(item => {
+        let newArr = []
+        template.map(tmpl => {
+          if (item.hasOwnProperty(tmpl.key.toLowerCase())) {
+            let val = item[tmpl.key.toLowerCase()]
+            let newObj = {}
+            newObj['key'] = tmpl.key
+            newObj['typeInput'] = tmpl.typeInput
+            newObj['value'] = val
+
+            newArr.push(newObj)
+          } else if (item.hasOwnProperty("inputs")) {
+            newArr = item["inputs"]
+          }
+        })
+
+        let newData = { 'inputs': [] }
+        newData['inputs'] = newArr
+        final.push(newData)
+      })
+    }
+    state.user.dynamicinputcomponent_user_additional_role.hasOwnProperty('arrData') ?
+      state.user.dynamicinputcomponent_user_additional_role.arrData = final :
+      state.user.dynamicinputcomponent_user_additional_role.arrData = []
   },
 
   // ==== user role ====
