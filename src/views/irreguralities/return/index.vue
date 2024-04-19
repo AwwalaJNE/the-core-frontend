@@ -54,6 +54,9 @@
                     :hasPagination="true"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
+                    :hasAction="false"
+                    :printAction="true"
+                    @actionPrint="actionPrint"
                     />
                 </div>
             </div>
@@ -63,7 +66,7 @@
         <dialog-return
             :active="dialogReturnActive" 
             :closeDialog="closeDialog"
-            @refresh="refresh"
+            :refresh="refresh"
         />
     </div>
 </template>
@@ -102,18 +105,18 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Connote",
-                    key: "koli_number",
+                    label: "Old Connote",
+                    key: "koli_number_original",
                     width: "auto"
                 },
                 {
-                    label: "Status Code",
-                    key: "irregularity_status_code",
+                    label: "Return Connote",
+                    key: "koli_number_return",
                     width: "auto"
                 },
                 {
                     label: "User",
-                    key: "user_name",
+                    key: "user_login",
                     width: "auto"
                 },
                 {
@@ -162,8 +165,8 @@ export default {
               endDate = to
             }
             await axios
-                .get(this.URL.irregularities +
-                `?n=${this.listenNodeId}&irregularity_type=RETURN&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                .get(this.URL.return +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
                     // this.dataTable = res.data.data
@@ -207,6 +210,17 @@ export default {
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
+        },
+        actionPrint(val){
+            let routeData = this.$router.resolve({ 
+                name: 'printGeneral', 
+                params: { 
+                    'id': val.koli_number_return, 
+                    'type': 'koli-reprint',
+                    'node_id': this.listenNodeId
+                } 
+            });
+            window.open(routeData.href, '_blank');
         },
         openDialog(){
             this.dialogReturnActive = true
