@@ -17,7 +17,8 @@
                                     <vs-input type="text"
                                         v-model="connote_number"
                                         label-placeholder="Nomer Connote"
-                                        :autofocus="true">
+                                        :autofocus="true"
+                                        :disabled="Object.keys(dataItem).length > 0">
                                     </vs-input>
                         </form>
                     </vs-col>
@@ -163,7 +164,8 @@ export default {
         "location-selector": LocationSelector,
     },
     props: {
-       closeDialog: Function, 
+       closeDialog: Function,
+       refresh: Function,
        active: Boolean,
        title: String,
     },
@@ -213,47 +215,41 @@ export default {
             obj['edited'] = this.isEdit
 
             let connote = {}
-            // connote = {...form}
             connote['connote_receiver_tariff_code'] = form.tariff_code ? form.tariff_code : this.dataItem['tariff_code']
             connote['connote_receiver_zip_code'] = form.zip_code ? form.zip_code :  this.dataItem['zip_code']
-            connote['connote_receiver_administrative_address'] = form.connote_receiver_administrative_address ? form.connote_receiver_administrative_address : this.dataItem['connote_receiver_administrative_address']
+            connote['connote_receiver_administrative_address'] = form.connote_shipper_administrative_address ? form.connote_shipper_administrative_address : this.dataItem['connote_shipper_administrative_address']
             connote['connote_receiver_street_address'] = form.destination_address ? form.destination_address : this.dataItem['destination_address']
-            connote['connote_receiver_customer_id'] = form.user_id ? form.user_id : this.dataItem['user_id']
             connote['connote_receiver_name'] = form.destination_name ? form.destination_name : this.dataItem['destination_name']
             connote['connote_receiver_phone_number'] = form.destination_phone ? form.destination_phone : this.dataItem['destination_phone']
             connote['connote_receiver_address_type'] = form.destination_type ? form.destination_type : this.dataItem['destination_type']
-            connote['connote_receiver_geolocation_subdistrict_id'] = this.dataItem['connote_receiver_geolocation_subdistrict_id']
-            connote['connote_receiver_administrative_address'] = this.dataItem['connote_receiver_administrative_address']
-            connote['connote_receiver_email'] = form.destination_email ? form.connote_receiver_email : this.dataItem['connote_receiver_email']
-            connote['connote_receiver_tlc'] = this.dataItem['connote_receiver_tlc']
-            connote['connote_receiver_city_zone'] = this.dataItem['connote_receiver_city_zone']
+            connote['connote_receiver_geolocation_subdistrict_id'] = form.destination_subdistrict_id ? form.destination_subdistrict_id : this.dataItem['destination_subdistrict_id']
+            connote['connote_receiver_email'] = form.destination_email ? form.destination_email : this.dataItem['destination_email']
+            connote['connote_receiver_tlc'] = this.dataItem['connote_shipper_tlc']
+            connote['connote_receiver_city_zone'] = this.dataItem['connote_shipper_city_zone']
 
             obj['connote'] = connote
-
-            console.log("AWWALA", obj,form.destination_email,  this.dataItems )
 
             this.form = obj
             this.addData()
             
         },
         async addData() {
-            console.log('form', this.form)
             await axios
                 .post(
-                    this.URL.irregularities + `/return?n=${this.listenNodeId}`,
+                    this.URL.return + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     console.log('res', res)
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
+                    this.refresh()
                     this.openNotification(null, 'Success', 'Create new return is success')
                 }).catch(err => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
+                    this.refresh()
                     this.openNotification('danger', 'Create new return is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
@@ -299,87 +295,58 @@ export default {
         },
         async scanConnote(){
             await axios
-                .get(this.URL.irregularities + 
-                `/return/${this.connote_number}?n=${this.listenNodeId}`, 
+                .get(this.URL.return + 
+                `/${this.connote_number}/scan?n=${this.listenNodeId}`, 
                 this.Helper.header())
                 .then(res => {
-                    
                     if(res.data) {
                         let obj = {}
 
                         obj['destination_type'] = 'rumah' // res.data.koli.connote.connote_shipper_address_type.toLowerCase() || 'rumah'
-                        obj['destination_name'] = res.data.koli.connote.connote_shipper_name || ''
-                        obj['destination_phone'] = res.data.koli.connote.connote_shipper_phone_number || ''
-                        obj['destination_address'] = res.data.koli.connote.connote_shipper_street_address || ''
-                        obj['destination_onchange_address'] = res.data.koli.connote.connote_shipper_administrative_address || ''
-                        obj['destination_subdistrict_id'] = res.data.koli.connote.connote_shipper_geolocation_subdistrict_id || ''
-                        obj['zip_code'] = res.data.koli.connote.connote_shipper_zip_code || ''
-                        obj['tariff_code'] = res.data.koli.connote.connote_shipper_tariff_code || ''
-                        obj['connote_receiver_geolocation_subdistrict_id'] = res.data.koli.connote.connote_receiver_geolocation_subdistrict_id || ""
-                        obj['connote_receiver_administrative_address'] = res.data.koli.connote.connote_receiver_administrative_address || ''
-                        obj['connote_receiver_email'] = res.data.koli.connote.connote_receiver_email || ''
-                        obj['connote_receiver_tlc'] = res.data.koli.connote_receiver_tlc || ''
-                        obj['connote_receiver_city_zone'] = res.data.koli.connote_receiver_city_zone || ''
-
-                        obj['remark'] = ''
-                        obj['irregularity_id'] = res.data.irregularity_id || ''
-                        obj['created_at'] = res.data.created_at || ''
-                        obj['irregularity_status_code'] = res.data.irregularity_status_code || ''
-                        obj['irregularity_status_description'] = res.data.irregularity_status_description || ''
-                        obj['irregularity_type'] = ''
-                        obj['koli_number'] = res.data.koli_number || ''
-                        obj['node_id'] = res.data.node_id || ''
-                        obj['unhold_at'] = res.data.unhold_at || ''
-                        obj['user_id'] = res.data.user_id || ''
-                        obj['approved_at'] = res.data.approved_at || ''
-                        obj['approved_by'] = res.data.approved_by || ''
-
+                        obj['destination_name'] = res.data.data.connote_shipper_name || ''
+                        obj['destination_phone'] = res.data.data.connote_shipper_phone_number || ''
+                        obj['destination_email'] = res.data.data.connote_shipper_email || ''
+                        obj['destination_address'] = res.data.data.connote_shipper_street_address || ''
+                        obj['destination_onchange_address'] = res.data.data.connote_shipper_administrative_address || ''
+                        obj['destination_subdistrict_id'] = res.data.data.connote_shipper_geolocation_subdistrict_id || ''
+                        obj['zip_code'] = res.data.data.connote_shipper_zip_code || ''
+                        obj['tariff_code'] = res.data.data.connote_shipper_tariff_code || ''
+                        obj['connote_shipper_administrative_address'] = res.data.data.connote_shipper_administrative_address || ''
+                        obj['connote_receiver_geolocation_subdistrict_id'] = res.data.data.connote_receiver_geolocation_subdistrict_id || ""
+                        obj['connote_receiver_administrative_address'] = res.data.data.connote_receiver_administrative_address || ''
+                        obj['connote_receiver_email'] = res.data.data.connote_receiver_email || ''
+                        obj['connote_receiver_tlc'] = res.data.data.connote_receiver_tlc || ''
+                        obj['connote_receiver_city_zone'] = res.data.data.connote_receiver_city_zone || ''
+                        obj['connote_number'] = res.data.data.connote_number || this.connote_number
+                        this.connote_number = res.data.data.connote_number || this.connote_number
 
                         this.dataItem = obj
-                        this.node_id = res.data.node_id
-
-                        if(res.data.koli.connote.hasOwnProperty('shipper_customer')) {
-                            if(res.data.koli.connote['shipper_customer'].hasOwnProperty('customer_shipper_alternatif_address')) {
-                                let altAddress = res.data.koli.connote['shipper_customer']['customer_shipper_alternatif_address'] || []
-                                let altAddressObj = {}
-                                let altAddressArr = []
-
-                                
-
-                                altAddress.map(item => {
-                                    let obj = {}
-                                    obj['destination_address'] = item.node_alternate_address_address || ''
-                                    obj['destination_onchange_address'] = item.node_alternate_address_address || ''
-                                    obj['destination_subdistrict_id'] = item.node_alternate_address_subdistrict_id || ''
-                                    obj['zip_code'] = item.node_alternate_address_zip_code || ''
-                                    obj['tariff_code'] = item.node_alternate_address_tariff_code || ''
-                                    obj['destination_name'] = item.node_alternate_address_name || ''
-                                    obj['destination_phone'] = item.node_alternate_address_phone || ''
-
-                                    altAddressObj[item.node_alternate_address_id] = obj
-
-                                    let objArr = {}
-                                    objArr['label'] = item.node_alternate_address_name
-                                    objArr['value'] = item.node_alternate_address_id
-
-                                    altAddressArr.push(objArr)
-                                    
-                                })
-
-                                this.alt_address_arr = altAddressArr
-                                this.alt_address_obj = altAddressObj
-                                console.log('altAddressObj', altAddressObj, altAddressArr)
-
-
-                            }
-                        }
                     }
                     // this.AltAddress()
+                    this.getTLC(res.data.data.connote_shipper_zip_code)
                     this.getDataStatus()
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    this.openNotification('danger', 'Create new return is failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+        },
+        async getTLC(q) {
+            await axios
+                .get(this.URL.geolocation_search + 
+                `?n=${this.listenNodeId}&s=${q}`, 
+                this.Helper.header())
+                .then(res => {
+                    let arr = res.data.data
+                    if(res.status == 200 && arr.length > 0) {
+                        let tlc = arr[0].geolocation_subdistrict_tarif_code.substring(0,3)
+                        
+                        this.dataItem['connote_shipper_tlc'] = tlc || this.dataItem['connote_receiver_tlc']
+                        this.dataItem['connote_shipper_city_zone'] = tlc || this.dataItem['connote_receiver_city_zone']
+                    }
+                }).catch(err => {
+                    console.log(err.response)
+                    this.checkAuth(err.response)
                 })
         },
         async getDataStatus(){

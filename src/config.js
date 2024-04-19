@@ -127,6 +127,7 @@ export default {
 
     //irregularities
     irregularities: api + "irregularities",
+    return: api + "return",
 
     //tracing
     tracing : api + "tracing",
