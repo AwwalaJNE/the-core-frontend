@@ -16,6 +16,7 @@
         :limit="pagination.limit"
         :hasAction="true"
         :hasPagination="true"
+        :expandable="true"
         @actionUpdate="actionUpdate"
         @actionRemove="actionRemove"
         @actionLimit="actionLimit"
@@ -27,6 +28,7 @@
             :active="dialogUser" 
             :openDialogUser="openDialogUser"
             :closeDialogUser="closeDialogUser"
+            :finishGetUser="finishGetUser"
             @refresh="refresh"
             btnBlue="Edit"
             title="Edit User"
@@ -84,16 +86,6 @@ export default {
                     width: "sm"
                 },
                 {
-                    label: "Additional Roles",
-                    key: "user_additional_role_name",
-                    width: "sm"
-                },
-                {
-                    label: "Expiry Additional Roles",
-                    key: "user_expiry_additional_role",
-                    width: "sm"
-                },
-                {
                     label: "Node",
                     key: "user_nodes",
                     width: "auto"
@@ -125,6 +117,40 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
+                        let additional_node = []
+                        let additional_role = []
+                        let children = {}
+
+                        item.user_additionals.map(value => {
+                            if (!additional_node.includes(value.node_name)) {
+                                additional_node.push(value.node_name)
+                            }
+
+                            let idx = additional_node.indexOf(value.node_name)
+                            if (additional_role[idx]) {
+                                additional_role[idx].push(...value.roles)
+                            }
+                            else if (!additional_role[idx]) {
+                                additional_role[idx] = value.roles
+                            }
+                        })
+
+                        if (additional_node.length > 0 && additional_role.length > 0) {
+                            additional_role.forEach(function(elements, idx) {
+                                if (elements.length > 0) {
+                                    this[idx] = elements.join(", ");
+                                    console.log("Yayaya ", elements)
+                                }
+                                else {
+                                    this[idx] = "-";
+                                }
+                            }, additional_role);
+                            children['Additional Node'] = additional_node
+                            children['Additional Role'] = additional_role
+
+                            item['children'] = children
+                        }
+
                         item["user_nodes"] = item.user_nodes.map((nodes,index) => {
                             let newline = "\n";
                             if(index == 0){
@@ -157,6 +183,7 @@ export default {
                     return item.user_id === val.user_id
                 })
                 this.dataItem = obj[0]
+                this.loading = true
                 // console.log(this.dataItem, 'nihh val', val)
             }
         },
@@ -188,10 +215,14 @@ export default {
         },
         closeDialogUser(){
             this.dialogUser = false
+            this.dataItem = undefined
             this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE", {})
         },
         openDialogUser(){
             this.dialogUser = true
+        },
+        finishGetUser(){
+            this.loading = false
         }
     },
     mounted() {
