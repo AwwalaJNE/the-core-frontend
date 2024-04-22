@@ -63,7 +63,8 @@ export default {
     },
     props: {
        openDialogUser: Function,
-       closeDialogUser: Function, 
+       closeDialogUser: Function,
+       finishGetUser: Function,
        refresh: Function,
        active: Boolean,
        title: String,
@@ -230,8 +231,10 @@ export default {
                         arr.push(obj)
                     }
                     this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE", arr)
+                    this.finishGetUser()
                 }).catch(err => {
-                        this.openNotification('danger', 'Failed!', 'Failed to get data user')
+                    this.openNotification('danger', 'Failed!', 'Failed to get data user')
+                    this.finishGetUser()
                 })
             this.$nextTick(() => {
                 this.openDialogUser()
