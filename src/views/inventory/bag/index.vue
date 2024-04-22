@@ -85,8 +85,8 @@
                 </div>
               </template>
             </vs-col>
-            <vs-col xs="12" sm="3" lg="2">
-              <template v-if="checkPermission('read-courier-pra-runsheet')">
+            <vs-col xs="12" sm="3" lg="2" v-if="checkPermission('read-courier-pra-runsheet') && is_pra_runsheet">
+              <template >
               <!-- <template> -->
                 <div class="center in-get-bag">
                  <vs-col lg="12">
