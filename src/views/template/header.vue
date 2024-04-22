@@ -182,21 +182,20 @@ export default {
                                     obj["value"] = String(item.node_id)
                                     obj["node_code"] = String(item.node_code)
                                     obj["is_currently_used"] = item.is_currently_used
-                                    obj["permissions"] = item.permissions
 
                                     this.datanode.push(obj)
                     })
                     
                     let current_node = this.datanode.find(node => node.is_currently_used).value
-                    let permissions = this.datanode.find(node => node.is_currently_used).permissions
 
                     let n = this.$ls.get('node_id')
                     if(n == null) {
                         this.$ls.set('node_id', this.datanode[0])
+                        this.$ls.set('permissions',res.data.permission)
                         this.selectedNode = String(current_node)
                         this.$store.dispatch(`SET_USER_N`, this.datanode[0])
                     } else {
-                        this.$ls.set('permissions',permissions)
+                        this.$ls.set('permissions',res.data.permission)
                         this.$store.dispatch(`SET_USER_N`, n)
                         this.selectedNode = String(n.value)
                     }
