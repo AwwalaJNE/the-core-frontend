@@ -366,7 +366,8 @@ export default {
         .catch((error) => console.log("error", error));
     },
     formData(form) {
-      form["node_id_origin"] = form["node_id_origin"]["node_id"];
+      let node_id = this.listenActiveUser.nodes[0].node_id;
+      form["node_id_origin"] = node_id;
       form["node_id_destination"] = form["node_id_destination"]["node_id"];
 
       if (form.hasOwnProperty("dynamicinputcomponent_node_id_transit")) {
