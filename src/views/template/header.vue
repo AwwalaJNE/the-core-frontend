@@ -191,9 +191,11 @@ export default {
                     let n = this.$ls.get('node_id')
                     if(n == null) {
                         this.$ls.set('node_id', this.datanode[0])
+                        this.$ls.set('permissions',res.data.permission)
                         this.selectedNode = String(current_node)
                         this.$store.dispatch(`SET_USER_N`, this.datanode[0])
                     } else {
+                        this.$ls.set('permissions',res.data.permission)
                         this.$store.dispatch(`SET_USER_N`, n)
                         this.selectedNode = String(n.value)
                     }

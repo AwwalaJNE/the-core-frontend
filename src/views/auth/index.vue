@@ -80,7 +80,6 @@ export default {
             this.$ls.set("tokenBearer", res.data.data.token);
             this.$ls.set("user", res.data.data.user);
             this.$ls.set("config", res.data.data.config);
-            this.$ls.set("permissions", res.data.data.user.permissions);
             this.$ls.set("is_first_login", res.data.data.user.is_first_login);
           }
 
