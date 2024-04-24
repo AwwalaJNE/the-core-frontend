@@ -81,7 +81,7 @@ export default {
     data() {
         return {
             value: this.selectedValue ?? null,
-            options: [{"label": null, "value": null}],
+            options: this.valueData ?? [{"label": null, "value": null}],
             loading: false,
         }
     },

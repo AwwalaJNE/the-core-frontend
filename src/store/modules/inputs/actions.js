@@ -75,6 +75,18 @@ export default {
   SET_USER_USER_ADDITIONAL_ROLE_ID_ArrData({ commit }, payload) {
     commit('SET_USER_USER_ADDITIONAL_ROLE_ID_ArrData', payload)
   },
+  SET_USER_USER_ADDITIONAL_NODE_ID_ValueData({ commit }, payload) {
+    commit('SET_USER_USER_ADDITIONAL_NODE_ID_ValueData', payload)
+  },
+  SET_USER_USER_ADDITIONAL_NODE_ID_ArrData({ commit }, payload) {
+    commit('SET_USER_USER_ADDITIONAL_NODE_ID_ArrData', payload)
+  },
+  SET_USER_USER_NODE_ID_ValueData({ commit }, payload) {
+    commit('SET_USER_USER_NODE_ID_ValueData', payload)
+  },
+  SET_USER_USER_NODE_ID_ArrData({ commit }, payload) {
+    commit('SET_USER_USER_NODE_ID_ArrData', payload)
+  },
   SET_USER_USER_EXPIRY_ADDITIONAL_ROLE_ValueData({ commit }, payload) {
     commit('SET_USER_USER_EXPIRY_ADDITIONAL_ROLE_ValueData', payload)
   },
