@@ -240,6 +240,8 @@ export default {
                     })
                     this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE", arr)
                     this.$store.dispatch("SET_USER_USER_NODE_ID", res.data.data.user_node_id)
+                    this.dataItem["user_node_id"] = res.data.data.user_node_id
+                    
                     this.$store.dispatch("SET_USER_USER_ADDITIONAL_NODE_ID_ArrData", nodeArr)
                     this.$store.dispatch("SET_USER_USER_NODE_ID_ArrData", nodeArr)
                     this.finishGetUser()
