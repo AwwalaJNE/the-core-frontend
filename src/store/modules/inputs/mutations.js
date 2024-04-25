@@ -83,6 +83,26 @@ export default {
       state.user.user_role_id.arrData = payload :
       state.user.user_role_id.arrData = []
   },
+  // type select
+  SET_USER_USER_NODE_ID_ValueData(state, payload) {
+    state.user.user_node_id.valueData = payload
+  },
+  // type select perlu data array
+  SET_USER_USER_NODE_ID_ArrData(state, payload) {
+    state.user.user_node_id.hasOwnProperty('arrData') ?
+      state.user.user_node_id.arrData = payload :
+      state.user.user_node_id.arrData = []
+  },
+  // type select
+  SET_USER_USER_ADDITIONAL_NODE_ID_ValueData(state, payload) {
+    state.user.user_additional_node_id.valueData = payload
+  },
+  // type select perlu data array
+  SET_USER_USER_ADDITIONAL_NODE_ID_ArrData(state, payload) {
+    state.user.user_additional_node_id.hasOwnProperty('arrData') ?
+      state.user.user_additional_node_id.arrData = payload :
+      state.user.user_additional_node_id.arrData = []
+  },
   SET_USER_EMPLOYEE_ID(state, payload) {
     state.user.employee_id.value = payload
   },

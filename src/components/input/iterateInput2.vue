@@ -257,6 +257,16 @@ export default {
             if(this.Max !== null && this.Max > this.listInput.length) {
                 this.addDisabled = false
             }
+
+            let prefix = this.listenTypeForm.toUpperCase()
+            let action = ""
+            for (const [key, value] of Object.entries(this.InputObject)) {
+                if (value["key"].includes("dynamicinputcomponent") && _.isEqual(value["inputs"], this.template["inputs"])) {
+                    action = value["key"].toUpperCase()
+                }
+            }
+            this.$store.dispatch(`SET_${prefix}_${action}`, this.tempform)
+
         },
         updateValue(key, value, info = {}){
             let index = key.split("|")[0]

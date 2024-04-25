@@ -126,6 +126,7 @@ export default {
       typeInput: "multipleSelector|hidden",
       width: '4',
       typeData: "String",
+      visible: false,
       arrData: [],
       valueData: null,
       value: ''

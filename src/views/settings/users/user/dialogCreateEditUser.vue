@@ -221,6 +221,7 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     let arr = []
+                    let nodeArr = []
                     for (let i = 0; i < res.data.data.user_additional_role_id.length; i++) {
                         let obj = {};
 
@@ -230,7 +231,19 @@ export default {
 
                         arr.push(obj)
                     }
+                    res.data.data.user_nodes.map(item => {
+                        let obj = {}
+                        obj["label"] = item.node_name
+                        obj["value"] = item.node_id
+
+                        nodeArr.push(obj)
+                    })
                     this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE", arr)
+                    this.$store.dispatch("SET_USER_USER_NODE_ID", res.data.data.user_node_id)
+                    this.dataItem["user_node_id"] = res.data.data.user_node_id
+                    
+                    this.$store.dispatch("SET_USER_USER_ADDITIONAL_NODE_ID_ArrData", nodeArr)
+                    this.$store.dispatch("SET_USER_USER_NODE_ID_ArrData", nodeArr)
                     this.finishGetUser()
                 }).catch(err => {
                     this.openNotification('danger', 'Failed!', 'Failed to get data user')
