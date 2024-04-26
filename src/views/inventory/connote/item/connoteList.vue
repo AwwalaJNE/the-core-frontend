@@ -30,14 +30,15 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import moment from "moment"
 export default {
     name:"list-user",
     mixins: [master],
     props: {
         query: String,
         queryBag: String,
-        queryInventory: String
-
+        queryInventory: String,
+        dateFilter: Array,
     },
     components: {
         "table-master" : TableMaster
@@ -47,7 +48,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag, this.statusinventory)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag, this.statusinventory, this.startDate, this.endDate)
                 }
             }
         },
@@ -55,15 +56,34 @@ export default {
           if(val !== undefined) {
             this.statusinventory = val
             if(this.statusinventory !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, val)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, val, this.startDate, this.endDate)
             }
           }
+        },
+        dateFilter: function (val, old) {
+            if (val !== undefined) {
+                let d = new Date()
+                let from = ''
+                let to = ''
+                
+                this.tempDate = val;
+                if (this.tempDate !== old) {
+                    if(this.tempDate.length > 0) {
+                        from = moment(this.tempDate[0]).format("YYYY-MM-DD")
+                        to = moment(this.tempDate[1]).format("YYYY-MM-DD")
+                    } else {
+                        from = moment(d).format("YYYY-MM-DD")
+                        to = moment(d).format("YYYY-MM-DD")
+                    }
+                }
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, from, to);
+            }
         },
         queryBag: function(val, old) {
           if(val !== undefined) {
             this.status_bag = val
             if(this.status_bag !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.statusinventory)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.statusinventory, this.startDate, this.endDate)
             }
           }
         },
@@ -82,6 +102,11 @@ export default {
                     label: "Bag",
                     key: "bag_number",
                     width: "auto"
+                },
+                {
+                    label: "Created Date",
+                    key: "created_at",
+                    width: "xs"
                 },
                 {
                     label: "Receiving Date",
@@ -132,6 +157,9 @@ export default {
             loading: false,
             dataItem: {},
             tempSearch: this.query ? this.query : "",
+            tempDate: [],
+            startDate: "",
+            endDate: "",
             dialogUser: false,
             status_bag:"",
             statusinventory:"",
@@ -149,7 +177,7 @@ export default {
                 this.refresh()
             }, 60000) // 1 menit
         },
-        async getTableData(limit,page,q, statusBag, statusInventory) {
+        async getTableData(limit,page,q, statusBag, statusInventory, from, to) {
             this.loading = true
             let query = "";
             let isOnBag = "";
@@ -166,7 +194,7 @@ export default {
             await axios
                 .get(
                     this.URL.koli +
-                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}`,
+                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}&start_date=${from}&end_date=${to}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
@@ -225,7 +253,7 @@ export default {
             this.refresh()
         },
         refresh(val){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate)
         },
         closeDialogUser(){
             this.dialogUser = false
@@ -236,7 +264,7 @@ export default {
         },
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate)
         this.pollData()
     },
     beforeDestroy () {

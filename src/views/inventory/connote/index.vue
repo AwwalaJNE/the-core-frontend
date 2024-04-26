@@ -27,15 +27,25 @@
 
                         <template v-if="navActive === 'k-CONNOTE'">
                           <vs-row >
-                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
+                            <vs-col vs-align="center" xs="4" sm="3" lg="2">
                                 <select-status-bag ref="is_in_bag" :isMultiple="false" :border="true" @updateStatusBag="updateStatusBag" />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
+                            <vs-col vs-align="center" xs="4" sm="3" lg="2">
                                 <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
+                            </vs-col>
+                            <vs-col xs="4" sm="6" lg="8">
+                                <date-time
+                                    :name="''"
+                                    :rules="''"
+                                    :formKey="'TRIGGER_DATE'"
+                                    :valueData="tempDate"
+                                    typeInput="daterange"
+                                    @updateValue="searchDate" 
+                                />
                             </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <connote-list :ref="navActive"  :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" />
+                                <connote-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" />
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-BAG'">
@@ -88,6 +98,7 @@ import SelectInventoryVue from "@/views/inventory/connote/item/selectInventorySt
 import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDestination"
 import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
 import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
+import DateTime from "@/components/input/dateTime"
 
 // Connote
 import ConnoteList from "@/views/inventory/connote/item/connoteList"
@@ -109,7 +120,8 @@ export default {
         "select-status-inventory": SelectInventoryVue,
         "select-bag-destination": SelectBagDestinationVue,
         "select-bag-routing": SelectBagRouting,
-        "select-bag-tipe": SelectBagTipe
+        "select-bag-tipe": SelectBagTipe,
+        "date-time": DateTime,
     },
     data() {
         return {
@@ -158,6 +170,7 @@ export default {
             loading: false,
             dataItem: {},
             tempSearch: "",
+            tempDate: [],
             dialogRole: false,
             pagination: {
                 limit:5,
@@ -200,6 +213,9 @@ export default {
         searchValue (val) {
             this.tempSearch = val
             console.log("this.tempSearch = ",this.tempSearch)
+        },
+        searchDate(key, val) {
+            this.tempDate = val;
         },
         clearSearch() {
             this.$refs.searchInput.clear()
