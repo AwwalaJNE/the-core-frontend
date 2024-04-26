@@ -68,6 +68,11 @@ export default {
           width: "xxs",
         },
         {
+          label: "Service",
+          key: "connote_service_code",
+          width: "xxs",
+        },
+        {
           label: "Status Delivery",
           key: "status_delivery",
           type: "inputan",
