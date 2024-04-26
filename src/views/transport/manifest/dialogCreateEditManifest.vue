@@ -237,7 +237,7 @@ export default {
       this.node_id = this.listenDataItem.node_id;
       this.manifest_number = this.listenDataItem.manifest_number;
 
-      this.vehicle_mode_id = this.listenDataItem["manifest_method"][
+      this.vehicle_mode_id = this.listenDataItem[
         "vehicle_mode_id"
       ];
       this.vehicle_type_id = this.listenDataItem["vehicle_type_id"]
