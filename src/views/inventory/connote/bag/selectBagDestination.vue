@@ -107,15 +107,15 @@ export default {
     },
     async getDataDestination(){
       await axios
-          .get(this.URL.node +
-              `?n=${this.listenNodeId}&sort_order=desc&&limit=10441&page=1`,
+          .get(this.URL.node_list +
+              `?n=${this.listenNodeId}`,
               this.Helper.header())
           .then(res => {
             if(res.data.data.length > 0) {
               let data = res.data.data
               data.map(item => {
                 let obj = {}
-                obj["label"] = item.node_code
+                obj["label"] = item.node_name
                 obj["value"] = item.node_id
 
 
