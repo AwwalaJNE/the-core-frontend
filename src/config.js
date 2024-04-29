@@ -26,6 +26,7 @@ export default {
     node_type: api + "node-type",
     node_alternate_address: api + "node-alternate-address",
     node_ip_address: api + "node-ip-address",
+    node_list: api + "node-list",
 
     // employee
     employee: api + "employee",
