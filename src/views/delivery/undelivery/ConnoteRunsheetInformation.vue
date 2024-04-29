@@ -64,6 +64,11 @@ export default {
                   key: "status_delivery",
                   width: "xxs"
                 },
+                {
+                  label: "HRS",
+                  key: "is_hrs",
+                  width: "xxs"
+                }
             ],
             loading: false,
             dataItem: {},
@@ -120,6 +125,7 @@ export default {
                     this.dataTable.map(item=>{
                       item['no'] = no
                       no++
+                      item['is_hrs'] = item['is_hrs'] ? "Yes" : "No"
                     })
                     let hasNullStatus = this.dataTable.length == 0;
                     if (hasNullStatus) {
