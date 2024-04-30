@@ -157,7 +157,11 @@ export default {
                     // console.log(arr, res,'klas')
                     arr.map((item, index)  => {
                       item["no"] = index+1
-                      item['destination_code'] = item.connote_receiver_tariff_code ?  item.connote_receiver_tariff_code : bag_des
+                      item['destination_code'] = item.item_type === 'KOLI' ?  item.connote_receiver_tariff_code : item.node_tariff_code
+                      item['koli_qty'] = item.item_type == 'KOLI' ? item.koli_qty : item.bag_detail_qty
+                      item['koli_actual_weight'] = item.item_type == 'KOLI' ? item.koli_actual_weight : item.bag_weight
+                      item['koli_sequence'] = item.item_type == 'KOLI' ? item.koli_sequence : '-'
+                      item['connote_service_code'] = item.item_type == 'KOLI' ? item.connote_service_code : item.bag_service.join(', ')
                       item['bag_detail_qty'] = res.data.data.bag_detail_qty
                       item["isDisabled"] = item.is_confirmed == 0 ? true : false;
                     })
