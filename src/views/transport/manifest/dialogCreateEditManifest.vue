@@ -258,8 +258,7 @@ export default {
             data["bag_number"] = data.item_number;
             data["type"] = data.item_type;
             data["bag_weight"] = data.total_weight;
-            data["destination_name"] = data["bag"]["destination"]
-              ? data["bag"]["destination"]["node_tariff_code"] : "";
+            data["destination_name"] = data["bag"] ? data["bag"]["destination"]["node_tariff_code"] : "";
             arr.push(data);
           }
         });
