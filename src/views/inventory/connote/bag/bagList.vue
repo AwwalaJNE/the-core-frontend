@@ -112,12 +112,12 @@ export default {
                 },
                 {
                     label: "Runsheet",
-                    key: "total_runsheet",
+                    key: "runsheet_count",
                     width: "xs"
                 },
                 {
                     label: "Un Runsheet",
-                    key: "total_unRunsheet",
+                    key: "un_runsheet_count",
                     width: "xs"
                 },
                 {
@@ -127,7 +127,7 @@ export default {
                 },
                 {
                     label: "With Courier",
-                    key: "current_user",
+                    key: "with_courier",
                     width: "auto"
                 },
                 {
@@ -182,31 +182,22 @@ export default {
                     res.data.data.forEach(el => {
                         el.surat_muatan = []
                         el.surat_jalan = []
-                        el.total_runsheet = 0
-                        el.total_unRunsheet = 0
-                        if (el.sj_detail.length > 0) {
-                            el.sj_detail.forEach(sj => {
+                        
+                        if (el.sj.length > 0) {
+                            el.sj.forEach(sj => {
                                 el.surat_jalan.push(sj.manifest_do_number)
                             });
                             
                         }
-                        
-                        if (el.sm_detail.length > 0) {
-                            el.sm_detail.forEach(sm => {
+                        if (el.sm.length > 0) {
+                            el.sm.forEach(sm => {
                                 el.surat_muatan.push(sm.manifest_number)
                             })
                         }
-                        if (el.runsheet_detail.length > 0) {
-                            el.runsheet_detail.forEach(runsheet => {
-                                if (runsheet.status_delivery !== null) {
-                                    el.total_runsheet++ 
-                                } else {
-                                    el.total_unRunsheet++
-                                }
-                            })
-                        }
+
                         el.surat_muatan = el.surat_muatan.join(", ")
                         el.surat_jalan = el.surat_jalan.join(", ")
+                        el.with_courier = el.courier ? el.courier.employee_name : ""
                     });
                     this.dataTable = res.data.data
 
