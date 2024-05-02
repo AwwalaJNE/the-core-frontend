@@ -20,7 +20,12 @@
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
                             <vs-col xs="12" sm="3" lg="3">
-                                <search-input ref="searchInput" @searchValue="searchValue" class="search-input"/>
+                                <template v-if="navActive === 'k-CONNOTE'">
+                                    <search-input ref="searchInput" @searchValue="searchValue" :placeholder="`Search Connote`" class="search-input"/>
+                                </template>
+                                <template v-if="navActive === 'k-BAG'">
+                                    <search-input ref="searchInput" @searchValue="searchValue" class="search-input"/>
+                                </template>
                             </vs-col>
                         </vs-row>
 

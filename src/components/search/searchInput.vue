@@ -1,6 +1,6 @@
 <template>
     <div class="searchbox">
-        <vs-input icon-after v-model="value" autocomplete="chrome-off" placeholder="Search" @change="searchValue">
+        <vs-input icon-after v-model="value" autocomplete="chrome-off" :placeholder="listenPlaceholder" @change="searchValue">
             <template #icon>
                 <i class='bx bx-search' @click="clear"></i>
             </template>
@@ -10,9 +10,17 @@
 <script>
 export default {
     name:"search-input",
+    props: {
+        placeholder: String,
+    },
     data() {
         return {
             value: ""
+        }
+    },
+    computed: {
+        listenPlaceholder() {
+            return this.placeholder || "";
         }
     },
     methods: {
