@@ -24,7 +24,7 @@
                                     <search-input ref="searchInput" @searchValue="searchValue" :placeholder="`Search Connote`" class="search-input"/>
                                 </template>
                                 <template v-if="navActive === 'k-BAG'">
-                                    <search-input ref="searchInput" @searchValue="searchValue" class="search-input"/>
+                                    <search-input ref="searchInput" @searchValue="searchValue" :placeholder="`Search Bag`" class="search-input"/>
                                 </template>
                             </vs-col>
                         </vs-row>

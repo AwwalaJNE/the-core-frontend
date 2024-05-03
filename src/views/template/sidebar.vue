@@ -158,13 +158,13 @@ export default {
               permission: "read-bag",
             },
             {
-              label: "Inventory Bagging",
+              label: "Create Bag",
               url: "/inventory/bagging",
               icon: "",
               permission: "read-bag",
             },
             {
-              label: "Inventory Unbagging",
+              label: "Open Bag",
               url: "/inventory/unbagging",
               icon: "",
               permission: "read-unbag",

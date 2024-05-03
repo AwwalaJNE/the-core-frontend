@@ -28,7 +28,7 @@
                     <daterange-filter @searchDate="searchDate"/>
                   </vs-col>
                   <vs-col offset="3" xs="6" sm="3" lg="3" class="mb-15">
-                    <search-input ref="searchInput" @searchValue="searchValue"/>
+                    <search-input ref="searchInput" @searchValue="searchValue" placeholder="Search Cash Register"/>
                   </vs-col>
                 </vs-row>
               </div>

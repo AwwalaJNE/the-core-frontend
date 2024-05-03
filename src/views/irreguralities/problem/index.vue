@@ -44,7 +44,7 @@
                             @updateValue="updateValue" />
                         </vs-col>
                         <vs-col xs="6" sm="3" lg="3">
-                            <search-input ref="searchInput" @searchValue="searchValue"/>
+                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="`Search Connote`"/>
                         </vs-col>
                     </vs-row>
                 </div>

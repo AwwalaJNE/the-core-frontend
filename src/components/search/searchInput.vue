@@ -1,10 +1,10 @@
 <template>
     <div class="searchbox">
-        <vs-input icon-after v-model="value" autocomplete="chrome-off" :placeholder="listenPlaceholder" @change="searchValue">
-            <template #icon>
-                <i class='bx bx-search' @click="clear"></i>
-            </template>
+        <vs-input icon-after v-model="value" autocomplete="chrome-off" :placeholder="listenPlaceholder" @change="searchValue" @focus="onFocus" @blur="onBlur">
         </vs-input>
+        <button click="test">
+            <i class='bx bx-search search-input-icon' @click="searchValue"></i>
+        </button>
     </div>
 </template>
 <script>
@@ -20,7 +20,7 @@ export default {
     },
     computed: {
         listenPlaceholder() {
-            return this.placeholder || "";
+            return this.placeholder || "Search";
         }
     },
     methods: {
@@ -30,24 +30,44 @@ export default {
         clear() {
             this.value = ""
             this.$emit("searchValue",this.value)
+        },
+        onFocus() {
+            this.value = ""
+        },
+        onBlur() {
+            if (!this.value) {
+                this.searchValue()
+            }
         }
     },
 }
 </script>
 <style lang="scss">
     .searchbox{
+        position: relative;
         .vs-input-content{
             position: relative;
             max-width: 200px;
             display: flex;
             align-self: flex-end;
+            label {
+                margin-left: 5px;
+            }
         }
-        .clear{
+        button {
             position: absolute;
-            right: 35px;
-            width: 35px;
+            right: 0;
             top: 0;
-            height: 100%;
+            bottom: 0;
+            box-shadow: -12px 0 10px -10px rgba(0,0,0,0.1);
+            i {
+                margin-top: 5px;
+            }
+            padding: 0 10px;
+            border: none;
+            background: rgba(var(--vs-gray-2), 1);
+            outline: 2px solid rgba(var(--vs-gray-2), 1);
+            border-radius: 10px;
         }
     }
 </style>

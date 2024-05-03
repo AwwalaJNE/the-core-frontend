@@ -23,7 +23,7 @@
                     </vs-input>
                   </vs-col>
                   <vs-col xs="6" sm="3" lg="3" offset="7"  class="mb-15">
-                    <search-input ref="searchInput" @searchValue="searchValue"/>
+                    <search-input ref="searchInput" @searchValue="searchValue" placeholder="Search Name"/>
                   </vs-col>
                 </vs-row>
               </div>
