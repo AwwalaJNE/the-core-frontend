@@ -18,7 +18,7 @@
                     <daterange-filter @searchDate="searchDate"/>
                   </vs-col>
                   <vs-col xs="12" sm="6" lg="9" class="mb-15">
-                    <search-input ref="searchInput" @searchValue="searchValue"/>
+                    <search-input ref="searchInput" @searchValue="searchValue" placeholder="Search Connote"/>
                   </vs-col>
                 </vs-row>
               </div>

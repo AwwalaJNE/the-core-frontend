@@ -26,7 +26,7 @@
               <daterange-filter @searchDate="searchDate" size="small" />
             </vs-col>
             <vs-col offset="6" xs="6" sm="3" lg="3" class="mb-15" align="right">
-              <search-input ref="searchInput" @searchValue="searchValue" />
+              <search-input ref="searchInput" @searchValue="searchValue" :placeholder="`Search SM`" />
             </vs-col>
           </vs-row>
         </div>

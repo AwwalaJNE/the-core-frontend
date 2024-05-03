@@ -201,7 +201,7 @@ export default {
                     arr.map(item => {
                         item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
-                        item["packing_kayu_type"] = item.packing_kayu_type != null ? 'PK-'+item.packing_kayu_type : '-'
+                        item["packing_kayu_type"] = item.packing_kayu_type != null ? 'Y' : '-'
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page

@@ -242,7 +242,7 @@ export default {
   },
   data() {
       return {
-          title: "Bagging",
+          title: "Create Bag",
           item_code:'',
           item_code_orion:  '',
           form:{},

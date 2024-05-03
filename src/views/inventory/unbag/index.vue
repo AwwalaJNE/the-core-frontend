@@ -81,7 +81,7 @@ export default {
   },
   data() {
     return {
-      title: "Unbagging",
+      title: "Open Bag",
       item_code: "",
       item_number: "",
       form: {},
