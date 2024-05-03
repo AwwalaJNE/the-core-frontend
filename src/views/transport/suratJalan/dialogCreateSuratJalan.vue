@@ -129,7 +129,7 @@ export default {
       dataTable: [],
       datacolumn: [
         {
-          label: "No Surat Muatan",
+          label: "Item Number",
           key: "item_number",
           width: "xs",
         },
@@ -214,10 +214,20 @@ export default {
 
         this.dataTable = val.detail;
         this.dataTable.map((item) => {
-          if (item.item_type == "SM") {
+          if (item.bag) {
+            item.destination = item.bag.destination
+              ? item.bag.destination.node_tariff_code
+              : "";
+          }
+          else if (item.koli) {
+            item.destination = item.koli.connote
+              ? item.koli.connote.connote_receiver_tariff_code
+              : "";
+          }
+          else if (item.manifest) {
             item.destination = item.manifest.destination
               ? item.manifest.destination.node_tariff_code
-              : item.manifest.destination.node_code;
+              : "";
           }
           if (val.status == "DEPARTED") {
             item.button_status = {
