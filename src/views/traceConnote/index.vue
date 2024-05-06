@@ -13,13 +13,14 @@
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center">
                     <div class="trace-connote-form">
                         <form @submit.prevent="processBookingCode">
-                            <vs-input border type="text"
+                            <vs-input 
+                                border 
+                                type="text"
                                 v-model="connoteNumber"
                                 label-placeholder="Masukkan Nomor Connote"
-                                :autofocus="true"
+                                autofocus
                                 :disabled="hasConnoteNumber"
-                                ref="inputCodeBooking">
-                            </vs-input>
+                            />
                             <vs-button type="submit">Submit</vs-button>
                         </form>
                     </div>
@@ -41,52 +42,56 @@
                     <div class="box view">
                         <vs-row justify="space-between">
                             <vs-col xs="6" sm="9" lg="9">
-                                <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                                <nav-item :navItem="navItem" @activeTab="activeTab" />
                             </vs-col>
-                            
                         </vs-row>
                         <template v-if="navActive === 'k-INFO'">
-                          <vs-row justify="space-between">
-                            <vs-col xs="4" sm="4" lg="4">
-                              <selector-origin
-                                  :title="'From'"
-                                  :valueData="originData"
-                                  :tlc="originTlc"
-                                  @updateInfo="updateInfo" />
-                            </vs-col>
-
-                            <vs-col xs="4" sm="4" lg="4">
-                              <selector-detail
-                                  :title="'To'"
-                                  :valueData="destinationData"
-                                  :tlc="destinationTlc"
-                                  @updateInfo="updateInfo" />
-                            </vs-col>
-                            <vs-col xs="4" sm="4" lg="4">
-                              <selector-detail
-                                  :title="'Information'"
-                                  :valueData="informationData"
-                                  @updateInfo="updateInfo" />
-                            </vs-col>
-                          </vs-row>
-
+                            <vs-row justify="space-between">
+                                <vs-col xs="4" sm="4" lg="4">
+                                    <selector-origin 
+                                        :title="'From'"
+                                        :valueData="originData"
+                                        :tlc="originTlc"
+                                        @updateInfo="updateInfo" 
+                                    />
+                                </vs-col>
+                                <vs-col xs="4" sm="4" lg="4">
+                                    <selector-detail 
+                                        :title="'To'"
+                                        :valueData="destinationData"
+                                        :tlc="destinationTlc"
+                                        @updateInfo="updateInfo" 
+                                    />
+                                </vs-col>
+                                <vs-col xs="4" sm="4" lg="4">
+                                    <selector-detail 
+                                        :title="'Information'"
+                                        :valueData="informationData"
+                                        @updateInfo="updateInfo" 
+                                    />
+                                </vs-col>
+                            </vs-row>
                         </template>
                         <template v-if="navActive === 'k-ACTIVITY'">
-                          <vs-row >
-                            <vs-col vs-align="center" xs="3" sm="3" lg="12">
-                              <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
-                            </vs-col>
-                          </vs-row>
+                            <vs-row>
+                                <vs-col vs-align="center" xs="3" sm="3" lg="12">
+                                    <select-status-inventory 
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateStatusinventory="updateStatusinventory" 
+                                    />
+                                </vs-col>
+                            </vs-row>
                         </template>
-                        
                     </div>
                 </vs-col>
-                
             </vs-row>
         </section>
     </div>
-</template>
+  </template>
+  
 <script>
+
 import axios from "axios";
 import master from "@/mixins/master"
 import NavItem from "@/components/navbar/navTab"
@@ -94,7 +99,9 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import selectorDetailVue from "@/views/inventory/connote-detail/connote/selectorDetail"
 import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
-export default {
+
+
+  export default {
     name: "trace-connote",
     mixins: [master],
     components: {
@@ -108,67 +115,50 @@ export default {
     computed: {
     },
     data() {
-        return {
-            connoteNumber: '',
-            hasConnoteNumber: false,
-
-
-
-
-            navItemm: [
-                {
-                    label: "INFO",
-                    key: "k-INFO",
-                    title: "Connote Info"
-                },
-                {
-                    label: "ACTIVITY",
-                    key: "k-ACTIVITY",
-                    title: "Connote Activity"
-                }
-            ],
-            navActive: "k-INFO",
-            title: "Connote Info",
-            loading: false,
-            originData:[],
-            destinationData:[],
-            originTlc:'',
-            destinationTlc:'',
-            informationData:[],
-            statusinventory:"",
-            connote_number:''
-        }
+      return {
+        connoteNumber: "",
+        hasConnoteNumber: false,
+        navItem: [
+          {
+            label: "INFO",
+            key: "k-INFO",
+            title: "Connote Info"
+          },
+          {
+            label: "ACTIVITY",
+            key: "k-ACTIVITY",
+            title: "Connote Activity"
+          }
+        ],
+        navActive: "k-INFO",
+        title: "Connote Info",
+        loading: false,
+        originData: [],
+        destinationData: [],
+        originTlc: "",
+        destinationTlc: "",
+        informationData: [],
+        statusinventory: "",
+        connote_number: ""
+      };
     },
     methods: {
-        updateValue(key,val){
-            switch(key) {
-                case "connoteNumber":
-                    this.connoteNumber = val
-                    break;
-            }
-        },
-        
         async processBookingCode() {
             this.connote_number = this.connoteNumber;
             const url = `/trace-connote/${encodeURIComponent(this.connote_number)}`;
             await this.$router.push(url); 
             this.getConnote();
         },
-
-        updateStatusinventory(key,val) {
-          this.statusinventory = val;
+        updateStatusinventory(val) {
+            this.statusinventory = val;
         },
-
         activeTab(val) {
-            this.navActive = val
-            let item = this.navItemm.filter(item => {
-                return item.key == val
-            })
-            this.title = item[0].title
-
-
+            this.navActive = val;
+            let item = this.navItem.filter(item => {
+                return item.key == val;
+            });
+            this.title = item[0].title;
         },
-
         async getConnote() {
             await axios
                 .get(this.URL.connote +`/${this.connote_number}?n=${this.listenNodeId}`,
@@ -321,23 +311,23 @@ export default {
         },
     },
     mounted() {
-        this.getConnote();
-    },
-    destroyed() {
+      this.getConnote();
     }
-}
-</script>
-<style scoped>
-.outline:focus {
-  background-color: #153478;
-}
-.outline:hover {
-  background-color: #153478;
-}
-.trace-connote-form  {
-    margin-top: 3em ;
-}
-.trace-connote-form form {
+  };
+  </script>
+  
+  <style scoped>
+  .outline:focus {
+    background-color: #153478;
+  }
+  .outline:hover {
+    background-color: #153478;
+  }
+  .trace-connote-form {
+    margin-top: 3em;
+  }
+  .trace-connote-form form {
     display: flex;
-}
-</style>
+  }
+  </style>
+  
