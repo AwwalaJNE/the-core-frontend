@@ -99,7 +99,7 @@ export default {
           label: "Trace Connote",
           url: "/trace-connote",
           icon: "css-search", // TODO: cari icon
-          permission: "", // TODO: DELETE SOON
+          permission: "",
           children: [],
         },
         {

@@ -87,7 +87,7 @@
                             </vs-row>
                         </template>
                     </div>
-                    <div class="box view" v-else-if="(connote_number || connote_number !== '') && !connote_found && !loading">
+                    <div class="box view" v-else-if="(connote_number && !connote_found && !loading) || (connote_number !== '' && !connote_found && !loading)">
                         <div style="margin-top: 2.5em;">
                             connote tidak ditemukan
                         </div>
