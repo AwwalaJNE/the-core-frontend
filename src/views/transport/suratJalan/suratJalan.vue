@@ -71,6 +71,11 @@ export default {
                 width: "xs"
               },
               {
+                label: "DO Number",
+                key: "do",
+                width: "auto"
+              },
+              {
                 label: "Vehicle Type",
                 key: "vehicle_type_name",
                 width: "auto"
@@ -113,11 +118,6 @@ export default {
               {
                 label: "Status",
                 key: "status",
-                width: "auto"
-              },
-              {
-                label: "Received",
-                key: "received_time",
                 width: "auto"
               },
             ],
