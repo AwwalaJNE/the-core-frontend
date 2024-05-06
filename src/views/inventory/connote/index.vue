@@ -16,12 +16,19 @@
                     <div class="box view">
 
                         <vs-row justify="space-between">
-                            <vs-col xs="12" sm="9" lg="9">
+                            <vs-col xs="12" sm="6" lg="8">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
-                            <vs-col xs="12" sm="3" lg="3">
+                            <vs-col xs="12" sm="6" lg="4">
                                 <template v-if="navActive === 'k-CONNOTE'">
-                                    <search-input ref="searchInput" @searchValue="searchValue" :placeholder="`Search Connote`" class="search-input"/>
+                                    <vs-row>
+                                        <vs-col vs-align="center" w="6">
+                                            <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" />
+                                        </vs-col>
+                                        <vs-col vs-align="center" w="6">
+                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" class="search-input"/>
+                                        </vs-col>
+                                    </vs-row>
                                 </template>
                                 <template v-if="navActive === 'k-BAG'">
                                     <search-input ref="searchInput" @searchValue="searchValue" :placeholder="`Search Bag`" class="search-input"/>
@@ -32,13 +39,16 @@
 
                         <template v-if="navActive === 'k-CONNOTE'">
                           <vs-row >
-                            <vs-col vs-align="center" xs="4" sm="3" lg="2">
+                            <vs-col vs-align="center" xs="6" sm="2" lg="2">
                                 <select-status-bag ref="is_in_bag" :isMultiple="false" :border="true" @updateStatusBag="updateStatusBag" />
                             </vs-col>
-                            <vs-col vs-align="center" xs="4" sm="3" lg="2">
+                            <vs-col vs-align="center" xs="6" sm="2" lg="2">
                                 <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
                             </vs-col>
-                            <vs-col xs="4" sm="6" lg="8">
+                            <vs-col vs-align="center" xs="6" sm="3" lg="2">
+                                <select-filter-date-by :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" />
+                            </vs-col>
+                            <vs-col xs="6" sm="5" lg="6">
                                 <date-time
                                     :name="''"
                                     :rules="''"
@@ -50,7 +60,7 @@
                             </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <connote-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" />
+                                <connote-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" :querySearch="searchBy" :queryDate="filterDateBy" />
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-BAG'">
@@ -100,6 +110,8 @@ import SearchInput from "@/components/search/searchInput"
 import Selector from "@/components/input/select"
 import SelectBagStatusVue from "@/views/inventory/connote/item/selectBagStatus"
 import SelectInventoryVue from "@/views/inventory/connote/item/selectInventoryStatus"
+import SelectSearchBy from "@/views/inventory/connote/item/selectSearchBy"
+import SelectFilterDateBy from "@/views/inventory/connote/item/selectFilterDateBy"
 import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDestination"
 import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
 import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
@@ -123,6 +135,8 @@ export default {
         "selector": Selector,
         "select-status-bag": SelectBagStatusVue,
         "select-status-inventory": SelectInventoryVue,
+        "select-search-by": SelectSearchBy,
+        "select-filter-date-by": SelectFilterDateBy,
         "select-bag-destination": SelectBagDestinationVue,
         "select-bag-routing": SelectBagRouting,
         "select-bag-tipe": SelectBagTipe,
@@ -186,6 +200,9 @@ export default {
             status_bag:"",
             statusinventory:"",
             bagDestination:"",
+            searchBy:"",
+            filterDateBy:"",
+            searchPlaceholder: "Search Connote",
             bagRouting:"",
             bagTipe:"",
             destination_tlc: [{
@@ -201,6 +218,13 @@ export default {
         },
         updateStatusinventory(key,val) {
           this.statusinventory = val;
+        },
+        updateSearchBy(key,val) {
+          this.searchBy = val;
+          this.searchPlaceholder = key;
+        },
+        updateFilterDateBy(key,val) {
+          this.filterDateBy = val;
         },
         updateBagDestination(key,val) {
           this.bagDestination = val

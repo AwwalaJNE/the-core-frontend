@@ -73,6 +73,11 @@ export default {
           width: "xxs",
         },
         {
+          label: "Status Code",
+          key: "status_code",
+          width: "xxs",
+        },
+        {
           label: "Status Delivery",
           key: "status_delivery",
           type: "inputan",
