@@ -38,6 +38,8 @@ export default {
         query: String,
         queryBag: String,
         queryInventory: String,
+        querySearch: String,
+        queryDate: String,
         dateFilter: Array,
     },
     components: {
@@ -48,7 +50,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag, this.statusinventory, this.startDate, this.endDate)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
                 }
             }
         },
@@ -56,7 +58,7 @@ export default {
           if(val !== undefined) {
             this.statusinventory = val
             if(this.statusinventory !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, val, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, val, this.startDate, this.endDate, this.querySearch, this.queryDate)
             }
           }
         },
@@ -76,14 +78,14 @@ export default {
                         to = moment(d).format("YYYY-MM-DD")
                     }
                 }
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, from, to);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, from, to, this.querySearch, this.queryDate);
             }
         },
         queryBag: function(val, old) {
           if(val !== undefined) {
             this.status_bag = val
             if(this.status_bag !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.statusinventory, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
             }
           }
         },
@@ -177,7 +179,7 @@ export default {
                 this.refresh()
             }, 60000) // 1 menit
         },
-        async getTableData(limit,page,q, statusBag, statusInventory, from, to) {
+        async getTableData(limit,page,q, statusBag, statusInventory, from, to, searchBy, filterDateBy) {
             this.loading = true
             let query = "";
             let isOnBag = "";
@@ -194,7 +196,7 @@ export default {
             await axios
                 .get(
                     this.URL.koli +
-                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}&start_date=${from}&end_date=${to}`,
+                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}&start_date=${from}&end_date=${to}&search_by=${searchBy}&filter_date_by=${filterDateBy}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
@@ -253,7 +255,7 @@ export default {
             this.refresh()
         },
         refresh(val){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
         },
         closeDialogUser(){
             this.dialogUser = false
@@ -264,7 +266,7 @@ export default {
         },
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
         this.pollData()
     },
     beforeDestroy () {
