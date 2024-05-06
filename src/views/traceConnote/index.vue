@@ -21,7 +21,15 @@
                                     label-placeholder="Masukkan Nomor Connote"
                                     autofocus
                                     :disabled="hasConnoteNumber"
-                                />
+                                    icon-after
+                                    ref="formInputConnoteOrion"
+                                    @keyup.enter="updateValueOrion"
+                                    @click-icon="$refs.cameraScanner.open('formInputConnoteOrion')"
+                                >
+                                    <template #icon>
+                                        <i class="bx bx-barcode-reader" />
+                                    </template>
+                                </vs-input>
                                 <template v-if="hasConnoteNumber">
                                     <div style="position:absolute;right:20px; top:15px;">
                                         <span class="vs-select__chips__chip__close" @click="removeConnoteNumber">
@@ -95,6 +103,8 @@
                 </vs-col>
             </vs-row>
         </section>
+
+        <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
     </div>
   </template>
   
@@ -104,6 +114,7 @@ import axios from "axios";
 import master from "@/mixins/master"
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
+import CameraScanner from "@/components/scanner/camera";
 import SearchInput from "@/components/search/searchInput"
 import selectorDetailVue from "@/views/inventory/connote-detail/connote/selectorDetail"
 import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
@@ -118,7 +129,8 @@ export default {
         "search-input": SearchInput,
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
-        "select-status-inventory": SelectInventoryVue
+        "select-status-inventory": SelectInventoryVue,
+        CameraScanner
     },
     computed: {
     },
@@ -171,7 +183,7 @@ export default {
         },
 
         async processConnoteNumber() {
-            this.connote_number = this.connoteNumber;
+            this.connote_number = this.connoteNumber + "00";
             const url = `/trace-connote/${encodeURIComponent(this.connote_number)}`;
             await this.$router.push(url); 
             this.hasConnoteNumber = true
@@ -344,6 +356,30 @@ export default {
                     this.loading = false
                     this.openNotification('danger', 'Failed to populate list', err)
                 })
+        },
+
+        // Scan Koli
+        onCameraScannerGetData(data) {
+            if (data && data.event === "result") {
+                const result = data.data;
+
+                switch (data.namespace) {
+                    case "formInputConnoteOrion":
+                        this.connoteNumber = result.text;
+                        this.updateValueOrion();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        },
+
+        updateValueOrion() {
+            this.connote_number = `${this.connoteNumber}` + "00";
+            const url = `/trace-connote/${encodeURIComponent(this.connote_number)}`;
+            this.$router.push(url); 
+            this.hasConnoteNumber = true
+            this.getConnote();
         },
     },
     mounted() {
