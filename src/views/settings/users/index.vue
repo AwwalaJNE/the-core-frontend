@@ -220,6 +220,8 @@ export default {
             user_role_id: "",
             user_role_permission: [],
             permissionObject: {},
+            filterArray: [],
+            user_true_permission: [],
 
             waitToRoleRenderer: true,
         }
@@ -317,6 +319,7 @@ export default {
                             temp[item.user_permission_id] = item
                             item["access_data"] = ""
                             item["selected"] = false
+                            item["un_selected"] = false
                         })
                         // this.permission = data
                         this.permissionDisplay = data
@@ -371,21 +374,38 @@ export default {
                 
         },
         updateSelected(arr){
+            this.filterNow()
             this.user_role_permission = arr
             this.user_role_permission.map(item => {
                 if(item["access_data"] == "") {
                     item["access_data"] = "USER"
                 }
             })
+        this.filterArray = this.user_role_permission.filter(item => item.selected === false);
+            if (this.filterArray.length == 0) {
+                this.filterArray = this.getMissingPermissions()
+            }
+            console.log('this.filterArray',this.filterArray);
 
             if(this.waitToRoleRenderer == false) {
                 this.updateRole()
             }
         },
+        getMissingPermissions() {
+            return this.user_true_permission.filter(truePermission => {
+                return !this.user_role_permission.some(rolePermission => {
+                    return rolePermission.user_permission_id === truePermission.user_permission_id;
+                });
+            }).map(missingPermission => {
+                return { ...missingPermission, un_selected: true };
+            });
+        },
         updateValue(key, val, info){
             let splitAction = key.split("|")[0] || null
             let splitKey = key.split("|")[1] || null
             let obj = {}
+    let updatedPermission = null
+            console.log(key, val, info,'hehhee',splitAction,splitKey,obj);
             switch(splitAction) {
                 
                 case "access_data":
@@ -394,12 +414,13 @@ export default {
                             if(item.user_permission_id == splitKey) {
                                 if(item.hasOwnProperty("access_data")){
                                     item["access_data"] = val
+                                    updatedPermission = [item]
                                 }
                             }
                         })
-
+                        console.log(this.user_role_permission,'hahah',[updatedPermission]);
                         if(this.waitToRoleRenderer == false) {
-                            this.updateRole()
+                            this.updateRole(updatedPermission)
                         }
                     }
                     break;
@@ -408,10 +429,14 @@ export default {
             
             
         },
-        async updateRole() {
+        async updateRole(updatedPermission) {
             if(this.permissionDisplay.length > 0 && this.waitToRoleRenderer == false) {
                 let data = {"permission": []}
-                data["permission"] = this.user_role_permission
+                // if (condition) {
+                    
+                // }
+                console.log(updatedPermission,'updatedPermission',this.filterArray);
+                data["permission"] = updatedPermission ? updatedPermission : this.filterArray
                 await axios
                 .post(
                     this.URL.role + `/${this.user_role_id}/permission?n=${this.listenNodeId}`,
@@ -437,6 +462,7 @@ export default {
                 })
                 
                 this.user_role_permission = arr
+                this.user_true_permission = arr
             }
             
             let self = this
