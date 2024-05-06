@@ -139,7 +139,6 @@ export default {
                             additional_role.forEach(function(elements, idx) {
                                 if (elements.length > 0) {
                                     this[idx] = elements.join(", ");
-                                    console.log("Yayaya ", elements)
                                 }
                                 else {
                                     this[idx] = "-";
