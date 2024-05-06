@@ -233,7 +233,6 @@ export default {
         },
         searchValue (val) {
             this.tempSearch = val
-            console.log("this.tempSearch = ",this.tempSearch)
             this.getDataRole(this.tempSearch)
         },
         clearSearch() {
@@ -381,11 +380,10 @@ export default {
                     item["access_data"] = "USER"
                 }
             })
-        this.filterArray = this.user_role_permission.filter(item => item.selected === false);
+            this.filterArray = this.user_role_permission.filter(item => item.selected === false);
             if (this.filterArray.length == 0) {
                 this.filterArray = this.getMissingPermissions()
             }
-            console.log('this.filterArray',this.filterArray);
 
             if(this.waitToRoleRenderer == false) {
                 this.updateRole()
@@ -404,8 +402,7 @@ export default {
             let splitAction = key.split("|")[0] || null
             let splitKey = key.split("|")[1] || null
             let obj = {}
-    let updatedPermission = null
-            console.log(key, val, info,'hehhee',splitAction,splitKey,obj);
+            let updatedPermission = null
             switch(splitAction) {
                 
                 case "access_data":
@@ -418,7 +415,6 @@ export default {
                                 }
                             }
                         })
-                        console.log(this.user_role_permission,'hahah',[updatedPermission]);
                         if(this.waitToRoleRenderer == false) {
                             this.updateRole(updatedPermission)
                         }
@@ -432,10 +428,6 @@ export default {
         async updateRole(updatedPermission) {
             if(this.permissionDisplay.length > 0 && this.waitToRoleRenderer == false) {
                 let data = {"permission": []}
-                // if (condition) {
-                    
-                // }
-                console.log(updatedPermission,'updatedPermission',this.filterArray);
                 data["permission"] = updatedPermission ? updatedPermission : this.filterArray
                 await axios
                 .post(
