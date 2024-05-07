@@ -26,7 +26,7 @@
                                     @keyup.enter="updateValueOrion"
                                     @click-icon="$refs.cameraScanner.open('formInputConnoteOrion')"
                                 >
-                                    <template #icon>
+                                    <template #icon v-if="!hasConnoteNumber">
                                         <i class="bx bx-barcode-reader" />
                                     </template>
                                 </vs-input>
