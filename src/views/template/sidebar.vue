@@ -98,7 +98,7 @@ export default {
         {
           label: "Trace Connote",
           url: "/trace-connote",
-          icon: "css-search", // TODO: cari icon
+          icon: "bx-search",
           permission: "",
           children: [],
         },
