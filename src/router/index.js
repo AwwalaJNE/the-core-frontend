@@ -61,6 +61,9 @@ import TransactionFinish from "@/views/transaction/finish"
 // === Transaction Detail ===
 import DetailConnote from "@/views/transactionList/detail"
 
+// === Trace Connote ===
+import TraceConnote from '@/views/traceConnote/index'
+
 // === Cash Register  ===
 import CashRegister from "@/views/cashRegister"
 
@@ -306,6 +309,16 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Transaction"
+        }
+      },
+      {
+        path: "trace-connote/:id?",
+        name: "trace-connote",
+        component: TraceConnote,
+        children: [],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Trace Connote"
         }
       },
       {

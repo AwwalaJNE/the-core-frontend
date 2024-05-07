@@ -96,6 +96,13 @@ export default {
           children: [],
         },
         {
+          label: "Trace Connote",
+          url: "/trace-connote",
+          icon: "bx-search",
+          permission: "",
+          children: [],
+        },
+        {
           label: "Transaction",
           url: null,
           icon: "bx-list-ol",
