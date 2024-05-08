@@ -246,6 +246,7 @@ export default {
             val["node_id_destination"] = val["destination_name"]
             val['manifest_method_id'] = parseInt(val['manifest_method_id'])
             val['vehicle_id'] = parseInt(val['vehicle_id'])
+            val['pic_employee_id'] = parseInt(val['pic_employee_id'])
             val['vehicle_type_id'] = parseInt(val['vehicle_type_id'])
             val['flight_number'] = val['flight_number']
             val['flight_schedule'] = val['flight_schedule']
