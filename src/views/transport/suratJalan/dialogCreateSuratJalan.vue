@@ -19,6 +19,7 @@
           @formData="formData"
           :dataItem="editData"
           typeForm="surat_jalan"
+          :isDisabled="isDisabled"
           @onChangeCustom="onChangeCustom"
         />
 
@@ -43,7 +44,7 @@
               </form>
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
-              <vs-checkbox v-model="is_penerusan">
+              <vs-checkbox v-model="is_penerusan" @change="handlePenerusan">
                 Penerusan
               </vs-checkbox>
             </vs-col>
@@ -83,6 +84,7 @@
             :active="true"
             type="submit"
             @click="handleSubmit"
+            :disabled="isDisabled"
           >
             {{ btnBlue || "Add" }}
           </vs-button>
@@ -178,6 +180,7 @@ export default {
       editData: {},
       isDestinationDisable: "",
       is_penerusan: false,
+      isDisabled: false
     };
   },
   computed: {
@@ -213,6 +216,12 @@ export default {
         this.manifest_delivery_id = val.manifest_do_number;
 
         this.dataTable = val.detail;
+        if (val.status !== 'READY') {
+          this.isDisabled = true
+        }
+        else {
+          this.isDisabled = false
+        }
         this.dataTable.map((item) => {
           if (item.bag) {
             item.destination = item.bag.destination
@@ -399,6 +408,15 @@ export default {
     handleClearForm() {
       this.$refs.formSuratJalan.handleClearForm();
       this.form = {};
+    },
+    handlePenerusan(val) {
+      if (this.isDisabled) {
+        this.is_penerusan = !val
+        this.openNotification('warn', 'Information', 'Surat Jalan is DEPARTED')
+      }
+      else {
+        this.is_penerusan = val
+      }
     },
     updateValue(key, val) {
       switch (key) {
