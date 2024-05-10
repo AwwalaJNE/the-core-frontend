@@ -59,6 +59,7 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
+                                            :disabled="listenIsDisabled"
                                             @updateValue="updateValue" />
                                         </div>
                                     </template>
@@ -74,6 +75,7 @@
                                         :formKey="InputObject[item].key"
                                         :valueData="InputObject[item].value"
                                         :typeInput="InputObject[item].typeInput"
+                                        :disabled="listenIsDisabled"
                                         @updateValue="updateValue" />
                                     </div>
                                 </template>
@@ -114,6 +116,7 @@
                                             :valueData="InputObject[item].arrData"
                                             :selectedValue="InputObject[item].value"
                                             :isMultiple="false"
+                                            :disabled="listenIsDisabled"
                                             @updateValue="updateValue" />
                                         </div>
                                     </template>
@@ -131,6 +134,7 @@
                                         :valueData="InputObject[item].arrData"
                                         :selectedValue="InputObject[item].value"
                                         :isMultiple="false"
+                                        :disabled="listenIsDisabled"
                                         @updateValue="updateValue" />
                                     </div>
                                 </template>
@@ -242,7 +246,8 @@ export default {
         asynchronousSelect_url: String,
         querySearch: Function, // klo ada auto complete [required]
         itterateUrlAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
-        itterateFlagAutoComplete: String // klo pke itterate component dan ada auto complete [required]
+        itterateFlagAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
+        isDisabled: Boolean
     },
     data() {
         return {
@@ -282,6 +287,9 @@ export default {
         },
         listenAsynchronousSelectUrl() {
             return this.asynchronousSelect_url
+        },
+        listenIsDisabled() {
+            return this.isDisabled || false
         }
     },
     methods: {
