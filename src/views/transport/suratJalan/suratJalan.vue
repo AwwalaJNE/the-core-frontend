@@ -215,8 +215,7 @@ export default {
 
                       if (item.hasOwnProperty('status') && item["status"] !== null) {
                           let str = item["status"].toLowerCase();
-                          console.log("button status", str, str.includes("depart"));
-                          if (str.includes("depart")) {
+                          if (!str.includes("ready")) {
                               console.log("button status", str, str.includes("depart"));
                               buttonStatus["depart"] = false;
                               item["button_status"] = buttonStatus;
@@ -226,6 +225,11 @@ export default {
                               buttonStatus["cancel"] = false;
                               item["button_status"] = buttonStatus;
                           }
+                      }
+
+                      if (item.is_orion == "1") {
+                        buttonStatus["cancel"] = false;
+                        item["button_status"] = buttonStatus;
                       }
                     })
                     console.log('manifest_delivery_order', arr, res)

@@ -197,6 +197,10 @@ export default {
                         item['eta']  = this.dateConvert(item.eta)
                         item['etd']  = this.dateConvert(item.etd)
                         item['created_at']  = this.dateConvert(item.created_at)
+
+                        if (item.is_orion == "1") {
+                          item['isDisabled'] = true
+                        }
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
