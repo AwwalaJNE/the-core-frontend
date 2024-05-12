@@ -107,7 +107,7 @@ export default {
                 },
                 {
                   label: "Status",
-                  key: "is_confirmed",
+                  key: "status",
                   width: "auto"
                 },
                 {
@@ -216,7 +216,6 @@ export default {
                       item['inbound_eta'] = this.dateConvert(item['inbound_eta'])
                       item['inbound_etd'] = this.dateConvert(item['inbound_etd'])
                       item['departed_at'] = this.dateConvert(item['departed_at'])
-                      item['is_confirmed'] = item.is_confirmed == 1 ? 'Complete' : 'Outstanding'
                       item['vehicle'] = item['vehicle_type_name']
                       // item['is_prealert'] = isPrealert
                       item['inbound_number'] = isPrealert == 'bag' ? item['bag_number'] : item['inbound_number']
