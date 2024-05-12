@@ -51,6 +51,11 @@ export default {
                   width: "xs"
                 },
                 {
+                  label: "IM Numbers",
+                  key: "im_numbers",
+                  width: "xs"
+                },
+                {
                   label: "Vehicle",
                   key: "vehicle",
                   width: "xs"
@@ -207,6 +212,7 @@ export default {
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
                       console.log(isPrealert,'isPrealert');
+                      let im = []
                       item['inbound_eta'] = this.dateConvert(item['inbound_eta'])
                       item['inbound_etd'] = this.dateConvert(item['inbound_etd'])
                       item['departed_at'] = this.dateConvert(item['departed_at'])
@@ -216,6 +222,19 @@ export default {
                       item['inbound_number'] = isPrealert == 'bag' ? item['bag_number'] : item['inbound_number']
                       if(item['vehicle_name'] != null){
                         item['vehicle'] = item['vehicle'] + '('+item['vehicle_name']+')'
+                      }
+                      if (item['manifest_do_items'].length > 0) {
+                        item['manifest_do_items'].map(el => {
+                          im.push(el.im_number)
+                        })
+                      }
+                      if (item['manifest_items'].length > 0) {
+                        item['manifest_items'].map(el => {
+                          im.push(el.im_number)
+                        })
+                      }
+                      if (im.length > 0) {
+                        item['im_numbers'] = im.join(", ")
                       }
                       total = Number(total) + Number(item.transaction_amount);
                     })
