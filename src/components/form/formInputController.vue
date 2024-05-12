@@ -16,6 +16,7 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
+                                            :disabled="listenIsDisabled"
                                             @updateValue="updateValue" 
                                             @inputFocus="onfocuslah"/>
                                         </div>
@@ -32,6 +33,7 @@
                                     :valueData="InputObject[item].value"
                                     :typeInput="InputObject[item].typeInput"
                                     :placeholder="InputObject[item].placeholder"
+                                    :disabled="listenIsDisabled"
                                     @updateValue="updateValue" 
                                     @inputFocus="onfocuslah"/>
                                 </template>
@@ -157,6 +159,7 @@
                                     :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
                                     :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
                                     :asynchronousSelect_url="listenAsynchronousSelectUrl"
+                                    :disabled="listenIsDisabled"
                                     @updateValue="updateValue"
                                     @inputFocus="onfocuslah"/>
                                 </template>
@@ -200,6 +203,7 @@
                                     :selectedValue="InputObject[item].value"
                                     :typeForm="listenTypeForm"
                                     :typeInput="InputObject[item].typeInput"
+                                    :disabled="listenIsDisabled"
                                     @updateValue="updateValue" 
                                     @inputFocus="onfocuslah"/>
                                 </template>

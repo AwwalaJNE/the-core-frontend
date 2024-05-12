@@ -118,7 +118,7 @@ export default {
                     width: "sm"
                 },
                 {
-                    label: "status",
+                    label: "Status",
                     key: "status",
                     width: "auto"
                 },

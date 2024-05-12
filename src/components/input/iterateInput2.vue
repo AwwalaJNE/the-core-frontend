@@ -134,6 +134,7 @@ export default {
         itterateFlagAutoComplete: String,
         asynchronousSelect_url: String,
         fromKey: String,
+        disabled: Boolean
     },
     components: {
         "input-general": InputGeneral,
@@ -180,6 +181,9 @@ export default {
     },
     methods: {
         initialize() {
+            if (this.disabled) {
+                this.addDisabled = true
+            }
             let obj = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm] || {}
             // this.keys = obj['dynamicinputcomponent']['arrData'] || []
             this.InputObject = obj
