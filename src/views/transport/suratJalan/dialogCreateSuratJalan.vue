@@ -216,7 +216,7 @@ export default {
         this.manifest_delivery_id = val.manifest_do_number;
 
         this.dataTable = val.detail;
-        if (val.status !== 'READY') {
+        if (val.status !== 'READY' || val.is_orion == "1") {
           this.isDisabled = true
         }
         else {

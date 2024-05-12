@@ -208,7 +208,7 @@ export default {
   },
   watch: {
     dataItem: function(val) {
-      if (val.status !== 'READY') {
+      if (val.status !== 'READY' || val.is_orion == "1") {
         this.isDisabled = true
       }
       else {
@@ -646,8 +646,11 @@ export default {
       this.dataTable = [];
     },
     updateValue(val) {
-      if (this.dataItem.status !== 'READY') {
+      if (this.dataItem.status !== 'READY' || this.dataItem.is_orion == '1') {
         let notification = this.dataItem.status === 'CANCELED' ? "SM is Canceled" : "SM is Departed"
+        if (this.dataItem.is_orion == '1') {
+          notification = "ORION DATA"
+        }
         this.openNotification(
           "warning",
           "Edit Forbidden",
