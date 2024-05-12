@@ -12,6 +12,7 @@
                     start-placeholder="Start date"
                     end-placeholder="End date"
                     :picker-options="isETDnETA ? pickerOptions : null"
+                    :disabled="listenIsDisabled"
                     @change="updateValue">
                 </el-date-picker>
             </div>
@@ -29,7 +30,8 @@ export default {
         formKey: String,
         typeInput: String,
         prefix: String,
-        placeholderGabung: Boolean
+        placeholderGabung: Boolean,
+        disabled: Boolean
     },
     components: {
         "inputan": Inputan
@@ -68,6 +70,9 @@ export default {
             } else {
                 return false;
             }
+        },
+        listenIsDisabled() {
+            return this.disabled
         }
     },
     watch: {
