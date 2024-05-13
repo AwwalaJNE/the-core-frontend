@@ -208,11 +208,13 @@ export default {
   },
   watch: {
     dataItem: function(val) {
-      if (val.status !== 'READY' || val.is_orion == "1") {
-        this.isDisabled = true
-      }
-      else {
-        this.isDisabled = false
+      if (val !== undefined) {
+        if (val.status !== 'READY' || val.is_orion == "1") {
+          this.isDisabled = true
+        }
+        else {
+          this.isDisabled = false
+        }
       }
       // console.log('WATCH dataItem', val)
       // if(val !== undefined) {
@@ -646,17 +648,19 @@ export default {
       this.dataTable = [];
     },
     updateValue(val) {
-      if (this.dataItem.status !== 'READY' || this.dataItem.is_orion == '1') {
-        let notification = this.dataItem.status === 'CANCELED' ? "SM is Canceled" : "SM is Departed"
-        if (this.dataItem.is_orion == '1') {
-          notification = "ORION DATA"
+      if (this.dataItem !== undefined) {
+        if (this.dataItem.status !== 'READY' || this.dataItem.is_orion == '1') {
+          let notification = this.dataItem.status === 'CANCELED' ? "SM is Canceled" : "SM is Departed"
+          if (this.dataItem.is_orion == '1') {
+            notification = "ORION DATA"
+          }
+          this.openNotification(
+            "warning",
+            "Edit Forbidden",
+            notification
+          );
+          return
         }
-        this.openNotification(
-          "warning",
-          "Edit Forbidden",
-          notification
-        );
-        return
       }
       let hasData = this.dataTable.filter(
         (item) => item["bag_number"] == this.item_code
