@@ -159,6 +159,12 @@ export default {
           key: "destination_name",
           width: "xs",
         },
+        {
+          label: "Received",
+          key: "received_status",
+          type: "status",
+          width: "xs",
+        },
       ],
       // customActionList: [
       //   {
@@ -264,6 +270,7 @@ export default {
       if (this.listenDataItem.hasOwnProperty("detail")) {
         let arr = [];
         this.listenDataItem["detail"].map((data) => {
+          data.received_status = data.received_at ? 1 : 0
           if (data.item_number) {
             data["bag_number"] = data.item_number;
             data["type"] = data.item_type;
