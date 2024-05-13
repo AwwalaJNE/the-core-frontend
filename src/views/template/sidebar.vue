@@ -165,6 +165,12 @@ export default {
               permission: "read-bag",
             },
             {
+              label: "Inventory Bag",
+              url: "/inventory/bag",
+              icon: "",
+              permission: "read-bag",
+            },
+            {
               label: "Create Bag",
               url: "/inventory/bagging",
               icon: "",

@@ -225,6 +225,7 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    disabled: Boolean
   },
   components: {
     inputan: Inputan,
@@ -249,7 +250,7 @@ export default {
       return this.onlyNumber;
     },
     isDisabled() {
-      return this.typeInput.includes("disabled");
+      return this.typeInput.includes("disabled") || this.disabled;
     },
     isHidden() {
       return this.typeInput.includes("hidden");

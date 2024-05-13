@@ -42,6 +42,11 @@ export default {
                     width: "md"
                 },
                 {
+                    label: "DRI Number",
+                    key: "dri",
+                    width: "auto"
+                },
+                {
                     label: "Courier Code",
                     key: "employee_code",
                     width: "xs"

@@ -40,6 +40,9 @@ import Surcharge from "@/views/settings/surcharge"
 // === Inventory Item or Connote ===
 import InventoryItem from "@/views/inventory/connote"
 
+// === Inventory Bag Item ===
+import InventoryBagItem from "@/views/inventory/inventory-bag"
+
 // === Inventory Item or Bag ===
 import InventoryBag from "@/views/inventory/bag"
 
@@ -460,6 +463,15 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "inventory Item"
+        }
+      },
+      {
+        path: "/inventory/bag",
+        name: "InventoryBagItem",
+        component: InventoryBagItem,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Inventory Item"
         }
       },
       {

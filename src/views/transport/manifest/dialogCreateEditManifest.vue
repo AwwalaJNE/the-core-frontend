@@ -24,6 +24,7 @@
               :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
               @onChangeCustom="onChangeOrigin"
               @inputFocus="inputFocus"
+              :isDisabled="isDisabled"
             />
           </div>
         </vs-col>
@@ -185,6 +186,7 @@ export default {
       itterateFlagAutoComplete: "node_name",
       etd: null,
       estimated_time_in_hour: null,
+      isDisabled: false
     };
   },
   computed: {
@@ -206,6 +208,12 @@ export default {
   },
   watch: {
     dataItem: function(val) {
+      if (val.status !== 'READY' || val.is_orion == "1") {
+        this.isDisabled = true
+      }
+      else {
+        this.isDisabled = false
+      }
       // console.log('WATCH dataItem', val)
       // if(val !== undefined) {
       //     this.node_id = val.node_id
@@ -638,6 +646,18 @@ export default {
       this.dataTable = [];
     },
     updateValue(val) {
+      if (this.dataItem.status !== 'READY' || this.dataItem.is_orion == '1') {
+        let notification = this.dataItem.status === 'CANCELED' ? "SM is Canceled" : "SM is Departed"
+        if (this.dataItem.is_orion == '1') {
+          notification = "ORION DATA"
+        }
+        this.openNotification(
+          "warning",
+          "Edit Forbidden",
+          notification
+        );
+        return
+      }
       let hasData = this.dataTable.filter(
         (item) => item["bag_number"] == this.item_code
       );
@@ -664,8 +684,8 @@ export default {
             let arr = res.data.data;
             arr.map((item) => {
               item["type"] = "Bag";
-              item["destination_name"] = item["bag"]["destination"]
-                ? item["bag"]["destination"]["node_tariff_code"]
+              item["destination_name"] = item["destination"]
+                ? item["destination"]["node_tariff_code"]
                 : "";
             });
             this.dataTable = this.dataTable.concat(arr);

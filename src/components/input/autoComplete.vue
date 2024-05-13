@@ -11,6 +11,7 @@
         @select="handleSelect"
         @input="updateValue"
         @focus="inputFocus"
+        :disabled="isDisabled"
         ></el-autocomplete>
     </div>
 </template>
@@ -33,6 +34,7 @@ export default {
         getters: String,
         typeForm: String,
         querySearch: Function,
+        disabled: Boolean
 
         // url: String,
         // flag: [String, Number]
@@ -72,7 +74,7 @@ export default {
         //     return this.flag || ''
         // },
         isDisabled() {
-            return this.typeInput.includes('disabled')
+            return this.typeInput.includes('disabled') || this.disabled
         }
     },
     watch: {
