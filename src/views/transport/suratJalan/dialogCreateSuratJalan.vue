@@ -150,6 +150,12 @@ export default {
           key: "item_type",
           width: "auto",
         },
+        {
+          label: "Received",
+          key: "received_status",
+          type: "status",
+          width: "auto",
+        },
       ],
       customActionList: [
         {
@@ -243,6 +249,7 @@ export default {
               remove: false,
             };
           }
+          item.received_status = item.received_at ? 1 : 0
         });
 
         this.editData = val;
