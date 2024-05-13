@@ -38,6 +38,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "IM Number",
+                    key: "im_number",
+                    width: "xs"
+                },
+                {
                     label: "Item type",
                     key: "item_type",
                     width: "xxs"
