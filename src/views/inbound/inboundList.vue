@@ -238,6 +238,7 @@ export default {
                         })
                       }
                       if (im.length > 0) {
+                        im = [...new Set(im)]
                         item['im_numbers'] = im.join(", ")
                       }
                       total = Number(total) + Number(item.transaction_amount);
