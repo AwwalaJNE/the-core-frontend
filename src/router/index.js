@@ -305,7 +305,8 @@ const routes = [
             component: DetailConnote,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Transaction Detail"
+              breadCrumb: "Transaction Detail",
+              backPath: "/sales/transaction"
             }
           },
         ],
@@ -419,7 +420,8 @@ const routes = [
             component: irreguralitiesTracingHistory,
             meta: {
               requiresAuth: true,
-              breadCrumb: "tracing"
+              breadCrumb: "tracing",
+              backPath: "/irreguralities/tracing"
             }
           }
         ],
@@ -480,7 +482,8 @@ const routes = [
         component: ConnoteDetail,
         meta: {
           requiresAuth: true,
-          breadCrumb: "connote detail"
+          breadCrumb: "connote detail",
+          backPath: "/inventory/item"
         }
       },
       {
@@ -498,7 +501,8 @@ const routes = [
         component: InventoryBagDetail,
         meta: {
           requiresAuth: true,
-          breadCrumb: "bagging detail"
+          breadCrumb: "bagging detail",
+          backPath: "/inventory/bag"
         }
       },
 
@@ -603,7 +607,8 @@ const routes = [
         component: InboundIncomingScan,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Inbound Incoming / Receiving"
+          breadCrumb: "Inbound Incoming / Receiving",
+          backPath: "/inbound/prealert"
         }
       },
 
@@ -622,7 +627,8 @@ const routes = [
         component: DeliveryRunsheetEdit,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Delivery Assign"
+          breadCrumb: "Delivery Assign",
+          backPath: "/delivery/runsheet"
         }
       },
       {
@@ -631,7 +637,8 @@ const routes = [
         component: DeliveryRunsheetEdit,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Delivery Assign"
+          breadCrumb: "Delivery Assign",
+          backPath: "/delivery/runsheet"
         }
       },
       {
