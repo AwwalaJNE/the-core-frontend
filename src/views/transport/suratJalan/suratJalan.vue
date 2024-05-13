@@ -74,7 +74,7 @@ export default {
               },
               {
                 label: "Orion Number",
-                key: "do",
+                key: "orion_number",
                 width: "auto"
               },
               {
@@ -217,6 +217,7 @@ export default {
                       item["node_id_destination_name"] = (item.destination) ? item.destination.node_name: null
                       item["driver_id"] = (item.pic_employee_id) ? parseInt(item.pic_employee_id): null
                       item["driver_name"] = (item.pic) ? item.pic.employee_name: null
+                      item["orion_number"] = item.mts || item.do || "";
 
                       if (item.hasOwnProperty('status') && item["status"] !== null) {
                           let str = item["status"].toLowerCase();
