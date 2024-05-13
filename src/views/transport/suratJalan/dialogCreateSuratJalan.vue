@@ -73,7 +73,7 @@
             :active="true"
             @click="cancel"
           >
-            Cancel
+            Close
           </vs-button>
         </vs-col>
         <vs-col w="3">

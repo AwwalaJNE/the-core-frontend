@@ -73,7 +73,7 @@ export default {
                 width: "xs"
               },
               {
-                label: "DO Number",
+                label: "Orion Number",
                 key: "do",
                 width: "auto"
               },

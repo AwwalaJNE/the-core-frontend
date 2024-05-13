@@ -84,7 +84,7 @@
             :active="true"
             @click="cancel"
           >
-            Cancel
+            Close
           </vs-button>
         </vs-col>
         <vs-col w="2">
@@ -95,6 +95,7 @@
             :active="true"
             type="submit"
             @click="handleSubmit"
+            :disabled="isDisabled"
           >
             {{ btnBlue || "Add" }}
           </vs-button>
