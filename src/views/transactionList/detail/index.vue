@@ -7,7 +7,7 @@
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
-            <vs-col xs="1" sm="1" lg="1" align="right">
+            <vs-col xs="4" sm="1" lg="1" align="right">
               <div class="btn-print-all">
                 <vs-button
                     ref="btnPrintAll"

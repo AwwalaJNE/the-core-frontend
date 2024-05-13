@@ -18,7 +18,7 @@
 
                         <template>
                             <vs-row>
-                                <vs-col vs-align="center" xs="3" sm="3" lg="2">
+                                <vs-col vs-align="center" xs="6" sm="3" lg="2">
                                     <template v-if="DataBag.length > 1">
                                         <vs-select
                                             class="m-select"
@@ -44,7 +44,7 @@
 
                                     </template>
                                 </vs-col>
-                                <vs-col vs-align="center" xs="3" sm="3" lg="3">
+                                <vs-col vs-align="center" xs="6" sm="3" lg="3">
                                     <template v-if="DataVehicle.length > 1">
                                         <vs-select class="m-select" filter autocomplete="off" :multiple="false" placeholder="All Vehicle" v-model="vehicle_id" :border="true" @change="updateVehicle">
                                             <template v-if="DataVehicle.length > 1">
@@ -56,7 +56,7 @@
                                         </vs-select>
                                     </template>
                                 </vs-col>
-                                <vs-col vs-align="center" xs="3" sm="3" lg="3">
+                                <vs-col vs-align="center" xs="6" sm="3" lg="3">
                                     <template v-if="DataDriver.length > 1">
                                         <vs-select class="m-select" filter :multiple="false" placeholder="All Driver" v-model="driver_id" :border="true" @change="updateDriver">
                                             <template v-if="DataDriver.length > 1">
@@ -67,7 +67,7 @@
                                         </vs-select>
                                     </template>
                                 </vs-col>
-                                <vs-col xs="6" sm="3" lg="3" offset="1" class="mb-15">
+                                <vs-col xs="5" sm="3" lg="3" offset="1" class="mb-15">
                                     <search-input ref="searchInput" @searchValue="searchValue" :placeholder="`Search Connote`"/>
                                 </vs-col>
                             </vs-row>

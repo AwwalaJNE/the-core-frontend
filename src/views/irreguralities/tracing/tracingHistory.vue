@@ -33,14 +33,16 @@
                         </vs-row>
                         
                         <vs-row>
-                            <date-time
-                                :name="''"
-                                :rules="''"
-                                :formKey="'TRIGGER_DATE'"
-                                :valueData="dateRange"
-                                typeInput="daterange"
-                                @updateValue="updateValue" 
-                            />
+                            <vs-col xs="12" sm="6" lg="6">
+                                <date-time
+                                    :name="''"
+                                    :rules="''"
+                                    :formKey="'TRIGGER_DATE'"
+                                    :valueData="dateRange"
+                                    typeInput="daterange"
+                                    @updateValue="updateValue" 
+                                />
+                            </vs-col>
                         </vs-row>
                         
                         <template v-if="navActive === 'k-REMARK'">

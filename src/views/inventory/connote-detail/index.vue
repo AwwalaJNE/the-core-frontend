@@ -7,7 +7,7 @@
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
-            <vs-col xs="1" sm="1" lg="1" align="right">
+            <vs-col xs="4" sm="1" lg="1" align="right">
                 <vs-button 
                 square
                 block
@@ -27,7 +27,7 @@
                         </vs-row>
                         <template v-if="navActive === 'k-INFO'">
                           <vs-row justify="space-between">
-                            <vs-col xs="4" sm="4" lg="4">
+                            <vs-col xs="12" sm="6" lg="4">
                               <selector-origin
                                   :title="'From'"
                                   :valueData="originData"
@@ -35,14 +35,14 @@
                                   @updateInfo="updateInfo" />
                             </vs-col>
 
-                            <vs-col xs="4" sm="4" lg="4">
+                            <vs-col xs="12" sm="6" lg="4">
                               <selector-detail
                                   :title="'To'"
                                   :valueData="destinationData"
                                   :tlc="destinationTlc"
                                   @updateInfo="updateInfo" />
                             </vs-col>
-                            <vs-col xs="4" sm="4" lg="4">
+                            <vs-col xs="12" sm="4" lg="4">
                               <selector-detail
                                   :title="'Information'"
                                   :valueData="informationData"
@@ -53,7 +53,7 @@
                         </template>
                         <template v-if="navActive === 'k-ACTIVITY'">
                           <vs-row >
-                            <vs-col vs-align="center" xs="3" sm="3" lg="12">
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
                               <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
                             </vs-col>
                           </vs-row>

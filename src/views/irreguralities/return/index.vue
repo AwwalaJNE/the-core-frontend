@@ -27,7 +27,7 @@
             <div class="box view">
                 <div class="nav-box">
                     <vs-row justify="space-between">
-                        <vs-col xs="6" sm="6" lg="6">
+                        <vs-col xs="12" sm="6" lg="6">
                             <date-time
                             :name="''"
                             :rules="''"
