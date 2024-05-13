@@ -202,13 +202,15 @@ export default {
                 this.transaction_id = data['transaction_id']
                 this.connote_qty = data['connote'].length
                 let diskon = 0
+                let amount_total_price = 0
                 data['connote'].map(item => {
                     if(item.amount_discount) {
                         diskon += Number(item.amount_discount)
                     }
+                    amount_total_price += Number(item.amount_total_price)
                 })
-                this.grand_total = diskon > 0 ? Number(data['grand_total']) + diskon : data['grand_total'] // data['grand_total'] sebelumnya sudah kena efek diskon saat proses calculation
-                this.price = data['grand_total'] 
+                this.grand_total = diskon > 0 ? amount_total_price + diskon : data['grand_total']// data['grand_total'] sebelumnya sudah kena efek diskon saat proses calculation
+                this.price = amount_total_price
                 this.discount = diskon
                 let koli_qty = 0
                 data['connote'].map(item => {
@@ -217,7 +219,7 @@ export default {
                 })
                 this.jumlahbayar = this.price
                 this.koli_qty = koli_qty
-                console.log('PAYMENT', 'meong', data, this.grand_total, diskon)
+                // console.log('PAYMENT', 'meong', data, this.grand_total, diskon,amount_total_price, data['grand_total'])
             }
             this.ecodi_id = `TCR${this.transaction_id}`
             
