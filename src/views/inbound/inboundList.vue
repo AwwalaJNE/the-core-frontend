@@ -83,7 +83,7 @@ export default {
                 {
                     label: "Weight (Kg)",
                     key: "inbound_total_weight",
-                    width: "xs"
+                    width: "auto"
                 },
                 {
                   label: "PIC",
@@ -113,6 +113,11 @@ export default {
                 {
                   label: "Received At",
                   key: "inbound_node_name_receiver",
+                  width: "auto"
+                },
+                {
+                  label: "Received Time",
+                  key: "received_at",
                   width: "auto"
                 },
             ],
