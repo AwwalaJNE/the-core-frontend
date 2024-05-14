@@ -135,10 +135,13 @@ export default {
         },
         closeDialogRole() {
             this.dialogRole = false
+        },
+        refreshMessage(){
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
+        this.refreshMessage()
     },
 }
 </script>
