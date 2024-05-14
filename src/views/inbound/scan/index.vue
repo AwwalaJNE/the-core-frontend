@@ -155,13 +155,6 @@ export default {
             this.refresh()
           }
         },
-        getBranchCode() {
-          let node_id = JSON.parse(localStorage.getItem("vuejs__node_id"))
-          if (node_id) {
-            const [type, zone, code] = node_id.value.node_code.split("-")
-            this.orion_payload.p_branch = zone + "000"
-          }
-        },
         transformSequence(orion_sequence) {
           const [prefix, middle, suffix] = orion_sequence.split("/")
           const coreSequence = `${prefix}-${middle}-C${suffix}`
@@ -281,7 +274,6 @@ export default {
     },
     mounted() {
       this.getParamRoute()
-      this.getBranchCode()
     }
 }
 </script>
