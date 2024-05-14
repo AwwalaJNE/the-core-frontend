@@ -110,7 +110,7 @@ export default {
       searchParams: [
         {
           label: 'Manifest Number',
-          value: 'manifest number'
+          value: 'manifest_number'
         },
         {
           label: 'Type SM',
