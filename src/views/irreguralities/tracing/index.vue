@@ -150,6 +150,8 @@
                         :hasPagination="true"
                         :hasLinked="['koli_number']"
                         @handleEdit="showData"
+                        @actionPagination="actionPagination"
+                        @actionLimit="actionLimit"
                     />
                 </div>
             </div>
@@ -243,7 +245,7 @@ export default {
             ],    
             form: {},
             pagination: {
-                limit:10,
+                limit:20,
                 page_size: 1,
                 page: 1
             },
