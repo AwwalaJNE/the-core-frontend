@@ -12,7 +12,7 @@
         </vs-row>
         <section class="new-transaction mt-1">
             <vs-row justify="flex-start">
-                        <vs-col xs="6" sm="2" lg="3">
+                        <vs-col xs="12" sm="2" lg="3">
                             <form @submit.prevent="processBookingCode">
                                 <!-- <input-general 
                                 name="Masukan Kode Booking"
@@ -41,7 +41,7 @@
                             </template>
                         </vs-col>
 
-                <vs-col xs="6" sm="2" lg="2">
+                <vs-col xs="12" sm="2" lg="2">
                     <vs-input border type="text"
                         :autofocus="true"
                         v-model="customerCode"

@@ -2,7 +2,8 @@
     <dialog-master 
     :actived="listenActive" 
     :loading="listenLoading"
-    :closeDialog="cancel">
+    :closeDialog="cancel"
+    width="lg">
 
         <template v-slot:header>
             {{listenTitle}}
