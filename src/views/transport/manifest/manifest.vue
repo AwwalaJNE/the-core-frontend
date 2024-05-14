@@ -197,15 +197,12 @@ export default {
                         item['eta']  = this.dateConvert(item.eta)
                         item['etd']  = this.dateConvert(item.etd)
                         item['created_at']  = this.dateConvert(item.created_at)
-                        
+
                         if (item.hasOwnProperty('status') && item["status"] !== null) {
                           let str = item["status"].toLowerCase();
                           if (!str.includes("ready")) {
                               item['isDisabled'] = true;
                           }
-                          if (str.includes("cancel")) {
-                              item['isDisabled'] = true;
-                        }
                       }
 
                         if (item.is_orion == "1") {
