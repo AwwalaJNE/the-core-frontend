@@ -48,7 +48,7 @@
                         <template v-if="navActive === 'k-REMARK'">
                             <transition name="slide-fade">
                                 <remark-list 
-                                    :ref="navActive"  
+                                    ref="refreshRemark"  
                                     :query="tempSearch"
                                     :dateFilter="dateRange"
                                 />
@@ -68,7 +68,7 @@
                         <template v-if="navActive === 'k-MESSAGE'">
                             <transition name="slide-fade">
                                 <message-list 
-                                    :ref="navActive"  
+                                    ref="refreshMessage"  
                                     :query="tempSearch"
                                     :dateFilter="dateRange"
                                 />
@@ -104,11 +104,13 @@
         <dialog-remark
             :active="dialogRemarkActive" 
             :closeDialog="closeDialogRemark"
+            :callRefreshRemarkFunction="callRefreshRemarkFunction"
         />
 
         <dialog-messages
             :active="dialogMessageActive" 
             :closeDialog="closeDialogMessage"
+            :callRefreshMessageFunction="callRefreshMessageFunction"
         />
 
     </div>
@@ -208,6 +210,12 @@ export default {
         }
     },
     methods: {
+        callRefreshRemarkFunction() {
+            this.$refs.refreshRemark.refreshRemark();
+        },
+        callRefreshMessageFunction() {
+            this.$refs.refreshMessage.refreshMessage();
+        },
         openDialogNewButton() {
             switch(this.navActive) {
                 case "k-REMARK":

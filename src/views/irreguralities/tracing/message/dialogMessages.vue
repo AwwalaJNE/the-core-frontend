@@ -111,6 +111,7 @@ export default {
        closeDialog: Function, 
        active: Boolean,
        title: String,
+       callRefreshMessageFunction: Function
     },
     computed: {
         listenActive() {
@@ -182,6 +183,8 @@ export default {
                     this.loadingMessage = false
                     this.openNotification('danger', 'Create new tracing message failed', err.response ? err.response.data.message : 'something went wrong')
                 })
+
+            this.callRefreshMessageFunction()
         },
         cancel() {
             this.form = {};

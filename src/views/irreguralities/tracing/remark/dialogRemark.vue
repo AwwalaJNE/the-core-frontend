@@ -110,6 +110,7 @@ export default {
        closeDialog: Function, 
        active: Boolean,
        title: String,
+       callRefreshRemarkFunction: Function
     },
     computed: {
         listenActive(){
@@ -248,6 +249,8 @@ export default {
                     this.loadingRemark = false
                     this.openNotification('danger', 'Create new tracing remark failed', err.response ? err.response.data.message : 'something went wrong')
                 })
+
+            this.callRefreshRemarkFunction();
         },
         handleClearForm(){
             this.status = ''

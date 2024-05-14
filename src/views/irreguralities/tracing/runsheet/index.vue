@@ -9,6 +9,8 @@
             :limit="pagination.limit"
             :hasAction="false"
             :hasPagination="true"
+            @actionPagination="actionPagination"
+            @actionLimit="actionLimit"
         />
 
     </div>
@@ -88,7 +90,7 @@ export default {
             tempSearch: this.query ? this.query : "",
             dialogRole: false,
             pagination: {
-                limit: 10,
+                limit: 20,
                 page_size: 1,
                 page: 1
             }
@@ -137,10 +139,22 @@ export default {
         },
         closeDialogRole() {
             this.dialogRole = false
+        },
+        actionPagination(val) {
+            this.pagination.page = val
+            this.refreshRunsheet()
+        },
+        actionLimit(val){
+            this.pagination.limit = val
+            this.pagination.page = 1
+            this.refreshRunsheet()
+        },
+        refreshRunsheet(){
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
+        this.refreshRunsheet();
     },
 }
 </script>
