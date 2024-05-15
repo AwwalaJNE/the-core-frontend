@@ -332,7 +332,7 @@ export default {
           this.loading = true
           await axios
               .get(this.URL.node +
-                  `/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+                  `/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&case=receiving_menu&s=`,
                   this.Helper.header())
               .then(res => {
                 if(res.data.data.length > 0) {
@@ -355,7 +355,7 @@ export default {
           this.loading = true
           await axios
               .get(this.URL.node +
-                  `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+                  `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&case=receiving_menu&s=`,
                   this.Helper.header())
               .then(res => {
                 if(res.data.data.length > 0) {
