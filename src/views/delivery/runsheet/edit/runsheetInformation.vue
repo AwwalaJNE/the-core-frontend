@@ -21,6 +21,7 @@
         @updateValue="updateValue"
         @actionUpdate="actionUpdate"
         @updateSelected="updateSelected"
+        @inputFocus="onClickClear"
       />
     </template>
   </div>
@@ -212,6 +213,15 @@ export default {
     this.getParamRoute();
   },
   methods: {
+    onClickClear(val) {
+      const obj = {};
+      obj.koli_number = val.koli_number;
+      obj.status = null;
+      val.status_code = null;
+      this.$store.dispatch("SET_STATUS_DELIVERY", obj);
+      this.$set(val, 'is_disabled_input_remarks', true);
+      this.$set(val, 'is_disabled_input_reveiver', true);
+    },
     updateValue(key, val, info, item = null) {
       val = val.toUpperCase();
       const deliveryNumber = this.$store.getters.getInputs.remarks;
