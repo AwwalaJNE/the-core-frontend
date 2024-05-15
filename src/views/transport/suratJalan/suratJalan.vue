@@ -281,6 +281,7 @@ export default {
                     obj['etd'] = val.etd
                     obj['eta'] = val.eta
                     obj['status'] = "DEPARTED"
+                    obj['is_penerusan'] = val.is_penerusan
 
                     this.form = obj
                     this.depart()
