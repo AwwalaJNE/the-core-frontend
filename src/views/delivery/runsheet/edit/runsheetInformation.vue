@@ -240,6 +240,10 @@ export default {
           if (item.status_code !== null) {
             this.$set(item, 'is_disabled_input_remarks', false);
             this.$set(item, 'is_disabled_input_reveiver', false);
+            if (!this.$refs.tableMaster.selected.includes(item)) {
+              this.$refs.tableMaster.selected.push(item)
+              this.$emit("update-selected", this.$refs.tableMaster.selected);
+            }
           }
           break;
         case column_change && column_change === "remarks":

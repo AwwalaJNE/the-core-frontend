@@ -749,6 +749,17 @@ export default {
     async updatePOD(dataPOD, info) {
       // console.log(dataPOD, "ini data pod");
       if (dataPOD.remarks || dataPOD.receiver_name || dataPOD.status) {
+        if (!dataPOD.status) {
+          this.openNotification('warn', 'Status Kosong', 'Status Wajib Diisi')
+          return
+        }
+        else {
+          let statusDesc = this.arrStatus.find(status => status.value === dataPOD.status)
+          if (statusDesc.label.includes("RECEIVED") && !dataPOD.receiver_name) {
+            this.openNotification('warn', 'Receiver Kosong', 'Receiver Wajib Diisi')
+            return
+          }
+        }
         if (this.delivery_runsheet_number) {
           dataPOD.delivery_runsheet_number = this.delivery_runsheet_number;
           if (this.employee_id != null || this.employee_id !== "") {
