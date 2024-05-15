@@ -395,6 +395,9 @@ export default {
 
         this.$emit("update-selected", filtered);
       }
+      else {
+        this.$emit("update-selected", selected);
+      }
     },
 
     onRowClickCallback(event, item, selected) {

@@ -9,233 +9,240 @@
         </div>
       </vs-col>
     </vs-row>
-
+    <template>
+      <vs-row style="margin-top:3em">
+        <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px;">
+          <vs-radio v-model="radio_option" val="connote" :disabled="disabledApprove">
+            Connote (orion)
+          </vs-radio>
+        </vs-col>
+        <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px">
+          <vs-radio v-model="radio_option" val="koli" :disabled="disabledApprove">
+            Koli
+          </vs-radio>
+        </vs-col>
+        <vs-col xs="12" sm="4" lg="3" >
+          <vs-radio v-model="radio_option" val="bag" :disabled="disabledApprove">
+            Bag Pra Runsheet
+          </vs-radio>
+        </vs-col>
+      </vs-row>
+    </template>
+    <vs-row align="center" style="margin-top: 1rem;">
+      <template>
+        <vs-col v-if="radio_option === 'bag'" xs="12" sm="3" lg="3">
+          <div class="center">
+            <vs-input
+              ref="formInputConnote"
+              v-model="item_bag"
+              border
+              type="text"
+              label-placeholder="Scan Bag disini"
+              autofocus
+              icon-after
+              :disabled="disabledApprove"
+              @keyup.enter="updateValueBag"
+              @click-icon="$refs.cameraScanner.open('formInputConnote')"
+            >
+              <template #icon>
+                <i class="bx bx-barcode-reader" />
+              </template>
+            </vs-input>
+          </div>
+        </vs-col>
+        <vs-col xs="12" sm="3" lg="3">
+          <div v-if="radio_option === 'koli'" class="center">
+            <vs-input
+              ref="formInputConnote"
+              v-model="item_no"
+              border
+              type="text"
+              label-placeholder="Scan Koli here"
+              autofocus
+              icon-after
+              :disabled="disabledApprove"
+              @keyup.enter="updateValue"
+              @click-icon="$refs.cameraScanner.open('formInputConnote')"
+            >
+              <template #icon>
+                <i class="bx bx-barcode-reader" />
+              </template>
+            </vs-input>
+          </div>
+          <div v-else-if="radio_option === 'connote'" class="center">
+            <vs-input
+              ref="formInputConnoteOrion"
+              v-model="item_no_orion"
+              border
+              type="text"
+              label-placeholder="Scan Connote here (orion)"
+              autofocus
+              icon-after
+              :disabled="disabledApprove"
+              @keyup.enter="updateValueOrion"
+              @click-icon="
+                $refs.cameraScanner.open('formInputConnoteOrion')
+              "
+            >
+              <template #icon>
+                <i class="bx bx-barcode-reader" />
+              </template>
+            </vs-input>
+          </div>
+          <div v-else-if="radio_option === 'bag'" class="center">
+            <vs-input
+              ref="formInputConnote"
+              v-model="item_no"
+              border
+              type="text"
+              label-placeholder="Scan Koli disini "
+              autofocus
+              icon-after
+              :disabled="disabledApprove"
+              @keyup.enter="updateValue"
+              @click-icon="
+                $refs.cameraScanner.open('formInputConnote')
+              "
+            >
+              <template #icon>
+                <i class="bx bx-barcode-reader" />
+              </template>
+            </vs-input>
+          </div>
+        </vs-col>
+        <vs-col xs="12" sm="3" lg="3">
+          <div v-if="radio_option === 'koli'" class="center">
+            <vs-input
+              ref="formRemoveConnote"
+              v-model="item_no_remove"
+              border
+              type="text"
+              label-placeholder="Remove Koli here"
+              autofocus
+              icon-after
+              :disabled="disabledApprove"
+              @keyup.enter="removeValue"
+              @click-icon="
+                $refs.cameraScanner.open('formRemoveConnote')
+              "
+            >
+              <template #icon>
+                <i class="bx bx-barcode-reader" />
+              </template>
+            </vs-input>
+          </div>
+          <div v-else-if="radio_option === 'connote'" class="center">
+            <vs-input
+              ref="formRemoveConnoteOrion"
+              v-model="item_no_orion_remove"
+              border
+              type="text"
+              label-placeholder="Remove Connote here (orion)"
+              autofocus
+              icon-after
+              :disabled="disabledApprove"
+              @keyup.enter="removeValueOrion"
+              @click-icon="
+                $refs.cameraScanner.open('formRemoveConnoteOrion')
+              "
+            >
+              <template #icon>
+                <i class="bx bx-barcode-reader" />
+              </template>
+            </vs-input>
+          </div>
+          <div v-else-if="radio_option === 'bag'" class="center">
+            <vs-input
+              ref="formRemoveConnote"
+              v-model="item_no_remove"
+              border
+              type="text"
+              label-placeholder="Hapus Koli disini"
+              autofocus
+              icon-after
+              :disabled="disabledApprove"
+              @keyup.enter="removeValue"
+              @click-icon="
+                $refs.cameraScanner.open('formRemoveConnote')
+              "
+            >
+              <template #icon>
+                <i class="bx bx-barcode-reader" />
+              </template>
+            </vs-input>
+          </div>
+        </vs-col>
+      </template>
+      <vs-col xs="12" sm="3" lg="3">
+        <template v-if="dataDelivery.length > 0">
+          <div class="left">
+            <ul style="float: left; text-align: left; padding: 0">
+              <li>
+                User :
+                {{
+                  listenActiveUser ? listenActiveUser.user_login : ""
+                }}
+              </li>
+              <!-- <li>Date : {{ dataDelivery.delivery[0].date }}</li> -->
+              <li>
+                Total :
+                {{ dataDelivery.length + " Connotes" }}
+              </li>
+              <li>
+                Expectations COD :
+                {{ moneyformat(dataDeliverySummary.amount_cod) }}
+              </li>
+            </ul>
+          </div>
+        </template>
+      </vs-col>
+    </vs-row>
     <section>
       <vs-row>
         <vs-col lg="12" sm="12" xs="12">
           <div class="box information" style="padding-top: 1px !important">
-            <p align="left">
-              <b>Courier</b>
-            </p>
-            <template>
-              <p align="left">
-                {{ employee_code }}
-                ({{ employee_name }})
-              </p>
-            </template>
-
-            <template>
-              <div class="center in-get-bag">
-                <vs-row style="margin-top:1em">
-                  <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px;">
-                    <vs-radio v-model="radio_option" val="connote">
-                      Connote (orion)
-                    </vs-radio>
-                  </vs-col>
-                  <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px">
-                    <vs-radio v-model="radio_option" val="koli">
-                      Koli
-                    </vs-radio>
-                  </vs-col>
-                  <vs-col xs="12" sm="4" lg="3" >
-                    <vs-radio v-model="radio_option" val="bag">
-                      Bag Pra Runsheet
-                    </vs-radio>
-                  </vs-col>
-                </vs-row>
-              </div>
-            </template>
-            <div class="nav-box">
-              <vs-row>
-                <vs-col v-if="radio_option === 'bag'" xs="12" sm="3" lg="3" style="margin-top: 2em">
-                  <div class="center">
-                    <vs-input
-                      ref="formInputConnote"
-                      v-model="item_bag"
-                      border
-                      type="text"
-                      label-placeholder="Scan Bag disini"
-                      autofocus
-                      icon-after
-                      @keyup.enter="updateValueBag"
-                      @click-icon="$refs.cameraScanner.open('formInputConnote')"
-                    >
-                      <template #icon>
-                        <i class="bx bx-barcode-reader" />
-                      </template>
-                    </vs-input>
-                  </div>
-                </vs-col>
-                <vs-col xs="12" sm="3" lg="3" style="margin-top: 2em">
-                  <div v-if="radio_option === 'koli'" class="center">
-                    <vs-input
-                      ref="formInputConnote"
-                      v-model="item_no"
-                      border
-                      type="text"
-                      label-placeholder="Scan Koli here"
-                      autofocus
-                      icon-after
-                      @keyup.enter="updateValue"
-                      @click-icon="$refs.cameraScanner.open('formInputConnote')"
-                    >
-                      <template #icon>
-                        <i class="bx bx-barcode-reader" />
-                      </template>
-                    </vs-input>
-                  </div>
-                  <div v-else-if="radio_option === 'connote'" class="center">
-                    <vs-input
-                      ref="formInputConnoteOrion"
-                      v-model="item_no_orion"
-                      border
-                      type="text"
-                      label-placeholder="Scan Connote here (orion)"
-                      autofocus
-                      icon-after
-                      @keyup.enter="updateValueOrion"
-                      @click-icon="
-                        $refs.cameraScanner.open('formInputConnoteOrion')
-                      "
-                    >
-                      <template #icon>
-                        <i class="bx bx-barcode-reader" />
-                      </template>
-                    </vs-input>
-                  </div>
-                  <div v-else-if="radio_option === 'bag'" class="center">
-                    <vs-input
-                      ref="formInputConnote"
-                      v-model="item_no"
-                      border
-                      type="text"
-                      label-placeholder="Scan Koli disini "
-                      autofocus
-                      icon-after
-                      @keyup.enter="updateValue"
-                      @click-icon="
-                        $refs.cameraScanner.open('formInputConnote')
-                      "
-                    >
-                      <template #icon>
-                        <i class="bx bx-barcode-reader" />
-                      </template>
-                    </vs-input>
-                  </div>
-                </vs-col>
-                <vs-col xs="12" sm="3" lg="3" style="margin-top: 2em">
-                  <div v-if="radio_option === 'koli'" class="center">
-                    <vs-input
-                      ref="formRemoveConnote"
-                      v-model="item_no_remove"
-                      border
-                      type="text"
-                      label-placeholder="Remove Koli here"
-                      autofocus
-                      icon-after
-                      @keyup.enter="removeValue"
-                      @click-icon="
-                        $refs.cameraScanner.open('formRemoveConnote')
-                      "
-                    >
-                      <template #icon>
-                        <i class="bx bx-barcode-reader" />
-                      </template>
-                    </vs-input>
-                  </div>
-                  <div v-else-if="radio_option === 'connote'" class="center">
-                    <vs-input
-                      ref="formRemoveConnoteOrion"
-                      v-model="item_no_orion_remove"
-                      border
-                      type="text"
-                      label-placeholder="Remove Connote here (orion)"
-                      autofocus
-                      icon-after
-                      @keyup.enter="removeValueOrion"
-                      @click-icon="
-                        $refs.cameraScanner.open('formRemoveConnoteOrion')
-                      "
-                    >
-                      <template #icon>
-                        <i class="bx bx-barcode-reader" />
-                      </template>
-                    </vs-input>
-                  </div>
-                  <div v-else-if="radio_option === 'bag'" class="center">
-                    <vs-input
-                      ref="formRemoveConnote"
-                      v-model="item_no_remove"
-                      border
-                      type="text"
-                      label-placeholder="Hapus Koli disini"
-                      autofocus
-                      icon-after
-                      @keyup.enter="removeValue"
-                      @click-icon="
-                        $refs.cameraScanner.open('formRemoveConnote')
-                      "
-                    >
-                      <template #icon>
-                        <i class="bx bx-barcode-reader" />
-                      </template>
-                    </vs-input>
-                  </div>
-                </vs-col>
-                <vs-col xs="12" sm="3" lg="3">
-                  <template v-if="dataDelivery.length > 0">
-                    <div class="left">
-                      <ul style="float: left; text-align: left">
-                        <li>
-                          User :
-                          {{
-                            listenActiveUser ? listenActiveUser.user_login : ""
-                          }}
-                        </li>
-                        <!-- <li>Date : {{ dataDelivery.delivery[0].date }}</li> -->
-                        <li>
-                          Total :
-                          {{ dataDelivery.length + " Connotes" }}
-                        </li>
-                        <li>
-                          Expectations COD :
-                          {{ moneyformat(dataDeliverySummary.amount_cod) }}
-                        </li>
-                      </ul>
-                    </div>
-                  </template>
-                </vs-col>
-                <vs-col xs="6" sm="2" lg="1">
-                  <template v-if="dataDelivery.length > 0">
-                    <div>
+            <vs-row justify="space between" align="center" style="margin-top: 1rem;">
+              <vs-col xs="12" sm="5" lg="7">
+                <p align="left">
+                  <b>Courier</b>
+                </p>
+                <template>
+                  <p align="left">
+                    {{ employee_code }}
+                    ({{ employee_name }})
+                  </p>
+                </template>
+              </vs-col>
+              <vs-col xs="12" sm="7" lg="5">
+                <vs-row justify="end">
+                    <template v-if="dataDelivery.length > 0">
                       <vs-button
                         :loading="loadingConfirm"
                         @click="confirmAction"
                         style="float: right"
+                        :disabled="disabledConfirm"
                       >
                         <span>
-                          Confirmed
+                          Confirm POD
                         </span>
                       </vs-button>
-                    </div>
-                  </template>
-                </vs-col>
-                <vs-col xs="6" sm="2" lg="1" class="mb-4">
-                  <template v-if="dataDelivery.length > 0">
-                    <div>
+                    </template>
+                    <template v-if="dataDelivery.length > 0">
                       <vs-button
                         :loading="loadingConfirm"
                         @click="approveAction"
                         style="float: left"
+                        :disabled="disabledApprove"
                       >
                         <span>
-                          Approve
+                          Approve Connotes
                         </span>
                       </vs-button>
-                    </div>
-                  </template>
-                </vs-col>
-              </vs-row>
+                    </template>
+                </vs-row>
+              </vs-col>
+            </vs-row>
+            <div class="nav-box">
               <div v-if="radio_option === 'bag' && listenDataDelivery.length > 0" style="margin-top: 10px;">
                 <vs-row justify="space-between">
                   <vs-col xs="12" sm="9" lg="9">
@@ -267,7 +274,7 @@
               </div>
               <vs-row v-if="radio_option !== 'bag'">
                 <!-- col for detail unreceive item--> 
-                <vs-col lg="12" :sm="12" xs="12" style="margin-top: 2em;">
+                <vs-col lg="12" :sm="12" xs="12">
                   <template>
                     <transition name="slide-fade">
                       <template v-if="listenDataDelivery.length > 0 ">
@@ -396,6 +403,8 @@ export default {
         }
       ],
       navActive: "k-LIST-DELIVERY",
+      disabledConfirm: true,
+      disabledApprove: false,
     };
   },
   computed: {
@@ -715,6 +724,9 @@ export default {
             item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false;
           }
         }
+        if (item.is_approve === '1') {
+          this.disabledApprove = true
+        }
         // console.log(item.is_delivered, "data.is_delivered");
         item.isDisabled = item.is_delivered === 1;
         item.employee_name = data.employee_name;
@@ -795,6 +807,9 @@ export default {
           this.openNotification("danger", "Failed", "Runsheet unavailable!");
         }
       }
+      else {
+        this.openNotification("danger", "POD KOSONG", "Isi POD terlebih dahulu");
+      }
     },
     async editPOD(val) {
       const dataPOD = {
@@ -842,6 +857,7 @@ export default {
     },
     updateSelected(arr) {
       this.selectedUpdateItems = arr;
+      this.disabledConfirm = arr.length > 0 && this.disabledApprove ? false : true;
     },
     confirmAction() {
       if (this.selectedUpdateItems.length > 0) {
@@ -883,6 +899,9 @@ export default {
         )
         .then((res) => {
           this.form = {};
+          if (res.data.data.is_approve === 1) {
+            this.disabledApprove = true
+          }
           this.openNotification(null, "Success", "APPROVE EDITED!");
         })
         .catch((err) => {
