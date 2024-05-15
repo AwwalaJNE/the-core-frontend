@@ -185,7 +185,7 @@ export default {
       ],
       editData: {},
       isDestinationDisable: "",
-      is_penerusan: false,
+      is_penerusan: true,
       isDisabled: false
     };
   },
