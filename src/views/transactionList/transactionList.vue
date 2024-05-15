@@ -31,7 +31,9 @@ export default {
     mixins: [master],
     props: {
         query: String,
-        dateFilter: Array
+        dateFilter: Array,
+        searchBy: String,
+        filterDateBy: String
     },
     components: {
         "table-master" : TableMaster
@@ -41,7 +43,7 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Transaction",
+                    label: "Transaction ID",
                     key: "transaction_id",
                     width: "xs"
                 },
@@ -136,7 +138,7 @@ export default {
             }
             await axios
                 .get(this.URL.transaction +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&is_paid=1`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&is_paid=1&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
                     let total = 0
