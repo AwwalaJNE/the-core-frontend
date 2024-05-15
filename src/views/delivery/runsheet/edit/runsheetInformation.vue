@@ -64,6 +64,11 @@ export default {
           width: "xs",
         },
         {
+          label: "Created Date",
+          key: "created_at",
+          width: "xs",
+        },
+        {
           label: "ZipCode",
           key: "connote_receiver_zip_code",
           width: "xxs",
