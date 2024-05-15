@@ -185,7 +185,7 @@ export default {
       ],
       editData: {},
       isDestinationDisable: "",
-      is_penerusan: false,
+      is_penerusan: true,
       isDisabled: false
     };
   },
@@ -222,12 +222,8 @@ export default {
         this.manifest_delivery_id = val.manifest_do_number;
 
         this.dataTable = val.detail;
-        if (val.status !== 'READY' || val.is_orion == "1") {
-          this.isDisabled = true
-        }
-        else {
-          this.isDisabled = false
-        }
+        this.is_penerusan = val.is_penerusan === "1" ? true : false
+        this.isDisabled = val.status !== 'READY' || val.is_orion == "1" ? true : false
         this.dataTable.map((item) => {
           if (item.bag) {
             item.destination = item.bag.destination
@@ -256,12 +252,6 @@ export default {
         this.no_moda_angkutan_id = val["no_moda_angkutan_id"]
           ? val["no_moda_angkutan_id"]
           : null;
-
-        if (val.sequence_orion) {
-          this.is_penerusan = true;
-        } else if (!val.sequence_orion) {
-          this.is_penerusan = false;
-        }
 
         // this.editData["destination_id"] = val.node_id_destination ? val.node_id_destination : ''
         // this.editData["moda_angkutan_id"] = val.vehicle_mode_id ? val.vehicle_mode_id : ''
@@ -418,11 +408,11 @@ export default {
     },
     handlePenerusan(val) {
       if (this.isDisabled) {
-        this.is_penerusan = !val
+        this.is_penerusan = !val.target.checked
         this.openNotification('warn', 'Information', 'Surat Jalan is DEPARTED')
       }
       else {
-        this.is_penerusan = val
+        this.is_penerusan = val.target.checked
       }
     },
     updateValue(key, val) {
