@@ -13,7 +13,7 @@
   </div>
 </template>
 <template>
-  <div class="block" style="float: left">
+  <div :class="`vs-input-content vs-input-content--has-label custom_datePicker`">
     <el-date-picker
       v-model="value"
       type="daterange"
@@ -109,4 +109,35 @@ export default {
     margin-left: 60px;
   }
 }
+</style>
+
+<style lang="scss">
+    .custom_datePicker{
+        .el-date-editor.el-input {
+            width: 100% !important;
+        }
+        .el-input__inner {
+            background-color: rgba(var(--vs-gray-2), 1) !important;
+            border-radius: 12px !important;
+            border: 0 !important;
+            height: 38px !important;
+            line-height: 38px !important;
+        }
+        .el-range-input{
+            background-color: transparent !important;
+        }
+        &.danger{
+            .el-input__inner {
+                background: rgba(var(--vs-danger), 0.1) !important;
+                color: rgba(var(--vs-danger), 1);
+            }
+            
+            label{
+                color: rgba(var(--vs-danger), 1);
+            }
+        }
+    }
+    .el-picker-panel{
+        z-index: 999999 !important;
+    }
 </style>

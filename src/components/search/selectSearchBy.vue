@@ -87,7 +87,6 @@ export default {
 <style lang="scss">
 .m-select.search-by {
   &.vs-select-content{
-    margin-top: -2px;
     max-width: unset;
   }
   .vs-select__label--label{
@@ -95,9 +94,6 @@ export default {
   }
   .vs-select.activeOptions .vs-select__input:focus ~ .vs-select__label--label {
     transform: translate(-3%, -28px) !important;
-  }
-  .vs-select__input {
-    min-height: 33.2px;
   }
 }
 </style>
