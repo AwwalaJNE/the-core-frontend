@@ -84,6 +84,7 @@
                       :placeholder="placeholder"
                       :disabled="listenIsDisabled"
                       @change="updateValue"
+                      @focus="inputFocus"
                       :loading="loadingActive"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                           <el-option
@@ -213,6 +214,9 @@ export default {
             let dataValue = this.listenIsMultiple == false && this.isMultipleTag === false ? this.value : this.arrValue
             let obj = this.DataArr.filter(item => item.value == val)[0]
             this.$emit("updateValue", this.listenFormKey, dataValue, obj, this.dataObj)
+        },
+        inputFocus() {
+            this.$emit("inputFocus", this.dataObj)
         }
     },
 }

@@ -248,6 +248,7 @@
                                 "
                                 autocomplete="off"
                                 @updateValue="updateValue"
+                                @inputFocus="onfocuslah"
                               />
                             </div>
                           </template>
@@ -1278,8 +1279,8 @@ export default {
 
     onfocuslah(info) {
       if (
-        info.typeInput !== "" &&
-        info.typeInput.includes("location_selector")
+        info?.typeInput !== "" &&
+        info?.typeInput?.includes("location_selector")
       ) {
         this.$emit("onFocus_location_selector", info);
       }

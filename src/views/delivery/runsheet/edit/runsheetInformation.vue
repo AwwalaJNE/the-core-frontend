@@ -21,6 +21,7 @@
         @updateValue="updateValue"
         @actionUpdate="actionUpdate"
         @updateSelected="updateSelected"
+        @inputFocus="onClickClear"
       />
     </template>
   </div>
@@ -60,6 +61,11 @@ export default {
         {
           label: "Connote Number",
           key: "koli_number",
+          width: "xs",
+        },
+        {
+          label: "Created Date",
+          key: "created_at",
           width: "xs",
         },
         {
@@ -212,6 +218,15 @@ export default {
     this.getParamRoute();
   },
   methods: {
+    onClickClear(val) {
+      const obj = {};
+      obj.koli_number = val.koli_number;
+      obj.status = null;
+      val.status_code = null;
+      this.$store.dispatch("SET_STATUS_DELIVERY", obj);
+      this.$set(val, 'is_disabled_input_remarks', true);
+      this.$set(val, 'is_disabled_input_reveiver', true);
+    },
     updateValue(key, val, info, item = null) {
       val = val.toUpperCase();
       const deliveryNumber = this.$store.getters.getInputs.remarks;
@@ -230,6 +245,10 @@ export default {
           if (item.status_code !== null) {
             this.$set(item, 'is_disabled_input_remarks', false);
             this.$set(item, 'is_disabled_input_reveiver', false);
+            if (!this.$refs.tableMaster.selected.includes(item)) {
+              this.$refs.tableMaster.selected.push(item)
+              this.$emit("update-selected", this.$refs.tableMaster.selected);
+            }
           }
           break;
         case column_change && column_change === "remarks":
@@ -375,6 +394,9 @@ export default {
         this.$refs.tableMaster.allCheck = filtered.length > 0;
 
         this.$emit("update-selected", filtered);
+      }
+      else {
+        this.$emit("update-selected", selected);
       }
     },
 
