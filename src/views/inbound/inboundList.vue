@@ -36,7 +36,8 @@ export default {
         hasLinkedItem: {
           type: Array,
           default: () => ['inbound_number'],
-        }
+        },
+        filterDateBy: String,
     },
     components: {
         "table-master" : TableMaster
@@ -143,7 +144,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type,this.prealertFilter)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate)
                 }
             }
         },
@@ -151,7 +152,7 @@ export default {
           if(val !== undefined) {
             this.node_type = val
             if(this.node_type !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate)
             }
           }
         },
@@ -159,7 +160,7 @@ export default {
           if(val !== undefined) {
             this.statusReceived = val
             if(this.statusReceived !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.node_type, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.node_type, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate)
             }
           }
         },
@@ -167,7 +168,7 @@ export default {
           if(val !== undefined) {
             this.nodeOrigin = val
             if(this.nodeOrigin !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type,this.prealertFilter)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate)
             }
           }
         },
@@ -175,7 +176,7 @@ export default {
           if(val !== undefined) {
             this.nodeDestination = val
             if(this.nodeDestination !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type,this.prealertFilter)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type,this.prealertFilter, this.startDate, this.endDate)
             }
           }
         },
@@ -183,13 +184,23 @@ export default {
           if(val !== undefined) {
             this.prealertFilter = val
             if(this.prealertFilter !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived,val)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived,val, this.startDate, this.endDate)
             }
           }
         },
+        dateFilter: function(val, old) {
+          if(val !== undefined) {
+            this.tempDate = val
+            if(this.tempDate !== old ) {
+              this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
+              this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
+            }
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate)
+          }
+        }
     },
     methods: {
-        async getTableData(limit,page,q, origin, destination,node_type,statusReceived, prealertFilter) {
+        async getTableData(limit,page,q, origin, destination,node_type,statusReceived, prealertFilter, from, to) {
             this.loading = true
             let query = "";
             let startDate = "";
@@ -207,9 +218,13 @@ export default {
             if(prealertFilter !== undefined && prealertFilter !== '-') {
               isPrealert = prealertFilter
             }
+            if(from !== undefined && to !== undefined) {
+              startDate = from
+              endDate = to
+            }
             await axios
                 .get(this.URL.inbound_incoming +
-                `?n=${this.listenNodeId}&type=${node_type}&is_confirmed=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
+                `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
 
@@ -276,7 +291,7 @@ export default {
 
         refresh(){
             console.log("refresh")
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate)
         },
 
         actionDetail(row){
