@@ -7,6 +7,7 @@
           :label="name"
           :border="border"
           @change="updateBagDestination"
+          @focus="handleFocus"
           :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
           v-model="value"
           multiple
@@ -112,6 +113,7 @@ export default {
               this.Helper.header())
           .then(res => {
             if(res.data.data.length > 0) {
+              let arr = []
               let data = res.data.data
               data.map(item => {
                 let obj = {}
@@ -119,9 +121,9 @@ export default {
                 obj["value"] = item.node_id
 
 
-                this.DataArr.push(obj)
-                this.options = this.DataArr
+                arr.push(obj)
               })
+              this.DataArr = arr
             } else {
               // this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
             }
@@ -143,6 +145,9 @@ export default {
       } else {
         this.options = [];
       }
+    },
+    handleFocus() {
+      this.options = this.DataArr
     }
   },
   mounted() {
