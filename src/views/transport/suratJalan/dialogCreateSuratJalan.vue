@@ -246,7 +246,7 @@ export default {
               ? item.manifest.destination.node_tariff_code
               : "";
           }
-          if (val.status == "DEPARTED") {
+          if (val.status !== "READY" ) {
             item.button_status = {
               remove: false,
             };
@@ -273,10 +273,24 @@ export default {
         this.getLov();
         this.isDestinationDisableCheck();
         this.getDriver();
+        this.setEmptyDataTable();
       }
     },
   },
   methods: {
+    setEmptyDataTable() {
+      let initial_data = this.$store.getters.getInputs.surat_jalan;
+      if (
+        !initial_data['destination_id'].value && 
+        !initial_data['driver_id'].value && 
+        !initial_data['eta'].value && 
+        !initial_data['etd'].value && 
+        !initial_data['no_moda_angkutan_id'].value &&
+        !initial_data['manifest_lov'].value
+      ) {
+        this.dataTable= [];
+      }
+    },
     formData(form) {
       let weight = 0;
       this.dataTable.map((item) => {
