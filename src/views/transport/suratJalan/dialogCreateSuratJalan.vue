@@ -3,7 +3,7 @@
     :actived="listenActive"
     :loading="listenLoading"
     width="xl"
-    :closeDialog="cancel"
+    :closeDialog="btnBlue === 'Approve' ? cancelAdd : cancelEdit"
   >
     <template v-slot:header>
       {{ listenTitle }}
@@ -23,6 +23,12 @@
           @onChangeCustom="onChangeCustom"
         />
 
+        <div v-if="btnBlue == 'Approve'">
+          <div v-if="!isDisabled && dataTable.length !== 0" class="clear-item" @click="handleClearAll">
+            Clear Form
+          </div>
+        </div>
+
         <div class="mt-2 mb-2">
           <vs-row align="center">
             <vs-col xs="6" sm="3" lg="3">
@@ -36,6 +42,7 @@
                   @updateValue="updateValue"
                   icon-after
                   @click-icon="$refs.cameraScanner.open('suratMuatan')"
+                  :disabled="isDisabled"
                 >
                   <template #icon>
                     <i class="bx bx-barcode-reader"></i>
@@ -71,7 +78,7 @@
             danger
             flat
             :active="true"
-            @click="cancel"
+            @click="btnBlue === 'Approve' ? cancelAdd() : cancelEdit()"
           >
             Close
           </vs-button>
@@ -240,7 +247,7 @@ export default {
               ? item.manifest.destination.node_tariff_code
               : "";
           }
-          if (val.status == "DEPARTED") {
+          if (val.status !== "READY" ) {
             item.button_status = {
               remove: false,
             };
@@ -267,10 +274,24 @@ export default {
         this.getLov();
         this.isDestinationDisableCheck();
         this.getDriver();
+        this.setEmptyDataTable();
       }
     },
   },
   methods: {
+    setEmptyDataTable() {
+      let initial_data = this.$store.getters.getInputs.surat_jalan;
+      if (
+        !initial_data['destination_id'].value && 
+        !initial_data['driver_id'].value && 
+        !initial_data['eta'].value && 
+        !initial_data['etd'].value && 
+        !initial_data['no_moda_angkutan_id'].value &&
+        !initial_data['manifest_lov'].value
+      ) {
+        this.dataTable= [];
+      }
+    },
     formData(form) {
       let weight = 0;
       this.dataTable.map((item) => {
@@ -445,8 +466,8 @@ export default {
           this.loading = false;
           this.closeDialog();
           this.$emit("refresh");
-          this.dataTable = [];
-          this.handleClearForm();
+          // this.dataTable = [];
+          // this.handleClearForm();
           this.openNotification(
             "danger",
             "Create surat jalan failed",
@@ -475,8 +496,8 @@ export default {
           this.loading = false;
           this.closeDialog();
           this.$emit("refresh");
-          this.dataTable = [];
-          this.handleClearForm();
+          // this.dataTable = [];
+          // this.handleClearForm();
           this.openNotification(
             "danger",
             "Create surat jalan failed",
@@ -484,11 +505,20 @@ export default {
           );
         });
     },
-    cancel() {
+    cancelEdit() {
       this.loading = false;
       this.handleClearForm();
       this.dataTable = [];
       this.closeDialog();
+    },
+    cancelAdd() {
+      this.loading = false;
+      this.closeDialog();
+    },
+    handleClearAll() {
+      this.$refs.formSuratJalan.handleEmptyForm();
+      this.form = {};
+      this.dataTable = [];
     },
     async getDestination() {
       await axios
@@ -525,7 +555,6 @@ export default {
           // this.openNotification('danger', 'Failed to collect role list', err)
         });
     },
-
     getLov() {
       let arr = [];
       this.manifest_lov_list.map((item) => {
@@ -693,7 +722,6 @@ export default {
           // this.openNotification('danger', 'Failed to collect role list', err)
         });
     },
-
     validateTempItemSJ(itemSJ) {
       if (Object.keys(this.dataTable).length === 0) {
         this.dataTable.push(itemSJ);
@@ -712,7 +740,6 @@ export default {
         }
       }
     },
-
     onCameraScannerGetData(data) {
       if (data && data.event === "result") {
         if (data.namespace === "suratMuatan") {
@@ -728,3 +755,13 @@ export default {
   },
 };
 </script>
+<style>
+
+.clear-item {
+  display: flex;
+  justify-content: end;
+  cursor: pointer;
+  color: red;
+  margin: 10px 0;
+}
+</style>

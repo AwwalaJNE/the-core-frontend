@@ -458,6 +458,31 @@ export default {
             })
             this.form = {}
         },
+        handleEmptyForm(){
+            let prefix = this.listenTypeForm.toUpperCase()
+            let tempKey = this.Keys.filter(item => !item.includes('mapPicker') && !item.includes('dynamicinputcomponent'))
+            tempKey.map(item => {
+                let action = item.toUpperCase()
+                try {
+                    if(this.InputObject[item].hasOwnProperty('typeData')) {
+                        if(this.InputObject[item]["typeData"].toLowerCase() == 'boolean') {
+                            this.$store.dispatch(`SET_${prefix}_${action}`, true)
+                            this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, true)
+                        } else {
+                            this.$store.dispatch(`SET_${prefix}_${action}`, '')
+                            this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
+                        }
+                    } else {
+                        this.$store.dispatch(`SET_${prefix}_${action}`, '')
+                        this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
+                    }
+                } catch (error) {
+                    
+                }
+                
+            })
+            this.form = {}
+        },
     },
     mounted() {
         this.initialize()
