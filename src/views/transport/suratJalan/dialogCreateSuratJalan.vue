@@ -3,7 +3,7 @@
     :actived="listenActive"
     :loading="listenLoading"
     width="xl"
-    :closeDialog="cancel"
+    :closeDialog="btnBlue === 'Approve' ? cancelAdd : cancelEdit"
   >
     <template v-slot:header>
       {{ listenTitle }}
@@ -22,6 +22,12 @@
           :isDisabled="isDisabled"
           @onChangeCustom="onChangeCustom"
         />
+
+        <div v-if="btnBlue == 'Approve'">
+          <div v-if="!isDisabled && dataTable.length !== 0" class="clear-item" @click="handleClearAll">
+            Clear Form
+          </div>
+        </div>
 
         <div class="mt-2 mb-2">
           <vs-row align="center">
@@ -71,7 +77,7 @@
             danger
             flat
             :active="true"
-            @click="cancel"
+            @click="btnBlue === 'Approve' ? cancelAdd() : cancelEdit()"
           >
             Close
           </vs-button>
@@ -445,8 +451,8 @@ export default {
           this.loading = false;
           this.closeDialog();
           this.$emit("refresh");
-          this.dataTable = [];
-          this.handleClearForm();
+          // this.dataTable = [];
+          // this.handleClearForm();
           this.openNotification(
             "danger",
             "Create surat jalan failed",
@@ -475,8 +481,8 @@ export default {
           this.loading = false;
           this.closeDialog();
           this.$emit("refresh");
-          this.dataTable = [];
-          this.handleClearForm();
+          // this.dataTable = [];
+          // this.handleClearForm();
           this.openNotification(
             "danger",
             "Create surat jalan failed",
@@ -484,11 +490,20 @@ export default {
           );
         });
     },
-    cancel() {
+    cancelEdit() {
       this.loading = false;
       this.handleClearForm();
       this.dataTable = [];
       this.closeDialog();
+    },
+    cancelAdd() {
+      this.loading = false;
+      this.closeDialog();
+    },
+    handleClearAll() {
+      this.$refs.formSuratJalan.handleEmptyForm();
+      this.form = {};
+      this.dataTable = [];
     },
     async getDestination() {
       await axios
@@ -525,7 +540,6 @@ export default {
           // this.openNotification('danger', 'Failed to collect role list', err)
         });
     },
-
     getLov() {
       let arr = [];
       this.manifest_lov_list.map((item) => {
@@ -693,7 +707,6 @@ export default {
           // this.openNotification('danger', 'Failed to collect role list', err)
         });
     },
-
     validateTempItemSJ(itemSJ) {
       if (Object.keys(this.dataTable).length === 0) {
         this.dataTable.push(itemSJ);
@@ -712,7 +725,6 @@ export default {
         }
       }
     },
-
     onCameraScannerGetData(data) {
       if (data && data.event === "result") {
         if (data.namespace === "suratMuatan") {
@@ -728,3 +740,13 @@ export default {
   },
 };
 </script>
+<style>
+
+.clear-item {
+  display: flex;
+  justify-content: end;
+  cursor: pointer;
+  color: red;
+  margin: 10px 0;
+}
+</style>
