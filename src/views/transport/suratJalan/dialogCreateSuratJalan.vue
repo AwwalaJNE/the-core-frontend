@@ -42,6 +42,7 @@
                   @updateValue="updateValue"
                   icon-after
                   @click-icon="$refs.cameraScanner.open('suratMuatan')"
+                  :disabled="isDisabled"
                 >
                   <template #icon>
                     <i class="bx bx-barcode-reader"></i>
