@@ -14,10 +14,31 @@
             <vs-row justify="space-around">
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center">
                     <div class="box view">
-
-                        <vs-row justify="end">
-                            <vs-col xs="12" sm="6" lg="4">
-                                <search-input ref="searchInput" @searchValue="searchValue" :placeholder="`Search Bag`" class="search-input"/>
+                        <vs-row >
+                            <vs-col xs="12" sm="12" lg="6">
+                                <vs-row>
+                                    <vs-col w="4">
+                                        <select-search-by :isMultiple="false" :border="true"
+                                            @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
+                                            :selectedValue="filterDateBy" />
+                                    </vs-col>
+                                    <vs-col w="8">
+                                        <daterange-filter @searchDate="searchDate" size="small" />
+                                    </vs-col>
+                                </vs-row>
+                            </vs-col>
+                            <vs-col xs="12" sm="12" lg="6">
+                                <vs-row justify="end">
+                                    <vs-col xs="6" sm="8" lg="4">
+                                        <select-search-by :isMultiple="false" :border="true"
+                                            @updateSearchBy="updateSearchBy" :valueData="searchParams"
+                                            :selectedValue="searchBy" />
+                                    </vs-col>
+                                    <vs-col xs="6" sm="4" lg="4">
+                                        <search-input ref="searchInput" @searchValue="searchValue"
+                                            :placeholder="searchPlaceholder" />
+                                    </vs-col>
+                                </vs-row>
                             </vs-col>
                         </vs-row>
                         <vs-row >
@@ -44,7 +65,7 @@
                             </vs-col>
                         </vs-row>
                         <transition name="slide-fade">
-                            <bag-list :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch"/>
+                            <bag-list :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :dateFilter="tempDate" :searchBy="searchBy" :filterDateBy="filterDateBy"/>
                         </transition>
                         
                     </div>
@@ -68,6 +89,8 @@ import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDest
 import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
 import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
 import DateTime from "@/components/input/dateTime"
+import dateRange from "@/components/daterange/index";
+import SelectSearchBy from "@/components/search/selectSearchBy";
 
 // Bag
 import BagList from "@/views/inventory/connote/bag/bagList"
@@ -87,6 +110,8 @@ export default {
         "select-bag-routing": SelectBagRouting,
         "select-bag-tipe": SelectBagTipe,
         "date-time": DateTime,
+        "daterange-filter": dateRange,
+        "select-search-by" : SelectSearchBy,
     },
     data() {
         return {
@@ -118,6 +143,67 @@ export default {
               label: 'All Destination',
               value: ''
             }],
+            searchBy:"bag number",
+            filterDateBy: "create",
+            searchPlaceholder: "Search Bag Number",
+            searchParams: [
+                {
+                    label: "Bag Number",
+                    value: "bag number",
+
+                },
+                {
+                    label: "Bag Detail Qty",
+                    value: "bag_detail_qty",
+
+                },
+                {
+                    label: "Weight",
+                    value: "bag_weight",
+
+                },
+                {
+                    label: "Origin",
+                    value: "origin_tariff_code",
+
+                },
+                {
+                    label: "Destination",
+                    value: "destination_tariff_code",
+
+                },
+                {
+                    label: "Runsheet",
+                    value: "runsheet_count",
+
+                },
+                {
+                    label: "Un Runsheet",
+                    value: "un_runsheet_count",
+
+                },
+                {
+                    label: "Courier",
+                    value: "courier",
+
+                },
+                {
+                    label: "Surat Muatan",
+                    value: "sm",
+
+                },
+                {
+                    label: "Surat Jalan",
+                   value: "sj",
+
+                }
+            ],
+            dateParams: [
+                {
+                    label: 'Created Date',
+                    value: 'create'
+                }
+            ]
 
         }
     },
@@ -142,7 +228,7 @@ export default {
             this.tempSearch = val
             console.log("this.tempSearch = ",this.tempSearch)
         },
-        searchDate(key, val) {
+        searchDate(val) {
             this.tempDate = val;
         },
         clearSearch() {
@@ -153,7 +239,15 @@ export default {
         },
         actionPagination(val) {
             this.pagination.page = val
-        }
+        },
+        updateSearchBy(key, val) {
+            val = val.replaceAll(" ", "_");
+            this.searchBy = val;
+            this.searchPlaceholder = key;
+        },
+        updateFilterDateBy(key, val) {
+            this.filterDateBy = val;
+        },
     },
 }
 </script>
