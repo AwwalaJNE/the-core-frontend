@@ -26,7 +26,7 @@
         <section class="nodes">
             <div class="box view">
               <div class="nav-box">
-                <vs-row justify>
+                <vs-row justify class="mb-15">
                   <vs-col xs="12" sm="2" lg="2">
                     <template v-if="DataNode.length > 1">
                       <vs-select
@@ -132,7 +132,7 @@
                       </template>
                     </inputan>
                   </vs-col>
-                  <vs-col xs="6" sm="4" lg="3" class="mb-2">
+                  <vs-col xs="6" sm="4" lg="3">
                     <inputan :name="name" :rules="rules">
                       <template v-slot:inputan="props">
                         <vs-select
@@ -160,14 +160,30 @@
                       </template>
                     </inputan>
                   </vs-col>
+                  <vs-col xs="12" sm="4" lg="2">
+                    <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
+                  </vs-col>
+                  <vs-col xs="12" sm="4" lg="3">
+                    <daterange-filter @searchDate="searchDate" size="small" />
+                  </vs-col>
                 </vs-row>
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <InboundIncoming :ref="'inboundIncoming'"   :nodeType="node_request" :received="value" :origin="node_origin" :destination="node_destination" :query="tempSearch" :prealert="values" :hasLinkedItem="hasLinkedItems"/>
+                        <InboundIncoming 
+                          :ref="'inboundIncoming'"   
+                          :nodeType="node_request" 
+                          :received="value" 
+                          :origin="node_origin" 
+                          :destination="node_destination" 
+                          :query="tempSearch" 
+                          :prealert="values" 
+                          :hasLinkedItem="hasLinkedItems"
+                          :filterDateBy="filterDateBy"
+                          :dateFilter="tempDate"
+                        />
                     </transition>
                 </template>
-
             </div>
         </section>
 
@@ -180,11 +196,11 @@ import master from "@/mixins/master";
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
-import dateRange from "@/components/daterange/index"
 import Inputan from "@/components/input/inputan"
 import InboundIncoming from "@/views/inbound/inboundList"
 
-
+import dateRange from "@/components/daterange/index"
+import SelectSearchBy from "@/components/search/selectSearchBy";
 
 export default {
     name:"Inbound-List",
@@ -195,7 +211,8 @@ export default {
         "search-input": SearchInput,
         "daterange-filter": dateRange,
         "InboundIncoming": InboundIncoming,
-        "inputan": Inputan
+        "inputan": Inputan,
+        "select-search-by": SelectSearchBy,
     },
     props: {
       name: String,
@@ -229,12 +246,16 @@ export default {
                 value: '-'
               },
               {
-                label: 'Complete',
-                value: '1'
+                label: 'Info',
+                value: 'INFO'
+              },
+              {
+                label: 'Received',
+                value: 'RECEIVED'
               },
               {
                 label: 'Outstanding',
-                value: '0'
+                value: 'OUTSTANDING'
               }
             ],
             values: this.selectedValue ? this.selectedValue :"-",
@@ -261,6 +282,25 @@ export default {
               value: "-",
               label: "All Status"
             }],
+            filterDateBy:"received",
+            dateParams: [
+              {
+                label: 'Received Time',
+                value: 'received'
+              },
+              {
+                label: 'ETD',
+                value: 'etd'
+              },
+              {
+                label: 'ETA',
+                value: 'eta'
+              },
+              {
+                label: 'Departed Time',
+                value: 'departed'
+              }
+            ]
         }
     },
     computed: {
@@ -303,6 +343,9 @@ export default {
 
         openDialog(){
             this.$router.push('/inbound/prealert/scan')
+        },
+        updateFilterDateBy(key,val) {
+          this.filterDateBy = val;
         },
 
         async getDataNodeType() {
