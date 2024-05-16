@@ -64,7 +64,7 @@
       @refresh="refresh"
       :closeDialog="closeDialogSuratJalan"
       title="Transport Surat Jalan"
-      btnBlue="Add"
+      btnBlue="Approve"
     />
   </div>
 </template>
