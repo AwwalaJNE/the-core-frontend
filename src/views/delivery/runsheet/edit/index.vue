@@ -223,7 +223,7 @@
                         :disabled="disabledConfirm"
                       >
                         <span>
-                          Confirm POD
+                          Confirm Status
                         </span>
                       </vs-button>
                     </template>
