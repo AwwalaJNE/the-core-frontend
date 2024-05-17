@@ -235,7 +235,7 @@
                         :disabled="disabledApprove"
                       >
                         <span>
-                          Approve Connotes
+                          Approve Runsheet
                         </span>
                       </vs-button>
                     </template>
