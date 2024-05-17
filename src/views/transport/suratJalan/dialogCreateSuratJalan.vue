@@ -287,7 +287,7 @@ export default {
         !initial_data['eta'].value && 
         !initial_data['etd'].value && 
         !initial_data['no_moda_angkutan_id'].value &&
-        !initial_data['manifest_lov'].value && !isDisabled
+        !initial_data['manifest_lov'].value && Object.keys(this.editData).length === 0
       ) {
         this.dataTable= [];
       }
