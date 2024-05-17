@@ -278,7 +278,7 @@ export default {
       
       console.log("dapet nih kedepan", data, loading)
       let arr = data.detail
-      let bag_des = data.data ? data.data.destination.node_code  : null
+      let bag_des = data.data ? data?.data?.destination?.node_code  : null
       this.is_pra_runsheet = data.data.is_pra_runsheet
 
       this.isAllowed = data.status.is_allowed
