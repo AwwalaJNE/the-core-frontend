@@ -23,7 +23,7 @@
           @onChangeCustom="onChangeCustom"
         />
 
-        <div v-if="btnBlue == 'Approve'">
+        <div v-if="btnBlue == 'Approve'" class="container-clear-item">
           <div v-if="!isDisabled && dataTable.length !== 0" class="clear-item" @click="handleClearAll">
             Clear Form
           </div>
@@ -755,8 +755,11 @@ export default {
   },
 };
 </script>
-<style>
-
+<style> 
+.container-clear-item {
+  display: flex;
+  justify-content: flex-end;
+}
 .clear-item {
   display: flex;
   justify-content: end;

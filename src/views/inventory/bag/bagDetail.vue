@@ -4,12 +4,21 @@
       <vs-col xs="6" sm="4" lg="4">
         <div class="titlePage">
           <breadcrumb/>
-          <h2>{{ title }}</h2>
+          <div style="display: flex; align-items: center;">
+            <h2 style="margin-right: 10px;">{{ title }}</h2> 
+            
+            <vs-tooltip bottom v-if="!isAllowed && !loading">
+              <i class="bx bx-info-circle"></i>
+              <template #tooltip>
+                {{ messageIsAllowed }}
+              </template>
+            </vs-tooltip>
+          </div>
         </div>
       </vs-col>
     </vs-row>
 
-    <template>
+    <template v-if="isAllowed && !loading">
       <div class="center in-get-bag">
         <vs-row style="margin-top:2em">
           <vs-col xs="4" sm="4" lg="2">
@@ -33,7 +42,7 @@
     <section class="bagging">
       <vs-row justify="space-between">
         <vs-col xs="12" sm="2" lg="2">
-          <template>
+          <template v-if="isAllowed && !loading">
             <div v-if="radio_option === 'connote'" class="center in-get-bag">
               <vs-input border type="text" v-model="item_code_orion" label-placeholder="Masukkan Connote (Orion)"
                 v-on:keyup.enter="updateItemOnBagOrion" icon-after :autofocus="true" ref="formInputBagging"
@@ -239,9 +248,9 @@ export default {
         "value":"all"
       }],
       
-      loading: true
-      
-      
+      loading: true,
+      isAllowed: true,
+      messageIsAllowed: ""    
     }
   },
   computed: {
@@ -271,6 +280,9 @@ export default {
       let arr = data.detail
       let bag_des = data.data ? data.data.destination.node_code  : null
       this.is_pra_runsheet = data.data.is_pra_runsheet
+
+      this.isAllowed = data.status.is_allowed
+      this.messageIsAllowed = data.status.message
       
       
       // this.DataNode
@@ -317,8 +329,6 @@ export default {
       } else {
         this.service = ["all"]
       }
-      
-      
       
       this.loading = loading
     },
