@@ -7,7 +7,6 @@
           :label="name"
           :border="border"
           @change="updateBagDestination"
-          @focus="handleFocus"
           :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
           v-model="value"
           multiple
@@ -15,7 +14,7 @@
           remote
           reserve-keyword
           placeholder="Code Destination"
-          :remote-method="remoteMethod"
+          :remote-method="getDataDestination"
           :loading="loading"
       >
         <template v-if="DataArr.length > 0">
@@ -73,7 +72,9 @@ export default {
           label: 'All Destination',
           value: ''
         }
-      ]
+      ],
+      limit: 0,
+      query: ''
     }
   },
   computed: {
@@ -106,10 +107,14 @@ export default {
     updateBagDestination(val){
       this.$emit("updateBagDestination", this.listenFormKey, val)
     },
-    async getDataDestination(){
+    async getDataDestination(query = ""){
+      if (query !== "scroll") {
+        this.query = query
+      }
+      this.limit += 15
       await axios
           .get(this.URL.node_list +
-              `?n=${this.listenNodeId}`,
+              `?n=${this.listenNodeId}&s=${this.query}&limit=${this.limit}`,
               this.Helper.header())
           .then(res => {
             if(res.data.data.length > 0) {
@@ -124,6 +129,7 @@ export default {
                 arr.push(obj)
               })
               this.DataArr = arr
+              this.options = arr
             } else {
               // this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
             }
@@ -132,28 +138,15 @@ export default {
             this.openNotification('danger', 'Failed to populate permission data', err)
           })
     },
-    remoteMethod(query) {
-      if (query !== '') {
-        this.loading = true;
-        setTimeout(() => {
-          this.loading = false;
-          // console.log(this.valueData,this.DataArr,'ini valuedata');
-          this.options = this.DataArr.filter(item => {
-            return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
-          });
-        }, 200);
-      } else {
-        this.options = [];
-      }
-    },
-    handleFocus() {
-      this.options = this.DataArr
-    }
   },
   mounted() {
     this.getDataDestination();
-    this.arrValue = this.DataArr.map(item => {
-      return { value: `value:${item}`, label: `label:${item}` };
+
+    const masonry = document.querySelector('.el-select-dropdown__wrap.el-scrollbar__wrap');
+    masonry.addEventListener('scroll', e => {
+      if (masonry.scrollHeight - (masonry.scrollTop + masonry.clientHeight) < 1) {
+        this.getDataDestination("scroll");
+      }
     });
   }
 
