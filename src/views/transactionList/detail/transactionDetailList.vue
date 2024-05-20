@@ -10,7 +10,7 @@
         :hasAction="false"
         
         :hasLinked="['connote_number']"
-        :hasPagination="false"
+        :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEdit="actionDetail"
@@ -41,6 +41,9 @@ export default {
     mixins: [master],
     props: {
         query: String,
+        dateFilter: Array,
+        searchBy: String,
+        filterDateBy: String
     },
     components: {
         "table-master" : TableMaster,
@@ -155,11 +158,14 @@ export default {
             transactionId: "",
             connote_number: "",
             dialogAvoidActive: false,
+            tempDate: [],
+            startDate: "",
+            endDate: "",
             pagination: {
-                limit:20,
+                limit:1,
                 page_size: 1,
                 page: 1
-            }
+            },
         }
     },
     watch: {
@@ -167,10 +173,20 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                  this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
                 }
             }
         },
+        dateFilter: function(val, old) {
+          if(val !== undefined) {
+            this.tempDate = val
+            if(this.tempDate !== old ) {
+              this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
+              this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
+            }
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
+          }
+        }
     },
     methods: {
         async getTableData(limit,page,q, from, to) {
@@ -181,27 +197,32 @@ export default {
             if(q !== undefined) {
                 query = q
             }
+            if(from !== undefined && to !== undefined) {
+              startDate = from
+              endDate = to
+            }
             await axios
-                .get(this.URL.transaction +'/'+this.transactionId+`?n=${this.listenNodeId}&s=${query}`,
+                .get(this.URL.transaction +'/'+this.transactionId+`?n=${this.listenNodeId}&s=${query}&sort_order=desc&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
                     let arr =res.data.data.connote
-                    arr.map((item) => {
-                      item["isDisabled"] = item.is_void == true ? true : false;
-                      item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
-                      // setTimeout(() => {
-                      //   console.log("refs", this.$parent.$refs.btnPrintAll.$el.disabled);
-                      //   item["isDisabled"] =
-                      //     item.is_void == true
-                      //       ? (this.$parent.$refs.btnPrintAll.$el.disabled = true)
-                      //       : (this.$parent.$refs.btnPrintAll.$el.disabled = false);
-                      // }, 1000);
-                    });
+                    console.log("arr", arr, res.data.data);
+                    // arr.map((item) => {
+                    //   item["isDisabled"] = item.is_void == true ? true : false;
+                    //   item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
+                    //   // setTimeout(() => {
+                    //   //   console.log("refs", this.$parent.$refs.btnPrintAll.$el.disabled);
+                    //   //   item["isDisabled"] =
+                    //   //     item.is_void == true
+                    //   //       ? (this.$parent.$refs.btnPrintAll.$el.disabled = true)
+                    //   //       : (this.$parent.$refs.btnPrintAll.$el.disabled = false);
+                    //   // }, 1000);
+                    // });
                     this.dataTable = arr
                     this.$emit("printAllData", this.dataTable)
 
                     this.pagination.page = res.data.meta ? res.data.meta.current_page : 1
-                    this.pagination.limit = res.data.meta ? parseInt(res.data.meta.per_page) : 1000
+                    this.pagination.limit = res.data.meta ? parseInt(res.data.meta.per_page) : 1
                     this.pagination.page_size = res.data.meta ? res.data.meta.last_page : 1
                     this.loading = false
                 }).catch(err => {
@@ -223,7 +244,7 @@ export default {
 
         refresh(){
             console.log("refresh")
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
         actionDetail(row){
           this.$router.push({name:'InventoryItem-detail', params:{ id:row.connote_number}});
