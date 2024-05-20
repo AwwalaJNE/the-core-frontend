@@ -13,12 +13,22 @@
       <div class="box view">
         <div class="nav-box">
           <vs-row justify>
-            <vs-col xs="6" sm="2" lg="2">
+            <vs-col xs="6" sm="2" lg="2" class="mb-15">
               <vs-input v-model="tempDate" type="date" />
             </vs-col>
-            <vs-col xs="6" sm="3" lg="3" offset="7" class="mb-15">
-              <search-input ref="searchInput" @searchValue="searchValue" />
+            <vs-col  offset="4" xs="12" sm="12" lg="6">
+              <vs-row justify="end">
+                <vs-col xs="6" sm="8" lg="4">
+                  <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
+                </vs-col>
+                <vs-col xs="6" sm="4" lg="4">
+                  <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
+                </vs-col>
+              </vs-row>
             </vs-col>
+            <!-- <vs-col xs="6" sm="3" lg="3" offset="7" class="mb-15">
+              <search-input ref="searchInput" @searchValue="searchValue" />
+            </vs-col> -->
           </vs-row>
         </div>
         <template>
@@ -28,6 +38,8 @@
               :node="node_request"
               :dateFilter="tempDate"
               :query="tempSearch"
+              :searchBy="searchBy"
+              :filterDateBy="filterDateBy"
             />
           </transition>
         </template>
@@ -43,6 +55,7 @@ import NavItem from "@/components/navbar/navTab";
 import Breadcrumb from "@/components/breadcrumb/index";
 import SearchInput from "@/components/search/searchInput";
 import dateRange from "@/components/daterange/index";
+import SelectSearchBy from "@/components/search/selectSearchBy";
 
 import DeliveryRunsheetTable from "@/views/delivery/runsheet/runsheetTable";
 
@@ -54,6 +67,7 @@ export default {
     breadcrumb: Breadcrumb,
     "search-input": SearchInput,
     "daterange-filter": dateRange,
+    "select-search-by" : SelectSearchBy,
     DeliveryRunsheetTable: DeliveryRunsheetTable,
   },
   data() {
@@ -65,6 +79,53 @@ export default {
       node_request: "",
       node_origin: "",
       node_destination: "",
+      searchBy:"delivery runsheet number",
+      filterDateBy:"create",
+      searchPlaceholder: "Search Manifest Number",
+      searchParams: [
+        {
+          label: "Runsheet Number",
+          value: "delivery runsheet number",
+        },
+        {
+          label: "DRI Number",
+          value: "dri",
+        },
+        {
+          label: "Courier Code",
+          value: "employee_code",
+        },
+        {
+          label: "Courier Name",
+          value: "employee_name",
+        },
+        {
+          label: "Total Koli",
+          value: "total_koli",
+        },
+        {
+          label: "Total Open",
+          value: "total_open",
+        },
+        {
+          label: "Total Delivered",
+          value: "total_delivered",
+        },
+        {
+          label: "Total Undelivered",
+          value: "total_undelivered",
+        },
+        {
+          label: "Total Undelivered Receiving",
+          value: "total_undelivery_received",
+        }
+      ],
+      dateParams: [
+        {
+          label: 'Create Date Delivery',
+          value: 'create'
+        },
+      ]
     };
   },
   methods: {
@@ -108,6 +169,14 @@ export default {
         });
     },
     updateNode(val) {},
+    updateSearchBy(key, val) {
+      val = val.replaceAll(" ", "_");
+      this.searchBy = val;
+      this.searchPlaceholder = key;
+    },
+    updateFilterDateBy(key,val) {
+      this.filterDateBy = val;
+    },
   },
   mounted() {
     // this.getDataNodeType()

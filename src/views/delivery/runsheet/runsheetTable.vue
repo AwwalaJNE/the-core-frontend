@@ -27,7 +27,9 @@ export default {
     props: {
         query: String,
         dateFilter: String,
-        node:String
+        node:String,
+        searchBy: String,
+        filterDateBy: String
     },
     components: {
         "table-master" : TableMaster
@@ -116,7 +118,12 @@ export default {
         },
         dateFilter: function(val, old) {
           if(val !== undefined) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
+            this.tempDate = val
+            if(this.tempDate !== old ) {
+              this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
+              this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
+            }
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter)
           }
         },
         node: function(val, old) {
@@ -143,7 +150,7 @@ export default {
             }
             await axios
                 .get(this.URL.courier_delivery +
-                `?n=${this.listenNodeId}&s=${query}&date_filter=${this.dateFilter}`,
+                `?n=${this.listenNodeId}&s=${query}&date_filter=${this.dateFilter}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => { 
                     this.dataTable = res.data.data.map((value)=>{
