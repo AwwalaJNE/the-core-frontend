@@ -12,14 +12,14 @@
               <span><b>Bag No. {{ bag_number }}</b></span>
             </vs-col>
             <vs-col xs="12" sm="3" lg="3" align="left" >
-                <!-- <span><p>Service: REG</p></span> -->
-                <span><p>Destination: {{bag_destination}}</p></span>
+                <span v-if="!is_pra_runsheet && !loading"><p>Destination: {{bag_destination}}</p></span>
+                <span v-if="is_pra_runsheet && !loading"><p>Courier Delivery: {{courier_delivery}}</p></span>
                 <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
             </vs-col>
             <vs-col xs="12" sm="3" lg="3" align="left" >
             
               <span><p>Total Weight: {{ total_weight }} Kg</p></span>
-              <span><p>Actual Weight: {{ actual_weight }} Kg</p></span>
+              <span v-if="!is_pra_runsheet && !loading"><p>Actual Weight: {{ actual_weight }} Kg</p></span>
             </vs-col>
             <vs-col xs="12" sm="3" lg="3" align="right"><span><h1>{{ bag_detail_qty }}</h1></span><p>Bagged</p></vs-col>
           </vs-row>
@@ -130,11 +130,13 @@ export default {
             actual_weight :'',
             bag_detail_qty:'',
             bag_destination:'',
+            courier_delivery: '',
             pagination: {
                 limit:20,
                 page_size: 1,
                 page: 1
-            }
+            },
+            is_pra_runsheet: false,
         }
     },
     methods: {
@@ -165,6 +167,7 @@ export default {
                       item['bag_detail_qty'] = res.data.data.bag_detail_qty
                       item["isDisabled"] = item.is_confirmed == 0 ? true : false;
                     })
+                    this.is_pra_runsheet = res.data.data.is_pra_runsheet === "1" ? true : false;
                     this.getSummaryBag(res)
                   // arr.map(item => {
                     //     item["user_nodes"] = item.user_nodes.toString()
@@ -194,6 +197,7 @@ export default {
           this.total_weight = val.data.data.bag_weight
           this.actual_weight = val.data.data.bag_actual_weight
           this.bag_destination = val.data.data.destination ? val.data.data.destination.node_code : ''
+          this.courier_delivery = val.data.employee_name ? val.data.employee_name : ''
         },
         actionUpdate(val){
             if(this.dataTable.length > 0) {

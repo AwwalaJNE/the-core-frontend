@@ -66,7 +66,7 @@
         </vs-col>
       </vs-row>
       
-      <vs-row style="margin-top:1em">
+      <vs-row style="margin-top:1em" v-if="!is_pra_runsheet && !loading">
         
         <!--input destination -->
         <vs-col xs="6" sm="3" lg="2">
@@ -250,7 +250,9 @@ export default {
       
       loading: true,
       isAllowed: true,
-      messageIsAllowed: ""    
+      messageIsAllowed: "",
+      employee: "",
+      is_pra_runsheet: false,
     }
   },
   computed: {
@@ -279,7 +281,7 @@ export default {
       console.log("dapet nih kedepan", data, loading)
       let arr = data.detail
       let bag_des = data.data ? data?.data?.destination?.node_code  : null
-      this.is_pra_runsheet = data.data.is_pra_runsheet
+      this.is_pra_runsheet = data.data.is_pra_runsheet === "1" ? true : false
 
       this.isAllowed = data.status.is_allowed
       this.messageIsAllowed = data.status.message
@@ -329,7 +331,9 @@ export default {
       } else {
         this.service = ["all"]
       }
-      
+
+      this.employee = data.employee_name ? data.employee_name : ""
+
       this.loading = loading
     },
     getIsPraRunsheet(){
