@@ -13,17 +13,10 @@
       <div class="box view">
         <div class="nav-box">
           <vs-row justify>
-            <vs-col xs="12" sm="12" lg="6" class="mb-15">
-              <vs-row>
-                <vs-col w="4">
-                  <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
-                </vs-col>
-                <vs-col w="8">
-                  <daterange-filter @searchDate="searchDate" size="small" />
-                </vs-col>
-              </vs-row>
+            <vs-col xs="6" sm="2" lg="2" class="mb-15">
+              <vs-input v-model="tempDate" type="date" />
             </vs-col>
-            <vs-col xs="12" sm="12" lg="6" class="mb-15">
+            <vs-col  offset="4" xs="12" sm="12" lg="6">
               <vs-row justify="end">
                 <vs-col xs="6" sm="8" lg="4">
                   <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
@@ -33,10 +26,7 @@
                 </vs-col>
               </vs-row>
             </vs-col>
-            <!-- <vs-col xs="6" sm="2" lg="2">
-              <vs-input v-model="tempDate" type="date" />
-            </vs-col>
-            <vs-col xs="6" sm="3" lg="3" offset="7" class="mb-15">
+            <!-- <vs-col xs="6" sm="3" lg="3" offset="7" class="mb-15">
               <search-input ref="searchInput" @searchValue="searchValue" />
             </vs-col> -->
           </vs-row>
@@ -109,26 +99,26 @@ export default {
           label: "Courier Name",
           value: "employee_name",
         },
-        // {
-        //   label: "Total Koli",
-        //   value: "total_koli",
-        // },
-        // {
-        //   label: "Total Open",
-        //   value: "total_open",
-        // },
-        // {
-        //   label: "Total Delivered",
-        //   value: "total_delivered",
-        // },
-        // {
-        //   label: "Total Undelivered",
-        //   value: "total_undelivered",
-        // },
-        // {
-        //   label: "Total Undelivered Receiving",
-        //   value: "total_undelivery_received",
-        // }
+        {
+          label: "Total Koli",
+          value: "total_koli",
+        },
+        {
+          label: "Total Open",
+          value: "total_open",
+        },
+        {
+          label: "Total Delivered",
+          value: "total_delivered",
+        },
+        {
+          label: "Total Undelivered",
+          value: "total_undelivered",
+        },
+        {
+          label: "Total Undelivered Receiving",
+          value: "total_undelivery_received",
+        }
       ],
       dateParams: [
         {

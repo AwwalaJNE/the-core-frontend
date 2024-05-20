@@ -118,7 +118,12 @@ export default {
         },
         dateFilter: function(val, old) {
           if(val !== undefined) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
+            this.tempDate = val
+            if(this.tempDate !== old ) {
+              this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
+              this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
+            }
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter)
           }
         },
         node: function(val, old) {
