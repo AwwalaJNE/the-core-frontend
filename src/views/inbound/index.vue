@@ -27,25 +27,80 @@
             <div class="box view">
               <div class="nav-box">
                 <vs-row justify="space-between">
-                  <vs-col xs="12" sm="12" lg="6" >
-                    <vs-row>
-                      <vs-col w="4">
-                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
-                      </vs-col>
-                      <vs-col w="8">
-                        <daterange-filter @searchDate="searchDate" size="small" />
-                      </vs-col>
-                    </vs-row>
+                  <vs-col xs="12" sm="4" lg="2">
+                    <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
                   </vs-col>
-                  <vs-col xs="12" sm="12" lg="6" class="mb-15">
+                  <vs-col xs="12" sm="4" lg="4">
+                    <daterange-filter @searchDate="searchDate" size="small" />
+                  </vs-col>
+                  <vs-col xs="12" sm="12" lg="6">
                     <vs-row justify="end">
-                      <vs-col xs="6" sm="8" lg="4">
+                      <vs-col xs="6" sm="8" lg="3">
                         <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
                       </vs-col>
                       <vs-col xs="6" sm="4" lg="4">
                         <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
                       </vs-col>
                     </vs-row>
+                  </vs-col>
+                </vs-row>
+                                
+                <vs-row justify>
+                  <vs-col xs="6" sm="4" lg="2">
+                    <inputan :name="name" :rules="rules">
+                      <template v-slot:inputan="props">
+                        <vs-select
+                            class="m-select"
+                            filter
+                            :multiple="listenIsMultiple"
+                            :placeholder="name"
+                            :label="name"
+                            v-model="value"
+                            :border="border"
+                            @change="updateStatusInbound"
+                            :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                        >
+                          <template v-if="DataArr.length > 0">
+                            <vs-option
+                                v-for="(item,key) in DataArr"
+                                :key="key"
+                                :label="item.label"
+                                :value="item.value">
+                              {{item.label}}
+                            </vs-option>
+                          </template>
+
+                        </vs-select>
+                      </template>
+                    </inputan>
+                  </vs-col>
+                  <vs-col xs="6" sm="4" lg="3">
+                    <inputan :name="name" :rules="rules">
+                      <template v-slot:inputan="props">
+                        <vs-select
+                            class="m-select"
+                            filter
+                            :placeholder="name"
+                            :label="name"
+                            v-model="values"
+                            :border="border"
+                            multiple
+                            @change="updatePrealert"
+                            :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+                        >
+                          <template v-if="DataFilterPrealert.length > 0">
+                            <vs-option
+                                v-for="(item,key) in DataFilterPrealert"
+                                :key="key"
+                                :label="item.label"
+                                :value="item.value">
+                              {{item.label}}
+                            </vs-option>
+                          </template>
+
+                        </vs-select>
+                      </template>
+                    </inputan>
                   </vs-col>
                 </vs-row>
                 <vs-row justify class="mb-15">
@@ -123,63 +178,8 @@
 
                     </template>
                   </vs-col>
-                  <vs-col xs="6" sm="4" lg="2">
-                    <inputan :name="name" :rules="rules">
-                      <template v-slot:inputan="props">
-                        <vs-select
-                            class="m-select"
-                            filter
-                            :multiple="listenIsMultiple"
-                            :placeholder="name"
-                            :label="name"
-                            v-model="value"
-                            :border="border"
-                            @change="updateStatusInbound"
-                            :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
-                        >
-                          <template v-if="DataArr.length > 0">
-                            <vs-option
-                                v-for="(item,key) in DataArr"
-                                :key="key"
-                                :label="item.label"
-                                :value="item.value">
-                              {{item.label}}
-                            </vs-option>
-                          </template>
-
-                        </vs-select>
-                      </template>
-                    </inputan>
-                  </vs-col>
-                  <vs-col xs="6" sm="4" lg="3">
-                    <inputan :name="name" :rules="rules">
-                      <template v-slot:inputan="props">
-                        <vs-select
-                            class="m-select"
-                            filter
-                            :placeholder="name"
-                            :label="name"
-                            v-model="values"
-                            :border="border"
-                            multiple
-                            @change="updatePrealert"
-                            :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
-                        >
-                          <template v-if="DataFilterPrealert.length > 0">
-                            <vs-option
-                                v-for="(item,key) in DataFilterPrealert"
-                                :key="key"
-                                :label="item.label"
-                                :value="item.value">
-                              {{item.label}}
-                            </vs-option>
-                          </template>
-
-                        </vs-select>
-                      </template>
-                    </inputan>
-                  </vs-col>
                 </vs-row>
+                
               </div>
                 <template>
                     <transition name="slide-fade">
