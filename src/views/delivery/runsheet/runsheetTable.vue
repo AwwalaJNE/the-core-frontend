@@ -27,7 +27,9 @@ export default {
     props: {
         query: String,
         dateFilter: String,
-        node:String
+        node:String,
+        searchBy: String,
+        filterDateBy: String
     },
     components: {
         "table-master" : TableMaster
@@ -143,7 +145,7 @@ export default {
             }
             await axios
                 .get(this.URL.courier_delivery +
-                `?n=${this.listenNodeId}&s=${query}&date_filter=${this.dateFilter}`,
+                `?n=${this.listenNodeId}&s=${query}&date_filter=${this.dateFilter}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => { 
                     this.dataTable = res.data.data.map((value)=>{

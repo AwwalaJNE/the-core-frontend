@@ -26,6 +26,7 @@ export default {
     dateFilter: Array,
     node: String,
     searchBy: String,
+    filterDateBy: String
   },
   components: {
     "table-master": TableMaster,
@@ -35,7 +36,7 @@ export default {
       dataTable: [],
       datacolumn: [
         {
-          label: "Connote",
+          label: "Koli Number",
           key: "koli_number",
           width: "xs",
         },
@@ -139,7 +140,7 @@ export default {
       await axios
         .get(
           this.URL.delivery_cod_history +
-            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}`,
+            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
           this.Helper.header()
         )
         .then((res) => {

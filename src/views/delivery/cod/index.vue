@@ -12,21 +12,29 @@
     <section class="nodes">
       <div class="box view">
         <div class="nav-box">
-          <vs-row class="mb-15">
-            <vs-col w="4">
-              <daterange-filter @searchDate="searchDate" />
+          <vs-row>
+            <vs-col xs="12" sm="12" lg="6">
+              <vs-row>
+                <vs-col w="4">
+                  <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
+                </vs-col>
+                <vs-col w="8">
+                  <daterange-filter @searchDate="searchDate" size="small" />
+                </vs-col>
+              </vs-row>
             </vs-col>
-            <vs-col w="8">
-              <vs-row justify="flex-end" align="center">
-                <vs-col w="3" sm="12">
+            <vs-col xs="12" sm="12" lg="6">
+              <vs-row justify="end">
+                <vs-col xs="6" sm="8" lg="4">
                   <select-search-by
                     :valueData="filterValues"
                     :isMultiple="false"
                     :border="true"
+                    :selectedValue="searchByVal"
                     @updateSearchBy="updateSearchBy"
                   />
                 </vs-col>
-                <vs-col class="pb-10" w="3" sm="12">
+                <vs-col xs="6" sm="4" lg="4">
                   <search-input
                     ref="searchInput"
                     @searchValue="searchValue"
@@ -45,6 +53,7 @@
               :dateFilter="tempDate"
               :query="tempSearch"
               :searchBy="searchByVal"
+              :filterDateBy="filterDateBy"
             />
           </transition>
         </template>
@@ -83,7 +92,9 @@ export default {
       node_request: "",
       node_origin: "",
       node_destination: "",
-      searchByVal: null,
+      searchByVal: "courier_employee_name",
+      searchPlaceholder: "Search Courier Name",
+      filterDateBy:"updated",
       filterValues: [
         {
           label: "Nama Kurir",
@@ -98,6 +109,12 @@ export default {
           value: "count_cod",
         },
       ],
+      dateParams: [
+        {
+          label: 'Date Deliverd',
+          value: 'updated'
+        },
+      ]
     };
   },
   methods: {

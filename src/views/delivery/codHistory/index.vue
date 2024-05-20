@@ -13,20 +13,28 @@
       <div class="box view">
         <div class="nav-box">
           <vs-row class="mb-15">
-            <vs-col w="4">
-              <daterange-filter @searchDate="searchDate" />
+            <vs-col xs="12" sm="12" lg="6" class="mb-15">
+              <vs-row>
+                <vs-col w="4">
+                  <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
+                </vs-col>
+                <vs-col w="8">
+                  <daterange-filter @searchDate="searchDate" size="small" />
+                </vs-col>
+              </vs-row>
             </vs-col>
-            <vs-col w="8">
-              <vs-row justify="flex-end" align="center">
-                <vs-col w="3" sm="12">
+            <vs-col xs="12" sm="12" lg="6">
+              <vs-row justify="end">
+                <vs-col xs="6" sm="8" lg="4">
                   <select-search-by
                     :valueData="filterValues"
                     :isMultiple="false"
                     :border="true"
+                    :selectedValue="searchByVal"
                     @updateSearchBy="updateSearchBy"
                   />
                 </vs-col>
-                <vs-col class="pb-10" w="3" sm="12">
+                <vs-col xs="6" sm="4" lg="4">
                   <search-input
                     ref="searchInput"
                     class="search-input"
@@ -46,6 +54,7 @@
               :dateFilter="tempDate"
               :query="tempSearch"
               :searchBy="searchByVal"
+              :filterDateBy="filterDateBy"
             />
           </transition>
         </template>
@@ -84,16 +93,13 @@ export default {
       node_request: "",
       node_origin: "",
       node_destination: "",
-      searchByVal: null,
-      searchPlaceholder: "Search Connote",
+      searchByVal: "koli_number",
+      searchPlaceholder: "Search Koli Number",
+      filterDateBy:"create",
       filterValues: [
         {
-          label: "Connote",
+          label: "Koli Number",
           value: "koli_number",
-        },
-        {
-          label: "Date",
-          value: "date_cod_collected",
         },
         {
           label: "Courier",
@@ -108,6 +114,12 @@ export default {
           value: "user_login",
         },
       ],
+      dateParams: [
+        {
+          label: 'Date Cod Collected',
+          value: 'create'
+        },
+      ]
     };
   },
   methods: {
@@ -164,6 +176,9 @@ export default {
           this.searchByVal = val;
         }
       }
+    },
+    updateFilterDateBy(key,val) {
+      this.filterDateBy = val;
     },
   },
 
