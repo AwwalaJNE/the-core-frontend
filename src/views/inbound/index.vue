@@ -26,6 +26,28 @@
         <section class="nodes">
             <div class="box view">
               <div class="nav-box">
+                <vs-row justify="space-between">
+                  <vs-col xs="12" sm="12" lg="6" >
+                    <vs-row>
+                      <vs-col w="4">
+                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
+                      </vs-col>
+                      <vs-col w="8">
+                        <daterange-filter @searchDate="searchDate" size="small" />
+                      </vs-col>
+                    </vs-row>
+                  </vs-col>
+                  <vs-col xs="12" sm="12" lg="6" class="mb-15">
+                    <vs-row justify="end">
+                      <vs-col xs="6" sm="8" lg="4">
+                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
+                      </vs-col>
+                      <vs-col xs="6" sm="4" lg="4">
+                        <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
+                      </vs-col>
+                    </vs-row>
+                  </vs-col>
+                </vs-row>
                 <vs-row justify class="mb-15">
                   <vs-col xs="12" sm="2" lg="2">
                     <template v-if="DataNode.length > 1">
@@ -101,9 +123,6 @@
 
                     </template>
                   </vs-col>
-                  <vs-col xs="12" sm="3" lg="3" offset="1" class="mb-15">
-                    <search-input ref="searchInput" @searchValue="searchValue"/>
-                  </vs-col>
                   <vs-col xs="6" sm="4" lg="2">
                     <inputan :name="name" :rules="rules">
                       <template v-slot:inputan="props">
@@ -160,12 +179,6 @@
                       </template>
                     </inputan>
                   </vs-col>
-                  <vs-col xs="12" sm="4" lg="2">
-                    <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
-                  </vs-col>
-                  <vs-col xs="12" sm="4" lg="3">
-                    <daterange-filter @searchDate="searchDate" size="small" />
-                  </vs-col>
                 </vs-row>
               </div>
                 <template>
@@ -181,6 +194,7 @@
                           :hasLinkedItem="hasLinkedItems"
                           :filterDateBy="filterDateBy"
                           :dateFilter="tempDate"
+                          :searchBy="searchBy"
                         />
                     </transition>
                 </template>
@@ -283,6 +297,59 @@ export default {
               label: "All Status"
             }],
             filterDateBy:"received",
+            searchBy:"inbound number",
+            searchPlaceholder: "Search Inbound Number",
+            searchParams: [
+              {
+                label: "Inbound Number",
+                value: "inbound number",
+              },
+              {
+                label: "IM Numbers",
+                value: "manifestItems",
+              },
+              {
+                label: "Vehicle",
+                value: "vehicle_type_name",
+              },
+              {
+                label: "Origin",
+                value: "inbound_node_name_origin",
+
+              },
+              {
+                label: "Type Inbound",
+                value: "inbound_type",
+
+              },
+              {
+                label: "Bag",
+                value: "inbound_total_bag",
+
+              },
+              {
+                label: "Koli",
+                value: "inbound_total_koli",
+
+              },
+              {
+                label: "Weight",
+                value: "inbound_total_weight",
+
+              },
+              {
+                label: "PIC",
+                value: "carrier_employee_name",
+              },
+              {
+                label: "Status",
+                value: "status",
+              },
+              {
+                label: "Received At",
+                value: "inbound_node_name_receiver",
+              }
+            ],
             dateParams: [
               {
                 label: 'Received Time',
@@ -434,7 +501,15 @@ export default {
             this.hasLinkedItems = ['inbound_number'];
           } 
           
-        }
+        },
+      updateSearchBy(key, val) {
+        val = val.replaceAll(" ", "_");
+        this.searchBy = val;
+        this.searchPlaceholder = key;
+      },
+      updateFilterDateBy(key,val) {
+        this.filterDateBy = val;
+      },
 
     },
 
