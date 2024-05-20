@@ -29,7 +29,6 @@ export default {
         query: String,
         dateFilter: Array,
         searchBy: String,
-        filterDateBy: String,
         nodeType:String,
         origin:String/Number,
         destination:String,
@@ -212,10 +211,8 @@ export default {
             if(q !== undefined) {
                 query = q
             }
-            if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
-            }
+
+            
             if(statusReceived !== undefined && statusReceived !== '-') {
               isReceived = statusReceived
             }
@@ -228,7 +225,7 @@ export default {
             }
             await axios
                 .get(this.URL.inbound_incoming +
-                `?n=${this.listenNodeId}&type=${node_type}&is_confirmed=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}`,
+                `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
 

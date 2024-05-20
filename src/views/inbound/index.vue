@@ -26,29 +26,7 @@
         <section class="nodes">
             <div class="box view">
               <div class="nav-box">
-                <vs-row justify="space-between">
-                  <vs-col xs="12" sm="12" lg="6" >
-                    <vs-row>
-                      <vs-col w="4">
-                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
-                      </vs-col>
-                      <vs-col w="8">
-                        <daterange-filter @searchDate="searchDate" size="small" />
-                      </vs-col>
-                    </vs-row>
-                  </vs-col>
-                  <vs-col xs="12" sm="12" lg="6" class="mb-15">
-                    <vs-row justify="end">
-                      <vs-col xs="6" sm="8" lg="4">
-                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
-                      </vs-col>
-                      <vs-col xs="6" sm="4" lg="4">
-                        <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
-                      </vs-col>
-                    </vs-row>
-                  </vs-col>
-                </vs-row>
-                <vs-row justify class="mb-15">
+                <vs-row>
                   <vs-col xs="12" sm="2" lg="2">
                     <template v-if="DataNode.length > 1">
                       <vs-select
@@ -123,6 +101,16 @@
 
                     </template>
                   </vs-col>
+                  <vs-col vs-col xs="6" sm="4" lg="4">
+                    <vs-row justify="end">
+                      <vs-col xs="12" sm="4" lg="4">
+                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
+                      </vs-col>
+                      <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
+                    </vs-row>
+                  </vs-col>
+                </vs-row>
+                <vs-row justify>
                   <vs-col xs="6" sm="4" lg="2">
                     <inputan :name="name" :rules="rules">
                       <template v-slot:inputan="props">
@@ -179,7 +167,13 @@
                       </template>
                     </inputan>
                   </vs-col>
-                </vs-row>
+                  <vs-col xs="12" sm="4" lg="2">
+                    <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
+                  </vs-col>
+                  <vs-col xs="12" sm="4" lg="4">
+                    <daterange-filter @searchDate="searchDate" size="small" />
+                  </vs-col>
+                </vs-row>                
               </div>
                 <template>
                     <transition name="slide-fade">
