@@ -23,7 +23,7 @@
                                 <template v-if="navActive === 'k-CONNOTE'">
                                     <vs-row>
                                         <vs-col vs-align="center" w="6">
-                                            <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" />
+                                            <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"  :selectedValue="searchBy"/>
                                         </vs-col>
                                         <vs-col vs-align="center" w="6">
                                             <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" class="search-input"/>
@@ -31,7 +31,14 @@
                                     </vs-row>
                                 </template>
                                 <template v-if="navActive === 'k-BAG'">
-                                    <search-input ref="searchInput" @searchValue="searchValue" :placeholder="`Search Bag`" class="search-input"/>
+                                    <vs-row>
+                                        <vs-col vs-align="center" w="6">
+                                            <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParamsBag" :selectedValue="searchByBag" />
+                                        </vs-col>
+                                        <vs-col vs-align="center" w="6">
+                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholderBag" class="search-input"/>
+                                        </vs-col>
+                                    </vs-row>
                                 </template>
                             </vs-col>
                         </vs-row>
@@ -64,31 +71,40 @@
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-BAG'">
-                          <vs-row >
-                            <vs-col vs-align="center" xs="6" sm="4" lg="3">
-                              <select-bag-destination
-                                  ref="bag_destination"
-                                  :isMultiple="false"
-                                  :border="true"
-                                  @updateBagDestination="updateBagDestination" />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
-                              <select-bag-routing
-                                  ref="bag_routing"
-                                  :isMultiple="false"
-                                  :border="true"
-                                  @updateBagRouting="updateBagRouting" />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" lg="2">
-                              <select-bag-tipe
-                                  ref="bag_tipe"
-                                  :isMultiple="false"
-                                  :border="true"
-                                  @updateBagTipe="updateBagTipe" />
-                            </vs-col>
+                            <vs-row >
+                               <vs-col vs-align="center" xs="12" sm="4" lg="2">
+                                <select-bag-destination
+                                    ref="bag_destination"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    @updateBagDestination="updateBagDestination" />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="4" lg="2">
+                                <select-bag-routing
+                                    ref="bag_routing"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    @updateBagRouting="updateBagRouting" />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="4" lg="2">
+                                <select-bag-tipe
+                                    ref="bag_tipe"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    @updateBagTipe="updateBagTipe" />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="3" lg="2">
+                                    <select-filter-date-by :isMultiple="false" :border="true"
+                                        @updateFilterDateBy="updateFilterDateBy" />
+                                </vs-col>
+                                <vs-col xs="12" sm="5" lg="4">
+                                    <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'" :valueData="tempDate"
+                                        typeInput="daterange" @updateValue="searchDate" />
+                                </vs-col>
+                            
                           </vs-row>
                             <transition name="slide-fade">
-                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch"/>
+                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :querySearch="searchByBag" :queryDate="filterDateBy"/>
                             </transition>
                         </template>
                         
@@ -209,6 +225,67 @@ export default {
               label: 'All Destination',
               value: ''
             }],
+            searchByBag:"bag number",
+            filterDateBy: "create",
+            searchPlaceholderBag: "Search Bag Number",
+            searchParamsBag: [
+                {
+                    label: "Bag Number",
+                    value: "bag number",
+
+                },
+                {
+                    label: "Bag Detail Qty",
+                    value: "bag_detail_qty",
+
+                },
+                {
+                    label: "Weight",
+                    value: "bag_weight",
+
+                },
+                {
+                    label: "Origin",
+                    value: "origin_tariff_code",
+
+                },
+                {
+                    label: "Destination",
+                    value: "destination_tariff_code",
+
+                },
+                {
+                    label: "Runsheet",
+                    value: "runsheet_count",
+
+                },
+                {
+                    label: "Un Runsheet",
+                    value: "un_runsheet_count",
+
+                },
+                {
+                    label: "Courier",
+                    value: "courier",
+
+                },
+                {
+                    label: "Surat Muatan",
+                    value: "sm",
+
+                },
+                {
+                    label: "Surat Jalan",
+                   value: "sj",
+
+                }
+            ],
+            dateParams: [
+                {
+                    label: 'Created Date',
+                    value: 'create'
+                }
+            ]
 
         }
     },
@@ -220,8 +297,15 @@ export default {
           this.statusinventory = val;
         },
         updateSearchBy(key,val) {
-          this.searchBy = val;
-          this.searchPlaceholder = key;
+            console.log(this.navActive,'hehe haha');
+            if (this.navActive === 'k-CONNOTE'){
+            this.searchBy = val;
+            this.searchPlaceholder = key;
+            } else {
+      val = val.replaceAll(" ", "_");
+            this.searchByBag = val;
+            this.searchPlaceholderBag = key;
+            }
         },
         updateFilterDateBy(key,val) {
           this.filterDateBy = val;
