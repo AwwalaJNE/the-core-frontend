@@ -105,6 +105,16 @@ export default {
                   width: "sm"
                 },
                 {
+                  label: "Bag",
+                  key: "detail_count",
+                  width: "sm"
+                },
+                {
+                  label: "Koli",
+                  key: "koli_count",
+                  width: "sm"
+                },
+                {
                     label: "Weight",
                     key: "max_weight",
                     width: "auto"
