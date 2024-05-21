@@ -51,7 +51,9 @@ export default {
     props: {
         query: String,
         dateFilter: Array,
-        node:String
+        node:String,
+        searchBy: String,
+        filterDateBy: String
     },
     components: {
         "table-master" : TableMaster,
@@ -147,7 +149,7 @@ export default {
             }
             await axios
                 .get(this.URL.pickup_schedule +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
 
