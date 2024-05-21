@@ -107,12 +107,12 @@ export default {
                 {
                   label: "Bag",
                   key: "detail_count",
-                  width: "sm"
+                  width: "auto"
                 },
                 {
                   label: "Koli",
                   key: "koli_count",
-                  width: "sm"
+                  width: "auto"
                 },
                 {
                     label: "Weight",
