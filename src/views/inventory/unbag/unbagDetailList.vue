@@ -63,7 +63,8 @@ export default {
     props: {
         query: String,
         itemNumber: String,
-        bagId: String
+        bagId: String,
+        resetInput: Function
 
     },
     components: {
@@ -212,6 +213,7 @@ export default {
           this.total_connote_in_bag = 0
           this.total_bag =0
           this.total_confirmed =0
+          this.$emit("resetInput", "RESET");
         },
         actionUpdate(val){
             if(this.dataTable.length > 0) {

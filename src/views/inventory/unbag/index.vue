@@ -57,7 +57,7 @@
       </vs-row>
 
       <vs-row justify="space-between" class=" mt-2">
-        <unbagDetail ref="unbagDetail" :itemNumber="item_number"></unbagDetail>
+        <unbagDetail ref="unbagDetail" :itemNumber="item_number" @resetInput="resetInput"></unbagDetail>
       </vs-row>
     </section>
 
@@ -126,6 +126,9 @@ export default {
         this.updateValue();
       }
     },
+    resetInput(val) {
+      this.inputLabelPlaceholder = "Masukan code BAG";
+    }
   },
 };
 </script>
