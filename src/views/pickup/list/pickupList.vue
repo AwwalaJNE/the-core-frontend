@@ -116,7 +116,9 @@ export default {
         dateFilter: Array,
         node:String,
         status_pickup:String,
-        courier_pickup:String/Number
+        courier_pickup:String/Number,
+        searchBy: String,
+        filterDateBy: String
     },
     components: {
     "table-master": TableMaster,
@@ -294,7 +296,7 @@ export default {
 
             await axios
                 .get(this.URL.pickup +
-                `?n=${this.listenNodeId}&pickup_status=${status_pickup}&pickup_courier=${courier_pickup}&page=${page}&s=${query}`,
+                `?n=${this.listenNodeId}&pickup_status=${status_pickup}&pickup_courier=${courier_pickup}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
                     // this.dataTable = res.data.data 

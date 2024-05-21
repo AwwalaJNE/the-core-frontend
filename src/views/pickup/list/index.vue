@@ -28,8 +28,27 @@
             <div class="box view">
               <div class="nav-box">
                 <vs-row justify="space-between">
-                  <vs-col xs="3" sm="3" lg="3" >
-                    <daterange-filter @searchDate="searchDate"/>
+                  <vs-col xs="12" sm="12" lg="6" >
+                    <vs-row>
+                      <vs-col w="4">
+                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy"
+                          :valueData="dateParams" :selectedValue="filterDateBy" />
+                      </vs-col>
+                      <vs-col w="8">
+                        <daterange-filter @searchDate="searchDate" size="small" />
+                      </vs-col>
+                    </vs-row>
+                  </vs-col>
+                  <vs-col xs="12" sm="12" lg="6">
+                    <vs-row justify="end">
+                      <vs-col xs="6" sm="8" lg="4">
+                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"
+                          :valueData="searchParams" :selectedValue="searchBy" />
+                      </vs-col>
+                      <vs-col xs="6" sm="4" lg="4">
+                        <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
+                      </vs-col>
+                    </vs-row>
                   </vs-col>
                   <!-- <vs-col xs="2" sm="2" lg="2">
                     <template v-if="DataNode.length > 0">
@@ -56,60 +75,41 @@
 
                     </template>
                   </vs-col> -->
-                  <vs-col xs="2" sm="2" lg="2" >
-                    <template v-if="DataStatus.length > 0">
-                      <vs-select
-                          class="m-select"
-                          filter
-                          :multiple="false"
-                          placeholder="All Status"
-                          v-model="status_pickup"
-                          :border="true"
-                          @change="updateNode"
-                      >
-                        <template>
-                          <vs-option
-                              v-for="(item,key) in DataStatus"
-                              :key="key"
-                              :label="item.label"
-                              :value="item.value">
-                            {{item.label}}
-                          </vs-option>
-                        </template>
+                  <vs-col xs="12" sm="12" lg="6">
+                    <vs-row>
+                      <vs-col xs="6" sm="4" lg="4">
+                        <template v-if="DataStatus.length > 0">
+                          <vs-select class="m-select" filter :multiple="false" placeholder="All Status"
+                            v-model="status_pickup" :border="true" @change="updateNode">
+                            <template>
+                              <vs-option v-for="(item, key) in DataStatus" :key="key" :label="item.label" :value="item.value">
+                                {{ item.label }}
+                              </vs-option>
+                            </template>
 
-                      </vs-select>
+                          </vs-select>
 
-                    </template>
-                  </vs-col>
-                  <vs-col xs="3" sm="3" lg="3">
-                    <template v-if="DataCourier.length > 0">
-                      <vs-select 
-                       class="m-select"
-                       filter
-                       :multiple="false"
-                       placeholder="All Courier"
-                       v-model="courier_pickup"
-                       :border="true"
-                       @change="updateNode">
-                        <template>
-                          <vs-option v-for="(item,key) in DataCourier"
-                          :key="key"
-                          :label="item.label"
-                          :value="item.value">
-                            {{ item.label }}
-                          </vs-option>
                         </template>
-                      </vs-select>
-                    </template>
-                  </vs-col>
-                  <vs-col xs="2" sm="2" lg="2" align="right">
-                    <search-input ref="searchInput" @searchValue="searchValue"/>
+                      </vs-col>
+                      <vs-col xs="6" sm="4" lg="4">
+                        <template v-if="DataCourier.length > 0">
+                          <vs-select class="m-select" filter :multiple="false" placeholder="All Courier"
+                            v-model="courier_pickup" :border="true" @change="updateNode">
+                            <template>
+                              <vs-option v-for="(item, key) in DataCourier" :key="key" :label="item.label" :value="item.value">
+                                {{ item.label }}
+                              </vs-option>
+                            </template>
+                          </vs-select>
+                        </template>
+                      </vs-col>
+                    </vs-row>
                   </vs-col>
                 </vs-row>
               </div>
                 <template>
                     <transition name="slide-fade">
-                        <PickupList :ref="'transactionList'" :status_pickup="status_pickup" :courier_pickup="courier_pickup" :node="node_request" :dateFilter="tempDate" :query="tempSearch"/>
+                        <PickupList :ref="'transactionList'" :status_pickup="status_pickup" :courier_pickup="courier_pickup" :node="node_request" :dateFilter="tempDate" :query="tempSearch" :searchBy="searchBy" :filterDateBy="filterDateBy"/>
                     </transition>
                 </template>
             </div>
@@ -131,6 +131,7 @@ import master from "@/mixins/master"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import dateRange from "@/components/daterange/index"
+import SelectSearchBy from "@/components/search/selectSearchBy";
 
 import PickupList from "@/views/pickup/list/pickupList"
 
@@ -146,6 +147,7 @@ export default {
         "daterange-filter": dateRange,
         "PickupList": PickupList,
         "dialogCreatePickupList": DialogCreatePickupList,
+        "select-search-by": SelectSearchBy,
     },
     data() {
         return {
@@ -158,7 +160,42 @@ export default {
             DataCourier:[],
             node_request:'',
             status_pickup:'',
-            courier_pickup:''
+            courier_pickup:'',
+            searchBy: "pickup number",
+            filterDateBy: "request_date",
+            searchPlaceholder: "Search Pickup Number",
+            searchParams: [
+              {
+                label: 'Pickup Number',
+                value: 'pickup number'
+              },
+              {
+                label: 'Pickup Name',
+                value: 'pickup_name'
+              },
+              {
+                label: "Courier",
+                value: "user_name",
+              },
+              {
+                label: "Pickup Type",
+                value: "pickup_type",
+              },
+              {
+                label: "Pickup Status",
+                value: "pickup_status",
+              },
+            ],
+            dateParams: [
+              {
+                label: 'Request Date Pickup',
+                value: 'request_date'
+              },
+              {
+                label: "Picked Time",
+                value: "picked_date",
+              },
+            ]
         }
     },
     methods: {
@@ -253,6 +290,14 @@ export default {
                 }).catch(err => {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
+        },
+        updateSearchBy(key, val) {
+            val = val.replaceAll(" ", "_");
+            this.searchBy = val;
+            this.searchPlaceholder = key;
+        },
+        updateFilterDateBy(key, val) {
+            this.filterDateBy = val;
         },
     },
   mounted() {
