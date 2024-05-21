@@ -14,7 +14,7 @@
           placeholder="Input / scan item number"
         />
       </vs-col>
-      <div class="dialog-content-row center">
+      <div class="dialog-content-row center dialog-picked">
         <vs-row class="dialog-content">
           <template v-if="bagNumberList.length > 0">
             <vs-row v-for="(item, key) in bagNumberList" :key="key">
@@ -23,6 +23,7 @@
                 v-model="item_picked"
                 :val="item.value"
                 :key="key"
+                disabled
               >
                 {{ item.label }}
               </vs-checkbox>
@@ -176,6 +177,14 @@ export default {
         let dataFoundFromPicked = this.item_picked.includes(this.scan_bag);
         if (!dataFoundFromPicked) {
           this.item_picked.push(this.scan_bag);
+          let theData = this.bagNumberList.find(
+            (item) => item.value == this.scan_bag
+          );
+          const index = this.bagNumberList.indexOf(theData);
+          if (index > 0) {
+            const item = this.bagNumberList.splice(index, 1)[0];
+            this.bagNumberList.unshift(item);
+          }
         }
       }else{
         this.openNotification("danger", "Select item is failed", "Bag or Connote not found!");
@@ -194,5 +203,13 @@ export default {
 .dialog-content-row {
   max-height: 15em;
   overflow: auto;
+}
+.dialog-picked .vs-checkbox--disabled {
+  opacity: 1;
+  color: black;
+  label {
+    opacity: 1;
+    color: black;
+  }
 }
 </style>
