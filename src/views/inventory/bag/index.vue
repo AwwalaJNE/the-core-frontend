@@ -105,7 +105,7 @@
               </template>
             </vs-col>
             <vs-col xs="6" sm="3" lg="2" class="mt-2">
-              <vs-checkbox  v-model="is_pra_runsheet">
+              <vs-checkbox  v-model="is_pra_runsheet" @change="handlePraRunsheet">
                 Pra Runsheet
               </vs-checkbox>
             </vs-col>
@@ -538,6 +538,13 @@ export default {
             this.openNotification('danger', 'Failed to populate service list', err)
           })
       },
+    handlePraRunsheet(val) {
+      if (val.target.checked) {
+        this.regional = ''
+        this.service = ''
+        this.destination = ''
+      }
+    },
     updateRadio(){
       this.form={
           item_number: this.item_code,
