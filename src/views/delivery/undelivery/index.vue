@@ -13,7 +13,7 @@
                     square
                     block
                     @click="finishReceiving"
-                    v-if="isFinishReceivingButtonVisible"
+                    :disabled="!isFinishReceivingButtonVisible"
                 >
                   Finish Receiving Runsheet
                 </vs-button>
