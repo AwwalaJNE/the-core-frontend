@@ -104,7 +104,7 @@
                             
                           </vs-row>
                             <transition name="slide-fade">
-                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :querySearch="searchByBag" :queryDate="filterDateBy"/>
+                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :querySearch="searchByBag" :queryDate="filterDateBy" :dateFilter="tempDate"/>
                             </transition>
                         </template>
                         
