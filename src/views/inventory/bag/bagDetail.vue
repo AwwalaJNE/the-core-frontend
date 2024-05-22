@@ -158,7 +158,7 @@
                          placeholder="Weight"
                          v-on:keyup.enter="updateValue"
                          ref="formInputBagging" icon-after
-                         :disabled="(!is_filled_bag_actual_weight || is_orion) && !loading"
+                         :disabled="(!isAllowed || is_orion) && !loading"
                          >
                  <template #icon>Kg</template>
                </vs-input>
@@ -255,7 +255,6 @@ export default {
       messageIsAllowed: "",
       employee: "",
       is_pra_runsheet: false,
-      is_filled_bag_actual_weight: false,
       is_orion: false
     }
   },
@@ -283,8 +282,6 @@ export default {
     getResponse(data, loading) {
       
       console.log("dapet nih kedepan", data, loading)
-
-      this.is_filled_bag_actual_weight = data.data.bag_actual_weight === '0' ? true : false;
       this.is_orion = data.data.is_orion === '1' ? true : false;
       let arr = data.detail
       let bag_des = data.data ? data?.data?.destination?.node_code  : null
