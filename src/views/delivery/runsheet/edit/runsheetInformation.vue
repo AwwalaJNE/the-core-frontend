@@ -44,7 +44,8 @@ export default {
     deliveryNumber: String,
     arrStatus: Array,
     dataDelivery: [Object, Array],
-    radioOption: String
+    radioOption: String,
+    selectedItems: Array
   },
   emits: ["update-selected"],
   data() {
@@ -206,6 +207,12 @@ export default {
         this.dataTable = val;
       }
     },
+    selectedItems(val) {
+      if (val.length === 0) {
+        this.$refs.tableMaster.selected = [];
+        this.$refs.tableMaster.allCheck = false;
+      }
+    }
   },
   mounted() {
     // this.datacolumn.map((item) => {
