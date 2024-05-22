@@ -452,28 +452,24 @@ export default {
       this.form.courier_employee_id = this.employee_id;
       this.form.bag_number = null;
       this.scanConnote();
-      this.item_no = null;
     },
     updateValueOrion() {
       this.form.koli_number = `${this.item_no_orion}00`;
       this.form.courier_employee_id = this.employee_id;
       this.form.bag_number = null;
       this.scanConnote();
-      this.item_no = null;
     },
     removeValue() {
       this.form.koli_number = this.item_no_remove;
       this.form.courier_employee_id = this.employee_id;
       this.form.bag_number = null;
       this.removeConnote();
-      this.item_no_remove = null;
     },
     removeValueOrion() {
       this.form.koli_number = `${this.item_no_orion_remove}00`;
       this.form.courier_employee_id = this.employee_id;
       this.form.bag_number = null;
       this.removeConnote();
-      this.item_no_orion_remove = null;
     },
     getParamRoute() {
       this.employee_id = this.$route.params.employee_id.toString();
@@ -581,10 +577,12 @@ export default {
             this.getDataDelivery();
             this.openNotification(null, "Success", "Update success");
             this.loadingRunsheet = false;
+            this.clearInputs()
           } else {
             this.getDataDelivery();
             this.openNotification(null, "Success", res.data.message);
             this.loadingRunsheet = false;
+            this.clearInputs()
           }
         })
         .catch((err) => {
@@ -617,10 +615,12 @@ export default {
             this.getDataDelivery();
             this.openNotification(null, "Success", "Remove koli success");
             this.loadingRunsheet = false;
+            this.clearInputs()
           } else {
             this.getDataDelivery();
             this.openNotification(null, "Success", res.data.message);
             this.loadingRunsheet = false;
+            this.clearInputs()
           }
         })
         .catch((err) => {
@@ -945,6 +945,12 @@ export default {
       })
       this.title = item[0].title
     },
+    clearInputs() {
+      this.item_no = null
+      this.item_no_orion = null
+      this.item_no_remove = null
+      this.item_no_orion_remove = null
+    }
   },
   watch: {
     radio_option(val) {
