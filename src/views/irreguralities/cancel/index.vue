@@ -34,7 +34,38 @@
             <div class="box view">
                 <div class="nav-box">
                     <vs-row justify="space-between">
-                        <vs-col xs="12" sm="6" lg="6">
+                        <vs-col xs="12" sm="12" lg="6">
+                            <vs-row>
+                                <vs-col w="4">
+                                    <select-search-by :isMultiple="false" :border="true"
+                                        @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
+                                        :selectedValue="filterDateBy" />
+                                </vs-col>
+                                <vs-col w="8">
+                                    <date-time
+                                        :name="''"
+                                        :rules="''"
+                                        :formKey="'TRIGGER_DATE'"
+                                        :valueData="dateRange"
+                                        typeInput="daterange"
+                                        @updateValue="updateValue" />
+                                </vs-col>
+                            </vs-row>
+                        </vs-col>
+                        <vs-col xs="12" sm="12" lg="6">
+                            <vs-row justify="end">
+                                <vs-col xs="6" sm="8" lg="4">
+                                    <select-search-by :isMultiple="false" :border="true"
+                                        @updateSearchBy="updateSearchBy" :valueData="searchParams"
+                                        :selectedValue="searchBy" />
+                                </vs-col>
+                                <vs-col xs="6" sm="4" lg="4">
+                                    <search-input ref="searchInput" @searchValue="searchValue"
+                                        :placeholder="searchPlaceholder" />
+                                </vs-col>
+                            </vs-row>
+                        </vs-col>
+                        <!-- <vs-col xs="12" sm="4" lg="4">
                             <date-time
                             :name="''"
                             :rules="''"
@@ -45,7 +76,7 @@
                         </vs-col>
                         <vs-col xs="6" sm="3" lg="3">
                             <search-input ref="searchInput" @searchValue="searchValue"/>
-                        </vs-col>
+                        </vs-col> -->
                     </vs-row>
                 </div>
 
@@ -95,6 +126,7 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
+import SelectSearchBy from "@/components/search/selectSearchBy";
 
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogCancel from "@/views/irreguralities/cancel/dialogCancel"
@@ -108,7 +140,8 @@ export default {
         "date-time": DateTime,
         "table-master" : TableMaster,
         "dialog-cancel": DialogCancel,
-        "dialog-confirm": DialogConfirm
+        "dialog-confirm": DialogConfirm,
+        "select-search-by": SelectSearchBy,
     },
     data() {
         return {
@@ -158,7 +191,38 @@ export default {
             form: {},
             dialogCancelActive: false,
             dialogApproveActive: false,
-            loadingApproveActive: false
+            loadingApproveActive: false,
+            searchBy: "koli number",
+            filterDateBy: "create",
+            searchPlaceholder: "Search Pickup Schedule",
+            searchParams: [
+              {
+                label: 'Koli number',
+                value: 'koli number'
+              },
+              {
+                label: "Status Code",
+                value: "status_code",
+              },
+              {
+                label: "User",
+                value: "user_name",
+              },
+              {
+                label: "Approved By",
+                value: "userApprove",
+              },
+            ],
+            dateParams: [
+              {
+                label: 'Canceled Date',
+                value: 'create'
+              },
+              {
+                label: 'Approved Date',
+                value: 'approved_at'
+              },
+            ]
         }
     },
     methods: {
@@ -193,7 +257,7 @@ export default {
             }
             await axios
                 .get(this.URL.irregularities +
-                `?n=${this.listenNodeId}&irregularity_type=CANCELED&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                `?n=${this.listenNodeId}&irregularity_type=CANCELED&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -314,7 +378,15 @@ export default {
             if(this.koliCode !== '') {
                 this.dialogCancelActive = true
             }
-        }
+        },
+        updateSearchBy(key, val) {
+            val = val.replaceAll(" ", "_");
+            this.searchBy = val;
+            this.searchPlaceholder = key;
+        },
+        updateFilterDateBy(key, val) {
+            this.filterDateBy = val;
+        },
     },
     mounted() {
         this.refresh()   

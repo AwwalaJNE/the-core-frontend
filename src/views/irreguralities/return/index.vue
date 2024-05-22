@@ -27,17 +27,36 @@
             <div class="box view">
                 <div class="nav-box">
                     <vs-row justify="space-between">
-                        <vs-col xs="12" sm="6" lg="6">
-                            <date-time
-                            :name="''"
-                            :rules="''"
-                            :formKey="'TRIGGER_DATE'"
-                            :valueData="dateRange"
-                            typeInput="daterange"
-                            @updateValue="updateValue" />
+                        <vs-col xs="12" sm="12" lg="6">
+                            <vs-row>
+                                <vs-col w="4">
+                                    <select-search-by :isMultiple="false" :border="true"
+                                        @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
+                                        :selectedValue="filterDateBy" />
+                                </vs-col>
+                                <vs-col w="8">
+                                    <date-time
+                                        :name="''"
+                                        :rules="''"
+                                        :formKey="'TRIGGER_DATE'"
+                                        :valueData="dateRange"
+                                        typeInput="daterange"
+                                        @updateValue="updateValue" />
+                                </vs-col>
+                            </vs-row>
                         </vs-col>
-                        <vs-col xs="6" sm="3" lg="3">
-                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="`Search Connote`"/>
+                        <vs-col xs="12" sm="12" lg="6">
+                            <vs-row justify="end">
+                                <vs-col xs="6" sm="8" lg="4">
+                                    <select-search-by :isMultiple="false" :border="true"
+                                        @updateSearchBy="updateSearchBy" :valueData="searchParams"
+                                        :selectedValue="searchBy" />
+                                </vs-col>
+                                <vs-col xs="6" sm="4" lg="4">
+                                    <search-input ref="searchInput" @searchValue="searchValue"
+                                        :placeholder="searchPlaceholder" />
+                                </vs-col>
+                            </vs-row>
                         </vs-col>
                     </vs-row>
                 </div>
@@ -79,6 +98,7 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
+import SelectSearchBy from "@/components/search/selectSearchBy";
 
 import DialogReturn from "@/views/irreguralities/return/dialogReturn"
 export default {
@@ -91,6 +111,7 @@ export default {
         "date-time": DateTime,
         "table-master" : TableMaster,
         "dialog-return" : DialogReturn,
+        "select-search-by": SelectSearchBy,
     },
     data() {
         return {
@@ -119,11 +140,6 @@ export default {
                     key: "user_login",
                     width: "auto"
                 },
-                {
-                    label: "Actions",
-                    key: "manifest_number",
-                    width: "auto"
-                },
             ],
             loading:false,
             pagination: {
@@ -132,6 +148,29 @@ export default {
                 page: 1
             },
             dialogReturnActive: false,
+            searchBy: "old connote",
+            filterDateBy: "create",
+            searchPlaceholder: "Search Old Connote",
+            searchParams: [
+              {
+                label: 'Old Connote',
+                value: 'old connote'
+              },
+              {
+                label: "Return Connote",
+                value: "return_connote",
+              },
+              {
+                label: "User",
+                value: "user",
+              }
+            ],
+            dateParams: [
+              {
+                label: 'Created Date',
+                value: 'create'
+              },
+            ]
         }
     },
     methods: {
@@ -166,7 +205,7 @@ export default {
             }
             await axios
                 .get(this.URL.return +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
                     // this.dataTable = res.data.data
@@ -231,6 +270,14 @@ export default {
         actionPagination(val) {
             this.pagination.page = val
             this.refresh()
+        },
+        updateSearchBy(key, val) {
+            val = val.replaceAll(" ", "_");
+            this.searchBy = val;
+            this.searchPlaceholder = key;
+        },
+        updateFilterDateBy(key, val) {
+            this.filterDateBy = val;
         },
     },
     mounted() {
