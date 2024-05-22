@@ -257,7 +257,7 @@
                         :data-delivery="dataDelivery" :arr-status="arrStatus" :query="tempSearch"
                         :loading="loadingRunsheet" :delivery-number="delivery_runsheet_number"
                         :radioOption="radio_option" @update-selected="updateSelected" @updatePOD="updatePOD"
-                        @editPOD="editPOD" />
+                        @editPOD="editPOD" :selectedItems="selectedUpdateItems" />
                     </template>
                   </transition>
                 </template>
@@ -267,7 +267,7 @@
                       <RunsheetInformationCancel v-if="arrStatus && dataDelivery" :ref="'runsheetInformationCancel'"
                         :data-delivery="dataDeliveryCancel" :arr-status="arrStatus" :query="tempSearch"
                         :loading="loadingRunsheet" :delivery-number="delivery_runsheet_number"
-                        :radioOption="radio_option" @updatePOD="updatePOD" @editPOD="editPOD" />
+                        :radioOption="radio_option" @updatePOD="updatePOD" @editPOD="editPOD" :selectedItems="selectedUpdateItems"  />
                     </template>
                   </transition>
                 </template>
@@ -290,6 +290,7 @@
                           @update-selected="updateSelected"
                           @updatePOD="updatePOD"
                           @editPOD="editPOD"
+                          :selectedItems="selectedUpdateItems"
                         />
                       </template>
                     </transition>
@@ -790,6 +791,7 @@ export default {
               this.getDataDelivery();
               this.form = {};
               this.openNotification(null, "Success", "POD UPDATED!");
+              this.selectedUpdateItems = []
             })
             .catch((err) => {
               console.log("eror");
