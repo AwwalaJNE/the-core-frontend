@@ -63,7 +63,7 @@ export default {
           }
         },
         dateFilter: function (val, old) {
-            if (val !== undefined) {
+            if (val !== undefined && val !== null) {
                 let d = new Date()
                 let from = ''
                 let to = ''
@@ -81,6 +81,11 @@ export default {
                     this.endDate = to
                 }
                 this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, from, to, this.querySearch, this.queryDate);
+            }
+            else {
+                this.startDate = ""
+                this.endDate = ""
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate);
             }
         },
         queryBag: function(val, old) {
