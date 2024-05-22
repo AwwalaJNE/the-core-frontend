@@ -77,6 +77,8 @@ export default {
                         from = moment(d).format("YYYY-MM-DD")
                         to = moment(d).format("YYYY-MM-DD")
                     }
+                    this.startDate = from
+                    this.endDate = to
                 }
                 this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, from, to, this.querySearch, this.queryDate);
             }
