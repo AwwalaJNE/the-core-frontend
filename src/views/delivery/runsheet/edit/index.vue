@@ -792,6 +792,7 @@ export default {
               this.form = {};
               this.openNotification(null, "Success", "POD UPDATED!");
               this.selectedUpdateItems = []
+              this.disabledConfirm = true
             })
             .catch((err) => {
               console.log("eror");
