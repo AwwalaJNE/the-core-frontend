@@ -18,7 +18,7 @@
       </vs-col>
     </vs-row>
 
-    <template v-if="isAllowed && !loading">
+    <template v-if="isAllowed && !is_orion && !loading">
       <div class="center in-get-bag">
         <vs-row style="margin-top:2em">
           <vs-col xs="4" sm="4" lg="2">
@@ -42,7 +42,7 @@
     <section class="bagging">
       <vs-row justify="space-between">
         <vs-col xs="12" sm="2" lg="2">
-          <template v-if="isAllowed && !loading">
+          <template v-if="isAllowed && !is_orion && !loading">
             <div v-if="radio_option === 'connote'" class="center in-get-bag">
               <vs-input border type="text" v-model="item_code_orion" label-placeholder="Masukkan Connote (Orion)"
                 v-on:keyup.enter="updateItemOnBagOrion" icon-after :autofocus="true" ref="formInputBagging"
