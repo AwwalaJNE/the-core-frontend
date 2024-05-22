@@ -26,7 +26,9 @@ export default {
     mixins: [master],
     props: {
         query: String,
-        dateFilter: Array
+        dateFilter: Array,
+        searchBy: String,
+        filterDateBy: String
     },
     components: {
         "table-master" : TableMaster,
@@ -114,7 +116,7 @@ export default {
 
             await axios
                 .get(this.URL.tracing +
-                `/${this.koli_number}/remark?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                `/${this.koli_number}/remark?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {

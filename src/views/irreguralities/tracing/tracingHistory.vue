@@ -11,28 +11,29 @@
                 <div style="position:relative;display:flex;justify-content: flex-end;">
                     <div style="width: 100px;padding-right: 5px;">
                         <vs-button flat block :active="true" @click="openDialogNewButton">
-                        <i class="bx bx-plus"></i> New
+                            <i class="bx bx-plus"></i> New
                         </vs-button>
                     </div>
                 </div>
             </vs-col>
         </vs-row>
-        
+
         <section class="users">
             <vs-row justify="space-around">
-                <vs-col vs-type="flex" vs-justify="center" vs-align="center" :w="`${navActive === 'k-PERMISSIONS'?'4':'12'}`">
+                <vs-col vs-type="flex" vs-justify="center" vs-align="center"
+                    :w="`${navActive === 'k-PERMISSIONS' ? '4' : '12'}`">
                     <div class="box view">
 
                         <vs-row justify="space-between">
                             <vs-col xs="12" sm="9" lg="9">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
-                            <vs-col xs="12" sm="3" lg="3">
-                                <search-input ref="searchInput" @searchValue="searchValue" class="search-input"/>
-                            </vs-col>
+                            <!-- <vs-col xs="12" sm="3" lg="3">
+                                <search-input ref="searchInput" @searchValue="searchValue" class="search-input" />
+                            </vs-col> -->
                         </vs-row>
-                        
-                        <vs-row>
+
+                        <!-- <vs-row>
                             <vs-col xs="12" sm="6" lg="6">
                                 <date-time
                                     :name="''"
@@ -43,75 +44,135 @@
                                     @updateValue="updateValue" 
                                 />
                             </vs-col>
-                        </vs-row>
-                        
+                        </vs-row> -->
+
                         <template v-if="navActive === 'k-REMARK'">
+                            <vs-row>
+                                <vs-col xs="12" sm="12" lg="6">
+                                    <vs-row>
+                                        <vs-col w="4">
+                                            <select-search-by :isMultiple="false" :border="true"
+                                                @updateSearchBy="updateFilterDateBy" :valueData="dateParamsRemark"
+                                                :selectedValue="filterDateByRemark" />
+                                        </vs-col>
+                                        <vs-col w="8">
+                                            <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'"
+                                                :valueData="dateRange" typeInput="daterange"
+                                                @updateValue="updateValue" />
+                                        </vs-col>
+                                    </vs-row>
+                                </vs-col>
+                                <vs-col xs="12" sm="12" lg="6" >
+                                    <vs-row justify="end">
+                                        <vs-col xs="6" sm="8" lg="4">
+                                            <select-search-by :isMultiple="false" :border="true"
+                                                @updateSearchBy="updateSearchBy" :valueData="searchParamsRemark"
+                                                :selectedValue="searchByRemark" />
+                                        </vs-col>
+                                        <vs-col xs="6" sm="4" lg="4">
+                                            <search-input ref="searchInput" @searchValue="searchValue"
+                                                :placeholder="searchPlaceholderRemark" />
+                                        </vs-col>
+                                    </vs-row>
+                                </vs-col>
+                            </vs-row>
                             <transition name="slide-fade">
-                                <remark-list 
-                                    ref="refreshRemark"  
-                                    :query="tempSearch"
-                                    :dateFilter="dateRange"
-                                />
+                                <remark-list ref="refreshRemark" :query="tempSearch" :dateFilter="dateRange"
+                                    :searchBy="searchByRemark" :filterDateBy="filterDateByRemark" />
                             </transition>
                         </template>
 
                         <template v-if="navActive === 'k-RUNSHEET'">
+                            <vs-row>
+                                <vs-col xs="12" sm="12" lg="6">
+                                    <vs-row>
+                                        <vs-col w="4">
+                                            <select-search-by :isMultiple="false" :border="true"
+                                                @updateSearchBy="updateFilterDateBy" :valueData="dateParamsRunsheet"
+                                                :selectedValue="filterDateByRunsheet" />
+                                        </vs-col>
+                                        <vs-col w="8">
+                                            <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'"
+                                                :valueData="dateRange" typeInput="daterange"
+                                                @updateValue="updateValue" />
+                                        </vs-col>
+                                    </vs-row>
+                                </vs-col>
+                                <vs-col xs="12" sm="12" lg="6" >
+                                    <vs-row justify="end">
+                                        <vs-col xs="6" sm="8" lg="4">
+                                            <select-search-by :isMultiple="false" :border="true"
+                                                @updateSearchBy="updateSearchBy" :valueData="searchParamsRunsheet"
+                                                :selectedValue="searchByRunsheet" />
+                                        </vs-col>
+                                        <vs-col xs="6" sm="4" lg="4">
+                                            <search-input ref="searchInput" @searchValue="searchValue"
+                                                :placeholder="searchPlaceholderRunsheet" />
+                                        </vs-col>
+                                    </vs-row>
+                                </vs-col>
+                            </vs-row>
                             <transition name="slide-fade">
-                                <runsheet-list
-                                    :ref="navActive"
-                                    :query="tempSearch"
-                                    :dateFilter="dateRange"
-                                />
+                                <runsheet-list :ref="navActive" :query="tempSearch" :dateFilter="dateRange"
+                                    :searchBy="searchByRunsheet" :filterDateBy="filterDateByRunsheet" />
                             </transition>
                         </template>
 
                         <template v-if="navActive === 'k-MESSAGE'">
+                            <vs-row>
+                                <vs-col xs="12" sm="12" lg="6">
+                                    <vs-row>
+                                        <vs-col w="4">
+                                            <select-search-by :isMultiple="false" :border="true"
+                                                @updateSearchBy="updateFilterDateBy" :valueData="dateParamsMessage"
+                                                :selectedValue="filterDateByMessage" />
+                                        </vs-col>
+                                        <vs-col w="8">
+                                            <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'"
+                                                :valueData="dateRange" typeInput="daterange"
+                                                @updateValue="updateValue" />
+                                        </vs-col>
+                                    </vs-row>
+                                </vs-col>
+                                <vs-col xs="12" sm="12" lg="6" >
+                                    <vs-row justify="end">
+                                        <vs-col xs="6" sm="8" lg="4">
+                                            <select-search-by :isMultiple="false" :border="true"
+                                                @updateSearchBy="updateSearchBy" :valueData="searchParamsMessage"
+                                                :selectedValue="searchByMessage" />
+                                        </vs-col>
+                                        <vs-col xs="6" sm="4" lg="4">
+                                            <search-input ref="searchInput" @searchValue="searchValue"
+                                                :placeholder="searchPlaceholderMessage" />
+                                        </vs-col>
+                                    </vs-row>
+                                </vs-col>
+                            </vs-row>
                             <transition name="slide-fade">
-                                <message-list 
-                                    ref="refreshMessage"  
-                                    :query="tempSearch"
-                                    :dateFilter="dateRange"
-                                />
+                                <message-list ref="refreshMessage" :query="tempSearch" :dateFilter="dateRange"
+                                    :searchBy="searchByMessage" :filterDateBy="filterDateByMessage" />
                             </transition>
                         </template>
-                        
+
                     </div>
                 </vs-col>
-                
+
             </vs-row>
             <vs-row justify="flex-end">
-                <vs-button
-                    class="mt-1"
-                    style="float: right"
-                    square
-                    active
-                    @click="print"
-                >
+                <vs-button class="mt-1" style="float: right" square active @click="print">
                     <i class="bx bxs-printer" /> PRINT
                 </vs-button>
-                <vs-button
-                    class="mt-1"
-                    style="float: right"
-                    square
-                    active
-                    @click="back"
-                >
+                <vs-button class="mt-1" style="float: right" square active @click="back">
                     <i class="bx bx-left-arrow" /> BACK
                 </vs-button>
             </vs-row>
         </section>
 
-        <dialog-remark
-            :active="dialogRemarkActive" 
-            :closeDialog="closeDialogRemark"
-            :callRefreshRemarkFunction="callRefreshRemarkFunction"
-        />
+        <dialog-remark :active="dialogRemarkActive" :closeDialog="closeDialogRemark"
+            :callRefreshRemarkFunction="callRefreshRemarkFunction" />
 
-        <dialog-messages
-            :active="dialogMessageActive" 
-            :closeDialog="closeDialogMessage"
-            :callRefreshMessageFunction="callRefreshMessageFunction"
-        />
+        <dialog-messages :active="dialogMessageActive" :closeDialog="closeDialogMessage"
+            :callRefreshMessageFunction="callRefreshMessageFunction" />
 
     </div>
 </template>
@@ -131,17 +192,19 @@ import RunsheetList from "@/views/irreguralities/tracing/runsheet/index"
 import SearchInput from "@/components/search/searchInput"
 import Selector from "@/components/input/select"
 import TableMaster from "@/components/table/tableMaster.vue"
+import SelectSearchBy from "@/components/search/selectSearchBy";
 
 export default {
-    name:"irregularities-tracing-history",
+    name: "irregularities-tracing-history",
     mixins: [master],
     components: {
-        "table-master" : TableMaster,
+        "table-master": TableMaster,
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
         "selector": Selector,
         "date-time": DateTime,
+        "select-search-by": SelectSearchBy,
 
         "remark-list": RemarkList,
         "dialog-remark": DialogRemark,
@@ -207,6 +270,81 @@ export default {
             dialogMessageActive: false,
 
             dateRange: [],
+
+            //search remarks
+            searchByRemark: "user login",
+            filterDateByRemark: "create",
+            searchPlaceholderRemark: "Search User",
+            searchParamsRemark: [
+                {
+                    label: "User",
+                    value: "user login",
+                },
+                {
+                    label: "Status",
+                    value: "lov_value",
+                },
+                {
+                    label: 'Remarks',
+                    value: 'remarks'
+                },
+            ],
+            dateParamsRemark: [
+                {
+                    label: 'Created Date',
+                    value: 'create'
+                },
+            ],
+
+            //search Runsheet
+            searchByRunsheet: "runsheet",
+            filterDateByRunsheet: "create",
+            searchPlaceholderRunsheet: "Search Runsheet Number",
+            searchParamsRunsheet: [
+                {
+                    label: "Runsheet number",
+                    value: "runsheet",
+                },
+                {
+                    label: "Status",
+                    value: "status",
+                },
+                {
+                    label: 'keterangan',
+                    value: 'remarks'
+                },
+            ],
+            dateParamsRunsheet: [
+                {
+                    label: 'Created Date',
+                    value: 'create'
+                },
+            ],
+
+            //search Message
+            searchByMessage: "user",
+            filterDateByMessage: "create",
+            searchPlaceholderMessage: "Search User",
+            searchParamsMessage: [
+                {
+                    label: "User",
+                    value: "user",
+                },
+                {
+                    label: "Receiver Phone",
+                    value: "receiver_phone",
+                },
+                {
+                    label: 'Message',
+                    value: 'message'
+                },
+            ],
+            dateParamsMessage: [
+                {
+                    label: 'Created Date',
+                    value: 'create'
+                },
+            ]
         }
     },
     methods: {
@@ -217,7 +355,7 @@ export default {
             this.$refs.refreshMessage.refreshMessage();
         },
         openDialogNewButton() {
-            switch(this.navActive) {
+            switch (this.navActive) {
                 case "k-REMARK":
                     this.dialogRemarkActive = true
                     break;
@@ -225,7 +363,7 @@ export default {
                     this.dialogMessageActive = true
                     break;
                 default:
-                    // code block
+                // code block
             }
         },
 
@@ -254,7 +392,7 @@ export default {
         back() {
             this.$router.push("/irreguralities/tracing");
         },
-        searchValue (val) {
+        searchValue(val) {
             this.tempSearch = val
         },
         clearSearch() {
@@ -269,27 +407,62 @@ export default {
             })
             this.title = item[0].title
         },
+        updateSearchBy(key, val) {
+            switch (this.navActive) {
+                case "k-REMARK":
+                    this.searchByRemark = val;
+                    this.searchPlaceholderRemark = key;
+                    break;
+                case "k-RUNSHEET":
+                    console.log(val, 'ini val');
+                    this.searchByRunsheet = val;
+                    this.searchPlaceholderRunsheet = key;
+                    break;
+                case "k-MESSAGE":
+                    this.searchByMessage = val;
+                    this.searchPlaceholderMessage = key;
+                    break;
+                default:
+            }
+        },
+        updateFilterDateBy(key, val) {
+            switch (this.navActive) {
+                case "k-REMARK":
+                    this.filterDateByRemark = val;
+                    break;
+                case "k-RUNSHEET":
+                    this.filterDateByRunsheet = val;
+                    break;
+                case "k-MESSAGE":
+                    this.filterDateByMessage = val;
+                    break;
+                default:
+            }
+        },
     },
 }
 </script>
 
 <style lang="scss">
-    .users{
-        min-height: 50vh;
-        .view{
-            min-height: 400px;
-        }
-        .nav-box{
-            position: relative;
-            top: 0;
-            left: 0;
-            width: auto;
-            max-width: 350px;
-        }
-        .search-input{
-            @include for-phone-only{
-                margin-bottom: 1rem;
-            }
+.users {
+    min-height: 50vh;
+
+    .view {
+        min-height: 400px;
+    }
+
+    .nav-box {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: auto;
+        max-width: 350px;
+    }
+
+    .search-input {
+        @include for-phone-only {
+            margin-bottom: 1rem;
         }
     }
+}
 </style>

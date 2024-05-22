@@ -123,18 +123,31 @@
             <div class="box view">
                 <div class="nav-box">
                     <vs-row justify="space-between">
-                        <vs-col xs="6" sm="6" lg="6">
-                            <date-time
-                                :name="''"
-                                :rules="''"
-                                :formKey="'TRIGGER_DATE'"
-                                :valueData="dateRange"
-                                typeInput="daterange"
-                                @updateValue="updateValueDate" 
-                            />
+                        <vs-col xs="12" sm="12" lg="6">
+                            <vs-row>
+                                <vs-col w="4">
+                                    <select-search-by :isMultiple="false" :border="true"
+                                        @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
+                                        :selectedValue="filterDateBy" />
+                                </vs-col>
+                                <vs-col w="8">
+                                    <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'" :valueData="dateRange"
+                                        typeInput="daterange" @updateValue="updateValue" />
+                                </vs-col>
+                            </vs-row>
                         </vs-col>
-                        <vs-col xs="6" sm="3" lg="3">
-                            <search-input ref="searchInput" @searchValue="searchValue"/>
+                        <vs-col xs="12" sm="12" lg="6">
+                            <vs-row justify="end">
+                                <vs-col xs="6" sm="8" lg="4">
+                                    <select-search-by :isMultiple="false" :border="true"
+                                        @updateSearchBy="updateSearchBy" :valueData="searchParams"
+                                        :selectedValue="searchBy" />
+                                </vs-col>
+                                <vs-col xs="6" sm="4" lg="4">
+                                    <search-input ref="searchInput" @searchValue="searchValue"
+                                        :placeholder="searchPlaceholder" />
+                                </vs-col>
+                            </vs-row>
                         </vs-col>
                     </vs-row>
                 </div>
@@ -172,6 +185,7 @@ import DateTime from "@/components/input/dateTime"
 import NavItem from "@/components/navbar/navTab"
 import SearchInput from "@/components/search/searchInput"
 import TableMaster from "@/components/table/tableMaster.vue"
+import SelectSearchBy from "@/components/search/selectSearchBy";
 
 
 export default {
@@ -182,6 +196,7 @@ export default {
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
         "date-time": DateTime,
+        "select-search-by": SelectSearchBy,
         "table-master" : TableMaster,
         CameraScanner,
     },
@@ -249,6 +264,53 @@ export default {
                 page_size: 1,
                 page: 1
             },
+            searchBy: "koli number",
+            filterDateBy: "update",
+            searchPlaceholder: "Search User",
+            searchParams: [
+                {
+                    label: "Koli number",
+                    value: "koli number",
+                },
+                {
+                    label: "HRS number",
+                    value: "hrs",
+                },
+                {
+                    label: "HRI number",
+                    value: "hri",
+                },
+                {
+                    label: "Shipper Name",
+                    value: "shipper_name",
+                },
+                {
+                    label: "Shipper Phone",
+                    value: "shipper_phone",
+                },
+                {
+                    label: "Receiver Name",
+                    value: "receiver_name",
+                },
+                {
+                    label: "Receiver Phone",
+                    value: "receiver_phone",
+                },
+                {
+                    label: "Origin",
+                    value: "origin",
+                },
+                {
+                    label: "Destination",
+                    value: "destination",
+                },
+            ],
+            dateParams: [
+                {
+                    label: 'Updated Date',
+                    value: 'update'
+                },
+            ]
         }
     },
     methods: {
@@ -269,7 +331,7 @@ export default {
 
             await axios
                 .get(this.URL.tracing +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
@@ -451,6 +513,14 @@ export default {
             this.form.item_number = this.item_no_orion_remove;
             this.removeConnote();
             this.item_no_orion_remove = null;
+        },
+        updateSearchBy(key, val) {
+            val = val.replaceAll(" ", "_");
+            this.searchBy = val;
+            this.searchPlaceholder = key;
+        },
+        updateFilterDateBy(key, val) {
+            this.filterDateBy = val;
         },
         
     },
