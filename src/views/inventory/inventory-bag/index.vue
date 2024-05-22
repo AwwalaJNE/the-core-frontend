@@ -23,7 +23,8 @@
                                             :selectedValue="filterDateBy" />
                                     </vs-col>
                                     <vs-col w="8">
-                                        <daterange-filter @searchDate="searchDate" size="small" />
+                                        <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'" :valueData="tempDate"
+                                        typeInput="daterange" @updateValue="searchDate" />
                                     </vs-col>
                                 </vs-row>
                             </vs-col>
@@ -228,7 +229,7 @@ export default {
             this.tempSearch = val
             console.log("this.tempSearch = ",this.tempSearch)
         },
-        searchDate(val) {
+        searchDate(key, val) {
             this.tempDate = val;
         },
         clearSearch() {
