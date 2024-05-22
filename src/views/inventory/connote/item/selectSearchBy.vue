@@ -52,6 +52,10 @@ export default {
           value: 'connote'
         },
         {
+          label: 'Bag',
+          value: 'bag'
+        },
+        {
           label: 'Origin',
           value: 'origin'
         },
