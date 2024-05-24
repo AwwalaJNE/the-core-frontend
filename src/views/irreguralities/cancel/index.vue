@@ -194,7 +194,7 @@ export default {
             loadingApproveActive: false,
             searchBy: "koli number",
             filterDateBy: "create",
-            searchPlaceholder: "Search Pickup Schedule",
+            searchPlaceholder: "Search Koli Number",
             searchParams: [
               {
                 label: 'Koli number',
