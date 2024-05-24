@@ -121,7 +121,7 @@ export default {
                 {
                     label: "Runsheet Number",
                     key: "runsheet_number",
-                    width: "xs"
+                    width: "auto"
                 }
             ],
             loading: false,
