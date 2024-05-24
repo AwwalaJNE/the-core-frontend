@@ -11,19 +11,24 @@
     </vs-row>
     <template>
       <vs-row style="margin-top:3em">
-        <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px;">
+        <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px;">
           <vs-radio v-model="radio_option" val="connote" :disabled="disabledApprove">
             Connote (orion)
           </vs-radio>
         </vs-col>
-        <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px">
+        <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px">
           <vs-radio v-model="radio_option" val="koli" :disabled="disabledApprove">
             Koli
           </vs-radio>
         </vs-col>
-        <vs-col xs="12" sm="4" lg="3" >
+        <vs-col xs="12" sm="3" lg="3" >
           <vs-radio v-model="radio_option" val="bag" :disabled="disabledApprove">
             Bag Pra Runsheet
+          </vs-radio>
+        </vs-col>
+        <vs-col xs="12" sm="3" lg="3" >
+          <vs-radio v-model="radio_option" val="bag-ex" :disabled="disabledApprove">
+            Bag Pra Runsheet Experimental
           </vs-radio>
         </vs-col>
       </vs-row>
@@ -31,6 +36,26 @@
     <vs-row align="center" style="margin-top: 1rem;">
       <template>
         <vs-col v-if="radio_option === 'bag'" xs="12" sm="3" lg="3">
+          <div class="center">
+            <vs-input
+              ref="formInputConnote"
+              v-model="item_bag"
+              border
+              type="text"
+              label-placeholder="Scan Bag disini"
+              autofocus
+              icon-after
+              :disabled="disabledApprove"
+              @keyup.enter="updateValueBag"
+              @click-icon="$refs.cameraScanner.open('formInputConnote')"
+            >
+              <template #icon>
+                <i class="bx bx-barcode-reader" />
+              </template>
+            </vs-input>
+          </div>
+        </vs-col>
+        <vs-col v-if="radio_option === 'bag-ex'" xs="12" sm="3" lg="3">
           <div class="center">
             <vs-input
               ref="formInputConnote"
@@ -109,6 +134,26 @@
               </template>
             </vs-input>
           </div>
+          <div v-else-if="radio_option === 'bag-ex'" class="center">
+            <vs-input
+              ref="formInputConnote"
+              v-model="item_no"
+              border
+              type="text"
+              label-placeholder="Scan Koli disini "
+              autofocus
+              icon-after
+              :disabled="disabledApprove"
+              @keyup.enter="updateValue"
+              @click-icon="
+                $refs.cameraScanner.open('formInputConnote')
+              "
+            >
+              <template #icon>
+                <i class="bx bx-barcode-reader" />
+              </template>
+            </vs-input>
+          </div>
         </vs-col>
         <vs-col xs="12" sm="3" lg="3">
           <div v-if="radio_option === 'koli'" class="center">
@@ -152,6 +197,26 @@
             </vs-input>
           </div>
           <div v-else-if="radio_option === 'bag'" class="center">
+            <vs-input
+              ref="formRemoveConnote"
+              v-model="item_no_remove"
+              border
+              type="text"
+              label-placeholder="Hapus Koli disini"
+              autofocus
+              icon-after
+              :disabled="disabledApprove"
+              @keyup.enter="removeValue"
+              @click-icon="
+                $refs.cameraScanner.open('formRemoveConnote')
+              "
+            >
+              <template #icon>
+                <i class="bx bx-barcode-reader" />
+              </template>
+            </vs-input>
+          </div>
+          <div v-else-if="radio_option === 'bag-ex'" class="center">
             <vs-input
               ref="formRemoveConnote"
               v-model="item_no_remove"
@@ -446,7 +511,12 @@ export default {
       this.form.courier_employee_id = this.employee_id;
       this.item_no = null;
       this.form.koli_number = null;
-      this.getKoli(val);
+      if (this.radio_option === "bag") {
+        this.getKoli(val);
+      }
+      else if (this.radio_option === "bag-ex") {
+        this.validateCourier(val)
+      }
     },
     updateValue() {
       this.form.koli_number = this.item_no;
@@ -509,6 +579,74 @@ export default {
     closeDialogConfirmEmployee() {
       this.dialogConfirmEmployee = false
       this.dialogLoadingEmployee = false
+    },
+    async validateCourier(val) {
+      await axios
+        .get(
+          this.URL.bag + '/' + this.form.bag_number.replaceAll("/", "-") + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`,
+          this.Helper.header())
+        .then(res => {
+          const details = res.data.detail;
+          for (let detail of details) {
+            this.validation_employee = val === false ? val : res.data.validation_employee;
+            if (this.validation_employee) {
+              this.dialogConfirmEmployee = true;
+              return
+            }
+          }
+          const postData = {
+              bag_number: this.form.bag_number,
+              courier_employee_id: this.employee_id,
+              delivery_runsheet_number: this.delivery_runsheet_number
+            };
+          this.scanBagPraRunsheet(postData)
+          // this.refresh()
+          // this.openNotification('success', ' success', 'Insert bag item successfully')
+        }).catch(err => {
+          this.loading = false
+          this.openNotification('danger', ' Nomor bag item is failed', err)
+        })
+    },
+    async scanBagPraRunsheet(postData) {
+      this.loadingRunsheet = true;
+      if (postData) {
+        this.form = postData
+      }
+      await axios
+        .post(
+          `${this.URL.employee}/${this.employee_id}/delivery/bag-pra?n=${this.listenNodeId}`,
+          JSON.stringify(this.form),
+          this.Helper.header()
+        )
+        .then((res) => {
+          // this.dataDelivery = this.processDataDelivery(res.data.data)
+          // this.dataDelivery.map((item) => {
+          //   item.employee_name = res.data.data.employee_name
+          // })
+          if (res.data.hasOwnProperty("summary")) {
+            this.dataDelivery.employee_name = res.data.data.employee_name
+              ? res.data.data.employee_name
+              : null;
+            this.dataDelivery.employee_code = res.data.data.employee_code
+              ? res.data.data.employee_code
+              : null;
+            this.dataDeliverySummary = res.data.summary;
+            this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
+            this.getDataDelivery();
+            this.openNotification(null, "Success", "Update success");
+            this.loadingRunsheet = false;
+            this.clearInputs()
+          } else {
+            this.getDataDelivery();
+            this.openNotification(null, "Success", res.data.message);
+            this.loadingRunsheet = false;
+            this.clearInputs()
+          }
+        })
+        .catch((err) => {
+          this.loadingRunsheet = false;
+          this.openNotification("danger", "", err.response.data.message);
+        });
     },
     async getKoli(val) {
       await axios
