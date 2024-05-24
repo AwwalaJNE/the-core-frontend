@@ -117,6 +117,11 @@ export default {
                     label: "Date",
                     key: "created_at",
                     width: "xs"
+                },
+                {
+                    label: "Runsheet Number",
+                    key: "runsheet_number",
+                    width: "auto"
                 }
             ],
             loading: false,
@@ -166,6 +171,7 @@ export default {
                       item['connote_service_code'] = item.item_type == 'KOLI' ? item.connote_service_code : item.bag_service.join(', ')
                       item['bag_detail_qty'] = res.data.data.bag_detail_qty
                       item["isDisabled"] = item.is_confirmed == 0 ? true : false;
+                      item["runsheet_number"] = item?.runsheet ? item?.runsheet?.[index]?.delivery_runsheet_number : '';
                     })
                     this.is_pra_runsheet = res.data.data.is_pra_runsheet === "1" ? true : false;
                     this.getSummaryBag(res)

@@ -231,7 +231,7 @@ export default {
             searchParamsBag: [
                 {
                     label: "Bag Number",
-                    value: "bag number",
+                    value: "bag",
 
                 },
                 {
