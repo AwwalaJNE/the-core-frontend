@@ -583,8 +583,9 @@
                           block
                           flat
                           size="small"
-                          :disabled="
-                            item.hasOwnProperty('isDisabled')
+                          :disabled="listenDisableAction
+                              ? listenDisableAction === true
+                              : item.hasOwnProperty('isDisabled')
                               ? item.isDisabled == true
                               : item.hasOwnProperty('button_status')
                               ? item['button_status'].hasOwnProperty([
@@ -1105,6 +1106,7 @@ export default {
 
     customAction: Boolean,
     customActionList: Array,
+    disableAction: Boolean,
 
     querySearch: Function, // klo ada auto complete [required]
 
@@ -1173,6 +1175,9 @@ export default {
     listenIsLocalPagination() {
       return this.isLocalPagination;
     },
+    listenDisableAction() {
+      return this.disableAction;
+    }
   },
   watch: {
     tableLoading: function(val) {

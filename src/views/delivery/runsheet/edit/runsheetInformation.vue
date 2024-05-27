@@ -17,6 +17,7 @@
         :isMultipleSelectColoum="true"
         :onRowClickCallback="onRowClickCallback"
         :allCheckCallback="onAllCheckCallback"
+        :disableAction="disableEdit"
         @actionRemove="actionRemove"
         @updateValue="updateValue"
         @actionUpdate="actionUpdate"
@@ -146,15 +147,6 @@ export default {
       },
       loadStatus: false,
       customActionList: [
-        // {
-        //   label: 'Confirm',
-        //   key: 'confirm',
-        //   attribute: '',
-        //   option: {
-        //     type: 'redirect',
-
-        //   },
-        // },
         {
           label: "Edit",
           key: "edit",
@@ -164,7 +156,8 @@ export default {
       test: "",
       waitToRoleRenderer: true,
       arrayOfObjects: [],
-      radio_option: ""
+      radio_option: "",
+      disableEdit: false
     };
   },
   computed: {
@@ -223,6 +216,7 @@ export default {
 
     console.log('Nilai radioOption di dalam komponen anak:', this.radioOption);
     this.getParamRoute();
+    this.getHRSStatus();
   },
   methods: {
     onClickClear(val) {
@@ -387,6 +381,18 @@ export default {
     getParamRoute() {
       if (this.$route.params.employee_id) {
         this.employee_id = this.$route.params.employee_id;
+      }
+    },
+    getHRSStatus() {
+      for (let data of this.dataDelivery) {
+        if (data?.is_hrs === '1') {
+          this.$set(data, 'is_disabled_input_status', true);
+          this.$set(data, 'is_disabled_input_remarks', true);
+          this.$set(data, 'is_disabled_input_reveiver', true);
+          if (!this.disableEdit) {
+            this.disableEdit = true
+          }
+        }
       }
     },
 
