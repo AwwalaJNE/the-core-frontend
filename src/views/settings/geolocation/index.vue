@@ -32,9 +32,6 @@
                         <vs-col xs="6" sm="9" lg="9">
                             <nav-item :navItem="navItemm" @activeTab="activeTab" />
                         </vs-col>
-                        <vs-col xs="6" sm="3" lg="3">
-                            <search-input ref="searchInput" @searchValue="searchValue"/>
-                        </vs-col>
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'k-GEOLOCATION'">
@@ -206,10 +203,6 @@ export default {
         refresh(){
             let el = this.refreshInject
             this.$refs[el].refresh() // trigger function refresh form dari luar component list
-        },
-        searchValue (val) {
-            this.tempSearch = val
-            console.log("this.tempSearch = ",this.tempSearch)
         },
         clearSearch() {
             this.$refs.searchInput.clear()
