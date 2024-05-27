@@ -515,6 +515,7 @@ export default {
         this.getKoli(val);
       }
       else if (this.radio_option === "bag-ex") {
+        this.dialogConfirmEmployee = false;
         this.validateCourier(val)
       }
     },
