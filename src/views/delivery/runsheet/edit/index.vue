@@ -1092,6 +1092,7 @@ export default {
       this.item_no_orion = null
       this.item_no_remove = null
       this.item_no_orion_remove = null
+      delete this.form.delivery_runsheet_number; 
     }
   },
   watch: {
