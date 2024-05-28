@@ -246,7 +246,6 @@ export default {
             this.refresh()
         },
         refresh(){
-            
             let from = ''
             let to = ''
 

@@ -213,9 +213,6 @@ export default {
             if(this.dateRange != null && this.dateRange.length > 0) {
                 from = moment(this.dateRange[0]).format("YYYY-MM-DD")
                 to = moment(this.dateRange[1]).format("YYYY-MM-DD")
-            } else {
-                from = ''
-                to = ''
             }
 
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
