@@ -1,5 +1,14 @@
 <template>
     <div>
+        <vs-row justify="end">
+            <vs-col xs="6" sm="8" lg="3">
+                <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"
+                    :valueData="searchParams" :selectedValue="searchBy" />
+            </vs-col>
+            <vs-col xs="6" sm="4" lg="2">
+                <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
+            </vs-col>
+        </vs-row>
         <table-master 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
@@ -27,6 +36,9 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import SelectSearchBy from "@/components/search/selectSearchBy"
+import SearchInput from "@/components/search/searchInput"
+
 export default {
     name:"timezone-list",
     mixins: [master],
@@ -36,6 +48,8 @@ export default {
     components: {
         "table-master" : TableMaster,
         // "dialog-create-edit-role": DialogCreateEditRole
+        "select-search-by": SelectSearchBy,
+        "search-input": SearchInput
     },
     data() {
         return {
@@ -60,7 +74,19 @@ export default {
                 limit:20,
                 page_size: 1,
                 page: 1
-            }
+            },
+            searchBy: "name",
+            searchPlaceholder: "Search Name",
+            searchParams: [
+                {
+                    label: "Name",
+                    value: "name",
+                },
+                {
+                    label: "Code time zone",
+                    value: "code",
+                },
+            ],
         }
     },
     watch: {
@@ -82,7 +108,7 @@ export default {
             }
             await axios
                 .get(this.URL.geolocation_timezone + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${1000}&page=${1}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${1000}&page=${1}&s=${query}&search_by=${this.searchBy}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
@@ -119,8 +145,16 @@ export default {
             this.refresh()
         },
         refresh(){
-            console.log("refresh")
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        },
+        searchValue (val) {
+            this.tempSearch = val
+            this.refresh()
+        },
+        updateSearchBy(key, val) {
+            val = val.replaceAll(" ", "_");
+            this.searchBy = val;
+            this.searchPlaceholder = key;
         },
     },
     mounted() {
