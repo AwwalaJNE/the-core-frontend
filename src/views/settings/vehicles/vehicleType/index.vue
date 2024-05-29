@@ -8,7 +8,7 @@
                             :valueData="dateParams" :selectedValue="filterDateBy" />
                     </vs-col>
                     <vs-col w="8">
-                        <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'" :valueData="dateRange"
+                        <date-time :name="''" :rules="''" :valueData="dateRange"
                             typeInput="daterange" @updateValue="updateValue" />
                     </vs-col>
                 </vs-row>
@@ -72,6 +72,7 @@ import DialogConfirm from "@/components/dialog/dialogConfirm"
 import SelectSearchBy from "@/components/search/selectSearchBy"
 import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
+import moment from "moment"
 
 export default {
     name:"vehicle-type",
@@ -136,7 +137,7 @@ export default {
             filterDateBy: "create",
             searchPlaceholder: "Search Vehicle Type Name",
             searchParams: [
-            {
+                {
                     label: "Vehicle Type ID",
                     value: "vehicle_type_id",
                 },

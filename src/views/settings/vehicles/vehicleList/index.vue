@@ -8,7 +8,7 @@
                             :valueData="dateParams" :selectedValue="filterDateBy" />
                     </vs-col>
                     <vs-col w="8">
-                        <date-time  :valueData="dateRange" typeInput="daterange" @updateValue="updateValue" />
+                        <date-time :name="''" :rules="''" :valueData="dateRange" typeInput="daterange" @updateValue="updateValue" />
                     </vs-col>
                 </vs-row>
             </vs-col>
@@ -56,6 +56,7 @@ import dialogCreateEditVehicle from "@/views/settings/vehicles/vehicleList/dialo
 import SelectSearchBy from "@/components/search/selectSearchBy"
 import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
+import moment from "moment"
 
 export default {
     name:"vehicle-list",
