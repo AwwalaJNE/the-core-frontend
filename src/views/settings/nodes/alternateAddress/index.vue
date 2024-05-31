@@ -1,5 +1,30 @@
 <template>
     <div>
+        <vs-row justify="space-between">
+            <vs-col xs="12" sm="12" lg="6">
+                <vs-row>
+                    <vs-col w="4">
+                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy"
+                            :valueData="dateParams" :selectedValue="filterDateBy" />
+                    </vs-col>
+                    <vs-col w="8">
+                        <date-time :name="''" :rules="''" :valueData="dateRange"
+                            typeInput="daterange" @updateValue="updateValue" />
+                    </vs-col>
+                </vs-row>
+            </vs-col>
+            <vs-col xs="12" sm="12" lg="6">
+                <vs-row justify="end">
+                    <vs-col xs="6" sm="8" lg="4">
+                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"
+                            :valueData="searchParams" :selectedValue="searchBy" />
+                    </vs-col>
+                    <vs-col xs="6" sm="4" lg="4">
+                        <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
+                    </vs-col>
+                </vs-row>
+            </vs-col>
+        </vs-row>
         <table-master 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
@@ -29,6 +54,11 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import dialogCreateAltAddress from "@/views/settings/nodes/alternateAddress/dialogCreateAltAddress"
+import SelectSearchBy from "@/components/search/selectSearchBy"
+import SearchInput from "@/components/search/searchInput"
+import DateTime from "@/components/input/dateTime"
+import moment from "moment"
+
 export default {
     name:"alternate-address-alt",
     mixins: [master],
@@ -37,7 +67,10 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
-        "dialog-create-edit-AltAddress": dialogCreateAltAddress
+        "dialog-create-edit-AltAddress": dialogCreateAltAddress,
+        "select-search-by": SelectSearchBy,
+        "search-input": SearchInput,
+        "date-time": DateTime
     },
     data() {
         return {
@@ -82,7 +115,43 @@ export default {
                 limit:20,
                 page_size: 1,
                 page: 1
-            }
+            },
+            dateRange: [],
+            searchBy: "alternate address name",
+            filterDateBy: "create",
+            searchPlaceholder: "Search Alternate Address Name",
+            searchParams: [
+                {
+                    label: "Node alternate ID",
+                    value: "node_alternate_address_id"
+                },
+                {
+                    label: "Node Id",
+                    value: "node_id"
+                },
+                {
+                    label: "Alternate address name",
+                    value: "alternate address name"
+                },
+                {
+                    label: "Alternate address",
+                    value: "node_alternate_address_address"
+                },
+                {
+                    label: "Alternate address phone",
+                    value: "node_alternate_address_phone"
+                },
+                {
+                    label: "Alternate address subdistrict id",
+                    value: "node_alternate_address_subdistrict_id"
+                }
+            ],
+            dateParams: [
+              {
+                label: 'Created Date',
+                value: 'create'
+              }
+            ]
         }
     },
     watch: {
@@ -96,15 +165,22 @@ export default {
         }
     },
     methods: {
-        async getTableData(limit,page,q) {
+        async getTableData(limit,page,q,from,to) {
             this.loading = true
             let query = "";
+            let startDate = "";
+            let endDate = "";
             if(q !== undefined) {
+                this.tempSearch = q
                 query = q
+            }
+            if(from !== undefined && to !== undefined) {
+              startDate = from
+              endDate = to
             }
             await axios
                 .get(this.URL.node_alternate_address + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
                     console.log(res)
@@ -170,12 +246,33 @@ export default {
             this.refresh()
         },
         refresh(){
-            console.log("refresh")
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            let from = ''
+            let to = ''
+
+            if(this.dateRange != null && this.dateRange.length > 0) {
+                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
+                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
+            }
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch,from,to)
         },
         closeDialogAltAddress() {
             this.dialogAltAddress = false
-        }
+        },
+        updateValue(key, val) {
+            this.dateRange = val
+            this.refresh()
+        },
+        searchValue (val) {
+            this.tempSearch = val
+            this.refresh()
+        },
+        updateSearchBy(key, val) {
+            this.searchBy = val;
+            this.searchPlaceholder = key;
+        },
+        updateFilterDateBy(key, val) {
+            this.filterDateBy = val;
+        },
     },
     mounted() {
         this.refresh()
