@@ -96,17 +96,17 @@ export default {
                 page: 1
             },
             dateRange: [],
-            searchBy: "vehicle mode id",
+            searchBy: "vehicle mode name",
             filterDateBy: "create",
             searchPlaceholder: "Search Vehicle Mode Name",
             searchParams: [
                 {
                     label: "Vehicle Mode ID",
-                    value: "vehicle mode id",
+                    value: "vehicle_mode_id",
                 },
                 {
                     label: "Vehicle Mode Name",
-                    value: "vehicle_mode_name",
+                    value: "vehicle mode name",
                 },
             ],
             dateParams: [

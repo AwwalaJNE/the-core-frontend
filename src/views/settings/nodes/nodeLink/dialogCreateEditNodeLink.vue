@@ -79,7 +79,9 @@ export default {
             form: {},
             node_link_id: '',
             autoComplateUrl: "",
-            flag: ""
+            flag: "",
+            searchByNode: "node_name",
+            searchByVehicle: "vehicle_type_name",
         }
     },
     computed: {
