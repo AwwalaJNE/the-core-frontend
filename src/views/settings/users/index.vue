@@ -33,9 +33,6 @@
                             <vs-col xs="6" sm="9" lg="9">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
-                            <vs-col xs="6" sm="3" lg="3">
-                                <search-input ref="searchInput" @searchValue="searchValue"/>
-                            </vs-col>
                         </vs-row>
 
                         <template v-if="navActive === 'k-USER'">
