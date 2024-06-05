@@ -274,15 +274,19 @@ export default {
               },
               {
                 label: 'SM',
-                value: 'sm'
+                value: 'SM'
               },
               {
                 label: 'SJ',
-                value: 'sj'
+                value: 'SJ'
               },
               {
                 label: 'BAG',
-                value: 'bag'
+                value: 'BAG'
+              },
+              {
+                label: 'Receving Orion',
+                value: 'RECEIVING ORION'
               }
             ],
             value: this.selectedValue ? this.selectedValue :"-",
