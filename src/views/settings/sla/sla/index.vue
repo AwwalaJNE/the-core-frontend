@@ -10,6 +10,7 @@
                                 filter
                                 v-model="filterStatusBy"
                                 :border="true"
+                                :multiple="false"
                                 @change="updateFilterStatus"
                             >
                             <template v-if="filterStatus.length > 1">
@@ -99,6 +100,7 @@ export default {
     mixins: [master],
     props: {
         query: String,
+        searchBy: String,
     },
     components: {
         "table-master" : TableMaster,
@@ -190,7 +192,7 @@ export default {
             ],
             loading: false,
             dataItem: {},
-            tempSearch: this.query ? this.query : "",
+            searchValue: this.query ? this.query : "",
             dialogSla: false,
             pagination: {
                 limit: 20,
@@ -198,12 +200,11 @@ export default {
                 page: 1
             },
             dateRange: [],
-            searchBy: "group_name",
-            filterStatusBy: "",
+            filterStatusBy: "-",
             filterStatus: [
                 {
                     label: 'All Status',
-                    value: ''
+                    value: '-'
                 },
                 {
                     label: 'Active',
@@ -214,11 +215,11 @@ export default {
                     value: 'false'
                 }
             ],
-            filterActivityBy: "",
+            filterActivityBy: "-",
             filterActivity: [
                 {
                     label: 'All Activity',
-                    value: ''
+                    value: '-'
                 },
                 {
                     label: 'CREATE_CONNOTE',
@@ -279,26 +280,29 @@ export default {
     watch: {
         query: function(val, old) {
             if(val !== undefined) {
-                this.tempSearch = val
-                if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.filterActivityBy, this.filterStatusBy)
+                this.searchValue = val
+                if(this.searchValue !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.searchBy, this.filterActivityBy, this.filterStatusBy)
                 }
             }
         },
-        valueData: function (val) {
-        if (val != undefined) {
-          this.DataArr = val
-        }
-      },
+        searchBy: function(val, old) {
+            if(val !== undefined) {
+                this.searchBy = val
+                if(this.searchBy !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.startDate, this.endDate, val, this.filterActivityBy, this.filterStatusBy)
+                }
+            }
+        },
     },
     methods: {
-        async getTableData(limit,page,q,from,to, filterActivityBy, filterStatusBy) {
+        async getTableData(limit,page,q,from,to, searchBy, filterActivityBy, filterStatusBy) {
             this.loading = true
             let query = "";
             let startDate = "";
             let endDate = "";
             if(q !== undefined) {
-                this.tempSearch = q
+                this.searchValue = q
                 query = q
             }
             if(from !== undefined && to !== undefined) {
@@ -307,7 +311,7 @@ export default {
             }
             await axios
                 .get(this.URL.sla + 
-                `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&activity_name=${filterActivityBy}&is_active=${filterStatusBy}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}&s=${query}&search_by=${searchBy}&activity_name=${filterActivityBy}&is_active=${filterStatusBy}`, 
                 this.Helper.header())
                 .then(res => {
                         this.dataTable = res.data.data
@@ -364,7 +368,7 @@ export default {
                 from = moment(this.dateRange[0]).format("YYYY-MM-DD")
                 to = moment(this.dateRange[1]).format("YYYY-MM-DD")
             }
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch,from,to, this.filterActivityBy, this.filterStatusBy)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.searchValue,from,to, this.searchBy, this.filterActivityBy, this.filterStatusBy)
         },
         closedialogSla() {
             this.$store.dispatch("SET_SLA_SLA_ID_visible", false)
@@ -374,22 +378,11 @@ export default {
             this.dateRange = val
             this.refresh()
         },
-        searchValue (val) {
-            this.tempSearch = val
+        updateFilterStatus(key) {
+            this.filterStatusBy = key;
             this.refresh()
         },
-        updateFilterStatus(key, val) {
-            console.log("PPPP status", val)
-            this.filterStatusBy = val;
-            this.refresh()
-        },
-        updateFiterActivity(val){
-            // const indexOfBag = val.indexOf('bag');
-            // if (indexOfBag !== -1) {
-            //     this.hasLinkedItems = [];
-            // }
-            console.log("PPPP activity", val)
-            this.filterActivityBy = val;
+        updateFiterActivity(key, val){
             this.refresh()
         },
         

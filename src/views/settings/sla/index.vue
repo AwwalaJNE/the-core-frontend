@@ -56,12 +56,12 @@
                 </div>
                 <template v-if="navActive === 'sla'">
                     <transition name="slide-fade">
-                        <sla :ref="navActive" :query="tempSearch"/>
+                        <sla :ref="navActive" :query="tempSearch" :searchBy="searchBy"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'upload-sla'">
                     <transition name="slide-fade">
-                        <sla :ref="navActive" :query="tempSearch"/>
+                        <sla :ref="navActive" :query="tempSearch" :searchBy="searchBy"/>
                     </transition>
                 </template>
             </div>
