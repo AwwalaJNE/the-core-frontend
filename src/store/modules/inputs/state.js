@@ -1493,9 +1493,9 @@ export default {
       valueData: null,
       value: ''
     },
-    customer_code: {
-      label: "Customer Code",
-      key: "customer_code",
+    customer_name: {
+      label: "Customer Name",
+      key: "customer_name",
       rule: "",
       typeInput: "select",
       typeData: "String",
@@ -1503,9 +1503,9 @@ export default {
       valueData: null,
       value: ''
     },
-    customer_name: {
-      label: "Customer Name",
-      key: "customer_name",
+    customer_code: {
+      label: "Customer Code",
+      key: "customer_code",
       rule: "",
       typeInput: "select",
       typeData: "String",

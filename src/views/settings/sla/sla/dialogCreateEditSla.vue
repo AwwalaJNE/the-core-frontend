@@ -81,7 +81,7 @@ export default {
             customerNameArray: [],
             customerIdArray: [],
             activityArray: [],
-            customerName: "",
+            customerName: this.$store.getters.getInputs.sla.customer_name.value,
             customerId: "",
             loadingDataOrigin: false,
             loadingDataService: false,
@@ -147,8 +147,7 @@ export default {
                 this.getActivityName()
                 this.getDataOrigin()
                 this.getDataService()
-                this.getDataCustomerName()
-                this.getDataCustomerCode()
+                this.getDataCustomerName()                
             }
             return this.active
         },
@@ -164,6 +163,14 @@ export default {
             if(val !== undefined) {
                 this.sla_id = val.sla_id
             }
+        },
+        '$store.getters.getInputs.sla.customer_name.value': {
+            handler(newVal) {
+                if (newVal && newVal !== "") {
+                    this.getDataCustomerCode();
+                }
+            },
+            immediate: true // Call the handler immediately upon component creation
         }
     },
     methods: {
@@ -331,7 +338,6 @@ export default {
             const isActiveDifferent = this.form.is_active !== this.dataItem.is_active;
             const areOthersEqual = this.compareSharedProperties(this.form, this.dataItem);
 
-            console.log("pppp", isActiveDifferent, areOthersEqual, this.form, this.dataItem)
             if (isActiveDifferent && areOthersEqual) {
                 await axios
                     .patch(
