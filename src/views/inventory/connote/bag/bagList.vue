@@ -7,6 +7,32 @@
 
 <template>
     <div>
+        <vs-row justify="space-between">
+            <vs-col xs="12" sm="12" lg="6">
+                <vs-row>
+                    <vs-col w="4">
+                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy"
+                            :valueData="dateParams" :selectedValue="filterDateBy" />
+                    </vs-col>
+                    <vs-col w="8">
+                        <date-time :name="''" :rules="''" :valueData="dateRange" typeInput="daterange"
+                            @updateValue="updateValue" />
+                    </vs-col>
+                </vs-row>
+            </vs-col>
+            <vs-col xs="12" sm="12" lg="6">
+                <vs-row justify="end">
+                    <vs-col xs="6" sm="8" lg="4">
+                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"
+                            :valueData="searchParamsBag" :selectedValue="searchByBag" />
+                    </vs-col>
+                    <vs-col xs="6" sm="4" lg="4">
+                        <search-input ref="searchInput" @searchValue="searchValue"
+                            :placeholder="searchPlaceholderBag" />
+                    </vs-col>
+                </vs-row>
+            </vs-col>
+        </vs-row>
         <table-master 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
@@ -30,6 +56,10 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import SelectSearchBy from "@/components/search/selectSearchBy"
+import SearchInput from "@/components/search/searchInput"
+import DateTime from "@/components/input/dateTime"
+import moment from "moment"
 export default {
     name:"Role-list",
     mixins: [master],
@@ -39,11 +69,12 @@ export default {
         bagRouting: String,
         bagTipe: String,
         dateFilter: Array,
-        searchBy: String,
-        filterDateBy: String
     },
     components: {
         "table-master" : TableMaster,
+        "select-search-by": SelectSearchBy,
+        "search-input": SearchInput,
+        "date-time": DateTime
     },
     watch: {
         query: function(val, old) {
@@ -169,6 +200,69 @@ export default {
             tempDate:[],
             startDate: "",
             endDate: "",
+            searchByBag:"bag number",
+            searchPlaceholderBag: "Search Bag Number",
+            searchParamsBag: [
+                {
+                    label: "Bag Number",
+                    value: "bag number",
+
+                },
+                {
+                    label: "Bag Detail Qty",
+                    value: "bag_detail_qty",
+
+                },
+                {
+                    label: "Weight",
+                    value: "bag_weight",
+
+                },
+                {
+                    label: "Origin",
+                    value: "origin_tariff_code",
+
+                },
+                {
+                    label: "Destination",
+                    value: "destination_tariff_code",
+
+                },
+                {
+                    label: "Runsheet",
+                    value: "runsheet_count",
+
+                },
+                {
+                    label: "Un Runsheet",
+                    value: "un_runsheet_count",
+
+                },
+                {
+                    label: "Courier",
+                    value: "courier",
+
+                },
+                {
+                    label: "Surat Muatan",
+                    value: "sm",
+
+                },
+                {
+                    label: "Surat Jalan",
+                   value: "sj",
+
+                }
+            ],
+            dateRange: [],
+            filterDateBy: "create",
+            dateParams: [
+                {
+                    label: 'Created Date',
+                    value: 'create'
+                }
+            ]
+            
         }
     },
     methods: {
@@ -198,7 +292,7 @@ export default {
             }
             await axios
                 .get(this.URL.bag +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchByBag}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
                     res.data.data.forEach(el => {
@@ -263,11 +357,33 @@ export default {
             this.refresh()
         },
         refresh(){
-            console.log("refresh")
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate)
+            let from = ''
+            let to = ''
+
+            if(this.dateRange != null && this.dateRange.length > 0) {
+                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
+                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
+            }
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, from, to)
         },
         closeDialogRole() {
             this.dialogRole = false
+        },
+        searchValue(val) {
+            this.tempSearch = val
+            this.refresh()
+        },
+        updateSearchBy(key, val) {
+            val = val.replaceAll(" ", "_");
+            this.searchByBag = val;
+            this.searchPlaceholderBag = key;
+        },
+        updateValue(key, val) {
+            this.dateRange = val
+            this.refresh()
+        },
+        updateFilterDateBy(key, val) {
+            this.filterDateBy = val;
         }
     },
     mounted() {
