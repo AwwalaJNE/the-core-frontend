@@ -2837,4 +2837,174 @@ export default {
   SET_IS_PRA_RUNSHEET_ValueData(state, payload) {
     state.is_pra_runsheet = payload;
   },
+
+
+  //====== SLA ======  
+
+  SET_SLA_SLA_ID(state, payload) {
+    state.sla.sla_id.value = payload
+  },
+  SET_SLA_SLA_ID_visible(state, payload) {
+    state.sla.sla_id.visible = payload
+  },
+  SET_SLA_SLA_ID_ValueData(state, payload) {
+    state.sla.sla_id.valueData = payload
+  },
+
+
+  SET_SLA_GROUP_NAME(state, payload) {
+    state.sla.group_name.value = payload
+  },
+  SET_SLA_GROUP_NAME_ValueData(state, payload) {
+    state.sla.group_name.valueData = payload
+  },
+
+
+  SET_SLA_START_DATE(state, payload) {
+    state.sla.start_date.value = payload
+  },
+  SET_SLA_START_DATE_ValueData(state, payload) {
+    state.sla.start_date.valueData = payload
+  },
+  SET_SLA_START_DATE_ArrData(state, payload) {
+    state.sla.start_date.hasOwnProperty('arrData') ?
+    state.sla.start_date.arrData = payload :
+    state.sla.start_date.arrData = []
+  },
+
+
+  SET_SLA_END_DATE(state, payload) {
+    state.sla.end_date.value = payload
+  },
+  SET_SLA_END_DATE_ValueData(state, payload) {
+    state.sla.end_date.valueData = payload
+  },
+  SET_SLA_END_DATE_ArrData(state, payload) {
+    state.sla.end_date.hasOwnProperty('arrData') ?
+    state.sla.end_date.arrData = payload :
+    state.sla.end_date.arrData = []
+  },
+
+
+  SET_SLA_ORIGIN(state, payload) {
+    state.sla.origin.value = payload
+  },
+  SET_SLA_ORIGIN_ValueData(state, payload) {
+    state.sla.origin.valueData = payload
+  },
+  SET_SLA_ORIGIN_ArrData(state, payload) {
+    state.sla.origin.hasOwnProperty('arrData') ?
+    state.sla.origin.arrData = payload :
+    state.sla.origin.arrData = []
+  },
+
+
+  SET_SLA_DESTINATION(state, payload) {
+    state.sla.destination.value = payload
+  },
+  SET_SLA_DESTINATION_ValueData(state, payload) {
+    state.sla.destination.valueData = payload
+  },
+  SET_SLA_DESTINATION_ArrData(state, payload) {
+    state.sla.destination.hasOwnProperty('arrData') ?
+    state.sla.destination.arrData = payload :
+    state.sla.destination.arrData = []
+  },
+
+
+  SET_SLA_CUSTOMER_NAME(state, payload) {
+    state.sla.customer_name.value = payload
+  },
+  SET_SLA_CUSTOMER_NAME_ValueData(state, payload) {
+    state.sla.customer_name.valueData = payload
+  },
+  SET_SLA_CUSTOMER_NAME_ArrData(state, payload) {
+    state.sla.customer_name.hasOwnProperty('arrData') ?
+    state.sla.customer_name.arrData = payload :
+    state.sla.customer_name.arrData = []
+  },
+
+
+  SET_SLA_CUSTOMER_CODE(state, payload) {
+    state.sla.customer_code.value = payload
+  },
+  SET_SLA_CUSTOMER_CODE_ValueData(state, payload) {
+    state.sla.customer_code.valueData = payload
+  },
+  SET_SLA_CUSTOMER_CODE_ArrData(state, payload) {
+    state.sla.customer_code.hasOwnProperty('arrData') ?
+    state.sla.customer_code.arrData = payload :
+    state.sla.customer_code.arrData = []
+  },
+
+  SET_SLA_SERVICE_CODE(state, payload) {
+    state.sla.service_code.value = payload
+  },
+  SET_SLA_SERVICE_CODE_ValueData(state, payload) {
+    state.sla.service_code.valueData = payload
+  },
+  SET_SLA_SERVICE_CODE_ArrData(state, payload) {
+    state.sla.service_code.hasOwnProperty('arrData') ?
+    state.sla.service_code.arrData = payload :
+    state.sla.service_code.arrData = []
+  },
+
+
+  SET_SLA_ACTIVITY_NAME(state, payload) {
+    state.sla.activity_name.value = payload
+  },
+  SET_SLA_ACTIVITY_NAME_ValueData(state, payload) {
+    state.sla.activity_name.valueData = payload
+  },
+  SET_SLA_ACTIVITY_NAME_ArrData(state, payload) {
+    state.sla.activity_name.hasOwnProperty('arrData') ?
+    state.sla.activity_name.arrData = payload :
+    state.sla.activity_name.arrData = []
+  },
+
+
+  SET_SLA_NODE_CODE(state, payload) {
+    state.sla.node_code.value = payload
+  },
+  SET_SLA_NODE_CODE_ValueData(state, payload) {
+    state.sla.node_code.valueData = payload
+  },
+  SET_SLA_NODE_CODE_ArrData(state, payload) {
+    state.sla.node_code.hasOwnProperty('arrData') ?
+    state.sla.node_code.arrData = payload :
+    state.sla.node_code.arrData = []
+  },
+
+
+  SET_SLA_SLA_KOLI(state, payload) {
+    state.sla.sla_koli.value = payload
+  },
+  SET_SLA_SLA_KOLI_ValueData(state, payload) {
+    state.sla.sla_koli.valueData = payload
+  },
+
+
+  SET_SLA_SLA_NODE(state, payload) {
+    state.sla.sla_node.value = payload
+  },
+  SET_SLA_SLA_NODE_ValueData(state, payload) {
+    state.sla.sla_node.valueData = payload
+  },
+
+
+  SET_SLA_SLA_ACTIVITY(state, payload) {
+    state.sla.sla_activity.value = payload
+  },
+  SET_SLA_SLA_ACTIVITY_ValueData(state, payload) {
+    state.sla.sla_activity.valueData = payload
+  },
+
+
+  SET_SLA_IS_ACTIVE(state, payload) {
+    state.sla.is_active.value = payload
+  },
+  SET_SLA_IS_ACTIVE_ValueData(state, payload) {
+    state.sla.is_active.valueData = payload
+  },
+  //====== END SLA ======    
 }

@@ -37,6 +37,9 @@ import Customer from "@/views/settings/customer"
 // === Surcharge ===
 import Surcharge from "@/views/settings/surcharge"
 
+// === SLA ===
+import Sla from "@/views/settings/sla"
+
 // === Inventory Item or Connote ===
 import InventoryItem from "@/views/inventory/connote"
 
@@ -259,6 +262,15 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Surcharge"
+            }
+          },
+          {
+            path: "sla",
+            name: "SLA",
+            component: Sla,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "SLA"
             }
           },
         ],

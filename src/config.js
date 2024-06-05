@@ -195,4 +195,10 @@ export default {
 
     //resync runsheet
     resync_runsheet : api + "resync/delivery",
+
+    //origin code
+    origin_code : api + "origin-code",
+
+    //sla
+    sla : api + "sla",
 }
