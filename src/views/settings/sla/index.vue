@@ -10,14 +10,16 @@
             <vs-col xs="6" sm="3" lg="3">
                 <div style="position:relative;display:flex;justify-content: flex-end;">
                     <div style="width: 100px;padding-right: 5px;">
-                        <vs-button
-                            flat
-                            block
-                            :active="true"
-                            @click="openDialog"
-                        > 
-                            <i class="bx bx-plus"></i> New
-                        </vs-button>
+                        <template v-if="navActive === 'sla'">
+                            <vs-button
+                                flat
+                                block
+                                :active="true"
+                                @click="openDialog"
+                            > 
+                                <i class="bx bx-plus"></i> New
+                            </vs-button>
+                        </template>
                     </div>
                 </div>
             </vs-col>
@@ -61,7 +63,7 @@
                 </template>
                 <template v-else-if="navActive === 'upload-sla'">
                     <transition name="slide-fade">
-                        <sla :ref="navActive" :query="tempSearch" :searchBy="searchBy"/>
+                        <upload-sla :ref="navActive"/>
                     </transition>
                 </template>
             </div>
@@ -82,6 +84,7 @@ import SelectSearchBy from "@/views/inventory/connote/item/selectSearchBy"
 
 import Sla from "@/views/settings/sla/sla/index"
 import DialogCreateEditSla from "@/views/settings/sla/sla/dialogCreateEditSla"
+import UploadSla from "@/views/settings/sla/uploadSla/index"
 
 export default {
     name:"sla-index",
@@ -92,6 +95,7 @@ export default {
         "sla": Sla,
         "dialog-create-edit-sla": DialogCreateEditSla,
         "select-search-by": SelectSearchBy,
+        "upload-sla": UploadSla
     },
     data() {
         return {
