@@ -342,7 +342,6 @@ export default {
                     this.URL.sla + `/${val.sla_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
                     this.refresh()
                     this.openNotification(null, 'Success', 'Delete sla is success')
                 }).catch(err => {
