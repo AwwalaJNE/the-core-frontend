@@ -177,7 +177,7 @@ export default {
                     "key":"node_code",
                     "width":"auto",
                     "type": "",
-                    "rule": "required|string"
+                    "rule": "string"
                 },
 
                 "Activity Name":{
