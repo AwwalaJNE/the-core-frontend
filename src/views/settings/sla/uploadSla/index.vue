@@ -262,7 +262,7 @@ export default {
                       this.handleClear()
                     }
                 }).catch(err => {
-                   let message = err.response ? err.response.data.reference : 'Upload SLA failed'
+                   let message = err.response ? err.response.data.message : 'Upload SLA failed'
                   this.openNotification('danger', 'Fail', message)
                 })
             
