@@ -33,6 +33,11 @@
                             <vs-col xs="6" sm="9" lg="9">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
+                            <template v-if="navActive === 'k-PERMISSIONS'">
+                                <vs-col xs="6" sm="3" lg="3">
+                                    <search-input :ref="searchInput" @searchValue="searchValue"/>
+                                </vs-col>
+                            </template>
                         </vs-row>
 
                         <template v-if="navActive === 'k-USER'">
@@ -237,7 +242,7 @@ export default {
         },
         activeTab(val) {
             this.navActive = val
-            this.clearSearch()
+            // this.clearSearch()
             let item = this.navItemm.filter(item => {
                 return item.key == val
             })
