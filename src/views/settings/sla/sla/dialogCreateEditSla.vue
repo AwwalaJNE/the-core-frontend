@@ -81,7 +81,6 @@ export default {
             customerNameArray: [],
             customerIdArray: [],
             activityArray: [],
-            customerName: this.$store.getters.getInputs.sla.customer_name.value,
             customerId: "",
             loadingDataOrigin: false,
             loadingDataService: false,
@@ -147,7 +146,7 @@ export default {
                 this.getActivityName()
                 this.getDataOrigin()
                 this.getDataService()
-                this.getDataCustomerName()                
+                this.getDataCustomerName()           
             }
             return this.active
         },
@@ -156,6 +155,9 @@ export default {
         },
         listenDataItem() {
             return this.dataItem
+        },
+        listenCustomerName() {
+            return this.$store.getters.getInputs.sla.customer_name.value;
         }
     },
     watch: {
@@ -164,13 +166,13 @@ export default {
                 this.sla_id = val.sla_id
             }
         },
-        '$store.getters.getInputs.sla.customer_name.value': {
+        listenCustomerName: {
             handler(newVal) {
-                if (newVal && newVal !== "") {
+                if (newVal !== null) {
                     this.getDataCustomerCode();
                 }
             },
-            immediate: true // Call the handler immediately upon component creation
+            immediate: true
         }
     },
     methods: {
@@ -302,7 +304,7 @@ export default {
         async getDataCustomerCode(){
             this.loadingDataCustomerCode = true
             await axios
-                .get(this.URL.customer + `/code?n=${this.listenNodeId}&customer_name=${this.customerName}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
+                .get(this.URL.customer + `/code?n=${this.listenNodeId}&customer_name=${this.listenCustomerName}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
@@ -398,6 +400,8 @@ export default {
             this.handleClearForm()
             this.closeDialog()
         },
+    },
+    created() {
     },
     mounted() {
     },
