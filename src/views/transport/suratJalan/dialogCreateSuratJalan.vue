@@ -272,9 +272,9 @@ export default {
         this.getDestination();
         this.getNoModeAngkutan();
         this.getLov();
-        this.isDestinationDisableCheck();
         this.getDriver();
         this.setEmptyDataTable();
+        this.isDestinationDisableCheck();
       }
     },
   },
@@ -290,6 +290,12 @@ export default {
         !initial_data['manifest_lov'].value && Object.keys(this.editData).length === 0
       ) {
         this.dataTable= [];
+        this.manifest_lov = ""
+        this.destinationUnlock = ""
+      }
+      else {
+        this.manifest_lov = initial_data['manifest_lov']
+        this.destinationUnlock = initial_data['destination_id']
       }
     },
     formData(form) {
