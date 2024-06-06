@@ -201,5 +201,5 @@ export default {
 
     //sla
     sla : api + "sla",
-    upload_sla : api + "sla/upload",
+    upload_sla : api + "sla/bulk",
 }

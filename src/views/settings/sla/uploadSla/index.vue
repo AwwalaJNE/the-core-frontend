@@ -80,12 +80,6 @@
                     :hasAction="false"
                     :hasPagination="false"
                     />
-                    <!-- <table-master 
-                    :dataTable="fileList" 
-                    :dataColumn="datacolumn" 
-                    :hasAction="false"
-                    :hasPagination="false"
-                    /> -->
                 </transition>
             </template>
             
@@ -99,8 +93,6 @@ import XLSX from "xlsx"
 import Breadcrumb from "@/components/breadcrumb/index"
 import TableMaster from "@/components/table/tableMaster.vue"
 import Selector from "@/components/input/select"
-import { messages } from 'vee-validate/dist/locale/en.json';
-import { required, email, min } from 'vee-validate/dist/rules'
 export default {
     name:"upload-transaction",
     mixins: [master],
@@ -227,20 +219,6 @@ export default {
                     "rule": "required|boolean"
                 },
             },
-            templateFile: {
-                "File Name":{
-                    "label":"File Name",
-                    "key":"File Name",
-                    "width":"auto",
-                    "type": "",
-                },
-                "File Size":{
-                    "label":"File Size",
-                    "key":"size",
-                    "width":"auto",
-                    "type": "",
-                },
-            },
             tempStatus: true,
             tempMsg: '',
             dataSLA: []
@@ -276,14 +254,15 @@ export default {
                     formData,
                     this.Helper.headerFormData()
                 ).then(res => {
-                    if(res.status == 200){
+                    if(res.status == 201){
                         if (this.progress <= 100) {
                                 loading.changeProgress(this.progress++)
                         }
-                      this.openNotification('success', 'Success', 'Upload SLA successful')
+                      this.openNotification('success', 'Success', res.data.message)
+                      this.handleClear()
                     }
                 }).catch(err => {
-                   let message = err.response ? err.response.data.message : 'Upload SLA failed'
+                   let message = err.response ? err.response.data.reference : 'Upload SLA failed'
                   this.openNotification('danger', 'Fail', message)
                 })
             
@@ -293,55 +272,6 @@ export default {
                 this.progress = 0
             }, 4100)
         },
-        // async handleProcess(){
-        //     if (!this.validateData()) {
-        //         return
-        //     }
-
-        //     console.log("VALIDATE RES: ", this.validateData())
-        //     const loading = this.$vs.loading({
-        //         progress: 0
-        //     })
-
-        //     const interval = setInterval(() => {
-        //         if (this.progress <= 100) {
-        //         loading.changeProgress(this.progress++)
-        //         }
-        //     }, 40)
-
-
-        //     let form= {}
-        //     let filterData = this.dataSLA.filter(item => {
-        //         return item.status == true
-        //     })
-
-        //     form.connote = filterData
-        //     await axios
-        //         .post(this.URL.upload_connote + `?n=${this.listenNodeId}`,
-        //             JSON.stringify(form),
-        //             this.Helper.header()
-        //         ).then(res => {
-        //             if(res.status == 200){
-        //                 console.log('res connote ========>', res)
-        //                 if (this.progress <= 100) {
-        //                         loading.changeProgress(this.progress++)
-        //                 }
-        //               this.openNotification('success', 'Success', 'Upload SLA successful')
-        //             }
-        //         }).catch(err => {
-        //            let message = err.response ? err.response.data.message : 'upload data failed'
-        //           this.openNotification('danger', 'Upload SLA failed', message)
-        //         })
-            
-            
-        //     setTimeout(() => {
-        //         loading.close()
-        //         clearInterval(interval)
-        //         this.progress = 0
-        //     }, 4100)
-            
-            
-        // },
         handleDownload(){
 
             var ws_name = "SLA";
@@ -359,7 +289,6 @@ export default {
             
         },
         handleClear(){
-            // this.$router.go();
             this.theFile = null;
             this.dataSLA = [];
             this.tempStatus = true;
@@ -375,14 +304,6 @@ export default {
                 obj["width"] = "auto"
                 this.datacolumn.push(obj)     
             })
-            // this.InputKeys = Object.keys(this.templateFile)
-            // this.InputKeys.map(item => {
-            //     let obj = {}    
-            //     obj["label"] = this.templateFile[item].label
-            //     obj["key"] = this.templateFile[item].label
-            //     obj["width"] = "auto"
-            //     this.datacolumn.push(obj)     
-            // })
 
             let statusColumn = [
                     {
@@ -470,13 +391,10 @@ export default {
                 let endTest = REGEX.test(el['End Date']);
 
                 if (startTest) {
-                    // new Date((excelDate - 1) * 86400 * 1000).toLocaleDateString('en-GB')
                     el['Start Date'] = new Date(Math.round((el['Start Date'] - 25569)*86400*1000)).toLocaleDateString('en-GB')
-                    // el['Start Date'] = new Date(Math.round((el['Start Date'] - 1)*86400*1000)).toLocaleDateString('en-GB')
                 }
                 if (endTest) {
                     el['End Date'] = new Date(Math.round((el['End Date'] - 25569)*86400*1000)).toLocaleDateString('en-GB')                    
-                    // el['End Date'] = new Date(Math.round((el['End Date'] - 1)*86400*1000)).toLocaleDateString('en-GB')                    
                 }
                 
                 el['Start Date'] = el['Start Date'].replaceAll("-", "/")
