@@ -199,6 +199,9 @@ export default {
     //origin code
     origin_code : api + "origin-code",
 
+    //destination code
+    destination_code : api + "get-destination",
+
     //sla
     sla : api + "sla",
     upload_sla : api + "sla/bulk",

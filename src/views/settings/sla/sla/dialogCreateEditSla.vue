@@ -78,15 +78,18 @@ export default {
             form: {},
             serviceArray: [],
             originArray: [],
+            destinationArray: [],
             customerNameArray: [],
             customerIdArray: [],
             activityArray: [],
             customerId: "",
             loadingDataOrigin: false,
+            loadingDataDestination: false,
             loadingDataService: false,
             loadingDataCustomerName: false,
             loadingDataCustomerCode: false,
             loadingDataNode: false,
+            loadingDataActivity: false,
             sla_id: "",
             activity_name: [
                 {
@@ -145,6 +148,7 @@ export default {
             if(this.active){
                 this.getActivityName()
                 this.getDataOrigin()
+                this.getDataDestination()
                 this.getDataService()
                 this.getDataCustomerName()           
             }
@@ -193,19 +197,33 @@ export default {
             this.form = {}
             this.sla_id = ""
         },
-        getActivityName() {
-            if(this.activity_name.length > 0) {
-                let arr = []
-                this.activity_name.map(item => {
-                    let obj = {}
-                    obj["label"] = item.label
-                    obj["value"] = item.value
+        async getActivityName() {
+            this.loadingDataActivity = true
+            await axios
+                .get(this.URL.sla + `/activity-name?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            if (item.activity_name !== null) {
+                                obj["label"] = item.activity_name
+                                obj["value"] = item.activity_name
 
-                    arr.push(obj)                
+                                arr.push(obj)
+                            }
+                            
+                        })
+                        this.activityArray = arr
+                        this.$store.dispatch("SET_SLA_ACTIVITY_NAME_ArrData", arr)
+                    } else {
+                        this.openNotification('warn', 'Activity data is empty!', ' Please create a new Activity data')
+                    }
+                    this.loadingDataActivity = false
+                }).catch(err => {
+                    this.loadingDataActivity = false
+                    this.openNotification('danger', 'Failed to populate Activity list', err)
                 })
-                this.activityArray = arr
-                this.$store.dispatch("SET_SLA_ACTIVITY_NAME_ArrData", arr)
-            }
         },        
         querySearch(queryString, cb){
             axios.get(this.URL.node +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
@@ -214,7 +232,7 @@ export default {
                 let suggestions = [];
                 result.length > 0 && result.map(item => {
                     suggestions.push({
-                        value: item['node_name'],
+                        value: item['node_name'] + " (" + item['node_code'] + ")",
                         data: item.node_code
                     });
                 });
@@ -241,7 +259,6 @@ export default {
                         })
                         this.originArray = arr
                         this.$store.dispatch("SET_SLA_ORIGIN_ArrData", arr)
-                        this.$store.dispatch("SET_SLA_DESTINATION_ArrData", arr)
                     } else {
                         this.openNotification('warn', 'Origin data is empty!', ' Please create a new origin data')
                     }
@@ -249,6 +266,34 @@ export default {
                 }).catch(err => {
                     this.loadingDataOrigin = false
                     this.openNotification('danger', 'Failed to populate service list', err)
+                })
+        },
+        async getDataDestination(){
+            this.loadingDataDestination = true
+            await axios
+                .get(this.URL.destination_code + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            if (item.geolocation_subdistrict_tarif_code !== null) {
+                                obj["label"] = item.geolocation_subdistrict_tarif_code
+                                obj["value"] = item.geolocation_subdistrict_tarif_code
+
+                                arr.push(obj)
+                            }
+                            
+                        })
+                        this.destinationArray = arr
+                        this.$store.dispatch("SET_SLA_DESTINATION_ArrData", arr)
+                    } else {
+                        this.openNotification('warn', 'Destination data is empty!', ' Please create a new Destination data')
+                    }
+                    this.loadingDataDestination = false
+                }).catch(err => {
+                    this.loadingDataDestination = false
+                    this.openNotification('danger', 'Failed to populate Destination list', err)
                 })
         },
         async getDataService(){
