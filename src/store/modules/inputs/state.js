@@ -1585,7 +1585,7 @@ export default {
     sla_activity: {
       label: "SLA Activity*",
       key: "sla_activity",
-      rule: "",
+      rule: "required",
       typeInput: "radtex",
       typeData: "Number",
       arrData: [
