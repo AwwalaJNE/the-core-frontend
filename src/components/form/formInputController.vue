@@ -422,7 +422,12 @@ export default {
             if(obj.hasOwnProperty('typeInput')) {
                 if(obj['typeInput'] == 'radtex') {
                     if (obj['statusRad']) {
-                        this.$store.dispatch(`SET_${prefix}_${action}_ArrValueData`, obj.statusRad)
+                        if (['menit', 'jam', 'hari'].includes(val)) {
+                            this.$store.dispatch(`SET_${prefix}_${action}_ArrValueData`, obj.statusRad)
+                            this.$store.dispatch(`SET_${prefix}_${action}`, '')
+                        } else {
+                            this.$store.dispatch(`SET_${prefix}_${action}_ArrValueData`, obj.statusRad)
+                        }                        
                     }
                 }
             }

@@ -1,39 +1,52 @@
 <template>
-    <inputan :name="name" :rules="rules">
-        <template v-slot:inputan="props">
-            <vs-row :style="'flex-direction: column'">
-                <template v-if="DataArr.length > 0">
-                    <label class="radio-input-label">{{ name }}</label>
-                    <vs-col xs="12" md="6" class="radio-input-group">
-                        <div class="radio-container" v-for="(item, key) in DataArr" :key="key">
-                            <vs-radio
-                                v-model="selectedRadio"
-                                :val="item.value"
-                                :state="props.err ? 'danger' : 'gray'"
-                                :key="key"
-                            />
-                            <label :for="`radio-${key}`" class="radio-label">{{ item.label }}</label>
-                        </div>
-                        <vs-input
-                            v-model="inputValue"
-                            class="mt-input"
-                            :type="'number'"
-                            :placeholder="`Masukkan ${name} dalam satuan ${selectedRadio.toLowerCase()}`"
-                            :autofocus="isFocusToInput"
-                            :disabled="isDisabled"
-                            :min="listenMinValue"
-                            :state="props.err ? 'danger' : 'gray'"
-                            @input="updateValue"
-                            @click-icon="$emit('click-icon')"
-                        />
-                    </vs-col>
+    <div>
+        <label class="radio-input-label">{{ name }}</label>
+        <div class="radio-input-group">
+            <inputan :name="name" :rules="rules">
+                <template v-slot:inputan="props">
+                    <vs-row style="flex-direction: column">
+                        <template v-if="DataArr.length > 0">
+                            <vs-col xs="12" md="6">
+                                <div class="radio-container" v-for="(item, key) in DataArr" :key="key">
+                                    <vs-radio
+                                        v-model="selectedRadio"
+                                        :val="item.value"
+                                        :state="props.err ? 'danger' : 'gray'"
+                                        :key="key"
+                                    />
+                                    <label :for="`radio-${key}`" class="radio-label">{{ item.label }}</label>
+                                </div>
+                            </vs-col>
+                        </template>
+                    </vs-row>
                 </template>
-            </vs-row>
-        </template>
-    </inputan>
-</template>
+            </inputan>
 
-  
+            <inputan :name="name" :rules="rules">
+                <template v-slot:inputan="props">
+                    <vs-row style="flex-direction: column">
+                        <template v-if="DataArr.length > 0">
+                            <vs-col xs="12" md="6">
+                                <vs-input
+                                    v-model="inputValue"
+                                    class="mt-input"
+                                    type="number"
+                                    :placeholder="`Masukkan ${name} dalam satuan ${selectedRadio.toLowerCase()}`"
+                                    :autofocus="isFocusToInput"
+                                    :disabled="isDisabled"
+                                    :min="listenMinValue"
+                                    :state="props.err ? 'danger' : 'gray'"
+                                    @input="updateValue"
+                                    @click-icon="$emit('click-icon')"
+                                />
+                            </vs-col>
+                        </template>
+                    </vs-row>
+                </template>
+            </inputan>
+        </div>
+    </div>
+</template>
 <script>
 import Inputan from "@/components/input/inputan";
 export default {
@@ -163,6 +176,7 @@ export default {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     background-color: white;
     display: inline-block; /* Add to keep the group inline */
+    width: 100%;
 }
 </style>
   
