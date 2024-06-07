@@ -90,57 +90,7 @@ export default {
             loadingDataCustomerCode: false,
             loadingDataNode: false,
             loadingDataActivity: false,
-            sla_id: "",
-            activity_name: [
-                {
-                    label: 'CREATE_CONNOTE',
-                    value: 'CREATE_CONNOTE'
-                },
-                {
-                    label: 'RECEIVE_CONNOTE',
-                    value: 'RECEIVE_CONNOTE'
-                },
-                {
-                    label: 'RECEIVE_BAG',
-                    value: 'RECEIVE_BAG'
-                },
-                {
-                    label: 'CREATE_SM',
-                    value: 'CREATE_SM'
-                },
-                {
-                    label: 'RECEIVE_SM',
-                    value: 'RECEIVE_SM'
-                },
-                {
-                    label: 'OPEN_BAG',
-                    value: 'OPEN_BAG'
-                },
-                {
-                    label: 'CREATE_BAG',
-                    value: 'CREATE_BAG'
-                },
-                {
-                    label: 'CREATE_SJ',
-                    value: 'CREATE_SJ'
-                },
-                {
-                    label: 'RECEIVE_SJ',
-                    value: 'RECEIVE_SJ'
-                },
-                {
-                    label: 'CREATE_PRARUNSHEET',
-                    value: 'CREATE_PRARUNSHEET'
-                },
-                {
-                    label: 'CREATE_RUNSHEET',
-                    value: 'CREATE_RUNSHEET'
-                },
-                {
-                    label: 'CREATE_STATUS',
-                    value: 'CREATE_STATUS'
-                }
-            ]
+            sla_id: ""
         }
     },
     computed: {
@@ -411,7 +361,7 @@ export default {
         async updateData(){
             const isActiveDifferent = this.form.is_active !== this.dataItem.is_active;
             const areOthersEqual = this.compareSharedProperties(this.form, this.dataItem);
-            
+
             if (isActiveDifferent && areOthersEqual) {
                 await axios
                     .patch(

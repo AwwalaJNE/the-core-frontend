@@ -216,60 +216,7 @@ export default {
                 }
             ],
             filterActivityBy: "-",
-            filterActivity: [
-                {
-                    label: 'All Activity',
-                    value: '-'
-                },
-                {
-                    label: 'CREATE_CONNOTE',
-                    value: 'CREATE_CONNOTE'
-                },
-                {
-                    label: 'RECEIVE_CONNOTE',
-                    value: 'RECEIVE_CONNOTE'
-                },
-                {
-                    label: 'RECEIVE_BAG',
-                    value: 'RECEIVE_BAG'
-                },
-                {
-                    label: 'CREATE_SM',
-                    value: 'CREATE_SM'
-                },
-                {
-                    label: 'RECEIVE_SM',
-                    value: 'RECEIVE_SM'
-                },
-                {
-                    label: 'OPEN_BAG',
-                    value: 'OPEN_BAG'
-                },
-                {
-                    label: 'CREATE_BAG',
-                    value: 'CREATE_BAG'
-                },
-                {
-                    label: 'CREATE_SJ',
-                    value: 'CREATE_SJ'
-                },
-                {
-                    label: 'RECEIVE_SJ',
-                    value: 'RECEIVE_SJ'
-                },
-                {
-                    label: 'CREATE_PRARUNSHEET',
-                    value: 'CREATE_PRARUNSHEET'
-                },
-                {
-                    label: 'CREATE_RUNSHEET',
-                    value: 'CREATE_RUNSHEET'
-                },
-                {
-                    label: 'CREATE_STATUS',
-                    value: 'CREATE_STATUS'
-                }
-            ],
+            filterActivity: []
         }
     },
     computed: {
@@ -384,9 +331,41 @@ export default {
         updateFiterActivity(key, val){
             this.refresh()
         },
+        async getActivityName() {
+            this.loadingDataActivity = true
+            await axios
+                .get(this.URL.sla + `/activity-name?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = [{
+                            label: 'All Activity',
+                            value: '-'
+                        }]
+                        res.data.data.map(item => {
+                            let obj = {}
+                            if (item.activity_name !== null) {
+                                obj["label"] = item.activity_name
+                                obj["value"] = item.activity_name
+
+                                arr.push(obj)
+                            }
+                            
+                        })
+                        this.filterActivity = arr
+                        this.$store.dispatch("SET_SLA_ACTIVITY_NAME_ArrData", arr)
+                    } else {
+                        this.openNotification('warn', 'Activity data is empty!', ' Please create a new Activity data')
+                    }
+                    this.loadingDataActivity = false
+                }).catch(err => {
+                    this.loadingDataActivity = false
+                    this.openNotification('danger', 'Failed to populate Activity list', err)
+                })
+        }, 
         
     },
     mounted() {
+        this.getActivityName();
         this.refresh()
     },
 }
