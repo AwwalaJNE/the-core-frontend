@@ -16,6 +16,7 @@
                     @formData="formData"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
+                    :permissionCreateSelect="checkPermission('create-activity-sla')"
                 />
             </div>
         </template>
@@ -130,6 +131,10 @@ export default {
         }
     },
     methods: {
+        checkPermission(permission) {
+            const permissions = this.$ls.get('permissions') || [];
+            return permissions.includes(permission);
+        },
         formData(form){
             for (const key in form) {
                 if (key.endsWith('_radio')) {

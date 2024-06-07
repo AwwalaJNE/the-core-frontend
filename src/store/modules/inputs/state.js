@@ -1524,7 +1524,7 @@ export default {
       value: ''
     },
     node_code: {
-      label: "Node Code*",
+      label: "Node Code",
       key: "node_code",
       rule: "required",
       typeInput: "autocomplete",

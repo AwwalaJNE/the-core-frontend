@@ -117,7 +117,7 @@
                                             :selectedValue="InputObject[item].value"
                                             :isMultiple="false"
                                             :disabled="listenIsDisabled"
-                                            :isAllowCreate="true"
+                                            :isAllowCreate="permissionCreateSelect"
                                             @updateValue="updateValue" />
                                     </div>
                             </template>
@@ -283,7 +283,8 @@ export default {
         querySearch: Function, // klo ada auto complete [required]
         itterateUrlAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         itterateFlagAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
-        isDisabled: Boolean
+        isDisabled: Boolean,
+        permissionCreateSelect: Boolean
     },
     data() {
         return {
