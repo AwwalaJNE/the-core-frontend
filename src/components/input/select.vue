@@ -79,6 +79,7 @@
                     <template v-else-if="listenIsMultiple == false">
                      <el-select
                       v-model="value" 
+                      :allow-create="listenAllowCreate"
                       filterable
                       class="m-select"
                       :placeholder="placeholder"
@@ -125,7 +126,8 @@ export default {
         tabindex: [Number, String],
         disabled: Boolean,
         hiddenTitle: Boolean,
-        collapseTags: Boolean
+        collapseTags: Boolean,
+        isAllowCreate: Boolean
     },
     data() {
         return {
@@ -164,6 +166,9 @@ export default {
         listenIsCollapseTags() {
             return this.collapseTags ? this.collapseTags : false
         },
+        listenAllowCreate() {
+            return this.isAllowCreate ? this.isAllowCreate : false
+        }
     },
     watch: {
         valueData: function (val) {

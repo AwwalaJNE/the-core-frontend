@@ -10,6 +10,15 @@ export default {
             }
           }
     },
+    headerFormData() {
+      return {
+          headers: {
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("vuejs__tokenBearer"))?.value,
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json"
+          }
+        }
+    },
     headerLogin() {
         return {
             headers: {
@@ -17,13 +26,5 @@ export default {
               Accept: "application/json"
             }
           }
-    },
-    headerSequenceOrion() {
-      return {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Accept: "application/json"
-        }
-      }
     }
 }

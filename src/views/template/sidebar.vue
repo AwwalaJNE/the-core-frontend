@@ -415,6 +415,12 @@ export default {
               url: "/settings/access-token",
               icon: "",
             },
+            {
+              label: "Settings SLA",
+              url: "/settings/sla",
+              icon: "",
+              permission: "read-sla",
+            },
           ],
         },
         {
