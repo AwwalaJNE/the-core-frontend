@@ -419,7 +419,7 @@ export default {
               label: "Settings SLA",
               url: "/settings/sla",
               icon: "",
-              // permission: "read-sla", //TODO: RECHECK
+              permission: "read-sla",
             },
           ],
         },
