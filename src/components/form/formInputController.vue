@@ -106,6 +106,21 @@
                                         @updateValue="updateValue" />
                                     </div>
                             </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('selectallowcreate') && !InputObject[item].typeInput.toLowerCase().includes('hidden')">
+                                    <div>
+                                        <selector 
+                                            :ref="InputObject[item].key"
+                                            :name="InputObject[item].label" 
+                                            :rules="InputObject[item].rule" 
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].arrData"
+                                            :selectedValue="InputObject[item].value"
+                                            :isMultiple="false"
+                                            :disabled="listenIsDisabled"
+                                            :isAllowCreate="true"
+                                            @updateValue="updateValue" />
+                                    </div>
+                            </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
                                 <template v-if="InputObject[item].hasOwnProperty('visible')">
                                     <template v-if="InputObject[item]['visible'] == true">
@@ -118,6 +133,7 @@
                                             :valueData="InputObject[item].arrData"
                                             :selectedValue="InputObject[item].value"
                                             :isMultiple="false"
+                                            :isAllowCreate="false"
                                             :disabled="listenIsDisabled"
                                             @updateValue="updateValue" />
                                         </div>

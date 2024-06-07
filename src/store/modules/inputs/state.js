@@ -1517,8 +1517,8 @@ export default {
       label: "Activity*",
       key: "activity_name",
       rule: "required",
-      typeInput: "select",
-      typeData: "String",
+      typeInput: "selectallowcreate",
+      typeData: "Array",
       arrData: [],
       valueData: null,
       value: ''
