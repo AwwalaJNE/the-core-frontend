@@ -1526,7 +1526,7 @@ export default {
     node_code: {
       label: "Node Code",
       key: "node_code",
-      rule: "required",
+      rule: "",
       typeInput: "autocomplete",
       typeData: "String",
       width: '12',
