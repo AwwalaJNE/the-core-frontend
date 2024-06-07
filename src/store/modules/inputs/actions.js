@@ -2775,5 +2775,15 @@ export default {
   SET_SLA_IS_ACTIVE_ValueData({ commit }, payload) {
     commit('SET_SLA_IS_ACTIVE_ValueData', payload)
   },
+
+  SET_SLA_SLA_KOLI_ArrValueData({ commit }, payload) {
+    commit('SET_SLA_SLA_KOLI_ArrValueData', payload)
+  },
+  SET_SLA_SLA_NODE_ArrValueData({ commit }, payload) {
+    commit('SET_SLA_SLA_NODE_ArrValueData', payload)
+  },
+  SET_SLA_SLA_ACTIVITY_ArrValueData({ commit }, payload) {
+    commit('SET_SLA_SLA_ACTIVITY_ArrValueData', payload)
+  },
   //====== END SLA ======    
 }

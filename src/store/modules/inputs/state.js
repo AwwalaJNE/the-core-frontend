@@ -1538,8 +1538,23 @@ export default {
       label: "SLA Koli",
       key: "sla_koli",
       rule: "",
-      typeInput: "text",
-      typeData: "String",
+      typeInput: "radtex",
+      typeData: "Number",
+      arrData: [
+        {
+          label: "Menit",
+          value: "menit"
+        },
+        {
+          label: "Jam",
+          value: "jam"
+        },
+        {
+          label: "Hari",
+          value: "hari"
+        },        
+      ],
+      arrValue: '',
       valueData: null,
       value: '',
     },
@@ -1547,8 +1562,23 @@ export default {
       label: "SLA Node",
       key: "sla_node",
       rule: "",
-      typeInput: "text",
-      typeData: "String",
+      typeInput: "radtex",
+      typeData: "Number",
+      arrData: [
+        {
+          label: "Menit",
+          value: "menit"
+        },
+        {
+          label: "Jam",
+          value: "jam"
+        },
+        {
+          label: "Hari",
+          value: "hari"
+        },        
+      ],
+      arrValue: '',
       valueData: null,
       value: '',
     },
@@ -1556,8 +1586,23 @@ export default {
       label: "SLA Activity*",
       key: "sla_activity",
       rule: "",
-      typeInput: "text",
-      typeData: "String",
+      typeInput: "radtex",
+      typeData: "Number",
+      arrData: [
+        {
+          label: "Menit",
+          value: "menit"
+        },
+        {
+          label: "Jam",
+          value: "jam"
+        },
+        {
+          label: "Hari",
+          value: "hari"
+        },        
+      ],
+      arrValue: '',
       valueData: null,
       value: '',
     },

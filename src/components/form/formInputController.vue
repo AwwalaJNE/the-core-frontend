@@ -208,6 +208,20 @@
                                     @inputFocus="onfocuslah"/>
                                 </template>
                             </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('radtex')">
+                                <radio-input-general
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].value"
+                                    :arrData="InputObject[item].arrData"
+                                    :arrValueData="InputObject[item].arrValue"
+                                    :typeInput="InputObject[item].typeInput"
+                                    :disabled="listenIsDisabled"
+                                    @updateValue="updateValue" 
+                                    @inputFocus="onfocuslah"
+                                />
+                            </template>
                         </vs-col>
                         <vs-col v-if="InputObject[item].reduce" :key="'reducer'+keys" :w="InputObject[item].reduce || null" />
                     </template>
@@ -227,6 +241,7 @@ import Radio from "@/components/input/radio"
 import AutoComplete from "@/components/input/autoComplete"
 import iterateSelector from "@/components/input/iterateInput2"
 import asynchronousSelect from "@/components/input/asynchronousSelect"
+import RadioInputGeneral from "@/components/input/radioInputGeneral.vue"
 export default {
     name:"input-controller",
     components: {
@@ -239,7 +254,8 @@ export default {
         "date-time": DateTime,
         "radio": Radio,
         "auto-complete": AutoComplete,
-        "asynchronousSelect": asynchronousSelect
+        "asynchronousSelect": asynchronousSelect,
+        "radio-input-general": RadioInputGeneral
     },
     props: {
         arrData: Array,
@@ -386,6 +402,13 @@ export default {
                     }
                 }
             }
+            if(obj.hasOwnProperty('typeInput')) {
+                if(obj['typeInput'] == 'radtex') {
+                    if (obj['statusRad']) {
+                        this.$store.dispatch(`SET_${prefix}_${action}_ArrValueData`, obj.statusRad)
+                    }
+                }
+            }
 
             this.$emit("onChangeCustom", type, val, obj)
         },
@@ -415,6 +438,9 @@ export default {
                             this.form[this.InputObject[item].key] = this.InputObject[item].arrData
                         } else if (this.InputObject[item]['typeInput'].toLowerCase() == 'autocomplete') {
                             this.form[this.InputObject[item].key] = this.InputObject[item].valueData
+                        } else if (this.InputObject[item]['typeInput'].toLowerCase() == 'radtex') {
+                            this.form[this.InputObject[item].key + '_radio'] = this.InputObject[item].arrValueData
+                            this.form[this.InputObject[item].key] = this.InputObject[item].value
                         }
                         else {
                             this.form[this.InputObject[item].key] = this.InputObject[item].value
@@ -448,7 +474,7 @@ export default {
                         this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
                     }
                     
-                    if(this.InputObject[item].hasOwnProperty('arrData')) {
+                    if(this.InputObject[item].hasOwnProperty('arrData') && !InputObject[item].typeInput.toLowerCase().includes('radtex')) {
                         this.$store.dispatch(`SET_${prefix}_${action}_ArrData`, [{"label": null, "value": null}])
                     }
                 } catch (error) {

@@ -3006,5 +3006,16 @@ export default {
   SET_SLA_IS_ACTIVE_ValueData(state, payload) {
     state.sla.is_active.valueData = payload
   },
+
+  
+  SET_SLA_SLA_KOLI_ArrValueData(state, payload) {
+    state.sla.sla_koli.arrValueData = payload
+  },
+  SET_SLA_SLA_NODE_ArrValueData(state, payload) {
+    state.sla.sla_node.arrValueData = payload
+  },
+  SET_SLA_SLA_ACTIVITY_ArrValueData(state, payload) {
+    state.sla.sla_activity.arrValueData = payload
+  }
   //====== END SLA ======    
 }

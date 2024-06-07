@@ -181,6 +181,33 @@ export default {
     },
     methods: {
         formData(form){
+            for (const key in form) {
+                if (key.endsWith('_radio')) {
+                    const baseKey = key.slice(0, -6);
+                    const radioValue = form[key];
+                    const relatedKey = baseKey + (form.hasOwnProperty(baseKey) ? '' : '_radio');
+                    
+                    if (form.hasOwnProperty(relatedKey)) {
+                        switch (radioValue) {
+                            case 'hari':
+                                form[relatedKey] *= 24 * 60;
+                                this.$store.dispatch("SET_SLA_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
+                                break;
+                            case 'jam':
+                                form[relatedKey] *= 60;
+                                this.$store.dispatch("SET_SLA_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
+                                break;
+                            case 'menit':
+                                break;
+                            default:
+                                break;
+                        }
+
+                        delete form[key];
+                    }
+                }
+            }
+            
             this.form = form
             if(this.sla_id !== undefined && this.sla_id !== '') {
                 this.form.node_code = this.dataItem.node_code
@@ -363,7 +390,7 @@ export default {
                         this.customerIdArray = arr
                         this.$store.dispatch("SET_SLA_CUSTOMER_CODE_ArrData", arr)
                     } else {
-                        this.openNotification('warn', 'Customer ID data is empty!', ' Please create a new Customer Id data')
+                        // this.openNotification('warn', 'Customer ID data is empty!', ' Please create a new Customer Id data')
                     }
                     this.loadingDataCustomerCode = false
                 }).catch(err => {
@@ -384,7 +411,7 @@ export default {
         async updateData(){
             const isActiveDifferent = this.form.is_active !== this.dataItem.is_active;
             const areOthersEqual = this.compareSharedProperties(this.form, this.dataItem);
-
+            
             if (isActiveDifferent && areOthersEqual) {
                 await axios
                     .patch(
