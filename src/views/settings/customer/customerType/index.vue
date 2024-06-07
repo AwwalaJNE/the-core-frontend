@@ -157,12 +157,10 @@ export default {
     methods: {
         async getTableData(limit,page,q,from,to) {
             this.loading = true
-            let query = "";
             let startDate = "";
             let endDate = "";
-            if(q !== undefined) {
-                query = q
-            }
+            let query = (q !== undefined) ? (q.toLowerCase() === 'active' ? 1 : (q.toLowerCase() === 'inactive' ? 0 : q)) : "";
+            
             if(from !== undefined && to !== undefined) {
               startDate = from
               endDate = to

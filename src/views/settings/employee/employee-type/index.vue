@@ -129,13 +129,13 @@ export default {
                 page: 1
             },
             dateRange: [],
-            searchBy: "employee type name",
+            searchBy: "employee_type_name",
             filterDateBy: "create",
             searchPlaceholder: "Search Employee Type Name",
             searchParams: [
                 {
                     label: "Employee Type",
-                    value: "employee type name"
+                    value: "employee_type_name"
                 },
                
                 {
@@ -154,12 +154,10 @@ export default {
     methods: {
         async getTableData(limit,page,q,from,to) {
             this.loading = true
-            let query = "";
             let startDate = "";
             let endDate = "";
-            if(q !== undefined) {
-                query = q
-            }
+            
+            let query = (q !== undefined) ? (q.toLowerCase() === 'active' ? 1 : (q.toLowerCase() === 'unactive' ? 0 : q)) : "";
             if(from !== undefined && to !== undefined) {
               startDate = from
               endDate = to
@@ -263,7 +261,6 @@ export default {
             this.refresh()
         },
         updateSearchBy(key, val) {
-            val = val.replaceAll(" ", "_");
             this.searchBy = val;
             this.searchPlaceholder = key;
         },

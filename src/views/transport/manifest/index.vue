@@ -104,7 +104,7 @@ export default {
       ],
       node_request: "",
       status_pickup: "",
-      searchBy:"manifest number",
+      searchBy:"manifest_number",
       filterDateBy:"create",
       searchPlaceholder: "Search Manifest Number",
       searchParams: [

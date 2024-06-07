@@ -200,12 +200,12 @@ export default {
             tempDate:[],
             startDate: "",
             endDate: "",
-            searchByBag:"bag number",
+            searchByBag:"bag_number",
             searchPlaceholderBag: "Search Bag Number",
             searchParamsBag: [
                 {
                     label: "Bag Number",
-                    value: "bag number",
+                    value: "bag_number",
 
                 },
                 {
@@ -226,16 +226,6 @@ export default {
                 {
                     label: "Destination",
                     value: "destination_tariff_code",
-
-                },
-                {
-                    label: "Runsheet",
-                    value: "runsheet_count",
-
-                },
-                {
-                    label: "Un Runsheet",
-                    value: "un_runsheet_count",
 
                 },
                 {
@@ -374,7 +364,6 @@ export default {
             this.refresh()
         },
         updateSearchBy(key, val) {
-            val = val.replaceAll(" ", "_");
             this.searchByBag = val;
             this.searchPlaceholderBag = key;
         },
