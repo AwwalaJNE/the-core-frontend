@@ -137,15 +137,15 @@ export default {
                 },
                 {
                     label: "Subdistrict",
-                    value: "subdistrict_name",
+                    value: "subdistrict",
                 },
                 {
                     label: "Zip Code",
-                    value: "subdistrict_zip_code",
+                    value: "zip_code",
                 },
                 {
                     label: "Tariff Code",
-                    value: "subdistrict_tarif_code",
+                    value: "tarif_code",
                 },
                 {
                     label: "Timezone",

@@ -59,6 +59,7 @@ import DialogCreateEditSubDistrict from "@/views/settings/geolocation/subdistric
 import SelectSearchBy from "@/components/search/selectSearchBy"
 import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
+import moment from "moment"
 export default {
     name:"subdistrict-list",
     mixins: [master],
@@ -87,7 +88,7 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Name",
+                    label: "Subdistrict",
                     key: "geolocation_subdistrict_name",
                     width: "auto"
                 },
@@ -137,7 +138,7 @@ export default {
                 },
                 {
                     label: "Subdistrict Name",
-                    value: "subdistrict_name",
+                    value: "name_subdistrict",
                 },
                 {
                     label: "Zip Code",

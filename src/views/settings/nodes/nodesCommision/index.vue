@@ -155,19 +155,19 @@ export default {
                 },
                 {
                     label: "Service",
-                    value: "node_commision_service_code"
+                    value: "commision_service_code"
                 },
                 {
                     label: "Daily",
-                    value: "node_commision_daily"
+                    value: "commision_daily"
                 },
                 {
                     label: "Amount 1",
-                    value: "node_commision_amount1"
+                    value: "commision_amount1"
                 },
                 {
                     label: "Amount 2",
-                    value: "node_commision_amount2"
+                    value: "commision_amount2"
                 },
             ],
             dateParams: [

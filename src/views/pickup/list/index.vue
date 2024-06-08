@@ -178,10 +178,6 @@ export default {
                 value: "user_name",
               },
               {
-                label: "Pickup Type",
-                value: "pickup_type",
-              },
-              {
                 label: "Pickup Status",
                 value: "pickup_status",
               },
