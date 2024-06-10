@@ -23,14 +23,23 @@
                                 <template v-if="navActive === 'k-CONNOTE'">
                                     <vs-row>
                                         <vs-col vs-align="center" w="6">
-                                            <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"  :selectedValue="searchBy"/>
+                                            <select-search-by-connote :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"  :selectedValue="searchBy"/>
                                         </vs-col>
                                         <vs-col vs-align="center" w="6">
                                             <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" class="search-input"/>
                                         </vs-col>
                                     </vs-row>
                                 </template>
-                                <template v-if="navActive === 'k-BAG'" />
+                                <template v-if="navActive === 'k-BAG'" >
+                                    <vs-row>
+                                        <vs-col vs-align="center" w="6">
+                                            <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchByBag"  :selectedValue="searchByBag" :valueData="searchParamsBag"/>
+                                        </vs-col>
+                                        <vs-col vs-align="center" w="6">
+                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholderBag" class="search-input"/>
+                                        </vs-col>
+                                    </vs-row>
+                                </template>
                             </vs-col>
                         </vs-row>
 
@@ -84,10 +93,23 @@
                                     :border="true"
                                     @updateBagTipe="updateBagTipe" />
                                 </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="3" lg="2">
+                                    <select-search-by :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
+                                </vs-col>
+                                <vs-col xs="6" sm="5" lg="3">
+                                    <date-time
+                                        :name="''"
+                                        :rules="''"
+                                        :formKey="'TRIGGER_DATE'"
+                                        :valueData="tempDate"
+                                        typeInput="daterange"
+                                        @updateValue="searchDate" 
+                                    />
+                                </vs-col>
                             
                           </vs-row>
                             <transition name="slide-fade">
-                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :dateFilter="tempDate"/>
+                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateBy" :searchBy="searchByBag"/>
                             </transition>
                         </template>
                         
@@ -109,7 +131,8 @@ import SearchInput from "@/components/search/searchInput"
 import Selector from "@/components/input/select"
 import SelectBagStatusVue from "@/views/inventory/connote/item/selectBagStatus"
 import SelectInventoryVue from "@/views/inventory/connote/item/selectInventoryStatus"
-import SelectSearchBy from "@/views/inventory/connote/item/selectSearchBy"
+import SelectSearchByConnote from "@/views/inventory/connote/item/selectSearchBy"
+import SelectSearchBy from "@/components/search/selectSearchBy"
 import SelectFilterDateBy from "@/views/inventory/connote/item/selectFilterDateBy"
 import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDestination"
 import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
@@ -134,6 +157,7 @@ export default {
         "selector": Selector,
         "select-status-bag": SelectBagStatusVue,
         "select-status-inventory": SelectInventoryVue,
+        "select-search-by-connote": SelectSearchByConnote,
         "select-search-by": SelectSearchBy,
         "select-filter-date-by": SelectFilterDateBy,
         "select-bag-destination": SelectBagDestinationVue,
@@ -200,8 +224,58 @@ export default {
             statusinventory:"",
             bagDestination:"",
             searchBy:"",
-            filterDateBy:"",
+            searchByBag:"bag_number",
             searchPlaceholder: "Search Connote",
+            searchPlaceholderBag: "Search Bag",
+            searchParamsBag: [
+                {
+                    label: "Bag Number",
+                    value: "bag_number",
+
+                },
+                {
+                    label: "Bag Detail Qty",
+                    value: "bag_detail_qty",
+
+                },
+                {
+                    label: "Weight",
+                    value: "bag_weight",
+
+                },
+                {
+                    label: "Origin",
+                    value: "origin_tariff_code",
+
+                },
+                {
+                    label: "Destination",
+                    value: "destination_tariff_code",
+
+                },
+                {
+                    label: "Courier",
+                    value: "courier",
+
+                },
+                {
+                    label: "Surat Muatan",
+                    value: "sm",
+
+                },
+                {
+                    label: "Surat Jalan",
+                   value: "sj",
+
+                }
+            ],
+            filterDateBy: "create",
+            dateParams: [
+                {
+                    label: 'Created Date',
+                    value: 'create'
+                }
+            ],
             bagRouting:"",
             bagTipe:"",
             destination_tlc: [{
@@ -222,6 +296,10 @@ export default {
             console.log(this.navActive,'hehe haha');
             this.searchBy = val;
             this.searchPlaceholder = key;
+        },
+        updateSearchByBag(key,val) {
+            this.searchByBag = val;
+            this.searchPlaceholderBag = key;
         },
         updateFilterDateBy(key,val) {
           this.filterDateBy = val;
