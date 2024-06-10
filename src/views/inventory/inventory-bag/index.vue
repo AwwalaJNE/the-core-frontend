@@ -14,22 +14,9 @@
             <vs-row justify="space-around">
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center">
                     <div class="box view">
-                        <vs-row >
+                        <vs-row justify="flex-end" class="mb-15">
                             <vs-col xs="12" sm="12" lg="6">
-                                <vs-row>
-                                    <vs-col w="4">
-                                        <select-search-by :isMultiple="false" :border="true"
-                                            @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
-                                            :selectedValue="filterDateBy" />
-                                    </vs-col>
-                                    <vs-col w="8">
-                                        <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'" :valueData="tempDate"
-                                        typeInput="daterange" @updateValue="searchDate" />
-                                    </vs-col>
-                                </vs-row>
-                            </vs-col>
-                            <vs-col xs="12" sm="12" lg="6">
-                                <vs-row justify="end">
+                                <vs-row justify="flex-end">
                                     <vs-col xs="6" sm="8" lg="4">
                                         <select-search-by :isMultiple="false" :border="true"
                                             @updateSearchBy="updateSearchBy" :valueData="searchParams"
@@ -63,6 +50,15 @@
                                     :isMultiple="false"
                                     :border="true"
                                     @updateBagTipe="updateBagTipe" />
+                            </vs-col>
+                            <vs-col vs-align="center" xs="6" sm="3" lg="2">
+                                <select-search-by :isMultiple="false" :border="true"
+                                    @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
+                                    :selectedValue="filterDateBy" />
+                            </vs-col>
+                            <vs-col xs="6" sm="5" lg="3">
+                                <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'" :valueData="tempDate"
+                                typeInput="daterange" @updateValue="searchDate" />
                             </vs-col>
                         </vs-row>
                         <transition name="slide-fade">
