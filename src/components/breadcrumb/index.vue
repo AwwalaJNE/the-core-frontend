@@ -2,7 +2,7 @@
     <div class="breadcrumb">
         <template v-for="(item,i) in crumbs">
             <span :key="i" @click="back(item, i)" :class="[item.back && i === 0 ? 'pointer' : '']">
-                {{`${i == 0 ? '': ' / '}`+item.text.replace('-','/')}}
+                {{`${i == 0 ? '': ' / '}`+item.text}}
             </span>
         </template>
     </div>
