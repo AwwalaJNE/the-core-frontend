@@ -206,6 +206,42 @@
                                     @updateValue="updateValue" />
                                 </template>
                             </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete1')">
+                                <template v-if="querySearch1 !== undefined">
+                                    <auto-complete
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].value"
+                                    :url="InputObject[item].url"
+                                    :flag="InputObject[item].flag"
+                                    :querySearch="querySearch1"
+                                    :selectedValue="InputObject[item].value"
+                                    :typeForm="listenTypeForm"
+                                    :typeInput="InputObject[item].typeInput"
+                                    :disabled="listenIsDisabled"
+                                    @updateValue="updateValue"
+                                    @inputFocus="onfocuslah"/>
+                                </template>
+                            </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete2')">
+                                <template v-if="querySearch2 !== undefined">
+                                    <auto-complete
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].value"
+                                    :url="InputObject[item].url"
+                                    :flag="InputObject[item].flag"
+                                    :querySearch="querySearch2"
+                                    :selectedValue="InputObject[item].value"
+                                    :typeForm="listenTypeForm"
+                                    :typeInput="InputObject[item].typeInput"
+                                    :disabled="listenIsDisabled"
+                                    @updateValue="updateValue"
+                                    @inputFocus="onfocuslah"/>
+                                </template>
+                            </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete')">
                                 <template v-if="querySearch !== undefined">
                                     <auto-complete
@@ -281,6 +317,8 @@ export default {
         submitByEnter: Boolean,
         asynchronousSelect_url: String,
         querySearch: Function, // klo ada auto complete [required]
+        querySearch1: Function,
+        querySearch2: Function,
         itterateUrlAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         itterateFlagAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         isDisabled: Boolean,
