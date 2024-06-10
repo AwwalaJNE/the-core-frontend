@@ -16,6 +16,8 @@
                     @formData="formData"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
+                    :querySearch1="getDataOrigin"
+                    :querySearch2="getDataDestination"
                     :permissionCreateSelect="checkPermission('create-activity-sla')"
                 />
             </div>
@@ -91,17 +93,17 @@ export default {
             loadingDataCustomerCode: false,
             loadingDataNode: false,
             loadingDataActivity: false,
-            sla_id: ""
+            sla_id: "",
+            queryOri: "",
+            queryDest: ""
         }
     },
     computed: {
         listenActive(){
             if(this.active){
                 this.getActivityName()
-                this.getDataOrigin()
-                this.getDataDestination()
                 this.getDataService()
-                this.getDataCustomerName()           
+                this.getDataCustomerName()  
             }
             return this.active
         },
@@ -222,25 +224,24 @@ export default {
                 })
             .catch(error => console.log("error", error));
         },
-        async getDataOrigin(){
+        getDataOrigin(queryOri, cb){
             this.loadingDataOrigin = true
-            await axios
-                .get(this.URL.origin_code + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
+            axios
+                .get(this.URL.origin_code + `?n=${this.listenNodeId}&s=${queryOri}&limit=100`, this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
                             if (item.origin_code !== null) {
-                                obj["label"] = item.origin_code
                                 obj["value"] = item.origin_code
+                                obj["data"] = item.origin_code
 
                                 arr.push(obj)
                             }
                             
                         })
-                        this.originArray = arr
-                        this.$store.dispatch("SET_SLA_ORIGIN_ArrData", arr)
+                        cb(arr);
                     } else {
                         this.openNotification('warn', 'Origin data is empty!', ' Please create a new origin data')
                     }
@@ -250,27 +251,26 @@ export default {
                     this.openNotification('danger', 'Failed to populate service list', err)
                 })
         },
-        async getDataDestination(){
+        async getDataDestination(queryDest, cb){
             this.loadingDataDestination = true
-            await axios
-                .get(this.URL.destination_code + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
+            axios
+                .get(this.URL.destination_code + `?n=${this.listenNodeId}&s=${queryDest}&limit=100`, this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
                             if (item.geolocation_subdistrict_tarif_code !== null) {
-                                obj["label"] = item.geolocation_subdistrict_tarif_code
                                 obj["value"] = item.geolocation_subdistrict_tarif_code
+                                obj["data"] = item.geolocation_subdistrict_tarif_code
 
                                 arr.push(obj)
                             }
                             
                         })
-                        this.destinationArray = arr
-                        this.$store.dispatch("SET_SLA_DESTINATION_ArrData", arr)
+                        cb(arr);
                     } else {
-                        this.openNotification('warn', 'Destination data is empty!', ' Please create a new Destination data')
+                        this.openNotification('warn', 'Destination data is empty!', ' Please create a new destination data')
                     }
                     this.loadingDataDestination = false
                 }).catch(err => {
