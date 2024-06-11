@@ -162,7 +162,7 @@ export default {
             startDate: "",
             endDate: "",
             pagination: {
-                limit:1,
+                limit:10,
                 page_size: 1,
                 page: 1
             },
@@ -205,8 +205,7 @@ export default {
                 .get(this.URL.transaction +'/'+this.transactionId+`?n=${this.listenNodeId}&s=${query}&sort_order=desc&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
-                    let arr =res.data.data.connote
-                    console.log("arr", arr, res.data.data);
+                    let arr =res.data.data.connote.data
                     // arr.map((item) => {
                     //   item["isDisabled"] = item.is_void == true ? true : false;
                     //   item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
@@ -221,9 +220,9 @@ export default {
                     this.dataTable = arr
                     this.$emit("printAllData", this.dataTable)
 
-                    this.pagination.page = res.data.meta ? res.data.meta.current_page : 1
-                    this.pagination.limit = res.data.meta ? parseInt(res.data.meta.per_page) : 1
-                    this.pagination.page_size = res.data.meta ? res.data.meta.last_page : 1
+                    this.pagination.page = res.data.data.connote.current_page
+                    this.pagination.limit = parseInt(res.data.data.connote.per_page)
+                    this.pagination.page_size = res.data.data.connote.last_page
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
