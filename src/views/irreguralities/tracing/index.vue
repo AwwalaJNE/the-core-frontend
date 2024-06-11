@@ -132,7 +132,7 @@
                                 </vs-col>
                                 <vs-col w="8">
                                     <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'" :valueData="dateRange"
-                                        typeInput="daterange" @updateValue="updateValue" />
+                                        typeInput="daterange" @updateValue="updateValueDate" />
                                 </vs-col>
                             </vs-row>
                         </vs-col>
@@ -380,17 +380,17 @@ export default {
             let from = ''
             let to = ''
             
-            if(this.dateRange.length > 0) {
+            if(this.dateRange != null && this.dateRange.length > 0) {
                 from = moment(this.dateRange[0]).format("YYYY-MM-DD")
                 to = moment(this.dateRange[1]).format("YYYY-MM-DD")
-            } else {
-                from = moment(d).format("YYYY-MM-DD")
-                to = moment(d).format("YYYY-MM-DD")
-            }
+            } 
+            // else {
+            //     from = moment(d).format("YYYY-MM-DD")
+            //     to = moment(d).format("YYYY-MM-DD")
+            // }
 
             
-            // this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, "", "")
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
 
         },
         searchValue (val) {

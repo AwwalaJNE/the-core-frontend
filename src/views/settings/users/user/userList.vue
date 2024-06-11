@@ -151,7 +151,7 @@ export default {
                 },
                 {
                     label: "Primary Roles",
-                    value: "user_role_name",
+                    value: "userNodeRoles",
                 },
                 {
                     label: "Node",
