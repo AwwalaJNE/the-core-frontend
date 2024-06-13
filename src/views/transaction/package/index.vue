@@ -654,7 +654,7 @@ export default {
 
           // }
           this.$store.dispatch('SET_PACKAGE_PACKAGE_SERVICE', arr.length > 0 ? arr[0].value : '')
-          this.$store.dispatch('SET_PACKAGE_PACKAGE_SERVICE_ValueData', arr[0])
+          this.$store.dispatch('SET_PACKAGE_PACKAGE_SERVICE_ValueData', arr.length > 0 ? arr[0] : '')
           this.$store.dispatch('SET_PACKAGE_PACKAGE_SERVICE_arrData', arr.length > 0 ? arr : [])
 
           const node_code = this.listenNodeCode

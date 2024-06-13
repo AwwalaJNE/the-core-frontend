@@ -157,14 +157,13 @@ const TransactionMixin = {
         filterSurcharge(obj, koli, node_code, selected_surchargeType = null) {
             let service = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_service_code || ''
             let selectedServiceData = this.$store.getters.getTransaction.package["package_service"]["valueData"] || {}
-            let selectedService = selectedServiceData['label'].toLowerCase()
+            let selectedService = selectedServiceData['label'] != undefined ? selectedServiceData['label'].toLowerCase() : ''
             
             let tarifData = this.listenPackageService.data || {}
             let status = false
             let visible = true
             let listkoli = koli || []
             let node = node_code || ''
-            // console.log('tarifData filter surcharge', tarifData)
             try {
                 if (Object.keys(service).length > 0) {
                     let surcharge_condition = obj['surcharge_condition'] || {}
@@ -796,6 +795,25 @@ const TransactionMixin = {
                 this.$store.dispatch("SET_CALCULATOR_TOTAL_BIAYA", TOTAL_BIAYA)
                 // this.$store.dispatch("SET_PROSES_CONNOTE_TOTAL_BIAYA", TOTAL_BIAYA)
                 this.$store.dispatch('SET_CONNOTE_DATA', {'key':'total_biaya','value': TOTAL_BIAYA})
+                this.calculateGrandTotal()
+            } else {
+                this.$store.dispatch("SET_CALCULATOR_ACTUAL_WEIGHT", 0);
+                this.$store.dispatch("SET_CALCULATOR_VOLUME_WEIGHT", 0);
+                this.$store.dispatch("SET_CALCULATOR_CHARGEABLE_WEIGHT", 0);
+            
+                this.$store.dispatch("SET_CALCULATOR_SURCHARGE_PACKING", 0);
+                this.$store.dispatch("SET_CALCULATOR_BIAYA_KIRIM", 0);
+                this.$store.dispatch("SET_CALCULATOR_ADM_KARANTINA", 0);
+            
+                this.$store.dispatch("SET_CALCULATOR_PELEPASAN_KARANTINA", 0);
+                this.$store.dispatch("SET_CALCULATOR_AIRLINE_DOCUMENT", 0);
+                this.$store.dispatch("SET_CALCULATOR_SHIPPER_DECLARATION", 0);
+            
+                this.$store.dispatch("SET_CALCULATOR_SURCHARGE", 0);
+                this.$store.dispatch("SET_CALCULATOR_HANDLING_CHARGE", 0);
+                this.$store.dispatch("SET_CALCULATOR_SURCHARGE_MANUAL", 0);
+                this.$store.dispatch("SET_CALCULATOR_TOTAL_BIAYA", 0);
+                this.$store.dispatch('SET_CONNOTE_DATA', {'key': 'total_biaya', 'value': 0});
                 this.calculateGrandTotal()
             }
             
