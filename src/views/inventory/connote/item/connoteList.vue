@@ -103,7 +103,7 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Connote",
+                    label: "Koli Number",
                     key: "koli_number",
                     width: "auto"
                 },

@@ -48,7 +48,7 @@ export default {
     return {
       DataArr: this.valueData ? this.valueData : [
         {
-          label: 'Connote',
+          label: 'Koli',
           value: 'connote'
         },
         {

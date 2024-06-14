@@ -61,7 +61,7 @@ export default {
           width: "sm",
         },
         {
-          label: "Connote Number",
+          label: "Koli / Connote Number",
           key: "koli_number",
           width: "xs",
         },

@@ -225,7 +225,7 @@ export default {
             bagDestination:"",
             searchBy:"",
             searchByBag:"bag_number",
-            searchPlaceholder: "Search Connote",
+            searchPlaceholder: "Search Koli",
             searchPlaceholderBag: "Search Bag",
             searchParamsBag: [
                 {

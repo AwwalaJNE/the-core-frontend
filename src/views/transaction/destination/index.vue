@@ -59,6 +59,7 @@
                         @formData="formData"
                         :dataItem="listenDataItem"
                         @searchTariffCode="searchTariffCode"
+                        @onChangeCustom="onChangeCustom"
                         :inputDisabled="listeninputDisabled"
                         typeForm="destination"
                     />
@@ -177,13 +178,13 @@ export default {
             this.dialogGetCustomer = false
             this.setFocus()
         },
-        // onChangeCustom(key,val) {
-        //     if(key != undefined) {
-        //         if(key == 'destination_onchange_address') {
-        //             this.$store.dispatch('SET_CALC_COMPONENT_SWITCH', true)
-        //         }
-        //     }
-        // },
+        onChangeCustom(key, val) {
+            if (key != undefined) {
+                if (key == 'destination_onchange_address') {
+                    this.$store.dispatch('SET_CALC_COMPONENT_SWITCH', true)
+                }
+            }
+        },
         updateValue(key,value,fromBooking = false, value2) {
             if(Object.keys(value).length > 0 && key == 'detination') {
                 // this.forcererender = true
