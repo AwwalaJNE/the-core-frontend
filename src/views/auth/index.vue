@@ -73,29 +73,26 @@ export default {
         text: "Checking credentials...",
         background: "#EAEAEA",
       });
-      await axios
-        .post(this.URL.login, this.form, this.Helper.headerLogin())
-        .then((res) => {
-          if (res.status == 200) {
-            this.$ls.set("tokenBearer", res.data.data.token);
-            this.$ls.set("user", res.data.data.user);
-            this.$ls.set("config", res.data.data.config);
-            this.$ls.set("is_first_login", res.data.data.user.is_first_login);
-          }
+      try {
+        const res = await axios.post(this.URL.login, this.form, this.Helper.headerLogin());
+
+        if (res.status == 200) {
+          this.$ls.set("tokenBearer", res.data.data.token);
+          this.$ls.set("user", res.data.data.user);
+          this.$ls.set("config", res.data.data.config);
+          this.$ls.set("is_first_login", res.data.data.user.is_first_login);
 
           loading.close();
           this.$router.push({ name: "profile" });
-          // this.$router.replace('/settings/users')
-        })
-        .catch((err) => {
-          loading.close();
-          console.log("err", err);
-          this.openNotification(
-            "danger",
-            "Login failed",
-            err ? err : "something went wrong"
-          );
-        });
+        }
+      } catch (err) {
+        loading.close();
+        const errorMessage = err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : "Something went wrong";
+
+        this.openNotification("danger", "Login Gagal !", errorMessage);
+      }
     },
     //     logout() {
     //   localStorage.clear();
