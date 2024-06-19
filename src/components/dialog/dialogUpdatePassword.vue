@@ -3,8 +3,15 @@
 <template>
   <vs-dialog v-model="visible" class="my-dialog" not-close prevent-close>
     <template #header>
-      <h4 class="not-margin" v-if="profileData.last_password_updated_at !== null">Please Update Your Password</h4>
-      <h4 class="not-margin" v-else>Please Changes Your Password</h4>
+      <h4
+        v-if="profileData.last_password_updated_at !== null"
+        class="not-margin"
+      >
+        Please Update Your Password
+      </h4>
+      <h4 v-else class="not-margin">
+        Please Changes Your Password
+      </h4>
     </template>
 
     <div class="con-form">
@@ -24,18 +31,24 @@
         </template>
 
         <template v-if="getProgress >= 100" #message-success>
-          <div class="text-left">Secure password</div>
+          <div class="text-left">
+            Secure password
+          </div>
         </template>
 
         <template
           v-if="getProgress <= 30 && form.password.length > 0"
           #message-danger
         >
-          <div class="text-left">Weak Password</div>
+          <div class="text-left">
+            Weak Password
+          </div>
         </template>
 
         <template v-if="errors.password.length > 0" #message-danger>
-          <div class="text-left">{{ errors.password[0] }}</div>
+          <div class="text-left">
+            {{ errors.password[0] }}
+          </div>
         </template>
       </vs-input>
       <vs-input
@@ -52,12 +65,19 @@
         </template>
 
         <template v-if="errors.passwordConfirm.length > 0" #message-danger>
-          <div class="text-left">{{ errors.passwordConfirm[0] }}</div>
+          <div class="text-left">
+            {{ errors.passwordConfirm[0] }}
+          </div>
         </template>
       </vs-input>
     </div>
 
-    <p class="message-text-password" v-if="profileData.last_password_updated_at !== null"><b>Note</b> : Expired Password, Please Change Your Password</p>
+    <p
+      v-if="profileData.last_password_updated_at !== null"
+      class="message-text-password"
+    >
+      <b>Note</b> : Expired Password, Please Change Your Password
+    </p>
 
     <template #footer>
       <div class="footer-dialog">
@@ -201,24 +221,29 @@ export default {
     async fetchProfileData() {
       this.showLoading();
 
-      return axios
-        // eslint-disable-next-line prefer-template
-        .get(this.URL.profile + `?n=${this.listenNodeId}`, this.Helper.header())
-        .then((res) => {
-          this.profileData = res.data.data;
-        })
-        .catch((err) => {
-          this.openNotification(
-            "danger",
-            "Failed!",
-            "Failed to populate data!"
-          );
+      return (
+        axios
+          // eslint-disable-next-line prefer-template
+          .get(
+            `${this.URL.profile}?n=${this.listenNodeId}`,
+            this.Helper.header()
+          )
+          .then((res) => {
+            this.profileData = res.data.data;
+          })
+          .catch((err) => {
+            this.openNotification(
+              "danger",
+              "Failed!",
+              "Failed to populate data!"
+            );
 
-          this.checkAuth(err.response);
-        })
-        .finally(() => {
-          this.hideLoading();
-        });
+            this.checkAuth(err.response);
+          })
+          .finally(() => {
+            this.hideLoading();
+          })
+      );
     },
 
     showLoading(text = "Loading....") {
