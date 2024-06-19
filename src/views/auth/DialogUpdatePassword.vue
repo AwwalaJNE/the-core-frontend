@@ -201,7 +201,7 @@ export default {
     async fetchProfileData() {
       this.showLoading();
 
-      await axios
+      return axios
         // eslint-disable-next-line prefer-template
         .get(this.URL.profile + `?n=${this.listenNodeId}`, this.Helper.header())
         .then((res) => {
