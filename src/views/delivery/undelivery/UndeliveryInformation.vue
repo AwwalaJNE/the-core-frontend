@@ -132,7 +132,7 @@ export default {
                     })
                     let gets = this.$store.getters.getInputs.all_runsheet;
                     let showButton = this.dataTable.length === 0;
-                    let statusExists = gets.some(item => item.status === null);
+                    let statusExists = gets?.some(item => item.status === null);
                     if (showButton && statusExists === true) {
                         showButton = false;
                     } else if (showButton && statusExists === false) {
