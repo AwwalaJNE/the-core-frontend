@@ -50,7 +50,7 @@ export default {
     refresh: Function,
     active: Boolean,
     title: String,
-    pickupData: Object,
+    // pickupData: Object,
   },
   computed: {
     listenActive() {
@@ -92,16 +92,16 @@ export default {
     };
   },
   watch: {
-    pickupData: {
-      async handler(val) {
-        try {
-          await this.handlePickupData(val);
-          console.log("this.item_picked", this.item_picked);
-        } catch (error) {
-          console.error('Error handling pickupData:', error);
-        }
-      },
-    },
+    // pickupData: {
+    //   async handler(val) {
+    //     try {
+    //       await this.handlePickupData(val);
+    //       console.log("this.item_picked", this.item_picked);
+    //     } catch (error) {
+    //       console.error('Error handling pickupData:', error);
+    //     }
+    //   },
+    // },
   },
   methods: {
     async handlePickupData(val) {
