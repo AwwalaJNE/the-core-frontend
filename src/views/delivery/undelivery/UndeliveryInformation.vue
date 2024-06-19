@@ -135,7 +135,7 @@ export default {
                     let statusExists = gets?.some(item => item.status === null);
                     if (showButton && statusExists === true) {
                         showButton = false;
-                    } else if (showButton && statusExists === false) {
+                    } else if (showButton && (statusExists === false || statusExists === undefined)) {
                         showButton = true;
                     }
                     this.$emit('showButtons',showButton);
