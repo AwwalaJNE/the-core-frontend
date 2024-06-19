@@ -211,7 +211,7 @@ export default {
             const inboundId = this.inbound_id.toString()
             if(this.inbound_id === ''){
               const id_inbound  = this.$ls.get('id_inbound');
-              const getInboundId = id_inbound.toString().toLowerCase();
+              const getInboundId = id_inbound?.toString()?.toLowerCase();
               // console.log(getInboundId,'id_inbound');
               await axios
                   .get(this.URL.inbound +
@@ -249,6 +249,7 @@ export default {
                     // this.openNotification('danger', 'Failed to populate Inbound list', err)
                   })
             }
+            this.$ls.remove('id_inbound');
 
         },
 
