@@ -4,7 +4,7 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>Problem BAG / Connote</h2>
+                    <h2>Entry Status</h2>
                 </div>
                 <div class="mt-2">
                     <vs-row justify="space-between">
@@ -70,28 +70,27 @@
 
                 <div class="mt-05">
                     <table-master 
-                    :dataTable="dataTable" 
-                    :dataColumn="datacolumn" 
-                    :tableLoading="loading"
-                    :pageSize="pagination.page_size"
-                    :page="pagination.page"
-                    :limit="pagination.limit"
-                    @actionUpdate="editIrreg"
-                    :hasPagination="true"
-                    :hasLinked4="['image']"
-                    @actionLimit="actionLimit"
-                    @actionPagination="actionPagination"
-
-                    :customAction="true"
-                    :customActionList="customActionList"
+                        :dataTable="dataTable" 
+                        :dataColumn="datacolumn" 
+                        :tableLoading="loading"
+                        :pageSize="pagination.page_size"
+                        :page="pagination.page"
+                        :limit="pagination.limit"
+                        :hasPagination="true"
+                        :hasLinked4="['image']"
+                        :customAction="true"
+                        :customActionList="customActionList"
+                        @actionLimit="actionLimit"
+                        @actionPagination="actionPagination"
+                        @actionUpdate="editIrreg"
                     />
                 </div>
             </div>
             
         </section>
 
-        <dialog-problem
-            :active="dialogProblemActive" 
+        <dialog-entry-status
+            :active="dialogEntryStatusActive" 
             :closeDialog="closeDialog"
             :dataItem="dataItem"
             @updateValue="updateValue"
@@ -109,9 +108,9 @@ import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
-import DialogProblem from "@/views/irreguralities/problem/dialogProblem"
+import DialogEntryStatus from "@/views/irreguralities/entryStatus/dialogEntryStatus"
 export default {
-    name:"irregularities-problem",
+    name:"irregularities-entry-status",
     mixins:[master],
     components: {
         "nav-item": NavItem,
@@ -120,7 +119,7 @@ export default {
         "date-time": DateTime,
         "select-search-by": SelectSearchBy,
         "table-master" : TableMaster,
-        "dialog-problem": DialogProblem,
+        "dialog-entry-status": DialogEntryStatus,
     },
     data() {
         return {
@@ -185,7 +184,7 @@ export default {
                 page: 1
             },
             form: {},
-            dialogProblemActive: false,
+            dialogEntryStatusActive: false,
             searchBy: "koli number",
             filterDateBy: "create",
             searchPlaceholder: "Search Connote Number",
@@ -248,7 +247,7 @@ export default {
             this.dataItem = val;
             console.log(this.dataItem);
             this.$nextTick(() => {
-                this.dialogProblemActive = true;
+                this.dialogEntryStatusActive = true;
             });
           }
         },
@@ -275,13 +274,7 @@ export default {
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
-                    if(res.data.data.length > 0) {
-                        
-                    } else {
-                        this.openNotification('warn', 'Irreguralities Problem data is empty!', '')
-                    }
-                    
+                    this.pagination.page_size = res.data.meta.last_page                    
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
@@ -303,11 +296,11 @@ export default {
                 .then(res => {
                     console.log('res', res)
                     this.refresh()
-                    this.dialogProblemActive = false
+                    this.dialogEntryStatusActive = false
                     this.openNotification(null, 'Success', 'Create new cancel connote is success')
                 }).catch(err => {
                     this.loading = false
-                    this.dialogProblem = false
+                    this.dialogEntryStatus = false
                     this.refresh()
 
                     this.openNotification('danger', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
@@ -324,7 +317,7 @@ export default {
                         this.dataItem = val
                         console.log(this.dataItem,'item')
                         this.$nextTick(() => {
-                            this.dialogProblem = true
+                            this.dialogEntryStatus = true
                         });
                     }
                     break;
@@ -359,11 +352,11 @@ export default {
             this.refresh()
         },
         closeDialog() {
-            this.dialogProblemActive = false
+            this.dialogEntryStatusActive = false
         },
         openDialog() {
             if(this.koliCode !== '') {
-                this.dialogProblemActive = true
+                this.dialogEntryStatusActive = true
             }
         },
         updateSearchBy(key, val) {
