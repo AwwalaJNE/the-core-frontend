@@ -246,7 +246,6 @@ export default {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
-                            console.log()
                             if(item.hasOwnProperty('status_subtype')) {
                                 // if(item['status_subtype'].toLowerCase().includes('problem')) {
                                 if(item['status_subtype'].toLowerCase() == ('problem')) {
