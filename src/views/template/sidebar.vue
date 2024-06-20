@@ -292,6 +292,12 @@ export default {
           icon: "",
           children: [
             {
+              label: "Irreguralities - Entry Status",
+              url: "/irreguralities/entry-status",
+              icon: "",
+              permission: "read-irreg",
+            },
+            {
               label: "Irreguralities - Cancel",
               url: "/irreguralities/cancel",
               icon: "",
@@ -300,12 +306,6 @@ export default {
             {
               label: "Irreguralities - Return",
               url: "/irreguralities/return",
-              icon: "",
-              permission: "read-irreg",
-            },
-            {
-              label: "Irreguralities - Problem",
-              url: "/irreguralities/problem",
               icon: "",
               permission: "read-irreg",
             },

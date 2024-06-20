@@ -126,7 +126,7 @@ import CashLess from "@/views/report/cashless"
 // === Irreguralities ===
 import irreguralitiesCancel from "@/views/irreguralities/cancel"
 import irreguralitiesReturn from "@/views/irreguralities/return"
-import irreguralitiesProblem from "@/views/irreguralities/problem"
+import irreguralitiesEntryStatus from "@/views/irreguralities/entryStatus"
 import irreguralitiesHold from "@/views/irreguralities/hold"
 import irreguralitiesFailed from "@/views/irreguralities/failed"
 import irreguralitiesTracing from "@/views/irreguralities/tracing"
@@ -373,6 +373,15 @@ const routes = [
         component: ContentChild,
         children: [
           {
+            path: "entry-status",
+            name: "irreguralities-entry-status",
+            component: irreguralitiesEntryStatus,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Entry Status"
+            }
+          },
+          {
             path: "cancel",
             name: "irreguralities-cancel",
             component: irreguralitiesCancel,
@@ -388,15 +397,6 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "return"
-            }
-          },
-          {
-            path: "problem",
-            name: "irreguralities-problem",
-            component: irreguralitiesProblem,
-            meta: {
-              requiresAuth: true,
-              breadCrumb: "problem"
             }
           },
           {

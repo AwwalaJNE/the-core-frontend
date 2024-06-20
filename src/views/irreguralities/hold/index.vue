@@ -292,7 +292,7 @@ export default {
                         this.dataItem = val
                         console.log(this.dataItem,'item')
                         this.$nextTick(() => {
-                            this.dialogProblem = true
+                            this.dialogEntryStatus = true
                         });
                     }
                     break;
