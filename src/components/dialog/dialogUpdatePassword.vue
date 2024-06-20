@@ -147,6 +147,9 @@ export default {
 
       return progress;
     },
+    getUserData() {
+      return this.$store.getters.getUser.user_data;
+    }
   },
   watch: {
     //
@@ -194,7 +197,7 @@ export default {
 
         this.showLoading("Updating password....");
 
-        await axios.put(
+        const res = await axios.put(
           // eslint-disable-next-line prefer-template
           this.URL.profile + `?n=${this.listenNodeId}`,
           payload,
@@ -204,6 +207,9 @@ export default {
         this.openNotification("success", "Success!", "Password Updated!");
 
         this.$ls.set("is_first_login", false);
+        const user = this.getUserData;
+        user.last_password_updated_at = res.data.data.last_password_updated_at;
+        this.$store.dispatch(`SET_USER_DATA`, user);
 
         this.visible = false;
       } catch (e) {
@@ -220,30 +226,18 @@ export default {
 
     async fetchProfileData() {
       this.showLoading();
+      try {
+        this.profileData = this.getUserData
+      } catch (err) {
+        this.openNotification(
+          "danger",
+          "Failed!",
+          "Failed to populate data!"
+        );
 
-      return (
-        axios
-          // eslint-disable-next-line prefer-template
-          .get(
-            `${this.URL.profile}?n=${this.listenNodeId}`,
-            this.Helper.header()
-          )
-          .then((res) => {
-            this.profileData = res.data.data;
-          })
-          .catch((err) => {
-            this.openNotification(
-              "danger",
-              "Failed!",
-              "Failed to populate data!"
-            );
-
-            this.checkAuth(err.response);
-          })
-          .finally(() => {
-            this.hideLoading();
-          })
-      );
+        this.checkAuth(err.response);
+      }
+      this.hideLoading();
     },
 
     showLoading(text = "Loading....") {

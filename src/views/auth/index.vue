@@ -56,8 +56,6 @@ export default {
     },
     async formData(form) {
       try {
-        const response = await axios.get("https://api64.ipify.org?format=json");
-        this.form.ip_address = response.data.ip;
         this.form.password = form.password;
         this.form.user_login = form.user_login;
       } catch (error) {
