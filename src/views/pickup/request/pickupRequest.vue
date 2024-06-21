@@ -159,7 +159,6 @@ export default {
         actionUpdate(val, key) {
           switch(key) {
                 case "print":
-                    // console.log('print', val)
                     let routeData = this.$router.resolve({ 
                       name: 'printGeneral', 
                       params: { 
@@ -175,7 +174,7 @@ export default {
                   this.dialogPickupRequestCancel = true;
                   break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },
@@ -238,7 +237,7 @@ export default {
         },
 
         refresh(){
-            console.log("refresh")
+
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
         actionPrint(row){

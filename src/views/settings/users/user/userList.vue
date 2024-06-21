@@ -253,7 +253,6 @@ export default {
                 })
                 this.dataItem = obj[0]
                 this.loading = true
-                // console.log(this.dataItem, 'nihh val', val)
             }
         },
         async actionRemove(val){

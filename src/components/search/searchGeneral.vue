@@ -108,7 +108,7 @@ export default {
     methods: {
         searchValue(){
             this.$emit("searchValue",this.tempSearch)
-            console.log("this.tempSearch = ",this.tempSearch)
+
             this.querySearch(this.tempSearch)
         },
         clear() {
@@ -139,11 +139,11 @@ export default {
                 this.itemSearch = arr
                 this.itemNum = arr.length
                 loading.close()
-                console.log('test: ', arr.length);
+
             })
             .catch(error => {
                 loading.close()
-                console.log("error", error)
+
             });
         },
         detail(row){

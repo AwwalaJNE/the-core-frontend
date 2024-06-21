@@ -258,7 +258,7 @@ export default {
                 if (this.temp_pickup_status !== old) {
                     this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter, val, this.temp_pickup_courier);
                 }
-                console.log(this.temp_pickup_status, 'status');
+
             }
         },
         courier_pickup: function(val, old) {
@@ -267,7 +267,7 @@ export default {
                 if (this.temp_pickup_courier !== old) {
                     this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter, this.temp_pickup_status, val);
                 }
-                console.log(this.temp_pickup_courier, 'kurir');
+
             }
         },
     },
@@ -462,7 +462,7 @@ export default {
         actionUpdate(val){
           let userRole = this.listenUserRole["user_role_code"] ? this.listenUserRole["user_role_code"].toLowerCase() : ""
           
-          console.log("update with role", userRole)
+
           if(this.dataTable.length > 0 && !userRole.includes("courier")) {
             val["pickup_node_id_destination"] = val["node_destination"] ? val["node_destination"]["node_name"] : ""     
             this.dataItem = val
@@ -505,7 +505,7 @@ export default {
         actionPicked(val){
           this.pickupData = val;
           this.dialogPickedActive = true;
-          console.log("HAI picked", val)
+
         },
         actionFailed(val) {
           let userRole = this.listenUserRole["user_role_code"] ? this.listenUserRole["user_role_code"].toLowerCase() : ""
@@ -531,7 +531,7 @@ export default {
             this.pickupNumber = val.pickup_number
             this.dialogPickupListCancel = true;
           }
-          console.log("HAI cancel", val, userRole)
+
         },
 
         //cancel pickup

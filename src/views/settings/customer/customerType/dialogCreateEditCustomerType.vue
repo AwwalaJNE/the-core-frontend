@@ -104,7 +104,7 @@ export default {
     methods: {
         formData(form){
             this.form = form
-            console.log(this.form, 'form', form)
+
            
             if(this.customer_type_id !== undefined && this.customer_type_id !== '') {
                      this.loading=true;
@@ -142,7 +142,7 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
+
             await axios
                 .post(
                     this.URL.customer_type + `?n=${this.listenNodeId}`,

@@ -133,7 +133,7 @@ export default {
     },
 
     SET_PACKAGE_PACKAGE_SERVICE({ commit, dispatch }, payload) {
-        console.log("why",payload)
+
         commit('SET_PACKAGE_PACKAGE_SERVICE', payload)
         dispatch('SET_CONNOTE_DATA', {'key':'connote_service_code','value': payload})
     },
@@ -167,7 +167,7 @@ export default {
         let numb = 0
             if(payload !== '' && typeof payload == 'string') {
                 let txt = payload.split(".")[0]
-                // console.log('money str', str,txt)
+ 
                 numb = txt.match(/\d/g);
                 numb = numb.join("");
             }
@@ -187,7 +187,7 @@ export default {
             let numb = 0
             if(payload !== '' && typeof payload == 'string') {
                 let txt = payload.split(".")[0]
-                // console.log('money str', str,txt)
+ 
                 numb = txt.match(/\d/g);
                 numb = numb.join("");
             }
@@ -397,7 +397,7 @@ export default {
         let numb = 0
             if(payload !== '' && typeof payload == 'string') {
                 let txt = payload.split(".")[0]
-                // console.log('money str', str,txt)
+ 
                 numb = txt.match(/\d/g);
                 numb = numb.join("");
             }

@@ -88,7 +88,7 @@ export default {
   },
   watch: {
     pickupDataKoli: function (val) {
-      console.log('pickupdata',val)
+
       if (val !== undefined) {
         if (this.dataitem !== val) {
           let arr = [];
@@ -117,7 +117,7 @@ export default {
         pickup_number: this.pickup_number,
         item_number: this.item_picked,
       };
-      console.log(this.item_picked);
+
       if (this.item_picked.length > 0) {
         this.updateData() // trigger function submit form dari luar component formMaster
       } else {

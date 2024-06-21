@@ -111,7 +111,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${1000}&page=${1}&s=${query}&search_by=${this.searchBy}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+
                     this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page

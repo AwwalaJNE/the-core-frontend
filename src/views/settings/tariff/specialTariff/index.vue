@@ -107,7 +107,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+
                     this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
@@ -131,7 +131,7 @@ export default {
                     return item.tariff_special_id === val.tariff_special_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogTariffSpecial = true
                 });
@@ -152,7 +152,7 @@ export default {
                     this.URL.tariff_special + `/${val.tariff_special_id}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.openNotification(null, 'Delete success', 'Delete tariff special is success')
                 }).catch(err => {
@@ -170,7 +170,7 @@ export default {
             this.refresh()
         },
         refresh(){
-            console.log("refresh")
+
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
         closeDialogTariffSpecial() {

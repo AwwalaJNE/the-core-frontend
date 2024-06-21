@@ -73,11 +73,11 @@ export default {
     },
     addKeyHandler(e) {
       window.addEventListener("keydown", this.keyHandler);
-      console.log('inject key handler add')
+
     },
     removeKeyHandler() {
       window.removeEventListener("keydown", this.keyHandler);
-      console.log('inject key handler destroy')
+
     }
   },
   created() {

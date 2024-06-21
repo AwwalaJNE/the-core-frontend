@@ -149,7 +149,7 @@ const TransactionMixin = {
                         
                     }
                 } catch (error) {
-                    console.log('error auto apply', error)
+
                 }
             }
         },
@@ -385,7 +385,7 @@ const TransactionMixin = {
                     // console.log('=================== Hasil obj>>>', obj)
                 }
             } catch (error) {
-                console.log('error', error)
+
                 return {}
             }
 
@@ -426,7 +426,7 @@ const TransactionMixin = {
                         } else {
                           switch(true) {
                               case formula.toLowerCase() == 'chargeble_weight':
-                                  console.log('formula chargeble_weight', formula.toLowerCase() == 'chargeble_weight')
+
                                   if(chargeble_weight != null) {
                                       str = isNaN(dataSurcharge['surcharge_formula'][formula]) ? 
                                               dataSurcharge['surcharge_formula'][formula].toLowerCase() : 
@@ -482,12 +482,12 @@ const TransactionMixin = {
                                   
                                   break;
                               case formula.toLowerCase().includes('surcharge'):
-                                  console.log('formula surcharge', formula.toLowerCase().includes('surcharge'))
+
                                   if(chargeble_weight != null) {
                                       let base_tariff = this.tarifTiering(chargeble_weight)
                                       str = dataSurcharge['surcharge_formula'][formula].toLowerCase() 
                                       let evalSurcharge = eval(str)
-                                      console.log('str evalSurcharge', str, evalSurcharge, base_tariff, chargeble_weight, koli_length, koli_width, koli_height) 
+
                                       ngubah['surcharge'] = evalSurcharge
                                   }
                                   break;
@@ -520,18 +520,18 @@ const TransactionMixin = {
                           }
                         }
                 } catch (err) {
-                    console.log('surchargeCalculation err', err)
+
                 }
             }
 
-            console.log('surchargeCalculation', ngubah)
+
             return ngubah
         },
 
         calculation(){
             // rumit cuuk
             let listKoli = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item || []
-            console.log("XYZ listkoli", listKoli, this.listenConnoteIndexActive)
+
             let diskon = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].amount_discount
             diskon = this.moneyParsing(diskon)
             let surchargeByID = this.listenPackageSurchargeByID
@@ -609,7 +609,7 @@ const TransactionMixin = {
                             
                             koli.surcharge_id.map(su_id => {
                                 let dataSurcharge = surchargeByID[su_id] || {}
-                                console.log("dataSurcharge", dataSurcharge)
+
 
                                 // Object dari surcharge formula (tiap surcharge bisa merubah banyak hal)
                                 Object.keys(dataSurcharge['surcharge_formula']).map(formula => {
@@ -621,7 +621,7 @@ const TransactionMixin = {
                                         koli_actual_weight
                                         )
                                     
-                                        console.log('obj perubahan', perubahan)
+
                                     
                                     // jika ada surcharge formula yg memberi efek pada calculation
                                     if(Object.keys(perubahan).length > 0) { // if perubahan != {} (empty object)
@@ -698,7 +698,7 @@ const TransactionMixin = {
                             
                         }
                         catch (err) {
-                            console.log('implementasi perubahan err', err)
+
                         }
                     } else {
                         if(this.koliBeforeSurcharge.hasOwnProperty(indexKoli)) {
@@ -768,7 +768,7 @@ const TransactionMixin = {
             // if(TOTAL_BIAYA > diskon) {
             //     TOTAL_BIAYA = TOTAL_BIAYA - diskon
             // }
-            console.log("uu",SUM_CHARGEBLE_WEIGHT)
+
             if(SUM_CHARGEBLE_WEIGHT===0){
                 TOTAL_BIAYA = 0
                 this.BASE_TARIFF = 0
@@ -844,8 +844,8 @@ const TransactionMixin = {
 
                 switch(true) {
                     case tariffType.toLowerCase() == 'increment' || tariffType.toLowerCase() == 'semi-flat':
-                        console.log("tariffAkumulatif", tariffAkumulatif)
-                        console.log("tariffStandar", tariffStandar)
+
+
                         let keys = Object.keys(tariffAkumulatif)
                         let Processweight = Math.abs(Number(tariffStandar['weight']) - Number(weight))
                         
@@ -857,36 +857,36 @@ const TransactionMixin = {
                             let sisa = 0
                             
                             let temp = 0
-                            console.log("Processweight", Processweight)
+
                             for(let i=0; i <= keys.length -1 ; i++) {
                                 let calc = (Number(Processweight) - Number(keys[i])) < 0 ? 0 : (Number(Processweight) - Number(keys[i]))
-                                console.log("inside LOOP calc", calc)
+
                                 if(calc !== 0) {
-                                    console.log("masuk if");
+
                                     let abs = Math.abs(Number(Processweight) - Number(keys[i]))
                                     Processweight = abs
                                     temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(keys[i]))
-                                    console.log("inside LOOP calc !== 0 > abs", abs)
-                                    console.log("inside LOOP calc !== 0 > keys[i]", keys[i])
-                                    console.log("inside LOOP calc !== 0 > tariffAkumulatif[keys[i]]", Number(tariffAkumulatif[keys[i]]))
-                                    console.log("inside LOOP calc !== 0 > Processweight", Processweight)
-                                    console.log("inside LOOP calc !== 0 > END !!! temp", temp)
-                                    console.log("sevice",service);
+
+
+
+
+
+
                                     // temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(Processweight))
                                     // sumTariffAkumulatif = Number(sumTariffAkumulatif) + temp
                                 } else {
-                                    console.log("masuk else");
-                                    console.log("inside LOOP calc == 0 > Processweight", Processweight)
-                                    console.log("inside LOOP calc == 0 > tariffAkumulatif[keys[i]]", Number(tariffAkumulatif[keys[i]]))
-                                    console.log("inside LOOP calc == 0 > temp", temp)
+
+
+
+
                                     temp = temp + (Number(tariffAkumulatif[keys[i]]) * Number(Processweight))
                                     sumTariffAkumulatif = Number(sumTariffAkumulatif) + temp
-                                    console.log("inside LOOP calc == 0 > END !!! sumTariffAkumulatif", sumTariffAkumulatif)
+
                                     break
                                 }   
                             }
-                            console.log("processTariff, sumTariffAkumulatif",processTariff, sumTariffAkumulatif)
-                            console.log("Number(processTariff) + Number(sumTariffAkumulatif)",Number(processTariff) + Number(sumTariffAkumulatif))
+
+
                             processTariff = Number(processTariff) + Number(sumTariffAkumulatif)
                           } else {
                             processTariff =  Number(tariffStandar['value'])
@@ -895,7 +895,7 @@ const TransactionMixin = {
                             processTariff =  Number(tariffStandar['value']) * weight
                         }
 
-                        console.log("processTariff >>>", processTariff)
+
 
                         break;
                     // case tariffType.toLowerCase() == 'semi-flat':

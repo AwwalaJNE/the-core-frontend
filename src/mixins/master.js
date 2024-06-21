@@ -55,7 +55,6 @@ const Master = {
                     if(txt < 1 ){
                         txt = 0
                     }else{
-                        // console.log('money str1', str,txt)
                         numb = txt.match(/\d/g);
                         numb = numb.join("");
                     }
@@ -146,7 +145,6 @@ const Master = {
             await axios
                 .get(this.URL.check_auth+"?n="+this.listenNodeId,
                     this.Helper.header()).catch(err => {
-                        // console.log(err.response)
                     this.checkAuth(err.response)
                 })            
         },

@@ -1150,8 +1150,8 @@ export default {
       return this.dataColumn;
     },
     listenDataTable() {
-      console.log("computed master table data", this.dataTable);
-      console.log("-----------------");
+
+
       return this.dataTable;
     },
     listenTableLoading() {
@@ -1191,10 +1191,10 @@ export default {
       }
     },
     selectedData: function(val) {
-      console.log(val, "selected data");
+
       if (val !== undefined) {
         this.selected = val;
-        console.log("this.selected", this.selected);
+
       }
     },
     pageSize: function(val) {
@@ -1238,7 +1238,6 @@ export default {
       this.$emit("actionPagination", val);
     },
     actionUpdate(val, key) {
-      // console.log(val,key,'update');
       this.$emit("actionUpdate", val, key);
     },
     actionCollect(val) {
@@ -1248,7 +1247,6 @@ export default {
       this.$emit("actionRemove", val);
     },
     actionConfirmed(val, key) {
-      // console.log(val, key,'update action confirmed');
       this.$emit("actionConfirmed", val, key);
     },
     actionPrint(val) {
@@ -1294,22 +1292,22 @@ export default {
 
     updateValue(key, val, info = {}, dataObj) {
       if (this.listenIsMultipleSelect == true && dataObj != undefined) {
-        console.log("unfined");
+
         if (!!this.selected.includes(dataObj) == false) {
           this.selected.push(dataObj);
-          console.log("push");
+
         }
       }
       this.$emit("updateValue", key, val, info, dataObj);
     },
     updateFormValue(value, formKey) {
-      console.log(value, formKey, "UPDATE_FORM_DATA");
+
       // Kirim aksi (action) ke Vuex store
       this.$store.commit("UPDATE_FORM_DATA", { key: formKey, value });
     },
 
     updateSelected() {
-      console.log(this.selected, "selected");
+
       this.$emit("updateSelected", this.selected);
     },
 
@@ -1323,7 +1321,7 @@ export default {
       this.$emit("handleEdit3", val);
     },
     handlePictureCardPreview(val) {
-      console.log(val, "ini val");
+
       this.dialogImageUrl = val.image;
       this.dialogVisible = true;
     },

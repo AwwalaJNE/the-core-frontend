@@ -398,23 +398,21 @@ export default {
                     }
                 ]
             this.datacolumn = [...this.datacolumn, ...statusColumn]
-            console.log('this.datacolumn',this.datacolumn)
+
         },
         handleChangeInputType(type, val) {
-            // console.log('handleChangeInputType', val)
-            
         },
         async beforeUpload(file) {
             await this.validateExcel(file)
-        // console.log(bool)
+ 
             this.typed = []
             let files =
             file.type ===
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             let size = file.size / 1024 / 1024 < 5;
 
-            console.log('info file', file)
-            console.log('info fileList', this.fileList)
+
+
         },
         validateExcel(file){
             this.processFile(file)
@@ -468,7 +466,7 @@ export default {
             let rule = dataInput.rule || null
 
             if(rule != null) {
-                // console.log('rule', rule, value[dataInput.label])
+ 
                 if(rule.includes("required")) {
                     if(value.hasOwnProperty(dataInput.label) == false) {
                             this.tempStatus = false
@@ -523,7 +521,7 @@ export default {
 
             obj["status"] = this.tempStatus
             obj["message"] = this.tempMsg
-            // console.log('last obj', obj)
+ 
 
             return obj
         },
@@ -560,7 +558,7 @@ export default {
         this.initializeInputType()
         // let em = email
         // let req = required
-        // console.log('email', em.validate('ekel', 'ooh'), req.validate(''), min.validate('12345', 'min:5'))
+ 
     },
 }
 </script>

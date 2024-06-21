@@ -43,7 +43,7 @@ export default {
         keyHandler(e){
             this.option1 = !this.option1
             this.updateValue()
-            console.log('HANDLE KEY enter', this.listenFormKey, this.option1)
+
         },
     },
 }

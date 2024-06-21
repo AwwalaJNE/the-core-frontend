@@ -731,7 +731,7 @@ export default {
         });
     },
     async removeConnote() {
-      // console.log("remove", this.form.koli_number);
+ 
       this.loadingRunsheet = true;
       await axios
         .delete(
@@ -799,7 +799,7 @@ export default {
           });
           this.statusObj = statusObj;
           this.getParamRoute(); // perlu data status dulu sebelum getDataDelivery didalam getParamRoute {fix issue data tidak tampil}
-          // console.log("statusObj", statusObj)
+ 
         })
         .catch((err) => {
           // this.openNotification('danger', 'Failed to populate status', err)
@@ -867,7 +867,7 @@ export default {
         if (item.is_approve === '1') {
           this.disabledApprove = true
         }
-        // console.log(item.is_delivered, "data.is_delivered");
+ 
         item.isDisabled = item.is_delivered === 1;
         item.employee_name = data.employee_name;
         item.employee_code = data.employee_code;
@@ -899,7 +899,7 @@ export default {
       return deliveryCancel;
     },
     async updatePOD(dataPOD, info) {
-      // console.log(dataPOD, "ini data pod");
+ 
       if (dataPOD.remarks || dataPOD.receiver_name || dataPOD.status) {
         if (!dataPOD.status) {
           this.openNotification('warn', 'Status Kosong', 'Status Wajib Diisi')
@@ -934,8 +934,8 @@ export default {
               this.disabledConfirm = true
             })
             .catch((err) => {
-              console.log("eror");
-              console.log(err.response);
+
+
               this.openNotification(
                 "danger",
                 err.response.data.message,
@@ -974,7 +974,7 @@ export default {
           this.openNotification(null, "Success", "POD EDITED!");
         })
         .catch((err) => {
-          console.log(err.response);
+
           this.openNotification(
             "danger",
             "EDIT FAILED !",
@@ -1047,7 +1047,7 @@ export default {
           this.openNotification(null, "Success", "APPROVE EDITED!");
         })
         .catch((err) => {
-          console.log(err.response,'ress');
+
           this.openNotification("danger", "approve FAILED !", err.response.data.message);
         });
     },
@@ -1075,7 +1075,7 @@ export default {
             this.removeValueOrion();
             break;
           default:
-            console.log("Unhandled event.", data);
+
             break;
         }
       }

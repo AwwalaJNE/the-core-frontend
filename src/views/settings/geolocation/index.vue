@@ -210,7 +210,7 @@ export default {
         activeTab(val) {
             this.navActive = val
             this.clearSearch()
-            console.log(this.navActive)
+
             let item = this.navItemm.filter(item => {
                 return item.key == val
             })
@@ -234,7 +234,7 @@ export default {
                     this.dialogGeolocationSubDistrict = true
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
             this.refreshInject = this.navActive

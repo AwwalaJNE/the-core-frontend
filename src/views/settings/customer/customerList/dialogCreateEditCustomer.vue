@@ -272,7 +272,7 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
+
             await axios
                 .post(
                     this.URL.customer + `?n=${this.listenNodeId}`,

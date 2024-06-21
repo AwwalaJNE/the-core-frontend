@@ -115,7 +115,7 @@ export default {
                 case "status_code":
                     
                     let obj = this.status_code_arr.filter(item => item.value == val)[0]
-                    console.log('status_code', val, obj)
+
                     if(Object.keys(obj).length > 0) {
                         if(obj.hasOwnProperty('item')) {
                             this.irregularity_type = obj.item.status_subtype || ''
@@ -127,7 +127,7 @@ export default {
                     this.remark= val
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },

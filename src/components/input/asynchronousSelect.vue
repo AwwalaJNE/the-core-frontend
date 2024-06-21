@@ -104,7 +104,6 @@ export default {
             queryString != '' && axios.get(this.listenUrl +`&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
-                // console.log('result',result)
                 let suggestions = [];
 
                 result.length > 0 && result.map(item => {
@@ -123,11 +122,11 @@ export default {
             })
             .catch(error => {
                 this.loading = false
-                console.log("error", error)
+
             });
         },
         updateOption(arr) {
-            console.log('cb :',arr)
+
            this.options = arr && arr.length > 0 ? arr : [{"label": null, "value": null}] 
         },
         inputFocus(){
@@ -146,7 +145,7 @@ export default {
             info['status'] = status
             // info['data'] = item.data
 
-            console.log('this.listenFormKey, item.value, info', this.listenFormKey, item.value, info)
+
 
             this.$emit("updateValue", this.listenFormKey, item, info)
         }

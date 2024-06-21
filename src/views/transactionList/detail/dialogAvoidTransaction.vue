@@ -167,7 +167,7 @@ export default {
           'void':1,
           'void_reason':this.selectedData
         }
-        console.log(this.form)
+
         this.updateData() // trigger function submit form dari luar component formMaster
     },
 

@@ -224,7 +224,7 @@ export default {
     },
     methods: {
         refresh(){
-            console.log("refresh")
+
             let d = new Date()
             let from = ''
             let to = ''
@@ -245,7 +245,7 @@ export default {
             if(this.dataTable.length > 0) {
               //dibuat untuk approve saja jadi gapake switch case
             this.dataItem = val;
-            console.log(this.dataItem);
+
             this.$nextTick(() => {
                 this.dialogEntryStatusActive = true;
             });
@@ -287,14 +287,14 @@ export default {
             for (const key in this.form) {
                 formData.append(key, this.form[key]);
             }
-            console.log('this.form',formData, this.form)
+
             await axios
                 .post(
                     this.URL.irregularities + `?n=${this.listenNodeId}`,
                     formData, 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.dialogEntryStatusActive = false
                     this.openNotification(null, 'Success', 'Create new cancel connote is success')
@@ -315,7 +315,7 @@ export default {
                 case "edit":
                     if(this.dataTable.length > 0) {
                         this.dataItem = val
-                        console.log(this.dataItem,'item')
+
                         this.$nextTick(() => {
                             this.dialogEntryStatus = true
                         });
@@ -329,7 +329,7 @@ export default {
                 case "TRIGGER_DATE":
                     this.dateRange = val
                     this.refresh()
-                    console.log('dateRange',this.dateRange)
+
                     break;
                 case "DIALOG_CANCEL":
                     this.form = val
@@ -337,7 +337,7 @@ export default {
                     this.handleSubmit()
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },

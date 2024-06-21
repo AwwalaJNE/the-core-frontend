@@ -174,7 +174,7 @@ export default {
                       objchild['Times'] = time
                       item['children'] = objchild
                     })
-                  console.log(this.dataTable)
+
                   this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
@@ -205,14 +205,14 @@ export default {
         },
 
         refresh(){
-            console.log("refresh")
+
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
 
         actionUpdate(val){
           this.dataItem = val
 
-          console.log(this.dataItem, 'nihh val', val)
+
           this.$nextTick(() => {
             this.dialogPickupSchedule = true
           });

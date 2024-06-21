@@ -194,7 +194,7 @@ export default {
             this.tempform = [...dataInputs]
 
             let inputs_template = obj[this.listenFromKey]['inputs'] || []
-            console.log('inputs', inputs_template)
+
             let arr = []
             let tempObj = {}
             inputs_template && inputs_template.map(item => {
@@ -206,9 +206,9 @@ export default {
 
             
 
-            console.log('this.template', obj,this.template, arr)
+
             
-            console.log('dynamicinputcomponent', obj, this.listInput, this.form)
+
         },
         onfocuslah(info) {
             this.$emit("inputFocus", info)
@@ -216,12 +216,10 @@ export default {
         querySearch(queryString, cb){
             
             // let flag = this.listenFlag
-            // console.log('autocomplete url', flag)
-            // console.log('meanwhile from prop was', this.listenUrl)
             axios.get(this.listenItterateUrlAutoComplete +`&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
-                console.log('result',result)
+
                 let suggestions = [];
 
                 result.length > 0 && result.map(item => {
@@ -234,7 +232,7 @@ export default {
                 })
                 
 
-                console.log('suggestions', suggestions)
+
 
                 cb(suggestions);
                 })

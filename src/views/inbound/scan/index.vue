@@ -212,7 +212,7 @@ export default {
             if(this.inbound_id === ''){
               const id_inbound  = this.$ls.get('id_inbound');
               const getInboundId = id_inbound?.toString()?.toLowerCase();
-              // console.log(getInboundId,'id_inbound');
+ 
               await axios
                   .get(this.URL.inbound +
                       `/${getInboundId}/inbound-status?n=${this.listenNodeId}`,

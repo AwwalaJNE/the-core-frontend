@@ -121,7 +121,7 @@ export default {
             // obj["node_alternate_address_subdistrict_id"] = obj["node_alternate_address_subdistrict_id"]["geolocation_subdistrict_id"]
             this.form = obj
             if(this.node_alternate_address_id !== undefined && this.node_alternate_address_id !== '') {
-                    // console.log('update')
+ 
                     this.form['node_alternate_address_subdistrict_id'] = this.form['node_alternate_address_subdistrict_id'] ? this.form['node_alternate_address_subdistrict_id']['geolocation_subdistrict_id'] : this.dataItem.node_alternate_address_subdistrict_id;
                     this.form['node_id'] = this.form['node_id'] ? this.form['node_id']["node_id"] : this.dataItem.node_id;
                     this.updateData()
@@ -142,12 +142,9 @@ export default {
         querySearch(queryString, cb){
             
             // let flag = this.listenFlag
-            // console.log('autocomplete url', flag)
-            // console.log('meanwhile from prop was', this.listenUrl)
             axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
-                // console.log('result',result)
                 let suggestions = [];
 
                 result.length > 0 && result.map(item => {
@@ -160,7 +157,7 @@ export default {
                 })
                 
 
-                // console.log('suggestions', suggestions)
+ 
 
                 cb(suggestions);
                 })
@@ -168,7 +165,7 @@ export default {
         },
         inputFocus(info) {
             // untuk trigger perubahan url autocomplete saat focus ke inputan
-            console.log('info', info)
+
             let key = info.hasOwnProperty("key") ? info["key"] : ""
             let url = ""
             this.autoComplateUrl = url
@@ -306,7 +303,7 @@ export default {
         //                     arr.push(obj)
         //                 })
 
-        //                 console.log('timezone', arr)
+ 
 
         //                 this.$store.dispatch("SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_TIME_ZONE_ID_ArrData", arr.length > 0 ? arr : null)
         //             } else {
@@ -349,7 +346,7 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
@@ -369,7 +366,7 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")

@@ -222,12 +222,12 @@ export default {
                       if (item.hasOwnProperty('status') && item["status"] !== null) {
                           let str = item["status"].toLowerCase();
                           if (!str.includes("ready")) {
-                              console.log("button status", str, str.includes("depart"));
+
                               buttonStatus["depart"] = false;
                               item["button_status"] = buttonStatus;
                           }
                           if (str.includes("cancel")) {
-                              // console.log("button status", str, str.includes("cancel"))
+ 
                               buttonStatus["cancel"] = false;
                               item["button_status"] = buttonStatus;
                           }
@@ -238,7 +238,7 @@ export default {
                         item["button_status"] = buttonStatus;
                       }
                     })
-                    console.log('manifest_delivery_order', arr, res)
+
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -264,7 +264,7 @@ export default {
         actionUpdate(val, key) {
           switch(key) {
                 case "print":
-                    console.log('print', val)
+
                     let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.manifest_do_number, 'type': 'manifest-delivery-order', 'node_id':this.listenNodeId } });
                     window.open(routeData.href, '_blank');
                     break;
@@ -291,7 +291,7 @@ export default {
                   this.manifest_do_number = val.manifest_do_number
                   this.cancel()
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },
@@ -324,7 +324,7 @@ export default {
         },
 
         refresh(){
-            console.log("refresh")
+
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
 

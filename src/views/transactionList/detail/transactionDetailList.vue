@@ -210,7 +210,6 @@ export default {
                     //   item["isDisabled"] = item.is_void == true ? true : false;
                     //   item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
                     //   // setTimeout(() => {
-                    //   //   console.log("refs", this.$parent.$refs.btnPrintAll.$el.disabled);
                     //   //   item["isDisabled"] =
                     //   //     item.is_void == true
                     //   //       ? (this.$parent.$refs.btnPrintAll.$el.disabled = true)
@@ -242,7 +241,7 @@ export default {
         },
 
         refresh(){
-            console.log("refresh")
+
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
         actionDetail(row){
@@ -257,7 +256,7 @@ export default {
           this.refresh()
         },
         actionAvoid(){
-          console.log('gas')
+
           this.dialogAvoidActive = true
         },
         actionUpdate(val, key) {
@@ -290,7 +289,7 @@ export default {
                     this.dialogAvoidActive = true
                    break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },

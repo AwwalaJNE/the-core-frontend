@@ -108,7 +108,7 @@ export default {
             
             // this.form['surcharge_condition'] = this.form['surcharge_condition'].toString()
             // this.form['surcharge_formula'] = this.form['surcharge_formula'].toString()
-            // console.log("this.form", this.form)
+ 
             if(this.surcharge_id !== undefined && this.surcharge_id !== '') {
                     this.updateData()
             } else {
@@ -174,7 +174,7 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")

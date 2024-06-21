@@ -56,7 +56,7 @@ export default {
                 if (this.temp_vehicle !== old) {
                     this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.temp_bag, this.temp_driver);
                 }
-                console.log(this.temp_vehicle, 'kurir');
+
             }
         },
         queryBags: function(val, old) {
@@ -65,7 +65,7 @@ export default {
                 if (this.temp_bag !== old) {
                     this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.temp_vehicle, val, this.temp_driver);
                 }
-                console.log(this.temp_bag, 'ini bag');
+
             }
         },
         queryDriver: function(val, old) {
@@ -74,7 +74,7 @@ export default {
                 if (this.temp_driver !== old) {
                     this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.temp_vehicle, this.temp_bag, val);
                 }
-                console.log(this.temp_driver, 'ini driver');
+
             }
         },
     },
@@ -219,7 +219,7 @@ export default {
                     return item.user_id === val.user_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 // this.$nextTick(() => {
                 //     this.dialogUser = true
                 // });

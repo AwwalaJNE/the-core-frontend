@@ -305,7 +305,7 @@ export default {
       };
     },
     handlerZero(val) {
-      // console.log("handlerZero", val)
+ 
       if (val) {
         if (val.match(/^0+\d/)) {
           this.value = parseFloat(val);
@@ -314,7 +314,7 @@ export default {
     },
     onlyNumberValidate(evt) {
       let theEvent = evt || window.event;
-      console.log("evt", evt, this.value);
+
 
       // backspace	8
       // tab	9

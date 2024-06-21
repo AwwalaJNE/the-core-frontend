@@ -103,7 +103,7 @@ export default {
     methods: {
         formData(form){
             this.form = form
-            // console.log(this.form)
+ 
             if(this.vehicle_type_id !== undefined && this.vehicle_type_id !== '') {
                     this.updateData()
             } else {
@@ -148,7 +148,7 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")

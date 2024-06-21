@@ -198,7 +198,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=asc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+
                     this.dataTable = res.data.data
                     this.dataTable.length > 0 && this.dataTable.map((item) => {
                         let tariff_amount = []
@@ -241,7 +241,7 @@ export default {
 
                     })
 
-                    console.log('this.dataTable', this.dataTable)
+
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -264,7 +264,7 @@ export default {
                     return item.tariff_id === val.tariff_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogTariff = true
                 });
@@ -292,7 +292,7 @@ export default {
                     this.URL.tariff + `/${this.tariff_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.closeDialogConfirmTariff();
                     this.openNotification(null, 'Delete success', 'Delete tariff is success')

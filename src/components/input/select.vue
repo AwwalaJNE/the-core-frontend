@@ -192,7 +192,7 @@ export default {
           if(val !== undefined) {
             this.loadingActive = val || false
           }
-          console.log('loading', val);
+
         },
         // loadingData: function (val) {
         //     if(val != undefined) {
@@ -206,7 +206,6 @@ export default {
     methods: {
         // loadingHandler(){
         //     let ref = `${this.name}`
-        //     console.log('this.$refs.ref', this.$refs.nameah, this.name)
         //     this.loadingInjector = this.$vs.loading({
         //         target: this.$refs.nameah,
         //         color: '#333'

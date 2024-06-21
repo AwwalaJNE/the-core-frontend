@@ -219,7 +219,6 @@ export default {
                 })
                 this.jumlahbayar = this.price
                 this.koli_qty = koli_qty
-                // console.log('PAYMENT', 'meong', data, this.grand_total, diskon,amount_total_price, data['grand_total'])
             }
             this.ecodi_id = `TCR${this.transaction_id}`
             
@@ -231,14 +230,14 @@ export default {
                     this.paymentBtnDisabled = this.jumlahbayar < this.price
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },
         changeTypePayment(obj) {
             this.navActive = obj['key']
             this.typePayment = obj
-            console.log('this.typePayment', this.typePayment)
+
         },
         async getListPayment(){
             this.loadingDataRole = true
@@ -248,7 +247,7 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
-                        console.log('getListPayment', res.data.data)
+
                         let data = res.data.data
                         let arr = []
                         data.map(item => {
@@ -288,14 +287,14 @@ export default {
                 form['payment_provider_code_number'] = this.typePayment['payment_provider_code_number']
                 form['payment_type_id'] = this.typePayment['payment_provider_code_number']
 
-                console.log('form', form, this.typePayment)
+
                 await axios
                 .post(
                     this.URL.transaction + `/${this.transaction_id}/payment?n=${this.listenNodeId}`,
                     JSON.stringify(form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.dataTransaction= {}
                     this.koli_qty= 0
                     this.connote_qty= 0

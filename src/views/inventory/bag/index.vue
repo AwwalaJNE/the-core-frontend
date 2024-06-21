@@ -564,7 +564,7 @@ export default {
       this.ProccessBagging()
     },
     updateValue(){
-      console.log(this.regional,this.service,this.item_code,'updateValue');
+
       this.form={
           item_number: this.item_code,
           destination : this.regional,
@@ -583,7 +583,7 @@ export default {
       this.ProccessBagging()
     },
     updateValueOrion(){
-      console.log(this.item_code_orion,'item_code_orion');
+
       this.form={
           item_number: this.item_code_orion + "00",
           destination : this.regional,
@@ -606,7 +606,7 @@ export default {
       this.item_code=''
     },
     updateFilter(key, value) {
-      console.log("regional", this.regional, key, value)
+
       
       switch(true) {
           case key.toLowerCase().includes("regional"):
@@ -681,7 +681,7 @@ export default {
         data.namespace === "formInputBagging"
       ) {
         this.item_code = data.data.text;
-        console.log(data,'camera',this.radio_option);
+
         if (this.radio_option === "connote") {
           this.item_code_orion = this.item_code;
           this.updateValueOrion();
