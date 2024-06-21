@@ -170,38 +170,39 @@ export default {
                   this.Helper.header())
               .then(res => {
                 this.closeProgress();
-              if (res.data.data.is_delivered == 1) {
-
-                this.openNotification(
-                  "danger",
-                  "Receiving Failed!",
-                  "Item has been delivered"
-                );
-              }else{
+                if (res.data.data.is_delivered == 1) {
+                  this.openNotification("danger", "Receiving Failed!", "Item has been delivered");
+                } else{
                   let message = 'TANPA : SM / SJ / PICKUP';
                   let typeNotif = null;
                   this.$ls.set('id_inbound',res.data.data.id_inbound)
-                if(res.data.data.inbound_id){
-                  typeNotif = 'success';                  
-                  message = null;
-                  this.inbound_id = res.data.data.inbound_id
-                }
+                  if(res.data.data.inbound_id){
+                    typeNotif = 'success';                  
+                    message = null;
+                    this.inbound_id = res.data.data.inbound_id
+                  }
                   this.refresh()
                   this.handlerClearForm()
-                setTimeout(()=>{
-                  this.openNotification(typeNotif, 'Receiving Success!', message)
-                },300);
-              }
+                  setTimeout(()=>{
+                    this.openNotification(typeNotif, 'Receiving Success!', message)
+                  },300);
+                }
               }).catch(err => {
                 this.closeProgress();
                 this.loading = false
+                // TODO: CHANGE THIS TO REFERENCE NUMBER (CHECK FIELD FROM BE)
+                let typeNotif = 'danger';
+                if (err.response.data.reference) {
+                  typeNotif = 'danger';
+                  this.inbound_id = err.response.data.reference
+                }
                 this.refresh()
                 this.handlerClearForm()
+
+                // TODO: BETTER WARN ATAU STILL SUCCESS YA?
                 setTimeout(()=>{
-                  this.openNotification('danger', 'Receiving Failed!', err.response.data.message)
-                },300);
-
-
+                  this.openNotification(typeNotif, 'Receiving Failed!', err.response.data.message)
+                }, 300);
               })
         },
 
