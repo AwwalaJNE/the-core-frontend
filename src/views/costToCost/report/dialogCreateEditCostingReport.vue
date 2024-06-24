@@ -127,11 +127,11 @@ export default {
             this.form = form
             if(this.cost_report_id !== undefined && this.cost_report_id !== ''){
                 // this.updateData()
-                // console.log('update')
+ 
             }else{
                 this.addData()
             } 
-            //   console.log('FORM', form)
+ 
 
         },
         handleSubmit(){
@@ -145,7 +145,7 @@ export default {
 
         openGetCustomer() {
           this.dialogGetCustomer = true
-          console.log('open ')
+
         },
         closeGetCustomer() {
           this.dialogGetCustomer = false
@@ -158,7 +158,7 @@ export default {
             axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
-                // console.log('result',result)
+ 
                 let suggestions = [];
 
                 result.length > 0 && result.map(item => {
@@ -171,14 +171,14 @@ export default {
                 })
                 
 
-                // console.log('suggestions', suggestions)
+ 
 
                 cb(suggestions);
                 })
             .catch(error => console.log("error", error));
         },
         onChangeCustom(type, val, info = {}){
-            // console.log('type',type, val, info)
+ 
 
             
         },
@@ -220,7 +220,7 @@ export default {
         // },
       
         async addData() {
-            console.log('form', this.form)
+
             await axios
                 .post(
                     this.URL.cost_to_cost_report + `?n=${this.listenNodeId}`,

@@ -99,10 +99,10 @@ export default {
         formData(form){
             this.form = form
             if(this.user_role_id !== undefined && this.user_role_id !== '') {
-                    console.log('update')
+
                     this.updateData()
             } else {
-                    console.log('create new')
+
                     this.addData()
             }
         },
@@ -134,7 +134,7 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
+
             await axios
                 .post(
                     this.URL.role + `?n=${this.listenNodeId}`,

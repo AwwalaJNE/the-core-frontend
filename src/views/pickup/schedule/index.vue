@@ -166,7 +166,7 @@ export default {
                   `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
                   this.Helper.header())
               .then(res => {
-                console.log('link', res)
+
                 if(res.data.data.length > 0) {
                   res.data.data.map(item => {
                     let obj = {}

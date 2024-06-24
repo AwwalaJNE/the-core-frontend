@@ -117,7 +117,7 @@ export default {
     },
     methods: {
         formData(form){
-            // console.log(form,'FORM');
+ 
             if(form != undefined){
                 let cost_value =[]
                 form.dynamicinputcomponent_cost_to_cost_detail_value.map((item, index) =>{
@@ -166,7 +166,7 @@ export default {
 
         openGetCustomer() {
           this.dialogGetCustomer = true
-          console.log('open ')
+
         },
         closeGetCustomer() {
           this.dialogGetCustomer = false
@@ -181,8 +181,8 @@ export default {
         querySearch(queryString, cb){
             
             // let flag = this.listenFlag
-            // console.log('autocomplete url', flag)
-            // console.log('meanwhile from prop was', this.listenUrl)
+ 
+ 
             axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
@@ -198,7 +198,7 @@ export default {
                 })
                 
 
-                // console.log('suggestions', suggestions)
+ 
 
                 cb(suggestions);
                 })

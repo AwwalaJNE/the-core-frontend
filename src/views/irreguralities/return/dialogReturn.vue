@@ -240,7 +240,7 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.handleClearForm()
                     this.closeDialog()
                     this.refresh()
@@ -289,7 +289,7 @@ export default {
                     this.dataItem.irregularity_status_description =info.item.status_description
                   break;
                 default:
-                    console.log(key,'meong', val)
+
                     // code block
             }
         },
@@ -345,7 +345,7 @@ export default {
                         this.dataItem['connote_shipper_city_zone'] = tlc || this.dataItem['connote_receiver_city_zone']
                     }
                 }).catch(err => {
-                    console.log(err.response)
+
                     this.checkAuth(err.response)
                 })
         },
@@ -418,7 +418,7 @@ export default {
             this.edited = false
         },
         onFocusLocationSelector(info){
-            console.log(info)
+
             if(info.key == 'destination_onchange_address' && info.status == true) {
                 this.openDialogLocationSelector()
             }
@@ -435,7 +435,7 @@ export default {
             this.locationSelectorActive = false
         },
         selectedDataLocation(val){
-            console.log(val)
+
             let data = val || {}
             if(Object.keys(data).length > 0) {
                 let obj = {}

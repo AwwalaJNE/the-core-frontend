@@ -13,12 +13,10 @@ export default {
     computed: {
         crumbs(){
             let pathArray = this.$route.path.split("/")
-            // console.log('pathArray', pathArray)
             pathArray.shift()
             if(pathArray.length > 2){
               pathArray = pathArray.slice(0, -1);
             }
-            // console.log('pathArray l 2', pathArray)
             let route = this.$route.matched.filter(item => item.path !== '')
             let back = route.filter(el => el.meta.hasOwnProperty('backPath'))
             let breadcrumbs = pathArray.reduce((breadcrumbArray, path, idx) => {

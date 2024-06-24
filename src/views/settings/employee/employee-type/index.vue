@@ -167,7 +167,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+
                     let arr = res.data.data
                     arr.map((item, idx) =>{
                         item['table_id'] = idx+1
@@ -195,7 +195,7 @@ export default {
                     return item.employee_type_id === val.employee_type_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogEmployeeType = true
                 });

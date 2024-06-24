@@ -161,7 +161,7 @@ export default {
                     let bag_des = res.data.dat ? res.data.data.destination.node_code  : '-'
                     this.$ls.set('getDataBag',res.data.data);
 
-                    // console.log(arr, res,'klas')
+ 
                     arr.map((item, index)  => {
                       item["no"] = index+1
                       item['destination_code'] = item.item_type === 'KOLI' ?  item.connote_receiver_tariff_code : item.node_tariff_code
@@ -211,7 +211,7 @@ export default {
                     return item.user_id === val.user_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogUser = true
                 });

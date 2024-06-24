@@ -2592,13 +2592,13 @@ export default {
 
   //GET NUMBER RUNSHEET
   SET_DELIVERY_NUMBER({ commit }, payload) {
-    console.log(payload,'deliveryNumber');
+
     commit('SET_DELIVERY_NUMBER', payload);
   },
 
   //input runsheet
   UPDATE_FORM_DATA({ commit }, payload) {
-    console.log(payload,'payload');
+
     commit('UPDATE_FORM_DATA', payload);
   },
 

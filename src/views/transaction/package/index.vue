@@ -556,7 +556,7 @@ export default {
   methods: {
     initialize() {
       this.listenJumlahPackage = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_koli_item.length;
-      console.log("123a", this.listenConnoteIndexActive, this.listenPreviousConnoteIndexActive)
+
       const obj = this.$store.getters.getTransaction.package || {}
       if (Object.keys(obj).length > 0) {
         const keys = Object.keys(obj)
@@ -606,7 +606,7 @@ export default {
     async getShippingService() {
       const connote_number = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number || ''
 
-      console.log("INIX1", this.listenCustomerCode)
+
       await axios
         .get(`${this.URL.tariff_shipping_service
         }?n=${this.listenNodeId}&destination=${this.listenDestinationCode}&customer_code_tariff=${this.listenCustomerCode}`,
@@ -647,7 +647,6 @@ export default {
               arr.push(obj)
             }
           })
-          // console.log('getShippingService arr', arr)
 
           // if create new transaction
           // if(connote_number == ""){
@@ -724,7 +723,7 @@ export default {
         case 'insured_goods_value':
           if (this.package_tidak_asuransi == false) {
             const numb = this.moneyParsing(value)
-            console.log('moneyParsing numb', numb)
+
             this.$store.dispatch('SET_CALCULATOR_ASURANSI', numb * 0.002)
           } else {
             this.$store.dispatch('SET_CALCULATOR_ASURANSI', 0)
@@ -796,7 +795,7 @@ export default {
           this.$store.dispatch('SET_PACKAGE_PACKAGE_COD', value)
           break
         case 'handle_surcharge':
-          console.log("handle surcharge", value, value2, value3, value4)
+
           this.connote_koli_item[value].surcharge_id = value2
            
           if (this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
@@ -964,7 +963,7 @@ export default {
     prosesmultipleKoli(val) {
       this.connote_koli_item = val
       this.connote_koli_item_sebelum_surcharge_menyerang = val
-      console.log("proses multi koli", val)
+
       this.$store.dispatch('SET_CONNOTE_DATA_KOLI', this.connote_koli_item)
       // this.calcDataKoli()
       const node_code = this.listenNodeCode

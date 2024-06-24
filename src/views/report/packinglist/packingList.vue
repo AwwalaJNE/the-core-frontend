@@ -156,7 +156,7 @@ export default {
         },
 
         refresh(){
-            console.log("refresh")
+
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
 

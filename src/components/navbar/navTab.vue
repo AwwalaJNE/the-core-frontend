@@ -50,7 +50,6 @@ export default {
     },
     methods: {
         activeTab(val){
-            // console.log(val)
             this.$emit("activeTab", val);
         }
     },

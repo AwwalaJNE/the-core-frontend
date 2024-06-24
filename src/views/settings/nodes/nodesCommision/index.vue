@@ -219,7 +219,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+
                     if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
                         this.dataTable.map(item=>{
@@ -247,7 +247,7 @@ export default {
                         
 
                         this.dataItem.node_id = val.node_id.toString();
-                        console.log(this.dataItem,'item')
+
                         this.$nextTick(() => {
                             this.dialogCreateEdit = true
                         });
@@ -281,7 +281,7 @@ export default {
                     this.URL.node_commission + `/${this.node_commission_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.closeDialogConfirmRemove();
                     this.openNotification(null, 'Romove success', 'Node type is success')

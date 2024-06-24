@@ -145,7 +145,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+
                     this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
@@ -169,7 +169,7 @@ export default {
                     return item.vehicle_mode_id === val.vehicle_mode_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogVehicleMode = true
                 });
@@ -190,7 +190,7 @@ export default {
                     this.URL.vehicle_mode + `/${val.vehicle_mode_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.openNotification(null, 'Delete success', 'Delete Vehicle mode is success')
                 }).catch(err => {

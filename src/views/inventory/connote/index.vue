@@ -293,7 +293,7 @@ export default {
           this.statusinventory = val;
         },
         updateSearchBy(key,val) {
-            console.log(this.navActive,'hehe haha');
+
             this.searchBy = val;
             this.searchPlaceholder = key;
         },
@@ -319,7 +319,7 @@ export default {
         },
         searchValue (val) {
             this.tempSearch = val
-            console.log("this.tempSearch = ",this.tempSearch)
+
         },
         searchDate(key, val) {
             this.tempDate = val;
@@ -367,14 +367,14 @@ export default {
 
         filterNow(){
             if(this.permission.length > 0) {
-                console.log('this.keysPermission before filter', this.keysPermission)
+
                 this.permission.map(item => {
                     if(this.keysPermission.hasOwnProperty(item.user_permission_id)) {
                         item["selected"] = true
                     } 
                 })
                 this.permissionDisplay = this.permission
-                console.log('this.keysPermission after filter', this.keysPermission)
+
             }
         },
 

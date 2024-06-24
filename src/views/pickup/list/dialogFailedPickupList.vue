@@ -127,7 +127,7 @@ export default {
             this.form = {}
         },
         async updateData() {
-            console.log("HALO2", this.pickup_number, this.listenNodeId, this.form)
+
             await axios
                 .post(
                     this.URL.pickup + `/${this.pickup_number}/request-failed?n=${this.listenNodeId}`,

@@ -106,7 +106,7 @@ export default {
         formData(form){
             this.form = form
             if(this.discount_tariff_id !== undefined && this.discount_tariff_id !== '') {
-                    console.log('update')
+
                     this.updateData()
             } else {
                     this.addData()
@@ -127,7 +127,7 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
@@ -141,14 +141,14 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
+
             await axios
                 .post(
                     this.URL.discount_tariff + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")

@@ -247,7 +247,7 @@ export default {
                   `?status_type=pickup&n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&s=`,
                   this.Helper.header())
               .then(res => {
-                console.log('status', res)
+
                 if(res.data.data.length > 0) {
                   res.data.data.map(item => {
                     let obj = {}
@@ -277,7 +277,7 @@ export default {
                             obj["label"] = item.user_login + ' - ' + item.user_name + ' - ' + item.user_id;
                             obj["value"] = item.user_id
 
-                            console.log(this.DataCourier,'test');
+
                             this.DataCourier.push(obj)
                         })
                         this.$store.dispatch("SET_PICKUP_LIST_PICKUP_COURIER_USER_ID_ArrData", arr.length > 0 ? arr : null)

@@ -109,11 +109,11 @@ export default {
             form["node_link_vehicle_mode_id"] = form["node_link_vehicle_mode_id"]["vehicle_mode_id"]
             this.form = form
             if(this.node_link_id !== undefined && this.node_link_id !== '') {
-                    console.log('update')
+
                     this.form.node_link_id = this.node_link_id
                     this.updateData()
             } else {
-                    console.log('create new')
+
                     this.addData()
             }
         },
@@ -128,12 +128,9 @@ export default {
         querySearch(queryString, cb){
             
             // let flag = this.listenFlag
-            // console.log('autocomplete url', flag)
-            // console.log('meanwhile from prop was', this.listenUrl)
             axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
-                // console.log('result',result)
                 let suggestions = [];
 
                 result.length > 0 && result.map(item => {
@@ -146,7 +143,7 @@ export default {
                 })
                 
 
-                // console.log('suggestions', suggestions)
+ 
 
                 cb(suggestions);
                 })
@@ -154,7 +151,7 @@ export default {
         },
         inputFocus(info) {
             // untuk trigger perubahan url autocomplete saat focus ke inputan
-            console.log('info', info)
+
             let key = info.hasOwnProperty("key") ? info["key"] : ""
             let url = ""
             this.autoComplateUrl = url
@@ -252,7 +249,7 @@ export default {
         },
 
         async addData() {
-            console.log('form', this.form)
+
             await axios
                 .post(
                     this.URL.node_link + `?n=${this.listenNodeId}`,

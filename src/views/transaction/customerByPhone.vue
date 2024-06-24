@@ -99,7 +99,7 @@ export default {
             this.closeDialog()
         },
         ooo(){
-            console.log('blur')
+
         },
         async submit() {
 
@@ -108,7 +108,7 @@ export default {
                     this.URL.search_customer_code + `?n=${this.listenNodeId}&customer_code=${this.value}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     
                     if(res.status == 200) {
                         let data = res.data.data

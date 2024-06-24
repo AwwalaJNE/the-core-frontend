@@ -123,14 +123,14 @@ export default {
         },
         searchValue (val) {
             this.tempSearch = val
-            console.log("this.tempSearch = ",this.tempSearch)
+
         },
         clearSearch() {
             this.$refs.searchInput.clear()
         },
         activeTab(val) {
             this.navActive = val
-            console.log(this.navActive)
+
             let item = this.navItemm.filter(item => {
                 return item.key == val
             })
@@ -145,7 +145,7 @@ export default {
                     this.dialogCustomerType = true
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
             this.refreshInject = this.navActive

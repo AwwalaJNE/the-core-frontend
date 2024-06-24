@@ -156,7 +156,7 @@ export default {
         },
         getParamRoute(){
           if(this.$route.params.id){
-            console.log(this.$route.params.id,'conno');
+
             this.connote_number = this.$route.params.id
           }
         },

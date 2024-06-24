@@ -121,7 +121,7 @@ export default {
           if (result) {
             // this.$emit("decode", result.text);
             // this.$emit("result", result);
-            console.log(result);
+
             this.emitEvent("result", result);
             this.handleClose();
           }

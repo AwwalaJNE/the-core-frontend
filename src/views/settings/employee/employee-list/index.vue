@@ -200,7 +200,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res,'ini apa sih')
+
                     if(res.data.data.length > 0) {
                         res.data.data.map(item=>{
                             item['node_name'] = item.node ? item.node.node_name : '-'
@@ -227,7 +227,7 @@ export default {
             this.dataItem = val
 
             this.$store.dispatch(`SET_EMPLOYEE_EMPLOYEE_NODE_ID_ValueData`, val["node"])
-            console.log(this.dataItem,'item')
+
             this.$nextTick(() => {
               this.dialogEmployee = true
             });

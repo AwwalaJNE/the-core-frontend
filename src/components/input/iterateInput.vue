@@ -85,7 +85,7 @@ export default {
             let obj = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm] || {}
             this.keys = obj['dynamicinputcomponent']['arrData'] || []
             this.InputObject = obj
-            console.log('dynamicinputcomponent', obj, this.keys)
+
         },
         Add() {
             if(this.index == 0) {
@@ -108,7 +108,7 @@ export default {
 
                 if (this.keys.length > 0) {
                     let filtered =  this.listInput.filter( item => {return item.key !== key})
-                    console.log('del',this.listInput, key, filtered)
+
                     let currentKey = this.keys[this.index]
                     this.$emit("updateValue", key, '')
                     this.listInput = filtered
@@ -118,7 +118,7 @@ export default {
         },
         updateValue(key, value){
             let currentKey = this.keys[this.index]
-            console.log('update value', key, value)
+
 
             // this.$emit("updateValue", currentKey['key'], '')
             this.$emit("updateValue", key, value)

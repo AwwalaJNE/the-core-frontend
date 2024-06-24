@@ -703,7 +703,7 @@ export default {
     state.node.ip_address.valueData = payload
   },
   SET_NODE_IP_ADDRESS_ArrData(state, payload) {
-    console.log(state,payload,'SET_NODE_IP_ADDRESS_ArrData');
+
     state.node.ip_address.hasOwnProperty('arrData') ?
       state.node.ip_address.arrData = payload :
       state.node.ip_address.arrData = []
@@ -2002,7 +2002,7 @@ export default {
 
   SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT(state, payload) {
     let arr = state.surat_muatan.dynamicinputcomponent_node_id_transit.inputs
-    console.log('ARR', arr, payload)
+
     let final = []
     if (payload && payload.length > 0) {
       let obj = {}
@@ -2029,7 +2029,7 @@ export default {
         final.push(newData)
       })
     }
-    console.log('final', final)
+
     state.surat_muatan.dynamicinputcomponent_node_id_transit.hasOwnProperty('arrData') ?
       state.surat_muatan.dynamicinputcomponent_node_id_transit.arrData = final :
       state.surat_muatan.dynamicinputcomponent_node_id_transit.arrData = []
@@ -2368,7 +2368,7 @@ export default {
 
   SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_COST_TO_COST_RULE(state, payload) {
     let arr = state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.inputs
-    console.log('ARR', arr, payload)
+
     let final = []
     if (payload && payload.length > 0) {
       let obj = {}
@@ -2396,14 +2396,14 @@ export default {
         final.push(newData)
       })
     }
-    console.log('final', final)
+
     state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.hasOwnProperty('arrData') ?
       state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.arrData = final :
       state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_rule.arrData = []
   },
   SET_COST_TO_COST_SETTING_DYNAMICINPUTCOMPONENT_COST_TO_COST_DETAIL_VALUE(state, payload) {
     let arr = state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_detail_value.inputs
-    console.log('ARR', arr, payload)
+
     let final = []
     if (payload && payload.length > 0) {
       let obj = {}
@@ -2432,7 +2432,7 @@ export default {
       })
     }
 
-    console.log('final', final)
+
     state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_detail_value.hasOwnProperty('arrData') ?
       state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_detail_value.arrData = final :
       state.cost_to_cost_setting.dynamicinputcomponent_cost_to_cost_detail_value.arrData = []
@@ -2812,20 +2812,20 @@ export default {
   },
 
   UPDATE_FORM_DATA(state, payload) {
-    console.log(state, payload, 'state');
+
     state.remarks = payload;
   },
   // update pod
   SET_STATUS_DELIVERY(state, payload) {
-    console.log(payload,'STATUS DELIVERY');
+
     state.status_delivery = payload;
   },
   SET_REMARKS(state, payload) {
-    console.log(payload,'SET_REMARKS');
+
     state.remarks = payload;
   },
   SET_RECEIVER_NAME(state, payload) {
-    console.log(payload,'SET_RECEIVER_NAME');
+
     state.receiver_name = payload;
   },
   SET_FINISH_RECEIVING_BUTTON_VISIBILITY(state, payload) {

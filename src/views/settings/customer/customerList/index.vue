@@ -187,7 +187,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res,'cus')
+
                     if(res.data.data.length > 0) {
                         if(res.data.data.length > 0){
                             res.data.data.map(item =>{

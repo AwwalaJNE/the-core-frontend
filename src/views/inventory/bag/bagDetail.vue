@@ -281,7 +281,7 @@ export default {
   methods: {
     getResponse(data, loading) {
       
-      console.log("dapet nih kedepan", data, loading)
+
       this.is_orion = data.data.is_orion === '1' ? true : false;
       let arr = data.detail
       let bag_des = data.data ? data?.data?.destination?.node_code  : null
@@ -433,13 +433,13 @@ export default {
             JSON.stringify(this.form), 
             this.Helper.header())
           .then(res => {
-            console.log('res',res)
+
             this.handleClearForm()
             this.loading = false
             this.openNotification('success', 'Update Bagging is success')
             this.$refs.detailbagList.refresh()
           }).catch(err => {
-            console.log(err)
+
             this.loading = false
             this.handleClearForm()
             this.openNotification('danger', err.response ? err.response.data.message : 'something went wrong')

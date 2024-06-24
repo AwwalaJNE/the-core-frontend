@@ -168,7 +168,7 @@ export default {
     },
     methods: {
         refresh(){
-            console.log("refresh")
+
             let d = new Date()
             let from = ''
             let to = ''
@@ -227,10 +227,10 @@ export default {
                 case "TRIGGER_DATE":
                     this.dateRange = val
                     this.refresh()
-                    console.log('dateRange',this.dateRange)
+
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },

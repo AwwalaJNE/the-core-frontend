@@ -199,7 +199,7 @@ export default {
                 this.dataItem = obj[0]
                 // this.$store.dispatch("SET_NODE_MAPPICKER_LATITUDE", this.dataItem['node_lat'] ? this.dataItem['node_lat'] : 0)
                 // this.$store.dispatch("SET_NODE_MAPPICKER_LONGITUDE", this.dataItem['node_lon'] ? this.dataItem['node_lon'] : 0)
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogNode = true
                 });
@@ -211,7 +211,7 @@ export default {
                     this.URL.node + `/${val.node_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.openNotification(null, 'Success', 'Delete node is success')
                 }).catch(err => {

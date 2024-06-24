@@ -110,9 +110,6 @@
         </vs-table>
       </div>
     </vs-col> -->
-
-    <!-- Dialog if user should update their password -->
-    <DialogUpdatePassword />
   </vs-row>
 </template>
 <script>
@@ -123,7 +120,6 @@ import moment from "moment";
 import master from "@/mixins/master";
 import FormInputController from "@/components/form/formInputController";
 import Breadcrumb from "@/components/breadcrumb/index";
-import DialogUpdatePassword from "./DialogUpdatePassword.vue";
 
 export default {
   name: "Profile",
@@ -131,7 +127,6 @@ export default {
     "form-input-controller": FormInputController,
     Skeleton,
     Breadcrumb,
-    DialogUpdatePassword,
   },
   mixins: [master],
   data() {

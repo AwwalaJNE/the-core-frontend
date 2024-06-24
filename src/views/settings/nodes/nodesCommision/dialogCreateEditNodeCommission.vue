@@ -124,13 +124,11 @@ export default {
 
         querySearch(queryString, cb){
             
-            // let flag = this.listenFlag
-            // console.log('autocomplete url', flag)
-            // console.log('meanwhile from prop was', this.listenUrl)
+            // let flag = this.listenFla
             axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
-                // console.log('result',result)
+ 
                 let suggestions = [];
 
                 result.length > 0 && result.map(item => {
@@ -143,7 +141,7 @@ export default {
                 })
                 
 
-                // console.log('suggestions', suggestions)
+ 
 
                 cb(suggestions);
                 })

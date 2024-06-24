@@ -197,7 +197,7 @@ export default {
         },
 
         refresh(){
-            console.log("refresh")
+
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
 
@@ -219,7 +219,7 @@ export default {
                     this.URL.cost_to_cost + `/${this.cost_to_cost_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.closeDialogConfirmRemove();
                     this.openNotification(null, 'Romove success', 'Romove Costing is success')

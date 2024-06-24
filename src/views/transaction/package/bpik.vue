@@ -243,11 +243,11 @@ export default {
         active: function(val) {
             if(val != undefined) {
                 if(val == true) {
-                    console.log('awww aktif')
+
                     this.initialize()
                     this.$nextTick(() => {
                         this.$refs.bpikBox.scrollIntoView({ behavior: 'smooth' })
-                        console.log()
+
                         let bpikINput = this.$refs.bpikinput00[0]
                         
                         setTimeout(function(){ bpikINput.$el.querySelector('input').focus() }, 100);
@@ -281,7 +281,7 @@ export default {
         updateValue(key, value, value2){
             let str = key.split("|")
             let index = str[1]
-            console.log(key, value, value2,index)
+
             switch(true) {
                 case key.includes("item_name"):
                     this.prosesBpik('item_name', value, index)
@@ -313,7 +313,7 @@ export default {
                this.listBpik[index][key] = value
                console.log('===> dipanggil ke', index, this.listBpik[index])
             }
-            console.log('proses bpik' ,key,index, this.listBpik)
+
             this.$store.dispatch("SET_CONNOTE_BPIK", this.listBpik)
             // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
         },
@@ -324,7 +324,7 @@ export default {
 
             let self = this
             let strEval = `self.$refs.bpikinput${this.listBpik.length - 1}0[0]`
-            console.log('BPIK strEval',this.listBpik, strEval)
+
             this.$nextTick(() => {
                 let bpikINput = eval(strEval)
                         
@@ -333,7 +333,7 @@ export default {
             
         },
         remove(i) {
-            console.log('remove', this.listBpik, i)
+
             // this.listBpik.splice(i, 1);
             this.$VueDelete(this.listBpik, i);
             this.$store.dispatch("SET_CONNOTE_BPIK", this.listBpik)

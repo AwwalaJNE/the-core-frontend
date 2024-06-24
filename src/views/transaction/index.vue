@@ -225,10 +225,10 @@ export default {
 
         },
         onSubmit(refs){
-            console.log('onsubmit form controller finished', refs)
+
                 refs.form.validate().then(success => {
                     if (!success) {
-                        console.log('err niih')
+
                         return;
                     }
                     
@@ -239,7 +239,7 @@ export default {
                     let inputan = ''
                     // quick fix required koli input dalem dialog multikoli
                     let dataConnote = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive]
-                    console.log("INI", dataConnote)
+
                     for(let i=0; i<= dataConnote['connote_koli_item'].length-1;i++) {
                         // console.log('koli curr', dataConnote['connote_koli_item'][i])
                         if(dataConnote['connote_koli_item'][i]['description'] == '') {
@@ -296,7 +296,7 @@ export default {
                     this.customerCode = val
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },
@@ -425,7 +425,7 @@ export default {
               this.openPaymentDialog()
             } else {
               this.typeAction = 'finish'
-              console.log("click finish",dataTransaction)
+
               this.$refs.formTransaction.formSubmit()
             }
           // }
@@ -455,7 +455,7 @@ export default {
                 has_bpik = true
               }
             }
-            console.log("")
+
             
             this.openLoading()
             await axios
@@ -611,7 +611,7 @@ export default {
                 this.$store.dispatch(`SET_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive + 1)
                 this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive)
 
-                console.log("123 Jumlah connote", (this.$store.getters.getTransaction.transaction.connote).length, (this.listenConnoteActive))
+
 
                 if (this.listenConnoteActive !== (this.$store.getters.getTransaction.transaction.connote).length - 1) {
                     this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive - 1)
@@ -797,16 +797,16 @@ export default {
         },
         addKeyHandler() {
             window.addEventListener("keydown", this.keyHandler);
-            console.log('inject transaction key handler add')
+
         },
         removeKeyHandler() {
             // window.removeEventListener("keydown", this.keyHandler);
-            console.log('transaction key handler destroyyy')
+
         },
         permissionCustomerCode(){
             const permissions = this.$ls.get("permissions") || [];
             this.isDisabled = permissions.includes('create-customer-code') ? false : true;
-            console.log(this.isDisabled,permissions.includes('create-customer-code'),permissions, 'test');
+
         }
 
         
@@ -829,7 +829,7 @@ export default {
         this.permissionCustomerCode()
     },
     beforeRouteLeave (to, from, next) {
-        console.log("beforeRouteEnter", to, from)
+
         this.refreshTransactionStore()
         next();
     },

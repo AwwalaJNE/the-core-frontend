@@ -232,7 +232,7 @@ export default {
                     let total = 0
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
-                      console.log(isPrealert,'isPrealert');
+
                       let im = []
                       item['inbound_eta'] = this.dateConvert(item['inbound_eta'])
                       item['inbound_etd'] = this.dateConvert(item['inbound_etd'])
@@ -291,7 +291,7 @@ export default {
         },
 
         refresh(){
-            console.log("refresh")
+
             this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate)
         },
 
@@ -299,7 +299,7 @@ export default {
           this.$router.push({ name: 'InboundIncomingScan', params: { inbound_id: row.inbound_id } });
         },
         handleHasLinkedItem(value) {
-          console.log('Received hasLinkedItem:', value);
+
         },
 
     },

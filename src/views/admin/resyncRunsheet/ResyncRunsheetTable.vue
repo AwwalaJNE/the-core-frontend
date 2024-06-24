@@ -188,16 +188,16 @@ export default {
         actionUpdate(val, key) {
             switch(key) {
                 case 'resync':
-                    console.log('asdssssss', this.form);
+
                     this.form = {
                         'delivery_runsheet_number' : val.delivery_runsheet_number,
                         'courier_employee_id' : val.employee_id,
                     }
-                    console.log(val,'asd', this.form);
+
                     this.activeDialogRemove = true;
                     break;
                 default:
-                    console.log('meong')
+
                 // code block
             }
         },

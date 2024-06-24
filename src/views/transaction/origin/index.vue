@@ -133,13 +133,13 @@ export default {
         },
         setFocus(){
             let inp = this.$refs.formTransactionOriginController.$refs.connote_shipper_name[0]
-            console.log(inp)
+
             this.$nextTick(() => {
                 inp.$refs.generalInput.$el.querySelector('input').focus()
             });
         },
         formData(form) {
-            console.log(form)
+
             
         },
         searchTariffCode(prefix, val){

@@ -154,7 +154,7 @@ export default {
                 let result = res.data.data
                 let suggestions = [];
                 result.length > 0 && result.map(item => {
-                    console.log(item);
+
                     suggestions.push({
                         value: item['node_name'],
                         data: item

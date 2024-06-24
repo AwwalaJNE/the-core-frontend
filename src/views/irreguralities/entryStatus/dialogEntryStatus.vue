@@ -206,7 +206,7 @@ export default {
             switch(key) {
                 case "status_code":
                     let obj = this.status_code_arr.filter(item => item.value == val)[0]
-                    console.log('status_code', val, obj)
+
                     if(Object.keys(obj).length > 0) {
                         if(obj.hasOwnProperty('item')) {
                             this.irregularity_type = obj.item.status_subtype || ''
@@ -232,7 +232,7 @@ export default {
                     this.inputType['value'] = val
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },
@@ -362,7 +362,7 @@ export default {
             this.closeDialog()
         },
         async handleRemove(file) {
-            console.log(this.fileList.length,'length');
+
             const index = this.fileList.findIndex(item => item.uid === file.uid);
             if (index !== -1) {
                 this.fileList[index].isRemoving = true;
@@ -375,7 +375,7 @@ export default {
                 this.fileList.splice(index, 1);
             }
             
-            console.log(file, this.fileList.splice(index, 1),'ini removes');
+
         },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;

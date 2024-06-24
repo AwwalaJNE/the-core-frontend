@@ -182,7 +182,7 @@ export default {
                     return item.user_id === val.user_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogUser = true
                 });
@@ -194,7 +194,7 @@ export default {
                     this.URL.user + `/${val.user_id}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.openNotification(null, 'Romove success', 'Romove role is success')
                 }).catch(err => {

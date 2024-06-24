@@ -100,7 +100,7 @@ export default {
         formData(form){
             this.form = form
             if(this.surcharge_type_id  !== undefined && this.surcharge_type_id  !== '') {
-                    console.log('update')
+
                     this.updateData()
             } else {
                     this.addData()
@@ -121,7 +121,7 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
@@ -135,14 +135,14 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
+
             await axios
                 .post(
                     this.URL.surcharge_type + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")

@@ -167,7 +167,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+
                     this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
@@ -191,7 +191,7 @@ export default {
                     return item.geolocation_city_id === val.geolocation_city_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogGeolocationCity = true
                 });
@@ -212,7 +212,7 @@ export default {
                     this.URL.geolocation_city + `/${val.geolocation_city_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.openNotification(null, 'Delete success', 'Delete city is success')
                 }).catch(err => {
