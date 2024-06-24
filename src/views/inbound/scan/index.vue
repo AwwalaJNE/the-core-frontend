@@ -191,7 +191,6 @@ export default {
                 this.closeProgress();
                 this.loading = false
                 if (err.response.data.reference) {
-                  typeNotif = 'danger';
                   this.inbound_id = err.response.data.reference
                 }
                 this.refresh()
