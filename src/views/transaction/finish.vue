@@ -48,17 +48,19 @@ export default {
                     this.loading = false
                 })
         },
+        handleSpacebar(evt) {
+            if (evt.keyCode == 32) {
+                this.$router.replace({ name: 'new-transactions'});
+                this.$router.go()
+            }
+        }
     },
     mounted() {
         this.initialize()
-        let self = this
-        window.document.onkeydown = function(evt) {
-            evt = evt || window.event;
-            if (evt.keyCode == 32) {
-                self.$router.replace({ name: 'new-transactions'});
-                self.$router.go()
-            }
-        };
+        window.addEventListener('keydown', this.handleSpacebar);
+    },
+    beforeDestroy() {
+        window.removeEventListener('keydown', this.handleSpacebar);
     },
 }
 </script>
