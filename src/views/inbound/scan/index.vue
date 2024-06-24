@@ -190,8 +190,6 @@ export default {
               }).catch(err => {
                 this.closeProgress();
                 this.loading = false
-                // TODO: CHANGE THIS TO REFERENCE NUMBER (CHECK FIELD FROM BE)
-                let typeNotif = 'danger';
                 if (err.response.data.reference) {
                   typeNotif = 'danger';
                   this.inbound_id = err.response.data.reference
@@ -199,9 +197,8 @@ export default {
                 this.refresh()
                 this.handlerClearForm()
 
-                // TODO: BETTER WARN ATAU STILL SUCCESS YA?
                 setTimeout(()=>{
-                  this.openNotification(typeNotif, 'Receiving Failed!', err.response.data.message)
+                  this.openNotification('danger', 'Receiving Failed!', err.response.data.message)
                 }, 300);
               })
         },
