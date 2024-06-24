@@ -184,7 +184,7 @@ export default {
     },
 
     refresh() {
-      console.log("refresh");
+
       this.getTableData(
         this.pagination.limit,
         this.pagination.page,

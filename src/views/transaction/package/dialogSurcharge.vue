@@ -241,7 +241,7 @@ export default {
             this.options = []
             let selectedR = {}
             let prev_surcharge_id = this.koli['surcharge_id'] || []
-            console.log('this.koli', this.koli, surcharge)
+
             let obj = {}
             let hidden = {}
             surcharge.map(item => {
@@ -344,10 +344,10 @@ export default {
           })
         },
         radioChange(key, val){
-            console.log('radio change', key, val)
+
         },
         updateValue(key, value){
-            console.log('selected name', key, value)
+
             let split = key.split("|")[1]
             switch(true) {
                 case key.includes('surcharge_manual'):

@@ -259,7 +259,7 @@ export default {
         },
 
         refresh(){
-            console.log("refresh")
+
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
 
@@ -273,7 +273,7 @@ export default {
             val['vehicle_type_id'] = parseInt(val['vehicle_type_id'])
             val['flight_number'] = val['flight_number']
             val['flight_schedule'] = val['flight_schedule']
-            console.log(val,'bagus')
+
             this.dataItem = val
             if (parseInt(val['manifest_method_id']) === 1) {
               this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true)
@@ -338,7 +338,7 @@ export default {
           } 
         });
         window.open(routeData.href, '_blank');
-          console.log(row,'print')
+
         },
         actionCancel(row){
 

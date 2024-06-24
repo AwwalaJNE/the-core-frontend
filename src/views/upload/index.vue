@@ -155,7 +155,7 @@ export default {
 
             const data = this.dataTable
 
-            console.log('this.dataTable ', this.dataTable)
+
             // let filterData = this.dataTable.filter(item => {
             //     return item.status == true
             // })
@@ -169,14 +169,14 @@ export default {
                             JSON.stringify(item),
                             this.Helper.header())
                         .then(res => {
-                            console.log('res ', res)
+
                             item["status"] = true
                             item["message"] = 'success'
                             if (this.progress <= 100) {
                                 loading.changeProgress(this.progress++)
                             }
                         }).catch(err => {
-                            console.log('err', err)
+
                             item["status"] = false
                             item["message"] = err.response.data.message || 'something went wrong'
                             // this.openNotification('danger', 'Failed to collect role list', err)
@@ -186,7 +186,7 @@ export default {
                 }
 
                 this.dataTable = data
-                console.log('this.dataTable after ==== ', this.dataTable)
+
             }
 
             addData()
@@ -229,7 +229,7 @@ export default {
             })
         },
         handleChangeInputType(type, val) {
-            console.log('handleChangeInputType', val)
+
             this.selectedInputType = val
             this.datacolumn = []
             this.InputObject = this.$store.getters.getInputs[val] || {}
@@ -272,15 +272,15 @@ export default {
         },
         async beforeUpload(file) {
             await this.validateExcel(file)
-        // console.log(bool)
+ 
             this.typed = []
             let files =
             file.type ===
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             let size = file.size / 1024 / 1024 < 5;
 
-            console.log('info file', file)
-            console.log('info fileList', this.fileList)
+
+
         },
         validateExcel(file){
             this.processFile(file)
@@ -328,7 +328,7 @@ export default {
             }
             let keys = Object.keys(this.InputObject)
             let rule = ''
-            console.log('item', item)
+
             for(let inp of keys) {
                 rule = this.InputObject[inp].rule || ''
                 switch(true) {
@@ -343,19 +343,19 @@ export default {
                             // obj["status"] = emailValidate || false
                             // obj["message"] = emailValidate == false ? `${inp} is not valid` : 'valid' 
                             
-                            // console.log(item, emailValidate, obj)
+ 
                         } 
                         // break;
                     case rule.includes("min_value"):
                         
                         // break;
                     default:
-                        console.log('meong')
+
                         // code block
                 }
             }
 
-            console.log('last obj', obj)
+
 
             return obj
             
@@ -365,7 +365,7 @@ export default {
         this.initializeInputType()
         // let em = email
         // let req = required
-        // console.log('email', em.validate('ekel', 'ooh'), req.validate(''), min.validate('12345', 'min:5'))
+ 
     },
 }
 </script>

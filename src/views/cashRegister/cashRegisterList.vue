@@ -109,7 +109,7 @@ export default {
         .then((res) => {
           let arr = res.data.data;
 
-          console.log(arr);
+
           this.dataTable = arr;
 
           this.pagination.page = res.data.meta ? res.data.meta.current_page : 1;
@@ -143,7 +143,7 @@ export default {
     },
 
     refresh() {
-      console.log("refresh");
+
       this.getTableData(
         this.pagination.limit,
         this.pagination.page,

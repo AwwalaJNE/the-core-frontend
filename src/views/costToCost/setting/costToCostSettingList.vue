@@ -176,7 +176,7 @@ export default {
         },
 
         refresh(){
-            console.log("refresh")
+
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
 
@@ -198,7 +198,7 @@ export default {
             this.$store.dispatch(`SET_COST_TO_COST_SETTING_COST_OWNER_NODE_ID_ValueData`, val["cost_owner"][0]) // asumsi ada flag node_name (samain dg querysearch. klo mau dinamis pakein prop aja)
             this.$store.dispatch(`SET_COST_TO_COST_SETTING_COST_PAYER_NODE_ID_ValueData`, val["cost_payer"][0]) // asumsi ada flag node_name
 
-            console.log(this.dataItem,'item')
+
             this.$nextTick(() => {
               this.dialogNewEditCostingSetting = true
             });
@@ -210,7 +210,7 @@ export default {
                     this.URL.cost_to_cost + `/${this.cost_to_cost_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.closeDialogConfirmRemove();
                     this.openNotification(null, 'Romove success', 'Romove Costing is success')

@@ -193,7 +193,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+
                     this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
@@ -217,7 +217,7 @@ export default {
                     return item.geolocation_subdistrict_id === val.geolocation_subdistrict_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogGeolocationSubDistrict = true
                 });
@@ -229,7 +229,7 @@ export default {
                     this.URL.geolocation_subdistrict + `/${val.geolocation_subdistrict_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.openNotification(null, 'Delete success', 'Delete subdistrict is success')
                 }).catch(err => {

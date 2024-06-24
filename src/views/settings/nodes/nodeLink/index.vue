@@ -191,7 +191,7 @@ export default {
             let obj = this.dataTable.filter(item => {
               return item.node_link_id === val.node_link_id
             })
-            // console.log(obj,'obj')
+ 
             this.dataItem = obj[0]
             this.dataItem.node_link_vehicle_mode_id = this.dataItem["vehicle_mode"]["vehicle_mode_name"] ? this.dataItem["vehicle_mode"]["vehicle_mode_name"] : this.dataItem["node_link_vehicle_mode_id"]
             this.dataItem.node_link_origin_id = this.dataItem["node_origin"]["node_name"] ? this.dataItem["node_origin"]["node_name"] : this.dataItem["node_link_origin_id"]
@@ -203,7 +203,7 @@ export default {
             
 
 
-            console.log(this.dataItem, 'nihh val', val, this.dataItem['node_link_origin_id'])
+
             this.$nextTick(() => {
               this.dialogNodeLink = true
             });
@@ -215,7 +215,7 @@ export default {
                   this.URL.node_link + `/${val.node_link_id}?n=${this.listenNodeId}`,
                   this.Helper.header())
               .then(res => {
-                console.log('res', res)
+
                 this.refresh()
                 this.openNotification(null, 'Success', 'Delete node link is success')
               }).catch(err => {

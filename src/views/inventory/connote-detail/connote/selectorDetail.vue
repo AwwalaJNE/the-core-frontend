@@ -90,7 +90,7 @@ export default {
     valueData: function (val) {
       if (val != undefined) {
         this.dataOrigin = val
-        console.log(this.dataOrigin,'arrdata')
+
         // this.dataOrigin.length > 0 ? this.loading = false : this.loading = true
       }
     },

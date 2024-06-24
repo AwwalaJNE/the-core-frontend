@@ -295,7 +295,7 @@ export default {
           if(this.pickup_schedule_id !== undefined && this.pickup_schedule_id !== '') {
             this.form.pickup_schedule_id = String(this.pickup_schedule_id)
 
-            console.log(this.form,'alah')
+
             this.updateData()
           } else {
             this.node_id = this.listenNodeId
@@ -318,7 +318,7 @@ export default {
 
         openGetCustomer() {
           this.dialogGetCustomer = true
-          console.log('open ')
+
         },
         closeGetCustomer() {
           this.dialogGetCustomer = false
@@ -334,9 +334,9 @@ export default {
                         }
                     })
 
-                    console.log('update this.pickup_schedule', this.pickup_schedule)
+
                 } else if(info.type == 'remove') {
-                    console.log('remove', key, value, info)
+
                     this.pickup_schedule.map(item => {
                         if(item.date == key) {
                             let filteredAry = item.time.filter(e => e !== value)
@@ -356,7 +356,7 @@ export default {
                 // setTimeout(function(){ self.forcererender = false }, 100);
 
                 let aaa = this.$store.getters.getInputs.pickup_list
-                console.log('data customer', aaa)
+
             }
         },
 
@@ -454,7 +454,7 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
+
             await axios
                 .post(
                     this.URL.pickup_schedule + `?n=${this.listenNodeId}`,

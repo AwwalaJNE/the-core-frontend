@@ -108,7 +108,7 @@ export default {
                     this.index = 1
                     this.inputArray.push(this.Keys[0])
 
-                    console.log('iterate-selector ', this.Keys, this.InputObject)
+
                 } else {
                     this.InputObject = {}
                 }
@@ -116,13 +116,13 @@ export default {
         addInputArray() {
             this.index++
             this.inputArray.push(this.input)
-            console.log('this.input', this.inputArray,this.input)
+
         },
         removeInputArray(index) {
             this.inputArray.splice(index, 1)
         },
         updateValue(type, val) {
-            console.log(type,val)
+
         }
     },
     mounted() {

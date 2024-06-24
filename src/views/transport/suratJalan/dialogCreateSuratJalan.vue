@@ -360,7 +360,7 @@ export default {
       }
     },
     onChangeCustom(type, val, obj) {
-      console.log("onchange", type, val, obj);
+
       switch (type) {
         case "no_moda_angkutan_id":
           if (typeof obj === "object") {
@@ -398,7 +398,7 @@ export default {
           }
           this.isDestinationDisableCheck();
         default:
-          console.log("meong");
+
         // code block
       }
     },
@@ -411,7 +411,7 @@ export default {
       }
     },
     actionUpdate(val, key) {
-      console.log("table", key, val);
+
       switch (key) {
         case "remove":
           if (this.dataTable.length > 0 && typeof val === "object") {
@@ -422,7 +422,7 @@ export default {
           }
           break;
         default:
-          console.log("meong");
+
         // code block
       }
     },
@@ -448,7 +448,7 @@ export default {
           this.suratMuatan = val;
           break;
         default:
-          console.log("meong");
+
         // code block
       }
     },

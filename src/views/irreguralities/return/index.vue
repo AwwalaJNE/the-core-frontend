@@ -187,7 +187,7 @@ export default {
                 from = moment(d).format("YYYY-MM-DD")
                 to = moment(d).format("YYYY-MM-DD")
             }
-            console.log("refresh",this.dateRange,d, from, to)
+
             
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
         },
@@ -241,7 +241,7 @@ export default {
                     this.refresh()
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },

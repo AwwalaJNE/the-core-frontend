@@ -118,7 +118,7 @@ export default {
         formData(form,value){
             this.form = form
             this.ipAddress = this.$store.getters.getInputs.value
-            // console.log(form,value,this.ipAddress,this.form, ' ini forms');
+ 
             if(this.node_id !== undefined && this.node_id !== '') {
                 if(this.form.hasOwnProperty('node_id')){
                   delete this.form.node_id
@@ -308,7 +308,7 @@ export default {
 
         },
         async addData() {
-            console.log('forms', this.form)
+
             await axios
                 .post(
                     this.URL.node + `?n=${this.listenNodeId}`,
@@ -333,11 +333,11 @@ export default {
         updateFilter(key, value) {
         this.form.ip_address = value;
         this.$store.dispatch("SET_NODE_IP_ADDRESS_ArrData",{ key, value })
-        console.log(this.form.ip_address,"regional", key, value)
+
         switch(true) {
             case key.toLowerCase().includes("ipAddress"):
                 this.ipAddress = value
-                console.log(value,'valuee');
+
                 // this.$store.dispatch("SET_BAGGING_destination_selected", this.regional )
                 break;
             case key.toLowerCase().includes("service"):

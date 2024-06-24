@@ -226,7 +226,7 @@ export default {
                     `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('link', res)
+
                     if(res.data.data.length > 0) {
                     res.data.data.map(item => {
                         let obj = {}
@@ -250,7 +250,7 @@ export default {
         },
         searchValue(val) {
             this.tempSearch = val
-            console.log("this.tempSearch = ", this.tempSearch)
+
         },
         clearSearch() {
             this.$refs.searchInput.clear()
@@ -276,14 +276,14 @@ export default {
 
         filterNow() {
             if (this.permission.length > 0) {
-                console.log('this.keysPermission before filter', this.keysPermission)
+
                 this.permission.map(item => {
                     if (this.keysPermission.hasOwnProperty(item.user_permission_id)) {
                         item["selected"] = true
                     }
                 })
                 this.permissionDisplay = this.permission
-                console.log('this.keysPermission after filter', this.keysPermission)
+
             }
         },
         

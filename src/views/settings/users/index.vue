@@ -249,7 +249,7 @@ export default {
             this.title = item[0].title
 
             if(this.navActive === "k-PERMISSIONS") {
-                // console.log('ini permission page')
+ 
                 this.getDataRole()
                 // this.getDataPermission()
             }
@@ -291,7 +291,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&s=${query}`, 
                 this.Helper.header())
                 .then(res => {
-                    // console.log('role', res.data.data)
+ 
                     if(res.data.data.length > 0) {
                         this.dataRole = res.data.data
                     } else {
@@ -312,7 +312,7 @@ export default {
                 `?n=${this.listenNodeId}&limit=-1`, 
                 this.Helper.header())
                 .then(res => {
-                    // console.log('getDataPermission',res.data.data)
+ 
                     if(res.data.data.length > 0) {
                         let data = res.data.data
                         let temp = {}
@@ -325,7 +325,7 @@ export default {
                         // this.permission = data
                         this.permissionDisplay = data
                         this.permissionObject = temp
-                        // console.log('meong 1 ', this.permission)
+ 
                     } else {
                         // this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
                     }
@@ -345,7 +345,7 @@ export default {
             this.user_role_permission = []
             // this.permissionDisplay = []
             this.keysPermission = {}
-            // console.log('this.keysPermission meong', this.keysPermission)
+ 
             await axios
                 .get(this.URL.role + `/${val}/permission?n=${this.listenNodeId}`, 
                 this.Helper.header())

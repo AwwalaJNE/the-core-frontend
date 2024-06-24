@@ -85,7 +85,6 @@ export default {
                     .get(url_print,
                     this.Helper.header())
                     .then(res => {
-    					// console.log('getDataPrint', res.data)
                         this.html = res.data.html 
 
                         // let iframe = document.getElementById('iframe')

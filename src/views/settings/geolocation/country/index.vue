@@ -177,7 +177,7 @@ export default {
                     return item.geolocation_country_id === val.geolocation_country_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogGeolocationCountry = true
                 });
@@ -189,7 +189,7 @@ export default {
                     this.URL.geolocation_country + `/${val.geolocation_country_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.openNotification(null, 'Success', 'Update role is success')
                 }).catch(err => {

@@ -223,14 +223,14 @@ export default {
           this.isDisabled = false
         }
       }
-      // console.log('WATCH dataItem', val)
+ 
       // if(val !== undefined) {
       //     this.node_id = val.node_id
       //     this.manifest_number = val.manifest_number
       //     this.vehicle_mode_id = val['vehicle_mode_id'] ? val['vehicle_mode_id'] : null
       //     this.vehicle_type_id = val['vehicle_type_id'] ? val['vehicle_type_id'] : null
       //     this.initDataItem()
-      //     // console.log('init dataItem', val)
+ 
       // }
     },
     active: function(val) {
@@ -243,8 +243,6 @@ export default {
           // if this.listenDataItem ada isinya
 
           this.initDataItem();
-
-          // console.log('init dataItem', val)
         }
       }
     },
@@ -303,14 +301,14 @@ export default {
     //         case 'remove':
     //           let filter = this.dataTable.filter(item => item.bag_number !== val.bag_number)
     //           this.dataTable = filter
-    //           console.log('filter', val, filter)
+ 
     //         default:
-    //             console.log('meong')
+ 
     //             // code block
     //     }
     // },
     inputFocus(info) {
-      // console.log('focus to', info)
+ 
       if (info && info.hasOwnProperty("key")) {
         let url = "";
         switch (info["key"]) {
@@ -330,7 +328,7 @@ export default {
               "dynamicinputcomponent_node_id_transit"
             ];
             let arr = transit["arrData"];
-            // console.log('node_id_destination transit', arr)
+ 
 
             let nodeId = this.node_id_origin;
             // jika punya transit
@@ -361,13 +359,13 @@ export default {
     },
     querySearch(queryString, cb) {
       // let flag = this.listenFlag
-      // console.log('autocomplete url', flag)
-      // console.log('meanwhile from prop was', this.listenUrl)
+ 
+ 
       axios
         .get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header())
         .then((res) => {
           let result = res.data.data;
-          // console.log('result',result)
+ 
           let suggestions = [];
 
           result.length > 0 &&
@@ -380,7 +378,7 @@ export default {
               }
             });
 
-          // console.log('suggestions', suggestions)
+ 
 
           cb(suggestions);
         })
@@ -442,7 +440,7 @@ export default {
         );
       }
 
-      console.log("this.form", this.form);
+
     },
     handleSubmit() {
       this.$refs.formSuratMuatanController.handleSubmit(); // trigger function submit form dari luar component formInputController
@@ -584,8 +582,8 @@ export default {
     },
 
     async updateData() {
-      console.log("ckck", this.dataTable);
-      console.log("this.formssssss", this.vehicle_mode_id, this.form);
+
+
       if (this.vehicle_mode_id) {
         this.form.vehicle_mode_id = this.vehicle_mode_id; //remove if vehicle_mode_id not editable
       }
@@ -620,7 +618,7 @@ export default {
     },
 
     async addData() {
-      // console.log('form', this.form)
+ 
       this.form.manifest_item = this.dataTable;
 
       await axios
@@ -673,7 +671,7 @@ export default {
       let hasData = this.dataTable.filter(
         (item) => item["bag_number"] == this.item_code
       );
-      console.log("data >>", this.dataTable, hasData, this.item_code);
+
       if (hasData.length == 0) {
         this.getDataManifest(this.item_code);
       } else {
@@ -701,7 +699,7 @@ export default {
                 : "";
             });
             this.dataTable = this.dataTable.concat(arr);
-            // console.log(this.dataTable,'data')
+ 
           } else {
             this.openNotification(
               "danger",
@@ -722,7 +720,7 @@ export default {
     },
 
     onChangeOrigin(type, val, info = {}) {
-      // console.log('type', type , val, info)
+ 
       if (this.manifest_method_id !== "" && type == "manifest_method_id") {
         this.manifest_method_id !== val && this.resetForm();
         // setTimeout(function(){ }, 3000);
@@ -817,7 +815,7 @@ export default {
 
           break;
         default:
-        // console.log(info)
+ 
       }
     },
     originNode(){

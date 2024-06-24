@@ -128,14 +128,14 @@ export default {
             this.loading = true
             let form = {};
             let itemNumber = "";
-            console.log(this.item_number,'ini item number');
+
             if(this.item_number !== undefined) {
               itemNumber = this.item_number
               form.item_number = this.item_number
             }
             if(this.bag_number !== null || this.bag_number !== undefined){
               form.bag_number = this.bag_number
-              console.log(form.bag_number.length, form.item_number.length)
+
               form.bag_number.length === form.item_number.length ? (this.total_connote_in_bag = 0) : this.total_connote_in_bag;
             }
             await axios
@@ -146,7 +146,7 @@ export default {
                 .then(res => {
                     if(res.data.data.bag_number != undefined) { // response dari BE jika data kosong bentuknya [] array kosong :( harusnya kan object
                         let itemNumberLength = form.item_number.length;
-                        console.log("item", itemNumberLength);
+
                         if (this.total_connote_in_bag == 0) {
                             let totalItem = res.data.data.hasOwnProperty("koli_detail")
                             ? Object.keys(res.data.data.koli_detail).length
@@ -187,7 +187,7 @@ export default {
                   
                     this.loading = false
                 }).catch(err => {
-                  console.log(err.response)
+
                     this.loading = false
                     // this.$router.push('/inventory/bagging')
                     this.openNotification('danger', 'Failed to populate Connote', (err.response && err.response.data && err.response.data.message) ? err.response.data.message : err)
@@ -195,7 +195,7 @@ export default {
         },
 
         getSummaryBag(val){
-          console.log("getSummaryBag", val)
+
           if(val.data != undefined ){ // response dari BE jika data kosong bentuknya [] array kosong :( harusnya kan object
             this.total_bag = 1
             // this.total_connote = val.data.data.bag_detail_qty
@@ -221,7 +221,7 @@ export default {
                     return item.user_id === val.user_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogUser = true
                 });
@@ -233,7 +233,7 @@ export default {
                     this.URL.bag+`/${val.bag_number}/detail/${val.bag_detail_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.openNotification('success', 'Romove success', 'Romove bag item successfully')
                 }).catch(err => {

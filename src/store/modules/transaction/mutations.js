@@ -448,7 +448,7 @@ export default {
         let index = state.connote_index_active
         let data = state.transaction.connote[index] || {}
 
-        console.log("xyz data", data)
+
 
         if(Object.keys(data).length > 0) {
             // ORIGIN
@@ -575,7 +575,7 @@ export default {
     // },
 
     RESET_STATE(state, payload) {
-        console.log("mutation reset", payload)
+
 
         if(payload && payload.state != undefined) {
             let parse = JSON.parse(payload.state)

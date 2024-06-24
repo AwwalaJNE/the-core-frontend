@@ -165,7 +165,7 @@ export default {
       return this.loading;
     },
     listenDataDelivery() {
-      console.log("data delivery item", this.dataDelivery);
+
       return this.dataDelivery;
     },
   },
@@ -214,7 +214,7 @@ export default {
     //   }
     // });
 
-    console.log('Nilai radioOption di dalam komponen anak:', this.radioOption);
+
     this.getParamRoute();
     this.getHRSStatus();
   },
@@ -321,7 +321,7 @@ export default {
       this.$emit("editPOD", val);
     },
     async actionRemove(val) {
-      console.log(val, "ini data pod");
+
       await axios
         .delete(
           `${this.URL.employee}/${val.courier_employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${val.delivery_runsheet_number}&koli_number=${val.koli_number}`,
@@ -353,7 +353,7 @@ export default {
     actionUpdate(key, val) {
       switch (val) {
         case "confirm":
-          console.log("confirms", key, val);
+
           this.runsheetAction(key);
           break;
         case "edit":
@@ -361,7 +361,7 @@ export default {
 
           break;
         default:
-          console.log("meong");
+
         // code block
       }
     },

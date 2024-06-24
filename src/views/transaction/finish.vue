@@ -43,7 +43,7 @@ export default {
                     obj['name'] = data.customer ? data.customer.toUpperCase() : ''
                     obj['id'] = data.transaction_id
                     this.dataTransaction = obj
-                    console.log(data)
+
                 }).catch(err => {
                     this.loading = false
                 })

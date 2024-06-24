@@ -179,7 +179,7 @@ export default {
     },
 
     refresh() {
-      console.log("refresh");
+
       this.getTableData(
         this.pagination.limit,
         this.pagination.page,
@@ -190,14 +190,14 @@ export default {
     },
 
     actionDetail(row) {
-      console.log(row);
+
       this.$router.push({
         name: "delivery-runsheet-edit",
         params: { delivery_runsheet_number: row.delivery_runsheet_number },
       });
     },
     actionCollect(row) {
-      console.log(row);
+
       this.form = {
         courier_employee_id: row.courier_employee_id,
         date: row.date ? row.date : null,

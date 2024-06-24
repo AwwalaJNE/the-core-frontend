@@ -117,7 +117,7 @@ export default {
                 obj['geolocation_province_time_zone']
             this.form = obj
             if(this.geolocation_province_id !== undefined && this.geolocation_province_id !== '') {
-                    console.log('update')
+
                     this.updateData()
             } else {
                     this.addData()
@@ -173,7 +173,7 @@ export default {
                             arr.push(obj)
                         })
 
-                        console.log('timezone', arr)
+
 
                         this.$store.dispatch("SET_GEOLOCATION_PROVINCE_GEOLOCATION_PROVINCE_TIME_ZONE_ArrData", arr.length > 0 ? arr : null)
                     } else {
@@ -191,7 +191,7 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
@@ -205,14 +205,14 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
+
             await axios
                 .post(
                     this.URL.geolocation_province + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")

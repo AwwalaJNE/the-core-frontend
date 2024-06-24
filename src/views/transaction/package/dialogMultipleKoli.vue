@@ -254,7 +254,6 @@ export default {
                     let self = this
                     this.$nextTick(() => {
                         // el[0].context.$refs.test.value = 'aaa'
-                        // console.log('input', el[0].context.$refs)
                     //     // this.$refs.theInput.focus();
                         // let str = `el[0].context.$refs.surchargeType${this.Keys[0].replace(/\s+/g, '')}`
                         // let elInput = eval(str)[0]
@@ -263,7 +262,7 @@ export default {
                         //actual_weight|0
                         let inputF = el[0].context.$refs.tableColom.$scopedSlots.tbody()[0].context.$refs.actual_weight0[0]
                         let inputEl = inputF.$el.querySelector('input')
-                        console.log('DIALOG SURCHARGE el', inputF)
+
                         // setTimeout(function(){ el[0].context.$refs.labelInput.$refs.generalInput.focus() }, 3000);
                         
 
@@ -321,7 +320,7 @@ export default {
         onSubmit(refs){
                 refs.form.validate().then(success => {
                     if (!success) {
-                        console.log('err form niih')
+
                         return;
                     } else {
                       this.handleSubmit()
@@ -376,7 +375,7 @@ export default {
                     break;
                 case key.includes("handle_surcharge"):
                     
-                    console.log('multi koli surcharge', value, value2, value3, value4)
+
                     
                     if (this.connote_koli_item[value].hasOwnProperty('is_packing_kayu_id')) {
                       if (value3 !== null && value3 !== "") {
@@ -395,7 +394,7 @@ export default {
                         this.connote_koli_item[value].surcharge_id = value2
                     }
                     
-                    console.log("this.connote_koli_item[value] >", this.connote_koli_item[value])
+
 
                     // this.$emit("prosesmultipleKoli", this.connote_koli_item)
                     // this.$store.dispatch("SET_CONNOTE_KOLI_ITEM", this.connote_koli_item)
@@ -403,7 +402,7 @@ export default {
                     // this.calculation()
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },

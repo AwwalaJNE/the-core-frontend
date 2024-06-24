@@ -172,7 +172,7 @@ export default {
     onError: function (e) {
       this.tokenCopied = false;
       this.toolTipMessage = "Failed to copy token!";
-      console.log(e);
+
     },
   },
   mounted() {

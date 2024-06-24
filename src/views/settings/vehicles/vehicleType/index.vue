@@ -227,7 +227,7 @@ export default {
                     this.message = `Are you sure want to delete vehicle type ${val.vehicle_type_name}`
                    break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
             

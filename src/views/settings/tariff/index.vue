@@ -40,7 +40,7 @@
                           v-model="filterTariffGroup"
                           :border="true"
                           @change="(asas) =>{
-                              console.log(asas);
+
                           }"
                       >
                         <template>
@@ -164,7 +164,7 @@ export default {
             this.$refs[el].refresh() // trigger function refresh form dari luar component list
         },
         async getTariffGroup(){
-            console.log('getTariffGroup');
+
             await axios.get(this.URL.tariff_group +`?n=${this.listenNodeId}`,this.Helper.header())
             .then(res => {
                 this.arrFilterTariffGroup = res.data.data.map(function(value){
@@ -173,12 +173,12 @@ export default {
                         value:value.tariff_group
                     };
                 });
-                console.log('getTariffGroup',this.arrFilterTariffGroup)
+
             });
         },
         searchValue (val) {
             this.tempSearch = val
-            console.log("this.tempSearch = ",this.tempSearch)
+
         },
         clearSearch() {
             this.$refs.searchInput.clear()
@@ -186,7 +186,7 @@ export default {
         activeTab(val) {
             this.navActive = val
             this.clearSearch()
-            console.log(this.navActive)
+
             let item = this.navItemm.filter(item => {
                 return item.key == val
             })
@@ -203,7 +203,7 @@ export default {
                 case "k-DISCOUNT":
                     this.dialogDiscount = true
                 default:
-                    console.log('meong')
+
                     // code block
             }
             this.refreshInject = this.navActive

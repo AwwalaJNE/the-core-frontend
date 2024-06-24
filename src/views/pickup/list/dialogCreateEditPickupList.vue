@@ -237,7 +237,7 @@ export default {
 
         openGetCustomer() {
           this.dialogGetCustomer = true
-          console.log('open ')
+
         },
         closeGetCustomer() {
           this.dialogGetCustomer = false

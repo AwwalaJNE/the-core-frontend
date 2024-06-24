@@ -165,7 +165,7 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
-                    console.log(res)
+
                     this.dataTable = res.data.data
 
                         this.pagination.page = res.data.meta.current_page
@@ -189,7 +189,7 @@ export default {
                     return item.geolocation_province_id === val.geolocation_province_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val update', val)
+
                 this.$nextTick(() => {
                     this.dialogGeolocationProvince = true
                 });
@@ -201,7 +201,7 @@ export default {
                     this.URL.geolocation_province + `/${val.geolocation_province_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.openNotification(null, 'Romove success', 'Romove role is success')
                 }).catch(err => {

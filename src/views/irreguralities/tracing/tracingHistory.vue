@@ -414,7 +414,7 @@ export default {
                     this.searchPlaceholderRemark = key;
                     break;
                 case "k-RUNSHEET":
-                    console.log(val, 'ini val');
+
                     this.searchByRunsheet = val;
                     this.searchPlaceholderRunsheet = key;
                     break;

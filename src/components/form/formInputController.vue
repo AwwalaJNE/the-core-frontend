@@ -370,7 +370,7 @@ export default {
     methods: {
         initialize() {
             let obj = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm] || {}
-            console.log('this.listenTypeForm',this.listenTypeForm,obj)
+
                 if (Object.keys(obj).length > 0) {
                     this.Keys = Object.keys(obj)
                     this.InputObject = obj
@@ -383,22 +383,22 @@ export default {
             this.iterateInputWait = true
             let obj = this.listenDataItem
             let prefix = this.listenTypeForm.toUpperCase()
-            console.log('obj', this.Keys, prefix,obj)
+
             if(obj != null && Object.keys(this.InputObject).length > 0) {
                 this.Keys.map(item => {
                     let action = item.toUpperCase()
                     if(item.includes('dynamicinputcomponent')){
                         let itemAlt = item.split('dynamicinputcomponent_')[1]
-                        // console.log('itemAlt', itemAlt)
+ 
                         if(this.listenDataItem.hasOwnProperty(itemAlt)){
                             this.$store.dispatch(`SET_${prefix}_${action}`, this.listenDataItem[itemAlt])
-                            console.log(`SET_${prefix}_${action}`, this.listenDataItem[itemAlt])
+
                             
                         }
                     }
                     if(this.listenDataItem.hasOwnProperty(item)) {
 
-                        // console.log('obj store dispatch', `SET_${prefix}_${action}`, this.listenDataItem[item])
+ 
                         this.$store.dispatch(`SET_${prefix}_${action}`, this.listenDataItem[item])
 
                         if(this.InputObject[item].hasOwnProperty('mapPicker')) {
@@ -441,13 +441,13 @@ export default {
                 // }
                 let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
                 if(err == true) {
-                    console.log(`error input controller dispatch SET_${prefix}_${action} | val ` + val)
+
                 }
             } catch (error) {
                 
             }
             
-            // console.log('form input component', type, val, obj)
+ 
             if(obj.hasOwnProperty('typeInput')) {
                 if(obj['typeInput'] == 'autocomplete') {
                     try {
@@ -484,7 +484,7 @@ export default {
         onSubmit(refs){
                 refs.form.validate().then(success => {
                     if (!success) {
-                        console.log('err niih')
+
                         return;
                     }
                     this.InputObject = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm]

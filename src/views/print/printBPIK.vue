@@ -207,7 +207,7 @@ export default {
                     this.bpik.push(obj)
                 }
             }
-            console.log('data connote', printBPIK)
+
         },
         moneyformat(number){
             let val = number != 0 ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number) : 'Rp 0'

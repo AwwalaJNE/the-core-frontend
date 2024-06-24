@@ -128,8 +128,8 @@ export default {
                 this.form.tariff_currency_code = val.tariff_currency_code
                 this.form.is_active = val.is_active
                 this.geolocation_country_id = val.geolocation_country_id
-                console.log(this.dataItem, 'nihh watch')
-                console.log(this.form, 'form')
+
+
                 
             }
         }
@@ -143,26 +143,26 @@ export default {
         updateValue(type, val) {
             let err = this.form[`${type}`] !== undefined ? this.form[type] = val : true
             if(err == true) {
-                console.log(`error this.form[${type}] | val ` + val + this.form[`${type}`])
+
             }
         },
         handleSubmit(){
             this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster
         },
         onSubmit(refs){
-            console.log('onsubmit', refs)
+
                 refs.form.validate().then(success => {
                 if (!success) {
-                    console.log('err niih')
+
                 return;
                 }
 
-                console.log('this.user_role_id',this.user_role_id)
+
                 if(this.geolocation_country_id !== undefined && this.geolocation_country_id !== '') {
-                    console.log('update')
+
                     this.updateData()
                 } else {
-                    console.log('create new')
+
                     this.addData()
                 }
 
@@ -179,7 +179,7 @@ export default {
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.form.geolocation_country_name = ""
                     this.form.geolocation_country_code = ""
                     this.form.tariff_currency_code = ""
@@ -196,14 +196,14 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
+
             await axios
                 .post(
                     this.URL.geolocation_country,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.form.geolocation_country_name = ""
                     this.form.geolocation_country_code = ""
                     this.form.tariff_currency_code = ""

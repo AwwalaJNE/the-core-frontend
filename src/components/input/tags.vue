@@ -65,8 +65,8 @@ export default {
                         tagify.dropdown.show.call(tagify, e.detail.value);
                 }
 
-                console.log( tagify.value )
-                console.log('mix-mode "input" event value: ', e.detail)
+
+
             })
         }
     },

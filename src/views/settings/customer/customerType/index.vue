@@ -195,7 +195,7 @@ export default {
                     return item.customer_type_id === val.customer_type_id
                 })
                 this.dataItem = obj[0]
-                console.log(this.dataItem, 'nihh val', val)
+
                 this.$nextTick(() => {
                     this.dialogCustomerType = true
                 });

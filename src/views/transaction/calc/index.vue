@@ -183,7 +183,7 @@ export default {
         // },
         listenTransactionConnoteLength: function (n,o) {
             if(n !== o) {
-                console.log('+++ calc listen list connote +++', n)
+
                 this.prosesListConnote()
             }
         },
@@ -199,7 +199,7 @@ export default {
                 if (Object.keys(obj).length > 0) {
                     this.Keys = Object.keys(obj)
                     this.objectKeys = obj
-                    console.log('ini objectKeys clac', this.objectKeys)
+
                 } else {
                     this.Keys = []
                     this.objectKeys = {}
@@ -229,7 +229,7 @@ export default {
             } else {
                 this.listConnote = [{'label': 'Package Empty', 'value':'-'}]
             }
-            console.log('Calculate === list === Connote', this.listConnote)
+
         },
         selectConnote(key, value) {
             let index = 0
@@ -244,13 +244,12 @@ export default {
             console.log('list connote koli => ', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
         },
         async getShippingService(booking_connote_service_code, fromBooking = false) {
-            console.log("apakah jalan")
+
             await axios
                 .get(this.URL.tariff_shipping_service + 
                 `?n=${this.listenNodeId}&destination=${this.destinationCode}`, 
                 this.Helper.header())
                 .then(res => {
-                    // console.log('getShippingService', res.data.data)
                     let data = res.data.data
                     let arr = []
                     data.map(item => {
@@ -259,16 +258,16 @@ export default {
                         obj['value'] = item.tariff_service_code
                         obj['data'] = item
                         obj['tarif'] = item.tariff_amount_1
-                        console.log(obj)
-                        console.log("ini bukan",booking_connote_service_code,item.tariff_service_code)
+
+
                         if(item.tariff_service_code==booking_connote_service_code){
-                            console.log("masuk",obj)
+
                             this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", obj)
-                            console.log('getShippingService arr', obj)
+
                         }
                         
                     })
-                    console.log('getShippingService arr', arr)
+
                    
                     //this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE", arr.length > 0 ? arr[0].value : '')
                     
@@ -304,7 +303,7 @@ export default {
                     // this.getShippingService()
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },

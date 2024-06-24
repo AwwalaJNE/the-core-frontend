@@ -142,7 +142,7 @@ export default {
             });
         },
         formData(form) {
-            console.log(form)
+
             
         },
         searchTariffCode(prefix, val){
@@ -165,7 +165,7 @@ export default {
                     }
                     // this.loading = false
                 }).catch(err => {
-                    console.log(err.response)
+
                     this.checkAuth(err.response)
                     // this.loading = false
                     // this.openNotification('danger', 'Failed to populate country list', err)
@@ -214,7 +214,7 @@ export default {
             }
         },
         async getShippingService(booking_connote_service_code, fromBooking = false) {
-            console.log("apakah jalan")
+
             await axios
                 .get(this.URL.tariff_shipping_service + 
                 `?n=${this.listenNodeId}&destination=${this.destinationCode}`, 
@@ -238,7 +238,7 @@ export default {
                     this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_arrData", arr)
 
                     if(fromBooking == true && booking_connote_service_code != '') {
-                        console.log('jangan jalanin lagi')
+
                         let dat = arr.filter(item => item.value == booking_connote_service_code)
                         let serviceItem = dat[0]
                         this.$store.dispatch("SET_PACKAGE_PACKAGE_SERVICE_ValueData", serviceItem)

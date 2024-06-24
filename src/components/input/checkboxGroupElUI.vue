@@ -33,7 +33,7 @@ export default {
     },
     methods: {
         changed() {
-            // console.log('changed',this.listenFormKey, this.option1)
+ 
             this.$emit("changed", this.checkList)
         },
         updateValue(){

@@ -154,7 +154,7 @@ export default {
 
         openGetCustomer() {
           this.dialogGetCustomer = true
-          console.log('open ')
+
         },
         closeGetCustomer() {
           this.dialogGetCustomer = false
@@ -174,7 +174,7 @@ export default {
             setTimeout(function(){ self.forcererender = false }, 100);
 
             let aaa = this.$store.getters.getTransaction.origin
-            console.log('data origin', aaa)
+
           }
         },
 
@@ -270,7 +270,7 @@ export default {
                 })
         },
         async addData() {
-            console.log('form', this.form)
+
             await axios
                 .post(
                     this.URL.pickup + `?n=${this.listenNodeId}`,

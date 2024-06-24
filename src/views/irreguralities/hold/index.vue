@@ -200,7 +200,7 @@ export default {
           this.UnholdIrregularity()
         },
         refresh(){
-            console.log("refresh")
+
             let d = new Date()
             let from = ''
             let to = ''
@@ -257,21 +257,21 @@ export default {
             if(this.dataTable.length > 0) {
               //dibuat untuk approve saja jadi gapake switch case
             this.dataItem = val;
-            console.log(this.dataItem);
+
             this.$nextTick(() => {
                 this.dialogConfirmCancelActive = true;
             });
           }
         },
         async handleSubmit() {
-            console.log('this.form', this.form)
+
             await axios
                 .post(
                     this.URL.irregularities + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-                    console.log('res', res)
+
                     this.refresh()
                     this.dialogCancelActive = false
                     this.openNotification(null, 'Success', 'Create new cancel connote is success')
@@ -290,7 +290,7 @@ export default {
                 case "edit":
                     if(this.dataTable.length > 0) {
                         this.dataItem = val
-                        console.log(this.dataItem,'item')
+
                         this.$nextTick(() => {
                             this.dialogEntryStatus = true
                         });
@@ -304,7 +304,7 @@ export default {
                 case "TRIGGER_DATE":
                     this.dateRange = val
                     this.refresh()
-                    console.log('dateRange',this.dateRange)
+
                     break;
                 case "DIALOG_CANCEL":
                     this.form = val
@@ -312,7 +312,7 @@ export default {
                     this.handleSubmit()
                     break;
                 default:
-                    console.log('meong')
+
                     // code block
             }
         },
@@ -353,7 +353,7 @@ export default {
                   JSON.stringify(form),
                   this.Helper.header())
               .then(res => {
-                console.log('res', res)
+
                 this.refresh()
                 this.dialogConfirmCancelActive = false
                 this.dialogLoadingCancelActive = false
