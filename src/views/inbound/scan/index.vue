@@ -211,7 +211,8 @@ export default {
               const id_inbound  = this.$ls.get('id_inbound');
               const getInboundId = id_inbound?.toString()?.toLowerCase();
               // console.log(getInboundId,'id_inbound');
-              await axios
+              if (getInboundId !== undefined) {
+                await axios
                   .get(this.URL.inbound +
                       `/${getInboundId}/inbound-status?n=${this.listenNodeId}`,
                       this.Helper.header())
@@ -228,6 +229,10 @@ export default {
                     this.loading = false
                     this.openNotification('danger', 'Failed to receiving ', err)
                   })
+              } else {
+                this.loading = false
+              }
+              
             }else{
               await axios
                   .get(this.URL.inbound +
