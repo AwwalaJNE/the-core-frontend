@@ -303,24 +303,45 @@ export default {
                 formData.append(key, this.form[key]);
             }
 
-            await axios
-                .post(
-                    this.URL.irregularities + `?n=${this.listenNodeId}`,
-                    formData, 
-                    this.Helper.header())
-                .then(res => {
-                    this.dialogEntryStatusActive = false
-                    this.refresh()
-                    this.openNotification(null, 'Success', 'Create new entry status is success')
-                    this.handleClearForm();
-                }).catch(err => {
-                    this.loading = false
-                    this.dialogEntryStatus = false
-                    this.dialogEntryStatusActive = false
-                    this.refresh()
-                    this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
-                    this.handleClearForm();
-                })
+            if (this.form.irregularity_id) {
+                await axios
+                    .post(
+                        this.URL.irregularities + `/update?n=${this.listenNodeId}`,
+                        formData, 
+                        this.Helper.header())
+                    .then(res => {
+                        this.dialogEntryStatusActive = false
+                        this.refresh()
+                        this.openNotification(null, 'Success', 'Create new entry status is success')
+                        this.handleClearForm();
+                    }).catch(err => {
+                        this.loading = false
+                        this.dialogEntryStatus = false
+                        this.dialogEntryStatusActive = false
+                        this.refresh()
+                        this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
+                        this.handleClearForm();
+                    })
+            } else {
+                await axios
+                    .post(
+                        this.URL.irregularities + `?n=${this.listenNodeId}`,
+                        formData, 
+                        this.Helper.header())
+                    .then(res => {
+                        this.dialogEntryStatusActive = false
+                        this.refresh()
+                        this.openNotification(null, 'Success', 'Create new entry status is success')
+                        this.handleClearForm();
+                    }).catch(err => {
+                        this.loading = false
+                        this.dialogEntryStatus = false
+                        this.dialogEntryStatusActive = false
+                        this.refresh()
+                        this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
+                        this.handleClearForm();
+                    })
+            }            
         },
         searchValue (val) {
             this.tempSearch = val
@@ -362,7 +383,6 @@ export default {
                 case "TRIGGER_DATE":
                     this.dateRange = val
                     this.refresh()
-
                     break;
                 case "DIALOG_ENTRY_STATUS":
                     this.form = val

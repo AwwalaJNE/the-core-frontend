@@ -144,6 +144,7 @@ export default {
             dialogVisible: false,
             disabled: false,
             fileList: [],
+            prevFileList: [],
             isRemoving: false,
             uploadedFile: '',
             files: null
@@ -185,13 +186,18 @@ export default {
                 //     });
                 // }
 
+                
                 if (this.listenDataItem.attachment && this.listenDataItem.attachment.length > 0) {
                     this.fileList = this.listenDataItem.attachment.map(item => ({
                         name: '',
                         url: item.url.toLowerCase()
                     }));
+                    this.prevFileList = this.listenDataItem.attachment.map(item => ({
+                        attachment_id: item.attachment_id
+                    }));
                 } else {
                     this.fileList = []; 
+                    this.prevFileList = [];
                 }
             }
         },
@@ -277,34 +283,70 @@ export default {
         async handleSubmit() {
             const uploadComponent = this.$refs.upload;
 
-            if (uploadComponent) {
-                const uploadedFiles = uploadComponent.uploadFiles;
+            if (this.irregularity_id) {
+                if (uploadComponent) {
+                    const uploadedFiles = uploadComponent.uploadFiles;
 
-                if (uploadedFiles.length > 0) {
-                    let form = {
-                        irregularity_type: this.irregularity_type,
-                        irregularity_status_code: this.irregularity_status_code,
-                        remark: this.remark,
-                    };
-                    uploadedFiles.forEach((file, index) => {
-                        if (file.raw && file.raw instanceof Blob) {
-                            form[`file_${this.generateRandomString(5)}`] = file.raw;
-                        } else {
-                            console.error('File is not valid or not in the expected format:', file);
-                        }
-                    });
+                    if (uploadedFiles.length > 0) {
+                        let form = {
+                            irregularity_id: this.irregularity_id,
+                            irregularity_type: this.irregularity_type,
+                            irregularity_status_code: this.irregularity_status_code,
+                            remark: this.remark,
+                        };
+                        uploadedFiles.forEach((file, index) => {
+                            if (file.raw && file.raw instanceof Blob) {
+                                form[`file_${this.generateRandomString(5)}`] = file.raw;
+                            } else if (file?.uid) {
+                                form[`file_${file.uid}`] = this.prevFileList[index].attachment_id;
+                            } else {
+                                this.openNotification('warn', 'File is not valid', ' Please put in the expected format')
+                            }
+                        });
 
-                    // form[this.inputType.key] = this.inputType.value;
+                        // form[this.inputType.key] = this.inputType.value;
 
-                    this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
-                } else {
-                    let form = {
-                        irregularity_type: this.irregularity_type,
-                        irregularity_status_code: this.irregularity_status_code,
-                        remark: this.remark,
-                    };
+                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
+                    } else {
+                        let form = {
+                            irregularity_type: this.irregularity_type,
+                            irregularity_status_code: this.irregularity_status_code,
+                            remark: this.remark,
+                        };
 
-                    this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
+                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
+                    }
+                }
+            } else {
+                if (uploadComponent) {
+                    const uploadedFiles = uploadComponent.uploadFiles;
+
+                    if (uploadedFiles.length > 0) {
+                        let form = {
+                            irregularity_type: this.irregularity_type,
+                            irregularity_status_code: this.irregularity_status_code,
+                            remark: this.remark,
+                        };
+                        uploadedFiles.forEach((file, index) => {
+                            if (file.raw && file.raw instanceof Blob) {
+                                form[`file_${this.generateRandomString(5)}`] = file.raw;
+                            } else {
+                                this.openNotification('warn', 'File is not valid', ' Please put in the expected format');
+                            }
+                        });
+
+                        // form[this.inputType.key] = this.inputType.value;
+
+                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
+                    } else {
+                        let form = {
+                            irregularity_type: this.irregularity_type,
+                            irregularity_status_code: this.irregularity_status_code,
+                            remark: this.remark,
+                        };
+
+                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
+                    }
                 }
             }
         },
@@ -324,9 +366,13 @@ export default {
         },
         async handleRemove(file) {
             const index = this.fileList.findIndex(item => item.url === file.url);
-            
             if (index !== -1) {
                 this.fileList.splice(index, 1);
+            }
+
+            const indexPrevFileList = this.prevFileList.findIndex(item => item.attachment_id === file.attachment_id);
+            if (indexPrevFileList !== -1) {
+                this.prevFileList.splice(indexPrevFileList, 1)
             }
         },
         handlePictureCardPreview(file) {
