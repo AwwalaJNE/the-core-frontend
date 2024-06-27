@@ -356,7 +356,7 @@ export default {
         updateValue(key, val) {
             switch(key) {
                 case "KOLI_CODE":
-                    this.koliCode = [val];
+                    this.koliCode = val;
                     break;
                 case "TRIGGER_DATE":
                     this.dateRange = val
@@ -395,7 +395,7 @@ export default {
             this.dataItem = {}
         },
         openDialog() {
-            if(this.koliCode !== '') {
+            if(this.koliCode?.length > 0) {
                 this.dialogEntryStatusActive = true
             }
         },
