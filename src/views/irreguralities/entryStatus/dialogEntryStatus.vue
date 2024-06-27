@@ -193,8 +193,6 @@ export default {
                 } else {
                     this.fileList = []; 
                 }
-
-                console.log("IINI", this.fileList)
             }
         },
         updateValue(key, val, info){

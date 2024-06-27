@@ -100,6 +100,7 @@
             :closeDialog="closeDialog"
             :dataItem="dataItem"
             @updateValue="updateValue"
+            ref="dialogEntryStatus"
         />
     </div>
 </template>
@@ -152,11 +153,6 @@ export default {
                     label: "Connote",
                     key: "koli_number",
                     width: "xs"
-                },
-                {
-                    label: "Gambar",
-                    key: "image",
-                    width: "auto"
                 },
                 {
                     label: "Status Code",
@@ -314,16 +310,15 @@ export default {
                     this.Helper.header())
                 .then(res => {
                     this.dialogEntryStatusActive = false
-                    this.handleClearForm();
                     this.refresh()
                     this.openNotification(null, 'Success', 'Create new entry status is success')
+                    this.handleClearForm();
                 }).catch(err => {
                     this.loading = false
                     this.dialogEntryStatus = false
-                    this.handleClearForm();
                     this.refresh()
-
                     this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.handleClearForm();
                 })
         },
         searchValue (val) {
@@ -355,6 +350,8 @@ export default {
         },
         handleClearForm(){
             this.koliCode = []
+            this.$refs.koliCode.value = []
+            this.$refs.dialogEntryStatus.handleClearForm()
         },
         updateValue(key, val) {
             switch(key) {
@@ -395,6 +392,7 @@ export default {
         },
         closeDialog() {
             this.dialogEntryStatusActive = false
+            this.dataItem = {}
         },
         openDialog() {
             if(this.koliCode !== '') {
