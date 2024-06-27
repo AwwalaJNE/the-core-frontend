@@ -124,6 +124,7 @@ import DeliveryCodHistory from "@/views/delivery/codHistory"
 import CashLess from "@/views/report/cashless"
 
 // === Irreguralities ===
+import inventoryIrreguralities from "@/views/irreguralities/inventory"
 import irreguralitiesCancel from "@/views/irreguralities/cancel"
 import irreguralitiesReturn from "@/views/irreguralities/return"
 import irreguralitiesEntryStatus from "@/views/irreguralities/entryStatus"
@@ -372,6 +373,15 @@ const routes = [
         name: "irreguralities",
         component: ContentChild,
         children: [
+          {
+            path: "inventory",
+            name: "inventory-irreguralities",
+            component: inventoryIrreguralities,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Inventory Irreguralities"
+            }
+          },
           {
             path: "entry-status",
             name: "irreguralities-entry-status",

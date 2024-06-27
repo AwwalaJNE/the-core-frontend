@@ -292,6 +292,12 @@ export default {
           icon: "",
           children: [
             {
+              label: "Inventory Irreguralities",
+              url: "/irreguralities/inventory",
+              icon: "",
+              permission: "read-irreg",
+            },
+            {
               label: "Irreguralities - Entry Status",
               url: "/irreguralities/entry-status",
               icon: "",
