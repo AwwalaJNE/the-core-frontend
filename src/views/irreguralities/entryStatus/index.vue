@@ -10,12 +10,18 @@
                     <vs-row justify="space-between">
                         <vs-col xs="9" sm="9" lg="9">
                             <form @submit.prevent="openDialog">
-                                <vs-input border type="text"
-                                    v-model="koliCode"
-                                    label-placeholder="Masukkan Nomer BAG / Connote"
-                                    :autofocus="true"
-                                    ref="formInputUnbagging">
-                                </vs-input>
+                                <multi-input
+                                    ref="koliCode"
+                                    placeholder="Masukkan Nomor Bag / Connote"
+                                    rules="" 
+                                    formKey="KOLI_CODE"
+                                    :loading="loading"
+                                    :selectedValue="koliCode"
+                                    :isMultiple="false"
+                                    :disabled="false"
+                                    :isAllowCreate="true"
+                                    @updateValue="updateValue"  
+                                />
                             </form>
                         </vs-col>
                         <vs-col xs="3" sm="3" lg="3">
@@ -76,13 +82,13 @@
                         :pageSize="pagination.page_size"
                         :page="pagination.page"
                         :limit="pagination.limit"
+                        :hasAction="true"
                         :hasPagination="true"
                         :hasLinked4="['image']"
-                        :customAction="true"
-                        :customActionList="customActionList"
                         @actionLimit="actionLimit"
                         @actionPagination="actionPagination"
                         @actionUpdate="editIrreg"
+                        @actionRemove="actionRemove"
                     />
                 </div>
             </div>
@@ -94,6 +100,7 @@
             :closeDialog="closeDialog"
             :dataItem="dataItem"
             @updateValue="updateValue"
+            ref="dialogEntryStatus"
         />
     </div>
 </template>
@@ -107,6 +114,8 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
 import SelectSearchBy from "@/components/search/selectSearchBy";
+import MultiInput from "@/components/input/multiInput"
+import Selector from "@/components/input/select"
 
 import DialogEntryStatus from "@/views/irreguralities/entryStatus/dialogEntryStatus"
 export default {
@@ -120,10 +129,12 @@ export default {
         "select-search-by": SelectSearchBy,
         "table-master" : TableMaster,
         "dialog-entry-status": DialogEntryStatus,
+        "multi-input": MultiInput,
+        "selector": Selector
     },
     data() {
         return {
-            koliCode: "",
+            koliCode: [],
             dateRange: [],
             tempSearch: "",
             dataTable: [],
@@ -136,17 +147,12 @@ export default {
                 {
                     label: "Bag Number",
                     key: "bag_number",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Connote",
                     key: "koli_number",
-                    width: "100px"
-                },
-                {
-                    label: "Gambar",
-                    key: "image",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Status Code",
@@ -179,46 +185,46 @@ export default {
             ],
             loading:false,
             pagination: {
-                limit:5,
+                limit: 10,
                 page_size: 1,
                 page: 1
             },
             form: {},
             dialogEntryStatusActive: false,
-            searchBy: "koli number",
+            searchBy: "koli_number",
             filterDateBy: "create",
-            searchPlaceholder: "Search Connote Number",
+            searchPlaceholder: "Search Koli Number",
             searchParams: [
-              {
-                label: 'Bag number',
-                value: 'bag_number'
-              },
-              {
-                label: 'Koli number',
-                value: 'koli number'
-              },
-              {
-                label: "Status Code",
-                value: "irregularity_status_code",
-              },
-              {
-                label: "Status Description",
-                value: "irregularity_status_description",
-              },
-              {
-                label: "Remarks",
-                value: "remark",
-              },
-              {
-                label: "User",
-                value: "userApprove",
-              },
+                {
+                    label: 'Koli number',
+                    value: 'koli_number'
+                },
+                {
+                    label: 'Bag number',
+                    value: 'bag_number'
+                },
+                {
+                    label: "Status Code",
+                    value: "irregularity_status_code",
+                },
+                {
+                    label: "Status Description",
+                    value: "irregularity_status_description",
+                },
+                {
+                    label: "Remarks",
+                    value: "remark",
+                },
+                {
+                    label: "User",
+                    value: "userApprove",
+                },
             ],
             dateParams: [
-              {
-                label: 'Created Date',
-                value: 'create'
-              }
+                {
+                    label: 'Created Date',
+                    value: 'create'
+                }
             ]
         }
     },
@@ -241,17 +247,28 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
         },
         async editIrreg(val){
-            
             if(this.dataTable.length > 0) {
-              //dibuat untuk approve saja jadi gapake switch case
-            this.dataItem = val;
+                this.dataItem = val;
 
-            this.$nextTick(() => {
-                this.dialogEntryStatusActive = true;
-            });
-          }
+                this.$nextTick(() => {
+                    this.dialogEntryStatusActive = true;
+                });
+            }
         },
-        async getTableData(limit,page,q, from, to, node) {
+        async actionRemove(val){
+            await axios
+                .delete(
+                    this.URL.irregularities + `/${val.irregularity_id}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    this.refresh()
+                    this.openNotification(null, 'Remove success', 'Remove Irreg success')
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Remove Irreg failed', err)
+                })
+        },
+        async getTableData(limit,page,q, from, to) {
             this.loading = true
             let query = "";
             let startDate = "";
@@ -265,10 +282,9 @@ export default {
             }
             await axios
                 .get(this.URL.irregularities +
-                `?n=${this.listenNodeId}&irregularity_type=PROBLEM&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+                `?n=${this.listenNodeId}&irregularity_type=PROBLEM&show_archive=false&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
-                    // this.dataTable = res.data.data
                     let arr = res.data.data
                     
                     this.dataTable = arr
@@ -281,30 +297,51 @@ export default {
                     this.openNotification('danger', 'Failed to populate Irreguralities Problem', err)
                 })
         },
-        
         async handleSubmit() {
             const formData = new FormData();
             for (const key in this.form) {
                 formData.append(key, this.form[key]);
             }
 
-            await axios
-                .post(
-                    this.URL.irregularities + `?n=${this.listenNodeId}`,
-                    formData, 
-                    this.Helper.header())
-                .then(res => {
-
-                    this.refresh()
-                    this.dialogEntryStatusActive = false
-                    this.openNotification(null, 'Success', 'Create new cancel connote is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.dialogEntryStatus = false
-                    this.refresh()
-
-                    this.openNotification('danger', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
-                })
+            if (this.form.irregularity_id) {
+                await axios
+                    .post(
+                        this.URL.irregularities + `/update?n=${this.listenNodeId}`,
+                        formData, 
+                        this.Helper.header())
+                    .then(res => {
+                        this.dialogEntryStatusActive = false
+                        this.refresh()
+                        this.openNotification(null, 'Success', 'Create new entry status is success')
+                        this.handleClearForm();
+                    }).catch(err => {
+                        this.loading = false
+                        this.dialogEntryStatus = false
+                        this.dialogEntryStatusActive = false
+                        this.refresh()
+                        this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
+                        this.handleClearForm();
+                    })
+            } else {
+                await axios
+                    .post(
+                        this.URL.irregularities + `?n=${this.listenNodeId}`,
+                        formData, 
+                        this.Helper.header())
+                    .then(res => {
+                        this.dialogEntryStatusActive = false
+                        this.refresh()
+                        this.openNotification(null, 'Success', 'Create new entry status is success')
+                        this.handleClearForm();
+                    }).catch(err => {
+                        this.loading = false
+                        this.dialogEntryStatus = false
+                        this.dialogEntryStatusActive = false
+                        this.refresh()
+                        this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
+                        this.handleClearForm();
+                    })
+            }            
         },
         searchValue (val) {
             this.tempSearch = val
@@ -324,21 +361,45 @@ export default {
                 default:
             }
         },
+        generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                result += characters.charAt(randomIndex);
+            }
+            return result;
+        },
+        handleClearForm(){
+            this.koliCode = []
+            this.$refs.koliCode.value = []
+            this.$refs.dialogEntryStatus.handleClearForm()
+        },
         updateValue(key, val) {
             switch(key) {
+                case "KOLI_CODE":
+                    this.koliCode = val;
+                    break;
                 case "TRIGGER_DATE":
                     this.dateRange = val
                     this.refresh()
-
                     break;
-                case "DIALOG_CANCEL":
+                case "DIALOG_ENTRY_STATUS":
                     this.form = val
-                    this.form['connote_number'] = this.koliCode
+                    let formattedItems = {};
+                    this.koliCode.forEach(item => {
+                        let key = `item_number_${this.generateRandomString(5)}`;
+                        formattedItems[key] = item;
+                    });
+
+                    this.form = {
+                        ...this.form,
+                        ...formattedItems
+                    };
+
                     this.handleSubmit()
                     break;
                 default:
-
-                    // code block
             }
         },
         actionLimit(val){
@@ -346,16 +407,16 @@ export default {
             this.pagination.page = 1
             this.refresh()
         },
-
         actionPagination(val) {
             this.pagination.page = val
             this.refresh()
         },
         closeDialog() {
             this.dialogEntryStatusActive = false
+            this.dataItem = {}
         },
         openDialog() {
-            if(this.koliCode !== '') {
+            if(this.koliCode?.length > 0) {
                 this.dialogEntryStatusActive = true
             }
         },

@@ -1,11 +1,12 @@
 <template>
     <dialog-master 
-    :actived="listenActive" 
-    :closeDialog="cancel"
-    width="md">
+        :actived="listenActive" 
+        :closeDialog="cancel"
+        width="md"
+    >
 
         <template v-slot:header>
-            Problem Connote
+            Entry Status
         </template>
 
         <template v-slot:content>
@@ -13,7 +14,6 @@
                 <vs-col xs="12" sm="12" lg="12">
                     <template v-if="loading == false && status_code_arr.length > 0">
                         <selector 
-                            :ref="''"
                             name="Status Code" 
                             :rules="''" 
                             formKey="status_code"
@@ -23,62 +23,33 @@
                             @updateValue="updateValue" />
                     </template>
                 </vs-col>
-                <template v-if="inputType.key !== null">
-                    <vs-col xs="12" sm="12" lg="12">
-                        <input-general
-                            :name="inputType.label"
-                            :rules="''"
-                            formKey="inputType"
-                            :valueData="inputType.value"
-                            typeInput="text"
-                            @updateValue="updateValue" 
-                        />
-                        <el-upload
-                            ref="upload"
-                            action="#"
-                            list-type="picture-card"
-                            :auto-upload="false"
-                            @updateValue="updateValue"
-                        >
-                            <i slot="default" class="el-icon-plus"></i>
-                            <div slot="file" slot-scope="{file}">
-                                <img
-                                    class="el-upload-list__item-thumbnail"
-                                    :src="file.url" alt="" 
-                                >
-                                <span class="el-upload-list__item-actions">
-                                    <span
-                                        v-if="!disabled"
-                                        class="el-upload-list__item-preview"
-                                        @click="handlePictureCardPreview(file)"
-                                    >
-                                        <i class="el-icon-zoom-in"></i>
-                                    </span>
-                                    <span
-                                        slot="file"
-                                        v-if="!disabled"
-                                        class="el-upload-list__item-delete"
-                                        @click="handleRemove(file)"
-                                    >
-                                        <i class="el-icon-delete"></i>
-                                    </span>
-                                </span>
-                            </div>
-                        </el-upload>
+                <vs-col xs="12" sm="12" lg="12">
+                    <el-upload
+                        ref="upload"
+                        action="#"
+                        list-type="picture-card"
+                        :auto-upload="false"
+                        :file-list="fileList"
+                        @remove="handleRemove"
+                        @preview="handlePictureCardPreview"
+                        @update:value="updateValue('files', $event)"
+                    >
+                        <i class="el-icon-plus"></i>
+                    </el-upload>
 
-                        <el-dialog :visible.sync="dialogVisible">
-                            <img width="100%" :src="dialogImageUrl" alt="">
-                        </el-dialog>
-                    </vs-col>
-                </template>
+                    <el-dialog :visible.sync="dialogVisible">
+                        <img width="100%" :src="dialogImageUrl" alt="">
+                    </el-dialog>
+                </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
                     <input-general
-                    name="Remark"
-                    :rules="''"
-                    formKey="remark"
-                    :valueData="remark"
-                    typeInput="text"
-                    @updateValue="updateValue" />
+                        name="Remark"
+                        :rules="''"
+                        formKey="remark"
+                        :valueData="remark"
+                        typeInput="text"
+                        @updateValue="updateValue" 
+                    />
                 </vs-col>
             </vs-row>
         </template>
@@ -87,24 +58,24 @@
             <vs-row justify="flex-end">
                 <vs-col w="3">
                     <vs-button
-                    transparent
-                    block
-                    danger
-                    flat
-                    :active="true"
-                    @click="cancel"
+                        transparent
+                        block
+                        danger
+                        flat
+                        :active="true"
+                        @click="cancel"
                     >
                         Cancel
                     </vs-button>
                 </vs-col>
                 <vs-col w="3">
                     <vs-button
-                    transparent
-                    block
-                    flat
-                    :active="true"
-                    type="submit"
-                    @click="handleSubmit"
+                        transparent
+                        block
+                        flat
+                        :active="true"
+                        type="submit"
+                        @click="handleSubmit"
                     >
                        Submit
                     </vs-button>
@@ -133,10 +104,10 @@ export default {
         'el-dialog': Dialog
     },
     props: {
-       closeDialog: Function, 
-       active: Boolean,
-       title: String,
-       dataItem: Object
+        closeDialog: Function, 
+        active: Boolean,
+        title: String,
+        dataItem: Object
     },
     computed: {
         listenActive(){
@@ -160,8 +131,7 @@ export default {
             status_code_arr: [],
             irregularity_id: '',
             irregularity_type: '',
-            irregularity_status_code: '',
-            
+            irregularity_status_code: '',            
             remark: '',
             loading: true,
             inputType: {
@@ -174,6 +144,7 @@ export default {
             dialogVisible: false,
             disabled: false,
             fileList: [],
+            prevFileList: [],
             isRemoving: false,
             uploadedFile: '',
             files: null
@@ -187,18 +158,46 @@ export default {
                 this.irregularity_status_code = this.listenDataItem.irregularity_status_code || ''
                 this.remark = this.listenDataItem.remark || ''
 
-                if(this.listenDataItem.irregularity_status_description.toLowerCase().includes('criscross')) {
-                    this.inputType['label'] = 'Nomer Bag / Connote'
-                    this.inputType['key'] = 'nomor_connotes'
-                    this.inputType['value'] = this.listenDataItem.koli_number || ''
-                } else if(this.listenDataItem.irregularity_status_description.toLowerCase().includes('misroute')){
-                    this.inputType['label'] = 'Zip Code'
-                    this.inputType['key'] = 'kode_pos'
-                    this.inputType['value'] = this.listenDataItem.zip_code || ''
-                } else if(this.listenDataItem.irregularity_status_description.toLowerCase().includes('bag rusak')){
-                    this.inputType['label'] = 'Masukan Bag'
-                    this.inputType['key'] = 'bag_number'
-                    this.inputType['value'] = this.listenDataItem.zip_code || ''
+                // if(this.listenDataItem.irregularity_status_description.toLowerCase().includes('criscross')) {
+                //     this.inputType['label'] = 'Nomer Bag / Connote'
+                //     this.inputType['key'] = 'item_number'
+                //     this.inputType['value'] = this.listenDataItem.koli_number || ''
+                // } else if(this.listenDataItem.irregularity_status_description.toLowerCase().includes('misroute')){
+                //     this.inputType['label'] = 'Zip Code'
+                //     this.inputType['key'] = 'kode_pos'
+                //     this.inputType['value'] = this.listenDataItem.zip_code || ''
+                // } else if(this.listenDataItem.irregularity_status_description.toLowerCase().includes('bag rusak')){
+                //     this.inputType['label'] = 'Masukan Bag'
+                //     this.inputType['key'] = 'bag_number'
+                //     this.inputType['value'] = this.listenDataItem.zip_code || ''
+                // }
+
+                // Object.keys(this.listenDataItem).forEach(key => {
+                //     if (key.startsWith('image_')) {
+                //         this.imageUrls[key] = this.listenDataItem[key];
+                //     }
+                // });
+                // const imageKeys = Object.keys(this.listenDataItem).filter(key => key.startsWith('image'));
+
+                // if (imageKeys.length > 0) {
+                //     imageKeys.forEach(key => {
+                //         console.log(key)
+                //         this.imageUrls[key] = this.listenDataItem[key];
+                //     });
+                // }
+
+                
+                if (this.listenDataItem.attachment && this.listenDataItem.attachment.length > 0) {
+                    this.fileList = this.listenDataItem.attachment.map(item => ({
+                        name: '',
+                        url: item.url.toLowerCase()
+                    }));
+                    this.prevFileList = this.listenDataItem.attachment.map(item => ({
+                        attachment_id: item.attachment_id
+                    }));
+                } else {
+                    this.fileList = []; 
+                    this.prevFileList = [];
                 }
             }
         },
@@ -213,16 +212,16 @@ export default {
                             this.irregularity_status_code = obj.item.status_code || ''
                         }
 
-                        if(obj['label'].toLowerCase().includes('criscross')) {
-                            this.inputType['label'] = 'Nomer Bag / Connote'
-                            this.inputType['key'] = 'nomor_connotes'
-                        } else if(obj['label'].toLowerCase().includes('misroute')){
-                            this.inputType['label'] = 'Zip Code'
-                            this.inputType['key'] = 'kode_pos'
-                        } else if(obj['label'].toLowerCase().includes('bag rusak')){
-                            this.inputType['label'] = 'Masukan Bag'
-                            this.inputType['key'] = 'bag_number'
-                        }
+                        // if(obj['label'].toLowerCase().includes('criscross')) {
+                        //     this.inputType['label'] = 'Nomer Bag / Connote'
+                        //     this.inputType['key'] = 'item_number'
+                        // } else if(obj['label'].toLowerCase().includes('misroute')){
+                        //     this.inputType['label'] = 'Zip Code'
+                        //     this.inputType['key'] = 'kode_pos'
+                        // } else if(obj['label'].toLowerCase().includes('bag rusak')){
+                        //     this.inputType['label'] = 'Masukan Bag'
+                        //     this.inputType['key'] = 'bag_number'
+                        // }
                     }
                     break;
                 case "remark":
@@ -232,9 +231,16 @@ export default {
                     this.inputType['value'] = val
                     break;
                 default:
-
-                    // code block
             }
+        },
+        generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                result += characters.charAt(randomIndex);
+            }
+            return result;
         },
         async getDataStatus(){
             this.loading = true
@@ -274,108 +280,100 @@ export default {
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
-        readFileAsync(file) {
-            return new Promise((resolve, reject) => {
-                let reader = new FileReader();
-
-                reader.onload = () => {
-                resolve(reader.result);
-                };
-
-                reader.onerror = reject;
-
-                reader.readAsArrayBuffer(file);
-            })
-        },
         async handleSubmit() {
-            // ORI
-            // const uploadComponent = this.$refs.upload;
-            // const uploadedFiles = uploadComponent.uploadFiles;
-            // // console.log(uploadComponent, uploadedFiles, 'upload compts');
-            // if (uploadedFiles.length > 0) {
-            //     const file = uploadedFiles[0];
-            //     if (file.raw && file.raw instanceof Blob) {
-            //         // File dalam format Blob (binary)
-            //         const formData = new FormData();
-            //         formData.append('image', file.raw, file.name);
-
-            //         // console.log(file.raw, 'uploads');
-            //         let form = {}
-            //         form['irregularity_type'] = this.irregularity_type
-            //         form['irregularity_status_code'] = this.irregularity_status_code
-            //         form['remark'] = this.remark
-            //         form['image'] = file.raw
-            //         form[this.inputType['key']] = this.inputType['value']
-            //         this.$emit("updateValue", 'DIALOG_CANCEL', form)
-            //         // console.log(form['image'], 'uploads');
-            //     } else {
-            //         console.error('File tidak valid atau tidak dalam format yang diharapkan');
-            //     }
-            // } else {
-            //     console.error('Tidak ada file yang diunggah');
-            // }
             const uploadComponent = this.$refs.upload;
 
-            if (uploadComponent) {
-                const uploadedFiles = uploadComponent.uploadFiles;
-                if (uploadedFiles.length > 0) {
-                    const file = uploadedFiles[0];
-                    if (file.raw && file.raw instanceof Blob) {
-                        // File dalam format Blob (binary)
-                        const formData = new FormData();
-                        formData.append('image', file.raw, file.name);
+            if (this.irregularity_id) {
+                if (uploadComponent) {
+                    const uploadedFiles = uploadComponent.uploadFiles;
 
-                        // console.log(file.raw, 'uploads');
-                        let form = {}
-                        form['irregularity_type'] = this.irregularity_type
-                        form['irregularity_status_code'] = this.irregularity_status_code
-                        form['remark'] = this.remark
-                        form['image'] = file.raw
-                        form[this.inputType['key']] = this.inputType['value']
-                        this.$emit("updateValue", 'DIALOG_CANCEL', form)
-                        // console.log(form['image'], 'uploads');
+                    if (uploadedFiles.length > 0) {
+                        let form = {
+                            irregularity_id: this.irregularity_id,
+                            irregularity_type: this.irregularity_type,
+                            irregularity_status_code: this.irregularity_status_code,
+                            remark: this.remark,
+                        };
+                        uploadedFiles.forEach((file, index) => {
+                            if (file.raw && file.raw instanceof Blob) {
+                                form[`file_${this.generateRandomString(5)}`] = file.raw;
+                            } else if (file?.uid) {
+                                form[`file_${file.uid}`] = this.prevFileList[index].attachment_id;
+                            } else {
+                                this.openNotification('warn', 'File is not valid', ' Please put in the expected format')
+                            }
+                        });
+
+                        // form[this.inputType.key] = this.inputType.value;
+
+                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
                     } else {
-                        console.error('File tidak valid atau tidak dalam format yang diharapkan');
+                        let form = {
+                            irregularity_type: this.irregularity_type,
+                            irregularity_status_code: this.irregularity_status_code,
+                            remark: this.remark,
+                        };
+
+                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
                     }
-                } else {
-                    console.error('Tidak ada file yang diunggah');
                 }
             } else {
-                let form = {}
-                form['irregularity_type'] = this.irregularity_type
-                form['irregularity_status_code'] = this.irregularity_status_code
-                form['remark'] = this.remark
-                this.$emit("updateValue", 'DIALOG_CANCEL', form)
+                if (uploadComponent) {
+                    const uploadedFiles = uploadComponent.uploadFiles;
+
+                    if (uploadedFiles.length > 0) {
+                        let form = {
+                            irregularity_type: this.irregularity_type,
+                            irregularity_status_code: this.irregularity_status_code,
+                            remark: this.remark,
+                        };
+                        uploadedFiles.forEach((file, index) => {
+                            if (file.raw && file.raw instanceof Blob) {
+                                form[`file_${this.generateRandomString(5)}`] = file.raw;
+                            } else {
+                                this.openNotification('warn', 'File is not valid', ' Please put in the expected format');
+                            }
+                        });
+
+                        // form[this.inputType.key] = this.inputType.value;
+
+                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
+                    } else {
+                        let form = {
+                            irregularity_type: this.irregularity_type,
+                            irregularity_status_code: this.irregularity_status_code,
+                            remark: this.remark,
+                        };
+
+                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
+                    }
+                }
             }
         },
         handleClearForm(){
-            this.form = {}
-            this.irregularity_type = ''
-            this.irregularity_status_code = ''
-            this.remark= ''
+            this.form = {};
+            this.irregularity_type = '';
+            this.irregularity_status_code = '';
+            this.remark = '';
+            this.fileList = [];
             
-            this.inputType['key'] = null
-            this.inputType['value'] = ''
+            // this.inputType['key'] = null
+            // this.inputType['value'] = ''
         },
         cancel() {
             this.handleClearForm()
             this.closeDialog()
         },
         async handleRemove(file) {
-
-            const index = this.fileList.findIndex(item => item.uid === file.uid);
+            const index = this.fileList.findIndex(item => item.url === file.url);
             if (index !== -1) {
-                this.fileList[index].isRemoving = true;
-
-                if (this.dialogImageUrl === file.url) {
-                this.dialogImageUrl = '';
-                this.dialogVisible = false;
-                }
-
                 this.fileList.splice(index, 1);
             }
-            
 
+            const indexPrevFileList = this.prevFileList.findIndex(item => item.attachment_id === file.attachment_id);
+            if (indexPrevFileList !== -1) {
+                this.prevFileList.splice(indexPrevFileList, 1)
+            }
         },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
