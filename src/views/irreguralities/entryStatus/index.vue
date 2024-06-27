@@ -316,6 +316,7 @@ export default {
                 }).catch(err => {
                     this.loading = false
                     this.dialogEntryStatus = false
+                    this.dialogEntryStatusActive = false
                     this.refresh()
                     this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
                     this.handleClearForm();
