@@ -21,14 +21,14 @@
             Koli
           </vs-radio>
         </vs-col>
-        <vs-col xs="12" sm="3" lg="3" >
+        <!-- <vs-col xs="12" sm="3" lg="3" >
           <vs-radio v-model="radio_option" val="bag" :disabled="disabledApprove">
             Bag Pra Runsheet
           </vs-radio>
-        </vs-col>
+        </vs-col> -->
         <vs-col xs="12" sm="3" lg="3" >
           <vs-radio v-model="radio_option" val="bag-ex" :disabled="disabledApprove">
-            Bag Pra Runsheet Experimental
+            Bag Pra Runsheet
           </vs-radio>
         </vs-col>
       </vs-row>
