@@ -76,6 +76,11 @@ export default {
           width: "xxs",
         },
         {
+          label: "Kelurahan",
+          key: "connote_receiver_subdistrict_name",
+          width: "xxs",
+        },
+        {
           label: "Service",
           key: "connote_service_code",
           width: "xxs",
