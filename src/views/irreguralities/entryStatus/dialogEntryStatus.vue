@@ -1,6 +1,7 @@
 <template>
     <dialog-master 
-        :actived="listenActive" 
+        :actived="listenActive"
+        :loading="listenLoading" 
         :closeDialog="cancel"
         width="md"
     >
@@ -12,7 +13,7 @@
         <template v-slot:content>
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="12" lg="12">
-                    <template v-if="loading == false && status_code_arr.length > 0">
+                    <template v-if="loadingStatus == false && status_code_arr.length > 0">
                         <selector 
                             name="Status Code" 
                             :rules="''" 
@@ -30,15 +31,61 @@
                         list-type="picture-card"
                         :auto-upload="false"
                         :file-list="fileList"
-                        @remove="handleRemove"
-                        @preview="handlePictureCardPreview"
-                        @update:value="updateValue('files', $event)"
                     >
-                        <i class="el-icon-plus"></i>
+                        <i slot="default" class="el-icon-plus"></i>
+                        <template slot="file" slot-scope="{file}">
+                            <template v-if="isImage(file)">
+                                <img
+                                    class="el-upload-list__item-thumbnail"
+                                    :src="file.url" 
+                                    alt="preview" 
+                                >
+                                <span class="el-upload-list__item-actions">
+                                    <span
+                                        v-if="!disabled"
+                                        class="el-upload-list__item-preview"
+                                        @click="handlePictureCardPreview(file)"
+                                    >
+                                        <i class="el-icon-zoom-in"></i>
+                                    </span>
+                                    <span
+                                        v-if="!disabled"
+                                        class="el-upload-list__item-delete"
+                                        @click="handleRemove(file)"
+                                    >
+                                        <i class="el-icon-delete"></i>
+                                    </span>
+                                </span>
+                            </template>
+                            <template v-else>
+                                <div class="file-display">
+                                    <i class="el-icon-document large-icon"></i>
+                                    <span class="small-text">{{ file.name || file.uid }}</span>
+                                </div>
+                                <span class="el-upload-list__item-actions">
+                                    <span
+                                        v-if="!disabled"
+                                        class="el-upload-list__item-preview"
+                                        @click="handleFilePreview(file)"
+                                    >
+                                        <i class="el-icon-zoom-in"></i>
+                                    </span>
+                                    <span
+                                        v-if="!disabled"
+                                        class="el-upload-list__item-delete"
+                                        @click="handleRemove(file)"
+                                    >
+                                        <i class="el-icon-delete"></i>
+                                    </span>
+                                </span>
+                            </template>
+                        </template>
                     </el-upload>
-
-                    <el-dialog :visible.sync="dialogVisible">
-                        <img width="100%" :src="dialogImageUrl" alt="">
+                    <el-dialog :visible.sync="dialogImageVisible" title="Image Preview">
+                        <img width="100%" :src="dialogImageUrl" alt="PreviewImage">
+                    </el-dialog>
+                    <el-dialog :visible.sync="dialogFileVisible" width="80%" title="File Preview">
+                        <embed :src="dialogFileUrl" type="application/pdf" width="100%" height="500px" />
                     </el-dialog>
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
@@ -107,7 +154,8 @@ export default {
         closeDialog: Function, 
         active: Boolean,
         title: String,
-        dataItem: Object
+        dataItem: Object,
+        loadingSubmit: Boolean
     },
     computed: {
         listenActive(){
@@ -115,7 +163,10 @@ export default {
         },
         listenDataItem() {
             return this.dataItem || {}
-        }
+        },
+        listenLoading(){
+            return this.loadingSubmit || this.loadingStatus
+        },
     },
     watch: {
         active: function (val) {
@@ -133,7 +184,7 @@ export default {
             irregularity_type: '',
             irregularity_status_code: '',            
             remark: '',
-            loading: true,
+            loadingStatus: false,
             inputType: {
                 type: 'text',
                 label: '',
@@ -141,13 +192,11 @@ export default {
                 value: ''
             },
             dialogImageUrl: '',
-            dialogVisible: false,
+            dialogImageVisible: false,
+            dialogFileUrl: '',
+            dialogFileVisible: false,
             disabled: false,
-            fileList: [],
-            prevFileList: [],
-            isRemoving: false,
-            uploadedFile: '',
-            files: null
+            fileList: []
         }
     },
     methods: {
@@ -185,19 +234,15 @@ export default {
                 //         this.imageUrls[key] = this.listenDataItem[key];
                 //     });
                 // }
-
                 
                 if (this.listenDataItem.attachment && this.listenDataItem.attachment.length > 0) {
                     this.fileList = this.listenDataItem.attachment.map(item => ({
                         name: '',
+                        attachment_id: item.attachment_id,
                         url: item.url.toLowerCase()
-                    }));
-                    this.prevFileList = this.listenDataItem.attachment.map(item => ({
-                        attachment_id: item.attachment_id
                     }));
                 } else {
                     this.fileList = []; 
-                    this.prevFileList = [];
                 }
             }
         },
@@ -242,8 +287,16 @@ export default {
             }
             return result;
         },
+        isImage(file) {
+            if (file.name !== "") {
+                return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.name);
+            } else {
+                return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.url);
+            }
+            
+        },
         async getDataStatus(){
-            this.loading = true
+            this.loadingStatus = true
             await axios
                 .get(this.URL.status + 
                 `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
@@ -274,15 +327,14 @@ export default {
                     } else {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
-                    this.loading = false
+                    this.loadingStatus = false
                 }).catch(err => {
-                    this.loading = false
+                    this.loadingStatus = false
                     // this.openNotification('danger', 'Failed to collect role list', err)
                 })
         },
         async handleSubmit() {
             const uploadComponent = this.$refs.upload;
-
             if (this.irregularity_id) {
                 if (uploadComponent) {
                     const uploadedFiles = uploadComponent.uploadFiles;
@@ -298,7 +350,7 @@ export default {
                             if (file.raw && file.raw instanceof Blob) {
                                 form[`file_${this.generateRandomString(5)}`] = file.raw;
                             } else if (file?.uid) {
-                                form[`file_${file.uid}`] = this.prevFileList[index].attachment_id;
+                                form[`file_${file.uid}`] = this.fileList[index].attachment_id;
                             } else {
                                 this.openNotification('warn', 'File is not valid', ' Please put in the expected format')
                             }
@@ -365,20 +417,40 @@ export default {
             this.closeDialog()
         },
         async handleRemove(file) {
-            const index = this.fileList.findIndex(item => item.url === file.url);
+            const uploadedFiles = this.$refs.upload.uploadFiles;
+            const index = uploadedFiles.findIndex(item => item.url === file.url);
             if (index !== -1) {
-                this.fileList.splice(index, 1);
-            }
-
-            const indexPrevFileList = this.prevFileList.findIndex(item => item.attachment_id === file.attachment_id);
-            if (indexPrevFileList !== -1) {
-                this.prevFileList.splice(indexPrevFileList, 1)
+                uploadedFiles.splice(index, 1);
             }
         },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
+            this.dialogImageVisible = true;
+        },
+        handleFilePreview(file) {
+            this.dialogFileUrl = file.url;
+            this.dialogFileVisible = true;
         }
     },
 }
 </script>
+<style scoped>
+.file-display {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.large-icon {
+    font-size: 80px;
+}
+
+.small-text {
+    font-size: 10px;
+    margin-top: 8px;
+}
+</style>

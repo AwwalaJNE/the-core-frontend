@@ -23,7 +23,7 @@
                                 <template v-if="navActive === 'k-ACTIVE'">
                                     <vs-row>
                                         <vs-col vs-align="center" w="6">
-                                            <select-search-by-connote :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"  :selectedValue="searchBy"/>
+                                            <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"  :selectedValue="searchBy" :valueData="searchParams"/>
                                         </vs-col>
                                         <vs-col vs-align="center" w="6">
                                             <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" class="search-input"/>
@@ -33,7 +33,7 @@
                                 <template v-if="navActive === 'k-HISTORY'" >
                                     <vs-row>
                                         <vs-col vs-align="center" w="6">
-                                            <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchByBag"  :selectedValue="searchByBag" :valueData="searchParamsBag"/>
+                                            <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"  :selectedValue="searchByBag" :valueData="searchParamsBag"/>
                                         </vs-col>
                                         <vs-col vs-align="center" w="6">
                                             <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholderBag" class="search-input"/>
@@ -45,52 +45,11 @@
 
 
                         <template v-if="navActive === 'k-ACTIVE'">
-                          <vs-row >
-                            <vs-col vs-align="center" xs="6" sm="2" lg="2">
-                                <select-status-bag ref="is_in_bag" :isMultiple="false" :border="true" @updateStatusBag="updateStatusBag" />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="2" lg="2">
-                                <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="3" lg="2">
-                                <select-filter-date-by :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" />
-                            </vs-col>
-                            <vs-col xs="6" sm="5" lg="6">
-                                <date-time
-                                    :name="''"
-                                    :rules="''"
-                                    :formKey="'TRIGGER_DATE'"
-                                    :valueData="tempDate"
-                                    typeInput="daterange"
-                                    @updateValue="searchDate" 
-                                />
-                            </vs-col>
-                          </vs-row>
-                            <transition name="slide-fade">
-                                <connote-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" :querySearch="searchBy" :queryDate="filterDateBy" />
-                            </transition>
-                        </template>
-                        <template v-if="navActive === 'k-HISTORY'">
                             <vs-row >
-                                <vs-col vs-align="center" xs="6" sm="4" lg="2">
-                                    <select-bag-routing
-                                        ref="bag_routing"
-                                        :isMultiple="false"
-                                        :border="true"
-                                        @updateBagRouting="updateBagRouting" 
-                                    />
+                                <vs-col vs-align="center" xs="4" sm="3" lg="2">
+                                    <select-search-by ref="" :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
                                 </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="4" lg="2">
-                                <select-bag-tipe
-                                    ref="bag_tipe"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagTipe="updateBagTipe" />
-                                </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="3" lg="2">
-                                    <select-search-by :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
-                                </vs-col>
-                                <vs-col xs="6" sm="5" lg="3">
+                                <vs-col xs="8" sm="5" lg="6">
                                     <date-time
                                         :name="''"
                                         :rules="''"
@@ -102,7 +61,27 @@
                                 </vs-col>
                             </vs-row>
                             <transition name="slide-fade">
-                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateBy" :searchBy="searchByBag"/>
+                                <active-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" querySearch="searchBy" :queryDate="filterDateBy" />
+                            </transition>
+                        </template>
+                        <template v-if="navActive === 'k-HISTORY'">
+                            <vs-row >
+                                <vs-col vs-align="center" xs="4" sm="3" lg="2">
+                                    <select-search-by :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" :valueData="dateParamsBag" :selectedValue="filterDateByBag"/>
+                                </vs-col>
+                                <vs-col xs="8" sm="5" lg="6">
+                                    <date-time
+                                        :name="''"
+                                        :rules="''"
+                                        :formKey="'TRIGGER_DATE'"
+                                        :valueData="tempDate"
+                                        typeInput="daterange"
+                                        @updateValue="searchDate" 
+                                    />
+                                </vs-col>
+                            </vs-row>
+                            <transition name="slide-fade">
+                                <history-list :ref="navActive" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateBy" :searchBy="searchByBag"/>
                             </transition>
                         </template>
                         
@@ -121,13 +100,7 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import Selector from "@/components/input/select"
-import SelectBagStatusVue from "@/views/inventory/connote/item/selectBagStatus"
-import SelectInventoryVue from "@/views/inventory/connote/item/selectInventoryStatus"
-import SelectSearchByConnote from "@/views/inventory/connote/item/selectSearchBy"
 import SelectSearchBy from "@/components/search/selectSearchBy"
-import SelectFilterDateBy from "@/views/inventory/connote/item/selectFilterDateBy"
-import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
-import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
 import DateTime from "@/components/input/dateTime"
 
 // Active List
@@ -144,16 +117,10 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
-        "connote-list":ActiveList ,
-        "bag-list": HistoryList,
+        "active-list":ActiveList ,
+        "history-list": HistoryList,
         "selector": Selector,
-        "select-status-bag": SelectBagStatusVue,
-        "select-status-inventory": SelectInventoryVue,
-        "select-search-by-connote": SelectSearchByConnote,
         "select-search-by": SelectSearchBy,
-        "select-filter-date-by": SelectFilterDateBy,
-        "select-bag-routing": SelectBagRouting,
-        "select-bag-tipe": SelectBagTipe,
         "date-time": DateTime,
     },
     data() {
@@ -167,7 +134,7 @@ export default {
                 {
                     label: "HISTORY",
                     key: "k-HISTORY",
-                    title: "Irregularity HistoryList"
+                    title: "Irregularity History List"
                 }
             ],
             navActive: "k-ACTIVE",
@@ -175,12 +142,30 @@ export default {
             tempSearch: "",
             tempDate: [],
             refreshInject:"",
-            status_bag:"",
-            statusinventory:"",
-            bagDestination:"",
-            searchBy:"",
-            searchByBag:"koli_number",
+            searchBy:"koli_number",
             searchPlaceholder: "Search Koli",
+            searchParams: [
+                {
+                    label: "Koli Number",
+                    value: "koli_number",
+
+                },
+                {
+                    label: "Bag Number",
+                    value: "bag_number",
+
+                },
+                {
+                    label: "Status Code",
+                    value: "status_code",
+
+                },
+                {
+                    label: "Type",
+                    value: "type",
+                },
+            ],
+            searchByBag:"koli_number",
             searchPlaceholderBag: "Search Koli",
             searchParamsBag: [
                 {
@@ -214,33 +199,43 @@ export default {
                     value: 'approve'
                 }
             ],
-            bagRouting:"",
-            bagTipe:"",
+            filterDateByBag: "create",
+            dateParamsBag: [
+                {
+                    label: 'Created Date',
+                    value: 'create'
+                },
+                {
+                    label: 'Approved Date',
+                    value: 'approve'
+                }
+            ],
         }
     },
     methods: {
-        updateStatusBag(key,val) {
-          this.status_bag = val;
+        updateSearchBy(key, val) {
+            switch (this.navActive) {
+                case "k-ACTIVE":
+                    this.searchBy = val;
+                    this.searchPlaceholder = key;
+                    break;
+                case "k-HISTORY":
+                    this.searchByBag = val;
+                    this.searchPlaceholderBag = key;
+                    break;
+                default:
+            }
         },
-        updateStatusinventory(key,val) {
-          this.statusinventory = val;
-        },
-        updateSearchBy(key,val) {
-            this.searchBy = val;
-            this.searchPlaceholder = key;
-        },
-        updateSearchByBag(key,val) {
-            this.searchByBag = val;
-            this.searchPlaceholderBag = key;
-        },
-        updateFilterDateBy(key,val) {
-          this.filterDateBy = val;
-        },
-        updateBagRouting(key,val){
-            this.bagRouting = val
-        },
-        updateBagTipe(key,val){
-            this.bagTipe = val
+        updateFilterDateBy(key, val) {
+            switch (this.navActive) {
+                case "k-ACTIVE":
+                    this.filterDateBy = val;
+                    break;
+                case "k-HISTORY":
+                    this.filterDateByBag = val;
+                    break;
+                default:
+            }
         },
         refresh(){
             let el = this.refreshInject
@@ -254,6 +249,7 @@ export default {
         },
         clearSearch() {
             this.$refs.searchInput.clear()
+            this.tempDate = [];
         },
         activeTab(val) {
             this.navActive = val
@@ -266,23 +262,3 @@ export default {
     },
 }
 </script>
-<style lang="scss">
-    .users{
-        min-height: 50vh;
-        .view{
-            min-height: 400px;
-        }
-        .nav-box{
-            position: relative;
-            top: 0;
-            left: 0;
-            width: auto;
-            max-width: 350px;
-        }
-        .search-input{
-            @include for-phone-only{
-                margin-bottom: 1rem;
-            }
-        }
-    }
-</style>

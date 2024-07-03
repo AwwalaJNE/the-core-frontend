@@ -10,8 +10,6 @@
             :hasAction="false"
             :hasLinked="['koli_number']"
             :hasPagination="true"
-            @actionUpdate="actionUpdate"
-            @actionRemove="actionRemove"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
             @handleEdit="showData"
@@ -24,12 +22,10 @@ import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import moment from "moment"
 export default {
-    name:"list-user",
+    name:"active-list",
     mixins: [master],
     props: {
         query: String,
-        queryBag: String,
-        queryInventory: String,
         querySearch: String,
         queryDate: String,
         dateFilter: Array,
@@ -42,53 +38,41 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.querySearch, this.queryDate)
                 }
             }
         },
-        queryInventory: function(val, old) {
+        searchDateBy: function(val, old) {
           if(val !== undefined) {
-            this.statusinventory = val
-            if(this.statusinventory !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, val, this.startDate, this.endDate, this.querySearch, this.queryDate)
+            this.filterDateBy = val
+            if(this.filterDateBy !== old) {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.querySearch, val);
             }
           }
         },
-        dateFilter: function (val, old) {
-            if (val !== undefined && val !== null) {
-                let d = new Date()
-                let from = ''
-                let to = ''
-                
-                this.tempDate = val;
-                if (this.tempDate !== old) {
-                    if(this.tempDate.length > 0) {
-                        from = moment(this.tempDate[0]).format("YYYY-MM-DD")
-                        to = moment(this.tempDate[1]).format("YYYY-MM-DD")
-                    } else {
-                        from = moment(d).format("YYYY-MM-DD")
-                        to = moment(d).format("YYYY-MM-DD")
-                    }
-                    this.startDate = from
-                    this.endDate = to
-                }
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, from, to, this.querySearch, this.queryDate);
-            }
-            else {
-                this.startDate = ""
-                this.endDate = ""
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate);
-            }
-        },
-        queryBag: function(val, old) {
+        searchBy: function(val, old) {
           if(val !== undefined) {
-            this.status_bag = val
-            if(this.status_bag !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
+            this.searchByBag = val
+            if(this.searchByBag !== old) {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val, this.queryDate);
             }
           }
         },
+        dateFilter: function(val, old) {
+            if (val !== undefined) {
+                this.dateRange = val;
+                this.startDate = this.dateRange[0] !== null ? moment(this.dateRange[0]).format("YYYY-MM-DD") : "";
+                this.endDate = this.dateRange[1] !== null ? moment(this.dateRange[1]).format("YYYY-MM-DD") : "";
 
+                if (old !== null && old !== undefined) {
+                    if (this.startDate !== old[0] || this.endDate !== old[1]) {
+                        this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.querySearch, this.queryDate);
+                    }
+                }
+            } else {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, "", "", this.querySearch, this.queryDate);
+            }
+        },
     },
     data() {
         return {
@@ -133,12 +117,9 @@ export default {
             loading: false,
             dataItem: {},
             tempSearch: this.query ? this.query : "",
-            tempDate: [],
+            dateRange: this.dateFilter ? this.dateFilter : [],
             startDate: "",
             endDate: "",
-            dialogUser: false,
-            status_bag:"",
-            statusinventory:"",
             pagination: {
                 limit:20,
                 page_size: 1,
@@ -153,19 +134,11 @@ export default {
                 this.refresh()
             }, 60000) // 1 menit
         },
-        async getTableData(limit,page,q, statusBag, statusInventory, from, to, searchBy, filterDateBy) {
+        async getTableData(limit,page,q, from, to, searchBy, filterDateBy) {
             this.loading = true
             let query = "";
-            let isOnBag = "";
-            let isInventory = "";
             if(q !== undefined) {
                 query = q
-            }
-            if(statusBag !== undefined && statusBag !== '-') {
-              isOnBag = statusBag
-            }
-            if(statusInventory !== undefined && statusInventory !== '-') {
-              isInventory = statusInventory
             }
             // TODO: CHANGE irregularity_type
             await axios
@@ -190,32 +163,6 @@ export default {
                     this.openNotification('danger', 'Failed to populate users list', err.response.data.message)
                 })
         },
-        actionUpdate(val){
-            if(this.dataTable.length > 0) {
-                let obj = this.dataTable.filter(item => {
-                    return item.user_id === val.user_id
-                })
-                this.dataItem = obj[0]
-
-                this.$nextTick(() => {
-                    this.dialogUser = true
-                });
-            }
-        },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.user + `/${val.user_id}`,
-                    this.Helper.header())
-                .then(res => {
-
-                    this.refresh()
-                    this.openNotification(null, 'Romove success', 'Romove role is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Romove role is failed', err)
-                })
-        },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
@@ -226,18 +173,14 @@ export default {
             this.refresh()
         },
         refresh(val){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.querySearch, this.queryDate)
         },
-        closeDialogUser(){
-            this.dialogUser = false
-        },
-
         showData(row) {
           this.$router.push(`/connote-detail/${row.koli_number}`);
         },
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.querySearch, this.queryDate)
         this.pollData()
     },
     beforeDestroy () {
