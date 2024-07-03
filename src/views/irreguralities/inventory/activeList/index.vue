@@ -46,7 +46,7 @@ export default {
           if(val !== undefined) {
             this.filterDateBy = val
             if(this.filterDateBy !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.searchByBag, val);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.querySearch, val);
             }
           }
         },
@@ -54,7 +54,7 @@ export default {
           if(val !== undefined) {
             this.searchByBag = val
             if(this.searchByBag !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val, this.filterDateBy);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val, this.queryDate);
             }
           }
         },
