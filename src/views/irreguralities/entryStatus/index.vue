@@ -361,7 +361,6 @@ export default {
             return result;
         },
         handleClearForm(){
-            this.koliCode = []
             this.$refs.koliCode.value = []
             this.$refs.dialogEntryStatus.handleClearForm()
         },
