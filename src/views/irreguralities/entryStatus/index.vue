@@ -84,7 +84,6 @@
                         :limit="pagination.limit"
                         :hasAction="true"
                         :hasPagination="true"
-                        :hasLinked4="['image']"
                         @actionLimit="actionLimit"
                         @actionPagination="actionPagination"
                         @actionUpdate="editIrreg"
@@ -96,9 +95,10 @@
         </section>
 
         <dialog-entry-status
-            :active="dialogEntryStatusActive" 
+            :active="dialogEntryStatusActive"
             :closeDialog="closeDialog"
             :dataItem="dataItem"
+            :loadingSubmit="loadingSubmit"
             @updateValue="updateValue"
             ref="dialogEntryStatus"
         />
@@ -176,14 +176,8 @@ export default {
                 },
             ],
             dataItem: {},
-            customActionList: [
-              {
-                label: 'Edit',
-                key: 'edit',
-                attribute: '',
-              },
-            ],
             loading:false,
+            loadingSubmit: false,
             pagination: {
                 limit: 10,
                 page_size: 1,
@@ -303,6 +297,8 @@ export default {
                 formData.append(key, this.form[key]);
             }
 
+            this.loadingSubmit = true;
+
             if (this.form.irregularity_id) {
                 await axios
                     .post(
@@ -310,17 +306,14 @@ export default {
                         formData, 
                         this.Helper.header())
                     .then(res => {
+                        this.loadingSubmit = false;
                         this.dialogEntryStatusActive = false
                         this.refresh()
                         this.openNotification(null, 'Success', 'Create new entry status is success')
                         this.handleClearForm();
                     }).catch(err => {
-                        this.loading = false
-                        this.dialogEntryStatus = false
-                        this.dialogEntryStatusActive = false
-                        this.refresh()
+                        this.loadingSubmit = false;
                         this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
-                        this.handleClearForm();
                     })
             } else {
                 await axios
@@ -329,19 +322,16 @@ export default {
                         formData, 
                         this.Helper.header())
                     .then(res => {
+                        this.loadingSubmit = false;
                         this.dialogEntryStatusActive = false
                         this.refresh()
                         this.openNotification(null, 'Success', 'Create new entry status is success')
                         this.handleClearForm();
                     }).catch(err => {
-                        this.loading = false
-                        this.dialogEntryStatus = false
-                        this.dialogEntryStatusActive = false
-                        this.refresh()
+                        this.loadingSubmit = false;
                         this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
-                        this.handleClearForm();
                     })
-            }            
+            }   
         },
         searchValue (val) {
             this.tempSearch = val
