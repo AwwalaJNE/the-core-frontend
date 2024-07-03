@@ -229,11 +229,9 @@ export default {
         updateFilterDateBy(key, val) {
             switch (this.navActive) {
                 case "k-ACTIVE":
-                    this.tempDate = []
                     this.filterDateBy = val;
                     break;
                 case "k-HISTORY":
-                    this.tempDate = []
                     this.filterDateByBag = val;
                     break;
                 default:
@@ -251,6 +249,7 @@ export default {
         },
         clearSearch() {
             this.$refs.searchInput.clear()
+            this.tempDate = [];
         },
         activeTab(val) {
             this.navActive = val

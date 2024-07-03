@@ -59,11 +59,10 @@ export default {
           }
         },
         dateFilter: function(val, old) {
-            console.log("INII", val, old)
             if (val !== undefined) {
-                this.tempDate = val;
-                this.startDate = this.tempDate[0] !== null ? moment(this.tempDate[0]).format("YYYY-MM-DD") : "";
-                this.endDate = this.tempDate[1] !== null ? moment(this.tempDate[1]).format("YYYY-MM-DD") : "";
+                this.dateRange = val;
+                this.startDate = this.dateRange[0] !== null ? moment(this.dateRange[0]).format("YYYY-MM-DD") : "";
+                this.endDate = this.dateRange[1] !== null ? moment(this.dateRange[1]).format("YYYY-MM-DD") : "";
 
                 if (old !== null && old !== undefined) {
                     if (this.startDate !== old[0] || this.endDate !== old[1]) {
@@ -118,7 +117,7 @@ export default {
             loading: false,
             dataItem: {},
             tempSearch: this.query ? this.query : "",
-            tempDate: this.dateFilter ? this.dateFilter : [],
+            dateRange: this.dateFilter ? this.dateFilter : [],
             startDate: "",
             endDate: "",
             pagination: {
