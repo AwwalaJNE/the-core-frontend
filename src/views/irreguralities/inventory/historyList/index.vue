@@ -26,13 +26,10 @@ import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
 import moment from "moment"
 export default {
-    name:"Role-list",
+    name:"history-list",
     mixins: [master],
     props: {
         query: String,
-        bagDestination: [],
-        bagRouting: String,
-        bagTipe: String,
         dateFilter: Array,
         searchDateBy: String,
         searchBy: String,
@@ -48,39 +45,15 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy);
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.searchByBag, this.filterDateBy);
                 }
             }
-        },
-        bagDestination: function(val, old) {
-          if(val !== undefined) {
-            this.bagFilter = val
-            if(this.bagFilter !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy);
-            }
-          }
-        },
-        bagRouting: function(val, old) {
-          if(val !== undefined) {
-            this.routingFilter = val
-            if(this.routingFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, val, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy)
-            }
-          }
-        },
-        bagTipe: function(val, old) {
-          if(val !== undefined) {
-            this.tipeBagFilter = val
-            if(this.tipeBagFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, val, this.startDate, this.endDate, this.searchByBag, this.filterDateBy);
-            }
-          }
         },
         searchDateBy: function(val, old) {
           if(val !== undefined) {
             this.filterDateBy = val
             if(this.filterDateBy !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, val);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.searchByBag, val);
             }
           }
         },
@@ -88,18 +61,24 @@ export default {
           if(val !== undefined) {
             this.searchByBag = val
             if(this.searchByBag !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, val, this.filterDateBy);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val, this.filterDateBy);
             }
           }
         },
         dateFilter: function(val, old) {
+            console.log("INII", val, old)
             if (val !== undefined) {
                 this.tempDate = val;
-                if (this.tempDate !== old) {
-                    this.startDate = this.tempDate !== null ? this.tempDate[0] : '';
-                    this.endDate = this.tempDate !== null ? this.tempDate[1] : '';
+                this.startDate = this.tempDate[0] !== null ? moment(this.tempDate[0]).format("YYYY-MM-DD") : "";
+                this.endDate = this.tempDate[1] !== null ? moment(this.tempDate[1]).format("YYYY-MM-DD") : "";
+
+                if (old !== null && old !== undefined) {
+                    if (this.startDate !== old[0] || this.endDate !== old[1]) {
+                        this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.searchByBag, this.filterDateBy);
+                    }
                 }
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy);
+            } else {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, "", "", this.searchByBag, this.filterDateBy);
             }
         },
     },
@@ -151,9 +130,7 @@ export default {
             loading: false,
             dataItem: {},
             tempSearch: this.query ? this.query : "",
-            bagFilter: this.bagDestination ? this.bagDestination : "",
-            routingFilter: this.bagRouting ? this.bagRouting : "",
-            tipeBagFilter: this.bagTipe ? this.bagTipe : "",
+            tempDate: this.dateFilter ? this.dateFilter : [],
             filterDateBy: this.searchDateBy ? this.searchDateBy : "",
             searchByBag: this.searchBy ? this.searchBy : "",
             dialogRole: false,
@@ -162,20 +139,15 @@ export default {
                 page_size: 1,
                 page: 1
             },
-            tempDate:[],
             startDate: "",
             endDate: "",
-            dateRange: [],
             
         }
     },
     methods: {
-        async getTableData(limit,page,q, bagDestination, bagRouting, bagTipe,  from, to, searchByBag, filterDateBy) {
+        async getTableData(limit,page,q, from, to, searchByBag, filterDateBy) {
             this.loading = true
             let query = "";
-            let bagDes = "";
-            let bagRout= "";
-            let bagTipee= "";
             let startDate = "";
             let endDate = "";
             if(q !== undefined) {
@@ -184,15 +156,6 @@ export default {
             if(from !== undefined && to !== undefined) {
               startDate = from
               endDate = to
-            }
-            if(bagDestination !== undefined && bagDestination !== '-') {
-              bagDes = bagDestination
-            }
-            if(bagRouting !== undefined && bagRouting !== '-') {
-              bagRout = bagRouting
-            }
-            if(bagTipe !== undefined && bagTipe !== '-') {
-              bagTipee = bagTipe
             }
 
             // TODO: CHANGE irregularity_type
@@ -246,15 +209,15 @@ export default {
             let from = ''
             let to = ''
 
-            if(this.dateRange != null && this.dateRange.length > 0) {
-                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
-                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
+            if(this.tempDate != null && this.tempDate.length > 0) {
+                from = moment(this.tempDate[0]).format("YYYY-MM-DD")
+                to = moment(this.tempDate[1]).format("YYYY-MM-DD")
             }
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, from, to, this.searchByBag, this.filterDateBy)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to, this.searchByBag, this.filterDateBy)
         },
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.searchByBag, this.filterDateBy)
     },
 }
 </script>
