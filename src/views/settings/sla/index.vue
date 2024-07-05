@@ -144,20 +144,8 @@ export default {
                     value: "customer_name"
                 },
                 {
-                    label: "Node Code",
-                    value: "node_code"
-                },
-                {
-                    label: "SLA Koli",
-                    value: "sla_koli"
-                },
-                {
-                    label: "SLA Node",
-                    value: "sla_node"
-                },
-                {
-                    label: "SLA Activity",
-                    value: "sla_activity"
+                    label: "SLA",
+                    value: "sla"
                 },
             ],
         }

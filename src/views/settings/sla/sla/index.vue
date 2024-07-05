@@ -26,29 +26,6 @@
                             </vs-select>
                         </template>
                     </vs-col>
-                    <vs-col xs="6" sm="4" lg="4">
-                        <template v-if="filterActivity.length > 1">
-                            <vs-select
-                                class="m-select"
-                                filter
-                                v-model="filterActivityBy"
-                                :border="true"
-                                :multiple="true"
-                                @change="updateFiterActivity"
-                            >
-                            <template v-if="filterActivity.length > 1">
-                                <vs-option
-                                    v-for="(item,key) in filterActivity"
-                                    :key="key"
-                                    :label="item.label"
-                                    :value="item.value">
-                                {{item.label}}
-                                </vs-option>
-                            </template>
-
-                            </vs-select>
-                        </template>
-                    </vs-col>
                     <vs-col w="5">
                         <date-time 
                             :name="''" 
@@ -159,29 +136,9 @@ export default {
                     width: "sm"
                 },
                 {
-                    label: "Activity",
-                    key: "activity_name",
-                    width: "auto"
-                },
-                {
-                    label: "Node Code",
-                    key: "node_code",
-                    width: "auto"
-                },
-                {
-                    label: "SLA Koli",
-                    key: "sla_koli",
-                    width: "xs"
-                },
-                {
-                    label: "SLA Node",
-                    key: "sla_node",
-                    width: "xs"
-                },
-                {
-                    label: "SLA Activity",
-                    key: "sla_activity",
-                    width: "xs"
+                    label: "SLA",
+                    key: "sla",
+                    width: "lg"
                 },
                 {
                     label: "Active",
@@ -214,9 +171,7 @@ export default {
                     label: 'Inactive',
                     value: 'false'
                 }
-            ],
-            filterActivityBy: "-",
-            filterActivity: []
+            ]
         }
     },
     computed: {
@@ -229,7 +184,7 @@ export default {
             if(val !== undefined) {
                 this.searchValue = val
                 if(this.searchValue !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.searchBy, this.filterActivityBy, this.filterStatusBy)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.searchBy, this.filterStatusBy)
                 }
             }
         },
@@ -237,13 +192,13 @@ export default {
             if(val !== undefined) {
                 this.searchBy = val
                 if(this.searchBy !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.startDate, this.endDate, val, this.filterActivityBy, this.filterStatusBy)
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.startDate, this.endDate, val, this.filterStatusBy)
                 }
             }
         },
     },
     methods: {
-        async getTableData(limit,page,q,from,to, searchBy, filterActivityBy, filterStatusBy) {
+        async getTableData(limit,page,q,from,to, searchBy, filterStatusBy) {
             this.loading = true
             let query = "";
             let startDate = "";
@@ -257,8 +212,8 @@ export default {
               endDate = to
             }
             await axios
-                .get(this.URL.sla + 
-                `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}&s=${query}&search_by=${searchBy}&activity_name=${filterActivityBy}&is_active=${filterStatusBy}`, 
+                .get(this.URL.sla_koli + 
+                `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}&s=${query}&search_by=${searchBy}&is_active=${filterStatusBy}`, 
                 this.Helper.header())
                 .then(res => {
                         this.dataTable = res.data.data
@@ -286,7 +241,7 @@ export default {
         async actionRemove(val){
             await axios
                 .delete(
-                    this.URL.sla + `/${val.sla_id}?n=${this.listenNodeId}`,
+                    this.URL.sla_koli + `/${val.sla_id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     this.refresh()
@@ -296,7 +251,6 @@ export default {
                     this.openNotification('danger', 'Delete sla is failed', err)
                 })
         },
-        
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
@@ -314,10 +268,10 @@ export default {
                 from = moment(this.dateRange[0]).format("YYYY-MM-DD")
                 to = moment(this.dateRange[1]).format("YYYY-MM-DD")
             }
-            this.getTableData(this.pagination.limit,this.pagination.page,this.searchValue,from,to, this.searchBy, this.filterActivityBy, this.filterStatusBy)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.searchValue,from,to, this.searchBy, this.filterStatusBy)
         },
         closedialogSla() {
-            this.$store.dispatch("SET_SLA_SLA_ID_visible", false)
+            this.$store.dispatch("SET_SLA_KOLI_SLA_ID_visible", false)
             this.dialogSla = false
         },
         updateValue(key, val) {
@@ -330,42 +284,9 @@ export default {
         },
         updateFiterActivity(key, val){
             this.refresh()
-        },
-        async getActivityName() {
-            this.loadingDataActivity = true
-            await axios
-                .get(this.URL.sla + `/activity-name?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = [{
-                            label: 'All Activity',
-                            value: '-'
-                        }]
-                        res.data.data.map(item => {
-                            let obj = {}
-                            if (item.activity_name !== null) {
-                                obj["label"] = item.activity_name
-                                obj["value"] = item.activity_name
-
-                                arr.push(obj)
-                            }
-                            
-                        })
-                        this.filterActivity = arr
-                        this.$store.dispatch("SET_SLA_ACTIVITY_NAME_ArrData", arr)
-                    } else {
-                        this.openNotification('warn', 'Activity data is empty!', ' Please create a new Activity data')
-                    }
-                    this.loadingDataActivity = false
-                }).catch(err => {
-                    this.loadingDataActivity = false
-                    this.openNotification('danger', 'Failed to populate Activity list', err)
-                })
-        }, 
-        
+        },        
     },
     mounted() {
-        this.getActivityName();
         this.refresh()
     },
 }

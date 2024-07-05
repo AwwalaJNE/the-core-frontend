@@ -12,7 +12,7 @@
             <div>
                 <form-input-controller
                     ref="formSlaController" 
-                    typeForm="sla"
+                    typeForm="sla_koli"
                     @formData="formData"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
@@ -101,7 +101,6 @@ export default {
     computed: {
         listenActive(){
             if(this.active){
-                this.getActivityName()
                 this.getDataService()
                 this.getDataCustomerName()  
             }
@@ -114,7 +113,10 @@ export default {
             return this.dataItem
         },
         listenCustomerName() {
-            return this.$store.getters.getInputs.sla.customer_name.value;
+            const customerName = this.$store.getters.getInputs.sla_koli.customer_name.value;
+            if (customerName) {
+                return customerName;
+            }
         }
     },
     watch: {
@@ -125,7 +127,7 @@ export default {
         },
         listenCustomerName: {
             handler(newVal) {
-                if (newVal !== null) {
+                if (newVal) {
                     this.getDataCustomerCode();
                 }
             },
@@ -148,11 +150,11 @@ export default {
                         switch (radioValue) {
                             case 'hari':
                                 form[relatedKey] *= 24 * 60;
-                                this.$store.dispatch("SET_SLA_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
+                                this.$store.dispatch("SET_SLA_KOLI_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
                                 break;
                             case 'jam':
                                 form[relatedKey] *= 60;
-                                this.$store.dispatch("SET_SLA_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
+                                this.$store.dispatch("SET_SLA_KOLI_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
                                 break;
                             case 'menit':
                                 break;
@@ -180,35 +182,7 @@ export default {
             this.$refs.formSlaController.handleClearForm()
             this.form = {}
             this.sla_id = ""
-        },
-        async getActivityName() {
-            this.loadingDataActivity = true
-            await axios
-                .get(this.URL.sla + `/activity-name?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            if (item.activity_name !== null) {
-                                obj["label"] = item.activity_name
-                                obj["value"] = item.activity_name
-
-                                arr.push(obj)
-                            }
-                            
-                        })
-                        this.activityArray = arr
-                        this.$store.dispatch("SET_SLA_ACTIVITY_NAME_ArrData", arr)
-                    } else {
-                        this.openNotification('warn', 'Activity data is empty!', ' Please create a new Activity data')
-                    }
-                    this.loadingDataActivity = false
-                }).catch(err => {
-                    this.loadingDataActivity = false
-                    this.openNotification('danger', 'Failed to populate Activity list', err)
-                })
-        },        
+        },    
         querySearch(queryString, cb){
             axios.get(this.URL.node +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
             .then(res => {
@@ -293,7 +267,7 @@ export default {
                             arr.push(obj)
                         })
                         this.serviceArray = arr
-                        this.$store.dispatch("SET_SLA_SERVICE_CODE_ArrData", arr)
+                        this.$store.dispatch("SET_SLA_KOLI_SERVICE_CODE_ArrData", arr)
                     } else {
                         this.openNotification('warn', 'Service data is empty!', ' Please create a new service data')
                     }
@@ -318,7 +292,7 @@ export default {
                             arr.push(obj)
                         })
                         this.customerNameArray = arr
-                        this.$store.dispatch("SET_SLA_CUSTOMER_NAME_ArrData", arr)
+                        this.$store.dispatch("SET_SLA_KOLI_CUSTOMER_NAME_ArrData", arr)
                     } else {
                         this.openNotification('warn', 'Customer Name data is empty!', ' Please create a new Customer Name data')
                     }
@@ -343,7 +317,7 @@ export default {
                             arr.push(obj)
                         })
                         this.customerIdArray = arr
-                        this.$store.dispatch("SET_SLA_CUSTOMER_CODE_ArrData", arr)
+                        this.$store.dispatch("SET_SLA_KOLI_CUSTOMER_CODE_ArrData", arr)
                     } else {
                         // this.openNotification('warn', 'Customer ID data is empty!', ' Please create a new Customer Id data')
                     }
@@ -370,7 +344,7 @@ export default {
             if (isActiveDifferent && areOthersEqual) {
                 await axios
                     .patch(
-                        this.URL.sla + `/${this.sla_id}?n=${this.listenNodeId}`,
+                        this.URL.sla_koli + `/${this.sla_id}?n=${this.listenNodeId}`,
                         JSON.stringify({
                             is_active: this.form.is_active
                         }), 
@@ -389,7 +363,7 @@ export default {
             } else {
                 await axios
                     .put(
-                        this.URL.sla + `/${this.sla_id}?n=${this.listenNodeId}`,
+                        this.URL.sla_koli + `/${this.sla_id}?n=${this.listenNodeId}`,
                         JSON.stringify(this.form), 
                         this.Helper.header())
                     .then(res => {
@@ -408,7 +382,7 @@ export default {
         async addData() {
             await axios
                 .post(
-                    this.URL.sla + `?n=${this.listenNodeId}`,
+                    this.URL.sla_koli + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {

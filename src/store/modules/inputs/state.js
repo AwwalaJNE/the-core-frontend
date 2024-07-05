@@ -1421,7 +1421,7 @@ export default {
 
   },
 
-  sla: {
+  sla_koli: {
     sla_id: {
       label: "Sla ID",
       key: "sla_id",
@@ -1513,79 +1513,10 @@ export default {
       valueData: null,
       value: ''
     },
-    activity_name: {
-      label: "Activity*",
-      key: "activity_name",
-      rule: "required",
-      typeInput: "selectallowcreate",
-      typeData: "Array",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    node_code: {
-      label: "Node Code",
-      key: "node_code",
+    sla: {
+      label: "SLA",
+      key: "sla",
       rule: "",
-      typeInput: "autocomplete",
-      typeData: "String",
-      width: '12',
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    sla_koli: {
-      label: "SLA Koli",
-      key: "sla_koli",
-      rule: "",
-      typeInput: "radtex",
-      typeData: "Number",
-      arrData: [
-        {
-          label: "Menit",
-          value: "menit"
-        },
-        {
-          label: "Jam",
-          value: "jam"
-        },
-        {
-          label: "Hari",
-          value: "hari"
-        },        
-      ],
-      arrValue: '',
-      valueData: null,
-      value: '',
-    },
-    sla_node: {
-      label: "SLA Node",
-      key: "sla_node",
-      rule: "",
-      typeInput: "radtex",
-      typeData: "Number",
-      arrData: [
-        {
-          label: "Menit",
-          value: "menit"
-        },
-        {
-          label: "Jam",
-          value: "jam"
-        },
-        {
-          label: "Hari",
-          value: "hari"
-        },        
-      ],
-      arrValue: '',
-      valueData: null,
-      value: '',
-    },
-    sla_activity: {
-      label: "SLA Activity*",
-      key: "sla_activity",
-      rule: "required",
       typeInput: "radtex",
       typeData: "Number",
       arrData: [
