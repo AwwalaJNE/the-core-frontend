@@ -260,7 +260,7 @@ export default {
                 
                 if (this.listenDataItem.attachment && this.listenDataItem.attachment.length > 0) {
                     this.fileList = this.listenDataItem.attachment.map(item => ({
-                        name: '',   // TODO: CHECK item.actual_file_name
+                        name: '',
                         attachment_id: item.attachment_id,
                         url: item.url
                     }));
