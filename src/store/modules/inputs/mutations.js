@@ -2967,5 +2967,176 @@ export default {
   SET_SLA_KOLI_IS_ACTIVE_ValueData(state, payload) {
     state.sla_koli.is_active.valueData = payload
   },
-  //====== END SLA ======    
+  //====== END SLA Koli ======    
+
+
+
+  //====== SLA Inter Activity======  
+
+  SET_SLA_INTER_ACTIVITY_SLA_ID(state, payload) {
+    state.sla_inter_activity.sla_id.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_SLA_ID_visible(state, payload) {
+    state.sla_inter_activity.sla_id.visible = payload
+  },
+  SET_SLA_INTER_ACTIVITY_SLA_ID_ValueData(state, payload) {
+    state.sla_inter_activity.sla_id.valueData = payload
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_GROUP_NAME(state, payload) {
+    state.sla_inter_activity.group_name.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_GROUP_NAME_ValueData(state, payload) {
+    state.sla_inter_activity.group_name.valueData = payload
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_START_DATE(state, payload) {
+    state.sla_inter_activity.start_date.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_START_DATE_ValueData(state, payload) {
+    state.sla_inter_activity.start_date.valueData = payload
+  },
+  SET_SLA_INTER_ACTIVITY_START_DATE_ArrData(state, payload) {
+    state.sla_inter_activity.start_date.hasOwnProperty('arrData') ?
+    state.sla_inter_activity.start_date.arrData = payload :
+    state.sla_inter_activity.start_date.arrData = []
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_END_DATE(state, payload) {
+    state.sla_inter_activity.end_date.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_END_DATE_ValueData(state, payload) {
+    state.sla_inter_activity.end_date.valueData = payload
+  },
+  SET_SLA_INTER_ACTIVITY_END_DATE_ArrData(state, payload) {
+    state.sla_inter_activity.end_date.hasOwnProperty('arrData') ?
+    state.sla_inter_activity.end_date.arrData = payload :
+    state.sla_inter_activity.end_date.arrData = []
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_ORIGIN(state, payload) {
+    state.sla_inter_activity.origin.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_ORIGIN_ValueData(state, payload) {
+    state.sla_inter_activity.origin.valueData = payload
+  },
+  SET_SLA_INTER_ACTIVITY_ORIGIN_ArrData(state, payload) {
+    state.sla_inter_activity.origin.hasOwnProperty('arrData') ?
+    state.sla_inter_activity.origin.arrData = payload :
+    state.sla_inter_activity.origin.arrData = []
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_DESTINATION(state, payload) {
+    state.sla_inter_activity.destination.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_DESTINATION_ValueData(state, payload) {
+    state.sla_inter_activity.destination.valueData = payload
+  },
+  SET_SLA_INTER_ACTIVITY_DESTINATION_ArrData(state, payload) {
+    state.sla_inter_activity.destination.hasOwnProperty('arrData') ?
+    state.sla_inter_activity.destination.arrData = payload :
+    state.sla_inter_activity.destination.arrData = []
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME(state, payload) {
+    state.sla_inter_activity.customer_name.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME_ValueData(state, payload) {
+    state.sla_inter_activity.customer_name.valueData = payload
+  },
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME_ArrData(state, payload) {
+    state.sla_inter_activity.customer_name.hasOwnProperty('arrData') ?
+    state.sla_inter_activity.customer_name.arrData = payload :
+    state.sla_inter_activity.customer_name.arrData = []
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE(state, payload) {
+    state.sla_inter_activity.customer_code.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE_ValueData(state, payload) {
+    state.sla_inter_activity.customer_code.valueData = payload
+  },
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE_ArrData(state, payload) {
+    state.sla_inter_activity.customer_code.hasOwnProperty('arrData') ?
+    state.sla_inter_activity.customer_code.arrData = payload :
+    state.sla_inter_activity.customer_code.arrData = []
+  },
+
+  SET_SLA_INTER_ACTIVITY_SERVICE_CODE(state, payload) {
+    state.sla_inter_activity.service_code.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_SERVICE_CODE_ValueData(state, payload) {
+    state.sla_inter_activity.service_code.valueData = payload
+  },
+  SET_SLA_INTER_ACTIVITY_SERVICE_CODE_ArrData(state, payload) {
+    state.sla_inter_activity.service_code.hasOwnProperty('arrData') ?
+    state.sla_inter_activity.service_code.arrData = payload :
+    state.sla_inter_activity.service_code.arrData = []
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_NODE_CODE(state, payload) {
+    state.sla_inter_activity.node_code.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_NODE_CODE_ValueData(state, payload) {
+    state.sla_inter_activity.node_code.valueData = payload
+  },
+  SET_SLA_INTER_ACTIVITY_NODE_CODE_ArrData(state, payload) {
+    state.sla_inter_activity.node_code.hasOwnProperty('arrData') ?
+    state.sla_inter_activity.node_code.arrData = payload :
+    state.sla_inter_activity.node_code.arrData = []
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY(state, payload) {
+    state.sla_inter_activity.previous_activity.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY_ValueData(state, payload) {
+    state.sla_inter_activity.previous_activity.valueData = payload
+  },
+  SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY_ArrData(state, payload) {
+    state.sla_inter_activity.previous_activity.hasOwnProperty('arrData') ?
+    state.sla_inter_activity.previous_activity.arrData = payload :
+    state.sla_inter_activity.previous_activity.arrData = []
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY(state, payload) {
+    state.sla_inter_activity.next_activity.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY_ValueData(state, payload) {
+    state.sla_inter_activity.next_activity.valueData = payload
+  },
+  SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY_ArrData(state, payload) {
+    state.sla_inter_activity.next_activity.hasOwnProperty('arrData') ?
+    state.sla_inter_activity.next_activity.arrData = payload :
+    state.sla_inter_activity.next_activity.arrData = []
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_SLA(state, payload) {
+    state.sla_inter_activity.sla.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_SLA_ValueData(state, payload) {
+    state.sla_inter_activity.sla.valueData = payload
+  },
+  SET_SLA_INTER_ACTIVITY_SLA_ArrValueData(state, payload) {
+    state.sla_inter_activity.sla.arrValueData = payload
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_IS_ACTIVE(state, payload) {
+    state.sla_inter_activity.is_active.value = payload
+  },
+  SET_SLA_INTER_ACTIVITY_IS_ACTIVE_ValueData(state, payload) {
+    state.sla_inter_activity.is_active.valueData = payload
+  },
+  //====== END SLA INTER ACTIVITY ======
 }

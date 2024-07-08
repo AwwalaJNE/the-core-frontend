@@ -2744,5 +2744,160 @@ export default {
   SET_SLA_KOLI_SLA_ACTIVITY_ArrValueData({ commit }, payload) {
     commit('SET_SLA_KOLI_SLA_ACTIVITY_ArrValueData', payload)
   },
-  //====== END SLA KOLI ======//    
+  //====== END SLA KOLI ======//
+
+
+  //====== SLA INTER_ACTIVITY ======//  
+
+  SET_SLA_INTER_ACTIVITY_SLA_ID({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_SLA_ID', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_SLA_ID_visible({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_SLA_ID_visible', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_SLA_ID_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_SLA_ID_ValueData', payload)
+  },
+  
+  SET_SLA_INTER_ACTIVITY_GROUP_NAME({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_GROUP_NAME', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_GROUP_NAME_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_GROUP_NAME_ValueData', payload)
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_START_DATE({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_START_DATE', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_START_DATE_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_START_DATE_ValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_START_DATE_ArrData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_START_DATE_ArrData', payload)
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_END_DATE({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_END_DATE', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_END_DATE_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_END_DATE_ValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_END_DATE_ArrData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_END_DATE_ArrData', payload)
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_ORIGIN({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_ORIGIN', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_ORIGIN_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_ORIGIN_ValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_ORIGIN_ArrData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_ORIGIN_ArrData', payload)
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_DESTINATION({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_DESTINATION', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_DESTINATION_ValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_DESTINATION_ArrData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_DESTINATION_ArrData', payload)
+  },
+
+  SET_SLA_INTER_ACTIVITY_SERVICE_CODE({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_SERVICE_CODE', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_SERVICE_CODE_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_SERVICE_CODE_ValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_SERVICE_CODE_ArrData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_SERVICE_CODE_ArrData', payload)
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME_ValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME_ArrData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME_ArrData', payload)
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE_ValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE_ArrData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE_ArrData', payload)
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_NODE_CODE({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_NODE_CODE', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_NODE_CODE_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_NODE_CODE_ValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_NODE_CODE_ArrData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_NODE_CODE_ArrData', payload)
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY_ValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY_ArrData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY_ArrData', payload)
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY_ValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY_ArrData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY_ArrData', payload)
+  },
+
+
+  SET_SLA_INTER_ACTIVITY_SLA({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_SLA', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_SLA_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_SLA_ValueData', payload)
+  },
+
+  SET_SLA_INTER_ACTIVITY_IS_ACTIVE({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_IS_ACTIVE', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_IS_ACTIVE_ValueData', payload)
+  },
+
+  SET_SLA_INTER_ACTIVITY_SLA_ArrValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_SLA_ArrValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_SLA_NODE_ArrValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_SLA_NODE_ArrValueData', payload)
+  },
+  SET_SLA_INTER_ACTIVITY_SLA_ACTIVITY_ArrValueData({ commit }, payload) {
+    commit('SET_SLA_INTER_ACTIVITY_SLA_ACTIVITY_ArrValueData', payload)
+  },
+  //====== END SLA INTER ACTIVITY ======//
 }

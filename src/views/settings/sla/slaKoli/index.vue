@@ -58,7 +58,7 @@
             :closeDialog="closedialogSla"
             @refresh="refresh"
             btnBlue="Edit"
-            title="Edit SLA"
+            title="Edit SLA Koli"
             :dataItem="dataItem"
         />
     </div>
@@ -67,7 +67,7 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
-import DialogCreateEditSla from "@/views/settings/sla/sla/dialogCreateEditSla"
+import DialogCreateEditSla from "@/views/settings/sla/slaInterActivity/dialogCreateEditSla"
 import SearchInput from "@/components/search/searchInput"
 import Inputan from "@/components/input/inputan"
 import DateTime from "@/components/input/dateTime"

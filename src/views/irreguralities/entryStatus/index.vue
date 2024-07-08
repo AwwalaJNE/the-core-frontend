@@ -6,35 +6,62 @@
                     <breadcrumb />
                     <h2>Entry Status</h2>
                 </div>
-                <div class="mt-2">
-                    <vs-row justify="space-between">
-                        <vs-col xs="9" sm="9" lg="9">
-                            <form @submit.prevent="openDialog">
-                                <multi-input
-                                    ref="koliCode"
-                                    placeholder="Masukkan Nomor Bag / Connote"
-                                    rules="" 
-                                    formKey="KOLI_CODE"
-                                    :loading="loading"
-                                    :selectedValue="koliCode"
-                                    :isMultiple="false"
-                                    :disabled="false"
-                                    :isAllowCreate="true"
-                                    @updateValue="updateValue"  
-                                />
-                            </form>
-                        </vs-col>
-                        <vs-col xs="3" sm="3" lg="3">
-                            <vs-button
-                                @click="openDialog"
-                            >
-                                Submit
-                            </vs-button>
-                        </vs-col>
-                    </vs-row>
-                </div>
             </vs-col>
         </vs-row>
+        <div class="mt-2" style="display: flex; justify-content: space-between;">
+            <vs-row justify="space-between">
+                <vs-col xs="9" sm="9" lg="9">
+                    <form @submit.prevent="openDialog">
+                        <multi-input
+                            ref="koliCode1"
+                            placeholder="Masukkan Nomor Bag / Connote"
+                            rules="" 
+                            formKey="KOLI_CODE"
+                            :loading="loading"
+                            :selectedValue="koliCode"
+                            :isMultiple="false"
+                            :disabled="false"
+                            :isAllowCreate="true"
+                            @updateValue="updateValue"  
+                        />
+                    </form>
+                </vs-col>
+                <vs-col xs="3" sm="3" lg="3">
+                    <vs-button
+                        @click="openDialog"
+                    >
+                        Submit
+                    </vs-button>
+                </vs-col>
+            </vs-row>
+            <vs-row justify="space-between">
+                <vs-col xs="9" sm="9" lg="9">
+                    <form @submit.prevent="openDialog">
+                        <multi-input
+                            ref="koliCode2"
+                            placeholder="Masukkan Nomor Bag / Connote"
+                            rules="" 
+                            formKey="KOLI_CODE"
+                            :loading="loading"
+                            :selectedValue="koliCode"
+                            :isMultiple="false"
+                            :disabled="false"
+                            :isAllowCreate="true"
+                            @updateValue="updateValue"  
+                        />
+                    </form>
+                </vs-col>
+                <vs-col xs="3" sm="3" lg="3">
+                    <vs-button
+                        danger
+                        :active="true"
+                        @click="openDialog"
+                    >
+                        Remove
+                    </vs-button>
+                </vs-col>
+            </vs-row>
+        </div>
 
         <section class="nodes">
             <div class="box view">

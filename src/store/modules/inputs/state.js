@@ -1548,6 +1548,164 @@ export default {
     },
   },
 
+  sla_inter_activity: {
+    sla_id: {
+      label: "Sla ID",
+      key: "sla_id",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      visible: false,
+      valueData: null,
+      value: '',
+    },
+    group_name: {
+      label: "Group Name*",
+      key: "group_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    start_date: {
+      label: "Start Date*",
+      key: "start_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    end_date: {
+      label: "End Date*",
+      key: "end_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    origin: {
+      label: "Origin*",
+      key: "origin",
+      rule: "required",
+      typeInput: "autocomplete1",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    destination: {
+      label: "Destination*",
+      key: "destination",
+      rule: "required",
+      typeInput: "autocomplete2",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    service_code: {
+      label: "Service*",
+      key: "service_code",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    customer_name: {
+      label: "Customer Name",
+      key: "customer_name",
+      rule: "",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    customer_code: {
+      label: "Customer Code",
+      key: "customer_code",
+      rule: "",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_code: {
+      label: "Node Code*",
+      key: "node_code",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      width: '12',
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    previous_activity: {
+      label: "Current Activity*",
+      key: "previous_activity",
+      rule: "required",
+      typeInput: "selectallowcreate",
+      typeData: "Array",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    next_activity: {
+      label: "Next Activity*",
+      key: "next_activity",
+      rule: "required",
+      typeInput: "selectallowcreate",
+      typeData: "Array",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    sla: {
+      label: "SLA",
+      key: "sla",
+      rule: "",
+      typeInput: "radtex",
+      typeData: "Number",
+      arrData: [
+        {
+          label: "Menit",
+          value: "menit"
+        },
+        {
+          label: "Jam",
+          value: "jam"
+        },
+        {
+          label: "Hari",
+          value: "hari"
+        },        
+      ],
+      arrValue: '',
+      valueData: null,
+      value: '',
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
+
   tariff: {
     tariff_group: {
       label: "Tariff Group",
