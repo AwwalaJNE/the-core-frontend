@@ -49,6 +49,29 @@
                             </vs-select>
                         </template>
                     </vs-col>
+                    <vs-col xs="6" sm="4" lg="4">
+                        <template v-if="filterNextActivity.length > 1">
+                            <vs-select
+                                class="m-select"
+                                filter
+                                v-model="filterNextActivityBy"
+                                :border="true"
+                                :multiple="true"
+                                @change="updateFiterActivity"
+                            >
+                            <template v-if="filterNextActivity.length > 1">
+                                <vs-option
+                                    v-for="(item,key) in filterNextActivity"
+                                    :key="key"
+                                    :label="item.label"
+                                    :value="item.value">
+                                {{item.label}}
+                                </vs-option>
+                            </template>
+
+                            </vs-select>
+                        </template>
+                    </vs-col>
                     <vs-col w="5">
                         <date-time 
                             :name="''" 
@@ -331,25 +354,30 @@ export default {
             await axios
                 .get(this.URL.sla + `/activity/activity-name?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
                 .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = [{
-                            label: 'All Activity',
-                            value: '-'
-                        }]
-                        res.data.data.map(item => {
-                            let obj = {}
+                    if (res.data.data.length > 0) {
+                        let arr = [];
+                        res.data.data.forEach(item => {
                             if (item.activity_name !== null) {
-                                obj["label"] = item.activity_name
-                                obj["value"] = item.activity_name
-
-                                arr.push(obj)
+                                let obj = {
+                                    label: item.activity_name,
+                                    value: item.activity_name
+                                };
+                                arr.push(obj);
                             }
-                            
-                        })
-                        this.filterCurrentActivity = arr
-                        this.filterNextActivity = arr
-                        this.$store.dispatch("SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY_ArrData", arr)
-                        this.$store.dispatch("SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY_ArrData", arr)
+                        });
+
+                        const filterCurrentActivityArr = [{ label: 'All Current Activity', value: '-' }, ...arr];
+                        const filterNextActivityArr = [{ label: 'All Next Activity', value: '-' }, ...arr];
+
+                        if (this.filterCurrentActivity !== undefined) {
+                            this.filterCurrentActivity = filterCurrentActivityArr;
+                        } 
+                        if (this.filterNextActivity !== undefined) {
+                            this.filterNextActivity = filterNextActivityArr;
+                        }
+
+                        this.$store.dispatch("SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY_ArrData", arr);
+                        this.$store.dispatch("SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY_ArrData", arr);
                     } else {
                         this.openNotification('warn', 'Activity data is empty!', ' Please create a new Activity data')
                     }
