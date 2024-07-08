@@ -1855,6 +1855,16 @@ export default {
       valueData: null,
       value: ''
     },
+    origin: {
+      label: "Origin*",
+      key: "origin",
+      rule: "required",
+      typeInput: "autocomplete3",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
     type: {
       label: "Type*",
       key: "type",

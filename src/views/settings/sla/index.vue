@@ -324,36 +324,16 @@ export default {
                     value: "group_name"
                 },
                 {
-                    label: "Origin",
-                    value: "origin"
+                    label: "Type",
+                    value: "type"
                 },
                 {
-                    label: "Destination",
-                    value: "destination"
+                    label: "Node Origin",
+                    value: "node_origin"
                 },
                 {
-                    label: "Service",
-                    value: "service_code"
-                },
-                {
-                    label: "Customer Code",
-                    value: "customer_code"
-                },
-                {
-                    label: "Customer Name",
-                    value: "customer_name"
-                },
-                {
-                    label: "Node Code",
-                    value: "node_code"
-                },
-                {
-                    label: "Current Activity",
-                    value: "previous_activity"
-                },
-                {
-                    label: "Next Activity",
-                    value: "next_activity"
+                    label: "Node Destination",
+                    value: "node_destination"
                 },
                 {
                     label: "SLA",
@@ -372,32 +352,20 @@ export default {
                     value: "origin"
                 },
                 {
-                    label: "Destination",
-                    value: "destination"
+                    label: "Type",
+                    value: "type"
                 },
                 {
-                    label: "Service",
-                    value: "service_code"
+                    label: "Node Origin",
+                    value: "node_origin"
                 },
                 {
-                    label: "Customer Code",
-                    value: "customer_code"
+                    label: "Node Destination",
+                    value: "node_destination"
                 },
                 {
-                    label: "Customer Name",
-                    value: "customer_name"
-                },
-                {
-                    label: "Node Code",
-                    value: "node_code"
-                },
-                {
-                    label: "Current Activity",
-                    value: "previous_activity"
-                },
-                {
-                    label: "Next Activity",
-                    value: "next_activity"
+                    label: "Delivery Zone",
+                    value: "delivery_zone"
                 },
                 {
                     label: "SLA",

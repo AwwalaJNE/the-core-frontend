@@ -67,7 +67,7 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
-import DialogCreateEditSla from "@/views/settings/sla/slaInterActivity/dialogCreateEditSla"
+import DialogCreateEditSla from "@/views/settings/sla/slaNodeToNodeB/dialogCreateEditSla"
 import SearchInput from "@/components/search/searchInput"
 import Inputan from "@/components/input/inputan"
 import DateTime from "@/components/input/dateTime"
@@ -116,23 +116,23 @@ export default {
                     width: "sm"
                 },
                 {
-                    label: "Destination",
-                    key: "destination",
-                    width: "sm"
-                },
-                {
-                    label: "Service",
-                    key: "service_code",
+                    label: "Type",
+                    key: "type",
                     width: "auto"
                 },
                 {
-                    label: "Customer ID",
-                    key: "customer_code",
+                    label: "Node Origin",
+                    key: "node_origin",
                     width: "sm"
                 },
                 {
-                    label: "Customer Name",
-                    key: "customer_name",
+                    label: "Node Destination",
+                    key: "node_destination",
+                    width: "sm"
+                },
+                {
+                    label: "Delivery Zone",
+                    key: "delivery_zone",
                     width: "sm"
                 },
                 {

@@ -16,8 +16,8 @@
                     @formData="formData"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
-                    :querySearch1="getDataOrigin"
-                    :querySearch2="getDataDestination"
+                    :querySearch1="getDataNodeOrigin"
+                    :querySearch2="getDataNodeDestination"
                     :permissionCreateSelect="checkPermission('create-activity-sla')"
                 />
             </div>
@@ -79,20 +79,24 @@ export default {
     data() {
         return {
             form: {},
-            typeArray: [],
-            originArray: [],
-            destinationArray: [],
-            customerNameArray: [],
-            customerIdArray: [],
-            activityArray: [],
-            customerId: "",
-            loadingDataOrigin: false,
-            loadingDataDestination: false,
+            // typeArray: [],
+            typeArray: [
+                {
+                    label: "SJ",
+                    value: "SJ"
+                },
+                {
+                    label: "SM",
+                    value: "SM"
+                },
+                {
+                    label: "Pickup",
+                    value: "Pickup"
+                }
+            ],
+            loadingDataNodeOrigin: false,
+            loadingDataNodeDestination: false,
             loadingDataType: false,
-            loadingDataCustomerName: false,
-            loadingDataCustomerCode: false,
-            loadingDataNode: false,
-            loadingDataActivity: false,
             sla_id: "",
             queryOri: "",
             queryDest: ""
@@ -183,18 +187,18 @@ export default {
                 })
             .catch(error => console.log("error", error));
         },
-        getDataOrigin(queryOri, cb){
-            this.loadingDataOrigin = true
+        getDataNodeOrigin(queryOri, cb){
+            this.loadingDataNodeOrigin = true
             axios
-                .get(this.URL.origin_code + `?n=${this.listenNodeId}&s=${queryOri}&limit=100`, this.Helper.header())
+                .get(this.URL.node + `?n=${this.listenNodeId}&s=${queryOri}&limit=100`, this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
                             if (item.origin_code !== null) {
-                                obj["value"] = item.origin_code
-                                obj["data"] = item.origin_code
+                                obj["value"] = item.node_code
+                                obj["data"] = item.node_code
 
                                 arr.push(obj)
                             }
@@ -204,24 +208,24 @@ export default {
                     } else {
                         this.openNotification('warn', 'Origin data is empty!', ' Please create a new origin data')
                     }
-                    this.loadingDataOrigin = false
+                    this.loadingDataNodeOrigin = false
                 }).catch(err => {
-                    this.loadingDataOrigin = false
+                    this.loadingDataNodeOrigin = false
                     this.openNotification('danger', 'Failed to populate service list', err)
                 })
         },
-        async getDataDestination(queryDest, cb){
-            this.loadingDataDestination = true
+        async getDataNodeDestination(queryDest, cb){
+            this.loadingDataNodeDestination = true
             axios
-                .get(this.URL.destination_code + `?n=${this.listenNodeId}&s=${queryDest}&limit=100`, this.Helper.header())
+                .get(this.URL.node + `?n=${this.listenNodeId}&s=${queryDest}&limit=100`, this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            if (item.geolocation_subdistrict_tarif_code !== null) {
-                                obj["value"] = item.geolocation_subdistrict_tarif_code
-                                obj["data"] = item.geolocation_subdistrict_tarif_code
+                            if (item.node_code !== null) {
+                                obj["value"] = item.node_code
+                                obj["data"] = item.node_code
 
                                 arr.push(obj)
                             }
@@ -231,28 +235,14 @@ export default {
                     } else {
                         this.openNotification('warn', 'Destination data is empty!', ' Please create a new destination data')
                     }
-                    this.loadingDataDestination = false
+                    this.loadingDataNodeDestination = false
                 }).catch(err => {
-                    this.loadingDataDestination = false
+                    this.loadingDataNodeDestination = false
                     this.openNotification('danger', 'Failed to populate Destination list', err)
                 })
         },
         async getDataType(){
-            this.typeArray = [
-                {
-                    label: "SJ",
-                    value: "SJ"
-                },
-                {
-                    label: "SM",
-                    value: "SM"
-                },
-                {
-                    label: "Pickup",
-                    value: "Pickup"
-                }
-            ]
-            this.$store.dispatch("SET_SLA_NODE_TO_NODE_A_SERVICE_CODE_ArrData", typeArray)
+            this.$store.dispatch("SET_SLA_NODE_TO_NODE_A_TYPE_ArrData", this.typeArray)
             // this.loadingDataType = true
             // await axios
             //     .get(this.URL.service + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
@@ -267,7 +257,7 @@ export default {
             //                 arr.push(obj)
             //             })
             //             this.typeArray = arr
-            //             this.$store.dispatch("SET_SLA_NODE_TO_NODE_A_SERVICE_CODE_ArrData", arr)
+            //             this.$store.dispatch("SET_SLA_NODE_TO_NODE_A_TYPE_ArrData", arr)
             //         } else {
             //             this.openNotification('warn', 'Service data is empty!', ' Please create a new service data')
             //         }

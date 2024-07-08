@@ -3292,6 +3292,20 @@ export default {
     state.sla_node_to_node_b.end_date.arrData = []
   },
 
+
+  SET_SLA_NODE_TO_NODE_B_ORIGIN(state, payload) {
+    state.sla_node_to_node_b.origin.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_ORIGIN_ValueData(state, payload) {
+    state.sla_node_to_node_b.origin.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_ORIGIN_ArrData(state, payload) {
+    state.sla_node_to_node_b.origin.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_b.origin.arrData = payload :
+    state.sla_node_to_node_b.origin.arrData = []
+  },
+
+
   SET_SLA_NODE_TO_NODE_B_TYPE(state, payload) {
     state.sla_node_to_node_b.type.value = payload
   },

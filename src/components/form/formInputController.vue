@@ -242,6 +242,24 @@
                                     @inputFocus="onfocuslah"/>
                                 </template>
                             </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete3')">
+                                <template v-if="querySearch3 !== undefined">
+                                    <auto-complete
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].value"
+                                    :url="InputObject[item].url"
+                                    :flag="InputObject[item].flag"
+                                    :querySearch="querySearch3"
+                                    :selectedValue="InputObject[item].value"
+                                    :typeForm="listenTypeForm"
+                                    :typeInput="InputObject[item].typeInput"
+                                    :disabled="listenIsDisabled"
+                                    @updateValue="updateValue"
+                                    @inputFocus="onfocuslah"/>
+                                </template>
+                            </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete')">
                                 <template v-if="querySearch !== undefined">
                                     <auto-complete
@@ -319,6 +337,7 @@ export default {
         querySearch: Function, // klo ada auto complete [required]
         querySearch1: Function,
         querySearch2: Function,
+        querySearch3: Function,
         itterateUrlAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         itterateFlagAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         isDisabled: Boolean,
