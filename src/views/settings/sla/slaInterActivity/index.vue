@@ -312,7 +312,7 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.searchValue,from,to, this.searchBy, this.filterCurrentActivityBy, this.filterNextActivityBy, this.filterStatusBy)
         },
         closedialogSla() {
-            this.$store.dispatch("SET_sla_inter_activity_SLA_ID_visible", false)
+            this.$store.dispatch("SET_SLA_INTER_ACTIVITY_SLA_ID_visible", false)
             this.dialogSla = false
         },
         updateValue(key, val) {
