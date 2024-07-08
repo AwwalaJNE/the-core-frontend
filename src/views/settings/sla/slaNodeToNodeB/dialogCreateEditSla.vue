@@ -80,7 +80,6 @@ export default {
     data() {
         return {
             form: {},
-            // deliveryZoneArray: []
             typeArray: [
                 {
                     label: "SJ",
