@@ -207,24 +207,24 @@ export default {
         return {
             navItemm: [
                 {
-                    label: "SLA Koli",
+                    label: "SLA KOLI",
                     key: "sla-koli",
-                    title: "SLA"
+                    title: "SLA KOLI"
                 },
                 {
-                    label: "SLA Inter Activity",
+                    label: "SLA INTER ACTIVITY",
                     key: "sla-inter-activity",
-                    title: "SLA Inter Activity"
+                    title: "SLA INTER ACTIVITY"
                 },
                 {
-                    label: "SLA Node To Node A",
+                    label: "SLA NODE TO NODE A",
                     key: "sla-node-to-node-a",
-                    title: "SLA Node To Node A"
+                    title: "SLA NODE TO NODE A"
                 },
                 {
-                    label: "SLA Node To Node B",
+                    label: "SLA NODE TO NODE B",
                     key: "sla-node-to-node-b",
-                    title: "SLA Node To Node B"
+                    title: "SLA NODE TO NODE B"
                 },
                 {
                     label: "Upload SLA",
