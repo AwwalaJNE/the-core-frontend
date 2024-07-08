@@ -79,7 +79,6 @@ export default {
     data() {
         return {
             form: {},
-            // typeArray: [],
             typeArray: [
                 {
                     label: "SJ",
@@ -89,10 +88,6 @@ export default {
                     label: "SM",
                     value: "SM"
                 },
-                {
-                    label: "Pickup",
-                    value: "Pickup"
-                }
             ],
             loadingDataNodeOrigin: false,
             loadingDataNodeDestination: false,
@@ -241,31 +236,8 @@ export default {
                     this.openNotification('danger', 'Failed to populate Destination list', err)
                 })
         },
-        async getDataType(){
+        getDataType(){
             this.$store.dispatch("SET_SLA_NODE_TO_NODE_A_TYPE_ArrData", this.typeArray)
-            // this.loadingDataType = true
-            // await axios
-            //     .get(this.URL.service + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
-            //     .then(res => {
-            //         if(res.data.data.length > 0) {
-            //             let arr = []
-            //             res.data.data.map(item => {
-            //                 let obj = {}
-            //                 obj["label"] = item.service_code
-            //                 obj["value"] = item.service_code
-
-            //                 arr.push(obj)
-            //             })
-            //             this.typeArray = arr
-            //             this.$store.dispatch("SET_SLA_NODE_TO_NODE_A_TYPE_ArrData", arr)
-            //         } else {
-            //             this.openNotification('warn', 'Service data is empty!', ' Please create a new service data')
-            //         }
-            //         this.loadingDataType = false
-            //     }).catch(err => {
-            //         this.loadingDataType = false
-            //         this.openNotification('danger', 'Failed to populate service list', err)
-            //     })
         },
         compareSharedProperties(obj1, obj2) {
             const keys1 = Object.keys(obj1).filter(key => key !== 'is_active');

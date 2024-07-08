@@ -3350,13 +3350,7 @@ export default {
   },
   SET_SLA_NODE_TO_NODE_B_DELIVERY_ZONE_ValueData(state, payload) {
     state.sla_node_to_node_b.delivery_zone.valueData = payload
-  },
-  SET_SLA_NODE_TO_NODE_B_DELIVERY_ZONE_ArrData(state, payload) {
-    state.sla_node_to_node_b.delivery_zone.hasOwnProperty('arrData') ?
-    state.sla_node_to_node_b.delivery_zone.arrData = payload :
-    state.sla_node_to_node_b.delivery_zone.arrData = []
-  },
-  
+  },  
 
   SET_SLA_NODE_TO_NODE_B_SLA(state, payload) {
     state.sla_node_to_node_b.sla.value = payload

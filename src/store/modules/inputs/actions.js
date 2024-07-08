@@ -3071,9 +3071,6 @@ export default {
   SET_SLA_NODE_TO_NODE_B_DELIVERY_ZONE_ValueData({ commit }, payload) {
     commit('SET_SLA_NODE_TO_NODE_B_DELIVERY_ZONE_ValueData', payload)
   },
-  SET_SLA_NODE_TO_NODE_B_DELIVERY_ZONE_ArrData({ commit }, payload) {
-    commit('SET_SLA_NODE_TO_NODE_B_DELIVERY_ZONE_ArrData', payload)
-  },
 
   SET_SLA_NODE_TO_NODE_B_SLA({ commit }, payload) {
     commit('SET_SLA_NODE_TO_NODE_B_SLA', payload)

@@ -1899,9 +1899,8 @@ export default {
       label: "Delivery Zone*",
       key: "delivery_zone",
       rule: "required",
-      typeInput: "select",
+      typeInput: "text",
       typeData: "String",
-      arrData: [],
       valueData: null,
       value: ''
     },
