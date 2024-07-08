@@ -13,7 +13,7 @@
                 <vs-col xs="9" sm="9" lg="9">
                     <form @submit.prevent="openDialog">
                         <multi-input
-                            ref="koliCode1"
+                            ref="koliCode"
                             placeholder="Masukkan Nomor Bag / Connote"
                             rules="" 
                             formKey="KOLI_CODE"
@@ -36,14 +36,14 @@
             </vs-row>
             <vs-row justify="space-between">
                 <vs-col xs="9" sm="9" lg="9">
-                    <form @submit.prevent="openDialog">
+                    <form @submit.prevent="actionRemoveBulk">
                         <multi-input
-                            ref="koliCode2"
+                            ref="removeKoliCode"
                             placeholder="Masukkan Nomor Bag / Connote"
                             rules="" 
-                            formKey="KOLI_CODE"
+                            formKey="REMOVE_KOLI_CODE"
                             :loading="loading"
-                            :selectedValue="koliCode"
+                            :selectedValue="removeKoliCode"
                             :isMultiple="false"
                             :disabled="false"
                             :isAllowCreate="true"
@@ -55,7 +55,7 @@
                     <vs-button
                         danger
                         :active="true"
-                        @click="openDialog"
+                        @click="actionRemoveBulk"
                     >
                         Remove
                     </vs-button>
@@ -162,6 +162,7 @@ export default {
     data() {
         return {
             koliCode: [],
+            removeKoliCode: [],
             dateRange: [],
             tempSearch: "",
             dataTable: [],
@@ -289,6 +290,27 @@ export default {
                     this.openNotification('danger', 'Remove Irreg failed', err)
                 })
         },
+        async actionRemoveBulk() {
+            let form = {
+                item_number: this.removeKoliCode
+            }
+
+            await axios
+                .delete(
+                    this.URL.irregularities + `/bulk?n=${this.listenNodeId}`,
+                    {
+                        data: form,
+                        headers: this.Helper.header()
+            })
+                .then(res => {
+                    this.refresh()
+                    this.openNotification(null, 'Remove Bulk success', 'Remove Bulk Irreg success')
+                    this.handleClearForm();
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', 'Remove Bulk Irreg failed', err)
+                })
+        },
         async getTableData(limit,page,q, from, to) {
             this.loading = true
             let query = "";
@@ -395,6 +417,9 @@ export default {
             switch(key) {
                 case "KOLI_CODE":
                     this.koliCode = val;
+                    break;
+                case "REMOVE_KOLI_CODE":
+                    this.removeKoliCode = val;
                     break;
                 case "TRIGGER_DATE":
                     this.dateRange = val
