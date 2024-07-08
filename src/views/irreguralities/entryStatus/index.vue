@@ -28,6 +28,7 @@
                 </vs-col>
                 <vs-col xs="3" sm="3" lg="3">
                     <vs-button
+                        :active="true"
                         @click="openDialog"
                     >
                         Submit
@@ -303,7 +304,7 @@ export default {
                 .then(res => {
                     this.refresh()
                     this.openNotification(null, 'Remove Bulk success', 'Remove Bulk Irreg success')
-                    this.handleClearForm();
+                    this.$refs.removeKoliCode.value = []
                 }).catch(err => {
                     this.loading = false
                     this.openNotification('danger', 'Remove Bulk Irreg failed', err)
