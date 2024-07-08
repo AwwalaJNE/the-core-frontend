@@ -296,12 +296,10 @@ export default {
             }
 
             await axios
-                .delete(
+                .put(
                     this.URL.irregularities + `/bulk?n=${this.listenNodeId}`,
-                    {
-                        data: form,
-                        headers: this.Helper.header()
-            })
+                    form,
+                    this.Helper.header())
                 .then(res => {
                     this.refresh()
                     this.openNotification(null, 'Remove Bulk success', 'Remove Bulk Irreg success')
