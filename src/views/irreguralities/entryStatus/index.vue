@@ -302,9 +302,10 @@ export default {
                     form,
                     this.Helper.header())
                 .then(res => {
+                    this.$refs.removeKoliCode.value = []
+                    this.removeKoliCode = []
                     this.refresh()
                     this.openNotification(null, 'Remove Bulk success', 'Remove Bulk Irreg success')
-                    this.$refs.removeKoliCode.value = []
                 }).catch(err => {
                     this.loading = false
                     this.openNotification('danger', 'Remove Bulk Irreg failed', err)
