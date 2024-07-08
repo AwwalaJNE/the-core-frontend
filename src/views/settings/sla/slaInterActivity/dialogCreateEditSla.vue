@@ -18,7 +18,7 @@
                     :querySearch="querySearch"
                     :querySearch1="getDataOrigin"
                     :querySearch2="getDataDestination"
-                    :permissionCreateSelect="checkPermission('create-activity-sla')"
+                    :permissionCreateSelect="checkPermission('create-sla-inter-activity')"
                 />
             </div>
         </template>

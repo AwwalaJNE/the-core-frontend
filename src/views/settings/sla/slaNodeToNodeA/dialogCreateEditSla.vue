@@ -18,7 +18,7 @@
                     :querySearch="querySearch"
                     :querySearch1="getDataNodeOrigin"
                     :querySearch2="getDataNodeDestination"
-                    :permissionCreateSelect="checkPermission('create-activity-sla')"
+                    :permissionCreateSelect="checkPermission('create-sla-node-to-node-a')"
                 />
             </div>
         </template>
