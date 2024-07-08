@@ -57,7 +57,7 @@
                                     </span>
                                 </span>
                             </template>
-                            <template v-else>
+                            <template v-else-if="isPDF(file)">
                                 <div class="file-display">
                                     <i class="el-icon-document large-icon"></i>
                                     <span class="small-text">{{ file.name || file.uid }}</span>
@@ -69,6 +69,29 @@
                                         @click="handleFilePreview(file)"
                                     >
                                         <i class="el-icon-zoom-in"></i>
+                                    </span>
+                                    <span
+                                        v-if="!disabled"
+                                        class="el-upload-list__item-delete"
+                                        @click="handleRemove(file)"
+                                    >
+                                        <i class="el-icon-delete"></i>
+                                    </span>
+                                </span>
+                            </template>
+                            <template v-else>
+                                <div class="file-display">
+                                    <i class="el-icon-document large-icon"></i>
+                                    <span class="small-text">{{ file.name || file.uid }}</span>
+                                </div>
+                                <span class="el-upload-list__item-actions">
+                                    <span
+                                        v-if="!disabled"
+                                        class="el-upload-list__item-preview"
+                                    >
+                                        <a :href="file.url">
+                                            <i class="el-icon-download"></i>
+                                        </a>
                                     </span>
                                     <span
                                         v-if="!disabled"
@@ -239,7 +262,7 @@ export default {
                     this.fileList = this.listenDataItem.attachment.map(item => ({
                         name: '',
                         attachment_id: item.attachment_id,
-                        url: item.url.toLowerCase()
+                        url: item.url
                     }));
                 } else {
                     this.fileList = []; 
@@ -292,8 +315,14 @@ export default {
                 return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.name);
             } else {
                 return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.url);
+            }  
+        },
+        isPDF(file) {
+            if (file.name !== "") {
+                return /\.(pdf)$/i.test(file.name);
+            } else {
+                return /\.(pdf)$/i.test(file.url);
             }
-            
         },
         async getDataStatus(){
             this.loadingStatus = true
@@ -305,9 +334,9 @@ export default {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
-                            if(item.hasOwnProperty('status_subtype')) {
-                                // if(item['status_subtype'].toLowerCase().includes('problem')) {
-                                if(item['status_subtype'].toLowerCase() == ('problem')) {
+                            if(item.hasOwnProperty('status_type')) {
+                                // if(item['status_type'].toLowerCase().includes('problem')) {
+                                if(item['status_type'].toLowerCase() == ('irregularity')) {
                                     let obj = {}
                                     obj["label"] = item.status_description
                                     obj["value"] = item.status_code

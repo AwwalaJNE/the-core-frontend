@@ -12,13 +12,14 @@
             <div>
                 <form-input-controller
                     ref="formSlaController" 
-                    typeForm="sla"
+                    typeForm="sla_node_to_node_b"
                     @formData="formData"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
-                    :querySearch1="getDataOrigin"
-                    :querySearch2="getDataDestination"
-                    :permissionCreateSelect="checkPermission('create-activity-sla')"
+                    :querySearch1="getDataNodeOrigin"
+                    :querySearch2="getDataNodeDestination"
+                    :querySearch3="getDataOrigin"
+                    :permissionCreateSelect="checkPermission('create-sla-node-to-node-b')"
                 />
             </div>
         </template>
@@ -79,20 +80,26 @@ export default {
     data() {
         return {
             form: {},
-            serviceArray: [],
-            originArray: [],
-            destinationArray: [],
-            customerNameArray: [],
-            customerIdArray: [],
-            activityArray: [],
-            customerId: "",
+            typeArray: [
+                {
+                    label: "SJ",
+                    value: "SJ"
+                },
+                {
+                    label: "SM",
+                    value: "SM"
+                }
+            ],
+            deliveryZoneArray: [
+                {
+                    label: "A",
+                    value: "A"
+                }
+            ],
             loadingDataOrigin: false,
-            loadingDataDestination: false,
-            loadingDataService: false,
-            loadingDataCustomerName: false,
-            loadingDataCustomerCode: false,
-            loadingDataNode: false,
-            loadingDataActivity: false,
+            loadingDataNodeOrigin: false,
+            loadingDataNodeDestination: false,
+            loadingDataType: false,
             sla_id: "",
             queryOri: "",
             queryDest: ""
@@ -101,9 +108,7 @@ export default {
     computed: {
         listenActive(){
             if(this.active){
-                this.getActivityName()
-                this.getDataService()
-                this.getDataCustomerName()  
+                this.getDataType()
             }
             return this.active
         },
@@ -113,9 +118,6 @@ export default {
         listenDataItem() {
             return this.dataItem
         },
-        listenCustomerName() {
-            return this.$store.getters.getInputs.sla.customer_name.value;
-        }
     },
     watch: {
         dataItem: function (val) {
@@ -123,14 +125,6 @@ export default {
                 this.sla_id = val.sla_id
             }
         },
-        listenCustomerName: {
-            handler(newVal) {
-                if (newVal !== null) {
-                    this.getDataCustomerCode();
-                }
-            },
-            immediate: true
-        }
     },
     methods: {
         checkPermission(permission) {
@@ -148,11 +142,11 @@ export default {
                         switch (radioValue) {
                             case 'hari':
                                 form[relatedKey] *= 24 * 60;
-                                this.$store.dispatch("SET_SLA_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
+                                this.$store.dispatch("SET_SLA_NODE_TO_NODE_B_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
                                 break;
                             case 'jam':
                                 form[relatedKey] *= 60;
-                                this.$store.dispatch("SET_SLA_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
+                                this.$store.dispatch("SET_SLA_NODE_TO_NODE_B_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
                                 break;
                             case 'menit':
                                 break;
@@ -180,35 +174,7 @@ export default {
             this.$refs.formSlaController.handleClearForm()
             this.form = {}
             this.sla_id = ""
-        },
-        async getActivityName() {
-            this.loadingDataActivity = true
-            await axios
-                .get(this.URL.sla + `/activity-name?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            if (item.activity_name !== null) {
-                                obj["label"] = item.activity_name
-                                obj["value"] = item.activity_name
-
-                                arr.push(obj)
-                            }
-                            
-                        })
-                        this.activityArray = arr
-                        this.$store.dispatch("SET_SLA_ACTIVITY_NAME_ArrData", arr)
-                    } else {
-                        this.openNotification('warn', 'Activity data is empty!', ' Please create a new Activity data')
-                    }
-                    this.loadingDataActivity = false
-                }).catch(err => {
-                    this.loadingDataActivity = false
-                    this.openNotification('danger', 'Failed to populate Activity list', err)
-                })
-        },        
+        },    
         querySearch(queryString, cb){
             axios.get(this.URL.node +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
             .then(res => {
@@ -251,18 +217,45 @@ export default {
                     this.openNotification('danger', 'Failed to populate service list', err)
                 })
         },
-        async getDataDestination(queryDest, cb){
-            this.loadingDataDestination = true
+        getDataNodeOrigin(queryOri, cb){
+            this.loadingDataNodeOrigin = true
             axios
-                .get(this.URL.destination_code + `?n=${this.listenNodeId}&s=${queryDest}&limit=100`, this.Helper.header())
+                .get(this.URL.node + `?n=${this.listenNodeId}&s=${queryOri}&limit=100`, this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            if (item.geolocation_subdistrict_tarif_code !== null) {
-                                obj["value"] = item.geolocation_subdistrict_tarif_code
-                                obj["data"] = item.geolocation_subdistrict_tarif_code
+                            if (item.node_code !== null) {
+                                obj["value"] = item.node_code
+                                obj["data"] = item.node_code
+
+                                arr.push(obj)
+                            }
+                            
+                        })
+                        cb(arr);
+                    } else {
+                        this.openNotification('warn', 'Origin data is empty!', ' Please create a new origin data')
+                    }
+                    this.loadingDataNodeOrigin = false
+                }).catch(err => {
+                    this.loadingDataNodeOrigin = false
+                    this.openNotification('danger', 'Failed to populate service list', err)
+                })
+        },
+        async getDataNodeDestination(queryDest, cb){
+            this.loadingDataNodeDestination = true
+            axios
+                .get(this.URL.node + `?n=${this.listenNodeId}&s=${queryDest}&limit=100`, this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            if (item.node_code !== null) {
+                                obj["value"] = item.node_code
+                                obj["data"] = item.node_code
 
                                 arr.push(obj)
                             }
@@ -272,86 +265,14 @@ export default {
                     } else {
                         this.openNotification('warn', 'Destination data is empty!', ' Please create a new destination data')
                     }
-                    this.loadingDataDestination = false
+                    this.loadingDataNodeDestination = false
                 }).catch(err => {
-                    this.loadingDataDestination = false
+                    this.loadingDataNodeDestination = false
                     this.openNotification('danger', 'Failed to populate Destination list', err)
                 })
         },
-        async getDataService(){
-            this.loadingDataService = true
-            await axios
-                .get(this.URL.service + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.service_code
-                            obj["value"] = item.service_code
-
-                            arr.push(obj)
-                        })
-                        this.serviceArray = arr
-                        this.$store.dispatch("SET_SLA_SERVICE_CODE_ArrData", arr)
-                    } else {
-                        this.openNotification('warn', 'Service data is empty!', ' Please create a new service data')
-                    }
-                    this.loadingDataService = false
-                }).catch(err => {
-                    this.loadingDataService = false
-                    this.openNotification('danger', 'Failed to populate service list', err)
-                })
-        },
-        async getDataCustomerName(){
-            this.loadingDataCustomerName = true
-            await axios
-                .get(this.URL.customer + `/name?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.customer_name
-                            obj["value"] = item.customer_name
-
-                            arr.push(obj)
-                        })
-                        this.customerNameArray = arr
-                        this.$store.dispatch("SET_SLA_CUSTOMER_NAME_ArrData", arr)
-                    } else {
-                        this.openNotification('warn', 'Customer Name data is empty!', ' Please create a new Customer Name data')
-                    }
-                    this.loadingDataCustomerName = false
-                }).catch(err => {
-                    this.loadingDataCustomerName = false
-                    this.openNotification('danger', 'Failed to populate service list', err)
-                })
-        },
-        async getDataCustomerCode(){
-            this.loadingDataCustomerCode = true
-            await axios
-                .get(this.URL.customer + `/code?n=${this.listenNodeId}&customer_name=${this.listenCustomerName}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.customer_code
-                            obj["value"] = item.customer_code
-
-                            arr.push(obj)
-                        })
-                        this.customerIdArray = arr
-                        this.$store.dispatch("SET_SLA_CUSTOMER_CODE_ArrData", arr)
-                    } else {
-                        // this.openNotification('warn', 'Customer ID data is empty!', ' Please create a new Customer Id data')
-                    }
-                    this.loadingDataCustomerCode = false
-                }).catch(err => {
-                    this.loadingDataCustomerCode = false
-                    this.openNotification('danger', 'Failed to populate service list', err)
-                })
+        getDataType(){
+            this.$store.dispatch("SET_SLA_NODE_TO_NODE_B_TYPE_ArrData", this.typeArray)
         },
         compareSharedProperties(obj1, obj2) {
             const keys1 = Object.keys(obj1).filter(key => key !== 'is_active');
@@ -370,7 +291,7 @@ export default {
             if (isActiveDifferent && areOthersEqual) {
                 await axios
                     .patch(
-                        this.URL.sla + `/${this.sla_id}?n=${this.listenNodeId}`,
+                        this.URL.sla_node_to_node_b + `/${this.sla_id}?n=${this.listenNodeId}`,
                         JSON.stringify({
                             is_active: this.form.is_active
                         }), 
@@ -389,7 +310,7 @@ export default {
             } else {
                 await axios
                     .put(
-                        this.URL.sla + `/${this.sla_id}?n=${this.listenNodeId}`,
+                        this.URL.sla_node_to_node_b + `/${this.sla_id}?n=${this.listenNodeId}`,
                         JSON.stringify(this.form), 
                         this.Helper.header())
                     .then(res => {
@@ -408,7 +329,7 @@ export default {
         async addData() {
             await axios
                 .post(
-                    this.URL.sla + `?n=${this.listenNodeId}`,
+                    this.URL.sla_node_to_node_b + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
