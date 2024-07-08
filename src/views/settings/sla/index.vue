@@ -9,7 +9,7 @@
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
                 <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
+                    <div v-if="navActive !== 'upload-sla'" style="width: 100px;padding-right: 5px;">
                         <vs-button
                             flat
                             block
