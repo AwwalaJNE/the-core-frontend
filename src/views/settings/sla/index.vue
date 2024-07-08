@@ -72,6 +72,48 @@
                                     </vs-col>
                                 </vs-row>
                             </template>
+                            <template v-else-if="navActive === 'sla-node-to-node-a'">
+                                <vs-row>
+                                    <vs-col vs-align="center" w="6">
+                                        <select-search-by 
+                                            :isMultiple="false" 
+                                            :border="true" 
+                                            :valueData="searchSlaNodeToNodeAParams" 
+                                            :selectedValue="searchSlaNodeToNodeABy" 
+                                            @updateSearchBy="updateSearchBy" 
+                                        />
+                                    </vs-col>
+                                    <vs-col vs-align="center" w="6">
+                                        <search-input 
+                                            ref="searchInput" 
+                                            @searchValue="searchValue" 
+                                            :placeholder="searchSlaNodeToNodeAPlaceholder" 
+                                            class="search-input"
+                                        />
+                                    </vs-col>
+                                </vs-row>
+                            </template>
+                            <template v-else-if="navActive === 'sla-node-to-node-b'">
+                                <vs-row>
+                                    <vs-col vs-align="center" w="6">
+                                        <select-search-by 
+                                            :isMultiple="false" 
+                                            :border="true" 
+                                            :valueData="searchSlaNodeToNodeBParams" 
+                                            :selectedValue="searchSlaNodeToNodeBBy" 
+                                            @updateSearchBy="updateSearchBy" 
+                                        />
+                                    </vs-col>
+                                    <vs-col vs-align="center" w="6">
+                                        <search-input 
+                                            ref="searchInput" 
+                                            @searchValue="searchValue" 
+                                            :placeholder="searchSlaNodeToNodeBPlaceholder" 
+                                            class="search-input"
+                                        />
+                                    </vs-col>
+                                </vs-row>
+                            </template>
                         </vs-col>
                     </vs-row>
                 </div>
@@ -83,6 +125,16 @@
                 <template v-else-if="navActive === 'sla-inter-activity'">
                     <transition name="slide-fade">
                         <sla-inter-activity :ref="navActive" :query="tempSearch" :searchBy="searchSlaInterActivityBy"/>
+                    </transition>
+                </template>
+                <template v-else-if="navActive === 'sla-node-to-node-a'">
+                    <transition name="slide-fade">
+                        <sla-node-to-node-a :ref="navActive" :query="tempSearch" :searchBy="searchSlaNodeToNodeABy"/>
+                    </transition>
+                </template>
+                <template v-else-if="navActive === 'sla-node-to-node-b'">
+                    <transition name="slide-fade">
+                        <sla-node-to-node-b :ref="navActive" :query="tempSearch" :searchBy="searchSlaNodeToNodeBBy"/>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'upload-sla'">
@@ -104,6 +156,18 @@
             :closeDialog="closeDialog"
             title="Create SLA Inter Activity"
         />
+        <dialog-create-edit-sla-node-to-node-a
+            :active="dialogSlaNodeToNodeA" 
+            @refresh="refresh"
+            :closeDialog="closeDialog"
+            title="Create SLA Node To Node A"
+        />
+        <dialog-create-edit-sla-node-to-node-b
+            :active="dialogSlaNodeToNodeB" 
+            @refresh="refresh"
+            :closeDialog="closeDialog"
+            title="Create SLA Node To Node B"
+        />
     </div>
 </template>
 <script>
@@ -114,8 +178,12 @@ import SelectSearchBy from "@/views/inventory/connote/item/selectSearchBy"
 
 import SlaKoli from "@/views/settings/sla/slaKoli/index"
 import SlaInterActivity from "@/views/settings/sla/slaInterActivity/index"
+import SlaNodeToNodeA from "@/views/settings/sla/slaNodeToNodeA/index"
+import SlaNodeToNodeB from "@/views/settings/sla/slaNodeToNodeB/index"
 import DialogCreateEditSlaKoli from "@/views/settings/sla/slaKoli/dialogCreateEditSla"
 import DialogCreateEditSlaInterActivity from "@/views/settings/sla/slaInterActivity/dialogCreateEditSla"
+import DialogCreateEditSlaNodeToNodeA from "@/views/settings/sla/slaNodeToNodeA/dialogCreateEditSla"
+import DialogCreateEditSlaNodeToNodeB from "@/views/settings/sla/slaNodeToNodeB/dialogCreateEditSla"
 import UploadSla from "@/views/settings/sla/uploadSla/index"
 
 export default {
@@ -126,8 +194,12 @@ export default {
         "search-input": SearchInput,
         "sla-koli": SlaKoli,
         "sla-inter-activity": SlaInterActivity,
+        "sla-node-to-node-a": SlaNodeToNodeA,
+        "sla-node-to-node-b": SlaNodeToNodeB,
         "dialog-create-edit-sla-koli": DialogCreateEditSlaKoli,
         "dialog-create-edit-sla-inter-activity": DialogCreateEditSlaInterActivity,
+        "dialog-create-edit-sla-node-to-node-a": DialogCreateEditSlaNodeToNodeA,
+        "dialog-create-edit-sla-node-to-node-b": DialogCreateEditSlaNodeToNodeB,
         "select-search-by": SelectSearchBy,
         "upload-sla": UploadSla
     },
@@ -145,6 +217,16 @@ export default {
                     title: "SLA Inter Activity"
                 },
                 {
+                    label: "SLA Node To Node A",
+                    key: "sla-node-to-node-a",
+                    title: "SLA Node To Node A"
+                },
+                {
+                    label: "SLA Node To Node B",
+                    key: "sla-node-to-node-b",
+                    title: "SLA Node To Node B"
+                },
+                {
                     label: "Upload SLA",
                     key: "upload-sla",
                     title: "Upload SLA"
@@ -156,6 +238,8 @@ export default {
             dialogNode: false,
             dialogSlaKoli: false,
             dialogSlaInterActivity: false,
+            dialogSlaNodeToNodeA: false,
+            dialogSlaNodeToNodeB: false,
             searchSlaKoliPlaceholder: "Search Group Name",
             searchSlaKoliBy: "group_name",
             searchSlaKoliParams: [
@@ -232,6 +316,94 @@ export default {
                     value: "sla"
                 },
             ],
+            searchSlaNodeToNodeAPlaceholder: "Search Group Name",
+            searchSlaNodeToNodeABy: "group_name",
+            searchSlaNodeToNodeAParams: [
+                {
+                    label: "Group Name",
+                    value: "group_name"
+                },
+                {
+                    label: "Origin",
+                    value: "origin"
+                },
+                {
+                    label: "Destination",
+                    value: "destination"
+                },
+                {
+                    label: "Service",
+                    value: "service_code"
+                },
+                {
+                    label: "Customer Code",
+                    value: "customer_code"
+                },
+                {
+                    label: "Customer Name",
+                    value: "customer_name"
+                },
+                {
+                    label: "Node Code",
+                    value: "node_code"
+                },
+                {
+                    label: "Current Activity",
+                    value: "previous_activity"
+                },
+                {
+                    label: "Next Activity",
+                    value: "next_activity"
+                },
+                {
+                    label: "SLA",
+                    value: "sla"
+                },
+            ],
+            searchSlaNodeToNodeBPlaceholder: "Search Group Name",
+            searchSlaNodeToNodeBBy: "group_name",
+            searchSlaNodeToNodeBParams: [
+                {
+                    label: "Group Name",
+                    value: "group_name"
+                },
+                {
+                    label: "Origin",
+                    value: "origin"
+                },
+                {
+                    label: "Destination",
+                    value: "destination"
+                },
+                {
+                    label: "Service",
+                    value: "service_code"
+                },
+                {
+                    label: "Customer Code",
+                    value: "customer_code"
+                },
+                {
+                    label: "Customer Name",
+                    value: "customer_name"
+                },
+                {
+                    label: "Node Code",
+                    value: "node_code"
+                },
+                {
+                    label: "Current Activity",
+                    value: "previous_activity"
+                },
+                {
+                    label: "Next Activity",
+                    value: "next_activity"
+                },
+                {
+                    label: "SLA",
+                    value: "sla"
+                },
+            ],
         }
     },
     methods: {
@@ -262,6 +434,12 @@ export default {
                 case "sla-inter-activity":
                     this.dialogSlaInterActivity = true
                     break;
+                case "sla-node-to-node-a":
+                    this.dialogSlaNodeToNodeA = true
+                    break;
+                case "sla-node-to-node-b":
+                    this.dialogSlaNodeToNodeB = true
+                    break;
                 default:
             }
             this.refreshInject = this.navActive
@@ -273,6 +451,12 @@ export default {
                     break;
                 case "sla-inter-activity":
                     this.dialogSlaInterActivity = false
+                    break;
+                case "sla-node-to-node-a":
+                    this.dialogSlaNodeToNodeA = false
+                    break;
+                case "sla-node-to-node-b":
+                    this.dialogSlaNodeToNodeB = false
                     break;
                 default:
             }
@@ -286,6 +470,14 @@ export default {
                 case "sla-inter-activity":
                     this.searchSlaInterActivityBy = val;
                     this.searchSlaInterActivityPlaceholder = key;
+                    break;
+                case "sla-node-to-node-a":
+                    this.searchSlaNodeToNodeABy = val;
+                    this.searchSlaNodeToNodeAPlaceholder = key;
+                    break;
+                case "sla-node-to-node-b":
+                    this.searchSlaNodeToNodeBBy = val;
+                    this.searchSlaNodeToNodeBPlaceholder = key;
                     break;
                 default:
             }

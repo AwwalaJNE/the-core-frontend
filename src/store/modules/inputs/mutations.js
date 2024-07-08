@@ -3139,4 +3139,227 @@ export default {
     state.sla_inter_activity.is_active.valueData = payload
   },
   //====== END SLA INTER ACTIVITY ======
+
+
+
+  //====== SLA Node To Node A ======  
+
+  SET_SLA_NODE_TO_NODE_A_SLA_ID(state, payload) {
+    state.sla_node_to_node_a.sla_id.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_SLA_ID_visible(state, payload) {
+    state.sla_node_to_node_a.sla_id.visible = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_SLA_ID_ValueData(state, payload) {
+    state.sla_node_to_node_a.sla_id.valueData = payload
+  },
+
+
+  SET_SLA_NODE_TO_NODE_A_GROUP_NAME(state, payload) {
+    state.sla_node_to_node_a.group_name.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_GROUP_NAME_ValueData(state, payload) {
+    state.sla_node_to_node_a.group_name.valueData = payload
+  },
+
+
+  SET_SLA_NODE_TO_NODE_A_START_DATE(state, payload) {
+    state.sla_node_to_node_a.start_date.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_START_DATE_ValueData(state, payload) {
+    state.sla_node_to_node_a.start_date.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_START_DATE_ArrData(state, payload) {
+    state.sla_node_to_node_a.start_date.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_a.start_date.arrData = payload :
+    state.sla_node_to_node_a.start_date.arrData = []
+  },
+
+
+  SET_SLA_NODE_TO_NODE_A_END_DATE(state, payload) {
+    state.sla_node_to_node_a.end_date.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_END_DATE_ValueData(state, payload) {
+    state.sla_node_to_node_a.end_date.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_END_DATE_ArrData(state, payload) {
+    state.sla_node_to_node_a.end_date.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_a.end_date.arrData = payload :
+    state.sla_node_to_node_a.end_date.arrData = []
+  },
+
+  SET_SLA_NODE_TO_NODE_A_TYPE(state, payload) {
+    state.sla_node_to_node_a.type.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_TYPE_ValueData(state, payload) {
+    state.sla_node_to_node_a.type.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_TYPE_ArrData(state, payload) {
+    state.sla_node_to_node_a.type.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_a.type.arrData = payload :
+    state.sla_node_to_node_a.type.arrData = []
+  },
+
+
+  SET_SLA_NODE_TO_NODE_A_NODE_ORIGIN(state, payload) {
+    state.sla_node_to_node_a.node_origin.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_NODE_ORIGIN_ValueData(state, payload) {
+    state.sla_node_to_node_a.node_origin.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_NODE_ORIGIN_ArrData(state, payload) {
+    state.sla_node_to_node_a.node_origin.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_a.node_origin.arrData = payload :
+    state.sla_node_to_node_a.node_origin.arrData = []
+  },
+
+
+  SET_SLA_NODE_TO_NODE_A_NODE_DESTINATION(state, payload) {
+    state.sla_node_to_node_a.node_destination.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_NODE_DESTINATION_ValueData(state, payload) {
+    state.sla_node_to_node_a.node_destination.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_NODE_DESTINATION_ArrData(state, payload) {
+    state.sla_node_to_node_a.node_destination.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_a.node_destination.arrData = payload :
+    state.sla_node_to_node_a.node_destination.arrData = []
+  },
+
+  SET_SLA_NODE_TO_NODE_A_SLA(state, payload) {
+    state.sla_node_to_node_a.sla.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_SLA_ValueData(state, payload) {
+    state.sla_node_to_node_a.sla.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_SLA_ArrValueData(state, payload) {
+    state.sla_node_to_node_a.sla.arrValueData = payload
+  },
+
+
+  SET_SLA_NODE_TO_NODE_A_IS_ACTIVE(state, payload) {
+    state.sla_node_to_node_a.is_active.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_A_IS_ACTIVE_ValueData(state, payload) {
+    state.sla_node_to_node_a.is_active.valueData = payload
+  },
+  //====== END SLA NODE TO NODE A ======
+
+
+  //====== SLA Node To Node B ======  
+
+  SET_SLA_NODE_TO_NODE_B_SLA_ID(state, payload) {
+    state.sla_node_to_node_b.sla_id.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_SLA_ID_visible(state, payload) {
+    state.sla_node_to_node_b.sla_id.visible = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_SLA_ID_ValueData(state, payload) {
+    state.sla_node_to_node_b.sla_id.valueData = payload
+  },
+
+
+  SET_SLA_NODE_TO_NODE_B_GROUP_NAME(state, payload) {
+    state.sla_node_to_node_b.group_name.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_GROUP_NAME_ValueData(state, payload) {
+    state.sla_node_to_node_b.group_name.valueData = payload
+  },
+
+
+  SET_SLA_NODE_TO_NODE_B_START_DATE(state, payload) {
+    state.sla_node_to_node_b.start_date.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_START_DATE_ValueData(state, payload) {
+    state.sla_node_to_node_b.start_date.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_START_DATE_ArrData(state, payload) {
+    state.sla_node_to_node_b.start_date.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_b.start_date.arrData = payload :
+    state.sla_node_to_node_b.start_date.arrData = []
+  },
+
+
+  SET_SLA_NODE_TO_NODE_B_END_DATE(state, payload) {
+    state.sla_node_to_node_b.end_date.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_END_DATE_ValueData(state, payload) {
+    state.sla_node_to_node_b.end_date.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_END_DATE_ArrData(state, payload) {
+    state.sla_node_to_node_b.end_date.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_b.end_date.arrData = payload :
+    state.sla_node_to_node_b.end_date.arrData = []
+  },
+
+  SET_SLA_NODE_TO_NODE_B_TYPE(state, payload) {
+    state.sla_node_to_node_b.type.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_TYPE_ValueData(state, payload) {
+    state.sla_node_to_node_b.type.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_TYPE_ArrData(state, payload) {
+    state.sla_node_to_node_b.type.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_b.type.arrData = payload :
+    state.sla_node_to_node_b.type.arrData = []
+  },
+
+
+  SET_SLA_NODE_TO_NODE_B_NODE_ORIGIN(state, payload) {
+    state.sla_node_to_node_b.node_origin.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_NODE_ORIGIN_ValueData(state, payload) {
+    state.sla_node_to_node_b.node_origin.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_NODE_ORIGIN_ArrData(state, payload) {
+    state.sla_node_to_node_b.node_origin.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_b.node_origin.arrData = payload :
+    state.sla_node_to_node_b.node_origin.arrData = []
+  },
+
+
+  SET_SLA_NODE_TO_NODE_B_NODE_DESTINATION(state, payload) {
+    state.sla_node_to_node_b.node_destination.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_NODE_DESTINATION_ValueData(state, payload) {
+    state.sla_node_to_node_b.node_destination.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_NODE_DESTINATION_ArrData(state, payload) {
+    state.sla_node_to_node_b.node_destination.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_b.node_destination.arrData = payload :
+    state.sla_node_to_node_b.node_destination.arrData = []
+  },
+
+
+  SET_SLA_NODE_TO_NODE_B_DELIVERY_ZONE(state, payload) {
+    state.sla_node_to_node_b.delivery_zone.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_DELIVERY_ZONE_ValueData(state, payload) {
+    state.sla_node_to_node_b.delivery_zone.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_DELIVERY_ZONE_ArrData(state, payload) {
+    state.sla_node_to_node_b.delivery_zone.hasOwnProperty('arrData') ?
+    state.sla_node_to_node_b.delivery_zone.arrData = payload :
+    state.sla_node_to_node_b.delivery_zone.arrData = []
+  },
+  
+
+  SET_SLA_NODE_TO_NODE_B_SLA(state, payload) {
+    state.sla_node_to_node_b.sla.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_SLA_ValueData(state, payload) {
+    state.sla_node_to_node_b.sla.valueData = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_SLA_ArrValueData(state, payload) {
+    state.sla_node_to_node_b.sla.arrValueData = payload
+  },
+
+
+  SET_SLA_NODE_TO_NODE_B_IS_ACTIVE(state, payload) {
+    state.sla_node_to_node_b.is_active.value = payload
+  },
+  SET_SLA_NODE_TO_NODE_B_IS_ACTIVE_ValueData(state, payload) {
+    state.sla_node_to_node_b.is_active.valueData = payload
+  },
+  //====== END SLA NODE TO NODE B ======
 }

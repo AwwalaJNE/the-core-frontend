@@ -1706,6 +1706,231 @@ export default {
     },
   },
 
+  sla_node_to_node_a: {
+    sla_id: {
+      label: "Sla ID",
+      key: "sla_id",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      visible: false,
+      valueData: null,
+      value: '',
+    },
+    group_name: {
+      label: "Group Name*",
+      key: "group_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    start_date: {
+      label: "Start Date*",
+      key: "start_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    end_date: {
+      label: "End Date*",
+      key: "end_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    type: {
+      label: "Type*",
+      key: "type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_origin: {
+      label: "Node Origin*",
+      key: "node_origin",
+      rule: "required",
+      typeInput: "autocomplete1",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_destination: {
+      label: "Node Destination*",
+      key: "node_destination",
+      rule: "required",
+      typeInput: "autocomplete2",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    sla: {
+      label: "SLA",
+      key: "sla",
+      rule: "",
+      typeInput: "radtex",
+      typeData: "Number",
+      arrData: [
+        {
+          label: "Menit",
+          value: "menit"
+        },
+        {
+          label: "Jam",
+          value: "jam"
+        },
+        {
+          label: "Hari",
+          value: "hari"
+        },        
+      ],
+      arrValue: '',
+      valueData: null,
+      value: '',
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
+
+  sla_node_to_node_b: {
+    sla_id: {
+      label: "Sla ID",
+      key: "sla_id",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      visible: false,
+      valueData: null,
+      value: '',
+    },
+    group_name: {
+      label: "Group Name*",
+      key: "group_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    start_date: {
+      label: "Start Date*",
+      key: "start_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    end_date: {
+      label: "End Date*",
+      key: "end_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    type: {
+      label: "Type*",
+      key: "type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_origin: {
+      label: "Node Origin*",
+      key: "node_origin",
+      rule: "required",
+      typeInput: "autocomplete1",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    node_destination: {
+      label: "Node Destination*",
+      key: "node_destination",
+      rule: "required",
+      typeInput: "autocomplete2",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    delivery_zone: {
+      label: "Delivery Zone*",
+      key: "delivery_zone",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    sla: {
+      label: "SLA",
+      key: "sla",
+      rule: "",
+      typeInput: "radtex",
+      typeData: "Number",
+      arrData: [
+        {
+          label: "Menit",
+          value: "menit"
+        },
+        {
+          label: "Jam",
+          value: "jam"
+        },
+        {
+          label: "Hari",
+          value: "hari"
+        },        
+      ],
+      arrValue: '',
+      valueData: null,
+      value: '',
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
+
+
   tariff: {
     tariff_group: {
       label: "Tariff Group",
