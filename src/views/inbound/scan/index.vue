@@ -223,6 +223,14 @@ export default {
                     })
                     this.dataTable = data
 
+                    this.dataTable = this.dataTable.map(item => {
+                      if (item.inbound_type === "RECEIVING CONNOTE" || item.inbound_type === "RECEIVING BAG") {
+                          return {
+                              detail_incoming: item.detail_incoming
+                          };
+                      }
+                      return item;
+                  }).filter(item => item.hasOwnProperty('detail_incoming'));
                     this.loading = false
                   }).catch(err => {
                     this.loading = false

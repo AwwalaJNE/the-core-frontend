@@ -227,9 +227,9 @@ export default {
                     title: "SLA NODE TO NODE B"
                 },
                 {
-                    label: "Upload SLA",
+                    label: "UPLOAD SLA",
                     key: "upload-sla",
-                    title: "Upload SLA"
+                    title: "UPLOAD SLA"
                 },
             ],
             title:"SLA Koli",
