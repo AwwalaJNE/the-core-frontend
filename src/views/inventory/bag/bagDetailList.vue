@@ -228,12 +228,11 @@ export default {
                     }else{
                         this.$router.push({ name: 'InventoryBag', params: { } });
                     }
-                    this.openNotification('success', 'Romove success', 'Romove bag item successfully')
+                    this.openNotification('success', 'Remove success', 'Remove bag item successfully')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Romove bag item is failed', err)
+                    this.openNotification('danger', 'Remove bag item is failed', err.response.data.message)
                 })
-                detail
         },
         actionLimit(val){
             this.pagination.limit = val
