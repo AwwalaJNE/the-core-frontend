@@ -35,6 +35,13 @@
               Koli
             </vs-radio>
           </vs-col>
+          <vs-col xs="4" sm="4" lg="2">
+            <vs-radio
+              v-model="radio_option"
+              val="bag">
+              Bag
+            </vs-radio>
+          </vs-col>
         </vs-row>
       </div>
     </template>
@@ -53,8 +60,17 @@
 
               </vs-input>
             </div>
-            <div v-else class="center in-get-bag">
-              <vs-input border type="text" v-model="item_code" label-placeholder="Masukkan code BAG / Koli"
+            <div v-if="radio_option === 'koli'" class="center in-get-bag">
+              <vs-input border type="text" v-model="item_code" label-placeholder="Masukkan code Koli"
+                v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBagging"
+                @click-icon="$refs.cameraScanner.open('formInputBagging')">
+                <template #icon>
+                  <i class="bx bx-barcode-reader"></i>
+                </template>
+              </vs-input>
+            </div>
+            <div v-if="radio_option === 'bag'" class="center in-get-bag">
+              <vs-input border type="text" v-model="item_code" label-placeholder="Masukkan code Bag"
                 v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBagging"
                 @click-icon="$refs.cameraScanner.open('formInputBagging')">
                 <template #icon>
