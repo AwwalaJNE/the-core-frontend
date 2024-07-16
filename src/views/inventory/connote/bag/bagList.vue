@@ -127,7 +127,7 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "# Connote",
+                    label: "# Item",
                     key: "bag_detail_qty",
                     width: "auto"
                 },
