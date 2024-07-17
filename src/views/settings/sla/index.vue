@@ -349,7 +349,7 @@ export default {
                 },
                 {
                     label: "Origin",
-                    value: "origin"
+                    value: "origin_code"
                 },
                 {
                     label: "Type",
