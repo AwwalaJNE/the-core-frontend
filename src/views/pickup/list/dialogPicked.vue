@@ -157,7 +157,7 @@ export default {
           this.closeDialog();
           this.cancel();
           this.$emit("refresh");
-          this.openNotification("danger", "Update Pickup is failed", err);
+          this.openNotification("danger", "Update Pickup is failed", err.response.data.message);
         });
     },
     activeLoading() {
