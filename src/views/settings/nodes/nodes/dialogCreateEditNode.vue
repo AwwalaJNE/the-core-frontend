@@ -285,7 +285,7 @@ export default {
                         // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
                     }
                 }).catch(err => {
-                    this.openNotification('danger', 'Failed to get Customer Code list', err)
+                    this.openNotification('danger', 'Failed to get Customer Code list', err.response.data.message)
                 })
         },
         async updateData(){
