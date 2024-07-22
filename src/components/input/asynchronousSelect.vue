@@ -109,9 +109,15 @@ export default {
                 result.length > 0 && result.map(item => {
                     if(item.hasOwnProperty('node_name')) {
                         suggestions.push({
-                                value: item['node_id'],
-                                label: item['node_name'],
-                                data: item
+                            value: item['node_id'],
+                            label: item['node_name'],
+                            data: item
+                        });
+                    } else if(item.hasOwnProperty('user_name')) {
+                        suggestions.push({
+                            value: item['user_id'],
+                            label: item['user_name'],
+                            data: item
                         });
                     }
                 })
