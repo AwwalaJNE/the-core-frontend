@@ -434,6 +434,12 @@ export default {
               icon: "",
               permission: "read-sla",
             },
+            {
+              label: "Settings Warning Runsheet",
+              url: "/settings/configuration-warning-runsheet",
+              icon: "",
+              permission: "read-warning-koli-setting",
+            },
           ],
         },
         {
