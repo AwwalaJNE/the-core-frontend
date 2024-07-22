@@ -100,6 +100,7 @@ export default {
 
     //SURAT JALAN
     manifest_delivery_order: api + "manifest-delivery-order",
+    manifest_delivery_order_airport: api + "manifest-delivery-order-airport",
 
     //delivery runsheet
     delivery : api + "delivery",
