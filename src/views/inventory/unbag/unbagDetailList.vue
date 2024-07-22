@@ -33,7 +33,7 @@
       <div class="box view">
         <div class="summary-unbag">
           <span class="subtitle" align="right"><p>{{ total_connote_in_bag - total_connote }}/{{ total_connote_in_bag }}</p></span>
-          <span class="title" align="right"><h4>Connote Scanned</h4></span>
+          <span class="title" align="right"><h4>Item Scanned</h4></span>
         </div>
         <table-master
             :dataTable="dataTable"
