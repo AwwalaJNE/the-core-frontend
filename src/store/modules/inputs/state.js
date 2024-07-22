@@ -1939,6 +1939,57 @@ export default {
     },
   },
 
+  configuration_warning_runsheet: {
+    setting_id: {
+      label: "Configuration Warning Runsheet ID",
+      key: "setting_id",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      visible: false,
+      valueData: null,
+      value: '',
+    },
+    percentage: {
+      label: "Percentage*",
+      key: "percentage",
+      rule: "required|decimal",
+      typeInput: "text",
+      typeData: "text",
+      valueData: null,
+      value: '',
+    },
+    minimum_count: {
+      label: "Minimum Connote*",
+      key: "minimum_count",
+      rule: "required|numeric|min_value:1",
+      typeInput: "text",
+      typeData: "text",
+      valueData: null,
+      value: '',
+    },
+    reference: {
+      label: "Configure By*",
+      key: "reference",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    user_id: {
+      label: "User Name*",
+      key: "user_id",
+      rule: "required",
+      typeInput: "multipleSelector",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ""
+    },
+  },
+
 
   tariff: {
     tariff_group: {

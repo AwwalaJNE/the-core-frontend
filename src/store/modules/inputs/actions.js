@@ -3090,4 +3090,60 @@ export default {
     commit('SET_SLA_NODE_TO_NODE_B_SLA_ArrValueData', payload)
   },
   //====== END SLA NODE TO NODE A ======//
+
+
+
+
+
+
+
+
+
+  //====== CONFIGURATION WARNING RUNSHEET ======//  
+
+  SET_CONFIGURATION_WARNING_RUNSHEET_SETTING_ID({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_SETTING_ID', payload)
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_SETTING_ID_visible({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_SETTING_ID_visible', payload)
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_SETTING_ID_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_SETTING_ID_ValueData', payload)
+  },
+  
+  SET_CONFIGURATION_WARNING_RUNSHEET_PERCENTAGE({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_PERCENTAGE', payload)
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_PERCENTAGE_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_PERCENTAGE_ValueData', payload)
+  },
+
+  SET_CONFIGURATION_WARNING_RUNSHEET_MINIMUM_COUNT({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_MINIMUM_COUNT', payload)
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_MINIMUM_COUNT_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_MINIMUM_COUNT_ValueData', payload)
+  },
+
+  SET_CONFIGURATION_WARNING_RUNSHEET_REFERENCE({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_REFERENCE', payload)
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_REFERENCE_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_REFERENCE_ValueData', payload)
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_REFERENCE_ArrData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_REFERENCE_ArrData', payload)
+  },
+
+
+  SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID', payload)
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID_ValueData', payload)
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID_ArrData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID_ArrData', payload)
+  },
+  //====== END CONFIGURATION WARNING RUNSHEET ======//
 }
