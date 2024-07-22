@@ -40,6 +40,9 @@ import Surcharge from "@/views/settings/surcharge"
 // === SLA ===
 import Sla from "@/views/settings/sla"
 
+// === Configuration Warning Runsheet ===
+import ConfigurationWarningRunsheet from "@/views/settings/configurationWarningRunsheet"
+
 // === Inventory Item or Connote ===
 import InventoryItem from "@/views/inventory/connote"
 
@@ -278,6 +281,15 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "SLA"
+            }
+          },
+          {
+            path: "configuration-warning-runsheet",
+            name: "ConfigurationWarningRunsheet",
+            component: ConfigurationWarningRunsheet,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Configuration Warning Runsheet"
             }
           },
         ],

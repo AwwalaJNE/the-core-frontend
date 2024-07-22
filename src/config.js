@@ -209,4 +209,7 @@ export default {
     sla_inter_activity : api + "sla/inter-activity",
     sla_node_to_node_a : api + "sla/node-to-node-a",
     sla_node_to_node_b : api + "sla/node-to-node-b",
+
+    // Configuration Warning Runsheet
+    configuration_warning_runsheet : api + 'warning-koli-setting',
 }
