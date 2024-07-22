@@ -16,9 +16,14 @@
               Connote (Orion)
             </vs-radio>
           </vs-col>
-          <vs-col xs="12" sm="4" lg="2">
+          <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px;">
             <vs-radio v-model="radio_option" val="koli">
               Koli
+            </vs-radio>
+          </vs-col>
+          <vs-col xs="12" sm="4" lg="2">
+            <vs-radio v-model="radio_option" val="bag">
+              Bag
             </vs-radio>
           </vs-col>
         </vs-row>
@@ -102,6 +107,8 @@ export default {
           this.inputLabelPlaceholder = "Masukan code CONNOTE (ORION)";
         } else if (this.radio_option === "koli") {
           this.inputLabelPlaceholder = "Masukan code KOLI";
+        } else if (this.radio_option === "bag") {
+          this.inputLabelPlaceholder = "Masukan code BAG ITEM";
         }
       }
       this.$nextTick(() => {
