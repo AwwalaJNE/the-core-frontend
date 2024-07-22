@@ -237,6 +237,13 @@ export default {
           children: [],
         },
         {
+          label: "Receiving Bandara",
+          url: "/inbound-bandara",
+          icon: "",
+          children: [],
+          permission: "create-manifest-delivery-order-airport",
+        },
+        {
           label: "Delivery",
           url: null,
           icon: "",

@@ -25,6 +25,7 @@
                 :key="key"
                 :active="active == item.key" 
                 :id="item.key"
+                :class="item.key"
                 >
                 {{item.label}}
                 </vs-navbar-item>

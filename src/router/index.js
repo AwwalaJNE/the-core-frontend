@@ -103,6 +103,12 @@ import PackingList from "@/views/report/packinglist"
 // === Inbound Incoming ===
 import InboundIncomingScan from "@/views/inbound/scan"
 
+// === Inbound Incoming Bandara ===
+import InboundBandara from "@/views/inboundAirport"
+
+// === Inbound Incoming Bandara Detail ===
+import InboundIncomingDetail from "@/views/inboundAirport/prealert/detail"
+
 // === Transport Manifest ===
 import TransportManifest from "@/views/transport/manifest"
 
@@ -633,7 +639,25 @@ const routes = [
           backPath: "/inbound/prealert"
         }
       },
-
+      {
+        path: "/inbound-bandara/detail/:inbound_id?",
+        name: "InboundIncomingDetail",
+        component: InboundIncomingDetail,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Inbound Incoming",
+          backPath: "/inbound-bandara"
+        }
+      },
+      {
+        path: "/inbound-bandara",
+        name: "Receiving Bandara",
+        component: InboundBandara,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Receiving Bandara / Prealert"
+        }
+      },
       {
         path: "/delivery/runsheet",
         name: "delivery-runsheet",
