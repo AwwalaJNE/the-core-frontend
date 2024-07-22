@@ -175,7 +175,7 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Update success', 'Update sla is success')
+                    this.openNotification(null, 'Update success', 'Update Warning Runsheet is success')
                 }).catch(err => {
                     this.loading = false
                     this.closeDialog()
@@ -193,7 +193,7 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Create Success', 'Create new sla is success')
+                    this.openNotification(null, 'Create Success', 'Create new Warning Runsheet is success')
                 }).catch(err => {
                     this.loading = false
                     this.closeDialog()
