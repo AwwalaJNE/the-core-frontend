@@ -3370,4 +3370,64 @@ export default {
     state.sla_node_to_node_b.is_active.valueData = payload
   },
   //====== END SLA NODE TO NODE B ======
+
+
+
+
+
+  //====== CONFIGURATION WARNING RUNSHEET======  
+
+  SET_CONFIGURATION_WARNING_RUNSHEET_SETTING_ID(state, payload) {
+    state.configuration_warning_runsheet.setting_id.value = payload
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_SETTING_ID_visible(state, payload) {
+    state.configuration_warning_runsheet.setting_id.visible = payload
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_SETTING_ID_ValueData(state, payload) {
+    state.configuration_warning_runsheet.setting_id.valueData = payload
+  },
+
+
+  SET_CONFIGURATION_WARNING_RUNSHEET_PERCENTAGE(state, payload) {
+    state.configuration_warning_runsheet.percentage.value = payload
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_PERCENTAGE_ValueData(state, payload) {
+    state.configuration_warning_runsheet.percentage.valueData = payload
+  },
+
+
+  SET_CONFIGURATION_WARNING_RUNSHEET_MINIMUM_COUNT(state, payload) {
+    state.configuration_warning_runsheet.minimum_count.value = payload
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_MINIMUM_COUNT_ValueData(state, payload) {
+    state.configuration_warning_runsheet.minimum_count.valueData = payload
+  },
+
+
+  SET_CONFIGURATION_WARNING_RUNSHEET_REFERENCE(state, payload) {
+    state.configuration_warning_runsheet.reference.value = payload
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_REFERENCE_ValueData(state, payload) {
+    state.configuration_warning_runsheet.reference.valueData = payload
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_REFERENCE_ArrData(state, payload) {
+    state.configuration_warning_runsheet.reference.hasOwnProperty('arrData') ?
+    state.configuration_warning_runsheet.reference.arrData = payload :
+    state.configuration_warning_runsheet.reference.arrData = []
+  },
+
+
+  SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID(state, payload) {
+    state.configuration_warning_runsheet.user_id.value = payload
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID_ValueData(state, payload) {
+    state.configuration_warning_runsheet.user_id.valueData = payload
+  },
+  SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID_ArrData(state, payload) {
+    state.configuration_warning_runsheet.user_id.hasOwnProperty('arrData') ?
+    state.configuration_warning_runsheet.user_id.arrData = payload :
+    state.configuration_warning_runsheet.user_id.arrData = []
+  },
+
+  //====== END CONFIGURATION WARNING RUNSHEET ======
 }
