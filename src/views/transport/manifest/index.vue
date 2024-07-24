@@ -175,33 +175,7 @@ export default {
       this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
     },
     updateNode(val) {},
-    async getTableData() {
-      this.loading = true;
-      await axios
-        .get(
-          this.URL.node +
-            `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
-          this.Helper.header()
-        )
-        .then((res) => {
-
-          if (res.data.data.length > 0) {
-            res.data.data.map((item) => {
-              let obj = {};
-              obj["label"] = item.node_code;
-              obj["value"] = item.node_code;
-
-              this.DataNode.push(obj);
-            });
-          }
-
-          this.loading = false;
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.openNotification("danger", "Failed to populate node list", err);
-        });
-    },
+    
     updateSearchBy(key, val) {
       val = val.replaceAll(" ", "_");
       this.searchBy = val;
@@ -212,7 +186,7 @@ export default {
     },
   },
   mounted() {
-    this.getTableData();
+    // this.getTableData();
   },
 };
 </script>

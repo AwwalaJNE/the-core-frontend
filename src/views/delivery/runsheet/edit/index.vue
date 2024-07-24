@@ -871,6 +871,7 @@ export default {
         item.isDisabled = item.is_delivered === 1;
         item.employee_name = data.employee_name;
         item.employee_code = data.employee_code;
+        item.warning_koli_record_id = item?.warning_koli_record_id
       });
       // console.log(" processDataDelivery : status =>", status);
       // console.log(" processDataDelivery : delivery =>", delivery);

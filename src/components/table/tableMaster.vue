@@ -414,6 +414,21 @@
                         />
                       </template>
                     </template>
+                    <template
+                      v-else-if="
+                        column.typeInput !== undefined &&
+                          column.typeInput
+                            .toLowerCase()
+                            .includes('icon')
+                      "
+                    >
+                      <template v-if="item[column.key]">
+                        <i 
+                          class='bx bxs-error-circle icon-warning' 
+                          @click="actionPopup(item[column.key])"
+                        ></i>
+                      </template>
+                    </template>
                   </vs-td>
                 </template>
                 <template
@@ -1240,6 +1255,9 @@ export default {
     actionUpdate(val, key) {
       this.$emit("actionUpdate", val, key);
     },
+    actionPopup(val, key) {
+      this.$emit("actionPopup", val, key);
+    },
     actionCollect(val) {
       this.$emit("actionCollect", val);
     },
@@ -1434,4 +1452,9 @@ span.text-link {
   padding: 5px 25px !important;
   border-radius: 3px;
 }
+.icon-warning {
+  font-size: 48px;
+  color: #ffcc00;
+}
+
 </style>
