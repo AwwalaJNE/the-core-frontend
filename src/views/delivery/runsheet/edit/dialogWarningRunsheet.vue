@@ -123,10 +123,6 @@ export default {
                         message_penerima;
 
                     this.summary_info = this.dataItem.summary
-
-                    
-
-                    console.log("INI", this.dataItem)
                 }).catch(err => {
                     this.openNotification('danger', 'Failed to populate service list', err)
                 })
