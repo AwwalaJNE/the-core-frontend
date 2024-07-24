@@ -22,7 +22,6 @@
             :hasAction="false"
             :removeOnly="false"
             :hasPagination="false"
-            @actionRemove="actionRemove"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
         />
@@ -32,7 +31,7 @@
     <vs-col xs="12" sm="6" lg="6" >
       <div class="box view">
         <div class="summary-unbag">
-          <span class="subtitle" align="right"><p>{{ total_connote_in_bag - total_connote }}/{{ total_connote_in_bag }}</p></span>
+          <span class="subtitle" align="right"><p>{{ total_confirmed }}/{{ total_confirmed + total_unconfirmed }}</p></span>
           <span class="title" align="right"><h4>Item Scanned</h4></span>
         </div>
         <table-master
@@ -45,7 +44,6 @@
             :hasAction="false"
             :removeOnly="false"
             :hasPagination="false"
-            @actionRemove="actionRemove"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
         />
@@ -89,12 +87,11 @@ export default {
             loading: false,
             dataItem: {},
             tempSearch: this.query ? this.query : "",
-            bag_number:"",
-            item_number :'',
-            total_connote :0,
-            total_connote_in_bag :0,
-            total_bag :0,
-            total_confirmed :0,
+            bag_number: "",
+            item_number : '',
+            total_bag : 1,
+            total_confirmed : 0,
+            total_unconfirmed: 0,
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -135,8 +132,6 @@ export default {
             }
             if(this.bag_number !== null || this.bag_number !== undefined){
               form.bag_number = this.bag_number
-
-              form.bag_number.length === form.item_number.length ? (this.total_connote_in_bag = 0) : this.total_connote_in_bag;
             }
             await axios
                 .post(
@@ -144,103 +139,49 @@ export default {
                     JSON.stringify(form),
                     this.Helper.header())
                 .then(res => {
-                    if(res.data.data.bag_number != undefined) { // response dari BE jika data kosong bentuknya [] array kosong :( harusnya kan object
-                        let itemNumberLength = form.item_number.length;
+                    if(res.data.data.bag_number != undefined) {
+                        let data = res.data.data
 
-                        if (this.total_connote_in_bag == 0) {
-                            let totalItem = res.data.data.hasOwnProperty("koli_detail")
-                            ? Object.keys(res.data.data.koli_detail).length
-                                : 1;
-                            this.total_connote_in_bag = totalItem;
-                        } else {
-                          this.total_connote_in_bag;
+                        if (data.unbagging_summary !== null && data.item_detail !== null) {
+                          this.bag_number = data.bag_number
+                          let dataBag = {
+                            no: 1,
+                            item_number: data.bag_number
+                          }
+                          this.dataTableBag = [dataBag]
+                          let item_detail = data.item_detail.map((el, idx) => {
+                            return {
+                              no: idx+1,
+                              item_number: el.item_number
+                            }
+                          })
+                          this.dataTable = item_detail
+                          this.total_confirmed = data.unbagging_summary[0].total_confirmed
+                          this.total_unconfirmed = data.unbagging_summary[0].total_unconfirmed
                         }
-                          if(res.data.data.is_unbagged == 1){
+                        else {
                             this.dataTable = []
                             this.dataTableBag = []
                             this.handleClearData()
                             this.openNotification('success', 'Unbagging is Success')
-                          
-                          }else{
-                            let arr = [];
-                            let arrBag = [];
-                            let dataBag = {};
-                          
-                            dataBag['no'] = 1
-                            dataBag['item_number'] = res.data.data.bag_number
-                            this.bag_number = res.data.data.bag_number
-                            this.getSummaryBag(res)
-                            arrBag.push(dataBag)
-                            if(res.data.data.koli_detail && res.data.data.koli_detail.length > 0) {
-                              arr = res.data.data.koli_detail
-                              arr.map((item, index)  => {
-                                item["no"] = index+1
-                                item["item_number"] = item.koli_number
-                              })
-                              this.dataTable = arr
-                            }else{
-                                this.dataTable = []
-                            }
-                            this.dataTableBag = arrBag
-                          }
+                        }
                     }
                   
                     this.loading = false
                 }).catch(err => {
-
                     this.loading = false
-                    // this.$router.push('/inventory/bagging')
-                    this.openNotification('danger', 'Failed to populate Connote', (err.response && err.response.data && err.response.data.message) ? err.response.data.message : err)
+                    this.openNotification('danger', 'Failed to populate Connote', err?.response?.data?.message ? err.response.data.message : err)
                 })
         },
 
-        getSummaryBag(val){
-
-          if(val.data != undefined ){ // response dari BE jika data kosong bentuknya [] array kosong :( harusnya kan object
-            this.total_bag = 1
-            // this.total_connote = val.data.data.bag_detail_qty
-            // this.total_confirmed = val.data.data.koli_detail ? (this.total_connote - val.data.data.koli_detail.length) : 0 
-            this.total_connote = val.data.data.koli_detail.length
-            this.total_confirmed = val.data.data.unbagging_summary[0]["total_confirmed"]
-          } else {
-            this.openNotification('danger', 'Bag empty', 'Bag empty')
-          }
-        },
         handleClearData(){
           this.bag_number=""
           this.item_number =""
-          this.total_connote =0
-          this.total_connote_in_bag = 0
-          this.total_bag =0
-          this.total_confirmed =0
+          this.total_confirmed = 0
+          this.total_unconfirmed = 0
           this.$emit("resetInput", "RESET");
         },
-        actionUpdate(val){
-            if(this.dataTable.length > 0) {
-                let obj = this.dataTable.filter(item => {
-                    return item.user_id === val.user_id
-                })
-                this.dataItem = obj[0]
-
-                this.$nextTick(() => {
-                    this.dialogUser = true
-                });
-            }
-        },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.bag+`/${val.bag_number}/detail/${val.bag_detail_id}?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-
-                    this.refresh()
-                    this.openNotification('success', 'Romove success', 'Romove bag item successfully')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Romove bag item is failed', err)
-                })
-        },
+        
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
@@ -253,16 +194,7 @@ export default {
         refresh(val){
             this.getTableData(this.pagination.limit,this.pagination.page,this.bag_id)
         },
-        closeDialogUser(){
-            this.dialogUser = false
-        },
-        getBagIdParam(){
-          this.bag_id = this.$route.params.id
-        }
-    },
-    mounted() {
-      //
-    },
+    }
 }
 </script>
 <style lang="scss">
