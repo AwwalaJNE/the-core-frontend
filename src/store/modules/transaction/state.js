@@ -28,7 +28,7 @@ export default {
       value: ''
     },
     origin_onchange_address: {
-      label: "Kelurahan / Kecamatan / Kota / Kode Pos*",
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
       key: "origin_onchange_address",
       rule: "required",
       typeInput: "text|onchange|calc_switch",
@@ -105,7 +105,7 @@ export default {
       value: ''
     },
     destination_onchange_address: {
-      label: "Kelurahan / Kecamatan / Kota / Kode Pos*",
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
       key: "destination_onchange_address",
       rule: "required",
       typeInput: "text|onchange|calc_switch",
