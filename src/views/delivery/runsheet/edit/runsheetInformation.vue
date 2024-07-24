@@ -23,6 +23,13 @@
         @actionUpdate="actionUpdate"
         @updateSelected="updateSelected"
         @inputFocus="onClickClear"
+        @actionPopup="actionPopup"
+      />
+      <dialog-warning-runsheet
+        title="Warning Info"
+        :warning_id="warning_id"
+        :active="openDialogWarning"
+        :closeDialog="closeActionPopup"
       />
     </template>
   </div>
@@ -32,10 +39,12 @@
 import axios from "axios";
 import master from "@/mixins/master";
 import TableMaster from "@/components/table/tableMaster.vue";
+import DialogWarningRunsheet from "@/views/delivery/runsheet/edit/dialogWarningRunsheet"
 export default {
   name: "InboundIncoming",
   components: {
     "table-master": TableMaster,
+    "dialog-warning-runsheet": DialogWarningRunsheet,
   },
   mixins: [master],
   props: {
@@ -59,6 +68,13 @@ export default {
           type: "text",
           hidden: true,
           width: "sm",
+        },
+        {
+          label: "",
+          key: "warning_koli_record_id",
+          type: "inputan",
+          typeInput: "icon",
+          width: "xxs",
         },
         {
           label: "Koli / Connote Number",
@@ -162,7 +178,9 @@ export default {
       waitToRoleRenderer: true,
       arrayOfObjects: [],
       radio_option: "",
-      disableEdit: false
+      disableEdit: false,
+      openDialogWarning: false,
+      warning_id: ''
     };
   },
   computed: {
@@ -224,6 +242,9 @@ export default {
     this.getHRSStatus();
   },
   methods: {
+    getWarningIcon(item) {
+      return item.warning_koli_record_id ? '<i class="bx bxs-error-circle icon-warning"></i>' : 'No Warning';
+    },
     onClickClear(val) {
       const obj = {};
       obj.koli_number = val.koli_number;
@@ -369,6 +390,13 @@ export default {
 
         // code block
       }
+    },
+    actionPopup(id) {
+      this.warning_id = id;
+      this.openDialogWarning = true;
+    },
+    closeActionPopup() {
+      this.openDialogWarning = false;
     },
     updateSelected(arr) {
       const { selected } = this.$refs.tableMaster;
