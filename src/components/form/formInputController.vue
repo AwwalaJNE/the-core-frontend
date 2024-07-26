@@ -199,6 +199,7 @@
                                     <radio 
                                     :ref="item"
                                     :name="''" 
+                                    :width="InputObject[item].width"
                                     :rules="InputObject[item].rule" 
                                     :formKey="item"
                                     :valueData="InputObject[item].arrData"
@@ -273,7 +274,7 @@
                                     :selectedValue="InputObject[item].value"
                                     :typeForm="listenTypeForm"
                                     :typeInput="InputObject[item].typeInput"
-                                    :disabled="listenIsDisabled"
+                                    :disabled="listenIsDisabled || InputObject[item].isDisabled"
                                     @updateValue="updateValue" 
                                     @inputFocus="onfocuslah"/>
                                 </template>

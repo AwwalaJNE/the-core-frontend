@@ -828,8 +828,8 @@ export default {
     },
     resetForm() {
       // this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", [{label: null, value: null, data: {}}])
-      this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", "");
-      this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", {});
+      // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", "");
+      // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", {});
 
       this.$store.dispatch(
         "SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT",

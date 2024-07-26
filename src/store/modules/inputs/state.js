@@ -3069,6 +3069,7 @@ export default {
       rule: "required",
       typeInput: "autocomplete",
       typeData: "String",
+      isDisabled: true,
       arrData: [],
       valueData: null,
       value: ''
@@ -3192,6 +3193,26 @@ export default {
       typeData: "String",
       valueData: null,
       value: ''
+    },
+    depart_sm: {
+      label: "Depart SM",
+      key: "depart_sm",
+      rule: "",
+      typeInput: "radio",
+      typeData: "String",
+      width: "10",
+      arrData: [
+        {
+          label: "Auto Depart SM",
+          value: "auto_depart_sm",
+        },
+        {
+          label: "Depart Via SJ",
+          value: "depart_via_sj"
+        },
+      ],
+      valueData: null,
+      value: 'auto_depart_sm'
     },
   },
   surat_jalan:{
