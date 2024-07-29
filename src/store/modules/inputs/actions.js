@@ -981,6 +981,45 @@ export default {
 
   //end node link
 
+
+  //======= Generate node DELIVERY AREA =======
+  SET_NODE_DELIVERY_AREA_NODE_DELIVERY_ID({ commit }, payload) {
+    commit('SET_NODE_DELIVERY_AREA_NODE_DELIVERY_ID', payload)
+  },
+  SET_NODE_DELIVERY_AREA_NODE_DELIVERY_ID_ValueData({ commit }, payload) {
+    commit('SET_NODE_DELIVERY_AREA_NODE_DELIVERY_ID_ValueData', payload)
+  },
+
+  SET_NODE_DELIVERY_AREA_NODE_CODE({ commit }, payload) {
+    commit('SET_NODE_DELIVERY_AREA_NODE_CODE', payload)
+  },
+  SET_NODE_DELIVERY_AREA_NODE_CODE_ValueData({ commit }, payload) {
+    commit('SET_NODE_DELIVERY_AREA_NODE_CODE_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_NODE_DELIVERY_AREA_NODE_CODE_ArrData({ commit }, payload) {
+    commit('SET_NODE_DELIVERY_AREA_NODE_CODE_ArrData', payload)
+  },
+
+  SET_NODE_DELIVERY_AREA_DESTINATION_CODE({ commit }, payload) {
+    commit('SET_NODE_DELIVERY_AREA_DESTINATION_CODE', payload)
+  },
+  SET_NODE_DELIVERY_AREA_DESTINATION_CODE_ValueData({ commit }, payload) {
+    commit('SET_NODE_DELIVERY_AREA_DESTINATION_CODE_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_NODE_DELIVERY_AREA_DESTINATION_CODE_ArrData({ commit }, payload) {
+    commit('SET_NODE_DELIVERY_AREA_DESTINATION_CODE_ArrData', payload)
+  },
+
+  SET_NODE_DELIVERY_AREA_IS_ACTIVE({ commit }, payload) {
+    commit('SET_NODE_DELIVERY_AREA_IS_ACTIVE', payload)
+  },
+  SET_NODE_DELIVERY_AREA_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_NODE_DELIVERY_AREA_IS_ACTIVE_ValueData', payload)
+  },
+
+
   // tariff
   SET_TARIFF_TARIFF_GROUP({ commit }, payload) {
     commit('SET_TARIFF_TARIFF_GROUP', payload)
