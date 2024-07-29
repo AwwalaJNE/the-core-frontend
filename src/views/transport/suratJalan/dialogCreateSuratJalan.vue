@@ -294,7 +294,7 @@ export default {
         this.destinationUnlock = ""
       }
       else {
-        this.manifest_lov = initial_data['manifest_lov']
+        this.manifest_lov = initial_data['manifest_lov'].value ? initial_data['manifest_lov'].value : initial_data['manifest_lov']
         this.destinationUnlock = initial_data['destination_id']
       }
     },
