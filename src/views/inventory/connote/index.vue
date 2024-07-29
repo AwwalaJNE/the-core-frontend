@@ -20,7 +20,7 @@
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
                             <vs-col xs="12" sm="6" lg="4">
-                                <template v-if="navActive === 'k-CONNOTE'">
+                                <template v-if="navActive === 'k-KOLI'">
                                     <vs-row>
                                         <vs-col vs-align="center" w="6">
                                             <select-search-by-connote :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"  :selectedValue="searchBy"/>
@@ -68,6 +68,32 @@
                           </vs-row>
                             <transition name="slide-fade">
                                 <connote-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" :querySearch="searchBy" :queryDate="filterDateBy" />
+                            </transition>
+                        </template>
+                        <template v-if="navActive === 'k-KOLI'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="6" sm="2" lg="2">
+                                <select-status-bag ref="is_in_bag" :isMultiple="false" :border="true" @updateStatusBag="updateStatusBag" />
+                            </vs-col>
+                            <vs-col vs-align="center" xs="6" sm="2" lg="2">
+                                <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
+                            </vs-col>
+                            <vs-col vs-align="center" xs="6" sm="3" lg="2">
+                                <select-filter-date-by :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" />
+                            </vs-col>
+                            <vs-col xs="6" sm="5" lg="6">
+                                <date-time
+                                    :name="''"
+                                    :rules="''"
+                                    :formKey="'TRIGGER_DATE'"
+                                    :valueData="tempDate"
+                                    typeInput="daterange"
+                                    @updateValue="searchDate" 
+                                />
+                            </vs-col>
+                          </vs-row>
+                            <transition name="slide-fade">
+                                <koli-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" :querySearch="searchBy" :queryDate="filterDateBy" />
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-BAG'">
@@ -140,7 +166,9 @@ import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
 import DateTime from "@/components/input/dateTime"
 
 // Connote
-import ConnoteList from "@/views/inventory/connote/item/connoteList"
+import ConnoteList from "@/views/inventory/connote/connote/cnoteList"
+// Koli
+import KoliList from "@/views/inventory/connote/item/connoteList"
 // Bag
 import BagList from "@/views/inventory/connote/bag/bagList"
 
@@ -153,6 +181,7 @@ export default {
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
         "connote-list": ConnoteList,
+        "koli-list": KoliList,
         "bag-list": BagList,
         "selector": Selector,
         "select-status-bag": SelectBagStatusVue,
@@ -169,6 +198,11 @@ export default {
         return {
             navItemm: [
                 {
+                    label: "KOLI",
+                    key: "k-KOLI",
+                    title: "Koli List"
+                },
+                {
                     label: "CONNOTE",
                     key: "k-CONNOTE",
                     title: "Connote List"
@@ -179,7 +213,7 @@ export default {
                     title: "Bag List"
                 }
             ],
-            navActive: "k-CONNOTE",
+            navActive: "k-KOLI",
             dialogUser: false,
             dialogRole: false,
             title: "Connote List",
@@ -339,7 +373,7 @@ export default {
         },
         openDialog(){
             switch(this.navActive) {
-                case "k-CONNOTE":
+                case "k-KOLI":
                     this.dialogUser = true
                     break;
                 case "k-BAG":
