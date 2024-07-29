@@ -419,6 +419,9 @@ export default {
       // form["vehicle_type_id"] = form["vehicle_mode_id"]
       // form["max_weight"] = 1
 
+
+      form['via_sj'] = !form['via_sj']
+
       this.form = form;
 
       if (this.form.eta > this.form.etd) {
@@ -439,8 +442,6 @@ export default {
           "ETA must more than ETD"
         );
       }
-
-
     },
     handleSubmit() {
       this.$refs.formSuratMuatanController.handleSubmit(); // trigger function submit form dari luar component formInputController
@@ -450,6 +451,7 @@ export default {
       this.form = {};
       this.item_code = "";
       this.manifest_number = "";
+      this.dataTable = [];
     },
     async getDataVehicleMode() {
       await axios
@@ -828,8 +830,8 @@ export default {
     },
     resetForm() {
       // this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", [{label: null, value: null, data: {}}])
-      this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", "");
-      this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", {});
+      // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", "");
+      // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", {});
 
       this.$store.dispatch(
         "SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT",

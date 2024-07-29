@@ -1048,6 +1048,48 @@ export default {
     state.nodeLink.is_active.valueData = payload
   },
 
+  //======= Generate node DELIVERY AREA =======
+  SET_NODE_DELIVERY_AREA_NODE_DELIVERY_ID(state, payload) {
+    state.node_delivery_area.node_delivery_id.value = payload
+  },
+  SET_NODE_DELIVERY_AREA_NODE_DELIVERY_ID_visible(state, payload) {
+    state.node_delivery_area.node_delivery_id.visible = payload
+  },
+  SET_NODE_DELIVERY_AREA_NODE_DELIVERY_ID_ValueData(state, payload) {
+    state.node_delivery_area.node_delivery_id.valueData = payload
+  },
+
+  SET_NODE_DELIVERY_AREA_NODE_CODE(state, payload) {
+    state.node_delivery_area.node_code.value = payload
+  },
+  SET_NODE_DELIVERY_AREA_NODE_CODE_ValueData(state, payload) {
+    state.node_delivery_area.node_code.valueData = payload
+  },
+  SET_NODE_DELIVERY_AREA_NODE_CODE_ArrData(state, payload) {
+    state.node_delivery_area.node_code.hasOwnProperty('arrData') ?
+      state.node_delivery_area.node_code.arrData = payload :
+      state.node_delivery_area.node_code.arrData = []
+  },
+
+  SET_NODE_DELIVERY_AREA_DESTINATION_CODE(state, payload) {
+    state.node_delivery_area.destination_code.value = payload
+  },
+  SET_NODE_DELIVERY_AREA_DESTINATION_CODE_ValueData(state, payload) {
+    state.node_delivery_area.destination_code.valueData = payload
+  },
+  SET_NODE_DELIVERY_AREA_DESTINATION_CODE_ArrData(state, payload) {
+    state.node_delivery_area.destination_code.hasOwnProperty('arrData') ?
+      state.node_delivery_area.destination_code.arrData = payload :
+      state.node_delivery_area.destination_code.arrData = []
+  },
+
+  SET_NODE_DELIVERY_AREA_IS_ACTIVE(state, payload) {
+    state.node_delivery_area.is_active.value = payload
+  },
+  SET_NODE_DELIVERY_AREA_IS_ACTIVE_ValueData(state, payload) {
+    state.node_delivery_area.is_active.valueData = payload
+  },
+
   //end node link
 
   // tariff
@@ -2143,6 +2185,18 @@ export default {
   },
   SET_SURAT_MUATAN_ETA_ValueData(state, payload) {
     state.surat_muatan.eta.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_VIA_SJ(state, payload) {
+    state.surat_muatan.via_sj.value = payload
+  },
+  SET_SURAT_MUATAN_VIA_SJ_ValueData(state, payload) {
+    state.surat_muatan.via_sj.valueData = payload
+  },
+  SET_SURAT_MUATAN_VIA_SJ_ArrData(state, payload) {
+    state.surat_muatan.via_sj.hasOwnProperty('arrData') ?
+    state.surat_muatan.via_sj.arrData = payload :
+    state.surat_muatan.via_sj.arrData = []
   },
 
 

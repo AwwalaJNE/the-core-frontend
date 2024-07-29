@@ -1421,6 +1421,48 @@ export default {
 
   },
 
+  node_delivery_area: {
+    node_delivery_id: {
+      label: "ID",
+      key: "node_delivery_id",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      visible: false,
+      valueData: null,
+      value: '',
+    },
+    node_code: {
+      label: "Node Code",
+      key: "node_code",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    destination_code: {
+      label: "Destination Code",
+      key: "destination_code",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
+
   sla_koli: {
     sla_id: {
       label: "Sla ID",
@@ -3069,6 +3111,7 @@ export default {
       rule: "required",
       typeInput: "autocomplete",
       typeData: "String",
+      isDisabled: true,
       arrData: [],
       valueData: null,
       value: ''
@@ -3192,6 +3235,15 @@ export default {
       typeData: "String",
       valueData: null,
       value: ''
+    },
+    via_sj: {
+      label: "Auto Depart",
+      key: "via_sj",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
     },
   },
   surat_jalan:{

@@ -11,10 +11,10 @@
                 <div style="position:relative;display:flex;justify-content: flex-end;">
                     <div style="width: 100px;padding-right: 5px;">
                         <vs-button
-                        flat
-                        block
-                        :active="true"
-                        @click="openDialog"
+                            flat
+                            block
+                            :active="true"
+                            @click="openDialog"
                         > 
                             <i class="bx bx-plus"></i> New
                         </vs-button>
@@ -52,45 +52,57 @@
                         <types :ref="navActive" :query="tempSearch"/>
                     </transition>
                 </template>
-              <template v-else-if="navActive === 'k-NODE-LINK'">
-                <transition name="slide-fade">
-                  <node-link :ref="navActive" :query="tempSearch"/>
-                </transition>
-              </template>
+                <template v-else-if="navActive === 'k-NODE-LINK'">
+                    <transition name="slide-fade">
+                        <node-link :ref="navActive" :query="tempSearch"/>
+                    </transition>
+                </template>
+                <template v-else-if="navActive === 'k-NODE-DELIVERY-AREA'">
+                    <transition name="slide-fade">
+                        <node-delivery-area :ref="navActive" :query="tempSearch"/>
+                    </transition>
+                </template>
 
             </div>
         </section>
 
         <dialog-create-edit-node 
-            :active="dialogNode" 
-            @refresh="refresh"
-            :closeDialog="closeDialogNode"
             title="Create Node"
-            />
+            :active="dialogNode" 
+            :closeDialog="closeDialog"
+            @refresh="refresh"            
+        />
         <dialog-create-edit-node-type
-            :active="dialogNodeType" 
-            @refresh="refresh"
-            :closeDialog="closeDialogNodeType"
             title="Create Node Type"
-            />
+            :active="dialogNodeType" 
+            :closeDialog="closeDialog"
+            @refresh="refresh"
+        />
         <dialog-create-edit-node-commision
+            title="Create Node Commision"
+            :closeDialog="closeDialog"
             :active="dialogNodeCommision" 
             @refresh="refresh"
-            :closeDialog="closeDialogNodeCommision"
-            title="Create Node Commision"
-            />
+        />
         <dialog-create-edit-alternate-address
-            :active="dialogAlternateAddress" 
-            @refresh="refresh"
-            :closeDialog="closeDialogAlternateAddress"
             title="Create Alternate Address"
-            />
+            :active="dialogAlternateAddress" 
+            :closeDialog="closeDialog"
+            @refresh="refresh"            
+        />
         <dialog-create-edit-node-link
-            :active="dialogNodeLink"
-            @refresh="refresh"
-            :closeDialog="closeDialogNodeLink"
             title="Create Node Link"
-            />
+            :active="dialogNodeLink"
+            :closeDialog="closeDialog"
+            @refresh="refresh"
+            
+        />
+        <dialog-create-edit-node-delivery-area
+            title="Create Node Delivery Area"
+            :active="dialogNodeDeliveryArea"
+            :closeDialog="closeDialog"
+            @refresh="refresh"
+        />
     </div>
 </template>
 <script>
@@ -103,11 +115,13 @@ import AlternateAddress from "@/views/settings/nodes/alternateAddress"
 import Nodes from "@/views/settings/nodes/nodes"
 import NodesCommision from "@/views/settings/nodes/nodesCommision"
 import Types from "@/views/settings/nodes/types"
+import NodeDeliveryArea from "@/views/settings/nodes/nodeDeliveryArea"
 import DialogCreateEditNode from "@/views/settings/nodes/nodes/dialogCreateEditNode"
 import DialogCreateEditNodeLink from "@/views/settings/nodes/nodeLink/dialogCreateEditNodeLink"
 import dialogCreateEditNodeType from "@/views/settings/nodes/types/dialogCreateEditNodeType"
 import dialogCreateEditNodeCommission from "@/views/settings/nodes/nodesCommision/dialogCreateEditNodeCommission"
 import dialogCreateAltAddress from "@/views/settings/nodes/alternateAddress/dialogCreateAltAddress"
+import DialogCreateEditNodeDeliveryArea from "@/views/settings/nodes/nodeDeliveryArea/dialogCreateEditNodeDeliveryArea"
 
 
 export default {
@@ -121,11 +135,13 @@ export default {
         "node-link": NodeLink,
         "nodes-commision": NodesCommision,
         "types": Types,
+        "node-delivery-area": NodeDeliveryArea,
         "dialog-create-edit-node": DialogCreateEditNode,
         "dialog-create-edit-node-link": DialogCreateEditNodeLink,
         "dialog-create-edit-node-type": dialogCreateEditNodeType,
         "dialog-create-edit-node-commision":dialogCreateEditNodeCommission,
-        "dialog-create-edit-alternate-address": dialogCreateAltAddress
+        "dialog-create-edit-alternate-address": dialogCreateAltAddress,
+        "dialog-create-edit-node-delivery-area": DialogCreateEditNodeDeliveryArea
         // "role-list": RoleList,
         // "dialog-create-edit-user": DialogCreateEditUser,
         // "dialog-create-edit-role": DialogCreateEditRole
@@ -158,6 +174,11 @@ export default {
                   key: "k-NODE-LINK",
                   title: "Node Link"
                 },
+                {
+                  label: "NODE DELIVERY AREA",
+                  key: "k-NODE-DELIVERY-AREA",
+                  title: "Node Delivery Area"
+                },
             ],
             title:"Nodes",
             navActive: "k-NODES",
@@ -166,7 +187,8 @@ export default {
             dialogNodeLink: false,
             dialogAlternateAddress: false,
             dialogNodeCommision: false,
-            dialogNodeType: false
+            dialogNodeType: false,
+            dialogNodeDeliveryArea: false
         }
     },
     methods: {
@@ -207,26 +229,39 @@ export default {
                 case "k-NODE-LINK":
                   this.dialogNodeLink = true
                   break;
+                case "k-NODE-DELIVERY-AREA":
+                  this.dialogNodeDeliveryArea = true
+                  break;
                 default:
 
                     // code block
             }
             this.refreshInject = this.navActive
         },
-        closeDialogNode() {
-            this.dialogNode = false
-        },
-        closeDialogNodeType() {
-            this.dialogNodeType = false
-        },
-        closeDialogNodeCommision() {
-            this.dialogNodeCommision = false
-        },
-        closeDialogAlternateAddress() {
-            this.dialogAlternateAddress = false
-        },
-        closeDialogNodeLink() {
-            this.dialogNodeLink = false
+        closeDialog() {
+            switch(this.navActive) {
+                case "k-NODES":
+                    this.dialogNode = false
+                    break;
+                case "k-TYPES":
+                    this.dialogNodeType = false
+                    break;
+                case "k-NODES-COMMISION":
+                    this.dialogNodeCommision = false
+                    break;
+                case "k-ALTERNATE-ADDRESS":
+                    this.dialogAlternateAddress = false
+                    break;
+                case "k-NODE-LINK":
+                  this.dialogNodeLink = false
+                  break;
+                case "k-NODE-DELIVERY-AREA":
+                  this.dialogNodeDeliveryArea = false
+                  break;
+                default:
+                    // code block
+            }
+            this.refreshInject = this.navActive
         },
     },
 }
