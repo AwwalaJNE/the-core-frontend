@@ -451,6 +451,7 @@ export default {
       this.form = {};
       this.item_code = "";
       this.manifest_number = "";
+      this.dataTable = [];
     },
     async getDataVehicleMode() {
       await axios
