@@ -214,5 +214,8 @@ export default {
     configuration_warning_runsheet : api + 'warning-koli-setting',
 
     // Configuration Warning Runsheet
-    warning_runsheet : api + 'warning-koli-record'
+    warning_runsheet : api + 'warning-koli-record',
+
+    // Check Delivery Area
+    check_delivery_area : api + 'check-delivery-area'
 }

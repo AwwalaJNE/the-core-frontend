@@ -394,6 +394,16 @@
             :closeDialog="closeDialogConfirmEmployee"
             @updateValue="updateValueBag"
         />
+        <dialog-recheck-connote-zone
+          title="Recheck Connote Zone"
+          :active="openDialogReCheckConnoteZone"
+          :closeDialog="closeActionPopup"
+          :dataItem="dataItem"
+          :listConnote="listConnote"
+          :type="type"
+          @addConnoteToRunsheet="addConnoteToRunsheet"
+          @addBagPraRunsheetToRunsheet="addBagPraRunsheetToRunsheet"
+        />
   </div>
 </template>
 <script>
@@ -408,6 +418,7 @@ import CameraScanner from "@/components/scanner/camera";
 import RunsheetInformation from "@/views/delivery/runsheet/edit/runsheetInformation";
 import RunsheetInformationCancel from "@/views/delivery/runsheet/edit/runsheetInformationCancel";
 import DialogConfirm from "@/views/delivery/runsheet/edit/dialogConfirm";
+import DialogReCheckConnoteZone from "@/views/delivery/runsheet/edit/dialogReCheckConnoteZone";
 
 export default {
   name: "DeliveryRunsheetEdit",
@@ -418,7 +429,8 @@ export default {
     RunsheetInformation,
     RunsheetInformationCancel,
     CameraScanner,
-    "dialog-confirm": DialogConfirm
+    "dialog-confirm": DialogConfirm,
+    "dialog-recheck-connote-zone": DialogReCheckConnoteZone
   },
   mixins: [master],
   // props: {
@@ -471,6 +483,10 @@ export default {
       navActive: "k-LIST-DELIVERY",
       disabledConfirm: true,
       disabledApprove: false,
+      dataItem: {},
+      openDialogReCheckConnoteZone: false,
+      type: '',
+      listConnote: []
     };
   },
   computed: {
@@ -613,40 +629,20 @@ export default {
       if (postData) {
         this.form = postData
       }
+      this.type = 'BAG'
+
       await axios
-        .post(
-          `${this.URL.employee}/${this.employee_id}/delivery/bag-pra?n=${this.listenNodeId}`,
-          JSON.stringify(this.form),
-          this.Helper.header()
-        )
+        .get(`${this.URL.check_delivery_area}?item_number=${this.form.bag_number}&type=${this.type}&n=${this.listenNodeId}&limit=-1`, this.Helper.header())
         .then((res) => {
-          // this.dataDelivery = this.processDataDelivery(res.data.data)
-          // this.dataDelivery.map((item) => {
-          //   item.employee_name = res.data.data.employee_name
-          // })
-          if (res.data.hasOwnProperty("summary")) {
-            this.dataDelivery.employee_name = res.data.data.employee_name
-              ? res.data.data.employee_name
-              : null;
-            this.dataDelivery.employee_code = res.data.data.employee_code
-              ? res.data.data.employee_code
-              : null;
-            this.dataDeliverySummary = res.data.summary;
-            this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
-            this.getDataDelivery();
-            this.openNotification(null, "Success", "Update success");
-            this.loadingRunsheet = false;
-            this.clearInputs()
-          } else {
-            this.getDataDelivery();
-            this.openNotification(null, "Success", res.data.message);
-            this.loadingRunsheet = false;
-            this.clearInputs()
-          }
+          this.addBagPraRunsheetToRunsheet(this.form)
         })
         .catch((err) => {
-          this.loadingRunsheet = false;
-          this.openNotification("danger", "", err.response.data.message);
+          if (err.response.data.status == 'failed') {
+            this.openNotification("warning", "", err.response.data.message);
+            this.actionPopup(this.form, err.response.data.data)
+          } else {
+            this.openNotification("danger", "", err.response.data.message);
+          }
         });
     },
     async getKoli(val) {
@@ -689,15 +685,79 @@ export default {
           this.openNotification('danger', ' Nomor bag item is failed', err)
         })
     },
+    actionPopup(dataItem, listConnote) {
+      this.dataItem = dataItem;
+      this.listConnote = listConnote;
+      this.openDialogReCheckConnoteZone = true;
+    },
+    closeActionPopup() {
+      this.openDialogReCheckConnoteZone = false;
+    },
     async scanConnote(postData) {
       this.loadingRunsheet = true;
       if (postData) {
         this.form = postData
       }
+      this.type = 'KOLI'
+
+      await axios
+        .get(`${this.URL.check_delivery_area}?item_number=${this.form.koli_number}&type=${this.type}&n=${this.listenNodeId}&limit=-1`, this.Helper.header())
+        .then((res) => {
+          this.addConnoteToRunsheet(this.form)
+        })
+        .catch((err) => {
+          if (err.response.data.status == 'failed') {
+            this.openNotification("warning", "", err.response.data.message);
+            this.actionPopup(this.form, err.response.data.data)
+          } else {
+            this.openNotification("danger", "", err.response.data.message);
+          }
+        });
+    },
+    async addConnoteToRunsheet(form) {
+      console.log("INII", form)
       await axios
         .post(
           `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}`,
-          JSON.stringify(this.form),
+          JSON.stringify(form),
+          this.Helper.header()
+        )
+        .then((res) => {
+          // this.dataDelivery = this.processDataDelivery(res.data.data)
+          // this.dataDelivery.map((item) => {
+          //   item.employee_name = res.data.data.employee_name
+          // })
+          if (res.data.hasOwnProperty("summary")) {
+            this.dataDelivery.employee_name = res.data.data.employee_name
+              ? res.data.data.employee_name
+              : null;
+            this.dataDelivery.employee_code = res.data.data.employee_code
+              ? res.data.data.employee_code
+              : null;
+            this.dataDeliverySummary = res.data.summary;
+            this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
+            this.getDataDelivery();
+            this.openNotification(null, "Success", "Update success");
+            this.loadingRunsheet = false;
+            this.clearInputs()
+          } else {
+            this.getDataDelivery();
+            this.openNotification(null, "Success", res.data.message);
+            this.loadingRunsheet = false;
+            this.clearInputs()
+          }
+        })
+        .catch((err) => {
+          this.loadingRunsheet = false;
+          this.openNotification("danger", "", err.response.data.message);
+        });
+    },
+    async addBagPraRunsheetToRunsheet(form) {
+      console.log("INII PRA", form)
+      await axios
+        .post(
+          `${this.URL.employee}/${this.employee_id}/delivery/bag-pra?n=${this.listenNodeId}`,
+          JSON.stringify(form),
           this.Helper.header()
         )
         .then((res) => {
@@ -1094,6 +1154,7 @@ export default {
       this.item_no_remove = null
       this.item_no_orion_remove = null
       delete this.form.delivery_runsheet_number; 
+      this.openDialogReCheckConnoteZone = false;
     }
   },
   watch: {
