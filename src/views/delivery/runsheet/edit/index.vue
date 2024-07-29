@@ -638,7 +638,6 @@ export default {
         })
         .catch((err) => {
           if (err.response.data.status == 'failed') {
-            this.openNotification("warning", "", err.response.data.message);
             this.actionPopup(this.form, err.response.data.data)
           } else {
             this.openNotification("danger", "", err.response.data.message);
@@ -707,7 +706,6 @@ export default {
         })
         .catch((err) => {
           if (err.response.data.status == 'failed') {
-            this.openNotification("warning", "", err.response.data.message);
             this.actionPopup(this.form, err.response.data.data)
           } else {
             this.openNotification("danger", "", err.response.data.message);
@@ -753,7 +751,6 @@ export default {
         });
     },
     async addBagPraRunsheetToRunsheet(form) {
-      console.log("INII PRA", form)
       await axios
         .post(
           `${this.URL.employee}/${this.employee_id}/delivery/bag-pra?n=${this.listenNodeId}`,

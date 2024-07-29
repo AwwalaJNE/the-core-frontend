@@ -18,13 +18,32 @@
                         </p>
                     </template>
                     <template v-if="type === 'BAG'">
-                        <span class="recheck-text">
-                            Terdapat connote dari bag yang Anda scan tidak sesuai dengan area kurir pengiriman. Nomor Connote:
-                            <br/><div v-for="item in listConnote" :key="item.connote_number">
-                                <p>{{ item.connote_number }}</p>
+                        <span>
+                            <p class="recheck-text">Terdapat connote dari bag yang Anda scan tidak sesuai dengan area kurir pengiriman. Nomor Connote:</p>
+                            <div v-for="item in listConnote" :key="item.connote_number">
+                                <vs-col xs="12" sm="12" lg="12">
+                                    <div style="margin-top: 10px">
+                                        <vs-tooltip
+                                            :success="tokenCopied"
+                                            :danger="tokenCopied === false"
+                                            circle
+                                        >
+                                        <vs-input
+                                            v-model="item.connote_number"
+                                            readonly
+                                            id="tokenField"
+                                            v-clipboard:copy="item.connote_number"
+                                            v-clipboard:success="onCopy"
+                                            v-clipboard:error="onError"
+                                        />
+                                        <template #tooltip>
+                                            {{ "Click to copy" }}
+                                        </template>
+                                        </vs-tooltip>
+                                    </div>
+                                </vs-col>
                             </div>
-                            <br/>
-                            Apakah Anda tetap ingin memasukkannya ke dalam runsheet?
+                            <p class="recheck-text">Apakah Anda tetap ingin memasukkannya ke dalam runsheet?</p>
                         </span>
                     </template>
                 </vs-col>
@@ -116,6 +135,8 @@ export default {
     data() {
         return {
             loading: true,
+            tokenCopied: null,
+            confirmModalActive: false,
         }
     },
     methods: {
@@ -128,6 +149,18 @@ export default {
         },
         cancel() {
             this.closeDialog()
+        },
+        onCopy: function (e) {
+            this.toolTipMessage = "Token Copied To Clipboard!";
+            this.tokenCopied = true;
+            setTimeout(() => {
+                this.tokenCopied = null;
+                this.toolTipMessage = null;
+            }, 1000);
+        },
+        onError: function (e) {
+            this.tokenCopied = false;
+            this.toolTipMessage = "Failed to copy token!";
         },
     },
 }
