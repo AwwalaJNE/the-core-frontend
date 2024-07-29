@@ -202,13 +202,13 @@ export default {
             if(this.dataTable.length > 0) {
                 if(this.dataTable.length > 0) {
                     let obj = this.dataTable.filter(item => {
-                    return item.node_delivery_id === val.node_delivery_id
-                })
-                this.dataItem = obj[0]
-                this.$nextTick(() => {
-                    this.dialogNodeDeliveryArea = true
-                });
-            }
+                        return item.node_delivery_id === val.node_delivery_id
+                    })
+                    this.dataItem = obj[0]
+                    this.$nextTick(() => {
+                        this.dialogNodeDeliveryArea = true
+                    });
+                }
             }
         },
         async actionRemove(val){

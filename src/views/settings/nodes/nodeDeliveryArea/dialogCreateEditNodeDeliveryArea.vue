@@ -107,10 +107,12 @@ export default {
 
             this.$store.dispatch("SET_NODE_DELIVERY_AREA_NODE_CODE_ValueData", val.node_code)
             this.$store.dispatch("SET_NODE_DELIVERY_AREA_DESTINATION_CODE_ValueData", val.destination_code)
+            this.$store.dispatch("SET_NODE_DELIVERY_AREA_IS_ACTIVE_ValueData", val.is_active)
         },
         formData(form){
             form["node_code"] = form["node_code"]["node_code"] ? form["node_code"]["node_code"] : form["node_code"]
             form["destination_code"] = form["destination_code"]["geolocation_subdistrict_tarif_code"] ? form["destination_code"]["geolocation_subdistrict_tarif_code"] : form["destination_code"]
+            form["is_active"] = form["is_active"] ? '1' : '0'
             this.form = form
 
             if(this.node_delivery_id !== undefined && this.node_delivery_id !== '') {
