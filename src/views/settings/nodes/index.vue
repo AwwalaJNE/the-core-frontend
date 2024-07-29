@@ -98,7 +98,7 @@
             
         />
         <dialog-create-edit-node-delivery-area
-            title="Create Node Link"
+            title="Create Node Delivery Area"
             :active="dialogNodeDeliveryArea"
             :closeDialog="closeDialog"
             @refresh="refresh"

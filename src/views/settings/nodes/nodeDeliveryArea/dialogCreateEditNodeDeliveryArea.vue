@@ -12,8 +12,8 @@
         <template v-slot:content>
             <div>
                 <form-input-controller 
-                    ref="formNodeLinkController"
-                    typeForm="nodeLink"
+                    ref="formNodeDeliveryAreaController"
+                    typeForm="node_delivery_area"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
                     @inputFocus="inputFocus"
@@ -78,7 +78,7 @@ export default {
             autoComplateUrl: "",
             flag: "",
             form: {},
-            node_link_id: '',            
+            node_delivery_id: '',            
             searchByNode: "node_name",
             searchByVehicle: "vehicle_type_name",
         }
@@ -97,31 +97,36 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.node_link_id = val.node_link_id
+                this.getDataDetail(val)
             }
         }
     },
     methods: {
+        async getDataDetail(val){
+            this.node_delivery_id = val.node_delivery_id
+
+            this.$store.dispatch("SET_NODE_DELIVERY_AREA_NODE_CODE_ValueData", val.node_code)
+            this.$store.dispatch("SET_NODE_DELIVERY_AREA_DESTINATION_CODE_ValueData", val.destination_code)
+        },
         formData(form){
-            form["node_link_origin_id"] = form["node_link_origin_id"]["node_id"]
-            form["node_link_destination_id"] = form["node_link_destination_id"]["node_id"]
-            form["node_link_vehicle_mode_id"] = form["node_link_vehicle_mode_id"]["vehicle_mode_id"]
+            form["node_code"] = form["node_code"]["node_code"] ? form["node_code"]["node_code"] : form["node_code"]
+            form["destination_code"] = form["destination_code"]["geolocation_subdistrict_tarif_code"] ? form["destination_code"]["geolocation_subdistrict_tarif_code"] : form["destination_code"]
             this.form = form
 
-            if(this.node_link_id !== undefined && this.node_link_id !== '') {
-                this.form.node_link_id = this.node_link_id
+            if(this.node_delivery_id !== undefined && this.node_delivery_id !== '') {
+                this.form.node_delivery_id = this.node_delivery_id
                 this.updateData()
             } else {
                 this.addData()
             }
         },
         handleSubmit(){
-            this.$refs.formNodeLinkController.handleSubmit() // trigger function submit form dari luar component formInputController
+            this.$refs.formNodeDeliveryAreaController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formNodeLinkController.handleClearForm()
+            this.$refs.formNodeDeliveryAreaController.handleClearForm()
             this.form = {}
-            this.node_link_id = ""
+            this.node_delivery_id = ""
         },
         querySearch(queryString, cb){
             axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
@@ -146,20 +151,15 @@ export default {
             let url = ""
             this.autoComplateUrl = url
             switch(key) {
-                case "node_link_origin_id":
+                case "node_code":
                     url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
                     this.autoComplateUrl = url
                     this.flag = "node_name"
                     break;
-                case "node_link_destination_id":
-                    url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+                case "destination_code":
+                    url = this.URL.destination_code +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
                     this.autoComplateUrl = url
-                    this.flag = "node_name"
-                    break;
-                case "node_link_vehicle_mode_id":
-                    url = this.URL.vehicle_mode +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
-                    this.autoComplateUrl = url
-                    this.flag = "vehicle_mode_name"
+                    this.flag = "geolocation_subdistrict_tarif_code"
                     break;
                 default:
                     //
@@ -168,14 +168,14 @@ export default {
         async updateData(){
             await axios
                 .put(
-                    this.URL.node_link + `/${this.node_link_id}?n=${this.listenNodeId}`,
+                    this.URL.node_delivery_area + `/${this.node_delivery_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Update success', 'Update node is success')
+                    this.openNotification(null, 'Update success', res.data.message)
                 }).catch(err => {
                     this.loading = false
                     this.closeDialog()
@@ -186,14 +186,14 @@ export default {
         async addData() {
             await axios
                 .post(
-                    this.URL.node_link + `?n=${this.listenNodeId}`,
+                    this.URL.node_delivery_area + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification(null, 'Create Success', 'Create new node is success')
+                    this.openNotification(null, 'Create Success', res.data.message)
                 }).catch(err => {
                     this.loading = false
                     this.closeDialog()
