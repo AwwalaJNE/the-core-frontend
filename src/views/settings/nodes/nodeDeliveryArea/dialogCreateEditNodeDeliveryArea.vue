@@ -78,9 +78,7 @@ export default {
             autoComplateUrl: "",
             flag: "",
             form: {},
-            node_delivery_id: '',            
-            searchByNode: "node_name",
-            searchByVehicle: "vehicle_type_name",
+            node_delivery_id: '',
         }
     },
     computed: {
