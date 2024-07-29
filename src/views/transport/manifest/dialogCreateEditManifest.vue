@@ -419,6 +419,9 @@ export default {
       // form["vehicle_type_id"] = form["vehicle_mode_id"]
       // form["max_weight"] = 1
 
+
+      form['via_sj'] = !form['via_sj']
+
       this.form = form;
 
       if (this.form.eta > this.form.etd) {
@@ -439,8 +442,6 @@ export default {
           "ETA must more than ETD"
         );
       }
-
-
     },
     handleSubmit() {
       this.$refs.formSuratMuatanController.handleSubmit(); // trigger function submit form dari luar component formInputController

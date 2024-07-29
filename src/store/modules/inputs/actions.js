@@ -2013,6 +2013,18 @@ export default {
     commit('SET_SURAT_MUATAN_ETA_ValueData', payload)
   },
 
+
+  SET_SURAT_MUATAN_VIA_SJ({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VIA_SJ', payload)
+  },
+  SET_SURAT_MUATAN_VIA_SJ_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VIA_SJ_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_SURAT_MUATAN_VIA_SJ_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VIA_SJ_ArrData', payload)
+  },
+
   /* End Suart Muatan */
 
   /* SURAT JALAN */

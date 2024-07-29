@@ -3194,25 +3194,14 @@ export default {
       valueData: null,
       value: ''
     },
-    depart_sm: {
-      label: "Depart SM",
-      key: "depart_sm",
+    via_sj: {
+      label: "Auto Depart",
+      key: "via_sj",
       rule: "",
-      typeInput: "radio",
-      typeData: "String",
-      width: "10",
-      arrData: [
-        {
-          label: "Auto Depart SM",
-          value: "auto_depart_sm",
-        },
-        {
-          label: "Depart Via SJ",
-          value: "depart_via_sj"
-        },
-      ],
-      valueData: null,
-      value: 'auto_depart_sm'
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
     },
   },
   surat_jalan:{
