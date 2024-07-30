@@ -20,6 +20,16 @@
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
                             <vs-col xs="12" sm="6" lg="4">
+                                <template v-if="navActive === 'k-CONNOTE'">
+                                    <vs-row>
+                                        <vs-col vs-align="center" w="6">
+                                            <select-search-by-cnote :isMultiple="false" :border="true" @updateSearchBy="updateSearchByCnote"  :selectedValue="searchByCnote"/>
+                                        </vs-col>
+                                        <vs-col vs-align="center" w="6">
+                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholderCnote" class="search-input"/>
+                                        </vs-col>
+                                    </vs-row>
+                                </template>
                                 <template v-if="navActive === 'k-KOLI'">
                                     <vs-row>
                                         <vs-col vs-align="center" w="6">
@@ -47,13 +57,13 @@
                         <template v-if="navActive === 'k-CONNOTE'">
                           <vs-row >
                             <vs-col vs-align="center" xs="6" sm="2" lg="2">
-                                <select-status-bag ref="is_in_bag" :isMultiple="false" :border="true" @updateStatusBag="updateStatusBag" />
+                                <select-status-bag-cnote ref="is_in_bag" :isMultiple="false" :border="true" @updateStatusBag="updateStatusBagCnote" />
                             </vs-col>
                             <vs-col vs-align="center" xs="6" sm="2" lg="2">
-                                <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
+                                <select-status-inventory-cnote :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventoryCnote" />
                             </vs-col>
                             <vs-col vs-align="center" xs="6" sm="3" lg="2">
-                                <select-filter-date-by :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" />
+                                <select-filter-date-by-cnote :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" />
                             </vs-col>
                             <vs-col xs="6" sm="5" lg="6">
                                 <date-time
@@ -67,7 +77,7 @@
                             </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <connote-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" :querySearch="searchBy" :queryDate="filterDateBy" />
+                                <connote-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventorycnote" :queryBag="status_bag_cnote" :querySearch="searchBy" :queryDate="filterDateBy" />
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-KOLI'">
@@ -164,6 +174,11 @@ import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDest
 import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
 import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
 import DateTime from "@/components/input/dateTime"
+import SelectBagStatusConnote from "@/views/inventory/connote/connote/selectBagStatus"
+import SelectInventoryConnote from "@/views/inventory/connote/connote/selectInventoryStatus"
+import SelectSearchByCnote from "@/views/inventory/connote/connote/selectSearchBy"
+import SelectFilterDateByConnote from "@/views/inventory/connote/connote/selectFilterDateBy"
+
 
 // Connote
 import ConnoteList from "@/views/inventory/connote/connote/cnoteList"
@@ -173,7 +188,7 @@ import KoliList from "@/views/inventory/connote/item/connoteList"
 import BagList from "@/views/inventory/connote/bag/bagList"
 
 export default {
-    name:"Users",
+    name:"Inventory Item",
     mixins: [master],
     components: {
         "table-master" : TableMaster,
@@ -193,6 +208,10 @@ export default {
         "select-bag-routing": SelectBagRouting,
         "select-bag-tipe": SelectBagTipe,
         "date-time": DateTime,
+        "select-status-bag-cnote": SelectBagStatusConnote,
+        "select-status-inventory-cnote": SelectInventoryConnote,
+        "select-search-by-cnote": SelectSearchByCnote,
+        "select-filter-date-by-cnote": SelectFilterDateByConnote,
     },
     data() {
         return {
@@ -214,40 +233,11 @@ export default {
                 }
             ],
             navActive: "k-KOLI",
-            dialogUser: false,
-            dialogRole: false,
             title: "Connote List",
-            dataRole: [],
-            loadingDataRole: false,
-            permission: [],
-            loadingPermission: false,
-            permissionDisplay: [],
-            keysPermission: {},
-            datacolumn: [
-                {
-                    label: "Menu",
-                    key: "user_permission_name",
-                    type: "text",
-                    width: "sm"
-                },
-                {
-                    label: "Select",
-                    key: "selected",
-                    type: "boolean",
-                    width: "xs"
-                },
-                {
-                    label: "Access Data",
-                    key: "permission_access_data",
-                    type: "selector",
-                    width: "auto"
-                }
-            ],
             loading: false,
             dataItem: {},
             tempSearch: "",
             tempDate: [],
-            dialogRole: false,
             pagination: {
                 limit:5,
                 page_size: 1,
@@ -256,11 +246,15 @@ export default {
             refreshInject:"",
             status_bag:"",
             statusinventory:"",
+            status_bag_cnote:"",
+            statusinventorycnote:"",
             bagDestination:"",
             searchBy:"",
             searchByBag:"bag_number",
+            searchByCnote:"",
             searchPlaceholder: "Search Koli",
             searchPlaceholderBag: "Search Bag",
+            searchPlaceholderCnote: "Search Connote",
             searchParamsBag: [
                 {
                     label: "Bag Number",
@@ -312,28 +306,32 @@ export default {
             ],
             bagRouting:"",
             bagTipe:"",
-            destination_tlc: [{
-              label: 'All Destination',
-              value: ''
-            }],
-
         }
     },
     methods: {
         updateStatusBag(key,val) {
           this.status_bag = val;
         },
+        updateStatusBagCnote(key,val) {
+          this.status_bag_cnote = val;
+        },
         updateStatusinventory(key,val) {
           this.statusinventory = val;
         },
+        updateStatusinventoryCnote(key,val) {
+          this.statusinventorycnote = val;
+        },
         updateSearchBy(key,val) {
-
             this.searchBy = val;
             this.searchPlaceholder = key;
         },
         updateSearchByBag(key,val) {
             this.searchByBag = val;
             this.searchPlaceholderBag = key;
+        },
+        updateSearchByCnote(key,val) {
+            this.searchByCnote = val;
+            this.searchPlaceholderCnote = key;
         },
         updateFilterDateBy(key,val) {
           this.filterDateBy = val;
@@ -353,13 +351,16 @@ export default {
         },
         searchValue (val) {
             this.tempSearch = val
-
         },
         searchDate(key, val) {
             this.tempDate = val;
         },
         clearSearch() {
             this.$refs.searchInput.clear()
+            if (this.navActive === 'k-BAG') {
+                this.filterDateBy = 'create'
+            }
+            this.tempDate = []
         },
         activeTab(val) {
             this.navActive = val
@@ -368,27 +369,6 @@ export default {
                 return item.key == val
             })
             this.title = item[0].title
-
-
-        },
-        openDialog(){
-            switch(this.navActive) {
-                case "k-KOLI":
-                    this.dialogUser = true
-                    break;
-                case "k-BAG":
-                    this.dialogRole = true
-                    break;
-                default:
-                    // code block
-            }
-            this.refreshInject = this.navActive
-        },
-        closeDialogUser() {
-            this.dialogUser = false
-        },
-        closeDialogRole() {
-            this.dialogRole = false
         },
         actionLimit(val){
             this.pagination.limit = val
@@ -396,22 +376,6 @@ export default {
         actionPagination(val) {
             this.pagination.page = val
         },
-
-
-
-        filterNow(){
-            if(this.permission.length > 0) {
-
-                this.permission.map(item => {
-                    if(this.keysPermission.hasOwnProperty(item.user_permission_id)) {
-                        item["selected"] = true
-                    } 
-                })
-                this.permissionDisplay = this.permission
-
-            }
-        },
-
     },
 }
 </script>
@@ -427,29 +391,6 @@ export default {
             left: 0;
             width: auto;
             max-width: 350px;
-        }
-        .dataRole{
-            position: relative;
-            width: 100%;
-            padding: 15px;
-            ul{
-                position: relative;
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                li{
-                    text-align: left;
-                    cursor: pointer;
-                    padding: 1em;
-                    border-bottom: 1px solid #eee;
-                    background-color: white;
-                    transition: all .2s ease;
-                    &:hover{
-                        background-color: #f1f1f1;
-                        transition: all .3s ease-in;
-                    }
-                }
-            }
         }
         .search-input{
             @include for-phone-only{

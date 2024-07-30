@@ -38,7 +38,6 @@ export default {
     name: String,
     rules: String,
     valueData: Array,
-    // loadingData: Boolean,
     selectedValue: [Array, String, Number],
     formKey: String,
     isMultiple: Boolean,
@@ -79,7 +78,6 @@ export default {
     valueData: function (val) {
       if (val != undefined) {
         this.DataArr = val
-        // this.DataArr.length > 0 ? this.loading = false : this.loading = true
       }
     },
     selectedValue: function (val) {

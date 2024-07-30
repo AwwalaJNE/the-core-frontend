@@ -15,14 +15,10 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :hasLinked="['koli_number']"
         :hasPagination="true"
         :expandable="true"
-        @actionUpdate="actionUpdate"
-        @actionRemove="actionRemove"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
-        @handleEdit="showData"
         />
 
     </div>
@@ -145,12 +141,10 @@ export default {
                 }
             ],
             loading: false,
-            dataItem: {},
             tempSearch: this.query ? this.query : "",
             tempDate: [],
             startDate: "",
             endDate: "",
-            dialogUser: false,
             status_bag:"",
             statusinventory:"",
             pagination: {
@@ -189,7 +183,6 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
-                        // item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
                         let koli_number = []
                         let bag = []
@@ -198,8 +191,6 @@ export default {
                         let irregularity = []
                         let is_confirmed = []
                         let children = {}
-                        // item["packing_kayu_type"] = item.packing_kayu_type != null ? 'Y' : '-'
-                        // item["status_irregularity"] = item.irregularity?.irregularity_status_description
                         item.koli.map(k => {
                             koli_number.push(k.koli_number)
                             bag.push(k.location_bag_number ?? " ")
@@ -220,40 +211,11 @@ export default {
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
-                    // if(res.data.data.length == 0) {
-                    //     this.openNotification('warn', 'Failed to populate User data', )
-                    // }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate users list', err.response.data.message)
-                })
-        },
-        actionUpdate(val){
-            if(this.dataTable.length > 0) {
-                let obj = this.dataTable.filter(item => {
-                    return item.user_id === val.user_id
-                })
-                this.dataItem = obj[0]
-
-                this.$nextTick(() => {
-                    this.dialogUser = true
-                });
-            }
-        },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.user + `/${val.user_id}`,
-                    this.Helper.header())
-                .then(res => {
-
-                    this.refresh()
-                    this.openNotification(null, 'Romove success', 'Romove role is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Romove role is failed', err)
+                    this.openNotification('danger', 'Failed to populate connote list', err.response.data.message)
                 })
         },
         actionLimit(val){
@@ -267,13 +229,6 @@ export default {
         },
         refresh(val){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
-        },
-        closeDialogUser(){
-            this.dialogUser = false
-        },
-
-        showData(row) {
-          this.$router.push(`/connote-detail/${row.koli_number}`);
         },
     },
     mounted() {
