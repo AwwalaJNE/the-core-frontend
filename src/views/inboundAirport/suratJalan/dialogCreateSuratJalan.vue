@@ -274,6 +274,10 @@ export default {
       else {
         this.manifest_lov = initial_data['manifest_lov'].value
         this.destinationUnlock = initial_data['destination_id'].value
+        let vehicle = initial_data['no_moda_angkutan_id'].arrData.find(el => el.value === initial_data['no_moda_angkutan_id'].value)
+        if (vehicle !== null) {
+          this.vehicle_max_weight = vehicle?.item?.vehicle_max_weight  
+        }
       }
     },
     formData(form) {
