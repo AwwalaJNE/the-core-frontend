@@ -38,7 +38,6 @@ export default {
     name: String,
     rules: String,
     valueData: Array,
-    // loadingData: Boolean,
     selectedValue: [Array, String, Number],
     formKey: String,
     isMultiple: Boolean,
