@@ -125,8 +125,8 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Payment Type",
-                    key: "payment_type_name",
+                    label: "COD",
+                    key: "is_cod",
                     width: "auto"
                 },
                 {
@@ -194,6 +194,7 @@ export default {
                     let arr = res.data.data
                     arr.map(item => {
                         item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
+                        item["is_cod"] = item.is_cod == 1 ? 'YES' : '-'
                         let koli_number = []
                         let bag = []
                         let packing_kayu = []
