@@ -125,6 +125,16 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Payment Type",
+                    key: "payment_type_name",
+                    width: "auto"
+                },
+                {
+                    label: "Amount COD",
+                    key: "amount_cod",
+                    width: "auto"
+                },
+                {
                     label: "SLA",
                     key: "connote_sla_date",
                     width: "auto"
