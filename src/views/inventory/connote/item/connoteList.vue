@@ -143,6 +143,16 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "COD",
+                    key: "is_cod",
+                    width: "auto"
+                },
+                {
+                    label: "Amount COD",
+                    key: "amount_cod",
+                    width: "auto"
+                },
+                {
                     label: "SLA",
                     key: "connote_sla_date",
                     width: "xs"
@@ -213,6 +223,7 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
+                        item["is_cod"] = item.is_cod == 1 ? 'YES' : '-'
                         item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
                         item["packing_kayu_type"] = item.packing_kayu_type != null ? 'Y' : '-'
