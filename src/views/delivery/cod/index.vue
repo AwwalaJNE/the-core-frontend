@@ -12,36 +12,22 @@
     <section class="nodes">
       <div class="box view">
         <div class="nav-box">
-          <vs-row>
-            <vs-col xs="12" sm="12" lg="6">
-              <vs-row>
-                <vs-col w="4">
-                  <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
-                </vs-col>
-                <vs-col w="8">
-                  <daterange-filter @searchDate="searchDate" size="small" />
-                </vs-col>
-              </vs-row>
+          <vs-row justify="end">
+            <vs-col xs="6" sm="8" lg="4">
+              <select-search-by
+                :valueData="filterValues"
+                :isMultiple="false"
+                :border="true"
+                :selectedValue="searchByVal"
+                @updateSearchBy="updateSearchBy"
+              />
             </vs-col>
-            <vs-col xs="12" sm="12" lg="6">
-              <vs-row justify="end">
-                <vs-col xs="6" sm="8" lg="4">
-                  <select-search-by
-                    :valueData="filterValues"
-                    :isMultiple="false"
-                    :border="true"
-                    :selectedValue="searchByVal"
-                    @updateSearchBy="updateSearchBy"
-                  />
-                </vs-col>
-                <vs-col xs="6" sm="4" lg="4">
-                  <search-input
-                    ref="searchInput"
-                    @searchValue="searchValue"
-                    class="search-input"
-                  />
-                </vs-col>
-              </vs-row>
+            <vs-col xs="6" sm="4" lg="2">
+              <search-input
+                ref="searchInput"
+                @searchValue="searchValue"
+                class="search-input"
+              />
             </vs-col>
           </vs-row>
         </div>
@@ -53,10 +39,21 @@
               :dateFilter="tempDate"
               :query="tempSearch"
               :searchBy="searchByVal"
-              :filterDateBy="filterDateBy"
+              @openDialog="openDialog"
             />
           </transition>
         </template>
+        <dialog-cod-collect
+          :active="dialogCodCollect"
+          :closeDialog="closeDialogCodCollect"
+          :expectedAmount="expectedAmount"
+          :runsheetNumber="runsheetNumber"
+          :courierId="courierId"
+          title="Collect COD"
+          @confirm="confirm"
+          @cancel="closeDialogCodCollect"
+          @refresh="refresh"
+        />
       </div>
     </section>
   </div>
@@ -71,6 +68,7 @@ import dateRange from "@/components/daterange/index";
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
 import DeliveryCodTable from "@/views/delivery/cod/codTable";
+import DialogCodCollect from "@/views/delivery/cod/dialogCodCollect";
 
 export default {
   name: "Inbound-List",
@@ -82,6 +80,7 @@ export default {
     "daterange-filter": dateRange,
     DeliveryCodTable: DeliveryCodTable,
     "select-search-by": SelectSearchBy,
+    "dialog-cod-collect": DialogCodCollect,
   },
   data() {
     return {
@@ -105,34 +104,44 @@ export default {
           value: "count_connote",
         },
         {
+          label: "Runsheet",
+          value: "delivery_runsheet_number",
+        },
+        {
+          label: "HRS",
+          value: "hrs",
+        },
+        {
           label: "Total Cod",
           value: "count_cod",
         },
       ],
-      dateParams: [
-        {
-          label: 'Date Deliverd',
-          value: 'updated'
-        },
-      ]
+      dialogCodCollect: false,
+      expectedAmount: 0,
+      runsheetNumber: "",
+      courierId: ""
     };
   },
   methods: {
     refresh() {
-      this.$refs.inboundIncoming.refresh(); // trigger function refresh form dari luar component list
+      this.$refs.DeliveryCodTable.refresh(); // trigger function refresh form dari luar component list
     },
     searchValue(val) {
       this.tempSearch = val;
-    },
-    searchDate(val) {
-      this.tempDate = val;
     },
     clearSearch() {
       this.$refs.searchInput.clear();
     },
 
-    openDialog() {
-      this.$router.push("/inbound/prealert/scan");
+    openDialog(amount, runsheet, courier) {
+      this.dialogCodCollect = true
+      this.expectedAmount = amount
+      this.runsheetNumber = runsheet
+      this.courierId = courier
+    },
+
+    closeDialogCodCollect() {
+      this.dialogCodCollect = false
     },
 
     async getDataNodeType() {

@@ -30,8 +30,7 @@ export default {
     query: String,
     dateFilter: Array,
     node: String,
-    searchBy: String,
-    filterDateBy: String
+    searchBy: String
   },
   components: {
     "table-master": TableMaster,
@@ -43,7 +42,17 @@ export default {
         {
           label: "Nama Kurir",
           key: "courier_employee_name",
-          width: "lg",
+          width: "md",
+        },
+        {
+          label: "Runsheet",
+          key: "delivery_runsheet_number",
+          width: "auto",
+        },
+        {
+          label: "HRS",
+          key: "hrs",
+          width: "auto",
         },
         {
           label: "Total Connotes",
@@ -53,7 +62,7 @@ export default {
         {
           label: "Total COD",
           key: "count_cod",
-          width: "sm",
+          width: "auto",
         },
       ],
       loading: false,
@@ -135,7 +144,7 @@ export default {
       await axios
         .get(
           this.URL.delivery_cod +
-            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}`,
           this.Helper.header()
         )
         .then((res) => {
@@ -202,7 +211,7 @@ export default {
         courier_employee_id: row.courier_employee_id,
         date: row.date ? row.date : null,
       };
-      this.updateData();
+      this.$emit("openDialog", row.count_cod, row.delivery_runsheet_number, row.courier_employee_id)
     },
     async updateData() {
       await axios
