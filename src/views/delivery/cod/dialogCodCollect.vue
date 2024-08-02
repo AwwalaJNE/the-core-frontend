@@ -93,7 +93,8 @@ export default {
         async collectCOD() {
             let form = {
                 courier_employee_id: this.courierId,
-                delivery_runsheet_number: this.runsheetNumber
+                delivery_runsheet_number: this.runsheetNumber,
+                amount: this.amount_cod
             }
             await axios
                 .post(
