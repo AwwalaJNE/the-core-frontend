@@ -65,7 +65,7 @@
                           <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
                             <template>
                               <div class="center">
-                                <vs-input border type="text" v-model="item_no_orion" label-placeholder="Masukkan Connote" v-on:keyup.enter="updateValueOrion" autofocus icon-after ref="formInputInbound">
+                                <vs-input border :disabled="isDisabled" type="text" v-model="item_no_orion" label-placeholder="Masukkan Connote" v-on:keyup.enter="updateValueOrion" autofocus icon-after ref="formInputInbound">
                                   <template #icon>
                                     <i class='bx bxs-file'> </i>
                                   </template>
@@ -89,7 +89,7 @@
                           <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
                             <template>
                               <div class="center">
-                                <vs-input border type="text" v-model="item_no" label-placeholder="Masukkan Koli" v-on:keyup.enter="updateValue" autofocus icon-after ref="formInputInbound">
+                                <vs-input border :disabled="isDisabled" type="text" v-model="item_no" label-placeholder="Masukkan Koli" v-on:keyup.enter="updateValue" autofocus icon-after ref="formInputInbound">
                                   <template #icon>
                                     <i class='bx bxs-file'> </i>
                                   </template>
@@ -215,6 +215,7 @@ export default {
             activeDialogFinishReceiving: false,
             activeLoadingFinishReceiving: false,
             isFinishReceivingButtonVisible: false,
+            isDisabled: true
         }
     },
     methods: {
@@ -250,6 +251,7 @@ export default {
           this.$refs.ConnoteRunsheetInformation.refresh();
           this.$refs.undeliveryInformation.refresh()
           this.confirm();
+          this.isDisabled = false
         },
         getTotal(tot) {
           this.totalConnote = tot
