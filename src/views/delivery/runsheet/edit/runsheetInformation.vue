@@ -67,44 +67,44 @@ export default {
           key: "inbound_id",
           type: "text",
           hidden: true,
-          width: "sm",
+          width: "auto",
         },
         {
           label: "",
           key: "warning_koli_record_id",
           type: "inputan",
           typeInput: "icon",
-          width: "xxs",
+          width: "auto",
         },
         {
           label: "Koli / Connote Number",
           key: "koli_number",
-          width: "xs",
+          width: "auto",
         },
         {
           label: "Created Date",
           key: "created_at",
-          width: "xs",
+          width: "auto",
         },
         {
           label: "ZipCode",
           key: "connote_receiver_zip_code",
-          width: "xxs",
+          width: "auto",
         },
         {
           label: "Kelurahan",
           key: "connote_receiver_subdistrict_name",
-          width: "xxs",
+          width: "auto",
         },
         {
           label: "Service",
           key: "connote_service_code",
-          width: "xxs",
+          width: "auto",
         },
         {
           label: "Status Code",
           key: "status_code",
-          width: "xxs",
+          width: "auto",
         },
         {
           label: "Status Delivery",
@@ -136,7 +136,7 @@ export default {
         {
           label: "COD",
           key: "amount_cod",
-          width: "xxs",
+          width: "auto",
         },
         {
           label: "Receiver name",
@@ -150,7 +150,7 @@ export default {
         {
           label: "Status",
           key: "status_delivery_description",
-          width: "xxs",
+          width: "auto",
         },
       ],
       dataItem: {},
@@ -240,6 +240,7 @@ export default {
 
     this.getParamRoute();
     this.getHRSStatus();
+    this.getPODOrion();
   },
   methods: {
     getWarningIcon(item) {
@@ -425,6 +426,15 @@ export default {
           if (!this.disableEdit) {
             this.disableEdit = true
           }
+        }
+      }
+    },
+    getPODOrion() {
+      for (let data of this.dataDelivery) {
+        if (data?.is_hrs === '1') {
+          this.$set(data, 'is_disabled_input_status', true);
+          this.$set(data, 'is_disabled_input_remarks', true);
+          this.$set(data, 'is_disabled_input_reveiver', true);
         }
       }
     },
