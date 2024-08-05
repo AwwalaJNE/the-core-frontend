@@ -1123,7 +1123,7 @@ export default {
       value: ''
     },
     node_commision_amount_1: {
-      label: "Node Commision amount 1*",
+      label: "Node Commision amount 1 (Rp)*",
       key: "node_commision_amount_1",
       rule: "required",
       typeInput: "text",
@@ -2136,7 +2136,7 @@ export default {
       value: ''
     },
     tariff_amount_1: {
-      label: "Tariff amount 1*",
+      label: "Tariff amount 1 (Rp)*",
       key: "tariff_amount_1",
       rule: "required",
       typeInput: "text",

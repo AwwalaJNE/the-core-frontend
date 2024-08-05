@@ -110,12 +110,12 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Amount 1",
+                    label: "Amount 1 (Rp)",
                     key: "node_commision_amount1",
                     width: "auto"
                 },
                 {
-                    label: "Amount 2",
+                    label: "Amount 2 (Rp)",
                     key: "node_commision_amount2",
                     width: "auto"
                 },

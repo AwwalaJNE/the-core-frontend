@@ -47,12 +47,12 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Amount Publish Rate",
+                    label: "Amount Publish Rate (Rp)",
                     key: "pickup_name",
                     width: "auto"
                 },
                 {
-                  label: "Paid",
+                  label: "Paid (Rp)",
                   key: "total_bag",
                   width: "auto"
                 },

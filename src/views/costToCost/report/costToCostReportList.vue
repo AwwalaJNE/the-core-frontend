@@ -108,7 +108,7 @@ export default {
                 },
                 
                 {
-                    label: "Cost",
+                    label: "Cost (Rp)",
                     key: "cost_value",
                     width: "auto"
                 }

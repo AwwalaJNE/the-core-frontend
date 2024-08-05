@@ -58,7 +58,7 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Total Amount",
+                    label: "Total Amount (Rp)",
                     key: "transaction_amount",
                     width: "auto"
                 },

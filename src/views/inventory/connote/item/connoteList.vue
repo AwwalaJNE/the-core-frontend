@@ -148,9 +148,9 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Amount COD",
+                    label: "Amount COD (Rp)",
                     key: "amount_cod",
-                    width: "auto"
+                    width: "xxs"
                 },
                 {
                     label: "SLA",
