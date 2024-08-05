@@ -12,7 +12,7 @@
         :limit="pagination.limit"
         :hasAction="false"
         :hasPagination="false"
-        :customAction="true"
+        :customAction="false"
         :customActionList="customActionList"
         :isMultipleSelectColoum="true"
         :onRowClickCallback="onRowClickCallback"

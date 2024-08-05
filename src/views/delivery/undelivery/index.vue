@@ -54,7 +54,7 @@
                           <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
                             <template>
                               <div class="center">
-                                <vs-input border type="text" v-model="no_runsheet" :autofocus="true"  v-on:keyup.enter="scanKoli" label-placeholder="Scan Nomor Runsheet" autofocus icon-after ref="formInputInbound">
+                                <vs-input border :disabled="!isDisabled" type="text" v-model="no_runsheet" :autofocus="true"  v-on:keyup.enter="scanKoli" label-placeholder="Scan Nomor Runsheet" autofocus icon-after ref="formInputInbound">
                                   <template #icon>
                                     <i class='bx bx-file'> </i>
                                   </template>
@@ -78,7 +78,7 @@
                           <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
                             <template>
                               <div class="center">
-                                <vs-input border type="text" v-model="no_runsheet" :autofocus="true"  v-on:keyup.enter="scanKoli" label-placeholder="Scan Nomor Runsheet" autofocus icon-after ref="formInputInbound">
+                                <vs-input border :disabled="!isDisabled" type="text" v-model="no_runsheet" :autofocus="true"  v-on:keyup.enter="scanKoli" label-placeholder="Scan Nomor Runsheet" autofocus icon-after ref="formInputInbound">
                                   <template #icon>
                                     <i class='bx bx-file'> </i>
                                   </template>
@@ -285,6 +285,7 @@ export default {
           this.item_no = ""
           this.item_no_orion = ""
           this.no_runsheet= ""
+          this.isDisabled = true
         },
         handleClearFormKoli(){
           this.item_no = ""

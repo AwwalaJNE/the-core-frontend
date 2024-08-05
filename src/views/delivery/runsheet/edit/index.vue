@@ -926,6 +926,9 @@ export default {
         }
  
         item.isDisabled = item.is_delivered === 1;
+        if (item.is_delivered == 1 || item.is_pod_orion == 1) {
+          this.disableDeliveredPOD(item)
+        }
         item.employee_name = data.employee_name;
         item.employee_code = data.employee_code;
         item.warning_koli_record_id = item?.warning_koli_record_id
@@ -1010,6 +1013,11 @@ export default {
       else {
         this.openNotification("danger", "POD KOSONG", "Isi POD terlebih dahulu");
       }
+    },
+    disableDeliveredPOD(val) {
+      this.$set(val, 'is_disabled_input_status', true);
+      this.$set(val, 'is_disabled_input_remarks', true);
+      this.$set(val, 'is_disabled_input_reveiver', true);
     },
     async editPOD(val) {
       const dataPOD = {
