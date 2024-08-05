@@ -53,7 +53,8 @@ export default {
         {
           label: "COD Amount (Rp)",
           key: "amount_cod",
-          width: "xs",
+          width: "xxs",
+          textAlign: "right"
         },
         {
           label: "Collected By",

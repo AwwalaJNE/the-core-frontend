@@ -49,12 +49,14 @@ export default {
                 {
                     label: "Amount Publish Rate (Rp)",
                     key: "pickup_name",
-                    width: "auto"
+                    width: "auto",
+                    textAlign: "right"
                 },
                 {
                   label: "Paid (Rp)",
                   key: "total_bag",
-                  width: "auto"
+                  width: "auto",
+                  textAlign: "right"
                 },
                 {
                   label: "Date Paid",

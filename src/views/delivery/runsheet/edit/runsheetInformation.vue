@@ -137,6 +137,7 @@ export default {
           label: "COD (Rp)",
           key: "amount_cod",
           width: "auto",
+          textAlign: "right"
         },
         {
           label: "Receiver name",

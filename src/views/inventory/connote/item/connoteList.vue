@@ -150,7 +150,8 @@ export default {
                 {
                     label: "Amount COD (Rp)",
                     key: "amount_cod",
-                    width: "xxs"
+                    width: "xxs",
+                    textAlign: "right"
                 },
                 {
                     label: "SLA",

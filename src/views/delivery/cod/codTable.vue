@@ -62,7 +62,8 @@ export default {
         {
           label: "Total COD (Rp)",
           key: "count_cod",
-          width: "auto",
+          width: "xs",
+          textAlign: "right"
         },
       ],
       loading: false,

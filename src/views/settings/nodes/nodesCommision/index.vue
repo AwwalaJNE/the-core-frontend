@@ -112,12 +112,14 @@ export default {
                 {
                     label: "Amount 1 (Rp)",
                     key: "node_commision_amount1",
-                    width: "auto"
+                    width: "auto",
+                    textAlign: "right"
                 },
                 {
                     label: "Amount 2 (Rp)",
                     key: "node_commision_amount2",
-                    width: "auto"
+                    width: "auto",
+                    textAlign: "right"
                 },
             ],
             customActionList: [
