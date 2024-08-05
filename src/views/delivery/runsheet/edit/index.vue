@@ -1110,7 +1110,7 @@ export default {
           if (res.data.data.is_approve === 1) {
             this.disabledApprove = true
           }
-          this.openNotification(null, "Success", "APPROVE EDITED!");
+          this.openNotification(null, "Success", "RUNSHEET APPROVED!");
         })
         .catch((err) => {
 
