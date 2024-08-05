@@ -557,7 +557,7 @@
                     </template>
                     <template v-else>
                       {{ item[column.key] 
-                          ?  !isNaN(item[column.key])
+                          ?  column.type_amount 
                               ? Intl.NumberFormat('en-GB').format(item[column.key])
                               : item[column.key]
                           : "" 

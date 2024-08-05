@@ -53,7 +53,8 @@ export default {
                   label: "COD Value (Rp)",
                   key: "amount_cod",
                   width: "xs",
-                  textAlign: "right"
+                  type_amount: true,
+                    textAlign: "right"
                 },
                 {
                   label: "Status",

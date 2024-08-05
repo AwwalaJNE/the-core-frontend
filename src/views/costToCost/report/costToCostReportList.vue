@@ -111,6 +111,7 @@ export default {
                     label: "Cost (Rp)",
                     key: "cost_value",
                     width: "auto",
+                    type_amount: true,
                     textAlign: "right"
                 }
             ],

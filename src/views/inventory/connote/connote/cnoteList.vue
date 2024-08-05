@@ -133,6 +133,7 @@ export default {
                     label: "Amount COD (Rp)",
                     key: "amount_cod",
                     width: "xxs",
+                    type_amount: true,
                     textAlign: "right"
                 },
                 {
