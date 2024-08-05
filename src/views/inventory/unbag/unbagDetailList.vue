@@ -62,7 +62,8 @@ export default {
         query: String,
         itemNumber: String,
         bagId: String,
-        resetInput: Function
+        resetInput: Function,
+        saveBagNumber: Function
 
     },
     components: {
@@ -144,6 +145,7 @@ export default {
 
                         if (data.unbagging_summary !== null && data.item_detail !== null) {
                           this.bag_number = data.bag_number
+                          this.$emit("saveBagNumber", this.bag_number)
                           let dataBag = {
                             no: 1,
                             item_number: data.bag_number

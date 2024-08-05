@@ -11,18 +11,23 @@
     <template>
       <div class="center in-get-bag">
         <vs-row style="margin-top:1em">
-          <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px;">
-            <vs-radio v-model="radio_option" val="connote">
+          <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px; text-align: left;" justify="start">
+            <span>Item Type:</span>
+          </vs-col>
+        </vs-row>
+        <vs-row  align="center">
+          <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px;">
+            <vs-radio v-model="radio_option" val="connote" :disabled="isInputDisabled">
               Connote (Orion)
             </vs-radio>
           </vs-col>
-          <vs-col xs="12" sm="4" lg="2" style="margin-bottom: 10px;">
-            <vs-radio v-model="radio_option" val="koli">
+          <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px;">
+            <vs-radio v-model="radio_option" val="koli" :disabled="isInputDisabled">
               Koli
             </vs-radio>
           </vs-col>
-          <vs-col xs="12" sm="4" lg="2">
-            <vs-radio v-model="radio_option" val="bag">
+          <vs-col xs="12" sm="3" lg="2">
+            <vs-radio v-model="radio_option" val="bag" :disabled="isInputDisabled">
               Bag
             </vs-radio>
           </vs-col>
@@ -62,7 +67,7 @@
       </vs-row>
 
       <vs-row justify="space-between" class=" mt-2">
-        <unbagDetail ref="unbagDetail" :itemNumber="item_number" @resetInput="resetInput"></unbagDetail>
+        <unbagDetail ref="unbagDetail" :itemNumber="item_number" @resetInput="resetInput" @saveBagNumber="saveBagNumber"></unbagDetail>
       </vs-row>
     </section>
 
@@ -89,10 +94,16 @@ export default {
       title: "Open Bag",
       item_code: "",
       item_number: "",
+      bag_number: "",
       form: {},
       inputLabelPlaceholder: "Masukan code BAG",
       radio_option: "connote",
     };
+  },
+  computed: {
+    isInputDisabled() {
+      return this.bag_number !== '';
+    }
   },
   methods: {
     updateValue() {
@@ -135,6 +146,10 @@ export default {
     },
     resetInput(val) {
       this.inputLabelPlaceholder = "Masukan code BAG";
+      this.bag_number = "";
+    },
+    saveBagNumber(val) {
+      this.bag_number = val;
     }
   },
 };
