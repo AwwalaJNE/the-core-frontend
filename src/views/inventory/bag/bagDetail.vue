@@ -16,6 +16,15 @@
           </div>
         </div>
       </vs-col>
+      <vs-col xs="6" sm="3" lg="3">
+        <div style="position:relative;display:flex;justify-content: flex-end;">
+          <div style="width: 100px;padding-right: 5px;">
+            <vs-button flat block :active="true" @click="newBag">
+              <i class="bx bx-plus"></i> New
+            </vs-button>
+          </div>
+        </div>
+      </vs-col>
     </vs-row>
 
     <template v-if="isAllowed && !is_orion && !loading">
@@ -483,6 +492,9 @@ export default {
         }
       }
     },
+    newBag() {
+      this.$router.push('/inventory/bagging')
+    }
   },
   mounted() {
     this.getBagIdParam()
