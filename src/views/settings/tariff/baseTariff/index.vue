@@ -116,6 +116,7 @@ export default {
                     label: "Tariff amount 1 (Rp)",
                     key: "tariff_amount_1",
                     width: "auto",
+                    type_amount: true,
                     textAlign: "right"
                 },
                 {

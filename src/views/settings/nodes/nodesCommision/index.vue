@@ -113,12 +113,14 @@ export default {
                     label: "Amount 1 (Rp)",
                     key: "node_commision_amount1",
                     width: "auto",
+                    type_amount: true,
                     textAlign: "right"
                 },
                 {
                     label: "Amount 2 (Rp)",
                     key: "node_commision_amount2",
                     width: "auto",
+                    type_amount: true,
                     textAlign: "right"
                 },
             ],
