@@ -50,9 +50,9 @@ export default {
                   width: "xxs"
                 },
                 {
-                  label: "COD Value",
+                  label: "COD Value (Rp)",
                   key: "amount_cod",
-                  width: "xxs"
+                  width: "xs"
                 },
                 {
                   label: "Status",

@@ -60,7 +60,7 @@ export default {
           width: "xs",
         },
         {
-          label: "Total COD",
+          label: "Total COD (Rp)",
           key: "count_cod",
           width: "auto",
         },

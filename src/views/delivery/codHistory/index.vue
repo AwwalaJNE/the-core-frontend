@@ -106,7 +106,7 @@ export default {
           value: "courier_employee_name",
         },
         {
-          label: "COD Amount",
+          label: "COD Amount (Rp)",
           value: "amount_cod",
         },
         {

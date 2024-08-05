@@ -262,7 +262,7 @@ export default {
                 },
 
                 "Amount Cod":{
-                    "label":"Amount Cod",
+                    "label":"Amount Cod (Rp)",
                     "key":"amount_cod",
                     "width":"xs",
                     "type": "",

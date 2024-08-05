@@ -9,6 +9,7 @@
 
         <template v-slot:content>
             <div>
+                <p class="label-cod">Silakan masukan nominal COD yang diterima</p>
                 <vs-input
                     v-model="amount_cod"
                 />
@@ -123,3 +124,10 @@ export default {
     },
 }
 </script>
+<style>
+.label-cod{
+    text-align: start;
+    margin: 0;
+    font-size: 12px;
+}
+</style>

@@ -134,7 +134,7 @@ export default {
         },
 
         {
-          label: "COD",
+          label: "COD (Rp)",
           key: "amount_cod",
           width: "auto",
         },

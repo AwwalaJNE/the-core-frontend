@@ -112,7 +112,7 @@ export default {
           value: "hrs",
         },
         {
-          label: "Total Cod",
+          label: "Total COD (Rp)",
           value: "count_cod",
         },
       ],
