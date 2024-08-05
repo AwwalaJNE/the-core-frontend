@@ -459,7 +459,7 @@
                 <template v-else>
                   <vs-td
                     :key="key"
-                    :class="column.width ? column.width : ''"
+                    :class="[column.textAlign ? column.textAlign : '', item.width ? item.width : '']"
                     class="manual-padding"
                   >
                     <template
@@ -556,7 +556,12 @@
                       <span v-else>{{ item[column.key] }}</span>
                     </template>
                     <template v-else>
-                      {{ item[column.key] ? item[column.key] : "" }}
+                      {{ item[column.key] 
+                          ?  !isNaN(item[column.key])
+                              ? Intl.NumberFormat('en-GB').format(item[column.key])
+                              : item[column.key]
+                          : "" 
+                      }}
                     </template>
                   </vs-td>
                 </template>
@@ -1382,6 +1387,9 @@ export default {
     }
     .xxs {
       width: calc(100% / 12) !important;
+    }
+    .right {
+      text-align: right !important;               
     }
     .auto {
       width: auto;
