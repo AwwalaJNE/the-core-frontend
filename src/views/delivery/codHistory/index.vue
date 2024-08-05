@@ -108,6 +108,7 @@ export default {
         {
           label: "COD Amount (Rp)",
           value: "amount_cod",
+          textAlign: "right"
         },
         {
           label: "Collected By",

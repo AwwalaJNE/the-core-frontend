@@ -114,6 +114,7 @@ export default {
         {
           label: "Total COD (Rp)",
           value: "count_cod",
+          textAlign: "right"
         },
       ],
       dialogCodCollect: false,

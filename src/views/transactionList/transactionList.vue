@@ -60,7 +60,8 @@ export default {
                 {
                     label: "Total Amount (Rp)",
                     key: "transaction_amount",
-                    width: "auto"
+                    width: "xxs",
+                    textAlign: "right"
                 },
                 {
                     label: "User",

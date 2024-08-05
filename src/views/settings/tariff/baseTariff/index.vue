@@ -115,7 +115,8 @@ export default {
                 {
                     label: "Tariff amount 1 (Rp)",
                     key: "tariff_amount_1",
-                    width: "auto"
+                    width: "auto",
+                    textAlign: "right"
                 },
                 {
                     label: "Tariff Customer Code",
@@ -154,8 +155,8 @@ export default {
                     value: "tariff_service_code"
                 },
                 {
-                    label: "Tariff amount 1 (Rp)",
-                    value: "tariff_amount_1"
+                    label: "Tariff amount 1",
+                    value: "tariff_amount_1",
                 },
                 {
                     label: "Tariff Customer Code",

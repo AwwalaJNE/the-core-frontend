@@ -71,7 +71,8 @@ export default {
                 {
                     label: "Tariff amount 1 (Rp)",
                     key: "tariff_amount_1",
-                    width: "auto"
+                    width: "auto",
+                    textAlign: "right"
                 },
             ],
             loading: false,
