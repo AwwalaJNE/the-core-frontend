@@ -499,11 +499,27 @@ export default {
   },
   mounted() {
     this.getStatus();
+    this.setFocus();
   },
   methods: {
     // refresh() {
     //   this.$refs.runsheetInformation.refresh(); // trigger function refresh form dari luar component list
     // },
+    setFocus() {
+    this.$nextTick(() => {
+      let inputElement = null;
+
+      if (this.radio_option === 'bag' || this.radio_option === 'connote') {
+        inputElement = this.$refs.formInputConnoteOrion?.$el.querySelector('input');
+      } else if (this.radio_option === 'koli') {
+        inputElement = this.$refs.formInputConnote?.$el.querySelector('input');
+      }
+
+      if (inputElement) {
+        inputElement.focus();
+      }
+    });
+  },
     reload() {
       this.getDataDelivery();
     },
@@ -625,7 +641,6 @@ export default {
         })
     },
     async scanBagPraRunsheet(postData) {
-      this.loadingRunsheet = true;
       if (postData) {
         this.form = postData
       }
@@ -693,7 +708,6 @@ export default {
       this.openDialogReCheckConnoteZone = false;
     },
     async scanConnote(postData) {
-      this.loadingRunsheet = true;
       if (postData) {
         this.form = postData
       }
@@ -713,7 +727,7 @@ export default {
         });
     },
     async addConnoteToRunsheet(form) {
-      console.log("INII", form)
+      this.loadingRunsheet = true;
       await axios
         .post(
           `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}`,
@@ -737,7 +751,8 @@ export default {
             this.getDataDelivery();
             this.openNotification(null, "Success", "Update success");
             this.loadingRunsheet = false;
-            this.clearInputs()
+            this.clearInputs();
+            this.setFocus();
           } else {
             this.getDataDelivery();
             this.openNotification(null, "Success", res.data.message);
@@ -751,6 +766,7 @@ export default {
         });
     },
     async addBagPraRunsheetToRunsheet(form) {
+      this.loadingRunsheet = true;
       await axios
         .post(
           `${this.URL.employee}/${this.employee_id}/delivery/bag-pra?n=${this.listenNodeId}`,
@@ -775,7 +791,9 @@ export default {
             this.openNotification(null, "Success", "Update success");
             this.loadingRunsheet = false;
             this.clearInputs()
+            this.setFocus();
           } else {
+            this.loadingRunsheet = false;
             this.getDataDelivery();
             this.openNotification(null, "Success", res.data.message);
             this.loadingRunsheet = false;
@@ -1168,7 +1186,9 @@ export default {
       if (this.radio_option == 'bag') {
         this.getDataDelivery(val);
       }
-    }
+
+      this.setFocus();      
+    },
   }
 };
 </script>
