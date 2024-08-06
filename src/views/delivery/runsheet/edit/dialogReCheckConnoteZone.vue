@@ -134,7 +134,6 @@ export default {
     },
     data() {
         return {
-            loading: true,
             tokenCopied: null,
             confirmModalActive: false,
         }
