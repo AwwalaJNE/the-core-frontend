@@ -28,7 +28,7 @@
           </vs-col>
           <vs-col xs="12" sm="3" lg="2">
             <vs-radio v-model="radio_option" val="bag" :disabled="isInputDisabled">
-              Bag
+              Masterbag
             </vs-radio>
           </vs-col>
         </vs-row>
