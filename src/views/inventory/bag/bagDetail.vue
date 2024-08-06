@@ -303,6 +303,13 @@ export default {
       return this.$ls.get('getDataBag')
     }
   },
+  watch: {
+    radio_option(old, val) {
+      if (old !== val) {
+        this.setInputFocus()
+      }
+    }
+  },
   methods: {
     getResponse(data, loading) {
       
@@ -498,11 +505,20 @@ export default {
     setInputFocus() {
       this.$nextTick(() => {
         setTimeout(() => {
-          const inputElement = this.$refs.formInputBaggingConnote?.$el.querySelector('input');
+          let inputElement = null
+          if (this.radio_option === "connote") {
+            inputElement = this.$refs.formInputBaggingConnote?.$el.querySelector('input');
+          }
+          else if (this.radio_option === "koli") {
+            inputElement = this.$refs.formInputBaggingKoli?.$el.querySelector('input');
+          }
+          else if (this.radio_option === "bag") {
+            inputElement = this.$refs.formInputBaggingBag?.$el.querySelector('input');
+          }
           if (inputElement) {
             inputElement.focus();
           }
-        }, 1000);
+        }, 500);
       });
     }
   },
