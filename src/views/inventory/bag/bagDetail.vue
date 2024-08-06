@@ -61,8 +61,8 @@
           <template v-if="isAllowed && !is_orion && !loading">
             <div v-if="radio_option === 'connote'" class="center in-get-bag">
               <vs-input border type="text" v-model="item_code_orion" label-placeholder="Masukkan Connote (Orion)"
-                v-on:keyup.enter="updateItemOnBagOrion" icon-after :autofocus="true" ref="formInputBagging"
-                @click-icon="$refs.cameraScanner.open('formInputBagging')">
+                v-on:keyup.enter="updateItemOnBagOrion" icon-after :autofocus="true" ref="formInputBaggingConnote"
+                @click-icon="$refs.cameraScanner.open('formInputBaggingConnote')">
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
                 </template>
@@ -71,8 +71,8 @@
             </div>
             <div v-if="radio_option === 'koli'" class="center in-get-bag">
               <vs-input border type="text" v-model="item_code" label-placeholder="Masukkan code Koli"
-                v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBagging"
-                @click-icon="$refs.cameraScanner.open('formInputBagging')">
+                v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBaggingKoli"
+                @click-icon="$refs.cameraScanner.open('formInputBaggingKoli')">
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
                 </template>
@@ -80,8 +80,8 @@
             </div>
             <div v-if="radio_option === 'bag'" class="center in-get-bag">
               <vs-input border type="text" v-model="item_code" label-placeholder="Masukkan code Bag"
-                v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBagging"
-                @click-icon="$refs.cameraScanner.open('formInputBagging')">
+                v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBaggingBag"
+                @click-icon="$refs.cameraScanner.open('formInputBaggingBag')">
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
                 </template>
@@ -482,7 +482,7 @@ export default {
         window.open(routeData.href, '_blank');
     },
     onCameraScannerGetData(data) {
-      if (data && data.event === "result" && data.namespace === "formInputBagging") {
+      if (data && data.event === "result" && (data.namespace === "formInputBagging" || data.namespace === "formInputBaggingConnote" || data.namespace === "formInputBaggingKoli" || data.namespace === "formInputBaggingBag")) {
         this.item_code = data.data.text;
         if (this.radio_option === "connote") {
           this.item_code_orion = this.item_code;
@@ -494,11 +494,22 @@ export default {
     },
     newBag() {
       this.$router.push('/inventory/bagging')
+    },
+    setInputFocus() {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          const inputElement = this.$refs.formInputBaggingConnote?.$el.querySelector('input');
+          if (inputElement) {
+            inputElement.focus();
+          }
+        }, 1000);
+      });
     }
   },
   mounted() {
     this.getBagIdParam()
     this.getIsPraRunsheet()
+    this.setInputFocus()
     // this.getNodeLink()
   }
 }
