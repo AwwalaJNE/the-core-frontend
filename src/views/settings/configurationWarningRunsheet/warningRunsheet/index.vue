@@ -26,7 +26,7 @@
 
         <dialog-confirm
             title="Remove Configuration Warning Runsheet"
-            message="Are you sure you want to remove this configuration warning runsheet?"
+            :message="`Are you sure you want to remove this configuration warning runsheet with id ${this.id}?`"
             :active="activeDialogConfirmRemove"
             :loading="loadingConfirmRemove"
             :closeDialog="closeDialogConfirmRemove"

@@ -64,7 +64,7 @@
 
         <dialog-confirm
             title="Remove SLA Node To Node A"
-            message="Are you sure you want to remove this sla node to node A?"
+            :message="`Are you sure you want to remove this sla node to node A with id ${this.id}?`"
             :active="activeDialogConfirmRemove"
             :loading="loadingConfirmRemove"
             :closeDialog="closeDialogConfirmRemove"

@@ -62,7 +62,7 @@
 
         <dialog-confirm
             title="Remove User"
-            message="Are you sure you want to remove this user?"
+            :message="`Are you sure you want to remove this user with id ${this.id}?`"
             :active="activeDialogConfirmRemove"
             :loading="loadingConfirmRemove"
             :closeDialog="closeDialogConfirmRemove"

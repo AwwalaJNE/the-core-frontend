@@ -110,7 +110,7 @@
 
         <dialog-confirm
             title="Remove SLA Inter Activity"
-            message="Are you sure you want to remove this sla inter activity?"
+            :message="`Are you sure you want to remove this sla inter activity with id ${this.id}?`"
             :active="activeDialogConfirmRemove"
             :loading="loadingConfirmRemove"
             :closeDialog="closeDialogConfirmRemove"

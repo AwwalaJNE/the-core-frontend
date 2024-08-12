@@ -64,7 +64,7 @@
 
         <dialog-confirm
             title="Remove SLA Koli"
-            message="Are you sure you want to remove this sla koli?"
+            :message="`Are you sure you want to remove this sla koli with id ${this.id}?`"
             :active="activeDialogConfirmRemove"
             :loading="loadingConfirmRemove"
             :closeDialog="closeDialogConfirmRemove"
