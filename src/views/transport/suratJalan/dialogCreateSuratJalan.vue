@@ -191,11 +191,11 @@ export default {
       destinationUnlock: "",
       manifest_lov_list: [
         {
-          label: "All",
+          label: "Multi Destination",
           value: "ALL",
         },
         {
-          label: "SAME DESTINATION",
+          label: "Same Destination",
           value: "SAME DESTINATION",
         },
       ],

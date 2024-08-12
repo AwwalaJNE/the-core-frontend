@@ -418,7 +418,8 @@ export default {
           searchTerm: '',
           timeout: null,
           links: [],
-          is_pra_runsheet: false
+          is_pra_runsheet: false,
+          routing_type: '',
       }
   },
   computed: {
@@ -456,10 +457,16 @@ export default {
     async getNodeLink() {
       if (this.regional !== 'intracity' && this.regional !== '') {
       this.loading = true
+
+      if (this.regional == "all_routing") {
+        this.routing_type = ""
+      } else {
+        this.routing_type = (this.regional).toUpperCase()
+      }
       
       await axios
           .get(this.URL.node +
-              `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+              `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&routing_type=${this.routing_type}&sort_order=desc&&limit=1000&page=1&s=`,
               this.Helper.header())
           .then(res => {
               let arr = []
