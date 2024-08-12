@@ -43,7 +43,7 @@
             <vs-col xs="6" sm="3" lg="3">
               <form @submit.prevent="getDataSuratMuatan">
                 <input-general
-                  name="Scan Surat Muatan / Bag"
+                  name="Scan Surat Muatan / Masterbag / Bag"
                   rules=""
                   formKey="scanBag"
                   :valueData="suratMuatan"
