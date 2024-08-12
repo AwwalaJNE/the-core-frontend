@@ -162,6 +162,10 @@ import DashboardSmartPoint from "@/views/dashboard/smartpoint"
 
 // === Resync Runsheet ===
 import ResyncRunsheet from "@/views/admin/resyncRunsheet"
+
+// === Help ===
+import Help from "@/views/help"
+
 // === blank ===
 import BlankPage from "@/views/example/blank"
 
@@ -771,15 +775,24 @@ const routes = [
           breadCrumb: "Dashboard"
         }
       },
-        {
-            path: "/resync/runsheet",
-            name: "ResyncRunsheet",
-            component: ResyncRunsheet,
-            meta: {
-                requiresAuth: true,
-                breadCrumb: "Admin"
-            }
-        },
+      {
+          path: "/resync/runsheet",
+          name: "ResyncRunsheet",
+          component: ResyncRunsheet,
+          meta: {
+              requiresAuth: true,
+              breadCrumb: "Admin"
+          }
+      },
+      {
+        path: "/help",
+        name: "Help",
+        component: Help,
+        meta: {
+            requiresAuth: true,
+            breadCrumb: "Help / Error Dictionary"
+        }
+      },
     ],
     meta: {
       requiresAuth: true,
