@@ -40,20 +40,31 @@
         @actionPagination="actionPagination"
         />
 
-            <dialog-create-edit-node
+        <dialog-create-edit-node
             :active="dialogNode" 
             :closeDialog="closeDialogNode"
             @refresh="refresh"
             btnBlue="Edit"
             title="Edit node"
             :dataItem="dataItem"
-            />
+        />
+
+        <dialog-confirm
+            title="Remove Node"
+            :message="`Are you sure you want to remove this node with id ${this.id}?`"
+            :active="activeDialogConfirmRemove"
+            :loading="loadingConfirmRemove"
+            :closeDialog="closeDialogConfirmRemove"
+            @confirm="confirmRemove"
+            @cancel="closeDialogConfirmRemove"
+        />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogCreateEditNode from "@/views/settings/nodes/nodes/dialogCreateEditNode"
 import SelectSearchBy from "@/components/search/selectSearchBy"
 import SearchInput from "@/components/search/searchInput"
@@ -70,7 +81,8 @@ export default {
         "dialog-create-edit-node": DialogCreateEditNode,
         "select-search-by": SelectSearchBy,
         "search-input": SearchInput,
-        "date-time": DateTime
+        "date-time": DateTime,
+        "dialog-confirm": DialogConfirm,
     },
     data() {
         return {
@@ -148,7 +160,11 @@ export default {
                 label: 'Created Date',
                 value: 'create'
               }
-            ]
+            ],
+            id: '',
+            dialogConfigurationWarningRunsheet: false,
+            activeDialogConfirmRemove: false,
+            loadingConfirmRemove:false,
         }
     },
     watch: {
@@ -205,20 +221,6 @@ export default {
                 });
             }
         },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.node + `/${val.node_id}?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-
-                    this.refresh()
-                    this.openNotification(null, 'Success', 'Delete node is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Delete node is failed', err)
-                })
-        },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
@@ -257,6 +259,35 @@ export default {
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
+        },
+        actionRemove(val){
+            this.id = val.node_id;
+            this.activeDialogConfirmRemove = true
+        },
+        confirmRemove() {
+            this.loadingConfirmRemove=true
+            this.removeData()
+        },
+        async removeData(){
+            await axios
+                .delete(
+                    this.URL.node + `/${this.id}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    this.closeDialogConfirmRemove()
+                    this.loadingConfirmRemove = false
+                    this.refresh()
+                    this.openNotification(null, 'Success', 'Delete node is success')
+                }).catch(err => {
+                    this.loadingConfirmRemove = false
+                    this.closeDialogConfirmRemove()
+                    this.loading = false
+                    this.openNotification('danger', 'Delete node is failed', err)
+                })
+        },
+        closeDialogConfirmRemove(){
+            this.activeDialogConfirmRemove = false
+            this.loadingConfirmRemove=false
         },
     },
     mounted() {
