@@ -255,8 +255,8 @@ export default {
               permission: "read-runsheet",
             },
             {
-              label: "Cod",
-              url: "/delivery/cod_collect",
+              label: "SCO",
+              url: "/sco",
               icon: "",
               permission: "read-cod",
             },

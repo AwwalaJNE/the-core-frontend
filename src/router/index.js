@@ -700,12 +700,12 @@ const routes = [
         }
       },
       {
-        path: "/delivery/cod_collect",
-        name: "delivery-cod",
+        path: "/sco",
+        name: "delivery-sco",
         component: DeliveryCod,
         meta: {
           requiresAuth: true,
-          breadCrumb: "COD Collect"
+          breadCrumb: "SCO"
         }
       },
       {
