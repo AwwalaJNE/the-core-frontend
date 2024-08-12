@@ -84,7 +84,7 @@ export default {
   },
   data() {
     return {
-      title: "COD Collect",
+      title: "SCO",
       tempSearch: "",
       tempDate: [],
       DataNode: [],

@@ -255,14 +255,14 @@ export default {
               permission: "read-runsheet",
             },
             {
-              label: "Cod",
-              url: "/delivery/cod_collect",
+              label: "SCO",
+              url: "/sco",
               icon: "",
               permission: "read-cod",
             },
             {
-              label: "Undelivery",
-              url: "/undelivered",
+              label: "Handover Runsheet",
+              url: "/hrs",
               icon: "",
               permission: "read-undelivery",
             },
