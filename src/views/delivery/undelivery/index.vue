@@ -15,7 +15,7 @@
                     @click="finishReceiving"
                     :disabled="!isFinishReceivingButtonVisible"
                 >
-                  Finish Receiving Runsheet
+                  Finish HRS
                 </vs-button>
               </div>
             </vs-col>
@@ -200,7 +200,7 @@ export default {
     data() {
         return {
             radio_option: "connote",
-            title:"Undelivered Receiving",
+            title:"Handover Runsheet",
             tempSearch: "",
             tempDate: [],
             dialogPickupRequest:false,

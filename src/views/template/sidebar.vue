@@ -261,8 +261,8 @@ export default {
               permission: "read-cod",
             },
             {
-              label: "Undelivery",
-              url: "/undelivered",
+              label: "Handover Runsheet",
+              url: "/hrs",
               icon: "",
               permission: "read-undelivery",
             },

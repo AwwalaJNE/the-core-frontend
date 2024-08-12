@@ -709,12 +709,12 @@ const routes = [
         }
       },
       {
-        path: "/undelivered",
-        name: "delivery-undelivery",
+        path: "/hrs",
+        name: "handover-runsheet",
         component: DeliveryUndelivery,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Undelivery / Undelivery Receiving"
+          breadCrumb: "HRS / Handover Runsheet"
         }
       },
       {
