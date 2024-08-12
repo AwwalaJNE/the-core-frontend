@@ -12,6 +12,15 @@
     <template v-slot:content>
       <div>
         <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
+        <div class="nomor-sj" v-if="dataItem">
+          <input-general
+            name="No Surat Jalan"
+            :valueData="dataItem.manifest_do_number"
+            :typeInput="`text`"
+            :disabled="true"
+          >
+          </input-general>
+        </div>
 
         <!-- <pre>{{listenDataItem}}</pre> -->
         <form-input-controller
@@ -34,7 +43,7 @@
             <vs-col xs="6" sm="3" lg="3">
               <form @submit.prevent="getDataSuratMuatan">
                 <input-general
-                  name="Scan Surat Muatan / Bag / Koli"
+                  name="Scan Surat Muatan / Bag"
                   rules=""
                   formKey="scanBag"
                   :valueData="suratMuatan"
@@ -542,7 +551,7 @@ export default {
             let arr = [];
             res.data.data.map((item) => {
               let obj = {};
-              obj["label"] = item.node_name;
+              obj["label"] = item.node_name + " (" + item.node_code + ")";
               obj["value"] = item.node_id;
               obj["item"] = item;
 
@@ -776,5 +785,8 @@ export default {
   cursor: pointer;
   color: red;
   margin: 10px 0;
+} 
+.nomor-sj {
+  width: inherit;
 }
 </style>
