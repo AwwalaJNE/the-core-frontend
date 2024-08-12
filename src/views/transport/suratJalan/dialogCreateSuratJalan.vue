@@ -12,7 +12,7 @@
     <template v-slot:content>
       <div>
         <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
-        <div v-if="dataItem">
+        <div class="nomor-sj" v-if="dataItem">
           <input-general
             name="No Surat Jalan"
             :valueData="dataItem.manifest_do_number"
@@ -785,5 +785,8 @@ export default {
   cursor: pointer;
   color: red;
   margin: 10px 0;
+} 
+.nomor-sj {
+  width: inherit;
 }
 </style>
