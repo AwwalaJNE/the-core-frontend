@@ -4,7 +4,7 @@
           <vs-col xs="6" sm="4" lg="4">
               <div class="titlePage">
                   <breadcrumb />
-                  <h2>{{title}}</h2>
+                  <h2>{{ listenTitle }}</h2>
               </div>
           </vs-col>
       </vs-row>
@@ -242,7 +242,6 @@ export default {
   },
   data() {
       return {
-          title: "Create Bag",
           item_code:'',
           item_code_orion:  '',
           form:{},
@@ -435,30 +434,16 @@ export default {
       const isPermissions = permissions.includes('read-all-service');
       return isPermissions ? this.serviceArrayNew : this.serviceArrayNew.filter(item => item.value !== 'ALL_SERVICE');
     },
-  },
-  watch: {
-    is_pra_runsheet(val) {
-      if (val !== undefined) {
-        if (val) {
-          this.title = "Create Bag Prarunsheet"
-        }
-        else {
-          if (this.radio_option === "bag") {
-            this.title = "Create Masterbag"
-          }
-          else {
-            this.title = "Create Bag"
-          }
-        }
+    listenTitle() {
+      if (this.is_pra_runsheet) {
+        return "Create Bag Prarunsheet"
       }
-    },
-    radio_option(val) {
-      if (val !== undefined && !this.is_pra_runsheet) {
-        if (val === "connote" || val === "koli") {
-          this.title = "Create Bag"
+      else {
+        if (this.radio_option === "connote" || this.radio_option === "koli") {
+          return "Create Bag"
         }
-        else if (val === "bag" ) {
-          this.title = "Create Masterbag"
+        else if (this.radio_option === "bag") {
+          return "Create Masterbag"
         }
       }
     }
