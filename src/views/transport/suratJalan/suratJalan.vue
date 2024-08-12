@@ -75,7 +75,7 @@ export default {
               {
                 label: "Orion Number",
                 key: "orion_number",
-                width: "sm"
+                width: "xs"
               },
               {
                 label: "Vehicle Type",
@@ -90,7 +90,7 @@ export default {
               {
                 label: "Mode#",
                 key: "vehicle_mode_name",
-                width: "xs"
+                width: "auto"
               },
               {
                 label: "Origin",
@@ -125,7 +125,7 @@ export default {
               {
                 label: "Status",
                 key: "status",
-                width: "xs"
+                width: "xxs"
               },
             ],
             customActionList: [
