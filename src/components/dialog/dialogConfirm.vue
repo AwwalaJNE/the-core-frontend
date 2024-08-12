@@ -17,7 +17,7 @@
 
         <template v-slot:footer>
             <vs-row justify="flex-end">
-                <!-- <vs-col w="3">
+                <vs-col w="3">
                     <vs-button
                     transparent
                     block
@@ -28,7 +28,7 @@
                     >
                         Cancel
                     </vs-button>
-                </vs-col> -->
+                </vs-col>
                 <vs-col w="3">
                     <vs-button
                     transparent
@@ -38,7 +38,7 @@
                     type="submit"
                     @click="confirm"
                     >
-                        Ok
+                        Okay
                     </vs-button>
                 </vs-col>
             </vs-row>
