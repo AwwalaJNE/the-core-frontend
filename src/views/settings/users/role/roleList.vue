@@ -56,12 +56,23 @@
             title="Edit role"
             :dataItem="dataItem"
             />
+
+        <dialog-confirm
+            title="Remove User"
+            message="Are you sure you want to remove this user?"
+            :active="activeDialogConfirmRemove"
+            :loading="loadingConfirmRemove"
+            :closeDialog="closeDialogConfirmRemove"
+            @confirm="confirmRemove"
+            @cancel="closeDialogConfirmRemove"
+        />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogCreateEditRole from "@/views/settings/users/role/dialogCreateEditRole"
 import SelectSearchBy from "@/components/search/selectSearchBy"
 import SearchInput from "@/components/search/searchInput"
@@ -78,7 +89,8 @@ export default {
         "dialog-create-edit-role": DialogCreateEditRole,
         "select-search-by": SelectSearchBy,
         "search-input": SearchInput,
-        "date-time": DateTime
+        "date-time": DateTime,
+        "dialog-confirm": DialogConfirm,
     },
     watch: {
         query: function(val, old) {
@@ -142,7 +154,11 @@ export default {
                 label: 'Created Date',
                 value: 'create'
               }
-            ]
+            ],
+            id: '',
+            dialogConfigurationWarningRunsheet: false,
+            activeDialogConfirmRemove: false,
+            loadingConfirmRemove:false,
         }
     },
     methods: {
@@ -192,21 +208,6 @@ export default {
                 });
             }
         },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.role + `/${val.user_role_id}?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-
-                    this.refresh()
-                    this.openNotification(null, 'Success', 'Delete role is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.checkAuth(err.response)
-                    this.openNotification('danger', 'Delete role is failed', err)
-                })
-        },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
@@ -243,6 +244,36 @@ export default {
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
+        },
+        actionRemove(val){
+            this.id = val.user_role_id;
+            this.activeDialogConfirmRemove = true
+        },
+        confirmRemove() {
+            this.loadingConfirmRemove=true
+            this.removeData()
+        },
+        async removeData(){
+            await axios
+                .delete(
+                    this.URL.role + `/${this.id}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    this.closeDialogConfirmRemove()
+                    this.loadingConfirmRemove = false
+                    this.refresh()
+                    this.openNotification(null, 'Success', 'Delete role is success')
+                }).catch(err => {
+                    this.loadingConfirmRemove = false
+                    this.closeDialogConfirmRemove()
+                    this.loading = false
+                    this.checkAuth(err.response)
+                    this.openNotification('danger', 'Delete role is failed', err.response.data.message)
+                })
+        },
+        closeDialogConfirmRemove(){
+            this.activeDialogConfirmRemove = false
+            this.loadingConfirmRemove=false
         },
     },
     mounted() {
