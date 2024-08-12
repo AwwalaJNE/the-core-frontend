@@ -143,6 +143,10 @@ export default {
           value: 'create'
         },
         {
+          label: 'Departed Time',
+          value: 'departed_time'
+        },
+        {
           label: 'ETD',
           value: 'etd'
         },
