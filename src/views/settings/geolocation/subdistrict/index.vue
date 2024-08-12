@@ -49,12 +49,23 @@
             title="Edit district"
             :dataItem="dataItem"
             />
+        
+        <dialog-confirm
+            title="Remove Geolocation Subdistrict"
+            :message="`Are you sure you want to remove this geolocation subdistrict with id ${this.id}?`"
+            :active="activeDialogConfirmRemove"
+            :loading="loadingConfirmRemove"
+            :closeDialog="closeDialogConfirmRemove"
+            @confirm="confirmRemove"
+            @cancel="closeDialogConfirmRemove"
+        />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogCreateEditSubDistrict from "@/views/settings/geolocation/subdistrict/dialogCreateEditSubDistrict"
 import SelectSearchBy from "@/components/search/selectSearchBy"
 import SearchInput from "@/components/search/searchInput"
@@ -72,6 +83,7 @@ export default {
         "select-search-by": SelectSearchBy,
         "search-input": SearchInput,
         "date-time": DateTime,
+        "dialog-confirm": DialogConfirm,
     },
     data() {
         return {
@@ -162,7 +174,11 @@ export default {
                 label: 'Created Date',
                 value: 'create'
               }
-            ]
+            ],
+            id: '',
+            dialogConfigurationWarningRunsheet: false,
+            activeDialogConfirmRemove: false,
+            loadingConfirmRemove:false,
         }
     },
     watch: {
@@ -223,20 +239,6 @@ export default {
                 });
             }
         },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.geolocation_subdistrict + `/${val.geolocation_subdistrict_id}?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-
-                    this.refresh()
-                    this.openNotification(null, 'Delete success', 'Delete subdistrict is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
-                })
-        },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
@@ -274,6 +276,35 @@ export default {
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
+        },
+        actionRemove(val){
+            this.id = val.geolocation_subdistrict_id;
+            this.activeDialogConfirmRemove = true
+        },
+        confirmRemove() {
+            this.loadingConfirmRemove=true
+            this.removeData()
+        },
+        async removeData(){
+            await axios
+                .delete(
+                    this.URL.geolocation_subdistrict + `/${this.id}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    this.closeDialogConfirmRemove()
+                    this.loadingConfirmRemove = false
+                    this.refresh()
+                    this.openNotification(null, 'Delete success', 'Delete subdistrict is success')
+                }).catch(err => {
+                    this.loadingConfirmRemove = false
+                    this.closeDialogConfirmRemove()
+                    this.loading = false
+                    this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+        },
+        closeDialogConfirmRemove(){
+            this.activeDialogConfirmRemove = false
+            this.loadingConfirmRemove=false
         },
     },
     mounted() {
