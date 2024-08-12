@@ -454,6 +454,12 @@ export default {
             },
           ],
         },
+        {
+          label: "Help",
+          url: "/help",
+          icon: "bx-help-circle",
+          children: [],
+        },
       ],
     };
   },

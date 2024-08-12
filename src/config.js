@@ -220,5 +220,8 @@ export default {
     check_delivery_area : api + 'check-delivery-area',
 
     // Delivery Area
-    node_delivery_area : api + 'node-delivery-area'
+    node_delivery_area : api + 'node-delivery-area',
+
+    // Documentation
+    documentation: api + 'documentation'
 }
