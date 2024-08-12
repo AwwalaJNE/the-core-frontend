@@ -75,12 +75,12 @@ export default {
               {
                 label: "Orion Number",
                 key: "orion_number",
-                width: "auto"
+                width: "sm"
               },
               {
                 label: "Vehicle Type",
                 key: "vehicle_type_name",
-                width: "auto"
+                width: "xs"
               },
               {
                 label: "Driver",
@@ -90,7 +90,7 @@ export default {
               {
                 label: "Mode#",
                 key: "vehicle_mode_name",
-                width: "auto"
+                width: "xs"
               },
               {
                 label: "Origin",
@@ -110,17 +110,22 @@ export default {
               {
                 label: "ETD",
                 key: "etd",
-                width: "sm"
+                width: "xs"
               },
               {
                 label: "ETA",
                 key: "eta",
-                width: "sm"
+                width: "xs"
+              },
+              {
+                label: "Departed Time",
+                key: "departed_time",
+                width: "xs"
               },
               {
                 label: "Status",
                 key: "status",
-                width: "auto"
+                width: "xs"
               },
             ],
             customActionList: [
