@@ -245,7 +245,7 @@
               <li>
                 User :
                 {{
-                  listenActiveUser ? listenActiveUser.user_login : ""
+                  listenActiveUser ? `${listenActiveUser.user_login} (${listenActiveUser.user_id})` : ""
                 }}
               </li>
               <!-- <li>Date : {{ dataDelivery.delivery[0].date }}</li> -->
