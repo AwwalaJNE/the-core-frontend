@@ -45,13 +45,24 @@
             @refresh="refresh"
             title="Edit Vehicle Mode"
             :dataItem="dataItem"
-            />
+        />
+
+        <dialog-confirm
+            title="Remove Vehicle Mode"
+            :message="`Are you sure you want to remove this vehicle mode with id ${this.id}?`"
+            :active="activeDialogConfirmRemove"
+            :loading="loadingConfirmRemove"
+            :closeDialog="closeDialogConfirmRemove"
+            @confirm="confirmRemove"
+            @cancel="closeDialogConfirmRemove"
+        />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import dialogCreateEditVehicleMode from "@/views/settings/vehicles/vehicleMode/dialogCreateEditVehicleMode"
 import SelectSearchBy from "@/components/search/selectSearchBy"
 import SearchInput from "@/components/search/searchInput"
@@ -70,6 +81,7 @@ export default {
         "select-search-by": SelectSearchBy,
         "search-input": SearchInput,
         "date-time": DateTime,
+        "dialog-confirm": DialogConfirm,
     },
     data() {
         return {
@@ -114,7 +126,11 @@ export default {
                 label: 'Created Date',
                 value: 'create'
               }
-            ]
+            ],
+            id: '',
+            dialogConfigurationWarningRunsheet: false,
+            activeDialogConfirmRemove: false,
+            loadingConfirmRemove:false,
         }
     },
     watch: {
@@ -183,21 +199,6 @@ export default {
 
             }
         },
-        async actionRemove(val){
-            // this.confirmDialog = true
-            await axios
-                .delete(
-                    this.URL.vehicle_mode + `/${val.vehicle_mode_id}?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-
-                    this.refresh()
-                    this.openNotification(null, 'Delete success', 'Delete Vehicle mode is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
-                })
-        },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
@@ -235,6 +236,35 @@ export default {
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
+        },
+        actionRemove(val){
+            this.id = val.vehicle_mode_id;
+            this.activeDialogConfirmRemove = true
+        },
+        confirmRemove() {
+            this.loadingConfirmRemove=true
+            this.removeData()
+        },
+        async removeData(){
+            await axios
+                .delete(
+                    this.URL.vehicle_mode + `/${this.id}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    this.closeDialogConfirmRemove()
+                    this.loadingConfirmRemove = false
+                    this.refresh()
+                    this.openNotification(null, 'Delete success', 'Delete Vehicle mode is success')
+                }).catch(err => {
+                    this.loadingConfirmRemove = false
+                    this.closeDialogConfirmRemove()
+                    this.loading = false
+                    this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+        },
+        closeDialogConfirmRemove(){
+            this.activeDialogConfirmRemove = false
+            this.loadingConfirmRemove=false
         },
     },
     mounted() {
