@@ -61,12 +61,23 @@
             title="Edit SLA Koli"
             :dataItem="dataItem"
         />
+
+        <dialog-confirm
+            title="Remove SLA Node To Node A"
+            message="Are you sure you want to remove this sla node to node A?"
+            :active="activeDialogConfirmRemove"
+            :loading="loadingConfirmRemove"
+            :closeDialog="closeDialogConfirmRemove"
+            @confirm="confirmRemove"
+            @cancel="closeDialogConfirmRemove"
+        />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogCreateEditSla from "@/views/settings/sla/slaNodeToNodeA/dialogCreateEditSla"
 import SearchInput from "@/components/search/searchInput"
 import Inputan from "@/components/input/inputan"
@@ -85,6 +96,7 @@ export default {
         "search-input": SearchInput,
         "date-time": DateTime,
         "inputan": Inputan,
+        "dialog-confirm": DialogConfirm,
     },
     data() {
         return {
@@ -161,7 +173,11 @@ export default {
                     label: 'Inactive',
                     value: 'false'
                 }
-            ]
+            ],
+            id: '',
+            dialogConfigurationWarningRunsheet: false,
+            activeDialogConfirmRemove: false,
+            loadingConfirmRemove:false,
         }
     },
     computed: {
@@ -228,19 +244,6 @@ export default {
                 });
             }
         },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.sla_node_to_node_a + `/${val.sla_id}?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-                    this.refresh()
-                    this.openNotification(null, 'Success', 'Delete sla is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Delete sla is failed', err)
-                })
-        },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
@@ -274,7 +277,36 @@ export default {
         },
         updateFiterActivity(key, val){
             this.refresh()
-        },        
+        },
+        actionRemove(val){
+            this.id = val.sla_id;
+            this.activeDialogConfirmRemove = true
+        },
+        confirmRemove() {
+            this.loadingConfirmRemove=true
+            this.removeData()
+        },
+        async removeData(){
+            await axios
+                .delete(
+                    this.URL.sla_node_to_node_a + `/${this.id}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    this.closeDialogConfirmRemove()
+                    this.loadingConfirmRemove = false
+                    this.refresh()
+                    this.openNotification(null, 'Success', 'Delete sla is success')
+                }).catch(err => {
+                    this.loadingConfirmRemove = false
+                    this.closeDialogConfirmRemove()
+                    this.loading = false
+                    this.openNotification('danger', 'Delete sla is failed', err)
+                })
+        },
+        closeDialogConfirmRemove(){
+            this.activeDialogConfirmRemove = false
+            this.loadingConfirmRemove=false
+        }, 
     },
     mounted() {
         this.refresh()
