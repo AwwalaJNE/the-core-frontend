@@ -47,6 +47,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
+                    this.pagination.page = 1
                     this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
                 }
             }
@@ -55,7 +56,8 @@ export default {
           if(val !== undefined) {
             this.statusinventory = val
             if(this.statusinventory !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, val, this.startDate, this.endDate, this.querySearch, this.queryDate)
+                this.pagination.page = 1
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, val, this.startDate, this.endDate, this.querySearch, this.queryDate)
             }
           }
         },
@@ -77,11 +79,13 @@ export default {
                     this.startDate = from
                     this.endDate = to
                 }
+                this.pagination.page = 1
                 this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, from, to, this.querySearch, this.queryDate);
             }
             else {
                 this.startDate = ""
                 this.endDate = ""
+                this.pagination.page = 1
                 this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate);
             }
         },
@@ -89,7 +93,8 @@ export default {
           if(val !== undefined) {
             this.status_bag = val
             if(this.status_bag !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
+                this.pagination.page = 1
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
             }
           }
         },

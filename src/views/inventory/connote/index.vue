@@ -77,7 +77,7 @@
                             </vs-col>
                           </vs-row>
                             <transition name="slide-fade">
-                                <connote-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventorycnote" :queryBag="status_bag_cnote" :querySearch="searchBy" :queryDate="filterDateBy" />
+                                <connote-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventorycnote" :queryBag="status_bag_cnote" :querySearch="searchByCnote" :queryDate="filterDateBy" />
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-KOLI'">
