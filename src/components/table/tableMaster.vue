@@ -9,7 +9,7 @@
         - actionPagination | trigger get data lagi setelah ganti page pada pagination
     }
     - @props {
-        - width: String | 'md','sm','xs','xxs','auto'
+        - width: String | 'md','sm','xs','xxs', 'xxxs', 'auto'
         - dataTable: Array Object,
         - dataColumn: Array Object,
           [
@@ -1387,6 +1387,9 @@ export default {
     }
     .xxs {
       width: calc(100% / 12) !important;
+    }
+    .xxxs {
+      width: calc(100% / 14) !important;
     }
     .right {
       text-align: right !important;               

@@ -105,12 +105,12 @@ export default {
                 {
                     label: "Koli Number",
                     key: "koli_number",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Bag",
                     key: "bag_number",
-                    width: "auto"
+                    width: "xxxs"
                 },
                 {
                     label: "Created Date",
@@ -150,7 +150,7 @@ export default {
                 {
                     label: "Amount COD (Rp)",
                     key: "amount_cod",
-                    width: "xxs",
+                    width: "xxxs",
                     type_amount: true,
                     textAlign: "right"
                 },
