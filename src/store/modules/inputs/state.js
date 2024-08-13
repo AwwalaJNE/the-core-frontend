@@ -2020,9 +2020,9 @@ export default {
       valueData: null,
       value: ''
     },
-    user_id: {
-      label: "User Name*",
-      key: "user_id",
+    node_id: {
+      label: "Node Name*",
+      key: "node_id",
       rule: "required",
       typeInput: "multipleSelector",
       typeData: "String",

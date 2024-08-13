@@ -3471,16 +3471,16 @@ export default {
   },
 
 
-  SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID(state, payload) {
-    state.configuration_warning_runsheet.user_id.value = payload
+  SET_CONFIGURATION_WARNING_RUNSHEET_NODE_ID(state, payload) {
+    state.configuration_warning_runsheet.node_id.value = payload
   },
-  SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID_ValueData(state, payload) {
-    state.configuration_warning_runsheet.user_id.valueData = payload
+  SET_CONFIGURATION_WARNING_RUNSHEET_NODE_ID_ValueData(state, payload) {
+    state.configuration_warning_runsheet.node_id.valueData = payload
   },
-  SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID_ArrData(state, payload) {
-    state.configuration_warning_runsheet.user_id.hasOwnProperty('arrData') ?
-    state.configuration_warning_runsheet.user_id.arrData = payload :
-    state.configuration_warning_runsheet.user_id.arrData = []
+  SET_CONFIGURATION_WARNING_RUNSHEET_NODE_ID_ArrData(state, payload) {
+    state.configuration_warning_runsheet.node_id.hasOwnProperty('arrData') ?
+    state.configuration_warning_runsheet.node_id.arrData = payload :
+    state.configuration_warning_runsheet.node_id.arrData = []
   },
 
   //====== END CONFIGURATION WARNING RUNSHEET ======

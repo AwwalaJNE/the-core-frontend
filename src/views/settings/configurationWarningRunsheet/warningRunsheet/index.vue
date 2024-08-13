@@ -86,7 +86,7 @@ export default {
                 },
                 {
                     label: "Applied For",
-                    key: "user_name",
+                    key: "node_name",
                     width: "auto"
                 },
             ],
@@ -147,15 +147,15 @@ export default {
                     if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
                         this.dataTable.length > 0 && this.dataTable.map((item) => {
-                            item["user_name"] = item.users.map((user, index) => {
-                                const { user_name } = user || {};
+                            item["node_name"] = item.node.map((itm, index) => {
+                                const { node_name } = itm || {};
                                 let newline = "\n";
 
                                 if (index == 0) {
                                     newline = "";
                                 }
 
-                                return newline + '- ' + user_name;
+                                return newline + '- ' + node_name;
                             }).toString();
                         })
 
