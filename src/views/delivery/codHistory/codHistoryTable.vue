@@ -38,29 +38,29 @@ export default {
         {
           label: "Koli Number",
           key: "koli_number",
-          width: "xs",
+          width: "auto",
         },
         {
           label: "Date",
           key: "date_cod_collected",
-          width: "xs",
+          width: "md",
         },
         {
           label: "Courier",
           key: "courier_employee_name",
-          width: "xs",
+          width: "auto",
         },
         {
           label: "COD Amount (Rp)",
           key: "amount_cod",
-          width: "xxs",
+          width: "xxxs",
           type_amount: true,
-                    textAlign: "right"
+          textAlign: "right"
         },
         {
           label: "Collected By",
           key: "user_login",
-          width: "xs",
+          width: "md",
         },
       ],
       loading: false,
