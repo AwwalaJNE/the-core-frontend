@@ -123,7 +123,7 @@ export default {
                 },
                 {
                     label: "Applied For",
-                    value: "user"
+                    value: "node"
                 },
             ]
         }

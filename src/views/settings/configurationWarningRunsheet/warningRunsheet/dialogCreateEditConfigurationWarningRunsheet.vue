@@ -77,9 +77,9 @@ export default {
     data() {
         return {
             form: {},
-            loadingDataUserName: false,
+            loadingDataName: false,
             setting_id: "",
-            userNameArray: [],
+            nodeNameArray: [],
             referenceArray: [
                 {
                     label: "SHIPPER",
@@ -101,7 +101,7 @@ export default {
         listenActive(){
             if(this.active){
                 this.getDataReference()
-                this.getUrlUserName()
+                this.getUrlNodeName()
             }
             return this.active
         },
@@ -127,18 +127,18 @@ export default {
         async getDataDetail(val){
             this.setting_id = val.setting_id
 
-            let arr_user_id = []
+            let arr_node_id = []
             let arr = []
-            val.users.map(item => {
+            val.node.map(item => {
                 let obj = {}
-                obj["label"] = item.user_name
-                obj["value"] = item.user_id
+                obj["label"] = item.node_name
+                obj["value"] = item.node_id
 
                 arr.push(obj)
-                arr_user_id.push(item.user_id)
+                arr_node_id.push(item.node_id)
             })
-            this.$store.dispatch("SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID", arr_user_id)
-            this.$store.dispatch("SET_CONFIGURATION_WARNING_RUNSHEET_USER_ID_ArrData", arr)
+            this.$store.dispatch("SET_CONFIGURATION_WARNING_RUNSHEET_NODE_ID", arr_node_id)
+            this.$store.dispatch("SET_CONFIGURATION_WARNING_RUNSHEET_NODE_ID_ArrData", arr)
         },
         formData(form){
             const { setting_id, ...formWithoutId } = form;
@@ -161,8 +161,8 @@ export default {
         getDataReference(){
             this.$store.dispatch("SET_CONFIGURATION_WARNING_RUNSHEET_REFERENCE_ArrData", this.referenceArray)
         }, 
-        getUrlUserName(){
-            let url = this.URL.user +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+        getUrlNodeName(){
+            let url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
             this.autoCompleteUrl = url
         },
         async updateData(){
