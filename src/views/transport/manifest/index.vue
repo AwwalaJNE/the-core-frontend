@@ -21,18 +21,8 @@
     <section class="nodes">
       <div class="box view">
         <div class="nav-box">
-          <vs-row justify="space-between">
-            <vs-col xs="12" sm="12" lg="6" class="mb-15">
-              <vs-row>
-                <vs-col w="4">
-                  <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
-                </vs-col>
-                <vs-col w="8">
-                  <daterange-filter @searchDate="searchDate" size="small" />
-                </vs-col>
-              </vs-row>
-            </vs-col>
-            <vs-col xs="12" sm="12" lg="6" class="mb-15">
+          <vs-row justify="end">
+            <vs-col xs="12" sm="12" lg="6">
               <vs-row justify="end">
                 <vs-col xs="6" sm="8" lg="4">
                   <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
@@ -43,6 +33,44 @@
               </vs-row>
             </vs-col>
           </vs-row>
+          <vs-row justify="flex-start">
+            <vs-col xs="6" sm="4" lg="3">
+              <template>
+                <vs-select
+                  class="m-select"
+                  filter
+                  v-model="filterStatusBy"
+                  placeholder="Select status"
+                  :border="true"
+                  :multiple="true"
+                  @change="updateFiterActivity"
+                >
+                  <template>
+                    <vs-option
+                      v-for="(item,key) in filterStatus"
+                      :key="key"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                      {{item.label}}
+                    </vs-option>
+                  </template>
+                </vs-select>
+              </template>
+            </vs-col>
+            <vs-col xs="12" sm="12" lg="6" >
+              <vs-row>
+                <vs-col w="4">
+                  <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
+                </vs-col>
+                <vs-col w="8">
+                  <daterange-filter @searchDate="searchDate" size="small" />
+                </vs-col>
+              </vs-row>
+            </vs-col>            
+          </vs-row>
+          
+          
         </div>
         <template>
           <transition name="slide-fade">
@@ -52,6 +80,7 @@
               :query="tempSearch"
               :searchBy="searchBy"
               :filterDateBy="filterDateBy"
+              :status="filterStatusBy"
             />
           </transition>
         </template>
@@ -150,7 +179,30 @@ export default {
           label: 'ETA',
           value: 'eta'
         }
-      ]
+      ],
+      filterStatusBy: "",
+      filterStatus: [
+        {
+          label: 'READY',
+          value: 'READY'
+        },
+        {
+          label: 'CANCELED',
+          value: 'CANCELED'
+        },
+        {
+          label: 'DEPARTED',
+          value: 'DEPARTED'
+        },
+        {
+          label: 'RECEIVED',
+          value: 'RECEIVED'
+        },
+        {
+          label: 'INFO',
+          value: 'INFO'
+        }
+      ],
     };
   },
   methods: {
@@ -184,6 +236,9 @@ export default {
     updateFilterDateBy(key,val) {
       this.filterDateBy = val;
     },
+    updateFiterActivity(key){
+      this.refresh()
+    },    
   },
   mounted() {
     // this.getTableData();
