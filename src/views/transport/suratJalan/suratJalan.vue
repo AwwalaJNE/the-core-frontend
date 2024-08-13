@@ -39,6 +39,16 @@
           :dataItem="dataItem"
           btnBlue="Edit"
         />
+
+        <dialog-confirm
+          title="Remove Surat Jalan"
+          :message="`Are you sure you want to remove this surat jalan with number ${this.id}?`"
+          :active="activeDialogConfirmRemove"
+          :loading="loadingConfirmRemove"
+          :closeDialog="closeDialogConfirmRemove"
+          @confirm="confirmRemove"
+          @cancel="closeDialogConfirmRemove"
+        />
     </div>
 </template>
 <script>
@@ -146,7 +156,7 @@ export default {
               {
                 label: 'Cancel',
                 key: 'cancel',
-                attribute: '',
+                attribute: 'danger',
               }
             ],
 
@@ -166,6 +176,9 @@ export default {
             activeLoadingCancel:false,
             pickupData:{},
             manifest_do_number: '',
+            id: '',
+            activeDialogConfirmRemove: false,
+            loadingConfirmRemove:false,
         }
     },
     watch: {
@@ -294,7 +307,9 @@ export default {
                     break;
                 case 'cancel':
                   this.manifest_do_number = val.manifest_do_number
-                  this.cancel()
+                  this.id = val.manifest_do_number;
+                  this.activeDialogConfirmRemove = true
+                  // this.cancel()
                 default:
 
                     // code block
@@ -356,26 +371,6 @@ export default {
                     this.openNotification('danger', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
-        async cancel() {
-            this.loading = true
-          let formCancel={}
-            await axios
-                .post(
-                    this.URL.manifest_delivery_order + `/${this.manifest_do_number}/cancel?n=${this.listenNodeId}`,
-                    JSON.stringify(formCancel),
-                    this.Helper.header())
-                .then(res => {
-                    this.loading = false
-                    this.refresh()
-                    this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Update surat jalan success')
-                }).catch(err => {
-                    this.loading = false
-                    this.refresh()
-                    this.$emit("refresh")
-                    this.openNotification('danger', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
-                })
-        },
 
         closeDialogConfirmCancel(){
           this.activeDialogCancel = false
@@ -385,6 +380,43 @@ export default {
         closeDialogSuratJalan() {
           this.dialogSuratJalan = false
           this.refresh();
+        },
+
+        actionRemove(val){
+            this.id = val.setting_id;
+            this.activeDialogConfirmRemove = true
+        },
+        confirmRemove() {
+            this.loadingConfirmRemove=true
+            this.cancel()
+        },
+        async cancel(){
+          this.loading = true
+          let formCancel={}
+            await axios
+                .post(
+                    this.URL.manifest_delivery_order + `/${this.manifest_do_number}/cancel?n=${this.listenNodeId}`,
+                    JSON.stringify(formCancel),
+                    this.Helper.header())
+                .then(res => {
+                    this.closeDialogConfirmRemove()
+                    this.loadingConfirmRemove = false
+                    this.loading = false
+                    this.refresh()
+                    this.$emit("refresh")
+                    this.openNotification(null, 'Success', 'Update surat jalan success')
+                }).catch(err => {
+                    this.loadingConfirmRemove = false
+                    this.closeDialogConfirmRemove()
+                    this.loading = false
+                    this.refresh()
+                    this.$emit("refresh")
+                    this.openNotification('danger', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+        },
+        closeDialogConfirmRemove(){
+            this.activeDialogConfirmRemove = false
+            this.loadingConfirmRemove=false
         },
 
     },

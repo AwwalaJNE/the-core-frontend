@@ -130,6 +130,25 @@
             @updateValue="updateValue"
             ref="dialogEntryStatus"
         />
+
+        <dialog-confirm
+            title="Remove Irregularity Entry Status"
+            :message="`Are you sure you want to remove this irregularity entry status with item number ${this.primaryKey}?`"
+            :active="activeDialogConfirmRemove"
+            :loading="loadingConfirmRemove"
+            :closeDialog="closeDialogConfirmRemove"
+            @confirm="confirmRemove"
+            @cancel="closeDialogConfirmRemove"
+        />
+        <dialog-confirm
+            title="Remove Irregularity Entry Status"
+            :message="`Are you sure you want to remove this irregularity entry status with item number ${this.removeKoliCode} ?`"
+            :active="activeDialogConfirmRemoveBulk"
+            :loading="loadingConfirmRemoveBulk"
+            :closeDialog="closeDialogConfirmRemoveBulk"
+            @confirm="confirmRemoveBulk"
+            @cancel="closeDialogConfirmRemoveBulk"
+        />
     </div>
 </template>
 <script>
@@ -137,6 +156,7 @@ import axios from "axios";
 import master from "@/mixins/master";
 import moment from "moment"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
@@ -158,7 +178,8 @@ export default {
         "table-master" : TableMaster,
         "dialog-entry-status": DialogEntryStatus,
         "multi-input": MultiInput,
-        "selector": Selector
+        "selector": Selector,
+        "dialog-confirm": DialogConfirm,
     },
     data() {
         return {
@@ -248,7 +269,13 @@ export default {
                     label: 'Created Date',
                     value: 'create'
                 }
-            ]
+            ],
+            id: '',
+            primaryKey: '',
+            activeDialogConfirmRemove: false,
+            loadingConfirmRemove:false,
+            activeDialogConfirmRemoveBulk: false,
+            loadingConfirmRemoveBulk:false,
         }
     },
     methods: {
@@ -277,39 +304,6 @@ export default {
                     this.dialogEntryStatusActive = true;
                 });
             }
-        },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.irregularities + `/${val.irregularity_id}?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-                    this.refresh()
-                    this.openNotification(null, 'Remove success', 'Remove Irreg success')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Remove Irreg failed', err)
-                })
-        },
-        async actionRemoveBulk() {
-            let form = {
-                item_number: this.removeKoliCode
-            }
-
-            await axios
-                .put(
-                    this.URL.irregularities + `/bulk?n=${this.listenNodeId}`,
-                    form,
-                    this.Helper.header())
-                .then(res => {
-                    this.$refs.removeKoliCode.value = []
-                    this.removeKoliCode = []
-                    this.refresh()
-                    this.openNotification(null, 'Remove Bulk success', 'Remove Bulk Irreg success')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Remove Bulk Irreg failed', err)
-                })
         },
         async getTableData(limit,page,q, from, to) {
             this.loading = true
@@ -468,6 +462,71 @@ export default {
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
+        },
+        actionRemove(val){
+            this.id = val.irregularity_id;
+            this.primaryKey = val.koli_number
+            this.activeDialogConfirmRemove = true
+        },
+        confirmRemove() {
+            this.loadingConfirmRemove=true
+            this.removeData()
+        },
+        async removeData(){
+            await axios
+                .delete(
+                    this.URL.irregularities + `/${this.id}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    this.closeDialogConfirmRemove()
+                    this.loadingConfirmRemove = false
+                    this.refresh()
+                    this.openNotification(null, 'Remove success', 'Remove Irreg success')
+                }).catch(err => {
+                    this.loadingConfirmRemove = false
+                    this.closeDialogConfirmRemove()
+                    this.loading = false
+                    this.openNotification('danger', 'Remove Irreg failed', err.response.data.message)
+                })
+        },
+        closeDialogConfirmRemove(){
+            this.activeDialogConfirmRemove = false
+            this.loadingConfirmRemove=false
+        },
+        actionRemoveBulk(){
+            this.activeDialogConfirmRemoveBulk = true
+        },
+        confirmRemoveBulk() {
+            this.loadingConfirmRemoveBulk=true
+            this.removeDataBulk()
+        },
+        async removeDataBulk(){
+            let form = {
+                item_number: this.removeKoliCode
+            }
+
+            await axios
+                .put(
+                    this.URL.irregularities + `/bulk?n=${this.listenNodeId}`,
+                    form,
+                    this.Helper.header())
+                .then(res => {
+                    this.closeDialogConfirmRemoveBulk()
+                    this.loadingConfirmRemoveBulk = false
+                    this.$refs.removeKoliCode.value = []
+                    this.removeKoliCode = []
+                    this.refresh()
+                    this.openNotification(null, 'Remove Bulk success', 'Remove Bulk Irreg success')
+                }).catch(err => {
+                    this.loadingConfirmRemoveBulk = false
+                    this.closeDialogConfirmRemoveBulk()
+                    this.loading = false
+                    this.openNotification('danger', 'Remove Bulk Irreg failed', err.response.data.message)
+                })
+        },
+        closeDialogConfirmRemoveBulk(){
+            this.activeDialogConfirmRemoveBulk = false
+            this.loadingConfirmRemoveBulk=false
         },
     },
     mounted() {

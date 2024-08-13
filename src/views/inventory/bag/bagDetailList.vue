@@ -40,12 +40,23 @@
         @actionPagination="actionPagination"
         />
 
+        <dialog-confirm
+            title="Remove Item Detail"
+            :message="`Are you sure you want to remove item with id ${this.primaryKey}?`"
+            :active="activeDialogConfirmRemove"
+            :loading="loadingConfirmRemove"
+            :closeDialog="closeDialogConfirmRemove"
+            @confirm="confirmRemove"
+            @cancel="closeDialogConfirmRemove"
+        />
+
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 export default {
     name:"list-detailbag",
     mixins: [master],
@@ -55,7 +66,8 @@ export default {
 
     },
     components: {
-        "table-master" : TableMaster
+        "table-master" : TableMaster,
+        "dialog-confirm": DialogConfirm,
     },
     watch: {
         query: function(val, old) {
@@ -142,6 +154,11 @@ export default {
                 page: 1
             },
             is_pra_runsheet: false,
+            parentId: '',
+            id: '',
+            primaryKey: '',
+            activeDialogConfirmRemove: false,
+            loadingConfirmRemove:false,
         }
     },
     methods: {
@@ -217,23 +234,6 @@ export default {
                 });
             }
         },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.bag+`/${val.bag_number}/detail/${val.bag_detail_id}?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-                    if(res.data.detail.length > 0){
-                    this.refresh()
-                    }else{
-                        this.$router.push({ name: 'InventoryBag', params: { } });
-                    }
-                    this.openNotification('success', 'Remove success', 'Remove bag item successfully')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', 'Remove bag item is failed', err.response.data.message)
-                })
-        },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
@@ -251,7 +251,42 @@ export default {
         },
         getBagIdParam(){
           this.bag_id = this.$route.params.id
-        }
+        },
+        actionRemove(val){
+            this.id = val.bag_detail_id;
+            this.parentId = val.bag_number;
+            this.primaryKey = val.item_number;
+            this.activeDialogConfirmRemove = true
+        },
+        confirmRemove() {
+            this.loadingConfirmRemove=true
+            this.removeData()
+        },
+        async removeData(){
+            await axios
+                .delete(
+                    this.URL.bag+`/${this.parentId}/detail/${this.id}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    this.closeDialogConfirmRemove()
+                    this.loadingConfirmRemove = false
+                    if(res.data.detail.length > 0){
+                    this.refresh()
+                    }else{
+                        this.$router.push({ name: 'InventoryBag', params: { } });
+                    }
+                    this.openNotification('success', 'Remove success', 'Remove bag item successfully')
+                }).catch(err => {
+                    this.loadingConfirmRemove = false
+                    this.closeDialogConfirmRemove()
+                    this.loading = false
+                    this.openNotification('danger', 'Remove bag item is failed', err.response.data.message)
+                })
+        },
+        closeDialogConfirmRemove(){
+            this.activeDialogConfirmRemove = false
+            this.loadingConfirmRemove=false
+        },
     },
     mounted() {
         this.getBagIdParam()
