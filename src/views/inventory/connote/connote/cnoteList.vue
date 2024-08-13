@@ -202,6 +202,14 @@ export default {
                     arr.map(item => {
                         item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
                         item["is_cod"] = item.is_cod == 1 ? 'YES' : '-'
+                        item['children_width'] = {
+                            'Koli Number': 'xs',
+                            'Bag': 'xxxs',
+                            'Wood Package': 'xxxs',
+                            'Receiving Date': 'md',
+                            'Status Irregularity': 'md',
+                            'Status': 'xxs'
+                        }
                         let koli_number = []
                         let bag = []
                         let packing_kayu = []
