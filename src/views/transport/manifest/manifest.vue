@@ -56,7 +56,8 @@ export default {
         dateFilter: Array,
         node:String,
         searchBy: String,
-        filterDateBy: String
+        filterDateBy: String,
+        status: Array
     },
     components: {
         "table-master" : TableMaster,
@@ -195,7 +196,7 @@ export default {
             }
             await axios
                 .get(this.URL.surat_muatan +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&status=${this.status}`,
                 this.Helper.header())
                 .then(res => {
                     // this.dataTable = res.data.data
