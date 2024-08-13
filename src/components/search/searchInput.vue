@@ -1,6 +1,15 @@
 <template>
     <div class="searchbox">
-        <vs-input icon-after v-model="value" autocomplete="chrome-off" :placeholder="listenPlaceholder" @change="searchValue" @focus="onFocus" @blur="onBlur">
+        <vs-input
+            icon-after
+            v-model="value"
+            autocomplete="chrome-off"
+            :placeholder="listenPlaceholder"
+            :type="isNumeric ? 'number' : 'text'"
+            @change="searchValue"
+            @focus="onFocus"
+            @blur="onBlur"
+        >
         </vs-input>
         <button click="test">
             <i class='bx bx-search search-input-icon' @click="searchValue"></i>
@@ -12,6 +21,7 @@ export default {
     name:"search-input",
     props: {
         placeholder: String,
+        isNumeric: Boolean,
     },
     data() {
         return {
