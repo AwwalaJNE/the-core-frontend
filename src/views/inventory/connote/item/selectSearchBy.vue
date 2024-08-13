@@ -74,7 +74,8 @@ export default {
         },
         {
           label: 'Amount COD',
-          value: 'amount_cod'
+          value: 'amount_cod',
+          isNumeric: true
         }
       ],
       value: this.selectedValue ? this.selectedValue :"connote",
