@@ -36,7 +36,7 @@
                                             <select-search-by-connote :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"  :selectedValue="searchBy"/>
                                         </vs-col>
                                         <vs-col vs-align="center" w="6">
-                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" class="search-input"/>
+                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" class="search-input" :isNumeric="searchByDataType"/>
                                         </vs-col>
                                     </vs-row>
                                 </template>
@@ -306,6 +306,7 @@ export default {
             ],
             bagRouting:"",
             bagTipe:"",
+            searchByDataType: false,
         }
     },
     methods: {
@@ -321,9 +322,10 @@ export default {
         updateStatusinventoryCnote(key,val) {
           this.statusinventorycnote = val;
         },
-        updateSearchBy(key,val) {
+        updateSearchBy(key,val, dataType) {
             this.searchBy = val;
             this.searchPlaceholder = key;
+            this.searchByDataType = dataType;
         },
         updateSearchByBag(key,val) {
             this.searchByBag = val;
