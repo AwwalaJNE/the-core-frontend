@@ -43,7 +43,7 @@
                   placeholder="Select status"
                   :border="true"
                   :multiple="true"
-                  @change="updateFiterActivity"
+                  @change="updateFilterStatus"
                 >
                   <template>
                     <vs-option
@@ -236,7 +236,7 @@ export default {
     updateFilterDateBy(key,val) {
       this.filterDateBy = val;
     },
-    updateFiterActivity(key){
+    updateFilterStatus(key){
       this.refresh()
     },    
   },
