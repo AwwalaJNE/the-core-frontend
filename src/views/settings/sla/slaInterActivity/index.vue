@@ -250,7 +250,6 @@ export default {
             filterNextActivityBy: "-",
             filterNextActivity: [],
             id: '',
-            dialogConfigurationWarningRunsheet: false,
             activeDialogConfirmRemove: false,
             loadingConfirmRemove:false,
         }

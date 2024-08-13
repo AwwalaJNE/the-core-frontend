@@ -39,6 +39,16 @@
           :dataItem="dataItem"
           btnBlue="Edit"
         />
+
+        <dialog-confirm
+          title="Remove Surat Jalan"
+          :message="`Are you sure you want to remove this surat jalan with id ${this.id}?`"
+          :active="activeDialogConfirmRemove"
+          :loading="loadingConfirmRemove"
+          :closeDialog="closeDialogConfirmRemove"
+          @confirm="confirmRemove"
+          @cancel="closeDialogConfirmRemove"
+        />
     </div>
 </template>
 <script>
@@ -166,6 +176,9 @@ export default {
             activeLoadingCancel:false,
             pickupData:{},
             manifest_do_number: '',
+            id: '',
+            activeDialogConfirmRemove: false,
+            loadingConfirmRemove:false,
         }
     },
     watch: {

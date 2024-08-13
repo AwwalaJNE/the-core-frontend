@@ -128,7 +128,6 @@ export default {
               }
             ],
             id: '',
-            dialogConfigurationWarningRunsheet: false,
             activeDialogConfirmRemove: false,
             loadingConfirmRemove:false,
         }
