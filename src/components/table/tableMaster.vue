@@ -1232,8 +1232,19 @@ export default {
         this.pagination.limits = val;
       }
     },
+    dataTable: function() {
+      if (this.listenExpandable) {
+        this.resetExpandedRows()
+      }
+    }
   },
   methods: {
+    resetExpandedRows() {
+      const elements = document.querySelectorAll('.vs-table__tr__expand');
+      elements.forEach((element) => {
+        element.remove()
+      });
+    },
     split(arr) {
       return arr.split(".");
     },
