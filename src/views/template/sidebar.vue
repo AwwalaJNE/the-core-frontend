@@ -35,13 +35,11 @@
                         {{child.label}}
                       </vs-sidebar-item>
                     </router-link> -->
-              <vs-sidebar-item :id="child.label.trim()" :key="i">
+              <vs-sidebar-item :id="child.label.trim()" :key="i" :to="child.url">
                 <template #icon>
                   <i :class="`bx ${child.icon}`" />
                 </template>
-                <router-link :key="i" :to="child.url">
-                  <p>{{ child.label }}</p>
-                </router-link>
+                <p>{{ child.label }}</p>
               </vs-sidebar-item>
               <!-- <vs-sidebar-item :id="child.label.trim()" :key="i" @input="redirect(child.url)">
                         <template #icon>
@@ -53,13 +51,11 @@
           </vs-sidebar-group>
         </template>
         <template v-else>
-          <vs-sidebar-item :id="item.label.trim()" :key="key">
+          <vs-sidebar-item :id="item.label.trim()" :key="key" :to="item.url">
             <template #icon>
               <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
             </template>
-            <router-link :key="key" :to="item.url">
-              <p>{{ item.label }}</p>
-            </router-link>
+            <p>{{ item.label }}</p>
           </vs-sidebar-item>
         </template>
       </template>
