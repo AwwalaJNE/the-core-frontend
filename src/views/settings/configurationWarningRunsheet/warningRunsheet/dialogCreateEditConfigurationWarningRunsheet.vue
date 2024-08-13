@@ -129,7 +129,7 @@ export default {
 
             let arr_node_id = []
             let arr = []
-            val.nodes.map(item => {
+            val.node.map(item => {
                 let obj = {}
                 obj["label"] = item.node_name
                 obj["value"] = item.node_id
