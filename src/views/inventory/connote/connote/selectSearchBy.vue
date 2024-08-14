@@ -64,11 +64,17 @@ export default {
         },
         {
           label: 'Weight',
-          value: 'weight'
+          value: 'weight',
+          isNumeric: true
         },
         {
           label: 'Service',
           value: 'service'
+        },
+        {
+          label: 'Amount COD',
+          value: 'amount_cod',
+          isNumeric: true
         }
       ],
       value: this.selectedValue ? this.selectedValue :"connote",
@@ -104,7 +110,9 @@ export default {
   },
   methods: {
     updateSearchBy(val){
-      this.$emit("updateSearchBy", `Search ${val.charAt(0).toUpperCase() + val.slice(1)}`, val)
+      const selectedItem = this.DataArr.find(item => item.value === val);
+      const isNumeric = selectedItem ? (selectedItem?.isNumeric !== undefined ? selectedItem.isNumeric : false) : false;
+      this.$emit("updateSearchBy", `Search ${val.charAt(0).toUpperCase() + val.slice(1)}`, val, isNumeric)
     }
   },
 
