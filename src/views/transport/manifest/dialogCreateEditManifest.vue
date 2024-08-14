@@ -713,7 +713,7 @@ export default {
         })
         .catch((err) => {
           this.item_code = "";
-          this.openNotification("danger", "Koli / Connote not found", err.response ? err.response.data.message : 'something went wrong');
+          this.openNotification("danger", "Failed Get Data", err.response ? err.response.data.message : 'something went wrong');
         });
     },
     actionPagination(val) {
