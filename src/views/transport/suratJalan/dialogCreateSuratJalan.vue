@@ -707,7 +707,7 @@ export default {
             let message = err.response.data
               ? err.response.data.message
               : "failed Load Data";
-            this.openNotification("warn", "Information", message);
+            this.openNotification("warn", "Failed Get Data", message);
           }
         });
     },
