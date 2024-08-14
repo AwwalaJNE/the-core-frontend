@@ -12,24 +12,6 @@
 
         <template v-slot:content>
             <vs-row justify="space-between">
-                <vs-row>
-                    <vs-col xs="12" sm="12" lg="6">
-                        <input-text-area 
-                            id="valid_item"
-                            label="Valid Bag / Connote"
-                            v-model="validItemNumber"
-                            :disabled="true"
-                        />
-                    </vs-col>
-                    <vs-col xs="12" sm="12" lg="6">
-                        <input-text-area 
-                            id="invalid_item"
-                            label="Invalid Bag / Connote"
-                            v-model="invalidItemNumber"
-                            :disabled="true"
-                        />
-                    </vs-col>
-                </vs-row>
                 <vs-col xs="12" sm="12" lg="12">
                     <template v-if="loadingStatus == false && status_code_arr.length > 0">
                         <selector 
@@ -42,6 +24,30 @@
                             @updateValue="updateValue" />
                     </template>
                 </vs-col>
+                <vs-row>
+                    <vs-col 
+                        v-if="validItemNumber.length > 0"
+                        xs="12" 
+                        sm="12" 
+                        :lg="`${invalidItemNumber.length > 0 ? '6':'12'}`"
+                    >
+                        <input-text-area 
+                            id="valid_item"
+                            label="Valid Bag / Connote"
+                            v-model="validItemNumber"
+                            :disabled="true"
+                        />
+                    </vs-col>
+                    <vs-col xs="12" sm="12" lg="6" v-if="invalidItemNumber.length > 0">
+                        <input-text-area 
+                            id="invalid_item"
+                            label="Invalid Bag / Connote"
+                            v-model="invalidItemNumber"
+                            :disabled="true"
+                        />
+                    </vs-col>
+                </vs-row>
+                
                 <vs-col xs="12" sm="12" lg="12">
                     <el-upload
                         ref="upload"
