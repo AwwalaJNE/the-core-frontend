@@ -121,14 +121,24 @@
                         @updateValue="updateValue" 
                     />
                 </vs-col>
-                <vs-col xs="12" sm="12" lg="12">
-                    <input-text-area 
-                        id="valid_item"
-                        label="Valid Bag / Connote"
-                        v-model="validItemNumber"
-                        :disabled="true"
-                    />
-                </vs-col>
+                <vs-row>
+                    <vs-col xs="12" sm="12" lg="6">
+                        <input-text-area 
+                            id="valid_item"
+                            label="Valid Bag / Connote"
+                            v-model="validItemNumber"
+                            :disabled="true"
+                        />
+                    </vs-col>
+                    <vs-col xs="12" sm="12" lg="6">
+                        <input-text-area 
+                            id="invalid_item"
+                            label="Invalid Bag / Connote"
+                            v-model="invalidItemNumber"
+                            :disabled="true"
+                        />
+                    </vs-col>
+                </vs-row>
             </vs-row>
         </template>
 
@@ -234,7 +244,8 @@ export default {
             dialogFileVisible: false,
             disabled: false,
             fileList: [],
-            validItemNumber: []
+            validItemNumber: [],
+            invalidItemNumber: []
         }
     },
     methods: {
@@ -287,6 +298,9 @@ export default {
             if (this.listenValidItem.length > 0) {
                 this.validItemNumber = this.listenValidItem
                     .filter(item => item.status === 'SUCCESS')
+                    .map(item => item.item_number);
+                this.invalidItemNumber = this.listenValidItem
+                    .filter(item => item.status !== 'SUCCESS')
                     .map(item => item.item_number);
             }
         },
