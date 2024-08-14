@@ -705,7 +705,7 @@ export default {
           } else {
             this.openNotification(
               "danger",
-              "Bag tidak ditemukan",
+              "Failed Get Data",
               "Bag yang dicari tidak ditemukan"
             );
           }
