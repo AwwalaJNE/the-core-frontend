@@ -26,7 +26,7 @@
                                             <select-search-by-cnote :isMultiple="false" :border="true" @updateSearchBy="updateSearchByCnote"  :selectedValue="searchByCnote"/>
                                         </vs-col>
                                         <vs-col vs-align="center" w="6">
-                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholderCnote" class="search-input"/>
+                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholderCnote" class="search-input" :isNumeric="searchByDataTypeCnote"/>
                                         </vs-col>
                                     </vs-row>
                                 </template>
@@ -307,6 +307,7 @@ export default {
             bagRouting:"",
             bagTipe:"",
             searchByDataType: false,
+            searchByDataTypeCnote: false,
         }
     },
     methods: {
@@ -331,9 +332,10 @@ export default {
             this.searchByBag = val;
             this.searchPlaceholderBag = key;
         },
-        updateSearchByCnote(key,val) {
+        updateSearchByCnote(key,val, dataType) {
             this.searchByCnote = val;
             this.searchPlaceholderCnote = key;
+            this.searchByDataTypeCnote = dataType
         },
         updateFilterDateBy(key,val) {
           this.filterDateBy = val;
