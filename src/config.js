@@ -223,5 +223,8 @@ export default {
     node_delivery_area : api + 'node-delivery-area',
 
     // Documentation
-    documentation: api + 'documentation'
+    documentation: api + 'documentation',
+
+    // Validation
+    validation: api + 'validation'
 }

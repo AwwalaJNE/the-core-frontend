@@ -24,6 +24,30 @@
                             @updateValue="updateValue" />
                     </template>
                 </vs-col>
+                <vs-row>
+                    <vs-col 
+                        v-if="validItemNumber.length > 0"
+                        xs="12" 
+                        sm="12" 
+                        :lg="`${invalidItemNumber.length > 0 ? '6':'12'}`"
+                    >
+                        <input-text-area 
+                            id="valid_item"
+                            label="Valid Bag / Connote"
+                            v-model="validItemNumber"
+                            :disabled="true"
+                        />
+                    </vs-col>
+                    <vs-col xs="12" sm="12" lg="6" v-if="invalidItemNumber.length > 0">
+                        <input-text-area 
+                            id="invalid_item"
+                            label="Invalid Bag / Connote"
+                            v-model="invalidItemNumber"
+                            :disabled="true"
+                        />
+                    </vs-col>
+                </vs-row>
+                
                 <vs-col xs="12" sm="12" lg="12">
                     <el-upload
                         ref="upload"
@@ -161,6 +185,7 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import InputGeneral from "@/components/input/general"
+import InputTextArea from "@/components/input/textArea";
 import Selector from "@/components/input/select"
 import DialogMaster from "@/components/dialog/dialogMaster"
 import { Dialog } from 'element-ui';
@@ -171,14 +196,16 @@ export default {
         "input-general": InputGeneral,
         "selector": Selector,
         "dialog-master": DialogMaster,
-        'el-dialog': Dialog
+        'el-dialog': Dialog,
+        "input-text-area": InputTextArea,
     },
     props: {
         closeDialog: Function, 
         active: Boolean,
         title: String,
         dataItem: Object,
-        loadingSubmit: Boolean
+        loadingSubmit: Boolean,
+        validItem: Array,
     },
     computed: {
         listenActive(){
@@ -189,6 +216,9 @@ export default {
         },
         listenLoading(){
             return this.loadingSubmit || this.loadingStatus
+        },
+        listenValidItem() {
+            return this.validItem || []
         },
     },
     watch: {
@@ -219,7 +249,9 @@ export default {
             dialogFileUrl: '',
             dialogFileVisible: false,
             disabled: false,
-            fileList: []
+            fileList: [],
+            validItemNumber: [],
+            invalidItemNumber: []
         }
     },
     methods: {
@@ -267,6 +299,15 @@ export default {
                 } else {
                     this.fileList = []; 
                 }
+            }
+
+            if (this.listenValidItem.length > 0) {
+                this.validItemNumber = this.listenValidItem
+                    .filter(item => item.status === 'SUCCESS')
+                    .map(item => item.item_number);
+                this.invalidItemNumber = this.listenValidItem
+                    .filter(item => item.status !== 'SUCCESS')
+                    .map(item => item.item_number);
             }
         },
         updateValue(key, val, info){
