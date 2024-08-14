@@ -121,6 +121,14 @@
                         @updateValue="updateValue" 
                     />
                 </vs-col>
+                <vs-col xs="12" sm="12" lg="12">
+                    <input-text-area 
+                        id="valid_item"
+                        label="Valid Bag / Connote"
+                        v-model="validItemNumber"
+                        :disabled="true"
+                    />
+                </vs-col>
             </vs-row>
         </template>
 
@@ -161,6 +169,7 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import InputGeneral from "@/components/input/general"
+import InputTextArea from "@/components/input/textArea";
 import Selector from "@/components/input/select"
 import DialogMaster from "@/components/dialog/dialogMaster"
 import { Dialog } from 'element-ui';
@@ -171,14 +180,16 @@ export default {
         "input-general": InputGeneral,
         "selector": Selector,
         "dialog-master": DialogMaster,
-        'el-dialog': Dialog
+        'el-dialog': Dialog,
+        "input-text-area": InputTextArea,
     },
     props: {
         closeDialog: Function, 
         active: Boolean,
         title: String,
         dataItem: Object,
-        loadingSubmit: Boolean
+        loadingSubmit: Boolean,
+        validItem: Array,
     },
     computed: {
         listenActive(){
@@ -189,6 +200,9 @@ export default {
         },
         listenLoading(){
             return this.loadingSubmit || this.loadingStatus
+        },
+        listenValidItem() {
+            return this.validItem || []
         },
     },
     watch: {
@@ -219,7 +233,8 @@ export default {
             dialogFileUrl: '',
             dialogFileVisible: false,
             disabled: false,
-            fileList: []
+            fileList: [],
+            validItemNumber: []
         }
     },
     methods: {
@@ -267,6 +282,12 @@ export default {
                 } else {
                     this.fileList = []; 
                 }
+            }
+
+            if (this.listenValidItem.length > 0) {
+                this.validItemNumber = this.listenValidItem
+                    .filter(item => item.status === 'SUCCESS')
+                    .map(item => item.item_number);
             }
         },
         updateValue(key, val, info){

@@ -126,6 +126,7 @@
             :active="dialogEntryStatusActive"
             :closeDialog="closeDialog"
             :dataItem="dataItem"
+            :validItem="validItem"
             :loadingSubmit="loadingSubmit"
             @updateValue="updateValue"
             ref="dialogEntryStatus"
@@ -142,7 +143,7 @@
         />
         <dialog-confirm
             title="Remove Irregularity Entry Status"
-            :message="`Are you sure you want to remove this irregularity entry status with item number ${this.removeKoliCode} ?`"
+            :message="`Are you sure you want to remove this irregularity entry status with item number ${this.primaryKeyList} ?`"
             :active="activeDialogConfirmRemoveBulk"
             :loading="loadingConfirmRemoveBulk"
             :closeDialog="closeDialogConfirmRemoveBulk"
@@ -226,8 +227,10 @@ export default {
                 },
             ],
             dataItem: {},
+            validItem: [],
             loading:false,
             loadingSubmit: false,
+            loadingValidation: false,
             pagination: {
                 limit: 10,
                 page_size: 1,
@@ -272,10 +275,12 @@ export default {
             ],
             id: '',
             primaryKey: '',
+            primaryKeyList: [],
             activeDialogConfirmRemove: false,
             loadingConfirmRemove:false,
             activeDialogConfirmRemoveBulk: false,
             loadingConfirmRemoveBulk:false,
+            listValidItem: []
         }
     },
     methods: {
@@ -422,7 +427,8 @@ export default {
                 case "DIALOG_ENTRY_STATUS":
                     this.form = val
                     let formattedItems = {};
-                    this.koliCode.forEach(item => {
+                        
+                    this.listValidItem.forEach(item => {
                         let key = `item_number_${this.generateRandomString(5)}`;
                         formattedItems[key] = item;
                     });
@@ -452,8 +458,39 @@ export default {
         },
         openDialog() {
             if(this.koliCode?.length > 0) {
-                this.dialogEntryStatusActive = true
+                let validationKoliCode = {
+                    "items": (this.koliCode).map(item => item)
+                };
+                this.validationItem(validationKoliCode, 'create')
             }
+        },
+        async validationItem(validationKoliCode, actionType) {
+            this.loadingValidation = true
+            
+            await axios
+                .post(
+                    this.URL.validation + `/irregularity?n=${this.listenNodeId}`,
+                    JSON.stringify(validationKoliCode), 
+                    this.Helper.header())
+                .then(res => {
+                    this.validItem = res.data.data
+                    this.listValidItem = this.validItem
+                        .filter(item => item.status === 'SUCCESS')
+                        .map(item => item.item_number);
+
+                    if (actionType === 'create') {
+                        this.dialogEntryStatusActive = true
+                    } else if (actionType === 'remove') {
+                        this.primaryKeyList = this.listValidItem
+                        this.activeDialogConfirmRemoveBulk = true
+                    }
+                }).catch(err => {
+                    // TODO: RECHECK CLEAR FORM
+                    this.handleClearForm();
+                    this.openNotification('danger', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+
+            this.loadingValidation = false
         },
         updateSearchBy(key, val) {
             val = val.replaceAll(" ", "_");
@@ -494,7 +531,11 @@ export default {
             this.loadingConfirmRemove=false
         },
         actionRemoveBulk(){
-            this.activeDialogConfirmRemoveBulk = true
+            let validationKoliCode = {
+                "items": (this.removeKoliCode).map(item => item)
+            };
+            
+            this.validationItem(validationKoliCode, 'remove');
         },
         confirmRemoveBulk() {
             this.loadingConfirmRemoveBulk=true
@@ -502,7 +543,7 @@ export default {
         },
         async removeDataBulk(){
             let form = {
-                item_number: this.removeKoliCode
+                item_number: this.listValidItem
             }
 
             await axios
