@@ -409,6 +409,10 @@ export default {
             return result;
         },
         handleClearForm(){
+            this.koliCode = []
+            // this.primaryKey = ""
+            // this.primaryKeyList = []
+            // this.listValidItem = []
             this.$refs.koliCode.value = []
             this.$refs.dialogEntryStatus.handleClearForm()
         },
@@ -461,15 +465,15 @@ export default {
                 let validationKoliCode = {
                     "items": (this.koliCode).map(item => item)
                 };
-                this.validationItem(validationKoliCode, 'create')
+                this.validationCreateItem(validationKoliCode)
             }
         },
-        async validationItem(validationKoliCode, actionType) {
+        async validationCreateItem(validationKoliCode) {
             this.loadingValidation = true
             
             await axios
                 .post(
-                    this.URL.validation + `/irregularity?n=${this.listenNodeId}`,
+                    this.URL.validation + `/create-irregularity?n=${this.listenNodeId}`,
                     JSON.stringify(validationKoliCode), 
                     this.Helper.header())
                 .then(res => {
@@ -478,15 +482,37 @@ export default {
                         .filter(item => item.status === 'SUCCESS')
                         .map(item => item.item_number);
 
-                    if (actionType === 'create') {
-                        this.dialogEntryStatusActive = true
-                    } else if (actionType === 'remove') {
-                        this.primaryKeyList = this.listValidItem
-                        this.activeDialogConfirmRemoveBulk = true
-                    }
+                    this.dialogEntryStatusActive = true
                 }).catch(err => {
                     // TODO: RECHECK CLEAR FORM
+                    this.refresh();
                     this.handleClearForm();
+                    this.openNotification('danger', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
+                })
+
+            this.loadingValidation = false
+        },
+        async validationRemoveItem(validationKoliCode) {
+            this.loadingValidation = true
+            
+            await axios
+                .post(
+                    this.URL.validation + `/remove-irregularity?n=${this.listenNodeId}`,
+                    JSON.stringify(validationKoliCode), 
+                    this.Helper.header())
+                .then(res => {
+                    this.validItem = res.data.data
+                    this.listValidItem = this.validItem
+                        .filter(item => item.status === 'SUCCESS')
+                        .map(item => item.item_number);
+                        
+                    this.primaryKeyList = this.listValidItem
+                    this.activeDialogConfirmRemoveBulk = true
+                }).catch(err => {
+                    // TODO: RECHECK CLEAR FORM
+                    this.$refs.removeKoliCode.value = []
+                    this.removeKoliCode = []
+                    this.refresh();
                     this.openNotification('danger', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
                 })
 
@@ -535,7 +561,7 @@ export default {
                 "items": (this.removeKoliCode).map(item => item)
             };
             
-            this.validationItem(validationKoliCode, 'remove');
+            this.validationRemoveItem(validationKoliCode);
         },
         confirmRemoveBulk() {
             this.loadingConfirmRemoveBulk=true
