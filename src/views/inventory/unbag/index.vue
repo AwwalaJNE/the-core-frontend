@@ -188,7 +188,7 @@ export default {
       item_number: "",
       bag_number: "",
       form: {},
-      inputLabelPlaceholder: "Masukan code BAG",
+      inputLabelPlaceholder: "Please enter item code",
       radio_option: "connote",
     };
   },
@@ -202,17 +202,6 @@ export default {
       this.form.item_number = this.item_code;
       if (this.item_code !== null) {
         this.item_number = this.item_code;
-        if (this.inputLabelPlaceholder.includes("CONNOTE")) {
-          this.item_number = this.item_code + "00";
-        }
-
-        if (this.radio_option === "connote") {
-          this.inputLabelPlaceholder = "Masukan code CONNOTE (ORION)";
-        } else if (this.radio_option === "koli") {
-          this.inputLabelPlaceholder = "Masukan code KOLI";
-        } else if (this.radio_option === "bag") {
-          this.inputLabelPlaceholder = "Masukan code BAG ITEM";
-        }
       }
       this.$nextTick(() => {
         this.handleClearForm();
@@ -237,7 +226,7 @@ export default {
       }
     },
     resetInput(val) {
-      this.inputLabelPlaceholder = "Masukan code BAG";
+      this.inputLabelPlaceholder = "Please enter item code";
       this.bag_number = "";
     },
     saveBagNumber(val) {
