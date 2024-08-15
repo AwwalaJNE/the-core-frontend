@@ -8,36 +8,11 @@
         </div>
       </vs-col>
     </vs-row>
-    <template>
-      <div class="center in-get-bag">
-        <vs-row style="margin-top:1em">
-          <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px; text-align: left;" justify="start">
-            <span>Item Type:</span>
-          </vs-col>
-        </vs-row>
-        <vs-row  align="center">
-          <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px;">
-            <vs-radio v-model="radio_option" val="connote" :disabled="isInputDisabled">
-              Connote (Orion)
-            </vs-radio>
-          </vs-col>
-          <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px;">
-            <vs-radio v-model="radio_option" val="koli" :disabled="isInputDisabled">
-              Koli
-            </vs-radio>
-          </vs-col>
-          <vs-col xs="12" sm="3" lg="2">
-            <vs-radio v-model="radio_option" val="bag" :disabled="isInputDisabled">
-              Masterbag
-            </vs-radio>
-          </vs-col>
-        </vs-row>
-      </div>
-    </template>
     <section class="bagging">
-      <vs-row>
-        <vs-col xs="8" sm="4" lg="2">
+      <vs-row align="flex-end">
+        <vs-col xs="8" sm="4" lg="3">
           <template>
+            <!-- <p style="text-align: left">Parent:</p> -->
             <div class="center in-get-bag">
               <vs-input
                 border
@@ -57,15 +32,7 @@
             </div>
           </template>
         </vs-col>
-        <vs-col xs="4" sm="2" lg="1">
-          <template>
-            <div class="center in-get-bag">
-              <vs-button @click="updateValue">Submit</vs-button>
-            </div>
-          </template>
-        </vs-col>
       </vs-row>
-
       <vs-row justify="space-between" class=" mt-2">
         <unbagDetail ref="unbagDetail" :itemNumber="item_number" @resetInput="resetInput" @saveBagNumber="saveBagNumber"></unbagDetail>
       </vs-row>
@@ -96,7 +63,7 @@ export default {
       item_number: "",
       bag_number: "",
       form: {},
-      inputLabelPlaceholder: "Masukan code BAG",
+      inputLabelPlaceholder: "Please enter item code",
       radio_option: "connote",
     };
   },
@@ -110,17 +77,6 @@ export default {
       this.form.item_number = this.item_code;
       if (this.item_code !== null) {
         this.item_number = this.item_code;
-        if (this.inputLabelPlaceholder.includes("CONNOTE")) {
-          this.item_number = this.item_code + "00";
-        }
-
-        if (this.radio_option === "connote") {
-          this.inputLabelPlaceholder = "Masukan code CONNOTE (ORION)";
-        } else if (this.radio_option === "koli") {
-          this.inputLabelPlaceholder = "Masukan code KOLI";
-        } else if (this.radio_option === "bag") {
-          this.inputLabelPlaceholder = "Masukan code BAG ITEM";
-        }
       }
       this.$nextTick(() => {
         this.handleClearForm();
@@ -145,7 +101,7 @@ export default {
       }
     },
     resetInput(val) {
-      this.inputLabelPlaceholder = "Masukan code BAG";
+      this.inputLabelPlaceholder = "Please enter item code";
       this.bag_number = "";
     },
     saveBagNumber(val) {

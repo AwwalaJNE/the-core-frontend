@@ -1000,6 +1000,7 @@
                       <th
                         v-for="(c_item, c_key) in Object.keys(item.children)"
                         :key="c_key"
+                        :class="item.hasOwnProperty('children_width') ? item['children_width'][c_item] : ''"
                       >
                         {{ c_item.replace(/[&\/\\#,+()$~%._'":*?<>{}]/g, " ") }}
                       </th>
@@ -1009,7 +1010,7 @@
                         v-for="(c_item, c_td_key) in Object.keys(item.children)"
                       >
                         <template v-if="Array.isArray(item.children[c_item])">
-                          <td :key="c_td_key">
+                          <td :key="c_td_key" :class="item.hasOwnProperty('children_width') ? item['children_width'][c_item] : ''">
                             <ul>
                               <li
                                 v-for="(itm, idx) in item.children[c_item]"
@@ -1034,7 +1035,7 @@
                           </td>
                         </template>
                         <template v-else>
-                          <td :key="c_td_key">
+                          <td :key="c_td_key" :class="item.hasOwnProperty('children_width') ? item['children_width'][c_item] : ''">
                             {{ item.children[c_item] }}
                           </td>
                         </template>
