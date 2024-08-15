@@ -26,7 +26,7 @@
         required: true
       },
       value: {
-        type: String,
+        type: [String, Array],
         default: ''
       },
       rows: {
@@ -45,28 +45,34 @@
         type: Boolean,
         default: false
       }
+  },
+  data() {
+    return {
+      inputValue: this.formatValue(this.value)
+    };
+  },
+  watch: {
+    value(newValue) {
+      this.inputValue = this.formatValue(newValue);
     },
-    data() {
-      return {
-        inputValue: this.value
-      };
-    },
-    watch: {
-      value(newValue) {
-        this.inputValue = newValue;
-      },
-      inputValue(newInputValue) {
-        this.$emit('input', newInputValue);
-      }
-    },
-    methods: {
-      handleInput(event) {
-        this.inputValue = event.target.value;
-      }
+    inputValue(newInputValue) {
+      this.$emit('input', newInputValue);
     }
-  };
-  </script>
-  
+  },
+  methods: {
+    handleInput(event) {
+      this.inputValue = event.target.value;
+    },
+    formatValue(value) {
+    if (Array.isArray(value)) {
+      return value.join('\n');
+    }
+    return value;
+  }
+  }
+};
+</script>
+
 <style scoped>
 
 .text-area-style {
