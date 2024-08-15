@@ -29,6 +29,11 @@ export default {
           width: "xs",
         },
         {
+          label: "Section",
+          key: "section",
+          width: "xs",
+        },
+        {
           label: "Message",
           key: "message",
           width: "auto",
@@ -56,6 +61,7 @@ export default {
           for (const [key, value] of Object.entries(res.data.data)) {
             apiData.push({
               code: key,
+              section: value.section,
               message: value.message,
               description: value.description
             })
