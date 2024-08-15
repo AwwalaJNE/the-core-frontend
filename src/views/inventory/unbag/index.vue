@@ -8,32 +8,6 @@
         </div>
       </vs-col>
     </vs-row>
-    <!-- <template>
-      <div class="center in-get-bag">
-        <vs-row style="margin-top:1em">
-          <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px; text-align: left;" justify="start">
-            <span>Item Type:</span>
-          </vs-col>
-        </vs-row>
-        <vs-row  align="center">
-          <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px;">
-            <vs-radio v-model="radio_option" val="connote" :disabled="isInputDisabled">
-              Connote (Orion)
-            </vs-radio>
-          </vs-col>
-          <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px;">
-            <vs-radio v-model="radio_option" val="koli" :disabled="isInputDisabled">
-              Koli
-            </vs-radio>
-          </vs-col>
-          <vs-col xs="12" sm="3" lg="2">
-            <vs-radio v-model="radio_option" val="bag" :disabled="isInputDisabled">
-              Masterbag
-            </vs-radio>
-          </vs-col>
-        </vs-row>
-      </div>
-    </template> -->
     <section class="bagging">
       <vs-row align="flex-end">
         <vs-col xs="8" sm="4" lg="3">
@@ -58,106 +32,7 @@
             </div>
           </template>
         </vs-col>
-        <!-- <vs-col xs="4" sm="2" lg="1">
-          <template>
-            <div class="center in-get-bag">
-              <vs-button @click="updateValue">Submit</vs-button>
-            </div>
-          </template>
-        </vs-col> -->
-        <!-- <vs-col xs="8" sm="4" lg="3">
-          <template>
-            <p style="text-align: left">Item:</p>
-            <div class="center in-get-bag">
-              <vs-input
-                border
-                type="text"
-                v-model="item_code"
-                :label-placeholder="inputLabelPlaceholder"
-                :autofocus="true"
-                ref="formInputUnbagging"
-                icon-after
-                @keyup.enter.native="updateValue"
-                @click-icon="$refs.cameraScanner.open('formInputUnbagging')"
-              >
-                <template #icon>
-                  <i class="bx bx-barcode-reader"></i>
-                </template>
-              </vs-input>
-            </div>
-          </template>
-        </vs-col> -->
-        <!-- <vs-col xs="4" sm="2" lg="1">
-          <template>
-            <div class="center in-get-bag">
-              <vs-button @click="updateValue">Submit</vs-button>
-            </div>
-          </template>
-        </vs-col> -->
       </vs-row>
-
-      <!-- <vs-row align="flex-end">
-        <vs-col xs="4" sm="2" lg="1">
-          <p style="text-align: left">Parent:</p>
-        </vs-col>
-        <vs-col xs="4" sm="2" lg="3">
-          <div class="center in-get-bag">
-            <vs-input
-              border
-              type="text"
-              v-model="item_code"
-              :label-placeholder="inputLabelPlaceholder"
-              :autofocus="true"
-              ref="formInputUnbagging"
-              icon-after
-              @keyup.enter.native="updateValue"
-              @click-icon="$refs.cameraScanner.open('formInputUnbagging')"
-            >
-              <template #icon>
-                <i class="bx bx-barcode-reader"></i>
-              </template>
-            </vs-input>
-          </div>
-        </vs-col>
-        <vs-col xs="4" sm="2" lg="1">
-          <template>
-            <div class="center in-get-bag">
-              <vs-button @click="updateValue">Submit</vs-button>
-            </div>
-          </template>
-        </vs-col>
-      </vs-row>
-      <vs-row align="flex-end">
-        <vs-col xs="4" sm="2" lg="1">
-          <p style="text-align: left">Parent:</p>
-        </vs-col>
-        <vs-col xs="4" sm="2" lg="3">
-          <div class="center in-get-bag">
-            <vs-input
-              border
-              type="text"
-              v-model="item_code"
-              :label-placeholder="inputLabelPlaceholder"
-              :autofocus="true"
-              ref="formInputUnbagging"
-              icon-after
-              @keyup.enter.native="updateValue"
-              @click-icon="$refs.cameraScanner.open('formInputUnbagging')"
-            >
-              <template #icon>
-                <i class="bx bx-barcode-reader"></i>
-              </template>
-            </vs-input>
-          </div>
-        </vs-col>
-        <vs-col xs="4" sm="2" lg="1">
-          <template>
-            <div class="center in-get-bag">
-              <vs-button @click="updateValue">Submit</vs-button>
-            </div>
-          </template>
-        </vs-col>
-      </vs-row> -->
       <vs-row justify="space-between" class=" mt-2">
         <unbagDetail ref="unbagDetail" :itemNumber="item_number" @resetInput="resetInput" @saveBagNumber="saveBagNumber"></unbagDetail>
       </vs-row>
