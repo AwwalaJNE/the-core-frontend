@@ -380,6 +380,13 @@ export default {
                         this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
                     })
             }   
+
+            this.$nextTick(() => {
+                const inputElement = this.$refs.koliCode.$el.querySelector('input');
+                if (inputElement) {
+                    inputElement.focus();
+                }
+            });
         },
         searchValue (val) {
             this.tempSearch = val
