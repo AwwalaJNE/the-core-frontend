@@ -57,7 +57,7 @@ export default {
         node:String,
         searchBy: String,
         filterDateBy: String,
-        status: Array
+        status: [Array, String]
     },
     components: {
         "table-master" : TableMaster,

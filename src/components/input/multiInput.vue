@@ -7,6 +7,7 @@
                 </template>
 
                 <el-select 
+                    ref="autoFocusSelect"
                     class="multi-input"
                     v-if="!listenIsMultiple"
                     multiple
@@ -17,7 +18,6 @@
                     :disabled="listenIsDisabled"
                     :loading="loadingActive"
                     :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
-                    @focus="inputFocus"
                     @keyup.enter.native="addItem"
                     @change="updateValue"
                 >
@@ -58,6 +58,10 @@ export default {
         hiddenTitle: Boolean,
         collapseTags: Boolean,
         isAllowCreate: Boolean,
+        autofocus: {
+            type: Boolean,
+            default: false
+        },
     },
     data() {
         return {
@@ -100,21 +104,34 @@ export default {
         },
     },
     methods: {
-        inputFocus() {
-            this.$emit("inputFocus", this.DataTemplate);
-        },
         addItem(event) {
             const newItem = event.target.value.trim();
             if (newItem && !this.value.includes(newItem)) {
                 this.value.push(newItem);
                 event.target.value = '';
+
+                this.$emit("updateValue", this.listenFormKey, this.value, null, this.dataObj);
             }
         },
         updateValue(val) {
-            let dataValue = !this.listenIsMultiple && !this.isMultipleTag ? this.value : this.arrValue;
-            let obj = this.DataTemplate.filter(item => item.value === val)[0];
+            let dataValue = this.listenIsMultiple ? this.value : this.value[0] || '';
+            let obj = this.DataTemplate.find(item => item.value === val);
             this.$emit("updateValue", this.listenFormKey, dataValue, obj, this.dataObj);
         },
+        focusSelect() {
+            if (this.$refs.autoFocusSelect) {
+                this.$nextTick(() => {
+                    this.$refs.autoFocusSelect.$el.querySelector('input').focus();
+                });
+            }
+        }
+    },
+    mounted() {
+        this.$nextTick(() => {
+            if (this.autofocus) {
+                this.focusSelect();
+            }
+        });
     },
 };
 </script>
