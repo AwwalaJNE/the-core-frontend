@@ -51,7 +51,7 @@
 
         <dialog-confirm
             title="Remove Node"
-            :message="`Are you sure you want to remove this node with id ${this.id}?`"
+            :message="`Are you sure you want to remove this node with code ${this.primaryKey}?`"
             :active="activeDialogConfirmRemove"
             :loading="loadingConfirmRemove"
             :closeDialog="closeDialogConfirmRemove"
@@ -162,6 +162,7 @@ export default {
               }
             ],
             id: '',
+            primaryKey: '',
             activeDialogConfirmRemove: false,
             loadingConfirmRemove:false,
         }
@@ -261,6 +262,7 @@ export default {
         },
         actionRemove(val){
             this.id = val.node_id;
+            this.primaryKey = val.node_code
             this.activeDialogConfirmRemove = true
         },
         confirmRemove() {
