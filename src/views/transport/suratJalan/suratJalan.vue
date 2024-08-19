@@ -65,7 +65,7 @@ export default {
         dateFilter: Array,
         searchBy: String,
         filterDateBy: String,
-        status: Array
+        status: [Array, String]
     },
     components: {
       "table-master" : TableMaster,
