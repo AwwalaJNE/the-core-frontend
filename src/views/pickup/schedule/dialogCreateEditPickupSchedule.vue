@@ -261,7 +261,7 @@ export default {
                 let suggestions = [];
                 result.map(item => {
                     suggestions.push({
-                        value: item['node_name'],
+                        value: item['node_name'] + " (" + item.node_code + ")",
                         data: item
                     });
                 });
@@ -420,7 +420,7 @@ export default {
                         let arr = []
                         res.data.data.map(item => {
                             let obj = {}
-                            obj["label"] = item.node_name
+                            obj["label"] = item.node_name + " (" + item.node_code + ")",
                             obj["value"] = Number(item.node_id)
 
                             arr.push(obj)

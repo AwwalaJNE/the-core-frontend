@@ -150,6 +150,7 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 if (val.hasOwnProperty('node_destination')) {
+                    console.log("INI", val)
                     this.$store.dispatch("SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION", val.node_destination.node_name)
                 }
                 this.node_id = val.node_id
@@ -335,7 +336,7 @@ export default {
                 result.length > 0 && result.map(item => {
                     if(item.hasOwnProperty('node_name')) {
                         suggestions.push({
-                                value: item['node_name'],
+                                value: item['node_name']  + " (" + item.node_code + ")",
                                 data: item
                         });
                     }
