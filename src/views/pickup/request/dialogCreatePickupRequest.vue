@@ -161,7 +161,7 @@ export default {
                     let arr = []
                     res.data.data.map(item => {
                         let obj = {}
-                        obj["label"] = item.node_name
+                        obj["label"] = item.node_name + " (" + item.node_code + ")"
                         obj["value"] = Number(item.node_id)
 
                         arr.push(obj)

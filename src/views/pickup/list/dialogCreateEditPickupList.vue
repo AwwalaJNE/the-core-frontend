@@ -335,7 +335,7 @@ export default {
                 result.length > 0 && result.map(item => {
                     if(item.hasOwnProperty('node_name')) {
                         suggestions.push({
-                                value: item['node_name'],
+                                value: item['node_name']  + " (" + item.node_code + ")",
                                 data: item
                         });
                     }
