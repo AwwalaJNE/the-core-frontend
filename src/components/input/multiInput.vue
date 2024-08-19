@@ -108,11 +108,13 @@ export default {
             if (newItem && !this.value.includes(newItem)) {
                 this.value.push(newItem);
                 event.target.value = '';
+
+                this.$emit("updateValue", this.listenFormKey, this.value, null, this.dataObj);
             }
         },
         updateValue(val) {
-            let dataValue = !this.listenIsMultiple && !this.isMultipleTag ? this.value : this.arrValue;
-            let obj = this.DataTemplate.filter(item => item.value === val)[0];
+            let dataValue = this.listenIsMultiple ? this.value : this.value[0] || '';
+            let obj = this.DataTemplate.find(item => item.value === val);
             this.$emit("updateValue", this.listenFormKey, dataValue, obj, this.dataObj);
         },
     },

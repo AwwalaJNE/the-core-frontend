@@ -409,20 +409,20 @@ export default {
             return result;
         },
         handleClearForm(){
-            this.koliCode = []
-            // this.primaryKey = ""
-            // this.primaryKeyList = []
-            // this.listValidItem = []
             this.$refs.koliCode.value = []
             this.$refs.dialogEntryStatus.handleClearForm()
+        },
+        handleClearRemoveForm(){
+            this.$refs.removeKoliCode.value = []
+            this.removeKoliCode = []
         },
         updateValue(key, val) {
             switch(key) {
                 case "KOLI_CODE":
-                    this.koliCode = val;
+                    this.koliCode = this.$refs.koliCode.value;
                     break;
                 case "REMOVE_KOLI_CODE":
-                    this.removeKoliCode = val;
+                    this.removeKoliCode = this.$refs.removeKoliCode.value;
                     break;
                 case "TRIGGER_DATE":
                     this.dateRange = val
@@ -490,7 +490,6 @@ export default {
                         this.openNotification('danger', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
                     }                    
                 }).catch(err => {
-                    // TODO: RECHECK CLEAR FORM
                     this.refresh();
                     this.handleClearForm();
                     this.openNotification('danger', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
@@ -516,15 +515,12 @@ export default {
                         this.primaryKeyList = this.listValidItem
                         this.activeDialogConfirmRemoveBulk = true
                     } else {
-                        this.$refs.removeKoliCode.value = []
-                        this.removeKoliCode = []
+                        this.handleClearRemoveForm();
                         this.refresh();
                         this.openNotification('danger', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
                     }     
                 }).catch(err => {
-                    // TODO: RECHECK CLEAR FORM
-                    this.$refs.removeKoliCode.value = []
-                    this.removeKoliCode = []
+                    this.handleClearRemoveForm();
                     this.refresh();
                     this.openNotification('danger', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
                 })
@@ -593,8 +589,7 @@ export default {
                 .then(res => {
                     this.closeDialogConfirmRemoveBulk()
                     this.loadingConfirmRemoveBulk = false
-                    this.$refs.removeKoliCode.value = []
-                    this.removeKoliCode = []
+                    this.handleClearRemoveForm();
                     this.refresh()
                     this.openNotification(null, 'Remove Bulk success', 'Remove Bulk Irreg success')
                 }).catch(err => {
