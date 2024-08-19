@@ -482,7 +482,13 @@ export default {
                         .filter(item => item.status === 'SUCCESS')
                         .map(item => item.item_number);
 
-                    this.dialogEntryStatusActive = true
+                    if (this.listValidItem.length > 0) {
+                        this.dialogEntryStatusActive = true
+                    } else {
+                        this.refresh();
+                        this.handleClearForm();
+                        this.openNotification('danger', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
+                    }                    
                 }).catch(err => {
                     // TODO: RECHECK CLEAR FORM
                     this.refresh();
@@ -505,9 +511,16 @@ export default {
                     this.listValidItem = this.validItem
                         .filter(item => item.status === 'SUCCESS')
                         .map(item => item.item_number);
-                        
-                    this.primaryKeyList = this.listValidItem
-                    this.activeDialogConfirmRemoveBulk = true
+                    
+                    if (this.listValidItem.length > 0) {
+                        this.primaryKeyList = this.listValidItem
+                        this.activeDialogConfirmRemoveBulk = true
+                    } else {
+                        this.$refs.removeKoliCode.value = []
+                        this.removeKoliCode = []
+                        this.refresh();
+                        this.openNotification('danger', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
+                    }     
                 }).catch(err => {
                     // TODO: RECHECK CLEAR FORM
                     this.$refs.removeKoliCode.value = []
