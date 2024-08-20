@@ -545,7 +545,7 @@ export default {
               let arr = []
                       res.data.data.map(item => {
                           let obj = {}
-                          obj["label"] = item.service_code
+                          obj["label"] = item.service_name
                           obj["value"] = item.service_code
 
                           this.serviceArrayNew.push(obj)
