@@ -68,7 +68,7 @@ export default {
     payment: api + "payment",
 
     // Service
-    service: api + "service",
+    service: api + "service-list",
 
     //  inventory Vehicle
     inventory_vehicle: api + "inventory-vehicle",
