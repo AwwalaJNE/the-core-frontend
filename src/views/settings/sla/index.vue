@@ -232,7 +232,7 @@ export default {
                     title: "UPLOAD SLA"
                 },
             ],
-            title:"SLA Koli",
+            title:"SLA KOLI",
             navActive: "sla-koli",
             tempSearch: "",
             dialogNode: false,
