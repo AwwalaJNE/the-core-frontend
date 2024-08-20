@@ -96,6 +96,7 @@
     "testMatch": [
       "**/tests/unit/**/*.spec.[jt]s?(x)"
     ],
-    "setupFilesAfterEnv": ["<rootDir>/tests/jest.setup.js"]
+    "setupFilesAfterEnv": ["<rootDir>/tests/jest.setup.js"],
+    "silent": true
   }
 }
