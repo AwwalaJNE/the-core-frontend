@@ -1028,7 +1028,22 @@
                                   </template>
                                 </template>
                                 <template v-else>
-                                  <p>{{ itm }}</p>
+                                  <template
+                                    v-if="
+                                      hasLinkedChild !== undefined &&
+                                        hasLinkedChild.length > 0 &&
+                                        itm !== undefined
+                                        && hasLinkedChild.includes(c_item)
+                                    "
+                                  >
+                                    <span class="text-link" @click="handleEditLinkedChild(itm)">
+                                    {{ itm ? itm : "" }}
+                                    </span>
+                                  </template>
+
+                                  <template v-else>
+                                    <p>{{ itm }}</p>
+                                  </template>
                                 </template>
                               </li>
                             </ul>
@@ -1106,6 +1121,7 @@ export default {
     hasLinked2: Array,
     hasLinked3: Array,
     hasLinked4: Array,
+    hasLinkedChild: Array,
     removeOnly: Boolean,
     runsheetAction: Boolean,
     printAction: Boolean,
@@ -1354,6 +1370,9 @@ export default {
     },
     handleEdit3(val, key) {
       this.$emit("handleEdit3", val);
+    },
+    handleEditLinkedChild(val) {
+      this.$emit("handleEditLinkedChild", val);
     },
     handlePictureCardPreview(val) {
 
