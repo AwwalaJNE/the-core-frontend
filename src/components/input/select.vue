@@ -48,7 +48,9 @@
                           v-for="(item,key) in DataArr"
                           :key="key"
                           :label="item.label"
-                          :value="item.value">
+                          :value="item.value"
+                          v-bind:data-kt="item.label"
+                          >
                           </el-option>
                       </el-select>
                     </template>
@@ -72,7 +74,8 @@
                                 v-for="(item,key) in DataArr"
                                 :key="key"
                                 :label="item.label"
-                                :value="item.value">
+                                :value="item.value"
+                                v-bind:data-kt="item.label">
                             </el-option>
                         </el-select>
                     </template>
@@ -92,7 +95,8 @@
                           v-for="(item,key) in DataArr"
                           :key="key"
                           :label="item.label"
-                          :value="item.value">
+                          :value="item.value"
+                          v-bind:data-kt="item.label">
                           </el-option>
                       </el-select>
                     </template>
