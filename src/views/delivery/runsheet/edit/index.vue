@@ -983,6 +983,8 @@ export default {
         }
         if (item.is_approve === '1') {
           this.disabledApprove = true
+        } else {
+          item["is_disabled_input_status"] = true
         }
  
         item.isDisabled = item.is_delivered === 1;
