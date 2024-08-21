@@ -222,13 +222,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        // this.openNotification('warn', 'Surat Jalan data is empty!', ' Please create a new Surat Jalan data')
+                        // this.openNotification('warn', null, 'Surat Jalan data is empty!', ' Please create a new Surat Jalan data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Surat Jalan data', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Surat Jalan data', err)
                 })
         },
 
@@ -312,7 +312,7 @@ export default {
                     this.loading = false
                     this.refresh()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         async cancel() {
@@ -332,7 +332,7 @@ export default {
                     this.loading = false
                     this.refresh()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         closeDialogSuratJalan() {

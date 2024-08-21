@@ -212,13 +212,13 @@ export default {
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
                         this.dataTable = [];
-                        // this.openNotification('warn', 'node commission data is empty!', ' Please create a new node commission')
+                        // this.openNotification('warn', null, 'node commission data is empty!', ' Please create a new node commission')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate node commission list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node commission list', err)
                 })
         },
         actionUpdate(val){
@@ -274,7 +274,7 @@ export default {
                     let message = err.response.data ? err.response.data.message : 'Update Failed'
                     this.loading = false
                     this.closeDialogConfirmRemove();
-                    this.openNotification('danger', 'Remove Employee is failed', message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Remove Employee is failed', message)
                    
                 })
         },

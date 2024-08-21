@@ -204,7 +204,7 @@ export default {
           this.Helper.header()
         );
 
-        this.openNotification("success", "Success!", "Password Updated!");
+        this.openNotification("success", null, "Success!", "Password Updated!");
 
         this.$ls.set("is_first_login", false);
         const user = this.getUserData;
@@ -218,7 +218,7 @@ export default {
           msg = e.response.data.message;
         }
 
-        this.openNotification("danger", "Failed!", msg);
+        this.openNotification("danger", err.response ? err.response.data.code : '', "Failed!", msg);
       } finally {
         this.hideLoading();
       }

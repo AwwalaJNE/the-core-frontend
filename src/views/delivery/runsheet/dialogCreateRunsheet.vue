@@ -148,10 +148,10 @@ export default {
 
                         this.courier_arr = arr
                     } else {
-                        this.openNotification('warn', 'Delivery courier data is empty!', ' Please create a new courier delivery')
+                        this.openNotification('warn', null, 'Delivery courier data is empty!', ' Please create a new courier delivery')
                     }
                 }).catch(err => {
-                    this.openNotification('danger', 'Failed to populate delivery courier list', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate delivery courier list', err.response ? err.response.data.message : 'something went wrong')
                 })
 
             this.loading = false

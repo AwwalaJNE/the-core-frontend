@@ -398,7 +398,7 @@ export default {
     handlePenerusan(val) {
       if (this.isDisabled) {
         this.is_penerusan = !val.target.checked
-        this.openNotification('warn', 'Information', 'Surat Jalan is DEPARTED')
+        this.openNotification('warn', null, 'Information', 'Surat Jalan is DEPARTED')
       }
       else {
         this.is_penerusan = val.target.checked
@@ -481,11 +481,11 @@ export default {
               "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
               null
             );
-            // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+            // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
           }
         })
         .catch((err) => {
-          // this.openNotification('danger', 'Failed to collect role list', err)
+          // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         });
     },
     getLov() {
@@ -547,11 +547,11 @@ export default {
               arr.length > 0 ? arr : null
             );
           } else {
-            // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+            // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
           }
         })
         .catch((err) => {
-          // this.openNotification('danger', 'Failed to collect role list', err)
+          // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         });
     },
     async getDataSuratMuatan() {
@@ -595,7 +595,7 @@ export default {
             let message = err.response.data
               ? err.response.data.message
               : "failed Load Data";
-            this.openNotification("warn", "Information", message);
+            this.openNotification("warn", null, "Information", message);
           }
         });
     },
@@ -622,11 +622,11 @@ export default {
               arr.length > 0 ? arr : null
             );
           } else {
-            // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+            // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
           }
         })
         .catch((err) => {
-          // this.openNotification('danger', 'Failed to collect role list', err)
+          // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         });
     },
     validateTempItemSJ(itemSJ) {

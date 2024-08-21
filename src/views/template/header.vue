@@ -157,7 +157,7 @@ export default {
                 .then((res) => {
                     this.$ls.set('node_id', node[0])
                     this.$store.dispatch(`SET_USER_N`, node[0])
-                    this.openNotification("success", "Success!", res.data.message || "Node Updated!");
+                    this.openNotification("success", null, "Success!", res.data.message || "Node Updated!");
                     this.$router.go(0)
                 })
                 .catch((err) => {

@@ -89,7 +89,7 @@ export default {
           ? err.response.data.message
           : "Something went wrong";
 
-        this.openNotification("danger", "Login Gagal !", errorMessage);
+        this.openNotification("danger", err.response ? err.response.data.code : '', "Login Gagal !", errorMessage);
       }
     },
     //     logout() {

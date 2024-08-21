@@ -190,12 +190,12 @@ export default {
                         this.status_arr = arr
                         
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     this.loadingStatus = false
                 }).catch(err => {
                     this.loadingStatus = false
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getDataGudang(){
@@ -221,12 +221,12 @@ export default {
                         this.gudang_arr = arr
                         
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     this.loadingGudang = false
                 }).catch(err => {
                     this.loadingGudang = false
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async handleSubmit(){
@@ -247,7 +247,7 @@ export default {
                     this.openNotification(null, 'Success', 'Create new tracing remark is success')
                 }).catch(err => {
                     this.loadingRemark = false
-                    this.openNotification('danger', 'Create new tracing remark failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new tracing remark failed', err.response ? err.response.data.message : 'something went wrong')
                 })
 
             this.callRefreshRemarkFunction();

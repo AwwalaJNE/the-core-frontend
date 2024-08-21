@@ -276,7 +276,7 @@ export default {
                     }
 
                     if(needValidation == true) {
-                        this.openNotification('warn', `Multi koli pada input '${inputan}' urutan ke ${indexKoli + 1} kosong`, `input ${inputan} tidak boleh kosong`)
+                        this.openNotification('warn', null, `Multi koli pada input '${inputan}' urutan ke ${indexKoli + 1} kosong`, `input ${inputan} tidak boleh kosong`)
                     } else {
                         this.createConnote2()
                     }
@@ -383,11 +383,11 @@ export default {
                     
                     
                 } else {
-                    this.openNotification('danger', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
                 }
               }).catch(err => {
-                  this.openNotification('danger', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
-                // this.openNotification('danger', 'Failed to collect role list', err)
+                  this.openNotification('danger', err.response ? err.response.data.code : '', 'Booking code not found', err.response ? err.response.data.message : 'something went wrong')
+                // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
               })
         },
 
@@ -409,7 +409,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate node list', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err.response.data.message)
                 })
         },
 
@@ -491,12 +491,12 @@ export default {
                         }
                         // this.rerender = false
                     } else {
-                        this.openNotification('danger', 'Transaction failed', err.response ? err.response.data.message : 'something went wrong')
+                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Transaction failed', err.response ? err.response.data.message : 'something went wrong')
                     }
                     this.closeLoading()
                 }).catch(err => {
                     // this.rerender = false
-                    this.openNotification('danger', 'Transaction failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Transaction failed', err.response ? err.response.data.message : 'something went wrong')
                     this.closeLoading()
                 })
         },
@@ -758,8 +758,8 @@ export default {
                     }).catch(err => {
                         // this.loading = false
                         // this.checkAuth(err.response)
-    					// this.openNotification('danger', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
-                        // this.openNotification('danger', 'Failed to populate country list', err)
+    					// this.openNotification('danger', err.response ? err.response.data.code : '', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
+                        // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate country list', err)
                     })
     		},
 

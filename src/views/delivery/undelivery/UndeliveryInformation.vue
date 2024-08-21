@@ -149,7 +149,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Undelivery list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Undelivery list', err)
                 })
         },
 

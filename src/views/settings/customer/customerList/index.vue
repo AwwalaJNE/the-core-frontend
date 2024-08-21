@@ -208,13 +208,13 @@ export default {
                         
                     } else {
                         this.dataTable = [];
-                        // this.openNotification('warn', 'Customer data is empty!', ' Please create a new Customer')
+                        // this.openNotification('warn', null, 'Customer data is empty!', ' Please create a new Customer')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate customer list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate customer list', err)
                 })
         },
         async getCustomerById(customer_id) {
@@ -227,7 +227,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate customer list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate customer list', err)
                 })
         },
         actionUpdate(val){
@@ -283,7 +283,7 @@ export default {
                 this.activeLoadingRemove = false
                 this.closeDialogConfirmRemove()
                 this.refresh()
-                this.openNotification('danger', 'Delete Customer is failed', err)
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete Customer is failed', err)
               })
         },
         updateValue(key, val) {

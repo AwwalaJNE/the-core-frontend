@@ -395,12 +395,12 @@ export default {
                         this.status_code_arr = arr
                         
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     this.loadingStatus = false
                 }).catch(err => {
                     this.loadingStatus = false
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async handleSubmit() {
@@ -422,7 +422,7 @@ export default {
                             } else if (file?.uid) {
                                 form[`file_${file.uid}`] = this.fileList[index].attachment_id;
                             } else {
-                                this.openNotification('warn', 'File is not valid', ' Please put in the expected format')
+                                this.openNotification('warn', null, 'File is not valid', ' Please put in the expected format')
                             }
                         });
 
@@ -453,7 +453,7 @@ export default {
                             if (file.raw && file.raw instanceof Blob) {
                                 form[`file_${this.generateRandomString(5)}`] = file.raw;
                             } else {
-                                this.openNotification('warn', 'File is not valid', ' Please put in the expected format');
+                                this.openNotification('warn', null, 'File is not valid', ' Please put in the expected format');
                             }
                         });
 

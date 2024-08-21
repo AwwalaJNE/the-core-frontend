@@ -173,13 +173,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        // this.openNotification('warn', 'tariff data is empty!', ' Please create cost to cost data')
+                        // this.openNotification('warn', null, 'tariff data is empty!', ' Please create cost to cost data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate tariff list', err)
                 })
         },
 
@@ -229,7 +229,7 @@ export default {
                 }).catch(err => {
                     this.loading = false
                      this.closeDialogConfirmRemove();
-                    this.openNotification('danger', 'Romove Costing is failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Romove Costing is failed', err)
                    
                 })
         },

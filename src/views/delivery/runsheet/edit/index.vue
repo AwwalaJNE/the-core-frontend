@@ -633,7 +633,7 @@ export default {
         })
         .catch((err) => {
           this.loadingCourier = true;
-          // this.openNotification('danger', 'Failed to populate status', err)
+          // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate status', err)
         });
     },
     closeDialogConfirmEmployee() {
@@ -661,10 +661,10 @@ export default {
             };
           this.scanBagPraRunsheet(postData)
           // this.refresh()
-          // this.openNotification('success', ' success', 'Insert bag item successfully')
+          // this.openNotification('success', null, ' success', 'Insert bag item successfully')
         }).catch(err => {
           this.loading = false
-          this.openNotification('danger', ' Nomor bag item is failed', err)
+          this.openNotification('danger', err.response ? err.response.data.code : '', ' Nomor bag item is failed', err)
         })
     },
     async scanBagPraRunsheet(postData) {
@@ -682,7 +682,7 @@ export default {
           if (err.response.data.status == 'failed') {
             this.actionPopup(this.form, err.response.data.data)
           } else {
-            this.openNotification("danger", "", err.response.data.message);
+            this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
           }
         });
     },
@@ -720,10 +720,10 @@ export default {
             }
           }
           // this.refresh()
-          // this.openNotification('success', ' success', 'Insert bag item successfully')
+          // this.openNotification('success', null, ' success', 'Insert bag item successfully')
         }).catch(err => {
           this.loading = false
-          this.openNotification('danger', ' Nomor bag item is failed', err)
+          this.openNotification('danger', err.response ? err.response.data.code : '', ' Nomor bag item is failed', err)
         })
     },
     actionPopup(dataItem, listConnote) {
@@ -755,7 +755,7 @@ export default {
           this.checkZoneDelivery(this.form)
         })
         .catch((err) => {
-          this.openNotification("danger", err.response.data.status, err.response.data.message);
+          this.openNotification("danger", err.response ? err.response.data.code : '', err.response.data.status, err.response.data.message);
           this.clearInputs();
         });
     },
@@ -774,7 +774,7 @@ export default {
           if (err.response.data.status == 'failed') {
             this.actionPopup(this.form, err.response.data.data)
           } else {
-            this.openNotification("danger", "", err.response.data.message);
+            this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
           }
         });
     },
@@ -814,7 +814,7 @@ export default {
         })
         .catch((err) => {
           this.loadingRunsheet = false;
-          this.openNotification("danger", "", err.response.data.message);
+          this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
         });
     },
     async addBagPraRunsheetToRunsheet(form) {
@@ -854,7 +854,7 @@ export default {
         })
         .catch((err) => {
           this.loadingRunsheet = false;
-          this.openNotification("danger", "", err.response.data.message);
+          this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
         });
     },
     async removeConnote() {
@@ -892,7 +892,7 @@ export default {
         })
         .catch((err) => {
           this.loadingRunsheet = false;
-          this.openNotification("danger", "", err.response.data.message);
+          this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
         });
     },
     async getStatus() {
@@ -929,7 +929,7 @@ export default {
  
         })
         .catch((err) => {
-          // this.openNotification('danger', 'Failed to populate status', err)
+          // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate status', err)
         });
     },
     async getDataDelivery() {
@@ -950,7 +950,7 @@ export default {
         })
         .catch((err) => {
           this.loadingRunsheet = false;
-          // this.openNotification('danger', 'Failed to populate status', err)
+          // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate status', err)
         });
     },
     processDataDelivery(data) {
@@ -1033,13 +1033,13 @@ export default {
  
       if (dataPOD.remarks || dataPOD.receiver_name || dataPOD.status) {
         if (!dataPOD.status) {
-          this.openNotification('warn', 'Status Kosong', 'Status Wajib Diisi')
+          this.openNotification('warn', null, 'Status Kosong', 'Status Wajib Diisi')
           return
         }
         else {
           let statusDesc = this.arrStatus.find(status => status.value === dataPOD.status)
           if (statusDesc.label.includes("RECEIVED") && !dataPOD.receiver_name) {
-            this.openNotification('warn', 'Receiver Kosong', 'Receiver Wajib Diisi')
+            this.openNotification('warn', null, 'Receiver Kosong', 'Receiver Wajib Diisi')
             return
           }
         }
@@ -1077,11 +1077,11 @@ export default {
               this.loadingConfirm = false;
             });
         } else {
-          this.openNotification("danger", "Failed", "Runsheet unavailable!");
+          this.openNotification("danger", err.response ? err.response.data.code : '', "Failed", "Runsheet unavailable!");
         }
       }
       else {
-        this.openNotification("danger", "POD KOSONG", "Isi POD terlebih dahulu");
+        this.openNotification("danger", err.response ? err.response.data.code : '', "POD KOSONG", "Isi POD terlebih dahulu");
       }
     },
     disableDeliveredPOD(val) {
@@ -1199,7 +1199,7 @@ export default {
           this.openNotification(null, "Success", res.data.message);
         })
         .catch((err) => {
-          this.openNotification("danger", "approve FAILED !", err.response.data.message);
+          this.openNotification("danger", err.response ? err.response.data.code : '', "approve FAILED !", err.response.data.message);
         });
         this.loadingConfirmUnpproveRunsheet=false
     },

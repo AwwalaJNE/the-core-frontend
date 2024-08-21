@@ -271,13 +271,13 @@ export default {
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
-                        // this.openNotification('warn', 'Irreguralities Cancel data is empty!', ' Please create Irreguralities Cancel data')
+                        // this.openNotification('warn', null, 'Irreguralities Cancel data is empty!', ' Please create Irreguralities Cancel data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Irreguralities Cancel', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Cancel', err)
                 })
         },
         async handleSubmit() {
@@ -296,7 +296,7 @@ export default {
                 }).catch(err => {
                     this.loading = false
                     this.refresh()
-                    this.openNotification('danger', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         searchValue (val) {
@@ -351,7 +351,7 @@ export default {
             }).catch(err => {
                 this.closeDialogApproveCancel()
                 this.refresh()
-                this.openNotification('danger', 'Cannot approve cancel irregularity', err.response ? err.response.data.message : 'something went wrong')
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Cannot approve cancel irregularity', err.response ? err.response.data.message : 'something went wrong')
             })
             this.loading = false
             return true;

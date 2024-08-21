@@ -193,7 +193,7 @@ export default {
         let errMessage = err.response ? err.response.data.message : 'Failed to populate bag';
         this.loading = false;
         this.$emit("getResponse", {}, this.loading);
-        this.openNotification('danger', 'Failed to populate bag', errMessage);
+        this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag', errMessage);
       }
     },
 
@@ -216,7 +216,7 @@ export default {
           this.closeDialog();
           this.cancel();
           this.$emit("refresh");
-          this.openNotification("danger", "Update Pickup is failed", err);
+          this.openNotification("danger", err.response ? err.response.data.code : '', "Update Pickup is failed", err);
         });
     },
     activeLoading() {
@@ -240,7 +240,7 @@ export default {
           this.item_picked.push(bagRow);
         }
       } else {
-        this.openNotification("danger", "Select item is failed", "Bag or Connote not found!");
+        this.openNotification("danger", err.response ? err.response.data.code : '', "Select item is failed", "Bag or Connote not found!");
       }
       this.scan_bag=null;
     },

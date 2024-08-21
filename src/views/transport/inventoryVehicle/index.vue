@@ -193,7 +193,7 @@ export default {
 
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate employee list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate employee list', err)
                 })
         },
         async getDataVehicle() {
@@ -215,7 +215,7 @@ export default {
                     
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate vehicle list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate vehicle list', err)
                 })
             
         },
@@ -240,7 +240,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate bag list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag list', err)
                 })
             
         },

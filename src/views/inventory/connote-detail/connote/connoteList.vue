@@ -167,13 +167,13 @@ export default {
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
                     // if(res.data.data.length == 0) {
-                    //     this.openNotification('warn', 'Failed to populate User data', )
+                    //     this.openNotification('warn', null, 'Failed to populate User data', )
                     // }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate users list', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate users list', err.response.data.message)
                 })
         },
         actionUpdate(val){
@@ -199,7 +199,7 @@ export default {
                     this.openNotification(null, 'Romove success', 'Romove role is success')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Romove role is failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Romove role is failed', err)
                 })
         },
         actionLimit(val){

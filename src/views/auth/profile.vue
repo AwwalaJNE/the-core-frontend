@@ -185,7 +185,7 @@ export default {
           this.Helper.header()
         )
         .then((res) => {
-          this.openNotification("success", "Success!", "Profile Updated!");
+          this.openNotification("success", null, "Success!", "Profile Updated!");
         })
         .catch((err) => {
           let title = "Failed!";
@@ -194,7 +194,7 @@ export default {
             title = "Validation Failed";
             msg = err.response.data.message;
           }
-          this.openNotification("danger", "Failed!", msg);
+          this.openNotification("danger", err.response ? err.response.data.code : '', "Failed!", msg);
           this.checkAuth(err.response);
         });
       updateLoading.close();

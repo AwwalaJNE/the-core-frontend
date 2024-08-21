@@ -96,13 +96,13 @@ export default {
                        
 
                     } else {
-                        // this.openNotification('warn', 'node config is empty!', ' Please create a new config')
+                        // this.openNotification('warn', null, 'node config is empty!', ' Please create a new config')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate config list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate config list', err)
                 })
         },
         updateValue(){
@@ -122,15 +122,15 @@ export default {
                         this.kurs_usd = this.moneyformat(res.data.data.value)
                         this.getConfig()
                        
-                        this.openNotification('success', 'config is update!', ' Thanks')
+                        this.openNotification('success', null, 'config is update!', ' Thanks')
                     } else {
-                        // this.openNotification('warn', 'config is empty!', ' Please create a new config')
+                        // this.openNotification('warn', null, 'config is empty!', ' Please create a new config')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate config list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate config list', err)
                 })
         },
        

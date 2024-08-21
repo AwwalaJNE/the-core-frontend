@@ -109,7 +109,7 @@ export default {
                   this.loading = false
                 }).catch(err => {
                   this.loading = false
-                  // this.openNotification('danger', 'Failed to populate Inbound list', err)
+                  // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Inbound list', err)
                 })
             this.$ls.remove('id_inbound');
 

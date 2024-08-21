@@ -118,7 +118,7 @@ export default {
                             this.value = ""
                             this.closeDialog()
                         } else {
-                            this.openNotification('warn', 'Customer not found')
+                            this.openNotification('warn', null, 'Customer not found')
                         }
                         
                         
@@ -130,7 +130,7 @@ export default {
                     // this.handleClearForm()
                     // this.closeDialog()
                     // this.$emit("refresh")
-                    this.openNotification('danger', 'Message :', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Message :', err.response ? err.response.data.message : 'something went wrong')
                 })
         }
     },

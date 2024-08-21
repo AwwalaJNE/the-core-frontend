@@ -248,12 +248,12 @@ export default {
                         if (this.progress <= 100) {
                                 loading.changeProgress(this.progress++)
                         }
-                      this.openNotification('success', 'Success', res.data.message)
+                      this.openNotification('success', null, 'Success', res.data.message)
                       this.handleClear()
                     }
                 }).catch(err => {
                    let message = err.response ? err.response.data.message : 'Upload SLA failed'
-                  this.openNotification('danger', 'Fail', message)
+                  this.openNotification('danger', err.response ? err.response.data.code : '', 'Fail', message)
                 })
             
             setTimeout(() => {
@@ -312,7 +312,7 @@ export default {
         },
         async beforeUpload(file) {
             if (!file.type.includes("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") && !file.type.includes("application/vnd.ms-excel")) {
-                this.openNotification('danger', 'Invalid File Type', 'Only excel files allowed')
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Invalid File Type', 'Only excel files allowed')
                 return false
             }
             await this.validateExcel(file)
@@ -328,7 +328,7 @@ export default {
             let valid = true
             for (const item of this.dataSLA)  {
                 if (!item.status) {
-                  this.openNotification('danger', 'Invalid Data Detected', 'Please review your data')
+                  this.openNotification('danger', err.response ? err.response.data.code : '', 'Invalid Data Detected', 'Please review your data')
                   valid = false
                   break
                 }
@@ -366,12 +366,12 @@ export default {
             let headerList = XLSX.utils.sheet_to_json(worksheet, { header: 1 })[0];
 
             if (!headerList?.includes("Group Name")) {
-                this.openNotification('danger', 'Invalid Header', "Please use the template provided")
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Invalid Header', "Please use the template provided")
                 return
             }
 
             if (jsonExcel.length === 0) {
-                this.openNotification('danger', 'Empty Worksheet', "Please provide the data")
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Empty Worksheet', "Please provide the data")
                 return
             }
 

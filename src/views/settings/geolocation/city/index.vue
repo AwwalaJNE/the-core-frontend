@@ -190,13 +190,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        // this.openNotification('warn', 'City data is empty!', ' Please create a new city data')
+                        // this.openNotification('warn', null, 'City data is empty!', ' Please create a new city data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate city list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate city list', err)
                 })
         },
         actionUpdate(val){
@@ -279,7 +279,7 @@ export default {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         closeDialogConfirmRemove(){

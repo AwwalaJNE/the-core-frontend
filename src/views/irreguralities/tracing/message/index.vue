@@ -127,14 +127,14 @@ export default {
 
                     if(res.data.data.length == 0) {
                         if (query != "") {
-                            this.openNotification('danger', 'Irreguralities Tracing data message is empty!', ' data is empty or not found, please check your keyword in the input search')
+                            this.openNotification('danger', err.response ? err.response.data.code : '', 'Irreguralities Tracing data message is empty!', ' data is empty or not found, please check your keyword in the input search')
                         }
                     }
                     
                     this.loadingMessage = false
                 }).catch(err => {
                     this.loadingMessage = false
-                    this.openNotification('danger', 'Failed to populate Irreguralities Tracing data message list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Tracing data message list', err)
                 })
         },
         closeDialogRole() {

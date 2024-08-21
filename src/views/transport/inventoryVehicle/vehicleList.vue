@@ -210,7 +210,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate inventory vehicle list', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate inventory vehicle list', err.response.data.message)
                 })
         },
         actionUpdate(val){

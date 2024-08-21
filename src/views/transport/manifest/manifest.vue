@@ -229,13 +229,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        // this.openNotification('warn', 'Surat Muatan data is empty!', ' Please create Surat Muatan data')
+                        // this.openNotification('warn', null, 'Surat Muatan data is empty!', ' Please create Surat Muatan data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Surat Muatan', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Surat Muatan', err)
                 })
         },
 
@@ -325,7 +325,7 @@ export default {
                 this.activeLoadingCancel = false
                 this.closeDialogConfirmCancel()
                 this.refresh()
-                this.openNotification('danger', 'Delete Manifest is failed', err)
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete Manifest is failed', err)
               })
         },
 

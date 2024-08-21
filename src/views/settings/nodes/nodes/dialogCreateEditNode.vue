@@ -153,11 +153,11 @@ export default {
                         })
                         this.$store.dispatch("SET_NODE_DEFAULT_NODE_LINK_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getIpAddress(){
@@ -185,11 +185,11 @@ export default {
                         let arr = Object.keys(uniqueIPs).map(ip => ({ label: ip, value: ip }));
                         this.$store.dispatch("SET_NODE_IP_ADDRESS_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getDataAltAddress(){
@@ -209,11 +209,11 @@ export default {
                         })
                         this.$store.dispatch("SET_NODE_DEFAULT_NODE_ALTERNATE_ADDRESS_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getDataTariff(){
@@ -233,11 +233,11 @@ export default {
                         })
                         this.$store.dispatch("SET_NODE_NODE_TARIFF_CODE_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getDataNodeType(){
@@ -258,11 +258,11 @@ export default {
                         // this.dataNodeType = arr
                         this.$store.dispatch("SET_NODE_NODE_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getDataCustomer(){
@@ -282,10 +282,10 @@ export default {
 
                         this.$store.dispatch("SET_NODE_NODE_CUSTOMER_CODE_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                 }).catch(err => {
-                    this.openNotification('danger', 'Failed to get Customer Code list', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to get Customer Code list', err.response.data.message)
                 })
         },
         async updateData(){
@@ -303,7 +303,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update failed', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err.response.data.message)
                 })
 
         },
@@ -323,7 +323,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create failed', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create failed', err.response.data.message)
                 })
         },
         cancel() {

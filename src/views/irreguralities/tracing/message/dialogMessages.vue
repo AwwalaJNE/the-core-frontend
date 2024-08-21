@@ -160,10 +160,10 @@ export default {
 
                     this.form = form;
                 } else {
-                    // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                    // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                 }
             } catch (err) {
-                this.openNotification('danger', 'Failed to get data', err);
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to get data', err);
             } finally {
                 this.loadingMessage = false;
             }
@@ -181,7 +181,7 @@ export default {
                     this.openNotification(null, 'Success', 'Create new tracing message is success')
                 }).catch(err => {
                     this.loadingMessage = false
-                    this.openNotification('danger', 'Create new tracing message failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new tracing message failed', err.response ? err.response.data.message : 'something went wrong')
                 })
 
             this.callRefreshMessageFunction()

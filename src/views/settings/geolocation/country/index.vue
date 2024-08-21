@@ -177,13 +177,13 @@ export default {
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
                     if(res.data.data.length == 0) {
-                        this.openNotification('warn', 'Failed to populate country data', ' data is empty or not found, please check your keyword in the input search')
+                        this.openNotification('warn', null, 'Failed to populate country data', ' data is empty or not found, please check your keyword in the input search')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate country list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate country list', err)
                 })
         },
         actionUpdate(val){
@@ -259,7 +259,7 @@ export default {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', 'Update role is failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update role is failed', err)
                 })
         },
         closeDialogConfirmRemove(){

@@ -185,7 +185,7 @@ export default {
             this.loading = false
             this.btnLoading = false
             this.closeDialog()
-            this.openNotification('danger', 'Update Connote is failed', err)
+            this.openNotification('danger', err.response ? err.response.data.code : '', 'Update Connote is failed', err)
           })
     },
     activeLoading(){

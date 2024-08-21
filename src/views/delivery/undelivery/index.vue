@@ -274,7 +274,7 @@ export default {
                 this.loading = false
                 this.refresh()
                 // this.handleClearForm();
-                this.openNotification('danger', 'Receiving is failed', err)
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Receiving is failed', err)
               })
         },
         back(){
@@ -334,7 +334,7 @@ export default {
                 this.activeLoadingFinishReceiving = false
                 this.refresh()
                 // this.handleClearForm();
-                this.openNotification('danger','Update Failed', message)
+                this.openNotification('danger', err.response ? err.response.data.code : '','Update Failed', message)
               })
         },
     },

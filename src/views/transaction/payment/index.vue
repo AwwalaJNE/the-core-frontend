@@ -268,13 +268,13 @@ export default {
                         this.navItemm = arr
                         this.typePayment = arr[0]
                     } else {
-                        // this.openNotification('warn', 'Payment method not found!', '')
+                        // this.openNotification('warn', null, 'Payment method not found!', '')
                     }
                     
                     this.loadingDataRole = false
                 }).catch(err => {
                     this.checkAuth(err.response.status)
-                    this.openNotification('danger', 'Failed to get Payment method', err.response.data.message || 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to get Payment method', err.response.data.message || 'something went wrong')
                 })
         },
         async CreatePayment() {
@@ -307,7 +307,7 @@ export default {
                     this.$router.push({ name: 'transactionComplete', params: { id: this.transaction_id } });
                     this.openNotification(null, 'Success', 'Payment success')
                 }).catch(err => {
-                    this.openNotification('danger', 'Payment failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Payment failed', err)
                 })
             }
         },

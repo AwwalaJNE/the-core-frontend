@@ -123,7 +123,7 @@ export default {
 
                     this.checkAuth(err.response)
                     // this.loading = false
-                    // this.openNotification('danger', 'Failed to populate country list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate country list', err)
                 })
         },
     },

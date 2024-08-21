@@ -185,7 +185,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate data', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate data', err)
                 })
         },
 
@@ -245,7 +245,7 @@ export default {
                 this.activeLoadingRemove = false
                 this.closeDialogConfirmRemove()
                 this.refresh()
-                this.openNotification('danger', 'Delete Pickup is failed', err)
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete Pickup is failed', err)
               })
         },
 

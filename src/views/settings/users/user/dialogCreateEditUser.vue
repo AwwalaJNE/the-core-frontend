@@ -187,7 +187,7 @@ export default {
                     this.loadingDataRole = false
                 }).catch(err => {
                     this.loadingDataRole = false
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getDataEmployee(){
@@ -207,11 +207,11 @@ export default {
                         })
                         this.$store.dispatch("SET_USER_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
 
                 }).catch(err => {
-                    this.openNotification('danger', 'Failed to collect role list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getUserDetail(){
@@ -246,7 +246,7 @@ export default {
                     this.$store.dispatch("SET_USER_USER_NODE_ID_ArrData", nodeArr)
                     this.finishGetUser()
                 }).catch(err => {
-                    this.openNotification('danger', 'Failed!', 'Failed to get data user')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed!', 'Failed to get data user')
                     this.finishGetUser()
                 })
             this.$nextTick(() => {
@@ -267,7 +267,7 @@ export default {
                 }).catch(err => {
                     this.loading = false
                     this.checkAuth(err.response)
-                    this.openNotification('danger', 'Failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         async addData() {
@@ -284,7 +284,7 @@ export default {
                 }).catch(err => {
                     this.loading = false
                     this.checkAuth(err.response)
-                    this.openNotification('danger', 'Failed add data', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed add data', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {

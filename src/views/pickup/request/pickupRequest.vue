@@ -211,13 +211,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        // this.openNotification('warn', 'Pickup request is empty!', ' Please create a new Pickup request')
+                        // this.openNotification('warn', null, 'Pickup request is empty!', ' Please create a new Pickup request')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate pickup request', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate pickup request', err)
                 })
         },
 
@@ -257,7 +257,7 @@ export default {
                 this.activeLoadingCancel = false
                 this.closeDialogConfirmCancel()
                 this.refresh()
-                this.openNotification('danger', 'Cancel Pickup is failed', err)
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Cancel Pickup is failed', err)
               })
         },
 

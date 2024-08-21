@@ -237,7 +237,7 @@ export default {
         //         this.loading = false
         //       }).catch(err => {
         //         this.loading = false
-        //         this.openNotification('danger', 'Failed to populate node list', err)
+        //         this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err)
         //       })
         // },
         async getPickupStatus() {
@@ -261,7 +261,7 @@ export default {
                 this.loading = false
               }).catch(err => {
                 this.loading = false
-                this.openNotification('danger', 'Failed to populate node list', err)
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err)
               })
         },
         async getDataCourier(){
@@ -284,7 +284,7 @@ export default {
                     }
 
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         updateSearchBy(key, val) {

@@ -197,7 +197,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate node type list', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node type list', err.response.data.message)
                 })
         },
 
@@ -284,7 +284,7 @@ export default {
                 this.loadingConfirmRemove = false
                 this.closeDialogConfirmRemove()
                 this.loading = false
-                this.openNotification('danger', 'Delete node link is failed', err.response ? err.response.data.message : 'something went wrong')
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete node link is failed', err.response ? err.response.data.message : 'something went wrong')
               })
         },
         closeDialogConfirmRemove(){

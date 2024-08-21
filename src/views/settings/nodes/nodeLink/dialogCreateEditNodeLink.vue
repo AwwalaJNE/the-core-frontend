@@ -195,11 +195,11 @@ export default {
         //                 this.$store.dispatch("SET_NODELINK_NODE_LINK_ORIGIN_ID_ArrData", arr.length > 0 ? arr : null)
         //                 this.$store.dispatch("SET_NODELINK_NODE_LINK_DESTINATION_ID_ArrData", arr.length > 0 ? arr : null)
         //             } else {
-        //                 // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+        //                 // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
         //             }
                     
         //         }).catch(err => {
-        //             // this.openNotification('danger', 'Failed to collect role list', err)
+        //             // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         //         })
         // },
 
@@ -221,11 +221,11 @@ export default {
 
     //             this.$store.dispatch("SET_NODELINK_NODE_LINK_VEHICLE_MODE_ID_ArrData", arr.length > 0 ? arr : null)
     //           } else {
-    //             // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+    //             // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
     //           }
 
     //         }).catch(err => {
-    //           // this.openNotification('danger', 'Failed to collect role list', err)
+    //           // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
     //         })
     //   },
 
@@ -244,7 +244,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update failed', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err.response.data.message)
                 })
         },
 
@@ -264,7 +264,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create failed', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create failed', err.response.data.message)
                 })
         },
         cancel() {

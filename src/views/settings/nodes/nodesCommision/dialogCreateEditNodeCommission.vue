@@ -164,7 +164,7 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update role is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update role is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         async addData() {
@@ -183,7 +183,7 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create new Node Commission is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new Node Commission is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {

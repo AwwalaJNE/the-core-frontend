@@ -201,12 +201,12 @@ export default {
                         })
                         cb(arr);
                     } else {
-                        this.openNotification('warn', 'Origin data is empty!', ' Please create a new origin data')
+                        this.openNotification('warn', null, 'Origin data is empty!', ' Please create a new origin data')
                     }
                     this.loadingDataNodeOrigin = false
                 }).catch(err => {
                     this.loadingDataNodeOrigin = false
-                    this.openNotification('danger', 'Failed to populate service list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
                 })
         },
         async getDataNodeDestination(queryDest, cb){
@@ -228,12 +228,12 @@ export default {
                         })
                         cb(arr);
                     } else {
-                        this.openNotification('warn', 'Destination data is empty!', ' Please create a new destination data')
+                        this.openNotification('warn', null, 'Destination data is empty!', ' Please create a new destination data')
                     }
                     this.loadingDataNodeDestination = false
                 }).catch(err => {
                     this.loadingDataNodeDestination = false
-                    this.openNotification('danger', 'Failed to populate Destination list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Destination list', err)
                 })
         },
         getDataType(){
@@ -270,7 +270,7 @@ export default {
                         this.loading = false
                         this.closeDialog()
                         this.$emit("refresh")
-                        this.openNotification('danger', 'Update failed', err.response.data.message)
+                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err.response.data.message)
                     })
             } else {
                 await axios
@@ -287,7 +287,7 @@ export default {
                         this.loading = false
                         this.closeDialog()
                         this.$emit("refresh")
-                        this.openNotification('danger', 'Update failed', err.response.data.message)
+                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err.response.data.message)
                     })
             }
         },
@@ -306,7 +306,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create failed', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create failed', err.response.data.message)
                 })
         },
         cancel() {
