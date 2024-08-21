@@ -293,16 +293,29 @@
                       </vs-button>
                     </template>
                     <template v-if="dataDelivery.length > 0">
-                      <vs-button
-                        :loading="loadingConfirm"
-                        @click="approveAction"
-                        style="float: left"
-                        :disabled="disabledApprove"
-                      >
-                        <span>
-                          Approve Runsheet
-                        </span>
-                      </vs-button>
+                      <div v-if="!disabledApprove">
+                        <vs-button
+                          :loading="loadingConfirm"
+                          @click="approveAction(true)"
+                          style="float: left"
+                        >
+                          <span>
+                            Approve Runsheet
+                          </span>
+                        </vs-button>
+                      </div>
+                      <div v-else-if="disabledApprove">
+                        <vs-button
+                          :loading="loadingConfirm"
+                          @click="approveAction(false)"
+                          style="float: left"
+                          danger
+                        >
+                          <span>
+                            Unapprove Runsheet
+                          </span>
+                        </vs-button>
+                      </div>
                     </template>
                 </vs-row>
               </vs-col>
@@ -389,7 +402,7 @@
     </section>
 
     <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
-        <dialog-confirm
+        <dialog-confirm-custom
             :active="dialogConfirmEmployee" 
             :closeDialog="closeDialogConfirmEmployee"
             @updateValue="updateValueBag"
@@ -403,7 +416,17 @@
           :type="type"
           @addConnoteToRunsheet="addConnoteToRunsheet"
           @addBagPraRunsheetToRunsheet="addBagPraRunsheetToRunsheet"
-        />
+    />
+
+    <dialog-confirm
+      title="Unapprove Runsheet"
+      :message="`Are you sure you want to unapprove this runsheet?`"
+      :active="activeDialogConfirmUnpproveRunsheet"
+      :loading="loadingConfirmUnpproveRunsheet"
+      :closeDialog="closeDialogConfirmUnpproveRunsheet"
+      @confirm="confirmUnpproveRunsheet"
+      @cancel="closeDialogConfirmUnpproveRunsheet"
+    />
   </div>
 </template>
 <script>
@@ -417,7 +440,8 @@ import CameraScanner from "@/components/scanner/camera";
 
 import RunsheetInformation from "@/views/delivery/runsheet/edit/runsheetInformation";
 import RunsheetInformationCancel from "@/views/delivery/runsheet/edit/runsheetInformationCancel";
-import DialogConfirm from "@/views/delivery/runsheet/edit/dialogConfirm";
+import DialogConfirmCustom from "@/views/delivery/runsheet/edit/dialogConfirm";
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogReCheckConnoteZone from "@/views/delivery/runsheet/edit/dialogReCheckConnoteZone";
 
 export default {
@@ -429,6 +453,7 @@ export default {
     RunsheetInformation,
     RunsheetInformationCancel,
     CameraScanner,
+    "dialog-confirm-custom": DialogConfirmCustom,
     "dialog-confirm": DialogConfirm,
     "dialog-recheck-connote-zone": DialogReCheckConnoteZone
   },
@@ -486,7 +511,9 @@ export default {
       dataItem: {},
       openDialogReCheckConnoteZone: false,
       type: '',
-      listConnote: []
+      listConnote: [],
+      activeDialogConfirmUnpproveRunsheet: false,
+      loadingConfirmUnpproveRunsheet:false,
     };
   },
   computed: {
@@ -1134,33 +1161,48 @@ export default {
         );
       }
     },
-    approveAction(){
-      this.updateApprove()
+    approveAction(val){
+      this.updateApprove(val)
     },
 
-    async updateApprove(){
-      this.data_runsheet = {
-        delivery_number_runsheet: this.delivery_runsheet_number,
+    updateApprove(val){
+      this.data_is_approve = {
+        approved: val
       };
+      
+      if (val) {
+        this.confirmationApprove(val)
+      } else {
+        this.activeDialogConfirmUnpproveRunsheet = true
+      }
+      
+    },
+    confirmUnpproveRunsheet() {
+      
+      this.confirmationApprove(false)
+      this.activeDialogConfirmUnpproveRunsheet = false
+    },
+    closeDialogConfirmUnpproveRunsheet(){
+      this.activeDialogConfirmUnpproveRunsheet = false
+    }, 
+    async confirmationApprove(val) {
+      this.loadingConfirmUnpproveRunsheet=true
       await axios
-        .put(
+        .patch(
           `${this.URL.delivery}/${this.delivery_runsheet_number}/approve?n=${this.listenNodeId}`,
-          JSON.stringify(this.data_runsheet),
+          JSON.stringify(this.data_is_approve),
           this.Helper.header()
         )
         .then((res) => {
           this.form = {};
-          if (res.data.data.is_approve === 1) {
-            this.disabledApprove = true
-          }
-          this.openNotification(null, "Success", "RUNSHEET APPROVED!");
+          this.disabledApprove = val;
+          this.openNotification(null, "Success", res.data.message);
         })
         .catch((err) => {
-
           this.openNotification("danger", "approve FAILED !", err.response.data.message);
         });
+        this.loadingConfirmUnpproveRunsheet=false
     },
-    
 
     onCameraScannerGetData(data) {
       if (data && data.event === "result") {
