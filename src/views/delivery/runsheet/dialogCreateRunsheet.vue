@@ -14,7 +14,7 @@
             <div>
                 <selector 
                     ref="courier"
-                    name="courier" 
+                    name="Courier" 
                     formKey="courier"
                     :rules="''" 
                     :valueData="courier_arr"
