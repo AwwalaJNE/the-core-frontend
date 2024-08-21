@@ -708,6 +708,31 @@ export default {
       this.openDialogReCheckConnoteZone = false;
     },
     async scanConnote(postData) {
+      let valForm = {}
+      if (postData) {
+        this.form = postData
+        valForm = {
+          item_number: postData.koli_number,
+          delivery_runsheet_number: this.delivery_runsheet_number
+        }
+      } else {
+        valForm = {
+          item_number: this.form.koli_number,
+          delivery_runsheet_number: this.delivery_runsheet_number
+        }
+      }
+
+      await axios
+        .post(`${this.URL.validation}/create-runsheet?n=${this.listenNodeId}`, valForm, this.Helper.header())
+        .then((res) => {
+          this.checkZoneDelivery(this.form)
+        })
+        .catch((err) => {
+          this.openNotification("danger", err.response.data.status, err.response.data.message);
+          this.clearInputs();
+        });
+    },
+    async checkZoneDelivery(postData) {
       if (postData) {
         this.form = postData
       }
