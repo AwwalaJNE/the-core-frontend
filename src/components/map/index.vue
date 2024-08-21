@@ -164,7 +164,7 @@ export default {
         //         failure => {
         //             console.log(failure, "Failure");
         //             if (failure.message.startsWith("Only secure origins are allowed")) {
-        //                 this.openNotification('danger', 'Failed get current location', 'Only secure origins are allowed')
+        //                 this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed get current location', 'Only secure origins are allowed')
         //             }
         //         }
         //     );

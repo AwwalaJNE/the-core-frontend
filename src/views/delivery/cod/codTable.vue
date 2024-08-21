@@ -159,7 +159,7 @@ export default {
           this.pagination.page_size = res.data.meta.last_page;
           if (res.data.data.length > 0) {
           } else {
-            // this.openNotification('warn', 'Delivery Runsheet data is empty!', ' Please create a new data')
+            // this.openNotification('warn', null, 'Delivery Runsheet data is empty!', ' Please create a new data')
           }
 
           this.loading = false;
@@ -230,7 +230,7 @@ export default {
         .catch((err) => {
           this.loading = false;
           this.$emit("refresh");
-          this.openNotification("danger", "Failed!", err);
+          this.openNotification("danger", err.response ? err.response.data.code : '', "Failed!", err);
           this.refresh();
         });
     },

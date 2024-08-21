@@ -164,7 +164,7 @@ export default {
                         this.pagination.page_size = res.data.meta.last_page ;
                     } 
                 }).catch(err => {
-                    this.openNotification('danger', 'Failed to populate node list', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err.response.data.message)
                 })
             this.loading = false
         },
@@ -225,7 +225,7 @@ export default {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', 'Delete Warning Configuration is failed', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete Warning Configuration is failed', err.response.data.message)
                 })
         },
         closeDialogConfirmRemove(){

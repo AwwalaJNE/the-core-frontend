@@ -276,7 +276,7 @@ export default {
                     }
 
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getDataVehicleType(){
@@ -296,11 +296,11 @@ export default {
                         })
                         this.$store.dispatch("SET_PICKUP_LIST_VEHICLE_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getDataNodeDestination(queryString = ''){
@@ -318,11 +318,11 @@ export default {
                         // this.dataNodeType = arr
                         // this.$store.dispatch("SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         querySearch(queryString, cb){
@@ -365,7 +365,7 @@ export default {
                     this.closeDialog()
                     this.handleClearForm()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update failed', message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', message)
                 })
         },
         async addData() {
@@ -385,7 +385,7 @@ export default {
                     let message = err.response.data ? err.response.data.message : 'Create Failed'
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create failed', message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create failed', message)
                 })
         },
         cancel() {

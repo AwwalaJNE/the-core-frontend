@@ -200,7 +200,7 @@ export default {
                     // this.pagination.limit = parseInt(res.data.meta.per_page)
                     // this.pagination.page_size = res.data.meta.last_page
                     // if(res.data.data.length == 0) {
-                    //     this.openNotification('warn', 'Failed to populate User data', )
+                    //     this.openNotification('warn', null, 'Failed to populate User data', )
                     // }
                     
                     this.loading = false
@@ -209,7 +209,7 @@ export default {
                     let errMessage = err.response ? err.response.data.message : 'Failed to populate bag'
                     this.loading = false
                     this.$emit("getResponse", {}, this.loading)
-                    this.openNotification('danger', 'Failed to populate bag', errMessage)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag', errMessage)
                 })
         },
 
@@ -275,12 +275,12 @@ export default {
                     }else{
                         this.$router.push({ name: 'InventoryBag', params: { } });
                     }
-                    this.openNotification('success', 'Remove success', 'Remove bag item successfully')
+                    this.openNotification('success', null, 'Remove success', 'Remove bag item successfully')
                 }).catch(err => {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', 'Remove bag item is failed', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Remove bag item is failed', err.response.data.message)
                 })
         },
         closeDialogConfirmRemove(){

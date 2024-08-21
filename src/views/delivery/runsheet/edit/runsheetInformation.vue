@@ -333,7 +333,7 @@ export default {
           receiver_name: receiverName,
         };
 
-        this.openNotification("success", "POD UPDATED!");
+        this.openNotification("success", null, "POD UPDATED!");
 
         // Send the values to the parent component
         this.$emit("updatePOD", dataPOD, info);
@@ -376,7 +376,7 @@ export default {
         })
         .catch((err) => {
           this.loading = false;
-          this.openNotification("danger", "Romove bag item is failed", err);
+          this.openNotification("danger", err.response ? err.response.data.code : '', "Romove bag item is failed", err);
         });
     },
     actionUpdate(key, val) {

@@ -336,7 +336,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Irreguralities Problem', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Problem', err)
                 })
         },
         async handleSubmit() {
@@ -361,7 +361,7 @@ export default {
                         this.handleClearForm();
                     }).catch(err => {
                         this.loadingSubmit = false;
-                        this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
+                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
                     })
             } else {
                 await axios
@@ -377,7 +377,7 @@ export default {
                         this.handleClearForm();
                     }).catch(err => {
                         this.loadingSubmit = false;
-                        this.openNotification('danger', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
+                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
                     })
             }   
 
@@ -494,12 +494,12 @@ export default {
                     } else {
                         this.refresh();
                         this.handleClearForm();
-                        this.openNotification('danger', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
+                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
                     }                    
                 }).catch(err => {
                     this.refresh();
                     this.handleClearForm();
-                    this.openNotification('danger', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
                 })
 
             this.loadingValidation = false
@@ -524,12 +524,12 @@ export default {
                     } else {
                         this.handleClearRemoveForm();
                         this.refresh();
-                        this.openNotification('danger', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
+                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
                     }     
                 }).catch(err => {
                     this.handleClearRemoveForm();
                     this.refresh();
-                    this.openNotification('danger', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
                 })
 
             this.loadingValidation = false
@@ -565,7 +565,7 @@ export default {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', 'Remove Irreg failed', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Remove Irreg failed', err.response.data.message)
                 })
         },
         closeDialogConfirmRemove(){
@@ -603,7 +603,7 @@ export default {
                     this.loadingConfirmRemoveBulk = false
                     this.closeDialogConfirmRemoveBulk()
                     this.loading = false
-                    this.openNotification('danger', 'Remove Bulk Irreg failed', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Remove Bulk Irreg failed', err.response.data.message)
                 })
         },
         closeDialogConfirmRemoveBulk(){

@@ -165,14 +165,14 @@ export default {
                             this.dataTable = []
                             this.dataTableBag = []
                             this.handleClearData()
-                            this.openNotification('success', 'Unbagging is Success')
+                            this.openNotification('success', null, 'Unbagging is Success')
                         }
                     }
                   
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Connote', err?.response?.data?.message ? err.response.data.message : err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Connote', err?.response?.data?.message ? err.response.data.message : err)
                 })
         },
 

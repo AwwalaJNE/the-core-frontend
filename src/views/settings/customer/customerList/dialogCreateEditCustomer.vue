@@ -179,13 +179,13 @@ export default {
                         
                         this.$store.dispatch("SET_CUSTOMER_CUSTOMER_SUBDISTRICT_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getDataCustomerType(){
@@ -207,13 +207,13 @@ export default {
                         
                         this.$store.dispatch("SET_CUSTOMER_CUSTOMER_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         // async getDataNodeId(){
@@ -243,13 +243,13 @@ export default {
         //                 this.$store.dispatch("SET_CUSTOMER_CUSTOMER_DEFAULT_NODE_ID_ArrData", arr_n.length > 0 ? arr_n : null)
         //                 this.$store.dispatch("SET_CUSTOMER_N_ArrData", arr_n.length > 0 ? arr_n : null)
         //             } else {
-        //                 // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+        //                 // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
         //             }
                     
         //             this.loading = false
         //         }).catch(err => {
         //             this.loading = false
-        //             // this.openNotification('danger', 'Failed to collect role list', err)
+        //             // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         //         })
         // },
         async updateData(){
@@ -268,7 +268,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err)
                 })
         },
         async addData() {
@@ -285,7 +285,7 @@ export default {
                     this.openNotification(null, 'Create Success', 'Create new customer is success')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Create failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create failed', err)
                 })
         },
         cancel() {

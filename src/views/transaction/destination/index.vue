@@ -168,7 +168,7 @@ export default {
 
                     this.checkAuth(err.response)
                     // this.loading = false
-                    // this.openNotification('danger', 'Failed to populate country list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate country list', err)
                 })
         },
         openGetCustomer() {
@@ -248,7 +248,7 @@ export default {
                 }).catch(err => {
                     // this.loading = false
                     this.checkAuth(err.response.status)
-                    // this.openNotification('danger', 'Failed to populate country list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate country list', err)
                 })
         },
     },

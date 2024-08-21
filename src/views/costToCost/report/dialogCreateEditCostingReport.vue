@@ -211,11 +211,11 @@ export default {
         //                 this.$store.dispatch("SET_COST_TO_COST_REPORT_COST_OWNER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
         //                 this.$store.dispatch("SET_COST_TO_COST_REPORT_COST_PAYER_NODE_ID_ArrData", arr.length > 0 ? arr : null)
         //             } else {
-        //                 // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+        //                 // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
         //             }
                     
         //         }).catch(err => {
-        //             // this.openNotification('danger', 'Failed to collect role list', err)
+        //             // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         //         })
         // },
       
@@ -235,7 +235,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create Costing setting failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create Costing setting failed', err)
                 })
         },
         cancel() {

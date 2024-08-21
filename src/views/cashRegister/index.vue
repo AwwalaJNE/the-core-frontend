@@ -133,7 +133,7 @@ export default {
                 this.activeLoadingCashRegister = false
                 this.closeDialogConfirm()
                 this.$refs.transactionList.refresh()
-                this.openNotification('danger', 'Create new role is failed', err.response ? err.response.data.message : 'something went wrong')
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new role is failed', err.response ? err.response.data.message : 'something went wrong')
               })
         },
     }

@@ -131,11 +131,11 @@ export default {
               this.DataArr = arr
               this.options = arr
             } else {
-              // this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
+              // this.openNotification('warn', null, 'Permission data is empty!', ' Failed to populate permission data')
             }
 
           }).catch(err => {
-            this.openNotification('danger', 'Failed to populate permission data', err)
+            this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate permission data', err)
           })
     },
   },

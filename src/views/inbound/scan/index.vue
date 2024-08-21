@@ -171,7 +171,7 @@ export default {
               .then(res => {
                 this.closeProgress();
                 if (res.data.data.is_delivered == 1) {
-                  this.openNotification("danger", "Receiving Failed!", "Item has been delivered");
+                  this.openNotification("danger", err.response ? err.response.data.code : '', "Receiving Failed!", "Item has been delivered");
                 } else{
                   let message = 'TANPA : SM / SJ / PICKUP';
                   let typeNotif = null;
@@ -197,7 +197,7 @@ export default {
                 this.handlerClearForm()
 
                 setTimeout(()=>{
-                  this.openNotification('danger', 'Receiving Failed!', err.response.data.message)
+                  this.openNotification('danger', err.response ? err.response.data.code : '', 'Receiving Failed!', err.response.data.message)
                 }, 300);
               })
         },
@@ -234,7 +234,7 @@ export default {
                     this.loading = false
                   }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to receiving ', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to receiving ', err)
                   })
               } else {
                 this.loading = false
@@ -256,7 +256,7 @@ export default {
                     this.loading = false
                   }).catch(err => {
                     this.loading = false
-                    // this.openNotification('danger', 'Failed to populate Inbound list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Inbound list', err)
                   })
             }
             this.$ls.remove('id_inbound');

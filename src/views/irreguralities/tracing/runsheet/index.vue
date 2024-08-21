@@ -129,14 +129,14 @@ export default {
                         this.dataTable = []
                         
                         if (query != "") {
-                            this.openNotification('danger', 'Irreguralities Tracing data runsheet is empty!', ' data is empty or not found, please check your keyword in the input search')
+                            this.openNotification('danger', err.response ? err.response.data.code : '', 'Irreguralities Tracing data runsheet is empty!', ' data is empty or not found, please check your keyword in the input search')
                         }
                     }
                     
                     this.loadingRunsheet = false
                 }).catch(err => {
                     this.loadingRunsheet = false
-                    this.openNotification('danger', 'Failed to populate Irreguralities Tracing data runsheet list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Tracing data runsheet list', err)
                 })
         },
         closeDialogRole() {

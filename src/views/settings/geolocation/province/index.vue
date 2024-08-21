@@ -189,13 +189,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        // this.openNotification('warn', 'provinces data is empty!', ' Please create a new province data')
+                        // this.openNotification('warn', null, 'provinces data is empty!', ' Please create a new province data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate province list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate province list', err)
                 })
         },
         actionUpdate(val){
@@ -270,7 +270,7 @@ export default {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', 'Romove role is failed', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Romove role is failed', err.response.data.message)
                 })
         },
         closeDialogConfirmRemove(){

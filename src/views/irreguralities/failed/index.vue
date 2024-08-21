@@ -209,13 +209,13 @@ export default {
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
-                        this.openNotification('warn', 'Irreguralities Failed data is empty!', '')
+                        this.openNotification('warn', null, 'Irreguralities Failed data is empty!', '')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Irreguralities Failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Failed', err)
                 })
         },
         searchValue (val) {

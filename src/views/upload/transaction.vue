@@ -335,7 +335,7 @@ export default {
                             //     this.openPaymentDialog()
                             // });
                         // }
-                      this.openNotification('success', 'Success', 'Upload Transaction is success')
+                      this.openNotification('success', null, 'Success', 'Upload Transaction is success')
                     }
                 }).catch(err => {
                    let message = err.response ? err.response.data.message : 'upload data failed'
@@ -343,7 +343,7 @@ export default {
                     // let obj = {}
                     // this.dataTable[index]['status'] = false
                     // this.dataTable[index]['message'] = err.response.data.message || 'something went wrong'
-                  this.openNotification('danger', 'Upload Transaction is failed', message)
+                  this.openNotification('danger', err.response ? err.response.data.code : '', 'Upload Transaction is failed', message)
                 })
             
             

@@ -270,7 +270,7 @@ export default {
                 this.loading = false
               }).catch(err => {
                 this.loading = false
-                this.openNotification('danger', 'Failed to populate node list', err)
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err)
               })
         },
         async getDataDestination() {
@@ -293,7 +293,7 @@ export default {
                 this.loading = false
               }).catch(err => {
                 this.loading = false
-                this.openNotification('danger', 'Failed to populate node list', err)
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err)
               })
         },
         getNodeTypeLogin(){

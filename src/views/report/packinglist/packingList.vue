@@ -134,13 +134,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        // this.openNotification('warn', 'inbound data is empty!', ' Please create a new data')
+                        // this.openNotification('warn', null, 'inbound data is empty!', ' Please create a new data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate data', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate data', err)
                 })
         },
 

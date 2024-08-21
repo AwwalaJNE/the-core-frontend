@@ -303,7 +303,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate node list', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err.response.data.message)
                 })
         },
         actionUpdate(val){
@@ -381,12 +381,12 @@ export default {
                         this.$store.dispatch("SET_SLA_INTER_ACTIVITY_PREVIOUS_ACTIVITY_ArrData", arr);
                         this.$store.dispatch("SET_SLA_INTER_ACTIVITY_NEXT_ACTIVITY_ArrData", arr);
                     } else {
-                        this.openNotification('warn', 'Activity data is empty!', ' Please create a new Activity data')
+                        this.openNotification('warn', null, 'Activity data is empty!', ' Please create a new Activity data')
                     }
                     this.loadingDataActivity = false
                 }).catch(err => {
                     this.loadingDataActivity = false
-                    this.openNotification('danger', 'Failed to populate Activity list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Activity list', err)
                 })
         },
         actionRemove(val){
@@ -411,7 +411,7 @@ export default {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', 'Delete sla is failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete sla is failed', err)
                 })
         },
         closeDialogConfirmRemove(){

@@ -296,13 +296,13 @@ export default {
                         this.dataRole = res.data.data
                     } else {
                         this.dataRole = []
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                     this.loadingDataRole = false
                 }).catch(err => {
                     this.loadingDataRole = false
-                    this.openNotification('danger', 'Failed to collect role list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getDataPermission(){
@@ -327,13 +327,13 @@ export default {
                         this.permissionObject = temp
  
                     } else {
-                        // this.openNotification('warn', 'Permission data is empty!', ' Failed to populate permission data')
+                        // this.openNotification('warn', null, 'Permission data is empty!', ' Failed to populate permission data')
                     }
                     
                     
                 }).catch(err => {
                     this.loadingPermission = false
-                    this.openNotification('danger', 'Failed to populate permission data', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate permission data', err)
                 })
         },
         
@@ -369,7 +369,7 @@ export default {
                 })
                 .catch(err => {
                     this.loadingPermission = false
-                    this.openNotification('danger', 'Failed to populate role permission data', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate role permission data', err)
                 })
                 
                 

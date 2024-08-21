@@ -478,7 +478,7 @@ export default {
           }
         })
         .catch((err) => {
-          // this.openNotification('danger', 'Failed to collect role list', err)
+          // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         });
     },
 
@@ -506,7 +506,7 @@ export default {
           this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ArrData", arr);
         })
         .catch((err) => {
-          // this.openNotification('danger', 'Failed to collect role list', err)
+          // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         });
     },
 
@@ -543,7 +543,7 @@ export default {
           }
         })
         .catch((err) => {
-          // this.openNotification('danger', 'Failed to collect role list', err)
+          // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         });
     },
 
@@ -579,7 +579,7 @@ export default {
           }
         })
         .catch((err) => {
-          // this.openNotification('danger', 'Failed to collect role list', err)
+          // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         });
     },
 
@@ -615,7 +615,7 @@ export default {
           this.loading = false;
           this.closeDialog();
           this.$emit("refresh");
-          this.openNotification("danger", "Update failed", err);
+          this.openNotification("danger", err.response ? err.response.data.code : '', "Update failed", err);
         });
     },
 
@@ -713,7 +713,7 @@ export default {
         })
         .catch((err) => {
           this.item_code = "";
-          this.openNotification("danger", "Failed Get Data", err.response ? err.response.data.message : 'something went wrong');
+          this.openNotification("danger", err.response ? err.response.data.code : '', "Failed Get Data", err.response ? err.response.data.message : 'something went wrong');
         });
     },
     actionPagination(val) {

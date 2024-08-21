@@ -217,12 +217,12 @@ export default {
                         })
                         cb(arr);
                     } else {
-                        this.openNotification('warn', 'Origin data is empty!', ' Please create a new origin data')
+                        this.openNotification('warn', null, 'Origin data is empty!', ' Please create a new origin data')
                     }
                     this.loadingDataOrigin = false
                 }).catch(err => {
                     this.loadingDataOrigin = false
-                    this.openNotification('danger', 'Failed to populate service list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
                 })
         },
         async getDataDestination(queryDest, cb){
@@ -244,12 +244,12 @@ export default {
                         })
                         cb(arr);
                     } else {
-                        this.openNotification('warn', 'Destination data is empty!', ' Please create a new destination data')
+                        this.openNotification('warn', null, 'Destination data is empty!', ' Please create a new destination data')
                     }
                     this.loadingDataDestination = false
                 }).catch(err => {
                     this.loadingDataDestination = false
-                    this.openNotification('danger', 'Failed to populate Destination list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Destination list', err)
                 })
         },
         async getDataService(){
@@ -269,12 +269,12 @@ export default {
                         this.serviceArray = arr
                         this.$store.dispatch("SET_SLA_INTER_ACTIVITY_SERVICE_CODE_ArrData", arr)
                     } else {
-                        this.openNotification('warn', 'Service data is empty!', ' Please create a new service data')
+                        this.openNotification('warn', null, 'Service data is empty!', ' Please create a new service data')
                     }
                     this.loadingDataService = false
                 }).catch(err => {
                     this.loadingDataService = false
-                    this.openNotification('danger', 'Failed to populate service list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
                 })
         },
         async getDataCustomerName(){
@@ -294,12 +294,12 @@ export default {
                         this.customerNameArray = arr
                         this.$store.dispatch("SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME_ArrData", arr)
                     } else {
-                        this.openNotification('warn', 'Customer Name data is empty!', ' Please create a new Customer Name data')
+                        this.openNotification('warn', null, 'Customer Name data is empty!', ' Please create a new Customer Name data')
                     }
                     this.loadingDataCustomerName = false
                 }).catch(err => {
                     this.loadingDataCustomerName = false
-                    this.openNotification('danger', 'Failed to populate service list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
                 })
         },
         async getDataCustomerCode(){
@@ -319,12 +319,12 @@ export default {
                         this.customerIdArray = arr
                         this.$store.dispatch("SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE_ArrData", arr)
                     } else {
-                        // this.openNotification('warn', 'Customer ID data is empty!', ' Please create a new Customer Id data')
+                        // this.openNotification('warn', null, 'Customer ID data is empty!', ' Please create a new Customer Id data')
                     }
                     this.loadingDataCustomerCode = false
                 }).catch(err => {
                     this.loadingDataCustomerCode = false
-                    this.openNotification('danger', 'Failed to populate service list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
                 })
         },
         compareSharedProperties(obj1, obj2) {
@@ -358,7 +358,7 @@ export default {
                         this.loading = false
                         this.closeDialog()
                         this.$emit("refresh")
-                        this.openNotification('danger', 'Update failed', err.response.data.message)
+                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err.response.data.message)
                     })
             } else {
                 await axios
@@ -375,7 +375,7 @@ export default {
                         this.loading = false
                         this.closeDialog()
                         this.$emit("refresh")
-                        this.openNotification('danger', 'Update failed', err.response.data.message)
+                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err.response.data.message)
                     })
             }
         },
@@ -394,7 +394,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create failed', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create failed', err.response.data.message)
                 })
         },
         cancel() {

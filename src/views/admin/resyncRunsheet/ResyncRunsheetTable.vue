@@ -147,7 +147,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Delivery Runsheet list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Delivery Runsheet list', err)
                 })
         },
 
@@ -227,7 +227,7 @@ export default {
                     this.loading = false
                     this.handleClearForm();
                     this.closeDialogConfirmRemove();
-                    this.openNotification('danger', 'Resync Runsheet is failed', message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Resync Runsheet is failed', message)
 
                 })
         },

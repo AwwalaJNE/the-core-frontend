@@ -179,7 +179,7 @@ export default {
 
                             item["status"] = false
                             item["message"] = err.response.data.message || 'something went wrong'
-                            // this.openNotification('danger', 'Failed to collect role list', err)
+                            // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                         })
                     }
                     

@@ -147,8 +147,8 @@ export default {
                         this.err = err.response.data.message || 'Invalid'
                         // this.loading = false
                         // this.checkAuth(err.response)
-    					          // this.openNotification('danger', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
-                        // this.openNotification('danger', 'Failed to populate country list', err)
+    					          // this.openNotification('danger', err.response ? err.response.data.code : '', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
+                        // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate country list', err)
                     })
     		},
         // addKeyHandler() {

@@ -170,14 +170,14 @@ export default {
                     this.pagination.page_size = res.data.meta.last_page
                     if(res.data.data.length == 0) {
                         if (query != "") {
-                            this.openNotification('danger', 'Failed to populate bag data', ' data is empty or not found, please check your keyword in the input search')
+                            this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag data', ' data is empty or not found, please check your keyword in the input search')
                         }
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate bag list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag list', err)
                 })
         },
         actionDetail(val){

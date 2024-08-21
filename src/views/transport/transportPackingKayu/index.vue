@@ -142,7 +142,7 @@ export default {
                     this.koli_number='';
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Packingkayu list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Packingkayu list', err)
                 })
         },
         updateValue(){

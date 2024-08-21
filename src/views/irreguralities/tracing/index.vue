@@ -344,14 +344,14 @@ export default {
                         this.dataTable = []
                         
                         if (query != "") {
-                            this.openNotification('danger', 'Irreguralities Tracing data is empty!', ' data is empty or not found, please check your keyword in the input search')
+                            this.openNotification('danger', err.response ? err.response.data.code : '', 'Irreguralities Tracing data is empty!', ' data is empty or not found, please check your keyword in the input search')
                         }
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Irreguralities Tracing', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Tracing', err)
                 })
         },
         async handleSubmit() {
@@ -368,7 +368,7 @@ export default {
                 }).catch(err => {
                     this.loading = false
                     this.refresh()
-                    this.openNotification('danger', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         showData(row) {
@@ -466,7 +466,7 @@ export default {
                 })
                 .catch((err) => {
                     this.loadingScanConnote = false;
-                    this.openNotification("danger", "", err.response.data.message);
+                    this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
                 });
         },
         async removeConnote() {
@@ -490,7 +490,7 @@ export default {
                 })
                 .catch((err) => {
                     this.loadingScanConnote = false;
-                    this.openNotification("danger", "", err.response.data.message);
+                    this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
                 });
         },
 

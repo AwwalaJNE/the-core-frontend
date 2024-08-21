@@ -73,18 +73,27 @@ const Master = {
         closeLoading() {
             this.Loading.close()
         },
-        openNotification(type = null, title,msg) {
+        openNotification(type = null, code, title, msg) {
             // type success, danger, warn
             const noti = this.$vs.notification({
-                duration: type == 'danger' ? 6000 : 6000,
+                duration: 6000,
                 progress: 'auto',
                 color: type,
                 position: 'top-right',
                 title: title,
                 text: msg,
-                icon: `<i class="bx ${type == 'success' ? 'bx-select-multiple':'bx-error'}" ></i>`
-            })
+                width: '80%',
+                icon: `
+                    <div style="display: flex; flex-direction: column; align-items: center; min-width: 64px; margin-left: 30px;">
+                        <i class="bx ${type === 'success' ? 'bx-select-multiple' : 'bx-error'}" style="font-size: 24px;"></i>
+                        <div style="font-size: 12px; margin-top: 4px; color: #fff; font-weight: bold">
+                            ${type === 'danger' && code ? code : ''}
+                        </div>
+                    </div>
+                `
+            });
         },
+             
         openProgress(type = null, title,msg) {
             // type success, danger, warn
             this.alert = this.$vs.notification({

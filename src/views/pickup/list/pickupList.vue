@@ -344,13 +344,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        // this.openNotification('warn', 'Pickup data is empty!', ' Please create a new pickup data')
+                        // this.openNotification('warn', null, 'Pickup data is empty!', ' Please create a new pickup data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate tariff list', err)
                 })
         },
         closeDialogApproveCancel(){
@@ -409,7 +409,7 @@ export default {
           .catch(err => {
             this.closeDialogApproveCancel()
             this.refresh()
-            this.openNotification('danger', 'Cannot approve failed pickup', err.response ? err.response.data.message : 'something went wrong')
+            this.openNotification('danger', err.response ? err.response.data.code : '', 'Cannot approve failed pickup', err.response ? err.response.data.message : 'something went wrong')
           })
           this.loading = false
           return true;
@@ -430,7 +430,7 @@ export default {
           } catch (error) {
             this.closeDialogApproveCancel()
             this.refresh()
-            this.openNotification('danger', 'Added to Irregularities - Failed is failed', error.response ? error.response.data.message : 'something went wrong')
+            this.openNotification('danger', err.response ? err.response.data.code : '', 'Added to Irregularities - Failed is failed', error.response ? error.response.data.message : 'something went wrong')
           }
         },
         closeDialogConfirmPicked(){
@@ -572,7 +572,7 @@ export default {
                 this.activeLoadingCancel = false
                 this.closeDialogConfirmCancel()
                 this.refresh()
-                this.openNotification('danger', 'Cancel Pickup is failed', err)
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Cancel Pickup is failed', err)
               })
         },
 

@@ -420,12 +420,12 @@ export default {
               this.Helper.header())
           .then(res => {
             this.handleClearForm()
-            this.openNotification('success', 'Success', 'Add Bagging is success')
+            this.openNotification('success', null, 'Success', 'Add Bagging is success')
             this.$refs.detailbagList.refresh()
           }).catch(err => {
             this.loading = false
             this.handleClearForm()
-            this.openNotification('danger', err.response ? err.response.data.message : 'something went wrong')
+            this.openNotification('danger', err.response ? err.response.data.code : '', err.response ? err.response.data.message : 'something went wrong')
           })
     },
 
@@ -448,7 +448,7 @@ export default {
     //         this.loading = false
     //       }).catch(err => {
     //         this.loading = false
-    //         this.openNotification('danger', 'Failed to populate node list', err)
+    //         this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err)
     //       })
     // },
     // updateNode(){
@@ -468,13 +468,13 @@ export default {
 
             this.handleClearForm()
             this.loading = false
-            this.openNotification('success', 'Update Bagging is success')
+            this.openNotification('success', null, 'Update Bagging is success')
             this.$refs.detailbagList.refresh()
           }).catch(err => {
 
             this.loading = false
             this.handleClearForm()
-            this.openNotification('danger', err.response ? err.response.data.message : 'something went wrong')
+            this.openNotification('danger', err.response ? err.response.data.code : '', err.response ? err.response.data.message : 'something went wrong')
           })
     },
     actionDetail(){

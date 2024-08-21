@@ -233,13 +233,13 @@ export default {
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
-                        // this.openNotification('warn', 'node commission data is empty!', ' Please create a new node commission')
+                        // this.openNotification('warn', null, 'node commission data is empty!', ' Please create a new node commission')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate node commission list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node commission list', err)
                 })
         },
         actionUpdate(val, key) {
@@ -259,7 +259,7 @@ export default {
                     break;
                 case "remove":
                     this.node_commission_id = val.node_commission_id;
-                    this.node_commission_id != "" && this.node_commission_id != undefined ? this.activeDialogRemove = true : this.openNotification('warn', 'Node type remove is failed', '')
+                    this.node_commission_id != "" && this.node_commission_id != undefined ? this.activeDialogRemove = true : this.openNotification('warn', null, 'Node type remove is failed', '')
                     break;
                 default:
                     //
@@ -293,7 +293,7 @@ export default {
                 }).catch(err => {
                     this.loading = false
                      this.closeDialogConfirmRemove();
-                    this.openNotification('danger', 'Node type is failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Node type is failed', err)
                    
                 })
         },

@@ -169,13 +169,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        // this.openNotification('warn', 'Vehicle mode data is empty!', ' Please create a new Vehicle mode data')
+                        // this.openNotification('warn', null, 'Vehicle mode data is empty!', ' Please create a new Vehicle mode data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Vehicle mode list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Vehicle mode list', err)
                 })
         },
         actionUpdate(val){
@@ -258,7 +258,7 @@ export default {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         closeDialogConfirmRemove(){

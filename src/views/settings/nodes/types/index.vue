@@ -216,13 +216,13 @@ export default {
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page
                     } else {
-                        // this.openNotification('warn', 'Node type data is empty!', ' Please create a new node type')
+                        // this.openNotification('warn', null, 'Node type data is empty!', ' Please create a new node type')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate node type list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node type list', err)
                 })
         },
         actionUpdate(val, key) {
@@ -241,7 +241,7 @@ export default {
                     break;
                 case "remove":
                     this.node_type_id = val.node_type_id;
-                    this.node_type_id != "" && this.node_type_id != undefined ? this.activeDialogRemove = true : this.openNotification('warn', 'Node type remove is failed', '')
+                    this.node_type_id != "" && this.node_type_id != undefined ? this.activeDialogRemove = true : this.openNotification('warn', null, 'Node type remove is failed', '')
                     break;
                 default:
                     //
@@ -275,7 +275,7 @@ export default {
                 }).catch(err => {
                     this.loading = false
                      this.closeDialogConfirmRemove();
-                    this.openNotification('danger', 'Node type is failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Node type is failed', err)
                    
                 })
         },

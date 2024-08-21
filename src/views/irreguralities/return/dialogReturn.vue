@@ -250,7 +250,7 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.refresh()
-                    this.openNotification('danger', 'Create new return is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new return is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         updateValue(key, val, info){
@@ -328,7 +328,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Create new return is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new return is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         async getTLC(q) {
@@ -379,12 +379,12 @@ export default {
                         this.status_code_arr = arr
                         
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         handleSubmit(){

@@ -17,8 +17,10 @@
         :hasAction="false"
         :hasPagination="true"
         :expandable="true"
+        :hasLinkedChild="['Koli Number']"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
+        @handleEditLinkedChild="actionDetail"
         />
 
     </div>
@@ -241,7 +243,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate connote list', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate connote list', err.response.data.message)
                 })
         },
         actionLimit(val){
@@ -256,6 +258,11 @@ export default {
         refresh(val){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
         },
+        actionDetail(row){
+            console.log("ROW", row)
+            //   this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
+            this.$router.push({ name: 'detailConnote', params: { id: 'b8ebb9f3-a30b-4bad-9ebc-72338816d034' } });
+        }
     },
     mounted() {
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)

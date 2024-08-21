@@ -484,7 +484,7 @@ export default {
             this.loading = false
           }).catch(err => {
             this.loading = false
-            this.openNotification('danger', 'Failed to populate node list', err)
+            this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err)
           })
     }
     },
@@ -511,7 +511,7 @@ export default {
             this.loading = false
           }).catch(err => {
             this.loading = false
-            this.openNotification('danger', 'Failed to populate node Intracity list', err)
+            this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node Intracity list', err)
           })
       }
     },
@@ -531,7 +531,7 @@ export default {
 
               }).catch(err => {
                   this.loading = false
-                  this.openNotification('danger', 'Failed to populate employee list', err)
+                  this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate employee list', err)
               })
       },
       async getService(){
@@ -554,7 +554,7 @@ export default {
                       this.loading = false
           }).catch(err => {
             this.loading = false
-            this.openNotification('danger', 'Failed to populate service list', err)
+            this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
           })
       },
     handlePraRunsheet(val) {
@@ -659,7 +659,7 @@ export default {
           }).catch(err => {
             this.loading = false
             this.handleClearForm()
-            this.openNotification('danger', err.response ? err.response.data.message : 'something went wrong')
+            this.openNotification('danger', err.response ? err.response.data.code : '', err.response ? err.response.data.message : 'something went wrong')
           })
     },
     querySearchAsync(queryString, cb) {

@@ -141,7 +141,7 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create pickup request is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create pickup request is failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {
@@ -173,7 +173,7 @@ export default {
                 this.loading = false
               }).catch(err => {
                 this.loading = false
-                this.openNotification('danger', 'Failed to populate node list', err)
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err)
               })
         },
     },

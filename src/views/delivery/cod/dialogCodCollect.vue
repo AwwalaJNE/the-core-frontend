@@ -85,7 +85,7 @@ export default {
             if(this.expectedAmount === this.amount_cod) {
                     this.collectCOD()
             } else {
-                this.openNotification('danger', 'Unable to Collect COD', 'Mismatch in COD Amount')
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Unable to Collect COD', 'Mismatch in COD Amount')
             }
         },
         handleClearForm(){
@@ -106,13 +106,13 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification("success", "SUCCESS!", "Cod Collected!");
+                    this.openNotification("success", null, "SUCCESS!", "Cod Collected!");
                 }).catch(err => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'COD Collect is Failed', err?.response?.data?.message ? err?.response?.data?.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'COD Collect is Failed', err?.response?.data?.message ? err?.response?.data?.message : 'something went wrong')
                 })
         },
         cancel() {

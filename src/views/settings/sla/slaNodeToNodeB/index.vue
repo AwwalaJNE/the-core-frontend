@@ -239,7 +239,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate node list', err.response.data.message)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err.response.data.message)
                 })
         },
         actionUpdate(val){
@@ -309,7 +309,7 @@ export default {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', 'Delete sla is failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete sla is failed', err)
                 })
         },
         closeDialogConfirmRemove(){

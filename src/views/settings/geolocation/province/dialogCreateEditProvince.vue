@@ -149,11 +149,11 @@ export default {
 
                         this.$store.dispatch("SET_GEOLOCATION_PROVINCE_GEOLOCATION_COUNTRY_ID_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async getDataTimezone(){
@@ -177,11 +177,11 @@ export default {
 
                         this.$store.dispatch("SET_GEOLOCATION_PROVINCE_GEOLOCATION_PROVINCE_TIME_ZONE_ArrData", arr.length > 0 ? arr : null)
                     } else {
-                        // this.openNotification('warn', 'Roles data is empty!', ' Please create a new role data')
+                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     
                 }).catch(err => {
-                    // this.openNotification('danger', 'Failed to collect role list', err)
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async updateData(){
@@ -201,7 +201,7 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         async addData() {
@@ -222,7 +222,7 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         cancel() {

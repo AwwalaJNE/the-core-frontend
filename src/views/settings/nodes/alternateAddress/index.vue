@@ -207,13 +207,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        // this.openNotification('warn', 'tariff data is empty!', ' Please create a new tariff data')
+                        // this.openNotification('warn', null, 'tariff data is empty!', ' Please create a new tariff data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate tariff list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate tariff list', err)
                 })
         },
         actionUpdate(val){
@@ -295,7 +295,7 @@ export default {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         closeDialogConfirmRemove(){

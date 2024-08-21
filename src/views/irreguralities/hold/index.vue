@@ -243,13 +243,13 @@ export default {
                     if(res.data.data.length > 0) {
                         
                     } else {
-                        // this.openNotification('warn', 'Irreguralities Hold data is empty!', ' Please create Irreguralities Hold data')
+                        // this.openNotification('warn', null, 'Irreguralities Hold data is empty!', ' Please create Irreguralities Hold data')
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', 'Failed to populate Irreguralities Hold', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Hold', err)
                 })
         },
         async editIrreg(val){
@@ -278,7 +278,7 @@ export default {
                 }).catch(err => {
                     this.loading = false
                     this.refresh()
-                    this.openNotification('danger', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         searchValue (val) {
@@ -361,7 +361,7 @@ export default {
               }).catch(err => {
                 this.dialogLoadingCancelActive = false
                 this.refresh()
-                this.openNotification('danger', 'Unhold irregularity failed', err.response ? err.response.data.message : 'something went wrong')
+                this.openNotification('danger', err.response ? err.response.data.code : '', 'Unhold irregularity failed', err.response ? err.response.data.message : 'something went wrong')
               })
         },
         updateSearchBy(key, val) {

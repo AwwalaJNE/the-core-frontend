@@ -192,7 +192,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.refresh()
-                    this.openNotification('danger', 'Update role is failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update role is failed', err)
                 })
         },
         async addData() {
@@ -216,7 +216,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.refresh()
-                    this.openNotification('danger', 'Create new role is failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new role is failed', err)
                 })
         },
         cancel() {

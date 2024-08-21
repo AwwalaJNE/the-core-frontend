@@ -138,7 +138,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Update failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err)
                 })
         },
         async addData() {
@@ -158,7 +158,7 @@ export default {
                     this.loading = false
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', 'Create failed', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create failed', err)
                 })
         },
         cancel() {

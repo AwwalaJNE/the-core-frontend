@@ -150,11 +150,11 @@ export default {
         .then((res) => {
           this.user_access_token = res.data.data.user_access_token;
           this.loading = false;
-          this.openNotification("success", "Success!", "Reset token success!");
+          this.openNotification("success", null, "Success!", "Reset token success!");
         })
         .catch((err) => {
           this.loading = false;
-          this.openNotification("danger", "Failed!", "Reset Token Failed!");
+          this.openNotification("danger", err.response ? err.response.data.code : '', "Failed!", "Reset Token Failed!");
           this.checkAuth(err.response);
         });
     },
