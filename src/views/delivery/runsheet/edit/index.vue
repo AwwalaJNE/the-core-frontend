@@ -402,7 +402,7 @@
     </section>
 
     <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
-        <dialog-confirm
+        <dialog-confirm-custom
             :active="dialogConfirmEmployee" 
             :closeDialog="closeDialogConfirmEmployee"
             @updateValue="updateValueBag"
@@ -416,7 +416,17 @@
           :type="type"
           @addConnoteToRunsheet="addConnoteToRunsheet"
           @addBagPraRunsheetToRunsheet="addBagPraRunsheetToRunsheet"
-        />
+    />
+
+    <dialog-confirm
+      title="Unapprove Runsheet"
+      :message="`Are you sure you want to unapprove this runsheet?`"
+      :active="activeDialogConfirmUnpproveRunsheet"
+      :loading="loadingConfirmUnpproveRunsheet"
+      :closeDialog="closeDialogConfirmUnpproveRunsheet"
+      @confirm="confirmUnpproveRunsheet"
+      @cancel="closeDialogConfirmUnpproveRunsheet"
+    />
   </div>
 </template>
 <script>
@@ -430,7 +440,8 @@ import CameraScanner from "@/components/scanner/camera";
 
 import RunsheetInformation from "@/views/delivery/runsheet/edit/runsheetInformation";
 import RunsheetInformationCancel from "@/views/delivery/runsheet/edit/runsheetInformationCancel";
-import DialogConfirm from "@/views/delivery/runsheet/edit/dialogConfirm";
+import DialogConfirmCustom from "@/views/delivery/runsheet/edit/dialogConfirm";
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogReCheckConnoteZone from "@/views/delivery/runsheet/edit/dialogReCheckConnoteZone";
 
 export default {
@@ -442,6 +453,7 @@ export default {
     RunsheetInformation,
     RunsheetInformationCancel,
     CameraScanner,
+    "dialog-confirm-custom": DialogConfirmCustom,
     "dialog-confirm": DialogConfirm,
     "dialog-recheck-connote-zone": DialogReCheckConnoteZone
   },
@@ -499,7 +511,9 @@ export default {
       dataItem: {},
       openDialogReCheckConnoteZone: false,
       type: '',
-      listConnote: []
+      listConnote: [],
+      activeDialogConfirmUnpproveRunsheet: false,
+      loadingConfirmUnpproveRunsheet:false,
     };
   },
   computed: {
@@ -1151,10 +1165,28 @@ export default {
       this.updateApprove(val)
     },
 
-    async updateApprove(val){
+    updateApprove(val){
       this.data_is_approve = {
         approved: val
       };
+      
+      if (val) {
+        this.confirmationApprove(val)
+      } else {
+        this.activeDialogConfirmUnpproveRunsheet = true
+      }
+      
+    },
+    confirmUnpproveRunsheet() {
+      
+      this.confirmationApprove(false)
+      this.activeDialogConfirmUnpproveRunsheet = false
+    },
+    closeDialogConfirmUnpproveRunsheet(){
+      this.activeDialogConfirmUnpproveRunsheet = false
+    }, 
+    async confirmationApprove(val) {
+      this.loadingConfirmUnpproveRunsheet=true
       await axios
         .patch(
           `${this.URL.delivery}/${this.delivery_runsheet_number}/approve?n=${this.listenNodeId}`,
@@ -1169,8 +1201,8 @@ export default {
         .catch((err) => {
           this.openNotification("danger", "approve FAILED !", err.response.data.message);
         });
+        this.loadingConfirmUnpproveRunsheet=false
     },
-    
 
     onCameraScannerGetData(data) {
       if (data && data.event === "result") {
