@@ -7,6 +7,20 @@
           <h2>{{ title }}</h2>
         </div>
       </vs-col>
+      <vs-col xs="6" sm="3" lg="3">
+        <div style="position:relative;display:flex;justify-content: flex-end;">
+          <div style="width: 100px;padding-right: 5px;">
+            <vs-button
+              flat
+              block
+              :active="true"
+              @click="openDialog"
+            > 
+              <i class="bx bx-plus"></i> New
+            </vs-button>
+          </div>
+        </div>
+      </vs-col>
     </vs-row>
 
     <section class="nodes">
@@ -42,6 +56,13 @@
         </template>
       </div>
     </section>
+
+    <dialog-create-runsheet
+      title="Create New Runsheet"
+      :active="dialogCreateRunsheet" 
+      :closeDialog="closeDialog"
+      @refresh="refresh"    
+    />
   </div>
 </template>
 <script>
@@ -55,6 +76,7 @@ import dateRange from "@/components/daterange/index";
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
 import DeliveryRunsheetTable from "@/views/delivery/runsheet/runsheetTable";
+import DialogCreateRunsheet from "@/views/delivery/runsheet/dialogCreateRunsheet";
 
 export default {
   name: "Inbound-List",
@@ -66,6 +88,7 @@ export default {
     "daterange-filter": dateRange,
     "select-search-by" : SelectSearchBy,
     DeliveryRunsheetTable: DeliveryRunsheetTable,
+    "dialog-create-runsheet": DialogCreateRunsheet
   },
   data() {
     return {
@@ -122,7 +145,8 @@ export default {
           label: 'Create Date Delivery',
           value: 'create'
         },
-      ]
+      ],
+      dialogCreateRunsheet: false,
     };
   },
   methods: {
@@ -173,6 +197,13 @@ export default {
     },
     updateFilterDateBy(key,val) {
       this.filterDateBy = val;
+    },
+
+    openDialog(){
+      this.dialogCreateRunsheet = true
+    },
+    closeDialog() {
+      this.dialogCreateRunsheet = false
     },
   },
   mounted() {
