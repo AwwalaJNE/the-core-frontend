@@ -110,7 +110,7 @@ export default {
         }
       },
       itemNumber: function(val, old) {
-        if(val !== undefined || val !== null) {
+        if(val !== undefined && val !== null && val !== '') {
           this.item_number = val
           if(this.item_number !== old || this.item_number !== null) {
             this.getTableData(this.pagination.limit, this.pagination.page)
