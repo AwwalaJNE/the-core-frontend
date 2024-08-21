@@ -575,7 +575,7 @@ export default {
       }
       else if (this.radio_option === "bag-ex") {
         this.dialogConfirmEmployee = false;
-        this.validateCourier(val)
+        this.validateBagPraRunsheet(val)
       }
     },
     updateValue() {
@@ -639,6 +639,23 @@ export default {
     closeDialogConfirmEmployee() {
       this.dialogConfirmEmployee = false
       this.dialogLoadingEmployee = false
+    },
+    async validateBagPraRunsheet(val) {
+      let valForm = {
+        item_number: this.item_bag,
+        delivery_runsheet_number: this.delivery_runsheet_number
+      }
+      await axios
+        .post(
+          this.URL.validation + `/create-runsheet-pra?n=${this.listenNodeId}`,
+          valForm,
+          this.Helper.header())
+        .then(res => {
+          this.validateCourier(val)
+        }).catch(err => {
+          this.openNotification("danger", err.response.data.status, err.response.data.message);
+          this.clearInputs();
+        })
     },
     async validateCourier(val) {
       await axios
@@ -993,6 +1010,8 @@ export default {
         }
         if (item.is_approve === '1') {
           this.disabledApprove = true
+        } else {
+          item["is_disabled_input_status"] = true
         }
  
         item.isDisabled = item.is_delivered === 1;
@@ -1239,10 +1258,11 @@ export default {
       this.title = item[0].title
     },
     clearInputs() {
-      this.item_no = null
-      this.item_no_orion = null
-      this.item_no_remove = null
-      this.item_no_orion_remove = null
+      this.item_no = ""
+      this.item_no_orion = ""
+      this.item_no_remove = ""
+      this.item_no_orion_remove = ""
+      this.item_bag = ""
       delete this.form.delivery_runsheet_number; 
       this.openDialogReCheckConnoteZone = false;
     }

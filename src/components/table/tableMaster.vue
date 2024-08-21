@@ -149,7 +149,7 @@
               </vs-td>
             </template>
             <template v-if="listenIsMultipleSelectColoum">
-              <vs-td checkbox class="xs">
+              <vs-td checkbox class="xxxxs">
                 <vs-checkbox
                   v-model="selected"
                   :val="item"
@@ -208,7 +208,10 @@
                       column.type.toLowerCase().includes('inputan')
                   "
                 >
-                  <vs-td :key="key" :class="column.width ? column.width : ''">
+                  <vs-td :key="key" :class="{
+                      [column.width]: column.width,
+                      'padding-top': column.hasOwnProperty('columnCaption') && item[column.selectedValue]
+                    }">
                     <template
                       v-if="
                         column.typeInput !== undefined &&
@@ -250,6 +253,11 @@
                                 @updateValue="updateValue"
                                 @inputFocus="onfocuslah"
                               />
+                              <template v-if="column.hasOwnProperty('columnCaption')">
+                                <template v-if="column['columnCaption'] == true">
+                                  <span :style="{ fontSize: '0.75em' }">{{ getStatusLabel(item[column.key], item[column.selectedValue]) }}</span>
+                                </template>
+                              </template>
                             </div>
                           </template>
                         </template>
@@ -1397,6 +1405,12 @@ export default {
         }
       }
     },
+    getStatusLabel(arr, val) {
+      if (val !== '') {
+        return arr?.find(item => item.value === val)?.label
+      }
+      return ""
+    }
   },
   mounted() {
     this.handleColumnsOrder();
@@ -1421,6 +1435,9 @@ export default {
     }
     .xxxs {
       width: calc(100% / 14) !important;
+    }
+    .xxxxs {
+      width: calc(100% / 25) !important;
     }
     .right {
       text-align: right !important;               
@@ -1497,6 +1514,9 @@ span.text-link {
 .icon-warning {
   font-size: 48px;
   color: #ffcc00;
+}
+.padding-top {
+  padding-top: 3em !important;
 }
 
 </style>
