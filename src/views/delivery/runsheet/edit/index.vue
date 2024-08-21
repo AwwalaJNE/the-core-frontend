@@ -293,16 +293,29 @@
                       </vs-button>
                     </template>
                     <template v-if="dataDelivery.length > 0">
-                      <vs-button
-                        :loading="loadingConfirm"
-                        @click="approveAction"
-                        style="float: left"
-                        :disabled="disabledApprove"
-                      >
-                        <span>
-                          Approve Runsheet
-                        </span>
-                      </vs-button>
+                      <div v-if="!disabledApprove">
+                        <vs-button
+                          :loading="loadingConfirm"
+                          @click="approveAction(true)"
+                          style="float: left"
+                        >
+                          <span>
+                            Approve Runsheet
+                          </span>
+                        </vs-button>
+                      </div>
+                      <div v-else-if="disabledApprove">
+                        <vs-button
+                          :loading="loadingConfirm"
+                          @click="approveAction(false)"
+                          style="float: left"
+                          danger
+                        >
+                          <span>
+                            Unapprove Runsheet
+                          </span>
+                        </vs-button>
+                      </div>
                     </template>
                 </vs-row>
               </vs-col>
@@ -1134,29 +1147,26 @@ export default {
         );
       }
     },
-    approveAction(){
-      this.updateApprove()
+    approveAction(val){
+      this.updateApprove(val)
     },
 
-    async updateApprove(){
-      this.data_runsheet = {
-        delivery_number_runsheet: this.delivery_runsheet_number,
+    async updateApprove(val){
+      this.data_is_approve = {
+        approved: val
       };
       await axios
-        .put(
+        .patch(
           `${this.URL.delivery}/${this.delivery_runsheet_number}/approve?n=${this.listenNodeId}`,
-          JSON.stringify(this.data_runsheet),
+          JSON.stringify(this.data_is_approve),
           this.Helper.header()
         )
         .then((res) => {
           this.form = {};
-          if (res.data.data.is_approve === 1) {
-            this.disabledApprove = true
-          }
-          this.openNotification(null, "Success", "RUNSHEET APPROVED!");
+          this.disabledApprove = val;
+          this.openNotification(null, "Success", res.data.message);
         })
         .catch((err) => {
-
           this.openNotification("danger", "approve FAILED !", err.response.data.message);
         });
     },
