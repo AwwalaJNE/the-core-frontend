@@ -85,6 +85,7 @@ export default {
 
     handleClearForm() {
       this.form = {};
+      this.item_number = "";
       this.item_code = "";
     },
 
