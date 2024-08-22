@@ -101,7 +101,7 @@ export default {
       node_destination: "",
       searchBy:"delivery runsheet number",
       filterDateBy:"create",
-      searchPlaceholder: "Search Manifest Number",
+      searchPlaceholder: "Search Runsheet Number",
       searchParams: [
         {
           label: "Runsheet Number",
@@ -118,6 +118,10 @@ export default {
         {
           label: "Courier Name",
           value: "employee_name",
+        },
+        {
+          label: "Total HRS",
+          value: "total_hrs",
         },
         {
           label: "Total Koli",

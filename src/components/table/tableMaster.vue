@@ -1009,6 +1009,7 @@
                         v-for="(c_item, c_key) in Object.keys(item.children)"
                         :key="c_key"
                         :class="item.hasOwnProperty('children_width') ? item['children_width'][c_item] : ''"
+                        style="font-size: 0.85em; padding-left: 0.75em"
                       >
                         {{ c_item.replace(/[&\/\\#,+()$~%._'":*?<>{}]/g, " ") }}
                       </th>
@@ -1019,10 +1020,11 @@
                       >
                         <template v-if="Array.isArray(item.children[c_item])">
                           <td :key="c_td_key" :class="item.hasOwnProperty('children_width') ? item['children_width'][c_item] : ''">
-                            <ul>
+                            <ul style="padding-left: 0.75em">
                               <li
                                 v-for="(itm, idx) in item.children[c_item]"
                                 :key="idx"
+                                style="font-size: 0.85em"
                               >
                                 <template v-if="typeof itm === 'object'">
                                   <template
@@ -1035,6 +1037,23 @@
                                     </p>
                                   </template>
                                 </template>
+                                <template v-else-if="typeof itm === 'boolean'">
+                                  <vs-button
+                                    circle
+                                    icon
+                                    border
+                                    disabled
+                                    :danger="itm == false ? true : false"
+                                    :active="false"
+                                    style="margin: 0.5em 0"
+                                  >
+                                    <i
+                                      :class="
+                                        `bx bx-${itm == false ? 'x' : 'check'}`
+                                      "
+                                    ></i>
+                                  </vs-button>
+                                </template>
                                 <template v-else>
                                   <template
                                     v-if="
@@ -1044,9 +1063,9 @@
                                         && hasLinkedChild.includes(c_item)
                                     "
                                   >
-                                    <span class="text-link" @click="handleEditLinkedChild(itm)">
+                                    <p class="text-link" @click="handleEditLinkedChild(item, itm)">
                                     {{ itm ? itm : "" }}
-                                    </span>
+                                    </p>
                                   </template>
 
                                   <template v-else>
@@ -1379,8 +1398,8 @@ export default {
     handleEdit3(val, key) {
       this.$emit("handleEdit3", val);
     },
-    handleEditLinkedChild(val) {
-      this.$emit("handleEditLinkedChild", val);
+    handleEditLinkedChild(val, key) {
+      this.$emit("handleEditLinkedChild", val, key);
     },
     handlePictureCardPreview(val) {
 
@@ -1493,6 +1512,10 @@ span.text-link {
   color: rgb(53, 92, 255);
   cursor: pointer;
 }
+p.text-link {
+  color: rgb(53, 92, 255);
+  cursor: pointer;
+}
 .manual-padding {
   padding-bottom: 0px;
 }
@@ -1517,6 +1540,10 @@ span.text-link {
 }
 .padding-top {
   padding-top: 3em !important;
+}
+
+.vs-table__tr.selected .vs-table__td {
+  color: #424242 !important;
 }
 
 </style>

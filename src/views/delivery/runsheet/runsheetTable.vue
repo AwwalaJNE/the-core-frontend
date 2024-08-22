@@ -8,11 +8,12 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :hasLinked="['employee_name']"
+        :hasLinkedChild="['Runsheet #']"
         :hasPagination="true"
+        :expandable="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
-        @handleEdit="actionDetail"
+        @handleEditLinkedChild="actionDetail"
         />
 
     </div>
@@ -39,16 +40,6 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Runsheet #",
-                    key: "delivery_runsheet_number",
-                    width: "md"
-                },
-                {
-                    label: "DRI Number",
-                    key: "dri",
-                    width: "auto"
-                },
-                {
                     label: "Courier Code",
                     key: "employee_code",
                     width: "xs"
@@ -56,23 +47,23 @@ export default {
                 {
                     label: "Name",
                     key: "employee_name",
-                    width: "auto"
+                    width: "sm"
+                },
+                {
+                    label: "Total Runsheet",
+                    key: "total_runsheet",
+                    width: "xs"
+                },
+                {
+                    label: "Total HRS",
+                    key: "total_hrs",
+                    width: "xs"
                 },
                 {
                     label: "Total Koli",
                     key: "total_koli",
                     width: "xs"
                 },
-                // {
-                //   label: "Cod",
-                //   key: "total_cod",
-                //   width: "xs"
-                // },
-                // {
-                //   label: "Cod Collected",
-                //   key: "total_cod_collected",
-                //   width: "xs"
-                // },
                 {
                     label: "Open",
                     key: "total_open",
@@ -101,7 +92,7 @@ export default {
             date: "",
             dialogTariff: false,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
@@ -112,7 +103,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
+                    this.getTableData(this.pagination.limit, 1, val, this.startDate, this.endDate)
                 }
             }
         },
@@ -123,14 +114,14 @@ export default {
               this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
               this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
             }
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter)
+            this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, this.node_filter)
           }
         },
         node: function(val, old) {
           if(val !== undefined) {
             this.node_filter = val
             if(this.node_filter !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val)
+              this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, val)
             }
           }
         },
@@ -150,12 +141,59 @@ export default {
             }
             await axios
                 .get(this.URL.courier_delivery +
-                `?n=${this.listenNodeId}&s=${query}&date_filter=${this.dateFilter}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+                `?n=${this.listenNodeId}&s=${query}&date_filter=${this.dateFilter}&search_by=${this.searchBy}&page=${page}&limit=${limit}`,
                 this.Helper.header())
-                .then(res => { 
-                    this.dataTable = res.data.data.map((value)=>{
-                        return value
+                .then(res => {
+                    let arr = res.data.data
+                    arr.map((item) => {
+                        let children = {}
+                        let delivery_runsheet_number = []
+                        let dri = []
+                        let hrs = []
+                        let is_hrs = []
+                        let total_koli = []
+                        let total_open = []
+                        let total_delivered = []
+                        let total_undelivered = []
+                        let total_undelivery_received = []
+                        item['children_width'] = {
+                            'Runsheet #': 'md',
+                            'DRI Number': 'sm',
+                            'HRS Number': 'sm',
+                            'Total Koli': 'auto',
+                            'Open': 'xxxs',
+                            'Status': 'xxxs',
+                            'Delivered': 'xxxs',
+                            'Undelivered': 'xxxs',
+                            'Undelivered Received': 'xs',
+                            'HRS': 'xxxxs'
+                        }
+                        item.delivery.map((el) => {
+                            delivery_runsheet_number.push(el.delivery_runsheet_number)
+                            dri.push(el.dri)
+                            hrs.push(el.hrs ?? " ")
+                            is_hrs.push(el.is_hrs ?? false)
+                            total_koli.push(el.total_koli)
+                            total_open.push(el.total_open)
+                            total_delivered.push(el.total_delivered)
+                            total_undelivered.push(el.total_undelivered)
+                            total_undelivery_received.push(el.total_undelivery_received)
+                        })
+                        children['Runsheet #'] = delivery_runsheet_number
+                        children['DRI Number'] = dri
+                        children['HRS Number'] = hrs
+                        children['Total Koli'] = total_koli
+                        children['Open'] = total_open
+                        children['Delivered'] = total_delivered
+                        children['Undelivered'] = total_undelivered
+                        children['Undelivered Received'] = total_undelivery_received
+                        children['HRS'] = is_hrs
+                        item['children'] = children
                     })
+                    this.dataTable = arr
+                    this.pagination.page = res.data.meta.current_page
+                    this.pagination.limit = parseInt(res.data.meta.per_page)
+                    this.pagination.page_size = res.data.meta.last_page
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
@@ -182,20 +220,15 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
 
-        actionDetail(row){
+        actionDetail(row, item){
             let params = {
                 employee_id: row.employee_id,
-                employee_code: row.employee_code,
-                employee_name: row.employee_name,
+                delivery_runsheet_number: item,
+                date_filter: this.dateFilter
             }
-            let routeName = 'delivery-runsheet-new'
-            if(row.delivery_runsheet_number){
-                params.delivery_runsheet_number = row.delivery_runsheet_number;
-                params.date_filter = this.dateFilter;
-                routeName = 'delivery-runsheet-edit';                
-            }
-            this.$router.push({ name: routeName, params: params });            
-        }
+            let routeName = 'delivery-runsheet-edit'
+            this.$router.push({ name: routeName, params: params })
+        },
 
     },
     mounted() {
