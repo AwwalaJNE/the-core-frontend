@@ -99,49 +99,29 @@ export default {
       node_request: "",
       node_origin: "",
       node_destination: "",
-      searchBy:"delivery runsheet number",
+      searchBy:"delivery_runsheet_number",
       filterDateBy:"create",
       searchPlaceholder: "Search Runsheet Number",
       searchParams: [
         {
           label: "Runsheet Number",
-          value: "delivery runsheet number",
+          value: "delivery_runsheet_number",
         },
         {
           label: "DRI Number",
-          value: "dri",
+          value: "dri_number",
+        },
+        {
+          label: "HRS Number",
+          value: "hrs_number",
         },
         {
           label: "Courier Code",
-          value: "employee_code",
+          value: "courier_code",
         },
         {
           label: "Courier Name",
-          value: "employee_name",
-        },
-        {
-          label: "Total HRS",
-          value: "total_hrs",
-        },
-        {
-          label: "Total Koli",
-          value: "total_koli",
-        },
-        {
-          label: "Total Open",
-          value: "total_open",
-        },
-        {
-          label: "Total Delivered",
-          value: "total_delivered",
-        },
-        {
-          label: "Total Undelivered",
-          value: "total_undelivered",
-        },
-        {
-          label: "Total Undelivered Receiving",
-          value: "total_undelivery_received",
+          value: "courier_name",
         }
       ],
       dateParams: [

@@ -8,12 +8,12 @@
         :page="pagination.page"
         :limit="pagination.limit"
         :hasAction="false"
-        :hasLinkedChild="['Runsheet #']"
+        :hasLinked="['employee_name']"
         :hasPagination="true"
         :expandable="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
-        @handleEditLinkedChild="actionDetail"
+        @handleEdit="actionDetail"
         />
 
     </div>
@@ -23,14 +23,11 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 export default {
-    name:"delivery-runsheet",
+    name:"hrs-table",
     mixins: [master],
     props: {
         query: String,
-        dateFilter: String,
-        node:String,
-        searchBy: String,
-        filterDateBy: String
+        searchBy: String
     },
     components: {
         "table-master" : TableMaster
@@ -52,11 +49,6 @@ export default {
                 {
                     label: "Total Runsheet",
                     key: "total_runsheet",
-                    width: "xs"
-                },
-                {
-                    label: "Total HRS",
-                    key: "total_hrs",
                     width: "xs"
                 },
                 {
@@ -83,14 +75,16 @@ export default {
                   label: "Undelivered Receiving",
                   key: "total_undelivery_received",
                   width: "xs"
+                },
+                {
+                  label: "Can HRS",
+                  key: "ready_to_hrs",
+                  type: "status",
+                  width: "xs"
                 }
             ],
             loading: false,
-            dataItem: {},
             tempSearch: "",
-            tempDate: [],
-            date: "",
-            dialogTariff: false,
             pagination: {
                 limit:20,
                 page_size: 1,
@@ -103,45 +97,21 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, 1, val, this.startDate, this.endDate)
+                    this.getTableData(this.pagination.limit, 1, val)
                 }
             }
-        },
-        dateFilter: function(val, old) {
-          if(val !== undefined) {
-            this.tempDate = val
-            if(this.tempDate !== old ) {
-              this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
-              this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
-            }
-            this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, this.node_filter)
-          }
-        },
-        node: function(val, old) {
-          if(val !== undefined) {
-            this.node_filter = val
-            if(this.node_filter !== old) {
-              this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, val)
-            }
-          }
-        },
+        }
     },
     methods: {
-        async getTableData(limit,page,q, from, to) {
+        async getTableData(limit,page,q) {
             this.loading = true
             let query = "";
-            let startDate = "";
-            let endDate = "";
             if(q !== undefined) {
                 query = q
             }
-            if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
-            }
             await axios
-                .get(this.URL.courier_delivery +
-                `?n=${this.listenNodeId}&s=${query}&date_filter=${this.dateFilter}&search_by=${this.searchBy}&page=${page}&limit=${limit}`,
+                .get(this.URL.handover_runsheet +
+                `?n=${this.listenNodeId}&s=${query}&search_by=${this.searchBy}&page=${page}&limit=${limit}`,
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
@@ -149,30 +119,24 @@ export default {
                         let children = {}
                         let delivery_runsheet_number = []
                         let dri = []
-                        let hrs = []
-                        let is_hrs = []
                         let total_koli = []
                         let total_open = []
                         let total_delivered = []
                         let total_undelivered = []
                         let total_undelivery_received = []
                         item['children_width'] = {
-                            'Runsheet #': 'md',
-                            'DRI Number': 'sm',
-                            'HRS Number': 'sm',
+                            'Runsheet #': 'auto',
+                            'DRI Number': 'auto',
                             'Total Koli': 'auto',
-                            'Open': 'xxxs',
-                            'Status': 'xxxs',
-                            'Delivered': 'xxxs',
-                            'Undelivered': 'xxxs',
-                            'Undelivered Received': 'xs',
-                            'HRS': 'xxxxs'
+                            'Open': 'auto',
+                            'Status': 'auto',
+                            'Delivered': 'auto',
+                            'Undelivered': 'auto',
+                            'Undelivered Received': 'auto'
                         }
                         item.delivery.map((el) => {
                             delivery_runsheet_number.push(el.delivery_runsheet_number)
-                            dri.push(el.dri)
-                            hrs.push(el.hrs ?? " ")
-                            is_hrs.push(el.is_hrs ?? false)
+                            dri.push(el.dri ?? " ")
                             total_koli.push(el.total_koli)
                             total_open.push(el.total_open)
                             total_delivered.push(el.total_delivered)
@@ -181,13 +145,11 @@ export default {
                         })
                         children['Runsheet #'] = delivery_runsheet_number
                         children['DRI Number'] = dri
-                        children['HRS Number'] = hrs
                         children['Total Koli'] = total_koli
                         children['Open'] = total_open
                         children['Delivered'] = total_delivered
                         children['Undelivered'] = total_undelivered
                         children['Undelivered Received'] = total_undelivery_received
-                        children['HRS'] = is_hrs
                         item['children'] = children
                     })
                     this.dataTable = arr
@@ -197,12 +159,8 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', err?.response?.data?.message ?? 'Failed to populate Delivery Runsheet list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', err?.response?.data?.message ?? 'Failed to Populate HRS Runsheet List', err)
                 })
-        },
-
-        closeDialogConfirm(){
-            this.confirmDialog = false
         },
 
         actionLimit(val){
@@ -217,16 +175,14 @@ export default {
         },
 
         refresh(){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
         },
 
-        actionDetail(row, item){
+        actionDetail(row){
             let params = {
                 employee_id: row.employee_id,
-                delivery_runsheet_number: item,
-                date_filter: this.dateFilter
             }
-            let routeName = 'delivery-runsheet-edit'
+            let routeName = 'handover-runsheet-courier'
             this.$router.push({ name: routeName, params: params })
         },
 
