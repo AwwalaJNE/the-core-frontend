@@ -124,6 +124,9 @@ import DeliveryRunsheetEdit from "@/views/delivery/runsheet/edit"
 // === Delivery COD===
 import DeliveryCod from "@/views/delivery/cod"
 
+// === Handover Runsheet ===
+import HandoverRunsheet from "@/views/delivery/hrs"
+
 // === Delivery Undelivery ===
 import DeliveryUndelivery from "@/views/delivery/undelivery"
 
@@ -715,6 +718,15 @@ const routes = [
       {
         path: "/hrs",
         name: "handover-runsheet",
+        component: HandoverRunsheet,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "HRS"
+        }
+      },
+      {
+        path: "/hrs/:employee_id",
+        name: "handover-runsheet-courier",
         component: DeliveryUndelivery,
         meta: {
           requiresAuth: true,
