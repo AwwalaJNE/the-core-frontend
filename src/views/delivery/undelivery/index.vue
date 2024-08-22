@@ -4,161 +4,106 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{title}}</h2>
+                    <h2>{{title}} - {{ employee_name }}</h2>
                 </div>
             </vs-col>
             <vs-col xs="4" sm="4" lg="4" align="right">
-              <div class="btn-print-all">
-                <vs-button class="btn-cash-register"
-                    square
-                    block
-                    @click="finishReceiving"
-                    :disabled="!isFinishReceivingButtonVisible"
-                >
-                  Finish HRS
-                </vs-button>
-              </div>
+                <div class="btn-print-all">
+                    <vs-button class="btn-cash-register"
+                        square
+                        block
+                        @click="finishReceiving"
+                        :disabled="!isFinishReceiving"
+                    >
+                        Finish HRS
+                    </vs-button>
+                </div>
             </vs-col>
         </vs-row>
 
         <section>
-          <vs-row>
-            <vs-col lg="6" sm="6" xs="12">
-              <div class="box information" style="padding-top: 1px !important;">
-                <div class="nav-box">
-                  <template>
-                    <div class="center in-get-bag">
-                      <vs-row style="margin-top:2em">
-                        <vs-col xs="12" sm="6" lg="5">
-                          <vs-radio
-                            v-model="radio_option"
-                            val="connote">
-                            Connote (Orion)
-                          </vs-radio>
-                        </vs-col>
-                        <vs-col xs="12" sm="6" lg="5">
-                          <vs-radio
-                            v-model="radio_option"
-                            val="koli">
-                            Koli
-                          </vs-radio>
-                        </vs-col>
-                      </vs-row>
+            <vs-row>
+                <vs-col lg="6" sm="6" xs="12">
+                    <div class="box information" style="padding-top: 1px !important;">
+                        <div class="nav-box">
+                            <vs-row justify="space-between">
+                                <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
+                                    <template>
+                                        <div class="center">
+                                            <vs-input 
+                                                border 
+                                                type="text" 
+                                                v-model="item_no" 
+                                                label-placeholder="Masukkan Koli" 
+                                                v-on:keyup.enter="updateValue" 
+                                                autofocus 
+                                                icon-after 
+                                                ref="formInputInbound"
+                                            >
+                                                <template #icon>
+                                                    <i class='bx bxs-file'> </i>
+                                                </template>
+                                            </vs-input>
+                                        </div>
+                                    </template>
+                                </vs-col>
+                            </vs-row>
+                        </div>
                     </div>
-                  </template>
-
-                  <vs-row justify="space-between">
-                    <vs-col>
-                      <template>
-                        <div v-if="radio_option === 'connote'" class="center in-get-bag-flex">
-                          <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
-                            <template>
-                              <div class="center">
-                                <vs-input border :disabled="!isDisabled" type="text" v-model="no_runsheet" :autofocus="true"  v-on:keyup.enter="scanKoli" label-placeholder="Scan Nomor Runsheet" autofocus icon-after ref="formInputInbound">
-                                  <template #icon>
-                                    <i class='bx bx-file'> </i>
-                                  </template>
-                                </vs-input>
-                              </div>
-                            </template>
-                          </vs-col>
-                          <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
-                            <template>
-                              <div class="center">
-                                <vs-input border :disabled="isDisabled" type="text" v-model="item_no_orion" label-placeholder="Masukkan Connote" v-on:keyup.enter="updateValueOrion" autofocus icon-after ref="formInputInbound">
-                                  <template #icon>
-                                    <i class='bx bxs-file'> </i>
-                                  </template>
-                                </vs-input>
-                              </div>
-                            </template>
-                          </vs-col>
+                    <vs-col lg="12" sm="12" xs="12">
+                        <div class="box information" style="padding-top: 1px !important;">
+                            <vs-row style="padding-top:5px" justify="space-around">
+                                <vs-col lg="12" sm="12" xs="12" w="3">
+                                    <h5 align="left">List All Connote Runsheet</h5>
+                                </vs-col>
+                            </vs-row>
+                            <div class="nav-box">
+                                <template>
+                                    <transition name="slide-fade">
+                                        <ConnoteRunsheetInformation 
+                                            :ref="'ConnoteRunsheetInformation'"
+                                            :query="tempSearch" 
+                                            :employeeId="listenEmployeeId"
+                                        />
+                                    </transition>
+                                </template>
+                            </div>
                         </div>
-                        <div v-else class="center in-get-bag-flex">
-                          <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
+                    </vs-col>
+                </vs-col>
+
+                <!-- col for detail unreceive item-->
+                <vs-col lg="6" sm="6" xs="12">
+                    <div class="box information" style="padding-top: 1px !important;">
+                        <vs-row style="padding-top:5px" justify="space-around">
+                            <vs-col lg="12" sm="12" xs="12" w="3">
+                                <h5 align="left">List Connote Undelivered ({{ this.totalConnote ? this.totalConnote : 0 }})</h5>
+                            </vs-col>
+                        </vs-row>
+
+                        <div class="nav-box">
                             <template>
-                              <div class="center">
-                                <vs-input border :disabled="!isDisabled" type="text" v-model="no_runsheet" :autofocus="true"  v-on:keyup.enter="scanKoli" label-placeholder="Scan Nomor Runsheet" autofocus icon-after ref="formInputInbound">
-                                  <template #icon>
-                                    <i class='bx bx-file'> </i>
-                                  </template>
-                                </vs-input>
-                              </div>
+                                <transition name="slide-fade">
+                                    <UndeliveryInformation 
+                                        :ref="'undeliveryInformation'"
+                                        :query="tempSearch" 
+                                        :employeeId="listenEmployeeId" 
+                                        v-on:total-connote="getTotal"
+                                    />
+                                </transition>
                             </template>
-                          </vs-col>
-                          <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
-                            <template>
-                              <div class="center">
-                                <vs-input border :disabled="isDisabled" type="text" v-model="item_no" label-placeholder="Masukkan Koli" v-on:keyup.enter="updateValue" autofocus icon-after ref="formInputInbound">
-                                  <template #icon>
-                                    <i class='bx bxs-file'> </i>
-                                  </template>
-                                </vs-input>
-                              </div>
-                            </template>
-                          </vs-col>
                         </div>
-                      </template>
-                    </vs-col>
-                  </vs-row>
-                </div>
-              </div>
-              <vs-col lg="12" sm="12" xs="12">
-                <div class="box information" style="padding-top: 1px !important;">
-                  <vs-row style="padding-top:5px" justify="space-around">
-                    <vs-col lg="12" sm="12" xs="12" w="3">
-                      <h5 align="left">List All Connote Runsheet</h5>
-                    </vs-col>
-                  </vs-row>
-                  <div class="nav-box">
-                    <template>
-                      <transition name="slide-fade">
-                            <ConnoteRunsheetInformation :ref="'ConnoteRunsheetInformation'" @tes="checkRunsheetStatus" :query="tempSearch" :courr="courierSel" v-on:cour-list="getCourrier" v-on:total-connote="getTotal"/>
-                      </transition>
-                    </template>
-                  </div>
-                </div>
-              </vs-col>
-            </vs-col>
-
-            <!-- col for detail unreceive item-->
-            <vs-col lg="6" sm="6" xs="12">
-              <div class="box information" style="padding-top: 1px !important;">
-              <vs-row style="padding-top:5px" justify="space-around">
-                <vs-col lg="8" sm="6" xs="12" w="3">
-                  <h5 align="left">List Connote Undelivered ({{ this.totalConnote ? this.totalConnote : 0 }})</h5>
+                    </div>
+                    
+                    <vs-button class="mt-1" style="float: right"
+                        square
+                        active
+                        @click="back"
+                    >
+                        <i class="bx bxs-chevron-left"> </i>  BACK
+                    </vs-button>
                 </vs-col>
-                <vs-col lg="4" sm="6" xs="12" style="margin-top:5px; align-items: right;">
-                  <vs-select
-                    filter
-                    placeholder="Filter"
-                    v-model="courierSel"
-                  >
-                    <vs-option :key="index" :label="item.text" :value="item.value" v-for="item,index in courArray">
-                      {{item.text}}
-                    </vs-option>
-                  </vs-select>
-                </vs-col>
-              </vs-row>
-
-                <div class="nav-box">
-                  <template>
-                    <transition name="slide-fade">
-                          <UndeliveryInformation :ref="'undeliveryInformation'"   @showButtons="checkUndelStatus" :query="tempSearch" :courr="courierSel" v-on:cour-list="getCourrier" v-on:total-connote="getTotal"/>
-                    </transition>
-                  </template>
-                </div>
-              </div>
-              <vs-button class="mt-1" style="float: right"
-                 square
-                 active
-                 @click="back"
-              >
-                <i class="bx bxs-chevron-left"> </i>  BACK
-              </vs-button>
-            </vs-col>
-          </vs-row>
-
+            </vs-row>
         </section>
 
         <!-- dialog confirm create receiving -->
@@ -179,8 +124,6 @@ import axios from "axios";
 import master from "@/mixins/master"
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
-import SearchInput from "@/components/search/searchInput"
-import dateRange from "@/components/daterange/index"
 
 import UndeliveryInformation from "@/views/delivery/undelivery/UndeliveryInformation"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
@@ -190,6 +133,9 @@ import ConnoteRunsheetInformation from "@/views/delivery/undelivery/ConnoteRunsh
 export default {
     name:"pickup-request",
     mixins: [master],
+    props: {
+        employee_name: String,
+    },
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
@@ -199,164 +145,140 @@ export default {
     },
     data() {
         return {
-            radio_option: "connote",
             title:"Handover Runsheet",
             tempSearch: "",
-            tempDate: [],
-            dialogPickupRequest:false,
             item_no:'',
-            item_no_orion: '',
             no_runsheet:'',
             form:{},
-            inbound_number:'',
             totalConnote:0,
-            courierSel:0,
-            courArray:[],
             activeDialogFinishReceiving: false,
             activeLoadingFinishReceiving: false,
             isFinishReceivingButtonVisible: false,
-            isDisabled: true
+            isFinishReceiving: false
         }
     },
+    computed: {
+        listenEmployeeId() {
+            return this.$route.params.employee_id;
+        }
+    },
+    watch: {
+        isFinishReceiving(newVal, oldVal) {
+            if (newVal !== oldVal) {
+                this.getButtonValue();
+            }
+        },
+    },
     methods: {
+        getTotal(val) {
+            this.totalConnote = val;
+        },
         refresh(){
-            // this.$refs.undeliveryInformation.refresh() // trigger function refresh form dari luar component list
-          },
-        searchValue (val) {
-            this.tempSearch = val
-        },
-        searchDate (val) {
-          this.tempDate = val
-        },
-        clearSearch() {
-            this.$refs.searchInput.clear()
-        },
-        closeDialogPickupRequest() {
-          this.dialogPickupRequest = false
-        },
-        openDialog(){
-            this.dialogPickupRequest = true
+            this.$refs.undeliveryInformation.refresh() // trigger function refresh form dari luar component list
+            this.$refs.ConnoteRunsheetInformation.refresh() // trigger function refresh form dari luar component list
+            this.getButtonValue();
         },
         updateValue(){
-          this.form.koli_number = this.item_no
-          this.processUndelivery();
+            this.form = {
+                koli_number: this.item_no,
+            };
+            this.processUndelivery();
         },
-        updateValueOrion(){
-          this.form.koli_number = this.item_no_orion + "00"
-          this.processUndelivery();
-        },
-        scanKoli(){
-          this.form.delivery_number_runsheet = this.no_runsheet
-          this.$ls.set('deliveryNumber',this.no_runsheet)
-          this.$refs.ConnoteRunsheetInformation.refresh();
-          this.$refs.undeliveryInformation.refresh()
-          this.confirm();
-          this.isDisabled = false
-        },
-        getTotal(tot) {
-          this.totalConnote = tot
-        },
-        getCourrier(datas){
-          this.courArray = datas
-        },
-
         async processUndelivery() {
-          await axios
-              .post(this.URL.undelivery + `?n=${this.listenNodeId}`,
-                  JSON.stringify(this.form),
-                  this.Helper.header())
-              .then(res => {
-                this.$refs.undeliveryInformation.refresh()
-                this.checkRunsheetStatus();
-                this.handleClearFormKoli()
-                this.openNotification(null, 'Success', 'Receiving is success')
-              }).catch(err => {
-                this.loading = false
-                this.refresh()
-                // this.handleClearForm();
-                this.openNotification('danger', err.response ? err.response.data.code : '', 'Receiving is failed', err)
-              })
+            await axios
+                .post(this.URL.undelivery + `?n=${this.listenNodeId}`,
+                    JSON.stringify(this.form),
+                    this.Helper.header())
+                .then(res => {
+                    this.$refs.undeliveryInformation.refresh()
+                    this.handleClearFormKoli()
+                    this.openNotification(null, 'Success', 'Receiving is success')
+                }).catch(err => {
+                    this.loading = false
+                    this.refresh()
+                    // this.handleClearForm();
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Receiving is failed', err)
+                })
+        },
+        async getButtonValue() {
+            await axios
+                .get(this.URL.courier_delivery + `/${this.listenEmployeeId}/hrs-status?n=${this.listenNodeId}`, this.Helper.header())
+                .then(res => {
+                    this.isFinishReceiving = res.data.ready_to_hrs;
+                }).catch(err => {
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to get button value', err.response ? err.response.data.message : "something went wrong")
+                })
         },
         back(){
-          this.$router.push('/inbound/prealert')
+            this.$router.push('/hrs')
         },
         handleClearForm(){
-          this.form = {}
-          this.item_no = ""
-          this.item_no_orion = ""
-          this.no_runsheet= ""
-          this.isDisabled = true
+            this.form = {}
+            this.item_no = ""
+            this.no_runsheet= ""
         },
         handleClearFormKoli(){
-          this.item_no = ""
-          this.item_no_orion = ""
+            this.item_no = ""
         },
         finishReceiving(){
-          this.activeDialogFinishReceiving = true
-        },
-        checkRunsheetStatus(val) {
-          this.isFinishReceivingButtonVisible = val;
-        },
-        checkUndelStatus(val) {
-          this.isFinishReceivingButtonVisible = val;
+            this.activeDialogFinishReceiving = true
         },
         closeDialogConfirm(){
-          this.activeDialogFinishReceiving = false
+            this.activeDialogFinishReceiving = false
         },
         confirm(val) {
-          if(val) {
-            this.activeLoadingFinishReceiving=true
-            this.addData()
-          }
+            if(val) {
+                this.activeLoadingFinishReceiving=true
+                this.addData()
+            }
         },
         async addData() {
-          const data = this.$ls.get('deliveryNumber')
-          const payload = {
-            delivery_number_runsheet: data
-          }
-          await axios
-              .post(this.URL.receiving_runsheet + `?n=${this.listenNodeId}`,
-                  JSON.stringify(payload),
-                  this.Helper.header())
-              .then(res => {
-                this.$refs.undeliveryInformation.refresh();
-                this.$refs.ConnoteRunsheetInformation.refresh();
-                this.activeDialogFinishReceiving = false
-                this.activeLoadingFinishReceiving = false
-                this.isFinishReceivingButtonVisible = false;
-                this.handleClearForm()
-                this.openNotification(null, 'Success', 'Receiving Runsheet is success')
-                
-      this.refresh()
-              }).catch(err => {
-                let message = err.response.data ? err.response.data.message : 'Update Failed'
-                this.activeDialogFinishReceiving = false
-                this.activeLoadingFinishReceiving = false
-                this.refresh()
-                // this.handleClearForm();
-                this.openNotification('danger', err.response ? err.response.data.code : '','Update Failed', message)
-              })
+            const data = this.$ls.get('deliveryNumber')
+            const payload = {
+                delivery_number_runsheet: data
+            }
+            await axios
+                .post(this.URL.receiving_runsheet + `?n=${this.listenNodeId}`,
+                    JSON.stringify(payload),
+                    this.Helper.header())
+                .then(res => {
+                    this.$refs.undeliveryInformation.refresh();
+                    this.$refs.ConnoteRunsheetInformation.refresh();
+                    this.activeDialogFinishReceiving = false
+                    this.activeLoadingFinishReceiving = false
+                    this.isFinishReceivingButtonVisible = false;
+                    this.handleClearForm()
+                    this.openNotification(null, 'Success', 'Receiving Runsheet is success')
+                    this.refresh()
+                }).catch(err => {
+                    let message = err.response.data ? err.response.data.message : 'Update Failed'
+                    this.activeDialogFinishReceiving = false
+                    this.activeLoadingFinishReceiving = false
+                    this.refresh()
+                    // this.handleClearForm();
+                    this.openNotification('danger', err.response ? err.response.data.code : '','Update Failed', message)
+                })
         },
     },
     mounted() {
-      this.refresh()
+        this.refresh()
     }
 }
 </script>
 <style lang="scss">
-  .mb-15{
-   margin-bottom: 1.5em;
-  }
-  .custom-title{
+.mb-15{
+    margin-bottom: 1.5em;
+}
+.custom-title{
     padding: 0.6em;
     text-align: right;
     font-weight: 600;
-  }
-  .nav-box{
+}
+.nav-box{
     margin-top: 1em;
-  }
-  .in-get-bag-flex {
+}
+.in-get-bag-flex {
     font-size: 16px;
     display: flex;
-  }
+}
 </style>

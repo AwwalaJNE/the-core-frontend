@@ -1200,6 +1200,7 @@ export default {
       
       this.confirmationApprove(false)
       this.activeDialogConfirmUnpproveRunsheet = false
+      this.reload()
     },
     closeDialogConfirmUnpproveRunsheet(){
       this.activeDialogConfirmUnpproveRunsheet = false
@@ -1216,6 +1217,7 @@ export default {
           this.form = {};
           this.disabledApprove = val;
           this.openNotification(null, "Success", res.data.message);
+          this.reload()
         })
         .catch((err) => {
           this.openNotification("danger", err.response ? err.response.data.code : '', "approve FAILED !", err.response.data.message);
