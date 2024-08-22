@@ -226,5 +226,8 @@ export default {
     documentation: api + 'documentation',
 
     // Validation
-    validation: api + 'validation'
+    validation: api + 'validation',
+
+    //Handover Runsheet
+    handover_runsheet : api + "handover-runsheet"
 }
