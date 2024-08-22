@@ -118,47 +118,6 @@ export default {
                         this.pagination.page = res.data.meta.current_page;
                         this.pagination.limit = parseInt(res.data.meta.per_page);
                         this.pagination.page_size = res.data.meta.last_page;
-                        // this.dataTable = res.data.data
-                        // let cour = [];
-                        // let dataCour = res.data.data
-                        // const map = new Map();
-                        // cour.push({
-                        //             'value': 0,
-                        //             'text': 'All'
-                        //         });
-                        // if (cour.length == 1 && cour.length > 0) {
-                        //     for (const item of dataCour) {
-                        //         if(!map.has(item.courier_employee_id)){
-                        //             map.set(item.courier_employee_id, true);    // set any value to Map
-                        //             cour.push({
-                        //                 value: item.employee_courier.employee_id,
-                        //                 text: item.employee_courier.employee_name
-                        //             });
-                        //         }
-                        //     }
-                        // }
-                        // this.$nextTick(() => {
-                        // this.$emit('cour-list', cour);
-                        // this.$emit('total-connote', res.data.data.length);
-                        // });
-                        // let no = 1;
-                        // this.dataTable.map(item=>{
-                        // item['no'] = no
-                        // item['courier_employee_name'] = item.employee_courier.employee_name
-                        // no++
-                        // })
-                        // let gets = this.$store.getters.getInputs.all_runsheet;
-                        // let showButton = this.dataTable.length === 0;
-                        // let statusExists = gets?.some(item => item.status === null);
-                        // if (showButton && statusExists === true) {
-                        //     showButton = false;
-                        // } else if (showButton && (statusExists === false || statusExists === undefined)) {
-                        //     showButton = true;
-                        // }
-                        // this.$emit('showButtons',showButton);
-                        // this.pagination.page = res.data.meta.current_page
-                        // this.pagination.limit = parseInt(res.data.meta.per_page)
-                        // this.pagination.page_size = res.data.meta.last_page
                     }
                 }).catch(err => {
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Undelivery list', err)
