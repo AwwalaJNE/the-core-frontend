@@ -15,6 +15,7 @@
                         <form @submit.prevent="processConnoteNumber" style="display: flex; margin-top: 2em;">
                             <vs-col xs="4" sm="4" lg="4">
                                 <vs-input 
+                                    id="traceConnote"
                                     border 
                                     type="text"
                                     v-model="connoteNumber"
