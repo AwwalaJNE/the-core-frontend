@@ -115,6 +115,7 @@
                 :disabled="listeninputDisabled"
                 :is-multiple="false"
                 @updateValue="updateValue"
+                :customBind="'data-kt'"
               />
 
               <p style="margin:0;">
