@@ -1,10 +1,10 @@
 <template>
     <div>
         <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
+            <vs-col xs="8" sm="8" lg="8">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{title}} - {{ employee_name }}</h2>
+                    <h2>{{title}} - {{ employeeName }} ({{ employeeCode }})</h2>
                 </div>
             </vs-col>
             <vs-col xs="4" sm="4" lg="4" align="right">
@@ -131,11 +131,8 @@ import ConnoteRunsheetInformation from "@/views/delivery/undelivery/ConnoteRunsh
 
 
 export default {
-    name:"pickup-request",
+    name:"undelivery-hrs",
     mixins: [master],
-    props: {
-        employee_name: String,
-    },
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
@@ -154,7 +151,9 @@ export default {
             activeDialogFinishReceiving: false,
             activeLoadingFinishReceiving: false,
             isFinishReceivingButtonVisible: false,
-            isFinishReceiving: false
+            isFinishReceiving: false,
+            employeeName: "",
+            employeeCode: ""
         }
     },
     computed: {
@@ -259,9 +258,21 @@ export default {
                     this.openNotification('danger', err.response ? err.response.data.code : '','Update Failed', message)
                 })
         },
+        async getEmployeeData() {
+            await axios
+                .get(this.URL.employee + `/${this.listenEmployeeId}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    this.employeeName = res.data.data.employee_name
+                    this.employeeCode = res.data.data.employee_code
+                }).catch(err => {
+                    this.openNotification('danger', err.response?.data?.code ?? '', err.response?.data?.message ?? 'Failed to Get Employee', err)
+                })
+        }
     },
     mounted() {
         this.refresh()
+        this.getEmployeeData()
     }
 }
 </script>
