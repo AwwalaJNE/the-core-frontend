@@ -200,7 +200,7 @@ export default {
             await axios
                 .get(this.URL.courier_delivery + `/${this.listenEmployeeId}/hrs-status?n=${this.listenNodeId}`, this.Helper.header())
                 .then(res => {
-                    this.isFinishReceiving = res.data.ready_to_hrs;
+                    this.isFinishReceiving = res.data.data.ready_to_hrs;
                 }).catch(err => {
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to get button value', err.response ? err.response.data.message : "something went wrong")
                 })
