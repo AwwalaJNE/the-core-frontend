@@ -298,6 +298,7 @@
                           :loading="loadingConfirm"
                           @click="approveAction(true)"
                           style="float: left"
+                          disabled="is_hrs"
                         >
                           <span>
                             Approve Runsheet
@@ -310,6 +311,7 @@
                           @click="approveAction(false)"
                           style="float: left"
                           danger
+                          disabled="is_hrs"
                         >
                           <span>
                             Unapprove Runsheet
