@@ -179,7 +179,7 @@ export default {
         },
         updateValue(){
             this.form = {
-                koli_number: this.item_no,
+                item_number: this.item_no,
             };
             this.processUndelivery();
         },
@@ -191,6 +191,7 @@ export default {
                 .then(res => {
                     this.$refs.undeliveryInformation.refresh()
                     this.handleClearFormKoli()
+                    this.refresh()
                     this.openNotification(null, 'Success', 'Receiving is success')
                 }).catch(err => {
                     this.loading = false
