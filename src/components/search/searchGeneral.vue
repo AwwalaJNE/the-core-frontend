@@ -1,197 +1,205 @@
 <template>
     <dialog-master 
-    :actived="listenActive" 
-    width="lg"
-    :closeDialog="cancel">
+        width="md"
+        :actived="listenActive" 
+        :loading="listenLoading"
+        :closeDialog="cancel"
+    >
+        <template v-slot:header>
+            {{listenTitle}}
+        </template>
         <template v-slot:content>
-            <div>
-            <vs-row>
-                <vs-col xs="12" sm="12" lg="12" class="mb-15" align="right">
-                    <!-- <search-input class="cus-search" ref="searchInput" @searchValue="searchValue"/> -->
-                    <div class="searchGeneral">
-                        <vs-input icon-after v-model="tempSearch" autocomplete="chrome-off" placeholder="Search" @change="searchValue">
-                            <template #icon>
-                                <i class='bx bx-search' @click="clear"></i>
-                            </template>
-                        </vs-input>
+            <vs-input
+                v-model="searchQuery"
+                icon-after
+                placeholder="Search Feature"
+                class="search-input"
+                @input="onSearch"
+            >
+                <template #icon>
+                    <i class='bx bx-search'></i>
+                </template>    
+            </vs-input>
+
+            <div
+                v-if="searchQuery.length"
+                class="search-dropdown"
+            >
+                <div v-if="filteredItems.length">
+                    <div
+                        v-for="(item, index) in filteredItems"
+                        :key="index"
+                        @click="selectItem(item)"
+                        class="dropdown-item"
+                    >
+                        <div class="dropdown-text">
+                            <span v-html="highlightMatch(item.label)" />
+                            <small v-html="highlightMatch(item.description)" />
+                        </div>
                     </div>
-                </vs-col>
-                <vs-col xs="12" sm="12" lg="12" class="mb-15">
-                    <div v-if="itemSearch.length > 0">
-                        <template v-for="item in itemSearch">
-                            <div class="itemSearch" @click="detail(item)">
-                                <i class='bx bx-detail'></i> {{ item.koli_number }}
-                            </div>
-                        </template>
-                    </div>
-                    <div v-else class="itemNotFound">
-                        Data tidak ada
-                    </div>
-                    <!-- <transition name="slide-fade"> -->
-                        <!-- <connote-list :query="tempSearch"/> -->
-                    <!-- </transition> -->
-                </vs-col>
-            </vs-row>
+                </div>
+                <div v-else class="dropdown-item no-data">
+                    No Data Found
+                </div>
             </div>
         </template>
-
     </dialog-master>
-
-
 </template>
 
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
 import DialogMaster from "@/components/dialog/dialogMaster"
-import SearchInput from "@/components/search/searchInput"
-// Connote
-import ConnoteList from "@/views/inventory/connote/item/connoteList"
 
 export default {
-    name:"dialog-create-edit-node",
+    name:"search-general",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
-        "search-input": SearchInput,
-        "connote-list": ConnoteList,
     },
     props: {
-       closeDialog: Function,
-       query: Function,
-       active: Boolean,
-       title: String,
-       dataItem: Object,
-       btnRed: String,
-       btnBlue: String,
-       withSchedule: Boolean,
-    },
-    watch: {
-        query: function(val, old) {
-            if(val !== undefined) {
-                this.tempSearch = val
-                if(this.tempSearch !== old) {
-                    this.querySearch(this.tempSearch)
-                }
-            }
-        },
+        closeDialog: Function,
+        active: Boolean,
+        title: String,
     },
     data() {
         return {
-            form: {},
-            node_id: '',
-            dialogGetCustomer:false,
-            tempSearch: "",
-            pickup_number:'',
-            hasClicked: false,
             itemSearch: [],
-            itemNum: 0
+            searchQuery: "",
+            items: [],
+            filteredItems: [],
+            loading: false
         }
     },
     computed: {
         listenActive(){
+            if(this.active){
+                this.getFindFeature() 
+            }
             return this.active
         },
         listenTitle(){
             return this.title
         },
-        listenDataItem() {
-            return this.dataItem
+        listenLoading(){
+          return this.loading
         },
-        listenDataSchedule() {
-            return this.$store.getters.getInputs.pickup_list.pickup_schedule || []
-        },
-        listenwithSchedule() {
-            return this.withSchedule || false
+        listenUserId() {
+            return this.$ls.get('user')['user_id'];
         }
     },
     methods: {
-        searchValue(){
-            this.$emit("searchValue",this.tempSearch)
+        onSearch() {
+            const query = this.searchQuery.toLowerCase();
+            this.filteredItems = this.items.filter(item =>
+                item.label.toLowerCase().includes(query) ||
+                item.description.toLowerCase().includes(query)
+            );
+        },
+        selectItem(item) {
+            this.filteredItems = [];
+            this.cancel();
+            this.$router.push(`${item.url}`);
+        },
+        highlightMatch(text) {
+            const query = this.searchQuery;
+            if (!query) return text;
+            const regex = new RegExp(`(${query})`, "gi");
+            return text.replace(regex, "<b>$1</b>");
+        },
+        async getFindFeature(){
+            this.loading = true
+            await axios
+                .get(this.URL.find_feature + `/${this.listenUserId}?n=${this.listenNodeId}`, this.Helper.header())
+                .then(res => {
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.feature_name;
+                            obj["description"] = item.description;
+                            obj["url"] = item.url;
 
-            this.querySearch(this.tempSearch)
-        },
-        clear() {
-            this.tempSearch = ""
-            this.$emit("searchValue",this.tempSearch)
-            this.itemSearch = []
-            this.itemNum = 0
-        },
-        async querySearch(query){
-            const loading = this.$vs.loading({
-                type:'scale',
-                text: 'Loading...',
-                background: '#EAEAEA',
-            })
-            let limit = 20;
-            let page = "1";
-            let isOnBag = "";
-            let isInventory = "";
-            await axios.get(this.URL.koli +
-                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}`,
-                    this.Helper.header())
-            .then(res => {
-                let arr = res.data.data
-                arr.map(item => {
-                    item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
-                    item["packing_kayu_type"] = item.packing_kayu_type != null ? 'PK-'+item.packing_kayu_type : '-'                        
+                            arr.push(obj)
+                        })
+                        this.items = arr
+                    } else {
+                        this.openNotification('warn', null, 'Feature list is empty!', ' Please create a new feature')
+                    }
+                }).catch(err => {
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate feature list', err.response ? err.response.data.message : "something went wrong")
                 })
-                this.itemSearch = arr
-                this.itemNum = arr.length
-                loading.close()
-
-            })
-            .catch(error => {
-                loading.close()
-
-            });
+            this.loading = false
         },
-        detail(row){
-          this.$router.push(`/connote-detail/${row.koli_number}`);
-          this.cancel()
+        handleClear() {
+            this.searchQuery = "";
+            this.items = [];
+            this.filteredItems = [];
         },
         cancel() {
+            this.handleClear()
             this.closeDialog()
-            this.clear()
         }
-    },
-    mounted() {
-        // this.getDataNodeDestination()
-    },
+    }
 }
 </script>
-<style lang="scss">
-    .searchGeneral{
-        .vs-input-content{
-            position: relative;
-            width: 100%;
-            display: flex;
-            align-self: flex-end;
-        }
-        .clear{
-            position: absolute;
-            right: 35px;
-            width: 35px;
-            top: 0;
-            height: 100%;
-        }
-    }
-    .itemNotFound{
-        width: 100%;
-        padding: 15px 0;
-        font-size: 0.9rem;
-    }
-    .itemSearch{
-        width: 100%;
-        text-align: left;
-        padding: 15px 0;
-        font-size: 0.9rem;
-    }
-    .itemSearch:hover{
-        cursor: pointer;
-        background: #355cff0f;
-    }
-    .itemSearch i {
-        padding: 0 10px;
-    }
+<style scoped>
+.search-input {
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-dropdown {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+    overflow: hidden;
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+}
+
+.search-dropdown::-webkit-scrollbar {
+    width: 6px;
+    height: 0;
+}
+
+.search-dropdown::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+.search-dropdown::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.dropdown-text {
+    text-align: left;
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown-text small {
+    display: block;
+    color: #888;
+    font-size: 12px;
+    margin-top: 2px;
+}
 </style>
