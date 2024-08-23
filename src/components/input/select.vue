@@ -49,7 +49,7 @@
                           :key="key"
                           :label="item.label"
                           :value="item.value"
-                          v-bind:data-kt="item.label"
+                          v-bind="getCustomAttribute(item.label)"
                           >
                           </el-option>
                       </el-select>
@@ -75,7 +75,7 @@
                                 :key="key"
                                 :label="item.label"
                                 :value="item.value"
-                                v-bind:data-kt="item.label">
+                                v-bind="getCustomAttribute(item.label)">
                             </el-option>
                         </el-select>
                     </template>
@@ -96,7 +96,7 @@
                           :key="key"
                           :label="item.label"
                           :value="item.value"
-                          v-bind:data-kt="item.label">
+                          v-bind="getCustomAttribute(item.label)">
                           </el-option>
                       </el-select>
                     </template>
@@ -131,7 +131,8 @@ export default {
         disabled: Boolean,
         hiddenTitle: Boolean,
         collapseTags: Boolean,
-        isAllowCreate: Boolean
+        isAllowCreate: Boolean,
+        customBind: String
     },
     data() {
         return {
@@ -225,6 +226,11 @@ export default {
         },
         inputFocus() {
             this.$emit("inputFocus", this.dataObj)
+        },
+        getCustomAttribute(label) {
+            return {
+                [this.customBind]: label
+            };
         }
     },
 }

@@ -24,7 +24,7 @@
                    :valueData="filteredRegionalArray"
                    :selectedValue="regional"
                    :disabled="is_pra_runsheet"
-                   
+                   :customBind="'data-kt-routing'"
                    @updateValue="updateFilter" />
                  </vs-col>
                 </div>
@@ -44,7 +44,7 @@
                    :valueData="destinationArray"
                    :selectedValue="destination"
                    :disabled="is_pra_runsheet"
-                   
+                   :customBind="'data-kt-destination'"
                    @updateValue="updateFilter" />
                  </vs-col>
                 </div>
@@ -59,7 +59,15 @@
                     :fetch-suggestions="querySearchAsync"
                     placeholder="Search Destination"
                     @select="handleSelect"
-                  />
+                  >
+                    <template v-slot="{ item }">
+                        <div
+                            v-bind:data-kt-destination="item.value"
+                        >
+                            {{ item.value }}
+                        </div>
+                    </template>
+                  </el-autocomplete>
                  </vs-col>
                 </div>
               </template>
@@ -79,7 +87,7 @@
                    :selectedValue="service"
                    :isMultiple="true"
                    :disabled="is_pra_runsheet"
-                   
+                   :customBind="'data-kt-service'"
                    @updateValue="updateFilter" />
                  </vs-col>
                 </div>
@@ -98,7 +106,7 @@
                    formKey="employee"
                    :valueData="employeeArray"
                    :selectedValue="employee"
-                   
+                   :customBind="'data-kt-courier'"
                    @updateValue="updateFilter" />
                  </vs-col>
                 </div>
@@ -673,7 +681,7 @@ export default {
           .then((response) => {
             const results = response.data.data;
             this.suggestions = results.map(item => ({
-              value: item.node_name,
+              value: `${item.node_name} (${item.node_code})`,
               node_id: item.node_id,
             }));
             cb(this.suggestions);
