@@ -62,7 +62,6 @@
                                     <transition name="slide-fade">
                                         <ConnoteRunsheetInformation 
                                             :ref="'ConnoteRunsheetInformation'"
-                                            :query="tempSearch" 
                                             :employeeId="listenEmployeeId"
                                         />
                                     </transition>
@@ -86,7 +85,6 @@
                                 <transition name="slide-fade">
                                     <UndeliveryInformation 
                                         :ref="'undeliveryInformation'"
-                                        :query="tempSearch" 
                                         :employeeId="listenEmployeeId" 
                                         v-on:total-connote="getTotal"
                                     />
@@ -143,7 +141,6 @@ export default {
     data() {
         return {
             title:"Handover Runsheet",
-            tempSearch: "",
             item_no:'',
             no_runsheet:'',
             form:{},
@@ -179,7 +176,7 @@ export default {
         },
         updateValue(){
             this.form = {
-                koli_number: this.item_no,
+                item_number: this.item_no,
             };
             this.processUndelivery();
         },
@@ -191,7 +188,7 @@ export default {
                 .then(res => {
                     this.$refs.undeliveryInformation.refresh()
                     this.handleClearFormKoli()
-                    this.openNotification(null, 'Success', 'Receiving is success')
+                    this.openNotification(null, 'Success', res.data.message)
                 }).catch(err => {
                     this.loading = false
                     this.refresh()
@@ -203,7 +200,7 @@ export default {
             await axios
                 .get(this.URL.courier_delivery + `/${this.listenEmployeeId}/hrs-status?n=${this.listenNodeId}`, this.Helper.header())
                 .then(res => {
-                    this.isFinishReceiving = res.data.ready_to_hrs;
+                    this.isFinishReceiving = res.data.data.ready_to_hrs;
                 }).catch(err => {
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to get button value', err.response ? err.response.data.message : "something went wrong")
                 })
