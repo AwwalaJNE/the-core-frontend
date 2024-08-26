@@ -298,7 +298,7 @@
                           :loading="loadingConfirm"
                           @click="approveAction(true)"
                           style="float: left"
-                          disabled="is_hrs"
+                          :disabled="hrsStatus"
                         >
                           <span>
                             Approve Runsheet
@@ -311,7 +311,7 @@
                           @click="approveAction(false)"
                           style="float: left"
                           danger
-                          disabled="is_hrs"
+                          :disabled="hrsStatus"
                         >
                           <span>
                             Unapprove Runsheet
@@ -516,6 +516,7 @@ export default {
       listConnote: [],
       activeDialogConfirmUnpproveRunsheet: false,
       loadingConfirmUnpproveRunsheet:false,
+      hrsStatus: false,
     };
   },
   computed: {
@@ -1014,6 +1015,10 @@ export default {
           this.disabledApprove = true
         } else {
           item["is_disabled_input_status"] = true
+        }
+
+        if (item.is_hrs) {
+          this.hrsStatus = true
         }
  
         item.isDisabled = item.is_delivered === 1;
