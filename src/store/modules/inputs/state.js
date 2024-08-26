@@ -2777,7 +2777,7 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      customBind: "data-kt-link-request"
+      customBind: "data-kt-pickup-request"
     },
   },
 
