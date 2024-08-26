@@ -172,7 +172,7 @@ export default {
                             delivery_runsheet_number.push(el.delivery_runsheet_number)
                             dri.push(el.dri)
                             hrs.push(el.hrs ?? " ")
-                            is_hrs.push(el.is_hrs ?? false)
+                            is_hrs.push(el.is_hrs ? true : false)
                             total_koli.push(el.total_koli)
                             total_open.push(el.total_open)
                             total_delivered.push(el.total_delivered)
