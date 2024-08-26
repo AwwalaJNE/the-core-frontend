@@ -2776,7 +2776,8 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      customBind: "data-kt-link-request"
     },
   },
 

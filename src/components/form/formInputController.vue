@@ -135,6 +135,7 @@
                                             :isMultiple="false"
                                             :isAllowCreate="false"
                                             :disabled="listenIsDisabled"
+                                            :customBind="InputObject[item].customBind"
                                             @updateValue="updateValue" />
                                         </div>
                                     </template>
@@ -153,6 +154,7 @@
                                         :selectedValue="InputObject[item].value"
                                         :isMultiple="false"
                                         :disabled="listenIsDisabled"
+                                        :customBind="InputObject[item].customBind"
                                         @updateValue="updateValue" />
                                     </div>
                                 </template>

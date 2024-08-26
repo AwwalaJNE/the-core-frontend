@@ -144,21 +144,27 @@
                 <vs-col xs="4" sm="3" lg="2">
                   <vs-radio
                     v-model="radio_option"
-                    val="connote">
+                    val="connote"
+                    v-bind:data-kt-radio="'Connote (Orion)'"
+                    >
                     Connote (Orion)
                   </vs-radio>
                 </vs-col>
                 <vs-col xs="4" sm="3" lg="2">
                   <vs-radio
                     v-model="radio_option"
-                    val="koli">
+                    val="koli"
+                    v-bind:data-kt-radio="'Koli'"
+                    >
                     Koli
                   </vs-radio>
                 </vs-col>
                 <vs-col xs="4" sm="3" lg="2">
                   <vs-radio
                     v-model="radio_option"
-                    val="bag">
+                    val="bag"
+                    v-bind:data-kt-radio="'Bag'"
+                    >
                     Bag
                   </vs-radio>
                 </vs-col>
@@ -178,6 +184,7 @@
                             icon-after
                             v-on:keyup.enter="updateValueOrion"
                             @click-icon="$refs.cameraScanner.open('formInputBagging')"
+                            v-bind:data-kt="'scan_input'"
                             >
                             <template #icon>
                               <i class="bx bx-barcode-reader"></i>
@@ -194,6 +201,7 @@
                             ref="formInputBagging"
                             icon-after
                             @click-icon="$refs.cameraScanner.open('formInputBagging')"
+                            v-bind:data-kt="'scan_input'"
                             >
                             <template #icon>
                               <i class="bx bx-barcode-reader"></i>
