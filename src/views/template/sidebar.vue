@@ -251,8 +251,8 @@ export default {
               permission: "read-runsheet",
             },
             {
-              label: "SCO",
-              url: "/sco",
+              label: "Deposit COD",
+              url: "/deposit-cod",
               icon: "",
               permission: "read-cod",
             },
