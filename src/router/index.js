@@ -734,7 +734,7 @@ const routes = [
         }
       },
       {
-        path: "/delivery/cod_history",
+        path: "/cod-history",
         name: "delivery-cod-history",
         component: DeliveryCodHistory,
         meta: {
