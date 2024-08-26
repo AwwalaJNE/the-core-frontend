@@ -229,30 +229,24 @@ export default {
             }
         },
         async addData() {
-            const data = this.$ls.get('deliveryNumber')
-            const payload = {
-                delivery_number_runsheet: data
+            let payload = {
+                courier_id: this.listenEmployeeId
             }
             await axios
-                .post(this.URL.receiving_runsheet + `?n=${this.listenNodeId}`,
+                .post(this.URL.handover_runsheet + `?n=${this.listenNodeId}`,
                     JSON.stringify(payload),
                     this.Helper.header())
                 .then(res => {
-                    this.$refs.undeliveryInformation.refresh();
-                    this.$refs.ConnoteRunsheetInformation.refresh();
+                    this.openNotification('success', null, "Success", res?.data?.message ?? 'Success Receiving Runsheet')
                     this.activeDialogFinishReceiving = false
                     this.activeLoadingFinishReceiving = false
-                    this.isFinishReceivingButtonVisible = false;
-                    this.handleClearForm()
-                    this.openNotification(null, 'Success', 'Receiving Runsheet is success')
-                    this.refresh()
+                    this.back()
                 }).catch(err => {
                     let message = err.response.data ? err.response.data.message : 'Update Failed'
                     this.activeDialogFinishReceiving = false
                     this.activeLoadingFinishReceiving = false
                     this.refresh()
-                    // this.handleClearForm();
-                    this.openNotification('danger', err.response ? err.response.data.code : '','Update Failed', message)
+                    this.openNotification('danger', err.response ? err.response?.data?.code : '','Update Failed', message)
                 })
         },
         async getEmployeeData() {
