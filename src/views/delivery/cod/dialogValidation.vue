@@ -171,7 +171,7 @@ export default {
                 }).catch(err => {
                     this.closeDialog()
                     this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'COD Collect is Failed', err?.response?.data?.message ? err?.response?.data?.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Deposit COD is Failed', err?.response?.data?.message ? err?.response?.data?.message : 'something went wrong')
                 })
             
             this.loading = false;
