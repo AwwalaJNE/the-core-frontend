@@ -67,7 +67,7 @@ export default {
         return {
             DataTemplate: [
                 {
-                    label: 'Write Connote / Bag Number Here',
+                    label: 'Write Here',
                     value: 'none',
                 },
             ],
