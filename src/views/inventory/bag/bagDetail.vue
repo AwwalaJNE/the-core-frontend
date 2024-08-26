@@ -62,7 +62,9 @@
             <div v-if="radio_option === 'connote'" class="center in-get-bag">
               <vs-input border type="text" v-model="item_code_orion" label-placeholder="Masukkan Connote (Orion)"
                 v-on:keyup.enter="updateItemOnBagOrion" icon-after :autofocus="true" ref="formInputBaggingConnote"
-                @click-icon="$refs.cameraScanner.open('formInputBaggingConnote')">
+                @click-icon="$refs.cameraScanner.open('formInputBaggingConnote')"
+                v-bind:data-kt="'scan_input'"
+                >
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
                 </template>
@@ -72,7 +74,9 @@
             <div v-if="radio_option === 'koli'" class="center in-get-bag">
               <vs-input border type="text" v-model="item_code" label-placeholder="Masukkan code Koli"
                 v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBaggingKoli"
-                @click-icon="$refs.cameraScanner.open('formInputBaggingKoli')">
+                @click-icon="$refs.cameraScanner.open('formInputBaggingKoli')"
+                v-bind:data-kt="'scan_input'"
+                >
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
                 </template>
@@ -81,7 +85,9 @@
             <div v-if="radio_option === 'bag'" class="center in-get-bag">
               <vs-input border type="text" v-model="item_code" label-placeholder="Masukkan code Bag"
                 v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBaggingBag"
-                @click-icon="$refs.cameraScanner.open('formInputBaggingBag')">
+                @click-icon="$refs.cameraScanner.open('formInputBaggingBag')"
+                v-bind:data-kt="'scan_input'"
+                >
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
                 </template>
