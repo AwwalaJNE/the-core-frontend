@@ -264,7 +264,7 @@ export default {
             },
             {
               label: "Cod History",
-              url: "/delivery/cod_history",
+              url: "/cod-history",
               icon: "",
               permission: "read-cod",
             },
