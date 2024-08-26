@@ -251,16 +251,16 @@ export default {
               permission: "read-runsheet",
             },
             {
-              label: "Deposit COD",
-              url: "/deposit-cod",
-              icon: "",
-              permission: "read-cod",
-            },
-            {
               label: "Handover Runsheet",
               url: "/hrs",
               icon: "",
               permission: "read-undelivery",
+            },
+            {
+              label: "Deposit COD",
+              url: "/deposit-cod",
+              icon: "",
+              permission: "read-cod",
             },
             {
               label: "Cod History",

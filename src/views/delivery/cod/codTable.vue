@@ -9,6 +9,10 @@
       :limit="pagination.limit"
       :hasPagination="true"
       :expandable="true"
+      :isMultipleSelectColoum="true"
+      :onRowClickCallback="onRowClickCallback"
+      :allCheckCallback="onAllCheckCallback"
+      @updateSelected="updateSelected"
       @actionLimit="actionLimit"
       @actionPagination="actionPagination"
     />
@@ -84,6 +88,9 @@ export default {
         page_size: 1,
         page: 1,
       },
+      filtered_item: [],
+      filtered_all_item: [],
+      is_all_selected: false,
     };
   },
   watch: {
@@ -150,7 +157,6 @@ export default {
               item['children_width'] = {
                   'Runsheet #': 'md',
                   'DRI Number': 'sm',
-                  'HRS Number': 'sm',
                   'Total Connote': 'sm',
                   'Payment Type': 'sm',
                   'Total COD (Rp)': 'sm'
@@ -166,7 +172,6 @@ export default {
               })
               children['Runsheet #'] = delivery_runsheet_number
               children['DRI Number'] = dri
-              children['HRS Number'] = hrs
               children['Total Connote'] = total_connote
               children['Payment Type'] = cod_payment_type
               children['Total COD (Rp)'] = total_amount_cod
@@ -190,6 +195,24 @@ export default {
     },
     closeDialogConfirm() {
       this.confirmDialog = false;
+    },
+    onRowClickCallback(event, item, selected) {
+      this.filtered_item = selected.map(item => item.hrs_number);
+      this.$emit("update-selected", this.filtered_item);
+    },
+    onAllCheckCallback(val, selected) {
+      this.is_all_selected = val;
+      if (val) {
+        this.filtered_all_item = selected.map(item => item.hrs_number);
+        this.$emit("update-selected", this.filtered_all_item);
+      }
+      else {
+        this.$emit("update-selected", selected);
+      }
+    },
+    updateSelected(selected) {
+      this.filtered_item = selected.map(item => item.hrs_number);
+      this.$emit("update-selected", this.filtered_item);
     },
     actionLimit(val) {
       this.pagination.limit = val;

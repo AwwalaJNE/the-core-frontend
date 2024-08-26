@@ -232,5 +232,8 @@ export default {
     handover_runsheet : api + "handover-runsheet",
 
     // Find Feature
-    find_feature: api + 'find-feature'
+    find_feature: api + 'find-feature',
+
+    // Deposit COD
+    deposit_cod: api + 'cod-deposit'
 }
