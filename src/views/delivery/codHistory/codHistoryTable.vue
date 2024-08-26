@@ -9,6 +9,7 @@
       :limit="pagination.limit"
       :hasAction="false"
       :hasPagination="true"
+      :expandable="true"
       @actionLimit="actionLimit"
       @actionPagination="actionPagination"
     />
@@ -19,12 +20,11 @@ import axios from "axios";
 import master from "@/mixins/master";
 import TableMaster from "@/components/table/tableMaster.vue";
 export default {
-  name: "delivery-COD-history",
+  name: "cod-history-table",
   mixins: [master],
   props: {
     query: String,
     dateFilter: Array,
-    node: String,
     searchBy: String,
     filterDateBy: String
   },
@@ -36,43 +36,55 @@ export default {
       dataTable: [],
       datacolumn: [
         {
-          label: "Koli Number",
-          key: "koli_number",
-          width: "auto",
+          label: "SCO Number",
+          key: "sco",
+          width: "sm",
         },
         {
-          label: "Date",
-          key: "date_cod_collected",
+          label: "Deposit Date",
+          key: "created_at",
           width: "md",
         },
         {
-          label: "Courier",
-          key: "courier_employee_name",
-          width: "auto",
+          label: "Cashier Name",
+          key: "cashier_name",
+          width: "sm",
+        },
+        {
+          label: "Cashier ID",
+          key: "cashier_id",
+          width: "sm",
+        },
+        {
+          label: "Total HRS",
+          key: "total_hrs",
+          width: "xs",
+        },
+        {
+          label: "Total Runsheet",
+          key: "total_runsheet",
+          width: "xs",
+        },
+        {
+          label: "Total Connote",
+          key: "total_connote",
+          width: "xs",
         },
         {
           label: "COD Amount (Rp)",
-          key: "amount_cod",
-          width: "xxxs",
+          key: "amount",
+          width: "sm",
           type_amount: true,
           textAlign: "right"
         },
-        {
-          label: "Collected By",
-          key: "user_login",
-          width: "md",
-        },
       ],
       loading: false,
-      dataItem: {},
-      form: {},
       tempSearch: "",
       tempDate: [],
       startDate: "",
       endDate: "",
-      dialogTariff: false,
       pagination: {
-        limit: 5,
+        limit: 20,
         page_size: 1,
         page: 1,
       },
@@ -109,21 +121,6 @@ export default {
         );
       }
     },
-    node: function(val, old) {
-      if (val !== undefined) {
-        this.node_filter = val;
-        if (this.node_filter !== old) {
-          this.getTableData(
-            this.pagination.limit,
-            this.pagination.page,
-            this.tempSearch,
-            this.startDate,
-            this.endDate,
-            val
-          );
-        }
-      }
-    },
   },
   methods: {
     async getTableData(limit, page, q, from, to) {
@@ -142,51 +139,78 @@ export default {
       await axios
         .get(
           this.URL.delivery_cod_history +
-            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}`,
           this.Helper.header()
         )
         .then((res) => {
-          this.dataTable = res.data.data;
-          this.dataTable.map((item) => {
-            item["courier_employee_name"] = item.employee_courier.employee_name;
-          });
+          let arr = res.data.data
+          arr.map((item) => {
+              let children = {}
+              let delivery_runsheet_number = []
+              let dri = []
+              let hrs = []
+              let employee_name = []
+              let employee_code = []
+              let total_connote = []
+              let cod_payment_type = []
+              let total_amount_cod = []
+              item['children_width'] = {
+                  'Runsheet #': 'md',
+                  'DRI Number': 'sm',
+                  'HRS Number': 'sm',
+                  'Employee Name': 'sm',
+                  'Employee Code': 'sm',
+                  'Payment Type': 'xs',
+                  'Total Connote': 'xxs',
+                  'Total COD (Rp)': 'sm'
+              }
+              item['type_amount'] = ['Total COD (Rp)']
+              item.runsheets?.map((el) => {
+                  delivery_runsheet_number.push(el.delivery_runsheet_number)
+                  dri.push(el.dri)
+                  hrs.push(el.hrs)
+                  employee_name.push(el.employee_name)
+                  employee_code.push(el.employee_code)
+                  cod_payment_type.push(el.cod_payment_type)
+                  total_amount_cod.push(el.total_amount_cod)
+                  total_connote.push(el.total_connote)
+              })
+              children['Runsheet #'] = delivery_runsheet_number
+              children['DRI Number'] = dri
+              children['HRS Number'] = hrs
+              children['Courier Name'] = employee_name
+              children['Courier Code'] = employee_code
+              children['Payment Type'] = cod_payment_type
+              children['Total Connote'] = total_connote
+              children['Total COD (Rp)'] = total_amount_cod
+              item['children'] = children
+          })
+          this.dataTable = arr;
           this.pagination.page = res.data.meta.current_page;
           this.pagination.limit = parseInt(res.data.meta.per_page);
           this.pagination.page_size = res.data.meta.last_page;
-          if (res.data.data.length > 0) {
-          } else {
-            // this.openNotification('warn', null, 'COD History data is empty!', ' Please create a new data')
-          }
-
           this.loading = false;
         })
         .catch((err) => {
           this.loading = false;
           this.openNotification(
             "danger",
-            "Failed to populate COD History list",
-            err
+            err?.response?.data?.code,
+            "Get List Failed",
+            err?.response?.data?.message ?? "Failed to populate COD History"
           );
         });
     },
-
-    closeDialogConfirm() {
-      this.confirmDialog = false;
-    },
-
     actionLimit(val) {
       this.pagination.limit = val;
       this.pagination.page = 1;
       this.refresh();
     },
-
     actionPagination(val) {
       this.pagination.page = val;
       this.refresh();
     },
-
     refresh() {
-
       this.getTableData(
         this.pagination.limit,
         this.pagination.page,
