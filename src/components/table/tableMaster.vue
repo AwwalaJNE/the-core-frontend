@@ -1011,7 +1011,7 @@
                         :class="item.hasOwnProperty('children_width') ? item['children_width'][c_item] : ''"
                         style="font-size: 0.85em; padding-left: 0.75em"
                       >
-                        {{ c_item.replace(/[&\/\\#,+()$~%._'":*?<>{}]/g, " ") }}
+                        {{ c_item.replace(/[&\/\\#,+$~%._'":*?<>{}]/g, " ") }}
                       </th>
                     </tr>
                     <tr>
@@ -1069,7 +1069,21 @@
                                   </template>
 
                                   <template v-else>
-                                    <p>{{ itm }}</p>
+                                    <template v-if="item.hasOwnProperty('type_amount')">
+                                      <template v-if="item.type_amount.includes(c_item)">
+                                        <p style="text-align:right;">
+                                          {{ Intl.NumberFormat('en-GB').format(itm) }}
+                                        </p>
+                                      </template>
+                                      <template v-else="">
+                                        <p>{{ itm }}</p>
+                                      </template>
+                                    </template>
+                                    <template v-else>
+                                      <p>
+                                        {{ itm }}
+                                      </p>
+                                    </template>
                                   </template>
                                 </template>
                               </li>

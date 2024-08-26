@@ -7,14 +7,10 @@
       :pageSize="pagination.page_size"
       :page="pagination.page"
       :limit="pagination.limit"
-      :hasAction="false"
-      :codAction="true"
-      :hasLinked="['delivery_runsheet_number']"
       :hasPagination="true"
+      :expandable="true"
       @actionLimit="actionLimit"
       @actionPagination="actionPagination"
-      @handleEdit="actionDetail"
-      @actionCollect="actionCollect"
     />
   </div>
 </template>
@@ -22,14 +18,12 @@
 import axios from "axios";
 import master from "@/mixins/master";
 import TableMaster from "@/components/table/tableMaster.vue";
-import moment from "moment";
 export default {
   name: "delivery-runsheet",
   mixins: [master],
   props: {
     query: String,
     dateFilter: Array,
-    node: String,
     searchBy: String
   },
   components: {
@@ -40,31 +34,41 @@ export default {
       dataTable: [],
       datacolumn: [
         {
-          label: "Nama Kurir",
-          key: "courier_employee_name",
-          width: "md",
+          label: "HRS Number",
+          key: "hrs_number",
+          width: "sm",
         },
         {
-          label: "Runsheet",
-          key: "delivery_runsheet_number",
-          width: "auto",
+          label: "HRS Date",
+          key: "created_at",
+          width: "sm",
         },
         {
-          label: "HRS",
-          key: "hrs",
-          width: "auto",
+          label: "Courier Name",
+          key: "employee_name",
+          width: "sm",
         },
         {
-          label: "Total Connotes",
-          key: "count_connote",
-          width: "xs",
+          label: "Courier Code",
+          key: "employee_code",
+          width: "sm",
+        },
+        {
+          label: "Total Runsheet",
+          key: "total_runsheet",
+          width: "sm",
+        },
+        {
+          label: "Total Connote",
+          key: "total_connote",
+          width: "sm",
         },
         {
           label: "Total COD (Rp)",
-          key: "count_cod",
-          width: "xs",
+          key: "total_amount_cod",
+          width: "sm",
           type_amount: true,
-                    textAlign: "right"
+          textAlign: "right"
         },
       ],
       loading: false,
@@ -113,21 +117,6 @@ export default {
         );
       }
     },
-    node: function(val, old) {
-      if (val !== undefined) {
-        this.node_filter = val;
-        if (this.node_filter !== old) {
-          this.getTableData(
-            this.pagination.limit,
-            this.pagination.page,
-            this.tempSearch,
-            this.startDate,
-            this.endDate,
-            val
-          );
-        }
-      }
-    },
   },
   methods: {
     async getTableData(limit, page, q, from, to) {
@@ -142,7 +131,6 @@ export default {
         startDate = from;
         endDate = to;
       }
-
       await axios
         .get(
           this.URL.delivery_cod +
@@ -150,47 +138,69 @@ export default {
           this.Helper.header()
         )
         .then((res) => {
-          this.dataTable = res.data.data;
-          this.dataTable.map((item) => {
-            item["courier_employee_name"] = item.employee_courier.employee_name;
-          });
+          let arr = res.data.data
+          arr.map((item) => {
+              let children = {}
+              let delivery_runsheet_number = []
+              let dri = []
+              let hrs = []
+              let total_connote = []
+              let cod_payment_type = []
+              let total_amount_cod = []
+              item['children_width'] = {
+                  'Runsheet #': 'md',
+                  'DRI Number': 'sm',
+                  'HRS Number': 'sm',
+                  'Total Connote': 'sm',
+                  'Payment Type': 'sm',
+                  'Total COD (Rp)': 'sm'
+              }
+              item['type_amount'] = ['Total COD (Rp)']
+              item.runsheets?.map((el) => {
+                  delivery_runsheet_number.push(el.delivery_runsheet_number)
+                  dri.push(el.dri)
+                  hrs.push(el.hrs)
+                  total_connote.push(el.total_connote)
+                  cod_payment_type.push(el.cod_payment_type)
+                  total_amount_cod.push(el.total_amount_cod)
+              })
+              children['Runsheet #'] = delivery_runsheet_number
+              children['DRI Number'] = dri
+              children['HRS Number'] = hrs
+              children['Total Connote'] = total_connote
+              children['Payment Type'] = cod_payment_type
+              children['Total COD (Rp)'] = total_amount_cod
+              item['children'] = children
+          })
+          this.dataTable = arr;
           this.pagination.page = res.data.meta.current_page;
           this.pagination.limit = parseInt(res.data.meta.per_page);
           this.pagination.page_size = res.data.meta.last_page;
-          if (res.data.data.length > 0) {
-          } else {
-            // this.openNotification('warn', null, 'Delivery Runsheet data is empty!', ' Please create a new data')
-          }
-
           this.loading = false;
         })
         .catch((err) => {
           this.loading = false;
           this.openNotification(
             "danger",
-            "Failed to populate Delivery Runsheet list",
-            err
+            err?.response?.data?.code ?? null,
+            "Get List Failed",
+            err?.response?.data?.message ?? "Failed to populate Outstanding COD"
           );
         });
     },
-
     closeDialogConfirm() {
       this.confirmDialog = false;
     },
-
     actionLimit(val) {
       this.pagination.limit = val;
       this.pagination.page = 1;
       this.refresh();
     },
-
     actionPagination(val) {
       this.pagination.page = val;
       this.refresh();
     },
-
     refresh() {
-
       this.getTableData(
         this.pagination.limit,
         this.pagination.page,
@@ -198,41 +208,6 @@ export default {
         this.startDate,
         this.endDate
       );
-    },
-
-    actionDetail(row) {
-
-      this.$router.push({
-        name: "delivery-runsheet-edit",
-        params: { delivery_runsheet_number: row.delivery_runsheet_number },
-      });
-    },
-    actionCollect(row) {
-
-      this.form = {
-        courier_employee_id: row.courier_employee_id,
-        date: row.date ? row.date : null,
-      };
-      this.$emit("openDialog", row.count_cod, row.delivery_runsheet_number, row.courier_employee_id)
-    },
-    async updateData() {
-      await axios
-        .post(
-          this.URL.delivery_cod_collect + `?n=${this.listenNodeId}`,
-          JSON.stringify(this.form),
-          this.Helper.header()
-        )
-        .then((res) => {
-          this.$emit("refresh");
-          this.openNotification(null, "SUCCESS!", "Cod Collected!");
-          this.refresh();
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.$emit("refresh");
-          this.openNotification("danger", err.response ? err.response.data.code : '', "Failed!", err);
-          this.refresh();
-        });
     },
   },
   mounted() {

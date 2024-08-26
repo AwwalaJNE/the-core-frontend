@@ -707,12 +707,12 @@ const routes = [
         }
       },
       {
-        path: "/sco",
-        name: "delivery-sco",
+        path: "/deposit-cod",
+        name: "deposit-cod",
         component: DeliveryCod,
         meta: {
           requiresAuth: true,
-          breadCrumb: "SCO"
+          breadCrumb: "Deposit COD"
         }
       },
       {
