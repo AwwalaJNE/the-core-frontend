@@ -34,7 +34,7 @@
                                                 border 
                                                 type="text" 
                                                 v-model="item_no" 
-                                                label-placeholder="Masukkan Koli" 
+                                                label-placeholder="Masukkan Item" 
                                                 v-on:keyup.enter="updateValue" 
                                                 autofocus 
                                                 icon-after 
@@ -187,6 +187,7 @@ export default {
                     this.Helper.header())
                 .then(res => {
                     this.$refs.undeliveryInformation.refresh()
+                    this.getButtonValue();
                     this.handleClearFormKoli()
                     this.openNotification(null, 'Success', res.data.message)
                 }).catch(err => {
