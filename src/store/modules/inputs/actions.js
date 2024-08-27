@@ -22,6 +22,9 @@ export default {
   SET_USER_USER_LOGIN({ commit }, payload) {
     commit('SET_USER_USER_LOGIN', payload)
   },
+  SET_USER_USER_NIK({ commit }, payload) {
+    commit('SET_USER_USER_NIK', payload)
+  },
   SET_USER_USER_EMAIL({ commit }, payload) {
     commit('SET_USER_USER_EMAIL', payload)
   },
