@@ -218,7 +218,7 @@ export default {
           msg = e.response.data.message;
         }
 
-        this.openNotification("danger", err.response ? err.response.data.code : '', "Failed!", msg);
+        this.openNotification("danger", e.response ? e.response.data.code : '', "Failed!", msg);
       } finally {
         this.hideLoading();
       }
