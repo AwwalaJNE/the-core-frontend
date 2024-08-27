@@ -646,7 +646,8 @@ export default {
     async validateBagPraRunsheet(val) {
       let valForm = {
         item_number: this.item_bag,
-        delivery_runsheet_number: this.delivery_runsheet_number
+        delivery_runsheet_number: this.delivery_runsheet_number,
+        courier_id: this.employee_id
       }
       await axios
         .post(
@@ -760,12 +761,14 @@ export default {
         this.form = postData
         valForm = {
           item_number: postData.koli_number,
-          delivery_runsheet_number: this.delivery_runsheet_number
+          delivery_runsheet_number: this.delivery_runsheet_number,
+          courier_id: this.employee_id
         }
       } else {
         valForm = {
           item_number: this.form.koli_number,
-          delivery_runsheet_number: this.delivery_runsheet_number
+          delivery_runsheet_number: this.delivery_runsheet_number,
+          courier_id: this.employee_id
         }
       }
 
