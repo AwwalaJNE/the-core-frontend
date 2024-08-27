@@ -86,6 +86,7 @@
       :loadingValidation="loadingValidation"
       :totalAmountCOD="totalAmountCOD"
       @updateValue="updateValue"
+      @refresh="refresh"
       ref="dialogEntryStatus"
     />
 
