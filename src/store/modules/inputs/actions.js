@@ -58,6 +58,9 @@ export default {
   SET_USER_USER_LOGIN_ValueData({ commit }, payload) {
     commit('SET_USER_USER_LOGIN_ValueData', payload)
   },
+  SET_USER_USER_NIK_ValueData({ commit }, payload) {
+    commit('SET_USER_USER_NIK_ValueData', payload)
+  },
   SET_USER_USER_EMAIL_ValueData({ commit }, payload) {
     commit('SET_USER_USER_EMAIL_ValueData', payload)
   },

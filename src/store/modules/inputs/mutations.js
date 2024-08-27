@@ -70,6 +70,9 @@ export default {
   SET_USER_USER_LOGIN_ValueData(state, payload) {
     state.user.user_login.valueData = payload
   },
+  SET_USER_USER_NIK_ValueData(state, payload) {
+    state.user.user_nik.valueData = payload
+  },
   SET_USER_USER_EMAIL_ValueData(state, payload) {
     state.user.user_email.valueData = payload
   },
