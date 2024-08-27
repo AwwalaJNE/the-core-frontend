@@ -1,7 +1,7 @@
 export default {
   login: {
     user_login: {
-      label: "User login",
+      label: "User login / User NIK",
       key: "user_login",
       rule: "required",
       typeInput: "text",
