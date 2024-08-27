@@ -222,15 +222,19 @@ export default {
                 .then(res => {
                     let arr = []
                     let nodeArr = []
-                    for (let i = 0; i < res.data.data.user_additional_role_id.length; i++) {
-                        let obj = {};
+                    
+                    if (res.data.data.user_additional_role_id.length > 0) {
+                        for (let i = 0; i < res.data.data.user_additional_role_id.length; i++) {
+                            let obj = {};
 
-                        obj["user_additional_role_id"] = res.data.data.user_additional_role_id[i]
-                        obj["user_additional_node_id"] = res.data.data.user_additional_node_id[i]
-                        obj["user_expiry_additional_role"] = res.data.data.user_expiry_additional_role[i]
+                            obj["user_additional_role_id"] = res.data.data.user_additional_role_id[i]
+                            obj["user_additional_node_id"] = res.data.data.user_additional_node_id[i]
+                            obj["user_expiry_additional_role"] = res.data.data.user_expiry_additional_role[i]
 
-                        arr.push(obj)
+                            arr.push(obj)
+                        }
                     }
+                    
                     res.data.data.user_nodes.map(item => {
                         let obj = {}
                         obj["label"] = item.node_name
@@ -239,8 +243,8 @@ export default {
                         nodeArr.push(obj)
                     })
                     this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE", arr)
-                    this.$store.dispatch("SET_USER_USER_NODE_ID", res.data.data.user_node_id)
-                    this.dataItem["user_node_id"] = res.data.data.user_node_id
+                    // this.$store.dispatch("SET_USER_USER_NODE_ID", res.data.data.user_node_id)
+                    // this.dataItem["user_node_id"] = res.data.data.user_node_id
                     
                     this.$store.dispatch("SET_USER_USER_ADDITIONAL_NODE_ID_ArrData", nodeArr)
                     this.$store.dispatch("SET_USER_USER_NODE_ID_ArrData", nodeArr)
@@ -283,6 +287,7 @@ export default {
                     this.openNotification(null, 'Success', 'Create user is success')
                 }).catch(err => {
                     this.loading = false
+                    this.handleClearForm()
                     this.checkAuth(err.response)
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed add data', err.response ? err.response.data.message : 'something went wrong')
                 })
