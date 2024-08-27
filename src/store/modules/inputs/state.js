@@ -31,6 +31,15 @@ export default {
       valueData: null,
       value: ''
     },
+    user_nik: {
+      label: "User NIK*",
+      key: "user_nik",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
     user_name: {
       label: "Name*",
       key: "user_name",

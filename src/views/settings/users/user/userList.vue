@@ -120,6 +120,11 @@ export default {
                     width: "sm"
                 },
                 {
+                    label: "User NIK",
+                    key: "user_nik",
+                    width: "sm"
+                },
+                {
                     label: "Email",
                     key: "user_email",
                     width: "xs"

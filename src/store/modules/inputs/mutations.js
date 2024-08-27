@@ -37,6 +37,9 @@ export default {
   SET_USER_USER_LOGIN(state, payload) {
     state.user.user_login.value = payload
   },
+  SET_USER_USER_NIK(state, payload) {
+    state.user.user_nik.value = payload
+  },
   SET_USER_USER_EMAIL(state, payload) {
     state.user.user_email.value = payload
   },

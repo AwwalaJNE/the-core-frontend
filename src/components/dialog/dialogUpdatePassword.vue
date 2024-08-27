@@ -4,7 +4,7 @@
   <vs-dialog v-model="visible" class="my-dialog" not-close prevent-close>
     <template #header>
       <h4
-        v-if="profileData.last_password_updated_at !== null"
+        v-if="profileData && profileData.last_password_updated_at !== null"
         class="not-margin"
       >
         Please Update Your Password
@@ -73,7 +73,7 @@
     </div>
 
     <p
-      v-if="profileData.last_password_updated_at !== null"
+      v-if="profileData && profileData.last_password_updated_at !== null"
       class="message-text-password"
     >
       <b>Note</b> : Expired Password, Please Change Your Password
@@ -218,7 +218,7 @@ export default {
           msg = e.response.data.message;
         }
 
-        this.openNotification("danger", err.response ? err.response.data.code : '', "Failed!", msg);
+        this.openNotification("danger", e.response ? e.response.data.code : '', "Failed!", msg);
       } finally {
         this.hideLoading();
       }
