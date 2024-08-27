@@ -100,7 +100,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
                 }
             }
         }
