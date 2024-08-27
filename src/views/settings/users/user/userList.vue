@@ -142,7 +142,7 @@ export default {
             ],
             loading: false,
             dataItem: {},
-            tempSearch: this.query ? this.query : "",
+            tempSearch: "",
             dialogUser: false,
             pagination: {
                 limit:20,
@@ -284,7 +284,7 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-        refresh(val){
+        refresh(){
             let from = ''
             let to = ''
 
@@ -353,7 +353,7 @@ export default {
         },
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        this.refresh()
     },
 }
 </script>
