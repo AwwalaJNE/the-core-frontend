@@ -1142,6 +1142,7 @@ export default {
 
           this.openNotification(
             "danger",
+            err.response ? err.response.data.code : '',
             "EDIT FAILED !",
             err.response.data.message
           );

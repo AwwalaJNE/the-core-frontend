@@ -195,6 +195,7 @@ export default {
           this.loading = false;
           this.openNotification(
             "danger",
+            err.response ? err.response.data.code : '',
             err?.response?.data?.code,
             "Get List Failed",
             err?.response?.data?.message ?? "Failed to populate COD History"

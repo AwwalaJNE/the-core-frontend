@@ -211,6 +211,7 @@ export default {
         .catch((err) => {
           this.openNotification(
             "danger",
+            err.response ? err.response.data.code : '',
             "Failed!",
             "Failed to populate data!"
           );
