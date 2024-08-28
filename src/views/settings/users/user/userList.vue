@@ -211,34 +211,34 @@ export default {
                         let additional_role = []
                         let children = {}
 
-                        item.user_additionals.map(value => {
-                            if (!additional_node.includes(value.node_name)) {
-                                additional_node.push(value.node_name)
-                            }
+                        // item.user_additionals.map(value => {
+                        //     if (!additional_node.includes(value.node_name)) {
+                        //         additional_node.push(value.node_name)
+                        //     }
 
-                            let idx = additional_node.indexOf(value.node_name)
-                            if (additional_role[idx]) {
-                                additional_role[idx].push(...value.roles)
-                            }
-                            else if (!additional_role[idx]) {
-                                additional_role[idx] = value.roles
-                            }
-                        })
+                        //     let idx = additional_node.indexOf(value.node_name)
+                        //     if (additional_role[idx]) {
+                        //         additional_role[idx].push(...value.roles)
+                        //     }
+                        //     else if (!additional_role[idx]) {
+                        //         additional_role[idx] = value.roles
+                        //     }
+                        // })
 
-                        if (additional_node.length > 0 && additional_role.length > 0) {
-                            additional_role.forEach(function(elements, idx) {
-                                if (elements.length > 0) {
-                                    this[idx] = elements.join(", ");
-                                }
-                                else {
-                                    this[idx] = "-";
-                                }
-                            }, additional_role);
-                            children['Additional Node'] = additional_node
-                            children['Additional Role'] = additional_role
+                        // if (additional_node.length > 0 && additional_role.length > 0) {
+                        //     additional_role.forEach(function(elements, idx) {
+                        //         if (elements.length > 0) {
+                        //             this[idx] = elements.join(", ");
+                        //         }
+                        //         else {
+                        //             this[idx] = "-";
+                        //         }
+                        //     }, additional_role);
+                        //     children['Additional Node'] = additional_node
+                        //     children['Additional Role'] = additional_role
 
-                            item['children'] = children
-                        }
+                        //     item['children'] = children
+                        // }
 
                         item["user_nodes"] = item.user_nodes.map((nodes,index) => {
                             let newline = "\n";
@@ -247,9 +247,9 @@ export default {
                             }
                             return newline+'- '+nodes.node_name;
                         }).toString();
-                        if (item.user_additional_role_name && Array.isArray(item.user_additional_role_name)) {
-                            item.user_additional_role_name = item.user_additional_role_name.join(", ");
-                        }
+                        // if (item.user_additional_role_name && Array.isArray(item.user_additional_role_name)) {
+                        //     item.user_additional_role_name = item.user_additional_role_name.join(", ");
+                        // }
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
