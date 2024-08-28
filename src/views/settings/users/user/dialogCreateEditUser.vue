@@ -223,17 +223,17 @@ export default {
                     let arr = []
                     let nodeArr = []
                     
-                    if (res.data.data.user_additional_role_id.length > 0) {
-                        for (let i = 0; i < res.data.data.user_additional_role_id.length; i++) {
-                            let obj = {};
+                    // if (res.data.data.user_additional_role_id.length > 0) {
+                    //     for (let i = 0; i < res.data.data.user_additional_role_id.length; i++) {
+                    //         let obj = {};
 
-                            obj["user_additional_role_id"] = res.data.data.user_additional_role_id[i]
-                            obj["user_additional_node_id"] = res.data.data.user_additional_node_id[i]
-                            obj["user_expiry_additional_role"] = res.data.data.user_expiry_additional_role[i]
+                    //         obj["user_additional_role_id"] = res.data.data.user_additional_role_id[i]
+                    //         obj["user_additional_node_id"] = res.data.data.user_additional_node_id[i]
+                    //         obj["user_expiry_additional_role"] = res.data.data.user_expiry_additional_role[i]
 
-                            arr.push(obj)
-                        }
-                    }
+                    //         arr.push(obj)
+                    //     }
+                    // }
                     
                     res.data.data.user_nodes.map(item => {
                         let obj = {}
