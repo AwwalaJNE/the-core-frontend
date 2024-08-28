@@ -1024,7 +1024,7 @@
                               <li
                                 v-for="(itm, idx) in item.children[c_item]"
                                 :key="idx"
-                                style="font-size: 0.85em"
+                                :style="{ fontSize: '0.85em', height: listenHasChildStatus ? '2.5rem' : '' }"
                               >
                                 <template v-if="typeof itm === 'object'">
                                   <template
@@ -1045,7 +1045,6 @@
                                     disabled
                                     :danger="itm == false ? true : false"
                                     :active="false"
-                                    style="margin: 0.5em 0"
                                   >
                                     <i
                                       :class="
@@ -1181,6 +1180,7 @@ export default {
     selectedData: Array,
     isSearchAble: Boolean,
     isLocalPagination: Boolean,
+    hasChildStatus: Boolean,
 
     customAction: Boolean,
     customActionList: Array,
@@ -1255,6 +1255,9 @@ export default {
     },
     listenDisableAction() {
       return this.disableAction;
+    },
+    listenHasChildStatus() {
+      return this.hasChildStatus;
     }
   },
   watch: {
@@ -1529,6 +1532,13 @@ span.text-link {
 p.text-link {
   color: rgb(53, 92, 255);
   cursor: pointer;
+}
+li {
+  display: flex;
+  align-items: center;
+}
+li p, li button {
+  margin: 0.5rem 0 !important;
 }
 .manual-padding {
   padding-bottom: 0px;
