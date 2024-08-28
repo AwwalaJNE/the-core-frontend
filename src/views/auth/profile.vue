@@ -15,10 +15,26 @@
           <vs-col xs="12" sm="3" lg="3" class="avatar-column">
             <Skeleton v-if="fetchingData" height="220px" />
             <div
-              v-if="!fetchingData"
-              style="background: #ccc; min-height: 220px; width: 100%"
+              v-else
+              class="image-container"
+              :style="{ backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }"
+              @click="triggerFileInput"
             >
-              <box-icon name="user" size="lg" border="circle" color="white" />
+              <div v-if="!imageUrl" class="placeholder-icon">
+                <box-icon name="user" size="lg" border="circle" color="white" />
+              </div>
+
+              <div class="hover-overlay">
+                <box-icon name="edit" size="md" color="white"></box-icon>
+                <span class="hover-text">Edit</span>
+              </div>
+
+              <input
+                type="file"
+                @change="handleFileUpload"
+                ref="fileInput"
+                style="display: none;"
+              />
             </div>
           </vs-col>
           <vs-col xs="12" sm="9" lg="9" style="padding-left: 30px">
@@ -161,8 +177,36 @@ export default {
       alert("throw");
       throw new Error("Sentry Error Local");
     },
+    triggerFileInput() {
+      this.$refs.fileInput.click();
+    },
     handleSubmit() {
       this.$refs.formProfileController.handleSubmit();
+    },
+    async handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+          await axios
+            .post(`${this.URL.profile}/upload-img?n=${this.listenNodeId}`, formData, this.Helper.header())
+            .then((res) => {
+              this.dataItem = res.data.data;
+              this.imageUrl = this.dataItem.url;
+              this.openNotification("success", null, "Success!", res.data.message);
+              this.getProfile();
+            })
+            .catch((err) => {
+              this.openNotification("danger", err.response ? err.response.data.code : '', "Failed!", err.response ? err.response.data.message : 'something went wrong');
+              this.checkAuth(err.response);
+              this.getProfile();
+            });
+        } finally {
+          this.fetchingData = false;
+        }
+      }
     },
     async updateProfile(form) {
       const updateLoading = this.$vs.loading({
@@ -207,6 +251,7 @@ export default {
           this.dataItem = res.data.data;
           this.dataFetched = true;
           this.checkDialoglogin();
+          this.imageUrl = this.dataItem.url;
         })
         .catch((err) => {
           this.openNotification(
@@ -247,6 +292,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .avatar-column {
   padding: 10px;
@@ -257,5 +303,63 @@ export default {
 }
 .avatar-column box-icon {
   margin-top: 20%;
+}
+.image-container {
+  position: relative;
+  background: #ccc;
+  min-height: 220px;
+  width: 100%;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.placeholder-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 8px;
+}
+
+.hover-overlay box-icon {
+  margin-bottom: 8px;
+}
+
+.hover-overlay .hover-text {
+  color: white;
+  font-size: 16px;
+}
+
+.image-container:hover .hover-overlay {
+  opacity: 1;
+}
+
+.image-container {
+  position: relative;
+  background: #ccc;
+  min-height: 220px;
+  width: 100%;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
