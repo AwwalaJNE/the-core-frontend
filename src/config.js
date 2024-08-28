@@ -235,5 +235,8 @@ export default {
     find_feature: api + 'find-feature',
 
     // Deposit COD
-    deposit_cod: api + 'cod-deposit'
+    deposit_cod: api + 'cod-deposit',
+
+    // Approval
+    approval: api + 'approval'
 }
