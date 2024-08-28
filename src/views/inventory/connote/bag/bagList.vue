@@ -175,6 +175,11 @@ export default {
                     label: "Surat Jalan",
                     key: "surat_jalan",
                     width: "auto"
+                },
+                {
+                    label: "Approved",
+                    key: "approved",
+                    width: "auto"
                 }
             ],
             loading: false,
@@ -247,6 +252,7 @@ export default {
                         el.surat_muatan = el.surat_muatan.join(", ")
                         el.surat_jalan = el.surat_jalan.join(", ")
                         el.with_courier = el.courier ? el.courier.employee_name : ""
+                        el.approved = el.is_approve === 1 ? "Yes" : "No"
                     });
                     this.dataTable = res.data.data
 
