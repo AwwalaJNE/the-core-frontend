@@ -1,7 +1,7 @@
 <template>
   <div>
     <vs-row justify="space-between">
-      <vs-col xs="6" sm="4" lg="4">
+      <vs-col w="6">
         <div class="titlePage">
           <breadcrumb/>
           <div style="display: flex; align-items: center;">
@@ -16,13 +16,42 @@
           </div>
         </div>
       </vs-col>
-      <vs-col xs="6" sm="3" lg="3">
+      <vs-col w="6">
         <div style="position:relative;display:flex;justify-content: flex-end;">
-          <div style="width: 100px;padding-right: 5px;">
-            <vs-button flat block :active="true" @click="newBag">
-              <i class="bx bx-plus"></i> New
-            </vs-button>
-          </div>
+          <vs-row justify="end">
+            <template v-if="!loading">
+              <vs-col style="width: fit-content; padding: 0">
+                <template v-if="!disabledApprove">
+                  <vs-button
+                    @click="approveAction(true)"
+                    :disabled="!isAllowed || is_orion"
+                    style="width: 7rem;"
+                  >
+                    <span>
+                      Approve Bag
+                    </span>
+                  </vs-button>
+                </template>
+                <template v-else-if="disabledApprove">
+                  <vs-button
+                    @click="approveAction(false)"
+                    danger
+                    :disabled="!isAllowed || is_orion"
+                    style="width: 8rem;"
+                  >
+                    <span>
+                      Unapprove Bag
+                    </span>
+                  </vs-button>
+                </template>
+              </vs-col>
+            </template>
+            <vs-col style="width: 6em;padding-right: 5px; padding-left: 0;">
+              <vs-button flat block :active="true" @click="newBag">
+                <i class="bx bx-plus"></i> New
+              </vs-button>
+            </vs-col>
+          </vs-row>
         </div>
       </vs-col>
     </vs-row>
@@ -228,7 +257,15 @@
 
     </section>
     <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
-
+    <dialog-confirm
+      title="Unapprove Bag"
+      :message="`Are you sure you want to unapprove this bag?`"
+      :active="activeDialogConfirmUnpproveBag"
+      :loading="loadingConfirmUnpproveBag"
+      :closeDialog="closeDialogConfirmUnpproveBag"
+      @confirm="confirmUnpproveBag"
+      @cancel="closeDialogConfirmUnpproveBag"
+    />
   </div>
 </template>
 <script>
@@ -238,6 +275,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import detailBagList from "@/views/inventory/bag/bagDetailList"
 import Selector from "@/components/input/select"
 import CameraScanner from "@/components/scanner/camera.vue";
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 
 export default {
   name: "InventoryBaggingList",
@@ -247,6 +285,7 @@ export default {
     "detailbagList": detailBagList,
     "selector": Selector,
     CameraScanner,
+    "dialog-confirm": DialogConfirm,
   },
   data() {
     return {
@@ -286,7 +325,11 @@ export default {
       messageIsAllowed: "",
       employee: "",
       is_pra_runsheet: false,
-      is_orion: false
+      is_orion: false,
+      toggle_approve: {},
+      disabledApprove: false,
+      activeDialogConfirmUnpproveBag: false,
+      loadingConfirmUnpproveBag: false
     }
   },
   computed: {
@@ -317,6 +360,9 @@ export default {
     }
   },
   methods: {
+    refresh() {
+      this.$refs.detailbagList.refresh()
+    },
     getResponse(data, loading) {
       
 
@@ -375,6 +421,7 @@ export default {
       }
 
       this.employee = data.employee_name ? data.employee_name : ""
+      this.disabledApprove = data.data.is_approve === 0 ? false : true
 
       this.loading = loading
     },
@@ -427,7 +474,7 @@ export default {
           .then(res => {
             this.handleClearForm()
             this.openNotification('success', null, 'Success', 'Add Bagging is success')
-            this.$refs.detailbagList.refresh()
+            this.refresh()
           }).catch(err => {
             this.loading = false
             this.handleClearForm()
@@ -475,7 +522,7 @@ export default {
             this.handleClearForm()
             this.loading = false
             this.openNotification('success', null, 'Update Bagging is success')
-            this.$refs.detailbagList.refresh()
+            this.refresh()
           }).catch(err => {
 
             this.loading = false
@@ -526,7 +573,47 @@ export default {
           }
         }, 500);
       });
-    }
+    },
+    approveAction(val){
+      this.updateApprove(val)
+    },
+    updateApprove(val){
+      this.toggle_approve = {
+        is_approve: val ? 1 : 0
+      };
+      if (val) {
+        this.confirmationApprove(val)
+      } else {
+        this.activeDialogConfirmUnpproveBag = true
+      }
+    },
+    confirmUnpproveBag() {
+      this.confirmationApprove(false)
+      this.activeDialogConfirmUnpproveBag = false
+      this.refresh()
+    },
+    closeDialogConfirmUnpproveBag(){
+      this.activeDialogConfirmUnpproveBag = false
+    }, 
+    async confirmationApprove(val) {
+      this.loadingConfirmUnpproveBag=true
+      await axios
+        .put(
+          `${this.URL.approval}-bag/${this.bag_id.replaceAll("/", "-")}?n=${this.listenNodeId}`,
+          JSON.stringify(this.toggle_approve),
+          this.Helper.header()
+        )
+        .then((res) => {
+          this.toggle_approve = {};
+          this.disabledApprove = val;
+          this.openNotification("success", null, "Success", res?.data?.message);
+          this.refresh()
+        })
+        .catch((err) => {
+          this.openNotification("danger", err?.response?.data?.code ?? '', "Approve FAILED!", err?.response?.data?.message ?? `Approve Bag ${this.bag_id} Failed`);
+        });
+        this.loadingConfirmUnpproveBag=false
+    },
   },
   mounted() {
     this.getBagIdParam()
