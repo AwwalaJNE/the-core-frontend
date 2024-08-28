@@ -601,12 +601,6 @@
                       keyActionItem) in listCustomActionList"
                     >
                       <vs-col :key="keyActionItem" w="3">
-                        <!-- <template v-if="actionItem.hasOwnProperty('option')">
-                                                        item.isDisabled == true
-                                                        item.hasOwnProperty('isDisabled') ? item.isDisabled == true : false
-                                                        item["button_status"][actionItem.key.toLowerCase()]
-                                                    </template> -->
-
                         <vs-button
                           block
                           flat
@@ -632,7 +626,11 @@
                               .toLowerCase()
                               .includes('danger')
                               ? true
-                              : false
+                              : item.hasOwnProperty('button_danger') && item['button_danger'].hasOwnProperty([actionItem.key.toLowerCase()])
+                                ? item['button_danger'][actionItem.key.toLowerCase()] == false
+                                  ? true
+                                  : false
+                                : false
                           "
                           :warn="
                             actionItem.attribute.toLowerCase().includes('warn')
@@ -642,7 +640,7 @@
                           :active="true"
                           @click="actionUpdate(item, actionItem.key)"
                         >
-                          <span>{{ actionItem.label }}</span>
+                          <span>{{ (item.hasOwnProperty('button_label') && item['button_label'][actionItem.key.toLowerCase()]) || actionItem.label }}</span>
                         </vs-button>
                       </vs-col>
                     </template>
@@ -820,6 +818,44 @@
                         @click="actionPrint(item)"
                       >
                         <span>Print</span>
+                      </vs-button>
+                    </vs-col>
+                  </template>
+                  <template v-else-if="approveCancelPrintRequestAction == true">
+                    <vs-col w="4">
+                      <vs-button
+                        block
+                        :disabled="item.hasOwnProperty('isDisabledApprove') && item.isDisabledApprove == true"
+                        :danger="item.hasOwnProperty('isDangerApprove') && item.isDangerApprove == true"
+                        size="small"
+                        flat
+                        :active="true"
+                        @click="actionApprove(item)"
+                      >
+                        <span>{{ item.hasOwnProperty('isApproveLabel') && item.isApproveLabel }}</span>
+                      </vs-button>
+                    </vs-col>
+                    <vs-col w="4">
+                      <vs-button
+                        block
+                        size="small"
+                        flat
+                        :active="true"
+                        @click="actionPrint(item)"
+                      >
+                        <span>Print</span>
+                      </vs-button>
+                    </vs-col>
+                    <vs-col w="4">
+                      <vs-button
+                        block
+                        :disabled="item.hasOwnProperty('isDisabledCancel') && item.isDisabledCancel == true"
+                        size="small"
+                        flat
+                        :active="true"
+                        @click="actionCancel(item)"
+                      >
+                        <span>Cancel</span>
                       </vs-button>
                     </vs-col>
                   </template>
@@ -1171,6 +1207,7 @@ export default {
     avoidAction: Boolean,
     pickedAction: Boolean, //pickup list action picked
     cancelRequestAction: Boolean, //pickup request action cancel,
+    approveCancelPrintRequestAction: Boolean,
     codAction: Boolean,
     customBtn: Boolean,
     customBtn_label: String,
@@ -1499,7 +1536,7 @@ export default {
         display: flex;
         justify-content: flex-end;
         .btn_action {
-          max-width: 280px;
+          max-width: 300px;
           position: relative;
           justify-content: flex-end;
           flex-wrap: nowrap;

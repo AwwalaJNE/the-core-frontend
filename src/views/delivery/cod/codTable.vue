@@ -187,6 +187,7 @@ export default {
           this.loading = false;
           this.openNotification(
             "danger",
+            err.response ? err.response.data.code : '',
             err?.response?.data?.code ?? null,
             "Get List Failed",
             err?.response?.data?.message ?? "Failed to populate Outstanding COD"

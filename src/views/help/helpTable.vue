@@ -74,6 +74,7 @@ export default {
           this.loading = false;
           this.openNotification(
             "danger",
+            err.response ? err.response.data.code : '',
             err.response?.data?.message ?? "Fail to populate dictionary",
             err
           );

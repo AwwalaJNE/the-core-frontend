@@ -10,12 +10,13 @@
         :limit="pagination.limit"
         :hasLinked="['manifest_number']"
         :pickupListAction="true"
-        :cancelRequestAction="true"
+        :approveCancelPrintRequestAction="true"
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @actionPrint="actionPrint"
         @actionCancel="actionCancel"
+        @actionApprove="actionApprove"
         @handleEdit="actionUpdate"
         />
 
@@ -37,6 +38,16 @@
           message="Are you sure you want to Cancel Surat Muatan ?"
           @confirm="confirmCancel"
           @cancel="closeDialogConfirmCancel"
+      />
+
+      <dialog-confirm
+          title="Unapprove Surat Muatan"
+          :message="`Are you sure you want to unapprove this surat muatan with number ${this.manifest_number}?`"
+          :active="activeDialogConfirmApprove"
+          :loading="loadingConfirmApprove"
+          :closeDialog="closeDialogConfirmApprove"
+          @confirm="confirmApprove"
+          @cancel="closeDialogConfirmApprove"
       />
     </div>
 </template>
@@ -131,6 +142,11 @@ export default {
                     width: "sm"
                 },
                 {
+                    label: "Approved",
+                    key: "approved",
+                    width: "xxs"
+                },
+                {
                     label: "Status",
                     key: "status",
                     width: "auto"
@@ -150,7 +166,10 @@ export default {
                 page_size: 1,
                 page: 1
             },
-            manifest_number:''
+            manifest_number:'',
+            activeDialogConfirmApprove: false,
+            loadingConfirmApprove: false,
+            is_approve: 0,
         }
     },
     watch: {
@@ -210,16 +229,22 @@ export default {
                         item['eta']  = this.dateConvert(item.eta)
                         item['etd']  = this.dateConvert(item.etd)
                         item['created_at']  = this.dateConvert(item.created_at)
+                        item["approved"] = item.is_approve  === 1 ? 'YES' : 'NO';
 
+                        item["isDangerApprove"] = item.is_approve === 1 ? true : false ;
+                        item["isApproveLabel"] = item.is_approve === 1 ? 'Unapprove' : 'Approve' ;
+                        
                         if (item.hasOwnProperty('status') && item["status"] !== null) {
                           let str = item["status"].toLowerCase();
                           if (!str.includes("ready")) {
-                              item['isDisabled'] = true;
+                              item['isDisabledApprove'] = true;
+                              item['isDisabledCancel'] = true;
                           }
                       }
 
                         if (item.is_orion == "1") {
-                          item['isDisabled'] = true
+                          item['isDisabledApprove'] = true;
+                          item['isDisabledCancel'] = true
                         }
                     })
                     this.dataTable = arr
@@ -345,6 +370,41 @@ export default {
 
           this.manifest_number = row.manifest_number
           this.activeDialogCancel = true;
+        },
+
+        actionApprove(row){
+            this.is_approve = row.is_approve;
+            this.manifest_number = row.manifest_number
+            this.is_approve === 0 ? this.confirmApprove() : this.activeDialogConfirmApprove = true;
+        },
+        confirmApprove() {
+            this.approve()
+        },
+        closeDialogConfirmApprove(){
+            this.loadingConfirmApprove=false
+            this.activeDialogConfirmApprove = false
+            this.refresh();
+        },
+        async approve(){
+          this.loading = true
+          this.loadingConfirmApprove = true
+            await axios
+                .put(
+                    `${this.URL.approval}-manifest/${this.manifest_number}?n=${this.listenNodeId}`,
+                    JSON.stringify({
+                      is_approve: this.is_approve ^= 1
+                    }),
+                    this.Helper.header()
+                )
+                .then(res => {
+                    this.is_approve ^= 1;
+                    this.closeDialogConfirmApprove();
+                    this.openNotification("success", null, "Success", res?.data?.message);
+                })
+                .catch(err => {
+                    this.closeDialogConfirmApprove();
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed', err.response ? err.response.data.message : 'something went wrong');
+                });
         },
 
     },

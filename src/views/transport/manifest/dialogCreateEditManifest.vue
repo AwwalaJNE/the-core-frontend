@@ -645,6 +645,7 @@ export default {
           this.$emit("refresh");
           this.openNotification(
             "danger",
+            err.response ? err.response.data.code : '',
             err.response ? err.response.data.message : "something went wrong",
             err
           );

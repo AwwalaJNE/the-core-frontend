@@ -371,6 +371,7 @@ export default {
           }
           this.openNotification(
             "success",
+            null,
             "Romove success",
             "Romove Koli number item successfully"
           );

@@ -489,6 +489,7 @@ export default {
           // this.handleClearForm();
           this.openNotification(
             "danger",
+            err.response ? err.response.data.code : '',
             "Create surat jalan failed",
             err.response ? err.response.data.message : "something went wrong"
           );
@@ -519,6 +520,7 @@ export default {
           // this.handleClearForm();
           this.openNotification(
             "danger",
+            err.response ? err.response.data.code : '',
             "Create surat jalan failed",
             err.response ? err.response.data.message : "something went wrong"
           );

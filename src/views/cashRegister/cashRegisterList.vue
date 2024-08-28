@@ -125,6 +125,7 @@ export default {
           this.loading = false;
           this.openNotification(
             "danger",
+            err.response ? err.response.data.code : '',
             "Failed to populate tariff list",
             err
           );
