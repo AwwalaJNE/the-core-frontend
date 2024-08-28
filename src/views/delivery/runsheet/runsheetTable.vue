@@ -11,6 +11,7 @@
         :hasLinkedChild="['Runsheet #']"
         :hasPagination="true"
         :expandable="true"
+        :hasChildStatus="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEditLinkedChild="actionDetail"
@@ -170,8 +171,8 @@ export default {
                         }
                         item.delivery.map((el) => {
                             delivery_runsheet_number.push(el.delivery_runsheet_number)
-                            dri.push(el.dri)
-                            hrs.push(el.hrs ?? " ")
+                            dri.push(el.dri ?? "-")
+                            hrs.push(el.hrs ?? "-")
                             is_hrs.push(el.is_hrs ? true : false)
                             total_koli.push(el.total_koli)
                             total_open.push(el.total_open)
