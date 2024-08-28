@@ -428,7 +428,7 @@ export default {
             this.id = val.setting_id;
             this.activeDialogConfirmRemove = true
         },
-        actionApprove(val){
+        actionApprove(){
             this.activeDialogConfirmApprove = true
         },
         confirmRemove() {
