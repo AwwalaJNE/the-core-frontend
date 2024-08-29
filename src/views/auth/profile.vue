@@ -301,9 +301,6 @@ export default {
   text-align: center;
   min-height: 200px !important;
 }
-.avatar-column box-icon {
-  margin-top: 20%;
-}
 .image-container {
   position: relative;
   background: #ccc;
