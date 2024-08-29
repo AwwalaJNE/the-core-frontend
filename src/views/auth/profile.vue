@@ -21,10 +21,10 @@
               @click="triggerFileInput"
             >
               <div v-if="!imageUrl" class="placeholder-icon">
-                <box-icon name="user" size="lg" border="circle" color="white" />
+                <box-icon name="user" size="lg" color="white" />
               </div>
 
-              <div class="hover-overlay">
+              <div v-if="imageUrl" class="hover-overlay">
                 <box-icon name="edit" size="md" color="white"></box-icon>
                 <span class="hover-text">Edit</span>
               </div>
