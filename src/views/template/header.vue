@@ -163,6 +163,7 @@ export default {
                 .catch((err) => {
                     this.openNotification(
                         "danger",
+                        err.response ? err.response.data.code : '',
                         "Failed!",
                         "Failed to change data node!"
                     );
@@ -203,6 +204,7 @@ export default {
                 .catch((err) => {
                     this.openNotification(
                         "danger",
+                        err.response ? err.response.data.code : '',
                         "Failed!",
                         "Failed to get list data node!"
                     );

@@ -348,10 +348,12 @@ export default {
                   this.id = val.manifest_do_number;
                   this.activeDialogConfirmRemove = true
                   // this.cancel()
+                  break;
                 case 'approve':
                   this.is_approve = val.is_approve;
                   this.manifest_do_number = val.manifest_do_number
                   this.is_approve === 0 ? this.confirmApprove() : this.activeDialogConfirmApprove = true;
+                  break;
                 default:
 
                     // code block
