@@ -239,7 +239,7 @@ export default {
 
         this.dataTable = val.detail;
         this.is_penerusan = val.is_penerusan === "1" ? true : false
-        this.isDisabled = val.status !== 'READY' || val.is_orion == "1" ? true : false
+        this.isDisabled = val.status !== 'READY' || val.is_orion == "1" || val.is_approve == 1 ? true : false
         this.dataTable.map((item) => {
           if (item.bag) {
             item.destination = item.bag.destination
