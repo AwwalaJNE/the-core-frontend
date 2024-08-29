@@ -3253,7 +3253,8 @@ export default {
       typeInput: "Boolean",
       typeData: "Boolean",
       valueData: true,
-      value: true
+      value: true,
+      isDisabled: false,
     },
   },
   surat_jalan:{
