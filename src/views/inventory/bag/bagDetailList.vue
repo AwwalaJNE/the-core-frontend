@@ -271,8 +271,10 @@ export default {
                     this.closeDialogConfirmRemove()
                     this.loadingConfirmRemove = false
                     if(res.data.detail.length > 0){
-                    this.refresh()
+                        this.$emit("resetBagActualWeight")
+                        this.refresh()
                     }else{
+                        this.$emit("resetBagActualWeight")
                         this.$router.push({ name: 'InventoryBag', params: { } });
                     }
                     this.openNotification('success', null, 'Remove success', 'Remove bag item successfully')

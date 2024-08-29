@@ -246,7 +246,7 @@
       <div class="box view">
         <vs-row justify="space-between">
           <vs-col xs="12" sm="12" lg="12">
-            <detailbagList ref="detailbagList"  :bagId="bag_id" @getResponse="getResponse"/>
+            <detailbagList ref="detailbagList"  :bagId="bag_id" @getResponse="getResponse" @resetBagActualWeight="resetBagActualWeight"/>
           </vs-col>
         </vs-row>
 
@@ -295,6 +295,7 @@ export default {
       item_code:'',
       bag_id:'',
       weight:'',
+      actual_weight:'',
       form:{},
       location_id:'',
       selected_data_node: "",
@@ -422,6 +423,7 @@ export default {
 
       this.employee = data.employee_name ? data.employee_name : ""
       this.disabledApprove = data.data.is_approve === 0 ? false : true
+      this.actual_weight = data.data.bag_actual_weight
 
       this.loading = loading
     },
@@ -451,19 +453,31 @@ export default {
       this.ProccessAddBagItem()
     },
     updateValue(){
-      this.form={
-          bag_number : this.bag_id,
-          bag_weight : this.weight
+      if (this.weight === '' || this.weight == 0) {
+        this.openNotification('warning', null, 'Empty Weight!', 'Bag Actual Weight must not be 0!')
       }
-      this.loading = true
-      this.putBag();
+      else {
+        this.form={
+            bag_number : this.bag_id,
+            bag_weight : this.weight
+        }
+        this.loading = true
+        this.putBag();
+      }
     },
-
     handleClearForm(){
       this.form = {}
       this.item_code='',
       this.item_code_orion = ''
       this.weight =''
+    },
+    resetBagActualWeight() {
+      this.form={
+          bag_number : this.bag_id,
+          bag_weight : 0
+      }
+      this.loading = true
+      this.putBag(true)
     },
     async ProccessAddBagItem(){
       await axios
@@ -474,6 +488,7 @@ export default {
           .then(res => {
             this.handleClearForm()
             this.openNotification('success', null, 'Success', 'Add Bagging is success')
+            this.resetBagActualWeight()
             this.refresh()
           }).catch(err => {
             this.loading = false
@@ -512,7 +527,7 @@ export default {
     //   this.loading = true
     //   this.putBag();
     // },
-    async putBag(){
+    async putBag(hideNotification){
       await axios
           .put(this.URL.bag+'/'+this.bag_id+`?n=${this.listenNodeId}`, 
             JSON.stringify(this.form), 
@@ -521,8 +536,10 @@ export default {
 
             this.handleClearForm()
             this.loading = false
-            this.openNotification('success', null, 'Update Bagging is success')
-            this.refresh()
+            if (hideNotification === undefined) {
+              this.openNotification('success', null, 'Update Bagging is success')
+              this.refresh()
+            }
           }).catch(err => {
 
             this.loading = false
@@ -575,7 +592,12 @@ export default {
       });
     },
     approveAction(val){
-      this.updateApprove(val)
+      if (this.actual_weight == 0) {
+        this.openNotification('warning', null, 'Empty Weight!', 'Bag Actual Weight must not be 0!')
+      }
+      else {
+        this.updateApprove(val)
+      }
     },
     updateApprove(val){
       this.toggle_approve = {
