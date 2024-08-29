@@ -1,7 +1,7 @@
 <template>
     <div class="com_switch">
         <small>{{listenLabel}}</small>
-        <vs-switch class="switch-Cus" v-model="active" @change="updateValue">
+        <vs-switch class="switch-Cus" v-model="active" @change="updateValue" :disabled="listenDisabled">
             <template #on>
                 {{ listenName[0] }}
             </template>
@@ -18,7 +18,8 @@ export default {
         name: String,
         titleLabel: String,
         valueData: Boolean,
-        formKey: String
+        formKey: String,
+        disabled: Boolean
     },
     computed: {
         listenName(){
@@ -29,6 +30,9 @@ export default {
         },
         listenFormKey(){
             return this.formKey
+        },
+        listenDisabled(){
+            return this.disabled || false
         },
     },
     data() {
