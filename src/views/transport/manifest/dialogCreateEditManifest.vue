@@ -41,6 +41,7 @@
                 icon-after
                 ref="formInputItemManifest"
                 @click-icon="$refs.cameraScanner.open('formInputItemManifest')"
+                :disabled="isDisabled"
               >
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
@@ -216,7 +217,7 @@ export default {
   watch: {
     dataItem: function(val) {
       if (val !== undefined) {
-        if (val.status !== 'READY' || val.is_orion == "1") {
+        if (val.status !== 'READY' || val.is_orion == "1" || val.is_approve == 1) {
           this.isDisabled = true
         }
         else {
