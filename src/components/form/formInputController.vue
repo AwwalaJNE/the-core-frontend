@@ -193,7 +193,8 @@
                                 :rules="InputObject[item].rule" 
                                 :formKey="InputObject[item].key"
                                 :valueData="InputObject[item].value"
-                                @updateValue="updateValue" />
+                                @updateValue="updateValue"
+                                :disabled="listenIsDisabled" />
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('radio')">
                                 
