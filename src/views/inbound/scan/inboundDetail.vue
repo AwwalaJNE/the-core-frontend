@@ -1,19 +1,17 @@
 <template>
     <div>
-        <template v-if="listenLoading == false">
-            <table-master 
+        <table-master 
             :dataTable="dataTableProp" 
             :dataColumn="datacolumn" 
             :tableLoading="listenLoading"
             :hasAction="false"
             :hasPagination="true"
-            :pageSize="pagination.page_size"
-            :page="pagination.page"
-            :limit="pagination.limit"
+            :pageSize="pageSize"
+            :page="page"
+            :limit="limit"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
-            />
-        </template>
+        />
     </div>
 </template>
 <script>
@@ -25,7 +23,9 @@ export default {
     props: {
         dataTableProp: Array,
         loading: Boolean,
-        pagination: Object,
+        pageSize: Number,
+        page: Number,
+        limit: Number,
         actionLimit: Function,
         actionPagination: Function,
     },

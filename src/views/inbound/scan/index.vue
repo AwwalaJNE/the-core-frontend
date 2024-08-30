@@ -59,16 +59,16 @@
                 <div class="nav-box">
                   <template>
                     <transition name="slide-fade">
-                      <template v-if="loading == false">
-                          <InboundDetail 
-                            ref="inboundDetail" 
-                            :dataTableProp="dataTableProp" 
-                            :loading="loading" 
-                            :pagination="pagination" 
-                            @actionLimitChild="actionLimit" 
-                            @actionPaginationChild="actionPagination"
-                          />
-                      </template>
+                      <InboundDetail 
+                        ref="inboundDetail" 
+                        :dataTableProp="dataTableProp" 
+                        :loading="loading" 
+                        :pageSize="page_size" 
+                        :page="page" 
+                        :limit="limit" 
+                        :actionLimit="actionLimit" 
+                        :actionPagination="actionPagination"
+                      />
                     </transition>
                   </template>
                 </div>
@@ -94,8 +94,6 @@ import axios from "axios";
 import master from "@/mixins/master"
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
-import SearchInput from "@/components/search/searchInput"
-import dateRange from "@/components/daterange/index"
 
 import InboundInformation from "@/views/inbound/scan/inboundInformation"
 import InboundDetail from "@/views/inbound/scan/inboundDetail"
@@ -122,11 +120,9 @@ export default {
             dataTable: [],
             dataTableProp: [],
             inboundDetailData : [],
-            pagination: {
-                limit:5,
-                page_size: 2,
-                page: 2
-            }
+            limit:20,
+            page_size: 1,
+            page: 1,
         }
     },
     methods: {
@@ -190,7 +186,6 @@ export default {
         async getTableData() {
             this.loading = true
             this.dataTable = []
-            const inboundId = this.inbound_id.toString()
             if(this.inbound_id === ''){
               const id_inbound  = this.$ls.get('id_inbound');
               const getInboundId = id_inbound?.toString()?.toLowerCase();
@@ -198,7 +193,7 @@ export default {
               if (getInboundId !== undefined) {
                 await axios
                   .get(this.URL.inbound +
-                      `/${getInboundId}/inbound-status?n=${this.listenNodeId}&page=${this.pagination.page}&limit=${this.pagination.limit}`,
+                      `/${getInboundId}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`,
                       this.Helper.header())
                   .then(res => {
                     let data=[res.data.data]
@@ -208,14 +203,14 @@ export default {
                     })
                     this.dataTable = data
                     this.dataTableProp = res.data.detail
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
+                    this.page = res.data.meta.current_page
+                    this.limit = parseInt(res.data.meta.per_page)
+                    this.page_size = res.data.meta.last_page
 
                     this.loading = false
                   }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to receiving ', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to Get Inbound Detail', err?.response?.data?.message ?? err)
                   })
               } else {
                 this.loading = false
@@ -223,7 +218,7 @@ export default {
             }else{
               await axios
                   .get(this.URL.inbound +
-                      `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}&page=${this.pagination.page}&limit=${this.pagination.limit}`,
+                      `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`,
                       this.Helper.header())
                   .then(res => {
                     let data=[res.data.data]
@@ -233,14 +228,14 @@ export default {
                     })
                     this.dataTable = data
                     this.dataTableProp = res.data.detail
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
+                    this.page = res.data.meta.current_page
+                    this.limit = parseInt(res.data.meta.per_page)
+                    this.page_size = res.data.meta.last_page
 
                     this.loading = false
                   }).catch(err => {
                     this.loading = false
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Inbound list', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to Get Inbound Detail', err?.response?.data?.message ?? err)
                   })
             }
             this.$ls.remove('id_inbound');
@@ -264,14 +259,12 @@ export default {
           }
         },
         actionLimit(val){
-            console.log("Limit", val)
-            this.pagination.limit = val
-            this.pagination.page = 1
+            this.limit = val
+            this.page = 1
             this.refresh()
         },
         actionPagination(val) {
-            console.log("Pagination", val)
-            this.pagination.page = val
+            this.page = val
             this.refresh()
         },
     },
