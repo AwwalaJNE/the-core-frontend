@@ -1,7 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
-    :closeDialog="closeDialogUser">
+    :closeDialog="cancel">
 
         <template v-slot:header>
             {{listenTitle}}
