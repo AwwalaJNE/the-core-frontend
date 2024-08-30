@@ -60,7 +60,14 @@
                   <template>
                     <transition name="slide-fade">
                       <template v-if="loading == false">
-                          <InboundDetail :ref="'inboundDetail'" :dataTableProp="dataTable" :loading="loading"/>
+                          <InboundDetail 
+                            ref="inboundDetail" 
+                            :dataTableProp="dataTableProp" 
+                            :loading="loading" 
+                            :pagination="pagination" 
+                            @actionLimitChild="actionLimit" 
+                            @actionPaginationChild="actionPagination"
+                          />
                       </template>
                     </transition>
                   </template>
@@ -108,40 +115,24 @@ export default {
     data() {
         return {
             title:"Receiving",
-            // tempSearch: "",
-            // tempDate: [],
-            // dialogPickupRequest:false,
             item_no:'',
             form:{},
             inbound_id:'',
-
             loading: false,
             dataTable: [],
-            inboundDetailData : []
+            dataTableProp: [],
+            inboundDetailData : [],
+            pagination: {
+                limit:5,
+                page_size: 2,
+                page: 2
+            }
         }
     },
     methods: {
         refresh(){
-          
-
-              this.getTableData() // trigger function refresh form dari luar component list
-
+          this.getTableData() // trigger function refresh form dari luar component list
         },
-        // searchValue (val) {
-        //     this.tempSearch = val
-        // },
-        // searchDate (val) {
-        //   this.tempDate = val
-        // },
-        // clearSearch() {
-        //     this.$refs.searchInput.clear()
-        // },
-        // closeDialogPickupRequest() {
-        //   this.dialogPickupRequest = false
-        // },
-        // openDialog(){
-        //     this.dialogPickupRequest = true
-        // },
         updateValue(){
           this.form.item_no = this.item_no
           this.processInbond();
@@ -154,11 +145,6 @@ export default {
             this.tempSearch = this.inbound_id.toString()
             this.refresh()
           }
-        },
-        transformSequence(orion_sequence) {
-          const [prefix, middle, suffix] = orion_sequence.split("/")
-          const coreSequence = `${prefix}-${middle}-C${suffix}`
-          return coreSequence
         },
         async processInbond() {
           this.openProgress(null, "Processing", `${this.form.item_no ? this.form.item_no : 'Item' } is in process`);
@@ -201,7 +187,6 @@ export default {
                 }, 300);
               })
         },
-
         async getTableData() {
             this.loading = true
             this.dataTable = []
@@ -213,7 +198,7 @@ export default {
               if (getInboundId !== undefined) {
                 await axios
                   .get(this.URL.inbound +
-                      `/${getInboundId}/inbound-status?n=${this.listenNodeId}`,
+                      `/${getInboundId}/inbound-status?n=${this.listenNodeId}&page=${this.pagination.page}&limit=${this.pagination.limit}`,
                       this.Helper.header())
                   .then(res => {
                     let data=[res.data.data]
@@ -222,15 +207,11 @@ export default {
                       item['total_unreceived'] = item.total_unreceived.toString()
                     })
                     this.dataTable = data
+                    this.dataTableProp = res.data.detail
+                    this.pagination.page = res.data.meta.current_page
+                    this.pagination.limit = parseInt(res.data.meta.per_page)
+                    this.pagination.page_size = res.data.meta.last_page
 
-                    this.dataTable = this.dataTable.map(item => {
-                      if (item.inbound_type === "RECEIVING CONNOTE" || item.inbound_type === "RECEIVING BAG") {
-                          return {
-                              detail_incoming: item.detail_incoming
-                          };
-                      }
-                      return item;
-                  }).filter(item => item.hasOwnProperty('detail_incoming'));
                     this.loading = false
                   }).catch(err => {
                     this.loading = false
@@ -239,11 +220,10 @@ export default {
               } else {
                 this.loading = false
               }
-              
             }else{
               await axios
                   .get(this.URL.inbound +
-                      `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}`,
+                      `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}&page=${this.pagination.page}&limit=${this.pagination.limit}`,
                       this.Helper.header())
                   .then(res => {
                     let data=[res.data.data]
@@ -252,6 +232,10 @@ export default {
                       item['total_unreceived'] = item.total_unreceived.toString()
                     })
                     this.dataTable = data
+                    this.dataTableProp = res.data.detail
+                    this.pagination.page = res.data.meta.current_page
+                    this.pagination.limit = parseInt(res.data.meta.per_page)
+                    this.pagination.page_size = res.data.meta.last_page
 
                     this.loading = false
                   }).catch(err => {
@@ -260,9 +244,7 @@ export default {
                   })
             }
             this.$ls.remove('id_inbound');
-
         },
-
         back(){
           this.$router.push('/inbound/prealert')
         },
@@ -281,7 +263,17 @@ export default {
             this.updateValue();
           }
         },
-
+        actionLimit(val){
+            console.log("Limit", val)
+            this.pagination.limit = val
+            this.pagination.page = 1
+            this.refresh()
+        },
+        actionPagination(val) {
+            console.log("Pagination", val)
+            this.pagination.page = val
+            this.refresh()
+        },
     },
     mounted() {
       this.getParamRoute()
