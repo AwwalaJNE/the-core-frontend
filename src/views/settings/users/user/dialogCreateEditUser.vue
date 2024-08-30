@@ -1,7 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
-    :closeDialog="closeDialogUser">
+    :closeDialog="cancel">
 
         <template v-slot:header>
             {{listenTitle}}
@@ -85,6 +85,10 @@ export default {
     },
     computed: {
         listenActive(){
+            if(this.active){
+                this.getDataRole()
+                this.getDataEmployee()
+            }
             return this.active
         },
         listenTitle(){
@@ -100,12 +104,6 @@ export default {
                 this.user_id = val.user_id
                 this.getUserDetail()
                 // this.user_node_id = val.user_nodes
-            }
-        },
-        active: function (val) {
-            if (val == true) {
-                this.getDataRole()
-                this.getDataEmployee()
             }
         }
     },
