@@ -1055,7 +1055,7 @@
                         v-for="(c_item, c_td_key) in Object.keys(item.children)"
                       >
                         <template v-if="Array.isArray(item.children[c_item])">
-                          <td :key="c_td_key" :class="['is-runhseet-page', item.hasOwnProperty('children_width') ? item['children_width'][c_item] : '']">
+                          <td :key="c_td_key" :class="['is-runsheet-page', item.hasOwnProperty('children_width') ? item['children_width'][c_item] : '']">
                             <ul style="padding-left: 0.75em">
                               <li
                                 v-for="(itm, idx) in item.children[c_item]"
@@ -1570,7 +1570,7 @@ p.text-link {
   color: rgb(53, 92, 255);
   cursor: pointer;
 }
-.is-runhseet-page {
+.is-runsheet-page {
   li {
     display: flex;
     align-items: center;
