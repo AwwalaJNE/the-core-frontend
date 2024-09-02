@@ -50,7 +50,7 @@
                   :typeInput="`text|${isDestinationDisable}`"
                   @updateValue="updateValue"
                   icon-after
-                  @click-icon="$refs.cameraScanner.open('suratMuatan')"
+                  @click-icon="handleIconClick"
                   :disabled="isDisabled"
                 >
                   <template #icon>
@@ -761,10 +761,17 @@ export default {
         }
       }
     },
+    handleIconClick() {
+      if (!this.isDisabled) {
+        this.$refs.cameraScanner.open('suratMuatan');
+      }
+    },
     onCameraScannerGetData(data) {
-      if (data && data.event === "result") {
-        if (data.namespace === "suratMuatan") {
-          this.suratMuatan = data.data.text;
+      if (!this.isDisabled) {
+        if (data && data.event === "result") {
+          if (data.namespace === "suratMuatan") {
+            this.suratMuatan = data.data.text;
+          }
         }
       }
     },
