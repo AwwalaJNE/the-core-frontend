@@ -40,7 +40,7 @@
                 :autofocus="true"
                 icon-after
                 ref="formInputItemManifest"
-                @click-icon="$refs.cameraScanner.open('formInputItemManifest')"
+                @click-icon="handleIconClick"
                 :disabled="isDisabled"
               >
                 <template #icon>
@@ -883,11 +883,18 @@ export default {
     // }
 
     onCameraScannerGetData(data) {
-      if (data && data.event === "result") {
-        if (data.namespace === "formInputItemManifest") {
-          this.item_code = data.data.text;
-          this.updateValue();
+      if (!this.isDisabled) {
+        if (data && data.event === "result") {
+          if (data.namespace === "formInputItemManifest") {
+            this.item_code = data.data.text;
+            this.updateValue();
+          }
         }
+      }
+    },
+    handleIconClick() {
+      if (!this.isDisabled) {
+        this.$refs.cameraScanner.open('formInputItemManifest');
       }
     },
   },
