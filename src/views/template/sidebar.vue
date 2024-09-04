@@ -35,12 +35,14 @@
                         {{child.label}}
                       </vs-sidebar-item>
                     </router-link> -->
-              <vs-sidebar-item :id="child.label.trim()" :key="i" :to="child.url">
-                <template #icon>
-                  <i :class="`bx ${child.icon}`" />
-                </template>
-                <p>{{ child.label }}</p>
-              </vs-sidebar-item>
+              <a :href="child.url" :id="child.label.trim()">
+                <vs-sidebar-item :id="child.label.trim()" :key="i" :to="child.url" :class="activeNav(child.url)">
+                  <template #icon>
+                    <i :class="`bx ${child.icon}`" />
+                  </template>
+                  <p>{{ child.label }}</p>
+                </vs-sidebar-item>
+              </a>
               <!-- <vs-sidebar-item :id="child.label.trim()" :key="i" @input="redirect(child.url)">
                         <template #icon>
                           <i :class="`bx ${child.icon}`"></i>
@@ -51,12 +53,14 @@
           </vs-sidebar-group>
         </template>
         <template v-else>
-          <vs-sidebar-item :id="item.label.trim()" :key="key" :to="item.url">
-            <template #icon>
-              <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
-            </template>
-            <p>{{ item.label }}</p>
-          </vs-sidebar-item>
+          <a :href="item.url" :id="item.label.trim()">
+            <vs-sidebar-item :id="item.label.trim()" :key="key" :to="item.url" :class="activeNav(item.url)">
+              <template #icon>
+                <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
+              </template>
+              <p>{{ item.label }}</p>
+            </vs-sidebar-item>
+          </a>
         </template>
       </template>
     </vs-sidebar>
@@ -482,6 +486,9 @@ export default {
     },
     listenNodeType() {
       this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
+    },
+    activeNav(url) {
+      return url === window.location.pathname ? 'active' : ''
     },
     loadPermission() {
       this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
