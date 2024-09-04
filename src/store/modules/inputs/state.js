@@ -3246,9 +3246,9 @@ export default {
       valueData: null,
       value: ''
     },
-    via_sj: {
+    auto_depart: {
       label: "Auto Depart",
-      key: "via_sj",
+      key: "auto_depart",
       rule: "",
       typeInput: "Boolean",
       typeData: "Boolean",
