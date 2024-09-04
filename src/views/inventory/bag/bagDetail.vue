@@ -56,7 +56,7 @@
       </vs-col>
     </vs-row>
 
-    <template v-if="isAllowed && !is_orion && !loading">
+    <template v-if="isAllowed && !is_orion && !loading && !is_masterbag">
       <div class="center in-get-bag">
         <vs-row style="margin-top:2em">
           <vs-col xs="4" sm="4" lg="2">
@@ -71,13 +71,6 @@
               v-model="radio_option"
               val="koli">
               Koli
-            </vs-radio>
-          </vs-col>
-          <vs-col xs="4" sm="4" lg="2">
-            <vs-radio
-              v-model="radio_option"
-              val="bag">
-              Bag
             </vs-radio>
           </vs-col>
         </vs-row>
@@ -371,6 +364,11 @@ export default {
       let arr = data.detail
       let bag_des = data.data ? data?.data?.destination?.node_code  : null
       this.is_pra_runsheet = data.data.is_pra_runsheet === "1" ? true : false
+      
+      this.is_masterbag = data.data.is_consolidated === "1" ? true : false
+      if (data.data.is_consolidated === "1") {
+        this.radio_option = "bag"
+      }
 
       this.isAllowed = data.status.is_allowed
       this.messageIsAllowed = data.status.message
