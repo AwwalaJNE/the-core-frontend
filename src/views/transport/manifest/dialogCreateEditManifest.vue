@@ -267,9 +267,6 @@ export default {
         this.getDataVehicle();
       }
 
-      this.via_sj = !!this.listenDataItem["departed_time"];
-      this.$store.dispatch("SET_SURAT_MUATAN_VIA_SJ", this.via_sj);
-
       if (this.listenDataItem.hasOwnProperty("detail")) {
         let arr = [];
         this.listenDataItem["detail"].map((data) => {
@@ -424,7 +421,7 @@ export default {
       // form["max_weight"] = 1
 
 
-      form['via_sj'] = !form['via_sj']
+      form['auto_depart'] = form['auto_depart']
 
       this.form = form;
 
@@ -856,8 +853,6 @@ export default {
 
       this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "");
       this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", []);
-
-      this.$store.dispatch("SET_SURAT_MUATAN_VIA_SJ", true);
     },
     handleEta(dateTime, amount) {
       if (dateTime && amount) {

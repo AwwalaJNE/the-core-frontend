@@ -2193,16 +2193,16 @@ export default {
     state.surat_muatan.eta.valueData = payload
   },
 
-  SET_SURAT_MUATAN_VIA_SJ(state, payload) {
-    state.surat_muatan.via_sj.value = payload
+  SET_SURAT_MUATAN_AUTO_DEPART(state, payload) {
+    state.surat_muatan.auto_depart.value = payload
   },
-  SET_SURAT_MUATAN_VIA_SJ_ValueData(state, payload) {
-    state.surat_muatan.via_sj.valueData = payload
+  SET_SURAT_MUATAN_AUTO_DEPART_ValueData(state, payload) {
+    state.surat_muatan.auto_depart.valueData = payload
   },
-  SET_SURAT_MUATAN_VIA_SJ_ArrData(state, payload) {
-    state.surat_muatan.via_sj.hasOwnProperty('arrData') ?
-    state.surat_muatan.via_sj.arrData = payload :
-    state.surat_muatan.via_sj.arrData = []
+  SET_SURAT_MUATAN_AUTO_DEPART_ArrData(state, payload) {
+    state.surat_muatan.auto_depart.hasOwnProperty('arrData') ?
+    state.surat_muatan.auto_depart.arrData = payload :
+    state.surat_muatan.auto_depart.arrData = []
   },
 
 

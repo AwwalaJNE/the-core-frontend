@@ -15,6 +15,7 @@
                 placeholder="Search Feature"
                 class="search-input"
                 @input="onSearch"
+                autofocus
             >
                 <template #icon>
                     <i class='bx bx-search'></i>
