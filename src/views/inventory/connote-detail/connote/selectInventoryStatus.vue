@@ -83,6 +83,11 @@ export default {
                     width: "sm"
                 },
                 {
+                    label: "Value",
+                    key: "value",
+                    width: "sm"
+                },
+                {
                     label: "Description",
                     key: "activity_description",
                     width: "auto"
