@@ -1,29 +1,33 @@
 <template>
     <div>
-        <template v-if="listenLoading == false">
-            <table-master 
-            :dataTable="dataTable" 
+        <table-master 
+            :dataTable="dataTableProp" 
             :dataColumn="datacolumn" 
             :tableLoading="listenLoading"
-            
             :hasAction="false"
-            :hasPagination="false"
-            
-            @handleEdit="actionDetail"
-            />
-        </template>
+            :hasPagination="true"
+            :pageSize="pageSize"
+            :page="page"
+            :limit="limit"
+            @actionLimit="actionLimit"
+            @actionPagination="actionPagination"
+        />
     </div>
 </template>
 <script>
-import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 export default {
     name:"Inbound-Detail",
     mixins: [master],
     props: {
-        dataTableProp: [Array, Object],
+        dataTableProp: Array,
         loading: Boolean,
+        pageSize: Number,
+        page: Number,
+        limit: Number,
+        actionLimit: Function,
+        actionPagination: Function,
     },
     components: {
         "table-master" : TableMaster
@@ -55,40 +59,12 @@ export default {
                   width: "xxs"
                 },
             ],
-            
         }
     },
     computed: {
         listenLoading(){
             return this.loading
-        },
-        listendataTableProp(){
-            return this.dataTableProp
-        },
-    },
-    watch: {
-        dataTableProp: function(val) {
-            if(val != undefined) {
-                this.initialize(val[0])
-            }
-        },
-    },
-    methods: {
-        initialize(obj) {
-            if(obj != undefined){
-              if(obj.hasOwnProperty("detail_incoming")) {
-                this.dataTable = obj["detail_incoming"]
-              }
-            }
-
-        },
-        actionDetail(row){
-          this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
         }
-
     },
-    mounted() {
-        this.initialize(this.listendataTableProp[0])
-    }
 }
 </script>

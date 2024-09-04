@@ -43,7 +43,7 @@
             :limit="pagination.limit"
             :hasAction="false"
             :removeOnly="false"
-            :hasPagination="false"
+            :hasPagination="true"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
         />
@@ -59,7 +59,6 @@ export default {
     name:"list-detailbag",
     mixins: [master],
     props: {
-        query: String,
         itemNumber: String,
         bagId: String,
         resetInput: Function,
@@ -86,34 +85,24 @@ export default {
                 }
             ],
             loading: false,
-            dataItem: {},
-            tempSearch: this.query ? this.query : "",
             bag_number: "",
             item_number : '',
             total_bag : 1,
             total_confirmed : 0,
             total_unconfirmed: 0,
             pagination: {
-                limit:5,
+                limit:20,
                 page_size: 1,
                 page: 1
             }
         }
     },
     watch: {
-      query: function(val, old) {
-        if(val !== undefined) {
-          this.tempSearch = val
-          if(this.tempSearch !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page)
-          }
-        }
-      },
       itemNumber: function(val, old) {
         if(val !== undefined && val !== null && val !== '') {
           this.item_number = val
           if(this.item_number !== old || this.item_number !== null) {
-            this.getTableData(this.pagination.limit, this.pagination.page)
+            this.getTableData(this.pagination.limit, 1)
           }
         }
       },
@@ -121,7 +110,6 @@ export default {
 
     },
     methods: {
-
         async getTableData(limit,page) {
             this.loading = true
             let form = {};
@@ -136,14 +124,14 @@ export default {
             }
             await axios
                 .post(
-                    this.URL.unbagging + `/bag?n=${this.listenNodeId}`,
+                    this.URL.unbagging + `/bag?n=${this.listenNodeId}&limit=${limit}&page=${page}`,
                     JSON.stringify(form),
                     this.Helper.header())
                 .then(res => {
                     if(res.data.data.bag_number != undefined) {
                         let data = res.data.data
 
-                        if (data.unbagging_summary !== null && data.item_detail !== null) {
+                        if (data.unbagging_summary !== null && res.data.detail !== null) {
                           this.bag_number = data.bag_number
                           this.$emit("saveBagNumber", this.bag_number)
                           let dataBag = {
@@ -151,7 +139,7 @@ export default {
                             item_number: data.bag_number
                           }
                           this.dataTableBag = [dataBag]
-                          let item_detail = data.item_detail.map((el, idx) => {
+                          let item_detail = res.data.detail.map((el, idx) => {
                             return {
                               no: idx+1,
                               item_number: el.item_number
@@ -160,6 +148,10 @@ export default {
                           this.dataTable = item_detail
                           this.total_confirmed = data.unbagging_summary[0].total_confirmed
                           this.total_unconfirmed = data.unbagging_summary[0].total_unconfirmed
+                          this.pagination.page = res.data.meta.current_page
+                          this.pagination.limit = parseInt(res.data.meta.per_page)
+                          this.pagination.page_size = res.data.meta.last_page
+                          this.openNotification('success', null, 'Success', 'Scan Item Success')
                         }
                         else {
                             this.dataTable = []
@@ -175,7 +167,6 @@ export default {
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Connote', err?.response?.data?.message ? err.response.data.message : err)
                 })
         },
-
         handleClearData(){
           this.bag_number=""
           this.item_number =""
@@ -183,18 +174,43 @@ export default {
           this.total_unconfirmed = 0
           this.$emit("resetInput", "RESET");
         },
-        
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.refresh()
+            this.handlePagination()
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.refresh()
+            this.handlePagination()
         },
         refresh(val){
             this.getTableData(this.pagination.limit,this.pagination.page,this.bag_id)
+        },
+        async handlePagination() {
+            this.loading = true
+            await axios
+                .get(
+                    this.URL.unbagging + `/bag/${this.bag_number.replaceAll("/", "-")}?n=${this.listenNodeId}&limit=${this.pagination.limit}&page=${this.pagination.page}`,
+                    this.Helper.header())
+                .then(res => {
+                    if(res.data.detail.length !== 0) {
+                      let item_detail = res.data.detail.map((el, idx) => {
+                        return {
+                          no: idx+1,
+                          item_number: el.item_number
+                        }
+                      })
+                      this.dataTable = item_detail
+                      this.pagination.page = res.data.meta.current_page
+                      this.pagination.limit = parseInt(res.data.meta.per_page)
+                      this.pagination.page_size = res.data.meta.last_page
+                    }
+                  
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to change page', err?.response?.data?.message ?? err)
+                })
         },
     }
 }

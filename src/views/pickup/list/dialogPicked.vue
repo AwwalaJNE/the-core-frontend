@@ -157,7 +157,7 @@ export default {
           this.closeDialog();
           this.cancel();
           this.$emit("refresh");
-          this.openNotification("danger", err.response ? err.response.data.code : '', "Update Pickup is failed", err.response.data.message);
+          this.openNotification("danger", err?.response ? err?.response?.data?.code : '', "Update Pickup is failed", err?.response?.data?.message ?? "");
         });
     },
     activeLoading() {
@@ -187,7 +187,7 @@ export default {
           }
         }
       }else{
-        this.openNotification("danger", err.response ? err.response.data.code : '', "Select item is failed", "Bag or Connote not found!");
+        this.openNotification("danger", null, "Select item is failed", "Bag or Connote not found!");
       }
       this.scan_bag=null;
     },

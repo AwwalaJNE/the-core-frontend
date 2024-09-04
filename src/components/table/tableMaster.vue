@@ -1327,7 +1327,7 @@ export default {
     },
     limit: function(val) {
       if (val !== undefined) {
-        this.pagination.limits = val;
+        this.pagination.limit = val;
       }
     },
     dataTable: function() {
