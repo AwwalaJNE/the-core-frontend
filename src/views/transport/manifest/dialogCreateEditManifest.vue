@@ -267,9 +267,6 @@ export default {
         this.getDataVehicle();
       }
 
-      // this.auto_depart = this.listenDataItem["auto_depart"];
-      // this.$store.dispatch("SET_SURAT_MUATAN_AUTO_DEPART", this.auto_depart);
-
       if (this.listenDataItem.hasOwnProperty("detail")) {
         let arr = [];
         this.listenDataItem["detail"].map((data) => {
