@@ -457,7 +457,7 @@ export default {
       else {
         this.form={
             bag_number : this.bag_id,
-            bag_weight : this.weight
+            bag_actual_weight : this.weight
         }
         this.loading = true
         this.putBag();
@@ -472,7 +472,7 @@ export default {
     resetBagActualWeight() {
       this.form={
           bag_number : this.bag_id,
-          bag_weight : 0
+          bag_actual_weight : 0
       }
       this.loading = true
       this.putBag(true)
