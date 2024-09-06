@@ -255,6 +255,11 @@ export default {
         this.getNodeIntracity()
       }
     },
+    radio_option(old, val) {
+      if (old !== val) {
+        this.setInputFocus();
+      }
+    },
   },
   data() {
       return {
@@ -725,12 +730,21 @@ export default {
         }
       }
     },
+    setInputFocus() {
+      this.$nextTick(() => {
+        let inputElement = this.$refs.formInputBagging?.$el.querySelector('input');
+        if (inputElement) {
+          inputElement.focus();
+        }
+      });
+    },
   },
   mounted() {
     this.getNodeLink()
     this.getNodeIntracity()
     this.getemployee()
     this.getService()
+    this.setInputFocus();
     // this.$store.dispatch("SET_BAGGING_destination_dataArray", this.regionalArray )
     // this.$store.dispatch("SET_BAGGING_service_dataArray", this.serviceArray )
   }
