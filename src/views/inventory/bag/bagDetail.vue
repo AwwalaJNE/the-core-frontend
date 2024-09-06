@@ -82,11 +82,18 @@
         <vs-col xs="12" sm="2" lg="2">
           <template v-if="isAllowed && !is_orion && !loading">
             <div v-if="radio_option === 'connote'" class="center in-get-bag">
-              <vs-input border type="text" v-model="item_code_orion" label-placeholder="Masukkan Connote (Orion)"
-                v-on:keyup.enter="updateItemOnBagOrion" icon-after :autofocus="true" ref="formInputBaggingConnote"
+              <vs-input 
+                border 
+                type="text" 
+                v-model="item_code_orion" 
+                label-placeholder="Masukkan Connote (Orion)"
+                v-on:keyup.enter="updateItemOnBagOrion" 
+                icon-after 
+                :autofocus="true" 
+                ref="formInputBaggingConnote"
                 @click-icon="$refs.cameraScanner.open('formInputBaggingConnote')"
                 v-bind:data-kt="'scan_input'"
-                >
+              >
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
                 </template>
@@ -94,22 +101,36 @@
               </vs-input>
             </div>
             <div v-if="radio_option === 'koli'" class="center in-get-bag">
-              <vs-input border type="text" v-model="item_code" label-placeholder="Masukkan code Koli"
-                v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBaggingKoli"
+              <vs-input 
+                border 
+                type="text" 
+                v-model="item_code" 
+                label-placeholder="Masukkan code Koli"
+                v-on:keyup.enter="updateItemOnBag" 
+                icon-after 
+                :autofocus="true" 
+                ref="formInputBaggingKoli"
                 @click-icon="$refs.cameraScanner.open('formInputBaggingKoli')"
                 v-bind:data-kt="'scan_input'"
-                >
+              >
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
                 </template>
               </vs-input>
             </div>
             <div v-if="radio_option === 'bag'" class="center in-get-bag">
-              <vs-input border type="text" v-model="item_code" label-placeholder="Masukkan code Bag"
-                v-on:keyup.enter="updateItemOnBag" icon-after :autofocus="true" ref="formInputBaggingBag"
+              <vs-input 
+                border 
+                type="text" 
+                v-model="item_code" 
+                label-placeholder="Masukkan code Bag"
+                v-on:keyup.enter="updateItemOnBag" 
+                icon-after 
+                :autofocus="true" 
+                ref="formInputBaggingBag"
                 @click-icon="$refs.cameraScanner.open('formInputBaggingBag')"
                 v-bind:data-kt="'scan_input'"
-                >
+              >
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
                 </template>
@@ -349,7 +370,12 @@ export default {
   watch: {
     radio_option(old, val) {
       if (old !== val) {
-        this.setInputFocus()
+        this.setInputFocus();
+      }
+    },
+    loading(newValue) {
+      if (!newValue) {
+        this.setInputFocus();
       }
     }
   },
@@ -572,21 +598,23 @@ export default {
     },
     setInputFocus() {
       this.$nextTick(() => {
-        setTimeout(() => {
-          let inputElement = null
-          if (this.radio_option === "connote") {
-            inputElement = this.$refs.formInputBaggingConnote?.$el.querySelector('input');
-          }
-          else if (this.radio_option === "koli") {
-            inputElement = this.$refs.formInputBaggingKoli?.$el.querySelector('input');
-          }
-          else if (this.radio_option === "bag") {
-            inputElement = this.$refs.formInputBaggingBag?.$el.querySelector('input');
-          }
-          if (inputElement) {
-            inputElement.focus();
-          }
-        }, 500);
+        let inputElement = null
+        if (this.radio_option === "connote") {
+          inputElement = this.$refs.formInputBaggingConnote?.$el.querySelector('input');
+        }
+        else if (this.radio_option === "koli") {
+          inputElement = this.$refs.formInputBaggingKoli?.$el.querySelector('input');
+        }
+        else if (this.radio_option === "bag") {
+          inputElement = this.$refs.formInputBaggingBag?.$el.querySelector('input');
+        }
+        if (inputElement) {
+          inputElement.focus();
+        }
+
+        if (inputElement) {
+          inputElement.focus();
+        }
       });
     },
     approveAction(val){
