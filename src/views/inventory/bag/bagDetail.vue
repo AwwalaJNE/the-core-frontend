@@ -344,7 +344,8 @@ export default {
       toggle_approve: {},
       disabledApprove: false,
       activeDialogConfirmUnpproveBag: false,
-      loadingConfirmUnpproveBag: false
+      loadingConfirmUnpproveBag: false,
+      arr_detail: []
     }
   },
   computed: {
@@ -388,6 +389,7 @@ export default {
 
       this.is_orion = data.data.is_orion === '1' ? true : false;
       let arr = data.detail
+      this.arr_detail = arr
       let bag_des = data.data ? data?.data?.destination?.node_code  : null
       this.is_pra_runsheet = data.data.is_pra_runsheet === "1" ? true : false
       
@@ -552,24 +554,26 @@ export default {
     //   this.putBag();
     // },
     async putBag(hideNotification){
-      await axios
-          .put(this.URL.bag+'/'+this.bag_id+`?n=${this.listenNodeId}`, 
-            JSON.stringify(this.form), 
-            this.Helper.header())
-          .then(res => {
+      if (this.arr_detail.length !== 1) {
+        await axios
+            .put(this.URL.bag+'/'+this.bag_id+`?n=${this.listenNodeId}`, 
+              JSON.stringify(this.form), 
+              this.Helper.header())
+            .then(res => {
 
-            this.handleClearForm()
-            this.loading = false
-            if (hideNotification === undefined) {
-              this.openNotification('success', null, 'Update Bagging is success')
-              this.refresh()
-            }
-          }).catch(err => {
+              this.handleClearForm()
+              this.loading = false
+              if (hideNotification === undefined) {
+                this.openNotification('success', null, 'Update Bagging is success')
+                this.refresh()
+              }
+            }).catch(err => {
 
-            this.loading = false
-            this.handleClearForm()
-            this.openNotification('danger', err.response ? err.response.data.code : '', err.response ? err.response.data.message : 'something went wrong')
-          })
+              this.loading = false
+              this.handleClearForm()
+              this.openNotification('danger', err.response ? err.response.data.code : '', err.response ? err.response.data.message : 'something went wrong')
+            })
+      }
     },
     actionDetail(){
         let routeData = this.$router.resolve({ 
