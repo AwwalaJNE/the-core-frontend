@@ -9,7 +9,7 @@
         <div class="summary-bag">
           <vs-row>
             <vs-col xs="12" sm="3" lg="3" align="left" class="bag-no">
-              <span><b>Bag No. {{ bag_number }}</b></span>
+              <span><b>Bag No. </b></span><span><b>{{ bag_number }}</b></span>
             </vs-col>
             <vs-col xs="12" sm="3" lg="3" align="left" >
                 <span v-if="!is_pra_runsheet && !loading"><p>Destination: {{bag_destination}}</p></span>
