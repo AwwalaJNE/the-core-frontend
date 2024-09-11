@@ -163,7 +163,7 @@
               </vs-td>
             </template>
             <template v-if="hasId == true">
-              <vs-td :key="key" class="automation-id">
+              <vs-td :key="key" class="automation-id" v-bind:data-kt-table="key + 1">
                 {{ key + 1 }}
               </vs-td>
             </template>
