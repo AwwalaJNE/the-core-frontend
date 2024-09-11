@@ -79,7 +79,7 @@
 
           <template v-if="listenColumn.length > 0">
             <template v-if="hasId == true">
-              <vs-th class="automation-id">
+              <vs-th class="automation-id" v-bind:data-kt-table="'ID'">
                 ID
               </vs-th>
             </template>
