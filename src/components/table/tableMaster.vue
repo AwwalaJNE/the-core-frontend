@@ -78,6 +78,11 @@
           </template>
 
           <template v-if="listenColumn.length > 0">
+            <template v-if="hasId == true">
+              <vs-th class="automation-id">
+                ID
+              </vs-th>
+            </template>
             <template v-for="(item, key) of listenColumn">
               <template v-if="!item.hasOwnProperty('hidden')">
                 <vs-th :key="key" :class="item.width ? item.width : ''">
@@ -155,6 +160,11 @@
                   :val="item"
                   @change="updateSelected"
                 />
+              </vs-td>
+            </template>
+            <template v-if="hasId == true">
+              <vs-td :key="key" class="automation-id">
+                {{ key + 1 }}
               </vs-td>
             </template>
 
@@ -1198,6 +1208,7 @@ export default {
     hasLinked3: Array,
     hasLinked4: Array,
     hasLinkedChild: Array,
+    hasId: Boolean,
     removeOnly: Boolean,
     runsheetAction: Boolean,
     printAction: Boolean,
@@ -1607,6 +1618,10 @@ p.text-link {
 
 .vs-table__tr.selected .vs-table__td {
   color: #424242 !important;
+}
+
+.automation-id {
+  display: none;
 }
 
 </style>

@@ -17,6 +17,7 @@
         :hasAction="false"
         :hasLinked="['koli_number']"
         :hasPagination="true"
+        :hasId="true"
         @actionUpdate="actionUpdate"
         @actionRemove="actionRemove"
         @actionLimit="actionLimit"
