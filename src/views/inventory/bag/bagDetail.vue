@@ -617,7 +617,7 @@ export default {
       });
     },
     approveAction(val){
-      if (this.isAllowed && this.actual_weight == 0) {
+      if (this.isAllowed && !this.is_pra_runsheet && this.actual_weight == 0) {
         this.openNotification('warning', null, 'Empty Weight!', 'Bag Actual Weight must not be 0!')
       }
       else {
