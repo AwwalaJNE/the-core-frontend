@@ -145,15 +145,6 @@ export default {
               },
             ],
             customActionList: [
-              // {
-              //   label: 'Print',
-              //   key: 'print',
-              //   attribute: '',
-              //   option: {
-              //     type: 'redirect',
-
-              //   }
-              // },
               {
                 label: 'Depart',
                 key: 'depart',
@@ -230,7 +221,6 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     let buttonStatus = {
-                          //'print': true, // tombol print default true
                           'depart': true,
                           'cancel': true
                         }
@@ -286,11 +276,6 @@ export default {
 
         actionUpdate(val, key) {
           switch(key) {
-                // case "print":
-
-                //     let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.manifest_do_number, 'type': 'manifest-delivery-order', 'node_id':this.listenNodeId } });
-                //     window.open(routeData.href, '_blank');
-                //     break;
                 case "depart":
                     this.manifest_do_number = val.manifest_do_number
                     let obj = {}
