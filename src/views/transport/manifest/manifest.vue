@@ -10,13 +10,11 @@
         :limit="pagination.limit"
         :hasLinked="['manifest_number']"
         :pickupListAction="true"
-        :approveCancelPrintRequestAction="true"
+        :cancelRequestAction="true"
         :hasPagination="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
-        @actionPrint="actionPrint"
         @actionCancel="actionCancel"
-        @actionApprove="actionApprove"
         @handleEdit="actionUpdate"
         />
 
@@ -38,16 +36,6 @@
           message="Are you sure you want to Cancel Surat Muatan ?"
           @confirm="confirmCancel"
           @cancel="closeDialogConfirmCancel"
-      />
-
-      <dialog-confirm
-          title="Unapprove Surat Muatan"
-          :message="`Are you sure you want to unapprove this surat muatan with number ${this.manifest_number}?`"
-          :active="activeDialogConfirmApprove"
-          :loading="loadingConfirmApprove"
-          :closeDialog="closeDialogConfirmApprove"
-          @confirm="confirmApprove"
-          @cancel="closeDialogConfirmApprove"
       />
     </div>
 </template>
@@ -99,7 +87,7 @@ export default {
                 {
                     label: "Type SM",
                     key: "manifest_type_name",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                   label: "Jenis Kiriman",
@@ -144,12 +132,12 @@ export default {
                 {
                     label: "Approved",
                     key: "approved",
-                    width: "xxs"
+                    width: "xs"
                 },
                 {
                     label: "Status",
                     key: "status",
-                    width: "auto"
+                    width: "xs"
                 },
             ],
             loading: false,
@@ -167,9 +155,6 @@ export default {
                 page: 1
             },
             manifest_number:'',
-            activeDialogConfirmApprove: false,
-            loadingConfirmApprove: false,
-            is_approve: 0,
         }
     },
     watch: {
@@ -230,20 +215,15 @@ export default {
                         item['etd']  = this.dateConvert(item.etd)
                         item['created_at']  = this.dateConvert(item.created_at)
                         item["approved"] = item.is_approve  === 1 ? 'YES' : 'NO';
-
-                        item["isDangerApprove"] = item.is_approve === 1 ? true : false ;
-                        item["isApproveLabel"] = item.is_approve === 1 ? 'Unapprove' : 'Approve' ;
                         
                         if (item.hasOwnProperty('status') && item["status"] !== null) {
                           let str = item["status"].toLowerCase();
                           if (!str.includes("ready")) {
-                              item['isDisabledApprove'] = true;
                               item['isDisabledCancel'] = true;
                           }
                       }
 
                         if (item.is_orion == "1") {
-                          item['isDisabledApprove'] = true;
                           item['isDisabledCancel'] = true
                         }
                     })
@@ -353,60 +333,11 @@ export default {
                 this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete Manifest is failed', err)
               })
         },
-
-        actionPrint(row){
-        let routeData = this.$router.resolve({ 
-          name: 'printGeneral', 
-          params: { 
-              'id': row.manifest_number, 
-              'type': 'manifest',
-              'node_id': this.listenNodeId
-          } 
-        });
-        window.open(routeData.href, '_blank');
-
-        },
         actionCancel(row){
 
           this.manifest_number = row.manifest_number
           this.activeDialogCancel = true;
         },
-
-        actionApprove(row){
-            this.is_approve = row.is_approve;
-            this.manifest_number = row.manifest_number
-            this.is_approve === 0 ? this.confirmApprove() : this.activeDialogConfirmApprove = true;
-        },
-        confirmApprove() {
-            this.approve()
-        },
-        closeDialogConfirmApprove(){
-            this.loadingConfirmApprove=false
-            this.activeDialogConfirmApprove = false
-            this.refresh();
-        },
-        async approve(){
-          this.loading = true
-          this.loadingConfirmApprove = true
-            await axios
-                .put(
-                    `${this.URL.approval}-manifest/${this.manifest_number}?n=${this.listenNodeId}`,
-                    JSON.stringify({
-                      is_approve: this.is_approve ^= 1
-                    }),
-                    this.Helper.header()
-                )
-                .then(res => {
-                    this.is_approve ^= 1;
-                    this.closeDialogConfirmApprove();
-                    this.openNotification("success", null, "Success", res?.data?.message);
-                })
-                .catch(err => {
-                    this.closeDialogConfirmApprove();
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed', err.response ? err.response.data.message : 'something went wrong');
-                });
-        },
-
     },
     mounted() {
         this.refresh()
