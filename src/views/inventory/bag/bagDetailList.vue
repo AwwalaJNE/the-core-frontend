@@ -187,7 +187,7 @@ export default {
                       item['koli_sequence'] = item.item_type == 'KOLI' ? item.koli_sequence : '-'
                       item['connote_service_code'] = item.item_type == 'KOLI' ? item.connote_service_code : item.bag_service.join(', ')
                       item['bag_detail_qty'] = res.data.data.bag_detail_qty
-                      item["isDisabled"] = item.is_confirmed == 0 ? true : false;
+                      item["isDisabled"] = res.data.data.is_approve === 1 ? true : false;
                       item["runsheet_number"] = item?.runsheet ? item?.runsheet?.[item?.runsheet?.length - 1]?.delivery_runsheet_number : '';
                     })
                     this.is_pra_runsheet = res.data.data.is_pra_runsheet === "1" ? true : false;
