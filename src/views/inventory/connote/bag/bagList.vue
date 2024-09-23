@@ -279,7 +279,7 @@ export default {
             let routeData = this.$router.resolve({ 
                 name: 'printGeneral', 
                 params: { 
-                    'id': val.bag_number, 
+                    'id': val.bag_number.replaceAll("/","~"), 
                     'type': 'bag',
                     'node_id': this.listenNodeId
                 } 

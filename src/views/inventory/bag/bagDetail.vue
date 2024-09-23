@@ -546,7 +546,7 @@ export default {
         let routeData = this.$router.resolve({ 
             name: 'printGeneral', 
             params: { 
-                'id': this.bag_id, 
+                'id': this.bag_id.replaceAll("/","~"), 
                 'type': 'bag',
                 'node_id': this.listenNodeId,
             } 
