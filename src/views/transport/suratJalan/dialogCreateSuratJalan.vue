@@ -6,7 +6,17 @@
     :closeDialog="btnBlue === 'Approve' ? cancelAdd : cancelEdit"
   >
     <template v-slot:header>
-      {{ listenTitle }}
+      <div class="button-helper">
+        <div class="title-helper">
+          {{ listenTitle }}
+        </div>
+        <vs-button @click="print">
+          Print
+        </vs-button>
+        <vs-button @click="approve" :danger="is_approve === 1">
+          {{ is_approve === 1 ? 'Unapproved' : 'Approve' }}
+        </vs-button>
+      </div>
     </template>
 
     <template v-slot:content>
@@ -202,7 +212,8 @@ export default {
       editData: {},
       isDestinationDisable: "",
       is_penerusan: true,
-      isDisabled: false
+      isDisabled: false,
+      is_approve: 0,
     };
   },
   computed: {
@@ -240,6 +251,7 @@ export default {
         this.dataTable = val.detail;
         this.is_penerusan = val.is_penerusan === "1" ? true : false
         this.isDisabled = val.status !== 'READY' || val.is_orion == "1" || val.is_approve == 1 ? true : false
+        this.is_approve = this.is_approve;
         this.dataTable.map((item) => {
           if (item.bag) {
             item.destination = item.bag.destination
@@ -438,6 +450,34 @@ export default {
 
         // code block
       }
+    },
+    async approve(){
+        await axios
+          .put(
+              `${this.URL.approval}-manifest-do/${this.manifest_delivery_id}?n=${this.listenNodeId}`,
+              JSON.stringify({
+                is_approve: this.is_approve ^ 1
+              }),
+              this.Helper.header()
+          )
+          .then(res => {
+              this.is_approve ^= 1;
+              this.openNotification("success", null, "Success", res?.data?.message);
+          })
+          .catch(err => {
+            this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed', err?.response?.data?.message ?? 'something went wrong'); 
+          });
+    },
+    print() {
+      let routeData = this.$router.resolve({ 
+        name: 'printGeneral', 
+        params: { 
+          'id': this.manifest_delivery_id, 
+          'type': 'manifest-delivery-order', 
+          'node_id':this.listenNodeId 
+        } 
+      });
+      window.open(routeData.href, '_blank');
     },
     handleSubmit() {
       this.$refs.formSuratJalan.handleSubmit(); // trigger function submit form dari luar component formInputController
@@ -797,5 +837,20 @@ export default {
 } 
 .nomor-sj {
   width: inherit;
+}
+</style>
+<style scoped>
+.title-helper {
+  width: 70%;
+  align-content: center;
+}
+
+.button-helper {
+  display: flex; 
+  justify-content: flex-end;
+}
+
+button {
+  width: 6em;
 }
 </style>
