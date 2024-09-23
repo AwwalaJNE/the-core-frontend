@@ -6,7 +6,17 @@
     class="custom-width"
   >
     <template v-slot:header>
-      {{ listenTitle }}
+      <div class="button-helper">
+        <div class="title-helper">
+          {{ listenTitle }}
+        </div>
+        <vs-button @click="print">
+          Print
+        </vs-button>
+        <vs-button @click="approve" :danger="is_approve === 1">
+          {{ is_approve === 1 ? 'Unapproved' : 'Approve' }}
+        </vs-button>
+      </div>
     </template>
 
     <template v-slot:content>
@@ -98,7 +108,7 @@
             @click="handleSubmit"
             :disabled="isDisabled"
           >
-            {{ btnBlue || "Add" }}
+            {{ btnBlue || "Save" }}
           </vs-button>
         </vs-col>
       </vs-row>
@@ -176,6 +186,7 @@ export default {
       //   }
       // ],
       loading: false,
+      loadingConfirmApprove: false,
       pagination: {
         limit: 5,
         page_size: 1,
@@ -194,7 +205,8 @@ export default {
       itterateFlagAutoComplete: "node_name",
       etd: null,
       estimated_time_in_hour: null,
-      isDisabled: false
+      isDisabled: false,
+      is_approve: 0
     };
   },
   computed: {
@@ -251,7 +263,8 @@ export default {
   methods: {
     initDataItem() {
       this.node_id = this.listenDataItem.node_id;
-      this.manifest_number = this.listenDataItem.manifest_number;
+      this.manifest_number = this.listenDataItem.manifest_number;      
+      this.is_approve = this.listenDataItem.is_approve;
 
       this.vehicle_mode_id = this.listenDataItem[
         "vehicle_mode_id"
@@ -652,6 +665,35 @@ export default {
           );
         });
     },
+    async approve(){
+        await axios
+          .put(
+            `${this.URL.approval}-manifest/${this.manifest_number}?n=${this.listenNodeId}`,
+              JSON.stringify({
+                is_approve: this.is_approve ^ 1
+              }),
+              this.Helper.header()
+          )
+          .then(res => {
+            this.is_approve ^= 1;
+            this.openNotification("success", null, "Success", res?.data?.message);
+          })
+          .catch(err => {
+            this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed', err?.response?.data?.message ?? 'something went wrong'); 
+          });
+    },
+    print(){
+      let routeData = this.$router.resolve({ 
+        name: 'printGeneral', 
+        params: { 
+            'id': this.manifest_number, 
+            'type': 'manifest',
+            'node_id': this.listenNodeId
+        } 
+      });
+      window.open(routeData.href, '_blank');
+
+    },
     cancel() {
       this.handleClearForm();
       this.closeDialog();
@@ -903,10 +945,18 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-@media (min-width: 1200px) {
-  // .vs-dialog-content.custom-width .vs-dialog{
-  //   min-width: 1100px;
-  // }
+<style scoped>
+.title-helper {
+  width: 60%;
+  align-content: center;
+}
+
+.button-helper {
+  display: flex; 
+  justify-content: flex-end;
+}
+
+button {
+  width: 6em;
 }
 </style>
