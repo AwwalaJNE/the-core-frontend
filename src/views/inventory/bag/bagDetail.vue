@@ -43,7 +43,7 @@
       </div>
     </vs-row>
 
-    <template v-if="isAllowed && !is_orion && !loading && !is_masterbag">
+    <template v-if="!disabledApprove && !is_orion && !loading && !is_masterbag">
       <div class="center in-get-bag">
         <vs-row style="margin-top:2em">
           <vs-col xs="4" sm="4" lg="2">
@@ -67,7 +67,7 @@
     <section class="bagging">
       <vs-row justify="space-between">
         <vs-col xs="12" sm="2" lg="2">
-          <template v-if="isAllowed && !is_orion && !loading">
+          <template v-if="!disabledApprove && !is_orion && !loading">
             <div v-if="radio_option === 'connote'" class="center in-get-bag">
               <vs-input 
                 border 
@@ -219,7 +219,7 @@
                          placeholder="Weight"
                          v-on:keyup.enter="updateValue"
                          ref="formInputBagging" icon-after
-                         :disabled="(!isAllowed || is_orion) && !loading"
+                         :disabled="(disabledApprove || is_orion) && !loading"
                          >
                  <template #icon>Kg</template>
                </vs-input>
