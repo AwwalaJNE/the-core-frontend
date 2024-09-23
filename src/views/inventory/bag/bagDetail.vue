@@ -1,59 +1,46 @@
 <template>
   <div>
-    <vs-row justify="space-between">
-      <vs-col w="6">
-        <div class="titlePage">
-          <breadcrumb/>
-          <div style="display: flex; align-items: center;">
-            <h2 style="margin-right: 10px;">{{ title }}</h2> 
-            
-            <vs-tooltip bottom v-if="!isAllowed && !loading">
-              <i class="bx bx-info-circle"></i>
-              <template #tooltip>
-                {{ messageIsAllowed }}
-              </template>
-            </vs-tooltip>
-          </div>
-        </div>
-      </vs-col>
-      <vs-col w="6">
-        <div style="position:relative;display:flex;justify-content: flex-end;">
-          <vs-row justify="end">
-            <template v-if="!loading">
-              <vs-col style="width: fit-content; padding: 0">
-                <template v-if="!disabledApprove">
-                  <vs-button
-                    @click="approveAction(true)"
-                    :disabled="!isAllowed || is_orion"
-                    style="width: 7rem;"
-                  >
-                    <span>
-                      Approve Bag
-                    </span>
-                  </vs-button>
-                </template>
-                <template v-else-if="disabledApprove">
-                  <vs-button
-                    @click="approveAction(false)"
-                    danger
-                    :disabled="!isAllowed || is_orion"
-                    style="width: 8rem;"
-                  >
-                    <span>
-                      Unapprove Bag
-                    </span>
-                  </vs-button>
-                </template>
-              </vs-col>
+    <vs-row justify="space-between" style="display: flex">
+      <div class="titlePage">
+        <breadcrumb/>
+        <div style="display: flex; align-items: center;">
+          <h2 style="margin-right: 10px;">{{ title }}</h2> 
+          
+          <vs-tooltip bottom v-if="!isAllowed && !loading">
+            <i class="bx bx-info-circle"></i>
+            <template #tooltip>
+              {{ messageIsAllowed }}
             </template>
-            <vs-col style="width: 6em;padding-right: 5px; padding-left: 0;">
-              <vs-button flat block :active="true" @click="newBag">
-                <i class="bx bx-plus"></i> New
-              </vs-button>
-            </vs-col>
-          </vs-row>
+          </vs-tooltip>
         </div>
-      </vs-col>
+      </div>
+      <div style="display: flex;" class="buttonPage" v-if="!loading">
+        <vs-button
+          @click="approveAction(true)"
+          :disabled="!isAllowed || is_orion"
+          style="width: 6rem;"
+          v-if="!disabledApprove"
+        >
+          <span>
+            Approve
+          </span>
+        </vs-button>
+        <vs-button
+          @click="approveAction(false)"
+          danger
+          :disabled="!isAllowed || is_orion"
+          style="width: 6rem;"
+          v-if="disabledApprove"
+        >
+          <span>
+            Unapprove
+          </span>
+        </vs-button>
+        <vs-button style="width: 6rem;" @click="newBag">
+          <i class="bx bx-plus"></i> New
+        </vs-button>
+        <vs-button style="width: 6rem;" @click="print">Print</vs-button>
+      </div>
     </vs-row>
 
     <template v-if="isAllowed && !is_orion && !loading && !is_masterbag">
@@ -240,21 +227,6 @@
             </div>
           </template>
         </vs-col>
-
-        <vs-col xs="4" sm="2" lg="3" class="mt-1">
-          <template>
-            <vs-button @click="actionDetail">Print</vs-button>
-            <!-- <div class="center in-get-bag">
-              <vs-row>
-                <vs-col lg="6" align="">
-                </vs-col>
-                <vs-col lg="6" align="right">
-                  <vs-button @click="actionDetail">Print</vs-button>
-                </vs-col>
-              </vs-row>
-            </div> -->
-          </template>
-        </vs-col>
       </vs-row>
 
       <div class="box view">
@@ -263,8 +235,8 @@
             <detailbagList ref="detailbagList"  :bagId="bag_id" @getResponse="getResponse" @resetBagActualWeight="resetBagActualWeight"/>
           </vs-col>
         </vs-row>
-
       </div>
+      
       <vs-col xs="12" sm="12" lg="12" align="right" style="padding:20px 5px;">
         <vs-button @click="$router.go(-1)">Back</vs-button>
       </vs-col>
@@ -570,7 +542,7 @@ export default {
             this.openNotification('danger', err.response ? err.response.data.code : '', err.response ? err.response.data.message : 'something went wrong')
           })
     },
-    actionDetail(){
+    print(){
         let routeData = this.$router.resolve({ 
             name: 'printGeneral', 
             params: { 
@@ -580,6 +552,9 @@ export default {
             } 
         });
         window.open(routeData.href, '_blank');
+    },
+    back() {
+      this.$router.go(-1);
     },
     onCameraScannerGetData(data) {
       if (data && data.event === "result" && (data.namespace === "formInputBagging" || data.namespace === "formInputBaggingConnote" || data.namespace === "formInputBaggingKoli" || data.namespace === "formInputBaggingBag")) {
@@ -687,5 +662,4 @@ export default {
 .box{
   margin-top: 20px !important;
 }
-
 </style>
