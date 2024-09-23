@@ -819,55 +819,6 @@
                         <span>Cancel</span>
                       </vs-button>
                     </vs-col>
-                    <vs-col w="4">
-                      <vs-button
-                        block
-                        size="small"
-                        flat
-                        :active="true"
-                        @click="actionPrint(item)"
-                      >
-                        <span>Print</span>
-                      </vs-button>
-                    </vs-col>
-                  </template>
-                  <template v-else-if="approveCancelPrintRequestAction == true">
-                    <vs-col w="4">
-                      <vs-button
-                        block
-                        :disabled="item.hasOwnProperty('isDisabledApprove') && item.isDisabledApprove == true"
-                        :danger="item.hasOwnProperty('isDangerApprove') && item.isDangerApprove == true"
-                        size="small"
-                        flat
-                        :active="true"
-                        @click="actionApprove(item)"
-                      >
-                        <span>{{ item.hasOwnProperty('isApproveLabel') && item.isApproveLabel }}</span>
-                      </vs-button>
-                    </vs-col>
-                    <vs-col w="4">
-                      <vs-button
-                        block
-                        size="small"
-                        flat
-                        :active="true"
-                        @click="actionPrint(item)"
-                      >
-                        <span>Print</span>
-                      </vs-button>
-                    </vs-col>
-                    <vs-col w="4">
-                      <vs-button
-                        block
-                        :disabled="item.hasOwnProperty('isDisabledCancel') && item.isDisabledCancel == true"
-                        size="small"
-                        flat
-                        :active="true"
-                        @click="actionCancel(item)"
-                      >
-                        <span>Cancel</span>
-                      </vs-button>
-                    </vs-col>
                   </template>
                   <template v-else>
                     <vs-col
