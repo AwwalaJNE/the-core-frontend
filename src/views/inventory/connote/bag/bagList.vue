@@ -233,6 +233,15 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
+                    if(res.data.data.length == 0) {
+                        if (query != "") {
+                            this.loading = false;
+                            this.dataTable = [];
+                            return;
+                        }
+                    }
+
+                    // console.log('PRINTED');
                     res.data.data.forEach(el => {
                         el.surat_muatan = []
                         el.surat_jalan = []
@@ -259,11 +268,7 @@ export default {
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
-                    if(res.data.data.length == 0) {
-                        if (query != "") {
-                            this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag data', ' data is empty or not found, please check your keyword in the input search')
-                        }
-                    }
+                    
                     
                     this.loading = false
                 }).catch(err => {
@@ -279,10 +284,10 @@ export default {
             let routeData = this.$router.resolve({ 
                 name: 'printGeneral', 
                 params: { 
-                    'id': val.bag_number, 
+                    'id': val.bag_number.replace(/\//g, "~"), 
                     'type': 'bag',
                     'node_id': this.listenNodeId
-                } 
+                }
             });
         window.open(routeData.href, '_blank');
         },
