@@ -180,6 +180,11 @@ export default {
                     key: "is_confirmed",
                     width: "auto"
                 },
+                {
+                    label: "Delivery Status Code",
+                    key: "delivery_status_code",
+                    width: "auto"
+                }
             ],
             loading: false,
             dataItem: {},
