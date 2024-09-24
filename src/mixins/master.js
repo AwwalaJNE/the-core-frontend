@@ -74,6 +74,8 @@ const Master = {
             this.Loading.close()
         },
         openNotification(type = null, code, title, msg) {
+            this.playNotificationSound(type);
+
             // type success, danger, warn
             const noti = this.$vs.notification({
                 duration: 6000,
@@ -92,6 +94,26 @@ const Master = {
                     </div>
                 `
             });
+        },
+
+        playNotificationSound(type) {
+            let soundPath;
+            switch (type) {
+                case "success":
+                    soundPath = require('@/assets/sound/success.mp3');
+                    break;
+                case "danger":
+                    soundPath = require('@/assets/sound/failed.mp3');
+                    break;
+                case "warn":
+                    soundPath = require('@/assets/sound/warn.mp3');
+                    break;
+                default:
+                    soundPath = require('@/assets/sound/default.mp3');
+            }
+
+            const sound = new Audio(soundPath);
+            sound.play();
         },
              
         openProgress(type = null, title,msg) {
