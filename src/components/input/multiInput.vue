@@ -13,6 +13,7 @@
                     multiple
                     filterable
                     v-model="value"
+                    v-uppercase
                     :allow-create="listenAllowCreate"
                     :placeholder="placeholder"
                     :disabled="listenIsDisabled"

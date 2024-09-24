@@ -49,6 +49,7 @@
                 v-on:keyup.enter="updateValue"
                 :autofocus="true"
                 icon-after
+                v-uppercase
                 ref="formInputItemManifest"
                 @click-icon="handleIconClick"
                 :disabled="isDisabled"

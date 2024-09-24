@@ -77,6 +77,7 @@
                 v-on:keyup.enter="updateItemOnBagOrion" 
                 icon-after 
                 :autofocus="true" 
+                v-uppercase
                 ref="formInputBaggingConnote"
                 @click-icon="$refs.cameraScanner.open('formInputBaggingConnote')"
                 v-bind:data-kt="'scan_input'"
@@ -96,6 +97,7 @@
                 v-on:keyup.enter="updateItemOnBag" 
                 icon-after 
                 :autofocus="true" 
+                v-uppercase
                 ref="formInputBaggingKoli"
                 @click-icon="$refs.cameraScanner.open('formInputBaggingKoli')"
                 v-bind:data-kt="'scan_input'"
@@ -114,6 +116,7 @@
                 v-on:keyup.enter="updateItemOnBag" 
                 icon-after 
                 :autofocus="true" 
+                v-uppercase
                 ref="formInputBaggingBag"
                 @click-icon="$refs.cameraScanner.open('formInputBaggingBag')"
                 v-bind:data-kt="'scan_input'"

@@ -183,6 +183,7 @@
                             ref="formInputBagging"
                             icon-after
                             v-on:keyup.enter="updateValueOrion"
+                            v-uppercase
                             @click-icon="$refs.cameraScanner.open('formInputBagging')"
                             v-bind:data-kt="'scan_input'"
                             >
@@ -200,6 +201,7 @@
                             :autofocus="true"
                             ref="formInputBagging"
                             icon-after
+                            v-uppercase
                             @click-icon="$refs.cameraScanner.open('formInputBagging')"
                             v-bind:data-kt="'scan_input'"
                             >
