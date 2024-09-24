@@ -11,6 +11,7 @@
           v-model="scan_bag"
           v-on:keyup.enter="scanBag"
           :autofocus="true"
+          v-uppercase
           placeholder="Input / scan item number"
         />
       </vs-col>

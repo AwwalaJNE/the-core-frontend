@@ -54,6 +54,7 @@
                         label-placeholder="Scan Koli here"
                         autofocus
                         icon-after
+                        v-uppercase
                         @keyup.enter="updateValue"
                         @click-icon="$refs.cameraScanner.open('formInputConnote')"
                     >
@@ -71,6 +72,7 @@
                         label-placeholder="Scan Connote here (orion)"
                         autofocus
                         icon-after
+                        v-uppercase
                         @keyup.enter="updateValueOrion"
                         @click-icon="$refs.cameraScanner.open('formInputConnoteOrion')"
                     >
@@ -91,6 +93,7 @@
                         label-placeholder="Remove Koli here"
                         autofocus
                         icon-after
+                        v-uppercase
                         @keyup.enter="removeValue"
                         @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
                     >
@@ -108,6 +111,7 @@
                         label-placeholder="Remove Connote here (orion)"
                         autofocus
                         icon-after
+                        v-uppercase
                         @keyup.enter="removeValueOrion"
                         @click-icon="$refs.cameraScanner.open('formRemoveConnoteOrion')"
                     >

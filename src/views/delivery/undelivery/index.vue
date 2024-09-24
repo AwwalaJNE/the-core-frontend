@@ -38,6 +38,7 @@
                                                 v-on:keyup.enter="updateValue" 
                                                 autofocus 
                                                 icon-after 
+                                                v-uppercase
                                                 ref="formInputInbound"
                                             >
                                                 <template #icon>
