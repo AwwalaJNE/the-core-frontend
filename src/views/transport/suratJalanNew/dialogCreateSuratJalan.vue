@@ -59,7 +59,7 @@
                                     name="Scan Surat Muatan / Masterbag / Bag"
                                     rules=""
                                     formKey="scanBag"
-                                    :valueData="suratJalan"
+                                    :valueData="item_number"
                                     :typeInput="`text|${isDestinationDisable}`"
                                     :disabled="isDisabled"
                                     @click-icon="handleIconClick"
@@ -193,7 +193,7 @@ export default {
                     attribute: "",
                 },
             ],
-            suratJalan: "",
+            item_number: "",
             vehicle_max_weight: 0,
             vehicle_type_id: "",
             lot_weight: 0,
@@ -218,6 +218,7 @@ export default {
             isDisabled: false,
             is_approve: 0,
             item_remove: "",
+            total_weight: 0
         };
     },
     computed: {
@@ -240,6 +241,7 @@ export default {
     watch: {
         dataItem: function(val) {
             if (val !== undefined) {
+                console.log("PP", val)
                 this.manifest_do_number = val.manifest_do_number;
 
                 this.dataTable = val.detail;
@@ -270,6 +272,7 @@ export default {
                     item.received_status = item.received_at ? 1 : 0
                 });
 
+                this.total_weight = val.total_weight;
                 this.editData = val;
                 this.no_moda_angkutan_id = val["no_moda_angkutan_id"]
                     ? val["no_moda_angkutan_id"]
@@ -318,17 +321,12 @@ export default {
             }
         },
         formData(form) {
-            let weight = 0;
-            this.dataTable.map((item) => {
-                if (item.total_weight) {
-                    weight += item.total_weight;
-                }
-            });
+            console.log("PP", this.total_weight)
 
             if (this.editData.max_weight > 0 && this.vehicle_max_weight < 1) {
                 this.vehicle_max_weight = this.editData.max_weight;
             }
-            if (this.vehicle_max_weight >= weight) {
+            if (this.vehicle_max_weight >= this.total_weight) {
                 let obj = {};
                 obj["node_id_origin"] = this.listenNodeId;
                 obj["node_id_destination"] = form.destination_id;
@@ -340,40 +338,28 @@ export default {
                 obj["vehicle_type_id"] = this.vehicle_type_id;
                 obj["max_weight"] = this.vehicle_max_weight;
                 obj["manifest_lov"] = this.manifest_lov;
-                obj["item_no"] = this.suratJalan;
+                obj["item_no"] = this.item_number;
                 obj["is_penerusan"] = this.is_penerusan;
 
                 this.form = obj;
 
                 if (this.form.eta > this.form.etd) {
-                    if (
-                        this.manifest_do_number !== undefined &&
-                        this.manifest_do_number !== ""
-                    ) {
-                        if (
-                            this.vehicle_type_id === "" ||
-                            this.vehicle_type_id === undefined ||
-                            this.vehicle_type_id === null
-                        ) {
-                            this.form.vehicle_type_id = this.dataItem.vehicle_type_id
-                                ? parseInt(this.dataItem.vehicle_type_id)
-                                : this.dataItem.vehicle_type_id;
+                    if (this.manifest_do_number) {
+                        if (!this.vehicle_type_id) {
+                            this.form.vehicle_type_id = this.dataItem.vehicle_type_id  ? parseInt(this.dataItem.vehicle_type_id) : this.dataItem.vehicle_type_id;
                         }
-                        this.updateSuratJalan();
+
+                        // this.updateSuratJalan();
                         this.addSuratJalanDetail();
-                    } else {
-                        // this.addData();
+                    }
+                    else {
                         this.createSuratJalan();
                     }
                 } else {
-                    this.openNotification(
-                        "warning",
-                        "Wrong Input in ETA/ETD field",
-                        "ETA must more than ETD"
-                    );
+                    this.openNotification("warning", null, "Wrong Input in ETA/ETD field", "ETA must more than ETD");
                 }
             } else {
-                this.openNotification("warn", "Melebihi berat", "Berat muatan melebihi batas berat kendaraan");
+                this.openNotification("warning", null, "Melebihi berat", "Berat muatan melebihi batas berat kendaraan");
             }
         },
         onChangeCustom(type, val, obj) {
@@ -430,7 +416,7 @@ export default {
         updateValue(key, val) {
             switch (key) {
                 case "scanBag":
-                    this.suratJalan = val;
+                    this.item_number = val;
                     break;
                 default:
             }
@@ -495,6 +481,7 @@ export default {
 
                 if (res.data.data) {
                     this.manifest_do_number = res.data.data.manifest_do_number;
+                    this.total_weight = res.data.data.total_weight;
                     await this.getSuratJalanDetail();
                 }
 
@@ -503,17 +490,18 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
-                this.suratJalan = "";
+                this.item_number = "";
                 this.loading = false;
             }
         },
         async addSuratJalanDetail() {
             this.loading = true;
             try {
-                const res = await axios.post(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());
+                const res = await axios.post(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`, {item_number: this.item_number}, this.Helper.header());
 
                 if (res.data.data) {
                     this.manifest_do_number = res.data.data.manifest_do_number;
+                    this.total_weight = res.data.data.total_weight;
                     await this.getSuratJalanDetail();
                 }
                 
@@ -521,7 +509,7 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
-                this.suratJalan = "";
+                this.item_number = "";
                 this.loading = false;
             }
         },
@@ -567,67 +555,6 @@ export default {
             } finally {
                 this.loading = false;
             }
-        },
-        async addData() {
-            this.loading = true;
-            await axios
-                .post(
-                    this.URL.manifest_delivery_order + `?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form),
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    this.closeDialog();
-                    this.loading = false;
-                    this.$emit("refresh");
-                    this.handleClearForm();
-                    this.dataTable = [];
-                    this.openNotification(null, "Success", "Create surat jalan success");
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    this.closeDialog();
-                    this.$emit("refresh");
-                    // this.dataTable = [];
-                    // this.handleClearForm();
-                    this.openNotification(
-                        "danger",
-                        err.response ? err.response.data.code : '',
-                        "Create surat jalan failed",
-                        err.response ? err.response.data.message : "something went wrong"
-                    );
-                });
-        },
-        async updateData() {
-            this.loading = true;
-            await axios
-                .put(
-                    this.URL.manifest_delivery_order +
-                        `/${this.manifest_do_number}?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form),
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    this.closeDialog();
-                    this.loading = false;
-                    this.$emit("refresh");
-                    this.handleClearForm();
-                    this.dataTable = [];
-                    this.openNotification(null, "Success", "Update surat jalan success");
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    this.closeDialog();
-                    this.$emit("refresh");
-                    // this.dataTable = [];
-                    // this.handleClearForm();
-                    this.openNotification(
-                        "danger",
-                        err.response ? err.response.data.code : '',
-                        "Create surat jalan failed",
-                        err.response ? err.response.data.message : "something went wrong"
-                    );
-                });
         },
         cancelEdit() {
             this.loading = false;
@@ -745,52 +672,6 @@ export default {
                     // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 });
         },
-        async getDataSuratJalan() {
-            let manifest_do_number = "";
-            let destination_id = "";
-            if (this.editData && this.editData.hasOwnProperty("manifest_do_number")) {
-                manifest_do_number = this.editData.manifest_do_number;
-            }
-            if (this.editData && this.editData.hasOwnProperty("destination_id")) {
-                destination_id = parseInt(this.editData.destination_id);
-            }
-            if (!destination_id) {
-                destination_id = this.destinationUnlock;
-            }
-            await axios
-                .get(
-                    this.URL.manifest_do +
-                        `/scan?n=${this.listenNodeId}&item_no=${this.suratJalan}&manifest_do_number=${manifest_do_number}&manifest_destination=${destination_id}&manifest_lov=${this.manifest_lov}`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.data) {
-                        let data = res.data.data;
-
-                        let obj = {};
-                        obj["item_number"] = data.item_number;
-                        obj["total_weight"] = data.total_weight;
-                        obj["destination"] = data.destination ? data.destination : "";
-                        obj["node_id_receiver"] = data.node_id_receiver;
-                        obj["total_koli"] = data.total_koli;
-                        obj["item_type"] = data.item_type;
-                        obj["total_connote"] = data.total_connote;
-                        obj["total_bag"] = data.total_bag;
-
-                        this.validateTempItemSJ(obj);
-
-                        this.suratJalan = "";
-                    }
-                })
-                .catch((err) => {
-                    if (err) {
-                        let message = err.response.data
-                            ? err.response.data.message
-                            : "failed Load Data";
-                        this.openNotification("warn", null, "Failed Get Data", message);
-                    }
-                });
-        },
         async getDriver() {
             await axios
                 .get(
@@ -821,34 +702,16 @@ export default {
                     // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 });
         },
-        validateTempItemSJ(itemSJ) {
-            if (Object.keys(this.dataTable).length === 0) {
-                this.dataTable.push(itemSJ);
-            } else {
-                let itemNumberExists = this.dataTable.some(
-                    (item) => item.item_number === itemSJ.item_number
-                );
-                if (itemNumberExists) {
-                    this.openNotification(
-                        "warn",
-                        "Information",
-                        "item " + itemSJ.item_number + " already exists"
-                    );
-                } else {
-                    this.dataTable.push(itemSJ);
-                }
-            }
-        },
         handleIconClick() {
             if (!this.isDisabled) {
-                this.$refs.cameraScanner.open('suratJalan');
+                this.$refs.cameraScanner.open('item_number');
             }
         },
         onCameraScannerGetData(data) {
             if (!this.isDisabled) {
                 if (data && data.event === "result") {
-                    if (data.namespace === "suratJalan") {
-                        this.suratJalan = data.data.text;
+                    if (data.namespace === "item_number") {
+                        this.item_number = data.data.text;
                     }
                 }
             }
