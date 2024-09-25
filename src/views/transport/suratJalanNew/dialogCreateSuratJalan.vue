@@ -3,7 +3,7 @@
         width="xl"
         :actived="listenActive"
         :loading="listenLoading"
-        :closeDialog="btnBlue === 'Approve' ? cancelAdd : cancelEdit"
+        :closeDialog="cancel"
     >
         <template v-slot:header>
             <div class="button-helper">
@@ -43,12 +43,6 @@
                     @formData="formData"
                     @onChangeCustom="onChangeCustom"
                 />
-
-                <div v-if="btnBlue == 'Approve'" class="container-clear-item">
-                    <div v-if="!isDisabled && dataTable.length !== 0" class="clear-item" @click="handleClearAll">
-                        Clear Form
-                    </div>
-                </div>
 
                 <div class="mt-2 mb-2">
                     <vs-row align="center">
@@ -291,35 +285,11 @@ export default {
                 this.getNoModeAngkutan();
                 this.getLov();
                 this.getDriver();
-                this.setEmptyDataTable();
                 this.isDestinationDisableCheck();
             }
         },
     },
     methods: {
-        setEmptyDataTable() {
-            let initial_data = this.$store.getters.getInputs.surat_jalan;
-            if (
-                !initial_data['destination_id'].value && 
-                !initial_data['driver_id'].value && 
-                !initial_data['eta'].value && 
-                !initial_data['etd'].value && 
-                !initial_data['no_moda_angkutan_id'].value &&
-                !initial_data['manifest_lov'].value && Object.keys(this.editData).length === 0
-            ) {
-                this.dataTable= [];
-                this.manifest_lov = ""
-                this.destinationUnlock = ""
-            }
-            else {
-                this.manifest_lov = initial_data['manifest_lov'].value ? initial_data['manifest_lov'].value : initial_data['manifest_lov']
-                this.destinationUnlock = initial_data['destination_id']
-                let vehicle = initial_data['no_moda_angkutan_id'].arrData.find(el => el.value === initial_data['no_moda_angkutan_id'].value)
-                if (vehicle !== null) {
-                    this.vehicle_max_weight = vehicle?.item?.vehicle_max_weight    
-                }
-            }
-        },
         formData(form) {
             let weight = 0;
             this.dataTable.map((item) => {
@@ -561,20 +531,11 @@ export default {
                 this.loading = false;
             }
         },
-        cancelEdit() {
+        cancel() {
             this.loading = false;
             this.handleClearForm();
             this.dataTable = [];
             this.closeDialog();
-        },
-        cancelAdd() {
-            this.loading = false;
-            this.closeDialog();
-        },
-        handleClearAll() {
-            this.$refs.formSuratJalan.handleEmptyForm();
-            this.form = {};
-            this.dataTable = [];
         },
         async getDestination() {
             await axios
