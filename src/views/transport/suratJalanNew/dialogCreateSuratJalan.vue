@@ -321,12 +321,17 @@ export default {
             }
         },
         formData(form) {
-            console.log("PP", this.total_weight)
+            let weight = 0;
+            this.dataTable.map((item) => {
+                if (item.total_weight) {
+                    weight += item.total_weight;
+                }
+            });
 
             if (this.editData.max_weight > 0 && this.vehicle_max_weight < 1) {
                 this.vehicle_max_weight = this.editData.max_weight;
             }
-            if (this.vehicle_max_weight >= this.total_weight) {
+            if (this.vehicle_max_weight >= weight) {
                 let obj = {};
                 obj["node_id_origin"] = this.listenNodeId;
                 obj["node_id_destination"] = form.destination_id;
@@ -505,7 +510,7 @@ export default {
                     await this.getSuratJalanDetail();
                 }
                 
-                this.openNotification(null, "Success", "Create surat jalan success");
+                this.openNotification("success", null, "Success", "Add item success");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
