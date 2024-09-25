@@ -217,7 +217,6 @@ export default {
             is_penerusan: true,
             isDisabled: false,
             is_approve: 0,
-            item_number: "",
             item_remove: "",
         };
     },
@@ -341,7 +340,7 @@ export default {
                 obj["vehicle_type_id"] = this.vehicle_type_id;
                 obj["max_weight"] = this.vehicle_max_weight;
                 obj["manifest_lov"] = this.manifest_lov;
-                obj["item_no"] = this.item_number;
+                obj["item_no"] = this.suratJalan;
                 obj["is_penerusan"] = this.is_penerusan;
 
                 this.form = obj;
@@ -431,7 +430,7 @@ export default {
         updateValue(key, val) {
             switch (key) {
                 case "scanBag":
-                    this.item_number = val;
+                    this.suratJalan = val;
                     break;
                 default:
             }
@@ -493,7 +492,6 @@ export default {
             this.loading = true;
             try {
                 const res = await axios.post(`${this.URL.revamp_surat_jalan}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
-                this.item_number = "";
 
                 if (res.data.data) {
                     this.manifest_do_number = res.data.data.manifest_do_number;
@@ -505,6 +503,7 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
+                this.suratJalan = "";
                 this.loading = false;
             }
         },
@@ -513,10 +512,6 @@ export default {
             try {
                 const res = await axios.post(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());
 
-                this.loading = false;
-                this.item_number = "";
-
-                // this.$emit("refresh");
                 if (res.data.data) {
                     this.manifest_do_number = res.data.data.manifest_do_number;
                     await this.getSuratJalanDetail();
@@ -524,10 +519,10 @@ export default {
                 
                 this.openNotification(null, "Success", "Create surat jalan success");
             } catch (err) {
-                this.loading = false;
-                // this.closeDialog();
-                // this.$emit("refresh");
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.suratJalan = "";
+                this.loading = false;
             }
         },
         async getSuratJalanDetail() {
