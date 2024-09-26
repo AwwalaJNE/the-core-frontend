@@ -41,12 +41,12 @@ export default {
                 {
                     label: "HRS ID",
                     key: "handover_runsheet_id",
-                    width: "xs"
+                    width: "sm"
                 },
                 {
                     label: "HRS Number",
                     key: "handover_number",
-                    width: "sm"
+                    width: "xs"
                 },
                 {
                     label: "Orion Number",
@@ -61,7 +61,7 @@ export default {
                 {
                     label: "Node Name",
                     key: "node_name",
-                    width: "xs"
+                    width: "md"
                 },
                 {
                     label: "Created By",
@@ -123,7 +123,7 @@ export default {
                 const arr = res.data.data.map(item => {
                     item["node_name"] = item?.node?.node_name ?? "";
                     item["courier_employee_name"] = item?.employee?.employee_name ?? "";
-                    
+
                     const children = {
                         'Runsheet #': [],
                         'DRI Number': [],
