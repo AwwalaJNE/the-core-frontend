@@ -646,6 +646,7 @@ export default {
     handleClearForm(){
       this.form = {}
       this.item_code=''
+      this.item_code_orion = "";
     },
     updateFilter(key, value) {
 
