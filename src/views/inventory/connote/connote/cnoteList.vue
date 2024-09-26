@@ -210,7 +210,8 @@ export default {
                             'Wood Package': 'xxxs',
                             'Receiving Date': 'md',
                             'Status Irregularity': 'md',
-                            'Status': 'xxs'
+                            'Status': 'xxs',
+                            'Delivery Status Code': 'xxs'
                         }
                         let koli_number = []
                         let bag = []
@@ -218,6 +219,7 @@ export default {
                         let received_at = []
                         let irregularity = []
                         let is_confirmed = []
+                        let delivery_status_code = []
                         let children = {}
                         item.koli.map(k => {
                             koli_number.push(k.koli_number)
@@ -226,6 +228,7 @@ export default {
                             received_at.push(k.received_at ?? " ")
                             irregularity.push(k.irregularity?.irregularity_status_description ?? " ")
                             is_confirmed.push(k.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed')
+                            delivery_status_code.push(k.delivery_status_code ?? "-")
                         })
                         children['Koli Number'] = koli_number
                         children['Bag'] = bag
@@ -233,6 +236,7 @@ export default {
                         children['Receiving Date'] = received_at
                         children['Status Irregularity'] = irregularity
                         children['Status'] = is_confirmed
+                        children['Delivery Status Code'] = delivery_status_code
                         item['children'] = children
                     })
                     this.dataTable = arr
