@@ -194,7 +194,7 @@ export default {
                 }).catch(err => {
                     this.loading = false
                     this.refresh()
-                    // this.handleClearForm();
+                    this.handleClearForm();
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Receiving is failed', err)
                 })
         },
