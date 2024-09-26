@@ -210,8 +210,8 @@ export default {
                             'Wood Package': 'xxxs',
                             'Receiving Date': 'md',
                             'Status Irregularity': 'md',
-                            'Status': 'xxs',
-                            'Delivery Status Code': 'xxs'
+                            'Delivery Status Code': 'xxs',
+                            'Status': 'xxs'
                         }
                         let koli_number = []
                         let bag = []
