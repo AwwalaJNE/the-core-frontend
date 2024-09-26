@@ -127,6 +127,9 @@ import DeliveryCod from "@/views/delivery/cod"
 // === Handover Runsheet ===
 import HandoverRunsheet from "@/views/delivery/hrs"
 
+// === Handover Runsheet History ===
+import HandoverRunsheetHistory from "@/views/delivery/hrsHistory"
+
 // === Delivery Undelivery ===
 import DeliveryUndelivery from "@/views/delivery/undelivery"
 
@@ -722,6 +725,15 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "HRS"
+        }
+      },
+      {
+        path: "/hrs-history",
+        name: "handover-runsheet-history",
+        component: HandoverRunsheetHistory,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "HRS History"
         }
       },
       {
