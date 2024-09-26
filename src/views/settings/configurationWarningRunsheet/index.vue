@@ -33,7 +33,8 @@
                             <template v-if="navActive === 'configuration-warning-runsheet'">
                                 <vs-row>
                                     <vs-col vs-align="center" w="6">
-                                        <select-search-by 
+                                        <select-search-by
+                                            :key="'searchByWarningRunsheet'"
                                             :isMultiple="false" 
                                             :border="true" 
                                             :valueData="searchConfigurationWarningRunsheetParams" 
@@ -43,9 +44,33 @@
                                     </vs-col>
                                     <vs-col vs-align="center" w="6">
                                         <search-input 
+                                            :key="'searchInputWarningRunsheet'"
                                             ref="searchInput" 
                                             @searchValue="searchValue" 
                                             :placeholder="searchConfigurationWarningRunsheetPlaceholder" 
+                                            class="search-input"
+                                        />
+                                    </vs-col>
+                                </vs-row>
+                            </template>
+                            <template v-if="navActive === 'configuration-warning-sla'">
+                                <vs-row>
+                                    <vs-col vs-align="center" w="6">
+                                        <select-search-by
+                                            :key="'searchByWarningSLA'"
+                                            :isMultiple="false" 
+                                            :border="true" 
+                                            :valueData="searchConfigurationWarningSLAParams" 
+                                            :selectedValue="searchConfigurationWarningSLABy" 
+                                            @updateSearchBy="updateSearchBy" 
+                                        />
+                                    </vs-col>
+                                    <vs-col vs-align="center" w="6">
+                                        <search-input 
+                                            :key="'searchInputWarningSLA'"
+                                            ref="searchInput" 
+                                            @searchValue="searchValue" 
+                                            :placeholder="searchConfigurationWarningSLAPlaceholder" 
                                             class="search-input"
                                         />
                                     </vs-col>
@@ -63,6 +88,15 @@
                         />
                     </transition>
                 </template>
+                <template v-if="navActive === 'configuration-warning-sla'">
+                    <transition name="slide-fade">
+                        <configuration-warning-sla 
+                            :ref="navActive" 
+                            :query="tempSearch" 
+                            :searchBy="searchConfigurationWarningSLABy"
+                        />
+                    </transition>
+                </template>
             </div>
         </section>
         <dialog-create-edit-configuration-warning-runsheet
@@ -70,6 +104,12 @@
             @refresh="refresh"
             :closeDialog="closeDialog"
             title="Create Configuration Warning Runsheet"
+        />
+        <dialog-create-edit-configuration-warning-sla
+            :active="dialogConfigurationWarningSLA" 
+            @refresh="refresh"
+            :closeDialog="closeDialog"
+            title="Create Configuration Warning SLA"
         />
     </div>
 </template>
@@ -81,6 +121,8 @@ import SelectSearchBy from "@/views/inventory/connote/item/selectSearchBy"
 
 import ConfigurationWarningRunsheet from "@/views/settings/configurationWarningRunsheet/warningRunsheet/index"
 import DialogCreateEditConfigurationWarningRunsheet from "@/views/settings/configurationWarningRunsheet/warningRunsheet/dialogCreateEditConfigurationWarningRunsheet"
+import ConfigurationWarningSLA from "@/views/settings/configurationWarningRunsheet/warningSLA/index"
+import DialogCreateEditConfigurationWarningSLA from "@/views/settings/configurationWarningRunsheet/warningSLA/dialogCreateEditConfigurationWarningSLA"
 
 export default {
     name:"sla-index",
@@ -90,6 +132,8 @@ export default {
         "search-input": SearchInput,
         "configuration-warning-runsheet": ConfigurationWarningRunsheet,
         "dialog-create-edit-configuration-warning-runsheet": DialogCreateEditConfigurationWarningRunsheet,
+        "configuration-warning-sla": ConfigurationWarningSLA,
+        "dialog-create-edit-configuration-warning-sla": DialogCreateEditConfigurationWarningSLA,
         "select-search-by": SelectSearchBy,
     },
     data() {
@@ -100,11 +144,15 @@ export default {
                     key: "configuration-warning-runsheet",
                     title: "CONFIGURATION WARNING RUNSHEET"
                 },
+                {
+                    label: "WARNING SLA",
+                    key: "configuration-warning-sla",
+                    title: "CONFIGURATION WARNING SLA"
+                },
             ],
             title:"CONFIGURATION WARNING RUNSHEET",
             navActive: "configuration-warning-runsheet",
             tempSearch: "",
-            dialogNode: false,
             dialogConfigurationWarningRunsheet: false,
             searchConfigurationWarningRunsheetPlaceholder: "Search Percentage",
             searchConfigurationWarningRunsheetBy: "percentage",
@@ -120,6 +168,19 @@ export default {
                 {
                     label: "Configure By",
                     value: "reference"
+                },
+                {
+                    label: "Applied For",
+                    value: "node"
+                },
+            ],
+            dialogConfigurationWarningSLA: false,
+            searchConfigurationWarningSLAPlaceholder: "Search Formula Type",
+            searchConfigurationWarningSLABy: "formula_type",
+            searchConfigurationWarningSLAParams: [
+                {
+                    label: "Formula Type",
+                    value: "formula_type"
                 },
                 {
                     label: "Applied For",
@@ -153,6 +214,9 @@ export default {
                 case "configuration-warning-runsheet":
                     this.dialogConfigurationWarningRunsheet = true
                     break;
+                case "configuration-warning-sla":
+                    this.dialogConfigurationWarningSLA = true
+                    break;
                 default:
             }
             this.refreshInject = this.navActive
@@ -162,6 +226,9 @@ export default {
                 case "configuration-warning-runsheet":
                     this.dialogConfigurationWarningRunsheet = false
                     break;
+                case "configuration-warning-sla":
+                    this.dialogConfigurationWarningSLA = false
+                    break;
                 default:
             }
         },
@@ -170,6 +237,11 @@ export default {
                 case "configuration-warning-runsheet":
                     this.searchConfigurationWarningRunsheetBy = val;
                     this.searchConfigurationWarningRunsheetPlaceholder = key;
+                    this.clearSearch()
+                    break;
+                case "configuration-warning-sla":
+                    this.searchConfigurationWarningSLABy = val;
+                    this.searchConfigurationWarningSLAPlaceholder = key;
                     this.clearSearch()
                     break;
                 default:

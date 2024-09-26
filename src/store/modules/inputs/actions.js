@@ -3203,4 +3203,46 @@ export default {
     commit('SET_CONFIGURATION_WARNING_RUNSHEET_NODE_ID_ArrData', payload)
   },
   //====== END CONFIGURATION WARNING RUNSHEET ======//
+
+
+
+  //====== CONFIGURATION WARNING SLA ======//  
+
+  SET_CONFIGURATION_WARNING_SLA_SETTING_ID({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_SETTING_ID', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_SETTING_ID_visible({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_SETTING_ID_visible', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_SETTING_ID_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_SETTING_ID_ValueData', payload)
+  },
+  
+  SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE_ValueData', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE_ArrData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE_ArrData', payload)
+  },
+
+  SET_CONFIGURATION_WARNING_SLA_VALUE({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_VALUE', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_VALUE_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_VALUE_ValueData', payload)
+  },
+
+  SET_CONFIGURATION_WARNING_SLA_NODE_ID({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_NODE_ID', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_NODE_ID_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_NODE_ID_ValueData', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_NODE_ID_ArrData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_NODE_ID_ArrData', payload)
+  },
+  //====== END CONFIGURATION WARNING SLA ======//
 }

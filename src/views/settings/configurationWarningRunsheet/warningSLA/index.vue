@@ -15,18 +15,18 @@
             @actionPagination="actionPagination"
         />
 
-        <dialog-create-edit-configuration-warning-runsheet
-            title="Edit Configuration Warning Runsheet"
+        <dialog-create-edit-configuration-warning-sla
+            title="Edit Configuration Warning SLA"
             btnBlue="Edit"
-            :active="dialogConfigurationWarningRunsheet" 
+            :active="dialogConfigurationWarningSLA" 
             :closeDialog="closeDialog"
             :dataItem="dataItem"
             @refresh="refresh"
         />
 
         <dialog-confirm
-            title="Remove Configuration Warning Runsheet"
-            :message="`Are you sure you want to remove this configuration warning runsheet with id ${this.id}?`"
+            title="Remove Configuration Warning SLA"
+            :message="`Are you sure you want to remove this configuration warning SLA with id ${this.id}?`"
             :active="activeDialogConfirmRemove"
             :loading="loadingConfirmRemove"
             :closeDialog="closeDialogConfirmRemove"
@@ -40,13 +40,9 @@ import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
-import DialogCreateEditConfigurationWarningRunsheet from "@/views/settings/configurationWarningRunsheet/warningRunsheet/dialogCreateEditConfigurationWarningRunsheet"
-import SearchInput from "@/components/search/searchInput"
-import Inputan from "@/components/input/inputan"
-import DateTime from "@/components/input/dateTime"
-import moment from "moment"
+import DialogCreateEditConfigurationWarningSLA from "@/views/settings/configurationWarningRunsheet/warningSLA/dialogCreateEditConfigurationWarningSLA"
 export default {
-    name:"configuration-warning-runsheet-list",
+    name:"configuration-warning-sla-list",
     mixins: [master],
     props: {
         query: String,
@@ -54,10 +50,7 @@ export default {
     },
     components: {
         "table-master" : TableMaster,
-        "dialog-create-edit-configuration-warning-runsheet": DialogCreateEditConfigurationWarningRunsheet,
-        "search-input": SearchInput,
-        "date-time": DateTime,
-        "inputan": Inputan,
+        "dialog-create-edit-configuration-warning-sla": DialogCreateEditConfigurationWarningSLA,
         "dialog-confirm": DialogConfirm,
     },
     data() {
@@ -70,18 +63,13 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Percentage",
-                    key: "percentage",
+                    label: "Formula Type",
+                    key: "formula_type",
                     width: "auto"
                 },
                 {
-                    label: "Minimum Connote",
-                    key: "minimum_count",
-                    width: "auto"
-                },
-                {
-                    label: "Configure By",
-                    key: "reference",
+                    label: "Value",
+                    key: "value",
                     width: "auto"
                 },
                 {
@@ -99,19 +87,17 @@ export default {
                 page: 1
             },
             id: '',
-            dialogConfigurationWarningRunsheet: false,
+            dialogConfigurationWarningSLA: false,
             activeDialogConfirmRemove: false,
             loadingConfirmRemove:false,
         }
-    },
-    computed: {
     },
     watch: {
         query: function(val, old) {
             if(val !== undefined) {
                 this.searchValue = val
                 if(this.searchValue !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.searchBy)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.searchBy)
                 }
             }
         },
@@ -119,35 +105,29 @@ export default {
             if(val !== undefined) {
                 this.searchBy = val
                 if(this.searchBy !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.startDate, this.endDate, val)
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, val)
                 }
             }
         },
     },
     methods: {
-        async getTableData(limit,page,q,from,to, searchBy) {
+        async getTableData(limit,page,q,searchBy) {
             this.loading = true
             let query = "";
-            let startDate = "";
-            let endDate = "";
             
             if (q !== undefined) {
                 this.searchValue = q
                 query = q
             }
-            if (from !== undefined && to !== undefined) {
-                startDate = from
-                endDate = to
-            }
             await axios
-                .get(this.URL.configuration_warning_runsheet + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}&s=${query}&search_by=${searchBy}`, 
+                .get(this.URL.configuration_warning_sla + 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${searchBy}`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
                         this.dataTable.length > 0 && this.dataTable.map((item) => {
-                            item["node_name"] = item.node.map((itm, index) => {
+                            item["node_name"] = item.nodes.map((itm, index) => {
                                 const { node_name } = itm || {};
                                 let newline = "\n";
 
@@ -162,9 +142,12 @@ export default {
                         this.pagination.page = res.data.meta.current_page;
                         this.pagination.limit = parseInt(res.data.meta.per_page);
                         this.pagination.page_size = res.data.meta.last_page ;
-                    } 
+                    }
+                    else {
+                        this.dataTable = res.data.data
+                    }
                 }).catch(err => {
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err.response.data.message)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Gagal mendapatkan data tabel', err?.response?.data?.message ?? "Gagal mendapatkan data tabel warning SLA")
                 })
             this.loading = false
         },
@@ -175,7 +158,7 @@ export default {
                 })
                 this.dataItem = obj[0]
                 this.$nextTick(() => {
-                    this.dialogConfigurationWarningRunsheet = true
+                    this.dialogConfigurationWarningSLA = true
                 });
             }
         },
@@ -189,18 +172,11 @@ export default {
             this.refresh()
         },
         refresh(){
-            let from = ''
-            let to = ''
-
-            if(this.dateRange != null && this.dateRange.length > 0) {
-                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
-                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
-            }
-            this.getTableData(this.pagination.limit,this.pagination.page,this.searchValue,from,to, this.searchBy)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.searchValue,this.searchBy)
         },
         closeDialog() {
-            this.$store.dispatch("SET_CONFIGURATION_WARNING_RUNSHEET_SETTING_ID_visible", false)
-            this.dialogConfigurationWarningRunsheet = false
+            this.$store.dispatch("SET_CONFIGURATION_WARNING_SLA_SETTING_ID_visible", false)
+            this.dialogConfigurationWarningSLA = false
             this.refresh()
         },
         actionRemove(val){
@@ -214,18 +190,18 @@ export default {
         async removeData(){
             await axios
                 .delete(
-                    this.URL.configuration_warning_runsheet + `/${this.id}?n=${this.listenNodeId}`,
+                    this.URL.configuration_warning_sla + `/${this.id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     this.closeDialogConfirmRemove()
                     this.loadingConfirmRemove = false
                     this.refresh()
-                    this.openNotification(null, 'Success', 'Delete Warning Configuration is success')
+                    this.openNotification("success", 'Success', res?.data?.message ?? 'Berhasil menghapus Konfigurasi Warning SLA')
                 }).catch(err => {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Delete Warning Configuration is failed', err.response.data.message)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Gagal', err?.response?.data?.message ?? "Gagal menghapus Konfigurasi Warning SLA")
                 })
         },
         closeDialogConfirmRemove(){

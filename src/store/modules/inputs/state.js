@@ -2041,6 +2041,47 @@ export default {
     },
   },
 
+  configuration_warning_sla: {
+    setting_id: {
+      label: "Configuration Warning SLA ID",
+      key: "setting_id",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      visible: false,
+      valueData: null,
+      value: '',
+    },
+    formula_type: {
+      label: "Formula Type*",
+      key: "formula_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    value: {
+      label: "Value*",
+      key: "value",
+      rule: "required|numeric|min_value:1",
+      typeInput: "text",
+      typeData: "text",
+      valueData: null,
+      value: '',
+    },
+    node_id: {
+      label: "Node Name*",
+      key: "node_id",
+      rule: "required",
+      typeInput: "multipleSelector",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ""
+    },
+  },
 
   tariff: {
     tariff_group: {

@@ -212,6 +212,7 @@ export default {
 
     // Configuration Warning Runsheet
     configuration_warning_runsheet : api + 'warning-koli-setting',
+    configuration_warning_sla : api + 'warning-runsheet-sla-setting',
 
     // Configuration Warning Runsheet
     warning_runsheet : api + 'warning-koli-record',
