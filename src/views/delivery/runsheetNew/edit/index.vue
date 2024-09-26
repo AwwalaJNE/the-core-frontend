@@ -274,12 +274,22 @@
                                 <p align="left">
                                     <b>Courier</b>
                                 </p>
-                                <template>
-                                    <p align="left">
-                                        {{ employee_code }}
-                                        ({{ employee_name }})
-                                    </p>
-                                </template>
+                                <vs-col xs="12" sm="4" lg="4">
+                                    <template>
+                                        <div>
+                                            <selector 
+                                                ref="courier"
+                                                formKey="courier"
+                                                :rules="''" 
+                                                :valueData="courier_arr"
+                                                :selectedValue="selectedCourier"
+                                                :isMultiple="false"
+                                                :disabled="disabledApprove"
+                                                @updateValue="updateValueCourier" 
+                                            />
+                                        </div>
+                                    </template>
+                                </vs-col>
                             </vs-col>
                             <vs-col xs="12" sm="7" lg="5">
                                 <vs-row justify="end">
@@ -406,21 +416,26 @@
             </vs-row>
         </section>
 
-        <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
-                <dialog-confirm-custom
-                    :active="dialogConfirmEmployee" 
-                    :closeDialog="closeDialogConfirmEmployee"
-                    @updateValue="updateValueBag"
-                />
-                <dialog-recheck-connote-zone
-                    title="Recheck Connote Zone"
-                    :active="openDialogReCheckConnoteZone"
-                    :closeDialog="closeActionPopup"
-                    :dataItem="dataItem"
-                    :listConnote="listConnote"
-                    :type="type"
-                    @addConnoteToRunsheet="addConnoteToRunsheet"
-                    @addBagPraRunsheetToRunsheet="addBagPraRunsheetToRunsheet"
+        <camera-scanner 
+            ref="cameraScanner" 
+            @data="onCameraScannerGetData" 
+        />
+
+        <dialog-confirm-custom
+            :active="dialogConfirmEmployee" 
+            :closeDialog="closeDialogConfirmEmployee"
+            @updateValue="updateValueBag"
+        />
+
+        <dialog-recheck-connote-zone
+            title="Recheck Connote Zone"
+            :active="openDialogReCheckConnoteZone"
+            :closeDialog="closeActionPopup"
+            :dataItem="dataItem"
+            :listConnote="listConnote"
+            :type="type"
+            @addConnoteToRunsheet="addConnoteToRunsheet"
+            @addBagPraRunsheetToRunsheet="addBagPraRunsheetToRunsheet"
         />
 
         <dialog-confirm
@@ -437,17 +452,19 @@
 <script>
 
 import axios from "axios";
-import moment from "moment";
 import master from "@/mixins/master";
-import NavItem from "@/components/navbar/navTab";
+import moment from "moment";
+
 import Breadcrumb from "@/components/breadcrumb/index";
 import CameraScanner from "@/components/scanner/camera";
+import NavItem from "@/components/navbar/navTab";
+import Selector from "@/components/input/select"
 
+import DialogConfirm from "@/components/dialog/dialogConfirm"
+import DialogConfirmCustom from "@/views/delivery/runsheetNew/edit/dialogConfirm";
+import DialogReCheckConnoteZone from "@/views/delivery/runsheetNew/edit/dialogReCheckConnoteZone";
 import RunsheetInformation from "@/views/delivery/runsheetNew/edit/runsheetInformation";
 import RunsheetInformationCancel from "@/views/delivery/runsheetNew/edit/runsheetInformationCancel";
-import DialogConfirmCustom from "@/views/delivery/runsheetNew/edit/dialogConfirm";
-import DialogConfirm from "@/components/dialog/dialogConfirm"
-import DialogReCheckConnoteZone from "@/views/delivery/runsheetNew/edit/dialogReCheckConnoteZone";
 
 export default {
     name: "DeliveryRunsheetEdit",
@@ -459,7 +476,8 @@ export default {
         CameraScanner,
         "dialog-confirm-custom": DialogConfirmCustom,
         "dialog-confirm": DialogConfirm,
-        "dialog-recheck-connote-zone": DialogReCheckConnoteZone
+        "dialog-recheck-connote-zone": DialogReCheckConnoteZone,
+        "selector": Selector
     },
     mixins: [master],
     data() {
@@ -516,6 +534,8 @@ export default {
             activeDialogConfirmUnpproveRunsheet: false,
             loadingConfirmUnpproveRunsheet:false,
             hrsStatus: false,
+            courier_arr: [],
+            selectedCourier: ""
         };
     },
     computed: {
@@ -526,6 +546,7 @@ export default {
     mounted() {
         this.getStatus();
         this.setFocus();
+        this.getDataCourier();
     },
     methods: {
         setFocus() {
@@ -548,6 +569,69 @@ export default {
         },
         openDialog() {
             this.dialogPickupRequest = true;
+        },
+        async getDataCourier() {
+            this.loading = true;
+
+            await axios
+                .get(this.URL.courier_delivery + `/list?n=${this.listenNodeId}`, this.Helper.header())
+                .then(res => { 
+                    if(res.data.data.length > 0) {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.employee_name + ' ( ' + item.employee_code + ' ) '
+                            obj["value"] = item.employee_id
+                            obj["item"] = item
+
+                            arr.push(obj)
+                        })
+
+                        if(arr.length == 0) {
+                            arr = [{'label': null, 'value': null}]
+                        }
+
+                        this.courier_arr = arr;
+                    } else {
+                        this.openNotification('warn', null, 'Delivery courier data is empty!', ' Please create a new courier delivery');
+                    }
+                }).catch(err => {
+                    this.openNotification('danger', err?.err?.response?.data?.code ?? '', 'Failed to populate delivery courier list', err?.response?.data?.message ?? 'something went wrong');
+                })
+
+            this.loading = false
+        },
+        updateValueCourier(key, val, info){
+            switch(key) {
+                case "courier":
+                    let obj = this.courier_arr.filter(item => item.value == val)[0]
+
+                    if(Object.keys(obj).length > 0) {
+                        if(obj.hasOwnProperty('item')) {
+                            this.selectedCourier = obj.item.employee_id || '';
+                            this.updateRunsheetCourier();
+                        }
+                    }
+                    break;
+            }
+        },
+        async updateRunsheetCourier() {
+            try {
+                const res = await axios.put(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}?n=${this.listenNodeId}`, {courier_employee_id: this.selectedCourier}, this.Helper.header());
+                this.openNotification('success', null, "Success", res?.data?.message ?? "Sukses mengganti kurir");
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.$router.push({ 
+                    name: 'delivery-runsheet-edit', 
+                    params: { 
+                        employee_id: this.selectedCourier,
+                        delivery_runsheet_number: this.delivery_runsheet_number,
+                        date_filter: this.tempDate
+                    } 
+                });
+
+            }
         },
         updateValueBag(val) {
             this.form.bag_number = this.item_bag;
@@ -614,6 +698,7 @@ export default {
                     this.employee_code = data.employee_name;
                     this.employee_name = data.employee_code;
                     this.loadingCourier = false;
+                    this.selectedCourier = data.employee_id;
                 })
                 .catch((err) => {
                     this.loadingCourier = true;
