@@ -247,7 +247,6 @@ export default {
                         }
                     }
 
-                    // console.log('PRINTED');
                     res.data.data.forEach(el => {
                         el.surat_muatan = []
                         el.surat_jalan = []
