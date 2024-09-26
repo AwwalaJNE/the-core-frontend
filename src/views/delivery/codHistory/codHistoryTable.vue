@@ -12,6 +12,7 @@
       :hasPagination="true"
       :expandable="true"
       :printAction="true"
+      :checkDepositMethod="true"
       @actionPrint="actionPrint"
       @actionLimit="actionLimit"
       @actionPagination="actionPagination"

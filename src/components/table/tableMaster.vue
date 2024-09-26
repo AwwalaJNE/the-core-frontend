@@ -785,17 +785,19 @@
                     </vs-col>
                   </template>
 
-                  <vs-col w="4">
-                    <vs-button
-                      block
-                      size="small"
-                      flat
-                      :active="true"
-                      @click="actionPrint(item)"
-                    >
-                      <span>Print</span>
-                    </vs-button>
-                  </vs-col>
+                  <template v-if="(checkDepositMethod === true && item.deposit_method === 'CDM') || checkDepositMethod === false">
+                    <vs-col w="4">
+                      <vs-button
+                        block
+                        size="small"
+                        flat
+                        :active="true"
+                        @click="actionPrint(item)"
+                      >
+                        <span>Print</span>
+                      </vs-button>
+                    </vs-col>
+                  </template>
                 </vs-row>
               </vs-td>
             </template>
@@ -1189,6 +1191,7 @@ export default {
 
     isKurirAccount: Boolean,
     isControlTowerAccount: Boolean,
+    checkDepositMethod: Boolean,
 
     allCheckCallback: {
       type: Function,
