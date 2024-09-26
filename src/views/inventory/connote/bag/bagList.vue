@@ -17,6 +17,7 @@
         :hasAction="false"
         :hasLinked="['bag_number']"
         :printAction="true"
+        :actionSize="'xxs'"
         :hasPagination="true"
         @handleEdit="actionDetail"
         @actionPrint="actionPrint"
@@ -149,37 +150,42 @@ export default {
                 {
                     label: "Runsheet",
                     key: "runsheet_count",
-                    width: "xs"
+                    width: "xxxxs"
                 },
                 {
                     label: "Un Runsheet",
                     key: "un_runsheet_count",
-                    width: "xs"
+                    width: "xxxxs"
                 },
                 {
                     label: "Consolidation",
                     key: "is_consolidated",
-                    width: "xs"
+                    width: "xxxxs"
                 },
                 {
                     label: "With Courier",
                     key: "with_courier",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Surat Muatan",
                     key: "surat_muatan",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Surat Jalan",
                     key: "surat_jalan",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Approved",
                     key: "approved",
-                    width: "auto"
+                    width: "xxxxs"
+                },
+                {
+                    label: "Status",
+                    key: "summary_status",
+                    width: "xxxxs"
                 }
             ],
             loading: false,
