@@ -286,7 +286,12 @@ export default {
   watch: {
     valueData: function(val) {
       if (val !== undefined) {
-        this.value = val;
+        if (this.listenTypeInput.includes("password")) {
+          this.value = val;
+        }
+        else {
+          this.value = val.toUpperCase();
+        }
         this.updateValue();
       }
     },

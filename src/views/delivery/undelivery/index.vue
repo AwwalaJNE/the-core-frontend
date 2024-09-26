@@ -38,6 +38,7 @@
                                                 v-on:keyup.enter="updateValue" 
                                                 autofocus 
                                                 icon-after 
+                                                v-uppercase
                                                 ref="formInputInbound"
                                             >
                                                 <template #icon>
@@ -193,7 +194,7 @@ export default {
                 }).catch(err => {
                     this.loading = false
                     this.refresh()
-                    // this.handleClearForm();
+                    this.handleClearForm();
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Receiving is failed', err)
                 })
         },

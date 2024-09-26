@@ -49,16 +49,6 @@
           @confirm="confirmRemove"
           @cancel="closeDialogConfirmRemove"
         />
-
-        <dialog-confirm
-          title="Unapprove Surat Jalan"
-          :message="`Are you sure you want to unapprove this surat jalan with number ${this.manifest_do_number}?`"
-          :active="activeDialogConfirmApprove"
-          :loading="loadingConfirmApprove"
-          :closeDialog="closeDialogConfirmApprove"
-          @confirm="confirmApprove"
-          @cancel="closeDialogConfirmApprove"
-        />
     </div>
 </template>
 <script>
@@ -156,20 +146,6 @@ export default {
             ],
             customActionList: [
               {
-                label: 'Approve',
-                key: 'approve',
-                attribute: '',
-              },
-              {
-                label: 'Print',
-                key: 'print',
-                attribute: '',
-                option: {
-                  type: 'redirect',
-
-                }
-              },
-              {
                 label: 'Depart',
                 key: 'depart',
                 attribute: '',
@@ -200,9 +176,6 @@ export default {
             id: '',
             activeDialogConfirmRemove: false,
             loadingConfirmRemove:false,
-            activeDialogConfirmApprove: false,
-            loadingConfirmApprove: false,
-            is_approve: 0,
         }
     },
     watch: {
@@ -248,8 +221,6 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     let buttonStatus = {
-                          'approve': true,
-                          //'print': true, // tombol print default true
                           'depart': true,
                           'cancel': true
                         }
@@ -262,34 +233,20 @@ export default {
                       item["driver_name"] = (item.pic) ? item.pic.employee_name: null
                       item["orion_number"] = item.mts || item.do || "";
                       item["approved"] = item.is_approve  === 1 ? 'YES' : 'NO';
-
-                      let buttonLabel = { 
-                        'approve': item.is_approve === 1 ? 'Unapprove' : 'Approve' 
-                      };
-                      
-                      let buttonDanger = { 
-                        'approve': item.is_approve === 1 ? false : true  
-                      };
-
-                      item["button_label"] = buttonLabel;
-                      item["button_danger"] = buttonDanger;
                       
                       if (item.hasOwnProperty('status') && item["status"] !== null) {
                           let str = item["status"].toLowerCase();
                           if (!str.includes("ready")) {
-                              buttonStatus["approve"] = false;
                               buttonStatus["depart"] = false;
                               item["button_status"] = buttonStatus;
                           }
                           if (str.includes("cancel")) {
-                              buttonStatus["approve"] = false;
                               buttonStatus["cancel"] = false;
                               item["button_status"] = buttonStatus;
                           }
                       }
 
                       if (item.is_orion == "1") {
-                        buttonStatus["approve"] = false;
                         buttonStatus["cancel"] = false;
                         item["button_status"] = buttonStatus;
                       }
@@ -319,11 +276,6 @@ export default {
 
         actionUpdate(val, key) {
           switch(key) {
-                case "print":
-
-                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.manifest_do_number, 'type': 'manifest-delivery-order', 'node_id':this.listenNodeId } });
-                    window.open(routeData.href, '_blank');
-                    break;
                 case "depart":
                     this.manifest_do_number = val.manifest_do_number
                     let obj = {}
@@ -348,11 +300,6 @@ export default {
                   this.id = val.manifest_do_number;
                   this.activeDialogConfirmRemove = true
                   // this.cancel()
-                  break;
-                case 'approve':
-                  this.is_approve = val.is_approve;
-                  this.manifest_do_number = val.manifest_do_number
-                  this.is_approve === 0 ? this.confirmApprove() : this.activeDialogConfirmApprove = true;
                   break;
                 default:
 
@@ -430,15 +377,9 @@ export default {
             this.id = val.setting_id;
             this.activeDialogConfirmRemove = true
         },
-        actionApprove(){
-            this.activeDialogConfirmApprove = true
-        },
         confirmRemove() {
             this.loadingConfirmRemove=true
             this.cancel()
-        },
-        confirmApprove() {
-            this.approve()
         },
         async cancel(){
           this.loading = true
@@ -464,41 +405,9 @@ export default {
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
-        async approve(){
-          this.loading = true
-          this.loadingConfirmApprove = true
-            await axios
-                .put(
-                    `${this.URL.approval}-manifest-do/${this.manifest_do_number}?n=${this.listenNodeId}`,
-                    JSON.stringify({
-                      is_approve: this.is_approve ^= 1
-                    }),
-                    this.Helper.header()
-                )
-                .then(res => {
-                    this.loading = false
-                    this.loadingConfirmApprove=false
-                    this.is_approve ^= 1;
-                    this.refresh();
-                    this.$emit("refresh")
-                    this.closeDialogConfirmApprove();
-                    this.openNotification("success", null, "Success", res?.data?.message);
-                })
-                .catch(err => {
-                    this.loading = false
-                    this.loadingConfirmApprove=false
-                    this.refresh();
-                    this.$emit("refresh")
-                    this.closeDialogConfirmApprove();
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed', err.response ? err.response.data.message : 'something went wrong');
-                });
-        },
         closeDialogConfirmRemove(){
             this.activeDialogConfirmRemove = false
             this.loadingConfirmRemove=false
-        },
-        closeDialogConfirmApprove(){
-            this.activeDialogConfirmApprove = false
         },
 
     },

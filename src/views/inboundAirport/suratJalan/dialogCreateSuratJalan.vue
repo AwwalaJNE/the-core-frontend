@@ -38,6 +38,7 @@
                   formKey="scanBag"
                   :valueData="suratMuatan"
                   :typeInput="`text|${isDestinationDisable}`"
+                  v-uppercase
                   @updateValue="updateValue"
                   icon-after
                   @click-icon="$refs.cameraScanner.open('suratMuatan')"

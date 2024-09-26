@@ -240,7 +240,7 @@ export default {
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag list', err?.response?.data?.message ?? 'something went wrong')
                 })
             
         },

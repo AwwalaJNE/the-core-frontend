@@ -45,6 +45,7 @@
               label-placeholder="Scan Bag disini"
               autofocus
               icon-after
+              v-uppercase
               :disabled="disabledApprove"
               @keyup.enter="updateValueBag"
               @click-icon="$refs.cameraScanner.open('formInputConnote')"
@@ -65,6 +66,7 @@
               label-placeholder="Scan Bag disini"
               autofocus
               icon-after
+              v-uppercase
               :disabled="disabledApprove"
               @keyup.enter="updateValueBag"
               @click-icon="$refs.cameraScanner.open('formInputConnote')"
@@ -85,6 +87,7 @@
               label-placeholder="Scan Koli here"
               autofocus
               icon-after
+              v-uppercase
               :disabled="disabledApprove"
               @keyup.enter="updateValue"
               @click-icon="$refs.cameraScanner.open('formInputConnote')"
@@ -103,6 +106,7 @@
               label-placeholder="Scan Connote here (orion)"
               autofocus
               icon-after
+              v-uppercase
               :disabled="disabledApprove"
               @keyup.enter="updateValueOrion"
               @click-icon="
@@ -123,6 +127,7 @@
               label-placeholder="Scan Koli disini "
               autofocus
               icon-after
+              v-uppercase
               :disabled="disabledApprove"
               @keyup.enter="updateValue"
               @click-icon="
@@ -143,6 +148,7 @@
               label-placeholder="Scan Koli disini "
               autofocus
               icon-after
+              v-uppercase
               :disabled="disabledApprove"
               @keyup.enter="updateValue"
               @click-icon="
@@ -165,6 +171,7 @@
               label-placeholder="Remove Koli here"
               autofocus
               icon-after
+              v-uppercase
               :disabled="disabledApprove"
               @keyup.enter="removeValue"
               @click-icon="
@@ -185,6 +192,7 @@
               label-placeholder="Remove Connote here (orion)"
               autofocus
               icon-after
+              v-uppercase
               :disabled="disabledApprove"
               @keyup.enter="removeValueOrion"
               @click-icon="
@@ -205,6 +213,7 @@
               label-placeholder="Hapus Koli disini"
               autofocus
               icon-after
+              v-uppercase
               :disabled="disabledApprove"
               @keyup.enter="removeValue"
               @click-icon="
@@ -225,6 +234,7 @@
               label-placeholder="Hapus Koli disini"
               autofocus
               icon-after
+              v-uppercase
               :disabled="disabledApprove"
               @keyup.enter="removeValue"
               @click-icon="
@@ -915,6 +925,7 @@ export default {
         })
         .catch((err) => {
           this.loadingRunsheet = false;
+          this.clearInputs()
           this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
         });
     },

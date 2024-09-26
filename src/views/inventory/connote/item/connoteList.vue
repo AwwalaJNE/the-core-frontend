@@ -171,7 +171,7 @@ export default {
                   width: "auto"
                 },
                 {
-                    label: "Delivery Status Code",
+                    label: "Status POD",
                     key: "delivery_status_code",
                     width: "auto"
                 },
