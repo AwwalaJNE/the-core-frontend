@@ -261,6 +261,12 @@ export default {
               permission: "read-undelivery",
             },
             {
+              label: "HRS History",
+              url: "/hrs-history",
+              icon: "",
+              permission: "read-undelivery",
+            },
+            {
               label: "Deposit COD",
               url: "/deposit-cod",
               icon: "",
