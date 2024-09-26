@@ -22,6 +22,7 @@
                 :autofocus="true"
                 ref="formInputUnbagging"
                 icon-after
+                v-uppercase
                 @keyup.enter.native="updateValue"
                 @click-icon="$refs.cameraScanner.open('formInputUnbagging')"
               >

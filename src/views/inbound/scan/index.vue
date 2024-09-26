@@ -25,6 +25,7 @@
                                     label-placeholder="Masukkan code BAG / Koli / SM"
                                     autofocus
                                     icon-after
+                                    v-uppercase
                                     ref="formInputInbound"
                                     @keyup.enter.native="updateValue"
                                     @click-icon="$refs.cameraScanner.open('formInputInbound')">

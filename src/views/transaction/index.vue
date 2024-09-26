@@ -27,6 +27,7 @@
                                     label-placeholder="Masukkan Code Booking  / Connote Number Untuk Perbaharui Data"
                                     :autofocus="true"
                                     :disabled="hasCodeBooking"
+                                    v-uppercase
                                     ref="inputCodeBooking">
                                 </vs-input>
                             </form>
@@ -50,6 +51,7 @@
                         @blur="handleBlurCustomerCode"
                         @input="handleInputCustomerCode"
                         :disabled="isDisabled"
+                        v-uppercase
                         ></vs-input>
                 </vs-col>
             </vs-row>

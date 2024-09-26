@@ -17,6 +17,7 @@
         :hasAction="false"
         :hasLinked="['bag_number']"
         :printAction="true"
+        :actionSize="'xxs'"
         :hasPagination="true"
         @handleEdit="actionDetail"
         @actionPrint="actionPrint"
@@ -149,37 +150,42 @@ export default {
                 {
                     label: "Runsheet",
                     key: "runsheet_count",
-                    width: "xs"
+                    width: "xxxxs"
                 },
                 {
                     label: "Un Runsheet",
                     key: "un_runsheet_count",
-                    width: "xs"
+                    width: "xxxxs"
                 },
                 {
                     label: "Consolidation",
                     key: "is_consolidated",
-                    width: "xs"
+                    width: "xxxxs"
                 },
                 {
                     label: "With Courier",
                     key: "with_courier",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Surat Muatan",
                     key: "surat_muatan",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Surat Jalan",
                     key: "surat_jalan",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Approved",
                     key: "approved",
-                    width: "auto"
+                    width: "xxxxs"
+                },
+                {
+                    label: "Status",
+                    key: "summary_status",
+                    width: "xxxxs"
                 }
             ],
             loading: false,
@@ -268,12 +274,16 @@ export default {
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
-                    
+                    if(res.data.data.length == 0) {
+                        if (query != "") {
+                            this.openNotification('warn', '', 'Failed to populate bag data', ' data is empty or not found')
+                        }
+                    }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag list', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag list', err?.response?.data?.message ?? 'something went wrong')
                 })
         },
         actionDetail(val){
@@ -284,7 +294,7 @@ export default {
             let routeData = this.$router.resolve({ 
                 name: 'printGeneral', 
                 params: { 
-                    'id': val.bag_number.replace(/\//g, "~"), 
+                    'id': val.bag_number.replaceAll("/","~"), 
                     'type': 'bag',
                     'node_id': this.listenNodeId
                 }

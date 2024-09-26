@@ -14,6 +14,7 @@
                                     v-model="koliCode"
                                     label-placeholder="Masukkan Nomer Connote"
                                     :autofocus="true"
+                                    v-uppercase
                                     ref="formInputUnbagging">
                                 </vs-input>
                             </form>

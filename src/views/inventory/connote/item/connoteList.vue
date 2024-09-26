@@ -171,6 +171,11 @@ export default {
                   width: "auto"
                 },
                 {
+                    label: "Status POD",
+                    key: "delivery_status_code",
+                    width: "auto"
+                },
+                {
                     label: "Status Irregularity",
                     key: "status_irregularity",
                     width: "auto"

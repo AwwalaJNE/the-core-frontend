@@ -70,6 +70,33 @@ Vue.prototype.$VueDelete = Vue.delete
 // global variable https://vuejs.org/v2/api/#Vue-nextTick
 Vue.prototype.$nextTick = Vue.nextTick
 
+Vue.directive('uppercase', {
+  bind(el, binding) {
+    const inputElement = el.querySelector('input');
+
+    if (inputElement && binding.value) {
+      inputElement.value = binding.value.toUpperCase();
+    }
+
+    inputElement.addEventListener('input', () => {
+      const upperCaseValue = inputElement.value.toUpperCase();
+      inputElement.value = upperCaseValue;
+
+      inputElement.dispatchEvent(new Event('input'));
+    });
+  },
+
+  update(el, binding) {
+    const inputElement = el.querySelector('input');
+
+    if (inputElement && binding.value !== undefined) {
+      inputElement.value = binding.value.toUpperCase();
+      inputElement.dispatchEvent(new Event('input'));
+    }
+  },
+});
+
+
 new Vue({
   router,
   store,

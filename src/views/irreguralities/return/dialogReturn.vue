@@ -18,6 +18,7 @@
                                         v-model="connote_number"
                                         label-placeholder="Nomer Connote"
                                         :autofocus="true"
+                                        v-uppercase
                                         :disabled="Object.keys(dataItem).length > 0">
                                     </vs-input>
                         </form>

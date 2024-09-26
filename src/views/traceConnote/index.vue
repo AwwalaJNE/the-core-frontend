@@ -23,6 +23,7 @@
                                     autofocus
                                     :disabled="hasConnoteNumber"
                                     icon-after
+                                    v-uppercase
                                     ref="formInputConnoteOrion"
                                     @keyup.enter="updateValueOrion"
                                     @click-icon="$refs.cameraScanner.open('formInputConnoteOrion')"
