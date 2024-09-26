@@ -308,17 +308,16 @@ export default {
         },
         async depart() {
             this.loading = true
-            await axios
-                .patch(this.URL.revamp_surat_jalan + `/${this.manifest_do_number}/depart?n=${this.listenNodeId}&is_departed=1`, {}, this.Helper.header())
-                .then(res => {
-                    this.loading = false
-                    this.refresh()
-                    this.openNotification('success', null, 'Success', 'Update surat jalan success')
-                }).catch(err => {
-                    this.loading = false
-                    this.refresh()
-                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Update surat jalan failed', err?.response?.data?.message ?? 'something went wrong')
-                })
+
+            try {
+                const res = await axios.patch(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/depart?n=${this.listenNodeId}&is_departed=1`, {}, this.Helper.header());
+                this.openNotification('success', null, 'Success', 'Update surat jalan success')
+            } catch (err) {
+                this.openNotification('danger', err?.response?.data?.code ?? '', 'Update surat jalan failed', err?.response?.data?.message ?? 'something went wrong')
+            } finally {
+                this.loading = false;
+                this.refresh();
+            }
         },
         closeDialogSuratJalan() {
             this.dialogSuratJalan = false

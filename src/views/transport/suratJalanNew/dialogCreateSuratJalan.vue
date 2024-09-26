@@ -289,7 +289,6 @@ export default {
                 this.openNotification("warning", null, "Melebihi berat", "Berat muatan melebihi batas berat kendaraan");
             }
         },
-
         onChangeCustom(type, val, obj) {
             const updateMasterForm = (key, value) => {
                 if (this.manifest_do_number && this.master_form?.[key] !== value) {
@@ -384,11 +383,11 @@ export default {
         },
         handlePenerusan(val) {
             if (this.isDisabled) {
-                this.is_penerusan = !val.target.checked
-                this.openNotification('warn', null, 'Information', 'Surat Jalan is DEPARTED')
+                this.is_penerusan = !val.target.checked;
+                this.openNotification('warn', null, 'Information', 'Surat Jalan is DEPARTED');
             }
             else {
-                this.is_penerusan = val.target.checked
+                this.is_penerusan = val.target.checked;
             }
         },
         submitSuratJalan() {
@@ -399,9 +398,24 @@ export default {
             try {
                 const res = await axios.post(`${this.URL.revamp_surat_jalan}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
 
-                if (res.data.data) {
-                    this.manifest_do_number = res.data.data.manifest_do_number;
-                    this.total_weight = res.data.data.total_weight;
+                let data = res.data.data;
+                if (data) {
+                    this.manifest_do_number = data.manifest_do_number;
+                    this.total_weight = data.total_weight;
+                    this.master_form = {
+                        node_id_origin: data.node_id_origin,
+                        node_id_destination: data.node_id_destination,
+                        vehicle_mode_id: data.vehicle_mode_id,
+                        vehicle_id: data.vehicle_id,
+                        pic_employee_id: data.pic_employee_id,
+                        etd: data.etd,
+                        eta: data.eta,
+                        vehicle_type_id: data.vehicle_type_id || parseInt(data.vehicle_type_id),
+                        max_weight: data.max_weight,
+                        manifest_lov: data.manifest_lov,
+                        item_no: data.item_number,
+                        is_penerusan: data.is_penerusan
+                    };
                     await this.getSuratJalanDetail();
                 }
 
@@ -516,7 +530,9 @@ export default {
         isDestinationDisableCheck() {
             if (!this.dataItem || !this.manifest_lov) {
                 this.isDestinationDisable = "disabled";
-            } else if (this.destinationUnlock || this.dataItem.node_id_destination) {
+            } 
+            
+            if (this.manifest_lov && (this.destinationUnlock || this?.dataItem?.node_id_destination)) {
                 this.isDestinationDisable = "";
             }
         },
