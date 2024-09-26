@@ -223,21 +223,21 @@ export default {
                         item["orion_number"] = item.mts || item.do || "";
                         item["approved"] = item.is_approve    === 1 ? 'YES' : 'NO';
                         
-                        // if (item.hasOwnProperty('status') && item["status"] !== null) {
-                        //     let str = item["status"].toLowerCase();
-                        //     if (!str.includes("ready")) {
-                        //         buttonStatus["depart"] = false;
-                        //         item["button_status"] = buttonStatus;
-                        //     }
-                        //     if (str.includes("cancel")) {
-                        //         buttonStatus["cancel"] = false;
-                        //         item["button_status"] = buttonStatus;
-                        //     }
-                        // }
+                        if (item.hasOwnProperty('status') && item["status"] !== null) {
+                            let str = item["status"].toLowerCase();
+                            if (!str.includes("ready")) {
+                                buttonStatus["depart"] = false;
+                                item["button_status"] = buttonStatus;
+                            }
+                            if (str.includes("cancel")) {
+                                buttonStatus["cancel"] = false;
+                                item["button_status"] = buttonStatus;
+                            }
+                        }
 
                         if (item.is_orion == "1") {
-                        buttonStatus["cancel"] = false;
-                        item["button_status"] = buttonStatus;
+                            buttonStatus["cancel"] = false;
+                            item["button_status"] = buttonStatus;
                         }
                     })
 

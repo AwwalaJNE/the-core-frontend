@@ -83,36 +83,6 @@
                 </div>
             </div>
         </template>
-
-        <!-- <template v-slot:footer>
-            <vs-row justify="flex-end">
-                <vs-col w="3">
-                    <vs-button
-                        transparent
-                        block
-                        danger
-                        flat
-                        :active="true"
-                        @click="btnBlue === 'Approve' ? cancelAdd() : cancelEdit()"
-                    >
-                        Close
-                    </vs-button>
-                </vs-col>
-                <vs-col w="3">
-                    <vs-button
-                        transparent
-                        block
-                        flat
-                        :active="true"
-                        type="submit"
-                        @click="handleSubmit"
-                        :disabled="isDisabled"
-                    >
-                        {{ btnBlue || "Add" }}
-                    </vs-button>
-                </vs-col>
-            </vs-row>
-        </template> -->
     </dialog-master>
 </template>
 <script>
@@ -148,7 +118,6 @@ export default {
     data() {
         return {
             form: {},
-            DataArr: [],
             loading: false,
             manifest_do_number: "",
             dataTable: [],
@@ -190,7 +159,6 @@ export default {
             item_number: "",
             vehicle_max_weight: 0,
             vehicle_type_id: "",
-            lot_weight: 0,
             no_moda_angkutan_id: null,
             etd: null,
             estimated_time_in_hour: null,
@@ -212,7 +180,8 @@ export default {
             isDisabled: false,
             is_approve: 0,
             item_remove: "",
-            total_weight: 0
+            total_weight: 0,
+            master_form: {}
         };
     },
     computed: {
@@ -224,59 +193,12 @@ export default {
         },
         listenTitle() {
             return this.title;
-        },
-        listenDataItem() {
-            return this.dataItem;
-        },
-        listenFormKey() {
-            return this.formKey || "";
-        },
+        }
     },
     watch: {
         dataItem: function(val) {
             if (val !== undefined) {
-                console.log("PP", val)
-                this.manifest_do_number = val.manifest_do_number;
-
-                this.dataTable = val.detail;
-                this.is_penerusan = val.is_penerusan === "1" ? true : false
-                this.isDisabled = val.status !== 'READY' || val.is_orion == "1" || val.is_approve == 1 ? true : false
-                this.is_approve = val.is_approve;
-                this.dataTable.map((item) => {
-                    if (item.bag) {
-                        item.destination = item.bag.destination
-                            ? item.bag.destination.node_tariff_code
-                            : "";
-                    }
-                    else if (item.koli) {
-                        item.destination = item.koli.connote
-                            ? item.koli.connote.connote_receiver_tariff_code
-                            : "";
-                    }
-                    else if (item.manifest) {
-                        item.destination = item.manifest.destination
-                            ? item.manifest.destination.node_tariff_code
-                            : "";
-                    }
-                    if (val.status !== "READY" ) {
-                        item.button_status = {
-                            remove: false,
-                        };
-                    }
-                    item.received_status = item.received_at ? 1 : 0
-                });
-
-                this.total_weight = val.total_weight;
-                this.editData = val;
-                this.no_moda_angkutan_id = val["no_moda_angkutan_id"]
-                    ? val["no_moda_angkutan_id"]
-                    : null;
-
-                // this.editData["destination_id"] = val.node_id_destination ? val.node_id_destination : ''
-                // this.editData["moda_angkutan_id"] = val.vehicle_mode_id ? val.vehicle_mode_id : ''
-                // this.editData["no_moda_angkutan_id"] = val.vehicle_id ? val.vehicle_id : ''
-                // this.editData["manifest_do_item"] = val.detail ? val.detail : ''
-                // this.editData["driver_id"] = val.pic_employee_id ? parseInt(val.pic_employee_id) : ''
+                this.getEditData(val);
             }
         },
         active: function(val) {
@@ -290,41 +212,71 @@ export default {
         },
     },
     methods: {
-        formData(form) {
-            let weight = 0;
-            this.dataTable.map((item) => {
-                if (item.total_weight) {
-                    weight += item.total_weight;
+        getEditData(val) {
+            this.manifest_do_number = val.manifest_do_number;
+            this.dataTable = val.detail;
+            this.is_penerusan = val.is_penerusan === "1";
+            this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
+            this.is_approve = val.is_approve;
+
+            this.dataTable.forEach(item => {
+                item.destination = item.bag?.destination?.node_tariff_code || item.koli?.connote?.connote_receiver_tariff_code || item.manifest?.destination?.node_tariff_code || '';
+
+                if (val.status !== "READY") {
+                    item.button_status = { remove: false };
                 }
+
+                item.received_status = item.received_at ? 1 : 0;
             });
+
+            this.total_weight = val.total_weight;
+            this.editData = val;
+            this.no_moda_angkutan_id = val.no_moda_angkutan_id || null;
+
+            this.master_form = {
+                node_id_origin: val.node_id_origin,
+                node_id_destination: val.node_id_destination,
+                vehicle_mode_id: val.vehicle_mode_id,
+                vehicle_id: val.vehicle_id,
+                pic_employee_id: val.pic_employee_id,
+                etd: val.etd,
+                eta: val.eta,
+                vehicle_type_id: val.vehicle_type_id || parseInt(val.vehicle_type_id),
+                max_weight: val.max_weight,
+                manifest_lov: val.manifest_lov,
+                item_no: val.item_number,
+                is_penerusan: val.is_penerusan
+            };
+        },
+        formData(form) {
+            let weight = this.dataTable.reduce((sum, item) => sum + (item.total_weight || 0), 0);
 
             if (this.editData.max_weight > 0 && this.vehicle_max_weight < 1) {
                 this.vehicle_max_weight = this.editData.max_weight;
             }
             if (this.vehicle_max_weight >= weight) {
-                let obj = {};
-                obj["node_id_origin"] = this.listenNodeId;
-                obj["node_id_destination"] = form.destination_id;
-                obj["vehicle_mode_id"] = form.moda_angkutan_id;
-                obj["vehicle_id"] = form.no_moda_angkutan_id;
-                obj["pic_employee_id"] = form.driver_id;
-                obj["etd"] = form.etd;
-                obj["eta"] = form.eta;
-                obj["vehicle_type_id"] = this.vehicle_type_id;
-                obj["max_weight"] = this.vehicle_max_weight;
-                obj["manifest_lov"] = this.manifest_lov;
-                obj["item_no"] = this.item_number;
-                obj["is_penerusan"] = this.is_penerusan;
+                const obj = {
+                    node_id_origin: this.listenNodeId,
+                    node_id_destination: form.destination_id,
+                    vehicle_mode_id: form.moda_angkutan_id,
+                    vehicle_id: form.no_moda_angkutan_id,
+                    pic_employee_id: form.driver_id,
+                    etd: form.etd,
+                    eta: form.eta,
+                    vehicle_type_id: this.vehicle_type_id || (this.dataItem.vehicle_type_id ? parseInt(this.dataItem.vehicle_type_id) : this.dataItem.vehicle_type_id),
+                    max_weight: this.vehicle_max_weight,
+                    manifest_lov: this.manifest_lov,
+                    item_no: this.item_number,
+                    is_penerusan: this.is_penerusan
+                };
 
                 this.form = obj;
-
                 if (this.form.eta > this.form.etd) {
                     if (this.manifest_do_number) {
                         if (!this.vehicle_type_id) {
                             this.form.vehicle_type_id = this.dataItem.vehicle_type_id  ? parseInt(this.dataItem.vehicle_type_id) : this.dataItem.vehicle_type_id;
                         }
 
-                        // this.updateSuratJalan();
                         this.addSuratJalanDetail();
                     }
                     else {
@@ -337,56 +289,70 @@ export default {
                 this.openNotification("warning", null, "Melebihi berat", "Berat muatan melebihi batas berat kendaraan");
             }
         },
+
         onChangeCustom(type, val, obj) {
+            const updateMasterForm = (key, value) => {
+                if (this.manifest_do_number && this.master_form?.[key] !== value) {
+                    this.master_form = { ...this.master_form, [key]: value };
+                    this.updateSuratJalan();
+                }
+            };
+
             switch (type) {
-                case "no_moda_angkutan_id":
-                    if (typeof obj === "object") {
-                        if (obj.hasOwnProperty("item")) {
-                            this.vehicle_max_weight = obj["item"]["vehicle_max_weight"];
-                            this.vehicle_type_id = obj["item"]["vehicle_type_id"];
-                        }
-                    }
-                    this.no_moda_angkutan_id = val;
-                    // this.updateSuratJalan();
-                    break;
                 case "destination_id":
                     if (typeof obj === "object") {
-                        if (obj.hasOwnProperty("item")) {
-                            this.estimated_time_in_hour =
-                                obj["item"]["estimated_time_in_hour"];
+                        const { item, value } = obj;
+                        if (item?.estimated_time_in_hour) {
+                            this.estimated_time_in_hour = item.estimated_time_in_hour;
                             this.handleEta(this.etd, this.estimated_time_in_hour);
                         }
-                        this.destinationUnlock = parseInt(obj["value"]);
+                        this.destinationUnlock = parseInt(value);
                     }
+                    updateMasterForm("node_id_destination", val);
                     this.isDestinationDisableCheck();
                     break;
+
+                case "no_moda_angkutan_id":
+                    if (typeof obj === "object" && obj.item) {
+                        const { vehicle_max_weight, vehicle_type_id } = obj.item;
+                        this.vehicle_max_weight = vehicle_max_weight;
+                        this.vehicle_type_id = vehicle_type_id;
+                    }
+                    this.no_moda_angkutan_id = val;
+                    updateMasterForm("vehicle_id", val);
+                    break;
+
                 case "etd":
                     this.etd = val;
-                    let dateEta = this.handleEta(this.etd, this.estimated_time_in_hour);
+                    this.handleEta(this.etd, this.estimated_time_in_hour);
+                    updateMasterForm("etd", val);
                     break;
-                case "manifest_lov":
-                    if (typeof obj === "object") {
-                        if (obj.hasOwnProperty("value")) {
-                            this.manifest_lov = obj["value"];
-                            this.$store.dispatch(
-                                "SET_SURAT_JALAN_MANIFEST_LOV_ValueData",
-                                obj["value"]
-                            );
-                        }
-                    }
-                    this.isDestinationDisableCheck();
-                default:
 
-                // code block
+                case "eta":
+                    updateMasterForm("eta", val);
+                    break;
+
+                case "manifest_lov":
+                    if (typeof obj === "object" && obj.value) {
+                        this.manifest_lov = obj.value;
+                        this.$store.dispatch("SET_SURAT_JALAN_MANIFEST_LOV_ValueData", obj.value);
+                    }
+                    updateMasterForm("manifest_lov", val);
+                    this.isDestinationDisableCheck();
+                    break;
+
+                case "driver_id":
+                    updateMasterForm("pic_employee_id", val);
+                    break;
+
+                default:
+                    break;
             }
         },
         handleEta(dateTime, amount) {
             if (dateTime && amount) {
-                let dateEta = moment(dateTime)
-                    .add(amount, "hours")
-                    .format("YYYY-MM-DD HH:mm:ss");
-                this.$store.dispatch("SET_SURAT_JALAN_ETA", dateEta);
-            }
+                this.$store.dispatch("SET_SURAT_JALAN_ETA", moment(dateTime).add(amount, "hours").format("YYYY-MM-DD HH:mm:ss"));
+            };
         },
         updateValue(key, val) {
             switch (key) {
@@ -405,20 +371,6 @@ export default {
                 default:
             }
         },
-        async approve() {
-            try {
-                const res = await axios.patch(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, { is_approve: this.is_approve ^ 1 }, this.Helper.header());
-                
-                this.is_approve ^= 1;
-                this.openNotification("success", null, "Success", res?.data?.message);
-
-                if (this.is_approve === 1) {
-                    this.print();
-                }
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
-            }
-        },
         print() {
             let routeData = this.$router.resolve({ 
                 name: 'printGeneral', 
@@ -429,13 +381,6 @@ export default {
                 } 
             });
             window.open(routeData.href, '_blank');
-        },
-        handleSubmit() {
-            this.$refs.formSuratJalan.handleSubmit();
-        },
-        handleClearForm() {
-            this.$refs.formSuratJalan.handleClearForm();
-            this.form = {};
         },
         handlePenerusan(val) {
             if (this.isDisabled) {
@@ -510,7 +455,7 @@ export default {
         async updateSuratJalan() {
             this.loading = true;
             try {
-                const res = await axios.put(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());
+                const res = await axios.put(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}?n=${this.listenNodeId}`, JSON.stringify(this.master_form), this.Helper.header());
                 this.openNotification('success', null, "Success", "Update surat jalan success");
 
             } catch (err) {
@@ -531,11 +476,49 @@ export default {
                 this.loading = false;
             }
         },
+        async approve() {
+            try {
+                const res = await axios.patch(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, { is_approve: this.is_approve ^ 1 }, this.Helper.header());
+                
+                this.is_approve ^= 1;
+                this.isDisabled = !this.isDisabled;
+                this.openNotification("success", null, "Success", res?.data?.message);
+
+                if (this.is_approve === 1) {
+                    this.print();
+                }
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
+            }
+        },
+        handleClearForm() {
+            this.$refs.formSuratJalan.handleClearForm();
+            this.form = {};
+        },
         cancel() {
             this.loading = false;
             this.handleClearForm();
             this.dataTable = [];
             this.closeDialog();
+        },
+        getLov() {
+            const arr = this.manifest_lov_list.map(item => ({
+                label: item.label,
+                value: item.value
+            }));
+
+            this.$store.dispatch("SET_SURAT_JALAN_MANIFEST_LOV_ArrData", arr.length ? arr : null);
+
+            if (this.dataItem?.manifest_lov) {
+                this.manifest_lov = this.dataItem.manifest_lov;
+            }
+        },
+        isDestinationDisableCheck() {
+            if (!this.dataItem || !this.manifest_lov) {
+                this.isDestinationDisable = "disabled";
+            } else if (this.destinationUnlock || this.dataItem.node_id_destination) {
+                this.isDestinationDisable = "";
+            }
         },
         async getDestination() {
             await axios
@@ -572,41 +555,6 @@ export default {
                     // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 });
         },
-        getLov() {
-            let arr = [];
-            this.manifest_lov_list.map((item) => {
-                let obj = {};
-                obj["label"] = item.label;
-                obj["value"] = item.value;
-
-                arr.push(obj);
-            });
-            this.$store.dispatch(
-                "SET_SURAT_JALAN_MANIFEST_LOV_ArrData",
-                arr.length > 0 ? arr : null
-            );
-            if (this.dataItem && this.dataItem.manifest_lov) {
-                this.manifest_lov = this.dataItem.manifest_lov;
-            }
-        },
-        isDestinationDisableCheck() {
-            if (!this.dataItem) {
-                this.isDestinationDisable = "disabled";
-            }
-            if (!this.manifest_lov) {
-                this.isDestinationDisable = "disabled";
-            }
-            if (this.manifest_lov && this.destinationUnlock) {
-                this.isDestinationDisable = "";
-            }
-            if (
-                this.dataItem &&
-                this.dataItem.node_id_destination &&
-                this.manifest_lov
-            ) {
-                this.isDestinationDisable = "";
-            }
-        },
         async getNoModeAngkutan() {
             await axios
                 .get(
@@ -639,34 +587,22 @@ export default {
                 });
         },
         async getDriver() {
-            await axios
-                .get(
-                    this.URL.employee +
-                    `/driver?n=${this.listenNodeId}`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.data.length > 0) {
-                        let arr = [];
-                        res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = `${item.employee_name} (${item.employee_nik})`;
-                            obj["value"] = item.employee_id;
+            try {
+                const res = await axios.get(`${this.URL.employee}/driver?n=${this.listenNodeId}`, this.Helper.header());
 
-                            arr.push(obj);
-                        });
+                if (res.data.data.length > 0) {
+                    const arr = res.data.data.map(item => ({
+                        label: `${item.employee_name} (${item.employee_nik})`,
+                        value: item.employee_id
+                    }));
 
-                        this.$store.dispatch(
-                            "SET_SURAT_JALAN_DRIVER_ID_ArrData",
-                            arr.length > 0 ? arr : null
-                        );
-                    } else {
-                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
-                    }
-                })
-                .catch((err) => {
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
-                });
+                    this.$store.dispatch("SET_SURAT_JALAN_DRIVER_ID_ArrData", arr);
+                } else {
+                    // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data');
+                }
+            } catch (err) {
+                // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err);
+            }
         },
         handleIconClick() {
             if (!this.isDisabled) {
@@ -674,17 +610,11 @@ export default {
             }
         },
         onCameraScannerGetData(data) {
-            if (!this.isDisabled) {
-                if (data && data.event === "result") {
-                    if (data.namespace === "item_number") {
-                        this.item_number = data.data.text;
-                    }
-                }
+            if (!this.isDisabled && data?.event === "result" && data.namespace === "item_number") {
+                this.item_number = data.data.text;
             }
         },
-    },
-    mounted() {
-    },
+    }
 };
 </script>
 <style> 
