@@ -113,7 +113,6 @@ export default {
         checkZoneDelivery: Function,
         closeDialog: Function, 
         dataItemCheckSla: [Object, Array],
-        dataItemCheckZone: Object,
         scanBagPraRunsheet: Function,
         title: String,
         type: String,
@@ -153,11 +152,7 @@ export default {
     },
     methods: {
         async handleSubmit() {
-            if (this.type == 'KOLI') {
-                this.$emit("checkZoneDelivery", this.dataItemCheckZone);
-            } else if (this.type == 'BAG') {
-                this.$emit("scanBagPraRunsheet", this.dataItemCheckZone);
-            }
+            this.$emit("checkZoneDelivery");
         },
     },
 }

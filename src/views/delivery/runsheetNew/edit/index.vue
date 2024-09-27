@@ -221,28 +221,28 @@
             @data="onCameraScannerGetData" 
         />
 
-        <dialog-confirm-custom
+        <dialog-recheck-courier
+            ref="recheck_courier"
             :active="dialogConfirmEmployee" 
-            :closeDialog="closeDialogConfirmEmployee"
+            :closeDialog="() => closeDialog('recheck_courier')"
             @updateValue="updateValueBag"
         />
 
         <dialog-recheck-connote-sla
+            ref="recheck_connote_sla"
             title="Recheck Connote Sla"
             :active="openDialogReCheckConnoteSla"
-            :closeDialog="closeActionPopupSla"
+            :closeDialog="() => closeDialog('recheck_connote_sla')"
             :dataItemCheckSla="dataItemCheckSla"
-            :dataItemCheckZone="dataItemCheckZone"
-            :listConnote="listConnote"
             :type="type"
             @checkZoneDelivery="checkZoneDelivery"
-            @scanBagPraRunsheet="scanBagPraRunsheet"
         />
 
         <dialog-recheck-connote-zone
+            ref="recheck_connote_zone"
             title="Recheck Connote Zone"
             :active="openDialogReCheckConnoteZone"
-            :closeDialog="closeActionPopupZone"
+            :closeDialog="() => closeDialog('recheck_connote_zone')"
             :dataItem="dataItem"
             :listConnote="listConnote"
             :type="type"
@@ -251,13 +251,14 @@
         />
 
         <dialog-confirm
+            ref="unapprove_runsheet"
             title="Unapprove Runsheet"
             :message="`Are you sure you want to unapprove this runsheet?`"
             :active="activeDialogConfirmUnpproveRunsheet"
             :loading="loadingConfirmUnpproveRunsheet"
-            :closeDialog="closeDialogConfirmUnpproveRunsheet"
+            :closeDialog="() => closeDialog('unapprove_runsheet')"
             @confirm="confirmUnpproveRunsheet"
-            @cancel="closeDialogConfirmUnpproveRunsheet"
+            @cancel="closeDialog('unapprove_runsheet')"
         />
     </div>
 </template>
@@ -285,8 +286,8 @@ export default {
         breadcrumb: Breadcrumb,
         RunsheetInformation,
         CameraScanner,
-        "dialog-confirm-custom": DialogConfirmCustom,
         "dialog-confirm": DialogConfirm,
+        "dialog-recheck-courier": DialogConfirmCustom,
         "dialog-recheck-connote-zone": DialogReCheckConnoteZone,
         "dialog-recheck-connote-sla": DialogReCheckConnoteSla,
         "selector": Selector
@@ -296,7 +297,6 @@ export default {
         return {
             title: "Edit Assign",
             tempDate: [],
-            dialogPickupRequest: false,
             item_no: "",
             item_bag: "",
             item_no_remove: "",
@@ -337,7 +337,6 @@ export default {
             disabledApprove: false,
             dataItem: {},
             dataItemCheckSla: {},
-            dataItemCheckZone: {},
             openDialogReCheckConnoteZone: false,
             openDialogReCheckConnoteSla: false,
             type: '',
@@ -362,18 +361,11 @@ export default {
     methods: {
         setFocus() {
             this.$nextTick(() => {
-                let inputElement = this.$refs.formInputConnote?.$el.querySelector('input');
-
-                if (inputElement) {
-                    inputElement.focus();
-                }
+                this.$refs.formInputConnote?.$el.querySelector('input')?.focus();
             });
         },
         reload() {
             this.getDataDelivery();
-        },
-        openDialog() {
-            this.dialogPickupRequest = true;
         },
         async getDataCourier() {
             this.loading = true;
@@ -409,13 +401,11 @@ export default {
         updateValueCourier(key, val, info){
             switch(key) {
                 case "courier":
-                    let obj = this.courier_arr.filter(item => item.value == val)[0]
+                    const obj = this.courier_arr.find(item => item.value == val);
 
-                    if(Object.keys(obj).length > 0) {
-                        if(obj.hasOwnProperty('item')) {
-                            this.selectedCourier = obj.item.employee_id || '';
-                            this.updateRunsheetCourier();
-                        }
+                    if (obj?.item) {
+                        this.selectedCourier = obj.item.employee_id || '';
+                        this.updateRunsheetCourier();
                     }
                     break;
             }
@@ -491,10 +481,6 @@ export default {
                     this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong')
                 });
         },
-        closeDialogConfirmEmployee() {
-            this.dialogConfirmEmployee = false
-            this.dialogLoadingEmployee = false
-        },
         async validateBagPraRunsheet(val) {
             let valForm = {
                 item_number: this.item_bag,
@@ -537,39 +523,22 @@ export default {
                     this.openNotification('danger', err?.response?.data?.code ?? '', ' Nomor bag item is failed', err?.response?.data?.message ?? 'something went wrong');
                 })
         },
-        async scanBagPraRunsheet(postData) {
-            if (postData) {
-                this.form = postData
+        closeDialog(ref) {
+            switch (ref) {
+                case 'recheck_connote_sla':
+                    this.openDialogReCheckConnoteSla = false;
+                    break;
+                case 'recheck_connote_zone':
+                    this.openDialogReCheckConnoteZone = false;
+                    break;
+                case 'unapprove_runsheet':
+                    this.activeDialogConfirmUnpproveRunsheet = false
+                case 'recheck_courier':
+                    this.dialogConfirmEmployee = false
+                    this.dialogLoadingEmployee = false
+                default:
+                    break;
             }
-            this.type = 'BAG'
-
-            // NOTES TODO: Change this to addBagPraRunsheetToRunsheet if backend validation's ready
-            await axios
-                .get(`${this.URL.check_delivery_area}?item_number=${this.form.bag_number}&type=${this.type}&n=${this.listenNodeId}&limit=-1`, this.Helper.header())
-                .then((res) => {
-                    this.addBagPraRunsheetToRunsheet(this.form)
-                })
-                .catch((err) => {
-                    if (err.response.data.status == 'failed') {
-                        this.actionPopupZone(this.form, err.response.data.data)
-                    } else {
-                        this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
-                    }
-                });
-        },
-        actionPopupZone(dataItem, listConnote) {
-            this.dataItem = dataItem;
-            this.listConnote = listConnote;
-            this.openDialogReCheckConnoteZone = true;
-        },
-        actionPopupSla() {
-            this.openDialogReCheckConnoteSla = true;
-        },
-        closeActionPopupSla() {
-            this.openDialogReCheckConnoteSla = false
-        },
-        closeActionPopupZone() {
-            this.openDialogReCheckConnoteZone = false;
         },
         async scanConnote(postData) {
             let valForm = {}
@@ -609,7 +578,6 @@ export default {
                 const res = await axios.get(url, this.Helper.header());
                 
                 this.dataItemCheckSla = res.data.data;
-                this.dataItemCheckZone = this.form;
 
                 const itemData = this.type === 'KOLI' ? [res.data.data] : res.data.data;
 
@@ -618,26 +586,30 @@ export default {
                     : false;
                 
                 if (allItemStatusSafe) {
-                    this.checkZoneDelivery(this.form);
+                    this.checkZoneDelivery();
                 } else {
-                    this.actionPopupSla();
+                    this.openDialogReCheckConnoteSla = true;
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             }
         },
-        async checkZoneDelivery(postData) {
-            if (postData) {
-                this.form = postData
-            }
-            this.type = 'KOLI'
+        async checkZoneDelivery() {
+            const itemNumber = this.type === 'BAG' ? this.form.bag_number : this.form.koli_number;
 
             try {
-                const res = await axios.get(`${this.URL.check_delivery_area}?item_number=${this.form.koli_number}&type=${this.type}&n=${this.listenNodeId}&limit=-1`, this.Helper.header());
-                this.addConnoteToRunsheet(this.form);
+                const res = await axios.get(`${this.URL.check_delivery_area}?item_number=${itemNumber}&type=${this.type}&n=${this.listenNodeId}&limit=-1`, this.Helper.header());
+
+                if (this.type === 'BAG') {
+                    this.addBagPraRunsheetToRunsheet(this.form);
+                } else {
+                    this.addConnoteToRunsheet(this.form);
+                }
             } catch (err) {
                 if (err?.response?.data?.status === 'failed') {
-                    this.actionPopupZone(this.form, err?.response?.data?.data);
+                    this.dataItem = this.form;
+                    this.listConnote = err?.response?.data?.data
+                    this.openDialogReCheckConnoteZone = true;
                 } else {
                     this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
                 }
@@ -933,11 +905,7 @@ export default {
                     this.updatePOD(dataPOD);
                 });
             } else {
-                this.openNotification(
-                    "danger",
-                    "Failed",
-                    "Please select at least one item"
-                );
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? "Please select at least one item");
             }
         },
         approveAction(val){
@@ -960,9 +928,6 @@ export default {
             this.activeDialogConfirmUnpproveRunsheet = false
             this.reload()
         },
-        closeDialogConfirmUnpproveRunsheet(){
-            this.activeDialogConfirmUnpproveRunsheet = false
-        }, 
         async approve(val) {
             this.loadingApprove=true
             this.loadingConfirmUnpproveRunsheet = true;
