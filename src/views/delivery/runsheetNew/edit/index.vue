@@ -502,10 +502,7 @@ export default {
                 courier_id: this.employee_id
             }
             await axios
-                .post(
-                    this.URL.validation + `/create-runsheet-pra?n=${this.listenNodeId}`,
-                    valForm,
-                    this.Helper.header())
+                .post(this.URL.validation + `/create-runsheet-pra?n=${this.listenNodeId}`, valForm, this.Helper.header())
                 .then(res => {
                     this.validateCourier(val)
                 }).catch(err => {
@@ -515,9 +512,7 @@ export default {
         },
         async validateCourier(val) {
             await axios
-                .get(
-                    this.URL.bag + '/' + this.form.bag_number.replaceAll("/", "-") + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`,
-                    this.Helper.header())
+                .get(this.URL.bag + '/' + this.form.bag_number.replaceAll("/", "-") + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`, this.Helper.header())
                 .then(res => {
                     const details = res.data.detail;
                     for (let detail of details) {
@@ -528,13 +523,15 @@ export default {
                         }
                     }
                     const postData = {
-                            bag_number: this.form.bag_number,
-                            courier_employee_id: this.employee_id,
-                            delivery_runsheet_number: this.delivery_runsheet_number
-                        };
-                    this.scanBagPraRunsheet(postData)
-                    // this.refresh()
-                    // this.openNotification('success', null, ' success', 'Insert bag item successfully')
+                        bag_number: this.form.bag_number,
+                        courier_employee_id: this.employee_id,
+                        delivery_runsheet_number: this.delivery_runsheet_number
+                    };
+
+                    if (postData) {
+                        this.form = postData
+                    }
+                    this.checkItemSla('BAG')
                 }).catch(err => {
                     this.loading = false
                     this.openNotification('danger', err?.response?.data?.code ?? '', ' Nomor bag item is failed', err?.response?.data?.message ?? 'something went wrong');
@@ -554,7 +551,7 @@ export default {
                 })
                 .catch((err) => {
                     if (err.response.data.status == 'failed') {
-                        this.actionPopup(this.form, err.response.data.data)
+                        this.actionPopupZone(this.form, err.response.data.data)
                     } else {
                         this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
                     }
@@ -635,33 +632,45 @@ export default {
             await axios
                 .post(`${this.URL.validation}/create-runsheet?n=${this.listenNodeId}`, valForm, this.Helper.header())
                 .then((res) => {
-                    this.checkItemSla(this.form)
+                    this.checkItemSla('KOLI')
                 })
                 .catch((err) => {
                     this.openNotification("danger", err.response ? err.response.data.code : '', err.response.data.status, err.response.data.message);
                     this.clearInputs();
                 });
         },
-        async checkItemSla(postData) {
-            if (postData) {
-                this.form = postData
-            }
+        async checkItemSla(type) {
+            this.type = type;
 
-            this.type = 'KOLI'
+            console.log("Form Data:", this.form);
+            const url = this.type === 'KOLI' 
+                ? `${this.URL.warning_runsheet_sla_setting}/check-sla?n=${this.listenNodeId}&item_number=${this.form.koli_number}`
+                : `${this.URL.warning_runsheet_sla_setting}/check-sla-bag?n=${this.listenNodeId}&bag_number=${this.form.bag_number}`;
 
             try {
-                const res = await axios.get(`${this.URL.warning_runsheet_sla_setting}/check-sla?n=${this.listenNodeId}&item_number=${this.form.koli_number}`, this.Helper.header());
+                console.log("Fetching data...");
+                const res = await axios.get(url, this.Helper.header());
+                
+                console.log("Response Data:", res.data);
                 
                 this.dataItemCheckSla = res.data.data;
                 this.dataItemCheckZone = this.form;
+
+                const itemData = this.type === 'KOLI' ? [res.data.data] : res.data.data;
+
+                const allItemStatusSafe = Array.isArray(itemData) 
+                    ? itemData.every(item => item.status === 'SAFE') 
+                    : false;
+
+                console.log("Item Data:", itemData, "All Status Safe:", allItemStatusSafe);
                 
-                if (res.data.data.status === 'SAFE') {
+                if (allItemStatusSafe) {
                     this.checkZoneDelivery(this.form);
                 } else {
                     this.actionPopupSla();
                 }
             } catch (err) {
-                this.openNotification("danger", response?.data?.code ?? '', "Failed", response?.data?.message ?? 'Something went wrong');
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             }
         },
         async checkZoneDelivery(postData) {
@@ -677,7 +686,7 @@ export default {
                 if (err?.response?.data?.status === 'failed') {
                     this.actionPopupZone(this.form, err?.response?.data?.data);
                 } else {
-                    this.openNotification("danger", response?.data?.code ?? '', "Failed", response?.data?.message ?? 'Something went wrong');
+                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
                 }
             }
         },

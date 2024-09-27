@@ -24,10 +24,37 @@
                             </span>
                         </p>
                     </template>
-                    <template v-if="type === 'BAG'">
+                    <template v-else>
                         <p class="recheck-text">
-                            Nomor connote yang Anda scan tidak sesuai dengan area kurir pengiriman. Apakah Anda tetap ingin memasukkannya ke dalam runsheet?
+                            Terdapat connote dari bag yang Anda scan berstatus <b>{{ uniqueStatus.join(' dan ') }}</b>
+                            <br>
+                            Apakah Anda masih ingin melanjutkan pengiriman untuk connote berikut ?
                         </p>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Koli Number</th>
+                                        <th>SLA Date</th>
+                                        <th>Remaining Time</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr 
+                                        v-for="item in filteredListDataItem" 
+                                        :key="item.koli_number"
+                                    >
+                                        <td>{{ item.koli_number }}</td>
+                                        <td>{{ item.sla_date }}</td>
+                                        <td>{{ item.status === "BREACH" ? 'Late' : item.remaining_time + ' minutes' }} </td>
+                                        <td>{{ item.status }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </template>
                 </vs-col>
             </vs-row>
@@ -84,10 +111,10 @@ export default {
     props: {
         active: Boolean,
         checkZoneDelivery: Function,
-        scanBagPraRunsheet: Function,
         closeDialog: Function, 
-        dataItemCheckSla: Object,
+        dataItemCheckSla: [Object, Array],
         dataItemCheckZone: Object,
+        scanBagPraRunsheet: Function,
         title: String,
         type: String,
     },
@@ -103,15 +130,24 @@ export default {
         return {
             status: "",
             sla_date: "",
-            remaining_time: 0
+            remaining_time: 0,
+            listDataItem: [],
+            uniqueStatus: [],
+            filteredListDataItem: []
         }
     },
     watch: {
         dataItemCheckSla: function (val) {
             if(val !== undefined) {
-                this.status = val.status;
-                this.sla_date = val.sla_date;
-                this.remaining_time = val.remaining_time;
+                if (this.type === "KOLI") {
+                    this.status = val.status;
+                    this.sla_date = val.sla_date;
+                    this.remaining_time = val.remaining_time;
+                } else {
+                    this.listDataItem = val;
+                    this.filteredListDataItem = this.listDataItem.filter(item => item.status !== 'SAFE');
+                    this.uniqueStatus = [...new Set(this.filteredListDataItem.map(item => item.status))];
+                }
             }
         }
     },
@@ -133,4 +169,29 @@ export default {
 .recheck-text {
     text-align: start;
 }
+
+.table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 2em 0px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th, 
+.data-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.data-table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+}
+
 </style>
