@@ -186,16 +186,6 @@
                                         </template>
                                     </transition>
                                 </template>
-                                <template v-if="navActive === 'k-LIST-DELETE'">
-                                    <transition name="slide-fade">
-                                        <template v-if="radio_option === 'bag'">
-                                            <RunsheetInformationCancel v-if="arrStatus && dataDelivery" :ref="'runsheetInformationCancel'"
-                                                :data-delivery="dataDeliveryCancel" :arr-status="arrStatus" :query="tempSearch"
-                                                :loading="loadingRunsheet" :delivery-number="delivery_runsheet_number"
-                                                :radioOption="radio_option" @updatePOD="updatePOD" @editPOD="editPOD" :selectedItems="selectedUpdateItems"    />
-                                        </template>
-                                    </transition>
-                                </template>
                             </div>
                             <vs-row v-if="radio_option !== 'bag'">
                                 <!-- col for detail unreceive item--> 
@@ -296,7 +286,6 @@ import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogConfirmCustom from "@/views/delivery/runsheetNew/edit/dialogConfirm";
 import DialogReCheckConnoteZone from "@/views/delivery/runsheetNew/edit/dialogReCheckConnoteZone";
 import RunsheetInformation from "@/views/delivery/runsheetNew/edit/runsheetInformation";
-import RunsheetInformationCancel from "@/views/delivery/runsheetNew/edit/runsheetInformationCancel";
 
 export default {
     name: "DeliveryRunsheetEdit",
@@ -304,7 +293,6 @@ export default {
         "nav-item": NavItem,
         breadcrumb: Breadcrumb,
         RunsheetInformation,
-        RunsheetInformationCancel,
         CameraScanner,
         "dialog-confirm-custom": DialogConfirmCustom,
         "dialog-confirm": DialogConfirm,
@@ -326,7 +314,6 @@ export default {
             employee_id: "",
             employee_data: {},
             dataDelivery: [],
-            dataDeliveryCancel: [],
             summary: [],
             arrStatus: null,
             statusObj: {},
@@ -491,8 +478,6 @@ export default {
         getParamRoute() {
             this.employee_id = this.$route.params.employee_id.toString();
             this.getCourier();
-            // this.employee_data.employee_name = this.$route.params.employee_name
-            // this.employee_data.employee_code = this.$route.params.employee_code
 
             if (this.$route.name === "delivery-runsheet-edit") {
                 this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number.toString();
@@ -819,7 +804,6 @@ export default {
                 )
                 .then((res) => {
                     this.dataDelivery = this.processDataDelivery(res.data.data);
-                    this.dataDeliveryCancel = this.processDataDeliveryCancel(res.data.data);
 
                     this.dataDeliverySummary = res.data.summary;
                     this.delivery_runsheet_number = res.data.summary.delivery_runsheet_number.toString();
@@ -890,27 +874,6 @@ export default {
             // console.log(" processDataDelivery : delivery =>", delivery);
 
             return delivery;
-        },
-        processDataDeliveryCancel(data) {
-            const status = this.statusObj || {};
-            const deliveryCancel = data.delivery_cancel ? data.delivery_cancel : [];
-            deliveryCancel.map((item) => {
-                item.status_delivery = [];
-                item.is_disabled_input = false;
-                item["is_disabled_cancel"] = true;
-                if (item.hasOwnProperty("koli_number")) {
-                    if (item.koli_number.toLowerCase().includes("rt")) {
-                        item.status_delivery = [...status.rt, ...status.all];
-                    } else {
-                        item.status_delivery = [...status.normal, ...status.all];
-                    }
-                }
-                item.isDisabled = item.is_delivered === 1;
-                item.employee_name = data.employee_name;
-                item.employee_code = data.employee_code;
-            });
-
-            return deliveryCancel;
         },
         async updatePOD(dataPOD, info) {
  
