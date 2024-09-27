@@ -1974,6 +1974,9 @@ export default {
   SET_SURAT_MUATAN_MANIFEST_NUMBER(state, payload) {
     state.surat_muatan.manifest_number.value = payload
   },
+  SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled(state, payload) {
+    state.surat_muatan.manifest_number.isDisabled = payload
+  },
   SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData(state, payload) {
     state.surat_muatan.manifest_number.valueData = payload
   },

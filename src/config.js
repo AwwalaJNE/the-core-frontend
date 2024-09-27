@@ -238,5 +238,17 @@ export default {
     deposit_cod: api + 'cod-deposit',
 
     // Approval
-    approval: api + 'approval'
+    approval: api + 'approval',
+
+    // Surat Jalan Revamp
+    revamp_surat_jalan: api + 'revamp/manifest-delivery-order',
+
+    // Surat Muatan Revamp
+    revamp_surat_muatan: api + 'revamp/manifest',
+
+    // Delivery Revamp
+    revamp_delivery: api + 'revamp/delivery',
+
+    // Delivery Bag Pra Revamp
+    revamp_delivery_bag_pra: api + 'revamp/delivery-bag-pra'
 }

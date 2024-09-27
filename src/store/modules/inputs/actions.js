@@ -1873,6 +1873,9 @@ export default {
   SET_SURAT_MUATAN_MANIFEST_NUMBER({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_NUMBER', payload)
   },
+  SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled', payload)
+  },
   SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData', payload)
   },

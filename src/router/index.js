@@ -92,7 +92,7 @@ import PickupSchedule from "@/views/pickup/schedule"
 import TransportPackingKayu from "@/views/transport/transportPackingKayu"
 
 // === Transport Surat Jalan ===
-import TransportSuratJalan from "@/views/transport/suratJalan"
+import TransportSuratJalan from "@/views/transport/suratJalanNew"
 
 // === Transport Inventory Vehicle ===
 import TransportInventoryVehicle from "@/views/transport/inventoryVehicle"
@@ -113,13 +113,13 @@ import InboundBandara from "@/views/inboundAirport"
 import InboundIncomingDetail from "@/views/inboundAirport/prealert/detail"
 
 // === Transport Manifest ===
-import TransportManifest from "@/views/transport/manifest"
+import TransportManifest from "@/views/transport/manifestNew"
 
 // === Delivery Runsheet ===
-import DeliveryRunsheet from "@/views/delivery/runsheet"
+import DeliveryRunsheet from "@/views/delivery/runsheetNew"
 
 // === Delivery Runsheet EDIT===
-import DeliveryRunsheetEdit from "@/views/delivery/runsheet/edit"
+import DeliveryRunsheetEdit from "@/views/delivery/runsheetNew/edit"
 
 // === Delivery COD===
 import DeliveryCod from "@/views/delivery/cod"
