@@ -1,43 +1,40 @@
 <template>
-        <div>
-            <!-- action table ini bisa diganti pke customActionList contohnya kaya di views/transport/suratJalan.vue -->
-                <table-master 
-                :dataTable="dataTable" 
-                :dataColumn="datacolumn" 
-                :tableLoading="loading"
-                :pageSize="pagination.page_size"
-                :page="pagination.page"
-                :limit="pagination.limit"
-                :hasLinked="['manifest_number']"
-                :pickupListAction="true"
-                :cancelRequestAction="true"
-                :hasPagination="true"
-                @actionLimit="actionLimit"
-                @actionPagination="actionPagination"
-                @actionCancel="actionCancel"
-                @handleEdit="actionUpdate"
-                />
+    <div>
+        <table-master 
+            :dataTable="dataTable" 
+            :dataColumn="datacolumn" 
+            :tableLoading="loading"
+            :pageSize="pagination.page_size"
+            :page="pagination.page"
+            :limit="pagination.limit"
+            :hasLinked="['manifest_number']"
+            :pickupListAction="true"
+            :cancelRequestAction="true"
+            :hasPagination="true"
+            @actionLimit="actionLimit"
+            @actionPagination="actionPagination"
+            @actionCancel="actionCancel"
+            @handleEdit="actionUpdate"
+        />
 
-            <!--Create pickup List-->
-            <dialogCreateManifest
-                    :active="dialogManifestList"
-                    @refresh="refresh"
-                    :closeDialog="closeDialog"
-                    title="Edit Manifest"
-                    :dataItem="dataItem"
-            />
+        <dialogCreateManifest
+            title="Edit Manifest"
+            :active="dialogManifestList"
+            :closeDialog="closeDialog"
+            :dataItem="dataItem"
+            @refresh="refresh"
+        />
 
-            <!-- dialog confirm remove manifest-->
-            <dialog-confirm
-                    :active="activeDialogCancel"
-                    :loading="activeLoadingCancel"
-                    :closeDialog="closeDialogConfirmCancel"
-                    title="Cancel Surat Muatan"
-                    message="Are you sure you want to Cancel Surat Muatan ?"
-                    @confirm="confirmCancel"
-                    @cancel="closeDialogConfirmCancel"
-            />
-        </div>
+        <dialog-confirm
+            title="Cancel Surat Muatan"
+            :active="activeDialogCancel"
+            :closeDialog="closeDialogCancel"
+            :loading="activeLoadingCancel"
+            message="Are you sure you want to Cancel Surat Muatan ?"
+            @confirm="confirmCancel"
+            @cancel="closeDialogCancel"
+        />
+    </div>
 </template>
 <script>
 import axios from "axios";
@@ -139,7 +136,6 @@ export default {
                 ],
                 loading: false,
                 dataItem: {},
-                pickupData:{},
                 tempSearch: "",
                 tempDate: [],
                 startDate: "",
@@ -283,16 +279,16 @@ export default {
                 this.refresh();
             },
             actionLimit(val){
-                this.pagination.limit = val
-                this.pagination.page = 1
-                this.refresh()
+                this.pagination.limit = val;
+                this.pagination.page = 1;
+                this.refresh();
             },
             actionPagination(val) {
-                this.pagination.page = val
-                this.refresh()
+                this.pagination.page = val;
+                this.refresh();
             },
             refresh(){
-                this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
+                this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate);
             },
             actionUpdate(val){
                 if(this.dataTable.length > 0) {
@@ -330,7 +326,7 @@ export default {
                 this.cancel()
             },
 
-            closeDialogConfirmCancel(){
+            closeDialogCancel(){
                 this.activeDialogCancel = false
                 this.activeLoadingCancel=false
                 this.refresh();
@@ -338,7 +334,7 @@ export default {
             async cancel() {
                 try {
                     const res = await axios.delete(this.URL.revamp_surat_muatan + `/${this.manifest_number}?n=${this.listenNodeId}&status=CANCELED&manifest_number=${this.manifest_number}`, this.Helper.header());
-                    this.closeDialogConfirmCancel();
+                    this.closeDialogCancel();
                     this.btnLoading = false
                     this.activeLoadingCancel = false
                     this.refresh();
@@ -346,7 +342,7 @@ export default {
                 } catch (err) {
                     this.btnLoading = false
                     this.activeLoadingCancel = false
-                    this.closeDialogConfirmCancel();
+                    this.closeDialogCancel();
                     this.refresh();
                     this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed', err?.response?.data?.message ?? 'something went wrong');
                 }
