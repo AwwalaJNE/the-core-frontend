@@ -601,17 +601,12 @@ export default {
         },
         async checkItemSla(type) {
             this.type = type;
-
-            console.log("Form Data:", this.form);
             const url = this.type === 'KOLI' 
                 ? `${this.URL.warning_runsheet_sla_setting}/check-sla?n=${this.listenNodeId}&item_number=${this.form.koli_number}`
                 : `${this.URL.warning_runsheet_sla_setting}/check-sla-bag?n=${this.listenNodeId}&bag_number=${this.form.bag_number}`;
 
             try {
-                console.log("Fetching data...");
                 const res = await axios.get(url, this.Helper.header());
-                
-                console.log("Response Data:", res.data);
                 
                 this.dataItemCheckSla = res.data.data;
                 this.dataItemCheckZone = this.form;
@@ -621,8 +616,6 @@ export default {
                 const allItemStatusSafe = Array.isArray(itemData) 
                     ? itemData.every(item => item.status === 'SAFE') 
                     : false;
-
-                console.log("Item Data:", itemData, "All Status Safe:", allItemStatusSafe);
                 
                 if (allItemStatusSafe) {
                     this.checkZoneDelivery(this.form);
