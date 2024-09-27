@@ -180,7 +180,6 @@
                                                     :data-delivery="dataDelivery"
                                                     :delivery-number="delivery_runsheet_number"
                                                     :loading="loadingRunsheet"
-                                                    :query="tempSearch"
                                                     :selectedItems="selectedUpdateItems"
                                                     @update-selected="updateSelected"
                                                     @updatePOD="updatePOD"
@@ -282,7 +281,6 @@ export default {
     data() {
         return {
             title: "Edit Assign",
-            tempSearch: "",
             tempDate: [],
             dialogPickupRequest: false,
             item_no: "",

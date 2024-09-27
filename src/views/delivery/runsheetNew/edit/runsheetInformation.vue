@@ -35,11 +35,14 @@
   </div>
 </template>
 <script>
-/* eslint-disable semi, indent, quotes, import/extensions */
+
 import axios from "axios";
 import master from "@/mixins/master";
+
 import TableMaster from "@/components/table/tableMaster.vue";
+
 import DialogWarningRunsheet from "@/views/delivery/runsheetNew/edit/dialogWarningRunsheet"
+
 export default {
   name: "InboundIncoming",
   components: {
@@ -49,8 +52,6 @@ export default {
   mixins: [master],
   props: {
     loading: Boolean,
-    query: String,
-    employeeId: String,
     deliveryNumber: String,
     arrStatus: Array,
     dataDelivery: [Object, Array],
@@ -156,7 +157,6 @@ export default {
         },
       ],
       dataItem: {},
-      tempSearch: "",
       tempDate: [],
       startDate: "",
       endDate: "",
@@ -164,7 +164,7 @@ export default {
       employee_id: "",
       delivery_runsheet_number: null,
       pagination: {
-        limit: 5,
+        limit: 20,
         page_size: 1,
         page: 1,
       },
@@ -188,28 +188,8 @@ export default {
     listenLoading() {
       return this.loading;
     },
-    listenDataDelivery() {
-
-      return this.dataDelivery;
-    },
   },
   watch: {
-    query(val, old) {
-      if (val !== undefined) {
-        this.tempSearch = val;
-        if (this.tempSearch !== old) {
-          // this.getTableData(this.pagination.limit, this.pagination.page, val)
-        }
-      }
-    },
-    employeeId(val, old) {
-      if (val !== undefined) {
-        this.employee_id = val;
-        if (this.employee_id !== old) {
-          // this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
-        }
-      }
-    },
     deliveryNumber(val, old) {
       if (val !== undefined) {
         this.delivery_runsheet_number = val;
@@ -232,13 +212,6 @@ export default {
     }
   },
   mounted() {
-    // this.datacolumn.map((item) => {
-    //   if (item.key == "status_delivery") {
-    //     item.data = this.arrStatus;
-    //   }
-    // });
-
-
     this.getParamRoute();
     this.getHRSStatus();
     this.getPODOrion();
@@ -323,7 +296,6 @@ export default {
         const receiverName = this.$store.getters.getInputs.receiver_name
           .receiver_name;
         const dataPOD = {
-          // Construct the payload to be sent in the request body
           courier_employee_id: val.courier_employee_id,
           delivery_runsheet_number: val.delivery_runsheet_number,
           koli_number: val.koli_number,
@@ -334,7 +306,6 @@ export default {
 
         this.openNotification("success", null, "POD UPDATED!");
 
-        // Send the values to the parent component
         this.$emit("updatePOD", dataPOD, info);
       } catch (err) {
         this.loading = false;
@@ -382,16 +353,12 @@ export default {
     actionUpdate(key, val) {
       switch (val) {
         case "confirm":
-
           this.runsheetAction(key);
           break;
         case "edit":
           this.edit(key);
-
           break;
         default:
-
-        // code block
       }
     },
     actionPopup(id) {
