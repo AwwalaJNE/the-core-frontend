@@ -106,7 +106,7 @@ export default {
     },
     data() {
         return {
-            title: "Assign Halo",
+            title: "Assign",
             tempSearch: "",
             tempDate: moment().format("YYYY-MM-DD"),
             DataNode: [],
