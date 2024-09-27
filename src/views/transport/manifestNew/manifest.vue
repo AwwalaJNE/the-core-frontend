@@ -11,6 +11,7 @@
             :pickupListAction="true"
             :cancelRequestAction="true"
             :hasPagination="true"
+            :isDisabled="dataTable.isDisabled"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
             @actionCancel="actionCancel"
@@ -190,8 +191,7 @@ export default {
                         etd: this.dateConvert(item.etd),
                         created_at: this.dateConvert(item.created_at),
                         approved: item.is_approve === 1 ? 'YES' : 'NO',
-                        isDisabledCancel: item.status?.toLowerCase().includes('ready') ? false : true,
-                        ...(item.is_orion == "1" && { isDisabledCancel: true })
+                        isDisabled: item.is_orion == "1" || !item.status?.toLowerCase().includes('ready')
                     }));
 
                     this.dataTable = arr;
