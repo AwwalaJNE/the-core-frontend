@@ -909,9 +909,6 @@ export default {
             }
         },
         approveAction(val){
-            this.updateApprove(val)
-        },
-        updateApprove(val){
             this.data_is_approve = {
                 approved: val
             };
@@ -921,7 +918,6 @@ export default {
             } else {
                 this.activeDialogConfirmUnpproveRunsheet = true
             }
-            
         },
         confirmUnpproveRunsheet() {
             this.approve(false)
