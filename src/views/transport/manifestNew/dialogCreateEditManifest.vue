@@ -86,7 +86,6 @@
                                 :customAction="true"
                                 :customActionList="customActionList"
                                 @actionUpdate="actionUpdate"
-                                @actionPagination="actionPagination"
                             />
                         </vs-col>
                     </vs-row>
