@@ -219,7 +219,6 @@ export default {
                 this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
                 this.isDisabledPrint = val.status === 'CANCELED';
                 this.isDisabledApprove = (val.status !== 'READY' && val.is_approve === 1) || val.is_orion === "1";
-
             }
         },
         active: function(val) {
@@ -268,10 +267,6 @@ export default {
                 });
 
                 this.dataTable = arr;
-                
-                if (val.status !== "READY") {
-                    item.button_status = { remove: false };
-                }
             }
 
             this.master_form = {
