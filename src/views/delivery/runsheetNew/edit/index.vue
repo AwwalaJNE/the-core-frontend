@@ -227,10 +227,22 @@
             @updateValue="updateValueBag"
         />
 
+        <dialog-recheck-connote-sla
+            title="Recheck Connote Sla"
+            :active="openDialogReCheckConnoteSla"
+            :closeDialog="closeActionPopupSla"
+            :dataItemCheckSla="dataItemCheckSla"
+            :dataItemCheckZone="dataItemCheckZone"
+            :listConnote="listConnote"
+            :type="type"
+            @checkZoneDelivery="checkZoneDelivery"
+            @scanBagPraRunsheet="scanBagPraRunsheet"
+        />
+
         <dialog-recheck-connote-zone
             title="Recheck Connote Zone"
             :active="openDialogReCheckConnoteZone"
-            :closeDialog="closeActionPopup"
+            :closeDialog="closeActionPopupZone"
             :dataItem="dataItem"
             :listConnote="listConnote"
             :type="type"
@@ -263,6 +275,7 @@ import Selector from "@/components/input/select"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogConfirmCustom from "@/views/delivery/runsheetNew/edit/dialogConfirm";
 import DialogReCheckConnoteZone from "@/views/delivery/runsheetNew/edit/dialogReCheckConnoteZone";
+import DialogReCheckConnoteSla from "@/views/delivery/runsheetNew/edit/dialogReCheckConnoteSla";
 import RunsheetInformation from "@/views/delivery/runsheetNew/edit/runsheetInformation";
 
 export default {
@@ -275,6 +288,7 @@ export default {
         "dialog-confirm-custom": DialogConfirmCustom,
         "dialog-confirm": DialogConfirm,
         "dialog-recheck-connote-zone": DialogReCheckConnoteZone,
+        "dialog-recheck-connote-sla": DialogReCheckConnoteSla,
         "selector": Selector
     },
     mixins: [master],
@@ -322,14 +336,17 @@ export default {
             disabledConfirm: true,
             disabledApprove: false,
             dataItem: {},
+            dataItemCheckSla: {},
+            dataItemCheckZone: {},
             openDialogReCheckConnoteZone: false,
+            openDialogReCheckConnoteSla: false,
             type: '',
             listConnote: [],
             activeDialogConfirmUnpproveRunsheet: false,
             loadingConfirmUnpproveRunsheet:false,
             hrsStatus: false,
             courier_arr: [],
-            selectedCourier: ""
+            selectedCourier: "",
         };
     },
     computed: {
@@ -583,12 +600,18 @@ export default {
                     this.openNotification('danger', err?.response?.data?.code ?? '', ' Nomor bag item is failed', err?.response?.data?.message ?? 'something went wrong');
                 })
         },
-        actionPopup(dataItem, listConnote) {
+        actionPopupZone(dataItem, listConnote) {
             this.dataItem = dataItem;
             this.listConnote = listConnote;
             this.openDialogReCheckConnoteZone = true;
         },
-        closeActionPopup() {
+        actionPopupSla() {
+            this.openDialogReCheckConnoteSla = true;
+        },
+        closeActionPopupSla() {
+            this.openDialogReCheckConnoteSla = false
+        },
+        closeActionPopupZone() {
             this.openDialogReCheckConnoteZone = false;
         },
         async scanConnote(postData) {
@@ -612,12 +635,34 @@ export default {
             await axios
                 .post(`${this.URL.validation}/create-runsheet?n=${this.listenNodeId}`, valForm, this.Helper.header())
                 .then((res) => {
-                    this.checkZoneDelivery(this.form)
+                    this.checkItemSla(this.form)
                 })
                 .catch((err) => {
                     this.openNotification("danger", err.response ? err.response.data.code : '', err.response.data.status, err.response.data.message);
                     this.clearInputs();
                 });
+        },
+        async checkItemSla(postData) {
+            if (postData) {
+                this.form = postData
+            }
+
+            this.type = 'KOLI'
+
+            try {
+                const res = await axios.get(`${this.URL.warning_runsheet_sla_setting}/check-sla?n=${this.listenNodeId}&item_number=${this.form.koli_number}`, this.Helper.header());
+                
+                this.dataItemCheckSla = res.data.data;
+                this.dataItemCheckZone = this.form;
+                
+                if (res.data.data.status === 'SAFE') {
+                    this.checkZoneDelivery(this.form);
+                } else {
+                    this.actionPopupSla();
+                }
+            } catch (err) {
+                this.openNotification("danger", response?.data?.code ?? '', "Failed", response?.data?.message ?? 'Something went wrong');
+            }
         },
         async checkZoneDelivery(postData) {
             if (postData) {
@@ -625,18 +670,16 @@ export default {
             }
             this.type = 'KOLI'
 
-            await axios
-                .get(`${this.URL.check_delivery_area}?item_number=${this.form.koli_number}&type=${this.type}&n=${this.listenNodeId}&limit=-1`, this.Helper.header())
-                .then((res) => {
-                    this.addConnoteToRunsheet(this.form)
-                })
-                .catch((err) => {
-                    if (err.response.data.status == 'failed') {
-                        this.actionPopup(this.form, err.response.data.data)
-                    } else {
-                        this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
-                    }
-                });
+            try {
+                const res = await axios.get(`${this.URL.check_delivery_area}?item_number=${this.form.koli_number}&type=${this.type}&n=${this.listenNodeId}&limit=-1`, this.Helper.header());
+                this.addConnoteToRunsheet(this.form);
+            } catch (err) {
+                if (err?.response?.data?.status === 'failed') {
+                    this.actionPopupZone(this.form, err?.response?.data?.data);
+                } else {
+                    this.openNotification("danger", response?.data?.code ?? '', "Failed", response?.data?.message ?? 'Something went wrong');
+                }
+            }
         },
         async addConnoteToRunsheet(form) {
             this.loadingRunsheet = true;            
@@ -1001,6 +1044,7 @@ export default {
             this.item_bag = ""
             delete this.form.delivery_runsheet_number; 
             this.openDialogReCheckConnoteZone = false;
+            this.openDialogReCheckConnoteSla = false;
         }
     }
 };
