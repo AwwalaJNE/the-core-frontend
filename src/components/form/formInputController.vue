@@ -16,6 +16,42 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
+                                            :disabled="listenIsDisabled || InputObject[item].isDisabled"
+                                            @updateValue="updateValue" 
+                                            @inputFocus="onfocuslah"/>
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        
+                                    </template>
+                                </template>
+                                <template v-else>
+                                    <input-general 
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].value"
+                                    :typeInput="InputObject[item].typeInput"
+                                    :placeholder="InputObject[item].placeholder"
+                                    :disabled="listenIsDisabled || InputObject[item].isDisabled"
+                                    @updateValue="updateValue" 
+                                    @inputFocus="onfocuslah"/>
+                                </template>
+                                <template v-if="InputObject[item].hasOwnProperty('visible') && InputObject[item]['visible'] == true">
+                                    
+                                </template>
+                            </template>
+
+                            <template v-if="InputObject[item].typeInput.toLowerCase().includes('number')">
+                                <template v-if="InputObject[item].hasOwnProperty('visible')">
+                                    <template v-if="InputObject[item]['visible'] == true">
+                                        <div>
+                                            <input-general 
+                                            :name="InputObject[item].label"
+                                            :rules="InputObject[item].rule"
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].value"
+                                            :typeInput="InputObject[item].typeInput"
                                             :disabled="listenIsDisabled"
                                             @updateValue="updateValue" 
                                             @inputFocus="onfocuslah"/>

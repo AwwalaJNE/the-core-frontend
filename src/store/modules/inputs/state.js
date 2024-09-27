@@ -3074,13 +3074,14 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      isDisabled: false,
     },
     max_weight: {
       label: "Max Weight",
       key: "max_weight",
       rule: "",
-      typeInput: "text",
+      typeInput: "number",
       typeData: "Number",
       valueData: null,
       value: null
