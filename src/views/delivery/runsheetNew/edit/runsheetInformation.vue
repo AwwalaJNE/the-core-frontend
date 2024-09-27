@@ -54,7 +54,6 @@ export default {
     deliveryNumber: String,
     arrStatus: Array,
     dataDelivery: [Object, Array],
-    radioOption: String,
     selectedItems: Array
   },
   emits: ["update-selected"],
@@ -180,7 +179,6 @@ export default {
       test: "",
       waitToRoleRenderer: true,
       arrayOfObjects: [],
-      radio_option: "",
       disableEdit: false,
       openDialogWarning: false,
       warning_id: ''

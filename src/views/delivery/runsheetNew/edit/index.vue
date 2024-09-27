@@ -168,27 +168,7 @@
                             </vs-col>
                         </vs-row>
                         <div class="nav-box">
-                            <div v-if="radio_option === 'bag' && listenDataDelivery.length > 0" style="margin-top: 10px;">
-                                <vs-row justify="space-between">
-                                    <vs-col xs="12" sm="9" lg="9">
-                                        <nav-item :navItem="navItemm" @activeTab="activeTab" />
-                                    </vs-col>
-                                </vs-row>
-
-                                <template v-if="navActive === 'k-LIST-DELIVERY'">
-                                    <transition name="slide-fade">
-                                        <template v-if="listenDataDelivery.length > 0">
-                                            <RunsheetInformation v-if="arrStatus && dataDelivery" :ref="'runsheetInformation'"
-                                                :data-delivery="dataDelivery" :arr-status="arrStatus" :query="tempSearch"
-                                                :loading="loadingRunsheet" :delivery-number="delivery_runsheet_number"
-                                                :radioOption="radio_option" @update-selected="updateSelected" @updatePOD="updatePOD"
-                                                @editPOD="editPOD" :selectedItems="selectedUpdateItems" />
-                                        </template>
-                                    </transition>
-                                </template>
-                            </div>
-                            <vs-row v-if="radio_option !== 'bag'">
-                                <!-- col for detail unreceive item--> 
+                            <vs-row>
                                 <vs-col lg="12" :sm="12" xs="12">
                                     <template>
                                         <transition name="slide-fade">
@@ -201,7 +181,6 @@
                                                     :delivery-number="delivery_runsheet_number"
                                                     :loading="loadingRunsheet"
                                                     :query="tempSearch"
-                                                    :radioOption="radio_option"
                                                     :selectedItems="selectedUpdateItems"
                                                     @update-selected="updateSelected"
                                                     @updatePOD="updatePOD"
@@ -321,7 +300,6 @@ export default {
             loadingRunsheet: false,
             employee_code: "",
             employee_name: "",
-            radio_option: "connote",
 
             loadingCourier: false,
             loadingConfirm: false,
@@ -368,13 +346,7 @@ export default {
     methods: {
         setFocus() {
             this.$nextTick(() => {
-                let inputElement = null;
-
-                if (this.radio_option === 'bag' || this.radio_option === 'connote') {
-                    inputElement = this.$refs.formInputConnoteOrion?.$el.querySelector('input');
-                } else if (this.radio_option === 'koli') {
-                    inputElement = this.$refs.formInputConnote?.$el.querySelector('input');
-                }
+                let inputElement = this.$refs.formInputConnote?.$el.querySelector('input');
 
                 if (inputElement) {
                     inputElement.focus();
@@ -455,13 +427,8 @@ export default {
             this.form.courier_employee_id = this.employee_id;
             this.item_no = null;
             this.form.koli_number = null;
-            if (this.radio_option === "bag") {
-                this.getKoli(val);
-            }
-            else if (this.radio_option === "bag-ex") {
-                this.dialogConfirmEmployee = false;
-                this.validateBagPraRunsheet(val)
-            }
+            this.dialogConfirmEmployee = false;
+            this.validateBagPraRunsheet(val);
         },
         updateValue() {
             this.form.koli_number = this.item_no;
@@ -795,11 +762,10 @@ export default {
                 });
         },
         async getDataDelivery() {
-            let deliveryCancel = this.radio_option === 'bag';
             this.loadingRunsheet = true;
             await axios
                 .get(
-                    `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&date_filter=${this.tempDate}&deliveryCancel=${deliveryCancel}`,
+                    `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&date_filter=${this.tempDate}`,
                     this.Helper.header()
                 )
                 .then((res) => {
@@ -1056,16 +1022,6 @@ export default {
             delete this.form.delivery_runsheet_number; 
             this.openDialogReCheckConnoteZone = false;
         }
-    },
-    watch: {
-        radio_option(val) {
-            this.radio_option = val
-            if (this.radio_option == 'bag') {
-                this.getDataDelivery(val);
-            }
-
-            this.setFocus();            
-        },
     }
 };
 </script>
