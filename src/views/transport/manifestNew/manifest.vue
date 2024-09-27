@@ -51,7 +51,6 @@ export default {
         props: {
             dateFilter: Array,
             filterDateBy: String,
-            node:String,
             query: String,
             searchBy: String,
             status: [Array, String]
@@ -140,7 +139,6 @@ export default {
                 tempDate: [],
                 startDate: "",
                 endDate: "",
-                node_filter: "",
                 dialogTariff: false,
                 pagination: {
                     limit:20,
@@ -155,7 +153,7 @@ export default {
                 if(val !== undefined) {
                     this.tempSearch = val
                     if(this.tempSearch !== old) {
-                        this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.node_filter)
+                        this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
                     }
                 }
             },
@@ -166,114 +164,52 @@ export default {
                         this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
                         this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
                     }
-                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.node_filter)
-                }
-            },
-            node: function(val, old) {
-                if(val !== undefined) {
-                    this.node_filter = val
-                    if(this.node_filter !== old) {
-                        this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val)
-                    }
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
                 }
             },
         },
         methods: {
-            async getTableData(limit,page,q, from, to, node) {
-                this.loading = true
-                let query = "";
-                let startDate = "";
-                let endDate = "";
-                if(q !== undefined) {
-                    query = q
-                }
-                if(from !== undefined && to !== undefined) {
-                    startDate = from
-                    endDate = to
-                }
-                await axios
-                    .get(this.URL.surat_muatan + `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&status=${this.status}`, this.Helper.header())
-                    .then(res => {
-                        this.dataTable = res.data.data
-                        let arr = res.data.data
-                        arr.map(item => {
-                            item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
-                            item["manifest_type_name"] = (item.manifest_method) ? item.manifest_method.vehicle_mode_name: null
-                            item['jenis_kiriman'] = (item.vehicle_type) ? item.vehicle_type.vehicle_type_name: '-'
-                            item['origin_name'] = (item.origin) ? item.origin.node_name: '-'
-                            item['destination_name'] = (item.destination) ? item.destination.node_name: '-'
-                            item['eta'] = this.dateConvert(item.eta)
-                            item['etd'] = this.dateConvert(item.etd)
-                            item['created_at'] = this.dateConvert(item.created_at)
-                            item["approved"] = item.is_approve === 1 ? 'YES' : 'NO';
-                            
-                            if (item.hasOwnProperty('status') && item["status"] !== null) {
-                                let str = item["status"].toLowerCase();
-                                if (!str.includes("ready")) {
-                                    item['isDisabledCancel'] = true;
-                                }
-                                }
+            async getTableData(limit, page, q, from, to) {
+                this.loading = true;
+                const query = q || '';
+                const startDate = from || '';
+                const endDate = to || '';
 
-                            if (item.is_orion == "1") {
-                                item['isDisabledCancel'] = true
-                            }
-                        })
-                        this.dataTable = arr
-                        this.pagination.page = res.data.meta.current_page
-                        this.pagination.limit = parseInt(res.data.meta.per_page)
-                        this.pagination.page_size = res.data.meta.last_page
-                        if(res.data.data.length > 0) {
-                                
-                        } else {
-                            this.openNotification('warn', null, 'Surat Muatan data is empty!', ' Please create Surat Muatan data')
-                        }
-                        
-                        this.loading = false
-                    }).catch(err => {
-                        this.loading = false
-                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Surat Muatan', err)
-                    })
+                try {
+                    const res = await axios.get(`${this.URL.surat_muatan}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&status=${this.status}`, 
+                    this.Helper.header());
+
+                    const arr = res.data.data.map(item => ({
+                        ...item,
+                        pickup_courier_employee_name: item.employee_courier?.employee_name || null,
+                        manifest_type_name: item.manifest_method?.vehicle_mode_name || null,
+                        jenis_kiriman: item.vehicle_type?.vehicle_type_name || '-',
+                        origin_name: item.origin?.node_name || '-',
+                        destination_name: item.destination?.node_name || '-',
+                        eta: this.dateConvert(item.eta),
+                        etd: this.dateConvert(item.etd),
+                        created_at: this.dateConvert(item.created_at),
+                        approved: item.is_approve === 1 ? 'YES' : 'NO',
+                        isDisabledCancel: item.status?.toLowerCase().includes('ready') ? false : true,
+                        ...(item.is_orion == "1" && { isDisabledCancel: true })
+                    }));
+
+                    this.dataTable = arr;
+                    this.pagination = {
+                        page: res.data.meta.current_page,
+                        limit: parseInt(res.data.meta.per_page),
+                        page_size: res.data.meta.last_page
+                    };
+                    
+                    if (!arr.length) {
+                        // this.openNotification('warn', null, 'Surat Muatan data is empty!', ' Please create Surat Muatan data');
+                    }
+                } catch (err) {
+                    this.openNotification('danger', err.response?.data.code || '', 'Failed to populate Surat Muatan', err);
+                } finally {
+                    this.loading = false;
+                }
             },
-            // async getTableData(limit, page, q, from, to, node) {
-            //     this.loading = true;
-            //     let query = q ?? "";
-            //     let startDate = from ?? "";
-            //     let endDate = to ?? "";
-                
-            //     try {
-            //         const res = await axios.get(`${this.URL.surat_muatan}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&status=${this.status}`, this.Helper.header());
-                    
-            //         let arr = res.data.data.map(item => {
-            //             return {
-            //                 ...item,
-            //                 pickup_courier_employee_name: item.employee_courier ? item.employee_courier.employee_name : null,
-            //                 manifest_type_name: item.manifest_method ? item.manifest_method.vehicle_mode_name : null,
-            //                 jenis_kiriman: item.vehicle_type ? item.vehicle_type.vehicle_type_name : '-',
-            //                 origin_name: item.origin ? item.origin.node_name : '-',
-            //                 destination_name: item.destination ? item.destination.node_name : '-',
-            //                 eta: this.dateConvert(item.eta),
-            //                 etd: this.dateConvert(item.etd),
-            //                 created_at: this.dateConvert(item.created_at),
-            //                 approved: item.is_approve === 1 ? 'YES' : 'NO',
-            //                 isDisabledCancel: (!item.status?.toLowerCase().includes("ready") || item.is_orion == "1") ? true : false
-            //             };
-            //         });
-                    
-            //         this.dataTable = arr;
-            //         this.pagination.page = res.data.meta.current_page;
-            //         this.pagination.limit = parseInt(res.data.meta.per_page);
-            //         this.pagination.page_size = res.data.meta.last_page;
-
-            //         if (res.data.data.length === 0) {
-            //             this.openNotification('warn', null, 'Surat Muatan data is empty!', 'Please create Surat Muatan data');
-            //         }
-
-            //     } catch (err) {
-            //         this.openNotification('danger', err.response?.data?.code ?? '', 'Failed to populate Surat Muatan', err.response?.data?.message ?? 'Something went wrong');
-            //     } finally {
-            //         this.loading = false;
-            //     }
-            // },
             closeDialog() {
                 this.dialogManifestList = false
                 this.refresh();
