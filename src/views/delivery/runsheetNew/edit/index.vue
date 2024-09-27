@@ -488,7 +488,7 @@ export default {
                 })
                 .catch((err) => {
                     this.loadingCourier = true;
-                    // this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong')
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong')
                 });
         },
         closeDialogConfirmEmployee() {
@@ -556,46 +556,6 @@ export default {
                         this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
                     }
                 });
-        },
-        async getKoli(val) {
-            await axios
-                .get(
-                    this.URL.bag + '/' + this.form.bag_number.replaceAll("/", "-") + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`,
-                    this.Helper.header())
-                .then(res => {
-                    const details = res.data.detail;
-                    let index = 0;
-                    for (let detail of details) {
-                        const item_number = detail.item_number;
-                        const detailsLength = details.length;
-                        const postData = {
-                            bag_number: this.form.bag_number,
-                            courier_employee_id: this.employee_id,
-                            koli_number: item_number
-                        };
-                        this.validation_employee = val === false ? val : res.data.validation_employee;
-                        if (this.validation_employee) {
-                            this.dialogConfirmEmployee = true;
-                        } else {
-                            this.dialogConfirmEmployee = false;
-                            // jika nomor runsheet kosong dan kirim data lebih dari 1
-                            // set timeout untuk mendapatkan nomor runsheet yang sama
-                            if (detailsLength > 1 && !this.delivery_runsheet_number && index > 0) {
-                                setTimeout(() => {
-                                        this.scanConnote(postData);
-                                }, 5000);
-                            } else {
-                                    this.scanConnote(postData);
-                            }
-                            index++;
-                        }
-                    }
-                    // this.refresh()
-                    // this.openNotification('success', null, ' success', 'Insert bag item successfully')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', err?.response?.data?.code ?? '', ' Nomor bag item is failed', err?.response?.data?.message ?? 'something went wrong');
-                })
         },
         actionPopupZone(dataItem, listConnote) {
             this.dataItem = dataItem;
@@ -809,7 +769,7 @@ export default {
  
                 })
                 .catch((err) => {
-                    // this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong');
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong');
                 });
         },
         async getDataDelivery() {
@@ -828,7 +788,7 @@ export default {
                 })
                 .catch((err) => {
                     this.loadingRunsheet = false;
-                    // this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong');
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong');
                 });
         },
         processDataDelivery(data) {
@@ -967,10 +927,8 @@ export default {
         },
         confirmAction() {
             if (this.selectedUpdateItems.length > 0) {
-                // this.$refs.runsheetInformation.runsheetAction(this.selectedUpdateItems);
                 this.selectedUpdateItems.forEach((item) => {
                     const dataPOD = {
-                        // Construct the payload to be sent in the request body
                         courier_employee_id: item.courier_employee_id,
                         delivery_runsheet_number: item.delivery_runsheet_number,
                         koli_number: item.koli_number,
