@@ -124,7 +124,7 @@ export default {
 
                     this.summary_info = this.dataItem.summary
                 }).catch(err => {
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate service list', err?.response?.data?.message ?? 'something went wrong')
                 })
 
             this.loading = false

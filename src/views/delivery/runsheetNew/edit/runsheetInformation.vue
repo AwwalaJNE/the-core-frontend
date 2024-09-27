@@ -338,16 +338,12 @@ export default {
           } else {
             this.$router.push({ name: "DeliveryRunsheetEdit", params: {} });
           }
-          this.openNotification(
-            "success",
-            null,
-            "Romove success",
-            "Romove Koli number item successfully"
+          this.openNotification("success", null, "Remove success", "Remove Koli number item successfully"
           );
         })
         .catch((err) => {
           this.loading = false;
-          this.openNotification("danger", err.response ? err.response.data.code : '', "Romove bag item is failed", err);
+          this.openNotification("danger", err?.response?.data?.code ?? '', "Remove bag item is failed", err?.response?.data?.message ?? 'something went wrong');
         });
     },
     actionUpdate(key, val) {

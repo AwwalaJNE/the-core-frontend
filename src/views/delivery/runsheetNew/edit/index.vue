@@ -470,7 +470,7 @@ export default {
                 })
                 .catch((err) => {
                     this.loadingCourier = true;
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate status', err)
+                    // this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong')
                 });
         },
         closeDialogConfirmEmployee() {
@@ -519,7 +519,7 @@ export default {
                     // this.openNotification('success', null, ' success', 'Insert bag item successfully')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', ' Nomor bag item is failed', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', ' Nomor bag item is failed', err?.response?.data?.message ?? 'something went wrong');
                 })
         },
         async scanBagPraRunsheet(postData) {
@@ -579,7 +579,7 @@ export default {
                     // this.openNotification('success', null, ' success', 'Insert bag item successfully')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', ' Nomor bag item is failed', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', ' Nomor bag item is failed', err?.response?.data?.message ?? 'something went wrong');
                 })
         },
         actionPopup(dataItem, listConnote) {
@@ -756,7 +756,7 @@ export default {
  
                 })
                 .catch((err) => {
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate status', err)
+                    // this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong');
                 });
         },
         async getDataDelivery() {
@@ -775,7 +775,7 @@ export default {
                 })
                 .catch((err) => {
                     this.loadingRunsheet = false;
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate status', err)
+                    // this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong');
                 });
         },
         processDataDelivery(data) {
