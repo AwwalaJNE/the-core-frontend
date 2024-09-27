@@ -127,10 +127,10 @@
                                 <vs-row justify="end">
                                         <template v-if="dataDelivery.length > 0">
                                             <vs-button
-                                                :loading="loadingConfirm"
-                                                @click="confirmAction"
                                                 style="float: right"
+                                                :loading="loadingConfirm"
                                                 :disabled="disabledConfirm"
+                                                @click="confirmAction"
                                             >
                                                 <span>
                                                     Confirm Status
@@ -142,7 +142,7 @@
                                                 <vs-button
                                                     style="float: left"
                                                     :disabled="hrsStatus"
-                                                    :loading="loadingConfirm"
+                                                    :loading="loadingApprove"
                                                     @click="approveAction(true)"
                                                 >
                                                     <span>
@@ -155,7 +155,7 @@
                                                     danger
                                                     style="float: left"
                                                     :disabled="hrsStatus"
-                                                    :loading="loadingConfirm"
+                                                    :loading="loadingApprove"
                                                     @click="approveAction(false)"
                                                 >
                                                     <span>
@@ -301,6 +301,7 @@ export default {
 
             loadingCourier: false,
             loadingConfirm: false,
+            loadingApprove: false,
 
             selectedUpdateItems: [],
             dialogConfirmEmployee: false,
@@ -781,7 +782,7 @@ export default {
         processDataDelivery(data) {
             const status = this.statusObj || {};
             const delivery = data.delivery ? data.delivery : [];
-            // eslint-disable-next-line array-callback-return
+            
             delivery.map((item) => {
                 item.status_delivery = [];
                 item.is_disabled_input = false;
@@ -792,19 +793,6 @@ export default {
                         item.status_delivery = [...status.normal, ...status.all];
                     }
                 }
-                // if(item.hasOwnProperty("status")) {
-                //     // item["is_disabled_input"] = item
-                //     if(item["status"] !== null && typeof item["status"] == 'object') {
-                //             if(item["status"].hasOwnProperty('status_code')) {
-                //                 item["is_disabled_input_status"] = item["status"]["status_code"] !== null || item["status"]["status_code"] !== "" ? true : false
-                //             }
-                //     }
-                // }
-                // if(item.hasOwnProperty("status_code")){
-                //     if(item["status_code"] !== null && typeof item["status_code"] == 'string') {
-                //         item["is_disabled_input_status"] = item["status_code"] !== null || item["status_code"] !== "" ? true : false
-                //     }
-                // }
                 if (item.hasOwnProperty("remarks")) {
                     if (item["status_code"] == null) {
                         item["is_disabled_input_remarks"] =
@@ -834,8 +822,6 @@ export default {
                 item.employee_code = data.employee_code;
                 item.warning_koli_record_id = item?.warning_koli_record_id
             });
-            // console.log(" processDataDelivery : status =>", status);
-            // console.log(" processDataDelivery : delivery =>", delivery);
 
             return delivery;
         },
@@ -888,6 +874,7 @@ export default {
             this.$set(val, 'is_disabled_input_reveiver', true);
         },
         async editPOD(val) {
+            this.loadingConfirm = true;
             const dataPOD = {
                 courier_employee_id: val.courier_employee_id,
                 delivery_runsheet_number: val.delivery_runsheet_number,
@@ -974,7 +961,8 @@ export default {
             this.activeDialogConfirmUnpproveRunsheet = false
         }, 
         async approve(val) {
-            this.loadingConfirmUnpproveRunsheet=true
+            this.loadingApprove=true
+            this.loadingConfirmUnpproveRunsheet = true;
             try {
                 const res = await axios.patch(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/approval?n=${this.listenNodeId}`, JSON.stringify(this.data_is_approve), this.Helper.header());
                 
@@ -985,7 +973,8 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
             } finally {
-                this.loadingConfirmUnpproveRunsheet=false
+                this.loadingConfirmUnpproveRunsheet=false;
+                this.loadingApprove=false
             }
         },
         onCameraScannerGetData(data) {
@@ -1006,13 +995,6 @@ export default {
                 }
             }
         },
-        activeTab(val) {
-            this.navActive = val
-            let item = this.navItemm.filter(item => {
-                return item.key == val
-            })
-            this.title = item[0].title
-        },
         clearInputs() {
             this.item_no = ""
             this.item_no_remove = ""
@@ -1023,11 +1005,3 @@ export default {
     }
 };
 </script>
-<style lang="scss">
-.information {
-    min-height: 190px;
-}
-.nav-box {
-    margin-top: 1em;
-}
-</style>
