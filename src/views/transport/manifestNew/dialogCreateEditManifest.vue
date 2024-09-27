@@ -10,10 +10,17 @@
                 <div class="title-helper">
                     {{ listenTitle }}
                 </div>
-                <vs-button @click="print">
+                <vs-button 
+                    :disabled="isDisabledPrint"
+                    @click="print"
+                >
                     Print
                 </vs-button>
-                <vs-button @click="approve" :danger="is_approve === 1">
+                <vs-button  
+                    :danger="is_approve === 1"
+                    :disabled="isDisabledApprove"
+                    @click="approve" 
+                >
                     {{ is_approve === 1 ? 'Unapproved' : 'Approve' }}
                 </vs-button>
             </div>
@@ -114,6 +121,7 @@ export default {
         btnBlue: String,
         closeDialog: Function,
         dataItem: Object,
+        refresh: Function,
         title: String,        
     },
     data() {
@@ -180,6 +188,8 @@ export default {
             etd: null,
             estimated_time_in_hour: null,
             isDisabled: false,
+            isDisabledPrint: false,
+            isDisabledApprove: false,
             is_approve: 0,
             item_remove: "",
             master_form: {}
@@ -207,12 +217,10 @@ export default {
             if (val !== undefined) {
                 this.getEditData(val);
 
-                if (val.status !== 'READY' || val.is_orion == "1" || val.is_approve == 1) {
-                    this.isDisabled = true
-                }
-                else {
-                    this.isDisabled = false
-                }
+                this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
+                this.isDisabledPrint = val.status === 'CANCELED';
+                this.isDisabledApprove = (val.status !== 'READY' && val.is_approve === 1) || val.is_orion === "1";
+
             }
         },
         active: function(val) {
@@ -252,11 +260,19 @@ export default {
                         data.bag_weight = data.total_weight;
                         data.destination_name = data.bag?.destination?.node_tariff_code || '';
                         
+                        if (val.status !== "READY") {
+                            data.button_status = { remove: false };
+                        }
+
                         arr.push(data);
                     }
                 });
 
                 this.dataTable = arr;
+                
+                if (val.status !== "READY") {
+                    item.button_status = { remove: false };
+                }
             }
 
             this.master_form = {
@@ -596,6 +612,8 @@ export default {
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
+            } finally {
+                this.$emit('refresh');
             }
         },
         print(){
@@ -617,10 +635,6 @@ export default {
         },
         updateValue() {
             this.handleSubmit();
-        }, 
-        actionPagination(val) {
-            this.pagination.page = val;
-            this.refresh();
         },
         onChangeCustom(type, val, info = {}) {
             const updateMasterForm = (key, value) => {

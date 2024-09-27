@@ -10,10 +10,17 @@
                 <div class="title-helper">
                     {{ listenTitle }}
                 </div>
-                <vs-button @click="print">
+                <vs-button 
+                    :disabled="isDisabledPrint"
+                    @click="print"
+                >
                     Print
                 </vs-button>
-                <vs-button @click="approve" :danger="is_approve === 1">
+                <vs-button  
+                    :danger="is_approve === 1"
+                    :disabled="isDisabledApprove"
+                    @click="approve" 
+                >
                     {{ is_approve === 1 ? 'Unapproved' : 'Approve' }}
                 </vs-button>
             </div>
@@ -178,6 +185,8 @@ export default {
             isDestinationDisable: "",
             is_penerusan: true,
             isDisabled: false,
+            isDisabledPrint: false,
+            isDisabledApprove: false,
             is_approve: 0,
             item_remove: "",
             total_weight: 0,
@@ -216,7 +225,11 @@ export default {
             this.manifest_do_number = val.manifest_do_number;
             this.dataTable = val.detail;
             this.is_penerusan = val.is_penerusan === "1";
+
             this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
+            this.isDisabledPrint = val.status === 'CANCELED';
+            this.isDisabledApprove = (val.status !== 'READY' && val.is_approve === 1) || val.is_orion === "1";
+
             this.is_approve = val.is_approve;
 
             this.dataTable.forEach(item => {
@@ -503,6 +516,8 @@ export default {
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
+            } finally {
+                this.$emit('refresh');
             }
         },
         handleClearForm() {
