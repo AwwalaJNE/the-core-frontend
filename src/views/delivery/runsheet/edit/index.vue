@@ -925,6 +925,7 @@ export default {
         })
         .catch((err) => {
           this.loadingRunsheet = false;
+          this.clearInputs()
           this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
         });
     },
