@@ -8,56 +8,16 @@
                 </div>
             </vs-col>
         </vs-row>
-        <template>
-            <vs-row style="margin-top:3em">
-                <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px;">
-                    <vs-radio v-model="radio_option" val="connote" :disabled="disabledApprove">
-                        Connote (orion)
-                    </vs-radio>
-                </vs-col>
-                <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px">
-                    <vs-radio v-model="radio_option" val="koli" :disabled="disabledApprove">
-                        Koli
-                    </vs-radio>
-                </vs-col>
-                <vs-col xs="12" sm="3" lg="3" >
-                    <vs-radio v-model="radio_option" val="bag-ex" :disabled="disabledApprove">
-                        Bag Pra Runsheet
-                    </vs-radio>
-                </vs-col>
-            </vs-row>
-        </template>
         <vs-row align="center" style="margin-top: 1rem;">
             <template>
-                <vs-col v-if="radio_option === 'bag'" xs="12" sm="3" lg="3">
+                <vs-col xs="12" sm="3" lg="3">
                     <div class="center">
                         <vs-input
                             ref="formInputConnote"
                             v-model="item_bag"
                             border
                             type="text"
-                            label-placeholder="Scan Bag disini"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="updateValueBag"
-                            @click-icon="$refs.cameraScanner.open('formInputConnote')"
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                </vs-col>
-                <vs-col v-if="radio_option === 'bag-ex'" xs="12" sm="3" lg="3">
-                    <div class="center">
-                        <vs-input
-                            ref="formInputConnote"
-                            v-model="item_bag"
-                            border
-                            type="text"
-                            label-placeholder="Scan Bag disini"
+                            label-placeholder="Scan Bag Pra Runsheet Here"
                             autofocus
                             icon-after
                             v-uppercase
@@ -72,13 +32,13 @@
                     </div>
                 </vs-col>
                 <vs-col xs="12" sm="3" lg="3">
-                    <div v-if="radio_option === 'koli'" class="center">
+                    <div class="center">
                         <vs-input
                             ref="formInputConnote"
                             v-model="item_no"
                             border
                             type="text"
-                            label-placeholder="Scan Koli here"
+                            label-placeholder="Scan Connote Here"
                             autofocus
                             icon-after
                             v-uppercase
@@ -91,149 +51,21 @@
                             </template>
                         </vs-input>
                     </div>
-                    <div v-else-if="radio_option === 'connote'" class="center">
-                        <vs-input
-                            ref="formInputConnoteOrion"
-                            v-model="item_no_orion"
-                            border
-                            type="text"
-                            label-placeholder="Scan Connote here (orion)"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="updateValueOrion"
-                            @click-icon="
-                                $refs.cameraScanner.open('formInputConnoteOrion')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                    <div v-else-if="radio_option === 'bag'" class="center">
-                        <vs-input
-                            ref="formInputConnote"
-                            v-model="item_no"
-                            border
-                            type="text"
-                            label-placeholder="Scan Koli disini "
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="updateValue"
-                            @click-icon="
-                                $refs.cameraScanner.open('formInputConnote')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                    <div v-else-if="radio_option === 'bag-ex'" class="center">
-                        <vs-input
-                            ref="formInputConnote"
-                            v-model="item_no"
-                            border
-                            type="text"
-                            label-placeholder="Scan Koli disini "
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="updateValue"
-                            @click-icon="
-                                $refs.cameraScanner.open('formInputConnote')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
                 </vs-col>
                 <vs-col xs="12" sm="3" lg="3">
-                    <div v-if="radio_option === 'koli'" class="center">
+                    <div class="center">
                         <vs-input
                             ref="formRemoveConnote"
                             v-model="item_no_remove"
                             border
                             type="text"
-                            label-placeholder="Remove Koli here"
+                            label-placeholder="Remove Connote Here"
                             autofocus
                             icon-after
                             v-uppercase
                             :disabled="disabledApprove"
                             @keyup.enter="removeValue"
-                            @click-icon="
-                                $refs.cameraScanner.open('formRemoveConnote')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                    <div v-else-if="radio_option === 'connote'" class="center">
-                        <vs-input
-                            ref="formRemoveConnoteOrion"
-                            v-model="item_no_orion_remove"
-                            border
-                            type="text"
-                            label-placeholder="Remove Connote here (orion)"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="removeValueOrion"
-                            @click-icon="
-                                $refs.cameraScanner.open('formRemoveConnoteOrion')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                    <div v-else-if="radio_option === 'bag'" class="center">
-                        <vs-input
-                            ref="formRemoveConnote"
-                            v-model="item_no_remove"
-                            border
-                            type="text"
-                            label-placeholder="Hapus Koli disini"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="removeValue"
-                            @click-icon="
-                                $refs.cameraScanner.open('formRemoveConnote')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                    <div v-else-if="radio_option === 'bag-ex'" class="center">
-                        <vs-input
-                            ref="formRemoveConnote"
-                            v-model="item_no_remove"
-                            border
-                            type="text"
-                            label-placeholder="Hapus Koli disini"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="removeValue"
-                            @click-icon="
-                                $refs.cameraScanner.open('formRemoveConnote')
-                            "
+                            @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
                         >
                             <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -489,8 +321,6 @@ export default {
             item_no: "",
             item_bag: "",
             item_no_remove: "",
-            item_no_orion_remove: "",
-            item_no_orion: "",
             form: {},
             delivery_runsheet_number: "",
             employee_id: "",
@@ -652,20 +482,8 @@ export default {
             this.form.bag_number = null;
             this.scanConnote();
         },
-        updateValueOrion() {
-            this.form.koli_number = `${this.item_no_orion}00`;
-            this.form.courier_employee_id = this.employee_id;
-            this.form.bag_number = null;
-            this.scanConnote();
-        },
         removeValue() {
             this.form.koli_number = this.item_no_remove;
-            this.form.courier_employee_id = this.employee_id;
-            this.form.bag_number = null;
-            this.removeConnote();
-        },
-        removeValueOrion() {
-            this.form.koli_number = `${this.item_no_orion_remove}00`;
             this.form.courier_employee_id = this.employee_id;
             this.form.bag_number = null;
             this.removeConnote();
@@ -877,8 +695,6 @@ export default {
 
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Create runsheet success");
-                    this.loadingRunsheet = false;
-                    this.clearInputs()
                 } else {
                     const res = await axios.post(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
                     
@@ -888,13 +704,12 @@ export default {
                     this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Update runsheet success");
-                    this.loadingRunsheet = false;
-                    this.clearInputs();
-                    this.setFocus();
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
+                this.clearInputs();
+                this.setFocus();
                 this.loadingRunsheet = false;
             }
         },
@@ -1251,10 +1066,6 @@ export default {
                 const result = data.data;
 
                 switch (data.namespace) {
-                    case "formInputConnoteOrion":
-                        this.item_no_orion = result.text;
-                        this.updateValueOrion();
-                        break;
                     case "formInputConnote":
                         this.item_no = result.text;
                         this.updateValue();
@@ -1263,12 +1074,7 @@ export default {
                         this.item_no_remove = result.text;
                         this.removeValue();
                         break;
-                    case "formRemoveConnoteOrion":
-                        this.item_no_orion_remove = result.text;
-                        this.removeValueOrion();
-                        break;
                     default:
-
                         break;
                 }
             }
@@ -1282,9 +1088,7 @@ export default {
         },
         clearInputs() {
             this.item_no = ""
-            this.item_no_orion = ""
             this.item_no_remove = ""
-            this.item_no_orion_remove = ""
             this.item_bag = ""
             delete this.form.delivery_runsheet_number; 
             this.openDialogReCheckConnoteZone = false;
