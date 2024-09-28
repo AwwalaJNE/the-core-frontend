@@ -5,53 +5,19 @@
                 <div class="titlePage">
                     <breadcrumb />
                     <h2>Tracing</h2>
-                </div>
-
-                <!-- <div class="mt-2">
-                    <vs-row justify="space-between">
-                        <vs-col xs="9" sm="9" lg="9">
-                            <form @submit.prevent="openDialog">
-                                <vs-input border type="text"
-                                    v-model="item_no"
-                                    label-placeholder="Scan Koli Here"
-                                    :autofocus="true"
-                                    ref="formInputUnbagging">
-                                </vs-input>
-                            </form>
-                        </vs-col>
-                    </vs-row>
-                </div> -->
-
-                
+                </div>                
             </vs-col>
         </vs-row>
 
-        <template>
-            <div>
-                <vs-row style="margin-top:1em">
-                    <vs-col xs="12" sm="6" lg="2" style="margin-bottom: 10px;">
-                        <vs-radio v-model="radio_option" val="connote">
-                            Connote (orion)
-                        </vs-radio>
-                    </vs-col>
-                    <vs-col xs="12" sm="6" lg="2">
-                        <vs-radio v-model="radio_option" val="koli">
-                            Koli
-                        </vs-radio>
-                    </vs-col>
-                </vs-row>
-            </div>
-        </template>
-
         <vs-row>
             <vs-col xs="12" sm="3" lg="3" style="margin-top: 2em">
-                <div v-if="radio_option === 'koli'" class="center">
+                <div class="center">
                     <vs-input
                         ref="formInputConnote"
                         v-model="item_no"
                         border
                         type="text"
-                        label-placeholder="Scan Koli here"
+                        label-placeholder="Scan Item here"
                         autofocus
                         icon-after
                         v-uppercase
@@ -63,57 +29,21 @@
                         </template>
                     </vs-input>
                 </div>
-                <div v-else class="center">
-                    <vs-input
-                        ref="formInputConnoteOrion"
-                        v-model="item_no_orion"
-                        border
-                        type="text"
-                        label-placeholder="Scan Connote here (orion)"
-                        autofocus
-                        icon-after
-                        v-uppercase
-                        @keyup.enter="updateValueOrion"
-                        @click-icon="$refs.cameraScanner.open('formInputConnoteOrion')"
-                    >
-                        <template #icon>
-                            <i class="bx bx-barcode-reader" />
-                        </template>
-                    </vs-input>
-                </div>
             </vs-col>
             
             <vs-col xs="12" sm="3" lg="3" style="margin-top: 2em">
-                <div v-if="radio_option === 'koli'" class="center">
+                <div class="center">
                     <vs-input
                         ref="formRemoveConnote"
                         v-model="item_no_remove"
                         border
                         type="text"
-                        label-placeholder="Remove Koli here"
+                        label-placeholder="Remove Item here"
                         autofocus
                         icon-after
                         v-uppercase
                         @keyup.enter="removeValue"
                         @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
-                    >
-                        <template #icon>
-                            <i class="bx bx-barcode-reader" />
-                        </template>
-                    </vs-input>
-                </div>
-                <div v-else class="center">
-                    <vs-input
-                        ref="formRemoveConnoteOrion"
-                        v-model="item_no_orion_remove"
-                        border
-                        type="text"
-                        label-placeholder="Remove Connote here (orion)"
-                        autofocus
-                        icon-after
-                        v-uppercase
-                        @keyup.enter="removeValueOrion"
-                        @click-icon="$refs.cameraScanner.open('formRemoveConnoteOrion')"
                     >
                         <template #icon>
                             <i class="bx bx-barcode-reader" />
@@ -193,7 +123,7 @@ import SelectSearchBy from "@/components/search/selectSearchBy";
 
 
 export default {
-    name:"irregularities-tracing",
+    name:"tracing",
     mixins:[master],
     components: {
         "nav-item": NavItem,
@@ -208,8 +138,6 @@ export default {
         return {
             item_no: "",
             item_no_remove: "",
-            item_no_orion: "",
-            item_no_orion_remove: "",
             tempSearch: "",
             radio_option: "connote",
             loading:false,
@@ -348,14 +276,14 @@ export default {
                         this.dataTable = []
                         
                         if (query != "") {
-                            this.openNotification('danger', err.response ? err.response.data.code : '', 'Irreguralities Tracing data is empty!', ' data is empty or not found, please check your keyword in the input search')
+                            this.openNotification('danger', err.response ? err.response.data.code : '', 'Tracing data is empty!', ' data is empty or not found, please check your keyword in the input search')
                         }
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Tracing', err)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Tracing', err?.response?.data?.message ?? 'Something went wrong');
                 })
         },
         async handleSubmit() {
@@ -368,15 +296,15 @@ export default {
                     this.refresh()
 
                     this.dialogRemarkActive = false
-                    this.openNotification(null, 'Success', 'Create new cancel connote is success')
+                    this.openNotification("success", null, 'Success', res?.data?.message ?? 'Create new tracing is success')
                 }).catch(err => {
                     this.loading = false
                     this.refresh()
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new tracing failed', err.response ? err.response.data.message : 'something went wrong')
                 })
         },
         showData(row) {
-            this.$router.push(`/irreguralities/tracing/${row.koli_number}/`);
+            this.$router.push(`/tracing/${row.koli_number}/`);
             this.refresh();
         },
         refresh(){
@@ -428,10 +356,6 @@ export default {
                 const result = data.data;
 
                 switch (data.namespace) {
-                    case "formInputConnoteOrion":
-                        this.item_no_orion = result.text;
-                        this.updateValueOrion();
-                        break;
                     case "formInputConnote":
                         this.item_no = result.text;
                         this.updateValue();
@@ -439,10 +363,6 @@ export default {
                     case "formRemoveConnote":
                         this.item_no_remove = result.text;
                         this.removeValue();
-                        break;
-                    case "formRemoveConnoteOrion":
-                        this.item_no_orion_remove = result.text;
-                        this.removeValueOrion();
                         break;
                     default:
                         break;
@@ -460,17 +380,17 @@ export default {
                 )
                 .then((res) => {
                     if (res.data.hasOwnProperty("summary")) {
-                        this.openNotification(null, "Success", "Remove koli success");
+                        this.openNotification("success", null, "Success", res?.data?.message ?? "Remove koli success");
                         this.loadingScanConnote = false;
                     } else {
-                        this.openNotification(null, "Success", res.data.message);
+                        this.openNotification("success", null, "Success", res?.data?.message);
                         this.loadingScanConnote = false;
                     }
                     this.refresh();
                 })
                 .catch((err) => {
                     this.loadingScanConnote = false;
-                    this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
+                    this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err.response.data.message);
                 });
         },
         async removeConnote() {
@@ -483,10 +403,10 @@ export default {
                 )
                 .then((res) => {
                     if (res.data.hasOwnProperty("summary")) {
-                        this.openNotification(null, "Success", "Remove koli success");
+                        this.openNotification("success", null, "Success", res?.data?.message ?? "Remove koli success");
                         this.loadingScanConnote = false;
                     } else {
-                        this.openNotification(null, "Success", res.data.message);
+                        this.openNotification("success", null, "Success", res?.data?.message);
                         this.loadingScanConnote = false;
                     }
 
@@ -494,7 +414,7 @@ export default {
                 })
                 .catch((err) => {
                     this.loadingScanConnote = false;
-                    this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
+                    this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? 'Something went wrong');
                 });
         },
 
@@ -507,16 +427,6 @@ export default {
             this.form.item_number = this.item_no_remove;
             this.removeConnote();
             this.item_no_remove = null;
-        },
-        updateValueOrion() {
-            this.form.item_number = `${this.item_no_orion}`;
-            this.scanConnote();
-            this.item_no_orion = null;
-        },
-        removeValueOrion() {
-            this.form.item_number = this.item_no_orion_remove;
-            this.removeConnote();
-            this.item_no_orion_remove = null;
         },
         updateSearchBy(key, val) {
             val = val.replaceAll(" ", "_");
