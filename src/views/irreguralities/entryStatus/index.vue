@@ -193,7 +193,6 @@ export default {
                 {
                     label: "Date",
                     key: "created_at",
-                    width: "md"
                     width: "sm"
                 },
                 {
