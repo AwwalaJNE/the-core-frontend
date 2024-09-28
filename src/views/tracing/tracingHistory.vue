@@ -262,16 +262,13 @@ export default {
             tempFrom: "",
             tempTo: "",
             pagination: {
-                limit: 10,
+                limit: 20,
                 page_size: 1,
                 page: 1
             },
             dialogRemarkActive: false,
             dialogMessageActive: false,
-
             dateRange: [],
-
-            //search remarks
             searchByRemark: "user login",
             filterDateByRemark: "create",
             searchPlaceholderRemark: "Search User",
@@ -295,8 +292,6 @@ export default {
                     value: 'create'
                 },
             ],
-
-            //search Runsheet
             searchByRunsheet: "runsheet",
             filterDateByRunsheet: "create",
             searchPlaceholderRunsheet: "Search Runsheet Number",
@@ -320,8 +315,6 @@ export default {
                     value: 'create'
                 },
             ],
-
-            //search Message
             searchByMessage: "user",
             filterDateByMessage: "create",
             searchPlaceholderMessage: "Search User",
@@ -363,7 +356,6 @@ export default {
                     this.dialogMessageActive = true
                     break;
                 default:
-                // code block
             }
         },
 

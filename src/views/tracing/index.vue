@@ -276,31 +276,14 @@ export default {
                         this.dataTable = []
                         
                         if (query != "") {
-                            this.openNotification('danger', err.response ? err.response.data.code : '', 'Tracing data is empty!', ' data is empty or not found, please check your keyword in the input search')
+                            this.openNotification('danger', err?.response?.data?.code ?? "", 'Tracing data is empty!', ' data is empty or not found, please check your keyword in the input search')
                         }
                     }
                     
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Tracing', err?.response?.data?.message ?? 'Something went wrong');
-                })
-        },
-        async handleSubmit() {
-            await axios
-                .post(
-                    this.URL.irregularities + `?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
-                    this.refresh()
-
-                    this.dialogRemarkActive = false
-                    this.openNotification("success", null, 'Success', res?.data?.message ?? 'Create new tracing is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.refresh()
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new tracing failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err?.response?.data?.code ?? "", 'Failed to populate Tracing', err?.response?.data?.message ?? 'Something went wrong');
                 })
         },
         showData(row) {
@@ -315,13 +298,8 @@ export default {
             if(this.dateRange != null && this.dateRange.length > 0) {
                 from = moment(this.dateRange[0]).format("YYYY-MM-DD")
                 to = moment(this.dateRange[1]).format("YYYY-MM-DD")
-            } 
-            // else {
-            //     from = moment(d).format("YYYY-MM-DD")
-            //     to = moment(d).format("YYYY-MM-DD")
-            // }
+            }
 
-            
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
 
         },
@@ -348,9 +326,7 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-
-
-        // Scan Koli
+        
         onCameraScannerGetData(data) {
             if (data && data.event === "result") {
                 const result = data.data;
@@ -390,7 +366,7 @@ export default {
                 })
                 .catch((err) => {
                     this.loadingScanConnote = false;
-                    this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err.response.data.message);
+                    this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? 'Something went wrong');
                 });
         },
         async removeConnote() {
