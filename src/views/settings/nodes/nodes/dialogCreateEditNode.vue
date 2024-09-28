@@ -111,11 +111,13 @@ export default {
             if(val !== undefined) {
                 this.node_id = val.node_id
                 this.$store.dispatch("SET_NODE_NODE_ID_visible", true)
+                this.$store.dispatch("SET_NODE_IS_CDM_ValueData", val.is_cdm)
             }
         }
     },
     methods: {
         formData(form,value){
+            form["is_cdm"] = form["is_cdm"] ? '1' : '0'
             this.form = form
             this.ipAddress = this.$store.getters.getInputs.value
  

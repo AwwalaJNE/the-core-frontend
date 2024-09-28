@@ -196,7 +196,10 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
-                        this.dataTable = res.data.data
+                        this.dataTable = res.data.data.map(item => ({
+                            ...item,
+                            is_cdm: item.is_cdm === '1' ? true : false
+                        }));
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
