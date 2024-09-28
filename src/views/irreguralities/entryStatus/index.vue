@@ -194,6 +194,12 @@ export default {
                     label: "Date",
                     key: "created_at",
                     width: "md"
+                    width: "sm"
+                },
+                {
+                    label: "Orion Number",
+                    key: "irg_sequence",
+                    width: "xs"
                 },
                 {
                     label: "Bag Number",
@@ -245,6 +251,10 @@ export default {
                 {
                     label: 'Koli number',
                     value: 'koli_number'
+                },
+                {
+                    label: "Orion Number",
+                    value: "irg_sequence",
                 },
                 {
                     label: 'Bag number',
