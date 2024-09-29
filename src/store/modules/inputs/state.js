@@ -1048,7 +1048,7 @@ export default {
       value: true
     },
     is_cdm: {
-      titleLabel: "Is CDM",
+      titleLabel: "Has Cash Deposit Machine (CDM)",
       label: "True|False",
       key: "is_cdm",
       rule: "required",
