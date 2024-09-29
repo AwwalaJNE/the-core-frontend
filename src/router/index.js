@@ -73,6 +73,9 @@ import DetailConnote from "@/views/transactionList/detail"
 // === Trace Connote ===
 import TraceConnote from '@/views/traceConnote/index'
 
+// === Trace Bag ===
+import TraceBag from '@/views/traceBag/index'
+
 // === Cash Register  ===
 import CashRegister from "@/views/cashRegister"
 
@@ -364,6 +367,16 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Trace Connote"
+        }
+      },
+      {
+        path: "trace-bag/:bag_number?",
+        name: "trace-bag",
+        component: TraceBag,
+        children: [],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Trace Bag"
         }
       },
       {
