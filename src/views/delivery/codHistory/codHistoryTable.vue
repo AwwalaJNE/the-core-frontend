@@ -143,7 +143,6 @@ export default {
           this.Helper.header()
         )
         .then((res) => {
-          let arr = res.data.data
           let is_cdm = this.listenNodeIsCDM ? ["TRB", "CDM"] : ["TRB"];
           let arr = res.data.data.filter(item => is_cdm.includes(item.deposit_method));
 
