@@ -49,12 +49,12 @@
                 </vs-row>
                 <vs-row>
                     <vs-col xs="12" sm="6" lg="2" style="margin-bottom: 10px;">
-                        <vs-radio v-model="radio_option" val="cdm">
+                        <vs-radio v-model="radio_option" val="CDM">
                             CDM
                         </vs-radio>
                     </vs-col>
                     <vs-col xs="12" sm="6" lg="2">
-                        <vs-radio v-model="radio_option" val="trb">
+                        <vs-radio v-model="radio_option" val="TRB">
                             TRB
                         </vs-radio>
                     </vs-col>
@@ -150,7 +150,7 @@ export default {
             validHrsNumber: [],
             invalidHrsNumber: [],
             loading: false,
-            radio_option: "cdm",
+            radio_option: "CDM",
         }
     },
     methods: {
@@ -174,7 +174,7 @@ export default {
                 .post(
                     this.URL.deposit_cod + `?n=${this.listenNodeId}`,
                     JSON.stringify({
-                        is_cdm: this.radio_option,
+                        deposit_method: this.radio_option,
                         hrs_numbers: this.validHrsNumber
                     }), 
                     this.Helper.header())
