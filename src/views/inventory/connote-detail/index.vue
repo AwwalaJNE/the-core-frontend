@@ -58,6 +58,13 @@
                             </vs-col>
                           </vs-row>
                         </template>
+                        <template v-if="navActive === 'k-BAG-HISTORY'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                              <select-bag-history />
+                            </vs-col>
+                          </vs-row>
+                        </template>
                         
                     </div>
                 </vs-col>
@@ -75,6 +82,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import selectorDetailVue from "@/views/inventory/connote-detail/connote/selectorDetail"
 import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
+import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
 
 
 export default {
@@ -86,7 +94,8 @@ export default {
         "search-input": SearchInput,
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
-        "select-status-inventory": SelectInventoryVue
+        "select-status-inventory": SelectInventoryVue,
+        "select-bag-history": SelectBagHistory
     },
     data() {
         return {
@@ -100,6 +109,11 @@ export default {
                     label: "ACTIVITY",
                     key: "k-ACTIVITY",
                     title: "Connote Activity"
+                },
+                {
+                    label: "BAG HISTORY",
+                    key: "k-BAG-HISTORY",
+                    title: "Connote's Bag History"
                 }
             ],
             navActive: "k-INFO",
