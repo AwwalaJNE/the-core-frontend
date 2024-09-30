@@ -3500,4 +3500,53 @@ export default {
   },
 
   //====== END CONFIGURATION WARNING RUNSHEET ======
+
+
+  //====== CONFIGURATION WARNING SLA======  
+
+  SET_CONFIGURATION_WARNING_SLA_SETTING_ID(state, payload) {
+    state.configuration_warning_sla.setting_id.value = payload
+  },
+  SET_CONFIGURATION_WARNING_SLA_SETTING_ID_visible(state, payload) {
+    state.configuration_warning_sla.setting_id.visible = payload
+  },
+  SET_CONFIGURATION_WARNING_SLA_SETTING_ID_ValueData(state, payload) {
+    state.configuration_warning_sla.setting_id.valueData = payload
+  },
+
+
+  SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE(state, payload) {
+    state.configuration_warning_sla.formula_type.value = payload
+  },
+  SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE_ValueData(state, payload) {
+    state.configuration_warning_sla.formula_type.valueData = payload
+  },
+  SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE_ArrData(state, payload) {
+    state.configuration_warning_sla.formula_type.hasOwnProperty('arrData') ?
+    state.configuration_warning_sla.formula_type.arrData = payload :
+    state.configuration_warning_sla.formula_type.arrData = []
+  },
+
+
+  SET_CONFIGURATION_WARNING_SLA_VALUE(state, payload) {
+    state.configuration_warning_sla.value.value = payload
+  },
+  SET_CONFIGURATION_WARNING_SLA_VALUE_ValueData(state, payload) {
+    state.configuration_warning_sla.value.valueData = payload
+  },
+
+
+  SET_CONFIGURATION_WARNING_SLA_NODE_ID(state, payload) {
+    state.configuration_warning_sla.node_id.value = payload
+  },
+  SET_CONFIGURATION_WARNING_SLA_NODE_ID_ValueData(state, payload) {
+    state.configuration_warning_sla.node_id.valueData = payload
+  },
+  SET_CONFIGURATION_WARNING_SLA_NODE_ID_ArrData(state, payload) {
+    state.configuration_warning_sla.node_id.hasOwnProperty('arrData') ?
+    state.configuration_warning_sla.node_id.arrData = payload :
+    state.configuration_warning_sla.node_id.arrData = []
+  },
+
+  //====== END CONFIGURATION WARNING SLA ======
 }

@@ -212,6 +212,7 @@ export default {
 
     // Configuration Warning Runsheet
     configuration_warning_runsheet : api + 'warning-koli-setting',
+    configuration_warning_sla : api + 'warning-runsheet-sla-setting',
 
     // Configuration Warning Runsheet
     warning_runsheet : api + 'warning-koli-record',
@@ -251,7 +252,4 @@ export default {
 
     // Delivery Bag Pra Revamp
     revamp_delivery_bag_pra: api + 'revamp/delivery-bag-pra',
-
-    // Warning Runsheet Sla Setting
-    warning_runsheet_sla_setting: api + 'warning-runsheet-sla-setting'
 }
