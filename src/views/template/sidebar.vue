@@ -101,6 +101,7 @@ export default {
           icon: "bx-search",
           permission: "",
           children: [],
+          showAll: true,
         },
         {
           label: "Trace Bag",
@@ -108,6 +109,7 @@ export default {
           icon: "bx-search",
           permission: "",
           children: [],
+          showAll: true,
         },
         {
           label: "Transaction",
@@ -379,6 +381,43 @@ export default {
           ],
         },
         {
+          label: "Helpdesk",
+          url: null,
+          icon: "bx-user-voice",
+          children: [
+            {
+              label: "Connote",
+              url: "/helpdesk/connote",
+              icon: "",
+              rolePermission: "HELPDESK",
+            },
+            {
+              label: "Bag",
+              url: "/helpdesk/bag",
+              icon: "",
+              rolePermission: "HELPDESK",
+            },
+            {
+              label: "Surat Jalan",
+              url: "/helpdesk/surat-jalan",
+              icon: "",
+              rolePermission: "HELPDESK",
+            },
+            {
+              label: "Surat Muatan",
+              url: "/helpdesk/surat-muatan",
+              icon: "",
+              rolePermission: "HELPDESK",
+            },
+            {
+              label: "Runsheet",
+              url: "/helpdesk/runsheet",
+              icon: "",
+              rolePermission: "HELPDESK",
+            },
+          ],
+        },
+        {
           label: "Settings",
           url: null,
           icon: "bx-cog",
@@ -441,6 +480,7 @@ export default {
               label: "Settings Access Token",
               url: "/settings/access-token",
               icon: "",
+              showAll: true
             },
             {
               label: "Settings SLA",
@@ -473,8 +513,15 @@ export default {
           url: "/help",
           icon: "bx-help-circle",
           children: [],
+          showAll: true,
         },
       ],
+      menuRolePermission: [
+        {
+          type: "exclusive",
+          role: "HELPDESK"
+        }
+      ]
     };
   },
   watch: {
@@ -529,13 +576,41 @@ export default {
 
     getMenuWithPermissions() {
       const permissions = this.$ls.get("permissions") || [];
-      const { menus } = this;
+      const userRole = this.$ls.get("user")?.role || {};
+      const { menus, menuRolePermission } = this;
+      const foundPermission = menuRolePermission.find(permission => permission.role === userRole?.user_role_name);
       const filtered = [];
 
       menus.forEach((menu) => {
-        const { permission, children } = menu;
+        const { permission, children, rolePermission, showAll } = menu;
 
-        if (permission) {
+        if (foundPermission?.type === 'exclusive') {
+          if (children.length > 0) {
+            const filteredChildren = [];
+
+            children.forEach((child) => {
+              if ((child?.rolePermission === foundPermission.role) || child.showAll) {
+                filteredChildren.push(child);
+              }
+            });
+
+            if (filteredChildren.length > 0) {
+              filtered.push({
+                ...menu,
+                children: filteredChildren,
+              });
+            }
+          }
+          else if (rolePermission) {
+            if (rolePermission === foundPermission.role) {
+              filtered.push(menu);
+            }
+          }
+          else if (showAll) {
+            filtered.push(menu);
+          }
+        }
+        else if (permission) {
           if (permissions.includes(permission)) {
             filtered.push(menu);
           }
@@ -547,7 +622,13 @@ export default {
               if (permissions.includes(child.permission)) {
                 filteredChildren.push(child);
               }
-            } else {
+            }
+            else if (child.rolePermission) {
+              if (child.rolePermission === foundPermission?.role) {
+                filteredChildren.push(child);
+              }
+            }
+            else {
               filteredChildren.push(child);
             }
           });
