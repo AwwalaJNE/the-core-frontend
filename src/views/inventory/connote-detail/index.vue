@@ -65,7 +65,13 @@
                             </vs-col>
                           </vs-row>
                         </template>
-                        
+                        <template v-if="navActive === 'k-CUSTOMER-VIEW'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                              <connote-customer-view />
+                            </vs-col>
+                          </vs-row>
+                        </template>
                     </div>
                 </vs-col>
                 
@@ -83,6 +89,7 @@ import SearchInput from "@/components/search/searchInput"
 import selectorDetailVue from "@/views/inventory/connote-detail/connote/selectorDetail"
 import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
 import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
+import connoteCustomerView from "@/views/inventory/connote-detail/connote/connoteCustomerView.vue";
 
 
 export default {
@@ -91,11 +98,12 @@ export default {
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
+        "connote-customer-view": connoteCustomerView,
         "search-input": SearchInput,
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
         "select-status-inventory": SelectInventoryVue,
-        "select-bag-history": SelectBagHistory
+        "select-bag-history": SelectBagHistory,
     },
     data() {
         return {
@@ -114,6 +122,11 @@ export default {
                     label: "BAG HISTORY",
                     key: "k-BAG-HISTORY",
                     title: "Connote's Bag History"
+                },
+                {
+                    label: "CUSTOMER VIEW",
+                    key: "k-CUSTOMER-VIEW",
+                    title: "Connote's Customer View"
                 }
             ],
             navActive: "k-INFO",

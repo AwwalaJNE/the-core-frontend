@@ -52,7 +52,7 @@
         <section>
             <vs-row justify="space-around">
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center" style="margin-bottom: 2em;">
-                    <div class="box view" v-if="connote_number !== '' && connote_found && !loading">
+                    <div class="box view" v-if="koli_number !== '' && connote_found && !loading">
                         <vs-row justify="space-between">
                             <vs-col xs="6" sm="9" lg="9">
                                 <nav-item :navItem="navItem" @activeTab="activeTab" />
@@ -103,8 +103,18 @@
                             </vs-col>
                           </vs-row>
                         </template>
+                        <template v-if="navActive === 'k-CUSTOMER-VIEW'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                <connote-customer-view 
+                                    :connoteNumber="connote_number"
+                                    :koliNumber="koli_number"
+                                />
+                            </vs-col>
+                          </vs-row>
+                        </template>
                     </div>
-                    <div class="box view" v-else-if="(connote_number && !connote_found && !loading) || (connote_number !== '' && !connote_found && !loading)">
+                    <div class="box view" v-else-if="(koli_number && !connote_found && !loading) || (koli_number !== '' && !connote_found && !loading)">
                         <div style="margin-top: 2.5em;">
                             connote tidak ditemukan
                         </div>
@@ -128,6 +138,7 @@ import SearchInput from "@/components/search/searchInput"
 import selectorDetailVue from "@/views/inventory/connote-detail/connote/selectorDetail"
 import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
 import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
+import connoteCustomerView from "@/views/inventory/connote-detail/connote/connoteCustomerView.vue";
 
 export default {
     name: "trace-connote",
@@ -135,6 +146,7 @@ export default {
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
+        "connote-customer-view": connoteCustomerView,
         "search-input": SearchInput,
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
@@ -163,6 +175,11 @@ export default {
             label: "BAG HISTORY",
             key: "k-BAG-HISTORY",
             title: "Connote's Bag History"
+          },
+          {
+            label: "CUSTOMER VIEW",
+            key: "k-CUSTOMER-VIEW",
+            title: "Connote's Customer View"
           }
         ],
         navActive: "k-INFO",
@@ -174,6 +191,7 @@ export default {
         destinationTlc: "",
         informationData: [],
         statusinventory: "",
+        koli_number: "",
         connote_number: "",
         connote_found: false
       };
@@ -185,7 +203,7 @@ export default {
         removeConnoteNumber() {
             this.hasConnoteNumber = false;
             this.connoteNumber = "";
-            this.connote_number = "";
+            this.koli_number = "";
             this.originData = [];
             this.destinationData = [];
             this.originTlc = "";
@@ -199,8 +217,10 @@ export default {
         },
 
         async processConnoteNumber() {
-            this.connote_number = this.connoteNumber + "00";
-            const url = `/trace-connote/${encodeURIComponent(this.connote_number)}`;
+            console.log("PPY2", this.connoteNumber)
+            this.connote_number = this.connoteNumber;
+            this.koli_number = this.connoteNumber + "00";
+            const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
             await this.$router.push(url); 
             this.hasConnoteNumber = true
             this.getConnote();
@@ -218,7 +238,7 @@ export default {
         async getConnote() {
             this.loading = true;
             await axios
-                .get(this.URL.connote +`/${this.connote_number}?n=${this.listenNodeId}`,
+                .get(this.URL.connote +`/${this.koli_number}?n=${this.listenNodeId}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data && Object.keys(res.data.data).length > 0) {
@@ -391,8 +411,10 @@ export default {
         },
 
         updateValueOrion() {
-            this.connote_number = `${this.connoteNumber}` + "00";
-            const url = `/trace-connote/${encodeURIComponent(this.connote_number)}`;
+            console.log("PPY1", this.connoteNumber)
+            this.connote_number = this.connoteNumber;
+            this.koli_number = `${this.connoteNumber}` + "00";
+            const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
             this.$router.push(url); 
             this.hasConnoteNumber = true
             this.getConnote();
