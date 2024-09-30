@@ -571,8 +571,8 @@ export default {
         async checkItemSla(type) {
             this.type = type;
             const url = this.type === 'KOLI' 
-                ? `${this.URL.warning_runsheet_sla_setting}/check-sla?n=${this.listenNodeId}&item_number=${this.form.koli_number}`
-                : `${this.URL.warning_runsheet_sla_setting}/check-sla-bag?n=${this.listenNodeId}&bag_number=${this.form.bag_number}`;
+                ? `${this.URL.configuration_warning_sla}/check-sla?n=${this.listenNodeId}&item_number=${this.form.koli_number}`
+                : `${this.URL.configuration_warning_sla}/check-sla-bag?n=${this.listenNodeId}&bag_number=${this.form.bag_number}`;
 
             try {
                 const res = await axios.get(url, this.Helper.header());
