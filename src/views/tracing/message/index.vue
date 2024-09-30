@@ -3,7 +3,7 @@
         <table-master 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
-            :tableLoading="loadingRunsheet"
+            :tableLoading="loadingMessage"
             :pageSize="pagination.page_size"
             :page="pagination.page"
             :limit="pagination.limit"
@@ -22,7 +22,7 @@ import moment from "moment";
 import TableMaster from "@/components/table/tableMaster.vue"
 
 export default {
-    name:"tracing-runsheet-list",
+    name:"tracing-message-list",
     mixins: [master],
     props: {
         query: String,
@@ -64,27 +64,27 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "No Runhseet",
-                    key: "delivery_runsheet_number",
-                    width: "sm"
-                },
-                {
                     label: "Date",
                     key: "created_at",
                     width: "sm"
                 },
                 {
-                    label: "Status",
-                    key: "status",
+                    label: "User",
+                    key: "user_login",
                     width: "sm"
                 },
                 {
-                    label: "Keterangan",
-                    key: "remarks",
+                    label: "Receiver Phone",
+                    key: "receiver_phone",
                     width: "sm"
+                },
+                {
+                    label: "Message",
+                    key: "message",
+                    width: "auto"
                 }
             ],
-            loadingRunsheet: false,
+            loadingMessage: false,
             dataItem: {},
             dateRange: [],
             startDate: this.dateFilter[0] ? this.dateFilter[0] : "",
@@ -100,7 +100,7 @@ export default {
     },
     methods: {
         async getTableData(limit,page,q, from, to) {
-            this.loadingRunsheet = true
+            this.loadingMessage = true
             let query = "";
             let startDate = "";
             let endDate = "";
@@ -116,27 +116,25 @@ export default {
 
             await axios
                 .get(this.URL.tracing +
-                `/${this.koli_number}/runsheet?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+                `/${this.koli_number}/message?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
-                    if(res.data.data.length > 0) {
-                        this.dataTable = res.data.data
+                    this.dataTable = res.data.data
 
-                        this.pagination.page = res.data.meta.current_page
-                        this.pagination.limit = parseInt(res.data.meta.per_page)
-                        this.pagination.page_size = res.data.meta.last_page
-                    } else {
-                        this.dataTable = []
-                        
+                    this.pagination.page = res.data.meta.current_page
+                    this.pagination.limit = parseInt(res.data.meta.per_page)
+                    this.pagination.page_size = res.data.meta.last_page
+
+                    if(res.data.data.length == 0) {
                         if (query != "") {
-                            this.openNotification('danger', err.response ? err.response.data.code : '', 'Irreguralities Tracing data runsheet is empty!', ' data is empty or not found, please check your keyword in the input search')
+                            this.openNotification('danger', err?.response?.data?.code ?? "", 'Tracing data message is empty!', ' data is empty or not found, please check your keyword in the input search')
                         }
                     }
                     
-                    this.loadingRunsheet = false
+                    this.loadingMessage = false
                 }).catch(err => {
-                    this.loadingRunsheet = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Tracing data runsheet list', err)
+                    this.loadingMessage = false
+                    this.openNotification('danger', err?.response?.data?.code ?? "", 'Failed to populate Tracing data message list', err?.response?.data?.message ?? 'Something went wrong');
                 })
         },
         closeDialogRole() {
@@ -144,19 +142,19 @@ export default {
         },
         actionPagination(val) {
             this.pagination.page = val
-            this.refreshRunsheet()
+            this.refreshMessage()
         },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
-            this.refreshRunsheet()
+            this.refreshMessage()
         },
-        refreshRunsheet(){
+        refreshMessage(){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         }
     },
     mounted() {
-        this.refreshRunsheet();
+        this.refreshMessage()
     },
 }
 </script>

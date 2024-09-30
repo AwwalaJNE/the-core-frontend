@@ -224,6 +224,7 @@ export default {
                             obj["label"] = item.node_name
                             obj["value"] = String(item.node_id)
                             obj["node_code"] = String(item.node_code)
+                            obj["is_cdm"] = Boolean(item.is_cdm)
 
                             this.datanode.push(obj)
             })

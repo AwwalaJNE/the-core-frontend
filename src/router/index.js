@@ -73,6 +73,9 @@ import DetailConnote from "@/views/transactionList/detail"
 // === Trace Connote ===
 import TraceConnote from '@/views/traceConnote/index'
 
+// === Trace Bag ===
+import TraceBag from '@/views/traceBag/index'
+
 // === Cash Register  ===
 import CashRegister from "@/views/cashRegister"
 
@@ -92,7 +95,7 @@ import PickupSchedule from "@/views/pickup/schedule"
 import TransportPackingKayu from "@/views/transport/transportPackingKayu"
 
 // === Transport Surat Jalan ===
-import TransportSuratJalan from "@/views/transport/suratJalan"
+import TransportSuratJalan from "@/views/transport/suratJalanNew"
 
 // === Transport Inventory Vehicle ===
 import TransportInventoryVehicle from "@/views/transport/inventoryVehicle"
@@ -113,19 +116,22 @@ import InboundBandara from "@/views/inboundAirport"
 import InboundIncomingDetail from "@/views/inboundAirport/prealert/detail"
 
 // === Transport Manifest ===
-import TransportManifest from "@/views/transport/manifest"
+import TransportManifest from "@/views/transport/manifestNew"
 
 // === Delivery Runsheet ===
-import DeliveryRunsheet from "@/views/delivery/runsheet"
+import DeliveryRunsheet from "@/views/delivery/runsheetNew"
 
 // === Delivery Runsheet EDIT===
-import DeliveryRunsheetEdit from "@/views/delivery/runsheet/edit"
+import DeliveryRunsheetEdit from "@/views/delivery/runsheetNew/edit"
 
 // === Delivery COD===
 import DeliveryCod from "@/views/delivery/cod"
 
 // === Handover Runsheet ===
 import HandoverRunsheet from "@/views/delivery/hrs"
+
+// === Handover Runsheet History ===
+import HandoverRunsheetHistory from "@/views/delivery/hrsHistory"
 
 // === Delivery Undelivery ===
 import DeliveryUndelivery from "@/views/delivery/undelivery"
@@ -142,8 +148,10 @@ import irreguralitiesReturn from "@/views/irreguralities/return"
 import irreguralitiesEntryStatus from "@/views/irreguralities/entryStatus"
 import irreguralitiesHold from "@/views/irreguralities/hold"
 import irreguralitiesFailed from "@/views/irreguralities/failed"
-import irreguralitiesTracing from "@/views/irreguralities/tracing"
-import irreguralitiesTracingHistory from "@/views/irreguralities/tracing/tracingHistory"
+
+// === Tracing ===
+import Tracing from "@/views/tracing"
+import TracingHistory from "@/views/tracing/tracingHistory"
 
 // === Cost To Cost ===
 import CostToCostSetting from "@/views/costToCost/setting"
@@ -364,6 +372,16 @@ const routes = [
         }
       },
       {
+        path: "trace-bag/:bag_number?",
+        name: "trace-bag",
+        component: TraceBag,
+        children: [],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Trace Bag"
+        }
+      },
+      {
         path: "sales",
         name: "sales",
         component: ContentChild,
@@ -391,6 +409,36 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Sales"
+        }
+      },
+      {
+        path: "Tracing",
+        name: "tracing",
+        component: ContentChild,
+        children: [
+          {
+            path: "/",
+            name: "tracing",
+            component: Tracing,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "tracing"
+            },
+          },
+          {
+            path: "/tracing/:id",
+            name: "tracing-history",
+            component: TracingHistory,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "tracing",
+              backPath: "/tracing"
+            }
+          }
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Trace Connote"
         }
       },
       {
@@ -452,25 +500,6 @@ const routes = [
               breadCrumb: "failed"
             }
           },
-          {
-            path: "tracing",
-            name: "irreguralities-tracing",
-            component: irreguralitiesTracing,
-            meta: {
-              requiresAuth: true,
-              breadCrumb: "tracing"
-            },
-          },
-          {
-            path: "tracing/:id/",
-            name: "irreguralities-tracing-history",
-            component: irreguralitiesTracingHistory,
-            meta: {
-              requiresAuth: true,
-              breadCrumb: "tracing",
-              backPath: "/irreguralities/tracing"
-            }
-          }
         ],
         meta: {
           requiresAuth: true,
@@ -722,6 +751,15 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "HRS"
+        }
+      },
+      {
+        path: "/hrs-history",
+        name: "handover-runsheet-history",
+        component: HandoverRunsheetHistory,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "HRS History"
         }
       },
       {

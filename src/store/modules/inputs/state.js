@@ -1047,6 +1047,16 @@ export default {
       valueData: true,
       value: true
     },
+    is_cdm: {
+      titleLabel: "Has Cash Deposit Machine (CDM)",
+      label: "True|False",
+      key: "is_cdm",
+      rule: "required",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
     is_active: {
       label: "Active|Unactive",
       key: "is_active",
@@ -3115,13 +3125,14 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      isDisabled: false,
     },
     max_weight: {
       label: "Max Weight",
       key: "max_weight",
       rule: "",
-      typeInput: "text",
+      typeInput: "number",
       typeData: "Number",
       valueData: null,
       value: null

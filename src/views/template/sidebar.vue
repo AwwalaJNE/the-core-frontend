@@ -103,6 +103,13 @@ export default {
           children: [],
         },
         {
+          label: "Trace Bag",
+          url: "/trace-bag",
+          icon: "bx-search",
+          permission: "",
+          children: [],
+        },
+        {
           label: "Transaction",
           url: null,
           icon: "bx-list-ol",
@@ -261,6 +268,12 @@ export default {
               permission: "read-undelivery",
             },
             {
+              label: "HRS History",
+              url: "/hrs-history",
+              icon: "",
+              permission: "read-undelivery",
+            },
+            {
               label: "Deposit COD",
               url: "/deposit-cod",
               icon: "",
@@ -273,6 +286,13 @@ export default {
               permission: "read-cod",
             },
           ],
+        },
+        {
+          label: "Tracing",
+          url: "/tracing",
+          icon: "",
+          children: [],
+          permission: "read-irreg",
         },
         {
           label: "Report",
@@ -333,13 +353,7 @@ export default {
               url: "/irreguralities/failed",
               icon: "",
               permission: "read-irreg",
-            },
-            {
-              label: "Irreguralities - Tracing",
-              url: "/irreguralities/tracing",
-              icon: "",
-              permission: "read-irreg",
-            },
+            }
           ],
         },
         {

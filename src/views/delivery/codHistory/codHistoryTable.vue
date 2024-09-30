@@ -7,9 +7,13 @@
       :pageSize="pagination.page_size"
       :page="pagination.page"
       :limit="pagination.limit"
+      :hasLinked="['sco']"
       :hasAction="false"
       :hasPagination="true"
       :expandable="true"
+      :printAction="true"
+      :checkDepositMethod="true"
+      @actionPrint="actionPrint"
       @actionLimit="actionLimit"
       @actionPagination="actionPagination"
     />
@@ -143,7 +147,9 @@ export default {
           this.Helper.header()
         )
         .then((res) => {
-          let arr = res.data.data
+          let is_cdm = this.listenNodeIsCDM ? ["TRB", "CDM"] : ["TRB"];
+          let arr = res.data.data.filter(item => is_cdm.includes(item.deposit_method));
+
           arr.map((item) => {
               let children = {}
               let delivery_runsheet_number = []
@@ -219,6 +225,17 @@ export default {
         this.startDate,
         this.endDate
       );
+    },
+    actionPrint(val){
+        let routeData = this.$router.resolve({ 
+            name: 'printGeneral', 
+            params: { 
+                'id': val.sco.replaceAll("/","~"), 
+                'type': 'cod-history',
+                'node_id': this.listenNodeId
+            }
+        });
+    window.open(routeData.href, '_blank');
     },
   },
   mounted() {

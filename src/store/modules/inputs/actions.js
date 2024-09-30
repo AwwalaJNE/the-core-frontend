@@ -694,6 +694,13 @@ export default {
     commit('SET_NODE_NODE_IS_EXTERNAL_ValueData', payload)
   },
 
+  SET_NODE_IS_CDM({ commit }, payload) {
+    commit('SET_NODE_IS_CDM', payload)
+  },
+  SET_NODE_IS_CDM_ValueData({ commit }, payload) {
+    commit('SET_NODE_IS_CDM_ValueData', payload)
+  },
+
   SET_NODE_IS_ACTIVE({ commit }, payload) {
     commit('SET_NODE_IS_ACTIVE', payload)
   },
@@ -1872,6 +1879,9 @@ export default {
   /* Start Surat Muatan */
   SET_SURAT_MUATAN_MANIFEST_NUMBER({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_NUMBER', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled', payload)
   },
   SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData', payload)

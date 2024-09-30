@@ -96,6 +96,13 @@
                                 </vs-col>
                             </vs-row>
                         </template>
+                        <template v-if="navActive === 'k-BAG-HISTORY'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                              <select-bag-history />
+                            </vs-col>
+                          </vs-row>
+                        </template>
                     </div>
                     <div class="box view" v-else-if="(connote_number && !connote_found && !loading) || (connote_number !== '' && !connote_found && !loading)">
                         <div style="margin-top: 2.5em;">
@@ -120,7 +127,7 @@ import CameraScanner from "@/components/scanner/camera";
 import SearchInput from "@/components/search/searchInput"
 import selectorDetailVue from "@/views/inventory/connote-detail/connote/selectorDetail"
 import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
-
+import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
 
 export default {
     name: "trace-connote",
@@ -132,6 +139,7 @@ export default {
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
         "select-status-inventory": SelectInventoryVue,
+        "select-bag-history": SelectBagHistory,
         CameraScanner
     },
     computed: {
@@ -150,6 +158,11 @@ export default {
             label: "ACTIVITY",
             key: "k-ACTIVITY",
             title: "Connote Activity"
+          },
+          {
+            label: "BAG HISTORY",
+            key: "k-BAG-HISTORY",
+            title: "Connote's Bag History"
           }
         ],
         navActive: "k-INFO",
@@ -180,7 +193,8 @@ export default {
             this.informationData = [];
             this.statusinventory = "";
             this.connote_found = false;
-            this.loading = false
+            this.loading = false;
+            this.activeTab("k-INFO");
             this.$router.push("/trace-connote");
         },
 

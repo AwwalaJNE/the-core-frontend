@@ -77,8 +77,8 @@
                         transparent
                         block
                         flat
-                        :active="true"
                         type="submit"
+                        :active="true"
                         @click="handleSubmit"
                     >
                        Submit
@@ -99,7 +99,7 @@ import InputTextArea from "@/components/input/textArea";
 import Selector from "@/components/input/select";
 
 export default {
-    name:"rregularities-tracing-message-dialog",
+    name:"tracing-message-dialog",
     mixins:[master],
     components: {
         "input-general": InputGeneral,
@@ -159,11 +159,9 @@ export default {
                     };
 
                     this.form = form;
-                } else {
-                    // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                 }
             } catch (err) {
-                this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to get data', err);
+                this.openNotification('danger', err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
                 this.loadingMessage = false;
             }
@@ -178,10 +176,10 @@ export default {
                     this.Helper.header())
                 .then(res => {
                     this.cancel()
-                    this.openNotification(null, 'Success', 'Create new tracing message is success')
+                    this.openNotification("success", null, "Success", res?.data?.message ?? 'Create new tracing message is success');
                 }).catch(err => {
                     this.loadingMessage = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new tracing message failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification('danger', err?.response?.data?.code ?? "", 'Create new tracing message failed', err?.response?.data?.message ?? 'Something went wrong');
                 })
 
             this.callRefreshMessageFunction()

@@ -129,14 +129,14 @@ export default {
                         this.dataTable = []
                         
                         if (query != "") {
-                            this.openNotification('danger', err.response ? err.response.data.code : '', 'Irreguralities Tracing data remark is empty!', ' data is empty or not found, please check your keyword in the input search')
+                            this.openNotification('danger', err?.response?.data?.code ?? "", 'Tracing data remark is empty!', ' data is empty or not found, please check your keyword in the input search')
                         }
                     }
 
                     this.loadingRemark = false
                 }).catch(err => {
                     this.loadingRemark = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Tracing data remark list', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? "", 'Failed to populate Tracing data remark list', err?.response?.data?.message ?? 'Something went wrong');
                 })
         },
         closeDialogRole() {
