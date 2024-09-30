@@ -694,6 +694,13 @@ export default {
     commit('SET_NODE_NODE_IS_EXTERNAL_ValueData', payload)
   },
 
+  SET_NODE_IS_CDM({ commit }, payload) {
+    commit('SET_NODE_IS_CDM', payload)
+  },
+  SET_NODE_IS_CDM_ValueData({ commit }, payload) {
+    commit('SET_NODE_IS_CDM_ValueData', payload)
+  },
+
   SET_NODE_IS_ACTIVE({ commit }, payload) {
     commit('SET_NODE_IS_ACTIVE', payload)
   },

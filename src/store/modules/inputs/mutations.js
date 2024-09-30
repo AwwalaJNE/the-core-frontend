@@ -757,6 +757,13 @@ export default {
     state.node.node_is_external.valueData = payload
   },
 
+  SET_NODE_IS_CDM(state, payload) {
+    state.node.is_cdm.value = payload
+  },
+  SET_NODE_IS_CDM_ValueData(state, payload) {
+    state.node.is_cdm.valueData = payload
+  },
+
   SET_NODE_IS_ACTIVE(state, payload) {
     state.node.is_active.value = payload
   },
