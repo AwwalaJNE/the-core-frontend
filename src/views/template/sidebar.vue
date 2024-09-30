@@ -103,6 +103,13 @@ export default {
           children: [],
         },
         {
+          label: "Trace Bag",
+          url: "/trace-bag",
+          icon: "bx-search",
+          permission: "",
+          children: [],
+        },
+        {
           label: "Transaction",
           url: null,
           icon: "bx-list-ol",
