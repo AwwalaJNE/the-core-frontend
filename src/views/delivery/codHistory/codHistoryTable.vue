@@ -7,9 +7,13 @@
       :pageSize="pagination.page_size"
       :page="pagination.page"
       :limit="pagination.limit"
+      :hasLinked="['sco']"
       :hasAction="false"
       :hasPagination="true"
       :expandable="true"
+      :printAction="true"
+      :checkDepositMethod="true"
+      @actionPrint="actionPrint"
       @actionLimit="actionLimit"
       @actionPagination="actionPagination"
     />
@@ -219,6 +223,17 @@ export default {
         this.startDate,
         this.endDate
       );
+    },
+    actionPrint(val){
+        let routeData = this.$router.resolve({ 
+            name: 'printGeneral', 
+            params: { 
+                'id': val.sco.replaceAll("/","~"), 
+                'type': 'cod-history',
+                'node_id': this.listenNodeId
+            }
+        });
+    window.open(routeData.href, '_blank');
     },
   },
   mounted() {
