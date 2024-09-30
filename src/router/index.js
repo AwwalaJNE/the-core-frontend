@@ -843,6 +843,38 @@ const routes = [
             breadCrumb: "Help / Error Dictionary"
         }
       },
+      {
+        path: "helpdesk",
+        name: "helpdesk",
+        component: ContentChild,
+        children: [
+          // Connote
+          // Bag
+          {
+            path: "surat-muatan",
+            name: "SuratMuatan",
+            component: TransportManifest,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Surat Muatan"
+            }
+          },
+          {
+            path: "surat-jalan",
+            name: "SuratJalan",
+            component: TransportSuratJalan,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Surat Jalan"
+            }
+          },
+          // Runsheet
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "helpdesk"
+        }
+      },
     ],
     meta: {
       requiresAuth: true,
