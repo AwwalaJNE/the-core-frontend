@@ -151,6 +151,11 @@ export default {
 
                 },
                 {
+                    label: "Orion Number",
+                    value: "irg_sequence",
+
+                },
+                {
                     label: "Bag Number",
                     value: "bag_number",
 
@@ -171,6 +176,11 @@ export default {
                 {
                     label: "Koli Number",
                     value: "koli_number",
+
+                },
+                {
+                    label: "Orion Number",
+                    value: "irg_sequence",
 
                 },
                 {

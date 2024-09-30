@@ -79,6 +79,11 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
+                    label: "Orion Number",
+                    key: "irg_sequence",
+                    width: "xs"
+                },
+                {
                     label: "Koli Number",
                     key: "koli_number",
                     width: "md"
