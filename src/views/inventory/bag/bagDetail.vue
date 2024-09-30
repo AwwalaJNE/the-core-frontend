@@ -15,27 +15,40 @@
         </div>
       </div>
       <div style="display: flex;" class="buttonPage" v-if="!loading">
-        <vs-button
-          @click="approveAction(true)"
-          :disabled="!isAllowed || is_orion"
-          style="width: 6rem;"
-          v-if="!disabledApprove"
-        >
-          <span>
-            Approve
-          </span>
-        </vs-button>
-        <vs-button
-          @click="approveAction(false)"
-          danger
-          :disabled="!isAllowed || is_orion"
-          style="width: 6rem;"
-          v-if="disabledApprove"
-        >
-          <span>
-            Unapprove
-          </span>
-        </vs-button>
+        <template v-if="listenUserRoleName === 'HELPDESK'">
+          <vs-button
+            @click="approveAction(true)"
+            :disabled="!isAllowed || is_orion"
+            style="width: 6rem;"
+            v-if="!disabledApprove"
+          >
+            <span>
+              Approve
+            </span>
+          </vs-button>
+          <vs-button
+            @click="approveAction(false)"
+            danger
+            :disabled="!isAllowed || is_orion"
+            style="width: 6rem;"
+            v-if="disabledApprove"
+          >
+            <span>
+              Unapprove
+            </span>
+          </vs-button>
+        </template>
+        <template v-else>
+          <vs-button
+            @click="approveAction(true)"
+            :disabled="disabledApprove || is_orion"
+            style="width: 6rem;"
+          >
+            <span>
+              {{ disabledApprove ? "Approved" : "Approve" }}
+            </span>
+          </vs-button>
+        </template>
         <vs-button style="width: 6rem;" @click="newBag">
           <i class="bx bx-plus"></i> New
         </vs-button>
@@ -340,6 +353,9 @@ export default {
     },
     listenDataBag(){
       return this.$ls.get('getDataBag')
+    },
+    listenUserRoleName() {
+      return this.listenUserRole.user_role_name
     }
   },
   watch: {
