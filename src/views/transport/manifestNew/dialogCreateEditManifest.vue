@@ -424,7 +424,7 @@ export default {
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ArrData", arr);
                 })
                 .catch((err) => {
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to collect role list', err?.response?.data?.message ?? 'something went wrong')
                 });
         },
         async getDataVehicle() {
@@ -460,17 +460,12 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to collect role list', err?.response?.data?.message ?? 'something went wrong')
                 });
         },
         async getDataEmployee() {
-            //this.URL.employee + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`
             await axios
-                .get(
-                    this.URL.employee +
-                        `/driver?n=${this.listenNodeId}`,
-                    this.Helper.header()
-                )
+                .get(this.URL.employee + `/driver?n=${this.listenNodeId}`, this.Helper.header())
                 .then((res) => {
                     if (res.data.data.length > 0) {
                         let arr = [];
@@ -481,11 +476,8 @@ export default {
 
                             arr.push(obj);
                         });
-                        // this.dataNodeType = arr
-                        this.$store.dispatch(
-                            "SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData",
-                            arr.length > 0 ? arr : null
-                        );
+
+                        this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null);
                     } else {
                         this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID", "");
                         this.$store.dispatch(
@@ -495,7 +487,7 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to collect role list', err?.response?.data?.message ?? 'something went wrong')
                 });
         },
         async createSuratMuatan() {
@@ -730,9 +722,6 @@ export default {
             }
         },
         resetForm() {
-            // this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", [{label: null, value: null, data: {}}])
-            // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", "");
-            // this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", {});
             this.$store.dispatch("SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT", []);
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", "");
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", {});

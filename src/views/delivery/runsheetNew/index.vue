@@ -178,7 +178,7 @@ export default {
                 })
                 .catch((err) => {
                     this.loading = false;
-                    this.openNotification("danger", err.response ? err.response.data.code : '', "Failed to populate node list", err);
+                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed to populate node list", err?.response?.data?.message ?? 'something went wrong');
                 });
         },
         updateSearchBy(key, val) {

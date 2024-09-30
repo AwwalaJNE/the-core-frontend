@@ -8,56 +8,16 @@
                 </div>
             </vs-col>
         </vs-row>
-        <template>
-            <vs-row style="margin-top:3em">
-                <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px;">
-                    <vs-radio v-model="radio_option" val="connote" :disabled="disabledApprove">
-                        Connote (orion)
-                    </vs-radio>
-                </vs-col>
-                <vs-col xs="12" sm="3" lg="2" style="margin-bottom: 10px">
-                    <vs-radio v-model="radio_option" val="koli" :disabled="disabledApprove">
-                        Koli
-                    </vs-radio>
-                </vs-col>
-                <vs-col xs="12" sm="3" lg="3" >
-                    <vs-radio v-model="radio_option" val="bag-ex" :disabled="disabledApprove">
-                        Bag Pra Runsheet
-                    </vs-radio>
-                </vs-col>
-            </vs-row>
-        </template>
         <vs-row align="center" style="margin-top: 1rem;">
             <template>
-                <vs-col v-if="radio_option === 'bag'" xs="12" sm="3" lg="3">
+                <vs-col xs="12" sm="3" lg="3">
                     <div class="center">
                         <vs-input
                             ref="formInputConnote"
                             v-model="item_bag"
                             border
                             type="text"
-                            label-placeholder="Scan Bag disini"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="updateValueBag"
-                            @click-icon="$refs.cameraScanner.open('formInputConnote')"
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                </vs-col>
-                <vs-col v-if="radio_option === 'bag-ex'" xs="12" sm="3" lg="3">
-                    <div class="center">
-                        <vs-input
-                            ref="formInputConnote"
-                            v-model="item_bag"
-                            border
-                            type="text"
-                            label-placeholder="Scan Bag disini"
+                            label-placeholder="Scan Bag Pra Runsheet Here"
                             autofocus
                             icon-after
                             v-uppercase
@@ -72,13 +32,13 @@
                     </div>
                 </vs-col>
                 <vs-col xs="12" sm="3" lg="3">
-                    <div v-if="radio_option === 'koli'" class="center">
+                    <div class="center">
                         <vs-input
                             ref="formInputConnote"
                             v-model="item_no"
                             border
                             type="text"
-                            label-placeholder="Scan Koli here"
+                            label-placeholder="Scan Connote Here"
                             autofocus
                             icon-after
                             v-uppercase
@@ -91,149 +51,21 @@
                             </template>
                         </vs-input>
                     </div>
-                    <div v-else-if="radio_option === 'connote'" class="center">
-                        <vs-input
-                            ref="formInputConnoteOrion"
-                            v-model="item_no_orion"
-                            border
-                            type="text"
-                            label-placeholder="Scan Connote here (orion)"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="updateValueOrion"
-                            @click-icon="
-                                $refs.cameraScanner.open('formInputConnoteOrion')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                    <div v-else-if="radio_option === 'bag'" class="center">
-                        <vs-input
-                            ref="formInputConnote"
-                            v-model="item_no"
-                            border
-                            type="text"
-                            label-placeholder="Scan Koli disini "
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="updateValue"
-                            @click-icon="
-                                $refs.cameraScanner.open('formInputConnote')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                    <div v-else-if="radio_option === 'bag-ex'" class="center">
-                        <vs-input
-                            ref="formInputConnote"
-                            v-model="item_no"
-                            border
-                            type="text"
-                            label-placeholder="Scan Koli disini "
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="updateValue"
-                            @click-icon="
-                                $refs.cameraScanner.open('formInputConnote')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
                 </vs-col>
                 <vs-col xs="12" sm="3" lg="3">
-                    <div v-if="radio_option === 'koli'" class="center">
+                    <div class="center">
                         <vs-input
                             ref="formRemoveConnote"
                             v-model="item_no_remove"
                             border
                             type="text"
-                            label-placeholder="Remove Koli here"
+                            label-placeholder="Remove Connote Here"
                             autofocus
                             icon-after
                             v-uppercase
                             :disabled="disabledApprove"
                             @keyup.enter="removeValue"
-                            @click-icon="
-                                $refs.cameraScanner.open('formRemoveConnote')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                    <div v-else-if="radio_option === 'connote'" class="center">
-                        <vs-input
-                            ref="formRemoveConnoteOrion"
-                            v-model="item_no_orion_remove"
-                            border
-                            type="text"
-                            label-placeholder="Remove Connote here (orion)"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="removeValueOrion"
-                            @click-icon="
-                                $refs.cameraScanner.open('formRemoveConnoteOrion')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                    <div v-else-if="radio_option === 'bag'" class="center">
-                        <vs-input
-                            ref="formRemoveConnote"
-                            v-model="item_no_remove"
-                            border
-                            type="text"
-                            label-placeholder="Hapus Koli disini"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="removeValue"
-                            @click-icon="
-                                $refs.cameraScanner.open('formRemoveConnote')
-                            "
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                    <div v-else-if="radio_option === 'bag-ex'" class="center">
-                        <vs-input
-                            ref="formRemoveConnote"
-                            v-model="item_no_remove"
-                            border
-                            type="text"
-                            label-placeholder="Hapus Koli disini"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keyup.enter="removeValue"
-                            @click-icon="
-                                $refs.cameraScanner.open('formRemoveConnote')
-                            "
+                            @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
                         >
                             <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -295,10 +127,10 @@
                                 <vs-row justify="end">
                                         <template v-if="dataDelivery.length > 0">
                                             <vs-button
-                                                :loading="loadingConfirm"
-                                                @click="confirmAction"
                                                 style="float: right"
+                                                :loading="loadingConfirm"
                                                 :disabled="disabledConfirm"
+                                                @click="confirmAction"
                                             >
                                                 <span>
                                                     Confirm Status
@@ -310,7 +142,7 @@
                                                 <vs-button
                                                     style="float: left"
                                                     :disabled="hrsStatus"
-                                                    :loading="loadingConfirm"
+                                                    :loading="loadingApprove"
                                                     @click="approveAction(true)"
                                                 >
                                                     <span>
@@ -323,7 +155,7 @@
                                                     danger
                                                     style="float: left"
                                                     :disabled="hrsStatus"
-                                                    :loading="loadingConfirm"
+                                                    :loading="loadingApprove"
                                                     @click="approveAction(false)"
                                                 >
                                                     <span>
@@ -336,37 +168,7 @@
                             </vs-col>
                         </vs-row>
                         <div class="nav-box">
-                            <div v-if="radio_option === 'bag' && listenDataDelivery.length > 0" style="margin-top: 10px;">
-                                <vs-row justify="space-between">
-                                    <vs-col xs="12" sm="9" lg="9">
-                                        <nav-item :navItem="navItemm" @activeTab="activeTab" />
-                                    </vs-col>
-                                </vs-row>
-
-                                <template v-if="navActive === 'k-LIST-DELIVERY'">
-                                    <transition name="slide-fade">
-                                        <template v-if="listenDataDelivery.length > 0">
-                                            <RunsheetInformation v-if="arrStatus && dataDelivery" :ref="'runsheetInformation'"
-                                                :data-delivery="dataDelivery" :arr-status="arrStatus" :query="tempSearch"
-                                                :loading="loadingRunsheet" :delivery-number="delivery_runsheet_number"
-                                                :radioOption="radio_option" @update-selected="updateSelected" @updatePOD="updatePOD"
-                                                @editPOD="editPOD" :selectedItems="selectedUpdateItems" />
-                                        </template>
-                                    </transition>
-                                </template>
-                                <template v-if="navActive === 'k-LIST-DELETE'">
-                                    <transition name="slide-fade">
-                                        <template v-if="radio_option === 'bag'">
-                                            <RunsheetInformationCancel v-if="arrStatus && dataDelivery" :ref="'runsheetInformationCancel'"
-                                                :data-delivery="dataDeliveryCancel" :arr-status="arrStatus" :query="tempSearch"
-                                                :loading="loadingRunsheet" :delivery-number="delivery_runsheet_number"
-                                                :radioOption="radio_option" @updatePOD="updatePOD" @editPOD="editPOD" :selectedItems="selectedUpdateItems"    />
-                                        </template>
-                                    </transition>
-                                </template>
-                            </div>
-                            <vs-row v-if="radio_option !== 'bag'">
-                                <!-- col for detail unreceive item--> 
+                            <vs-row>
                                 <vs-col lg="12" :sm="12" xs="12">
                                     <template>
                                         <transition name="slide-fade">
@@ -378,8 +180,6 @@
                                                     :data-delivery="dataDelivery"
                                                     :delivery-number="delivery_runsheet_number"
                                                     :loading="loadingRunsheet"
-                                                    :query="tempSearch"
-                                                    :radioOption="radio_option"
                                                     :selectedItems="selectedUpdateItems"
                                                     @update-selected="updateSelected"
                                                     @updatePOD="updatePOD"
@@ -421,16 +221,28 @@
             @data="onCameraScannerGetData" 
         />
 
-        <dialog-confirm-custom
+        <dialog-recheck-courier
+            ref="recheck_courier"
             :active="dialogConfirmEmployee" 
-            :closeDialog="closeDialogConfirmEmployee"
+            :closeDialog="() => closeDialog('recheck_courier')"
             @updateValue="updateValueBag"
         />
 
+        <dialog-recheck-connote-sla
+            ref="recheck_connote_sla"
+            title="Recheck Connote Sla"
+            :active="openDialogReCheckConnoteSla"
+            :closeDialog="() => closeDialog('recheck_connote_sla')"
+            :dataItemCheckSla="dataItemCheckSla"
+            :type="type"
+            @checkZoneDelivery="checkZoneDelivery"
+        />
+
         <dialog-recheck-connote-zone
+            ref="recheck_connote_zone"
             title="Recheck Connote Zone"
             :active="openDialogReCheckConnoteZone"
-            :closeDialog="closeActionPopup"
+            :closeDialog="() => closeDialog('recheck_connote_zone')"
             :dataItem="dataItem"
             :listConnote="listConnote"
             :type="type"
@@ -439,13 +251,14 @@
         />
 
         <dialog-confirm
+            ref="unapprove_runsheet"
             title="Unapprove Runsheet"
             :message="`Are you sure you want to unapprove this runsheet?`"
             :active="activeDialogConfirmUnpproveRunsheet"
             :loading="loadingConfirmUnpproveRunsheet"
-            :closeDialog="closeDialogConfirmUnpproveRunsheet"
+            :closeDialog="() => closeDialog('unapprove_runsheet')"
             @confirm="confirmUnpproveRunsheet"
-            @cancel="closeDialogConfirmUnpproveRunsheet"
+            @cancel="closeDialog('unapprove_runsheet')"
         />
     </div>
 </template>
@@ -463,8 +276,8 @@ import Selector from "@/components/input/select"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogConfirmCustom from "@/views/delivery/runsheetNew/edit/dialogConfirm";
 import DialogReCheckConnoteZone from "@/views/delivery/runsheetNew/edit/dialogReCheckConnoteZone";
+import DialogReCheckConnoteSla from "@/views/delivery/runsheetNew/edit/dialogReCheckConnoteSla";
 import RunsheetInformation from "@/views/delivery/runsheetNew/edit/runsheetInformation";
-import RunsheetInformationCancel from "@/views/delivery/runsheetNew/edit/runsheetInformationCancel";
 
 export default {
     name: "DeliveryRunsheetEdit",
@@ -472,31 +285,26 @@ export default {
         "nav-item": NavItem,
         breadcrumb: Breadcrumb,
         RunsheetInformation,
-        RunsheetInformationCancel,
         CameraScanner,
-        "dialog-confirm-custom": DialogConfirmCustom,
         "dialog-confirm": DialogConfirm,
+        "dialog-recheck-courier": DialogConfirmCustom,
         "dialog-recheck-connote-zone": DialogReCheckConnoteZone,
+        "dialog-recheck-connote-sla": DialogReCheckConnoteSla,
         "selector": Selector
     },
     mixins: [master],
     data() {
         return {
             title: "Edit Assign",
-            tempSearch: "",
             tempDate: [],
-            dialogPickupRequest: false,
             item_no: "",
             item_bag: "",
             item_no_remove: "",
-            item_no_orion_remove: "",
-            item_no_orion: "",
             form: {},
             delivery_runsheet_number: "",
             employee_id: "",
             employee_data: {},
             dataDelivery: [],
-            dataDeliveryCancel: [],
             summary: [],
             arrStatus: null,
             statusObj: {},
@@ -504,10 +312,10 @@ export default {
             loadingRunsheet: false,
             employee_code: "",
             employee_name: "",
-            radio_option: "connote",
 
             loadingCourier: false,
             loadingConfirm: false,
+            loadingApprove: false,
 
             selectedUpdateItems: [],
             dialogConfirmEmployee: false,
@@ -528,14 +336,16 @@ export default {
             disabledConfirm: true,
             disabledApprove: false,
             dataItem: {},
+            dataItemCheckSla: {},
             openDialogReCheckConnoteZone: false,
+            openDialogReCheckConnoteSla: false,
             type: '',
             listConnote: [],
             activeDialogConfirmUnpproveRunsheet: false,
             loadingConfirmUnpproveRunsheet:false,
             hrsStatus: false,
             courier_arr: [],
-            selectedCourier: ""
+            selectedCourier: "",
         };
     },
     computed: {
@@ -551,24 +361,11 @@ export default {
     methods: {
         setFocus() {
             this.$nextTick(() => {
-                let inputElement = null;
-
-                if (this.radio_option === 'bag' || this.radio_option === 'connote') {
-                    inputElement = this.$refs.formInputConnoteOrion?.$el.querySelector('input');
-                } else if (this.radio_option === 'koli') {
-                    inputElement = this.$refs.formInputConnote?.$el.querySelector('input');
-                }
-
-                if (inputElement) {
-                    inputElement.focus();
-                }
+                this.$refs.formInputConnote?.$el.querySelector('input')?.focus();
             });
         },
         reload() {
             this.getDataDelivery();
-        },
-        openDialog() {
-            this.dialogPickupRequest = true;
         },
         async getDataCourier() {
             this.loading = true;
@@ -604,13 +401,11 @@ export default {
         updateValueCourier(key, val, info){
             switch(key) {
                 case "courier":
-                    let obj = this.courier_arr.filter(item => item.value == val)[0]
+                    const obj = this.courier_arr.find(item => item.value == val);
 
-                    if(Object.keys(obj).length > 0) {
-                        if(obj.hasOwnProperty('item')) {
-                            this.selectedCourier = obj.item.employee_id || '';
-                            this.updateRunsheetCourier();
-                        }
+                    if (obj?.item) {
+                        this.selectedCourier = obj.item.employee_id || '';
+                        this.updateRunsheetCourier();
                     }
                     break;
             }
@@ -638,22 +433,11 @@ export default {
             this.form.courier_employee_id = this.employee_id;
             this.item_no = null;
             this.form.koli_number = null;
-            if (this.radio_option === "bag") {
-                this.getKoli(val);
-            }
-            else if (this.radio_option === "bag-ex") {
-                this.dialogConfirmEmployee = false;
-                this.validateBagPraRunsheet(val)
-            }
+            this.dialogConfirmEmployee = false;
+            this.validateBagPraRunsheet(val);
         },
         updateValue() {
             this.form.koli_number = this.item_no;
-            this.form.courier_employee_id = this.employee_id;
-            this.form.bag_number = null;
-            this.scanConnote();
-        },
-        updateValueOrion() {
-            this.form.koli_number = `${this.item_no_orion}00`;
             this.form.courier_employee_id = this.employee_id;
             this.form.bag_number = null;
             this.scanConnote();
@@ -664,17 +448,9 @@ export default {
             this.form.bag_number = null;
             this.removeConnote();
         },
-        removeValueOrion() {
-            this.form.koli_number = `${this.item_no_orion_remove}00`;
-            this.form.courier_employee_id = this.employee_id;
-            this.form.bag_number = null;
-            this.removeConnote();
-        },
         getParamRoute() {
             this.employee_id = this.$route.params.employee_id.toString();
             this.getCourier();
-            // this.employee_data.employee_name = this.$route.params.employee_name
-            // this.employee_data.employee_code = this.$route.params.employee_code
 
             if (this.$route.name === "delivery-runsheet-edit") {
                 this.delivery_runsheet_number = this.$route.params.delivery_runsheet_number.toString();
@@ -702,12 +478,8 @@ export default {
                 })
                 .catch((err) => {
                     this.loadingCourier = true;
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate status', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong')
                 });
-        },
-        closeDialogConfirmEmployee() {
-            this.dialogConfirmEmployee = false
-            this.dialogLoadingEmployee = false
         },
         async validateBagPraRunsheet(val) {
             let valForm = {
@@ -716,10 +488,7 @@ export default {
                 courier_id: this.employee_id
             }
             await axios
-                .post(
-                    this.URL.validation + `/create-runsheet-pra?n=${this.listenNodeId}`,
-                    valForm,
-                    this.Helper.header())
+                .post(this.URL.validation + `/create-runsheet-pra?n=${this.listenNodeId}`, valForm, this.Helper.header())
                 .then(res => {
                     this.validateCourier(val)
                 }).catch(err => {
@@ -729,9 +498,7 @@ export default {
         },
         async validateCourier(val) {
             await axios
-                .get(
-                    this.URL.bag + '/' + this.form.bag_number.replaceAll("/", "-") + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`,
-                    this.Helper.header())
+                .get(this.URL.bag + '/' + this.form.bag_number.replaceAll("/", "-") + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`, this.Helper.header())
                 .then(res => {
                     const details = res.data.detail;
                     for (let detail of details) {
@@ -742,85 +509,36 @@ export default {
                         }
                     }
                     const postData = {
-                            bag_number: this.form.bag_number,
-                            courier_employee_id: this.employee_id,
-                            delivery_runsheet_number: this.delivery_runsheet_number
-                        };
-                    this.scanBagPraRunsheet(postData)
-                    // this.refresh()
-                    // this.openNotification('success', null, ' success', 'Insert bag item successfully')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', ' Nomor bag item is failed', err)
-                })
-        },
-        async scanBagPraRunsheet(postData) {
-            if (postData) {
-                this.form = postData
-            }
-            this.type = 'BAG'
+                        bag_number: this.form.bag_number,
+                        courier_employee_id: this.employee_id,
+                        delivery_runsheet_number: this.delivery_runsheet_number
+                    };
 
-            // NOTES TODO: Change this to addBagPraRunsheetToRunsheet if backend validation's ready
-            await axios
-                .get(`${this.URL.check_delivery_area}?item_number=${this.form.bag_number}&type=${this.type}&n=${this.listenNodeId}&limit=-1`, this.Helper.header())
-                .then((res) => {
-                    this.addBagPraRunsheetToRunsheet(this.form)
-                })
-                .catch((err) => {
-                    if (err.response.data.status == 'failed') {
-                        this.actionPopup(this.form, err.response.data.data)
-                    } else {
-                        this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
+                    if (postData) {
+                        this.form = postData
                     }
-                });
-        },
-        async getKoli(val) {
-            await axios
-                .get(
-                    this.URL.bag + '/' + this.form.bag_number.replaceAll("/", "-") + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`,
-                    this.Helper.header())
-                .then(res => {
-                    const details = res.data.detail;
-                    let index = 0;
-                    for (let detail of details) {
-                        const item_number = detail.item_number;
-                        const detailsLength = details.length;
-                        const postData = {
-                            bag_number: this.form.bag_number,
-                            courier_employee_id: this.employee_id,
-                            koli_number: item_number
-                        };
-                        this.validation_employee = val === false ? val : res.data.validation_employee;
-                        if (this.validation_employee) {
-                            this.dialogConfirmEmployee = true;
-                        } else {
-                            this.dialogConfirmEmployee = false;
-                            // jika nomor runsheet kosong dan kirim data lebih dari 1
-                            // set timeout untuk mendapatkan nomor runsheet yang sama
-                            if (detailsLength > 1 && !this.delivery_runsheet_number && index > 0) {
-                                setTimeout(() => {
-                                        this.scanConnote(postData);
-                                }, 5000);
-                            } else {
-                                    this.scanConnote(postData);
-                            }
-                            index++;
-                        }
-                    }
-                    // this.refresh()
-                    // this.openNotification('success', null, ' success', 'Insert bag item successfully')
+                    this.checkItemSla('BAG')
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', ' Nomor bag item is failed', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', ' Nomor bag item is failed', err?.response?.data?.message ?? 'something went wrong');
                 })
         },
-        actionPopup(dataItem, listConnote) {
-            this.dataItem = dataItem;
-            this.listConnote = listConnote;
-            this.openDialogReCheckConnoteZone = true;
-        },
-        closeActionPopup() {
-            this.openDialogReCheckConnoteZone = false;
+        closeDialog(ref) {
+            switch (ref) {
+                case 'recheck_connote_sla':
+                    this.openDialogReCheckConnoteSla = false;
+                    break;
+                case 'recheck_connote_zone':
+                    this.openDialogReCheckConnoteZone = false;
+                    break;
+                case 'unapprove_runsheet':
+                    this.activeDialogConfirmUnpproveRunsheet = false
+                case 'recheck_courier':
+                    this.dialogConfirmEmployee = false
+                    this.dialogLoadingEmployee = false
+                default:
+                    break;
+            }
         },
         async scanConnote(postData) {
             let valForm = {}
@@ -843,31 +561,59 @@ export default {
             await axios
                 .post(`${this.URL.validation}/create-runsheet?n=${this.listenNodeId}`, valForm, this.Helper.header())
                 .then((res) => {
-                    this.checkZoneDelivery(this.form)
+                    this.checkItemSla('KOLI')
                 })
                 .catch((err) => {
                     this.openNotification("danger", err.response ? err.response.data.code : '', err.response.data.status, err.response.data.message);
                     this.clearInputs();
                 });
         },
-        async checkZoneDelivery(postData) {
-            if (postData) {
-                this.form = postData
-            }
-            this.type = 'KOLI'
+        async checkItemSla(type) {
+            this.type = type;
+            const url = this.type === 'KOLI' 
+                ? `${this.URL.warning_runsheet_sla_setting}/check-sla?n=${this.listenNodeId}&item_number=${this.form.koli_number}`
+                : `${this.URL.warning_runsheet_sla_setting}/check-sla-bag?n=${this.listenNodeId}&bag_number=${this.form.bag_number}`;
 
-            await axios
-                .get(`${this.URL.check_delivery_area}?item_number=${this.form.koli_number}&type=${this.type}&n=${this.listenNodeId}&limit=-1`, this.Helper.header())
-                .then((res) => {
-                    this.addConnoteToRunsheet(this.form)
-                })
-                .catch((err) => {
-                    if (err.response.data.status == 'failed') {
-                        this.actionPopup(this.form, err.response.data.data)
-                    } else {
-                        this.openNotification("danger", err.response ? err.response.data.code : '', "", err.response.data.message);
-                    }
-                });
+            try {
+                const res = await axios.get(url, this.Helper.header());
+                
+                this.dataItemCheckSla = res.data.data;
+
+                const itemData = this.type === 'KOLI' ? [res.data.data] : res.data.data;
+
+                const allItemStatusSafe = Array.isArray(itemData) 
+                    ? itemData.every(item => item.status === 'SAFE') 
+                    : false;
+                
+                if (allItemStatusSafe) {
+                    this.checkZoneDelivery();
+                } else {
+                    this.openDialogReCheckConnoteSla = true;
+                }
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            }
+        },
+        async checkZoneDelivery() {
+            const itemNumber = this.type === 'BAG' ? this.form.bag_number : this.form.koli_number;
+
+            try {
+                const res = await axios.get(`${this.URL.check_delivery_area}?item_number=${itemNumber}&type=${this.type}&n=${this.listenNodeId}&limit=-1`, this.Helper.header());
+
+                if (this.type === 'BAG') {
+                    this.addBagPraRunsheetToRunsheet(this.form);
+                } else {
+                    this.addConnoteToRunsheet(this.form);
+                }
+            } catch (err) {
+                if (err?.response?.data?.status === 'failed') {
+                    this.dataItem = this.form;
+                    this.listConnote = err?.response?.data?.data
+                    this.openDialogReCheckConnoteZone = true;
+                } else {
+                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                }
+            }
         },
         async addConnoteToRunsheet(form) {
             this.loadingRunsheet = true;            
@@ -877,8 +623,6 @@ export default {
 
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Create runsheet success");
-                    this.loadingRunsheet = false;
-                    this.clearInputs()
                 } else {
                     const res = await axios.post(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
                     
@@ -888,13 +632,12 @@ export default {
                     this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Update runsheet success");
-                    this.loadingRunsheet = false;
-                    this.clearInputs();
-                    this.setFocus();
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
+                this.clearInputs();
+                this.setFocus();
                 this.loadingRunsheet = false;
             }
         },
@@ -991,20 +734,18 @@ export default {
  
                 })
                 .catch((err) => {
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate status', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong');
                 });
         },
         async getDataDelivery() {
-            let deliveryCancel = this.radio_option === 'bag';
             this.loadingRunsheet = true;
             await axios
                 .get(
-                    `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&date_filter=${this.tempDate}&deliveryCancel=${deliveryCancel}`,
+                    `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&date_filter=${this.tempDate}`,
                     this.Helper.header()
                 )
                 .then((res) => {
                     this.dataDelivery = this.processDataDelivery(res.data.data);
-                    this.dataDeliveryCancel = this.processDataDeliveryCancel(res.data.data);
 
                     this.dataDeliverySummary = res.data.summary;
                     this.delivery_runsheet_number = res.data.summary.delivery_runsheet_number.toString();
@@ -1012,13 +753,13 @@ export default {
                 })
                 .catch((err) => {
                     this.loadingRunsheet = false;
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate status', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate status', err?.response?.data?.message ?? 'something went wrong');
                 });
         },
         processDataDelivery(data) {
             const status = this.statusObj || {};
             const delivery = data.delivery ? data.delivery : [];
-            // eslint-disable-next-line array-callback-return
+            
             delivery.map((item) => {
                 item.status_delivery = [];
                 item.is_disabled_input = false;
@@ -1029,19 +770,6 @@ export default {
                         item.status_delivery = [...status.normal, ...status.all];
                     }
                 }
-                // if(item.hasOwnProperty("status")) {
-                //     // item["is_disabled_input"] = item
-                //     if(item["status"] !== null && typeof item["status"] == 'object') {
-                //             if(item["status"].hasOwnProperty('status_code')) {
-                //                 item["is_disabled_input_status"] = item["status"]["status_code"] !== null || item["status"]["status_code"] !== "" ? true : false
-                //             }
-                //     }
-                // }
-                // if(item.hasOwnProperty("status_code")){
-                //     if(item["status_code"] !== null && typeof item["status_code"] == 'string') {
-                //         item["is_disabled_input_status"] = item["status_code"] !== null || item["status_code"] !== "" ? true : false
-                //     }
-                // }
                 if (item.hasOwnProperty("remarks")) {
                     if (item["status_code"] == null) {
                         item["is_disabled_input_remarks"] =
@@ -1071,31 +799,8 @@ export default {
                 item.employee_code = data.employee_code;
                 item.warning_koli_record_id = item?.warning_koli_record_id
             });
-            // console.log(" processDataDelivery : status =>", status);
-            // console.log(" processDataDelivery : delivery =>", delivery);
 
             return delivery;
-        },
-        processDataDeliveryCancel(data) {
-            const status = this.statusObj || {};
-            const deliveryCancel = data.delivery_cancel ? data.delivery_cancel : [];
-            deliveryCancel.map((item) => {
-                item.status_delivery = [];
-                item.is_disabled_input = false;
-                item["is_disabled_cancel"] = true;
-                if (item.hasOwnProperty("koli_number")) {
-                    if (item.koli_number.toLowerCase().includes("rt")) {
-                        item.status_delivery = [...status.rt, ...status.all];
-                    } else {
-                        item.status_delivery = [...status.normal, ...status.all];
-                    }
-                }
-                item.isDisabled = item.is_delivered === 1;
-                item.employee_name = data.employee_name;
-                item.employee_code = data.employee_code;
-            });
-
-            return deliveryCancel;
         },
         async updatePOD(dataPOD, info) {
  
@@ -1146,6 +851,7 @@ export default {
             this.$set(val, 'is_disabled_input_reveiver', true);
         },
         async editPOD(val) {
+            this.loadingConfirm = true;
             const dataPOD = {
                 courier_employee_id: val.courier_employee_id,
                 delivery_runsheet_number: val.delivery_runsheet_number,
@@ -1186,10 +892,8 @@ export default {
         },
         confirmAction() {
             if (this.selectedUpdateItems.length > 0) {
-                // this.$refs.runsheetInformation.runsheetAction(this.selectedUpdateItems);
                 this.selectedUpdateItems.forEach((item) => {
                     const dataPOD = {
-                        // Construct the payload to be sent in the request body
                         courier_employee_id: item.courier_employee_id,
                         delivery_runsheet_number: item.delivery_runsheet_number,
                         koli_number: item.koli_number,
@@ -1201,17 +905,10 @@ export default {
                     this.updatePOD(dataPOD);
                 });
             } else {
-                this.openNotification(
-                    "danger",
-                    "Failed",
-                    "Please select at least one item"
-                );
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? "Please select at least one item");
             }
         },
         approveAction(val){
-            this.updateApprove(val)
-        },
-        updateApprove(val){
             this.data_is_approve = {
                 approved: val
             };
@@ -1221,18 +918,15 @@ export default {
             } else {
                 this.activeDialogConfirmUnpproveRunsheet = true
             }
-            
         },
         confirmUnpproveRunsheet() {
             this.approve(false)
             this.activeDialogConfirmUnpproveRunsheet = false
             this.reload()
         },
-        closeDialogConfirmUnpproveRunsheet(){
-            this.activeDialogConfirmUnpproveRunsheet = false
-        }, 
         async approve(val) {
-            this.loadingConfirmUnpproveRunsheet=true
+            this.loadingApprove=true
+            this.loadingConfirmUnpproveRunsheet = true;
             try {
                 const res = await axios.patch(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/approval?n=${this.listenNodeId}`, JSON.stringify(this.data_is_approve), this.Helper.header());
                 
@@ -1243,7 +937,8 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
             } finally {
-                this.loadingConfirmUnpproveRunsheet=false
+                this.loadingConfirmUnpproveRunsheet=false;
+                this.loadingApprove=false
             }
         },
         onCameraScannerGetData(data) {
@@ -1251,10 +946,6 @@ export default {
                 const result = data.data;
 
                 switch (data.namespace) {
-                    case "formInputConnoteOrion":
-                        this.item_no_orion = result.text;
-                        this.updateValueOrion();
-                        break;
                     case "formInputConnote":
                         this.item_no = result.text;
                         this.updateValue();
@@ -1263,50 +954,19 @@ export default {
                         this.item_no_remove = result.text;
                         this.removeValue();
                         break;
-                    case "formRemoveConnoteOrion":
-                        this.item_no_orion_remove = result.text;
-                        this.removeValueOrion();
-                        break;
                     default:
-
                         break;
                 }
             }
         },
-        activeTab(val) {
-            this.navActive = val
-            let item = this.navItemm.filter(item => {
-                return item.key == val
-            })
-            this.title = item[0].title
-        },
         clearInputs() {
             this.item_no = ""
-            this.item_no_orion = ""
             this.item_no_remove = ""
-            this.item_no_orion_remove = ""
             this.item_bag = ""
             delete this.form.delivery_runsheet_number; 
             this.openDialogReCheckConnoteZone = false;
+            this.openDialogReCheckConnoteSla = false;
         }
-    },
-    watch: {
-        radio_option(val) {
-            this.radio_option = val
-            if (this.radio_option == 'bag') {
-                this.getDataDelivery(val);
-            }
-
-            this.setFocus();            
-        },
     }
 };
 </script>
-<style lang="scss">
-.information {
-    min-height: 190px;
-}
-.nav-box {
-    margin-top: 1em;
-}
-</style>

@@ -250,5 +250,8 @@ export default {
     revamp_delivery: api + 'revamp/delivery',
 
     // Delivery Bag Pra Revamp
-    revamp_delivery_bag_pra: api + 'revamp/delivery-bag-pra'
+    revamp_delivery_bag_pra: api + 'revamp/delivery-bag-pra',
+
+    // Warning Runsheet Sla Setting
+    warning_runsheet_sla_setting: api + 'warning-runsheet-sla-setting'
 }

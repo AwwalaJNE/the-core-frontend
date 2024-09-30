@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div>
     <template>
@@ -12,15 +11,10 @@
         :limit="pagination.limit"
         :hasAction="false"
         :hasPagination="false"
-        :customAction="false"
-        :customActionList="customActionList"
         :isMultipleSelectColoum="true"
         :onRowClickCallback="onRowClickCallback"
         :allCheckCallback="onAllCheckCallback"
-        :disableAction="disableEdit"
-        @actionRemove="actionRemove"
         @updateValue="updateValue"
-        @actionUpdate="actionUpdate"
         @updateSelected="updateSelected"
         @inputFocus="onClickClear"
         @actionPopup="actionPopup"
@@ -35,11 +29,14 @@
   </div>
 </template>
 <script>
-/* eslint-disable semi, indent, quotes, import/extensions */
+
 import axios from "axios";
 import master from "@/mixins/master";
+
 import TableMaster from "@/components/table/tableMaster.vue";
+
 import DialogWarningRunsheet from "@/views/delivery/runsheetNew/edit/dialogWarningRunsheet"
+
 export default {
   name: "InboundIncoming",
   components: {
@@ -49,12 +46,9 @@ export default {
   mixins: [master],
   props: {
     loading: Boolean,
-    query: String,
-    employeeId: String,
     deliveryNumber: String,
     arrStatus: Array,
     dataDelivery: [Object, Array],
-    radioOption: String,
     selectedItems: Array
   },
   emits: ["update-selected"],
@@ -156,32 +150,13 @@ export default {
           width: "auto",
         },
       ],
-      dataItem: {},
-      tempSearch: "",
-      tempDate: [],
-      startDate: "",
-      endDate: "",
-      dialogTariff: false,
       employee_id: "",
       delivery_runsheet_number: null,
       pagination: {
-        limit: 5,
+        limit: 20,
         page_size: 1,
         page: 1,
       },
-      loadStatus: false,
-      customActionList: [
-        {
-          label: "Edit",
-          key: "edit",
-          attribute: "",
-        },
-      ],
-      test: "",
-      waitToRoleRenderer: true,
-      arrayOfObjects: [],
-      radio_option: "",
-      disableEdit: false,
       openDialogWarning: false,
       warning_id: ''
     };
@@ -190,28 +165,8 @@ export default {
     listenLoading() {
       return this.loading;
     },
-    listenDataDelivery() {
-
-      return this.dataDelivery;
-    },
   },
   watch: {
-    query(val, old) {
-      if (val !== undefined) {
-        this.tempSearch = val;
-        if (this.tempSearch !== old) {
-          // this.getTableData(this.pagination.limit, this.pagination.page, val)
-        }
-      }
-    },
-    employeeId(val, old) {
-      if (val !== undefined) {
-        this.employee_id = val;
-        if (this.employee_id !== old) {
-          // this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
-        }
-      }
-    },
     deliveryNumber(val, old) {
       if (val !== undefined) {
         this.delivery_runsheet_number = val;
@@ -234,13 +189,6 @@ export default {
     }
   },
   mounted() {
-    // this.datacolumn.map((item) => {
-    //   if (item.key == "status_delivery") {
-    //     item.data = this.arrStatus;
-    //   }
-    // });
-
-
     this.getParamRoute();
     this.getHRSStatus();
     this.getPODOrion();
@@ -317,85 +265,6 @@ export default {
 
       this.$refs.tableMaster.selected = selected;
     },
-    async runsheetAction(val, info) {
-      try {
-        const statusDelivery = this.$store.getters.getInputs.status_delivery
-          .status;
-        const { remarks } = this.$store.getters.getInputs.remarks;
-        const receiverName = this.$store.getters.getInputs.receiver_name
-          .receiver_name;
-        const dataPOD = {
-          // Construct the payload to be sent in the request body
-          courier_employee_id: val.courier_employee_id,
-          delivery_runsheet_number: val.delivery_runsheet_number,
-          koli_number: val.koli_number,
-          status: statusDelivery,
-          remarks,
-          receiver_name: receiverName,
-        };
-
-        this.openNotification("success", null, "POD UPDATED!");
-
-        // Send the values to the parent component
-        this.$emit("updatePOD", dataPOD, info);
-      } catch (err) {
-        this.loading = false;
-        this.openNotification(
-          "danger",
-          "Update POD is failed",
-          err.message || err
-        );
-      }
-    },
-    async edit(val) {
-      this.$emit("editPOD", val);
-    },
-    async actionRemove(val) {
-
-      await axios
-        .delete(
-          `${this.URL.employee}/${val.courier_employee_id}/delivery/cancel?n=${this.listenNodeId}&delivery_runsheet_number=${val.delivery_runsheet_number}&koli_number=${val.koli_number}`,
-          this.Helper.header()
-        )
-        .then((res) => {
-          console.log(
-            res.data,
-            res.data.data.length,
-            Object.keys(res.data.data).length,
-            "inires"
-          );
-          if (Object.keys(res.data.data).length > 0) {
-            this.refresh();
-          } else {
-            this.$router.push({ name: "DeliveryRunsheetEdit", params: {} });
-          }
-          this.openNotification(
-            "success",
-            null,
-            "Romove success",
-            "Romove Koli number item successfully"
-          );
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.openNotification("danger", err.response ? err.response.data.code : '', "Romove bag item is failed", err);
-        });
-    },
-    actionUpdate(key, val) {
-      switch (val) {
-        case "confirm":
-
-          this.runsheetAction(key);
-          break;
-        case "edit":
-          this.edit(key);
-
-          break;
-        default:
-
-        // code block
-      }
-    },
     actionPopup(id) {
       this.warning_id = id;
       this.openDialogWarning = true;
@@ -427,9 +296,6 @@ export default {
           this.$set(data, 'is_disabled_input_status', true);
           this.$set(data, 'is_disabled_input_remarks', true);
           this.$set(data, 'is_disabled_input_reveiver', true);
-          if (!this.disableEdit) {
-            this.disableEdit = true
-          }
         }
       }
     },
