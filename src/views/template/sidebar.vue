@@ -281,6 +281,13 @@ export default {
           ],
         },
         {
+          label: "Tracing",
+          url: "/tracing",
+          icon: "",
+          children: [],
+          permission: "read-irreg",
+        },
+        {
           label: "Report",
           url: null,
           icon: "",
@@ -339,13 +346,7 @@ export default {
               url: "/irreguralities/failed",
               icon: "",
               permission: "read-irreg",
-            },
-            {
-              label: "Irreguralities - Tracing",
-              url: "/irreguralities/tracing",
-              icon: "",
-              permission: "read-irreg",
-            },
+            }
           ],
         },
         {

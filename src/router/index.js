@@ -145,8 +145,10 @@ import irreguralitiesReturn from "@/views/irreguralities/return"
 import irreguralitiesEntryStatus from "@/views/irreguralities/entryStatus"
 import irreguralitiesHold from "@/views/irreguralities/hold"
 import irreguralitiesFailed from "@/views/irreguralities/failed"
-import irreguralitiesTracing from "@/views/irreguralities/tracing"
-import irreguralitiesTracingHistory from "@/views/irreguralities/tracing/tracingHistory"
+
+// === Tracing ===
+import Tracing from "@/views/tracing"
+import TracingHistory from "@/views/tracing/tracingHistory"
 
 // === Cost To Cost ===
 import CostToCostSetting from "@/views/costToCost/setting"
@@ -397,6 +399,36 @@ const routes = [
         }
       },
       {
+        path: "Tracing",
+        name: "tracing",
+        component: ContentChild,
+        children: [
+          {
+            path: "/",
+            name: "tracing",
+            component: Tracing,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "tracing"
+            },
+          },
+          {
+            path: "/tracing/:id",
+            name: "tracing-history",
+            component: TracingHistory,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "tracing",
+              backPath: "/tracing"
+            }
+          }
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Trace Connote"
+        }
+      },
+      {
         path: "irreguralities",
         name: "irreguralities",
         component: ContentChild,
@@ -455,25 +487,6 @@ const routes = [
               breadCrumb: "failed"
             }
           },
-          {
-            path: "tracing",
-            name: "irreguralities-tracing",
-            component: irreguralitiesTracing,
-            meta: {
-              requiresAuth: true,
-              breadCrumb: "tracing"
-            },
-          },
-          {
-            path: "tracing/:id/",
-            name: "irreguralities-tracing-history",
-            component: irreguralitiesTracingHistory,
-            meta: {
-              requiresAuth: true,
-              breadCrumb: "tracing",
-              backPath: "/irreguralities/tracing"
-            }
-          }
         ],
         meta: {
           requiresAuth: true,

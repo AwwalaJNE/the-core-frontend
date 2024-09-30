@@ -183,19 +183,19 @@ import master from "@/mixins/master"
 
 import Breadcrumb from "@/components/breadcrumb/index"
 import DateTime from "@/components/input/dateTime"
-import DialogMessages from "@/views/irreguralities/tracing/message/dialogMessages";
-import DialogRemark from "@/views/irreguralities/tracing/remark/dialogRemark"
+import DialogMessages from "@/views/tracing/message/dialogMessages";
+import DialogRemark from "@/views/tracing/remark/dialogRemark"
 import NavItem from "@/components/navbar/navTab"
-import MessageList from "@/views/irreguralities/tracing/message/index"
-import RemarkList from "@/views/irreguralities/tracing/remark/index"
-import RunsheetList from "@/views/irreguralities/tracing/runsheet/index"
+import MessageList from "@/views/tracing/message/index"
+import RemarkList from "@/views/tracing/remark/index"
+import RunsheetList from "@/views/tracing/runsheet/index"
 import SearchInput from "@/components/search/searchInput"
 import Selector from "@/components/input/select"
 import TableMaster from "@/components/table/tableMaster.vue"
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
 export default {
-    name: "irregularities-tracing-history",
+    name: "tracing-history",
     mixins: [master],
     components: {
         "table-master": TableMaster,
@@ -262,16 +262,13 @@ export default {
             tempFrom: "",
             tempTo: "",
             pagination: {
-                limit: 10,
+                limit: 20,
                 page_size: 1,
                 page: 1
             },
             dialogRemarkActive: false,
             dialogMessageActive: false,
-
             dateRange: [],
-
-            //search remarks
             searchByRemark: "user login",
             filterDateByRemark: "create",
             searchPlaceholderRemark: "Search User",
@@ -295,8 +292,6 @@ export default {
                     value: 'create'
                 },
             ],
-
-            //search Runsheet
             searchByRunsheet: "runsheet",
             filterDateByRunsheet: "create",
             searchPlaceholderRunsheet: "Search Runsheet Number",
@@ -320,8 +315,6 @@ export default {
                     value: 'create'
                 },
             ],
-
-            //search Message
             searchByMessage: "user",
             filterDateByMessage: "create",
             searchPlaceholderMessage: "Search User",
@@ -363,7 +356,6 @@ export default {
                     this.dialogMessageActive = true
                     break;
                 default:
-                // code block
             }
         },
 
@@ -390,7 +382,7 @@ export default {
         },
 
         back() {
-            this.$router.push("/irreguralities/tracing");
+            this.$router.push("/tracing");
         },
         searchValue(val) {
             this.tempSearch = val
