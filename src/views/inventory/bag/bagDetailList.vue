@@ -13,7 +13,6 @@
             </vs-col>
             <vs-col xs="12" sm="3" lg="3" align="left" >
                 <span v-if="!is_pra_runsheet && !loading"><p>Destination: {{bag_destination}}</p></span>
-                <span v-if="is_pra_runsheet && !loading"><p>Courier Delivery: {{courier_delivery}}</p></span>
                 <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
             </vs-col>
             <vs-col xs="12" sm="3" lg="3" align="left" >
@@ -147,7 +146,6 @@ export default {
             actual_weight :'',
             bag_detail_qty:'',
             bag_destination:'',
-            courier_delivery: '',
             pagination: {
                 limit:20,
                 page_size: 1,
@@ -220,7 +218,6 @@ export default {
           this.total_weight = val.data.data.bag_weight
           this.actual_weight = val.data.data.bag_actual_weight
           this.bag_destination = val.data.data.destination ? val.data.data.destination.node_code : ''
-          this.courier_delivery = val.data.employee_name ? val.data.employee_name : ''
         },
         actionUpdate(val){
             if(this.dataTable.length > 0) {
