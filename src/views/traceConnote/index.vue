@@ -217,7 +217,6 @@ export default {
         },
 
         async processConnoteNumber() {
-            console.log("PPY2", this.connoteNumber)
             this.connote_number = this.connoteNumber;
             this.koli_number = this.connoteNumber + "00";
             const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
@@ -411,7 +410,6 @@ export default {
         },
 
         updateValueOrion() {
-            console.log("PPY1", this.connoteNumber)
             this.connote_number = this.connoteNumber;
             this.koli_number = `${this.connoteNumber}` + "00";
             const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
