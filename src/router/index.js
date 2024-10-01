@@ -883,7 +883,7 @@ const routes = [
           },
           {
             path: "bag",
-            name: "bag",
+            name: "Bag",
             component: InventoryBagItem,
             meta: {
               requiresAuth: true,
