@@ -16,13 +16,23 @@
                 >
                     Print
                 </vs-button>
-                <vs-button  
-                    :danger="is_approve === 1"
-                    :disabled="isDisabledApprove"
-                    @click="approve" 
-                >
-                    {{ is_approve === 1 ? 'Unapproved' : 'Approve' }}
-                </vs-button>
+                <template v-if="listenUserRoleName === 'HELPDESK'">
+                    <vs-button  
+                        :danger="is_approve === 1"
+                        :disabled="isDisabledApprove"
+                        @click="approve" 
+                    >
+                        {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
+                    </vs-button>
+                </template>
+                <template v-else>
+                    <vs-button
+                        :disabled="is_approve === 1 || isDisabledApprove"
+                        @click="approve" 
+                    >
+                        {{ is_approve === 1 ? 'Approved' : 'Approve' }}
+                    </vs-button>
+                </template>
             </div>
         </template>
 
@@ -202,6 +212,9 @@ export default {
         },
         listenTitle() {
             return this.title;
+        },
+        listenUserRoleName() {
+            return this.listenUserRole.user_role_name
         }
     },
     watch: {
@@ -228,7 +241,7 @@ export default {
 
             this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
             this.isDisabledPrint = val.status === 'CANCELED';
-            this.isDisabledApprove = (val.status !== 'READY' && val.is_approve === 1) || val.is_orion === "1";
+            this.isDisabledApprove = val.status !== 'READY' || val.is_orion === "1";
 
             this.is_approve = val.is_approve;
 

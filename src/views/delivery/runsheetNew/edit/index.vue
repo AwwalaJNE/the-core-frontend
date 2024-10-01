@@ -138,31 +138,45 @@
                                             </vs-button>
                                         </template>
                                         <template v-if="dataDelivery.length > 0">
-                                            <div v-if="!disabledApprove">
+                                            <template v-if="listenUserRoleName === 'HELPDESK'">
+                                                <div v-if="!disabledApprove">
+                                                    <vs-button
+                                                        style="float: left"
+                                                        :disabled="hrsStatus"
+                                                        :loading="loadingApprove"
+                                                        @click="approveAction(true)"
+                                                    >
+                                                        <span>
+                                                            Approve Runsheet
+                                                        </span>
+                                                    </vs-button>
+                                                </div>
+                                                <div v-else-if="disabledApprove">
+                                                    <vs-button
+                                                        danger
+                                                        style="float: left"
+                                                        :disabled="hrsStatus"
+                                                        :loading="loadingApprove"
+                                                        @click="approveAction(false)"
+                                                    >
+                                                        <span>
+                                                            Unapprove Runsheet
+                                                        </span>
+                                                    </vs-button>
+                                                </div>
+                                            </template>
+                                            <template v-else>
                                                 <vs-button
                                                     style="float: left"
-                                                    :disabled="hrsStatus"
+                                                    :disabled="disabledApprove"
                                                     :loading="loadingApprove"
                                                     @click="approveAction(true)"
                                                 >
                                                     <span>
-                                                        Approve Runsheet
+                                                        {{ disabledApprove ? "Runsheet Approved" : "Approve Runsheet"}}
                                                     </span>
-                                                </vs-button>
-                                            </div>
-                                            <div v-else-if="disabledApprove">
-                                                <vs-button
-                                                    danger
-                                                    style="float: left"
-                                                    :disabled="hrsStatus"
-                                                    :loading="loadingApprove"
-                                                    @click="approveAction(false)"
-                                                >
-                                                    <span>
-                                                        Unapprove Runsheet
-                                                    </span>
-                                                </vs-button>
-                                            </div>
+                                                    </vs-button>
+                                            </template>
                                         </template>
                                 </vs-row>
                             </vs-col>
@@ -352,6 +366,9 @@ export default {
         listenDataDelivery() {
             return this.dataDelivery;
         },
+        listenUserRoleName() {
+            return this.listenUserRole.user_role_name
+        }
     },
     mounted() {
         this.getStatus();
