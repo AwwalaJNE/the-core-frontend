@@ -3923,6 +3923,19 @@ export default {
     },
   },
 
+  helpdesk_move_bag: {
+    node_location_id: {
+      label: "Node",
+      key: "node_location_id",
+      rule: "",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  },
+
   helpdesk_edit_connote: {
     connote_shipper_name: {
       label: "Connote Shipper Name",
@@ -4023,5 +4036,5 @@ export default {
       valueData: null,
       value: '',
     },
-  },
+  },  
 }
