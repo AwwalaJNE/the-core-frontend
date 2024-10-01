@@ -3912,9 +3912,9 @@ export default {
 
   helpdesk_move_connote: {
     node_location_id: {
-      label: "To Node",
+      label: "Node",
       key: "node_location_id",
-      rule: "required",
+      rule: "",
       typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
@@ -3927,7 +3927,7 @@ export default {
     connote_shipper_name: {
       label: "Connote Shipper Name",
       key: "connote_shipper_name",
-      rule: "required",
+      rule: "",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -3936,7 +3936,7 @@ export default {
     connote_shipper_street_address: {
       label: "Connote Shipper Street Address",
       key: "connote_shipper_street_address",
-      rule: "required",
+      rule: "",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -3945,7 +3945,7 @@ export default {
     connote_shipper_email: {
       label: "Connote Shipper Email",
       key: "connote_shipper_email",
-      rule: "required",
+      rule: "",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -3954,7 +3954,7 @@ export default {
     connote_shipper_phone_number: {
       label: "Connote Shipper Name",
       key: "connote_shipper_phone_number",
-      rule: "required|numeric|min:8",
+      rule: "numeric|min:8",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -3963,7 +3963,7 @@ export default {
     connote_receiver_name: {
       label: "Connote Receiver Name",
       key: "connote_receiver_name",
-      rule: "required",
+      rule: "",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -3972,7 +3972,7 @@ export default {
     connote_receiver_street_address: {
       label: "Connote Receiver Street Address",
       key: "connote_receiver_street_address",
-      rule: "required",
+      rule: "",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -3981,7 +3981,7 @@ export default {
     connote_receiver_email: {
       label: "Connote Receiver Email",
       key: "connote_receiver_email",
-      rule: "required",
+      rule: "",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -3990,7 +3990,7 @@ export default {
     connote_receiver_phone_number: {
       label: "Connote Receiver Name",
       key: "connote_receiver_phone_number",
-      rule: "required|numeric|min:8",
+      rule: "numeric|min:8",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -3999,8 +3999,8 @@ export default {
     amount_cod: {
       label: "Amount COD",
       key: "amount_cod",
-      rule: "required",
-      typeInput: "numeric",
+      rule: "",
+      typeInput: "number",
       typeData: "String",
       valueData: null,
       value: '',
@@ -4008,8 +4008,8 @@ export default {
     amount_price: {
       label: "Amount Price",
       key: "amount_price",
-      rule: "required",
-      typeInput: "numeric",
+      rule: "",
+      typeInput: "number",
       typeData: "String",
       valueData: null,
       value: '',
@@ -4017,7 +4017,7 @@ export default {
     remarks: {
       label: "Remarks",
       key: "remarks",
-      rule: "required",
+      rule: "",
       typeInput: "text",
       typeData: "String",
       valueData: null,

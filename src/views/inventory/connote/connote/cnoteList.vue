@@ -17,9 +17,11 @@
             :hasAction="false"
             :hasPagination="true"
             :expandable="true"
-            :hasLinkedChild="['Koli Number']"
+            :hasLinkedChild="this.listenUserRoleName === 'HELPDESK' ? [] : ['Koli Number']"
+            :hasLinked="this.listenUserRoleName === 'HELPDESK' ? ['connote_number'] : []"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
+            @handleEdit="showData"
             @handleEditLinkedChild="actionDetail"
         />
 
@@ -28,8 +30,6 @@
             :active="dialogHelpdeskEditConnote"
             :connoteNumber="connote_number"
             :closeDialog="closeDialog"
-            :dataItem="dataItem"
-            @refresh="refresh"
         />
     </div>
 </template>
@@ -283,14 +283,12 @@ export default {
         refresh(val){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
         },
+        showData(row) {
+            this.connote_number = row.connote_number;
+            this.dialogHelpdeskEditConnote = true;
+        },
         actionDetail(row){
-            if  (this.listenUserRoleName === "HELPDESK") {
-                this.dialogHelpdeskEditConnote = true;
-                this.connote_number = row.connote_number;
-                this.dataItem = row;
-            } else {
-                this.$router.push({ name: 'detailConnote', params: { id: 'b8ebb9f3-a30b-4bad-9ebc-72338816d034' } });
-            }
+            this.$router.push({ name: 'detailConnote', params: { id: 'b8ebb9f3-a30b-4bad-9ebc-72338816d034' } });
         },
 
         closeDialog() {
