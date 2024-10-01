@@ -85,11 +85,11 @@ export default {
                 },
                 { 
                     label: 'From', 
-                    value: 'from' 
+                    value: 'city_origin' 
                 },
                 { 
                     label: 'To', 
-                    value: 'geolocation_subdistrict_name' 
+                    value: 'city_destination' 
                 },
                 { 
                     label: 'Estimate Delivery', 
@@ -97,7 +97,7 @@ export default {
                 },
                 { 
                     label: 'Pod Date', 
-                    value: 'created_at' 
+                    value: 'pod_date' 
                 },
                 { 
                     label: 'Receiver Name', 
