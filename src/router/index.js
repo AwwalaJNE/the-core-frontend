@@ -180,6 +180,9 @@ import Help from "@/views/help"
 // === blank ===
 import BlankPage from "@/views/example/blank"
 
+// === Helpdesk ===
+import HelpdeskConnote from "@/views/helpdesk/connote/index";
+
 
 Vue.use(VueRouter)
 
@@ -848,7 +851,15 @@ const routes = [
         name: "helpdesk",
         component: ContentChild,
         children: [
-          // Connote
+          {
+            path: "connote",
+            name: "Connote",
+            component: HelpdeskConnote,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Connote"
+            }
+          },
           // Bag
           {
             path: "surat-muatan",

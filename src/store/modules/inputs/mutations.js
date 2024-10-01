@@ -3549,4 +3549,111 @@ export default {
   },
 
   //====== END CONFIGURATION WARNING SLA ======
+
+  //====== HELPDESK MOVE CONNOTE ======//
+  SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID(state, payload) {
+    state.helpdesk_move_connote.node_location_id.value = payload
+  },
+  SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID_ValueData(state, payload) {
+    state.helpdesk_move_connote.node_location_id.valueData = payload
+  },
+  SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID_ArrData(state, payload) {
+    state.helpdesk_move_connote.node_location_id.hasOwnProperty('arrData') ?
+    state.helpdesk_move_connote.node_location_id.arrData = payload :
+    state.helpdesk_move_connote.node_location_id.arrData = []
+  },
+  //====== END HELPDESK MOVE CONNOTE ======//
+
+
+
+
+  //====== HELPDESK EDIT CONNOTE ======//
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_NAME(state, payload) {
+    state.helpdesk_edit_connote.connote_shipper_name.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_NAME_ValueData(state, payload) {
+    state.helpdesk_edit_connote.connote_shipper_name.valueData = payload
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_STREET_ADDRESS(state, payload) {
+    state.helpdesk_edit_connote.connote_shipper_street_address.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_STREET_ADDRESS_ValueData(state, payload) {
+    state.helpdesk_edit_connote.connote_shipper_street_address.valueData = payload
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_EMAIL(state, payload) {
+    state.helpdesk_edit_connote.connote_shipper_email.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_EMAIL_ValueData(state, payload) {
+    state.helpdesk_edit_connote.connote_shipper_email.valueData = payload
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_PHONE_NUMBER(state, payload) {
+    state.helpdesk_edit_connote.connote_shipper_phone_number.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_PHONE_NUMBER_ValueData(state, payload) {
+    state.helpdesk_edit_connote.connote_shipper_phone_number.valueData = payload
+  },
+
+
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_NAME(state, payload) {
+    state.helpdesk_edit_connote.connote_receiver_name.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_NAME_ValueData(state, payload) {
+    state.helpdesk_edit_connote.connote_receiver_name.valueData = payload
+  },
+
+  
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_STREET_ADDRESS(state, payload) {
+    state.helpdesk_edit_connote.connote_receiver_street_address.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_STREET_ADDRESS_ValueData(state, payload) {
+    state.helpdesk_edit_connote.connote_receiver_street_address.valueData = payload
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_EMAIL(state, payload) {
+    state.helpdesk_edit_connote.connote_receiver_email.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_EMAIL_ValueData(state, payload) {
+    state.helpdesk_edit_connote.connote_receiver_email.valueData = payload
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_PHONE_NUMBER(state, payload) {
+    state.helpdesk_edit_connote.connote_receiver_phone_number.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_PHONE_NUMBER_ValueData(state, payload) {
+    state.helpdesk_edit_connote.connote_receiver_phone_number.valueData = payload
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_COD(state, payload) {
+    state.helpdesk_edit_connote.amount_cod.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_COD_ValueData(state, payload) {
+    state.helpdesk_edit_connote.amount_cod.valueData = payload
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_PRICE(state, payload) {
+    state.helpdesk_edit_connote.amount_price.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_PRICE_ValueData(state, payload) {
+    state.helpdesk_edit_connote.amount_price.valueData = payload
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_REMARKS(state, payload) {
+    state.helpdesk_edit_connote.remarks.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_REMARKS_ValueData(state, payload) {
+    state.helpdesk_edit_connote.remarks.valueData = payload
+  },
+  //====== END HELPDESK EDIT CONNOTE ======//
 }
