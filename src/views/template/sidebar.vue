@@ -510,10 +510,20 @@ export default {
         },
         {
           label: "Help",
-          url: "/help",
+          url: null,
           icon: "bx-help-circle",
-          children: [],
-          showAll: true,
+          children: [
+            {
+              label: "Error Dictionary",
+              url: "/help/error-dictionary",
+              icon: "bx-message-alt-error",
+            },
+            {
+              label: "Shortcut Dictionary",
+              url: "/help/shortcut-dictionary",
+              icon: "bxs-keyboard",
+            },
+          ],
         },
       ],
       menuRolePermission: [

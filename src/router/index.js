@@ -175,7 +175,8 @@ import DashboardSmartPoint from "@/views/dashboard/smartpoint"
 import ResyncRunsheet from "@/views/admin/resyncRunsheet"
 
 // === Help ===
-import Help from "@/views/help"
+import ErrorDictionary from "@/views/help/errorDictionary"
+import ShortcutDictionary from "@/views/help/shortcutDictionary"
 
 // === blank ===
 import BlankPage from "@/views/example/blank"
@@ -838,12 +839,32 @@ const routes = [
           }
       },
       {
-        path: "/help",
-        name: "Help",
-        component: Help,
+        path: "help",
+        name: "help",
+        component: ContentChild,
+        children: [
+          {
+            path: "error-dictionary",
+            name: "ErrorDictionary",
+            component: ErrorDictionary,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Error Dictionary"
+            }
+          },
+          {
+            path: "shortcut-dictionary",
+            name: "ShortcutDictionary",
+            component: ShortcutDictionary,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Shortcut Dictionary"
+            }
+          },
+        ],
         meta: {
-            requiresAuth: true,
-            breadCrumb: "Help / Error Dictionary"
+          requiresAuth: true,
+          breadCrumb: "help"
         }
       },
       {

@@ -13,8 +13,8 @@
       <div class="box view">
         <template>
           <transition name="slide-fade">
-            <help-table
-              :ref="'HelpTable'"
+            <shortcut-table
+              :ref="'ShortcutTable'"
             />
           </transition>
         </template>
@@ -27,19 +27,19 @@ import master from "@/mixins/master";
 import NavItem from "@/components/navbar/navTab";
 import Breadcrumb from "@/components/breadcrumb/index";
 
-import HelpTable from "@/views/help/helpTable";
+import ShortcutTable from "@/views/help/shortcutDictionary/shortcutTable";
 
 export default {
-  name: "help",
+  name: "shortcut",
   mixins: [master],
   components: {
     "nav-item": NavItem,
     breadcrumb: Breadcrumb,
-    "help-table": HelpTable,
+    "shortcut-table": ShortcutTable,
   },
   data() {
     return {
-      title: "Error Dictionary",
+      title: "Shortcut Dictionary",
     };
   },
 };
