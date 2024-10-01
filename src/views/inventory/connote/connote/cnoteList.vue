@@ -28,6 +28,7 @@
             :active="dialogHelpdeskEditConnote"
             :connoteNumber="connote_number"
             :closeDialog="closeDialog"
+            :dataItem="dataItem"
             @refresh="refresh"
         />
     </div>
@@ -117,6 +118,7 @@ export default {
     data() {
         return {
             dialogHelpdeskEditConnote: false,
+            dataItem: {},
             dataTable: [],
             datacolumn: [
                 {
@@ -285,7 +287,7 @@ export default {
             if  (this.listenUserRoleName === "HELPDESK") {
                 this.dialogHelpdeskEditConnote = true;
                 this.connote_number = row.connote_number;
-                console.log("PP", row)
+                this.dataItem = row;
             } else {
                 this.$router.push({ name: 'detailConnote', params: { id: 'b8ebb9f3-a30b-4bad-9ebc-72338816d034' } });
             }
