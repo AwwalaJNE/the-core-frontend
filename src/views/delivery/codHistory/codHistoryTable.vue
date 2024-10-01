@@ -204,7 +204,7 @@ export default {
             err.response ? err.response.data.code : '',
             err?.response?.data?.code,
             "Get List Failed",
-            err?.response?.data?.message ?? "Failed to populate COD History"
+            err?.response?.data?.message ?? "Failed to populate Deposit COD History"
           );
         });
     },
