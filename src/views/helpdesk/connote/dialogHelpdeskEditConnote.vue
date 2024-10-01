@@ -154,8 +154,7 @@ export default {
                     
                     
                     this.formHelpdeskMoveConnote = val.node_id;
-                    this.$store.dispatch(`SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID`, val?.current_location_name
-                    )
+                    this.$store.dispatch(`SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID`, val?.current_location_name);
                     this.formHelpdeskEditConnote = {
                         connote_shipper_name: val.connote_shipper_name,
                         connote_shipper_street_address: val.connote_shipper_street_address,
