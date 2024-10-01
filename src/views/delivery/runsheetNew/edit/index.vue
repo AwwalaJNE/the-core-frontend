@@ -235,13 +235,6 @@
             @data="onCameraScannerGetData" 
         />
 
-        <dialog-recheck-courier
-            ref="recheck_courier"
-            :active="dialogConfirmEmployee" 
-            :closeDialog="() => closeDialog('recheck_courier')"
-            @updateValue="updateValueBag"
-        />
-
         <dialog-recheck-connote-sla
             ref="recheck_connote_sla"
             title="Recheck Connote Sla"
@@ -332,8 +325,6 @@ export default {
             loadingApprove: false,
 
             selectedUpdateItems: [],
-            dialogConfirmEmployee: false,
-            dialogLoadingEmployee: false,
             navItemm: [
                 {
                     label: "LIST DELIVERY",
@@ -431,9 +422,6 @@ export default {
             try {
                 const res = await axios.put(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}?n=${this.listenNodeId}`, {courier_employee_id: this.selectedCourier}, this.Helper.header());
                 this.openNotification('success', null, "Success", res?.data?.message ?? "Sukses mengganti kurir");
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
-            } finally {
                 this.$router.push({ 
                     name: 'delivery-runsheet-edit', 
                     params: { 
@@ -442,7 +430,9 @@ export default {
                         date_filter: this.tempDate
                     } 
                 });
-
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.selectedCourier = this.employee_name + "( " + this.employee_code + " )";
             }
         },
         updateValueBag(val) {
@@ -450,7 +440,6 @@ export default {
             this.form.courier_employee_id = this.employee_id;
             this.item_no = null;
             this.form.koli_number = null;
-            this.dialogConfirmEmployee = false;
             this.validateBagPraRunsheet(val);
         },
         updateValue() {
@@ -488,8 +477,8 @@ export default {
                 )
                 .then((res) => {
                     const { data } = res.data;
-                    this.employee_code = data.employee_name;
-                    this.employee_name = data.employee_code;
+                    this.employee_code = data.employee_code;
+                    this.employee_name = data.employee_name;
                     this.loadingCourier = false;
                     this.selectedCourier = data.employee_id;
                 })
@@ -518,13 +507,6 @@ export default {
                 .get(this.URL.bag + '/' + this.form.bag_number.replaceAll("/", "-") + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`, this.Helper.header())
                 .then(res => {
                     const details = res.data.detail;
-                    for (let detail of details) {
-                        this.validation_employee = val === false ? val : res.data.validation_employee;
-                        if (this.validation_employee) {
-                            this.dialogConfirmEmployee = true;
-                            return
-                        }
-                    }
                     const postData = {
                         bag_number: this.form.bag_number,
                         courier_employee_id: this.employee_id,
@@ -550,9 +532,6 @@ export default {
                     break;
                 case 'unapprove_runsheet':
                     this.activeDialogConfirmUnpproveRunsheet = false
-                case 'recheck_courier':
-                    this.dialogConfirmEmployee = false
-                    this.dialogLoadingEmployee = false
                 default:
                     break;
             }
@@ -638,6 +617,15 @@ export default {
                 if (!this.delivery_runsheet_number) {
                     const res = await axios.post(`${this.URL.revamp_delivery}?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
 
+                    this.dataDeliverySummary = res.data.summary;
+                    this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
+                    this.$router.push({ 
+                        name: 'delivery-runsheet-edit', 
+                        params: { 
+                            employee_id: this.employee_id,
+                            delivery_runsheet_number: this.delivery_runsheet_number
+                        } 
+                    });
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Create runsheet success");
                 } else {
