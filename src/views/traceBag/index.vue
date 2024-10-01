@@ -23,7 +23,7 @@
                                     label-placeholder="Masukkan Nomor Bag"
                                     icon-after
                                     type="text"
-                                    v-model="bag_number"
+                                    v-model="bagNumber"
                                     v-uppercase
                                     :disabled="hasBagNumber"
                                     @click-icon="$refs.cameraScanner.open('formInputBag')"
@@ -80,7 +80,7 @@
                             </vs-row>
                         </template>
                     </div>
-                    <div class="box view" v-else-if="bag_number && !bag_found && !loading">
+                    <div class="box view" v-else-if="(bag_number && !bag_found && !loading) || (bag_number !== '' && !bag_found && !loading)">
                         <div style="margin-top: 2.5em;">
                             Bag tidak ditemukan
                         </div>
@@ -144,7 +144,8 @@ export default {
             this.loading = false;
             this.$router.push("/trace-bag");
         },
-        async processBagNumber() {            
+        async processBagNumber() {         
+            this.bag_number = this.bagNumber   
             try {
                 await this.$router.push(`/trace-bag/${this.bag_number}`);
                 this.hasBagNumber = true;

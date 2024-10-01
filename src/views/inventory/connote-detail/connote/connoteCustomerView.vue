@@ -81,15 +81,15 @@ export default {
             masterInfo: [
                 { 
                     label: 'Shipment Service', 
-                    value: 'service_name' 
+                    value: 'service' 
                 },
                 { 
                     label: 'From', 
-                    value: 'from' 
+                    value: 'city_origin' 
                 },
                 { 
                     label: 'To', 
-                    value: 'geolocation_subdistrict_name' 
+                    value: 'city_destination' 
                 },
                 { 
                     label: 'Estimate Delivery', 
@@ -97,11 +97,11 @@ export default {
                 },
                 { 
                     label: 'Pod Date', 
-                    value: 'created_at' 
+                    value: 'pod_date' 
                 },
                 { 
                     label: 'Receiver Name', 
-                    value: 'connote_receiver_name' 
+                    value: 'receiver_name' 
                 }
             ]
         }
