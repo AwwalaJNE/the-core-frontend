@@ -282,7 +282,7 @@ export default {
               permission: "read-cod",
             },
             {
-              label: "COD History",
+              label: "Deposit COD History",
               url: "/cod-history",
               icon: "",
               permission: "read-cod",
