@@ -151,7 +151,7 @@ export default {
                     
                     
                     this.formHelpdeskMoveBag = val.current_node_id;
-                    this.$store.dispatch(`SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID`, val?.destination?.node_name);
+                    this.$store.dispatch(`SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID`, val?.current_node_name);
                     this.formHelpdeskEditBag = {
                         bag_shipper_name: val.bag_shipper_name,
                         bag_shipper_street_address: val.bag_shipper_street_address,
