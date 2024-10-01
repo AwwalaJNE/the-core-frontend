@@ -3566,6 +3566,21 @@ export default {
 
 
 
+  //====== HELPDESK MOVE BAG ======//
+  SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID(state, payload) {
+    state.helpdesk_move_bag.node_location_id.value = payload
+  },
+  SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID_ValueData(state, payload) {
+    state.helpdesk_move_bag.node_location_id.valueData = payload
+  },
+  SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID_ArrData(state, payload) {
+    state.helpdesk_move_bag.node_location_id.hasOwnProperty('arrData') ?
+    state.helpdesk_move_bag.node_location_id.arrData = payload :
+    state.helpdesk_move_bag.node_location_id.arrData = []
+  },
+  //====== END HELPDESK MOVE BAG ======//
+
+
 
   //====== HELPDESK EDIT CONNOTE ======//
   SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_NAME(state, payload) {

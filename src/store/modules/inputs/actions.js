@@ -3272,6 +3272,20 @@ export default {
 
 
 
+  //======= HELPDESK MOVE BAG =======//
+  SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID({ commit }, payload) {
+    commit('SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID', payload)
+  },
+  SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID_ValueData', payload)
+  },
+  SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID_ArrData({ commit }, payload) {
+    commit('SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID_ArrData', payload)
+  },
+  //====== END HELPDESK MOVE BAG ======//
+
+
+
   //======= HELPDESK EDIT CONNOTE =======//
   SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_NAME({ commit }, payload) {
     commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_NAME', payload)

@@ -49,10 +49,13 @@
             </span>
           </vs-button>
         </template>
-        <vs-button style="width: 6rem;" @click="newBag">
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK'" style="width: 6rem;" @click="newBag">
           <i class="bx bx-plus"></i> New
         </vs-button>
-        <vs-button style="width: 6rem;" @click="print">Print</vs-button>
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK'" style="width: 6rem;" @click="print">Print</vs-button>
+        <vs-button v-if="listenUserRoleName === 'HELPDESK'" style="width: 6rem;" @click="editBag">
+          Edit
+        </vs-button>
       </div>
     </vs-row>
 
@@ -268,6 +271,12 @@
       @confirm="confirmUnpproveBag"
       @cancel="closeDialogConfirmUnpproveBag"
     />
+    <dialog-helpdesk-edit-bag
+      title="Edit Bag"
+      :active="dialogHelpdeskEditBag"
+      :bagNumber="bag_id"
+      :closeDialog="closeDialog"
+    />
   </div>
 </template>
 <script>
@@ -278,6 +287,7 @@ import detailBagList from "@/views/inventory/bag/bagDetailList"
 import Selector from "@/components/input/select"
 import CameraScanner from "@/components/scanner/camera.vue";
 import DialogConfirm from "@/components/dialog/dialogConfirm"
+import DialogHelpdeskEditBag from "@/views/helpdesk/bag/dialogHelpdeskEditBag";
 
 export default {
   name: "InventoryBaggingList",
@@ -288,6 +298,7 @@ export default {
     "selector": Selector,
     CameraScanner,
     "dialog-confirm": DialogConfirm,
+    "dialog-helpdesk-edit-bag": DialogHelpdeskEditBag,
   },
   data() {
     return {
@@ -333,6 +344,7 @@ export default {
       disabledApprove: false,
       activeDialogConfirmUnpproveBag: false,
       loadingConfirmUnpproveBag: false,
+      dialogHelpdeskEditBag: false,
     }
   },
   computed: {
@@ -589,6 +601,9 @@ export default {
     newBag() {
       this.$router.push('/inventory/bagging')
     },
+    editBag() {
+      this.dialogHelpdeskEditBag = true;
+    },
     setInputFocus() {
       this.$nextTick(() => {
         let inputElement = null
@@ -632,6 +647,10 @@ export default {
       this.confirmationApprove(false)
       this.activeDialogConfirmUnpproveBag = false
       this.refresh()
+    },
+    closeDialog() {
+      this.dialogHelpdeskEditBag = false;
+      this.refresh();
     },
     closeDialogConfirmUnpproveBag(){
       this.activeDialogConfirmUnpproveBag = false

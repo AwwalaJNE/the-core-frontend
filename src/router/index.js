@@ -881,7 +881,15 @@ const routes = [
               breadCrumb: "Connote"
             }
           },
-          // Bag
+          {
+            path: "bag",
+            name: "Bag",
+            component: InventoryBagItem,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "bag"
+            }
+          },
           {
             path: "surat-muatan",
             name: "SuratMuatan",
