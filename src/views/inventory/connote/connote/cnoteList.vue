@@ -8,28 +8,39 @@
 <template>
     <div>
         <table-master
-        :dataTable="dataTable" 
-        :dataColumn="datacolumn" 
-        :tableLoading="loading"
-        :pageSize="pagination.page_size"
-        :page="pagination.page"
-        :limit="pagination.limit"
-        :hasAction="false"
-        :hasPagination="true"
-        :expandable="true"
-        :hasLinkedChild="['Koli Number']"
-        @actionLimit="actionLimit"
-        @actionPagination="actionPagination"
-        @handleEditLinkedChild="actionDetail"
+            :dataTable="dataTable" 
+            :dataColumn="datacolumn" 
+            :tableLoading="loading"
+            :pageSize="pagination.page_size"
+            :page="pagination.page"
+            :limit="pagination.limit"
+            :hasAction="false"
+            :hasPagination="true"
+            :expandable="true"
+            :hasLinkedChild="['Koli Number']"
+            @actionLimit="actionLimit"
+            @actionPagination="actionPagination"
+            @handleEditLinkedChild="actionDetail"
         />
 
+        <dialog-helpdesk-edit-connote
+            title="Edit Connote"
+            :active="dialogHelpdeskEditConnote"
+            :connoteNumber="connote_number"
+            :closeDialog="closeDialog"
+            @refresh="refresh"
+        />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import TableMaster from "@/components/table/tableMaster.vue"
 import moment from "moment"
+
+import TableMaster from "@/components/table/tableMaster.vue"
+
+import DialogHelpdeskEditConnote from "@/views/helpdesk/connote/dialogHelpdeskEditConnote";
+
 export default {
     name:"list-connote",
     mixins: [master],
@@ -42,7 +53,8 @@ export default {
         dateFilter: Array,
     },
     components: {
-        "table-master" : TableMaster
+        "table-master" : TableMaster,
+        "dialog-helpdesk-edit-connote": DialogHelpdeskEditConnote
     },
     watch: {
         query: function(val, old) {
@@ -104,22 +116,23 @@ export default {
     },
     data() {
         return {
+            dialogHelpdeskEditConnote: false,
             dataTable: [],
             datacolumn: [
                 {
                     label: "Connote Number",
                     key: "connote_number",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Origin",
                     key: "connote_shipper_tariff_code",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Destination",
                     key: "connote_receiver_tariff_code",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Weight(Kg)",
@@ -129,34 +142,34 @@ export default {
                 {
                     label: "Service",
                     key: "connote_service_code",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "COD",
                     key: "is_cod",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Amount COD (Rp)",
                     key: "amount_cod",
-                    width: "xxs",
+                    width: "sm",
                     type_amount: true,
                     textAlign: "right"
                 },
                 {
                     label: "SLA",
                     key: "connote_sla_date",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Created At",
                     key: "created_at",
-                    width: "auto"
+                    width: "xs"
                 },                
                 {
                     label: "Cancel",
                     key: "is_void_status",
-                    width: "auto"
+                    width: "xs"
                 }
             ],
             loading: false,
@@ -171,7 +184,13 @@ export default {
                 page_size: 1,
                 page: 1
             },
-            loadInterval: null
+            loadInterval: null,
+            connote_number: ''
+        }
+    },
+    computed: {
+        listenUserRoleName() {
+            return this.listenUserRole.user_role_name
         }
     },
     methods: {
@@ -206,12 +225,12 @@ export default {
                         item["is_cod"] = item.is_cod == 1 ? 'YES' : '-'
                         item['children_width'] = {
                             'Koli Number': 'xs',
-                            'Bag': 'xxxs',
-                            'Wood Package': 'xxxs',
-                            'Receiving Date': 'md',
-                            'Status Irregularity': 'md',
-                            'Delivery Status Code': 'xxs',
-                            'Status': 'xxs'
+                            'Bag': 'xs',
+                            'Wood Package': 'xs',
+                            'Receiving Date': 'sm',
+                            'Status Irregularity': 'xs',
+                            'Delivery Status Code': 'xs',
+                            'Status': 'xs'
                         }
                         let koli_number = []
                         let bag = []
@@ -263,10 +282,19 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
         },
         actionDetail(row){
-            console.log("ROW", row)
-            //   this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
-            this.$router.push({ name: 'detailConnote', params: { id: 'b8ebb9f3-a30b-4bad-9ebc-72338816d034' } });
-        }
+            if  (this.listenUserRoleName === "HELPDESK") {
+                this.dialogHelpdeskEditConnote = true;
+                this.connote_number = row.connote_number;
+                console.log("PP", row)
+            } else {
+                this.$router.push({ name: 'detailConnote', params: { id: 'b8ebb9f3-a30b-4bad-9ebc-72338816d034' } });
+            }
+        },
+
+        closeDialog() {
+            this.dialogHelpdeskEditConnote = false;
+            this.refresh();
+        },
     },
     mounted() {
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
