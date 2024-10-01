@@ -81,7 +81,7 @@ export default {
             masterInfo: [
                 { 
                     label: 'Shipment Service', 
-                    value: 'service_name' 
+                    value: 'service' 
                 },
                 { 
                     label: 'From', 
@@ -101,7 +101,7 @@ export default {
                 },
                 { 
                     label: 'Receiver Name', 
-                    value: 'connote_receiver_name' 
+                    value: 'receiver_name' 
                 }
             ]
         }
