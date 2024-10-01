@@ -422,9 +422,6 @@ export default {
             try {
                 const res = await axios.put(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}?n=${this.listenNodeId}`, {courier_employee_id: this.selectedCourier}, this.Helper.header());
                 this.openNotification('success', null, "Success", res?.data?.message ?? "Sukses mengganti kurir");
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
-            } finally {
                 this.$router.push({ 
                     name: 'delivery-runsheet-edit', 
                     params: { 
@@ -433,7 +430,9 @@ export default {
                         date_filter: this.tempDate
                     } 
                 });
-
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.selectedCourier = this.employee_name + "( " + this.employee_code + " )";
             }
         },
         updateValueBag(val) {
@@ -478,8 +477,8 @@ export default {
                 )
                 .then((res) => {
                     const { data } = res.data;
-                    this.employee_code = data.employee_name;
-                    this.employee_name = data.employee_code;
+                    this.employee_code = data.employee_code;
+                    this.employee_name = data.employee_name;
                     this.loadingCourier = false;
                     this.selectedCourier = data.employee_id;
                 })
