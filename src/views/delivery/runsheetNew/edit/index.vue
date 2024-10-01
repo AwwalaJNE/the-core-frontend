@@ -235,13 +235,6 @@
             @data="onCameraScannerGetData" 
         />
 
-        <dialog-recheck-courier
-            ref="recheck_courier"
-            :active="dialogConfirmEmployee" 
-            :closeDialog="() => closeDialog('recheck_courier')"
-            @updateValue="updateValueBag"
-        />
-
         <dialog-recheck-connote-sla
             ref="recheck_connote_sla"
             title="Recheck Connote Sla"
@@ -332,8 +325,6 @@ export default {
             loadingApprove: false,
 
             selectedUpdateItems: [],
-            dialogConfirmEmployee: false,
-            dialogLoadingEmployee: false,
             navItemm: [
                 {
                     label: "LIST DELIVERY",
@@ -450,7 +441,6 @@ export default {
             this.form.courier_employee_id = this.employee_id;
             this.item_no = null;
             this.form.koli_number = null;
-            this.dialogConfirmEmployee = false;
             this.validateBagPraRunsheet(val);
         },
         updateValue() {
@@ -518,13 +508,6 @@ export default {
                 .get(this.URL.bag + '/' + this.form.bag_number.replaceAll("/", "-") + `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`, this.Helper.header())
                 .then(res => {
                     const details = res.data.detail;
-                    for (let detail of details) {
-                        this.validation_employee = val === false ? val : res.data.validation_employee;
-                        if (this.validation_employee) {
-                            this.dialogConfirmEmployee = true;
-                            return
-                        }
-                    }
                     const postData = {
                         bag_number: this.form.bag_number,
                         courier_employee_id: this.employee_id,
@@ -550,9 +533,6 @@ export default {
                     break;
                 case 'unapprove_runsheet':
                     this.activeDialogConfirmUnpproveRunsheet = false
-                case 'recheck_courier':
-                    this.dialogConfirmEmployee = false
-                    this.dialogLoadingEmployee = false
                 default:
                     break;
             }
