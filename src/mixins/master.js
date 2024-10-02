@@ -256,11 +256,10 @@ const Master = {
         redirectShortcut() {
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
-                    e.preventDefault();
+                    if (e.key.toLowerCase() !== 'i') {
+                        e.preventDefault();
+                    }
                     switch (e.key.toLowerCase()) {
-                        case "i":
-                            this.$router.push('/inventory/item')
-                            break;
                         case "h":
                             this.$router.push('/help/error-dictionary')
                             break;
@@ -282,7 +281,9 @@ const Master = {
                         default:
                     }
                 }
-                
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') {
+                    this.$router.push('/inventory/item')
+                }
             });
         },
     },
