@@ -70,6 +70,7 @@
                     :page="pagination.page"
                     :limit="pagination.limit"
                     
+                    :onRowClickCallback="updateSelected"
                     :hasPagination="true"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
@@ -170,7 +171,8 @@ export default {
                 label: 'Created Date',
                 value: 'create'
               },
-            ]
+            ],
+            selectedRow: []
         }
     },
     methods: {
@@ -279,9 +281,29 @@ export default {
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
         },
+        updateSelected(_event, _item, selected) {
+          this.selectedRow = selected.map(el => el.koli_number_return)
+        },
+        actionPrintSelected(){
+            if (this.selectedRow.length > 0) {
+                let routeData = this.$router.resolve({
+                    name: 'printGeneral',
+                    params: {
+                        'id': this.selectedRow.toString(),
+                        'type': 'koli-reprint',
+                        'node_id':this.listenNodeId
+                    }
+                });
+                window.open(routeData.href, '_blank');
+            }
+            else {
+                this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Connote Return terlebih dahulu')
+            }
+        }
     },
     mounted() {
         this.refresh()   
+        this.handlePrintShortcut(this.actionPrintSelected)
     }
 }
 </script>

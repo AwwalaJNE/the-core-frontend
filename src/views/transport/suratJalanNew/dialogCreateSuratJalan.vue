@@ -658,6 +658,9 @@ export default {
                 this.item_number = data.data.text;
             }
         },
+    },
+    mounted() {
+        this.handlePrintShortcut(this.print)
     }
 };
 </script>

@@ -19,6 +19,7 @@
         :printAction="true"
         :actionSize="'xxs'"
         :hasPagination="true"
+        :onRowClickCallback="updateSelected"
         @handleEdit="actionDetail"
         @actionPrint="actionPrint"
         @actionLimit="actionLimit"
@@ -206,7 +207,7 @@ export default {
             startDate: "",
             endDate: "",
             dateRange: [],
-            
+            selectedRow: []
         }
     },
     methods: {
@@ -298,7 +299,23 @@ export default {
                     'node_id': this.listenNodeId
                 }
             });
-        window.open(routeData.href, '_blank');
+            window.open(routeData.href, '_blank');
+        },
+        actionPrintSelected(){
+            if (this.selectedRow.length > 0) {
+                let routeData = this.$router.resolve({ 
+                    name: 'printGeneral', 
+                    params: { 
+                        'id': this.selectedRow.toString().replaceAll("/","~"), 
+                        'type': 'bag',
+                        'node_id': this.listenNodeId
+                    }
+                });
+                window.open(routeData.href, '_blank');
+            }
+            else {
+                this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Bag terlebih dahulu')
+            }
         },
         actionLimit(val){
             this.pagination.limit = val
@@ -319,9 +336,13 @@ export default {
             }
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, from, to, this.searchByBag, this.filterDateBy)
         },
+        updateSelected(_event, _item, selected) {
+            this.selectedRow = selected.map(bag => bag.bag_number)
+        },
     },
     mounted() {
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy)
+        this.handlePrintShortcut(this.actionPrintSelected)
     },
 }
 </script>

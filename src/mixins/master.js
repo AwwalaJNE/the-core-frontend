@@ -98,7 +98,6 @@ const Master = {
                 `
             });
         },
-
         playNotificationSound(type) {
             let soundPath;
             switch (type) {
@@ -117,8 +116,7 @@ const Master = {
 
             const sound = new Audio(soundPath);
             sound.play();
-        },
-             
+        },          
         openProgress(type = null, title,msg) {
             // type success, danger, warn
             this.alert = this.$vs.notification({
@@ -240,20 +238,28 @@ const Master = {
             }
             return this.day
         },
-
         dateConvert(val){
             if(val != null){
                 return moment(val).format('DD-MMM-YYYY kk:mm');
             }
         },
+        handlePrintShortcut(printFunction) {
+            document.addEventListener('keydown', function (e) {
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    e.stopPropagation();
+                    printFunction();
+                }
+            });
+        },
         redirectShortcut() {
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
-                    e.preventDefault();
+                    if (e.key.toLowerCase() !== 'i') {
+                        e.preventDefault();
+                    }
                     switch (e.key.toLowerCase()) {
-                        case "i":
-                            this.$router.push('/inventory/item')
-                            break;
                         case "h":
                             this.$router.push('/help/error-dictionary')
                             break;
@@ -275,7 +281,9 @@ const Master = {
                         default:
                     }
                 }
-                
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') {
+                    this.$router.push('/inventory/item')
+                }
             });
         },
     },
