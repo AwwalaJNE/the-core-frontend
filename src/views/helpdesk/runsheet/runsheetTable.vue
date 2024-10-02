@@ -172,9 +172,9 @@ export default {
             this.$router.push({ 
                 name: 'delivery-runsheet-edit', 
                 params: { 
-                    employee_id: this.selectedCourier,
-                    delivery_runsheet_number: this.delivery_runsheet_number,
-                    date_filter: this.tempDate
+                    employee_id: row.employee_id,
+                    delivery_runsheet_number: row.delivery_runsheet_number,
+                    date_filter: row.created_at.split(' ')[0]
                 } 
             });
         },
