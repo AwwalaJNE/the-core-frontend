@@ -252,7 +252,39 @@ const Master = {
                     printFunction();
                 }
             });
-        }
+        },
+        redirectShortcut() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
+                    e.preventDefault();
+                    switch (e.key.toLowerCase()) {
+                        case "i":
+                            this.$router.push('/inventory/item')
+                            break;
+                        case "h":
+                            this.$router.push('/help/error-dictionary')
+                            break;
+                        case "x":
+                            this.$router.push('/transaction/new-transactions')
+                            break;
+                        case "c":
+                            this.$router.push('/trace-connote')
+                            break;
+                        case "v":
+                            this.$router.push('/inbound/prealert/scan')
+                            break;
+                        case "b":
+                            this.$router.push('/inventory/bagging')
+                            break;
+                        case "o":
+                            this.$router.push('/inventory/unbagging')
+                            break;
+                        default:
+                    }
+                }
+                
+            });
+        },
     },
     created() {
         this.URL = URL

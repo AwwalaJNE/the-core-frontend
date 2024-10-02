@@ -238,11 +238,20 @@ export default {
                 this.$store.dispatch(`SET_USER_N`, n)
                 this.selectedNode = String(n.value)
             }
+        },
+        searchShortcut() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'f') {
+                    e.preventDefault();
+                    this.openDialog();
+                }
+            });
         }
     },
     mounted() {
         this.init()   
-        this.getListNode() 
+        this.getListNode()
+        this.searchShortcut()
     },
     created() {
         // this.$store.dispatch('SET_NAME', 'Laba-laba 2 biji')

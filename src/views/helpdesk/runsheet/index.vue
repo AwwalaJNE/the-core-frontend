@@ -7,20 +7,6 @@
                     <h2>{{ title }}</h2>
                 </div>
             </vs-col>
-            <vs-col xs="6" sm="3" lg="3">
-                <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
-                        <vs-button
-                            flat
-                            block
-                            :active="true"
-                            @click="openDialog"
-                        > 
-                            <i class="bx bx-plus"></i> New
-                        </vs-button>
-                    </div>
-                </div>
-            </vs-col>
         </vs-row>
 
         <section class="nodes">
@@ -69,13 +55,6 @@
                 </template>
             </div>
         </section>
-
-        <dialog-create-runsheet
-            title="Create New Runsheet"
-            :active="dialogCreateRunsheet" 
-            :closeDialog="closeDialog"
-            @refresh="refresh"        
-        />
     </div>
 </template>
 <script>
@@ -89,8 +68,7 @@ import NavItem from "@/components/navbar/navTab";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
-import DeliveryRunsheetTable from "@/views/delivery/runsheetNew/runsheetTable";
-import DialogCreateRunsheet from "@/views/delivery/runsheetNew/dialogCreateRunsheet";
+import DeliveryRunsheetTable from "@/views/helpdesk/runsheet/runsheetTable";
 
 export default {
     name: "Inbound-List",
@@ -101,18 +79,14 @@ export default {
         "search-input": SearchInput,
         "daterange-filter": dateRange,
         "select-search-by" : SelectSearchBy,
-        DeliveryRunsheetTable: DeliveryRunsheetTable,
-        "dialog-create-runsheet": DialogCreateRunsheet
+        DeliveryRunsheetTable: DeliveryRunsheetTable
     },
     data() {
         return {
-            title: "Assign",
+            title: "Runsheet",
             tempSearch: "",
             tempDate: moment().format("YYYY-MM-DD"),
-            DataNode: [],
             node_request: "",
-            node_origin: "",
-            node_destination: "",
             searchBy:"delivery_runsheet_number",
             filterDateBy:"create",
             searchPlaceholder: "Search Runsheet Number",
@@ -144,7 +118,6 @@ export default {
                     value: 'create'
                 },
             ],
-            dialogCreateRunsheet: false,
         };
     },
     methods: {
@@ -154,55 +127,11 @@ export default {
         searchValue(val) {
             this.tempSearch = val;
         },
-        async getDataNodeType() {
-            this.loading = true;
-            await axios
-                .get(
-                    this.URL.node_type +
-                        `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-
-                    if (res.data.data.length > 0) {
-                        res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = item.node_type_name;
-                            obj["value"] = item.node_type_id;
-
-                            this.DataNode.push(obj);
-                        });
-                    }
-
-                    this.loading = false;
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed to populate node list", err?.response?.data?.message ?? 'something went wrong');
-                });
-        },
         updateSearchBy(key, val) {
             val = val.replaceAll(" ", "_");
             this.searchBy = val;
             this.searchPlaceholder = key;
         },
-        openDialog(){
-            this.dialogCreateRunsheet = true
-        },
-        closeDialog() {
-            this.dialogCreateRunsheet = false
-        },
-        createNewShortcut() {
-            document.addEventListener('keydown', (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'r') {
-                    e.preventDefault();
-                    this.openDialog();
-                }
-            });
-        }
     },
-    mounted() {
-        this.createNewShortcut()
-    }
 };
 </script>
