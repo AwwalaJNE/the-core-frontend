@@ -9,6 +9,7 @@
         :limit="pagination.limit"
         :hasAction="false"
         :hasPagination="true"
+        :onRowClickCallback="updateSelected"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         :customAction="true"
@@ -132,7 +133,8 @@ export default {
             pickupData:{},
             pickupNumber:'',
             form:{},
-            user_role_id: ''
+            user_role_id: '',
+            selectedRow: []
         }
     },
     watch: {
@@ -265,9 +267,29 @@ export default {
           this.dialogPickupRequestCancel = false
           this.dialogPickupRequestCancelLoading=false
         },
+        updateSelected(_event, _item, selected) {
+          this.selectedRow = selected.map(el => el.pickup_number)
+        },
+        actionPrintSelected(){
+            if (this.selectedRow.length > 0) {
+                let routeData = this.$router.resolve({
+                    name: 'printGeneral',
+                    params: {
+                        'id': this.selectedRow.toString(),
+                        'type': 'pickup',
+                        'node_id':this.listenNodeId
+                    }
+                });
+                window.open(routeData.href, '_blank');
+            }
+            else {
+                this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Pickup Request terlebih dahulu')
+            }
+        }
     },
     mounted() {
         this.refresh()
+        this.handlePrintShortcut(this.actionPrintSelected)
     }
 }
 </script>

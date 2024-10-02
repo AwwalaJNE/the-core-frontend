@@ -11,6 +11,7 @@
         
         :hasLinked="['connote_number']"
         :hasPagination="true"
+        :onRowClickCallback="updateSelected"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEdit="actionDetail"
@@ -166,6 +167,7 @@ export default {
                 page_size: 1,
                 page: 1
             },
+            selectedRow: []
         }
     },
     watch: {
@@ -293,7 +295,21 @@ export default {
                     // code block
             }
         },
-
+        updateSelected(_event, _item, selected) {
+          this.selectedRow = selected.flatMap(connote => connote.koli.map(koli => koli.koli_number))
+          this.$emit("handleSelectedRow", this.selectedRow)
+        },
+        actionPrintSelected(val){
+          let routeData = this.$router.resolve({
+            name: 'printGeneral',
+            params: {
+              'id': val ? val.toString() : this.selectedRow.toString(),
+              'type': 'koli-reprint',
+              'node_id': this.listenNodeId
+            } 
+          });
+          window.open(routeData.href, '_blank');
+        },
     },
     mounted() {
         this.getTransactionIdParam()

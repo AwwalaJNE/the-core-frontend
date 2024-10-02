@@ -761,6 +761,9 @@ export default {
                 this.updateValue();
             }
         },
+    },
+    mounted() {
+        this.handlePrintShortcut(this.print)
     }
 };
 </script>

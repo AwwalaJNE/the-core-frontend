@@ -13,6 +13,7 @@
       :expandable="true"
       :printAction="true"
       :checkDepositMethod="true"
+      :onRowClickCallback="updateSelected"
       @actionPrint="actionPrint"
       @actionLimit="actionLimit"
       @actionPagination="actionPagination"
@@ -92,6 +93,7 @@ export default {
         page_size: 1,
         page: 1,
       },
+      selectedRow: []
     };
   },
   watch: {
@@ -237,9 +239,29 @@ export default {
         });
     window.open(routeData.href, '_blank');
     },
+    updateSelected(_event, _item, selected) {
+      this.selectedRow = selected.map(el => el.sco)
+    },
+    actionPrintSelected(){
+        if (this.selectedRow.length > 0) {
+            let routeData = this.$router.resolve({
+                name: 'printGeneral',
+                params: {
+                    'id': this.selectedRow.toString().replaceAll("/","~"),
+                    'type': 'cod-history',
+                    'node_id':this.listenNodeId
+                }
+            });
+            window.open(routeData.href, '_blank');
+        }
+        else {
+            this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih History terlebih dahulu')
+        }
+    }
   },
   mounted() {
     this.refresh();
+    this.handlePrintShortcut(this.actionPrintSelected)
   },
 };
 </script>

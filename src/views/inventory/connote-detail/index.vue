@@ -146,8 +146,8 @@ export default {
             destinationTlc:'',
             informationData:[],
             statusinventory:"",
+            koli_number:'',
             connote_number:''
-
         }
     },
     methods: {
@@ -195,15 +195,16 @@ export default {
         },
         getParamRoute(){
           if(this.$route.params.id){
-            this.connote_number = this.$route.params.id
+            this.koli_number = this.$route.params.id
           }
         },
         async getConnote() {
             await axios
-                .get(this.URL.connote +`/${this.connote_number}?n=${this.listenNodeId}`,
+                .get(this.URL.connote +`/${this.koli_number}?n=${this.listenNodeId}`,
                 this.Helper.header())
                 .then(res => {
                     let response = res.data.data;
+                    this.connote_number = response.connote_number
                     let dataorigin={};
                     let dataDestination={}; 
                     let dataInformation={}; 
@@ -364,6 +365,7 @@ export default {
     mounted(){
         this.getParamRoute();
         this.getConnote();
+        this.handlePrintShortcut(this.actionPrint)
     }
 }
 </script>

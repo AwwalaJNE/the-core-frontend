@@ -189,17 +189,6 @@ export default {
             let bag = val.bag_number.replaceAll("/", "-")
             this.$router.push('/bagging-detail/'+bag)
         },
-        actionPrint(val){
-            let routeData = this.$router.resolve({ 
-                name: 'printGeneral', 
-                params: { 
-                    'id': val.bag_number, 
-                    'type': 'bag',
-                    'node_id': this.listenNodeId
-                } 
-            });
-        window.open(routeData.href, '_blank');
-        },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1

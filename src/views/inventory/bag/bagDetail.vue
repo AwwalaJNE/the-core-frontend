@@ -679,6 +679,7 @@ export default {
     this.getBagIdParam()
     this.getIsPraRunsheet()
     this.setInputFocus()
+    this.handlePrintShortcut(this.print)
     // this.getNodeLink()
   }
 }

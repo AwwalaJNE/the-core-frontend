@@ -46,7 +46,7 @@
         </div>
         <template>
           <transition name="slide-fade">
-            <transactionDetailList :ref="'transactionList'" :query="tempSearch" @printAllData="printAllDataResolver" :dateFilter="tempDate" :searchBy="searchBy" :filterDateBy="filterDateBy" />
+            <transactionDetailList :ref="'transactionList'" :query="tempSearch" @handleSelectedRow="handleSelectedRow" @printAllData="printAllDataResolver" :dateFilter="tempDate" :searchBy="searchBy" :filterDateBy="filterDateBy" />
           </transition>
         </template>
 
@@ -152,7 +152,8 @@ export default {
           label: 'Due Date',
           value: 'connote_sla_date'
         },
-      ]
+      ],
+      selectedRow: []
     }
   },
   methods: {
@@ -213,6 +214,21 @@ export default {
       this.tempDate = val
     },
 
+    handleSelectedRow(val) {
+      this.selectedRow = val
+    },
+
+    handleShortcutPrint() {
+      if (this.selectedRow.length > 0) {
+        this.$refs.transactionList.actionPrintSelected()
+      }
+      else {
+        this.$refs.transactionList.actionPrintSelected(this.koli_number)
+      }
+    }
+  },
+  mounted() {
+    this.handlePrintShortcut(this.handleShortcutPrint)
   }
 }
 </script>
