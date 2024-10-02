@@ -184,6 +184,8 @@ import BlankPage from "@/views/example/blank"
 // === Helpdesk ===
 import HelpdeskConnote from "@/views/helpdesk/connote/index";
 
+import HelpdeskRunsheet from "@/views/helpdesk/runsheet/index";
+
 
 Vue.use(VueRouter)
 
@@ -908,7 +910,15 @@ const routes = [
               breadCrumb: "Surat Jalan"
             }
           },
-          // Runsheet
+          {
+            path: "runsheet",
+            name: "Runsheet",
+            component: HelpdeskRunsheet,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Runsheet"
+            }
+          },
         ],
         meta: {
           requiresAuth: true,
