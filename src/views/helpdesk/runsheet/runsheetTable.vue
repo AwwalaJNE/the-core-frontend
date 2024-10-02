@@ -60,8 +60,8 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Employee NIK",
-                    key: "employee_nik",
+                    label: "Employee Code",
+                    key: "employee_code",
                     width: "xxs"
                 },
                 {
