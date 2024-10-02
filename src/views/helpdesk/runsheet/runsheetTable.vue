@@ -10,7 +10,6 @@
             :hasAction="false"
             :hasLinked="['delivery_runsheet_number']"
             :hasPagination="true"
-            :expandable="true"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
             @handleEdit="showData"
@@ -41,65 +40,60 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Employee NIK",
-                    key: "employee_nik",
-                    width: "xs"
-                },
-                {
-                    label: "Employee Code",
-                    key: "employee_code",
-                    width: "xs"
-                },
-                {
-                    label: "Employee Name",
-                    key: "employee_name",
-                    width: "xs"
+                  label: "Created At",
+                  key: "created_at",
+                  width: "sm"
                 },
                 {
                     label: "Delivery Runsheet Number",
                     key: "delivery_runsheet_number",
-                    width: "sm"
+                    width: "md"
                 },
                 {
                     label: "DRI Number",
                     key: "dri",
-                    width: "sm"
+                    width: "xs"
                 },
                 {
                     label: "HRS Number",
-                    key: "total_runsheet",
-                    width: "sm"
+                    key: "hrs",
+                    width: "xs"
+                },
+                {
+                    label: "Employee NIK",
+                    key: "employee_nik",
+                    width: "xxs"
+                },
+                {
+                    label: "Employee Name",
+                    key: "employee_name",
+                    width: "xxs"
                 },
                 {
                     label: "Total Koli",
                     key: "total_koli",
-                    width: "xs"
+                    width: "xxs"
                 },
                 {
                     label: "Open",
                     key: "total_open",
-                    width: "xs"
+                    width: "xxs"
                 },
                 {
                     label: "Delivered",
                     key: "total_delivered",
-                    width: "xs"
+                    width: "xxs"
                 },
                 {
                     label: "Undelivered",
                     key: "total_undelivered",
-                    width: "xs"
+                    width: "xxs"
                 },
                 {
                   label: "Undelivered Receiving",
                   key: "total_undelivery_received",
-                  width: "xs"
+                  width: "xxs"
                 },
-                {
-                  label: "Created At",
-                  key: "created_at",
-                  width: "xs"
-                }
             ],
             loading: false,
             dataItem: {},
@@ -175,7 +169,6 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
         showData(row) {
-            console.log("PP", row)
             this.$router.push({ 
                 name: 'delivery-runsheet-edit', 
                 params: { 

@@ -7,20 +7,6 @@
                     <h2>{{ title }}</h2>
                 </div>
             </vs-col>
-            <vs-col xs="6" sm="3" lg="3">
-                <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
-                        <vs-button
-                            flat
-                            block
-                            :active="true"
-                            @click="openDialog"
-                        > 
-                            <i class="bx bx-plus"></i> New
-                        </vs-button>
-                    </div>
-                </div>
-            </vs-col>
         </vs-row>
 
         <section class="nodes">
@@ -97,13 +83,10 @@ export default {
     },
     data() {
         return {
-            title: "Assign",
+            title: "Runsheet",
             tempSearch: "",
             tempDate: moment().format("YYYY-MM-DD"),
-            DataNode: [],
             node_request: "",
-            node_origin: "",
-            node_destination: "",
             searchBy:"delivery_runsheet_number",
             filterDateBy:"create",
             searchPlaceholder: "Search Runsheet Number",
@@ -143,33 +126,6 @@ export default {
         },
         searchValue(val) {
             this.tempSearch = val;
-        },
-        async getDataNodeType() {
-            this.loading = true;
-            await axios
-                .get(
-                    this.URL.node_type +
-                        `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-
-                    if (res.data.data.length > 0) {
-                        res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = item.node_type_name;
-                            obj["value"] = item.node_type_id;
-
-                            this.DataNode.push(obj);
-                        });
-                    }
-
-                    this.loading = false;
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed to populate node list", err?.response?.data?.message ?? 'something went wrong');
-                });
         },
         updateSearchBy(key, val) {
             val = val.replaceAll(" ", "_");
