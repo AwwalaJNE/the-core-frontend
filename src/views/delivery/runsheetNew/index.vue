@@ -192,6 +192,17 @@ export default {
         closeDialog() {
             this.dialogCreateRunsheet = false
         },
+        createNewShortcut() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'r') {
+                    e.preventDefault();
+                    this.openDialog();
+                }
+            });
+        }
     },
+    mounted() {
+        this.createNewShortcut()
+    }
 };
 </script>

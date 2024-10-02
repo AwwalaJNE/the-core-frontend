@@ -14,6 +14,7 @@ export default {
     mixins: [master],	
 	mounted() {
 		this.checkAuthRequest()
+		this.redirectShortcut()
 		// console.log('TOLONG GIMANA CARANYA CEK AUTH DISINI :(');
 		// console.log('CEK DI MIXIN KANG, ITU ADA HELPER UNTUK AMBIL TOKEN BUAT HEADER');
 	}

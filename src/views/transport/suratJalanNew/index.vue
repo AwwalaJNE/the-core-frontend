@@ -263,8 +263,30 @@ export default {
         },
         updateFilterStatus(key){
             this.refresh()
-        },    
+        },
+        createNewShortcut() {
+            const keysPressed = {};
+
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                    e.preventDefault();
+                }
+                
+                keysPressed[e.key.toLowerCase()] = true;
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && keysPressed['s'] && keysPressed['j']) {
+                    e.preventDefault();
+                    this.openDialog();
+                }
+            });
+
+            document.addEventListener('keyup', (e) => {
+                keysPressed[e.key.toLowerCase()] = false;
+            });
+        }
     },
+    mounted() {
+        this.createNewShortcut()
+    }
 };
 </script>
 

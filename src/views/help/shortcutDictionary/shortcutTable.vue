@@ -78,14 +78,14 @@ export default {
           description: 'Submit the form'
         },
         {
-          shortcut: 'Ctrl + I',
+          shortcut: 'Ctrl + Shift + I',
           process: 'Inventory Item',
           description: 'Go to Inventory Item List'
         },
         {
           shortcut: 'Ctrl + Shift + F',
           process: 'Search Feature',
-          description: 'Go to Search feature'
+          description: 'Open Search feature'
         },
         {
           shortcut: 'Ctrl + Shift + H',
@@ -93,42 +93,42 @@ export default {
           description: 'Go to Help feature'
         },
         {
-          shortcut: 'Ctrl + N + R',
+          shortcut: 'Ctrl + Shift + R',
           process: 'Runsheet',
           description: 'Open dialog Create New Runsheet'
         },
         {
-          shortcut: 'Ctrl + N + T',
+          shortcut: 'Ctrl + Shift + T',
           process: 'New Transaction',
           description: 'Go to Create New Transaction page'
         },
         {
-          shortcut: 'Ctrl + N + C',
+          shortcut: 'Ctrl + Shift + C',
           process: 'Trace Connote',
           description: 'Go to Trace Connote page'
         },
         {
-          shortcut: 'Ctrl + N + V',
+          shortcut: 'Ctrl + Shift + V',
           process: 'Receiving',
           description: 'Go to Receiving Page'
         },
         {
-          shortcut: 'Ctrl + N + B',
+          shortcut: 'Ctrl + Shift + B',
           process: 'Create Bag',
           description: 'Go to Create Bag page'
         },
         {
-          shortcut: 'Ctrl + N + O',
+          shortcut: 'Ctrl + Shift + O',
           process: 'Open Bag',
           description: 'Go to Open Bag page'
         },
         {
-          shortcut: 'Ctrl + N + S + J',
+          shortcut: 'Ctrl + Shift + S + J',
           process: 'Surat Jalan',
           description: 'Open dialog Create New Surat Jalan'
         },
         {
-          shortcut: 'Ctrl + N + S + M',
+          shortcut: 'Ctrl + Shift + S + M',
           process: 'Surat Muatan',
           description: 'Open dialog Create Surat Muatan'
         }
