@@ -149,9 +149,8 @@ import irreguralitiesEntryStatus from "@/views/irreguralities/entryStatus"
 import irreguralitiesHold from "@/views/irreguralities/hold"
 import irreguralitiesFailed from "@/views/irreguralities/failed"
 
-// === Tracing ===
 import Tracing from "@/views/tracing"
-import TracingHistory from "@/views/tracing/tracingHistory"
+import TracingDetail from "@/views/tracing/detail/index"
 
 // === Cost To Cost ===
 import CostToCostSetting from "@/views/costToCost/setting"
@@ -418,33 +417,52 @@ const routes = [
         }
       },
       {
-        path: "Tracing",
+        path: "",
         name: "tracing",
         component: ContentChild,
         children: [
           {
-            path: "/",
+            path: "/tracing-outstanding",
             name: "tracing",
             component: Tracing,
             meta: {
               requiresAuth: true,
-              breadCrumb: "tracing"
+              breadCrumb: "Tracing Outstanding",
             },
           },
           {
-            path: "/tracing/:id",
-            name: "tracing-history",
-            component: TracingHistory,
+            path: "/tracing-outstanding/:id",
+            name: "tracing-detail",
+            component: TracingDetail,
             meta: {
               requiresAuth: true,
-              breadCrumb: "tracing",
-              backPath: "/tracing"
+              breadCrumb: "Tracing Outstanding",
+              backPath: "/tracing-outstanding"
+            }
+          },
+          {
+            path: "/tracing-history",
+            name: "tracingHistory",
+            component: Tracing,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Tracing History"
+            },
+          },
+          {
+            path: "/tracing-history/:id",
+            name: "tracingHistoryDetail",
+            component: TracingDetail,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Tracing History",
+              backPath: "/tracing-history"
             }
           }
         ],
         meta: {
           requiresAuth: true,
-          breadCrumb: "Trace Connote"
+          breadCrumb: "Tracing"
         }
       },
       {

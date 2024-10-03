@@ -8,7 +8,7 @@
                 </div>
             </vs-col>
             <vs-col xs="6" sm="3" lg="3" v-if="navActive != 'k-RUNSHEET'">
-                <div style="position:relative;display:flex;justify-content: flex-end;">
+                <div style="position:relative;display:flex;justify-content: flex-end;" v-if="!is_history">
                     <div style="width: 100px;padding-right: 5px;">
                         <vs-button flat block :active="true" @click="openDialogNewButton">
                             <i class="bx bx-plus"></i> New
@@ -28,36 +28,28 @@
                             <vs-col xs="12" sm="9" lg="9">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
-                            <!-- <vs-col xs="12" sm="3" lg="3">
-                                <search-input ref="searchInput" @searchValue="searchValue" class="search-input" />
-                            </vs-col> -->
                         </vs-row>
-
-                        <!-- <vs-row>
-                            <vs-col xs="12" sm="6" lg="6">
-                                <date-time
-                                    :name="''"
-                                    :rules="''"
-                                    :formKey="'TRIGGER_DATE'"
-                                    :valueData="dateRange"
-                                    typeInput="daterange"
-                                    @updateValue="updateValue" 
-                                />
-                            </vs-col>
-                        </vs-row> -->
 
                         <template v-if="navActive === 'k-REMARK'">
                             <vs-row>
                                 <vs-col xs="12" sm="12" lg="6">
                                     <vs-row>
                                         <vs-col w="4">
-                                            <select-search-by :isMultiple="false" :border="true"
-                                                @updateSearchBy="updateFilterDateBy" :valueData="dateParamsRemark"
-                                                :selectedValue="filterDateByRemark" />
+                                            <select-search-by 
+                                                :border="true"
+                                                :isMultiple="false" 
+                                                :selectedValue="filterDateByRemark"
+                                                :valueData="dateParamsRemark"
+                                                @updateSearchBy="updateFilterDateBy" 
+                                            />
                                         </vs-col>
                                         <vs-col w="8">
-                                            <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'"
-                                                :valueData="dateRange" typeInput="daterange"
+                                            <date-time 
+                                                typeInput="daterange"
+                                                :name="''" 
+                                                :formKey="'TRIGGER_DATE'"
+                                                :rules="''" 
+                                                :valueData="dateRange" 
                                                 @updateValue="updateValue" />
                                         </vs-col>
                                     </vs-row>
@@ -65,20 +57,32 @@
                                 <vs-col xs="12" sm="12" lg="6" >
                                     <vs-row justify="end">
                                         <vs-col xs="6" sm="8" lg="4">
-                                            <select-search-by :isMultiple="false" :border="true"
-                                                @updateSearchBy="updateSearchBy" :valueData="searchParamsRemark"
-                                                :selectedValue="searchByRemark" />
+                                            <select-search-by 
+                                                :border="true"
+                                                :isMultiple="false" 
+                                                :valueData="searchParamsRemark"
+                                                :selectedValue="searchByRemark" 
+                                                @updateSearchBy="updateSearchBy" 
+                                            />
                                         </vs-col>
                                         <vs-col xs="6" sm="4" lg="4">
-                                            <search-input ref="searchInput" @searchValue="searchValue"
-                                                :placeholder="searchPlaceholderRemark" />
+                                            <search-input 
+                                                ref="searchInput" 
+                                                @searchValue="searchValue"
+                                                :placeholder="searchPlaceholderRemark" 
+                                            />
                                         </vs-col>
                                     </vs-row>
                                 </vs-col>
                             </vs-row>
                             <transition name="slide-fade">
-                                <remark-list ref="refreshRemark" :query="tempSearch" :dateFilter="dateRange"
-                                    :searchBy="searchByRemark" :filterDateBy="filterDateByRemark" />
+                                <remark-list 
+                                    ref="refreshRemark" 
+                                    :dateFilter="dateRange"
+                                    :filterDateBy="filterDateByRemark" 
+                                    :query="tempSearch" 
+                                    :searchBy="searchByRemark" 
+                                />
                             </transition>
                         </template>
 
@@ -87,34 +91,55 @@
                                 <vs-col xs="12" sm="12" lg="6">
                                     <vs-row>
                                         <vs-col w="4">
-                                            <select-search-by :isMultiple="false" :border="true"
-                                                @updateSearchBy="updateFilterDateBy" :valueData="dateParamsRunsheet"
-                                                :selectedValue="filterDateByRunsheet" />
+                                            <select-search-by 
+                                                :border="true"
+                                                :isMultiple="false" 
+                                                :selectedValue="filterDateByRunsheet"
+                                                :valueData="dateParamsRunsheet" 
+                                                @updateSearchBy="updateFilterDateBy" 
+                                            />
                                         </vs-col>
                                         <vs-col w="8">
-                                            <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'"
-                                                :valueData="dateRange" typeInput="daterange"
-                                                @updateValue="updateValue" />
+                                            <date-time 
+                                                typeInput="daterange"
+                                                :rules="''" 
+                                                :name="''" 
+                                                :formKey="'TRIGGER_DATE'"
+                                                :valueData="dateRange" 
+                                                @updateValue="updateValue" 
+                                            />
                                         </vs-col>
                                     </vs-row>
                                 </vs-col>
                                 <vs-col xs="12" sm="12" lg="6" >
                                     <vs-row justify="end">
                                         <vs-col xs="6" sm="8" lg="4">
-                                            <select-search-by :isMultiple="false" :border="true"
-                                                @updateSearchBy="updateSearchBy" :valueData="searchParamsRunsheet"
-                                                :selectedValue="searchByRunsheet" />
+                                            <select-search-by 
+                                                :border="true"
+                                                :isMultiple="false" 
+                                                :selectedValue="searchByRunsheet"
+                                                :valueData="searchParamsRunsheet" 
+                                                @updateSearchBy="updateSearchBy" 
+                                            />
                                         </vs-col>
                                         <vs-col xs="6" sm="4" lg="4">
-                                            <search-input ref="searchInput" @searchValue="searchValue"
-                                                :placeholder="searchPlaceholderRunsheet" />
+                                            <search-input 
+                                                ref="searchInput"
+                                                :placeholder="searchPlaceholderRunsheet" 
+                                                @searchValue="searchValue"
+                                            />
                                         </vs-col>
                                     </vs-row>
                                 </vs-col>
                             </vs-row>
                             <transition name="slide-fade">
-                                <runsheet-list :ref="navActive" :query="tempSearch" :dateFilter="dateRange"
-                                    :searchBy="searchByRunsheet" :filterDateBy="filterDateByRunsheet" />
+                                <runsheet-list 
+                                    :dateFilter="dateRange"
+                                    :filterDateBy="filterDateByRunsheet" 
+                                    :query="tempSearch" 
+                                    :ref="navActive" 
+                                    :searchBy="searchByRunsheet" 
+                                />
                             </transition>
                         </template>
 
@@ -123,34 +148,55 @@
                                 <vs-col xs="12" sm="12" lg="6">
                                     <vs-row>
                                         <vs-col w="4">
-                                            <select-search-by :isMultiple="false" :border="true"
-                                                @updateSearchBy="updateFilterDateBy" :valueData="dateParamsMessage"
-                                                :selectedValue="filterDateByMessage" />
+                                            <select-search-by 
+                                                :border="true"
+                                                :isMultiple="false" 
+                                                :selectedValue="filterDateByMessage" 
+                                                :valueData="dateParamsMessage"
+                                                @updateSearchBy="updateFilterDateBy" 
+                                            />
                                         </vs-col>
                                         <vs-col w="8">
-                                            <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'"
-                                                :valueData="dateRange" typeInput="daterange"
-                                                @updateValue="updateValue" />
+                                            <date-time 
+                                                typeInput="daterange"
+                                                :rules="''" 
+                                                :name="''" 
+                                                :formKey="'TRIGGER_DATE'"
+                                                :valueData="dateRange" 
+                                                @updateValue="updateValue" 
+                                            />
                                         </vs-col>
                                     </vs-row>
                                 </vs-col>
                                 <vs-col xs="12" sm="12" lg="6" >
                                     <vs-row justify="end">
                                         <vs-col xs="6" sm="8" lg="4">
-                                            <select-search-by :isMultiple="false" :border="true"
-                                                @updateSearchBy="updateSearchBy" :valueData="searchParamsMessage"
-                                                :selectedValue="searchByMessage" />
+                                            <select-search-by 
+                                                :border="true"
+                                                :isMultiple="false" 
+                                                :selectedValue="searchByMessage"
+                                                :valueData="searchParamsMessage" 
+                                                @updateSearchBy="updateSearchBy"    
+                                            />
                                         </vs-col>
                                         <vs-col xs="6" sm="4" lg="4">
-                                            <search-input ref="searchInput" @searchValue="searchValue"
-                                                :placeholder="searchPlaceholderMessage" />
+                                            <search-input 
+                                                ref="searchInput" 
+                                                :placeholder="searchPlaceholderMessage" 
+                                                @searchValue="searchValue"
+                                            />
                                         </vs-col>
                                     </vs-row>
                                 </vs-col>
                             </vs-row>
                             <transition name="slide-fade">
-                                <message-list ref="refreshMessage" :query="tempSearch" :dateFilter="dateRange"
-                                    :searchBy="searchByMessage" :filterDateBy="filterDateByMessage" />
+                                <message-list 
+                                    ref="refreshMessage"
+                                    :dateFilter="dateRange" 
+                                    :filterDateBy="filterDateByMessage" 
+                                    :query="tempSearch" 
+                                    :searchBy="searchByMessage" 
+                                />
                             </transition>
                         </template>
 
@@ -168,11 +214,17 @@
             </vs-row>
         </section>
 
-        <dialog-remark :active="dialogRemarkActive" :closeDialog="closeDialogRemark"
-            :callRefreshRemarkFunction="callRefreshRemarkFunction" />
+        <dialog-remark 
+            :active="dialogRemarkActive" 
+            :closeDialog="closeDialogRemark"
+            :callRefreshRemarkFunction="callRefreshRemarkFunction" 
+        />
 
-        <dialog-messages :active="dialogMessageActive" :closeDialog="closeDialogMessage"
-            :callRefreshMessageFunction="callRefreshMessageFunction" />
+        <dialog-messages 
+            :active="dialogMessageActive" 
+            :closeDialog="closeDialogMessage"
+            :callRefreshMessageFunction="callRefreshMessageFunction" 
+        />
 
     </div>
 </template>
@@ -183,12 +235,12 @@ import master from "@/mixins/master"
 
 import Breadcrumb from "@/components/breadcrumb/index"
 import DateTime from "@/components/input/dateTime"
-import DialogMessages from "@/views/tracing/message/dialogMessages";
-import DialogRemark from "@/views/tracing/remark/dialogRemark"
+import DialogMessages from "@/views/tracing/detail/message/dialogMessages";
+import DialogRemark from "@/views/tracing/detail/remark/dialogRemark"
 import NavItem from "@/components/navbar/navTab"
-import MessageList from "@/views/tracing/message/index"
-import RemarkList from "@/views/tracing/remark/index"
-import RunsheetList from "@/views/tracing/runsheet/index"
+import MessageList from "@/views/tracing/detail/message/index"
+import RemarkList from "@/views/tracing/detail/remark/index"
+import RunsheetList from "@/views/tracing/detail/runsheet/index"
 import SearchInput from "@/components/search/searchInput"
 import Selector from "@/components/input/select"
 import TableMaster from "@/components/table/tableMaster.vue"
@@ -205,19 +257,15 @@ export default {
         "selector": Selector,
         "date-time": DateTime,
         "select-search-by": SelectSearchBy,
-
         "remark-list": RemarkList,
         "dialog-remark": DialogRemark,
-
         "runsheet-list": RunsheetList,
-
         "message-list": MessageList,
         "dialog-messages": DialogMessages,
     },
     data() {
         return {
             koli_number: this.$route.params.id,
-
             navItemm: [
                 {
                     label: "REMARK",
@@ -235,7 +283,6 @@ export default {
                     title: "Message List"
                 }
             ],
-
             navActive: "k-REMARK",
             title: "Remark List",
             datacolumn: [
@@ -337,7 +384,8 @@ export default {
                     label: 'Created Date',
                     value: 'create'
                 },
-            ]
+            ],
+            is_history: this.$route.fullPath.includes('history')
         }
     },
     methods: {
@@ -382,7 +430,8 @@ export default {
         },
 
         back() {
-            this.$router.push("/tracing");
+            const baseRoute = this.is_history ? 'history' : 'outstanding';
+            this.$router.push(`/tracing-${baseRoute}`);
         },
         searchValue(val) {
             this.tempSearch = val
@@ -434,27 +483,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss">
-.users {
-    min-height: 50vh;
-
-    .view {
-        min-height: 400px;
-    }
-
-    .nav-box {
-        position: relative;
-        top: 0;
-        left: 0;
-        width: auto;
-        max-width: 350px;
-    }
-
-    .search-input {
-        @include for-phone-only {
-            margin-bottom: 1rem;
-        }
-    }
-}
-</style>

@@ -258,6 +258,9 @@ export default {
             this.closeDialog()
         }
     },
+    mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
+    }
 }
 </script>
 <style scoped>
