@@ -248,7 +248,7 @@ export default {
         this.autoComplateUrl = url
 
         this.initForm()
-        // this.getDataNode()
+        this.handleSubmitShortcut(this.handleSubmit)
     },
 }
 </script>
