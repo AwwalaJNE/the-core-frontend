@@ -261,8 +261,7 @@ export default {
         }
     },
     mounted() {
-        
-        // this.getDataNode()
+        this.handleSubmitShortcut(this.handleSubmit)
     },
 }
 </script>
