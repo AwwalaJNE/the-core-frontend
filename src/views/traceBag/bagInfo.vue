@@ -133,8 +133,8 @@ export default {
                     value: 'bag_type'
                 },
                 { 
-                    label: 'Is Materbag', 
-                    value: 'is_materbag', 
+                    label: 'Is Masterbag', 
+                    value: 'is_masterbag', 
                     type: 'status' 
                 },
                 { 
@@ -222,7 +222,7 @@ export default {
                     if (item) {
                         this.bag_additional_info = {
                             created_at: item.created_at,
-                            is_materbag: item.is_consolidated === 1 ? true : false,
+                            is_masterbag: item.is_consolidated === 1 ? true : false,
                             is_approve: item.is_approve === 1 ? true : false,
                             surat_muatan: item.sm?.[0]?.manifest_number || '-',
                             surat_jalan: item.sj?.[0]?.manifest_do_number || '-',
