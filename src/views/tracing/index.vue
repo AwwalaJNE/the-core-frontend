@@ -4,54 +4,67 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>Tracing</h2>
+                    <h2>{{ title }} {{  is_history ? "History" : "Outstanding" }}</h2>
                 </div>                
             </vs-col>
         </vs-row>
 
-        <vs-row>
-            <vs-col xs="12" sm="3" lg="3" style="margin-top: 2em">
-                <div class="center">
-                    <vs-input
-                        ref="formInputConnote"
-                        v-model="item_no"
-                        border
-                        type="text"
-                        label-placeholder="Scan Item here"
-                        autofocus
-                        icon-after
-                        v-uppercase
-                        @keyup.enter="updateValue"
-                        @click-icon="$refs.cameraScanner.open('formInputConnote')"
+        <div class="mt-2" style="display: flex; justify-content: space-between;" v-if="!is_history">
+            <vs-row justify="space-between">
+                <vs-col xs="9" sm="9" lg="9">
+                    <form @submit.prevent="openDialog('create')">
+                        <multi-input
+                            ref="koliCode"
+                            placeholder="Scan Item Here"
+                            rules="" 
+                            formKey="KOLI_CODE"
+                            :loading="loading"
+                            :selectedValue="koliCode"
+                            :isMultiple="false"
+                            :disabled="false"
+                            :isAllowCreate="true"
+                            :autofocus="true"
+                            @updateValue="updateValue"
+                        />
+                    </form>
+                </vs-col>
+                <vs-col xs="3" sm="3" lg="3">
+                    <vs-button
+                        :active="true"
+                        @click="openDialog('create')"
                     >
-                        <template #icon>
-                            <i class="bx bx-barcode-reader" />
-                        </template>
-                    </vs-input>
-                </div>
-            </vs-col>
-            
-            <vs-col xs="12" sm="3" lg="3" style="margin-top: 2em">
-                <div class="center">
-                    <vs-input
-                        ref="formRemoveConnote"
-                        v-model="item_no_remove"
-                        border
-                        type="text"
-                        label-placeholder="Remove Item here"
-                        autofocus
-                        icon-after
-                        v-uppercase
-                        @keyup.enter="removeValue"
-                        @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
+                        Submit
+                    </vs-button>
+                </vs-col>
+            </vs-row>
+            <vs-row justify="space-between">
+                <vs-col xs="9" sm="9" lg="9">
+                    <form @submit.prevent="openDialog('remove')">
+                        <multi-input
+                            ref="removeKoliCode"
+                            placeholder="Remove Item Here"
+                            rules="" 
+                            formKey="REMOVE_KOLI_CODE"
+                            :loading="loading"
+                            :selectedValue="removeKoliCode"
+                            :isMultiple="false"
+                            :disabled="false"
+                            :isAllowCreate="true"
+                            @updateValue="updateValue"  
+                        />
+                    </form>
+                </vs-col>
+                <vs-col xs="3" sm="3" lg="3">
+                    <vs-button
+                        danger
+                        :active="true"
+                        @click="openDialog('remove')"
                     >
-                        <template #icon>
-                            <i class="bx bx-barcode-reader" />
-                        </template>
-                    </vs-input>
-                </div>
-            </vs-col>
-        </vs-row>
+                        Remove
+                    </vs-button>
+                </vs-col>
+            </vs-row>
+        </div>
 
         <section class="nodes">
             <div class="box view">
@@ -60,26 +73,43 @@
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row>
                                 <vs-col w="4">
-                                    <select-search-by :isMultiple="false" :border="true"
-                                        @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
-                                        :selectedValue="filterDateBy" />
+                                    <select-search-by 
+                                        :border="true"
+                                        :isMultiple="false" 
+                                        :selectedValue="filterDateBy" 
+                                        :valueData="dateParams"
+                                        @updateSearchBy="updateFilterDateBy" 
+                                    />
                                 </vs-col>
                                 <vs-col w="8">
-                                    <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'" :valueData="dateRange"
-                                        typeInput="daterange" @updateValue="updateValueDate" />
+                                    <date-time 
+                                        :name="''" 
+                                        :rules="''" 
+                                        :formKey="'TRIGGER_DATE'" 
+                                        :valueData="dateRange"
+                                        typeInput="daterange" 
+                                        @updateValue="updateValue" 
+                                    />
                                 </vs-col>
                             </vs-row>
                         </vs-col>
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row justify="end">
                                 <vs-col xs="6" sm="8" lg="4">
-                                    <select-search-by :isMultiple="false" :border="true"
-                                        @updateSearchBy="updateSearchBy" :valueData="searchParams"
-                                        :selectedValue="searchBy" />
+                                    <select-search-by 
+                                        :border="true"
+                                        :isMultiple="false" 
+                                        :selectedValue="searchBy" 
+                                        :valueData="searchParams"
+                                        @updateSearchBy="updateSearchBy" 
+                                    />
                                 </vs-col>
                                 <vs-col xs="6" sm="4" lg="4">
-                                    <search-input ref="searchInput" @searchValue="searchValue"
-                                        :placeholder="searchPlaceholder" />
+                                    <search-input 
+                                        ref="searchInput"
+                                        :placeholder="searchPlaceholder" 
+                                        @searchValue="searchValue"
+                                    />
                                 </vs-col>
                             </vs-row>
                         </vs-col>
@@ -104,22 +134,32 @@
             </div>
         </section>
 
-        <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
+        <dialog-validate-tracing
+            ref="dialogValidateTracing"
+            title="Validate Tracing"
+            :active="dialogValidateTracingActive"
+            :closeDialog="closeDialog"
+            :validItem="validItem"
+            :loadingSubmit="loadingSubmit"
+            :validateType="validateType"
+            @updateValue="updateValue"
+        />
     </div>
 </template>
 
 <script>
 import axios from "axios";
 import master from "@/mixins/master";
-import moment from "moment"
+import moment from "moment";
 
 import Breadcrumb from "@/components/breadcrumb/index"
-import CameraScanner from "@/components/scanner/camera";
 import DateTime from "@/components/input/dateTime"
 import NavItem from "@/components/navbar/navTab"
 import SearchInput from "@/components/search/searchInput"
 import TableMaster from "@/components/table/tableMaster.vue"
 import SelectSearchBy from "@/components/search/selectSearchBy";
+import MultiInput from "@/components/input/multiInput"
+import DialogValidateTracing from "@/views/tracing/dialogValidateTracing"
 
 
 export default {
@@ -132,14 +172,13 @@ export default {
         "date-time": DateTime,
         "select-search-by": SelectSearchBy,
         "table-master" : TableMaster,
-        CameraScanner,
+        "multi-input": MultiInput,
+        "dialog-validate-tracing": DialogValidateTracing,
     },
     data() {
         return {
-            item_no: "",
-            item_no_remove: "",
+            title:"Tracing",
             tempSearch: "",
-            radio_option: "connote",
             loading:false,
             dateRange: [],
             dataTable: [],
@@ -147,47 +186,62 @@ export default {
                 {
                     label: "Koli",
                     key: "koli_number",
-                    width: "auto"
+                    width: "xxs"
                 },
                 {
                     label: "HRS",
                     key: "hrs_sequence",
-                    width: "auto"
+                    width: "xxs"
                 },
                 {
                     label: "HRI",
                     key: "hri_sequence",
-                    width: "auto"
+                    width: "xxs"
+                },
+                {
+                    label: "HOC",
+                    key: "hoc",
+                    width: "xxs"
                 },
                 {
                     label: "Shipper Name",
                     key: "shipper_name",
-                    width: "auto"
+                    width: "xxs"
                 },
                 {
                     label: "Shipper Phone",
                     key: "shipper_phone_number",
-                    width: "auto"
+                    width: "xxs"
                 },
                 {
                     label: "Receiver Name",
                     key: "receiver_name",
-                    width: "auto"
+                    width: "xxs"
                 },
                 {
                     label: "Receiver Phone",
                     key: "receiver_phone_number",
-                    width: "auto"
+                    width: "xxs"
                 },
                 {
                     label: "Origin",
                     key: "origin",
-                    width: "auto"
+                    width: "xxs"
                 },
                 {
                     label: "Destination",
                     key: "destination",
-                    width: "auto"
+                    width: "xxs"
+                },
+                {
+                    label: "Status Code",
+                    key: "status_code",
+                    width: "xxs"
+                },
+                {
+                    label: "Status Name",
+                    key: "status_name",
+                    width: "xxs"
                 },
             ],    
             form: {},
@@ -196,20 +250,20 @@ export default {
                 page_size: 1,
                 page: 1
             },
-            searchBy: "koli number",
-            filterDateBy: "update",
-            searchPlaceholder: "Search User",
+            searchBy: "koli_number",
+            filterDateBy: "created_at",
+            searchPlaceholder: "Search Koli Number",
             searchParams: [
                 {
-                    label: "Koli number",
-                    value: "koli number",
+                    label: "Koli Number",
+                    value: "koli_number",
                 },
                 {
-                    label: "HRS number",
+                    label: "HRS Number",
                     value: "hrs",
                 },
                 {
-                    label: "HRI number",
+                    label: "HRI Number",
                     value: "hri",
                 },
                 {
@@ -236,58 +290,63 @@ export default {
                     label: "Destination",
                     value: "destination",
                 },
+                {
+                    label: "Status Code",
+                    value: "status_code",
+                },
+                {
+                    label: "Status Name",
+                    value: "status_name",
+                },
             ],
             dateParams: [
                 {
-                    label: 'Updated Date',
-                    value: 'update'
+                    label: 'Created Date',
+                    value: 'created_at'
                 },
-            ]
+                {
+                    label: 'Updated Date',
+                    value: 'updated_at'
+                }                
+            ],
+            koliCode: [],
+            removeKoliCode: [],
+            dialogValidateTracingActive: false,
+            validItem: [],
+            listValidItem: [],
+            loading:false,
+            loadingSubmit: false,
+            loadingValidation: false,
+            validateType: 'create',
+            is_history: this.$route.fullPath.includes('history')
         }
     },
     methods: {
-        async getTableData(limit,page,q, from, to) {
-            this.loading = true
-            let query = "";
-            let startDate = "";
-            let endDate = "";
+        async getTableData(limit, page, q, from, to) {
+            this.loading = true;
 
-            if(q !== undefined) {
-                query = q
+            let query = q ?? '';            
+            let startDate = from ?? "";
+            let endDate = to ?? "";
+
+            try {
+                const res = await axios.get(`${this.URL.revamp_tracing}?n=${this.listenNodeId}&status=${this.is_history ? "1" : "0"}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, this.Helper.header());
+
+                this.dataTable = res.data.data;
+                this.pagination = {
+                    page: res.data.meta.current_page,
+                    limit: parseInt(res.data.meta.per_page, 10),
+                    page_size: res.data.meta.last_page,
+                };
+            } catch (err) {
+                this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed', err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.loading = false;
             }
-
-            if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
-            }
-
-            await axios
-                .get(this.URL.tracing +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
-                        this.dataTable = res.data.data
-
-                        this.pagination.page = res.data.meta.current_page
-                        this.pagination.limit = parseInt(res.data.meta.per_page)
-                        this.pagination.page_size = res.data.meta.last_page
-                    } else {
-                        this.dataTable = []
-                        
-                        if (query != "") {
-                            this.openNotification('danger', err?.response?.data?.code ?? "", 'Tracing data is empty!', ' data is empty or not found, please check your keyword in the input search')
-                        }
-                    }
-                    
-                    this.loading = false
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', err?.response?.data?.code ?? "", 'Failed to populate Tracing', err?.response?.data?.message ?? 'Something went wrong');
-                })
         },
         showData(row) {
-            this.$router.push(`/tracing/${row.koli_number}/`);
+            const baseRoute = this.is_history ? 'history' : 'outstanding';
+            this.$router.push(`/tracing-${baseRoute}/${row.koli_number}`);
             this.refresh();
         },
         refresh(){
@@ -307,16 +366,6 @@ export default {
             this.tempSearch = val;
             this.refresh()
         },
-        updateValueDate(key, val) {
-            switch(key) {
-                case "TRIGGER_DATE":
-                    this.dateRange = val;
-                    this.refresh();
-                    break;
-                default:
-                    break;
-            }
-        },
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
@@ -326,83 +375,40 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-        
-        onCameraScannerGetData(data) {
-            if (data && data.event === "result") {
-                const result = data.data;
-
-                switch (data.namespace) {
-                    case "formInputConnote":
-                        this.item_no = result.text;
-                        this.updateValue();
-                        break;
-                    case "formRemoveConnote":
-                        this.item_no_remove = result.text;
-                        this.removeValue();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        },
         async scanConnote() {
             this.loadingScanConnote = true;
 
-            await axios
-                .post(
-                    `${this.URL.tracing}?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form),
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.hasOwnProperty("summary")) {
-                        this.openNotification("success", null, "Success", res?.data?.message ?? "Remove koli success");
-                        this.loadingScanConnote = false;
-                    } else {
-                        this.openNotification("success", null, "Success", res?.data?.message);
-                        this.loadingScanConnote = false;
-                    }
-                    this.refresh();
-                })
-                .catch((err) => {
-                    this.loadingScanConnote = false;
-                    this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? 'Something went wrong');
-                });
+            try {
+                const res = await axios.post(`${this.URL.revamp_tracing}/create?n=${this.listenNodeId}`, this.form, this.Helper.header());
+                this.openNotification("success", null, "Success", res?.data?.message ?? "Remove koli success");
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.loadingScanConnote = false;
+                this.dialogValidateTracingActive = false;
+                this.handleClearForm();
+                this.refresh();
+            }
         },
         async removeConnote() {
             this.loadingScanConnote = true;
 
-            await axios
-                .delete(
-                    `${this.URL.tracing}/${this.form.item_number}?n=${this.listenNodeId}`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.hasOwnProperty("summary")) {
-                        this.openNotification("success", null, "Success", res?.data?.message ?? "Remove koli success");
-                        this.loadingScanConnote = false;
-                    } else {
-                        this.openNotification("success", null, "Success", res?.data?.message);
-                        this.loadingScanConnote = false;
+            try {
+                const res = await axios.delete(`${this.URL.revamp_tracing}/delete?n=${this.listenNodeId}`,
+                    {
+                        headers: this.Helper.header().headers,
+                        data: this.form,
                     }
-
-                    this.refresh();
-                })
-                .catch((err) => {
-                    this.loadingScanConnote = false;
-                    this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? 'Something went wrong');
-                });
-        },
-
-        updateValue() {
-            this.form.item_number = this.item_no;
-            this.scanConnote();
-            this.item_no = null;
-        },
-        removeValue() {
-            this.form.item_number = this.item_no_remove;
-            this.removeConnote();
-            this.item_no_remove = null;
+                );
+                this.openNotification("success", null, "Success", res?.data?.message ?? "Remove item success");
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.loadingScanConnote = false;
+                this.dialogValidateTracingActive = false;
+                this.handleClearForm();
+                this.refresh();
+            }
         },
         updateSearchBy(key, val) {
             val = val.replaceAll(" ", "_");
@@ -412,10 +418,117 @@ export default {
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
         },
-        
+        openDialog(actionType) {
+            this.validateType = actionType;
+            if (actionType === 'create' && this.koliCode?.length) {
+                this.validationCreateItem({ item_number: this.koliCode });
+            } else if (actionType === 'remove' && this.removeKoliCode?.length) {
+                this.validationRemoveItem({ item_number: this.removeKoliCode });
+            }
+        },
+        closeDialog() {
+            this.dialogValidateTracingActive = false
+            this.dataItem = {}
+        },
+        updateValue(key, val) {
+            switch(key) {
+                case "KOLI_CODE":
+                    this.koliCode = this.$refs.koliCode.value;
+                    break;
+                case "REMOVE_KOLI_CODE":
+                    this.removeKoliCode = this.$refs.removeKoliCode.value;
+                    break;
+                case "TRIGGER_DATE":
+                    this.dateRange = val
+                    this.refresh()
+                    break;
+                case "SUBMIT_DIALOG_CREATE_VALIDATE_TRACING":
+                    this.form = val;
+                    this.scanConnote();
+                    break;
+                case "SUBMIT_DIALOG_REMOVE_VALIDATE_TRACING":
+                    this.form = val;
+                    this.removeConnote();
+                    break;
+                default:
+            }
+        },
+        async validationCreateItem(validationKoliCode) {
+            this.loadingValidation = true
+            
+            // TODO: REMOVE after API validation ready
+            this.validItem = validationKoliCode;
+            this.dialogValidateTracingActive = true;
+            
+            // TODO: USE after API validation ready
+            // await axios
+            //     .post(
+            //         this.URL.validation + `/create-irregularity?n=${this.listenNodeId}`,
+            //         JSON.stringify(validationKoliCode), 
+            //         this.Helper.header())
+            //     .then(res => {
+            //         this.validItem = res.data.data
+            //         this.listValidItem = this.validItem
+            //             .filter(item => item.status === 'SUCCESS')
+            //             .map(item => item.item_number);
+
+            //         if (this.listValidItem.length > 0) {
+            //             this.dialogValidateTracingActive = true
+            //         } else {
+            //             this.refresh();
+            //             this.handleClearForm();
+            //             this.openNotification('danger', err.response ? err.response.data.code : '', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
+            //         }                    
+            //     }).catch(err => {
+            //         this.refresh();
+            //         this.handleClearForm();
+            //         this.openNotification('danger', err.response ? err.response.data.code : '', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
+            //     })
+
+            this.loadingValidation = false
+        },
+        async validationRemoveItem(validationKoliCode) {
+            this.loadingValidation = true
+            
+            // TODO: REMOVE after API validation ready
+            this.validItem = validationKoliCode;
+            this.dialogValidateTracingActive = true;
+
+            // TODO: USE after API validation ready
+            // await axios
+            //     .post(
+            //         this.URL.validation + `/remove-irregularity?n=${this.listenNodeId}`,
+            //         JSON.stringify(validationKoliCode), 
+            //         this.Helper.header())
+            //     .then(res => {
+            //         this.validItem = res.data.data
+            //         this.listValidItem = this.validItem
+            //             .filter(item => item.status === 'SUCCESS')
+            //             .map(item => item.item_number);
+                    
+            //         if (this.listValidItem.length > 0) {
+            //             this.primaryKeyList = this.listValidItem
+            //             this.activeDialogConfirmRemoveBulk = true
+            //         } else {
+            //             this.handleClearRemoveForm();
+            //             this.refresh();
+            //             this.openNotification('danger', err.response ? err.response.data.code : '', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
+            //         }     
+            //     }).catch(err => {
+            //         this.handleClearRemoveForm();
+            //         this.refresh();
+            //         this.openNotification('danger', err.response ? err.response.data.code : '', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
+            //     })
+
+            this.loadingValidation = false
+        },
+        handleClearForm(){
+            this.$refs.koliCode.value = [];
+            this.$refs.removeKoliCode.value = [];
+        },  
     },
     mounted() {
-        this.refresh()   
+        this.refresh();
     }
 }
 </script>

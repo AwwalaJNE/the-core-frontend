@@ -291,10 +291,22 @@ export default {
         },
         {
           label: "Tracing",
-          url: "/tracing",
+          url: null,
           icon: "",
-          children: [],
-          permission: "read-irreg",
+          children: [
+            {
+              label: "Tracing Outstanding",
+              url: "/tracing-outstanding",
+              icon: "",
+              permission: "read-irreg",
+            },
+            {
+              label: "Tracing History",
+              url: "/tracing-history",
+              icon: "",
+              permission: "read-irreg",
+            },
+          ],
         },
         {
           label: "Report",

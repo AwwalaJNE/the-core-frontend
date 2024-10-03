@@ -252,4 +252,7 @@ export default {
 
     // Delivery Bag Pra Revamp
     revamp_delivery_bag_pra: api + 'revamp/delivery-bag-pra',
+
+    // Tracing Revamp
+    revamp_tracing: api + 'revamp/tracing'
 }
