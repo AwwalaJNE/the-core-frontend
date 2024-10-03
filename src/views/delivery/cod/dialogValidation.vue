@@ -168,7 +168,7 @@ export default {
             }
         },
         async handleSubmit() {
-            this.loading = true;
+            this.loadingValidation = true;
 
             await axios
                 .post(
@@ -188,11 +188,14 @@ export default {
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Deposit COD is Failed', err?.response?.data?.message ? err?.response?.data?.message : 'something went wrong')
                 })
             
-            this.loading = false;
+            this.loadingValidation = false;
         },
         cancel() {
             this.closeDialog()
         },
     },
+    mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
+    }
 }
 </script>
