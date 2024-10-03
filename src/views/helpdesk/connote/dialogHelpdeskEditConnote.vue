@@ -257,6 +257,9 @@ export default {
         onChangeCustom(type, val, obj) {
             this.formHelpdeskEditConnote[type] = val;
         },
+    },
+    mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
     }
 };
 </script>
