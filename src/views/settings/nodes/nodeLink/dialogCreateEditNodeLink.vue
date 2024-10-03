@@ -275,8 +275,7 @@ export default {
         }
     },
     mounted() {
-    //   this.getDataNode()
-    //   this.getVehicleMode()
+        this.handleSubmitShortcut(this.handleSubmit)
     },
 }
 </script>

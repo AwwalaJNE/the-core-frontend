@@ -297,6 +297,7 @@ export default {
     mounted() {
         let url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
         this.autoComplateUrl = url
+        this.handleSubmitShortcut(this.handleSubmit)
     },
 }
 </script>

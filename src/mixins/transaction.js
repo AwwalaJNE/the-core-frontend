@@ -1035,6 +1035,14 @@ const TransactionMixin = {
         clearTransactionStore() {
             // this.$store.dispatch("CLEAR_TRANSACTION_DATA_CONNOTE", true)
         },
+        handleSubmitShortcut(submitFunction) {
+            document.addEventListener('keydown', function (e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    submitFunction();
+                }
+            });
+        },
     },
 }
 

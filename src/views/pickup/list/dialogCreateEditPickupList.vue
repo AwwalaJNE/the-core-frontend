@@ -395,7 +395,7 @@ export default {
     },
     mounted() {
         this.initialize()
-        // this.getDataNodeDestination()
+        this.handleSubmitShortcut(this.handleSubmit)
     },
 }
 </script>

@@ -255,6 +255,9 @@ export default {
         onChangeCustom(type, val, obj) {
             this.formHelpdeskEditBag[type] = val;
         },
+    },
+    mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
     }
 };
 </script>

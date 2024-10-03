@@ -140,10 +140,12 @@ export default {
     },
     methods: {
         async handleSubmit() {
-            if (this.type == 'KOLI') {
-                this.$emit("addConnoteToRunsheet", this.dataItem);
-            } else if (this.type == 'BAG') {
-                this.$emit("addBagPraRunsheetToRunsheet", this.dataItem);
+            if (this.listenActive) {
+                if (this.type == 'KOLI') {
+                    this.$emit("addConnoteToRunsheet", this.dataItem);
+                } else if (this.type == 'BAG') {
+                    this.$emit("addBagPraRunsheetToRunsheet", this.dataItem);
+                }
             }
         },
         cancel() {
@@ -162,6 +164,9 @@ export default {
             this.toolTipMessage = "Failed to copy token!";
         },
     },
+    mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
+    }
 }
 </script>
 <style scoped>

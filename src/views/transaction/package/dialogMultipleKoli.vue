@@ -522,6 +522,9 @@ export default {
             this.volume_weight = volume_weight
         }
     },
+    mounted() {
+        this.handleSubmitShortcut(this.formSubmit)
+    }
 }
 </script>
 <style scoped>

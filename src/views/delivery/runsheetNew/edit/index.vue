@@ -13,7 +13,7 @@
                 <vs-col xs="12" sm="3" lg="3">
                     <div class="center">
                         <vs-input
-                            ref="formInputConnote"
+                            ref="formInputBag"
                             v-model="item_bag"
                             border
                             type="text"
@@ -22,8 +22,8 @@
                             icon-after
                             v-uppercase
                             :disabled="disabledApprove"
-                            @keyup.enter="updateValueBag"
-                            @click-icon="$refs.cameraScanner.open('formInputConnote')"
+                            @keydown.enter="updateValueBag"
+                            @click-icon="$refs.cameraScanner.open('formInputBag')"
                         >
                             <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -43,7 +43,7 @@
                             icon-after
                             v-uppercase
                             :disabled="disabledApprove"
-                            @keyup.enter="updateValue"
+                            @keydown.enter="updateValue"
                             @click-icon="$refs.cameraScanner.open('formInputConnote')"
                         >
                             <template #icon>
@@ -64,7 +64,7 @@
                             icon-after
                             v-uppercase
                             :disabled="disabledApprove"
-                            @keyup.enter="removeValue"
+                            @keydown.enter="removeValue"
                             @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
                         >
                             <template #icon>
@@ -372,6 +372,16 @@ export default {
                 this.$refs.formInputConnote?.$el.querySelector('input')?.focus();
             });
         },
+        setFocusPra() {
+            this.$nextTick(() => {
+                this.$refs.formInputConnote?.$el.querySelector('input')?.focus();
+            });
+        },
+        setFocusRemove() {
+            this.$nextTick(() => {
+                this.$refs.formRemoveConnote?.$el.querySelector('input')?.focus();
+            });
+        },
         reload() {
             this.getDataDelivery();
         },
@@ -440,18 +450,21 @@ export default {
             this.form.courier_employee_id = this.employee_id;
             this.item_no = null;
             this.form.koli_number = null;
+            document.activeElement.blur();
             this.validateBagPraRunsheet(val);
         },
         updateValue() {
             this.form.koli_number = this.item_no;
             this.form.courier_employee_id = this.employee_id;
             this.form.bag_number = null;
+            document.activeElement.blur();
             this.scanConnote();
         },
         removeValue() {
             this.form.koli_number = this.item_no_remove;
             this.form.courier_employee_id = this.employee_id;
             this.form.bag_number = null;
+            document.activeElement.blur();
             this.removeConnote();
         },
         getParamRoute() {
@@ -591,6 +604,7 @@ export default {
             }
         },
         async checkZoneDelivery() {
+            this.openDialogReCheckConnoteSla = false;
             const itemNumber = this.type === 'BAG' ? this.form.bag_number : this.form.koli_number;
 
             try {
@@ -654,8 +668,6 @@ export default {
 
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Create runsheet success");
-                    this.loadingRunsheet = false;
-                    this.clearInputs()
                 } else {
                     const res = await axios.post(`${this.URL.revamp_delivery_bag_pra}/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
                     
@@ -665,13 +677,12 @@ export default {
                     this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Update runsheet success");
-                    this.loadingRunsheet = false;
-                    this.clearInputs()
-                    this.setFocus();
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
+                this.clearInputs()
+                this.setFocusRemove()
                 this.loadingRunsheet = false;
             }
         },
@@ -702,6 +713,7 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
+                this.setFocusRemove()
                 this.loadingRunsheet = false;
             }
         },
@@ -951,6 +963,10 @@ export default {
                 const result = data.data;
 
                 switch (data.namespace) {
+                    case "formInputBag":
+                        this.item_bag = result.text;
+                        this.updateValueBag();
+                        break;
                     case "formInputConnote":
                         this.item_no = result.text;
                         this.updateValue();

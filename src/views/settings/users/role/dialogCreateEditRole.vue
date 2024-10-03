@@ -158,5 +158,8 @@ export default {
             this.closeDialogRole()
         }
     },
+    mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
+    }
 }
 </script>

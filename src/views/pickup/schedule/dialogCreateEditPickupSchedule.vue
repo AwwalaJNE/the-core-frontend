@@ -478,8 +478,8 @@ export default {
         }
     },
     mounted() {
-
         this.initialize()
+        this.handleSubmitShortcut(this.handleSubmit)
     },
 }
 </script>

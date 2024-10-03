@@ -152,9 +152,14 @@ export default {
     },
     methods: {
         async handleSubmit() {
-            this.$emit("checkZoneDelivery");
+            if (this.listenActive) {
+                this.$emit("checkZoneDelivery");
+            }
         },
     },
+    mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
+    }
 }
 </script>
 <style scoped>

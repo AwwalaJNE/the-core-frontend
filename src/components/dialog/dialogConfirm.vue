@@ -83,6 +83,17 @@ export default {
         cancel(val) {
           this.$emit("cancel",true)
         },
+        handleConfirmShortcut() {
+            document.addEventListener('keydown', (e) => {
+                if (this.listenActive && (e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    this.confirm();
+                }
+            });
+        },
     },
+    mounted() {
+        this.handleConfirmShortcut()
+    }
 }
 </script>

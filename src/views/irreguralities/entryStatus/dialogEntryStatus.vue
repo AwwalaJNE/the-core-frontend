@@ -502,6 +502,9 @@ export default {
             this.dialogFileVisible = true;
         }
     },
+    mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
+    }
 }
 </script>
 <style scoped>

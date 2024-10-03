@@ -295,9 +295,7 @@ export default {
         
     },
     mounted() {
-        // this.getDataNodeId()
-        // this.getDataCustomerType()
-        // this.getDataSubdistrict()
+        this.handleSubmitShortcut(this.handleSubmit)
     },
 }
 </script>
