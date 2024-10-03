@@ -92,12 +92,17 @@ export default {
     },
     methods: {
         async handleSubmit() {
-            this.validation_employee = false;
-            this.$emit("updateValue",this.validation_employee );
+            if (this.listenActive) {
+                this.validation_employee = false;
+                this.$emit("updateValue",this.validation_employee );
+            }
         },
         cancel() {
             this.closeDialog()
         },
     },
+    mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
+    }
 }
 </script>

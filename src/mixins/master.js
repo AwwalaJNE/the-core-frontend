@@ -282,7 +282,17 @@ const Master = {
                     }
                 }
                 if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') {
-                    this.$router.push('/inventory/item')
+                    if (!e.shiftKey) {
+                        this.$router.push('/inventory/item')
+                    }
+                }
+            });
+        },
+        handleSubmitShortcut(submitFunction) {
+            document.addEventListener('keydown', function (e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    submitFunction();
                 }
             });
         },
