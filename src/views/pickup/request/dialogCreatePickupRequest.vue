@@ -98,9 +98,6 @@ export default {
           return this.formKey || ''
         },
     },
-    mounted() {
-    //   this.getTableData();
-    },
     watch: { 
       	active: function(newVal, oldVal) { // watch it
           if(newVal){
@@ -177,5 +174,8 @@ export default {
               })
         },
     },
+    mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
+    }
 }
 </script>
