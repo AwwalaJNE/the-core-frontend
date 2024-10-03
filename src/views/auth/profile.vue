@@ -194,7 +194,8 @@ export default {
             .post(`${this.URL.profile}/upload-img?n=${this.listenNodeId}`, formData, this.Helper.header())
             .then((res) => {
               this.dataItem = res.data.data;
-              this.imageUrl = this.dataItem.url;
+              // this.imageUrl = this.dataItem.url;
+              this.imageUrl = res.data.data.url;
               this.openNotification("success", null, "Success!", res.data.message);
               this.getProfile();
             })
