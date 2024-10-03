@@ -322,6 +322,7 @@ export default {
     },
     mounted() {
         this.getListPayment()
+        this.handleSubmitShortcut(this.CreatePayment)
     },
 }
 </script>
