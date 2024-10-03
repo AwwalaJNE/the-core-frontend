@@ -15,7 +15,7 @@
                 >PRINT BPIK</vs-button>
             </vs-col>
         </vs-row>
-        <section class="users">
+        <section>
             <vs-row justify="space-around">
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center" :w="`${navActive === 'k-PERMISSIONS'?'4':'12'}`">
                     <div class="box view">
@@ -68,7 +68,10 @@
                         <template v-if="navActive === 'k-CUSTOMER-VIEW'">
                           <vs-row >
                             <vs-col vs-align="center" xs="12" sm="3" lg="12">
-                              <connote-customer-view />
+                              <connote-customer-view 
+                                :connoteNumber="connote_number"
+                                :koliNumber="koli_number"
+                              />
                             </vs-col>
                           </vs-row>
                         </template>
@@ -369,41 +372,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-    .users{
-        min-height: 50vh;
-        .view{
-            min-height: 400px;
-        }
-        .nav-box{
-            position: relative;
-            top: 0;
-            left: 0;
-            width: auto;
-            max-width: 350px;
-        }
-        .dataRole{
-            position: relative;
-            width: 100%;
-            padding: 15px;
-            ul{
-                position: relative;
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                li{
-                    text-align: left;
-                    cursor: pointer;
-                    padding: 1em;
-                    border-bottom: 1px solid #eee;
-                    background-color: white;
-                    transition: all .2s ease;
-                    &:hover{
-                        background-color: #f1f1f1;
-                        transition: all .3s ease-in;
-                    }
-                }
-            }
-        }
-    }
-</style>
