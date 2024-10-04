@@ -87,15 +87,17 @@
                             <table-master
                                 :dataTable="dataTable"
                                 :dataColumn="datacolumn"
-                                :tableLoading="loading"
+                                :tableLoading="loadingDetail"
                                 :pageSize="pagination.page_size"
                                 :page="pagination.page"
                                 :limit="pagination.limit"
                                 :hasAction="false"
-                                :hasPagination="false"
+                                :hasPagination="true"
                                 :customAction="true"
                                 :customActionList="customActionList"
                                 @actionUpdate="actionUpdate"
+                                @actionLimit="actionLimit"
+                                @actionPagination="actionPagination"
                             />
                         </vs-col>
                     </vs-row>
@@ -177,13 +179,13 @@ export default {
                 }
             ],
             loading: false,
+            loadingDetail: false,
             loadingConfirmApprove: false,
             pagination: {
-                limit: 5,
+                limit: 10,
                 page_size: 1,
                 page: 1,
             },
-
             vehicle_mode_id: "",
             vehicle_type_id: "",
             node_id_origin: "",
@@ -559,6 +561,7 @@ export default {
             }
         },
         async getSuratMuatanDetail() {
+            this.loadingDetail = true;
             try {
                 const res = await axios.get(`${this.URL.revamp_surat_muatan}/${this.manifest_number}/detail?n=${this.listenNodeId}`, this.Helper.header());
 
@@ -575,6 +578,8 @@ export default {
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.loadingDetail = false;
             }
         },
         async updateSuratMuatan() {
@@ -761,6 +766,18 @@ export default {
                 this.updateValue();
             }
         },
+        actionLimit(val){
+            this.pagination.limit = val;
+            this.pagination.page = 1;
+            this.refreshDetail();
+        },
+        actionPagination(val) {
+            this.pagination.page = val;
+            this.refreshDetail();
+        },
+        refreshDetail() {
+            this.getSuratMuatanDetail();
+        }
     },
     mounted() {
         this.handlePrintShortcut(this.print)
