@@ -635,6 +635,7 @@ export default {
         },
         cancel() {
             this.isDisabledApprove = false;
+            this.isDisabled = false
             this.resetForm();
             this.handleClearForm();
             this.closeDialog();
@@ -729,6 +730,7 @@ export default {
                     }
                     break;
                 case "auto_depart":
+                    this.isDisabled = val;
                     this.isDisabledApprove = val;
                     updateMasterForm("auto_depart", val);
                     break;
