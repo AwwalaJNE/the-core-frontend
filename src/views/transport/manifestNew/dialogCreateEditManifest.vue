@@ -234,6 +234,7 @@ export default {
                 this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
                 this.isDisabledPrint = val.status === 'CANCELED';
                 this.isDisabledApprove = val.status !== 'READY' || val.is_orion === "1";
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
             }
         },
         active: function(val) {
@@ -634,6 +635,7 @@ export default {
 
         },
         cancel() {
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
             this.isDisabledApprove = false;
             this.isDisabled = false
             this.resetForm();
@@ -730,9 +732,14 @@ export default {
                     }
                     break;
                 case "auto_depart":
-                    this.isDisabled = val;
-                    this.isDisabledApprove = val;
-                    updateMasterForm("auto_depart", val);
+                    if (this.dataTable.length === 0 && val) {
+                        this.openNotification("warning", "Data Item is Empty", "Please Scan at least one more item");
+                    } else {
+                        this.isDisabled = val;
+                        this.isDisabledApprove = val;
+                        updateMasterForm("auto_depart", val);
+                    }
+                    
                     break;
                 default:
             }
@@ -754,7 +761,6 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ArrData", []);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "");
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", []);
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
         },
         handleEta(dateTime, amount) {
             if (dateTime && amount) {
