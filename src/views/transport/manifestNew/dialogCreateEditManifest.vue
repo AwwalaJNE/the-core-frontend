@@ -512,6 +512,7 @@ export default {
                 const data = res.data.data;
                 if (data) {
                     this.manifest_number = data.manifest_number;
+                    this.isDisabledApprove = data.auto_depart;
                     this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
                     this.master_form = {
                         manifest_number: data.manifest_number,
@@ -633,6 +634,7 @@ export default {
 
         },
         cancel() {
+            this.isDisabledApprove = false;
             this.resetForm();
             this.handleClearForm();
             this.closeDialog();
@@ -727,6 +729,7 @@ export default {
                     }
                     break;
                 case "auto_depart":
+                    this.isDisabledApprove = val;
                     updateMasterForm("auto_depart", val);
                     break;
                 default:
