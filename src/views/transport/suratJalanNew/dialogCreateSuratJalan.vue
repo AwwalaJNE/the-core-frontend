@@ -462,6 +462,7 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
+                this.manifest_do_number = "";
                 this.item_number = "";
                 this.loading = false;
             }
@@ -549,6 +550,8 @@ export default {
             }
         },
         handleClearForm() {
+            this.manifest_do_number = "";
+            this.item_number = "";
             this.$refs.formSuratJalan.handleClearForm();
             this.form = {};
         },
@@ -692,17 +695,6 @@ export default {
 };
 </script>
 <style> 
-.container-clear-item {
-    display: flex;
-    justify-content: flex-end;
-}
-.clear-item {
-    display: flex;
-    justify-content: end;
-    cursor: pointer;
-    color: red;
-    margin: 10px 0;
-} 
 .nomor-sj {
     width: inherit;
 }
