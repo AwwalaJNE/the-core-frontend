@@ -633,6 +633,7 @@ export default {
 
         },
         cancel() {
+            this.resetForm();
             this.handleClearForm();
             this.closeDialog();
             this.dataTable = [];
@@ -748,6 +749,7 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ArrData", []);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "");
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", []);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
         },
         handleEta(dateTime, amount) {
             if (dateTime && amount) {
