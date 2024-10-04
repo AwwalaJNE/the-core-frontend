@@ -462,7 +462,6 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
-                this.manifest_do_number = "";
                 this.item_number = "";
                 this.loading = false;
             }
