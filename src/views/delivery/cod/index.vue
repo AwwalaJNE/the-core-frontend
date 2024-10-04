@@ -4,7 +4,16 @@
       <vs-col xs="6" sm="4" lg="4">
         <div class="titlePage">
           <breadcrumb />
-          <h2>{{ title }}</h2>
+          <div style="display: flex; align-items: center;">
+            <h2 style="margin-right: 10px;">{{ title }}</h2> 
+            
+            <vs-tooltip right>
+              <i class="bx bx-info-circle"></i>
+              <template #tooltip>
+                Deposit & COD history only for cash payment type
+              </template>
+            </vs-tooltip>
+          </div>          
         </div>
       </vs-col>
     </vs-row>
