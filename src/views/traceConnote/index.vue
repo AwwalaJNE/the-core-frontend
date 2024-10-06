@@ -374,6 +374,11 @@ export default {
                                 width: 6
                             },
                             {
+                                key : 'Amount COD',
+                                value: 'Rp '+ Intl.NumberFormat('en-GB').format(response.amount_cod),
+                                width: 6
+                            },
+                            {
                                 key : 'Packing Kayu',
                                 value: packing,
                             },

@@ -328,7 +328,6 @@ export default {
                             value: response.connote_actual_weight + ' Kg',
                             width: 6
                         },
-                       
                         {
                             key : 'Charged Weight',
                             value: response.connote_chargeable_weight + ' Kg',
@@ -339,7 +338,12 @@ export default {
                             value: response.koli_qty + ' Pcs',
                             width: 6
                         },
-                         {
+                        {
+                            key : 'Amount COD',
+                            value: 'Rp '+ Intl.NumberFormat('en-GB').format(response.amount_cod),
+                            width: 6
+                        },
+                        {
                             key : 'Packing Kayu',
                             value: packing,
                         },
