@@ -40,37 +40,51 @@ export default {
         {
           label: "HRS Number",
           key: "hrs_number",
-          width: "sm",
+          width: "xs",
         },
         {
           label: "HRS Date",
           key: "created_at",
-          width: "sm",
+          width: "xs",
         },
         {
           label: "Courier Name",
           key: "employee_name",
-          width: "sm",
+          width: "xs",
         },
         {
           label: "Courier Code",
           key: "employee_code",
-          width: "sm",
+          width: "xs",
         },
         {
           label: "Total Runsheet",
           key: "total_runsheet",
-          width: "sm",
+          width: "xs",
         },
         {
           label: "Total Connote",
           key: "total_connote",
-          width: "sm",
+          width: "xs",
         },
         {
           label: "Total COD (Rp)",
           key: "total_amount_cod",
-          width: "sm",
+          width: "xs",
+          type_amount: true,
+          textAlign: "right"
+        },
+        {
+          label: "Total Cash (Rp)",
+          key: "total_amount_cash",
+          width: "xs",
+          type_amount: true,
+          textAlign: "right"
+        },
+        {
+          label: "Total Digital Payment (Rp)",
+          key: "total_amount_e-pay",
+          width: "xs",
           type_amount: true,
           textAlign: "right"
         },
