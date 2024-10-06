@@ -87,15 +87,17 @@
                             <table-master
                                 :dataTable="dataTable"
                                 :dataColumn="datacolumn"
-                                :tableLoading="loading"
+                                :tableLoading="loadingDetail"
                                 :pageSize="pagination.page_size"
                                 :page="pagination.page"
                                 :limit="pagination.limit"
                                 :hasAction="false"
-                                :hasPagination="false"
+                                :hasPagination="true"
                                 :customAction="true"
                                 :customActionList="customActionList"
                                 @actionUpdate="actionUpdate"
+                                @actionLimit="actionLimit"
+                                @actionPagination="actionPagination"
                             />
                         </vs-col>
                     </vs-row>
@@ -177,13 +179,13 @@ export default {
                 }
             ],
             loading: false,
+            loadingDetail: false,
             loadingConfirmApprove: false,
             pagination: {
-                limit: 5,
+                limit: 10,
                 page_size: 1,
                 page: 1,
             },
-
             vehicle_mode_id: "",
             vehicle_type_id: "",
             node_id_origin: "",
@@ -232,6 +234,7 @@ export default {
                 this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
                 this.isDisabledPrint = val.status === 'CANCELED';
                 this.isDisabledApprove = val.status !== 'READY' || val.is_orion === "1";
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
             }
         },
         active: function(val) {
@@ -510,6 +513,7 @@ export default {
                 const data = res.data.data;
                 if (data) {
                     this.manifest_number = data.manifest_number;
+                    this.isDisabledApprove = data.auto_depart;
                     this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
                     this.master_form = {
                         manifest_number: data.manifest_number,
@@ -559,6 +563,7 @@ export default {
             }
         },
         async getSuratMuatanDetail() {
+            this.loadingDetail = true;
             try {
                 const res = await axios.get(`${this.URL.revamp_surat_muatan}/${this.manifest_number}/detail?n=${this.listenNodeId}`, this.Helper.header());
 
@@ -575,6 +580,8 @@ export default {
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.loadingDetail = false;
             }
         },
         async updateSuratMuatan() {
@@ -628,6 +635,10 @@ export default {
 
         },
         cancel() {
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
+            this.isDisabledApprove = false;
+            this.isDisabled = false
+            this.resetForm();
             this.handleClearForm();
             this.closeDialog();
             this.dataTable = [];
@@ -721,7 +732,14 @@ export default {
                     }
                     break;
                 case "auto_depart":
-                    updateMasterForm("auto_depart", val);
+                    if (this.dataTable.length === 0 && val) {
+                        this.openNotification("warning", "Data Item is Empty", "Please Scan at least one more item");
+                    } else {
+                        this.isDisabled = val;
+                        this.isDisabledApprove = val;
+                        updateMasterForm("auto_depart", val);
+                    }
+                    
                     break;
                 default:
             }
@@ -761,6 +779,18 @@ export default {
                 this.updateValue();
             }
         },
+        actionLimit(val){
+            this.pagination.limit = val;
+            this.pagination.page = 1;
+            this.refreshDetail();
+        },
+        actionPagination(val) {
+            this.pagination.page = val;
+            this.refreshDetail();
+        },
+        refreshDetail() {
+            this.getSuratMuatanDetail();
+        }
     },
     mounted() {
         this.handlePrintShortcut(this.print)
