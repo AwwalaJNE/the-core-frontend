@@ -42,7 +42,8 @@
                                     <search-input 
                                         ref="searchInput" 
                                         :placeholder="searchPlaceholder"
-                                        @searchValue="searchValue"  
+                                        @searchValue="searchValue"
+                                        @handleSearch="handleSearch"
                                     />
                                 </vs-col>
                             </vs-row>
@@ -233,6 +234,15 @@ export default {
             ],
         };
     },
+    watch: {
+        searchBy(old, val) {
+            if (old !== val) {
+                this.$nextTick(() => {
+                    this.refresh();
+                });
+            }
+        },
+    },
     methods: {
         refresh() {
             this.$refs.SuratJalan.refresh();
@@ -281,6 +291,11 @@ export default {
 
             document.addEventListener('keyup', (e) => {
                 keysPressed[e.key.toLowerCase()] = false;
+            });
+        },
+        handleSearch() {
+            this.$nextTick(() => {
+                this.refresh();
             });
         }
     },

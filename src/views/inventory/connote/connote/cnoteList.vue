@@ -113,7 +113,13 @@ export default {
             }
           }
         },
-
+        querySearch: function(val, old) {
+            if(val !== undefined) {
+                if(val !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, val, this.queryDate)
+                }
+            }
+        },
     },
     data() {
         return {

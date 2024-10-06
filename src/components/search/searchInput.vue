@@ -9,6 +9,7 @@
             @change="searchValue"
             @focus="onFocus"
             @blur="onBlur"
+            @keyup.enter="handleSearch"
         >
         </vs-input>
         <button click="test">
@@ -48,6 +49,9 @@ export default {
             if (!this.value) {
                 this.searchValue()
             }
+        },
+        handleSearch() {
+            this.$emit("handleSearch")
         }
     },
 }
