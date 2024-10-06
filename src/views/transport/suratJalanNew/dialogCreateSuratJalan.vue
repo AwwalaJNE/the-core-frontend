@@ -91,11 +91,17 @@
                     <table-master
                         :dataTable="dataTable"
                         :dataColumn="datacolumn"
+                        :tableLoading="loadingDetail"
+                        :pageSize="pagination.page_size"
+                        :page="pagination.page"
+                        :limit="pagination.limit"
                         :hasAction="false"
-                        :hasPagination="false"
+                        :hasPagination="true"
                         :customAction="true"
                         :customActionList="customActionList"
                         @actionUpdate="actionUpdate"
+                        @actionLimit="actionLimit"
+                        @actionPagination="actionPagination"
                     />
                 </div>
             </div>
@@ -136,6 +142,7 @@ export default {
         return {
             form: {},
             loading: false,
+            loadingDetail: false,
             manifest_do_number: "",
             dataTable: [],
             datacolumn: [
@@ -200,7 +207,12 @@ export default {
             is_approve: 0,
             item_remove: "",
             total_weight: 0,
-            master_form: {}
+            master_form: {},
+            pagination: {
+                limit: 10,
+                page_size: 1,
+                page: 1,
+            },
         };
     },
     computed: {
@@ -474,6 +486,7 @@ export default {
             }
         },
         async getSuratJalanDetail() {
+            this.loadingDetail = true;
             try {
                 const res = await axios.get(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`, this.Helper.header());
 
@@ -490,6 +503,8 @@ export default {
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed 2", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.loadingDetail = false;
             }
         },
         async updateSuratJalan() {
@@ -534,6 +549,8 @@ export default {
             }
         },
         handleClearForm() {
+            this.manifest_do_number = "";
+            this.item_number = "";
             this.$refs.formSuratJalan.handleClearForm();
             this.form = {};
         },
@@ -658,6 +675,18 @@ export default {
                 this.item_number = data.data.text;
             }
         },
+        actionLimit(val){
+            this.pagination.limit = val;
+            this.pagination.page = 1;
+            this.refreshDetail();
+        },
+        actionPagination(val) {
+            this.pagination.page = val;
+            this.refreshDetail();
+        },
+        refreshDetail() {
+            this.getSuratJalanDetail();
+        }
     },
     mounted() {
         this.handlePrintShortcut(this.print)
@@ -665,17 +694,6 @@ export default {
 };
 </script>
 <style> 
-.container-clear-item {
-    display: flex;
-    justify-content: flex-end;
-}
-.clear-item {
-    display: flex;
-    justify-content: end;
-    cursor: pointer;
-    color: red;
-    margin: 10px 0;
-} 
 .nomor-sj {
     width: inherit;
 }
