@@ -2904,9 +2904,6 @@ export default {
   SET_ALL_RUNSHEET_ID_ValueData(state, payload) {
     state.all_runsheet = payload
   },
-  SET_IS_PRA_RUNSHEET_ValueData(state, payload) {
-    state.is_pra_runsheet = payload;
-  },
 
 
   //====== SLA KOLI======  

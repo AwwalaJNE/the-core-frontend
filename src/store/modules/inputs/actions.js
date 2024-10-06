@@ -2686,10 +2686,6 @@ export default {
   SET_ALL_RUNSHEET_ID_ValueData({ commit }, payload) {
     commit('SET_ALL_RUNSHEET_ID_ValueData', payload)
   },
-  //Pra runsheet
-  SET_IS_PRA_RUNSHEET_ValueData({ commit }, payload) {
-    commit('SET_IS_PRA_RUNSHEET_ValueData', payload)
-  },
   
 
   //====== SLA KOLI ======//  
