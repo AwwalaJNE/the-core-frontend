@@ -19,11 +19,14 @@
                                 <vs-row justify="flex-end">
                                     <vs-col xs="6" sm="8" lg="4">
                                         <select-search-by :isMultiple="false" :border="true"
-                                            @updateSearchBy="updateSearchBy" :valueData="searchParams"
+                                            @updateSearchBy="updateSearchBy"
+                                            :valueData="searchParams" 
                                             :selectedValue="searchBy" />
                                     </vs-col>
                                     <vs-col xs="6" sm="4" lg="4">
-                                        <search-input ref="searchInput" @searchValue="searchValue"
+                                        <search-input ref="searchInput"
+                                            @searchValue="searchValue"
+                                            @handleSearch="handleSearch"
                                             :placeholder="searchPlaceholder" />
                                     </vs-col>
                                 </vs-row>
@@ -62,7 +65,7 @@
                             </vs-col>
                         </vs-row>
                         <transition name="slide-fade">
-                            <bag-list :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :dateFilter="tempDate" :searchBy="searchBy" :filterDateBy="filterDateBy"/>
+                            <bag-list :ref="'bagList'" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :dateFilter="tempDate" :searchBy="searchBy" :filterDateBy="filterDateBy"/>
                         </transition>
                         
                     </div>
@@ -218,8 +221,7 @@ export default {
             this.bagTipe = val
         },
         refresh(){
-            let el = this.refreshInject
-            this.$refs[el].refresh() // trigger function refresh form dari luar component list
+            this.$refs.bagList.refresh();
         },
         searchValue (val) {
             this.tempSearch = val
@@ -245,6 +247,11 @@ export default {
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
         },
+        handleSearch() {
+            this.$nextTick(() => {
+                this.refresh();
+            });
+        }
     },
 }
 </script>

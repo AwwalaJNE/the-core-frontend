@@ -49,6 +49,7 @@
                                         ref="searchInput" 
                                         :placeholder="searchPlaceholder" 
                                         @searchValue="searchValue" 
+                                        @handleSearch="handleSearch"
                                     />
                                 </vs-col>
                             </vs-row>
@@ -147,6 +148,15 @@ export default {
             dialogCreateRunsheet: false,
         };
     },
+    watch: {
+        searchBy(old, val) {
+            if (old !== val) {
+                this.$nextTick(() => {
+                    this.refresh();
+                });
+            }
+        },
+    },
     methods: {
         refresh() {
             this.$refs.DeliveryRunsheetTable.refresh();
@@ -198,6 +208,11 @@ export default {
                     e.preventDefault();
                     this.openDialog();
                 }
+            });
+        },
+        handleSearch() {
+            this.$nextTick(() => {
+                this.refresh();
             });
         }
     },
