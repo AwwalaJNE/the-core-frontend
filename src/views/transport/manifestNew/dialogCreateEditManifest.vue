@@ -261,6 +261,10 @@ export default {
             if (this.vehicle_type_id) {
                 this.getDataVehicle();
             }
+            
+            if (val.manifest_method_id === 1) {
+                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
+            }
 
             if (val?.detail) {
                 let arr = [];
