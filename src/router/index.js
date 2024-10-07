@@ -182,9 +182,10 @@ import BlankPage from "@/views/example/blank"
 
 // === Helpdesk ===
 import HelpdeskConnote from "@/views/helpdesk/connote/index";
-
 import HelpdeskRunsheet from "@/views/helpdesk/runsheet/index";
 
+// === Facility Code ===
+import FacilityCode from '@/views/settings/facilityCode';
 
 Vue.use(VueRouter)
 
@@ -310,6 +311,15 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Configuration Warning Runsheet"
+            }
+          },
+          {
+            path: "facility-code",
+            name: "FacilityCode",
+            component: FacilityCode,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Facility Code"
             }
           },
         ],

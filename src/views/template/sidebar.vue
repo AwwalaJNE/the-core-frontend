@@ -506,6 +506,12 @@ export default {
               icon: "",
               permission: "read-warning-koli-setting",
             },
+            {
+              label: "Settings Facility Code",
+              url: "/settings/facility-code",
+              icon: "",
+              permission: "read-facility-code",
+            },
           ],
         },
         {
