@@ -573,7 +573,7 @@ export default {
     },
     async ProccessBagging(){
       await axios
-          .post(this.URL.bag+`?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header())
+          .post(this.URL.revamp_bag+`?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header())
           .then(res => {
             let bagNumber = res.data.data.bag_number;
             this.handleClearForm()

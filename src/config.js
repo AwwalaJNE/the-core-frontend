@@ -257,5 +257,8 @@ export default {
     revamp_tracing: api + 'revamp/tracing',
 
     // Facility Code
-    facility_code: api + 'facility-code'
+    facility_code: api + 'facility-code',
+
+    // Bag Revamp
+    revamp_bag: api + 'revamp/bag',
 }
