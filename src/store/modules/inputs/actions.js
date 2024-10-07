@@ -3370,4 +3370,54 @@ export default {
     commit('SET_HELPDESK_EDIT_CONNOTE_REMARKS_ValueData', payload)
   },
   //====== END HELPDESK EDIT CONNOTE ======//
+
+
+
+  //====== FACILITY CODE ======//
+
+  SET_FACILITY_CODE_USER_ID({ commit }, payload) {
+    commit('SET_FACILITY_CODE_USER_ID', payload)
+  },
+  SET_FACILITY_CODE_USER_ID_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_USER_ID_ValueData', payload)
+  },
+  SET_FACILITY_CODE_USER_ID_ArrData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_USER_ID_ArrData', payload)
+  },
+  
+  SET_FACILITY_CODE_CODE({ commit }, payload) {
+    commit('SET_FACILITY_CODE_CODE', payload)
+  },
+  SET_FACILITY_CODE_CODE_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_CODE_ValueData', payload)
+  },
+
+  SET_FACILITY_CODE_NAME({ commit }, payload) {
+    commit('SET_FACILITY_CODE_NAME', payload)
+  },
+  SET_FACILITY_CODE_NAME_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_NAME_ValueData', payload)
+  },
+
+  SET_FACILITY_CODE_ADDRESS({ commit }, payload) {
+    commit('SET_FACILITY_CODE_ADDRESS', payload)
+  },
+  SET_FACILITY_CODE_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_ADDRESS_ValueData', payload)
+  },
+
+  SET_FACILITY_CODE_FACILITY_TYPE({ commit }, payload) {
+    commit('SET_FACILITY_CODE_FACILITY_TYPE', payload)
+  },
+  SET_FACILITY_CODE_FACILITY_TYPE_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_FACILITY_TYPE_ValueData', payload)
+  },
+
+  SET_FACILITY_CODE_DESTINATION({ commit }, payload) {
+    commit('SET_FACILITY_CODE_DESTINATION', payload)
+  },
+  SET_FACILITY_CODE_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_DESTINATION_ValueData', payload)
+  },
+  //====== END FACILITY CODE ======//
 }

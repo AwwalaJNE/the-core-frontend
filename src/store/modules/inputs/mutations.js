@@ -3668,4 +3668,62 @@ export default {
     state.helpdesk_edit_connote.remarks.valueData = payload
   },
   //====== END HELPDESK EDIT CONNOTE ======//
+
+
+
+  //====== FACILITY CODE ======  
+
+  SET_FACILITY_CODE_USER_ID(state, payload) {
+    state.facility_code.user_id.value = payload
+  },
+  SET_FACILITY_CODE_USER_ID_ValueData(state, payload) {
+    state.facility_code.user_id.valueData = payload
+  },
+  SET_FACILITY_CODE_USER_ID_ArrData(state, payload) {
+    state.facility_code.user_id.hasOwnProperty('arrData') ?
+    state.facility_code.user_id.arrData = payload :
+    state.facility_code.user_id.arrData = []
+  },
+
+
+  SET_FACILITY_CODE_CODE(state, payload) {
+    state.facility_code.code.value = payload
+  },
+  SET_FACILITY_CODE_CODE_ValueData(state, payload) {
+    state.facility_code.code.valueData = payload
+  },
+
+
+  SET_FACILITY_CODE_NAME(state, payload) {
+    state.facility_code.name.value = payload
+  },
+  SET_FACILITY_CODE_NAME_ValueData(state, payload) {
+    state.facility_code.name.valueData = payload
+  },
+
+
+  SET_FACILITY_CODE_ADDRESS(state, payload) {
+    state.facility_code.address.value = payload
+  },
+  SET_FACILITY_CODE_ADDRESS_ValueData(state, payload) {
+    state.facility_code.address.valueData = payload
+  },
+
+
+  SET_FACILITY_CODE_FACILITY_TYPE(state, payload) {
+    state.facility_code.facility_type.value = payload
+  },
+  SET_FACILITY_CODE_FACILITY_TYPE_ValueData(state, payload) {
+    state.facility_code.facility_type.valueData = payload
+  },
+
+
+  SET_FACILITY_CODE_DESTINATION(state, payload) {
+    state.facility_code.destination.value = payload
+  },
+  SET_FACILITY_CODE_DESTINATION_ValueData(state, payload) {
+    state.facility_code.destination.valueData = payload
+  },
+
+  //====== END FACILITY CODE ======
 }
