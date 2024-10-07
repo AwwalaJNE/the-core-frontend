@@ -145,7 +145,7 @@ export default {
             this.$router.push("/trace-bag");
         },
         async processBagNumber() {         
-            this.bag_number = this.bagNumber   
+            this.bag_number = this.bagNumber.replace(/\//g, '~'); 
             try {
                 await this.$router.push(`/trace-bag/${this.bag_number}`);
                 this.hasBagNumber = true;
