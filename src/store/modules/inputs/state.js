@@ -4070,7 +4070,7 @@ export default {
     address: {
       label: "Address*",
       key: "address",
-      rule: "",
+      rule: "required",
       typeInput: "text",
       typeData: "String",
       valueData: null,
