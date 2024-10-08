@@ -84,21 +84,23 @@
 
                     <vs-row>
                         <vs-col style="overflow: auto;">
-                            <table-master
-                                :dataTable="dataTable"
-                                :dataColumn="datacolumn"
-                                :tableLoading="loadingDetail"
-                                :pageSize="pagination.page_size"
-                                :page="pagination.page"
-                                :limit="pagination.limit"
-                                :hasAction="false"
-                                :hasPagination="true"
-                                :customAction="true"
-                                :customActionList="customActionList"
-                                @actionUpdate="actionUpdate"
-                                @actionLimit="actionLimit"
-                                @actionPagination="actionPagination"
-                            />
+                            <div v-if="!loadingDetail && !oading">
+                                <table-master
+                                    :dataTable="dataTable"
+                                    :dataColumn="datacolumn"
+                                    :tableLoading="loadingDetail"
+                                    :pageSize="pagination.page_size"
+                                    :page="pagination.page"
+                                    :limit="pagination.limit"
+                                    :hasAction="false"
+                                    :hasPagination="true"
+                                    :customAction="true"
+                                    :customActionList="customActionList"
+                                    @actionUpdate="actionUpdate"
+                                    @actionLimit="actionLimit"
+                                    @actionPagination="actionPagination"
+                                />
+                            </div>
                         </vs-col>
                     </vs-row>
                 </vs-col>
@@ -521,7 +523,6 @@ export default {
                 const data = res.data.data;
                 if (data) {
                     this.manifest_number = data.manifest_number;
-                    this.isDisabledApprove = data.auto_depart;
                     this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
                     this.master_form = {
                         manifest_number: data.manifest_number,
@@ -616,6 +617,7 @@ export default {
             }
         },
         async approve() {
+            this.loadingDetail = true;
             try {
                 const res = await axios.patch(`${this.URL.revamp_surat_muatan}/${this.manifest_number}/approval?n=${this.listenNodeId}`, { is_approve: this.is_approve ^ 1 }, this.Helper.header());
                 
@@ -623,11 +625,18 @@ export default {
                 this.openNotification("success", null, "Success", res?.data?.message);
                 if (this.is_approve === 1) {
                     this.print();
+                    this.isDisabled = true;
+                    this.isDisabledApprove = true;
+                    
+                    this.dataTable.forEach(data => {
+                        data.button_status = { remove: false };
+                    });
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
             } finally {
                 this.$emit('refresh');
+                this.loadingDetail = false;
             }
         },
         print(){
@@ -756,11 +765,9 @@ export default {
                     }
                     break;
                 case "auto_depart":
-                    if (this.dataTable.length === 0 && val) {
+                    if (this.dataTable.length === 0 && val && this.manifest_number) {
                         this.openNotification("warning", "Data Item is Empty", "Please Scan at least one more item");
                     } else {
-                        this.isDisabled = val;
-                        this.isDisabledApprove = val;
                         updateMasterForm("auto_depart", val);
                     }
                     
