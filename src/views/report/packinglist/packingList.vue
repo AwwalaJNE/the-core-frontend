@@ -166,7 +166,15 @@ export default {
 
         actionDetail(row){
           let routeData = this.$router.resolve(`/print/${row.cash_register_number}/cash-register/${this.listenNodeId}`);
-          window.open(routeData.href, '_blank');
+          
+          const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+            if (printWindow) {
+                printWindow.onload = function() {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                };
+            }
         }
 
     },

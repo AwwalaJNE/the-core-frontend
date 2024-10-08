@@ -237,7 +237,15 @@ export default {
                 'node_id': this.listenNodeId
             }
         });
-    window.open(routeData.href, '_blank');
+
+        const printWindow = window.open(routeData.href, '_blank', 'noopener');
+        
+        if (printWindow) {
+            printWindow.onload = function() {
+                printWindow.print();
+                printWindow.onafterprint = () => printWindow.close();
+            };
+        }
     },
     updateSelected(_event, _item, selected) {
       this.selectedRow = selected.map(el => el.sco)
@@ -252,7 +260,15 @@ export default {
                     'node_id':this.listenNodeId
                 }
             });
-            window.open(routeData.href, '_blank');
+            
+            const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+            if (printWindow) {
+                printWindow.onload = function() {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                };
+            }
         }
         else {
             this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih History terlebih dahulu')

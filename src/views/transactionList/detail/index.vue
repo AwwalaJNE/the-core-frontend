@@ -196,7 +196,15 @@ export default {
     printAll() {
       if (this.koli_number.length > 0) {
         let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': this.koli_number, 'type': 'koli-reprint', 'node_id': this.listenNodeId } });
-        window.open(routeData.href, '_blank');
+        
+        const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+        if (printWindow) {
+          printWindow.onload = function() {
+            printWindow.print();
+            printWindow.onafterprint = () => printWindow.close();
+          };
+        }
       }
     },
 

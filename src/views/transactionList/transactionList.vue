@@ -183,7 +183,15 @@ export default {
           switch(key) {
                 case "print":
                     let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.transaction_id, 'type': 'transaction', 'node_id':this.listenNodeId} });
-                    window.open(routeData.href, '_blank');
+
+                    const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+                    if (printWindow) {
+                        printWindow.onload = function() {
+                            printWindow.print();
+                            printWindow.onafterprint = () => printWindow.close();
+                        };
+                    }
                     break;
                 default:
 
@@ -230,7 +238,15 @@ export default {
                         'node_id':this.listenNodeId
                     }
                 });
-                window.open(routeData.href, '_blank');
+                
+                const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+                if (printWindow) {
+                    printWindow.onload = function() {
+                        printWindow.print();
+                        printWindow.onafterprint = () => printWindow.close();
+                    };
+                }
             }
             else {
                 this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Transaksi terlebih dahulu')

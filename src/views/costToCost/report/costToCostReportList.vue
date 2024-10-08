@@ -215,7 +215,15 @@ export default {
         },
         actionUpdate(val){
           let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.cost_report_id, 'type': 'costing-report', 'node_id':this.listenNodeId} });
-          window.open(routeData.href, '_blank');
+          
+          const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+            if (printWindow) {
+                printWindow.onload = function() {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                };
+            }
         },
         async removeCosting(){
             await axios
