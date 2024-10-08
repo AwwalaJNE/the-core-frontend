@@ -3232,6 +3232,7 @@ export default {
       label: "Destination",
       key: "node_id_destination",
       rule:"",
+      visible: false,
       typeInput: "autocomplete",
       typeData: "String",
       arrData: [],

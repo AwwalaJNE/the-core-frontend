@@ -2134,6 +2134,9 @@ export default {
       state.surat_muatan.node_id_destination.arrData = payload :
       state.surat_muatan.node_id_destination.arrData = []
   },
+  SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible(state, payload) {
+    state.surat_muatan.node_id_destination.visible = payload
+  },
 
   SET_SURAT_MUATAN_VEHICLE_TYPE_ID(state, payload) {
     state.surat_muatan.vehicle_type_id.value = payload
