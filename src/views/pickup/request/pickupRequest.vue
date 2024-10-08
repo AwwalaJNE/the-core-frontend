@@ -169,7 +169,16 @@ export default {
                           'node_id':this.listenNodeId
                       } 
                     });
-                    window.open(routeData.href, '_blank');
+
+                    const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+                    if (printWindow) {
+                        printWindow.onload = function() {
+                            printWindow.print();
+                            printWindow.onafterprint = () => printWindow.close();
+                        };
+                    }
+
                     break;
                 case 'cancel':
                   this.pickupNumber = val.pickup_number;
@@ -280,7 +289,15 @@ export default {
                         'node_id':this.listenNodeId
                     }
                 });
-                window.open(routeData.href, '_blank');
+
+                const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+                if (printWindow) {
+                    printWindow.onload = function() {
+                        printWindow.print();
+                        printWindow.onafterprint = () => printWindow.close();
+                    };
+                }
             }
             else {
                 this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Pickup Request terlebih dahulu')

@@ -299,7 +299,15 @@ export default {
                     'node_id': this.listenNodeId
                 }
             });
-            window.open(routeData.href, '_blank');
+
+            const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+            if (printWindow) {
+                printWindow.onload = function() {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                };
+            }
         },
         actionPrintSelected(){
             if (this.selectedRow.length > 0) {
@@ -311,7 +319,15 @@ export default {
                         'node_id': this.listenNodeId
                     }
                 });
-                window.open(routeData.href, '_blank');
+                
+                const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+                if (printWindow) {
+                    printWindow.onload = function() {
+                        printWindow.print();
+                        printWindow.onafterprint = () => printWindow.close();
+                    };
+                }
             }
             else {
                 this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Bag terlebih dahulu')

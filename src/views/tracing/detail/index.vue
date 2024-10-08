@@ -426,7 +426,15 @@ export default {
                     node_id: this.listenNodeId,
                 },
             });
-            window.open(routeData.href, "_blank");
+
+            const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+            if (printWindow) {
+                printWindow.onload = function() {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                };
+            }
         },
 
         back() {
