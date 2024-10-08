@@ -23,6 +23,7 @@
                             :disabled="false"
                             :isAllowCreate="true"
                             :autofocus="true"
+                            @updateValue="updateValue" 
                         />
                     </form>
                 </vs-col>

@@ -187,6 +187,12 @@ import HelpdeskRunsheet from "@/views/helpdesk/runsheet/index";
 // === Facility Code ===
 import FacilityCode from '@/views/settings/facilityCode';
 
+
+// === Connote Adjustment ===
+import ConnoteCancel from '@/views/connoteAdjustment/connoteCancel'
+import ConnoteForward from '@/views/connoteAdjustment/connoteForward'
+import ConnoteReturn from '@/views/connoteAdjustment/connoteReturn'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -434,8 +440,7 @@ const routes = [
           {
             path: "connote-cancel",
             name: "connote-cancel",
-            // TODO: Change Later
-            // component: ,
+            component: ConnoteCancel,
             meta: {
               requiresAuth: true,
               breadCrumb: "Connote Cancel"
@@ -444,8 +449,7 @@ const routes = [
           {
             path: "connote-forward",
             name: "connote-forward",
-            // TODO: Change Later
-            // component: ,
+            component: ConnoteForward,
             meta: {
               requiresAuth: true,
               breadCrumb: "Connote Forward"
@@ -454,8 +458,7 @@ const routes = [
           {
             path: "connote-return",
             name: "connote-return",
-            // TODO: Change Later
-            // component: ,
+            component: ConnoteReturn,
             meta: {
               requiresAuth: true,
               breadCrumb: "Connote Return"
