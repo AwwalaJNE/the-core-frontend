@@ -683,10 +683,12 @@ export default {
                         this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
                         this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true);
                         this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", true);
+                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", true);
                     } else if (type == "manifest_method_id" && val != 1) {
                         this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true);
                         this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
                         this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
+                        this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", true);
                     }
                     if (info?.data) {
                         this.vehicle_mode_id = info.data.vehicle_mode_id || "";
