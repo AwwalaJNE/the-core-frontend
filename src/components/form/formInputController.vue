@@ -301,21 +301,46 @@
                                 </template>
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete')">
-                                <template v-if="querySearch !== undefined">
-                                    <auto-complete
-                                    :name="InputObject[item].label"
-                                    :rules="InputObject[item].rule"
-                                    :formKey="InputObject[item].key"
-                                    :valueData="InputObject[item].value"
-                                    :url="InputObject[item].url"
-                                    :flag="InputObject[item].flag"
-                                    :querySearch="querySearch"
-                                    :selectedValue="InputObject[item].value"
-                                    :typeForm="listenTypeForm"
-                                    :typeInput="InputObject[item].typeInput"
-                                    :disabled="listenIsDisabled || InputObject[item].isDisabled"
-                                    @updateValue="updateValue" 
-                                    @inputFocus="onfocuslah"/>
+                                
+                                <template v-if="InputObject[item].hasOwnProperty('visible')">
+                                    <template v-if="InputObject[item]['visible'] == true">
+                                        <template v-if="querySearch !== undefined">
+                                            <auto-complete
+                                                :name="InputObject[item].label"
+                                                :rules="InputObject[item].rule"
+                                                :formKey="InputObject[item].key"
+                                                :valueData="InputObject[item].value"
+                                                :url="InputObject[item].url"
+                                                :flag="InputObject[item].flag"
+                                                :querySearch="querySearch"
+                                                :selectedValue="InputObject[item].value"
+                                                :typeForm="listenTypeForm"
+                                                :typeInput="InputObject[item].typeInput"
+                                                :disabled="listenIsDisabled || InputObject[item].isDisabled"
+                                                @updateValue="updateValue" 
+                                                @inputFocus="onfocuslah"
+                                            />
+                                        </template>
+                                    </template>
+                                </template>
+                                <template v-else>
+                                    <template v-if="querySearch !== undefined">
+                                        <auto-complete
+                                            :name="InputObject[item].label"
+                                            :rules="InputObject[item].rule"
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].value"
+                                            :url="InputObject[item].url"
+                                            :flag="InputObject[item].flag"
+                                            :querySearch="querySearch"
+                                            :selectedValue="InputObject[item].value"
+                                            :typeForm="listenTypeForm"
+                                            :typeInput="InputObject[item].typeInput"
+                                            :disabled="listenIsDisabled || InputObject[item].isDisabled"
+                                            @updateValue="updateValue" 
+                                            @inputFocus="onfocuslah"
+                                        />
+                                </template>
                                 </template>
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('radtex')">
