@@ -290,6 +290,31 @@ export default {
           ],
         },
         {
+          label: "Connote Adjustments",
+          url: null,
+          icon: "bx-edit",
+          children: [
+            {
+              label: "Connote Cancel",
+              url: "/connote-adjustment/connote-cancel",
+              icon: "",
+              permission: "read-irreg",
+            },
+            {
+              label: "Connote Forward",
+              url: "/connote-adjustment/connote-forward",
+              icon: "",
+              permission: "read-irreg",
+            },
+            {
+              label: "Connote Return",
+              url: "/connote-adjustment/connote-return",
+              icon: "",
+              permission: "read-irreg",
+            }
+          ],
+        },
+        {
           label: "Tracing",
           url: null,
           icon: "",
