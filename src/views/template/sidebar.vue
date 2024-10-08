@@ -296,22 +296,22 @@ export default {
           children: [
             {
               label: "Connote Cancel",
-              url: "/connote-cancel",
+              url: "/connote-adjustment/connote-cancel",
               icon: "",
-              permission: "",
+              permission: "read-irreg",
             },
             {
               label: "Connote Forward",
-              url: "/connote-forward",
+              url: "/connote-adjustment/connote-forward",
               icon: "",
-              permission: "",
+              permission: "read-irreg",
             },
             {
               label: "Connote Return",
-              url: "/connote-return",
+              url: "/connote-adjustment/connote-return",
               icon: "",
-              permission: "",
-            },
+              permission: "read-irreg",
+            }
           ],
         },
         {

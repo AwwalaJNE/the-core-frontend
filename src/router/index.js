@@ -427,6 +427,47 @@ const routes = [
         }
       },
       {
+        path: "connote-adjustment",
+        name: "connote-adjustment",
+        component: ContentChild,
+        children: [
+          {
+            path: "connote-cancel",
+            name: "connote-cancel",
+            // TODO: Change Later
+            // component: ,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Connote Cancel"
+            }
+          },
+          {
+            path: "connote-forward",
+            name: "connote-forward",
+            // TODO: Change Later
+            // component: ,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Connote Forward"
+            }
+          },
+          {
+            path: "connote-return",
+            name: "connote-return",
+            // TODO: Change Later
+            // component: ,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Connote Return"
+            }
+          },
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Connote Adjustment"
+        }
+      },
+      {
         path: "",
         name: "tracing",
         component: ContentChild,
