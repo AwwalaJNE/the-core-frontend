@@ -290,6 +290,31 @@ export default {
           ],
         },
         {
+          label: "Connote Adjustments",
+          url: null,
+          icon: "",
+          children: [
+            {
+              label: "Connote Cancel",
+              url: "/connote-cancel",
+              icon: "",
+              permission: "",
+            },
+            {
+              label: "Connote Forward",
+              url: "/connote-forward",
+              icon: "",
+              permission: "",
+            },
+            {
+              label: "Connote Return",
+              url: "/connote-return",
+              icon: "",
+              permission: "",
+            },
+          ],
+        },
+        {
           label: "Tracing",
           url: null,
           icon: "",
