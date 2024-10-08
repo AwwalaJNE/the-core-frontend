@@ -292,7 +292,7 @@ export default {
         {
           label: "Connote Adjustments",
           url: null,
-          icon: "",
+          icon: "bx-edit",
           children: [
             {
               label: "Connote Cancel",
