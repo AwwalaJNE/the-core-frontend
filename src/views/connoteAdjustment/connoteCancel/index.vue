@@ -245,7 +245,7 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.connote_cancel}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&type=${!this.is_history ? 'OUTSTANDING' : ''}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.connote_cancel}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&type=${!this.is_history ? 'OUTSTANDING' : 'HISTORY'}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data
