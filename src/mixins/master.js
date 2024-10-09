@@ -256,7 +256,7 @@ const Master = {
         redirectShortcut() {
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
-                    if (e.key.toLowerCase() !== 'i') {
+                    if (e.key.toLowerCase() !== 'i' && e.key.toLowerCase() !== 'c') {
                         e.preventDefault();
                     }
                     switch (e.key.toLowerCase()) {
