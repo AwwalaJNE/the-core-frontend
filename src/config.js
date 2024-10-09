@@ -261,4 +261,7 @@ export default {
 
     // Bag Revamp
     revamp_bag: api + 'revamp/bag',
+
+    // Connote Cancel
+    connote_cancel: api + 'request-cancel',
 }
