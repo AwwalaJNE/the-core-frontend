@@ -5,6 +5,7 @@ import Login from '@/views/auth'
 
 import Content from '@/views/template/Content.vue'
 import ContentChild from '@/views/template/Content-child'
+import MainPage from '@/views/template/mainPage'
 
 import Upload from '@/views/upload/index.vue'
 import UploadTransaction from '@/views/upload/transaction.vue'
@@ -206,6 +207,15 @@ const routes = [
     name: 'main',
     component: Content,
     children: [
+      {
+        path: "",
+        name: "mainPage",
+        component: MainPage,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: ""
+        }
+      },
       {
         path: "profile",
         name: "profile",
