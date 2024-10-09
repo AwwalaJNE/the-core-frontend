@@ -78,6 +78,16 @@ export default {
           description: 'Submit the form'
         },
         {
+          shortcut: 'Ctrl + /',
+          process: 'Trace Connote',
+          description: 'Go to Trace Connote page'
+        },
+        {
+          shortcut: 'Ctrl + Shift + /',
+          process: 'Trace Bag',
+          description: 'Go to Trace Bag page'
+        },
+        {
           shortcut: 'Ctrl + Shift + I',
           process: 'Inventory Item',
           description: 'Go to Inventory Item List'
@@ -101,11 +111,6 @@ export default {
           shortcut: 'Ctrl + Shift + T',
           process: 'New Transaction',
           description: 'Go to Create New Transaction page'
-        },
-        {
-          shortcut: 'Ctrl + Shift + C',
-          process: 'Trace Connote',
-          description: 'Go to Trace Connote page'
         },
         {
           shortcut: 'Ctrl + Shift + V',
