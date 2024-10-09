@@ -266,8 +266,8 @@ const Master = {
                         case "x":
                             this.$router.push('/transaction/new-transactions')
                             break;
-                        case "c":
-                            this.$router.push('/trace-connote')
+                        case "?":
+                            this.$router.push('/trace-bag')
                             break;
                         case "v":
                             this.$router.push('/inbound/prealert/scan')
@@ -284,6 +284,11 @@ const Master = {
                 if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') {
                     if (!e.shiftKey) {
                         this.$router.push('/inventory/item')
+                    }
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+                    if (!e.shiftKey) {
+                        this.$router.push('/trace-connote')
                     }
                 }
             });
