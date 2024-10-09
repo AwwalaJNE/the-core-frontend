@@ -217,7 +217,7 @@ export default {
                     arr.map(item => {
                         item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
                         item["node_id_origin_name"] = (item.origin) ? item.origin.node_name: null
-                        item["node_id_destination_name"] = (item.destination) ? item.destination.node_name: null
+                        item["node_id_destination_name"] = (item.destination) ? item.destination.node_name: facility_code_destination
                         item["driver_id"] = (item.pic_employee_id) ? parseInt(item.pic_employee_id): null
                         item["driver_name"] = (item.pic) ? item.pic.employee_name: null
                         item["orion_number"] = item.mts || item.do || "";
