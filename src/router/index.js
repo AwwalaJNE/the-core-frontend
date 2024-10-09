@@ -447,6 +447,15 @@ const routes = [
             }
           },
           {
+            path: "connote-cancel-history",
+            name: "connote-cancel-history",
+            component: ConnoteCancel,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Connote Cancel History"
+            }
+          },
+          {
             path: "connote-forward",
             name: "connote-forward",
             component: ConnoteForward,

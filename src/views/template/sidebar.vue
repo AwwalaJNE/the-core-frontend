@@ -301,6 +301,12 @@ export default {
               permission: "read-irreg",
             },
             {
+              label: "Connote Cancel History",
+              url: "/connote-adjustment/connote-cancel-history",
+              icon: "",
+              permission: "read-irreg",
+            },
+            {
               label: "Connote Forward",
               url: "/connote-adjustment/connote-forward",
               icon: "",
