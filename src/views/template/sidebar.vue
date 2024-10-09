@@ -98,7 +98,7 @@ export default {
         {
           label: "Trace Connote",
           url: "/trace-connote",
-          icon: "bx-search",
+          icon: "bx-search-alt",
           permission: "",
           children: [],
           showAll: true,
@@ -139,7 +139,7 @@ export default {
         {
           label: "Pick Up",
           url: null,
-          icon: "",
+          icon: "bx-package",
           children: [
             {
               label: "Pickup Request",
@@ -165,7 +165,7 @@ export default {
         {
           label: "Inventory",
           url: null,
-          icon: "",
+          icon: "bx bx-archive",
           children: [
             {
               label: "Inventory Item",
@@ -196,7 +196,7 @@ export default {
         {
           label: "Transport",
           url: null,
-          icon: "",
+          icon: "bx bxs-truck",
           children: [
             {
               label: "Transport Packing Kayu",
@@ -242,20 +242,20 @@ export default {
         {
           label: "Receiving",
           url: "/inbound/prealert",
-          icon: "",
+          icon: "bx bxs-inbox",
           children: [],
         },
         {
           label: "Receiving Bandara",
           url: "/inbound-bandara",
-          icon: "",
+          icon: "bx bxs-inbox",
           children: [],
           permission: "create-manifest-delivery-order-airport",
         },
         {
           label: "Delivery",
           url: null,
-          icon: "",
+          icon: "bx bx-paper-plane",
           children: [
             {
               label: "Delivery Runsheet",
@@ -317,7 +317,7 @@ export default {
         {
           label: "Tracing",
           url: null,
-          icon: "",
+          icon: "bx bx-store-alt",
           children: [
             {
               label: "Tracing Outstanding",
@@ -336,7 +336,7 @@ export default {
         {
           label: "Report",
           url: null,
-          icon: "",
+          icon: "bx bxs-report",
           children: [
             {
               label: "Packing List",
@@ -355,7 +355,7 @@ export default {
         {
           label: "Irreguralities",
           url: null,
-          icon: "",
+          icon: "bx bx-alarm-exclamation",
           children: [
             {
               label: "Inventory Irreguralities",
@@ -398,7 +398,7 @@ export default {
         {
           label: "Cost To Cost",
           url: null,
-          icon: "",
+          icon: "bx bx-wallet",
           children: [
             {
               label: "Settings",
