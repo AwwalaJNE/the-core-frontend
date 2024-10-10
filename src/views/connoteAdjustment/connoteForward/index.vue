@@ -190,16 +190,16 @@ export default {
                 page: 1
             },
             dialogCreateEditActive: false,
-            searchBy: "koli_number_original",
+            searchBy: "old_connote",
             searchPlaceholder: "Search Item Number",
             searchParams: [
                 {
                     label: 'Old Connote',
-                    value: 'koli_number_original'
+                    value: 'old_connote'
                 },
                 {
                     label: 'Connote Forward',
-                    value: 'koli_number_forward'
+                    value: 'return_connote'
                 }
             ],
             filterDateBy: "create",
@@ -241,7 +241,9 @@ export default {
                         limit: parseInt(res.data.meta.per_page, 10),
                         page_size: res.data.meta.last_page,
                     };
-                }    
+                } else {
+                    this.dataTable = [];
+                }  
                 
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
