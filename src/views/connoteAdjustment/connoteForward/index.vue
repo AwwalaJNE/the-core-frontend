@@ -6,28 +6,19 @@
                     <breadcrumb />
                     <h2>{{ title }}</h2>
                 </div>
-                <div class="mt-2">
-                    <vs-row justify="space-between">
-                        <vs-col xs="9" sm="9" lg="9">
-                            <form @submit.prevent="openDialog">
-                                <vs-input 
-                                    border
-                                    placeholder="Masukkan Nomer Connote"
-                                    type="text"
-                                    v-model="item_number" 
-                                    v-uppercase
-                                    :autofocus="true"
-                                />
-                            </form>
-                        </vs-col>
-                        <vs-col xs="3" sm="3" lg="3">
+            </vs-col>
+            <vs-col xs="6" sm="3" lg="3">
+                <div style="position:relative;display:flex;justify-content: flex-end;">
+                    <div style="width: 100px;padding-right: 5px;">
                             <vs-button
-                                @click="openDialog"
-                            >
-                                Submit
+                            flat
+                            block
+                            :active="true"
+                            @click="openDialog"
+                            > 
+                                <i class="bx bx-plus"></i> New
                             </vs-button>
-                        </vs-col>
-                    </vs-row>
+                    </div>
                 </div>
             </vs-col>
         </vs-row>
@@ -104,11 +95,8 @@
 
         <dialog-forward
             title="Create Connote Forward"
-            :active="dialogCreateEditActive" 
+            :active="dialogActive" 
             :closeDialog="closeDialog"
-            :dataItem="dataItem"
-            :itemNumber="item_number || itemNumber"
-            @handleClearInput="handleClearInput"
             @refresh="refresh"
         />
     </div>
@@ -145,8 +133,6 @@ export default {
     data() {
         return {
             title: "Connote Forward",
-            item_number: "",
-            itemNumber: "",
             dateRange: [],
             tempSearch: "",
             dataTable: [],
@@ -189,7 +175,7 @@ export default {
                 page_size: 1,
                 page: 1
             },
-            dialogCreateEditActive: false,
+            dialogActive: false,
             searchBy: "old_connote",
             searchPlaceholder: "Search Item Number",
             searchParams: [
@@ -307,8 +293,11 @@ export default {
                 this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Connote Return terlebih dahulu');
             }
         },
-        handleClearInput(){
-            this.item_number = "";
+        openDialog(){
+            this.dialogActive = true
+        },
+        closeDialog() {
+            this.dialogActive = false
         },
         actionLimit(val) {
             this.pagination.limit = val;
@@ -318,14 +307,6 @@ export default {
         actionPagination(val) {
             this.pagination.page = val;
             this.refresh();
-        },
-        closeDialog() {
-            this.dialogCreateEditActive = false;
-        },
-        openDialog() {
-            if (this.item_number !== '') {
-                this.dialogCreateEditActive = true;
-            }
         },
         updateSearchBy(key, val) {
             val = val.replaceAll(" ", "_");
