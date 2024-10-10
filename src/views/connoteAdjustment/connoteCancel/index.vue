@@ -258,7 +258,9 @@ export default {
                         limit: parseInt(res.data.meta.per_page, 10),
                         page_size: res.data.meta.last_page,
                     };
-                }    
+                } else {
+                    this.dataTable = [];
+                }
                 
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
