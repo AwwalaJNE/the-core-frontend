@@ -231,9 +231,7 @@ export default {
             let d = new Date();
             let [from, to] = this.dateRange.length > 0 
                 ? [moment(this.dateRange[0]).format("YYYY-MM-DD"), moment(this.dateRange[1]).format("YYYY-MM-DD")] 
-                : !this.is_history
-                    ? [moment(d).format("YYYY-MM-DD"), moment(d).format("YYYY-MM-DD")]
-                    : ["", ""];
+                : ["", ""];
 
             this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, from, to);
         },
@@ -260,7 +258,9 @@ export default {
                         limit: parseInt(res.data.meta.per_page, 10),
                         page_size: res.data.meta.last_page,
                     };
-                }    
+                } else {
+                    this.dataTable = [];
+                }
                 
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');

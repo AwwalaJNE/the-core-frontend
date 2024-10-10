@@ -264,4 +264,7 @@ export default {
 
     // Connote Cancel
     connote_cancel: api + 'request-cancel',
+
+    // Connote Forward
+    connote_forward: api + 'forward'
 }
