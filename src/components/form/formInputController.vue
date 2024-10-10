@@ -97,7 +97,7 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
-                                            :disabled="listenIsDisabled ? listenIsDisabled : (partialDisabled(InputObject[item].key) || false)"
+                                            :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                             @updateValue="updateValue" />
                                         </div>
                                     </template>
@@ -113,7 +113,7 @@
                                         :formKey="InputObject[item].key"
                                         :valueData="InputObject[item].value"
                                         :typeInput="InputObject[item].typeInput"
-                                        :disabled="listenIsDisabled ? listenIsDisabled : (partialDisabled(InputObject[item].key) || false)"
+                                        :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                         @updateValue="updateValue" />
                                     </div>
                                 </template>
@@ -170,7 +170,7 @@
                                             :selectedValue="InputObject[item].value"
                                             :isMultiple="false"
                                             :isAllowCreate="false"
-                                            :disabled="listenIsDisabled ? listenIsDisabled : (partialDisabled(InputObject[item].key) || false)"
+                                            :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                             :customBind="InputObject[item].customBind"
                                             @updateValue="updateValue" />
                                         </div>
@@ -189,7 +189,7 @@
                                         :valueData="InputObject[item].arrData"
                                         :selectedValue="InputObject[item].value"
                                         :isMultiple="false"
-                                        :disabled="listenIsDisabled ? listenIsDisabled : (partialDisabled(InputObject[item].key) || false)"
+                                        :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                         :customBind="InputObject[item].customBind"
                                         @updateValue="updateValue" />
                                     </div>
