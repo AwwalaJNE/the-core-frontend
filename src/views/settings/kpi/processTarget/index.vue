@@ -207,6 +207,7 @@ export default {
                 case 'dialog_remove_kpi_process_target':
                     this.activeDialogConfirmRemove = false;
                     this.refresh();
+                    break;
                 default:
                     break;
             }
