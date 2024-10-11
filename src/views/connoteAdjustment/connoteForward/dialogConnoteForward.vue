@@ -34,9 +34,9 @@
                         :disabled="crisscross_number"
                     />
                 </vs-col>
-            </vs-row>            
-            <!-- below new -->
-            <template v-if="dataTable.length > 0 && crisscross_number === ''">
+            </vs-row>
+
+            <template v-if="status === 'PS3' && crisscross_number === ''">
                 <hr>
                 <span class="crisscross-title">Choose Crisscross Number</span>
                 <div class="mt-05 mb-2 ">
@@ -55,7 +55,8 @@
                     />
                 </div>
             </template>
-            <template v-if="(Object.keys(dataItem).length && status === 'PS2') || crisscross_number">
+
+            <template v-if="status === 'PS2' || crisscross_number">
                 <hr>
                 <div class="change-container">
                     <span 
@@ -78,7 +79,6 @@
                     </vs-col>
                 </vs-row>
             </template>
-            <!-- above new -->
         </template>
 
         <template v-slot:footer v-if="status === 'PS2' || (status === 'PS3' && crisscross_number)">
@@ -217,6 +217,7 @@ export default {
         },
         onRowClickSelected(item) {
             this.crisscross_number = item.connote_number;
+            this.scanConnote();
         },
         async getCrisscross(limit, page){
             this.loading = true;
@@ -246,46 +247,44 @@ export default {
             try {
                 const res = this.crisscross_number ? await axios.get(`${this.URL.connote}/${this.crisscross_number}?n=${this.listenNodeId}`, this.Helper.header()) : await axios.get(`${this.URL.connote_forward}/${this.connote_number}/scan?n=${this.listenNodeId}`, this.Helper.header());
 
-                if(res.data) {
-                    let obj = {}
+                if(res.data.data) {
+                    let data = res.data.data;
 
+                    let obj = {
+                        connote_number: res.data.data.connote_number || '',
+                        connote_shipper_name: data.connote_shipper_name || '',
+                        connote_shipper_phone_number: data.connote_shipper_phone_number || '',
+                        connote_shipper_email: data.connote_shipper_email || '',
+                        connote_shipper_street_address: data.connote_shipper_street_address || '',
+                        connote_shipper_administrative_address: data.connote_shipper_administrative_address || '',
+                        connote_shipper_zip_code: data.connote_shipper_zip_code || '',
+                        connote_shipper_tariff_code: data.connote_shipper_tariff_code || '',
 
-                    obj['origin_name'] = res.data.data.connote_shipper_name || ''
-                    obj['origin_phone'] = res.data.data.connote_shipper_phone_number || ''
-                    obj['origin_email'] = res.data.data.connote_shipper_email || ''
-                    obj['origin_address'] = res.data.data.connote_shipper_street_address || ''
-                    obj['origin_onchange_address'] = res.data.data.connote_shipper_administrative_address || ''
-                    obj['origin_subdistrict_id'] = res.data.data.connote_shipper_geolocation_subdistrict_id || ''
-                    obj['zip_code'] = res.data.data.connote_shipper_zip_code || ''
-                    obj['tariff_code'] = res.data.data.connote_shipper_tariff_code || ''
+                        connote_receiver_name: data.connote_receiver_name || '',
+                        connote_receiver_phone_number: data.connote_receiver_phone_number || '',
+                        connote_receiver_email: data.connote_receiver_email || '',
+                        connote_receiver_street_address: data.connote_receiver_street_address || '',
+                        connote_receiver_administrative_address: data.connote_receiver_administrative_address || '',
+                        connote_receiver_zip_code: data.connote_receiver_zip_code || '',
+                        connote_receiver_tariff_code: data.connote_receiver_tariff_code || '',
 
-                    obj['destination_name'] = res.data.data.connote_receiver_name || ''
-                    obj['destination_phone'] = res.data.data.connote_receiver_phone_number || ''
-                    obj['destination_email'] = res.data.data.connote_receiver_email || ''
-                    obj['destination_address'] = res.data.data.connote_receiver_street_address || ''
-                    obj['destination_onchange_address'] = res.data.data.connote_receiver_administrative_address || ''
-                    obj['destination_subdistrict_id'] = res.data.data.connote_receiver_geolocation_subdistrict_id || ''
-
-
-                    obj['connote_shipper_administrative_address'] = res.data.data.connote_shipper_administrative_address || ''
-                    obj['connote_receiver_geolocation_subdistrict_id'] = res.data.data.connote_receiver_geolocation_subdistrict_id || ""
-                    obj['connote_receiver_administrative_address'] = res.data.data.connote_receiver_administrative_address || ''
-                    obj['connote_receiver_email'] = res.data.data.connote_receiver_email || ''
-                    obj['connote_receiver_tlc'] = res.data.data.connote_receiver_tlc || ''
-                    obj['connote_receiver_city_zone'] = res.data.data.connote_receiver_city_zone || ''
-                    obj['connote_number'] = res.data.data.connote_number || this.connote_number
-                    this.connote_number = res.data.data.connote_number || this.connote_number
+                        connote_receiver_address_type: data.connote_receiver_address_type || '',
+                        connote_receiver_geolocation_subdistrict_id: data.connote_receiver_geolocation_subdistrict_id || '',
+                        connote_receiver_tlc: data.connote_receiver_tlc || '',
+                        connote_receiver_city_zone: data.connote_receiver_city_zone || ''
+                    };
 
                     this.dataItem = obj
-                    this.status = res.data.status;
+                    this.connote_number = this.crisscross_number ? this.connote_number : res.data.data.connote_number || this.connote_number
+                    this.status = res.data.status || this.status;
 
-                    if (this.status === "PS3") {
+                    if (this.status === "PS3" && this.crisscross_number === "") {
                         await this.getCrisscross(this.pagination.limit, this.pagination.page);
                     }
 
                     this.form = {
                         connote_number: this.connote_number,
-                        connote: this.obj
+                        connote: this.dataItem
                     }
                 }
                 
