@@ -46,12 +46,14 @@
                         :tableLoading="loading"
                         :pageSize="pagination.page_size"
                         :page="pagination.page"
+                        :hasLinked="['connote_number']"
                         :limit="pagination.limit"
                         :hasPagination="true"
                         :hasAction="false"
                         :onRowClickSelected="onRowClickSelected"
                         @actionLimit="actionLimit"
                         @actionPagination="actionPagination"
+                        @handleEdit="handleEdit"
                     />
                 </div>
             </template>
@@ -214,6 +216,10 @@ export default {
         actionPagination(val) {
             this.pagination.page = val;
             this.refresh();
+        },
+        handleEdit(item) {
+            this.crisscross_number = item.connote_number;
+            this.scanConnote();
         },
         onRowClickSelected(item) {
             this.crisscross_number = item.connote_number;
