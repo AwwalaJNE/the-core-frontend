@@ -3500,172 +3500,159 @@ export default {
   //====== END KPI PROCESS TARGET ======//
 
 
-   //====== CONNOTE FORWARD ======//
-   SET_CONNOTE_FORWARD_ORIGIN_TYPE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_TYPE_ValueData', payload)
+  //====== CONNOTE FORWARD ======//
+  
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_ValueData', payload);
+  },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_ValueData', payload);
+  },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_ValueData', payload);
+  },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_ValueData', payload);
+  },  
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_isDisabled', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ValueData', payload)
   },
   // type select perlu data array
-  SET_CONNOTE_FORWARD_ORIGIN_TYPE_ArrData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_TYPE_ArrData', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ArrData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ArrData', payload)
   },
 
-  SET_CONNOTE_FORWARD_ORIGIN_NAME({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_NAME', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE', payload)
   },
-  SET_CONNOTE_FORWARD_ORIGIN_NAME_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_NAME_isDisabled', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_isDisabled', payload)
   },
-  SET_CONNOTE_FORWARD_ORIGIN_NAME_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_NAME_ValueData', payload)
-  },
-
-  SET_CONNOTE_FORWARD_ORIGIN_PHONE({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_PHONE', payload)
-  },
-  SET_CONNOTE_FORWARD_ORIGIN_PHONE_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_PHONE_isDisabled', payload)
-  },
-  SET_CONNOTE_FORWARD_ORIGIN_PHONE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_PHONE_ValueData', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_ValueData', payload)
   },
 
-  SET_CONNOTE_FORWARD_ORIGIN_EMAIL({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_EMAIL', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE', payload)
   },
-  SET_CONNOTE_FORWARD_ORIGIN_EMAIL_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_EMAIL_isDisabled', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled', payload)
   },
-  SET_CONNOTE_FORWARD_ORIGIN_EMAIL_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_EMAILs_ValueData', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_ValueData', payload)
   },
+  
 
-  SET_CONNOTE_FORWARD_ORIGIN_ADDRESS({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_ADDRESS', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME', payload);
   },
-  SET_CONNOTE_FORWARD_ORIGIN_ADDRESS_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_ADDRESS_isDisabled', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_isDisabled', payload);
   },
-  SET_CONNOTE_FORWARD_ORIGIN_ADDRESS_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_ADDRESS_ValueData', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_ValueData', payload);
   },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_ValueData', payload);
+  },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_ValueData', payload);
+  },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_ValueData', payload);
+  },  
 
-  SET_CONNOTE_FORWARD_ORIGIN_ONCHANGE_ADDRESS({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_ONCHANGE_ADDRESS', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS', payload)
   },
-  SET_CONNOTE_FORWARD_ORIGIN_ONCHANGE_ADDRESS_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_ONCHANGE_ADDRESS_isDisabled', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_isDisabled', payload)
   },
-  SET_CONNOTE_FORWARD_ORIGIN_ONCHANGE_ADDRESS_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_ONCHANGE_ADDRESS_ValueData', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ValueData', payload)
   },
   // type select perlu data array
-  SET_CONNOTE_FORWARD_ORIGIN_ONCHANGE_ADDRESS_ArrData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_ONCHANGE_ADDRESS_ArrData', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ArrData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ArrData', payload)
   },
 
-  SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE', payload)
   },
-  SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE_isDisabled', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_isDisabled', payload)
   },
-  SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE_ValueData', payload)
-  },
-
-  SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE', payload)
-  },
-  SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE_isDisabled', payload)
-  },
-  SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE_ValueData', payload)
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_ValueData', payload)
   },
 
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_isDisabled', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_ValueData', payload)
+  },
+
 
 
 
-  SET_CONNOTE_FORWARD_DESTINATION_TYPE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_TYPE_ValueData', payload)
-  },
-  // type select perlu data array
-  SET_CONNOTE_FORWARD_DESTINATION_TYPE_ArrData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_TYPE_ArrData', payload)
-  },
-
-  SET_CONNOTE_FORWARD_DESTINATION_NAME({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_NAME', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_NAME_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_NAME_isDisabled', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_NAME_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_NAME_ValueData', payload)
-  },
-
-  SET_CONNOTE_FORWARD_DESTINATION_PHONE({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_PHONE', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_PHONE_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_PHONE_isDisabled', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_PHONE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_PHONE_ValueData', payload)
-  },
-
-  SET_CONNOTE_FORWARD_DESTINATION_EMAIL({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_EMAIL', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_EMAIL_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_EMAIL_isDisabled', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_EMAIL_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_EMAILs_ValueData', payload)
-  },
-
-  SET_CONNOTE_FORWARD_DESTINATION_ADDRESS({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_ADDRESS', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_ADDRESS_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_ADDRESS_isDisabled', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_ADDRESS_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_ADDRESS_ValueData', payload)
-  },
-
-  SET_CONNOTE_FORWARD_DESTINATION_ONCHANGE_ADDRESS({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_ONCHANGE_ADDRESS', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_ONCHANGE_ADDRESS_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_ONCHANGE_ADDRESS_isDisabled', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_ONCHANGE_ADDRESS_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_ONCHANGE_ADDRESS_ValueData', payload)
-  },
-  // type select perlu data array
-  SET_CONNOTE_FORWARD_DESTINATION_ONCHANGE_ADDRESS_ArrData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_ONCHANGE_ADDRESS_ArrData', payload)
-  },
-
-  SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE_isDisabled', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE_ValueData', payload)
-  },
-
-  SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE_isDisabled', payload)
-  },
-  SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE_ValueData', payload)
-  },
   //====== END CONNOTE FORWARD ======//
 }

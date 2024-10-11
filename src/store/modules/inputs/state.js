@@ -4197,9 +4197,9 @@ export default {
   },
 
   connote_forward: {
-    origin_name: {
+    connote_shipper_name: {
       label: "Nama Pengirim*",
-      key: "origin_name",
+      key: "connote_shipper_name",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -4208,9 +4208,9 @@ export default {
       valueData: null,
       value: ''
     },
-    destination_name: {
+    connote_receiver_name: {
       label: "Nama Penerima*",
-      key: "destination_name",
+      key: "connote_receiver_name",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -4219,10 +4219,9 @@ export default {
       valueData: null,
       value: ''
     },
-
-    origin_phone: {
+    connote_shipper_phone_number: {
       label: "Telepon Pengirim*",
-      key: "origin_phone",
+      key: "connote_shipper_phone_number",
       rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
@@ -4231,9 +4230,9 @@ export default {
       valueData: null,
       value: ''
     },
-    destination_phone: {
+    connote_receiver_phone_number: {
       label: "Telepon Penerima*",
-      key: "destination_phone",
+      key: "connote_receiver_phone_number",
       rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
@@ -4242,10 +4241,9 @@ export default {
       valueData: null,
       value: ''
     },
-
-    origin_email: {
+    connote_shipper_email: {
       label: "Email Pengirim",
-      key: "origin_email",
+      key: "connote_shipper_email",
       rule: "",
       typeInput: "text",
       typeData: "String",
@@ -4254,9 +4252,9 @@ export default {
       valueData: null,
       value: ''
     },
-    destination_email: {
+    connote_receiver_email: {
       label: "Email Penerima",
-      key: "destination_email",
+      key: "connote_receiver_email",
       rule: "",
       typeInput: "text",
       typeData: "String",
@@ -4265,10 +4263,9 @@ export default {
       valueData: null,
       value: ''
     },
-
-    origin_address: {
+    connote_shipper_street_address: {
       label: "Alamat & Kode Pos Pengirim",
-      key: "origin_address",
+      key: "connote_shipper_street_address",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -4277,9 +4274,9 @@ export default {
       valueData: null,
       value: ''
     },
-    destination_address: {
+    connote_receiver_street_address: {
       label: "Alamat & Kode Pos Penerima",
-      key: "destination_address",
+      key: "connote_receiver_street_address",
       rule: "required",
       typeInput: "text",
       typeData: "String",
@@ -4288,10 +4285,9 @@ export default {
       valueData: null,
       value: ''
     },
-
-    origin_onchange_address: {
+    connote_shipper_administrative_address: {
       label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
-      key: "origin_onchange_address",
+      key: "connote_shipper_administrative_address",
       rule: "required",
       typeInput: "text|onchange|location_selector",
       typeData: "String",
@@ -4302,9 +4298,9 @@ export default {
       onchange: true,
       value: ''
     },
-    destination_onchange_address: {
+    connote_receiver_administrative_address: {
       label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
-      key: "destination_onchange_address",
+      key: "connote_receiver_administrative_address",
       rule: "required",
       typeInput: "text|onchange|location_selector",
       typeData: "String",
@@ -4315,10 +4311,9 @@ export default {
       onchange: true,
       value: ''
     },
-
-    origin_zip_code:{
+    connote_shipper_zip_code: {
       label: "Kode Pos",
-      key: "origin_zip_code",
+      key: "connote_shipper_zip_code",
       rule: "required",
       isDisabled: true,
       width: '3',
@@ -4327,9 +4322,9 @@ export default {
       valueData: null,
       value: ''
     },
-    origin_tariff_code: {
+    connote_shipper_tariff_code: {
       label: "Kode Tujuan*",
-      key: "origin_tariff_code",
+      key: "connote_shipper_tariff_code",
       rule: "required",
       isDisabled: true,
       width: '3',
@@ -4338,10 +4333,9 @@ export default {
       valueData: null,
       value: ''
     },
-
-    destination_zip_code:{
+    connote_receiver_zip_code: {
       label: "Kode Pos",
-      key: "destination_zip_code",
+      key: "connote_receiver_zip_code",
       rule: "required",
       isDisabled: true,
       width: '3',
@@ -4349,10 +4343,10 @@ export default {
       typeData: "String",
       valueData: null,
       value: ''
-    },    
-    destination_tariff_code: {
+    },
+    connote_receiver_tariff_code: {
       label: "Kode Tujuan*",
-      key: "destination_tariff_code",
+      key: "connote_receiver_tariff_code",
       rule: "required",
       isDisabled: true,
       width: '3',
