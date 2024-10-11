@@ -3887,34 +3887,24 @@ export default {
       state.connote_forward.origin_onchange_address.arrData = []
   },
 
-  SET_CONNOTE_FORWARD_ORIGIN_SUBDISTRICT_ID(state, payload) {
-    state.connote_forward.origin_subdistrict_id.value = payload
+  SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE(state, payload) {
+    state.connote_forward.origin_zip_code.value = payload
   },
-  SET_CONNOTE_FORWARD_ORIGIN_SUBDISTRICT_ID_isDisabled(state, payload) {
-    state.connote_forward.origin_subdistrict_id.isDisabled = payload
+  SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE_isDisabled(state, payload) {
+    state.connote_forward.origin_zip_code.isDisabled = payload
   },
-  SET_CONNOTE_FORWARD_ORIGIN_SUBDISTRICT_ID_ValueData(state, payload) {
-    state.connote_forward.origin_subdistrict_id.valueData = payload
-  },
-
-  SET_CONNOTE_FORWARD_ZIP_CODE(state, payload) {
-    state.connote_forward.zip_code.value = payload
-  },
-  SET_CONNOTE_FORWARD_ZIP_CODE_isDisabled(state, payload) {
-    state.connote_forward.zip_code.isDisabled = payload
-  },
-  SET_CONNOTE_FORWARD_ZIP_CODE_ValueData(state, payload) {
-    state.connote_forward.zip_code.valueData = payload
+  SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE_ValueData(state, payload) {
+    state.connote_forward.origin_zip_code.valueData = payload
   },
 
-  SET_CONNOTE_FORWARD_TARIFF_CODE(state, payload) {
-    state.connote_forward.tariff_code.value = payload
+  SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE(state, payload) {
+    state.connote_forward.origin_tariff_code.value = payload
   },
-  SET_CONNOTE_FORWARD_TARIFF_CODE_isDisabled(state, payload) {
-    state.connote_forward.tariff_code.isDisabled = payload
+  SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE_isDisabled(state, payload) {
+    state.connote_forward.origin_tariff_code.isDisabled = payload
   },
-  SET_CONNOTE_FORWARD_TARIFF_CODE_ValueData(state, payload) {
-    state.connote_forward.tariff_code.valueData = payload
+  SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE_ValueData(state, payload) {
+    state.connote_forward.origin_tariff_code.valueData = payload
   },
 
   SET_CONNOTE_FORWARD_DESTINATION_TYPE(state, payload) {
@@ -3987,34 +3977,24 @@ export default {
       state.connote_forward.destination_onchange_address.arrData = []
   },
 
-  SET_CONNOTE_FORWARD_DESTINATION_SUBDISTRICT_ID(state, payload) {
-    state.connote_forward.destination_subdistrict_id.value = payload
+  SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE(state, payload) {
+    state.connote_forward.destination_zip_code.value = payload
   },
-  SET_CONNOTE_FORWARD_DESTINATION_SUBDISTRICT_ID_isDisabled(state, payload) {
-    state.connote_forward.destination_subdistrict_id.isDisabled = payload
+  SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE_isDisabled(state, payload) {
+    state.connote_forward.destination_zip_code.isDisabled = payload
   },
-  SET_CONNOTE_FORWARD_DESTINATION_SUBDISTRICT_ID_ValueData(state, payload) {
-    state.connote_forward.destination_subdistrict_id.valueData = payload
-  },
-
-  SET_CONNOTE_FORWARD_ZIP_CODE(state, payload) {
-    state.connote_forward.zip_code.value = payload
-  },
-  SET_CONNOTE_FORWARD_ZIP_CODE_isDisabled(state, payload) {
-    state.connote_forward.zip_code.isDisabled = payload
-  },
-  SET_CONNOTE_FORWARD_ZIP_CODE_ValueData(state, payload) {
-    state.connote_forward.zip_code.valueData = payload
+  SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE_ValueData(state, payload) {
+    state.connote_forward.destination_zip_code.valueData = payload
   },
 
-  SET_CONNOTE_FORWARD_TARIFF_CODE(state, payload) {
-    state.connote_forward.tariff_code.value = payload
+  SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE(state, payload) {
+    state.connote_forward.destination_tariff_code.value = payload
   },
-  SET_CONNOTE_FORWARD_TARIFF_CODE_isDisabled(state, payload) {
-    state.connote_forward.tariff_code.isDisabled = payload
+  SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE_isDisabled(state, payload) {
+    state.connote_forward.destination_tariff_code.isDisabled = payload
   },
-  SET_CONNOTE_FORWARD_TARIFF_CODE_ValueData(state, payload) {
-    state.connote_forward.tariff_code.valueData = payload
+  SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE_ValueData(state, payload) {
+    state.connote_forward.destination_tariff_code.valueData = payload
   },
   //====== END CONNOTE FORWARD ======//
 }

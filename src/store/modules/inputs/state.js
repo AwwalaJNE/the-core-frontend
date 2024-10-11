@@ -4316,68 +4316,46 @@ export default {
       value: ''
     },
 
-    origin_subdistrict_id: {
-      label: "Kode Pos*",
-      key: "origin_subdistrict_id",
-      rule: "",
-      isDisabled: true,
-      typeInput: "hidden|disabled|dotted",
-      typeData: "String",
-      valueData: null,
-      value: ''
-    },
-    zip_code:{
+    origin_zip_code:{
       label: "Kode Pos",
-      key: "zip_code",
+      key: "origin_zip_code",
       rule: "required",
       isDisabled: true,
-      width: '6',
+      width: '3',
       typeInput: "text|disabled",
       typeData: "String",
       valueData: null,
       value: ''
     },
-    tariff_code: {
+    origin_tariff_code: {
       label: "Kode Tujuan*",
-      key: "tariff_code",
+      key: "origin_tariff_code",
       rule: "required",
       isDisabled: true,
-      width: '6',
+      width: '3',
       typeInput: "text|disabled",
       typeData: "String",
       valueData: null,
       value: ''
     },
-   
-    
-    
-    destination_subdistrict_id: {
-      label: "Kode Pos*",
-      key: "destination_subdistrict_id",
-      rule: "",
-      isDisabled: true,
-      typeInput: "hidden|disabled|dotted",
-      typeData: "String",
-      valueData: null,
-      value: ''
-    },
-    zip_code:{
+
+    destination_zip_code:{
       label: "Kode Pos",
-      key: "zip_code",
+      key: "destination_zip_code",
       rule: "required",
       isDisabled: true,
-      width: '6',
+      width: '3',
       typeInput: "text|disabled",
       typeData: "String",
       valueData: null,
       value: ''
-    },
-    tariff_code: {
+    },    
+    destination_tariff_code: {
       label: "Kode Tujuan*",
-      key: "tariff_code",
+      key: "destination_tariff_code",
       rule: "required",
       isDisabled: true,
-      width: '6',
+      width: '3',
       typeInput: "text|disabled",
       typeData: "String",
       valueData: null,

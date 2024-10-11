@@ -3563,34 +3563,24 @@ export default {
     commit('SET_CONNOTE_FORWARD_ORIGIN_ONCHANGE_ADDRESS_ArrData', payload)
   },
 
-  SET_CONNOTE_FORWARD_ORIGIN_SUBDISTRICT_ID({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_SUBDISTRICT_ID', payload)
+  SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE', payload)
   },
-  SET_CONNOTE_FORWARD_ORIGIN_SUBDISTRICT_ID_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_SUBDISTRICT_ID_isDisabled', payload)
+  SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE_isDisabled', payload)
   },
-  SET_CONNOTE_FORWARD_ORIGIN_SUBDISTRICT_ID_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ORIGIN_SUBDISTRICT_ID_ValueData', payload)
-  },
-
-  SET_CONNOTE_FORWARD_ZIP_CODE({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ZIP_CODE', payload)
-  },
-  SET_CONNOTE_FORWARD_ZIP_CODE_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ZIP_CODE_isDisabled', payload)
-  },
-  SET_CONNOTE_FORWARD_ZIP_CODE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ZIP_CODE_ValueData', payload)
+  SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_ORIGIN_ZIP_CODE_ValueData', payload)
   },
 
-  SET_CONNOTE_FORWARD_TARIFF_CODE({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_TARIFF_CODE', payload)
+  SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE', payload)
   },
-  SET_CONNOTE_FORWARD_TARIFF_CODE_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_TARIFF_CODE_isDisabled', payload)
+  SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE_isDisabled', payload)
   },
-  SET_CONNOTE_FORWARD_TARIFF_CODE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_TARIFF_CODE_ValueData', payload)
+  SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_ORIGIN_TARIFF_CODE_ValueData', payload)
   },
 
 
@@ -3658,40 +3648,24 @@ export default {
     commit('SET_CONNOTE_FORWARD_DESTINATION_ONCHANGE_ADDRESS_ArrData', payload)
   },
 
-  SET_CONNOTE_FORWARD_DESTINATION_SUBDISTRICT_ID({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_SUBDISTRICT_ID', payload)
+  SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE', payload)
   },
-  SET_CONNOTE_FORWARD_DESTINATION_SUBDISTRICT_ID_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_SUBDISTRICT_ID_isDisabled', payload)
+  SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE_isDisabled', payload)
   },
-  SET_CONNOTE_FORWARD_DESTINATION_SUBDISTRICT_ID_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_DESTINATION_SUBDISTRICT_ID_ValueData', payload)
-  },
-
-  SET_CONNOTE_FORWARD_ZIP_CODE({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ZIP_CODE', payload)
-  },
-  SET_CONNOTE_FORWARD_ZIP_CODE_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ZIP_CODE_isDisabled', payload)
-  },
-  SET_CONNOTE_FORWARD_ZIP_CODE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_ZIP_CODE_ValueData', payload)
+  SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_DESTINATION_ZIP_CODE_ValueData', payload)
   },
 
-  SET_CONNOTE_FORWARD_TARIFF_CODE({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_TARIFF_CODE', payload)
+  SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE', payload)
   },
-  SET_CONNOTE_FORWARD_TARIFF_CODE_isDisabled({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_TARIFF_CODE_isDisabled', payload)
+  SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE_isDisabled', payload)
   },
-  SET_CONNOTE_FORWARD_TARIFF_CODE_ValueData({ commit }, payload) {
-    commit('SET_CONNOTE_FORWARD_TARIFF_CODE_ValueData', payload)
-  },
-
-
-
-  SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_TYPE({ commit }, payload) {
-    commit('SET_IRREGURALITIES_RETURN_DESTINATION_DESTINATION_TYPE', payload)
+  SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_DESTINATION_TARIFF_CODE_ValueData', payload)
   },
   //====== END CONNOTE FORWARD ======//
 }
