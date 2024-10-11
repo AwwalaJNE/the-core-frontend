@@ -91,6 +91,16 @@
             :closeDialog="closeDialog"
             :refresh="refresh"
         />
+
+        <dialog-confirm
+            title="Cancel Connote Return"
+            :message="`Are you sure you want to cancel ${this.connote_number_return}?`"
+            :active="activeDialogConfirm"
+            :loading="loadingDialogConfirm"
+            :closeDialog="closeDialogConfirm"
+            @confirm="confirmCancel"
+            @cancel="closeDialogConfirm"
+        />
     </div>
 </template>
 <script>
@@ -105,6 +115,7 @@ import DateTime from "@/components/input/dateTime"
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
 import DialogReturn from "@/views/irreguralities/return/dialogReturn"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 export default {
     name:"irregularities-return",
     mixins:[master],
@@ -116,6 +127,7 @@ export default {
         "table-master" : TableMaster,
         "dialog-return" : DialogReturn,
         "select-search-by": SelectSearchBy,
+        "dialog-confirm": DialogConfirm,
     },
     data() {
         return {
@@ -175,7 +187,10 @@ export default {
                 value: 'create'
               },
             ],
-            selectedRow: []
+            selectedRow: [],
+            connote_number_return: '',
+            activeDialogConfirm: false,
+            loadingDialogConfirm: false
         }
     },
     methods: {
@@ -322,11 +337,23 @@ export default {
         validateCancel(is_cancellable) {
             return is_cancellable === '0' ? false : true
         },
-        async actionCancel(item) {
-            this.loading = true
+        actionCancel(val){
+            this.connote_number_return = val.connote_number_return;
+            this.activeDialogConfirm = true
+        },
+        closeDialogConfirm(){
+            this.activeDialogConfirm = false
+            this.loadingDialogConfirm = false
+        },
+        confirmCancel() {
+            this.loadingDialogConfirm = true
+            this.cancelConnote()
+        },
+        async cancelConnote() {
+            this.loadingDialogConfirm = true
             await axios
                 .post(
-                    this.URL.return + `/${item.connote_number_return}/cancel?n=${this.listenNodeId}`,
+                    this.URL.return + `/${this.connote_number_return}/cancel?n=${this.listenNodeId}`,
                     null,
                     this.Helper.header())
                 .then(res => {
@@ -336,8 +363,9 @@ export default {
                     this.openNotification('danger', err?.response?.data?.code ?? '', 'Cancel connote return is failed', err?.response?.data?.message ?? err)
                 })
                 .finally(() => {
-                    this.loading = false;
-                    this.refresh()
+                    this.closeDialogConfirm();
+                    this.connote_number_return = '';
+                    this.refresh();
                 });
         }
     },
