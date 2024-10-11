@@ -4195,4 +4195,193 @@ export default {
       value: '',
     },
   },
+
+  connote_forward: {
+    origin_name: {
+      label: "Nama Pengirim*",
+      key: "origin_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    destination_name: {
+      label: "Nama Penerima*",
+      key: "destination_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+
+    origin_phone: {
+      label: "Telepon Pengirim*",
+      key: "origin_phone",
+      rule: "required|numeric|min:8",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    destination_phone: {
+      label: "Telepon Penerima*",
+      key: "destination_phone",
+      rule: "required|numeric|min:8",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+
+    origin_email: {
+      label: "Email Pengirim",
+      key: "origin_email",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    destination_email: {
+      label: "Email Penerima",
+      key: "destination_email",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+
+    origin_address: {
+      label: "Alamat & Kode Pos Pengirim",
+      key: "origin_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    destination_address: {
+      label: "Alamat & Kode Pos Penerima",
+      key: "destination_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+
+    origin_onchange_address: {
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
+      key: "origin_onchange_address",
+      rule: "required",
+      typeInput: "text|onchange|location_selector",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      arrData: [],
+      valueData: null,
+      onchange: true,
+      value: ''
+    },
+    destination_onchange_address: {
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
+      key: "destination_onchange_address",
+      rule: "required",
+      typeInput: "text|onchange|location_selector",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      arrData: [],
+      valueData: null,
+      onchange: true,
+      value: ''
+    },
+
+    origin_subdistrict_id: {
+      label: "Kode Pos*",
+      key: "origin_subdistrict_id",
+      rule: "",
+      isDisabled: true,
+      typeInput: "hidden|disabled|dotted",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    zip_code:{
+      label: "Kode Pos",
+      key: "zip_code",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_code: {
+      label: "Kode Tujuan*",
+      key: "tariff_code",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+   
+    
+    
+    destination_subdistrict_id: {
+      label: "Kode Pos*",
+      key: "destination_subdistrict_id",
+      rule: "",
+      isDisabled: true,
+      typeInput: "hidden|disabled|dotted",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    zip_code:{
+      label: "Kode Pos",
+      key: "zip_code",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    tariff_code: {
+      label: "Kode Tujuan*",
+      key: "tariff_code",
+      rule: "required",
+      isDisabled: true,
+      width: '6',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    }
+  },
 }
