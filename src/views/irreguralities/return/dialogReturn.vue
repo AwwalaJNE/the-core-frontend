@@ -389,18 +389,20 @@ export default {
                 })
         },
         handleSubmit(){
-            let form = {}
+            if (this.listenActive) {
+                let form = {}
 
-            if(Object.keys(this.dataItem).length == 0) {
-                this.scanConnote()
-            } else {
-                this.$refs.irreguralitiesReturnDestination.handleSubmit()
+                if(Object.keys(this.dataItem).length == 0) {
+                    this.scanConnote()
+                } else {
+                    this.$refs.irreguralitiesReturnDestination.handleSubmit()
+                }
+
+                // form['irregularity_type'] = this.irregularity_type
+                // form['irregularity_alt_address'] = this.irregularity_alt_address
+                // form['connote_number'] = this.connote_number
+                // this.$emit("updateValue", 'DIALOG_CANCEL',form)
             }
-
-            // form['irregularity_type'] = this.irregularity_type
-            // form['irregularity_alt_address'] = this.irregularity_alt_address
-            // form['connote_number'] = this.connote_number
-            // this.$emit("updateValue", 'DIALOG_CANCEL',form)
         },
         handleClearForm(){
             this.form = {}

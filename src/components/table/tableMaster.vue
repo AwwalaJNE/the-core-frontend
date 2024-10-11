@@ -798,6 +798,23 @@
                       </vs-button>
                     </vs-col>
                   </template>
+                  <template v-if="typeof dynamicCancel === 'function'">
+                    <vs-col w="4">
+                      <vs-button
+                        block
+                        :disabled="
+                          (item.hasOwnProperty('isDisabled') && item.isDisabled == true) ||
+                          (!dynamicCancel(item[dynamicCancelColumn]))
+                        "
+                        flat
+                        size="small"
+                        :active="true"
+                        @click="actionCancel(item)"
+                      >
+                        <span>Cancel</span>
+                      </vs-button>
+                    </vs-col>
+                  </template>
                 </vs-row>
               </vs-td>
             </template>
@@ -1175,6 +1192,8 @@ export default {
     codAction: Boolean,
     customBtn: Boolean,
     customBtn_label: String,
+    dynamicCancel: Function,
+    dynamicCancelColumn: String,
 
     isMultipleSelect: Boolean,
     isMultipleSelectColoum: Boolean,
