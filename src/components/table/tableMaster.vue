@@ -798,13 +798,13 @@
                       </vs-button>
                     </vs-col>
                   </template>
-                  <template v-if="typeof dynamicCancel === 'function' && dynamicCancel(item[dynamicCancelColumn])">
+                  <template v-if="typeof dynamicCancel === 'function'">
                     <vs-col w="4">
                       <vs-button
                         block
                         :disabled="
-                          item.hasOwnProperty('isDisabled') &&
-                            item.isDisabled == true
+                          (item.hasOwnProperty('isDisabled') && item.isDisabled == true) ||
+                          (!dynamicCancel(item[dynamicCancelColumn]))
                         "
                         flat
                         size="small"
