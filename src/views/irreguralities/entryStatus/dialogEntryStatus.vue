@@ -431,6 +431,7 @@ export default {
                         this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
                     } else {
                         let form = {
+                            irregularity_id: this.irregularity_id,
                             irregularity_type: this.irregularity_type,
                             irregularity_status_code: this.irregularity_status_code,
                             remark: this.remark,
