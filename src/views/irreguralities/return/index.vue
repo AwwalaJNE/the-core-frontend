@@ -77,6 +77,9 @@
                     :hasAction="false"
                     :printAction="true"
                     @actionPrint="actionPrint"
+                    :dynamicCancel="validateCancel"
+                    :dynamicCancelColumn="'is_cancellable'"
+                    @actionCancel="actionCancel"
                     />
                 </div>
             </div>
@@ -315,6 +318,27 @@ export default {
             else {
                 this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Connote Return terlebih dahulu')
             }
+        },
+        validateCancel(is_cancellable) {
+            return is_cancellable === '0' ? false : true
+        },
+        async actionCancel(item) {
+            this.loading = true
+            await axios
+                .post(
+                    this.URL.return + `/${item.connote_number_return}/cancel?n=${this.listenNodeId}`,
+                    null,
+                    this.Helper.header())
+                .then(res => {
+                    this.openNotification("success", null, "Success!", 'Success cancel connote return');
+                })
+                .catch(err => {
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Cancel connote return is failed', err?.response?.data?.message ?? err)
+                })
+                .finally(() => {
+                    this.loading = false;
+                    this.refresh()
+                });
         }
     },
     mounted() {
