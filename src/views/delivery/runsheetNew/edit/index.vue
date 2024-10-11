@@ -428,21 +428,31 @@ export default {
                     break;
             }
         },
-        async updateRunsheetCourier() {
-            try {
-                const res = await axios.put(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}?n=${this.listenNodeId}`, {courier_employee_id: this.selectedCourier}, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message ?? "Sukses mengganti kurir");
+        async updateRunsheetCourier() { 
+            if (this.delivery_runsheet_number) {
+                try {
+                    const res = await axios.put(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}?n=${this.listenNodeId}`, {courier_employee_id: this.selectedCourier}, this.Helper.header());
+                    this.openNotification('success', null, "Success", res?.data?.message ?? "Sukses mengganti kurir");
+                    this.$router.push({ 
+                        name: 'delivery-runsheet-edit', 
+                        params: { 
+                            employee_id: this.selectedCourier,
+                            delivery_runsheet_number: this.delivery_runsheet_number,
+                            date_filter: this.tempDate
+                        } 
+                    });
+                } catch (err) {
+                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                    this.selectedCourier = this.employee_name + "( " + this.employee_code + " )";
+                }   
+            } else {
+                this.employee_id = this.selectedCourier;
                 this.$router.push({ 
-                    name: 'delivery-runsheet-edit', 
+                    name: 'delivery-runsheet-new', 
                     params: { 
-                        employee_id: this.selectedCourier,
-                        delivery_runsheet_number: this.delivery_runsheet_number,
-                        date_filter: this.tempDate
+                        employee_id: this.selectedCourier
                     } 
                 });
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
-                this.selectedCourier = this.employee_name + "( " + this.employee_code + " )";
             }
         },
         updateValueBag(val) {
