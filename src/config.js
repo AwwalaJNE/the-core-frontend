@@ -266,5 +266,29 @@ export default {
     connote_cancel: api + 'request-cancel',
 
     // Connote Forward
-    connote_forward: api + 'forward'
+    connote_forward: api + 'forward',
+
+    // Crisscross
+    crisscross: api + 'crisscross',
+
+    // KPI
+    kpi_process_target: api + 'kpi/process-target',
+
+    // Region List
+    regional_list: api + 'regional-list',
+
+    // Branch List
+    branch_list: api + 'branch-list',
+
+    // Origin List
+    origin_list: api + 'origin-list',
+
+    // Node List
+    node_list: api + 'node-list',
+
+    // User List
+    user_list: api + 'user-list',
+
+    // Employee List
+    employee_list: api + 'employee-list',
 }

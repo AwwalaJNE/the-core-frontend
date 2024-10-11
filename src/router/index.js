@@ -44,6 +44,9 @@ import Sla from "@/views/settings/sla"
 // === Configuration Warning Runsheet ===
 import ConfigurationWarningRunsheet from "@/views/settings/configurationWarningRunsheet"
 
+// === KPI ===
+import KeyPerformanceIndicator from "@/views/settings/kpi"
+
 // === Inventory Item or Connote ===
 import InventoryItem from "@/views/inventory/connote"
 
@@ -336,6 +339,15 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Facility Code"
+            }
+          },
+          {
+            path: "kpi",
+            name: "KPI",
+            component: KeyPerformanceIndicator,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "KPI"
             }
           },
         ],

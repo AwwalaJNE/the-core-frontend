@@ -3423,4 +3423,79 @@ export default {
     commit('SET_FACILITY_CODE_DESTINATION_ValueData', payload)
   },
   //====== END FACILITY CODE ======//
+
+
+
+  //====== KPI PROCESS TARGET ======//
+
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_VALUE', payload)
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ValueData', payload)
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ArrData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ArrData', payload)
+  },
+
+
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY', payload)
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ValueData', payload)
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ArrData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ArrData', payload)
+  },
+
+
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_PROCESS_NAME', payload)
+  },
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_PROCESS_NAME_ValueData', payload)
+  },
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME_ArrData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_PROCESS_NAME_ArrData', payload)
+  },
+
+  SET_KPI_PROCESS_TARGET_VALUE({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_VALUE', payload)
+  },
+  SET_KPI_PROCESS_TARGET_VALUE_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_VALUE_ValueData', payload)
+  },
+
+
+  SET_KPI_PROCESS_TARGET_DESCRIPTION({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_DESCRIPTION', payload)
+  },
+  SET_KPI_PROCESS_TARGET_DESCRIPTION_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_DESCRIPTION_ValueData', payload)
+  },
+
+
+  SET_KPI_PROCESS_TARGET_START_DATE({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_START_DATE', payload)
+  },
+  SET_KPI_PROCESS_TARGET_START_DATE_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_START_DATE_ValueData', payload)
+  },
+  SET_KPI_PROCESS_TARGET_START_DATE_ArrData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_START_DATE_ArrData', payload)
+  },
+
+
+  SET_KPI_PROCESS_TARGET_END_DATE({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_END_DATE', payload)
+  },
+  SET_KPI_PROCESS_TARGET_END_DATE_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_END_DATE_ValueData', payload)
+  },
+  SET_KPI_PROCESS_TARGET_END_DATE_ArrData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_END_DATE_ArrData', payload)
+  },
+
+  //====== END KPI PROCESS TARGET ======//
 }

@@ -543,6 +543,12 @@ export default {
               icon: "",
               permission: "read-facility-code",
             },
+            {
+              label: "Settings KPI",
+              url: "/settings/kpi",
+              icon: "",
+              permission: "", // TODO: Change after permission ready
+            },
           ],
         },
         {

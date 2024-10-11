@@ -2093,6 +2093,105 @@ export default {
     },
   },
 
+  kpi_process_target: {
+    reference_entity: {
+      label: "Reference Entity*",
+      key: "reference_entity",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Region',
+          value: 'REGION'
+        },
+        {
+          label: 'Branch',
+          value: 'BRANCH'
+        },
+        {
+          label: 'Origin',
+          value: 'ORIGIN'
+        },
+        {
+          label: 'Node',
+          value: 'NODE'
+        },
+        {
+          label: 'User',
+          value: 'USER'
+        },
+        {
+          label: 'Employee',
+          value: 'EMPLOYEE'
+        }
+      ],
+      valueData: null,
+      value: '',
+    },
+    reference_value: {
+      label: "Reference Value*",
+      key: "reference_value",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      width: '12',
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    process_name: {
+      label: "Process Name*",
+      key: "process_name",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    value: {
+      label: "Value*",
+      key: "value",
+      rule: "required|numeric|min_value:1",
+      typeInput: "number",
+      typeData: "Number",
+      valueData: null,
+      value: null
+    },
+    description: {
+      label: "Description*",
+      key: "description",
+      rule: "required",
+      typeInput: "text",
+      typeData: "text",
+      valueData: null,
+      value: '',
+    },
+    start_date: {
+      label: "Start Date*",
+      key: "start_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    end_date: {
+      label: "End Date*",
+      key: "end_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  },
+
   tariff: {
     tariff_group: {
       label: "Tariff Group",

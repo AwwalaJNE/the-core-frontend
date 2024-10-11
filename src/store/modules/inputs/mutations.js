@@ -3729,4 +3729,90 @@ export default {
   },
 
   //====== END FACILITY CODE ======
+
+
+
+  //====== KPI PROCESS TARGET ======//
+
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE(state, payload) {
+    state.kpi_process_target.reference_value.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ValueData(state, payload) {
+    state.kpi_process_target.reference_value.valueData = payload
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ArrData(state, payload) {
+    state.kpi_process_target.reference_value.hasOwnProperty('arrData') ?
+    state.kpi_process_target.reference_value.arrData = payload :
+    state.kpi_process_target.reference_value.arrData = []
+  },
+
+
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY(state, payload) {
+    state.kpi_process_target.reference_entity.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ValueData(state, payload) {
+    state.kpi_process_target.reference_entity.valueData = payload
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ArrData(state, payload) {
+    state.kpi_process_target.reference_entity.hasOwnProperty('arrData') ?
+    state.kpi_process_target.reference_entity.arrData = payload :
+    state.kpi_process_target.reference_entity.arrData = []
+  },
+
+
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME(state, payload) {
+    state.kpi_process_target.process_name.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME_ValueData(state, payload) {
+    state.kpi_process_target.process_name.valueData = payload
+  },
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME_ArrData(state, payload) {
+    state.kpi_process_target.process_name.hasOwnProperty('arrData') ?
+    state.kpi_process_target.process_name.arrData = payload :
+    state.kpi_process_target.process_name.arrData = []
+  },
+
+
+  SET_KPI_PROCESS_TARGET_VALUE(state, payload) {
+    state.kpi_process_target.value.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_VALUE_ValueData(state, payload) {
+    state.kpi_process_target.value.valueData = payload
+  },
+
+
+  SET_KPI_PROCESS_TARGET_DESCRIPTION(state, payload) {
+    state.kpi_process_target.description.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_DESCRIPTION_ValueData(state, payload) {
+    state.kpi_process_target.description.valueData = payload
+  },
+
+
+  SET_KPI_PROCESS_TARGET_START_DATE(state, payload) {
+    state.kpi_process_target.start_date.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_START_DATE_ValueData(state, payload) {
+    state.kpi_process_target.start_date.valueData = payload
+  },
+  SET_KPI_PROCESS_TARGET_START_DATE_ArrData(state, payload) {
+    state.kpi_process_target.start_date.hasOwnProperty('arrData') ?
+    state.kpi_process_target.start_date.arrData = payload :
+    state.kpi_process_target.start_date.arrData = []
+  },
+
+
+  SET_KPI_PROCESS_TARGET_END_DATE(state, payload) {
+    state.kpi_process_target.end_date.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_END_DATE_ValueData(state, payload) {
+    state.kpi_process_target.end_date.valueData = payload
+  },
+  SET_KPI_PROCESS_TARGET_END_DATE_ArrData(state, payload) {
+    state.kpi_process_target.end_date.hasOwnProperty('arrData') ?
+    state.kpi_process_target.end_date.arrData = payload :
+    state.kpi_process_target.end_date.arrData = []
+  },
+
+  //====== END KPI PROCESS TARGET ======//
 }
