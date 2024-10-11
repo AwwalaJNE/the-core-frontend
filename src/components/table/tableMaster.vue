@@ -1221,6 +1221,10 @@ export default {
       type: Function,
       default: undefined,
     },
+    onRowClickSelected: {
+      type: Function,
+      default: undefined,
+    },
   },
   data() {
     return {
@@ -1459,6 +1463,10 @@ export default {
         // eslint-disable-next-line quotes
         if (typeof this.onRowClickCallback === "function") {
           this.onRowClickCallback(event, item, this.selected);
+        }
+
+        if (typeof this.onRowClickSelected === "function") {
+          this.onRowClickSelected(item);
         }
       }
     },

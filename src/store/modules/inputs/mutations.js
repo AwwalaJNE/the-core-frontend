@@ -3815,4 +3815,160 @@ export default {
   },
 
   //====== END KPI PROCESS TARGET ======//
+
+  //====== CONNOTE FORWARD ======//
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME(state, payload) {
+    state.connote_forward.connote_shipper_name.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_name.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_name.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER(state, payload) {
+    state.connote_forward.connote_shipper_phone_number.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_phone_number.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_phone_number.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL(state, payload) {
+    state.connote_forward.connote_shipper_email.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_email.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_email.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS(state, payload) {
+    state.connote_forward.connote_shipper_street_address.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_street_address.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_street_address.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS(state, payload) {
+    state.connote_forward.connote_shipper_administrative_address.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_administrative_address.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_administrative_address.valueData = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ArrData(state, payload) {
+    state.connote_forward.connote_shipper_administrative_address.hasOwnProperty('arrData') ?
+      state.connote_forward.connote_shipper_administrative_address.arrData = payload :
+      state.connote_forward.connote_shipper_administrative_address.arrData = []
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE(state, payload) {
+    state.connote_forward.connote_shipper_zip_code.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_zip_code.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_zip_code.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE(state, payload) {
+    state.connote_forward.connote_shipper_tariff_code.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_tariff_code.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_tariff_code.valueData = payload
+  },
+
+
+
+
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME(state, payload) {
+    state.connote_forward.connote_receiver_name.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_name.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_name.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER(state, payload) {
+    state.connote_forward.connote_receiver_phone_number.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_phone_number.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_phone_number.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL(state, payload) {
+    state.connote_forward.connote_receiver_email.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_email.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_email.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS(state, payload) {
+    state.connote_forward.connote_receiver_street_address.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_street_address.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_street_address.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS(state, payload) {
+    state.connote_forward.connote_receiver_administrative_address.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_administrative_address.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_administrative_address.valueData = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ArrData(state, payload) {
+    state.connote_forward.connote_receiver_administrative_address.hasOwnProperty('arrData') ?
+      state.connote_forward.connote_receiver_administrative_address.arrData = payload :
+      state.connote_forward.connote_receiver_administrative_address.arrData = []
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE(state, payload) {
+    state.connote_forward.connote_receiver_zip_code.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_zip_code.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_zip_code.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE(state, payload) {
+    state.connote_forward.connote_receiver_tariff_code.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_tariff_code.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_tariff_code.valueData = payload
+  },
+  //====== END CONNOTE FORWARD ======//
 }

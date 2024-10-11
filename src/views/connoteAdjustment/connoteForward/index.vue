@@ -10,14 +10,14 @@
             <vs-col xs="6" sm="3" lg="3">
                 <div style="position:relative;display:flex;justify-content: flex-end;">
                     <div style="width: 100px;padding-right: 5px;">
-                            <vs-button
+                        <vs-button
                             flat
                             block
                             :active="true"
                             @click="openDialog"
-                            > 
-                                <i class="bx bx-plus"></i> New
-                            </vs-button>
+                        > 
+                            <i class="bx bx-plus"></i> New
+                        </vs-button>
                     </div>
                 </div>
             </vs-col>
@@ -97,7 +97,6 @@
             title="Create Connote Forward"
             :active="dialogActive" 
             :closeDialog="closeDialog"
-            @refresh="refresh"
         />
     </div>
 </template>
@@ -109,8 +108,6 @@ import moment from "moment";
 
 import Breadcrumb from "@/components/breadcrumb/index";
 import DateTime from "@/components/input/dateTime";
-import DialogConfirm from "@/components/dialog/dialogConfirm";
-import NavItem from "@/components/navbar/navTab";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
 import TableMaster from "@/components/table/tableMaster";
@@ -124,8 +121,6 @@ export default {
         "breadcrumb": Breadcrumb,
         "date-time": DateTime,
         "dialog-forward": DialogConnoteForward,
-        "dialog-confirm": DialogConfirm,
-        "nav-item": NavItem,
         "search-input": SearchInput,
         "select-search-by": SelectSearchBy,
         "table-master" : TableMaster,
@@ -297,7 +292,8 @@ export default {
             this.dialogActive = true
         },
         closeDialog() {
-            this.dialogActive = false
+            this.dialogActive = false;
+            this.refresh();
         },
         actionLimit(val) {
             this.pagination.limit = val;

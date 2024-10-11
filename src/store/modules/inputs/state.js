@@ -4195,4 +4195,165 @@ export default {
       value: '',
     },
   },
+
+  connote_forward: {
+    connote_shipper_name: {
+      label: "Nama Pengirim*",
+      key: "connote_shipper_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_name: {
+      label: "Nama Penerima*",
+      key: "connote_receiver_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_shipper_phone_number: {
+      label: "Telepon Pengirim*",
+      key: "connote_shipper_phone_number",
+      rule: "required|numeric|min:8",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_phone_number: {
+      label: "Telepon Penerima*",
+      key: "connote_receiver_phone_number",
+      rule: "required|numeric|min:8",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_shipper_email: {
+      label: "Email Pengirim",
+      key: "connote_shipper_email",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_email: {
+      label: "Email Penerima",
+      key: "connote_receiver_email",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_shipper_street_address: {
+      label: "Alamat & Kode Pos Pengirim",
+      key: "connote_shipper_street_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_street_address: {
+      label: "Alamat & Kode Pos Penerima",
+      key: "connote_receiver_street_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_shipper_administrative_address: {
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
+      key: "connote_shipper_administrative_address",
+      rule: "required",
+      typeInput: "text|onchange|location_selector",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      arrData: [],
+      valueData: null,
+      onchange: true,
+      value: ''
+    },
+    connote_receiver_administrative_address: {
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
+      key: "connote_receiver_administrative_address",
+      rule: "required",
+      typeInput: "text|onchange|location_selector",
+      typeData: "String",
+      isDisabled: true,
+      width: '6',
+      arrData: [],
+      valueData: null,
+      onchange: true,
+      value: ''
+    },
+    connote_shipper_zip_code: {
+      label: "Kode Pos",
+      key: "connote_shipper_zip_code",
+      rule: "required",
+      isDisabled: true,
+      width: '3',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    connote_shipper_tariff_code: {
+      label: "Kode Tujuan*",
+      key: "connote_shipper_tariff_code",
+      rule: "required",
+      isDisabled: true,
+      width: '3',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_zip_code: {
+      label: "Kode Pos",
+      key: "connote_receiver_zip_code",
+      rule: "required",
+      isDisabled: true,
+      width: '3',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_tariff_code: {
+      label: "Kode Tujuan*",
+      key: "connote_receiver_tariff_code",
+      rule: "required",
+      isDisabled: true,
+      width: '3',
+      typeInput: "text|disabled",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    }
+  },
 }
