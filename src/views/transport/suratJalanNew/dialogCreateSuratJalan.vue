@@ -274,13 +274,13 @@ export default {
                 if (val) {
                     this.$store.dispatch(
                         "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                        this.nodeDestination.length > 0 ? this.nodeDestination : null
+                        this.nodeDestination?.length > 0 ? this.nodeDestination : null
                     );
                 }
                 else {
                     this.$store.dispatch(
                         "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                        this.facilityDestination.length > 0 ? this.facilityDestination : null
+                        this.facilityDestination?.length > 0 ? this.facilityDestination : null
                     );
                 }
                 this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID",'');
@@ -609,8 +609,20 @@ export default {
         handleClearForm() {
             this.manifest_do_number = "";
             this.item_number = "";
+            this.isDisabled = false;
+            this.isDisabledPrint = false;
+            this.isDisabledApprove = false;
+            this.is_approve = 0;
+            this.vehicle_max_weight = 0;
+            this.vehicle_type_id = "";
+            this.no_moda_angkutan_id = null;
+            this.etd = null;
+            this.estimated_time_in_hour = null;
+            this.manifest_lov = "";
+            this.isNodeDestination = true;
             this.$refs.formSuratJalan.handleClearForm();
             this.form = {};
+            this.master_form = {};
         },
         cancel() {
             this.loading = false;
@@ -698,14 +710,14 @@ export default {
                         });
 
                         this.facilityDestination = arr
-                        if (!this.manifest_do_number || this.dataItem.facility_code_destination) {
+                        if (this.dataItem?.facility_code_destination) {
                             this.$store.dispatch(
                                 "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
                                 arr.length > 0 ? arr : null
                             );
                         }
                     } else {
-                        if (!this.manifest_do_number || this.dataItem.facility_code_destination) {
+                        if (this.dataItem?.facility_code_destination) {
                             this.$store.dispatch(
                                 "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
                                 null
