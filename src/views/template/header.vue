@@ -269,6 +269,7 @@ export default {
         min-height: 1.5em;
         padding: .5em 0;
         background-color: $bgWhite;
+        position: sticky;
         .burger_custom{
             margin: auto;
             margin-top: .3em;
