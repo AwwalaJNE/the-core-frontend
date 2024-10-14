@@ -676,6 +676,16 @@ export default {
                 if (!this.delivery_runsheet_number) {
                     const res = await axios.post(`${this.URL.revamp_delivery_bag_pra}?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
 
+                    this.dataDeliverySummary = res.data.summary;
+                    this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
+                    this.$router.push({ 
+                        name: 'delivery-runsheet-edit', 
+                        params: { 
+                            employee_id: this.employee_id,
+                            delivery_runsheet_number: this.delivery_runsheet_number
+                        } 
+                    });
+                    
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Create runsheet success");
                 } else {
