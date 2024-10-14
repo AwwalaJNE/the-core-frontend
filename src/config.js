@@ -291,4 +291,16 @@ export default {
 
     // Employee List
     employee_list: api + 'employee-list',
+
+    // Insight Inventory
+    insight_inventory: api + 'insight/inventory',
+
+    // Insight Receive
+    insight_receive: api + 'insight/receive',
+
+    // Insight Depart
+    insight_depart: api + 'insight/depart',
+
+    // Insight Runsheet
+    insight_runsheet: api + 'insight/runsheet',
 }
