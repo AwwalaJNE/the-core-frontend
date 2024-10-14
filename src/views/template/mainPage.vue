@@ -434,8 +434,8 @@ export default {
                 const res = await axios.get(`${this.URL.insight_receive}?n=${this.listenNodeId}`, this.Helper.header());
 
                 if (res.data.data) {
-                    const keys = Object.keys(res.data.data[0]);
-                    const values = Object.values(res.data.data[0]);
+                    const keys = Object.keys(res.data.data);
+                    const values = Object.values(res.data.data);
                     this.dataInsightReceive = {
                         labels: keys,
                         datasets: [{
@@ -461,8 +461,8 @@ export default {
                 const res = await axios.get(`${this.URL.insight_depart}?n=${this.listenNodeId}`, this.Helper.header());
 
                 if (res.data.data) {
-                    const keys = Object.keys(res.data.data[0]);
-                    const values = Object.values(res.data.data[0]);
+                    const keys = Object.keys(res.data.data);
+                    const values = Object.values(res.data.data);
                     this.dataInsightDepart = {
                         labels: keys,
                         datasets: [{
