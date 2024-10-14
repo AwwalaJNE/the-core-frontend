@@ -39,11 +39,15 @@
                 <vs-col xs="12" sm="6" lg="3">
                     <div class="box">
                         <h4>Insight Inventory</h4>
-                        <bar-chart 
-                            ref="insightInventoryChart" 
-                            :chart-data="dataInsightInventory" 
-                            :options="optionsInsightInventory" 
+                        <bar-chart
+                            ref="insightInventoryChart"
+                            v-if="!is_empty_insight_invetory"
+                            :chart-data="dataInsightInventory"
+                            :options="optionsInsightInventory"
                         />
+                        <div v-else class="no-data-message">
+                            No data available
+                        </div>
                     </div>
                 </vs-col>
 
@@ -52,9 +56,13 @@
                         <h4>Insight Runsheet</h4>
                         <doughnut-chart 
                             ref="insightRunsheetChart" 
+                            v-if="!is_empty_insight_runsheet"
                             :chart-data="dataInsightRunsheet" 
                             :options="optionsInsightRunsheet" 
                         />
+                        <div v-else class="no-data-message">
+                            No data available
+                        </div>
                     </div>
                 </vs-col>
 
@@ -63,9 +71,13 @@
                         <h4>Insight Receive</h4>
                         <bar-chart 
                             ref="insightReceiveChart" 
+                            v-if="!is_empty_insight_receive"
                             :chart-data="dataInsightReceive" 
                             :options="optionsInsightReceive" 
                         />
+                        <div v-else class="no-data-message">
+                            No data available
+                        </div>
                     </div>
                 </vs-col>
 
@@ -74,9 +86,13 @@
                         <h4>Insight Depart</h4>
                         <bar-chart 
                             ref="insightDepartChart" 
+                            v-if="!is_empty_insight_depart"
                             :chart-data="dataInsightDepart" 
                             :options="optionsInsightDepart" 
                         />
+                        <div v-else class="no-data-message">
+                            No data available
+                        </div>
                     </div>
                 </vs-col>
             </vs-row>
@@ -143,6 +159,7 @@ export default {
             ],
             timeOfDay: "",
             currentTime: "",
+            is_empty_insight_invetory: false,
             dataInsightInventory: {},
             optionsInsightInventory: {
                 responsive: true,
@@ -188,6 +205,7 @@ export default {
                     },
                 },
             },
+            is_empty_insight_runsheet: false,
             dataInsightRunsheet: {},
             optionsInsightRunsheet: {
                 responsive: true,
@@ -214,23 +232,95 @@ export default {
                     },
                 },
             },
+            is_empty_insight_receive: false,
             dataInsightReceive: {},
             optionsInsightReceive: {
                 responsive: true,
-                maintainAspectRatio: false,
+                maintainAspectRatio: false, 
                 scales: {
-                    x: {
+                    y: {
                         beginAtZero: true,
+                        grid: {
+                            color: '#e0e0e0',
+                            lineWidth: 1,
+                        },
+                        ticks: {
+                            color: '#333',
+                            font: {
+                                size: 12,
+                                family: 'Arial',
+                            },
+                        },
+                    },
+                    x: {
+                        grid: {
+                            display: false,
+                        },
+                        ticks: {
+                            color: '#333',
+                            font: {
+                                size: 12,
+                                family: 'Arial',
+                            },
+                        },
+                    },
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#1E88E5',
+                        borderWidth: 1,
                     },
                 },
             },
+            is_empty_insight_depart: false,
             dataInsightDepart: {},
             optionsInsightDepart: {
                 responsive: true,
-                maintainAspectRatio: false,
+                maintainAspectRatio: false, 
                 scales: {
-                    x: {
+                    y: {
                         beginAtZero: true,
+                        grid: {
+                            color: '#e0e0e0',
+                            lineWidth: 1,
+                        },
+                        ticks: {
+                            color: '#333',
+                            font: {
+                                size: 12,
+                                family: 'Arial',
+                            },
+                        },
+                    },
+                    x: {
+                        grid: {
+                            display: false,
+                        },
+                        ticks: {
+                            color: '#333',
+                            font: {
+                                size: 12,
+                                family: 'Arial',
+                            },
+                        },
+                    },
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#1E88E5',
+                        borderWidth: 1,
                     },
                 },
             },
@@ -279,15 +369,24 @@ export default {
                         labels: keys,
                         datasets: [{
                             label: 'Count',
-                            backgroundColor: '#42A5F5',
-                            borderColor: '#1E88E5',
+                            backgroundColor: (context) => {
+                                const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 400);
+                                
+                                gradient.addColorStop(0, '#1E88E5');
+                                gradient.addColorStop(1, '#90CAF9');
+                                return gradient;
+                            },
+                            hoverBackgroundColor: '#1565C0',
+                            borderRadius: 6,
+                            barThickness: 20,
                             data: values,
                         }]
                     };
-                }
 
-                console.log("P1", res.data.data, this.dataInsightInventory)
-                
+                    if (values.every(value => value === 0)) {
+                        this.is_empty_insight_invetory = true;
+                    }
+                }                
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -318,10 +417,11 @@ export default {
                             data: values,
                         }]
                     };
-                }
 
-                console.log("P2", res.data.data, this.dataInsightRunsheet)
-                
+                    if (values.every(value => value === 0)) {
+                        this.is_empty_insight_runsheet = true;
+                    }
+                }                
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -344,10 +444,11 @@ export default {
                             data: values,
                         }]
                     };
-                }
 
-                console.log("P3", res.data.data, this.dataInsightReceive)
-                
+                    if (values.every(value => value === 0)) {
+                        this.is_empty_insight_receive = true;
+                    }
+                }                
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -370,10 +471,11 @@ export default {
                             data: values,
                         }]
                     };
-                }
 
-                console.log("P4", res.data.data, this.dataInsightDepart)
-                
+                    if (values.every(value => value === 0)) {
+                        this.is_empty_insight_depart = true;
+                    }
+                }                
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -406,3 +508,10 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.no-data-message {
+    font-size: 12px;
+    margin: 4em 0;
+}
+</style>
