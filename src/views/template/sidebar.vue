@@ -35,14 +35,24 @@
                         {{child.label}}
                       </vs-sidebar-item>
                     </router-link> -->
-              <a :href="child.url" :id="child.label.trim()">
-                <vs-sidebar-item :id="child.label.trim()" :key="i" :to="child.url" :class="activeNav(child.url)">
-                  <template #icon>
-                    <i :class="`bx ${child.icon}`" />
-                  </template>
-                  <p>{{ child.label }}</p>
-                </vs-sidebar-item>
-              </a>
+                <a 
+                  :key="i"
+                  :href="child.url" 
+                  :id="child.label.trim()" 
+                  @click.prevent="navigate(child)" 
+                >
+                  <vs-sidebar-item
+                    :id="child.label.trim()"
+                    :key="i"
+                    :class="activeNav(child.url)"
+                  >
+                    <template #icon>
+                      <i :class="`bx ${child.icon}`" />
+                    </template>
+                    <p>{{ child.label }}</p>
+                  </vs-sidebar-item>
+                </a>
+              
               <!-- <vs-sidebar-item :id="child.label.trim()" :key="i" @input="redirect(child.url)">
                         <template #icon>
                           <i :class="`bx ${child.icon}`"></i>
@@ -53,8 +63,17 @@
           </vs-sidebar-group>
         </template>
         <template v-else>
-          <a :href="item.url" :id="item.label.trim()">
-            <vs-sidebar-item :id="item.label.trim()" :key="key" :to="item.url" :class="activeNav(item.url)">
+          <a 
+            :key="key"
+            :href="item.url" 
+            :id="item.label.trim()" 
+            @click.prevent="navigate(item)" 
+          >
+            <vs-sidebar-item
+              :id="item.label.trim()"
+              :key="key"
+              :class="activeNav(item.url)"
+            >
               <template #icon>
                 <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
               </template>
@@ -71,6 +90,8 @@
 import Logo from "../../components/logo/logo.vue";
 // eslint-disable-next-line import/extensions
 import master from "@/mixins/master";
+import { resourceLookup } from '@/constants'; 
+
 export default {
   name: "Sidebar",
   components: {
@@ -94,6 +115,11 @@ export default {
           icon: "bx-archive",
           permission: "create-transaction",
           children: [],
+          meta: {
+            resource_type: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_type,
+            resource_code: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_code,
+            resource_name: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_name
+          },
         },
         {
           label: "Trace Connote",
@@ -102,6 +128,11 @@ export default {
           permission: "",
           children: [],
           showAll: true,
+          meta: {
+            resource_type: resourceLookup["TRACE_CONNOTE"].resource_type,
+            resource_code: resourceLookup["TRACE_CONNOTE"].resource_code,
+            resource_name: resourceLookup["TRACE_CONNOTE"].resource_name
+          },
         },
         {
           label: "Trace Bag",
@@ -110,6 +141,11 @@ export default {
           permission: "",
           children: [],
           showAll: true,
+          meta: {
+            resource_type: resourceLookup["TRACE_BAG"].resource_type,
+            resource_code: resourceLookup["TRACE_BAG"].resource_code,
+            resource_name: resourceLookup["TRACE_BAG"].resource_name
+          },
         },
         {
           label: "Transaction",
@@ -615,6 +651,11 @@ export default {
     },
     activeNav(url) {
       return url === window.location.pathname ? 'active' : ''
+    },
+    navigate(item) {
+      this.$router.push(item.url);
+
+      this.setRoutePageHistory(item.meta);
     },
     loadPermission() {
       this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;

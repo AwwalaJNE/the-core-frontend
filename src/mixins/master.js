@@ -301,6 +301,48 @@ const Master = {
                 }
             });
         },
+
+
+        setRoutePageHistory(meta) {
+            const routeHistory = this.$ls.get('route_history') || [];
+
+            let temp = {
+                event_id: this.generateRandomUUID(),
+                timestamp: new Date().toISOString(),
+                resource_code: meta?.resource_code || "",
+                resource_type: meta?.resource_type || "",
+                resource_name: meta?.resource_name || "",
+            };
+            routeHistory.push(temp);
+            this.$ls.set('route_history', routeHistory);
+
+            console.log("P", routeHistory)
+      
+            if (routeHistory.length === 10) {
+              this.handleAuditLog(routeHistory);
+            }
+        },
+        generateRandomUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const randomHex = Math.random() * 16 | 0;
+                const value = c === 'x' ? randomHex : (randomHex & 0x3 | 0x8);
+                return value.toString(16);
+            });
+        },          
+        async handleAuditLog(route_history) {
+            let form = {
+                track_logs: route_history
+            }
+            try {
+                const res = await axios.post(`${this.URL.tracking_audit}?n=${this.listenNodeId}`, form, this.Helper.header());
+
+                this.openNotification('success', null, "Success", res?.data?.message ?? "success");
+                localStorage.removeItem('route_history');
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+            }
+        }
     },
     created() {
         this.URL = URL
