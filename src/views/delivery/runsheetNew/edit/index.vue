@@ -441,6 +441,7 @@ export default {
                             date_filter: this.tempDate
                         } 
                     });
+                    this.setRoutePageHistory(this.$route.meta, false);
                 } catch (err) {
                     this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
                     this.selectedCourier = this.employee_name + "( " + this.employee_code + " )";
@@ -453,6 +454,7 @@ export default {
                         employee_id: this.selectedCourier
                     } 
                 });
+                this.setRoutePageHistory(this.$route.meta, false);
             }
         },
         updateValueBag(val) {
@@ -650,6 +652,7 @@ export default {
                             delivery_runsheet_number: this.delivery_runsheet_number
                         } 
                     });
+                    this.setRoutePageHistory(this.$route.meta, false);
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Create runsheet success");
                 } else {
@@ -685,6 +688,7 @@ export default {
                             delivery_runsheet_number: this.delivery_runsheet_number
                         } 
                     });
+                    this.setRoutePageHistory(this.$route.meta, false);
                     
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Create runsheet success");
@@ -910,6 +914,7 @@ export default {
         },
         back() {
             this.$router.push("/delivery/runsheet");
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         print() {
             const routeData = this.$router.resolve({

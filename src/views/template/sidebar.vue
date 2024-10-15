@@ -250,9 +250,9 @@ export default {
               icon: "",
               permission: "read-bag",
               meta: {
-                resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
-                resource_code: resourceLookup["INVENTORY_BAG"].resource_code,
-                resource_name: resourceLookup["INVENTORY_BAG"].resource_name
+                resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,
+                resource_code: resourceLookup["INVENTORY_BAG_ITEM"].resource_code,
+                resource_name: resourceLookup["INVENTORY_BAG_ITEM"].resource_name
               },
             },
             {
@@ -261,9 +261,9 @@ export default {
               icon: "",
               permission: "read-bag",
               meta: {
-                resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,
-                resource_code: resourceLookup["INVENTORY_BAG_ITEM"].resource_code,
-                resource_name: resourceLookup["INVENTORY_BAG_ITEM"].resource_name
+                resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
+                resource_code: resourceLookup["INVENTORY_BAG"].resource_code,
+                resource_name: resourceLookup["INVENTORY_BAG"].resource_name
               },
             },
             {

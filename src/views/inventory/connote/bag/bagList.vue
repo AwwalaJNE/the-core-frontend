@@ -289,6 +289,7 @@ export default {
         actionDetail(val){
             let bag = val.bag_number.replaceAll("/", "-")
             this.$router.push('/bagging-detail/'+bag)
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         actionPrint(val){
             let routeData = this.$router.resolve({ 

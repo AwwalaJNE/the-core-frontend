@@ -150,6 +150,7 @@ export default {
         },
         goToProfile() {
             if (this.$route.name !== 'profile') this.$router.push({ name: 'profile', params: { } });
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         async updateValue(key,val) {
             let node = this.datanode.filter(item => item.value == val)

@@ -214,6 +214,7 @@ export default {
             this.loading = false;
             this.activeTab("k-INFO");
             this.$router.push("/trace-connote");
+            this.setRoutePageHistory(this.$route.meta, false);
         },
 
         async processConnoteNumber() {
@@ -221,6 +222,7 @@ export default {
             this.koli_number = this.connoteNumber + "00";
             const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
             await this.$router.push(url); 
+            this.setRoutePageHistory(this.$route.meta, false);
             this.hasConnoteNumber = true
             this.getConnote();
         },
@@ -419,6 +421,7 @@ export default {
             this.koli_number = `${this.connoteNumber}` + "00";
             const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
             this.$router.push(url); 
+            this.setRoutePageHistory(this.$route.meta, false);
             this.hasConnoteNumber = true
             this.getConnote();
         },

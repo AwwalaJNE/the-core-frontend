@@ -76,6 +76,7 @@ export default {
         
         actionDetail(row){
           this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
+          this.setRoutePageHistory(this.$route.meta, false);
         }
 
     },

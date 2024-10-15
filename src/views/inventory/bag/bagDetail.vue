@@ -257,7 +257,7 @@
       </div>
       
       <vs-col xs="12" sm="12" lg="12" align="right" style="padding:20px 5px;">
-        <vs-button @click="$router.go(-1)">Back</vs-button>
+        <vs-button @click="back">Back</vs-button>
       </vs-col>
 
     </section>
@@ -593,7 +593,8 @@ export default {
         }
     },
     back() {
-      this.$router.go(-1);
+      this.$router.push('/inventory/bag')
+      this.setRoutePageHistory(this.$route.meta, false);
     },
     onCameraScannerGetData(data) {
       if (data && data.event === "result" && (data.namespace === "formInputBagging" || data.namespace === "formInputBaggingConnote" || data.namespace === "formInputBaggingKoli" || data.namespace === "formInputBaggingBag")) {
@@ -608,6 +609,8 @@ export default {
     },
     newBag() {
       this.$router.push('/inventory/bagging')
+      this.setRoutePageHistory(this.$route.meta, false);
+      
     },
     editBag() {
       this.dialogHelpdeskEditBag = true;

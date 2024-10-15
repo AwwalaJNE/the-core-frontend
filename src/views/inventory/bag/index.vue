@@ -579,6 +579,7 @@ export default {
             this.handleClearForm()
             this.openNotification("success", null, 'Success', 'Bagging is success')
             this.$router.push('/bagging-detail/'+bagNumber)
+            this.setRoutePageHistory(this.$route.meta, false);
           }).catch(err => {
             this.loading = false
             this.handleClearForm()

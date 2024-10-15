@@ -248,6 +248,7 @@ export default {
         },
         actionDetail(row){
           this.$router.push({name:'InventoryItem-detail', params:{ id:row.connote_number}});
+          this.setRoutePageHistory(this.$route.meta, false);
         },
         getTransactionIdParam(){
           let paramId =  this.$route.params.id

@@ -276,6 +276,7 @@ export default {
 
         actionDetail(row){
           this.$router.push({ name: 'InboundIncomingDetail', params: { inbound_id: row.inbound_id } });
+          this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {

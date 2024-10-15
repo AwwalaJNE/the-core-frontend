@@ -223,6 +223,7 @@ export default {
             }
             let routeName = 'delivery-runsheet-edit'
             this.$router.push({ name: routeName, params: params })
+            this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {
