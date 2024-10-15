@@ -116,6 +116,7 @@ export default {
     },
     data() {
         return {
+            bagNumber: "",
             hasBagNumber: false,
             navItem: [
                 { 
