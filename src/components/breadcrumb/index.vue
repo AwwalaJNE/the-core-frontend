@@ -44,7 +44,7 @@ export default {
         back(breadcrumb, i){
             if (i === 0 && breadcrumb.back !== null) {
                 this.$router.push(breadcrumb.back);
-                this.setRoutePageHistory(breadcrumb);
+                this.setRoutePageHistory(breadcrumb, false);
             } 
         }
     }

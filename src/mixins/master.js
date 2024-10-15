@@ -303,22 +303,27 @@ const Master = {
         },
 
 
-        setRoutePageHistory(meta) {
+        setRoutePageHistory(meta, isFinish) {
             const routeHistory = this.$ls.get('route_history') || [];
 
-            let temp = {
-                event_id: this.generateRandomUUID(),
-                timestamp: new Date().toISOString(),
-                resource_code: meta?.resource_code || "",
-                resource_type: meta?.resource_type || "",
-                resource_name: meta?.resource_name || "",
-            };
-            routeHistory.push(temp);
-            this.$ls.set('route_history', routeHistory);
-      
-            if (routeHistory.length % 10 === 0) {
-              this.handleAuditLog(routeHistory);
+            if (!isFinish) {
+                let temp = {
+                    event_id: this.generateRandomUUID(),
+                    timestamp: new Date().toISOString(),
+                    resource_code: meta?.resource_code || "",
+                    resource_type: meta?.resource_type || "",
+                    resource_name: meta?.resource_name || "",
+                };
+                routeHistory.push(temp);
             }
+            
+            this.$ls.set('route_history', routeHistory);
+
+            if ((routeHistory.length === 10 || isFinish) && routeHistory.length !== 0) {
+                return this.handleAuditLog(routeHistory);
+            }
+            
+            return Promise.resolve()
         },
         generateRandomUUID() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -334,10 +339,10 @@ const Master = {
             try {
                 const res = await axios.post(`${this.URL.tracking_audit}?n=${this.listenNodeId}`, form, this.Helper.header());
 
-                // this.openNotification('success', null, "Success", res?.data?.message ?? "success");
+                this.openNotification('success', null, "Success", res?.data?.message ?? "success");
                 localStorage.removeItem('vuejs__route_history');
             } catch (err) {
-                // this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
             }
         }

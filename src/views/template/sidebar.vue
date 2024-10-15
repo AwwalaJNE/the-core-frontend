@@ -942,7 +942,7 @@ export default {
     navigate(item) {
       this.$router.push(item.url);
 
-      this.setRoutePageHistory(item.meta);
+      this.setRoutePageHistory(item.meta, false);
     },
     loadPermission() {
       this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
