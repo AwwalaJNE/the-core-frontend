@@ -566,20 +566,20 @@ export default {
                 resource_name: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_name
               },
             },
-            // TODO: DELETE SOON
-            {
-              label: "Irreguralities - Cancel",
-              url: "/irreguralities/cancel",
-              icon: "",
-              permission: "read-irreg",
-            },
-            // TODO: DELETE SOON
-            {
-              label: "Irreguralities - Return",
-              url: "/irreguralities/return",
-              icon: "",
-              permission: "read-irreg",
-            },
+            // // TODO: DELETE SOON
+            // {
+            //   label: "Irreguralities - Cancel",
+            //   url: "/irreguralities/cancel",
+            //   icon: "",
+            //   permission: "read-irreg",
+            // },
+            // // TODO: DELETE SOON
+            // {
+            //   label: "Irreguralities - Return",
+            //   url: "/irreguralities/return",
+            //   icon: "",
+            //   permission: "read-irreg",
+            // },
             {
               label: "Irreguralities - Hold",
               url: "/irreguralities/hold",
