@@ -318,7 +318,7 @@ const Master = {
 
             console.log("P", routeHistory)
       
-            if (routeHistory.length === 10) {
+            if (routeHistory.length % 10 === 0) {
               this.handleAuditLog(routeHistory);
             }
         },
@@ -336,10 +336,10 @@ const Master = {
             try {
                 const res = await axios.post(`${this.URL.tracking_audit}?n=${this.listenNodeId}`, form, this.Helper.header());
 
-                this.openNotification('success', null, "Success", res?.data?.message ?? "success");
-                localStorage.removeItem('route_history');
+                // this.openNotification('success', null, "Success", res?.data?.message ?? "success");
+                localStorage.removeItem('vuejs__route_history');
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                // this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
             }
         }
