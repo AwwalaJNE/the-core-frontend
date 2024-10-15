@@ -315,8 +315,6 @@ const Master = {
             };
             routeHistory.push(temp);
             this.$ls.set('route_history', routeHistory);
-
-            console.log("P", routeHistory)
       
             if (routeHistory.length % 10 === 0) {
               this.handleAuditLog(routeHistory);
