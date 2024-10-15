@@ -82,6 +82,7 @@ export default {
 
           loading.close();
           this.$router.push({ name: "mainPage" });
+          this.setRoutePageHistory(this.$route.meta, false);
         }
       } catch (err) {
         loading.close();

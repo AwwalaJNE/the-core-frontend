@@ -138,9 +138,15 @@ export default {
         updateValue(){
 
         },
-        logout() {
-            localStorage.clear();
-            this.$router.go()
+        async logout() {
+            try {
+                await this.setRoutePageHistory({}, true);
+                
+            } catch (error) {} 
+            finally {
+                localStorage.clear();
+                this.$router.go(0);  
+            }
         },
         goToProfile() {
             if (this.$route.name !== 'profile') this.$router.push({ name: 'profile', params: { } });
