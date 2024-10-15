@@ -8,8 +8,12 @@
     </div>
 </template>
 <script>
+
+import master from "@/mixins/master";
+
 export default {
     name:"breadcrumb",
+    mixins: [master],
     computed: {
         crumbs(){
             let pathArray = this.$route.path.split("/")
@@ -26,7 +30,10 @@ export default {
                       ? "/" + breadcrumbArray[idx - 1].path + "/" + path
                       : "/" + path,
                   text: route[idx] ? route[idx].meta.breadCrumb : null || path,
-                  back: back[0]?.meta?.backPath ?? null
+                  back: back[0]?.meta?.backPath ?? null,
+                  resource_type: back[0]?.meta?.resource_type ?? null,
+                  resource_code: back[0]?.meta?.resource_code ?? null,
+                  resource_name: back[0]?.meta?.resource_name ?? null
                   });
                   return breadcrumbArray;
               }, [])
@@ -37,6 +44,7 @@ export default {
         back(breadcrumb, i){
             if (i === 0 && breadcrumb.back !== null) {
                 this.$router.push(breadcrumb.back);
+                this.setRoutePageHistory(breadcrumb);
             } 
         }
     }
