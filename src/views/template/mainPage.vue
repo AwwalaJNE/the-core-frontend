@@ -37,7 +37,7 @@
 
             <vs-row>
                 <vs-col xs="12" sm="6" lg="3">
-                    <div class="box">
+                    <div class="box set-height">
                         <h4>Insight Inventory</h4>
                         <bar-chart
                             ref="insightInventoryChart"
@@ -52,7 +52,7 @@
                 </vs-col>
 
                 <vs-col xs="12" sm="6" lg="3">
-                    <div class="box">
+                    <div class="box set-height">
                         <h4>Insight Runsheet</h4>
                         <doughnut-chart 
                             ref="insightRunsheetChart" 
@@ -67,7 +67,7 @@
                 </vs-col>
 
                 <vs-col xs="12" sm="6" lg="3">
-                    <div class="box">
+                    <div class="box set-height">
                         <h4>Insight Receive</h4>
                         <bar-chart 
                             ref="insightReceiveChart" 
@@ -82,7 +82,7 @@
                 </vs-col>
 
                 <vs-col xs="12" sm="6" lg="3">
-                    <div class="box">
+                    <div class="box set-height">
                         <h4>Insight Depart</h4>
                         <bar-chart 
                             ref="insightDepartChart" 
@@ -121,20 +121,28 @@ export default {
     watch: {
         listenUser(val) {
             if (val) {
-                getInfo(val);
+                this.getInfo(val);
             }
         },
         dataInsightInventory(newData) {
-            this.$refs.insightInventoryChart.renderChart(newData, this.optionsInsightInventory);
+            if (newData) {
+                this.$refs.insightInventoryChart.renderChart(newData, this.optionsInsightInventory);
+            }
         },
         dataInsightRunsheet(newData) {
-            this.$refs.insightRunsheetChart.renderChart(newData, this.optionsInsightRunsheet);
+            if (newData) {
+                this.$refs.insightRunsheetChart.renderChart(newData, this.optionsInsightRunsheet);
+            }
         },
         dataInsightReceive(newData) {
-            this.$refs.insightReceiveChart.renderChart(newData, this.optionsInsightReceive);
+            if (newData) {
+                this.$refs.insightReceiveChart.renderChart(newData, this.optionsInsightReceive);
+            }
         },
         dataInsightDepart(newData) {
-            this.$refs.insightDepartChart.renderChart(newData, this.optionsInsightDepart);
+            if (newData) {
+                this.$refs.insightDepartChart.renderChart(newData, this.optionsInsightDepart);
+            }
         }
     },
     data() {
@@ -491,27 +499,39 @@ export default {
         }
 
         this.getInsightInventory().then(() => {
-            this.$refs.insightInventoryChart.renderChart(this.dataInsightInventory, this.optionsInsightInventory);
+            this.$refs.insightInventoryChart?.renderChart(this.dataInsightInventory, this.optionsInsightInventory);
         });
 
         this.getInsightRunsheet().then(() => {
-            this.$refs.insightRunsheetChart.renderChart(this.dataInsightRunsheet, this.optionsInsightRunsheet);
+            this.$refs.insightRunsheetChart?.renderChart(this.dataInsightRunsheet, this.optionsInsightRunsheet);
         });
 
         this.getInsightReceive().then(() => {
-            this.$refs.insightReceiveChart.renderChart(this.dataInsightReceive, this.optionsInsightReceive);
+            this.$refs.insightReceiveChart?.renderChart(this.dataInsightReceive, this.optionsInsightReceive);
         });
 
         this.getInsightDepart().then(() => {
-            this.$refs.insightDepartChart.renderChart(this.dataInsightDepart, this.optionsInsightDepart);
+            this.$refs.insightDepartChart?.renderChart(this.dataInsightDepart, this.optionsInsightDepart);
         });
     },
 };
 </script>
 
 <style scoped>
-.no-data-message {
-    font-size: 12px;
-    margin: 4em 0;
+.set-height {
+    height: 75vh;
 }
+.box {
+    display: flex;
+    flex-direction: column;
+}
+.no-data-message {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 12px;
+}
+
 </style>
