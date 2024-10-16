@@ -1161,6 +1161,7 @@ export default {
     },
     back() {
       this.$router.push("/delivery/runsheet");
+      this.setRoutePageHistory(this.$route.meta, false);
     },
     print() {
       const routeData = this.$router.resolve({

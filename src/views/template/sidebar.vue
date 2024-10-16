@@ -2,7 +2,7 @@
 <template>
   <div class="hidden">
     <vs-sidebar
-      v-model="active"
+      v-model="activeItem"
       absolute
       :open="isExpand"
       @update:open="actionSidebar"
@@ -44,7 +44,8 @@
                   <vs-sidebar-item
                     :id="child.label.trim()"
                     :key="i"
-                    :class="activeNav(child.url)"
+                    :class="{ active: activeItem === child.url }"
+                    @click="setActive(child.url)"
                   >
                     <template #icon>
                       <i :class="`bx ${child.icon}`" />
@@ -62,6 +63,7 @@
             </template>
           </vs-sidebar-group>
         </template>
+        
         <template v-else>
           <a 
             :key="key"
@@ -72,7 +74,8 @@
             <vs-sidebar-item
               :id="item.label.trim()"
               :key="key"
-              :class="activeNav(item.url)"
+              :class="{ active: activeItem === item.url }"
+              @click="setActive(item.url)"
             >
               <template #icon>
                 <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
@@ -106,7 +109,7 @@ export default {
   data() {
     return {
       nodeTypeCode: null,
-      active: "home",
+      activeItem: "home",
       isExpand: false,
       menus: [
         {
@@ -250,9 +253,9 @@ export default {
               icon: "",
               permission: "read-bag",
               meta: {
-                resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
-                resource_code: resourceLookup["INVENTORY_BAG"].resource_code,
-                resource_name: resourceLookup["INVENTORY_BAG"].resource_name
+                resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,
+                resource_code: resourceLookup["INVENTORY_BAG_ITEM"].resource_code,
+                resource_name: resourceLookup["INVENTORY_BAG_ITEM"].resource_name
               },
             },
             {
@@ -261,9 +264,9 @@ export default {
               icon: "",
               permission: "read-bag",
               meta: {
-                resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,
-                resource_code: resourceLookup["INVENTORY_BAG_ITEM"].resource_code,
-                resource_name: resourceLookup["INVENTORY_BAG_ITEM"].resource_name
+                resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
+                resource_code: resourceLookup["INVENTORY_BAG"].resource_code,
+                resource_name: resourceLookup["INVENTORY_BAG"].resource_name
               },
             },
             {
@@ -923,21 +926,25 @@ export default {
         this.isExpand = val;
       }
     },
+    '$route.path'(newPath) {
+      this.activeItem = newPath;
+    }
   },
   mounted() {
     this.listenNodeType();
     this.customFilter();
   },
   methods: {
+    setActive(url) {
+      this.activeItem = url;
+      this.$router.push(url);
+    },
     redirect(val) {
       this.isExpand = false;
       // this.$router.push(`${val}`)
     },
     listenNodeType() {
       this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
-    },
-    activeNav(url) {
-      return url === window.location.pathname ? 'active' : ''
     },
     navigate(item) {
       this.$router.push(item.url);

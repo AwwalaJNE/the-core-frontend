@@ -138,6 +138,7 @@ export default {
         },
         showData(row) {
             this.$router.push(`/delivery/runsheet/${this.listenEmployeeId}/edit/${row.delivery_runsheet_number}/${row.created_at.split(' ')[0]}`);
+            this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {

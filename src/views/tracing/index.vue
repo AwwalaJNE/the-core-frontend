@@ -347,6 +347,7 @@ export default {
         showData(row) {
             const baseRoute = this.is_history ? 'history' : 'outstanding';
             this.$router.push(`/tracing-${baseRoute}/${row.koli_number}`);
+            this.setRoutePageHistory(this.$route.meta, false);
             this.refresh();
         },
         refresh(){

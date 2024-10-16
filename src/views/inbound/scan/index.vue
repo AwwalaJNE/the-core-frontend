@@ -243,6 +243,7 @@ export default {
         },
         back(){
           this.$router.push('/inbound/prealert')
+          this.setRoutePageHistory(this.$route.meta, false);
         },
         handlerClearForm(){
           this.item_no = ''

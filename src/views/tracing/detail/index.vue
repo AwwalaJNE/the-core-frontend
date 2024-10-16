@@ -440,6 +440,7 @@ export default {
         back() {
             const baseRoute = this.is_history ? 'history' : 'outstanding';
             this.$router.push(`/tracing-${baseRoute}`);
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         searchValue(val) {
             this.tempSearch = val

@@ -177,6 +177,7 @@ export default {
                     date_filter: row.created_at.split(' ')[0]
                 } 
             });
+            this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {

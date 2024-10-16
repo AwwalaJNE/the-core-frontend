@@ -240,6 +240,7 @@ export default {
 
         showData(row) {
           this.$router.push(`/connote-detail/${row.koli_number}`);
+          this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {

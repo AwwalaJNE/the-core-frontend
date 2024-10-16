@@ -297,6 +297,7 @@ export default {
 
         actionDetail(row){
           this.$router.push({ name: 'InboundIncomingScan', params: { inbound_id: row.inbound_id } });
+          this.setRoutePageHistory(this.$route.meta, false);
         },
         handleHasLinkedItem(value) {
 

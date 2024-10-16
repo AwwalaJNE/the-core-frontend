@@ -408,6 +408,7 @@ export default {
 
         openDialog(){
             this.$router.push('/inbound/prealert/scan')
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         updateFilterDateBy(key,val) {
           this.filterDateBy = val;

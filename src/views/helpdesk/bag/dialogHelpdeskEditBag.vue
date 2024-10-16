@@ -209,6 +209,7 @@ export default {
                 this.cancel();
                 this.loading = false;
                 this.$router.push('/helpdesk/bag');
+                this.setRoutePageHistory(this.$route.meta, false);
             }
         },
         async updateBag(){

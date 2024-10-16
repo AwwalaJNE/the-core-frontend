@@ -113,6 +113,7 @@ export default {
                         employee_id: this.employee_id
                     } 
                 });
+                this.setRoutePageHistory(this.$route.meta, false);
             } else {
                 this.openNotification("warning", null, "Warning", "Courier not choosen yet");
             }

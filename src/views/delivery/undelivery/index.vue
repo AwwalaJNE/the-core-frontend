@@ -209,6 +209,7 @@ export default {
         },
         back(){
             this.$router.push('/hrs')
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         handleClearForm(){
             this.form = {}

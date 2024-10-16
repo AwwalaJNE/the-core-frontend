@@ -224,6 +224,7 @@ export default {
         },
         actionDetail(row){
           this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
+          this.setRoutePageHistory(this.$route.meta, false);
         },
         updateSelected(_event, _item, selected) {
           this.selectedRow = selected.map(el => el.transaction_id)
