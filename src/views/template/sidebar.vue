@@ -109,7 +109,7 @@ export default {
   data() {
     return {
       nodeTypeCode: null,
-      activeItem: "home",
+      activeItem: "",
       isExpand: false,
       menus: [
         {
@@ -929,6 +929,9 @@ export default {
     '$route.path'(newPath) {
       this.activeItem = newPath;
     }
+  },
+  created() {
+    this.activeItem = this.$route.path;
   },
   mounted() {
     this.listenNodeType();

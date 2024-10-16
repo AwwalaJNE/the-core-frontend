@@ -162,27 +162,27 @@ export default {
                 {
                     label: "Transaction Date",
                     key: "transaction_date",
-                    width: "md"
+                    width: "xs"
                 },
                 {
                     label: "Connote Number",
                     key: "connote_number",
+                    width: "xs"
+                },
+                {
+                    label: "Node Name",
+                    key: "node_name",
                     width: "md"
                 },
                 {
-                    label: "Node ID",
-                    key: "node_id",
-                    width: "md"
-                },
-                {
-                    label: "User ID",
-                    key: "user_id",
-                    width: "md"
+                    label: "User Name",
+                    key: "user_name",
+                    width: "xxs"
                 },
                 {
                     label: "Status Delivery",
                     key: "status_delivery",
-                    width: "xs"
+                    width: "xxs"
                 },
             ],
             pagination: {
