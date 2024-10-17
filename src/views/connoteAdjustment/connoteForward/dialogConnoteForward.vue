@@ -24,7 +24,7 @@
                     />
                     </form>
                 </vs-col>
-                <vs-col xs="6" sm="6" lg="6" v-if="status === 'PS3' && connote_number">
+                <vs-col xs="6" sm="6" lg="6" v-if="status === 'PS3' && connote_number && !isCreateManually">
                     <vs-input
                         type="text"
                         autofocus
@@ -35,40 +35,57 @@
                     />
                 </vs-col>
             </vs-row>
-
+            
             <template v-if="status === 'PS3' && crisscross_number === ''">
-                <hr>
-                <span class="crisscross-title">Choose Crisscross Number</span>
-                <div class="mt-05 mb-2 ">
-                    <table-master
-                        :dataTable="dataTable" 
-                        :dataColumn="datacolumn" 
-                        :tableLoading="loading"
-                        :pageSize="pagination.page_size"
-                        :page="pagination.page"
-                        :hasLinked="['connote_number']"
-                        :limit="pagination.limit"
-                        :hasPagination="true"
-                        :hasAction="false"
-                        :onRowClickSelected="onRowClickSelected"
-                        @actionLimit="actionLimit"
-                        @actionPagination="actionPagination"
-                        @handleEdit="handleEdit"
-                    />
+                <div v-if="!isCreateManually">
+                    <hr>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span class="crisscross-title">Choose Crisscross Number</span>
+                        <div class="change-container">
+                            <span 
+                                class="change-link"
+                                @click="selectCreate"
+                            >
+                                Create Manually
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mt-05 mb-2 ">
+                        <table-master
+                            :dataTable="dataTable" 
+                            :dataColumn="datacolumn" 
+                            :tableLoading="loading"
+                            :pageSize="pagination.page_size"
+                            :page="pagination.page"
+                            :hasLinked="['connote_number']"
+                            :limit="pagination.limit"
+                            :hasPagination="true"
+                            :hasAction="false"
+                            :onRowClickSelected="onRowClickSelected"
+                            @actionLimit="actionLimit"
+                            @actionPagination="actionPagination"
+                            @handleEdit="handleEdit"
+                        />
+                    </div>
                 </div>
             </template>
 
-            <template v-if="status === 'PS2' || crisscross_number">
+            <template v-if="status === 'PS2' || crisscross_number || isCreateManually">
                 <hr>
                 <div class="change-container">
                     <span 
-                        class="change-link"
-                        v-if="crisscross_number" 
-                        @click="resetCrisscross"
+                        class="change-link" 
+                        @click="crisscross_number ? resetCrisscross() : selectCreate()" 
+                        v-if="crisscross_number || isCreateManually"
                     >
-                        Change Connote
+                        {{ crisscross_number ? 'Change Crisscross' : 'Create Using Crisscross' }}
                     </span>
                 </div>
+
+                <div style="position: relative; display: flex; justify-content: flex-end;" v-if="status === 'PS2'">
+                    <vs-switch v-model="isEdit">Edit</vs-switch>
+                </div>
+
                 <vs-row justify="space-between">
                     <vs-col :xs="12" :sm="12" :lg="12">
                         <div class="address_box">
@@ -76,14 +93,16 @@
                                 ref="irreguralitiesReturnDestination"
                                 typeForm="connote_forward"
                                 :dataItem="dataItem"
+                                :isDisabled="!!crisscross_number"
                             />
                         </div>
                     </vs-col>
                 </vs-row>
             </template>
+
         </template>
 
-        <template v-slot:footer v-if="status === 'PS2' || (status === 'PS3' && crisscross_number)">
+        <template v-slot:footer v-if="status === 'PS2' || (status === 'PS3' && crisscross_number) || (status === 'PS3' && isCreateManually)">
             <vs-row justify="flex-end">
                 <vs-col w="3">
                     <vs-button
@@ -149,6 +168,43 @@ export default {
             return this.loading;
         }
     },
+    watch: {
+        isEdit: function (val) {
+            if (val == true) {
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled", true);
+
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_isDisabled", true);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_isDisabled", true);
+            } else {
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled", false);
+
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_isDisabled", false);
+            }
+        }
+    },
     data() {
         return {
             loading: false,
@@ -190,6 +246,8 @@ export default {
                 page_size: 1,
                 page: 1
             },
+            isEdit: false,
+            isCreateManually: false
         }
     },
     methods: {
@@ -251,7 +309,7 @@ export default {
         async scanConnote(){
             this.loading = true;
             try {
-                const res = this.crisscross_number ? await axios.get(`${this.URL.connote}/${this.crisscross_number}?n=${this.listenNodeId}`, this.Helper.header()) : await axios.get(`${this.URL.connote_forward}/${this.connote_number}/scan?n=${this.listenNodeId}`, this.Helper.header());
+                const res = this.crisscross_number && !this.isCreateManually ? await axios.get(`${this.URL.connote}/${this.crisscross_number}?n=${this.listenNodeId}`, this.Helper.header()) : await axios.get(`${this.URL.connote_forward}/${this.connote_number}/scan?n=${this.listenNodeId}`, this.Helper.header());
 
                 if(res.data.data) {
                     let data = res.data.data;
@@ -284,7 +342,9 @@ export default {
                     this.status = res.data.status || this.status;
 
                     if (this.status === "PS3" && this.crisscross_number === "") {
-                        await this.getCrisscross(this.pagination.limit, this.pagination.page);
+                        if (!this.isCreateManually) {
+                            await this.getCrisscross(this.pagination.limit, this.pagination.page);
+                        }
                     }
 
                     this.form = {
@@ -299,6 +359,10 @@ export default {
             } finally {
                 this.loading = false;
             }
+        },
+        selectCreate() {
+            this.isCreateManually = !this.isCreateManually;
+            this.scanConnote();
         },
         async handleSubmit() {            
             this.loading = true;
@@ -319,6 +383,7 @@ export default {
             this.form = {};
             this.dataItem = {};
             this.dataTable = [];
+            this.isCreateManually = false;
         },
         cancel() {
             this.handleClearForm();
