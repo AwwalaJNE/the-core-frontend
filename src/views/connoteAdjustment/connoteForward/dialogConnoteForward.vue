@@ -257,7 +257,6 @@ export default {
                     let data = res.data.data;
 
                     let obj = {
-                        connote_number: res.data.data.connote_number || '',
                         connote_shipper_name: data.connote_shipper_name || '',
                         connote_shipper_phone_number: data.connote_shipper_phone_number || '',
                         connote_shipper_email: data.connote_shipper_email || '',
