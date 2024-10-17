@@ -170,7 +170,7 @@ export default {
     },
     watch: {
         isEdit: function (val) {
-            if (val == true) {
+            if (val == false) {
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled", true);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled", true);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled", true);
@@ -246,7 +246,7 @@ export default {
                 page_size: 1,
                 page: 1
             },
-            isEdit: false,
+            isEdit: true,
             isCreateManually: false
         }
     },
