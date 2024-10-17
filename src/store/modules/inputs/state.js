@@ -4194,7 +4194,7 @@ export default {
       rule: "required",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
+      isDisabled: false,
       width: '6',
       valueData: null,
       value: ''
@@ -4205,7 +4205,7 @@ export default {
       rule: "required",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
+      isDisabled: false,
       width: '6',
       valueData: null,
       value: ''
@@ -4216,7 +4216,7 @@ export default {
       rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
+      isDisabled: false,
       width: '6',
       valueData: null,
       value: ''
@@ -4227,7 +4227,7 @@ export default {
       rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
+      isDisabled: false,
       width: '6',
       valueData: null,
       value: ''
@@ -4238,7 +4238,7 @@ export default {
       rule: "",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
+      isDisabled: false,
       width: '6',
       valueData: null,
       value: ''
@@ -4249,7 +4249,7 @@ export default {
       rule: "",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
+      isDisabled: false,
       width: '6',
       valueData: null,
       value: ''
@@ -4260,7 +4260,7 @@ export default {
       rule: "required",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
+      isDisabled: false,
       width: '6',
       valueData: null,
       value: ''
@@ -4271,7 +4271,7 @@ export default {
       rule: "required",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
+      isDisabled: false,
       width: '6',
       valueData: null,
       value: ''
@@ -4282,11 +4282,11 @@ export default {
       rule: "required",
       typeInput: "text|onchange|location_selector",
       typeData: "String",
-      isDisabled: true,
+      isDisabled: false,
       width: '6',
       arrData: [],
       valueData: null,
-      onchange: true,
+      onchange: false,
       value: ''
     },
     connote_receiver_administrative_address: {
@@ -4295,20 +4295,20 @@ export default {
       rule: "required",
       typeInput: "text|onchange|location_selector",
       typeData: "String",
-      isDisabled: true,
+      isDisabled: false,
       width: '6',
       arrData: [],
       valueData: null,
-      onchange: true,
+      onchange: false,
       value: ''
     },
     connote_shipper_zip_code: {
       label: "Kode Pos",
       key: "connote_shipper_zip_code",
       rule: "required",
-      isDisabled: true,
+      isDisabled: false,
       width: '3',
-      typeInput: "text|disabled",
+      typeInput: "text",
       typeData: "String",
       valueData: null,
       value: ''
@@ -4317,9 +4317,9 @@ export default {
       label: "Kode Tujuan*",
       key: "connote_shipper_tariff_code",
       rule: "required",
-      isDisabled: true,
+      isDisabled: false,
       width: '3',
-      typeInput: "text|disabled",
+      typeInput: "text",
       typeData: "String",
       valueData: null,
       value: ''
@@ -4328,9 +4328,9 @@ export default {
       label: "Kode Pos",
       key: "connote_receiver_zip_code",
       rule: "required",
-      isDisabled: true,
+      isDisabled: false,
       width: '3',
-      typeInput: "text|disabled",
+      typeInput: "text",
       typeData: "String",
       valueData: null,
       value: ''
@@ -4339,9 +4339,9 @@ export default {
       label: "Kode Tujuan*",
       key: "connote_receiver_tariff_code",
       rule: "required",
-      isDisabled: true,
+      isDisabled: false,
       width: '3',
-      typeInput: "text|disabled",
+      typeInput: "text",
       typeData: "String",
       valueData: null,
       value: ''
