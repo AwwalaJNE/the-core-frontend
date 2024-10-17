@@ -56,13 +56,13 @@
                                             </vs-switch>
                                         </div>
                                         <div class="address_box">
-                                            <div :class="`overlay ${isEdit == false ? 'disabled': ''}`"></div>
                                             <form-input-controller 
                                                 ref="irreguralitiesReturnDestination"
                                                 @formData="formData"
                                                 @onFocus_location_selector="onFocusLocationSelector"
                                                 @onChangeCustom="onChangeCustom"
                                                 :dataItem="dataItem"
+                                                :isDisabled="!isEdit"
                                                 typeForm="irreguralities_return_destination"
                                             />
                                         </div>

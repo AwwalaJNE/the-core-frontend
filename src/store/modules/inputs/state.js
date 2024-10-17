@@ -3519,7 +3519,6 @@ export default {
           value: "kantor"
         },
       ],
-      isDisabled: true,
       valueData: null,
       value: 'rumah'
     },
@@ -3529,7 +3528,6 @@ export default {
       rule: "required",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
       valueData: null,
       value: ''
     },
@@ -3539,7 +3537,6 @@ export default {
       rule: "required|numeric|min:8",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
       valueData: null,
       value: ''
     },
@@ -3549,7 +3546,6 @@ export default {
       rule: "",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
       valueData: null,
       value: ''
     },
@@ -3559,7 +3555,6 @@ export default {
       rule: "required",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
       valueData: null,
       value: ''
     },
@@ -3569,7 +3564,6 @@ export default {
       rule: "required",
       typeInput: "text|onchange|location_selector",
       typeData: "String",
-      isDisabled: true,
       arrData: [],
       valueData: null,
       onchange: true,
@@ -3579,7 +3573,6 @@ export default {
       label: "Kode Pos*",
       key: "destination_subdistrict_id",
       rule: "",
-      isDisabled: true,
       typeInput: "hidden|disabled|dotted",
       typeData: "String",
       valueData: null,
@@ -3589,9 +3582,8 @@ export default {
       label: "Kode Pos",
       key: "zip_code",
       rule: "required",
-      isDisabled: true,
       width: '6',
-      typeInput: "text|disabled",
+      typeInput: "text",
       typeData: "String",
       valueData: null,
       value: ''
@@ -3600,9 +3592,8 @@ export default {
       label: "Kode Tujuan*",
       key: "tariff_code",
       rule: "required",
-      isDisabled: true,
       width: '6',
-      typeInput: "text|disabled",
+      typeInput: "text",
       typeData: "String",
       valueData: null,
       value: ''
