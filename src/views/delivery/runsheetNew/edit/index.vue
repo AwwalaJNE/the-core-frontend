@@ -209,15 +209,18 @@
                 </vs-col>
             </vs-row>
             <vs-row justify="flex-end">
-                <vs-button
-                    class="mt-1"
-                    style="float: right"
-                    square
-                    active
-                    @click="print"
-                >
-                    <i class="bx bxs-printer" /> PRINT
-                </vs-button>
+                <template v-if="is_approve === '1'">
+                    <vs-button
+                        class="mt-1"
+                        style="float: right"
+                        square
+                        active
+                        @click="print"
+                    >
+                        <i class="bx bxs-printer" /> PRINT
+                    </vs-button>
+                </template>
+                
                 <vs-button
                     class="mt-1"
                     style="float: right"
@@ -351,6 +354,7 @@ export default {
             hrsStatus: false,
             courier_arr: [],
             selectedCourier: "",
+            is_approve: '0',
         };
     },
     computed: {
@@ -804,6 +808,7 @@ export default {
             delivery.map((item) => {
                 item.status_delivery = [];
                 item.is_disabled_input = false;
+                
                 if (item.hasOwnProperty("koli_number")) {
                     if (item.koli_number.toLowerCase().includes("rt")) {
                         item.status_delivery = [...status.rt, ...status.all];
@@ -822,6 +827,8 @@ export default {
                         item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false;
                     }
                 }
+                
+                this.is_approve = item.is_approve;
                 if (item.is_approve === '1') {
                     this.disabledApprove = true
                 } else {
@@ -981,6 +988,7 @@ export default {
                 const res = await axios.patch(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/approval?n=${this.listenNodeId}`, JSON.stringify(this.data_is_approve), this.Helper.header());
                 
                 this.form = {};
+                this.is_approve = val;
                 this.disabledApprove = val;
                 this.openNotification("success", null, "Success", res?.data?.message);
                 this.reload()
