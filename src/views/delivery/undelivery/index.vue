@@ -15,7 +15,7 @@
                         @click="finishReceiving"
                         :disabled="!isFinishReceiving"
                     >
-                        Finish HRS
+                        Approve HRS
                     </vs-button>
                 </div>
             </vs-col>
