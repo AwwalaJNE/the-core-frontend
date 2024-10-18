@@ -186,7 +186,8 @@ export default {
                 {
                     label: "Status",
                     key: "summary_status",
-                    width: "xxxxs"
+                    width: "xxxxs",
+                    tooltip_desc: "Status SM/SJ"
                 }
             ],
             loading: false,
