@@ -63,6 +63,13 @@ export default {
             }
           }
         },
+        queryDate: function(val, old) {
+          if(val !== undefined) {
+            if(val !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, val)
+            }
+          }
+        },
         dateFilter: function (val, old) {
             if (val !== undefined && val !== null) {
                 let d = new Date()

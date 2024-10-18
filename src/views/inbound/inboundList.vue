@@ -145,7 +145,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
                 }
             }
         },
@@ -153,7 +153,7 @@ export default {
           if(val !== undefined) {
             this.node_type = val
             if(this.node_type !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
             }
           }
         },
@@ -161,7 +161,7 @@ export default {
           if(val !== undefined) {
             this.statusReceived = val
             if(this.statusReceived !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.node_type, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, val, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
             }
           }
         },
@@ -169,7 +169,7 @@ export default {
           if(val !== undefined) {
             this.nodeOrigin = val
             if(this.nodeOrigin !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
             }
           }
         },
@@ -177,7 +177,7 @@ export default {
           if(val !== undefined) {
             this.nodeDestination = val
             if(this.nodeDestination !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type,this.prealertFilter, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
             }
           }
         },
@@ -185,7 +185,7 @@ export default {
           if(val !== undefined) {
             this.prealertFilter = val
             if(this.prealertFilter !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived,val, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived,val, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
             }
           }
         },
@@ -196,23 +196,38 @@ export default {
               this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
               this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
             }
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
           }
-        }
+        },
+        searchBy: function(val, old) {
+            if(val !== undefined) {
+                if(val !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, val, this.filterDateBy)
+                }
+            }
+        },
+        filterDateBy: function(val, old) {
+            if(val !== undefined) {
+                if(val !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, val)
+                }
+            }
+        },
     },
     methods: {
-        async getTableData(limit,page,q, origin, destination,node_type,statusReceived, prealertFilter, from, to) {
+        async getTableData(limit,page,q, origin, destination,node_type,statusReceived, prealertFilter, from, to, qFilter, qDate) {
+            console.log("PARAMS", from, to, qFilter, qDate)
             this.loading = true
             let query = "";
             let startDate = "";
             let endDate = "";
             let isReceived = "";
             let isPrealert = "";
+            let queryFilter = "";
+            let queryDate = "";
             if(q !== undefined) {
                 query = q
             }
-
-            
             if(statusReceived !== undefined && statusReceived !== '-') {
               isReceived = statusReceived
             }
@@ -223,9 +238,15 @@ export default {
               startDate = from
               endDate = to
             }
+            if (qFilter !== undefined) {
+              queryFilter = qFilter
+            }
+            if (qDate !== undefined) {
+              queryDate = qDate
+            }
             await axios
                 .get(this.URL.inbound_incoming +
-                `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}`,
+                `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${queryFilter}&filter_date_by=${queryDate}&start_date=${startDate}&end_date=${endDate}`,
                 this.Helper.header())
                 .then(res => {
 
@@ -292,7 +313,7 @@ export default {
 
         refresh(){
 
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
         },
 
         actionDetail(row){
