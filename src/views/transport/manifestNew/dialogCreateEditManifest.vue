@@ -10,12 +10,15 @@
                 <div class="title-helper">
                     {{ listenTitle }}
                 </div>
-                <vs-button 
-                    :disabled="isDisabledPrint"
-                    @click="print"
-                >
-                    Print
-                </vs-button>
+                
+                <template v-if="is_approve === 1">
+                    <vs-button 
+                        :disabled="isDisabledPrint"
+                        @click="print"
+                    >
+                        Print
+                    </vs-button>
+                </template>
                 <template v-if="listenUserRoleName === 'HELPDESK'">
                     <vs-button  
                         :danger="is_approve === 1"

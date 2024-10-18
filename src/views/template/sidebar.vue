@@ -39,7 +39,7 @@
                   :key="i"
                   :href="child.url" 
                   :id="child.label.trim()" 
-                  @click.prevent="navigate(child)" 
+                  @click="navigate(child)" 
                 >
                   <vs-sidebar-item
                     :id="child.label.trim()"
@@ -69,7 +69,7 @@
             :key="key"
             :href="item.url" 
             :id="item.label.trim()" 
-            @click.prevent="navigate(item)" 
+            @click="navigate(item)" 
           >
             <vs-sidebar-item
               :id="item.label.trim()"
