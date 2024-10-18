@@ -365,6 +365,19 @@ export default {
                 return "Evening";
             }
         },
+        formattedArr(arr) {
+            return arr.map(item =>
+                item
+                    .split('_')
+                    .map(word =>
+                    word.toLowerCase() === 'sm' || word.toLowerCase() === 'sj'
+                        ? word.toUpperCase()
+                        : word.charAt(0).toUpperCase() + word.slice(1)
+                    )
+                    .join(' ')
+                );
+            
+        },
         async getInsightInventory(){
             this.loading = true;
             try {
@@ -374,7 +387,7 @@ export default {
                     const keys = Object.keys(res.data.data);
                     const values = Object.values(res.data.data);
                     this.dataInsightInventory = {
-                        labels: keys,
+                        labels: this.formattedArr(keys),
                         datasets: [{
                             label: 'Count',
                             backgroundColor: (context) => {
@@ -410,7 +423,7 @@ export default {
                     const keys = Object.keys(res.data.data);
                     const values = Object.values(res.data.data);
                     this.dataInsightRunsheet = {
-                        labels: keys,
+                        labels: this.formattedArr(keys),
                         datasets: [{
                             backgroundColor: [
                                 '#FF6384',
@@ -445,7 +458,7 @@ export default {
                     const keys = Object.keys(res.data.data);
                     const values = Object.values(res.data.data);
                     this.dataInsightReceive = {
-                        labels: keys,
+                        labels: this.formattedArr(keys),
                         datasets: [{
                             label: 'Counts',
                             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
@@ -472,7 +485,7 @@ export default {
                     const keys = Object.keys(res.data.data);
                     const values = Object.values(res.data.data);
                     this.dataInsightDepart = {
-                        labels: keys,
+                        labels: this.formattedArr(keys),
                         datasets: [{
                             label: 'Counts',
                             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
