@@ -87,6 +87,12 @@
               <template v-if="!item.hasOwnProperty('hidden')">
                 <vs-th :key="key" :class="item.width ? item.width : ''">
                   {{ item.label }}
+                  <vs-tooltip v-if="item.hasOwnProperty('tooltip_desc')" bottom>
+                    <i class="bx bx-info-circle"></i>
+                      <template #tooltip>
+                        {{ item.tooltip_desc }}
+                      </template>
+                  </vs-tooltip>
                 </vs-th>
               </template>
             </template>
