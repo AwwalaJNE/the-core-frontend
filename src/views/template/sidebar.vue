@@ -490,7 +490,7 @@ export default {
           icon: "bx bx-store-alt",
           children: [
             {
-              label: "Tracing Outstanding",
+              label: "Entry & Inventory",
               url: "/tracing-outstanding",
               icon: "",
               permission: "read-irreg",
@@ -501,7 +501,7 @@ export default {
               },
             },
             {
-              label: "Tracing History",
+              label: "Archive",
               url: "/tracing-history",
               icon: "",
               permission: "read-irreg",
