@@ -199,6 +199,7 @@ export default {
             irregularity_status_code: '',
             remark: '',
             node_id: '',
+            status: '',
             
 
             locationSelectorActive: false,
@@ -213,6 +214,7 @@ export default {
             obj['irregularity_status_code'] = this.dataItem['irregularity_status_code']
             obj['irregularity_status_description'] = this.dataItem['irregularity_status_description']
             obj['remark'] = this.dataItem.remark
+            obj['status'] = this.status
             obj['edited'] = this.isEdit
 
             let connote = {}
@@ -320,7 +322,8 @@ export default {
                         obj['connote_receiver_city_zone'] = res.data.data.connote_receiver_city_zone || ''
                         obj['connote_number'] = res.data.data.connote_number || this.connote_number
                         this.connote_number = res.data.data.connote_number || this.connote_number
-
+                        
+                        this.status = res.data.status;
                         this.dataItem = obj
                     }
                     // this.AltAddress()
