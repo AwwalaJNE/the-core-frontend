@@ -52,7 +52,7 @@
         <vs-button v-if="listenUserRoleName !== 'HELPDESK'" style="width: 6rem;" @click="newBag">
           <i class="bx bx-plus"></i> New
         </vs-button>
-        <vs-button v-if="listenUserRoleName !== 'HELPDESK'" style="width: 6rem;" @click="print">Print</vs-button>
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK' && is_approve" style="width: 6rem;" @click="print">Print</vs-button>
         <vs-button v-if="listenUserRoleName === 'HELPDESK'" style="width: 6rem;" @click="editBag">
           Edit
         </vs-button>
@@ -345,6 +345,7 @@ export default {
       activeDialogConfirmUnpproveBag: false,
       loadingConfirmUnpproveBag: false,
       dialogHelpdeskEditBag: false,
+      is_approve: false
     }
   },
   computed: {
@@ -449,6 +450,7 @@ export default {
 
       this.employee = data.employee_name ? data.employee_name : ""
       this.disabledApprove = data.data.is_approve === 0 ? false : true
+      this.is_approve = data.data.is_approve === 0 ? false : true
       this.actual_weight = data.data.bag_actual_weight
 
       this.loading = loading
