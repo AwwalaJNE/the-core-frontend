@@ -756,6 +756,9 @@ export default {
                     this.arrStatus = res.data.data.map((item) => {
                         const obj = {};
                         obj.label = `${item.status_description}(${item.status_code})`;
+                        if (obj.label.length > 60) {
+                            obj.formattedLabel = this.splitText(obj.label, 60);
+                        }
                         obj.value = item.status_code;
                         obj.data = item;
 
@@ -1028,6 +1031,27 @@ export default {
             delete this.form.delivery_runsheet_number; 
             this.openDialogReCheckConnoteZone = false;
             this.openDialogReCheckConnoteSla = false;
+        },
+        splitText(text, maxLineLength) {
+            const words = text.split(' ');
+            let lines = [];
+            let currentLine = '';
+
+            words.forEach((word) => {
+                if ((currentLine + word).length <= maxLineLength) {
+                    currentLine += word + ' ';
+                }
+                else {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                }
+            });
+
+            if (currentLine.length > 0) {
+                lines.push(currentLine.trim());
+            }
+
+            return lines;
         }
     }
 };
