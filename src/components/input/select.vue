@@ -91,13 +91,22 @@
                       @focus="inputFocus"
                       :loading="loadingActive"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
-                          <el-option
-                          v-for="(item,key) in DataArr"
-                          :key="key"
-                          :label="item.label"
-                          :value="item.value"
-                          v-bind="getCustomAttribute(item.label)">
-                          </el-option>
+                            <el-option
+                                v-for="(item, key) in DataArr"
+                                :key="key"
+                                :value="item.value"
+                                :label="!item.hasOwnProperty('formattedLabel') && item.label"
+                            >
+                                <template v-if="item.hasOwnProperty('formattedLabel')">
+                                <span v-for="(line, index) in item.formattedLabel" :key="index">
+                                    {{ line }}
+                                    <br v-if="index < item.formattedLabel.length - 1" />
+                                </span>
+                                </template>
+                                <template v-else>
+                                {{ item.label }}
+                                </template>
+                            </el-option>
                       </el-select>
                     </template>
                     
@@ -274,4 +283,10 @@ export default {
             padding: 4px 7px;
             text-align: left;
         }
+</style>
+<style scoped>
+    .el-select-dropdown__item {
+        min-height: 34px;
+        height: fit-content !important;
+    }
 </style>
