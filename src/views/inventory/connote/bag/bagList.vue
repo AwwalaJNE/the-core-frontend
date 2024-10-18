@@ -354,7 +354,7 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, from, to, this.searchByBag, this.filterDateBy)
         },
         updateSelected(_event, _item, selected) {
-            this.selectedRow = selected.map(bag => bag.bag_number)
+            this.selectedRow = selected.filter(bag => bag.is_approve !== 0).map(bag => bag.bag_number);
         },
     },
     mounted() {
