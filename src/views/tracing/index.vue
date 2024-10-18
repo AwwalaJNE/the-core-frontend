@@ -418,6 +418,7 @@ export default {
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
+            this.refresh();
         },
         openDialog(actionType) {
             this.validateType = actionType;

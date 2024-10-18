@@ -42,7 +42,7 @@ export default {
                 }
             }
         },
-        searchDateBy: function(val, old) {
+        queryDate: function(val, old) {
           if(val !== undefined) {
             this.filterDateBy = val
             if(this.filterDateBy !== old) {
@@ -50,10 +50,9 @@ export default {
             }
           }
         },
-        searchBy: function(val, old) {
+        querySearch: function(val, old) {
           if(val !== undefined) {
-            this.searchByBag = val
-            if(this.searchByBag !== old) {
+            if(val !== old) {
                 this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val, this.queryDate);
             }
           }

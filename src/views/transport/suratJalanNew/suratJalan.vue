@@ -174,7 +174,14 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.filterDateBy)
+                }
+            }
+        },
+        filterDateBy: function(val, old) {
+            if(val !== undefined) {
+                if(val !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val)
                 }
             }
         },
@@ -185,16 +192,17 @@ export default {
                 this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
                 this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
             }
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.filterDateBy)
             }
         }
     },
     methods: {
-        async getTableData(limit,page,q, from, to) {
+        async getTableData(limit,page,q, from, to, qDate) {
             this.loading = true
             let query = "";
             let startDate = "";
             let endDate = "";
+            let queryDate = "";
             if(q !== undefined) {
                 query = q
                 if (q.includes("/")) {
@@ -205,8 +213,11 @@ export default {
                 startDate = from
                 endDate = to
             }
+            if (qDate !== undefined) {
+                queryDate = qDate
+            }
             await axios
-                .get(this.URL.manifest_delivery_order + `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&status=${this.status}`, this.Helper.header())
+                .get(this.URL.manifest_delivery_order + `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}`, this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
                     let buttonStatus = {
@@ -304,7 +315,7 @@ export default {
             this.refresh()
         },
         refresh(){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.filterDateBy)
         },
         async depart() {
             this.loading = true
