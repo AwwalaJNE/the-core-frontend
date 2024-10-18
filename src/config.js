@@ -63,6 +63,7 @@ export default {
     transaction: api + "transaction",
     koli: api + "koli",
     bag: api + "bag",
+    bag_inventory: api + "bag-inventory",
     unbagging: api + "unbagging",
     cash_register: api + "cash-register",
     payment: api + "payment",

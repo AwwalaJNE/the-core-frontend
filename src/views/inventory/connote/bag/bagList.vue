@@ -188,6 +188,11 @@ export default {
                     key: "summary_status",
                     width: "xxxxs",
                     tooltip_desc: "Status SM/SJ"
+                },
+                {
+                    label: "Status Irregularity",
+                    key: "status_irregularity_description",
+                    width: "xxxxs",
                 }
             ],
             loading: false,
@@ -237,7 +242,7 @@ export default {
               bagTipee = bagTipe
             }
             await axios
-                .get(this.URL.bag +
+                .get(this.URL.bag_inventory +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
@@ -269,6 +274,7 @@ export default {
                         el.surat_jalan = el.surat_jalan.join(", ")
                         el.with_courier = el.courier ? el.courier.employee_name : ""
                         el.approved = el.is_approve === 1 ? "Yes" : "No"
+                        el.status_irregularity_description = el.irregularity_status_description || ""
                     });
                     this.dataTable = res.data.data
 
