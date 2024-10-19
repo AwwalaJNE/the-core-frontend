@@ -129,6 +129,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Scanned Date",
+                    key: "first_opened_bag",
+                    width: "xs"
+                },
+                {
                     label: "# Item",
                     key: "bag_detail_qty",
                     width: "auto"

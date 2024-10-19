@@ -202,6 +202,10 @@ export default {
                 {
                     label: 'Created Date',
                     value: 'create'
+                },
+                {
+                    label: 'Opened Date',
+                    value: 'opened'
                 }
             ]
 
