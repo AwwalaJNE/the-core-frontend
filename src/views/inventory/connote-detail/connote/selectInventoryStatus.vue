@@ -123,7 +123,7 @@ export default {
                     let arr = res.data.data
                     arr.map((item, index) => {
                         item["counter"] = index+1
-                        item["node_name"] = item["node_name"]+" ("+item["node_type_name"]+")"
+                        item["node_name"] = item["node_name"]
                         item["user_name"] = item["employee_name"] ?? item["user_name"]
                     })
                     this.dataTable = arr
