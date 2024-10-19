@@ -243,6 +243,7 @@ export default {
                             'Bag': 'xs',
                             'Wood Package': 'xs',
                             'Receiving Date': 'sm',
+                            'Scanned Date': 'sm',
                             'Status Irregularity': 'xs',
                             'Delivery Status Code': 'xs',
                             'Status': 'xs'
@@ -251,6 +252,7 @@ export default {
                         let bag = []
                         let packing_kayu = []
                         let received_at = []
+                        let latest_opened_bag = []
                         let irregularity = []
                         let is_confirmed = []
                         let delivery_status_code = []
@@ -260,6 +262,7 @@ export default {
                             bag.push(k.location_bag_number ?? " ")
                             packing_kayu.push(k.packing_kayu_type ? "Y" : "-")
                             received_at.push(k.received_at ?? " ")
+                            latest_opened_bag.push(k.latest_opened_bag ?? " ")
                             irregularity.push(k.irregularity?.irregularity_status_description ?? " ")
                             is_confirmed.push(k.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed')
                             delivery_status_code.push(k.delivery_status_code ?? "-")
@@ -268,6 +271,7 @@ export default {
                         children['Bag'] = bag
                         children['Wood Package'] = packing_kayu
                         children['Receiving Date'] = received_at
+                        children['Scanned Date'] = latest_opened_bag
                         children['Status Irregularity'] = irregularity
                         children['Status'] = is_confirmed
                         children['Delivery Status Code'] = delivery_status_code
