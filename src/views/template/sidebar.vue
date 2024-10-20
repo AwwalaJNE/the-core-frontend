@@ -442,7 +442,7 @@ export default {
               label: "Invalid Receiving",
               url: "/audit/invalid-receiving",
               icon: "",
-              permission: "", // TODO: CHANGE LATER
+              permission: "read-audit-receiving",
               meta: {
                 resource_type: resourceLookup["INVALID_RECEIVING"].resource_type,
                 resource_code: resourceLookup["INVALID_RECEIVING"].resource_code,
@@ -453,7 +453,7 @@ export default {
               label: "Invalid Opening Bag",
               url: "/transport/invalid-opening-bag",
               icon: "",
-              permission: "", // TODO: CHANGE LATER
+              permission: "read-audit-opening-bag",
               meta: {
                 resource_type: resourceLookup["INVALID_OPENING_BAG"].resource_type,
                 resource_code: resourceLookup["INVALID_OPENING_BAG"].resource_code,
