@@ -197,6 +197,10 @@ import ConnoteCancel from '@/views/connoteAdjustment/connoteCancel'
 import ConnoteForward from '@/views/connoteAdjustment/connoteForward'
 import ConnoteReturn from '@/views/connoteAdjustment/connoteReturn'
 
+// === Audit Inventory ===
+import InvalidReceiving from '@/views/audit/invalidReceiving'
+import InvalidOpeningBag from '@/views/audit/invalidOpeningBag'
+
 import { resourceLookup } from '@/constants'; 
 
 Vue.use(VueRouter)
@@ -523,6 +527,41 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Sales"
+        }
+      },
+      {
+        path: "audit",
+        name: "audit",
+        component: ContentChild,
+        children: [
+          {
+            path: "invalid-receiving",
+            name: "invalid-receiving",
+            component: InvalidReceiving,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Invalid Receiving",
+              resource_type: resourceLookup["INVALID_RECEIVING"].resource_type,
+              resource_code: resourceLookup["INVALID_RECEIVING"].resource_code,
+              resource_name: resourceLookup["INVALID_RECEIVING"].resource_name
+            }
+          },
+          {
+            path: "invalid-opening-bag",
+            name: "invalid-opening-bag",
+            component: InvalidOpeningBag,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Invalid Opening Bag",
+              resource_type: resourceLookup["INVALID_OPENING_BAG"].resource_type,
+              resource_code: resourceLookup["INVALID_OPENING_BAG"].resource_code,
+              resource_name: resourceLookup["INVALID_OPENING_BAG"].resource_name
+            }
+          },
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "audit"
         }
       },
       {
