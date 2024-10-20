@@ -65,7 +65,7 @@
                             </vs-col>
                         </vs-row>
                         <transition name="slide-fade">
-                            <bag-list :ref="'bagList'" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :dateFilter="tempDate" :searchBy="searchBy" :filterDateBy="filterDateBy"/>
+                            <bag-list :ref="'bagList'" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :dateFilter="tempDate" :searchBy="searchBy" :searchDateBy="filterDateBy"/>
                         </transition>
                         
                     </div>
@@ -250,6 +250,10 @@ export default {
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
+            
+            if (this.tempDate.length !== 0) {
+                this.tempDate = [];
+            }
         },
         handleSearch() {
             this.$nextTick(() => {

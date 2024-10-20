@@ -361,13 +361,10 @@ export default {
             this.refresh()
         },
         refresh(){
-            let from = ''
-            let to = ''
-
-            if(this.dateRange != null && this.dateRange.length > 0) {
-                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
-                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
-            }
+            let d = new Date();
+            let [from, to] = this.dateRange.length > 0 
+                ? [moment(this.dateRange[0]).format("YYYY-MM-DD"), moment(this.dateRange[1]).format("YYYY-MM-DD")] 
+                : ["", ""];
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, from, to, this.searchByBag, this.filterDateBy)
         },
         updateSelected(_event, _item, selected) {
