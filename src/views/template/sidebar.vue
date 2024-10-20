@@ -434,6 +434,35 @@ export default {
           ],
         },
         {
+          label: "Audit",
+          url: null,
+          icon: "bx bxs-file-find",
+          children: [
+            {
+              label: "Invalid Receiving",
+              url: "/audit/invalid-receiving",
+              icon: "",
+              permission: "", // TODO: CHANGE LATER
+              meta: {
+                resource_type: resourceLookup["INVALID_RECEIVING"].resource_type,
+                resource_code: resourceLookup["INVALID_RECEIVING"].resource_code,
+                resource_name: resourceLookup["INVALID_RECEIVING"].resource_name
+              },
+            },
+            {
+              label: "Invalid Opening Bag",
+              url: "/transport/invalid-opening-bag",
+              icon: "",
+              permission: "", // TODO: CHANGE LATER
+              meta: {
+                resource_type: resourceLookup["INVALID_OPENING_BAG"].resource_type,
+                resource_code: resourceLookup["INVALID_OPENING_BAG"].resource_code,
+                resource_name: resourceLookup["INVALID_OPENING_BAG"].resource_name
+              },
+            },
+          ],
+        },
+        {
           label: "Connote Adjustments",
           url: null,
           icon: "bx-edit",
