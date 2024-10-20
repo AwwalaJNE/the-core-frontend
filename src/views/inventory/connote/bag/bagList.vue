@@ -124,6 +124,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Bag type",
+                    key: "tipe_bag",
+                    width: "xs"
+                },
+                {
                     label: "Date #",
                     key: "created_at",
                     width: "xs"
