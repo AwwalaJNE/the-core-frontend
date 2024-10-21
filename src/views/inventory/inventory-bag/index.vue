@@ -61,7 +61,7 @@
                                     :border="true"
                                     @updateBagStatus="updateBagStatus" />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="3" lg="2">
+                            <vs-col vs-align="center" xs="6" sm="3" lg="3">
                                 <select-search-by :isMultiple="false" :border="true"
                                     @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
                                     :selectedValue="filterDateBy" />
