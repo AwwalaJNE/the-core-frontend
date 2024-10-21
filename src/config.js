@@ -307,4 +307,7 @@ export default {
 
     // Tracking Audit
     tracking_audit: api + 'tracking/audit',
+
+    // Masterdata Bag Weight
+    bag_weight_setting: api + 'bag-weight',
 }
