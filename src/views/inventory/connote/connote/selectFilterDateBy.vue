@@ -55,6 +55,10 @@ export default {
           value: 'receive'
         },
         {
+          label: 'Opened Date',
+          value: 'opened'
+        },
+        {
           label: 'SLA',
           value: 'sla'
         }

@@ -130,7 +130,7 @@
                                     @updateBagTipe="updateBagTipe" />
                                 </vs-col>
                                 <vs-col vs-align="center" xs="6" sm="3" lg="2">
-                                    <select-search-by :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
+                                    <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
                                 </vs-col>
                                 <vs-col xs="6" sm="5" lg="3">
                                     <date-time
@@ -302,6 +302,10 @@ export default {
                 {
                     label: 'Created Date',
                     value: 'create'
+                },
+                {
+                    label: 'Opened Date',
+                    value: 'opened'
                 }
             ],
             bagRouting:"",
@@ -339,6 +343,10 @@ export default {
         },
         updateFilterDateBy(key,val) {
           this.filterDateBy = val;
+
+          if (this.tempDate.length !== 0) {
+                this.tempDate = [];
+            }
         },
         updateBagDestination(key,val) {
           this.bagDestination = val

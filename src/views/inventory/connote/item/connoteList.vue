@@ -137,6 +137,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Last Bag Opened Date",
+                    key: "latest_opened_bag",
+                    width: "xs"
+                },
+                {
                     label: "Origin",
                     key: "origin_tariff_code",
                     width: "auto"
