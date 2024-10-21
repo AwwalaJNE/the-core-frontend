@@ -218,6 +218,7 @@
             :active="dialogRemarkActive" 
             :closeDialog="closeDialogRemark"
             :callRefreshRemarkFunction="callRefreshRemarkFunction" 
+            :itemNumber="koli_number"
         />
 
         <dialog-messages 
