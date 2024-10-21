@@ -422,9 +422,10 @@ export default {
         openDialog(actionType) {
             this.validateType = actionType;
             if (actionType === 'create' && this.koliCode?.length) {
-                this.validationCreateItem({ item_number: this.koliCode });
+                this.validateCreateItem({ items: this.koliCode });
             } else if (actionType === 'remove' && this.removeKoliCode?.length) {
-                this.validationRemoveItem({ item_number: this.removeKoliCode });
+                // TODO: Adjust after Remove Validation API ready
+                this.validateRemoveItem(this.removeKoliCode.map(el => ({item_number: el, status: "SUCCESS"})));
             }
         },
         closeDialog() {
@@ -454,41 +455,36 @@ export default {
                 default:
             }
         },
-        async validationCreateItem(validationKoliCode) {
+        async validateCreateItem(validationKoliCode) {
             this.loadingValidation = true
             
-            // TODO: REMOVE after API validation ready
-            this.validItem = validationKoliCode;
-            this.dialogValidateTracingActive = true;
-            
-            // TODO: USE after API validation ready
-            // await axios
-            //     .post(
-            //         this.URL.validation + `/create-irregularity?n=${this.listenNodeId}`,
-            //         JSON.stringify(validationKoliCode), 
-            //         this.Helper.header())
-            //     .then(res => {
-            //         this.validItem = res.data.data
-            //         this.listValidItem = this.validItem
-            //             .filter(item => item.status === 'SUCCESS')
-            //             .map(item => item.item_number);
+            await axios
+                .post(
+                    this.URL.validation + `/create-tracing?n=${this.listenNodeId}`,
+                    validationKoliCode, 
+                    this.Helper.header())
+                .then(res => {
+                    this.validItem = res.data.data
+                    this.listValidItem = this.validItem
+                        .filter(item => item.status === 'SUCCESS')
+                        .map(item => item.item_number);
 
-            //         if (this.listValidItem.length > 0) {
-            //             this.dialogValidateTracingActive = true
-            //         } else {
-            //             this.refresh();
-            //             this.handleClearForm();
-            //             this.openNotification('danger', err.response ? err.response.data.code : '', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
-            //         }                    
-            //     }).catch(err => {
-            //         this.refresh();
-            //         this.handleClearForm();
-            //         this.openNotification('danger', err.response ? err.response.data.code : '', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
-            //     })
+                    if (this.listValidItem.length > 0) {
+                        this.dialogValidateTracingActive = true
+                    } else {
+                        this.refresh();
+                        this.handleClearForm();
+                        this.openNotification('danger', err?.response?.data?.code ?? '', 'Error', this.validItem?.[0].message ?? 'something went wrong')
+                    }                    
+                }).catch(err => {
+                    this.refresh();
+                    this.handleClearForm();
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Input Validation Failed', err?.response?.data?.message ?? 'something went wrong')
+                })
 
             this.loadingValidation = false
         },
-        async validationRemoveItem(validationKoliCode) {
+        async validateRemoveItem(validationKoliCode) {
             this.loadingValidation = true
             
             // TODO: REMOVE after API validation ready
