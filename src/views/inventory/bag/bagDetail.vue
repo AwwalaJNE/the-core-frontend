@@ -345,7 +345,8 @@ export default {
       activeDialogConfirmUnpproveBag: false,
       loadingConfirmUnpproveBag: false,
       dialogHelpdeskEditBag: false,
-      is_approve: false
+      is_approve: false,
+      is_actual_weight_mandatory: false,
     }
   },
   computed: {
@@ -393,7 +394,8 @@ export default {
       this.is_orion = data.data.is_orion === '1' ? true : false;
       let bag_des = data.data ? data?.data?.destination?.node_code  : null
       this.is_pra_runsheet = data.data.is_pra_runsheet === "1" ? true : false
-      
+      this.is_actual_weight_mandatory = data.data.is_actual_weight_mandatory === "0" ? false : true;
+
       this.is_masterbag = data.data.is_consolidated === "1" ? true : false
       if (data.data.is_consolidated === "1") {
         this.radio_option = "bag"
@@ -481,7 +483,7 @@ export default {
       this.ProccessAddBagItem()
     },
     updateValue(){
-      if (this.weight === '' || this.weight == 0) {
+      if ((this.weight === '' || this.weight == 0) && this.is_actual_weight_mandatory) {
         this.openNotification('warning', null, 'Empty Weight!', 'Bag Actual Weight must not be 0!')
       }
       else {
@@ -639,7 +641,7 @@ export default {
       });
     },
     approveAction(val){
-      if (this.isAllowed && !this.is_pra_runsheet && this.actual_weight == 0) {
+      if (this.isAllowed && !this.is_pra_runsheet && (this.actual_weight == 0 && this.is_actual_weight_mandatory)) {
         this.openNotification('warning', null, 'Empty Weight!', 'Bag Actual Weight must not be 0!')
       }
       else {
