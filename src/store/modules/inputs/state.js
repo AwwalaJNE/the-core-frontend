@@ -2192,6 +2192,87 @@ export default {
     },
   },
 
+  bag_weight: {
+    bag_type: {
+      label: "Bag Type*",
+      key: "bag_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          "label": "Regular Bag",
+          "value": "normal"
+        },
+        {
+          "label": "Masterbag",
+          "value": "masterbag"
+        },
+        {
+          "label": "Bag Pra Runsheet",
+          "value": "pra runsheet"
+        },
+        {
+          "label": "Bag Return",
+          "value": "return"
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    routing_type: {
+      label: "Routing Type*",
+      key: "routing_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          "label":"All Routing",
+          "value":"all_routing"
+        },
+        {
+          "label":"Intracity",
+          "value":"intracity"
+        },
+        {
+          "label":"Intercity",
+          "value":"intercity"
+        },
+        {
+          "label":"Domestik",
+          "value":"domestik"
+        },
+        {
+          "label":"International",
+          "value":"international"
+        }
+      ],
+      valueData: null,
+      value: '',
+    },
+    service_type: {
+      label: "Service*",
+      key: "service_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    destination: {
+      label: "Destination*",
+      key: "destination",
+      rule:"required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  },
+
   tariff: {
     tariff_group: {
       label: "Tariff Group",
