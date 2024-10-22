@@ -158,8 +158,18 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Origin Node ID",
+                    key: "origin_node_id",
+                    width: "auto"
+                },
+                {
                     label: "Origin",
                     key: "origin_tariff_code",
+                    width: "auto"
+                },
+                {
+                    label: "Destination Node ID",
+                    key: "destination_node_id",
                     width: "auto"
                 },
                 {
