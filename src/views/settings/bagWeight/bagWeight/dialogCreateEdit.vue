@@ -116,11 +116,20 @@ export default {
     methods: {
         getEditData(val) {
             this.bag_weight_setting_id = val.bag_weight_setting_id;
-            this.$store.dispatch("SET_BAG_WEIGHT_DESTINATION", val.destinaton);
-            this.dataItem = val;            
+            this.dataItem = val;
+            
+            let curr_destination_arr = [{
+                label: val.destination,
+                value: val.destination
+            }]
+
+            this.$store.dispatch("SET_BAG_WEIGHT_DESTINATION", val.destination);
+            this.$store.dispatch("SET_BAG_WEIGHT_DESTINATION_ValueData", val.destination);
+            this.$store.dispatch("SET_BAG_WEIGHT_DESTINATION_ArrData", curr_destination_arr);
         },
         formData(form){
-            this.form = form
+            this.form = form;
+            
             if(this.bag_weight_setting_id !== undefined && this.bag_weight_setting_id !== '') {
                 this.updateData()
             } else {
