@@ -310,4 +310,7 @@ export default {
 
     // Masterdata Bag Weight
     bag_weight_setting: api + 'bag-weight',
+
+    // Audit
+    audit_invalid_log: api + 'audit/invalid-item-log',
 }
