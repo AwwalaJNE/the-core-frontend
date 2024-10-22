@@ -119,28 +119,24 @@ export default {
                     value: 'item_number'
                 },
                 {
-                    label: 'DO Number',
-                    value: 'do_number'
+                    label: 'Process',
+                    value: 'process'
                 },
                 {
-                    label: 'Vehicle Type',
-                    value: 'vehicle_type'
+                    label: 'User Login',
+                    value: 'user_login'
                 },
                 {
-                    label: 'Driver',
-                    value: 'pic'
+                    label: 'Node Name',
+                    value: 'node_name'
                 },
                 {
-                    label: 'Mode',
-                    value: 'mode'
+                    label: 'Is Data Existed',
+                    value: 'is_data_existed'
                 },
                 {
-                    label: 'Origin',
-                    value: 'origin'
-                },
-                {
-                    label: 'Destination',
-                    value: 'destination'
+                    label: 'Reason',
+                    value: 'reason'
                 },
                 {
                     label: 'Weight',
@@ -162,71 +158,57 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Surat Jalan #",
-                    key: "manifest_do_number",
+                    label: "id",
+                    key: "invalid_item_log_id",
                     width: "xs"
                 },
                 {
-                    label: "Orion Number",
-                    key: "orion_number",
+                    label: "Item Number",
+                    key: "item_number",
                     width: "xs"
                 },
                 {
-                    label: "Vehicle Type",
-                    key: "vehicle_type_name",
+                    label: "Process",
+                    key: "process",
                     width: "xs"
                 },
                 {
-                    label: "Driver",
-                    key: "driver_name",
+                    label: "User Login",
+                    key: "user_login",
                     width: "xs"
                 },
                 {
-                    label: "Mode#",
-                    key: "vehicle_mode_name",
-                    width: "auto"
-                },
-                {
-                    label: "Origin",
-                    key: "node_id_origin_name",
+                    label: "Node Name",
+                    key: "node_name",
                     width: "sm"
                 },
                 {
-                    label: "Destination",
-                    key: "node_id_destination_name",
-                    width: "sm"
-                },
-                {
-                    label: "Kg",
-                    key: "total_weight",
-                    width: "auto"
-                },
-                {
-                    label: "ETD",
-                    key: "etd",
-                    width: "xs"
-                },
-                {
-                    label: "ETA",
-                    key: "eta",
-                    width: "xs"
-                },
-                {
-                    label: "Departed Time",
-                    key: "departed_time",
-                    width: "xs"
-                },
-                {
-                    label: "Approved",
-                    key: "approved",
+                    label: "Is Exist",
+                    key: "is_data_existed",
                     width: "xxs"
                 },
+                {
+                    label: "Reason",
+                    key: "reason",
+                    width: "xs"
+                },
+                {
+                    label: "Created At",
+                    key: "created_at",
+                    width: "xs"
+                },
+                {
+                    label: "Updated At",
+                    key: "updated_at",
+                    width: "xs"
+                }
             ],
             pagination: {
                 limit: 20,
                 page_size: 1,
                 page: 1
             },
+            type: 'RECEIVING'
         };
     },
     methods: {
@@ -238,64 +220,30 @@ export default {
             let queryDate = "";
             if(q !== undefined) {
                 query = q
-                if (q.includes("/")) {
-                    query = query.replaceAll("/", "-")
-                }
             }
             if(from !== undefined && to !== undefined) {
                 startDate = from
                 endDate = to
             }
             await axios
-                .get(this.URL.manifest_delivery_order + `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, this.Helper.header())
+                .get(this.URL.audit_invalid_log + `?n=${this.listenNodeId}&type=${this.type}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, this.Helper.header())
                 .then(res => {
-                    let arr = res.data.data
-                    let buttonStatus = {
-                        'depart': true,
-                        'cancel': true
-                    }
-                    
-                    arr.map(item => {
-                        item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
-                        item["node_id_origin_name"] = (item.origin) ? item.origin.node_name: null
-                        item["node_id_destination_name"] = (item.destination) ? item.destination.node_name: item.facility_code_destination
-                        item["driver_id"] = (item.pic_employee_id) ? parseInt(item.pic_employee_id): null
-                        item["driver_name"] = (item.pic) ? item.pic.employee_name: null
-                        item["orion_number"] = item.mts || item.do || "";
-                        item["approved"] = item.is_approve    === 1 ? 'YES' : 'NO';
-                        
-                        if (item.hasOwnProperty('status') && item["status"] !== null) {
-                            let str = item["status"].toLowerCase();
-                            if (!str.includes("ready")) {
-                                buttonStatus["depart"] = false;
-                                item["button_status"] = buttonStatus;
-                            }
-                            if (str.includes("cancel")) {
-                                buttonStatus["cancel"] = false;
-                                item["button_status"] = buttonStatus;
-                            }
-                        }
+                    let arr = res.data.data;
 
-                        if (item.is_orion == "1") {
-                            buttonStatus["cancel"] = false;
-                            item["button_status"] = buttonStatus;
-                        }
-                    })
+                    if (arr.length > 0) {
+                        arr.map(item => {
+                            item["is_data_existed"] = item.is_data_existed === 1 ? 'TRUE' : 'FALSE';
+                        })
 
-                    this.dataTable = arr
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
-                    if(res.data.data.length > 0) {
-                        
-                    } else {
-                        // this.openNotification('warn', null, 'Surat Jalan data is empty!', ' Please create a new Surat Jalan data')
-                    }
-                    
-                    this.loading = false
+                        this.dataTable = arr;
+                        this.pagination.page = res.data.meta.current_page;
+                        this.pagination.limit = parseInt(res.data.meta.per_page);
+                        this.pagination.page_size = res.data.meta.last_page;
+                        this.loading = false;
+                    }                    
                 }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Surat Jalan data', err)
+                    this.loading = false;
+                    this.openNotification('danger', err?.response?.data?.code || '', 'Failed',  err?.response?.data?.message || 'Something went wrong')
                 })
         },
         actionLimit(val){
