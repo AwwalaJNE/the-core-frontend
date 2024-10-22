@@ -119,7 +119,7 @@
                 <div class="mt-05">
                     <table-master 
                         :dataTable="dataTable" 
-                        :dataColumn="is_history ? datacolumn.concat(additionalArchiveColumn) : datacolumn" 
+                        :dataColumn="is_history ? datacolumn.concat(additionalColumn) : datacolumn" 
                         :tableLoading="loading"
                         :pageSize="pagination.page_size"
                         :page="pagination.page"
@@ -233,18 +233,6 @@ export default {
                     width: "xxs"
                 },
                 {
-                    label: "Status Code",
-                    key: "status_code",
-                    width: "xxs"
-                },
-                {
-                    label: "Status Name",
-                    key: "status_name",
-                    width: "xxs"
-                },
-            ],
-            additionalArchiveColumn: [
-                {
                     label: "Service",
                     key: "service_code",
                     width: "xxs"
@@ -252,6 +240,18 @@ export default {
                 {
                     label: "Payment Type",
                     key: "payment_type_name",
+                    width: "xxs"
+                },
+            ],
+            additionalColumn: [
+                {
+                    label: "Status Code",
+                    key: "status_code",
+                    width: "xxs"
+                },
+                {
+                    label: "Status Name",
+                    key: "status_name",
                     width: "xxs"
                 },
             ],
