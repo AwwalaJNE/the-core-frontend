@@ -286,7 +286,7 @@ export default {
   watch: {
     valueData: function(val) {
       if (val !== undefined) {
-        if (this.listenTypeInput.includes("password")) {
+        if (this.listenTypeInput.includes("password") || this.listenTypeInput.includes("number")) {
           this.value = val;
         }
         else {

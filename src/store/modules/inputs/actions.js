@@ -3655,4 +3655,52 @@ export default {
 
 
   //====== END CONNOTE FORWARD ======//
+
+
+  //====== BAG WEIGHT SETTINGS ======//
+
+  SET_BAG_WEIGHT_BAG_TYPE({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_BAG_TYPE', payload)
+  },
+  SET_BAG_WEIGHT_BAG_TYPE_ValueData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_BAG_TYPE_ValueData', payload)
+  },
+  SET_BAG_WEIGHT_BAG_TYPE_ArrData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_BAG_TYPE_ArrData', payload)
+  },
+
+
+  SET_BAG_WEIGHT_ROUTING_TYPE({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_ROUTING_TYPE', payload)
+  },
+  SET_BAG_WEIGHT_ROUTING_TYPE_ValueData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_ROUTING_TYPE_ValueData', payload)
+  },
+  SET_BAG_WEIGHT_ROUTING_TYPE_ArrData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_ROUTING_TYPE_ArrData', payload)
+  },
+
+
+  SET_BAG_WEIGHT_SERVICE_TYPE({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_SERVICE_TYPE', payload)
+  },
+  SET_BAG_WEIGHT_SERVICE_TYPE_ValueData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_SERVICE_TYPE_ValueData', payload)
+  },
+  SET_BAG_WEIGHT_SERVICE_TYPE_ArrData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_SERVICE_TYPE_ArrData', payload)
+  },
+
+
+  SET_BAG_WEIGHT_DESTINATION({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_DESTINATION', payload)
+  },
+  SET_BAG_WEIGHT_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_DESTINATION_ValueData', payload)
+  },
+  SET_BAG_WEIGHT_DESTINATION_ArrData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_DESTINATION_ArrData', payload)
+  },
+
+  //====== END BAG WEIGHT SETTINGS ======//
 }

@@ -3971,4 +3971,60 @@ export default {
     state.connote_forward.connote_receiver_tariff_code.valueData = payload
   },
   //====== END CONNOTE FORWARD ======//
+
+
+  //====== BAG WEIGHT SETTINGS ======//
+
+  SET_BAG_WEIGHT_BAG_TYPE(state, payload) {
+    state.bag_weight.bag_type.value = payload
+  },
+  SET_BAG_WEIGHT_BAG_TYPE_ValueData(state, payload) {
+    state.bag_weight.bag_type.valueData = payload
+  },
+  SET_BAG_WEIGHT_BAG_TYPE_ArrData(state, payload) {
+    state.bag_weight.bag_type.hasOwnProperty('arrData') ?
+    state.bag_weight.bag_type.arrData = payload :
+    state.bag_weight.bag_type.arrData = []
+  },
+
+
+  SET_BAG_WEIGHT_ROUTING_TYPE(state, payload) {
+    state.bag_weight.routing_type.value = payload
+  },
+  SET_BAG_WEIGHT_ROUTING_TYPE_ValueData(state, payload) {
+    state.bag_weight.routing_type.valueData = payload
+  },
+  SET_BAG_WEIGHT_ROUTING_TYPE_ArrData(state, payload) {
+    state.bag_weight.routing_type.hasOwnProperty('arrData') ?
+    state.bag_weight.routing_type.arrData = payload :
+    state.bag_weight.routing_type.arrData = []
+  },
+
+
+  SET_BAG_WEIGHT_SERVICE_TYPE(state, payload) {
+    state.bag_weight.service_type.value = payload
+  },
+  SET_BAG_WEIGHT_SERVICE_TYPE_ValueData(state, payload) {
+    state.bag_weight.service_type.valueData = payload
+  },
+  SET_BAG_WEIGHT_SERVICE_TYPE_ArrData(state, payload) {
+    state.bag_weight.service_type.hasOwnProperty('arrData') ?
+    state.bag_weight.service_type.arrData = payload :
+    state.bag_weight.service_type.arrData = []
+  },
+
+
+  SET_BAG_WEIGHT_DESTINATION(state, payload) {
+    state.bag_weight.destination.value = payload
+  },
+  SET_BAG_WEIGHT_DESTINATION_ValueData(state, payload) {
+    state.bag_weight.destination.valueData = payload
+  },
+  SET_BAG_WEIGHT_DESTINATION_ArrData(state, payload) {
+    state.bag_weight.destination.hasOwnProperty('arrData') ?
+    state.bag_weight.destination.arrData = payload :
+    state.bag_weight.destination.arrData = []
+  },
+
+  //====== END BAG WEIGHT SETTINGS ======//
 }

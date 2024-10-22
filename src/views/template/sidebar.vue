@@ -451,7 +451,7 @@ export default {
             },
             {
               label: "Invalid Opening Bag",
-              url: "/transport/invalid-opening-bag",
+              url: "/audit/invalid-opening-bag",
               icon: "",
               permission: "read-audit-opening-bag",
               meta: {
@@ -887,6 +887,17 @@ export default {
                 resource_type: resourceLookup["SETTINGS_KPI"].resource_type,
                 resource_code: resourceLookup["SETTINGS_KPI"].resource_code,
                 resource_name: resourceLookup["SETTINGS_KPI"].resource_name
+              },
+            },
+            {
+              label: "Settings Bag Weight",
+              url: "/settings/bag-weight",
+              icon: "",
+              permission: "", // TODO: Change after permission ready
+              meta: {
+                resource_type: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_type,
+                resource_code: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_code,
+                resource_name: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_name
               },
             },
           ],

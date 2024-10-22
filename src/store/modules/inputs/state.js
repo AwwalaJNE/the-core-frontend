@@ -2014,8 +2014,8 @@ export default {
     percentage: {
       label: "Percentage*",
       key: "percentage",
-      rule: "required|decimal",
-      typeInput: "text",
+      rule: "required|decimal|min_value:1",
+      typeInput: "number",
       typeData: "text",
       valueData: null,
       value: '',
@@ -2024,7 +2024,7 @@ export default {
       label: "Minimum Connote*",
       key: "minimum_count",
       rule: "required|numeric|min_value:1",
-      typeInput: "text",
+      typeInput: "number",
       typeData: "text",
       valueData: null,
       value: '',
@@ -2185,6 +2185,87 @@ export default {
       rule: "required",
       typeInput: "date",
       width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  },
+
+  bag_weight: {
+    bag_type: {
+      label: "Bag Type*",
+      key: "bag_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          "label": "Regular Bag",
+          "value": "normal"
+        },
+        {
+          "label": "Masterbag",
+          "value": "masterbag"
+        },
+        {
+          "label": "Bag Pra Runsheet",
+          "value": "pra runsheet"
+        },
+        {
+          "label": "Bag Return",
+          "value": "return"
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    routing_type: {
+      label: "Routing Type*",
+      key: "routing_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          "label":"All Routing",
+          "value":"all_routing"
+        },
+        {
+          "label":"Intracity",
+          "value":"intracity"
+        },
+        {
+          "label":"Intercity",
+          "value":"intercity"
+        },
+        {
+          "label":"Domestik",
+          "value":"domestik"
+        },
+        {
+          "label":"International",
+          "value":"international"
+        }
+      ],
+      valueData: null,
+      value: '',
+    },
+    service_type: {
+      label: "Service*",
+      key: "service_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    destination: {
+      label: "Destination*",
+      key: "destination",
+      rule:"required",
+      typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
       valueData: null,

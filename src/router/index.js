@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import master from "@/mixins/master"
 
 import Login from '@/views/auth'
 
@@ -191,6 +192,8 @@ import HelpdeskRunsheet from "@/views/helpdesk/runsheet/index";
 // === Facility Code ===
 import FacilityCode from '@/views/settings/facilityCode';
 
+// === Bag Weight ===
+import BagWeight from '@/views/settings/bagWeight/index';
 
 // === Connote Adjustment ===
 import ConnoteCancel from '@/views/connoteAdjustment/connoteCancel'
@@ -399,6 +402,18 @@ const routes = [
               resource_type: resourceLookup["SETTINGS_KPI"].resource_type,
               resource_code: resourceLookup["SETTINGS_KPI"].resource_code,
               resource_name: resourceLookup["SETTINGS_KPI"].resource_name
+            }
+          },
+          {
+            path: "bag-weight",
+            name: "BagWeight",
+            component: BagWeight,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Bag Weight",
+              resource_type: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_type,
+              resource_code: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_code,
+              resource_name: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_name
             }
           },
         ],
