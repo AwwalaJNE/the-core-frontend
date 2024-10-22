@@ -9,7 +9,7 @@
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
                 <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div v-if="navActive !== 'upload-sla'" style="width: 100px;padding-right: 5px;">
+                    <div style="width: 100px;padding-right: 5px;">
                         <vs-button
                             flat
                             block
@@ -28,7 +28,7 @@
                     <vs-row justify="space-between">
                         <vs-col xs="12" sm="6" lg="8">
                             <nav-item 
-                                :navItem="navItemm" 
+                                :navItem="navItem" 
                                 @activeTab="activeTab" 
                             />
                         </vs-col>
@@ -97,7 +97,7 @@ export default {
     },
     data() {
         return {
-            navItemm: [
+            navItem: [
                 {
                     label: "BAG WEIGHT",
                     key: "bag-weight",
@@ -145,7 +145,7 @@ export default {
             this.navActive = val
             this.clearSearch()
 
-            let item = this.navItemm.filter(item => {
+            let item = this.navItem.filter(item => {
                 return item.key == val
             })
             this.title = item[0].title
@@ -162,7 +162,7 @@ export default {
         closeDialog() {
             switch(this.navActive) {
                 case "bag-weight":
-                    this.dialogBagWeight = false
+                    this.dialogBagWeight = false;
                     break;
                 default:
             }

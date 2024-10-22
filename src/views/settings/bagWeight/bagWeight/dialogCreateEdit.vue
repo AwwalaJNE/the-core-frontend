@@ -78,20 +78,8 @@ export default {
     data() {
         return {
             form: {},
-            serviceArray: [],
-            originArray: [],
-            destinationArray: [],
-            customerNameArray: [],
-            customerIdArray: [],
-            activityArray: [],
-            customerId: "",
-            loadingDataOrigin: false,
-            loadingDataDestination: false,
+            loading: false,
             loadingDataService: false,
-            loadingDataCustomerName: false,
-            loadingDataCustomerCode: false,
-            loadingDataNode: false,
-            loadingDataActivity: false,
             bag_weight_setting_id: "",
         }
     },
@@ -122,17 +110,14 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.getEditData(val);
-                
             }
         },
     },
     methods: {
         getEditData(val) {
             this.bag_weight_setting_id = val.bag_weight_setting_id;
-            this.$store.dispatch("SET_BAG_WEIGHT_BAG_TYPE", val.bag_type);
-            this.$store.dispatch("SET_BAG_WEIGHT_ROUTING_TYPE", val.routing_type);
-            this.$store.dispatch("SET_BAG_WEIGHT_SERVICE_TYPE", val.service_type);
             this.$store.dispatch("SET_BAG_WEIGHT_DESTINATION", val.destinaton);
+            this.dataItem = val;            
         },
         formData(form){
             this.form = form
@@ -181,7 +166,6 @@ export default {
 
                             arr.push(obj)
                         })
-                        this.serviceArray = arr
                         this.$store.dispatch("SET_BAG_WEIGHT_SERVICE_TYPE_ArrData", arr)
                     } else {
                         this.openNotification('warn', null, 'Service data is empty!', ' Please create a new service data')
@@ -215,7 +199,7 @@ export default {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
-                this.cancel();
+                this.cancel(); 
             }
         },
         handleClearForm(){
@@ -224,8 +208,8 @@ export default {
             this.bag_weight_setting_id = ""
         },
         cancel() {
-            this.handleClearForm();
             this.closeDialog();
+            this.handleClearForm();
             this.$emit("refresh");
         },
     },

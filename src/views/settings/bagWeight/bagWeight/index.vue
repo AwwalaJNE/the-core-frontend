@@ -200,7 +200,7 @@ export default {
         },
         actionRemove(val){
             this.bag_weight_setting_id = val.bag_weight_setting_id;
-            this.dialogRemoveActive = true
+            this.dialogRemoveActive = true;
         },
         confirmRemove() {
             this.removeData()
@@ -215,16 +215,16 @@ export default {
             } finally {
                 this.loadingDialog = false;
                 this.closeDialog('dialog_remove');
-                this.refresh()
+                this.refresh();
             }
         },
         closeDialog(ref) {
             switch (ref) {
-                case 'dialog_edit_create':
-                    this.dialogCreateEditActive = false
+                case 'dialog_create_edit':
+                    this.dialogCreateEditActive = false;
                     break;
                 case 'dialog_remove':
-                    this.dialogRemoveActive = false
+                    this.dialogRemoveActive = false;
                     break;
                 default:
                     break;
