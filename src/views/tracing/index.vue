@@ -119,7 +119,7 @@
                 <div class="mt-05">
                     <table-master 
                         :dataTable="dataTable" 
-                        :dataColumn="datacolumn" 
+                        :dataColumn="is_history ? datacolumn.concat(additionalColumn) : datacolumn" 
                         :tableLoading="loading"
                         :pageSize="pagination.page_size"
                         :page="pagination.page"
@@ -233,6 +233,18 @@ export default {
                     width: "xxs"
                 },
                 {
+                    label: "Service",
+                    key: "service_code",
+                    width: "xxs"
+                },
+                {
+                    label: "Payment Type",
+                    key: "payment_type_name",
+                    width: "xxs"
+                },
+            ],
+            additionalColumn: [
+                {
                     label: "Status Code",
                     key: "status_code",
                     width: "xxs"
@@ -242,7 +254,7 @@ export default {
                     key: "status_name",
                     width: "xxs"
                 },
-            ],    
+            ],
             form: {},
             pagination: {
                 limit:20,
