@@ -101,6 +101,7 @@ export default {
             current_node_name: '',
             data: this.dataItem || {},
             loading: false,
+            isEmptyAddInfo: false,
             mainInfo: [
                 { 
                     label: 'Current Location', 
@@ -220,7 +221,7 @@ export default {
             try {
                 const res = await axios.get(`${this.URL.bag}?n=${this.current_node_id}&s=${this.bag_number}`, this.Helper.header());
                 
-                if (res.data.data && res.data.data.length > 0) {
+                if (res.data.data.length > 0) {
                     const item = res.data.data[0]
 
                     if (item) {
@@ -235,10 +236,10 @@ export default {
                             bag_type: item.tipe_bag || "-"
                         };
                     } else {
-                        this.bag_additional_info = {};
+                        this.bag_additional_info = {}; 
                     }
                 } else {
-                    console.warn("No data found for the specified bag number.");
+                    this.isEmptyAddInfo = true;
                 }
 
             } catch (err) {
@@ -277,6 +278,19 @@ export default {
                             .join(", "),
                         bag_weight: data.bag_weight
                     };
+                    
+                    if (this.isEmptyAddInfo) {
+                        this.bag_additional_info = {
+                            created_at: data.created_at,
+                            is_masterbag: data.is_consolidated === 1 ? true : false,
+                            is_approve: data.is_approve === 1 ? true : false,
+                            surat_muatan: '-',
+                            surat_jalan: '-',
+                            with_courier: data.employee_code || '-',
+                            irregularity_status_description: data.irregularity_status_description || '-',
+                            bag_type: data.tipe_bag || "-"
+                        };
+                    }
                 }
             } catch (err) {
                 this.openNotification('danger', err.response?.data.code ?? '', 'Failed', err?.response?.data?.message ?? 'Something went wrong');
