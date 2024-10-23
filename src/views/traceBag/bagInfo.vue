@@ -154,6 +154,10 @@ export default {
                     label: 'With Courier', 
                     value: 'with_courier' 
                 },
+                { 
+                    label: 'Irregularity Status', 
+                    value: 'irregularity_status_description' 
+                }
             ],
             dataTable: [],
             datacolumn: [
@@ -227,6 +231,7 @@ export default {
                             surat_muatan: item.sm?.[0]?.manifest_number || '-',
                             surat_jalan: item.sj?.[0]?.manifest_do_number || '-',
                             with_courier: item.courier?.employee_name || '-',
+                            irregularity_status_description: item.irregularity_status_description || '-',
                             bag_type: item.tipe_bag || "-"
                         };
                     } else {
