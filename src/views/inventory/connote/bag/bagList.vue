@@ -262,7 +262,7 @@ export default {
             if(bagTipe !== undefined && bagTipe !== '-') {
               bagTipee = bagTipe
             }
-            if(bagStatus !== undefined) {
+            if(bagStatus !== undefined && bagStatus !== '-') {
                 bagStat = bagStatus
             }
             await axios

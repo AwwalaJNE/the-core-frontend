@@ -47,6 +47,10 @@ export default {
     return {
       DataArr: this.valueData ? this.valueData : [
         {
+          label: 'All Bag',
+          value: '-'
+        },
+        {
           label: 'Opened Bag',
           value: '1'
         },
@@ -55,10 +59,10 @@ export default {
           value: '0'
         }
       ],
-      value: this.selectedValue ? this.selectedValue :"0",
+      value: this.selectedValue ? this.selectedValue :"-",
       arrValue: this.selectedValue ? this.selectedValue : [{
-        label: 'Unopened Bag',
-        value: '0'
+        label: 'All',
+        value: '-'
       }],
     }
   },

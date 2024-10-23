@@ -319,7 +319,7 @@ export default {
             ],
             bagRouting:"",
             bagTipe:"",
-            bagStatus: "0",
+            bagStatus: "",
             searchByDataType: false,
             searchByDataTypeCnote: false,
         }

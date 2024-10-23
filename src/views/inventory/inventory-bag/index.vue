@@ -146,7 +146,7 @@ export default {
             bagDestination:"",
             bagRouting:"",
             bagTipe:"",
-            bagStatus:"0",
+            bagStatus:"",
             destination_tlc: [{
               label: 'All Destination',
               value: ''
