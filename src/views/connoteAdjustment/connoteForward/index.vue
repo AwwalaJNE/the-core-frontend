@@ -152,16 +152,6 @@ export default {
                     label: "Created By",
                     key: "user_login",
                     width: "md"
-                },
-                {
-                    label: "Status Code",
-                    key: "delivery_status_code",
-                    width: "md"
-                },
-                {
-                    label: "Latest Delivery",
-                    key: "latest_delivery",
-                    width: "md"
                 }
             ],
             loading: false,
