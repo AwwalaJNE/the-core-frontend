@@ -758,7 +758,7 @@
                 </vs-row>
               </vs-td>
             </template>
-            <template v-if="printAction == true && item.is_approve === 1">
+            <template v-if="printAction == true && item.hasOwnProperty('is_approve') ? item.is_approve === 1 : true">
               <vs-td class="action">
                 <vs-row justify="center" class="btn_action">
                   <template v-if="avoidAction == true">
