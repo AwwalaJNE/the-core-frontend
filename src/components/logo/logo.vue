@@ -1,5 +1,5 @@
 <template>
-    <a href="https://www.jne.co.id/" target="_blank" rel="noopener noreferrer">
+    <a href="https://core.jne.co.id/">
         <img 
             :src="require('../../assets/img/jne.jpg')" 
             class="logo" 
