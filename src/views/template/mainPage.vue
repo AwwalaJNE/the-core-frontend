@@ -162,7 +162,7 @@ export default {
                 },
                 { 
                     label: "JNE Main Page",
-                    url: "https://core.jne.co.id/"
+                    url: "https://www.jne.co.id/"
                 }
             ],
             timeOfDay: "",
