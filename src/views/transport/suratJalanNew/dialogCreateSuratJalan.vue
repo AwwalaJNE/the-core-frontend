@@ -550,7 +550,7 @@ export default {
             try {
                 const res = await axios.get(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`, this.Helper.header());
 
-                if (res.data.data) {
+                if (res.data.data.length > 0) {
                     let arr = res.data.data;
 
                     arr = arr.map(item => ({
@@ -560,6 +560,9 @@ export default {
                     }));
 
                     this.dataTable = arr;
+                } else {
+                    this.dataTable = [];
+                    this.manifest_do_number = "";
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed 2", err?.response?.data?.message ?? 'Something went wrong');
