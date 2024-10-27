@@ -666,6 +666,7 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
             this.isDisabledApprove = false;
             this.isDisabled = false
+            this.is_approve = 0
             this.resetForm();
             this.handleClearForm();
             this.closeDialog();

@@ -38,7 +38,7 @@
             <vs-row>
                 <vs-col xs="12" sm="6" lg="3">
                     <div class="box set-height">
-                        <h4>Insight Inventory</h4>
+                        <h4>Current Inventory</h4>
                         <bar-chart
                             ref="insightInventoryChart"
                             v-if="!is_empty_insight_invetory"
@@ -53,7 +53,7 @@
 
                 <vs-col xs="12" sm="6" lg="3">
                     <div class="box set-height">
-                        <h4>Insight Runsheet</h4>
+                        <h4>Today Runsheet Summary</h4>
                         <doughnut-chart 
                             ref="insightRunsheetChart" 
                             v-if="!is_empty_insight_runsheet"
@@ -68,7 +68,7 @@
 
                 <vs-col xs="12" sm="6" lg="3">
                     <div class="box set-height">
-                        <h4>Insight Receive</h4>
+                        <h4>Today Receive Summary</h4>
                         <bar-chart 
                             ref="insightReceiveChart" 
                             v-if="!is_empty_insight_receive"
@@ -83,7 +83,7 @@
 
                 <vs-col xs="12" sm="6" lg="3">
                     <div class="box set-height">
-                        <h4>Insight Depart</h4>
+                        <h4>Today Depart Summary</h4>
                         <bar-chart 
                             ref="insightDepartChart" 
                             v-if="!is_empty_insight_depart"
