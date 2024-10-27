@@ -38,7 +38,7 @@
             <vs-row>
                 <vs-col xs="12" sm="6" lg="3">
                     <div class="box set-height">
-                        <h4>Insight Inventory</h4>
+                        <h4>Current Inventory</h4>
                         <bar-chart
                             ref="insightInventoryChart"
                             v-if="!is_empty_insight_invetory"
