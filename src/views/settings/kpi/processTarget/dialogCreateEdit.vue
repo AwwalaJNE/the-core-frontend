@@ -140,27 +140,33 @@ export default {
                 switch(this.listenEntity) {
                     case "REGION":
                         this.autoCompleteUrl = this.URL.regional_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "region_name";
+                        this.input_value = "regional_code";
+                        this.input_label = "regional_code";
                         break;
                     case "BRANCH":
                         this.autoCompleteUrl = this.URL.branch_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
                         this.input_value = "branch_code";
+                        this.input_label = "branch_code";
                         break;
                     case "ORIGIN":
                         this.autoCompleteUrl = this.URL.origin_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
                         this.input_value = "origin_code";
+                        this.input_label = "origin_code";
                         break;
                     case "NODE":
                         this.autoCompleteUrl = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "node_name";
+                        this.input_value = "node_id";
+                        this.input_label = "node_name";
                         break;
                     case "USER":
                         this.autoCompleteUrl = this.URL.user_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "user_name";
+                        this.input_value = "user_id";
+                        this.input_label = "user_name";
                         break;
                     case "EMPLOYEE":
                         this.autoCompleteUrl = this.URL.employee_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "employee_name";
+                        this.input_value = "employee_id";
+                        this.input_label = "employee_name";
                         break;
                     default:
                 }
@@ -175,8 +181,8 @@ export default {
                 let suggestions = [];
                 result.length > 0 && result.map(item => {
                     suggestions.push({
-                        value: item[this.input_value],
-                        data: item[this.input_value]
+                        value: item[this.input_label],
+                        data: String(item[this.input_value])
                     });
                 });
                 cb(suggestions);
