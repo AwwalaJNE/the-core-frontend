@@ -16,6 +16,7 @@
         :limit="pagination.limit"
         :hasAction="false"
         :hasLinked="['bag_number']"
+        :hasLinkedDanger="'status_irregularity_description'"
         :printAction="true"
         :actionSize="'xxs'"
         :hasPagination="true"
