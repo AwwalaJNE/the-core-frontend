@@ -202,12 +202,12 @@ export default {
                     key: "approved",
                     width: "xxxxs"
                 },
-                {
-                    label: "Status",
-                    key: "summary_status",
-                    width: "xxxxs",
-                    tooltip_desc: "Status SM/SJ"
-                },
+                // {
+                //     label: "Status",
+                //     key: "summary_status",
+                //     width: "xxxxs",
+                //     tooltip_desc: "Status SM/SJ"
+                // },
                 {
                     label: "Status Irregularity",
                     key: "status_irregularity_description",
