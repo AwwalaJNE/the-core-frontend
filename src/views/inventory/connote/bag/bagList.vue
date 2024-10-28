@@ -133,6 +133,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Source",
+                    key: "source",
+                    width: "xxxxs"
+                },
+                {
                     label: "Bag type",
                     key: "tipe_bag",
                     width: "xs"
@@ -299,6 +304,13 @@ export default {
                         el.with_courier = el.courier ? el.courier.employee_name : ""
                         el.approved = el.is_approve === 1 ? "Yes" : "No"
                         el.status_irregularity_description = el.irregularity_status_description || ""
+                        
+                        if (this.listenNodeId === el.origin_node_id) {
+                            el.source = 'CREATE'
+                        }
+                        else {
+                            el.source = 'RECEIVE'
+                        }
                     });
                     this.dataTable = res.data.data
 
