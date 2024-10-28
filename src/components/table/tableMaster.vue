@@ -1142,8 +1142,15 @@
       </template>
     </vs-table>
 
-    <template v-if="hasPagination == true">
-      <vs-row class="mt-2" justify="flex-end">
+    <vs-row class="mt-2" justify="flex-end" align="center">
+      <vs-col w="4">
+        <vs-button
+          @click="handleExportCSV"
+          >
+            Export
+          </vs-button>
+      </vs-col>
+      <template v-if="hasPagination == true">
         <vs-col w="8">
           <pagination-master
             :page="pagination.page"
@@ -1153,8 +1160,8 @@
             @actionPagination="actionPagination"
           />
         </vs-col>
-      </vs-row>
-    </template>
+      </template>
+    </vs-row>
   </div>
 </template>
 <script>
@@ -1486,7 +1493,29 @@ export default {
         return arr?.find(item => item.value === val)?.label
       }
       return ""
-    }
+    },
+    convertToCSV(columns, data) {
+        const headers = columns.map(column => column.label);
+        const rows = data.map(item => columns.map(column => item[column.key] || ''));
+        return [headers, ...rows].map(row => row.join(',')).join('\n');
+    },
+    handleExportCSV() {
+        const csv = this.convertToCSV(this.listenColumn, this.listenDataTable);
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        
+        if (navigator.msSaveBlob) { // For IE 10+
+            navigator.msSaveBlob(blob, 'data.csv');
+        } else {
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'data.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    },
   },
   mounted() {
     this.handleColumnsOrder();
