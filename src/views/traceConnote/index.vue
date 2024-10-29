@@ -57,6 +57,29 @@
                             <vs-col xs="6" sm="9" lg="9">
                                 <nav-item :navItem="navItem" @activeTab="activeTab" />
                             </vs-col>
+                            <vs-col xs="12" sm="3" lg="3" >
+                                <template v-if="filterStatus.length > 1 && navActive === 'k-ACTIVITY'">
+                                    <vs-select
+                                        class="m-select"
+                                        filter
+                                        v-model="filterStatusBy"
+                                        :border="true"
+                                        :multiple="false"
+                                        @change="updateFilterStatus"
+                                    >
+                                    <template v-if="filterStatus.length > 1">
+                                        <vs-option
+                                            v-for="(item,key) in filterStatus"
+                                            :key="key"
+                                            :label="item.label"
+                                            :value="item.value">
+                                        {{item.label}}
+                                        </vs-option>
+                                    </template>
+
+                                    </vs-select>
+                                </template>
+                            </vs-col>
                         </vs-row>
                         <template v-if="navActive === 'k-INFO'">
                             <vs-row justify="space-between">
@@ -89,8 +112,10 @@
                             <vs-row>
                                 <vs-col vs-align="center" xs="3" sm="3" lg="12">
                                     <select-status-inventory 
+                                        ref="activityInventory"
                                         :isMultiple="false"
                                         :border="true"
+                                        :filterStatusBy="filterStatusBy"
                                         @updateStatusinventory="updateStatusinventory" 
                                     />
                                 </vs-col>
@@ -193,7 +218,30 @@ export default {
         statusinventory: "",
         koli_number: "",
         connote_number: "",
-        connote_found: false
+        connote_found: false,
+        filterStatusBy: "ALL",
+        filterStatus: [
+            {
+                label: 'All Connote Type',
+                value: 'ALL'
+            },
+            {
+                label: 'Connote Regular',
+                value: 'NORMAL'
+            },
+            {
+                label: 'Connote Forward',
+                value: 'FORWARD'
+            },
+            {
+                label: 'Connote Return',
+                value: 'RETURN'
+            },
+            {
+                label: 'Connote Return Failed',
+                value: 'RETURN FAILED'
+            }
+        ],
       };
     },
     methods: {
@@ -424,6 +472,11 @@ export default {
             this.setRoutePageHistory(this.$route.meta, false);
             this.hasConnoteNumber = true
             this.getConnote();
+        },
+
+        updateFilterStatus(key) {
+            this.filterStatusBy = key;
+            this.$refs.activityInventory.refresh();
         },
     },
     mounted() {

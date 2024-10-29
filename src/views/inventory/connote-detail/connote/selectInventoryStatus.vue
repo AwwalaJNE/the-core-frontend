@@ -36,8 +36,8 @@ export default {
     props: {
         query: String,
         queryBag: String,
-        queryInventory: String
-
+        queryInventory: String,
+        filterStatusBy: String
     },
     components: {
         "table-master" : TableMaster
@@ -117,7 +117,7 @@ export default {
             await axios
                 .get(
                     this.URL.connote +
-                    `/${this.connote_number}/activity?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
+                    `/${this.connote_number}/activity?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${this.filterStatusBy}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
@@ -152,7 +152,7 @@ export default {
             this.refresh()
         },
         refresh(val){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.filterStatusBy)
         },
         closeDialogUser(){
             this.dialogUser = false
