@@ -107,6 +107,11 @@
                 </div>
               </template>
             </vs-col>
+            <vs-col xs="6" sm="3" lg="2" class="mt-2">
+              <vs-checkbox  v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                Auto Open Bag
+              </vs-checkbox>
+            </vs-col>
           </vs-row>
 
           <vs-row style="margin-top:1em">
@@ -397,7 +402,8 @@ export default {
               "value": "return"
             },
           ],
-          placeholder: 'Masukkan Connote'
+          placeholder: 'Masukkan Connote',
+          is_auto_open_bag: false,
       }
   },
   computed: {
@@ -509,6 +515,9 @@ export default {
             this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
           })
       },
+    handleAutoOpenBag(val) {
+      this.is_auto_open_bag = val.target.checked;
+    },
     handlePraRunsheet() {
       this.regional = ''
       this.service = ''
@@ -534,7 +543,8 @@ export default {
           item_number: this.item_code,
           destination : this.regional,
           service: this.service,
-          type: this.bag_type
+          type: this.bag_type,
+          auto_open_bag: this.is_auto_open_bag
       }
       // if(this.weight !== null) {
       //   this.form["bag_weight"] = parseInt(this.weight)
