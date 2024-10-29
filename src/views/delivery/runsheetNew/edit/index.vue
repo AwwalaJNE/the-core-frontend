@@ -8,29 +8,38 @@
                 </div>
             </vs-col>
         </vs-row>
-        <vs-row align="center" style="margin-top: 1rem;">
+        <vs-row align="self-end" style="margin-top: 1rem;">
             <template>
                 <vs-col xs="12" sm="3" lg="3">
-                    <div class="center">
-                        <vs-input
-                            ref="formInputBag"
-                            v-model="item_bag"
-                            border
-                            type="text"
-                            label-placeholder="Scan Bag Pra Runsheet Here"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keydown.enter="updateValueBag"
-                            @click-icon="$refs.cameraScanner.open('formInputBag')"
-                        >
-                            <template #icon>
+                    <vs-row class="mb-2">
+                        <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                            Auto Open Bag
+                        </vs-checkbox>
+                    </vs-row>
+
+                    <vs-row>
+                        <div class="center" style="width: 100%">
+                            <vs-input
+                                ref="formInputBag"
+                                v-model="item_bag"
+                                border
+                                type="text"
+                                label-placeholder="Scan Bag Pra Runsheet Here"
+                                autofocus
+                                icon-after
+                                v-uppercase
+                                :disabled="disabledApprove"
+                                @keydown.enter="updateValueBag"
+                                @click-icon="$refs.cameraScanner.open('formInputBag')"
+                            >
+                                <template #icon>
                                 <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
+                                </template>
+                            </vs-input>
+                        </div>
+                    </vs-row>
                 </vs-col>
+
                 <vs-col xs="12" sm="3" lg="3">
                     <div class="center">
                         <vs-input
@@ -355,6 +364,7 @@ export default {
             courier_arr: [],
             selectedCourier: "",
             is_approve: '0',
+            is_auto_open_bag: false,
         };
     },
     computed: {
@@ -466,6 +476,7 @@ export default {
             this.form.courier_employee_id = this.employee_id;
             this.item_no = null;
             this.form.koli_number = null;
+            this.form.auto_open_bag = this.is_auto_open_bag;
             document.activeElement.blur();
             this.validateBagPraRunsheet(val);
         },
@@ -473,6 +484,7 @@ export default {
             this.form.koli_number = this.item_no;
             this.form.courier_employee_id = this.employee_id;
             this.form.bag_number = null;
+            this.form.auto_open_bag = this.is_auto_open_bag;
             document.activeElement.blur();
             this.scanConnote();
         },
@@ -520,7 +532,8 @@ export default {
             let valForm = {
                 item_number: this.item_bag,
                 delivery_runsheet_number: this.delivery_runsheet_number,
-                courier_id: this.employee_id
+                courier_id: this.employee_id,
+                auto_open_bag: this.is_auto_open_bag
             }
             await axios
                 .post(this.URL.validation + `/create-runsheet-pra?n=${this.listenNodeId}`, valForm, this.Helper.header())
@@ -539,7 +552,8 @@ export default {
                     const postData = {
                         bag_number: this.form.bag_number,
                         courier_employee_id: this.employee_id,
-                        delivery_runsheet_number: this.delivery_runsheet_number
+                        delivery_runsheet_number: this.delivery_runsheet_number,
+                        auto_open_bag: this.is_auto_open_bag
                     };
 
                     if (postData) {
@@ -572,13 +586,15 @@ export default {
                 valForm = {
                     item_number: postData.koli_number,
                     delivery_runsheet_number: this.delivery_runsheet_number,
-                    courier_id: this.employee_id
+                    courier_id: this.employee_id,
+                    auto_open_bag: this.is_auto_open_bag
                 }
             } else {
                 valForm = {
                     item_number: this.form.koli_number,
                     delivery_runsheet_number: this.delivery_runsheet_number,
-                    courier_id: this.employee_id
+                    courier_id: this.employee_id,
+                    auto_open_bag: this.is_auto_open_bag
                 }
             }
 
@@ -1052,7 +1068,10 @@ export default {
             }
 
             return lines;
-        }
+        },
+        handleAutoOpenBag(val) {
+            this.is_auto_open_bag = val.target.checked;
+        },
     }
 };
 </script>

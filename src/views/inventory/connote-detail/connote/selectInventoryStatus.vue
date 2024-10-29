@@ -36,8 +36,8 @@ export default {
     props: {
         query: String,
         queryBag: String,
-        queryInventory: String
-
+        queryInventory: String,
+        filterStatusBy: String
     },
     components: {
         "table-master" : TableMaster
@@ -111,7 +111,7 @@ export default {
             this.loading = true
             let query = "";
             if(q !== undefined) {
-                query = q
+                query = this.filterStatusBy ? this.filterStatusBy : q;
             }
            
             await axios
@@ -152,7 +152,7 @@ export default {
             this.refresh()
         },
         refresh(val){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.filterStatusBy)
         },
         closeDialogUser(){
             this.dialogUser = false

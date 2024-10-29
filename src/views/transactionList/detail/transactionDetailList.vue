@@ -247,7 +247,7 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
         actionDetail(row){
-          this.$router.push({name:'InventoryItem-detail', params:{ id:row.connote_number}});
+          this.$router.push({name:'InventoryItem-detail', params:{ id:row.connote_number + "00"}});
           this.setRoutePageHistory(this.$route.meta, false);
         },
         getTransactionIdParam(){
