@@ -1152,14 +1152,14 @@
     </vs-table>
 
     <vs-row class="mt-2" justify="flex-end" align="center">
-      <vs-col w="4">
-        <vs-button
-          @click="handleExportCSV"
-          >
-            Export
-          </vs-button>
-      </vs-col>
       <template v-if="hasPagination == true">
+        <vs-col w="4">
+          <vs-button
+            @click="handleExportCSV"
+            >
+              Export
+            </vs-button>
+        </vs-col>
         <vs-col w="8">
           <pagination-master
             :page="pagination.page"
