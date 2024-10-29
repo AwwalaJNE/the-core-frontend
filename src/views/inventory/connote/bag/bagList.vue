@@ -16,6 +16,7 @@
         :limit="pagination.limit"
         :hasAction="false"
         :hasLinked="['bag_number']"
+        :hasLinkedDanger="'status_irregularity_description'"
         :printAction="true"
         :actionSize="'xxs'"
         :hasPagination="true"
@@ -48,6 +49,7 @@ export default {
         searchDateBy: String,
         searchBy: String,
         bagStatus: String,
+        bagIrreg: String,
     },
     components: {
         "table-master" : TableMaster,
@@ -60,7 +62,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.bagStatus);
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg);
                 }
             }
         },
@@ -68,7 +70,7 @@ export default {
           if(val !== undefined) {
             this.bagFilter = val
             if(this.bagFilter !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.bagStatus);
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg);
             }
           }
         },
@@ -76,7 +78,7 @@ export default {
           if(val !== undefined) {
             this.routingFilter = val
             if(this.routingFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, val, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.bagStatus)
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, val, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg)
             }
           }
         },
@@ -84,7 +86,7 @@ export default {
           if(val !== undefined) {
             this.tipeBagFilter = val
             if(this.tipeBagFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, val, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.bagStatus);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, val, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg);
             }
           }
         },
@@ -92,7 +94,7 @@ export default {
           if(val !== undefined) {
             this.filterDateBy = val
             if(this.filterDateBy !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, val, this.bagStatus);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, val, this.statusBagFilter, this.statusBagIrreg);
             }
           }
         },
@@ -100,7 +102,7 @@ export default {
           if(val !== undefined) {
             this.searchByBag = val
             if(this.searchByBag !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, val, this.filterDateBy, this.bagStatus);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, val, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg);
             }
           }
         },
@@ -111,14 +113,22 @@ export default {
                     this.startDate = this.tempDate !== null ? this.tempDate[0] : '';
                     this.endDate = this.tempDate !== null ? this.tempDate[1] : '';
                 }
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.bagStatus);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg);
             }
         },
         bagStatus: function(val, old) {
           if(val !== undefined) {
             this.statusBagFilter = val
             if(this.statusBagFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, val);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, val, this.statusBagIrreg);
+            }
+          }
+        },
+        bagIrreg: function(val, old) {
+          if(val !== undefined) {
+            this.statusBagIrreg = val
+            if(this.statusBagIrreg !== old) {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, val);
             }
           }
         },
@@ -131,6 +141,11 @@ export default {
                     label: "Bag #",
                     key: "bag_number",
                     width: "xs"
+                },
+                {
+                    label: "Source",
+                    key: "source",
+                    width: "xxxxs"
                 },
                 {
                     label: "Bag type",
@@ -202,12 +217,12 @@ export default {
                     key: "approved",
                     width: "xxxxs"
                 },
-                {
-                    label: "Status",
-                    key: "summary_status",
-                    width: "xxxxs",
-                    tooltip_desc: "Status SM/SJ"
-                },
+                // {
+                //     label: "Status",
+                //     key: "summary_status",
+                //     width: "xxxxs",
+                //     tooltip_desc: "Status SM/SJ"
+                // },
                 {
                     label: "Status Irregularity",
                     key: "status_irregularity_description",
@@ -221,6 +236,7 @@ export default {
             routingFilter: this.bagRouting ? this.bagRouting : "",
             tipeBagFilter: this.bagTipe ? this.bagTipe : "",
             statusBagFilter: this.bagStatus ? this.bagStatus : "",
+            statusBagIrreg: this.bagIrreg ? this.bagIrreg : "",
             filterDateBy: this.searchDateBy ? this.searchDateBy : "",
             searchByBag: this.searchBy ? this.searchBy : "",
             dialogRole: false,
@@ -237,7 +253,7 @@ export default {
         }
     },
     methods: {
-        async getTableData(limit,page,q, bagDestination, bagRouting, bagTipe,  from, to, searchByBag, filterDateBy, bagStatus) {
+        async getTableData(limit,page,q, bagDestination, bagRouting, bagTipe,  from, to, searchByBag, filterDateBy, bagStatus, bagIrreg) {
             this.loading = true
             let query = "";
             let bagDes = "";
@@ -246,6 +262,7 @@ export default {
             let startDate = "";
             let endDate = "";
             let bagStat = "";
+            let bagIrregStatus = "";
             if(q !== undefined) {
                 query = q
             }
@@ -265,9 +282,17 @@ export default {
             if(bagStatus !== undefined && bagStatus !== '-') {
                 bagStat = bagStatus
             }
+            if(bagIrreg && bagIrreg !== '-') {
+                if (bagIrreg === '1') {
+                    bagIrregStatus = "Irregularity"
+                }
+                else {
+                    bagIrregStatus = "Not Irregularity"
+                }
+            }
             await axios
                 .get(this.URL.bag_inventory +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length == 0) {
@@ -299,6 +324,13 @@ export default {
                         el.with_courier = el.courier ? el.courier.employee_name : ""
                         el.approved = el.is_approve === 1 ? "Yes" : "No"
                         el.status_irregularity_description = el.irregularity_status_description || ""
+                        
+                        if (this.listenNodeId === el.origin_node_id) {
+                            el.source = 'CREATE'
+                        }
+                        else {
+                            el.source = 'RECEIVE'
+                        }
                     });
                     this.dataTable = res.data.data
 
@@ -379,14 +411,14 @@ export default {
             let [from, to] = this.dateRange.length > 0 
                 ? [moment(this.dateRange[0]).format("YYYY-MM-DD"), moment(this.dateRange[1]).format("YYYY-MM-DD")] 
                 : ["", ""];
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, from, to, this.searchByBag, this.filterDateBy, this.statusBagFilter)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, from, to, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg)
         },
         updateSelected(_event, _item, selected) {
             this.selectedRow = selected.filter(bag => bag.is_approve !== 0).map(bag => bag.bag_number);
         },
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg)
         this.handlePrintShortcut(this.actionPrintSelected)
     },
 }

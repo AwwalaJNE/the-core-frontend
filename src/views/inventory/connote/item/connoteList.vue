@@ -16,6 +16,7 @@
         :limit="pagination.limit"
         :hasAction="false"
         :hasLinked="['koli_number']"
+        :hasLinkedDanger="'status_irregularity'"
         :hasPagination="true"
         :hasId="true"
         @actionUpdate="actionUpdate"

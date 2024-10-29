@@ -506,9 +506,18 @@
                           hasLinked.includes(column.key.toLowerCase())
                       "
                     >
-                      <span class="text-link" @click="handleEdit(item)">{{
-                        item[column.key] ? item[column.key] : ""
-                      }}</span>
+                      <template v-if="hasLinkedDanger !== undefined &&
+                          column.key !== undefined &&
+                          item[hasLinkedDanger]">
+                        <span class="text-danger" @click="handleEdit(item)">{{
+                          item[column.key] ? item[column.key] : ""
+                        }}</span>
+                      </template>
+                      <template v-else>
+                        <span class="text-link" @click="handleEdit(item)">{{
+                          item[column.key] ? item[column.key] : ""
+                        }}</span>
+                      </template>
                     </template>
                     <template
                       v-else-if="
@@ -1143,14 +1152,14 @@
     </vs-table>
 
     <vs-row class="mt-2" justify="flex-end" align="center">
-      <vs-col w="4">
-        <vs-button
-          @click="handleExportCSV"
-          >
-            Export
-          </vs-button>
-      </vs-col>
       <template v-if="hasPagination == true">
+        <vs-col w="4">
+          <vs-button
+            @click="handleExportCSV"
+            >
+              Export
+            </vs-button>
+        </vs-col>
         <vs-col w="8">
           <pagination-master
             :page="pagination.page"
@@ -1191,6 +1200,7 @@ export default {
     hasAction: Boolean,
     hasPagination: Boolean,
     expandable: Boolean,
+    hasLinkedDanger: String,
     hasLinked: Array,
     hasLinked2: Array,
     hasLinked3: Array,
@@ -1600,6 +1610,12 @@ span.text-link {
 }
 p.text-link {
   color: rgb(53, 92, 255);
+  cursor: pointer;
+}
+span.text-danger {
+  display: inline-block;
+  padding-top: 18px;
+  color: rgba(255,71,87,255);
   cursor: pointer;
 }
 .is-runsheet-page {
