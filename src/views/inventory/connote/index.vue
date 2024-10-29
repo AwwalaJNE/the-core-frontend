@@ -108,38 +108,45 @@
                         </template>
                         <template v-if="navActive === 'k-BAG'">
                             <vs-row >
-                               <vs-col vs-align="center" xs="12" sm="4" lg="2">
+                               <vs-col vs-align="center" xs="12" sm="6" lg="3">
                                 <select-bag-destination
                                     ref="bag_destination"
                                     :isMultiple="false"
                                     :border="true"
                                     @updateBagDestination="updateBagDestination" />
                                 </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="4" lg="2">
+                                <vs-col vs-align="center" xs="6" sm="6" lg="3">
                                 <select-bag-routing
                                     ref="bag_routing"
                                     :isMultiple="false"
                                     :border="true"
                                     @updateBagRouting="updateBagRouting" />
                                 </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="4" lg="2">
+                                <vs-col vs-align="center" xs="6" sm="4" lg="3">
                                 <select-bag-tipe
                                     ref="bag_tipe"
                                     :isMultiple="false"
                                     :border="true"
                                     @updateBagTipe="updateBagTipe" />
                                 </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="4" lg="2">
+                                <vs-col vs-align="center" xs="6" sm="4" lg="3">
                                 <select-bag-status
                                     ref="bag_status"
                                     :isMultiple="false"
                                     :border="true"
                                     @updateBagStatus="updateBagStatus" />
                                 </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="3" lg="2">
+                                <vs-col vs-align="center" xs="6" sm="4" lg="3">
+                                <select-bag-irreg
+                                    ref="bag_irreg"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    @updateBagIrreg="updateBagIrreg" />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="12" sm="6" lg="3">
                                     <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
                                 </vs-col>
-                                <vs-col xs="12" sm="5" lg="2">
+                                <vs-col xs="12" sm="6" lg="3">
                                     <date-time
                                         :name="''"
                                         :rules="''"
@@ -152,7 +159,7 @@
                             
                           </vs-row>
                             <transition name="slide-fade">
-                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :bagStatus="bagStatus" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateBy" :searchBy="searchByBag"/>
+                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :bagStatus="bagStatus" :bagIrreg="bagIrreg" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateBy" :searchBy="searchByBag"/>
                             </transition>
                         </template>
                         
@@ -181,6 +188,7 @@ import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDest
 import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
 import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
 import SelectBagStatus from "@/views/inventory/connote/bag/selectBagOpened"
+import SelectBagStatusIrreg from "@/views/inventory/connote/bag/selectBagIrreg"
 import DateTime from "@/components/input/dateTime"
 import SelectBagStatusConnote from "@/views/inventory/connote/connote/selectBagStatus"
 import SelectInventoryConnote from "@/views/inventory/connote/connote/selectInventoryStatus"
@@ -216,6 +224,7 @@ export default {
         "select-bag-routing": SelectBagRouting,
         "select-bag-tipe": SelectBagTipe,
         "select-bag-status": SelectBagStatus,
+        "select-bag-irreg": SelectBagStatusIrreg,
         "date-time": DateTime,
         "select-status-bag-cnote": SelectBagStatusConnote,
         "select-status-inventory-cnote": SelectInventoryConnote,
@@ -320,6 +329,7 @@ export default {
             bagRouting:"",
             bagTipe:"",
             bagStatus: "",
+            bagIrreg: "",
             searchByDataType: false,
             searchByDataTypeCnote: false,
         }
@@ -369,6 +379,9 @@ export default {
         },
         updateBagStatus(key,val){
             this.bagStatus = val
+        },
+        updateBagIrreg(key,val){
+            this.bagIrreg = val
         },
         refresh(){
             let el = this.refreshInject
