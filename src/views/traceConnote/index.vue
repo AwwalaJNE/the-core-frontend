@@ -219,27 +219,23 @@ export default {
         koli_number: "",
         connote_number: "",
         connote_found: false,
-        filterStatusBy: "ALL",
+        filterStatusBy: "All",
         filterStatus: [
             {
                 label: 'All Connote Type',
-                value: 'ALL'
-            },
-            {
-                label: 'Connote Regular',
-                value: 'NORMAL'
+                value: 'All'
             },
             {
                 label: 'Connote Forward',
-                value: 'FORWARD'
+                value: 'FW'
             },
             {
                 label: 'Connote Return',
-                value: 'RETURN'
+                value: 'RT'
             },
             {
                 label: 'Connote Return Failed',
-                value: 'RETURN FAILED'
+                value: 'RF'
             }
         ],
       };
