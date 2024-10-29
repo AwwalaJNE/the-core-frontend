@@ -120,6 +120,15 @@ export default {
     methods: {
         async getDataDetail(val){
             this.kpi_process_target_id = val.kpi_process_target_id;
+
+            let curr_reference_value_arr = [{
+                label: val.reference_value,
+                value: val.reference_value
+            }]
+
+            this.$store.dispatch("SET_KPI_PROCESS_TARGET_REFERENCE_VALUE", val.reference_value);
+            this.$store.dispatch("SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ValueData", val.reference_value);
+            this.$store.dispatch("SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
         },
         formData(form){
             const { kpi_process_target_id, ...formWithoutId } = form;
@@ -155,17 +164,17 @@ export default {
                         break;
                     case "NODE":
                         this.autoCompleteUrl = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "node_id";
+                        this.input_value = "node_code";
                         this.input_label = "node_name";
                         break;
                     case "USER":
                         this.autoCompleteUrl = this.URL.user_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "user_id";
+                        this.input_value = "user_login";
                         this.input_label = "user_name";
                         break;
                     case "EMPLOYEE":
                         this.autoCompleteUrl = this.URL.employee_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "employee_id";
+                        this.input_value = "employee_nik";
                         this.input_label = "employee_name";
                         break;
                     default:
