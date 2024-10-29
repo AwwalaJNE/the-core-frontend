@@ -111,13 +111,13 @@ export default {
             this.loading = true
             let query = "";
             if(q !== undefined) {
-                query = q
+                query = this.filterStatusBy ? this.filterStatusBy : q;
             }
            
             await axios
                 .get(
                     this.URL.connote +
-                    `/${this.connote_number}/activity?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${this.filterStatusBy}`,
+                    `/${this.connote_number}/activity?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
