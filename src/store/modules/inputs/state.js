@@ -4428,4 +4428,16 @@ export default {
       value: ''
     }
   },
+
+  bag_is_auto_open_bag: {
+    bag_is_auto_open_bag: {
+      label: "Is Auto Open Bag",
+      key: "bag_is_auto_open_bag",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: false,
+      value: false
+    },
+  }
 }

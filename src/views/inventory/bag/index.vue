@@ -588,12 +588,16 @@ export default {
             let bagNumber = res.data.data.bag_number;
             this.handleClearForm()
             this.openNotification("success", null, 'Success', 'Bagging is success')
+
+            this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG", this.is_auto_open_bag);
+            this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG_ValueData", this.is_auto_open_bag);
+
             this.$router.push('/bagging-detail/'+bagNumber)
             this.setRoutePageHistory(this.$route.meta, false);
           }).catch(err => {
             this.loading = false
             this.handleClearForm()
-            this.openNotification('danger', err?.response?.data?.code ?? '', err?.response?.data?.message ?? 'Something went wrong')
+            this.openNotification('danger', err?.response?.data?.code ?? '', "FAILED", err?.response?.data?.message ?? 'Something went wrong')
           })
     },
     querySearchAsync(queryString, cb) {
@@ -645,6 +649,10 @@ export default {
         }
       });
     },
+  },
+  created() {
+    this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG", false);
+    this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG_ValueData", false);
   },
   mounted() {
     this.getNodeLink()
