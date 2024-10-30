@@ -61,6 +61,11 @@
 
     <template v-if="!disabledApprove && !is_orion && !loading && !is_masterbag">
       <div class="center in-get-bag">
+        <vs-row class="mb-2 mt-2">
+          <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+            Auto Open Bag
+          </vs-checkbox>
+        </vs-row>
         <vs-row style="margin-top:2em">
           <vs-col xs="4" sm="4" lg="2">
             <vs-radio
@@ -347,6 +352,7 @@ export default {
       dialogHelpdeskEditBag: false,
       is_approve: false,
       is_actual_weight_mandatory: false,
+      is_auto_open_bag: false,
     }
   },
   computed: {
@@ -387,6 +393,9 @@ export default {
   methods: {
     refresh() {
       this.$refs.detailbagList.refresh()
+    },
+    handleAutoOpenBag(val) {
+      this.is_auto_open_bag = val.target.checked;
     },
     getResponse(data, loading) {
       
@@ -469,17 +478,20 @@ export default {
           bag_number : this.bag_id,
           destination : this.listenDestination,
           service: this.listenServiceType,
-          is_pra_runsheet: this.is_pra_runsheet
+          is_pra_runsheet: this.is_pra_runsheet,
+          auto_open_bag: this.is_auto_open_bag
       }
     },
     updateItemOnBag() {
       this.form.item_number = this.item_code
       this.form.is_pra_runsheet = this.is_pra_runsheet
+      this.form.auto_open_bag = this.is_auto_open_bag
       this.ProccessAddBagItem()
     },
     updateItemOnBagOrion() {
       this.form.item_number = this.item_code_orion + "00"
       this.form.is_pra_runsheet = this.is_pra_runsheet
+      this.form.auto_open_bag = this.is_auto_open_bag
       this.ProccessAddBagItem()
     },
     updateValue(){
