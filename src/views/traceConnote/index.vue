@@ -274,6 +274,7 @@ export default {
             this.statusinventory = val;
         },
         activeTab(val) {
+            this.filterStatusBy = 'All';
             this.navActive = val;
             let item = this.navItem.filter(item => {
                 return item.key == val;

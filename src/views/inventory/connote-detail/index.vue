@@ -23,6 +23,29 @@
                             <vs-col xs="6" sm="9" lg="9">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
+                            <vs-col xs="12" sm="3" lg="3" >
+                                <template v-if="filterStatus.length > 1 && navActive === 'k-ACTIVITY'">
+                                    <vs-select
+                                        class="m-select"
+                                        filter
+                                        v-model="filterStatusBy"
+                                        :border="true"
+                                        :multiple="false"
+                                        @change="updateFilterStatus"
+                                    >
+                                    <template v-if="filterStatus.length > 1">
+                                        <vs-option
+                                            v-for="(item,key) in filterStatus"
+                                            :key="key"
+                                            :label="item.label"
+                                            :value="item.value">
+                                        {{item.label}}
+                                        </vs-option>
+                                    </template>
+
+                                    </vs-select>
+                                </template>
+                            </vs-col>
                             
                         </vs-row>
                         <template v-if="navActive === 'k-INFO'">
@@ -54,7 +77,13 @@
                         <template v-if="navActive === 'k-ACTIVITY'">
                           <vs-row >
                             <vs-col vs-align="center" xs="12" sm="3" lg="12">
-                              <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
+                              <select-status-inventory 
+                                ref="activityInventory" 
+                                :isMultiple="false" 
+                                :border="true" 
+                                :filterStatusBy="filterStatusBy"
+                                @updateStatusinventory="updateStatusinventory" 
+                                />
                             </vs-col>
                           </vs-row>
                         </template>
@@ -150,7 +179,26 @@ export default {
             informationData:[],
             statusinventory:"",
             koli_number:'',
-            connote_number:''
+            connote_number:'',
+            filterStatusBy: "All",
+            filterStatus: [
+                {
+                    label: 'All Connote Type',
+                    value: 'All'
+                },
+                {
+                    label: 'Connote Forward',
+                    value: 'FW'
+                },
+                {
+                    label: 'Connote Return',
+                    value: 'RT'
+                },
+                {
+                    label: 'Connote Return Failed',
+                    value: 'RF'
+                }
+            ],
         }
     },
     methods: {
@@ -169,6 +217,7 @@ export default {
         },
 
         activeTab(val) {
+            this.filterStatusBy = 'All';
             this.navActive = val
             let item = this.navItemm.filter(item => {
                 return item.key == val
@@ -375,6 +424,10 @@ export default {
                     printWindow.onafterprint = () => printWindow.close();
                 };
             }
+        },
+        updateFilterStatus(key) {
+            this.filterStatusBy = key;
+            this.$refs.activityInventory.refresh();
         },
     },
     mounted(){
