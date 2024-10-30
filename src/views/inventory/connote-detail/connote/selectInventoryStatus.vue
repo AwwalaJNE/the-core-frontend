@@ -108,6 +108,7 @@ export default {
     },
     methods: {
         async getTableData(limit,page,q) {
+            console.log("ASAS")
             this.loading = true
             let query = "";
             if(q !== undefined) {
