@@ -39,7 +39,7 @@
                                 </vs-row>
                             </vs-col>
                         </vs-row>
-                        <vs-row>
+                        <vs-row align="center">
                             <vs-col vs-align="center" xs="6" sm="4" lg="3">
                                 <select-bag-routing
                                     ref="bag_routing"
@@ -67,7 +67,14 @@
                                     :isMultiple="false"
                                     :border="true"
                                     @updateBagIrreg="updateBagIrreg" />
-                                </vs-col>
+                            </vs-col>
+                            <vs-col vs-align="center" xs="6" sm="4" lg="3">
+                                <select-bag-source
+                                    ref="bag_source"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    @updateBagSource="updateBagSource" />
+                            </vs-col>
                             <vs-col vs-align="center" xs="12" sm="4" lg="3">
                                 <select-search-by :isMultiple="false" :border="true"
                                     @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
@@ -79,7 +86,7 @@
                             </vs-col>
                         </vs-row>
                         <transition name="slide-fade">
-                            <bag-list :ref="'bagList'" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :bagStatus="bagStatus" :bagIrreg="bagIrreg" :query="tempSearch" :dateFilter="tempDate" :searchBy="searchBy" :searchDateBy="filterDateBy"/>
+                            <bag-list :ref="'bagList'" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :bagStatus="bagStatus" :bagIrreg="bagIrreg" :bagSource="bagSource" :query="tempSearch" :dateFilter="tempDate" :searchBy="searchBy" :searchDateBy="filterDateBy"/>
                         </transition>
                         
                     </div>
@@ -103,6 +110,7 @@ import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
 import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
 import SelectBagStatus from "@/views/inventory/connote/bag/selectBagOpened"
 import SelectBagStatusIrreg from "@/views/inventory/connote/bag/selectBagIrreg"
+import SelectBagSource from "@/views/inventory/connote/bag/selectBagSource"
 import DateTime from "@/components/input/dateTime"
 import dateRange from "@/components/daterange/index";
 import SelectSearchBy from "@/components/search/selectSearchBy";
@@ -125,6 +133,7 @@ export default {
         "select-bag-destination": SelectBagDestinationVue,
         "select-bag-routing": SelectBagRouting,
         "select-bag-tipe": SelectBagTipe,
+        "select-bag-source": SelectBagSource,
         "date-time": DateTime,
         "daterange-filter": dateRange,
         "select-search-by" : SelectSearchBy,
@@ -157,6 +166,7 @@ export default {
             bagTipe:"",
             bagStatus:"",
             bagIrreg: "",
+            bagSource: "",
             destination_tlc: [{
               label: 'All Destination',
               value: ''
@@ -247,6 +257,9 @@ export default {
         },
         updateBagIrreg(key,val){
             this.bagIrreg = val
+        },
+        updateBagSource(key,val){
+            this.bagSource = val
         },
         refresh(){
             this.$refs.bagList.refresh();
