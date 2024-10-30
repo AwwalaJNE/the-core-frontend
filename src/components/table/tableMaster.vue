@@ -1506,20 +1506,30 @@ export default {
     },
     convertToCSV(columns, data) {
         const headers = columns.map(column => column.label);
-        const rows = data.map(item => columns.map(column => item[column.key] || ''));
+        const rows = data.map(item => columns.map(column => {
+            let value = item[column.key] || '';
+            value = value.toString().replace(/"/g, '""');
+            if (value.includes(',') || value.includes('\n')) {
+                value = `"${value}"`;
+            }
+            return value;
+        }));
         return [headers, ...rows].map(row => row.join(',')).join('\n');
     },
     handleExportCSV() {
         const csv = this.convertToCSV(this.listenColumn, this.listenDataTable);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
+        const route = this.$route.path.replaceAll("/", "-").slice(1);
+        const timestamp = new Date().toLocaleString().replaceAll("/", "-").replaceAll(":", "-");
+        const fileName = `${route} - ${timestamp}`;
         
         if (navigator.msSaveBlob) { // For IE 10+
-            navigator.msSaveBlob(blob, 'data.csv');
+            navigator.msSaveBlob(blob, `${fileName}.csv`);
         } else {
             const url = URL.createObjectURL(blob);
             link.setAttribute('href', url);
-            link.setAttribute('download', 'data.csv');
+            link.setAttribute('download', `${fileName}.csv`);
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
