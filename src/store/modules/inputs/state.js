@@ -3615,7 +3615,7 @@ export default {
     destination_phone: {
       label: "Telepon Penerima*",
       key: "destination_phone",
-      rule: "required|numeric|min:8",
+      rule: "min:8",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -4294,7 +4294,7 @@ export default {
     connote_shipper_phone_number: {
       label: "Telepon Pengirim*",
       key: "connote_shipper_phone_number",
-      rule: "required|numeric|min:8",
+      rule: "min:8",
       typeInput: "text",
       typeData: "String",
       isDisabled: false,
@@ -4305,7 +4305,7 @@ export default {
     connote_receiver_phone_number: {
       label: "Telepon Penerima*",
       key: "connote_receiver_phone_number",
-      rule: "required|numeric|min:8",
+      rule: "min:8",
       typeInput: "text",
       typeData: "String",
       isDisabled: false,
