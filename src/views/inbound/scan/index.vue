@@ -145,8 +145,12 @@ export default {
         },
         async processInbond() {
           this.openProgress(null, "Processing", `${this.form.item_no ? this.form.item_no : 'Item' } is in process`);
-          let inbound_number = this.dataTable.length > 0 ? this.dataTable[0].inbound_number : null;
-          this.form.inbound_number = inbound_number;
+          
+          if(this.$route.params.inbound_id){
+            let inbound_number = this.dataTable.length > 0 ? this.dataTable[0].inbound_number : null;
+            this.form.inbound_number = inbound_number;
+          }
+
           await axios
               .post(this.URL.receiving + `?n=${this.listenNodeId}`,
                   JSON.stringify(this.form),
@@ -167,7 +171,7 @@ export default {
                   this.refresh()
                   this.handlerClearForm()
                   setTimeout(()=>{
-                    this.openNotification(typeNotif, 'Receiving Success!', message)
+                    this.openNotification(typeNotif, '', 'Receiving Success!', message)
                   },300);
                 }
               }).catch(err => {
