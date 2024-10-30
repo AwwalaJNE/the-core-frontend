@@ -59,7 +59,7 @@ export default {
           value: '0'
         }
       ],
-      value: this.selectedValue ? this.selectedValue :"-",
+      value: this.selectedValue ? this.selectedValue :"0",
       arrValue: this.selectedValue ? this.selectedValue : [{
         label: 'Unopened Bag',
         value: '0'
