@@ -3703,4 +3703,12 @@ export default {
   },
 
   //====== END BAG WEIGHT SETTINGS ======//
+
+  SET_BAG_IS_AUTO_OPEN_BAG({ commit }, payload) {
+    commit('SET_BAG_IS_AUTO_OPEN_BAG', payload);
+  },
+
+  SET_BAG_IS_AUTO_OPEN_BAG_ValueData({ commit }, payload) {
+    commit('SET_BAG_IS_AUTO_OPEN_BAG_ValueData', payload);
+  }
 }

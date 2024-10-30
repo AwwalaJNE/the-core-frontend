@@ -4027,4 +4027,13 @@ export default {
   },
 
   //====== END BAG WEIGHT SETTINGS ======//
+
+
+  SET_BAG_IS_AUTO_OPEN_BAG(state, payload) {
+    state.bag_is_auto_open_bag.bag_is_auto_open_bag.value = payload || false;
+  },
+
+  SET_BAG_IS_AUTO_OPEN_BAG_ValueData(state, payload) {
+    state.bag_is_auto_open_bag.bag_is_auto_open_bag.valueData = payload || false;
+  }
 }
