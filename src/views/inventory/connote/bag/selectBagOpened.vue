@@ -61,8 +61,8 @@ export default {
       ],
       value: this.selectedValue ? this.selectedValue :"-",
       arrValue: this.selectedValue ? this.selectedValue : [{
-        label: 'All',
-        value: '-'
+        label: 'Unopened Bag',
+        value: '0'
       }],
     }
   },
