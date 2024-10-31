@@ -337,7 +337,7 @@ export default {
             ],
             bagRouting:"",
             bagTipe:"",
-            bagStatus: "",
+            bagStatus: "0",
             bagIrreg: "",
             bagSource: "",
             searchByDataType: false,

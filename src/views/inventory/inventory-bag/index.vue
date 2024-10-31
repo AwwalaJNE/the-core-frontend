@@ -164,7 +164,7 @@ export default {
             bagDestination:"",
             bagRouting:"",
             bagTipe:"",
-            bagStatus:"",
+            bagStatus:"0",
             bagIrreg: "",
             bagSource: "",
             destination_tlc: [{

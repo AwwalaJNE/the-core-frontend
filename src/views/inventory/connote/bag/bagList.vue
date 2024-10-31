@@ -244,7 +244,7 @@ export default {
             bagFilter: this.bagDestination ? this.bagDestination : "",
             routingFilter: this.bagRouting ? this.bagRouting : "",
             tipeBagFilter: this.bagTipe ? this.bagTipe : "",
-            statusBagFilter: this.bagStatus ? this.bagStatus : "",
+            statusBagFilter: this.bagStatus ? this.bagStatus : "0",
             statusBagIrreg: this.bagIrreg ? this.bagIrreg : "",
             bagSourceFilter: this.bagSource ? this.bagSource : "",
             filterDateBy: this.searchDateBy ? this.searchDateBy : "",
