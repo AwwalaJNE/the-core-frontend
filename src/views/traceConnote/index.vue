@@ -263,7 +263,7 @@ export default {
 
         async processConnoteNumber() {
             this.connote_number = this.connoteNumber;
-            this.koli_number = this.connoteNumber + "00";
+            this.koli_number = this.connoteNumber;
             const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
             await this.$router.push(url); 
             this.setRoutePageHistory(this.$route.meta, false);
@@ -463,7 +463,7 @@ export default {
 
         updateValueOrion() {
             this.connote_number = this.connoteNumber;
-            this.koli_number = `${this.connoteNumber}` + "00";
+            this.koli_number = `${this.connoteNumber}`;
             const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
             this.$router.push(url); 
             this.setRoutePageHistory(this.$route.meta, false);
