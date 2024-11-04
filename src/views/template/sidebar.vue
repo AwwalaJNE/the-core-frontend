@@ -514,12 +514,12 @@ export default {
           ],
         },
         {
-          label: "Tracing",
+          label: "WUS",
           url: null,
           icon: "bx bx-store-alt",
           children: [
             {
-              label: "Entry & Inventory",
+              label: "Receiving & Inventory",
               url: "/tracing-outstanding",
               icon: "",
               permission: "read-irreg",

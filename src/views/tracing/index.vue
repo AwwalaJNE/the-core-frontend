@@ -4,7 +4,7 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{  is_history ? "Archive" : "Entry & Inventory" }}</h2>
+                    <h2>{{  is_history ? "Archive" : "Receiving & Inventory" }}</h2>
                 </div>                
             </vs-col>
         </vs-row>
