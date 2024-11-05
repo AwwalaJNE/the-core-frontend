@@ -78,10 +78,21 @@ const Master = {
         },
         openNotification(type = null, code, title, msg) {
             this.playNotificationSound(type);
+            if (type === 'success') {
+                return
+            }
+
+            const notifications = document.querySelectorAll('.vs-notification');
+            for (const notification of notifications) {
+                const message = notification.querySelector('p').textContent;
+                if (msg === message) {
+                    return;
+                }
+            }
 
             // type success, danger, warn
             const noti = this.$vs.notification({
-                duration: 6000,
+                duration: 3000,
                 progress: 'auto',
                 color: type,
                 position: 'top-right',
