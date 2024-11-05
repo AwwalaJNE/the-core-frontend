@@ -43,6 +43,7 @@ export default {
     props: {
         query: String,
         bagDestination: [],
+        bagOrigin: [],
         bagRouting: String,
         bagTipe: String,
         dateFilter: Array,
@@ -63,7 +64,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
                 }
             }
         },
@@ -71,7 +72,15 @@ export default {
           if(val !== undefined) {
             this.bagFilter = val
             if(this.bagFilter !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
+            }
+          }
+        },
+        bagOrigin: function(val, old) {
+          if(val !== undefined) {
+            this.bagOriginFilter = val
+            if(this.bagOriginFilter !== old) {
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, val, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
             }
           }
         },
@@ -79,7 +88,7 @@ export default {
           if(val !== undefined) {
             this.routingFilter = val
             if(this.routingFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, val, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter)
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, val, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter)
             }
           }
         },
@@ -87,7 +96,7 @@ export default {
           if(val !== undefined) {
             this.tipeBagFilter = val
             if(this.tipeBagFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, val, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, val, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
             }
           }
         },
@@ -95,7 +104,7 @@ export default {
           if(val !== undefined) {
             this.filterDateBy = val
             if(this.filterDateBy !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, val, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, val, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
             }
           }
         },
@@ -103,7 +112,7 @@ export default {
           if(val !== undefined) {
             this.searchByBag = val
             if(this.searchByBag !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, val, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, val, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
             }
           }
         },
@@ -114,14 +123,14 @@ export default {
                     this.startDate = this.tempDate !== null ? this.tempDate[0] : '';
                     this.endDate = this.tempDate !== null ? this.tempDate[1] : '';
                 }
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter);
             }
         },
         bagStatus: function(val, old) {
           if(val !== undefined) {
             this.statusBagFilter = val
             if(this.statusBagFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, val, this.statusBagIrreg, this.bagSourceFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, val, this.statusBagIrreg, this.bagSourceFilter);
             }
           }
         },
@@ -129,7 +138,7 @@ export default {
           if(val !== undefined) {
             this.statusBagIrreg = val
             if(this.statusBagIrreg !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, val, this.bagSourceFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, val, this.bagSourceFilter);
             }
           }
         },
@@ -137,7 +146,7 @@ export default {
           if(val !== undefined) {
             this.bagSourceFilter = val
             if(this.bagSourceFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, val);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, val);
             }
           }
         },
@@ -179,6 +188,11 @@ export default {
                 {
                     label: "Weight (Kg)",
                     key: "bag_weight",
+                    width: "auto"
+                },
+                {
+                    label: "Origin",
+                    key: "origin_tariff_code",
                     width: "auto"
                 },
                 {
@@ -242,6 +256,7 @@ export default {
             dataItem: {},
             tempSearch: this.query ? this.query : "",
             bagFilter: this.bagDestination ? this.bagDestination : "",
+            bagOriginFilter: this.bagOrigin ? this.bagOrigin : "",
             routingFilter: this.bagRouting ? this.bagRouting : "",
             tipeBagFilter: this.bagTipe ? this.bagTipe : "",
             statusBagFilter: this.bagStatus ? this.bagStatus : "0",
@@ -263,10 +278,11 @@ export default {
         }
     },
     methods: {
-        async getTableData(limit,page,q, bagDestination, bagRouting, bagTipe,  from, to, searchByBag, filterDateBy, bagStatus, bagIrreg, bagSource) {
+        async getTableData(limit,page,q, bagDestination, bagOrigin, bagRouting, bagTipe,  from, to, searchByBag, filterDateBy, bagStatus, bagIrreg, bagSource) {
             this.loading = true
             let query = "";
             let bagDes = "";
+            let bagOri = "";
             let bagRout= "";
             let bagTipee= "";
             let startDate = "";
@@ -283,6 +299,9 @@ export default {
             }
             if(bagDestination !== undefined && bagDestination !== '-') {
               bagDes = bagDestination
+            }
+            if(bagOrigin !== undefined && bagOrigin !== '-') {
+                bagOri = bagOrigin
             }
             if(bagRouting !== undefined && bagRouting !== '-') {
               bagRout = bagRouting
@@ -306,7 +325,7 @@ export default {
             }
             await axios
                 .get(this.URL.bag_inventory +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length == 0) {

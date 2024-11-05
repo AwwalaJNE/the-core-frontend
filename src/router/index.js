@@ -661,7 +661,7 @@ const routes = [
             component: TracingDetail,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Tracing Outstanding",
+              breadCrumb: "Outstanding",
               backPath: "/tracing-outstanding",
               resource_type: resourceLookup["TRACING_DETAIL"].resource_type,
               resource_code: resourceLookup["TRACING_DETAIL"].resource_code,
@@ -674,7 +674,7 @@ const routes = [
             component: Tracing,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Tracing History",
+              breadCrumb: "History",
               resource_type: resourceLookup["TRACING_HISTORY"].resource_type,
               resource_code: resourceLookup["TRACING_HISTORY"].resource_code,
               resource_name: resourceLookup["TRACING_HISTORY"].resource_name
@@ -686,7 +686,7 @@ const routes = [
             component: TracingDetail,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Tracing History",
+              breadCrumb: "History",
               backPath: "/tracing-history",
               resource_type: resourceLookup["TRACING_HISTORY_DETAIL"].resource_type,
               resource_code: resourceLookup["TRACING_HISTORY_DETAIL"].resource_code,
@@ -696,7 +696,7 @@ const routes = [
         ],
         meta: {
           requiresAuth: true,
-          breadCrumb: "Tracing"
+          breadCrumb: "WUS"
         }
       },
       {
