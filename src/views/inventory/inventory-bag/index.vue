@@ -15,12 +15,21 @@
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center">
                     <div class="box view">
                         <vs-row justify="space-between" class="mb-15">
-                            <vs-col vs-align="center" xs="12" sm="6" lg="4">
+                            <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                                <select-bag-origin
+                                    ref="bag_origin"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    @updateBagOrigin="updateBagOrigin" 
+                                />
+                            </vs-col>
+                            <vs-col vs-align="center" xs="12" sm="6" lg="3">
                                 <select-bag-destination
                                     ref="bag_destination"
                                     :isMultiple="false"
                                     :border="true"
-                                    @updateBagDestination="updateBagDestination" />
+                                    @updateBagDestination="updateBagDestination" 
+                                />
                             </vs-col>
                             <vs-col xs="12" sm="6" lg="6">
                                 <vs-row justify="flex-end">
@@ -86,7 +95,7 @@
                             </vs-col>
                         </vs-row>
                         <transition name="slide-fade">
-                            <bag-list :ref="'bagList'" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :bagStatus="bagStatus" :bagIrreg="bagIrreg" :bagSource="bagSource" :query="tempSearch" :dateFilter="tempDate" :searchBy="searchBy" :searchDateBy="filterDateBy"/>
+                            <bag-list :ref="'bagList'" :bagDestination="bagDestination" :bagOrigin="bagOrigin" :bagRouting="bagRouting" :bagTipe="bagTipe" :bagStatus="bagStatus" :bagIrreg="bagIrreg" :bagSource="bagSource" :query="tempSearch" :dateFilter="tempDate" :searchBy="searchBy" :searchDateBy="filterDateBy"/>
                         </transition>
                         
                     </div>
@@ -106,6 +115,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import Selector from "@/components/input/select"
 import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDestination"
+import SelectBagOrigin from "@/views/inventory/connote/bag/selectBagOrigin"
 import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
 import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
 import SelectBagStatus from "@/views/inventory/connote/bag/selectBagOpened"
@@ -131,6 +141,7 @@ export default {
         "select-bag-status": SelectBagStatus,
         "select-bag-irreg": SelectBagStatusIrreg,
         "select-bag-destination": SelectBagDestinationVue,
+        "select-bag-origin": SelectBagOrigin,
         "select-bag-routing": SelectBagRouting,
         "select-bag-tipe": SelectBagTipe,
         "select-bag-source": SelectBagSource,
@@ -162,6 +173,7 @@ export default {
             refreshInject:"",
             status_bag:"",
             bagDestination:"",
+            bagOrigin: "",
             bagRouting:"",
             bagTipe:"",
             bagStatus:"0",
@@ -245,6 +257,9 @@ export default {
         },
         updateBagDestination(key,val) {
           this.bagDestination = val
+        },
+        updateBagOrigin(key,val) {
+          this.bagOrigin = val
         },
         updateBagRouting(key,val){
             this.bagRouting = val

@@ -109,11 +109,20 @@
                         <template v-if="navActive === 'k-BAG'">
                             <vs-row align="center">
                                <vs-col vs-align="center" xs="12" sm="6" lg="3">
-                                <select-bag-destination
-                                    ref="bag_destination"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagDestination="updateBagDestination" />
+                                    <select-bag-origin
+                                        ref="bag_origin"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagOrigin="updateBagOrigin" 
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                                    <select-bag-destination
+                                        ref="bag_destination"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagDestination="updateBagDestination" 
+                                    />
                                 </vs-col>
                                 <vs-col vs-align="center" xs="6" sm="6" lg="3">
                                 <select-bag-routing
@@ -166,7 +175,7 @@
                             
                           </vs-row>
                             <transition name="slide-fade">
-                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :bagStatus="bagStatus" :bagIrreg="bagIrreg" :bagSource="bagSource" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateBy" :searchBy="searchByBag"/>
+                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagOrigin="bagOrigin" :bagRouting="bagRouting" :bagTipe="bagTipe" :bagStatus="bagStatus" :bagIrreg="bagIrreg" :bagSource="bagSource" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateBy" :searchBy="searchByBag"/>
                             </transition>
                         </template>
                         
@@ -192,6 +201,7 @@ import SelectSearchByConnote from "@/views/inventory/connote/item/selectSearchBy
 import SelectSearchBy from "@/components/search/selectSearchBy"
 import SelectFilterDateBy from "@/views/inventory/connote/item/selectFilterDateBy"
 import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDestination"
+import SelectBagOrigin from "@/views/inventory/connote/bag/selectBagOrigin"
 import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
 import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
 import SelectBagStatus from "@/views/inventory/connote/bag/selectBagOpened"
@@ -229,6 +239,7 @@ export default {
         "select-search-by": SelectSearchBy,
         "select-filter-date-by": SelectFilterDateBy,
         "select-bag-destination": SelectBagDestinationVue,
+        "select-bag-origin": SelectBagOrigin,
         "select-bag-routing": SelectBagRouting,
         "select-bag-tipe": SelectBagTipe,
         "select-bag-status": SelectBagStatus,
@@ -276,6 +287,7 @@ export default {
             status_bag_cnote:"",
             statusinventorycnote:"",
             bagDestination:"",
+            bagOrigin: "",
             searchBy:"connote",
             searchByBag:"bag_number",
             searchByCnote:"connote",
@@ -380,6 +392,9 @@ export default {
         },
         updateBagDestination(key,val) {
           this.bagDestination = val
+        },
+        updateBagOrigin(key,val) {
+          this.bagOrigin = val
         },
         updateBagRouting(key,val){
             this.bagRouting = val
