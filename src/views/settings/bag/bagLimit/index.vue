@@ -87,6 +87,11 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
+                    label: "Id",
+                    key: "bag_limit_id",
+                    width: "sm"
+                },
+                {
                     label: "Bag Type",
                     key: "bag_type",
                     width: "sm"
