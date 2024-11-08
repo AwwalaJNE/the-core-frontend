@@ -68,6 +68,7 @@
                                         <search-input 
                                             ref="searchInput" 
                                             :placeholder="searchBagLimitPlaceholder" 
+                                            :isNumeric="searchBagLimitByDataType"
                                             @searchValue="searchValue" 
                                         />
                                     </vs-col>
@@ -105,7 +106,7 @@
             @refresh="refresh"
         />
         <dialog-create-edit-bag-limit
-            title="Create Bag Item Limitation"
+            title="Create Bag Limit"
             :active="dialogBagLimit" 
             :closeDialog="closeDialog"
             @refresh="refresh"
@@ -144,9 +145,9 @@ export default {
                     title: "Bag Weight"
                 },
                 {
-                    label: "BAG ITEM LIMITATION",
+                    label: "BAG LIMIT",
                     key: "bag-limit",
-                    title: "Bag Item Limitation"
+                    title: "Bag Limit"
                 },
             ],
             title:"Bag Weight",
@@ -155,6 +156,7 @@ export default {
             dialogBagWeight: false,
             searchBagWeightPlaceholder: "Search Bag Type",
             searchBagWeightBy: "bag_type",
+            searchBagWeightByDataType: false,
             searchBagWeightParams: [
                 {
                     label: "Bag Type",
@@ -176,22 +178,28 @@ export default {
             dialogBagLimit: false,
             searchBagLimitPlaceholder: "Search Bag Type",
             searchBagLimitBy: "bag_type",
+            searchBagLimitByDataType: false,
             searchBagLimitParams: [
                 {
                     label: "Bag Type",
                     value: "bag_type"
                 },
                 {
-                    label: "Routing Type",
-                    value: "routing_type"
+                    label: "Reference Entity",
+                    value: "reference_entity"
                 },
                 {
-                    label: "Service Type",
-                    value: "service_type"
+                    label: "Reference Value",
+                    value: "reference_value"
                 },
                 {
-                    label: "Destination",
-                    value: "destination"
+                    label: "Limit",
+                    value: "limit",
+                    isNumeric: true
+                },
+                {
+                    label: "Created By",
+                    value: "created_by"
                 }
             ],
         }
@@ -239,15 +247,17 @@ export default {
                 default:
             }
         },
-        updateSearchBy(key,val) {
+        updateSearchBy(key, val, dataType) {
             switch(this.navActive) {
                 case "bag-weight":
                     this.searchBagWeightBy = val;
                     this.searchBagWeightPlaceholder = key;
+                    this.searchBagWeightByDataType = dataType;
                     break;
                 case "bag-limit":
                     this.searchBagLimitBy = val;
                     this.searchBagLimitPlaceholder = key;
+                    this.searchBagLimitByDataType = dataType;
                     break;
                 default:
             }

@@ -3,6 +3,7 @@
         width="lg"
         :actived="listenActive" 
         :closeDialog="cancel"
+        :loading="listenLoading"
     >
         <template v-slot:header>
             {{listenTitle}}
@@ -12,7 +13,7 @@
             <div>
                 <form-input-controller
                     ref="formDataController" 
-                    typeForm="kpi_process_target"
+                    typeForm="bag_limit"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
                     @formData="formData"
@@ -72,36 +73,34 @@ export default {
         active: Boolean,
         btnRed: String,
         btnBlue: String,
-        dataItem: Object,
         closeDialog: Function,
+        dataItem: Object,
         title: String
     },
     data() {
         return {
             form: {},
-            kpi_process_target_id: "",
+            bag_limit_id: "",
             autoCompleteUrl: null,
             input_value: "",
-
-            loadingDataOrigin: false,
-
+            loading: false,
         }
     },
     computed: {
         listenActive(){
-            if(this.active){
-                this.getActivityName();
-            }
             return this.active;
         },
         listenTitle(){
             return this.title;
         },
+        listenLoading() {
+            return this.loading;
+        },
         listenDataItem() {
             return this.dataItem;
         },
         listenEntity() {
-            return this.$store.getters.getInputs.kpi_process_target.reference_entity.value;
+            return this.$store.getters.getInputs.bag_limit.reference_entity.value;
         }
     },
     watch: {
@@ -119,19 +118,19 @@ export default {
     },
     methods: {
         async getDataDetail(val){
-            this.kpi_process_target_id = val.kpi_process_target_id;
+            this.bag_limit_id = val.bag_limit_id;
 
             let curr_reference_value_arr = [{
                 label: val.reference_value,
                 value: val.reference_value
             }]
 
-            this.$store.dispatch("SET_KPI_PROCESS_TARGET_REFERENCE_VALUE", val.reference_value);
-            this.$store.dispatch("SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ValueData", val.reference_value);
-            this.$store.dispatch("SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
+            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE", val.reference_value);
+            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE_ValueData", val.reference_value);
+            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
         },
         formData(form){
-            const { kpi_process_target_id, ...formWithoutId } = form;
+            const { bag_limit_id, ...formWithoutId } = form;
 
             this.form = formWithoutId;
             this.handleSubmitData();
@@ -139,7 +138,7 @@ export default {
         onChangeCustom(type, val, obj) {
             switch (type) {
                 case "reference_entity":
-                    this.$store.dispatch("SET_KPI_PROCESS_TARGET_REFERENCE_VALUE", "");
+                    this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE", "");
                     break;
                 default:
             }
@@ -165,17 +164,7 @@ export default {
                     case "NODE":
                         this.autoCompleteUrl = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
                         this.input_value = "node_code";
-                        this.input_label = "node_name";
-                        break;
-                    case "USER":
-                        this.autoCompleteUrl = this.URL.user_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "user_login";
-                        this.input_label = "user_name";
-                        break;
-                    case "EMPLOYEE":
-                        this.autoCompleteUrl = this.URL.employee_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "employee_nik";
-                        this.input_label = "employee_name";
+                        this.input_label = "node_code";
                         break;
                     default:
                 }
@@ -198,39 +187,11 @@ export default {
                 })
             .catch();
         },
-        async getActivityName() {
-            this.loadingDataActivity = true
-            await axios
-                .get(this.URL.sla + `/activity/activity-name?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
-                .then(res => {
-                    if (res.data.data.length > 0) {
-                        let arr = [];
-                        res.data.data.forEach(item => {
-                            if (item.activity_name !== null) {
-                                let obj = {
-                                    label: item.activity_name,
-                                    value: item.activity_name
-                                };
-                                arr.push(obj);
-                            }
-                        });
-
-                        this.$store.dispatch("SET_KPI_PROCESS_TARGET_PROCESS_NAME_ArrData", arr);
-
-                    } else {
-                        this.openNotification('warn', null, 'Activity data is empty!', ' Please create a new Activity data')
-                    }
-                    this.loadingDataActivity = false
-                }).catch(err => {
-                    this.loadingDataActivity = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Activity list', err)
-                })
-        },
         async handleSubmitData() {
             this.loading = true;
             try {
-                const res = this.kpi_process_target_id ? await axios.put(`${this.URL.kpi_process_target}/${this.kpi_process_target_id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.kpi_process_target}?n=${this.listenNodeId}`, this.form, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || this.kpi_process_target_id ? "Success Update Data" : "Success Create Data");
+                const res = this.bag_limit_id ? await axios.put(`${this.URL.bag_limit_setting}/${this.bag_limit_id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.bag_limit_setting}?n=${this.listenNodeId}`, this.form, this.Helper.header());
+                this.openNotification('success', null, "Success", res?.data?.message || this.bag_limit_id ? "Success Update Data" : "Success Create Data");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -246,7 +207,7 @@ export default {
         handleClearForm(){
             this.$refs.formDataController.handleClearForm();
             this.form = {}
-            this.kpi_process_target_id = ""
+            this.bag_limit_id = ""
         },
         cancel() {
             this.handleClearForm();

@@ -1,5 +1,20 @@
 <template>
     <div>
+        <vs-row justify="space-between">
+            <vs-col xs="12" sm="12" lg="12">
+                <vs-row>
+                    <vs-col w="6">
+                        <date-time 
+                            :name="''" 
+                            :rules="''" 
+                            :valueData="dateRange"
+                            typeInput="daterange" 
+                            @updateValue="updateValue" 
+                        />
+                    </vs-col>
+                </vs-row>
+            </vs-col>
+        </vs-row>
         <table-master 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
@@ -16,24 +31,25 @@
         />
 
         <dialog-create-edit
-            ref="dialog_edit_kpi_process_target"
-            title="Edit KPI Process Target"
             btnBlue="Edit"
-            :active="dialogActive" 
-            :closeDialog="() => closeDialog('dialog_edit_kpi_process_target')"
+            ref="dialog_edit"
+            title="Edit Bag Limit"
+            :active="dialogEditActive" 
+            :closeDialog="() => closeDialog('dialog_edit')"
             :dataItem="dataItem"
+            :loading="loadingEdit"
             @refresh="refresh"
         />
 
         <dialog-confirm
-            ref="dialog_remove_kpi_process_target"
-            title="Remove KPI Process Target"
-            :message="`Are you sure you want to remove this KPI Process Target with id ${this.selected_id}?`"
-            :active="activeDialogConfirmRemove"
-            :loading="loadingConfirmRemove"
-            :closeDialog="() => closeDialog('dialog_remove_kpi_process_target')"
+            ref="dialog_remove"
+            title="Remove Bag Limit"
+            :active="dialogRemoveActive"
+            :closeDialog="() => closeDialog('dialog_remove')"
+            :loading="loadingRemove"
+            :message="`Are you sure you want to remove this Bag Limit with id ${this.selected_id}?`"
+            @cancel="() => closeDialog('dialog_remove')"
             @confirm="confirmRemove"
-            @cancel="() => closeDialog('dialog_remove_kpi_process_target')"
         />
     </div>
 </template>
@@ -71,48 +87,39 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Id",
-                    key: "kpi_process_target_id",
+                    label: "Bag Type",
+                    key: "bag_type",
+                    width: "sm"
+                },
+                {
+                    label: "Reference Entity",
+                    key: "reference_entity",
                     width: "sm"
                 },
                 {
                     label: "Referece Value",
                     key: "reference_value",
-                    width: "xs"
-                },
-                {
-                    label: "Reference Entity",
-                    key: "reference_entity",
-                    width: "xs"
-                },
-                {
-                    label: "Process Name",
-                    key: "process_name",
-                    width: "xs"
-                },
-                {
-                    label: "Value",
-                    key: "value",
-                    width: "xxxxs"
-                },
-                {
-                    label: "Description",
-                    key: "description",
                     width: "sm"
                 },
                 {
-                    label: "Start Date",
-                    key: "start_date",
-                    width: "xxs"
+                    label: "Limit",
+                    key: "limit",
+                    width: "xs"
                 },
                 {
-                    label: "End Date",
-                    key: "end_date",
-                    width: "xxs"
+                    label: "Created By",
+                    key: "created_by",
+                    width: "sm"
+                },
+                {
+                    label: "Created At",
+                    key: "created_at",
+                    width: "sm"
                 },
             ],
             loading: false,
             dataItem: {},
+            dateRange: [],
             searchValue: this.query ? this.query : "",
             pagination: {
                 limit: 20,
@@ -120,9 +127,10 @@ export default {
                 page: 1
             },
             selected_id: '',
-            dialogActive: false,
-            activeDialogConfirmRemove: false,
-            loadingConfirmRemove:false,
+            dialogEditActive: false,
+            dialogRemoveActive: false,
+            loadingRemove:false,
+            loadingEdit: false,
         }
     },
     computed: {
@@ -157,6 +165,10 @@ export default {
 
             this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, from, to, this.searchBy)
         },
+        updateValue(key, val) {
+            this.dateRange = val
+            this.refresh()
+        },
         async getTableData(limit, page, q, from, to, searchBy) {
             this.loading = true
 
@@ -165,7 +177,7 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.kpi_process_target}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${searchBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.bag_limit_setting}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
@@ -187,7 +199,7 @@ export default {
         },
         actionUpdate(val){
             this.dataItem = val;
-            this.dialogActive = true;
+            this.dialogEditActive = true;
         },
         actionLimit(val){
             this.pagination.limit = val
@@ -200,12 +212,12 @@ export default {
         },
         closeDialog(ref) {
             switch (ref) {
-                case 'dialog_edit_kpi_process_target':
-                    this.dialogActive = false;
+                case 'dialog_edit':
+                    this.dialogEditActive = false;
                     this.refresh();
                     break;
-                case 'dialog_remove_kpi_process_target':
-                    this.activeDialogConfirmRemove = false;
+                case 'dialog_remove':
+                    this.dialogRemoveActive = false;
                     this.refresh();
                     break;
                 default:
@@ -213,22 +225,22 @@ export default {
             }
         },
         actionRemove(val){
-            this.selected_id = val.kpi_process_target_id;
-            this.activeDialogConfirmRemove = true;
+            this.selected_id = val.bag_limit_id;
+            this.dialogRemoveActive = true;
         },
         confirmRemove() {
             this.removeData();
         },
         async removeData() {
-            this.loadingConfirmRemove = true;
+            this.loadingRemove = true;
             try {
-                const res = await axios.delete(`${this.URL.kpi_process_target}/${this.selected_id}?n=${this.listenNodeId}`, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || "Remove KPI Process Target success");
+                const res = await axios.delete(`${this.URL.bag_limit_setting}/${this.selected_id}?n=${this.listenNodeId}`, this.Helper.header());
+                this.openNotification('success', null, "Success", res?.data?.message || "Remove Bag Limit success");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
-                this.loadingConfirmRemove = false;
-                this.closeDialog('dialog_remove_kpi_process_target');
+                this.loadingRemove = false;
+                this.closeDialog('dialog_remove');
             }
         }
     },
