@@ -63,7 +63,7 @@ import DialogConfirm from "@/components/dialog/dialogConfirm"
 import SearchInput from "@/components/search/searchInput"
 import TableMaster from "@/components/table/tableMaster.vue"
 
-import DialogCreateEdit from "@/views/settings/bagWeight/bagWeight/dialogCreateEdit"
+import DialogCreateEdit from "@/views/settings/bag/bagWeight/dialogCreateEdit"
 
 export default {
     name:"bag-weight-data-tabel",

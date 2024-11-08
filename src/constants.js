@@ -82,7 +82,7 @@ const resources = [
     { resource_code: "CORE-01-081", resource_type: "PAGE", resource_name: "PRINT_SPPAP" },
     { resource_code: "CORE-01-082", resource_type: "PAGE", resource_name: "INVALID_RECEIVING" },
     { resource_code: "CORE-01-083", resource_type: "PAGE", resource_name: "INVALID_OPENING_BAG" },
-    { resource_code: "CORE-01-084", resource_type: "PAGE", resource_name: "SETTINGS_BAG_WEIGHT" },
+    { resource_code: "CORE-01-084", resource_type: "PAGE", resource_name: "SETTINGS_BAG" },
     { resource_code: "CORE-01-085", resource_type: "PAGE", resource_name: "SORTING" },
 ];
 
