@@ -3704,6 +3704,53 @@ export default {
 
   //====== END BAG WEIGHT SETTINGS ======//
 
+
+
+  //====== BAG LIMIT SETTINGS ======//
+
+  SET_BAG_LIMIT_BAG_TYPE({ commit }, payload) {
+    commit('SET_BAG_LIMIT_BAG_TYPE', payload)
+  },
+  SET_BAG_LIMIT_BAG_TYPE_ValueData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_BAG_TYPE_ValueData', payload)
+  },
+  SET_BAG_LIMIT_BAG_TYPE_ArrData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_BAG_TYPE_ArrData', payload)
+  },
+
+
+  SET_BAG_LIMIT_REFERENCE_VALUE({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_VALUE', payload)
+  },
+  SET_BAG_LIMIT_REFERENCE_VALUE_ValueData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_VALUE_ValueData', payload)
+  },
+  SET_BAG_LIMIT_REFERENCE_VALUE_ArrData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_VALUE_ArrData', payload)
+  },
+
+
+  SET_BAG_LIMIT_REFERENCE_ENTITY({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_ENTITY', payload)
+  },
+  SET_BAG_LIMIT_REFERENCE_ENTITY_ValueData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_ENTITY_ValueData', payload)
+  },
+  SET_BAG_LIMIT_REFERENCE_ENTITY_ArrData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_ENTITY_ArrData', payload)
+  },
+
+
+  SET_BAG_LIMIT_LIMIT({ commit }, payload) {
+    commit('SET_BAG_LIMIT_LIMIT', payload)
+  },
+  SET_BAG_LIMIT_LIMIT_ValueData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_LIMIT_ValueData', payload)
+  },
+
+  //====== END BAG LIMIT SETTINGS ======//
+
+
   SET_BAG_IS_AUTO_OPEN_BAG({ commit }, payload) {
     commit('SET_BAG_IS_AUTO_OPEN_BAG', payload);
   },

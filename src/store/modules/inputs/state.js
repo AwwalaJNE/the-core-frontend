@@ -2273,6 +2273,83 @@ export default {
     },
   },
 
+  bag_limit: {
+    bag_type: {
+      label: "Bag Type*",
+      key: "bag_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          "label": "Regular Bag",
+          "value": "REGULAR"
+        },
+        {
+          "label": "Bag Pra Runsheet",
+          "value": "PRA RUNSHEET"
+        },
+        {
+          "label": "Bag Outbound",
+          "value": "OUTBOUND"
+        },
+        {
+          "label": "Bag Return",
+          "value": "RETURN"
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    reference_entity: {
+      label: "Reference Entity*",
+      key: "reference_entity",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Region',
+          value: 'REGION'
+        },
+        {
+          label: 'Branch',
+          value: 'BRANCH'
+        },
+        {
+          label: 'Origin',
+          value: 'ORIGIN'
+        },
+        {
+          label: 'Node',
+          value: 'NODE'
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    reference_value: {
+      label: "Reference Value*",
+      key: "reference_value",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      width: '12',
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    limit: {
+      label: "Limit*",
+      key: "limit",
+      rule: "required|numeric|min_value:1",
+      typeInput: "number",
+      typeData: "Number",
+      valueData: null,
+      value: null
+    }
+  },
+
   tariff: {
     tariff_group: {
       label: "Tariff Group",
