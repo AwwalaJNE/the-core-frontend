@@ -280,6 +280,17 @@ export default {
                 resource_name: resourceLookup["UNBAGGING"].resource_name
               },
             },
+            {
+              label: "Sorting",
+              url: "/inventory/sorting",
+              icon: "",
+              permission: "read-bag", // TODO: CHECK PERMISSION LATER
+              meta: {
+                resource_type: resourceLookup["SORTING"].resource_type,
+                resource_code: resourceLookup["SORTING"].resource_code,
+                resource_name: resourceLookup["SORTING"].resource_name
+              },
+            },
           ],
         },
         {

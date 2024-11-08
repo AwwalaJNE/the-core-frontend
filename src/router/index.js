@@ -87,6 +87,9 @@ import CashRegister from "@/views/cashRegister"
 // === Inventory Unbagging  ===
 import Unbagging from "@/views/inventory/unbag"
 
+// === Inventory Sorting  ===
+import Sorting from "@/views/inventory/sorting"
+
 // === Pickup Request ===
 import PickupRequest from "@/views/pickup/request"
 
@@ -886,6 +889,18 @@ const routes = [
           resource_type: resourceLookup["UNBAGGING"].resource_type,
           resource_code: resourceLookup["UNBAGGING"].resource_code,
           resource_name: resourceLookup["UNBAGGING"].resource_name
+        }
+      },
+      {
+        path: "inventory/sorting",
+        name: "sorting",
+        component: Sorting,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Sorting",
+          resource_type: resourceLookup["SORTING"].resource_type,
+          resource_code: resourceLookup["SORTING"].resource_code,
+          resource_name: resourceLookup["SORTING"].resource_name
         }
       },
       {
