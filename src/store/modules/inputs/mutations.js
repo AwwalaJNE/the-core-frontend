@@ -4029,6 +4029,59 @@ export default {
   //====== END BAG WEIGHT SETTINGS ======//
 
 
+
+  //====== BAG LIMIT SETTINGS ======//
+
+  SET_BAG_LIMIT_BAG_TYPE(state, payload) {
+    state.bag_limit.bag_type.value = payload
+  },
+  SET_BAG_LIMIT_BAG_TYPE_ValueData(state, payload) {
+    state.bag_limit.bag_type.valueData = payload
+  },
+  SET_BAG_LIMIT_BAG_TYPE_ArrData(state, payload) {
+    state.bag_limit.bag_type.hasOwnProperty('arrData') ?
+    state.bag_limit.bag_type.arrData = payload :
+    state.bag_limit.bag_type.arrData = []
+  },
+
+
+  SET_BAG_LIMIT_REFERENCE_VALUE(state, payload) {
+    state.bag_limit.reference_value.value = payload
+  },
+  SET_BAG_LIMIT_REFERENCE_VALUE_ValueData(state, payload) {
+    state.bag_limit.reference_value.valueData = payload
+  },
+  SET_BAG_LIMIT_REFERENCE_VALUE_ArrData(state, payload) {
+    state.bag_limit.reference_value.hasOwnProperty('arrData') ?
+    state.bag_limit.reference_value.arrData = payload :
+    state.bag_limit.reference_value.arrData = []
+  },
+
+
+  SET_BAG_LIMIT_REFERENCE_ENTITY(state, payload) {
+    state.bag_limit.reference_entity.value = payload
+  },
+  SET_BAG_LIMIT_REFERENCE_ENTITY_ValueData(state, payload) {
+    state.bag_limit.reference_entity.valueData = payload
+  },
+  SET_BAG_LIMIT_REFERENCE_ENTITY_ArrData(state, payload) {
+    state.bag_limit.reference_entity.hasOwnProperty('arrData') ?
+    state.bag_limit.reference_entity.arrData = payload :
+    state.bag_limit.reference_entity.arrData = []
+  },
+
+
+  SET_BAG_LIMIT_LIMIT(state, payload) {
+    state.bag_limit.limit.value = payload
+  },
+  SET_BAG_LIMIT_LIMIT_ValueData(state, payload) {
+    state.bag_limit.limit.valueData = payload
+  },
+
+
+  //====== END BAG LIMIT SETTINGS ======//
+
+  
   SET_BAG_IS_AUTO_OPEN_BAG(state, payload) {
     state.bag_is_auto_open_bag.bag_is_auto_open_bag.value = payload || false;
   },

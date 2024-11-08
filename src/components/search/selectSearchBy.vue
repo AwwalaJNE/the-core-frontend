@@ -78,7 +78,8 @@ export default {
   methods: {
     updateSearchBy(val){
       const selectedOption = this.DataArr.find(item => item.value === val);
-      this.$emit("updateSearchBy", `Search ${selectedOption.label}`, val)
+      const isNumeric = selectedOption?.isNumeric || false;
+      this.$emit("updateSearchBy", `Search ${selectedOption.label}`, val, isNumeric)
     }
   },
 

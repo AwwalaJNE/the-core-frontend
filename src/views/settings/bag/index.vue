@@ -53,6 +53,27 @@
                                     </vs-col>
                                 </vs-row>
                             </template>
+                            <template v-else-if="navActive === 'bag-limit'">
+                                <vs-row>
+                                    <vs-col vs-align="center" w="6">
+                                        <select-search-by 
+                                            :border="true" 
+                                            :isMultiple="false" 
+                                            :selectedValue="searchBagLimitBy" 
+                                            :valueData="searchBagLimitParams" 
+                                            @updateSearchBy="updateSearchBy" 
+                                        />
+                                    </vs-col>
+                                    <vs-col vs-align="center" w="6">
+                                        <search-input 
+                                            ref="searchInput" 
+                                            :placeholder="searchBagLimitPlaceholder" 
+                                            :isNumeric="searchBagLimitByDataType"
+                                            @searchValue="searchValue" 
+                                        />
+                                    </vs-col>
+                                </vs-row>
+                            </template>
                         </vs-col>
                     </vs-row>
                 </div>
@@ -66,11 +87,27 @@
                         />
                     </transition>
                 </template>
+                <template v-else-if="navActive === 'bag-limit'">
+                    <transition name="slide-fade">
+                        <bag-limit 
+                            :ref="navActive" 
+                            :query="tempSearch" 
+                            :searchBy="searchBagLimitBy"
+                            @clearSearch="clearSearch"
+                        />
+                    </transition>
+                </template>
             </div>
         </section>
-        <dialog-create-edit
+        <dialog-create-edit-bag-weight
             title="Create Bag Weight"
             :active="dialogBagWeight" 
+            :closeDialog="closeDialog"
+            @refresh="refresh"
+        />
+        <dialog-create-edit-bag-limit
+            title="Create Bag Limit"
+            :active="dialogBagLimit" 
             :closeDialog="closeDialog"
             @refresh="refresh"
         />
@@ -82,15 +119,19 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
-import BagWeight from "@/views/settings/bagWeight/bagWeight/index"
-import DialogCreateEdit from "@/views/settings/bagWeight/bagWeight/dialogCreateEdit"
+import BagWeight from "@/views/settings/bag/bagWeight/index"
+import BagLimit from "@/views/settings/bag/bagLimit/index"
+import DialogCreateEditBagWeight from "@/views/settings/bag/bagWeight/dialogCreateEdit"
+import DialogCreateEditBagLimit from "@/views/settings/bag/bagLimit/dialogCreateEdit"
 
 export default {
-    name:"bag-weight-index",
+    name:"bag-index",
     components: {
         "bag-weight": BagWeight,
+        "bag-limit": BagLimit,
         "breadcrumb": Breadcrumb,
-        "dialog-create-edit": DialogCreateEdit,
+        "dialog-create-edit-bag-weight": DialogCreateEditBagWeight,
+        "dialog-create-edit-bag-limit": DialogCreateEditBagLimit,
         "nav-item": NavItem,
         "search-input": SearchInput,
         "select-search-by": SelectSearchBy,
@@ -103,6 +144,11 @@ export default {
                     key: "bag-weight",
                     title: "Bag Weight"
                 },
+                {
+                    label: "BAG LIMIT",
+                    key: "bag-limit",
+                    title: "Bag Limit"
+                },
             ],
             title:"Bag Weight",
             navActive: "bag-weight",
@@ -110,6 +156,7 @@ export default {
             dialogBagWeight: false,
             searchBagWeightPlaceholder: "Search Bag Type",
             searchBagWeightBy: "bag_type",
+            searchBagWeightByDataType: false,
             searchBagWeightParams: [
                 {
                     label: "Bag Type",
@@ -126,6 +173,33 @@ export default {
                 {
                     label: "Destination",
                     value: "destination"
+                }
+            ],
+            dialogBagLimit: false,
+            searchBagLimitPlaceholder: "Search Bag Type",
+            searchBagLimitBy: "bag_type",
+            searchBagLimitByDataType: false,
+            searchBagLimitParams: [
+                {
+                    label: "Bag Type",
+                    value: "bag_type"
+                },
+                {
+                    label: "Reference Entity",
+                    value: "reference_entity"
+                },
+                {
+                    label: "Reference Value",
+                    value: "reference_value"
+                },
+                {
+                    label: "Limit",
+                    value: "limit",
+                    isNumeric: true
+                },
+                {
+                    label: "Created By",
+                    value: "created_by"
                 }
             ],
         }
@@ -153,7 +227,10 @@ export default {
         openDialog(){
             switch(this.navActive) {
                 case "bag-weight":
-                    this.dialogBagWeight = true
+                    this.dialogBagWeight = true;
+                    break;
+                case "bag-limit":
+                    this.dialogBagLimit = true;
                     break;
                 default:
             }
@@ -164,14 +241,23 @@ export default {
                 case "bag-weight":
                     this.dialogBagWeight = false;
                     break;
+                case "bag-limit":
+                    this.dialogBagLimit = false;
+                    break;
                 default:
             }
         },
-        updateSearchBy(key,val) {
+        updateSearchBy(key, val, dataType) {
             switch(this.navActive) {
                 case "bag-weight":
                     this.searchBagWeightBy = val;
                     this.searchBagWeightPlaceholder = key;
+                    this.searchBagWeightByDataType = dataType;
+                    break;
+                case "bag-limit":
+                    this.searchBagLimitBy = val;
+                    this.searchBagLimitPlaceholder = key;
+                    this.searchBagLimitByDataType = dataType;
                     break;
                 default:
             }

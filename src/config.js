@@ -311,6 +311,9 @@ export default {
     // Masterdata Bag Weight
     bag_weight_setting: api + 'bag-weight',
 
+    // Masterdata Bag Item Limit
+    bag_limit_setting: api + 'bag-limit',
+
     // Audit
     audit_invalid_log: api + 'audit/invalid-item-log',
 }

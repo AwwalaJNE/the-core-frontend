@@ -890,14 +890,14 @@ export default {
               },
             },
             {
-              label: "Settings Bag Weight",
-              url: "/settings/bag-weight",
+              label: "Settings Bag",
+              url: "/settings/bag",
               icon: "",
               permission: "", // TODO: Change after permission ready
               meta: {
-                resource_type: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_type,
-                resource_code: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_code,
-                resource_name: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_name
+                resource_type: resourceLookup["SETTINGS_BAG"].resource_type,
+                resource_code: resourceLookup["SETTINGS_BAG"].resource_code,
+                resource_name: resourceLookup["SETTINGS_BAG"].resource_name
               },
             },
           ],

@@ -192,8 +192,8 @@ import HelpdeskRunsheet from "@/views/helpdesk/runsheet/index";
 // === Facility Code ===
 import FacilityCode from '@/views/settings/facilityCode';
 
-// === Bag Weight ===
-import BagWeight from '@/views/settings/bagWeight/index';
+// === Bag Settings ===
+import Bag from '@/views/settings/bag/index';
 
 // === Connote Adjustment ===
 import ConnoteCancel from '@/views/connoteAdjustment/connoteCancel'
@@ -405,15 +405,15 @@ const routes = [
             }
           },
           {
-            path: "bag-weight",
-            name: "BagWeight",
-            component: BagWeight,
+            path: "bag",
+            name: "Bag",
+            component: Bag,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Bag Weight",
-              resource_type: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_type,
-              resource_code: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_code,
-              resource_name: resourceLookup["SETTINGS_BAG_WEIGHT"].resource_name
+              breadCrumb: "Bag",
+              resource_type: resourceLookup["SETTINGS_BAG"].resource_type,
+              resource_code: resourceLookup["SETTINGS_BAG"].resource_code,
+              resource_name: resourceLookup["SETTINGS_BAG"].resource_name
             }
           },
         ],
