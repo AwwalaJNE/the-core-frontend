@@ -171,7 +171,7 @@ export default {
             }
         },
         querySearch(queryString, cb){
-            axios.get(this.autoCompleteUrl +`?n=${this.listenNodeId}&s=${queryString}`,
+            axios.get(this.autoCompleteUrl +`&s=${queryString}`,
                 this.Helper.header()
             )
             .then(res => {
