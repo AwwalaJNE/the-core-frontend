@@ -16,6 +16,7 @@
         :limit="pagination.limit"
         :hasAction="false"
         :hasLinked="['koli_number']"
+        :hasLinkedDanger="'status_irregularity'"
         :hasPagination="true"
         :hasId="true"
         @actionUpdate="actionUpdate"
@@ -63,6 +64,13 @@ export default {
             }
           }
         },
+        queryDate: function(val, old) {
+          if(val !== undefined) {
+            if(val !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, val)
+            }
+          }
+        },
         dateFilter: function (val, old) {
             if (val !== undefined && val !== null) {
                 let d = new Date()
@@ -97,7 +105,13 @@ export default {
             }
           }
         },
-
+        querySearch: function(val, old) {
+            if(val !== undefined) {
+                if(val !== old) {
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, val, this.queryDate)
+                }
+            }
+        },
     },
     data() {
         return {
@@ -121,6 +135,11 @@ export default {
                 {
                     label: "Receiving Date",
                     key: "received_at",
+                    width: "xs"
+                },
+                {
+                    label: "Last Bag Opened Date",
+                    key: "latest_opened_bag",
                     width: "xs"
                 },
                 {
@@ -295,6 +314,7 @@ export default {
 
         showData(row) {
           this.$router.push(`/connote-detail/${row.koli_number}`);
+          this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {

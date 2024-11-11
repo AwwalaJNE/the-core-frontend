@@ -15,36 +15,57 @@
         </div>
       </div>
       <div style="display: flex;" class="buttonPage" v-if="!loading">
-        <vs-button
-          @click="approveAction(true)"
-          :disabled="!isAllowed || is_orion"
-          style="width: 6rem;"
-          v-if="!disabledApprove"
-        >
-          <span>
-            Approve
-          </span>
-        </vs-button>
-        <vs-button
-          @click="approveAction(false)"
-          danger
-          :disabled="!isAllowed || is_orion"
-          style="width: 6rem;"
-          v-if="disabledApprove"
-        >
-          <span>
-            Unapprove
-          </span>
-        </vs-button>
-        <vs-button style="width: 6rem;" @click="newBag">
+        <template v-if="listenUserRoleName === 'HELPDESK'">
+          <vs-button
+            @click="approveAction(true)"
+            :disabled="!isAllowed || is_orion"
+            style="width: 6rem;"
+            v-if="!disabledApprove"
+          >
+            <span>
+              Approve
+            </span>
+          </vs-button>
+          <vs-button
+            @click="approveAction(false)"
+            danger
+            :disabled="!isAllowed || is_orion"
+            style="width: 6rem;"
+            v-if="disabledApprove"
+          >
+            <span>
+              Unapprove
+            </span>
+          </vs-button>
+        </template>
+        <template v-else>
+          <vs-button
+            @click="approveAction(true)"
+            :disabled="disabledApprove || is_orion"
+            style="width: 6rem;"
+          >
+            <span>
+              {{ disabledApprove ? "Approved" : "Approve" }}
+            </span>
+          </vs-button>
+        </template>
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK'" style="width: 6rem;" @click="newBag">
           <i class="bx bx-plus"></i> New
         </vs-button>
-        <vs-button style="width: 6rem;" @click="print">Print</vs-button>
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK' && is_approve" style="width: 6rem;" @click="print">Print</vs-button>
+        <vs-button v-if="listenUserRoleName === 'HELPDESK'" style="width: 6rem;" @click="editBag">
+          Edit
+        </vs-button>
       </div>
     </vs-row>
 
     <template v-if="!disabledApprove && !is_orion && !loading && !is_masterbag">
       <div class="center in-get-bag">
+        <vs-row class="mb-2 mt-2">
+          <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+            Auto Open Bag
+          </vs-checkbox>
+        </vs-row>
         <vs-row style="margin-top:2em">
           <vs-col xs="4" sm="4" lg="2">
             <vs-radio
@@ -241,7 +262,7 @@
       </div>
       
       <vs-col xs="12" sm="12" lg="12" align="right" style="padding:20px 5px;">
-        <vs-button @click="$router.go(-1)">Back</vs-button>
+        <vs-button @click="back">Back</vs-button>
       </vs-col>
 
     </section>
@@ -255,6 +276,12 @@
       @confirm="confirmUnpproveBag"
       @cancel="closeDialogConfirmUnpproveBag"
     />
+    <dialog-helpdesk-edit-bag
+      title="Edit Bag"
+      :active="dialogHelpdeskEditBag"
+      :bagNumber="bag_id"
+      :closeDialog="closeDialog"
+    />
   </div>
 </template>
 <script>
@@ -265,6 +292,7 @@ import detailBagList from "@/views/inventory/bag/bagDetailList"
 import Selector from "@/components/input/select"
 import CameraScanner from "@/components/scanner/camera.vue";
 import DialogConfirm from "@/components/dialog/dialogConfirm"
+import DialogHelpdeskEditBag from "@/views/helpdesk/bag/dialogHelpdeskEditBag";
 
 export default {
   name: "InventoryBaggingList",
@@ -275,6 +303,7 @@ export default {
     "selector": Selector,
     CameraScanner,
     "dialog-confirm": DialogConfirm,
+    "dialog-helpdesk-edit-bag": DialogHelpdeskEditBag,
   },
   data() {
     return {
@@ -320,6 +349,10 @@ export default {
       disabledApprove: false,
       activeDialogConfirmUnpproveBag: false,
       loadingConfirmUnpproveBag: false,
+      dialogHelpdeskEditBag: false,
+      is_approve: false,
+      is_actual_weight_mandatory: false,
+      is_auto_open_bag: this.$store.getters.getInputs.bag_is_auto_open_bag.bag_is_auto_open_bag.value || false,
     }
   },
   computed: {
@@ -340,6 +373,9 @@ export default {
     },
     listenDataBag(){
       return this.$ls.get('getDataBag')
+    },
+    listenUserRoleName() {
+      return this.listenUserRole.user_role_name
     }
   },
   watch: {
@@ -358,13 +394,17 @@ export default {
     refresh() {
       this.$refs.detailbagList.refresh()
     },
+    handleAutoOpenBag(val) {
+      this.is_auto_open_bag = val.target.checked;
+    },
     getResponse(data, loading) {
       
 
       this.is_orion = data.data.is_orion === '1' ? true : false;
       let bag_des = data.data ? data?.data?.destination?.node_code  : null
       this.is_pra_runsheet = data.data.is_pra_runsheet === "1" ? true : false
-      
+      this.is_actual_weight_mandatory = data.data.is_actual_weight_mandatory === "0" ? false : true;
+
       this.is_masterbag = data.data.is_consolidated === "1" ? true : false
       if (data.data.is_consolidated === "1") {
         this.radio_option = "bag"
@@ -421,6 +461,7 @@ export default {
 
       this.employee = data.employee_name ? data.employee_name : ""
       this.disabledApprove = data.data.is_approve === 0 ? false : true
+      this.is_approve = data.data.is_approve === 0 ? false : true
       this.actual_weight = data.data.bag_actual_weight
 
       this.loading = loading
@@ -437,21 +478,24 @@ export default {
           bag_number : this.bag_id,
           destination : this.listenDestination,
           service: this.listenServiceType,
-          is_pra_runsheet: this.is_pra_runsheet
+          is_pra_runsheet: this.is_pra_runsheet,
+          auto_open_bag: this.is_auto_open_bag
       }
     },
     updateItemOnBag() {
       this.form.item_number = this.item_code
       this.form.is_pra_runsheet = this.is_pra_runsheet
+      this.form.auto_open_bag = this.is_auto_open_bag
       this.ProccessAddBagItem()
     },
     updateItemOnBagOrion() {
       this.form.item_number = this.item_code_orion + "00"
       this.form.is_pra_runsheet = this.is_pra_runsheet
+      this.form.auto_open_bag = this.is_auto_open_bag
       this.ProccessAddBagItem()
     },
     updateValue(){
-      if (this.weight === '' || this.weight == 0) {
+      if ((this.weight === '' || this.weight == 0) && this.is_actual_weight_mandatory) {
         this.openNotification('warning', null, 'Empty Weight!', 'Bag Actual Weight must not be 0!')
       }
       else {
@@ -554,10 +598,19 @@ export default {
                 'node_id': this.listenNodeId,
             } 
         });
-        window.open(routeData.href, '_blank');
+        
+        const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+        if (printWindow) {
+            printWindow.onload = function() {
+                printWindow.print();
+                printWindow.onafterprint = () => printWindow.close();
+            };
+        }
     },
     back() {
-      this.$router.go(-1);
+      this.$router.push('/inventory/bag')
+      this.setRoutePageHistory(this.$route.meta, false);
     },
     onCameraScannerGetData(data) {
       if (data && data.event === "result" && (data.namespace === "formInputBagging" || data.namespace === "formInputBaggingConnote" || data.namespace === "formInputBaggingKoli" || data.namespace === "formInputBaggingBag")) {
@@ -572,6 +625,11 @@ export default {
     },
     newBag() {
       this.$router.push('/inventory/bagging')
+      this.setRoutePageHistory(this.$route.meta, false);
+      
+    },
+    editBag() {
+      this.dialogHelpdeskEditBag = true;
     },
     setInputFocus() {
       this.$nextTick(() => {
@@ -595,7 +653,7 @@ export default {
       });
     },
     approveAction(val){
-      if (this.isAllowed && !this.is_pra_runsheet && this.actual_weight == 0) {
+      if (this.isAllowed && !this.is_pra_runsheet && (this.actual_weight == 0 && this.is_actual_weight_mandatory)) {
         this.openNotification('warning', null, 'Empty Weight!', 'Bag Actual Weight must not be 0!')
       }
       else {
@@ -616,6 +674,10 @@ export default {
       this.confirmationApprove(false)
       this.activeDialogConfirmUnpproveBag = false
       this.refresh()
+    },
+    closeDialog() {
+      this.dialogHelpdeskEditBag = false;
+      this.refresh();
     },
     closeDialogConfirmUnpproveBag(){
       this.activeDialogConfirmUnpproveBag = false
@@ -644,6 +706,7 @@ export default {
     this.getBagIdParam()
     this.getIsPraRunsheet()
     this.setInputFocus()
+    this.handlePrintShortcut(this.print)
     // this.getNodeLink()
   }
 }

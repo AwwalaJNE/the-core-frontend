@@ -51,6 +51,7 @@ export default {
         handleSpacebar(evt) {
             if (evt.keyCode == 32) {
                 this.$router.replace({ name: 'new-transactions'});
+                this.setRoutePageHistory(this.$route.meta, false);
                 this.$router.go()
             }
         }

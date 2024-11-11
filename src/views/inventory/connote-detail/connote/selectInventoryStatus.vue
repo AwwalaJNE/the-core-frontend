@@ -36,8 +36,8 @@ export default {
     props: {
         query: String,
         queryBag: String,
-        queryInventory: String
-
+        queryInventory: String,
+        filterStatusBy: String
     },
     components: {
         "table-master" : TableMaster
@@ -111,7 +111,7 @@ export default {
             this.loading = true
             let query = "";
             if(q !== undefined) {
-                query = q
+                query = this.filterStatusBy ? this.filterStatusBy : q;
             }
            
             await axios
@@ -123,7 +123,7 @@ export default {
                     let arr = res.data.data
                     arr.map((item, index) => {
                         item["counter"] = index+1
-                        item["node_name"] = item["node_name"]+" ("+item["node_type_name"]+")"
+                        item["node_name"] = item["node_name"]
                         item["user_name"] = item["employee_name"] ?? item["user_name"]
                     })
                     this.dataTable = arr
@@ -152,7 +152,7 @@ export default {
             this.refresh()
         },
         refresh(val){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.filterStatusBy)
         },
         closeDialogUser(){
             this.dialogUser = false

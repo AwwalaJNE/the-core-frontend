@@ -237,7 +237,15 @@ export default {
                 case "print":
 
                     let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.manifest_do_number, 'type': 'manifest-delivery-order', 'node_id':this.listenNodeId } });
-                    window.open(routeData.href, '_blank');
+                    
+                    const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+                    if (printWindow) {
+                        printWindow.onload = function() {
+                            printWindow.print();
+                            printWindow.onafterprint = () => printWindow.close();
+                        };
+                    }
                     break;
                 case "depart":
                     this.manifest_do_number = val.manifest_do_number

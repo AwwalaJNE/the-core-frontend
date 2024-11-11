@@ -52,10 +52,33 @@
         <section>
             <vs-row justify="space-around">
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center" style="margin-bottom: 2em;">
-                    <div class="box view" v-if="connote_number !== '' && connote_found && !loading">
+                    <div class="box view" v-if="koli_number !== '' && connote_found && !loading">
                         <vs-row justify="space-between">
                             <vs-col xs="6" sm="9" lg="9">
                                 <nav-item :navItem="navItem" @activeTab="activeTab" />
+                            </vs-col>
+                            <vs-col xs="12" sm="3" lg="3" >
+                                <template v-if="filterStatus.length > 1 && navActive === 'k-ACTIVITY'">
+                                    <vs-select
+                                        class="m-select"
+                                        filter
+                                        v-model="filterStatusBy"
+                                        :border="true"
+                                        :multiple="false"
+                                        @change="updateFilterStatus"
+                                    >
+                                    <template v-if="filterStatus.length > 1">
+                                        <vs-option
+                                            v-for="(item,key) in filterStatus"
+                                            :key="key"
+                                            :label="item.label"
+                                            :value="item.value">
+                                        {{item.label}}
+                                        </vs-option>
+                                    </template>
+
+                                    </vs-select>
+                                </template>
                             </vs-col>
                         </vs-row>
                         <template v-if="navActive === 'k-INFO'">
@@ -89,15 +112,34 @@
                             <vs-row>
                                 <vs-col vs-align="center" xs="3" sm="3" lg="12">
                                     <select-status-inventory 
+                                        ref="activityInventory"
                                         :isMultiple="false"
                                         :border="true"
+                                        :filterStatusBy="filterStatusBy"
                                         @updateStatusinventory="updateStatusinventory" 
                                     />
                                 </vs-col>
                             </vs-row>
                         </template>
+                        <template v-if="navActive === 'k-BAG-HISTORY'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                              <select-bag-history />
+                            </vs-col>
+                          </vs-row>
+                        </template>
+                        <template v-if="navActive === 'k-CUSTOMER-VIEW'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                <connote-customer-view 
+                                    :connoteNumber="connote_number"
+                                    :koliNumber="koli_number"
+                                />
+                            </vs-col>
+                          </vs-row>
+                        </template>
                     </div>
-                    <div class="box view" v-else-if="(connote_number && !connote_found && !loading) || (connote_number !== '' && !connote_found && !loading)">
+                    <div class="box view" v-else-if="(koli_number && !connote_found && !loading) || (koli_number !== '' && !connote_found && !loading)">
                         <div style="margin-top: 2.5em;">
                             connote tidak ditemukan
                         </div>
@@ -120,7 +162,8 @@ import CameraScanner from "@/components/scanner/camera";
 import SearchInput from "@/components/search/searchInput"
 import selectorDetailVue from "@/views/inventory/connote-detail/connote/selectorDetail"
 import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
-
+import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
+import connoteCustomerView from "@/views/inventory/connote-detail/connote/connoteCustomerView.vue";
 
 export default {
     name: "trace-connote",
@@ -128,10 +171,12 @@ export default {
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
+        "connote-customer-view": connoteCustomerView,
         "search-input": SearchInput,
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
         "select-status-inventory": SelectInventoryVue,
+        "select-bag-history": SelectBagHistory,
         CameraScanner
     },
     computed: {
@@ -150,6 +195,16 @@ export default {
             label: "ACTIVITY",
             key: "k-ACTIVITY",
             title: "Connote Activity"
+          },
+          {
+            label: "BAG HISTORY",
+            key: "k-BAG-HISTORY",
+            title: "Connote's Bag History"
+          },
+          {
+            label: "CUSTOMER VIEW",
+            key: "k-CUSTOMER-VIEW",
+            title: "Connote's Customer View"
           }
         ],
         navActive: "k-INFO",
@@ -161,8 +216,28 @@ export default {
         destinationTlc: "",
         informationData: [],
         statusinventory: "",
+        koli_number: "",
         connote_number: "",
-        connote_found: false
+        connote_found: false,
+        filterStatusBy: "All",
+        filterStatus: [
+            {
+                label: 'All Connote Type',
+                value: 'All'
+            },
+            {
+                label: 'Connote Forward',
+                value: 'FW'
+            },
+            {
+                label: 'Connote Return',
+                value: 'RT'
+            },
+            {
+                label: 'Connote Return Failed',
+                value: 'RF'
+            }
+        ],
       };
     },
     methods: {
@@ -172,7 +247,7 @@ export default {
         removeConnoteNumber() {
             this.hasConnoteNumber = false;
             this.connoteNumber = "";
-            this.connote_number = "";
+            this.koli_number = "";
             this.originData = [];
             this.destinationData = [];
             this.originTlc = "";
@@ -180,14 +255,18 @@ export default {
             this.informationData = [];
             this.statusinventory = "";
             this.connote_found = false;
-            this.loading = false
+            this.loading = false;
+            this.activeTab("k-INFO");
             this.$router.push("/trace-connote");
+            this.setRoutePageHistory(this.$route.meta, false);
         },
 
         async processConnoteNumber() {
-            this.connote_number = this.connoteNumber + "00";
-            const url = `/trace-connote/${encodeURIComponent(this.connote_number)}`;
+            this.connote_number = this.connoteNumber;
+            this.koli_number = this.connoteNumber;
+            const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
             await this.$router.push(url); 
+            this.setRoutePageHistory(this.$route.meta, false);
             this.hasConnoteNumber = true
             this.getConnote();
         },
@@ -195,6 +274,7 @@ export default {
             this.statusinventory = val;
         },
         activeTab(val) {
+            this.filterStatusBy = 'All';
             this.navActive = val;
             let item = this.navItem.filter(item => {
                 return item.key == val;
@@ -204,7 +284,7 @@ export default {
         async getConnote() {
             this.loading = true;
             await axios
-                .get(this.URL.connote +`/${this.connote_number}?n=${this.listenNodeId}`,
+                .get(this.URL.connote +`/${this.koli_number}?n=${this.listenNodeId}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data && Object.keys(res.data.data).length > 0) {
@@ -341,6 +421,11 @@ export default {
                                 width: 6
                             },
                             {
+                                key : 'Amount COD',
+                                value: 'Rp '+ Intl.NumberFormat('en-GB').format(response.amount_cod),
+                                width: 6
+                            },
+                            {
                                 key : 'Packing Kayu',
                                 value: packing,
                             },
@@ -377,11 +462,18 @@ export default {
         },
 
         updateValueOrion() {
-            this.connote_number = `${this.connoteNumber}` + "00";
-            const url = `/trace-connote/${encodeURIComponent(this.connote_number)}`;
+            this.connote_number = this.connoteNumber;
+            this.koli_number = `${this.connoteNumber}`;
+            const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
             this.$router.push(url); 
+            this.setRoutePageHistory(this.$route.meta, false);
             this.hasConnoteNumber = true
             this.getConnote();
+        },
+
+        updateFilterStatus(key) {
+            this.filterStatusBy = key;
+            this.$refs.activityInventory.refresh();
         },
     },
     mounted() {

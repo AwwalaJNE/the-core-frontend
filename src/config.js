@@ -63,6 +63,7 @@ export default {
     transaction: api + "transaction",
     koli: api + "koli",
     bag: api + "bag",
+    bag_inventory: api + "bag-inventory",
     unbagging: api + "unbagging",
     cash_register: api + "cash-register",
     payment: api + "payment",
@@ -212,6 +213,7 @@ export default {
 
     // Configuration Warning Runsheet
     configuration_warning_runsheet : api + 'warning-koli-setting',
+    configuration_warning_sla : api + 'warning-runsheet-sla-setting',
 
     // Configuration Warning Runsheet
     warning_runsheet : api + 'warning-koli-record',
@@ -238,5 +240,80 @@ export default {
     deposit_cod: api + 'cod-deposit',
 
     // Approval
-    approval: api + 'approval'
+    approval: api + 'approval',
+
+    // Surat Jalan Revamp
+    revamp_surat_jalan: api + 'revamp/manifest-delivery-order',
+
+    // Surat Muatan Revamp
+    revamp_surat_muatan: api + 'revamp/manifest',
+
+    // Delivery Revamp
+    revamp_delivery: api + 'revamp/delivery',
+
+    // Delivery Bag Pra Revamp
+    revamp_delivery_bag_pra: api + 'revamp/delivery-bag-pra',
+
+    // Tracing Revamp
+    revamp_tracing: api + 'revamp/tracing',
+
+    // Facility Code
+    facility_code: api + 'facility-code',
+
+    // Bag Revamp
+    revamp_bag: api + 'revamp/bag',
+
+    // Connote Cancel
+    connote_cancel: api + 'request-cancel',
+
+    // Connote Forward
+    connote_forward: api + 'forward',
+
+    // Crisscross
+    crisscross: api + 'crisscross',
+
+    // KPI
+    kpi_process_target: api + 'kpi/process-target',
+
+    // Region List
+    regional_list: api + 'regional-list',
+
+    // Branch List
+    branch_list: api + 'branch-list',
+
+    // Origin List
+    origin_list: api + 'origin-list',
+
+    // Node List
+    node_list: api + 'node-list',
+
+    // User List
+    user_list: api + 'user-list',
+
+    // Employee List
+    employee_list: api + 'employee-list',
+
+    // Insight Inventory
+    insight_inventory: api + 'insight/inventory',
+
+    // Insight Receive
+    insight_receive: api + 'insight/receive',
+
+    // Insight Depart
+    insight_depart: api + 'insight/depart',
+
+    // Insight Runsheet
+    insight_runsheet: api + 'insight/runsheet',
+
+    // Tracking Audit
+    tracking_audit: api + 'tracking/audit',
+
+    // Masterdata Bag Weight
+    bag_weight_setting: api + 'bag-weight',
+
+    // Masterdata Bag Item Limit
+    bag_limit_setting: api + 'bag-limit',
+
+    // Audit
+    audit_invalid_log: api + 'audit/invalid-item-log',
 }

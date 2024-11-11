@@ -694,6 +694,13 @@ export default {
     commit('SET_NODE_NODE_IS_EXTERNAL_ValueData', payload)
   },
 
+  SET_NODE_IS_CDM({ commit }, payload) {
+    commit('SET_NODE_IS_CDM', payload)
+  },
+  SET_NODE_IS_CDM_ValueData({ commit }, payload) {
+    commit('SET_NODE_IS_CDM_ValueData', payload)
+  },
+
   SET_NODE_IS_ACTIVE({ commit }, payload) {
     commit('SET_NODE_IS_ACTIVE', payload)
   },
@@ -1873,6 +1880,9 @@ export default {
   SET_SURAT_MUATAN_MANIFEST_NUMBER({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_NUMBER', payload)
   },
+  SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled', payload)
+  },
   SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData', payload)
   },
@@ -1964,6 +1974,9 @@ export default {
   // type select perlu data array
   SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_DESTINATION_ArrData', payload)
+  },
+  SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible', payload)
   },
 
   SET_SURAT_MUATAN_VEHICLE_TYPE_ID({ commit }, payload) {
@@ -2676,10 +2689,6 @@ export default {
   SET_ALL_RUNSHEET_ID_ValueData({ commit }, payload) {
     commit('SET_ALL_RUNSHEET_ID_ValueData', payload)
   },
-  //Pra runsheet
-  SET_IS_PRA_RUNSHEET_ValueData({ commit }, payload) {
-    commit('SET_IS_PRA_RUNSHEET_ValueData', payload)
-  },
   
 
   //====== SLA KOLI ======//  
@@ -3203,4 +3212,550 @@ export default {
     commit('SET_CONFIGURATION_WARNING_RUNSHEET_NODE_ID_ArrData', payload)
   },
   //====== END CONFIGURATION WARNING RUNSHEET ======//
+
+
+
+  //====== CONFIGURATION WARNING SLA ======//  
+
+  SET_CONFIGURATION_WARNING_SLA_SETTING_ID({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_SETTING_ID', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_SETTING_ID_visible({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_SETTING_ID_visible', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_SETTING_ID_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_SETTING_ID_ValueData', payload)
+  },
+  
+  SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE_ValueData', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE_ArrData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_FORMULA_TYPE_ArrData', payload)
+  },
+
+  SET_CONFIGURATION_WARNING_SLA_VALUE({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_VALUE', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_VALUE_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_VALUE_ValueData', payload)
+  },
+
+  SET_CONFIGURATION_WARNING_SLA_NODE_ID({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_NODE_ID', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_NODE_ID_ValueData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_NODE_ID_ValueData', payload)
+  },
+  SET_CONFIGURATION_WARNING_SLA_NODE_ID_ArrData({ commit }, payload) {
+    commit('SET_CONFIGURATION_WARNING_SLA_NODE_ID_ArrData', payload)
+  },
+  //====== END CONFIGURATION WARNING SLA ======//
+
+
+
+  //======= HELPDESK MOVE CONNOTE =======//
+  SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID({ commit }, payload) {
+    commit('SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID', payload)
+  },
+  SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID_ValueData', payload)
+  },
+  SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID_ArrData({ commit }, payload) {
+    commit('SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID_ArrData', payload)
+  },
+  //====== END HELPDESK MOVE CONNOTE ======//
+
+
+
+  //======= HELPDESK MOVE BAG =======//
+  SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID({ commit }, payload) {
+    commit('SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID', payload)
+  },
+  SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID_ValueData', payload)
+  },
+  SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID_ArrData({ commit }, payload) {
+    commit('SET_HELPDESK_MOVE_BAG_NODE_LOCATION_ID_ArrData', payload)
+  },
+  //====== END HELPDESK MOVE BAG ======//
+
+
+
+  //======= HELPDESK EDIT CONNOTE =======//
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_NAME({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_NAME', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_NAME_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_NAME_ValueData', payload)
+  },
+  
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_STREET_ADDRESS({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_STREET_ADDRESS', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_STREET_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_STREET_ADDRESS_ValueData', payload)
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_EMAIL({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_EMAIL', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_EMAIL_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_EMAIL_ValueData', payload)
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_PHONE_NUMBER({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_PHONE_NUMBER', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_PHONE_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_SHIPPER_PHONE_NUMBER_ValueData', payload)
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_NAME({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_NAME', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_NAME_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_NAME_ValueData', payload)
+  },
+  
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_STREET_ADDRESS({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_STREET_ADDRESS', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_STREET_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_STREET_ADDRESS_ValueData', payload)
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_EMAIL({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_EMAIL', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_EMAIL_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_EMAIL_ValueData', payload)
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_PHONE_NUMBER({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_PHONE_NUMBER', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_PHONE_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_PHONE_NUMBER_ValueData', payload)
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_COD({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_AMOUNT_COD', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_COD_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_AMOUNT_COD_ValueData', payload)
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_PRICE({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_AMOUNT_PRICE', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_PRICE_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_AMOUNT_PRICE_ValueData', payload)
+  },
+
+
+  SET_HELPDESK_EDIT_CONNOTE_REMARKS({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_REMARKS', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_REMARKS_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_REMARKS_ValueData', payload)
+  },
+  //====== END HELPDESK EDIT CONNOTE ======//
+
+
+
+  //====== FACILITY CODE ======//
+
+  SET_FACILITY_CODE_USER_ID({ commit }, payload) {
+    commit('SET_FACILITY_CODE_USER_ID', payload)
+  },
+  SET_FACILITY_CODE_USER_ID_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_USER_ID_ValueData', payload)
+  },
+  SET_FACILITY_CODE_USER_ID_ArrData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_USER_ID_ArrData', payload)
+  },
+  
+  SET_FACILITY_CODE_CODE({ commit }, payload) {
+    commit('SET_FACILITY_CODE_CODE', payload)
+  },
+  SET_FACILITY_CODE_CODE_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_CODE_ValueData', payload)
+  },
+
+  SET_FACILITY_CODE_NAME({ commit }, payload) {
+    commit('SET_FACILITY_CODE_NAME', payload)
+  },
+  SET_FACILITY_CODE_NAME_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_NAME_ValueData', payload)
+  },
+
+  SET_FACILITY_CODE_ADDRESS({ commit }, payload) {
+    commit('SET_FACILITY_CODE_ADDRESS', payload)
+  },
+  SET_FACILITY_CODE_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_ADDRESS_ValueData', payload)
+  },
+
+  SET_FACILITY_CODE_FACILITY_TYPE({ commit }, payload) {
+    commit('SET_FACILITY_CODE_FACILITY_TYPE', payload)
+  },
+  SET_FACILITY_CODE_FACILITY_TYPE_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_FACILITY_TYPE_ValueData', payload)
+  },
+
+  SET_FACILITY_CODE_DESTINATION({ commit }, payload) {
+    commit('SET_FACILITY_CODE_DESTINATION', payload)
+  },
+  SET_FACILITY_CODE_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_FACILITY_CODE_DESTINATION_ValueData', payload)
+  },
+  //====== END FACILITY CODE ======//
+
+
+
+  //====== KPI PROCESS TARGET ======//
+
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_VALUE', payload)
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ValueData', payload)
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ArrData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ArrData', payload)
+  },
+
+
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY', payload)
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ValueData', payload)
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ArrData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ArrData', payload)
+  },
+
+
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_PROCESS_NAME', payload)
+  },
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_PROCESS_NAME_ValueData', payload)
+  },
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME_ArrData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_PROCESS_NAME_ArrData', payload)
+  },
+
+  SET_KPI_PROCESS_TARGET_VALUE({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_VALUE', payload)
+  },
+  SET_KPI_PROCESS_TARGET_VALUE_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_VALUE_ValueData', payload)
+  },
+
+
+  SET_KPI_PROCESS_TARGET_DESCRIPTION({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_DESCRIPTION', payload)
+  },
+  SET_KPI_PROCESS_TARGET_DESCRIPTION_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_DESCRIPTION_ValueData', payload)
+  },
+
+
+  SET_KPI_PROCESS_TARGET_START_DATE({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_START_DATE', payload)
+  },
+  SET_KPI_PROCESS_TARGET_START_DATE_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_START_DATE_ValueData', payload)
+  },
+  SET_KPI_PROCESS_TARGET_START_DATE_ArrData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_START_DATE_ArrData', payload)
+  },
+
+
+  SET_KPI_PROCESS_TARGET_END_DATE({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_END_DATE', payload)
+  },
+  SET_KPI_PROCESS_TARGET_END_DATE_ValueData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_END_DATE_ValueData', payload)
+  },
+  SET_KPI_PROCESS_TARGET_END_DATE_ArrData({ commit }, payload) {
+    commit('SET_KPI_PROCESS_TARGET_END_DATE_ArrData', payload)
+  },
+
+  //====== END KPI PROCESS TARGET ======//
+
+
+  //====== CONNOTE FORWARD ======//
+  
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_ValueData', payload);
+  },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_ValueData', payload);
+  },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_ValueData', payload);
+  },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_ValueData', payload);
+  },  
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_isDisabled', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ArrData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ArrData', payload)
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_isDisabled', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_ValueData', payload)
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_ValueData', payload)
+  },
+  
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_ValueData', payload);
+  },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_ValueData', payload);
+  },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_ValueData', payload);
+  },
+  
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_isDisabled', payload);
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_ValueData', payload);
+  },  
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_isDisabled', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ArrData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ArrData', payload)
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_isDisabled', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_ValueData', payload)
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_isDisabled', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_ValueData', payload)
+  },
+
+
+
+
+  //====== END CONNOTE FORWARD ======//
+
+
+  //====== BAG WEIGHT SETTINGS ======//
+
+  SET_BAG_WEIGHT_BAG_TYPE({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_BAG_TYPE', payload)
+  },
+  SET_BAG_WEIGHT_BAG_TYPE_ValueData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_BAG_TYPE_ValueData', payload)
+  },
+  SET_BAG_WEIGHT_BAG_TYPE_ArrData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_BAG_TYPE_ArrData', payload)
+  },
+
+
+  SET_BAG_WEIGHT_ROUTING_TYPE({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_ROUTING_TYPE', payload)
+  },
+  SET_BAG_WEIGHT_ROUTING_TYPE_ValueData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_ROUTING_TYPE_ValueData', payload)
+  },
+  SET_BAG_WEIGHT_ROUTING_TYPE_ArrData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_ROUTING_TYPE_ArrData', payload)
+  },
+
+
+  SET_BAG_WEIGHT_SERVICE_TYPE({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_SERVICE_TYPE', payload)
+  },
+  SET_BAG_WEIGHT_SERVICE_TYPE_ValueData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_SERVICE_TYPE_ValueData', payload)
+  },
+  SET_BAG_WEIGHT_SERVICE_TYPE_ArrData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_SERVICE_TYPE_ArrData', payload)
+  },
+
+
+  SET_BAG_WEIGHT_DESTINATION({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_DESTINATION', payload)
+  },
+  SET_BAG_WEIGHT_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_DESTINATION_ValueData', payload)
+  },
+  SET_BAG_WEIGHT_DESTINATION_ArrData({ commit }, payload) {
+    commit('SET_BAG_WEIGHT_DESTINATION_ArrData', payload)
+  },
+
+  //====== END BAG WEIGHT SETTINGS ======//
+
+
+
+  //====== BAG LIMIT SETTINGS ======//
+
+  SET_BAG_LIMIT_BAG_TYPE({ commit }, payload) {
+    commit('SET_BAG_LIMIT_BAG_TYPE', payload)
+  },
+  SET_BAG_LIMIT_BAG_TYPE_ValueData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_BAG_TYPE_ValueData', payload)
+  },
+  SET_BAG_LIMIT_BAG_TYPE_ArrData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_BAG_TYPE_ArrData', payload)
+  },
+
+
+  SET_BAG_LIMIT_REFERENCE_VALUE({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_VALUE', payload)
+  },
+  SET_BAG_LIMIT_REFERENCE_VALUE_ValueData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_VALUE_ValueData', payload)
+  },
+  SET_BAG_LIMIT_REFERENCE_VALUE_ArrData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_VALUE_ArrData', payload)
+  },
+
+
+  SET_BAG_LIMIT_REFERENCE_ENTITY({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_ENTITY', payload)
+  },
+  SET_BAG_LIMIT_REFERENCE_ENTITY_ValueData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_ENTITY_ValueData', payload)
+  },
+  SET_BAG_LIMIT_REFERENCE_ENTITY_ArrData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_REFERENCE_ENTITY_ArrData', payload)
+  },
+
+
+  SET_BAG_LIMIT_LIMIT({ commit }, payload) {
+    commit('SET_BAG_LIMIT_LIMIT', payload)
+  },
+  SET_BAG_LIMIT_LIMIT_ValueData({ commit }, payload) {
+    commit('SET_BAG_LIMIT_LIMIT_ValueData', payload)
+  },
+
+  //====== END BAG LIMIT SETTINGS ======//
+
+
+  SET_BAG_IS_AUTO_OPEN_BAG({ commit }, payload) {
+    commit('SET_BAG_IS_AUTO_OPEN_BAG', payload);
+  },
+
+  SET_BAG_IS_AUTO_OPEN_BAG_ValueData({ commit }, payload) {
+    commit('SET_BAG_IS_AUTO_OPEN_BAG_ValueData', payload);
+  }
 }

@@ -10,7 +10,20 @@
       </vs-row>
       <section class="bagging">
           <vs-row>            
-            <!--input destination -->
+            <vs-col xs="12" sm="3" lg="2">
+              <selector 
+                ref="bag_type"
+                name="Bag Type" 
+                rules="" 
+                placeholder="Select bag type"
+                formKey="bag_type"
+                :loading="loading"
+                :valueData="bagTypeArray"
+                :selectedValue="bag_type"
+                :isMultiple="false"
+                :customBind="'data-kt-bag-type'"
+                @updateValue="updateFilter" />
+            </vs-col>
             <vs-col xs="12" sm="3" lg="2">
               <template>
                 <div class="center in-get-bag">
@@ -23,7 +36,7 @@
                    formKey="regional"
                    :valueData="filteredRegionalArray"
                    :selectedValue="regional"
-                   :disabled="is_pra_runsheet"
+                   :disabled="listenDisabled"
                    :customBind="'data-kt-routing'"
                    @updateValue="updateFilter" />
                  </vs-col>
@@ -43,7 +56,7 @@
                    :loading="loading"
                    :valueData="destinationArray"
                    :selectedValue="destination"
-                   :disabled="is_pra_runsheet"
+                   :disabled="listenDisabled"
                    :customBind="'data-kt-destination'"
                    @updateValue="updateFilter" />
                  </vs-col>
@@ -58,6 +71,7 @@
                     v-model="searchTerm"
                     :fetch-suggestions="querySearchAsync"
                     placeholder="Search Destination"
+                    :disabled="listenDisabled"
                     @select="handleSelect"
                   >
                     <template v-slot="{ item }">
@@ -86,136 +100,40 @@
                    :valueData="filteredServiceArray"
                    :selectedValue="service"
                    :isMultiple="true"
-                   :disabled="is_pra_runsheet"
+                   :disabled="listenDisabled"
                    :customBind="'data-kt-service'"
                    @updateValue="updateFilter" />
                  </vs-col>
                 </div>
               </template>
             </vs-col>
-            <vs-col xs="12" sm="3" lg="2" v-if="checkPermission('read-courier-pra-runsheet') && is_pra_runsheet">
-              <template >
-              <!-- <template> -->
-                <div class="center in-get-bag">
-                 <vs-col lg="12">
-                   <selector 
-                   ref="employee"
-                   name="Courier Delivery" 
-                   rules="" 
-                   placeholder="Select Courier Delivery"
-                   formKey="employee"
-                   :valueData="employeeArray"
-                   :selectedValue="employee"
-                   :customBind="'data-kt-courier'"
-                   @updateValue="updateFilter" />
-                 </vs-col>
-                </div>
-              </template>
-            </vs-col>
             <vs-col xs="6" sm="3" lg="2" class="mt-2">
-              <vs-checkbox  v-model="is_pra_runsheet" @change="handlePraRunsheet">
-                Pra Runsheet
+              <vs-checkbox  v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                Auto Open Bag
               </vs-checkbox>
             </vs-col>
-            
-            
-            
-            <!-- <vs-col xs="12" sm="2" lg="2">
-              <template>
-                <div class="center in-get-bag">
-                  <span class="c-label">Weight</span>
-                  <vs-input border type="text"
-                            v-model="weight"
-                            placeholder="Weight"
-                            v-on:keyup.enter="updateValue"
-                            ref="formInputBagging" icon-after>
-                    <template #icon>Kg</template>
-                  </vs-input>
-                </div>
-              </template>
-            </vs-col> -->
-            
-            
           </vs-row>
-
-          <template>
-            <div class="center in-get-bag mb-2">
-              <vs-row style="margin-top:1em">
-                <vs-col xs="4" sm="3" lg="2">
-                  <vs-radio
-                    v-model="radio_option"
-                    val="connote"
-                    v-bind:data-kt-radio="'Connote (Orion)'"
-                    >
-                    Connote (Orion)
-                  </vs-radio>
-                </vs-col>
-                <vs-col xs="4" sm="3" lg="2">
-                  <vs-radio
-                    v-model="radio_option"
-                    val="koli"
-                    v-bind:data-kt-radio="'Koli'"
-                    >
-                    Koli
-                  </vs-radio>
-                </vs-col>
-                <vs-col xs="4" sm="3" lg="2">
-                  <vs-radio
-                    v-model="radio_option"
-                    val="bag"
-                    v-bind:data-kt-radio="'Bag'"
-                    >
-                    Bag
-                  </vs-radio>
-                </vs-col>
-              </vs-row>
-            </div>
-          </template>
 
           <vs-row style="margin-top:1em">
             <vs-col xs="12" sm="6" lg="2">
-              <template>
-                <div v-if="radio_option === 'connote'" class="center in-get-bag">
-                  <vs-input border type="text"
-                            v-model="item_code_orion"
-                            label-placeholder="Masukkan Connote (Orion)"
-                            :autofocus="true"
-                            ref="formInputBagging"
-                            icon-after
-                            v-on:keyup.enter="updateValueOrion"
-                            v-uppercase
-                            @click-icon="$refs.cameraScanner.open('formInputBagging')"
-                            v-bind:data-kt="'scan_input'"
-                            >
-                            <template #icon>
-                              <i class="bx bx-barcode-reader"></i>
-                            </template>
-
-                  </vs-input>
-                </div>
-                <div v-else class="center in-get-bag">
-                  <vs-input border type="text"
-                            v-model="item_code"
-                            label-placeholder="Masukkan code Koli / Bag"
-                            v-on:keyup.enter="updateValue"
-                            :autofocus="true"
-                            ref="formInputBagging"
-                            icon-after
-                            v-uppercase
-                            @click-icon="$refs.cameraScanner.open('formInputBagging')"
-                            v-bind:data-kt="'scan_input'"
-                            >
-                            <template #icon>
-                              <i class="bx bx-barcode-reader"></i>
-                            </template>
-
-                  </vs-input>
-                </div>
-              </template>
+              <div class="center in-get-bag">
+                <vs-input border type="text"
+                  v-model="item_code"
+                  :label-placeholder="placeholder"
+                  v-on:keyup.enter="updateValue"
+                  :autofocus="true"
+                  ref="formInputBagging"
+                  icon-after
+                  v-uppercase
+                  @click-icon="$refs.cameraScanner.open('formInputBagging')"
+                  v-bind:data-kt="'scan_input'"
+                  >
+                  <template #icon>
+                    <i class="bx bx-barcode-reader"></i>
+                  </template>
+                </vs-input>
+              </div>
             </vs-col>
-            
-            <!--input service type -->
-            
           </vs-row>
           
           <vs-row justify="space-between" class="mt-2">
@@ -237,7 +155,6 @@ import axios from "axios";
 import master from "@/mixins/master"
 import Breadcrumb from "@/components/breadcrumb/index"
 import Selector from "@/components/input/select"
-import FormInputController from "@/components/form/formInputController"
 import AutoComplete from "@/components/input/autoComplete"
 import CameraScanner from "@/components/scanner/camera.vue";
 
@@ -262,9 +179,38 @@ export default {
         this.setInputFocus();
       }
     },
+    bag_type: function(val) {
+      if (val !== undefined) {
+        switch (val) {
+          case "normal":
+            this.title = 'Create Bag'
+            this.placeholder = 'Masukkan Connote'
+            this.is_disabled = false
+            break;
+          case "masterbag":
+            this.title = 'Create Masterbag'
+            this.placeholder = 'Masukkan Bag'
+            this.is_disabled = false
+            break;
+          case "pra runsheet":
+            this.title = 'Create Bag Prarunsheet'
+            this.placeholder = 'Masukkan Connote'
+            this.is_disabled = true
+            this.handlePraRunsheet()
+            break;
+          case "return":
+            this.title = 'Create Bag Return'
+            this.placeholder = 'Masukkan Connote Return'
+            this.is_disabled = false
+            break;
+          default:
+        }
+      }
+    },
   },
   data() {
       return {
+          title: 'Create Bag',
           item_code:'',
           item_code_orion:  '',
           form:{},
@@ -272,7 +218,6 @@ export default {
           loadingData: false,
           is_disabled: false,
           radio_option: "connote",
-          
           regional: "",
           regionalArray: [
             {
@@ -296,7 +241,6 @@ export default {
               "value":"international"
             }
           ],
-          
           service: "",
           serviceArray: [
             {
@@ -427,7 +371,6 @@ export default {
               "value":"ALL_SERVICE"
             },
           ],
-          
           destinationArray: [
             {
               "label": "",
@@ -436,13 +379,31 @@ export default {
           ],
           destination: "",
           // weight: null,
-          employee: "",
-          employeeArray: [],
           searchTerm: '',
           timeout: null,
           links: [],
-          is_pra_runsheet: false,
           routing_type: '',
+          bag_type: '',
+          bagTypeArray: [
+            {
+              "label": "Regular Bag",
+              "value": "normal"
+            },
+            {
+              "label": "Masterbag",
+              "value": "masterbag"
+            },
+            {
+              "label": "Bag Pra Runsheet",
+              "value": "pra runsheet"
+            },
+            {
+              "label": "Bag Return",
+              "value": "return"
+            },
+          ],
+          placeholder: 'Masukkan Connote',
+          is_auto_open_bag: false,
       }
   },
   computed: {
@@ -459,18 +420,11 @@ export default {
       return isPermissions ? this.serviceArrayNew : this.serviceArrayNew.filter(item => item.value !== 'ALL_SERVICE');
     },
     listenTitle() {
-      if (this.is_pra_runsheet) {
-        return "Create Bag Prarunsheet"
-      }
-      else {
-        if (this.radio_option === "connote" || this.radio_option === "koli") {
-          return "Create Bag"
-        }
-        else if (this.radio_option === "bag") {
-          return "Create Masterbag"
-        }
-      }
-    }
+      return this.title
+    },
+    listenDisabled() {
+      return this.is_disabled
+    },
   },
   methods: {
     checkPermission(permission) {
@@ -538,25 +492,6 @@ export default {
           })
       }
     },
-    async getemployee(){
-        await axios
-              .get(this.URL.employee +
-              `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-              this.Helper.header())
-              .then(res => {
-                      res.data.data.filter(item => item.employee_type_id == 5).map(item => {
-                          let obj = {}
-                          obj["label"] = item.employee_name + ' (' + item.employee_nik + ' ) '
-                          obj["value"] = item.employee_id
-
-                          this.employeeArray.push(obj)
-                      })
-
-              }).catch(err => {
-                  this.loading = false
-                  this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate employee list', err)
-              })
-      },
       async getService(){
         
       this.loading = true
@@ -580,12 +515,13 @@ export default {
             this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
           })
       },
-    handlePraRunsheet(val) {
-      if (val.target.checked) {
-        this.regional = ''
-        this.service = ''
-        this.destination = ''
-      }
+    handleAutoOpenBag(val) {
+      this.is_auto_open_bag = val.target.checked;
+    },
+    handlePraRunsheet() {
+      this.regional = ''
+      this.service = ''
+      this.destination = ''
     },
     updateRadio(){
       this.form={
@@ -599,10 +535,6 @@ export default {
       if(this.destination !== "") {
         this.form["destination_node_id"] = this.destination
       }
-      // jika user type inbound, kirim payload employee_id(kurir delivery) 
-      if (this.listenActiveUser['user_role_id'] == 4){
-        this.form["employee_id"] = this.employee
-      }
       this.ProccessBagging()
     },
     updateValue(){
@@ -611,35 +543,14 @@ export default {
           item_number: this.item_code,
           destination : this.regional,
           service: this.service,
-          is_pra_runsheet: this.is_pra_runsheet
+          type: this.bag_type,
+          auto_open_bag: this.is_auto_open_bag
       }
       // if(this.weight !== null) {
       //   this.form["bag_weight"] = parseInt(this.weight)
       // }
       if(this.destination !== "") {
         this.form["destination_node_id"] = this.destination
-      }
-      if (this.checkPermission('read-courier-pra-runsheet')){
-        this.form["employee_id"] = this.employee
-      }
-      this.ProccessBagging()
-    },
-    updateValueOrion(){
-
-      this.form={
-          item_number: this.item_code_orion + "00",
-          destination : this.regional,
-          service: this.service,
-          is_pra_runsheet: this.is_pra_runsheet
-      }
-      // if(this.weight !== null) {
-      //   this.form["bag_weight"] = parseInt(this.weight)
-      // }
-      if(this.destination !== "") {
-        this.form["destination_node_id"] = this.destination
-      }
-      if (this.checkPermission('read-courier-pra-runsheet')){
-        this.form["employee_id"] = this.employee
       }
       this.ProccessBagging()
     },
@@ -663,8 +574,8 @@ export default {
           case key.toLowerCase().includes('destination'):
               this.destination = value
               break;
-          case key.toLowerCase().includes('employee'):
-              this.employee = value
+          case key.toLowerCase().includes('bag_type'):
+              this.bag_type = value
               break;
           default:
       }
@@ -672,18 +583,21 @@ export default {
     },
     async ProccessBagging(){
       await axios
-          .post(this.URL.bag+`?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header())
+          .post(this.URL.revamp_bag+`?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header())
           .then(res => {
             let bagNumber = res.data.data.bag_number;
-            let is_pra_runsheet = res.data.data.is_pra_runsheet
             this.handleClearForm()
-            this.$store.dispatch("SET_IS_PRA_RUNSHEET_ValueData", is_pra_runsheet)
-            this.openNotification(null, 'Success', 'Bagging is success')
+            this.openNotification("success", null, 'Success', 'Bagging is success')
+
+            this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG", this.is_auto_open_bag);
+            this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG_ValueData", this.is_auto_open_bag);
+
             this.$router.push('/bagging-detail/'+bagNumber)
+            this.setRoutePageHistory(this.$route.meta, false);
           }).catch(err => {
             this.loading = false
             this.handleClearForm()
-            this.openNotification('danger', err.response ? err.response.data.code : '', err.response ? err.response.data.message : 'something went wrong')
+            this.openNotification('danger', err?.response?.data?.code ?? '', "FAILED", err?.response?.data?.message ?? 'Something went wrong')
           })
     },
     querySearchAsync(queryString, cb) {
@@ -724,13 +638,7 @@ export default {
         data.namespace === "formInputBagging"
       ) {
         this.item_code = data.data.text;
-
-        if (this.radio_option === "connote") {
-          this.item_code_orion = this.item_code;
-          this.updateValueOrion();
-        } else {
-          this.updateValue();
-        }
+        this.updateValue();
       }
     },
     setInputFocus() {
@@ -742,14 +650,15 @@ export default {
       });
     },
   },
+  created() {
+    this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG", false);
+    this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG_ValueData", false);
+  },
   mounted() {
     this.getNodeLink()
     this.getNodeIntracity()
-    this.getemployee()
     this.getService()
     this.setInputFocus();
-    // this.$store.dispatch("SET_BAGGING_destination_dataArray", this.regionalArray )
-    // this.$store.dispatch("SET_BAGGING_service_dataArray", this.serviceArray )
   }
 }
 </script>

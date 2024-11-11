@@ -184,7 +184,7 @@ export default {
         }
     },
     mounted() {
-        // this.getDataTariffCode()
+        this.handleSubmitShortcut(this.handleSubmit)
     },
 }
 </script>

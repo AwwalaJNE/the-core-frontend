@@ -70,12 +70,16 @@
                     :page="pagination.page"
                     :limit="pagination.limit"
                     
+                    :onRowClickCallback="updateSelected"
                     :hasPagination="true"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
                     :hasAction="false"
                     :printAction="true"
                     @actionPrint="actionPrint"
+                    :dynamicCancel="validateCancel"
+                    :dynamicCancelColumn="'is_cancellable'"
+                    @actionCancel="actionCancel"
                     />
                 </div>
             </div>
@@ -86,6 +90,16 @@
             :active="dialogReturnActive" 
             :closeDialog="closeDialog"
             :refresh="refresh"
+        />
+
+        <dialog-confirm
+            title="Cancel Connote Return"
+            :message="`Are you sure you want to cancel ${this.connote_number_return}?`"
+            :active="activeDialogConfirm"
+            :loading="loadingDialogConfirm"
+            :closeDialog="closeDialogConfirm"
+            @confirm="confirmCancel"
+            @cancel="closeDialogConfirm"
         />
     </div>
 </template>
@@ -101,6 +115,7 @@ import DateTime from "@/components/input/dateTime"
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
 import DialogReturn from "@/views/irreguralities/return/dialogReturn"
+import DialogConfirm from "@/components/dialog/dialogConfirm"
 export default {
     name:"irregularities-return",
     mixins:[master],
@@ -112,6 +127,7 @@ export default {
         "table-master" : TableMaster,
         "dialog-return" : DialogReturn,
         "select-search-by": SelectSearchBy,
+        "dialog-confirm": DialogConfirm,
     },
     data() {
         return {
@@ -170,7 +186,11 @@ export default {
                 label: 'Created Date',
                 value: 'create'
               },
-            ]
+            ],
+            selectedRow: [],
+            connote_number_return: '',
+            activeDialogConfirm: false,
+            loadingDialogConfirm: false
         }
     },
     methods: {
@@ -259,7 +279,15 @@ export default {
                     'node_id': this.listenNodeId
                 } 
             });
-            window.open(routeData.href, '_blank');
+
+            const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+            if (printWindow) {
+                printWindow.onload = function() {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                };
+            }
         },
         openDialog(){
             this.dialogReturnActive = true
@@ -279,9 +307,71 @@ export default {
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
         },
+        updateSelected(_event, _item, selected) {
+          this.selectedRow = selected.map(el => el.koli_number_return)
+        },
+        actionPrintSelected(){
+            if (this.selectedRow.length > 0) {
+                let routeData = this.$router.resolve({
+                    name: 'printGeneral',
+                    params: {
+                        'id': this.selectedRow.toString(),
+                        'type': 'koli-reprint',
+                        'node_id':this.listenNodeId
+                    }
+                });
+                
+                const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+                if (printWindow) {
+                    printWindow.onload = function() {
+                        printWindow.print();
+                        printWindow.onafterprint = () => printWindow.close();
+                    };
+                }
+            }
+            else {
+                this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Connote Return terlebih dahulu')
+            }
+        },
+        validateCancel(is_cancellable) {
+            return is_cancellable === '0' ? false : true
+        },
+        actionCancel(val){
+            this.connote_number_return = val.connote_number_return;
+            this.activeDialogConfirm = true
+        },
+        closeDialogConfirm(){
+            this.activeDialogConfirm = false
+            this.loadingDialogConfirm = false
+        },
+        confirmCancel() {
+            this.loadingDialogConfirm = true
+            this.cancelConnote()
+        },
+        async cancelConnote() {
+            this.loadingDialogConfirm = true
+            await axios
+                .post(
+                    this.URL.return + `/${this.connote_number_return}/cancel?n=${this.listenNodeId}`,
+                    null,
+                    this.Helper.header())
+                .then(res => {
+                    this.openNotification("success", null, "Success!", 'Success cancel connote return');
+                })
+                .catch(err => {
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Cancel connote return is failed', err?.response?.data?.message ?? err)
+                })
+                .finally(() => {
+                    this.closeDialogConfirm();
+                    this.connote_number_return = '';
+                    this.refresh();
+                });
+        }
     },
     mounted() {
         this.refresh()   
+        this.handlePrintShortcut(this.actionPrintSelected)
     }
 }
 </script>

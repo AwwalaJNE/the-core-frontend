@@ -86,6 +86,11 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
+                    label: "Orion Number",
+                    key: "irg_sequence",
+                    width: "xs"
+                },
+                {
                     label: "Koli Number",
                     key: "koli_number",
                     width: "md"
@@ -183,17 +188,7 @@ export default {
         actionDetail(val){
             let bag = val.bag_number.replaceAll("/", "-")
             this.$router.push('/bagging-detail/'+bag)
-        },
-        actionPrint(val){
-            let routeData = this.$router.resolve({ 
-                name: 'printGeneral', 
-                params: { 
-                    'id': val.bag_number, 
-                    'type': 'bag',
-                    'node_id': this.listenNodeId
-                } 
-            });
-        window.open(routeData.href, '_blank');
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         actionLimit(val){
             this.pagination.limit = val

@@ -141,7 +141,7 @@ export default {
             }
             await axios
                 .get(this.URL.configuration_warning_runsheet + 
-                `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}&s=${query}&search_by=${searchBy}`, 
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}&s=${query}&search_by=${searchBy}`, 
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {

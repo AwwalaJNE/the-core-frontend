@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import master from "@/mixins/master"
 
 import Login from '@/views/auth'
 
 import Content from '@/views/template/Content.vue'
 import ContentChild from '@/views/template/Content-child'
+import MainPage from '@/views/template/mainPage'
 
 import Upload from '@/views/upload/index.vue'
 import UploadTransaction from '@/views/upload/transaction.vue'
@@ -43,6 +45,9 @@ import Sla from "@/views/settings/sla"
 // === Configuration Warning Runsheet ===
 import ConfigurationWarningRunsheet from "@/views/settings/configurationWarningRunsheet"
 
+// === KPI ===
+import KeyPerformanceIndicator from "@/views/settings/kpi"
+
 // === Inventory Item or Connote ===
 import InventoryItem from "@/views/inventory/connote"
 
@@ -73,11 +78,17 @@ import DetailConnote from "@/views/transactionList/detail"
 // === Trace Connote ===
 import TraceConnote from '@/views/traceConnote/index'
 
+// === Trace Bag ===
+import TraceBag from '@/views/traceBag/index'
+
 // === Cash Register  ===
 import CashRegister from "@/views/cashRegister"
 
 // === Inventory Unbagging  ===
 import Unbagging from "@/views/inventory/unbag"
+
+// === Inventory Sorting  ===
+import Sorting from "@/views/inventory/sorting"
 
 // === Pickup Request ===
 import PickupRequest from "@/views/pickup/request"
@@ -92,7 +103,7 @@ import PickupSchedule from "@/views/pickup/schedule"
 import TransportPackingKayu from "@/views/transport/transportPackingKayu"
 
 // === Transport Surat Jalan ===
-import TransportSuratJalan from "@/views/transport/suratJalan"
+import TransportSuratJalan from "@/views/transport/suratJalanNew"
 
 // === Transport Inventory Vehicle ===
 import TransportInventoryVehicle from "@/views/transport/inventoryVehicle"
@@ -113,19 +124,22 @@ import InboundBandara from "@/views/inboundAirport"
 import InboundIncomingDetail from "@/views/inboundAirport/prealert/detail"
 
 // === Transport Manifest ===
-import TransportManifest from "@/views/transport/manifest"
+import TransportManifest from "@/views/transport/manifestNew"
 
 // === Delivery Runsheet ===
-import DeliveryRunsheet from "@/views/delivery/runsheet"
+import DeliveryRunsheet from "@/views/delivery/runsheetNew"
 
 // === Delivery Runsheet EDIT===
-import DeliveryRunsheetEdit from "@/views/delivery/runsheet/edit"
+import DeliveryRunsheetEdit from "@/views/delivery/runsheetNew/edit"
 
 // === Delivery COD===
 import DeliveryCod from "@/views/delivery/cod"
 
 // === Handover Runsheet ===
 import HandoverRunsheet from "@/views/delivery/hrs"
+
+// === Handover Runsheet History ===
+import HandoverRunsheetHistory from "@/views/delivery/hrsHistory"
 
 // === Delivery Undelivery ===
 import DeliveryUndelivery from "@/views/delivery/undelivery"
@@ -142,8 +156,9 @@ import irreguralitiesReturn from "@/views/irreguralities/return"
 import irreguralitiesEntryStatus from "@/views/irreguralities/entryStatus"
 import irreguralitiesHold from "@/views/irreguralities/hold"
 import irreguralitiesFailed from "@/views/irreguralities/failed"
-import irreguralitiesTracing from "@/views/irreguralities/tracing"
-import irreguralitiesTracingHistory from "@/views/irreguralities/tracing/tracingHistory"
+
+import Tracing from "@/views/tracing"
+import TracingDetail from "@/views/tracing/detail/index"
 
 // === Cost To Cost ===
 import CostToCostSetting from "@/views/costToCost/setting"
@@ -167,11 +182,32 @@ import DashboardSmartPoint from "@/views/dashboard/smartpoint"
 import ResyncRunsheet from "@/views/admin/resyncRunsheet"
 
 // === Help ===
-import Help from "@/views/help"
+import ErrorDictionary from "@/views/help/errorDictionary"
+import ShortcutDictionary from "@/views/help/shortcutDictionary"
 
 // === blank ===
 import BlankPage from "@/views/example/blank"
 
+// === Helpdesk ===
+import HelpdeskConnote from "@/views/helpdesk/connote/index";
+import HelpdeskRunsheet from "@/views/helpdesk/runsheet/index";
+
+// === Facility Code ===
+import FacilityCode from '@/views/settings/facilityCode';
+
+// === Bag Settings ===
+import Bag from '@/views/settings/bag/index';
+
+// === Connote Adjustment ===
+import ConnoteCancel from '@/views/connoteAdjustment/connoteCancel'
+import ConnoteForward from '@/views/connoteAdjustment/connoteForward'
+import ConnoteReturn from '@/views/connoteAdjustment/connoteReturn'
+
+// === Audit Inventory ===
+import InvalidReceiving from '@/views/audit/invalidReceiving'
+import InvalidOpeningBag from '@/views/audit/invalidOpeningBag'
+
+import { resourceLookup } from '@/constants'; 
 
 Vue.use(VueRouter)
 
@@ -187,12 +223,27 @@ const routes = [
     component: Content,
     children: [
       {
+        path: "",
+        name: "mainPage",
+        component: MainPage,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "",
+          resource_type: resourceLookup["MAINPAGE"].resource_type,
+          resource_code: resourceLookup["MAINPAGE"].resource_code,
+          resource_name: resourceLookup["MAINPAGE"].resource_name
+        }
+      },
+      {
         path: "profile",
         name: "profile",
         component: Profile,
         meta: {
           requiresAuth: true,
-          breadCrumb: "User Profile"
+          breadCrumb: "User Profile",
+          resource_type: resourceLookup["PROFILE"].resource_type,
+          resource_code: resourceLookup["PROFILE"].resource_code,
+          resource_name: resourceLookup["PROFILE"].resource_name
         }
       },
       {
@@ -201,7 +252,10 @@ const routes = [
         component: BlankPage,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Example Blank Page"
+          breadCrumb: "Example Blank Page",
+          resource_type: resourceLookup["BLANK"].resource_type,
+          resource_code: resourceLookup["BLANK"].resource_code,
+          resource_name: resourceLookup["BLANK"].resource_name
         }
       },
       {
@@ -215,7 +269,10 @@ const routes = [
             component: Users,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Users"
+              breadCrumb: "Users",
+              resource_type: resourceLookup["SETTINGS_USERS"].resource_type,
+              resource_code: resourceLookup["SETTINGS_USERS"].resource_code,
+              resource_name: resourceLookup["SETTINGS_USERS"].resource_name
             }
           },
           {
@@ -224,7 +281,10 @@ const routes = [
             component: Geolocation,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Geolocation"
+              breadCrumb: "Geolocation",
+              resource_type: resourceLookup["SETTINGS_GEOLOCATION"].resource_type,
+              resource_code: resourceLookup["SETTINGS_GEOLOCATION"].resource_code,
+              resource_name: resourceLookup["SETTINGS_GEOLOCATION"].resource_name
             }
           },
           {
@@ -233,7 +293,10 @@ const routes = [
             component: Nodes,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Nodes"
+              breadCrumb: "Nodes",
+              resource_type: resourceLookup["SETTINGS_NODES"].resource_type,
+              resource_code: resourceLookup["SETTINGS_NODES"].resource_code,
+              resource_name: resourceLookup["SETTINGS_NODES"].resource_name
             }
           },
           {
@@ -242,7 +305,10 @@ const routes = [
             component: Tariff,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Tariff"
+              breadCrumb: "Tariff",
+              resource_type: resourceLookup["SETTINGS_TARIFF"].resource_type,
+              resource_code: resourceLookup["SETTINGS_TARIFF"].resource_code,
+              resource_name: resourceLookup["SETTINGS_TARIFF"].resource_name
             }
           },
           {
@@ -251,7 +317,10 @@ const routes = [
             component: Employee,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Employee"
+              breadCrumb: "Employee",
+              resource_type: resourceLookup["SETTINGS_EMPLOYEE"].resource_type,
+              resource_code: resourceLookup["SETTINGS_EMPLOYEE"].resource_code,
+              resource_name: resourceLookup["SETTINGS_EMPLOYEE"].resource_name
             }
           },
           {
@@ -260,7 +329,10 @@ const routes = [
             component: Vehicles,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Vehicles"
+              breadCrumb: "Vehicles",
+              resource_type: resourceLookup["SETTINGS_VEHICLES"].resource_type,
+              resource_code: resourceLookup["SETTINGS_VEHICLES"].resource_code,
+              resource_name: resourceLookup["SETTINGS_VEHICLES"].resource_name
             }
           },
           {
@@ -269,7 +341,10 @@ const routes = [
             component: Customer,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Customer"
+              breadCrumb: "Customer",
+              resource_type: resourceLookup["SETTINGS_CUSTOMER"].resource_type,
+              resource_code: resourceLookup["SETTINGS_CUSTOMER"].resource_code,
+              resource_name: resourceLookup["SETTINGS_CUSTOMER"].resource_name
             }
           },
           {
@@ -278,7 +353,10 @@ const routes = [
             component: Surcharge,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Surcharge"
+              breadCrumb: "Surcharge",
+              resource_type: resourceLookup["SETTINGS_SURCHARGE"].resource_type,
+              resource_code: resourceLookup["SETTINGS_SURCHARGE"].resource_code,
+              resource_name: resourceLookup["SETTINGS_SURCHARGE"].resource_name
             }
           },
           {
@@ -287,7 +365,10 @@ const routes = [
             component: Sla,
             meta: {
               requiresAuth: true,
-              breadCrumb: "SLA"
+              breadCrumb: "SLA",
+              resource_type: resourceLookup["SETTINGS_SLA"].resource_type,
+              resource_code: resourceLookup["SETTINGS_SLA"].resource_code,
+              resource_name: resourceLookup["SETTINGS_SLA"].resource_name
             }
           },
           {
@@ -296,7 +377,46 @@ const routes = [
             component: ConfigurationWarningRunsheet,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Configuration Warning Runsheet"
+              breadCrumb: "Configuration Warning Runsheet",
+              resource_type: resourceLookup["SETTINGS_CONFIGURATION_WARNING_RUNSHEET"].resource_type,
+              resource_code: resourceLookup["SETTINGS_CONFIGURATION_WARNING_RUNSHEET"].resource_code,
+              resource_name: resourceLookup["SETTINGS_CONFIGURATION_WARNING_RUNSHEET"].resource_name
+            }
+          },
+          {
+            path: "facility-code",
+            name: "FacilityCode",
+            component: FacilityCode,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Facility Code",
+              resource_type: resourceLookup["SETTINGS_FACILITY_CODE"].resource_type,
+              resource_code: resourceLookup["SETTINGS_FACILITY_CODE"].resource_code,
+              resource_name: resourceLookup["SETTINGS_FACILITY_CODE"].resource_name
+            }
+          },
+          {
+            path: "kpi",
+            name: "KPI",
+            component: KeyPerformanceIndicator,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "KPI",
+              resource_type: resourceLookup["SETTINGS_KPI"].resource_type,
+              resource_code: resourceLookup["SETTINGS_KPI"].resource_code,
+              resource_name: resourceLookup["SETTINGS_KPI"].resource_name
+            }
+          },
+          {
+            path: "bag",
+            name: "Bag",
+            component: Bag,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Bag",
+              resource_type: resourceLookup["SETTINGS_BAG"].resource_type,
+              resource_code: resourceLookup["SETTINGS_BAG"].resource_code,
+              resource_name: resourceLookup["SETTINGS_BAG"].resource_name
             }
           },
         ],
@@ -316,7 +436,10 @@ const routes = [
             component: Transaction,
             meta: {
               requiresAuth: true,
-              breadCrumb: "New Transaction"
+              breadCrumb: "New Transaction",
+              resource_type: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_type,
+              resource_code: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_code,
+              resource_name: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_name
             }
           },
           {
@@ -325,7 +448,10 @@ const routes = [
             component: UploadTransaction,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Upload Connote"
+              breadCrumb: "Upload Connote",
+              resource_type: resourceLookup["TRANSACTION_UPLOAD_CONNOTE"].resource_type,
+              resource_code: resourceLookup["TRANSACTION_UPLOAD_CONNOTE"].resource_code,
+              resource_name: resourceLookup["TRANSACTION_UPLOAD_CONNOTE"].resource_name
             }
           },
           {
@@ -334,7 +460,10 @@ const routes = [
             component: TransactionFinish,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Transaction Complete"
+              breadCrumb: "Transaction Complete",
+              resource_type: resourceLookup["TRANSACTION_COMPLETE"].resource_type,
+              resource_code: resourceLookup["TRANSACTION_COMPLETE"].resource_code,
+              resource_name: resourceLookup["TRANSACTION_COMPLETE"].resource_name
             }
           },
           {
@@ -344,7 +473,10 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Transaction Detail",
-              backPath: "/sales/transaction"
+              backPath: "/sales/transaction",
+              resource_type: resourceLookup["TRANSACTION_DETAIL"].resource_type,
+              resource_code: resourceLookup["TRANSACTION_DETAIL"].resource_code,
+              resource_name: resourceLookup["TRANSACTION_DETAIL"].resource_name
             }
           },
         ],
@@ -360,7 +492,23 @@ const routes = [
         children: [],
         meta: {
           requiresAuth: true,
-          breadCrumb: "Trace Connote"
+          breadCrumb: "Trace Connote",
+          resource_type: resourceLookup["TRACE_CONNOTE"].resource_type,
+          resource_code: resourceLookup["TRACE_CONNOTE"].resource_code,
+          resource_name: resourceLookup["TRACE_CONNOTE"].resource_name
+        }
+      },
+      {
+        path: "trace-bag/:bag_number?",
+        name: "trace-bag",
+        component: TraceBag,
+        children: [],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Trace Bag",
+          resource_type: resourceLookup["TRACE_BAG"].resource_type,
+          resource_code: resourceLookup["TRACE_BAG"].resource_code,
+          resource_name: resourceLookup["TRACE_BAG"].resource_name
         }
       },
       {
@@ -374,7 +522,10 @@ const routes = [
             component: TransactionList,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Transaction List"
+              breadCrumb: "Transaction List",
+              resource_type: resourceLookup["SALES_TRANSACTION_LIST"].resource_type,
+              resource_code: resourceLookup["SALES_TRANSACTION_LIST"].resource_code,
+              resource_name: resourceLookup["SALES_TRANSACTION_LIST"].resource_name
             }
           },
 
@@ -384,13 +535,171 @@ const routes = [
             component: CashRegister,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Cash Register"
+              breadCrumb: "Cash Register",
+              resource_type: resourceLookup["SALES_CASH_REGISTER"].resource_type,
+              resource_code: resourceLookup["SALES_CASH_REGISTER"].resource_code,
+              resource_name: resourceLookup["SALES_CASH_REGISTER"].resource_name
             }
           },
         ],
         meta: {
           requiresAuth: true,
           breadCrumb: "Sales"
+        }
+      },
+      {
+        path: "audit",
+        name: "audit",
+        component: ContentChild,
+        children: [
+          {
+            path: "invalid-receiving",
+            name: "invalid-receiving",
+            component: InvalidReceiving,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Invalid Receiving",
+              resource_type: resourceLookup["INVALID_RECEIVING"].resource_type,
+              resource_code: resourceLookup["INVALID_RECEIVING"].resource_code,
+              resource_name: resourceLookup["INVALID_RECEIVING"].resource_name
+            }
+          },
+          {
+            path: "invalid-opening-bag",
+            name: "invalid-opening-bag",
+            component: InvalidOpeningBag,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Invalid Opening Bag",
+              resource_type: resourceLookup["INVALID_OPENING_BAG"].resource_type,
+              resource_code: resourceLookup["INVALID_OPENING_BAG"].resource_code,
+              resource_name: resourceLookup["INVALID_OPENING_BAG"].resource_name
+            }
+          },
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "audit"
+        }
+      },
+      {
+        path: "connote-adjustment",
+        name: "connote-adjustment",
+        component: ContentChild,
+        children: [
+          {
+            path: "connote-cancel",
+            name: "connote-cancel",
+            component: ConnoteCancel,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Connote Cancel",
+              resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_type,
+              resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_code,
+              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_name
+            }
+          },
+          {
+            path: "connote-cancel-history",
+            name: "connote-cancel-history",
+            component: ConnoteCancel,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Connote Cancel History",
+              resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_type,
+              resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_code,
+              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_name
+            }
+          },
+          {
+            path: "connote-forward",
+            name: "connote-forward",
+            component: ConnoteForward,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Connote Forward",
+              resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_type,
+              resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_code,
+              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_name
+            }
+          },
+          {
+            path: "connote-return",
+            name: "connote-return",
+            component: ConnoteReturn,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Connote Return",
+              resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_type,
+              resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_code,
+              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_name
+            }
+          },
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Connote Adjustment"
+        }
+      },
+      {
+        path: "",
+        name: "tracing",
+        component: ContentChild,
+        children: [
+          {
+            path: "/tracing-outstanding",
+            name: "tracing",
+            component: Tracing,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Tracing Outstanding",
+              resource_type: resourceLookup["TRACING"].resource_type,
+              resource_code: resourceLookup["TRACING"].resource_code,
+              resource_name: resourceLookup["TRACING"].resource_name
+            },
+          },
+          {
+            path: "/tracing-outstanding/:id",
+            name: "tracing-detail",
+            component: TracingDetail,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Outstanding",
+              backPath: "/tracing-outstanding",
+              resource_type: resourceLookup["TRACING_DETAIL"].resource_type,
+              resource_code: resourceLookup["TRACING_DETAIL"].resource_code,
+              resource_name: resourceLookup["TRACING_DETAIL"].resource_name
+            }
+          },
+          {
+            path: "/tracing-history",
+            name: "tracingHistory",
+            component: Tracing,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "History",
+              resource_type: resourceLookup["TRACING_HISTORY"].resource_type,
+              resource_code: resourceLookup["TRACING_HISTORY"].resource_code,
+              resource_name: resourceLookup["TRACING_HISTORY"].resource_name
+            },
+          },
+          {
+            path: "/tracing-history/:id",
+            name: "tracingHistoryDetail",
+            component: TracingDetail,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "History",
+              backPath: "/tracing-history",
+              resource_type: resourceLookup["TRACING_HISTORY_DETAIL"].resource_type,
+              resource_code: resourceLookup["TRACING_HISTORY_DETAIL"].resource_code,
+              resource_name: resourceLookup["TRACING_HISTORY_DETAIL"].resource_name
+            }
+          }
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "WUS"
         }
       },
       {
@@ -404,7 +713,10 @@ const routes = [
             component: inventoryIrreguralities,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Inventory Irreguralities"
+              breadCrumb: "Inventory Irreguralities",
+              resource_type: resourceLookup["IRREGURALITIES_INVENTORY"].resource_type,
+              resource_code: resourceLookup["IRREGURALITIES_INVENTORY"].resource_code,
+              resource_name: resourceLookup["IRREGURALITIES_INVENTORY"].resource_name
             }
           },
           {
@@ -413,34 +725,40 @@ const routes = [
             component: irreguralitiesEntryStatus,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Entry Status"
+              breadCrumb: "Entry Status",
+              resource_type: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_type,
+              resource_code: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_code,
+              resource_name: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_name
             }
           },
-          {
-            path: "cancel",
-            name: "irreguralities-cancel",
-            component: irreguralitiesCancel,
-            meta: {
-              requiresAuth: true,
-              breadCrumb: "Cancel"
-            }
-          },
-          {
-            path: "return",
-            name: "irreguralities-return",
-            component: irreguralitiesReturn,
-            meta: {
-              requiresAuth: true,
-              breadCrumb: "return"
-            }
-          },
+          // {
+          //   path: "cancel",
+          //   name: "irreguralities-cancel",
+          //   component: irreguralitiesCancel,
+          //   meta: {
+          //     requiresAuth: true,
+          //     breadCrumb: "Cancel"
+          //   }
+          // },
+          // {
+          //   path: "return",
+          //   name: "irreguralities-return",
+          //   component: irreguralitiesReturn,
+          //   meta: {
+          //     requiresAuth: true,
+          //     breadCrumb: "return"
+          //   }
+          // },
           {
             path: "hold",
             name: "irreguralities-hold",
             component: irreguralitiesHold,
             meta: {
               requiresAuth: true,
-              breadCrumb: "hold"
+              breadCrumb: "hold",
+              resource_type: resourceLookup["IRREGURALITIES_HOLD"].resource_type,
+              resource_code: resourceLookup["IRREGURALITIES_HOLD"].resource_code,
+              resource_name: resourceLookup["IRREGURALITIES_HOLD"].resource_name
             }
           },
           {
@@ -449,28 +767,12 @@ const routes = [
             component: irreguralitiesFailed,
             meta: {
               requiresAuth: true,
-              breadCrumb: "failed"
+              breadCrumb: "failed",
+              resource_type: resourceLookup["IRREGURALITIES_FAILED"].resource_type,
+              resource_code: resourceLookup["IRREGURALITIES_FAILED"].resource_code,
+              resource_name: resourceLookup["IRREGURALITIES_FAILED"].resource_name
             }
           },
-          {
-            path: "tracing",
-            name: "irreguralities-tracing",
-            component: irreguralitiesTracing,
-            meta: {
-              requiresAuth: true,
-              breadCrumb: "tracing"
-            },
-          },
-          {
-            path: "tracing/:id/",
-            name: "irreguralities-tracing-history",
-            component: irreguralitiesTracingHistory,
-            meta: {
-              requiresAuth: true,
-              breadCrumb: "tracing",
-              backPath: "/irreguralities/tracing"
-            }
-          }
         ],
         meta: {
           requiresAuth: true,
@@ -483,7 +785,10 @@ const routes = [
         component: CashLess,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Report"
+          breadCrumb: "Report",
+          resource_type: resourceLookup["CASHLESS"].resource_type,
+          resource_code: resourceLookup["CASHLESS"].resource_code,
+          resource_name: resourceLookup["CASHLESS"].resource_name
         }
       },
       {
@@ -492,7 +797,10 @@ const routes = [
         component: PackingList,
         meta: {
           requiresAuth: true,
-          breadCrumb: "report"
+          breadCrumb: "report",
+          resource_type: resourceLookup["PACKINGLIST"].resource_type,
+          resource_code: resourceLookup["PACKINGLIST"].resource_code,
+          resource_name: resourceLookup["PACKINGLIST"].resource_name
         }
       },
       {
@@ -501,7 +809,10 @@ const routes = [
         component: Upload,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Upload"
+          breadCrumb: "Upload",
+          resource_type: resourceLookup["UPLOAD"].resource_type,
+          resource_code: resourceLookup["UPLOAD"].resource_code,
+          resource_name: resourceLookup["UPLOAD"].resource_name
         }
       },
 
@@ -511,7 +822,10 @@ const routes = [
         component: InventoryItem,
         meta: {
           requiresAuth: true,
-          breadCrumb: "inventory Item"
+          breadCrumb: "inventory Item",
+          resource_type: resourceLookup["INVENTORY_ITEM"].resource_type,
+          resource_code: resourceLookup["INVENTORY_ITEM"].resource_code,
+          resource_name: resourceLookup["INVENTORY_ITEM"].resource_name
         }
       },
       {
@@ -520,7 +834,10 @@ const routes = [
         component: InventoryBagItem,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Inventory Item"
+          breadCrumb: "Inventory Item",
+          resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,
+          resource_code: resourceLookup["INVENTORY_BAG_ITEM"].resource_code,
+          resource_name: resourceLookup["INVENTORY_BAG_ITEM"].resource_name
         }
       },
       {
@@ -530,7 +847,10 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "connote detail",
-          backPath: "/inventory/item"
+          backPath: "/inventory/item",
+          resource_type: resourceLookup["INVENTORY_ITEM_DETAIL"].resource_type,
+          resource_code: resourceLookup["INVENTORY_ITEM_DETAIL"].resource_code,
+          resource_name: resourceLookup["INVENTORY_ITEM_DETAIL"].resource_name
         }
       },
       {
@@ -539,7 +859,10 @@ const routes = [
         component: InventoryBag,
         meta: {
           requiresAuth: true,
-          breadCrumb: "bagging"
+          breadCrumb: "bagging",
+          resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
+          resource_code: resourceLookup["INVENTORY_BAG"].resource_code,
+          resource_name: resourceLookup["INVENTORY_BAG"].resource_name
         }
       },
       {
@@ -549,7 +872,10 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "bagging detail",
-          backPath: "/inventory/bag"
+          backPath: "/inventory/bag",
+          resource_type: resourceLookup["INVENTORY_BAG_DETAIL"].resource_type,
+          resource_code: resourceLookup["INVENTORY_BAG_DETAIL"].resource_code,
+          resource_name: resourceLookup["INVENTORY_BAG_DETAIL"].resource_name
         }
       },
 
@@ -559,7 +885,22 @@ const routes = [
         component: Unbagging,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Unbagging"
+          breadCrumb: "Unbagging",
+          resource_type: resourceLookup["UNBAGGING"].resource_type,
+          resource_code: resourceLookup["UNBAGGING"].resource_code,
+          resource_name: resourceLookup["UNBAGGING"].resource_name
+        }
+      },
+      {
+        path: "inventory/sorting",
+        name: "sorting",
+        component: Sorting,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Sorting",
+          resource_type: resourceLookup["SORTING"].resource_type,
+          resource_code: resourceLookup["SORTING"].resource_code,
+          resource_name: resourceLookup["SORTING"].resource_name
         }
       },
       {
@@ -568,7 +909,10 @@ const routes = [
         component: PickupRequest,
         meta: {
             requiresAuth: true,
-            breadCrumb: "Request Pickup"
+            breadCrumb: "Request Pickup",
+            resource_type: resourceLookup["PICKUP_REQUEST"].resource_type,
+            resource_code: resourceLookup["PICKUP_REQUEST"].resource_code,
+            resource_name: resourceLookup["PICKUP_REQUEST"].resource_name
         }
       },
       {
@@ -577,7 +921,10 @@ const routes = [
         component: PickupList,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Pickup List"
+          breadCrumb: "Pickup List",
+          resource_type: resourceLookup["PICKUP_LIST"].resource_type,
+          resource_code: resourceLookup["PICKUP_LIST"].resource_code,
+          resource_name: resourceLookup["PICKUP_LIST"].resource_name
         }
       },
       {
@@ -586,7 +933,10 @@ const routes = [
         component: PickupSchedule,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Pickup Schedule"
+          breadCrumb: "Pickup Schedule",
+          resource_type: resourceLookup["PICKUP_SCHEDULE"].resource_type,
+          resource_code: resourceLookup["PICKUP_SCHEDULE"].resource_code,
+          resource_name: resourceLookup["PICKUP_SCHEDULE"].resource_name
         }
       },
       //parent transport
@@ -601,7 +951,10 @@ const routes = [
             component: TransportManifest,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Surat Muatan"
+              breadCrumb: "Surat Muatan",
+              resource_type: resourceLookup["TRANSPORT_MANIFEST"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_MANIFEST"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_MANIFEST"].resource_name
             }
           },
           {
@@ -610,7 +963,10 @@ const routes = [
             component: TransportPackingKayu,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Packing Kayu"
+              breadCrumb: "Packing Kayu",
+              resource_type: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_name
             }
           },
           {
@@ -619,7 +975,10 @@ const routes = [
             component: TransportSuratJalan,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Surat Jalan"
+              breadCrumb: "Surat Jalan",
+              resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name
             }
           },
           {
@@ -628,7 +987,10 @@ const routes = [
             component: TransportInventoryVehicle,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Inventory Vehicle"
+              breadCrumb: "Inventory Vehicle",
+              resource_type: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_name
             }
           },
 
@@ -645,7 +1007,10 @@ const routes = [
         component: InboundIncoming,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Receiving"
+          breadCrumb: "Receiving",
+          resource_type: resourceLookup["RECEIVING"].resource_type,
+          resource_code: resourceLookup["RECEIVING"].resource_code,
+          resource_name: resourceLookup["RECEIVING"].resource_name
         }
       },
       {
@@ -655,7 +1020,10 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Inbound Incoming / Receiving",
-          backPath: "/inbound/prealert"
+          backPath: "/inbound/prealert",
+          resource_type: resourceLookup["INBOUND_INCOMING_SCAN"].resource_type,
+          resource_code: resourceLookup["INBOUND_INCOMING_SCAN"].resource_code,
+          resource_name: resourceLookup["INBOUND_INCOMING_SCAN"].resource_name
         }
       },
       {
@@ -665,7 +1033,10 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Inbound Incoming",
-          backPath: "/inbound-bandara"
+          backPath: "/inbound-bandara",
+          resource_type: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_type,
+          resource_code: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_code,
+          resource_name: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_name
         }
       },
       {
@@ -674,7 +1045,10 @@ const routes = [
         component: InboundBandara,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Receiving Bandara / Prealert"
+          breadCrumb: "Receiving Bandara / Prealert",
+          resource_type: resourceLookup["RECEIVING_BANDARA"].resource_type,
+          resource_code: resourceLookup["RECEIVING_BANDARA"].resource_code,
+          resource_name: resourceLookup["RECEIVING_BANDARA"].resource_name
         }
       },
       {
@@ -683,7 +1057,10 @@ const routes = [
         component: DeliveryRunsheet,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Delivery Assign"
+          breadCrumb: "Delivery Assign",
+          resource_type: resourceLookup["DELIVERY_RUNSHEET"].resource_type,
+          resource_code: resourceLookup["DELIVERY_RUNSHEET"].resource_code,
+          resource_name: resourceLookup["DELIVERY_RUNSHEET"].resource_name
         }
       },
       {
@@ -693,7 +1070,10 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Delivery Assign",
-          backPath: "/delivery/runsheet"
+          backPath: "/delivery/runsheet",
+          resource_type: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_type,
+          resource_code: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_code,
+          resource_name: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_name
         }
       },
       {
@@ -703,7 +1083,10 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "Delivery Assign",
-          backPath: "/delivery/runsheet"
+          backPath: "/delivery/runsheet",
+          resource_type: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_type,
+          resource_code: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_code,
+          resource_name: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_name
         }
       },
       {
@@ -712,7 +1095,10 @@ const routes = [
         component: DeliveryCod,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Deposit COD"
+          breadCrumb: "Deposit COD",
+          resource_type: resourceLookup["DEPOSIT_COD"].resource_type,
+          resource_code: resourceLookup["DEPOSIT_COD"].resource_code,
+          resource_name: resourceLookup["DEPOSIT_COD"].resource_name
         }
       },
       {
@@ -721,7 +1107,22 @@ const routes = [
         component: HandoverRunsheet,
         meta: {
           requiresAuth: true,
-          breadCrumb: "HRS"
+          breadCrumb: "HRS",
+          resource_type: resourceLookup["HANDOVER_RUNSHEET"].resource_type,
+          resource_code: resourceLookup["HANDOVER_RUNSHEET"].resource_code,
+          resource_name: resourceLookup["HANDOVER_RUNSHEET"].resource_name
+        }
+      },
+      {
+        path: "/hrs-history",
+        name: "handover-runsheet-history",
+        component: HandoverRunsheetHistory,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "HRS History",
+          resource_type: resourceLookup["HANDOVER_RUNSHEET_HISTORY"].resource_type,
+          resource_code: resourceLookup["HANDOVER_RUNSHEET_HISTORY"].resource_code,
+          resource_name: resourceLookup["HANDOVER_RUNSHEET_HISTORY"].resource_name
         }
       },
       {
@@ -730,7 +1131,10 @@ const routes = [
         component: DeliveryUndelivery,
         meta: {
           requiresAuth: true,
-          breadCrumb: "HRS / Handover Runsheet"
+          breadCrumb: "HRS / Handover Runsheet",
+          resource_type: resourceLookup["HANDOVER_RUNSHEET_COURIER"].resource_type,
+          resource_code: resourceLookup["HANDOVER_RUNSHEET_COURIER"].resource_code,
+          resource_name: resourceLookup["HANDOVER_RUNSHEET_COURIER"].resource_name
         }
       },
       {
@@ -739,7 +1143,10 @@ const routes = [
         component: DeliveryCodHistory,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Cod History"
+          breadCrumb: "Deposit Cod History",
+          resource_type: resourceLookup["DEPOSIT_COD_HISTORY"].resource_type,
+          resource_code: resourceLookup["DEPOSIT_COD_HISTORY"].resource_code,
+          resource_name: resourceLookup["DEPOSIT_COD_HISTORY"].resource_name
         }
       },
       {
@@ -748,7 +1155,10 @@ const routes = [
         component: CostToCostSetting,
         meta: {
             requiresAuth: true,
-            breadCrumb: "Cost To Cost"
+            breadCrumb: "Cost To Cost",
+            resource_type: resourceLookup["COST_TO_COST_SETTING"].resource_type,
+            resource_code: resourceLookup["COST_TO_COST_SETTING"].resource_code,
+            resource_name: resourceLookup["COST_TO_COST_SETTING"].resource_name
         }
       },
       {
@@ -757,7 +1167,10 @@ const routes = [
         component: CostToCostReport,
         meta: {
             requiresAuth: true,
-            breadCrumb: "Cost To Cost"
+            breadCrumb: "Cost To Cost",
+            resource_type: resourceLookup["COST_TO_COST_REPORT"].resource_type,
+            resource_code: resourceLookup["COST_TO_COST_REPORT"].resource_code,
+            resource_name: resourceLookup["COST_TO_COST_REPORT"].resource_name
         }
       },
       {
@@ -766,7 +1179,10 @@ const routes = [
         component: SettingExchangeRate,
         meta: {
             requiresAuth: true,
-            breadCrumb: "setting"
+            breadCrumb: "setting",
+            resource_type: resourceLookup["SETTING_EXCHANGE_RATE"].resource_type,
+            resource_code: resourceLookup["SETTING_EXCHANGE_RATE"].resource_code,
+            resource_name: resourceLookup["SETTING_EXCHANGE_RATE"].resource_name
         }
       },
       {
@@ -775,7 +1191,10 @@ const routes = [
         component: SettingAccessToken,
         meta: {
             requiresAuth: true,
-            breadCrumb: "setting"
+            breadCrumb: "setting",
+            resource_type: resourceLookup["SETTING_ACCESS_TOKEN"].resource_type,
+            resource_code: resourceLookup["SETTING_ACCESS_TOKEN"].resource_code,
+            resource_name: resourceLookup["SETTING_ACCESS_TOKEN"].resource_name
         }
       },
       {
@@ -784,7 +1203,10 @@ const routes = [
         component: DashboardSmartPoint,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Dashboard"
+          breadCrumb: "Dashboard",
+          resource_type: resourceLookup["DASHBOARD_SMART_POINT"].resource_type,
+          resource_code: resourceLookup["DASHBOARD_SMART_POINT"].resource_code,
+          resource_name: resourceLookup["DASHBOARD_SMART_POINT"].resource_name
         }
       },
       {
@@ -793,16 +1215,116 @@ const routes = [
           component: ResyncRunsheet,
           meta: {
               requiresAuth: true,
-              breadCrumb: "Admin"
+              breadCrumb: "Admin",
+              resource_type: resourceLookup["RESYNC_RUNSHEET"].resource_type,
+              resource_code: resourceLookup["RESYNC_RUNSHEET"].resource_code,
+              resource_name: resourceLookup["RESYNC_RUNSHEET"].resource_name
           }
       },
       {
-        path: "/help",
-        name: "Help",
-        component: Help,
+        path: "help",
+        name: "help",
+        component: ContentChild,
+        children: [
+          {
+            path: "error-dictionary",
+            name: "ErrorDictionary",
+            component: ErrorDictionary,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Error Dictionary",
+              resource_type: resourceLookup["HELP_ERROR_DICTIONARY"].resource_type,
+              resource_code: resourceLookup["HELP_ERROR_DICTIONARY"].resource_code,
+              resource_name: resourceLookup["HELP_ERROR_DICTIONARY"].resource_name
+            }
+          },
+          {
+            path: "shortcut-dictionary",
+            name: "ShortcutDictionary",
+            component: ShortcutDictionary,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Shortcut Dictionary",
+              resource_type: resourceLookup["HELP_SHORTCUT_DICTIONARY"].resource_type,
+              resource_code: resourceLookup["HELP_SHORTCUT_DICTIONARY"].resource_code,
+              resource_name: resourceLookup["HELP_SHORTCUT_DICTIONARY"].resource_name
+            }
+          },
+        ],
         meta: {
-            requiresAuth: true,
-            breadCrumb: "Help / Error Dictionary"
+          requiresAuth: true,
+          breadCrumb: "help"
+        }
+      },
+      {
+        path: "helpdesk",
+        name: "helpdesk",
+        component: ContentChild,
+        children: [
+          {
+            path: "connote",
+            name: "Connote",
+            component: HelpdeskConnote,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Connote",
+              resource_type: resourceLookup["HELPDESK_CONNOTE"].resource_type,
+              resource_code: resourceLookup["HELPDESK_CONNOTE"].resource_code,
+              resource_name: resourceLookup["HELPDESK_CONNOTE"].resource_name
+            }
+          },
+          {
+            path: "bag",
+            name: "Bag",
+            component: InventoryBagItem,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "bag",
+              resource_type: resourceLookup["HELPDESK_BAG"].resource_type,
+              resource_code: resourceLookup["HELPDESK_BAG"].resource_code,
+              resource_name: resourceLookup["HELPDESK_BAG"].resource_name
+            }
+          },
+          {
+            path: "surat-muatan",
+            name: "SuratMuatan",
+            component: TransportManifest,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Surat Muatan",
+              resource_type: resourceLookup["HELPDESK_SURAT_MUATAN"].resource_type,
+              resource_code: resourceLookup["HELPDESK_SURAT_MUATAN"].resource_code,
+              resource_name: resourceLookup["HELPDESK_SURAT_MUATAN"].resource_name
+            }
+          },
+          {
+            path: "surat-jalan",
+            name: "SuratJalan",
+            component: TransportSuratJalan,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Surat Jalan",
+              resource_type: resourceLookup["HELPDESK_SURAT_JALAN"].resource_type,
+              resource_code: resourceLookup["HELPDESK_SURAT_JALAN"].resource_code,
+              resource_name: resourceLookup["HELPDESK_SURAT_JALAN"].resource_name
+            }
+          },
+          {
+            path: "runsheet",
+            name: "Runsheet",
+            component: HelpdeskRunsheet,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Runsheet",
+              resource_type: resourceLookup["HELPDESK_RUNSHEET"].resource_type,
+              resource_code: resourceLookup["HELPDESK_RUNSHEET"].resource_code,
+              resource_name: resourceLookup["HELPDESK_RUNSHEET"].resource_name
+            }
+          },
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "helpdesk"
         }
       },
     ],
@@ -819,17 +1341,26 @@ const routes = [
   {
     path: '/print-bpik',
     name: 'printBpik',
-    component: PrintBPIK
+    component: PrintBPIK,
+    resource_type: resourceLookup["PRINT_BPIK"].resource_type,
+    resource_code: resourceLookup["PRINT_BPIK"].resource_code,
+    resource_name: resourceLookup["PRINT_BPIK"].resource_name
   },
   {
     path: '/print/:id/:type/:node_id?/:employee_id?',
     name: 'printGeneral',
-    component: printGeneral
+    component: printGeneral,
+    resource_type: resourceLookup["PRINT_GENERAL"].resource_type,
+    resource_code: resourceLookup["PRINT_GENERAL"].resource_code,
+    resource_name: resourceLookup["PRINT_GENERAL"].resource_name
   },
   {
     path: '/print-sppap',
     name: 'printSPPAP',
-    component: printSPPAP
+    component: printSPPAP,
+    resource_type: resourceLookup["PRINT_SPPAP"].resource_type,
+    resource_code: resourceLookup["PRINT_SPPAP"].resource_code,
+    resource_name: resourceLookup["PRINT_SPPAP"].resource_name
   },
 ]
 

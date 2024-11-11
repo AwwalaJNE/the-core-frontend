@@ -111,6 +111,7 @@ export default {
                     employee_id: this.employee_id
                 } 
             });
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         updateValue(key, val, info){
             switch(key) {

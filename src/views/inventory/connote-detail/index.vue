@@ -15,13 +15,36 @@
                 >PRINT BPIK</vs-button>
             </vs-col>
         </vs-row>
-        <section class="users">
+        <section>
             <vs-row justify="space-around">
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center" :w="`${navActive === 'k-PERMISSIONS'?'4':'12'}`">
                     <div class="box view">
                         <vs-row justify="space-between">
                             <vs-col xs="6" sm="9" lg="9">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
+                            </vs-col>
+                            <vs-col xs="12" sm="3" lg="3" >
+                                <template v-if="filterStatus.length > 1 && navActive === 'k-ACTIVITY'">
+                                    <vs-select
+                                        class="m-select"
+                                        filter
+                                        v-model="filterStatusBy"
+                                        :border="true"
+                                        :multiple="false"
+                                        @change="updateFilterStatus"
+                                    >
+                                    <template v-if="filterStatus.length > 1">
+                                        <vs-option
+                                            v-for="(item,key) in filterStatus"
+                                            :key="key"
+                                            :label="item.label"
+                                            :value="item.value">
+                                        {{item.label}}
+                                        </vs-option>
+                                    </template>
+
+                                    </vs-select>
+                                </template>
                             </vs-col>
                             
                         </vs-row>
@@ -54,11 +77,33 @@
                         <template v-if="navActive === 'k-ACTIVITY'">
                           <vs-row >
                             <vs-col vs-align="center" xs="12" sm="3" lg="12">
-                              <select-status-inventory :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventory" />
+                              <select-status-inventory 
+                                ref="activityInventory" 
+                                :isMultiple="false" 
+                                :border="true" 
+                                :filterStatusBy="filterStatusBy"
+                                @updateStatusinventory="updateStatusinventory" 
+                                />
                             </vs-col>
                           </vs-row>
                         </template>
-                        
+                        <template v-if="navActive === 'k-BAG-HISTORY'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                              <select-bag-history />
+                            </vs-col>
+                          </vs-row>
+                        </template>
+                        <template v-if="navActive === 'k-CUSTOMER-VIEW'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                              <connote-customer-view 
+                                :connoteNumber="connote_number"
+                                :koliNumber="koli_number"
+                              />
+                            </vs-col>
+                          </vs-row>
+                        </template>
                     </div>
                 </vs-col>
                 
@@ -75,6 +120,8 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import selectorDetailVue from "@/views/inventory/connote-detail/connote/selectorDetail"
 import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
+import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
+import connoteCustomerView from "@/views/inventory/connote-detail/connote/connoteCustomerView.vue";
 
 
 export default {
@@ -83,10 +130,12 @@ export default {
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
+        "connote-customer-view": connoteCustomerView,
         "search-input": SearchInput,
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
-        "select-status-inventory": SelectInventoryVue
+        "select-status-inventory": SelectInventoryVue,
+        "select-bag-history": SelectBagHistory,
     },
     data() {
         return {
@@ -100,6 +149,16 @@ export default {
                     label: "ACTIVITY",
                     key: "k-ACTIVITY",
                     title: "Connote Activity"
+                },
+                {
+                    label: "BAG HISTORY",
+                    key: "k-BAG-HISTORY",
+                    title: "Connote's Bag History"
+                },
+                {
+                    label: "CUSTOMER VIEW",
+                    key: "k-CUSTOMER-VIEW",
+                    title: "Connote's Customer View"
                 }
             ],
             navActive: "k-INFO",
@@ -119,8 +178,27 @@ export default {
             destinationTlc:'',
             informationData:[],
             statusinventory:"",
-            connote_number:''
-
+            koli_number:'',
+            connote_number:'',
+            filterStatusBy: "All",
+            filterStatus: [
+                {
+                    label: 'All Connote Type',
+                    value: 'All'
+                },
+                {
+                    label: 'Connote Forward',
+                    value: 'FW'
+                },
+                {
+                    label: 'Connote Return',
+                    value: 'RT'
+                },
+                {
+                    label: 'Connote Return Failed',
+                    value: 'RF'
+                }
+            ],
         }
     },
     methods: {
@@ -139,6 +217,7 @@ export default {
         },
 
         activeTab(val) {
+            this.filterStatusBy = 'All';
             this.navActive = val
             let item = this.navItemm.filter(item => {
                 return item.key == val
@@ -168,15 +247,16 @@ export default {
         },
         getParamRoute(){
           if(this.$route.params.id){
-            this.connote_number = this.$route.params.id
+            this.koli_number = this.$route.params.id
           }
         },
         async getConnote() {
             await axios
-                .get(this.URL.connote +`/${this.connote_number}?n=${this.listenNodeId}`,
+                .get(this.URL.connote +`/${this.koli_number}?n=${this.listenNodeId}`,
                 this.Helper.header())
                 .then(res => {
                     let response = res.data.data;
+                    this.connote_number = response.connote_number
                     let dataorigin={};
                     let dataDestination={}; 
                     let dataInformation={}; 
@@ -297,7 +377,6 @@ export default {
                             value: response.connote_actual_weight + ' Kg',
                             width: 6
                         },
-                       
                         {
                             key : 'Charged Weight',
                             value: response.connote_chargeable_weight + ' Kg',
@@ -308,7 +387,12 @@ export default {
                             value: response.koli_qty + ' Pcs',
                             width: 6
                         },
-                         {
+                        {
+                            key : 'Amount COD',
+                            value: 'Rp '+ Intl.NumberFormat('en-GB').format(response.amount_cod),
+                            width: 6
+                        },
+                        {
                             key : 'Packing Kayu',
                             value: packing,
                         },
@@ -331,50 +415,25 @@ export default {
                     'node_id': this.listenNodeId
                 } 
             });
-            window.open(routeData.href, '_blank');
+            
+            const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+            if (printWindow) {
+                printWindow.onload = function() {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                };
+            }
+        },
+        updateFilterStatus(key) {
+            this.filterStatusBy = key;
+            this.$refs.activityInventory.refresh();
         },
     },
     mounted(){
         this.getParamRoute();
         this.getConnote();
+        this.handlePrintShortcut(this.actionPrint)
     }
 }
 </script>
-<style lang="scss">
-    .users{
-        min-height: 50vh;
-        .view{
-            min-height: 400px;
-        }
-        .nav-box{
-            position: relative;
-            top: 0;
-            left: 0;
-            width: auto;
-            max-width: 350px;
-        }
-        .dataRole{
-            position: relative;
-            width: 100%;
-            padding: 15px;
-            ul{
-                position: relative;
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                li{
-                    text-align: left;
-                    cursor: pointer;
-                    padding: 1em;
-                    border-bottom: 1px solid #eee;
-                    background-color: white;
-                    transition: all .2s ease;
-                    &:hover{
-                        background-color: #f1f1f1;
-                        transition: all .3s ease-in;
-                    }
-                }
-            }
-        }
-    }
-</style>

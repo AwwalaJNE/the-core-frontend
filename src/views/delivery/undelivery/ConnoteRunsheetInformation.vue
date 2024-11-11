@@ -8,9 +8,11 @@
             :page="pagination.page"
             :limit="pagination.limit"
             :hasAction="false"
+            :hasLinked="['delivery_runsheet_number']"
             :hasPagination="true"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
+            @handleEdit="showData"
         />
     </div>
 </template>
@@ -103,6 +105,7 @@ export default {
                             item["status"] = item.status
                             item["status_delivery"] = item.status_delivery
                             item['hrs_value'] = item['is_hrs'] ? true : false
+                            item['created_at'] = item.created_at
                         })
                         this.dataTable = arr;
 
@@ -132,6 +135,10 @@ export default {
         },
         refresh(){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        },
+        showData(row) {
+            this.$router.push(`/delivery/runsheet/${this.listenEmployeeId}/edit/${row.delivery_runsheet_number}/${row.created_at.split(' ')[0]}`);
+            this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {

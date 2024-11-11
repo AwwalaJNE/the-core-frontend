@@ -72,7 +72,7 @@ export default {
   },
   data() {
     return {
-      title: "COD History",
+      title: "Deposit COD History",
       tempSearch: "",
       tempDate: [],
       searchBy: "sco_number",

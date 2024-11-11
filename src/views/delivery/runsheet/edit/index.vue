@@ -1161,6 +1161,7 @@ export default {
     },
     back() {
       this.$router.push("/delivery/runsheet");
+      this.setRoutePageHistory(this.$route.meta, false);
     },
     print() {
       const routeData = this.$router.resolve({
@@ -1172,7 +1173,15 @@ export default {
           node_id: this.listenNodeId,
         },
       });
-      window.open(routeData.href, "_blank");
+      
+      const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+      if (printWindow) {
+        printWindow.onload = function() {
+          printWindow.print();
+          printWindow.onafterprint = () => printWindow.close();
+        };
+      }
     },
     updateSelected(arr) {
       this.selectedUpdateItems = arr;

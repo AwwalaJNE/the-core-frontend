@@ -305,6 +305,7 @@ export default {
                     // this.refreshTransactionStore()
 
                     this.$router.push({ name: 'transactionComplete', params: { id: this.transaction_id } });
+                    this.setRoutePageHistory(this.$route.meta, false);
                     this.openNotification(null, 'Success', 'Payment success')
                 }).catch(err => {
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Payment failed', err)
@@ -322,6 +323,7 @@ export default {
     },
     mounted() {
         this.getListPayment()
+        this.handleSubmitShortcut(this.CreatePayment)
     },
 }
 </script>

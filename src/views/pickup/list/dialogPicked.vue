@@ -193,6 +193,9 @@ export default {
       this.scan_bag=null;
     },
   },
+  mounted() {
+    this.handleSubmitShortcut(this.handleSubmit)
+  }
 };
 </script>
 <style lang="scss">

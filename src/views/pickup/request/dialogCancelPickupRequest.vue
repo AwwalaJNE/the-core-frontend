@@ -181,7 +181,7 @@ export default {
         },
     },
     mounted() {
-    //   this.getStatus();
+        this.handleSubmitShortcut(this.handleSubmit)
     }
 }
 </script>

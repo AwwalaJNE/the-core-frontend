@@ -11,17 +11,29 @@
             <vs-col xs="12" sm="3" lg="3" align="left" class="bag-no">
               <span><b>Bag No. </b></span><span><b>{{ bag_number }}</b></span>
             </vs-col>
-            <vs-col xs="12" sm="3" lg="3" align="left" >
-                <span v-if="!is_pra_runsheet && !loading"><p>Destination: {{bag_destination}}</p></span>
-                <span v-if="is_pra_runsheet && !loading"><p>Courier Delivery: {{courier_delivery}}</p></span>
-                <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
-            </vs-col>
-            <vs-col xs="12" sm="3" lg="3" align="left" >
-            
-              <span><p>Total Weight: {{ total_weight }} Kg</p></span>
-              <span v-if="!is_pra_runsheet && !loading"><p>Actual Weight: {{ actual_weight }} Kg</p></span>
-            </vs-col>
-            <vs-col xs="12" sm="3" lg="3" align="right"><span><h1>{{ bag_detail_qty }}</h1></span><p>Bagged</p></vs-col>
+            <template v-if="!loading">
+                <template v-if="!is_pra_runsheet">
+                    <vs-col xs="12" sm="4" lg="4" align="left" >
+                        <span><p>Destination: {{bag_destination}}</p></span>
+                        <span><p>Destination Node ID: {{bag_destination_id}}</p></span>
+                        <span><p>Destination Name: {{bag_destination_name}}</p></span>
+                    </vs-col>
+                    <vs-col xs="12" sm="2" lg="2" align="left" >
+                        <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
+                        <span><p>Total Weight: {{ total_weight }} Kg</p></span>
+                        <span><p>Actual Weight: {{ actual_weight }} Kg</p></span>
+                    </vs-col>
+                </template>
+                <template v-else>
+                    <vs-col xs="12" sm="3" lg="3" align="left" >
+                        <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
+                    </vs-col>
+                    <vs-col xs="12" sm="3" lg="3" align="left" >
+                        <span><p>Total Weight: {{ total_weight }} Kg</p></span>
+                    </vs-col>
+                </template>
+                <vs-col xs="12" sm="3" lg="3" align="right"><span><h1>{{ bag_detail_qty }}</h1></span><p>Bagged</p></vs-col>
+            </template>
           </vs-row>
         </div>
 
@@ -147,7 +159,8 @@ export default {
             actual_weight :'',
             bag_detail_qty:'',
             bag_destination:'',
-            courier_delivery: '',
+            bag_destination_id:'',
+            bag_destination_name:'',
             pagination: {
                 limit:20,
                 page_size: 1,
@@ -219,8 +232,9 @@ export default {
           this.total_connote = val.data.detail.length
           this.total_weight = val.data.data.bag_weight
           this.actual_weight = val.data.data.bag_actual_weight
-          this.bag_destination = val.data.data.destination ? val.data.data.destination.node_code : ''
-          this.courier_delivery = val.data.employee_name ? val.data.employee_name : ''
+          this.bag_destination = val?.data?.data?.destination?.node_code ?? ''
+          this.bag_destination_id = val?.data?.data?.destination?.node_id ?? ''
+          this.bag_destination_name = val?.data?.data?.destination?.node_name ?? ''
         },
         actionUpdate(val){
             if(this.dataTable.length > 0) {
@@ -275,6 +289,7 @@ export default {
                         this.refresh()
                     }else{
                         this.$router.push({ name: 'InventoryBag', params: { } });
+                        this.setRoutePageHistory(this.$route.meta, false);
                     }
                     this.openNotification('success', null, 'Remove success', 'Remove bag item successfully')
                 }).catch(err => {

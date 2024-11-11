@@ -12,6 +12,7 @@
         :hasPagination="true"
         :customBtn="true"
         customBtn_label="PRINT"
+        :onRowClickCallback="updateSelected"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @actionRemove="actionRemove"
@@ -125,7 +126,8 @@ export default {
                 limit:5,
                 page_size: 1,
                 page: 1
-            }
+            },
+            selectedRow: []
         }
     },
     watch: {
@@ -213,7 +215,15 @@ export default {
         },
         actionUpdate(val){
           let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.cost_report_id, 'type': 'costing-report', 'node_id':this.listenNodeId} });
-          window.open(routeData.href, '_blank');
+          
+          const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+            if (printWindow) {
+                printWindow.onload = function() {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                };
+            }
         },
         async removeCosting(){
             await axios
@@ -248,10 +258,29 @@ export default {
         closeDialogNewEditCostingSetting() {
           this.dialogNewEditCostingSetting = false
         },
-
+        updateSelected(_event, _item, selected) {
+            this.selectedRow = selected.map(el => el.cost_report_id)
+        },
+        actionPrintSelected(){
+            if (this.selectedRow.length > 0) {
+                let routeData = this.$router.resolve({
+                    name: 'printGeneral',
+                    params: {
+                        'id': this.selectedRow.toString(),
+                        'type': 'costing-report',
+                        'node_id':this.listenNodeId
+                    }
+                });
+                window.open(routeData.href, '_blank');
+            }
+            else {
+                this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih History terlebih dahulu')
+            }
+        }
     },
     mounted() {
         this.refresh()
+        this.handlePrintShortcut(this.actionPrintSelected)
     }
 }
 </script>

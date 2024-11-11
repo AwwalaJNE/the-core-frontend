@@ -87,6 +87,12 @@
               <template v-if="!item.hasOwnProperty('hidden')">
                 <vs-th :key="key" :class="item.width ? item.width : ''">
                   {{ item.label }}
+                  <vs-tooltip v-if="item.hasOwnProperty('tooltip_desc')" bottom>
+                    <i class="bx bx-info-circle"></i>
+                      <template #tooltip>
+                        {{ item.tooltip_desc }}
+                      </template>
+                  </vs-tooltip>
                 </vs-th>
               </template>
             </template>
@@ -500,9 +506,18 @@
                           hasLinked.includes(column.key.toLowerCase())
                       "
                     >
-                      <span class="text-link" @click="handleEdit(item)">{{
-                        item[column.key] ? item[column.key] : ""
-                      }}</span>
+                      <template v-if="hasLinkedDanger !== undefined &&
+                          column.key !== undefined &&
+                          item[hasLinkedDanger]">
+                        <span class="text-danger" @click="handleEdit(item)">{{
+                          item[column.key] ? item[column.key] : ""
+                        }}</span>
+                      </template>
+                      <template v-else>
+                        <span class="text-link" @click="handleEdit(item)">{{
+                          item[column.key] ? item[column.key] : ""
+                        }}</span>
+                      </template>
                     </template>
                     <template
                       v-else-if="
@@ -752,7 +767,12 @@
                 </vs-row>
               </vs-td>
             </template>
-            <template v-if="printAction == true">
+            <template v-if="
+              printAction == true && item.hasOwnProperty('is_approve') 
+              ? item.is_approve === 1 
+              : printAction === true
+                ? true
+                : false">
               <vs-td class="action">
                 <vs-row justify="center" class="btn_action">
                   <template v-if="avoidAction == true">
@@ -785,17 +805,36 @@
                     </vs-col>
                   </template>
 
-                  <vs-col w="4">
-                    <vs-button
-                      block
-                      size="small"
-                      flat
-                      :active="true"
-                      @click="actionPrint(item)"
-                    >
-                      <span>Print</span>
-                    </vs-button>
-                  </vs-col>
+                  <template v-if="(checkDepositMethod === true && item.deposit_method === 'CDM') || checkDepositMethod === false">
+                    <vs-col w="4">
+                      <vs-button
+                        block
+                        size="small"
+                        flat
+                        :active="true"
+                        @click="actionPrint(item)"
+                      >
+                        <span>Print</span>
+                      </vs-button>
+                    </vs-col>
+                  </template>
+                  <template v-if="typeof dynamicCancel === 'function'">
+                    <vs-col w="4">
+                      <vs-button
+                        block
+                        :disabled="
+                          (item.hasOwnProperty('isDisabled') && item.isDisabled == true) ||
+                          (!dynamicCancel(item[dynamicCancelColumn]))
+                        "
+                        flat
+                        size="small"
+                        :active="true"
+                        @click="actionCancel(item)"
+                      >
+                        <span>Cancel</span>
+                      </vs-button>
+                    </vs-col>
+                  </template>
                 </vs-row>
               </vs-td>
             </template>
@@ -1112,8 +1151,15 @@
       </template>
     </vs-table>
 
-    <template v-if="hasPagination == true">
-      <vs-row class="mt-2" justify="flex-end">
+    <vs-row class="mt-2" justify="flex-end" align="center">
+      <template v-if="hasPagination == true">
+        <vs-col w="4">
+          <vs-button
+            @click="handleExportCSV"
+            >
+              Export
+            </vs-button>
+        </vs-col>
         <vs-col w="8">
           <pagination-master
             :page="pagination.page"
@@ -1123,8 +1169,8 @@
             @actionPagination="actionPagination"
           />
         </vs-col>
-      </vs-row>
-    </template>
+      </template>
+    </vs-row>
   </div>
 </template>
 <script>
@@ -1154,6 +1200,7 @@ export default {
     hasAction: Boolean,
     hasPagination: Boolean,
     expandable: Boolean,
+    hasLinkedDanger: String,
     hasLinked: Array,
     hasLinked2: Array,
     hasLinked3: Array,
@@ -1173,6 +1220,8 @@ export default {
     codAction: Boolean,
     customBtn: Boolean,
     customBtn_label: String,
+    dynamicCancel: Function,
+    dynamicCancelColumn: String,
 
     isMultipleSelect: Boolean,
     isMultipleSelectColoum: Boolean,
@@ -1189,6 +1238,7 @@ export default {
 
     isKurirAccount: Boolean,
     isControlTowerAccount: Boolean,
+    checkDepositMethod: Boolean,
 
     allCheckCallback: {
       type: Function,
@@ -1196,6 +1246,10 @@ export default {
     },
 
     onRowClickCallback: {
+      type: Function,
+      default: undefined,
+    },
+    onRowClickSelected: {
       type: Function,
       default: undefined,
     },
@@ -1438,6 +1492,10 @@ export default {
         if (typeof this.onRowClickCallback === "function") {
           this.onRowClickCallback(event, item, this.selected);
         }
+
+        if (typeof this.onRowClickSelected === "function") {
+          this.onRowClickSelected(item);
+        }
       }
     },
     getStatusLabel(arr, val) {
@@ -1445,7 +1503,39 @@ export default {
         return arr?.find(item => item.value === val)?.label
       }
       return ""
-    }
+    },
+    convertToCSV(columns, data) {
+        const headers = columns.map(column => column.label);
+        const rows = data.map(item => columns.map(column => {
+            let value = item[column.key] || '';
+            value = value.toString().replace(/"/g, '""');
+            if (value.includes(',') || value.includes('\n')) {
+                value = `"${value}"`;
+            }
+            return value;
+        }));
+        return [headers, ...rows].map(row => row.join(',')).join('\n');
+    },
+    handleExportCSV() {
+        const csv = this.convertToCSV(this.listenColumn, this.listenDataTable);
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const route = this.$route.path.replaceAll("/", "-").slice(1);
+        const timestamp = new Date().toLocaleString().replaceAll("/", "-").replaceAll(":", "-");
+        const fileName = `${route} - ${timestamp}`;
+        
+        if (navigator.msSaveBlob) { // For IE 10+
+            navigator.msSaveBlob(blob, `${fileName}.csv`);
+        } else {
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `${fileName}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    },
   },
   mounted() {
     this.handleColumnsOrder();
@@ -1530,6 +1620,12 @@ span.text-link {
 }
 p.text-link {
   color: rgb(53, 92, 255);
+  cursor: pointer;
+}
+span.text-danger {
+  display: inline-block;
+  padding-top: 18px;
+  color: rgba(255,71,87,255);
   cursor: pointer;
 }
 .is-runsheet-page {

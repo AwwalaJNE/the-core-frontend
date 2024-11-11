@@ -251,7 +251,7 @@ export default {
           this.dataItem = res.data.data;
           this.dataFetched = true;
           this.checkDialoglogin();
-          this.imageUrl = this.dataItem.url;
+          this.imageUrl = res.data.url;
         })
         .catch((err) => {
           this.openNotification(

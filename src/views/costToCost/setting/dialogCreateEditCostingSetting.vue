@@ -352,10 +352,10 @@ export default {
         this.autoComplateUrl = url
 
         this.initForm()
-        // this.getDataNode()
         this.getCostingRules()
         this.getCostingType()
         this.getActivityType()
+        this.handleSubmitShortcut(this.handleSubmit)
     },
 }
 </script>

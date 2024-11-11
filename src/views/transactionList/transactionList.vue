@@ -11,6 +11,7 @@
         
         :hasLinked="['transaction_id']"
         :hasPagination="true"
+        :onRowClickCallback="updateSelected"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEdit="actionDetail"
@@ -102,7 +103,8 @@ export default {
                 limit:20,
                 page_size: 1,
                 page: 1
-            }
+            },
+            selectedRow: []
         }
     },
     watch: {
@@ -181,7 +183,15 @@ export default {
           switch(key) {
                 case "print":
                     let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.transaction_id, 'type': 'transaction', 'node_id':this.listenNodeId} });
-                    window.open(routeData.href, '_blank');
+
+                    const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+                    if (printWindow) {
+                        printWindow.onload = function() {
+                            printWindow.print();
+                            printWindow.onafterprint = () => printWindow.close();
+                        };
+                    }
                     break;
                 default:
 
@@ -214,11 +224,39 @@ export default {
         },
         actionDetail(row){
           this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
+          this.setRoutePageHistory(this.$route.meta, false);
+        },
+        updateSelected(_event, _item, selected) {
+          this.selectedRow = selected.map(el => el.transaction_id)
+        },
+        actionPrintSelected(){
+            if (this.selectedRow.length > 0) {
+                let routeData = this.$router.resolve({
+                    name: 'printGeneral',
+                    params: {
+                        'id': this.selectedRow.toString(),
+                        'type': 'transaction',
+                        'node_id':this.listenNodeId
+                    }
+                });
+                
+                const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+                if (printWindow) {
+                    printWindow.onload = function() {
+                        printWindow.print();
+                        printWindow.onafterprint = () => printWindow.close();
+                    };
+                }
+            }
+            else {
+                this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Transaksi terlebih dahulu')
+            }
         }
-
     },
     mounted() {
         this.refresh()
+        this.handlePrintShortcut(this.actionPrintSelected)
     }
 }
 </script>

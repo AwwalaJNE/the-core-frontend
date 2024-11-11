@@ -31,6 +31,9 @@ const Master = {
         listenNodeCode() {
             return this.$store.getters.getUser['node_id'].node_code
         },
+        listenNodeIsCDM() {
+            return this.$store.getters.getUser['node_id'].is_cdm
+        },
         listenUserRole() {
             return this.$store.getters.getUser['user_data'].role
         }
@@ -75,10 +78,21 @@ const Master = {
         },
         openNotification(type = null, code, title, msg) {
             this.playNotificationSound(type);
+            if (type === 'success') {
+                return
+            }
+
+            const notifications = document.querySelectorAll('.vs-notification');
+            for (const notification of notifications) {
+                const message = notification.querySelector('p').textContent;
+                if (msg === message) {
+                    return;
+                }
+            }
 
             // type success, danger, warn
             const noti = this.$vs.notification({
-                duration: 6000,
+                duration: 3000,
                 progress: 'auto',
                 color: type,
                 position: 'top-right',
@@ -95,7 +109,6 @@ const Master = {
                 `
             });
         },
-
         playNotificationSound(type) {
             let soundPath;
             switch (type) {
@@ -114,8 +127,7 @@ const Master = {
 
             const sound = new Audio(soundPath);
             sound.play();
-        },
-             
+        },          
         openProgress(type = null, title,msg) {
             // type success, danger, warn
             this.alert = this.$vs.notification({
@@ -237,10 +249,112 @@ const Master = {
             }
             return this.day
         },
-
         dateConvert(val){
             if(val != null){
                 return moment(val).format('DD-MMM-YYYY kk:mm');
+            }
+        },
+        handlePrintShortcut(printFunction) {
+            document.addEventListener('keydown', function (e) {
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    e.stopPropagation();
+                    printFunction();
+                }
+            });
+        },
+        redirectShortcut() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
+                    if (e.key.toLowerCase() !== 'i' && e.key.toLowerCase() !== 'c') {
+                        e.preventDefault();
+                    }
+                    switch (e.key.toLowerCase()) {
+                        case "h":
+                            this.$router.push('/help/error-dictionary')
+                            break;
+                        case "x":
+                            this.$router.push('/transaction/new-transactions')
+                            break;
+                        case "?":
+                            this.$router.push('/trace-bag')
+                            break;
+                        case "v":
+                            this.$router.push('/inbound/prealert/scan')
+                            break;
+                        case "b":
+                            this.$router.push('/inventory/bagging')
+                            break;
+                        case "o":
+                            this.$router.push('/inventory/unbagging')
+                            break;
+                        default:
+                    }
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') {
+                    if (!e.shiftKey) {
+                        this.$router.push('/inventory/item')
+                    }
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+                    if (!e.shiftKey) {
+                        this.$router.push('/trace-connote')
+                    }
+                }
+            });
+        },
+        handleSubmitShortcut(submitFunction) {
+            document.addEventListener('keydown', function (e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    submitFunction();
+                }
+            });
+        },
+
+
+        setRoutePageHistory(meta, isFinish) {
+            const routeHistory = this.$ls.get('route_history') || [];
+
+            if (!isFinish) {
+                let temp = {
+                    event_id: this.generateRandomUUID(),
+                    timestamp: new Date().toISOString(),
+                    resource_code: meta?.resource_code || "",
+                    resource_type: meta?.resource_type || "",
+                    resource_name: meta?.resource_name || "",
+                };
+                routeHistory.push(temp);
+            }
+            
+            this.$ls.set('route_history', routeHistory);
+
+            if ((routeHistory.length === 10 || isFinish) && routeHistory.length !== 0) {
+                return this.handleAuditLog(routeHistory);
+            }
+            
+            return Promise.resolve()
+        },
+        generateRandomUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const randomHex = Math.random() * 16 | 0;
+                const value = c === 'x' ? randomHex : (randomHex & 0x3 | 0x8);
+                return value.toString(16);
+            });
+        },          
+        async handleAuditLog(route_history) {
+            let form = {
+                track_logs: route_history
+            }
+            try {
+                const res = await axios.post(`${this.URL.tracking_audit}?n=${this.listenNodeId}`, form, this.Helper.header());
+
+                // this.openNotification('success', null, "Success", res?.data?.message ?? "success");
+                localStorage.removeItem('vuejs__route_history');
+            } catch (err) {
+                // this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
             }
         }
     },

@@ -11,6 +11,7 @@
         
         :hasLinked="['connote_number']"
         :hasPagination="true"
+        :onRowClickCallback="updateSelected"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEdit="actionDetail"
@@ -166,6 +167,7 @@ export default {
                 page_size: 1,
                 page: 1
             },
+            selectedRow: []
         }
     },
     watch: {
@@ -245,7 +247,8 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
         actionDetail(row){
-          this.$router.push({name:'InventoryItem-detail', params:{ id:row.connote_number}});
+          this.$router.push({name:'InventoryItem-detail', params:{ id:row.connote_number + "00"}});
+          this.setRoutePageHistory(this.$route.meta, false);
         },
         getTransactionIdParam(){
           let paramId =  this.$route.params.id
@@ -282,7 +285,15 @@ export default {
                         'node_id': this.listenNodeId
                       } 
                     });
-                    window.open(routeData.href, '_blank');
+
+                    const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+                    if (printWindow) {
+                      printWindow.onload = function() {
+                        printWindow.print();
+                        printWindow.onafterprint = () => printWindow.close();
+                      };
+                    }
                     break;
                 case "void":
                     this.connote_number = val.connote_number
@@ -293,7 +304,29 @@ export default {
                     // code block
             }
         },
-
+        updateSelected(_event, _item, selected) {
+          this.selectedRow = selected.flatMap(connote => connote.koli.map(koli => koli.koli_number))
+          this.$emit("handleSelectedRow", this.selectedRow)
+        },
+        actionPrintSelected(val){
+          let routeData = this.$router.resolve({
+            name: 'printGeneral',
+            params: {
+              'id': val ? val.toString() : this.selectedRow.toString(),
+              'type': 'koli-reprint',
+              'node_id': this.listenNodeId
+            } 
+          });
+          
+          const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+          if (printWindow) {
+            printWindow.onload = function() {
+              printWindow.print();
+              printWindow.onafterprint = () => printWindow.close();
+            };
+          }
+        },
     },
     mounted() {
         this.getTransactionIdParam()

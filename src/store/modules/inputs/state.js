@@ -1047,6 +1047,16 @@ export default {
       valueData: true,
       value: true
     },
+    is_cdm: {
+      titleLabel: "Has Cash Deposit Machine (CDM)",
+      label: "True|False",
+      key: "is_cdm",
+      rule: "required",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
     is_active: {
       label: "Active|Unactive",
       key: "is_active",
@@ -2004,8 +2014,8 @@ export default {
     percentage: {
       label: "Percentage*",
       key: "percentage",
-      rule: "required|decimal",
-      typeInput: "text",
+      rule: "required|decimal|min_value:1",
+      typeInput: "number",
       typeData: "text",
       valueData: null,
       value: '',
@@ -2014,7 +2024,7 @@ export default {
       label: "Minimum Connote*",
       key: "minimum_count",
       rule: "required|numeric|min_value:1",
-      typeInput: "text",
+      typeInput: "number",
       typeData: "text",
       valueData: null,
       value: '',
@@ -2041,6 +2051,304 @@ export default {
     },
   },
 
+  configuration_warning_sla: {
+    setting_id: {
+      label: "Configuration Warning SLA ID",
+      key: "setting_id",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      visible: false,
+      valueData: null,
+      value: '',
+    },
+    formula_type: {
+      label: "Formula Type*",
+      key: "formula_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    value: {
+      label: "Value*",
+      key: "value",
+      rule: "required|numeric|min_value:1",
+      typeInput: "text",
+      typeData: "text",
+      valueData: null,
+      value: '',
+    },
+    node_id: {
+      label: "Node Name*",
+      key: "node_id",
+      rule: "required",
+      typeInput: "multipleSelector",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ""
+    },
+  },
+
+  kpi_process_target: {
+    reference_entity: {
+      label: "Reference Entity*",
+      key: "reference_entity",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Region',
+          value: 'REGION'
+        },
+        {
+          label: 'Branch',
+          value: 'BRANCH'
+        },
+        {
+          label: 'Origin',
+          value: 'ORIGIN'
+        },
+        {
+          label: 'Node',
+          value: 'NODE'
+        },
+        {
+          label: 'User',
+          value: 'USER'
+        },
+        {
+          label: 'Employee',
+          value: 'EMPLOYEE'
+        }
+      ],
+      valueData: null,
+      value: '',
+    },
+    reference_value: {
+      label: "Reference Value*",
+      key: "reference_value",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      width: '12',
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    process_name: {
+      label: "Process Name*",
+      key: "process_name",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    value: {
+      label: "Value*",
+      key: "value",
+      rule: "required|numeric|min_value:1",
+      typeInput: "number",
+      typeData: "Number",
+      valueData: null,
+      value: null
+    },
+    description: {
+      label: "Description*",
+      key: "description",
+      rule: "required",
+      typeInput: "text",
+      typeData: "text",
+      valueData: null,
+      value: '',
+    },
+    start_date: {
+      label: "Start Date*",
+      key: "start_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    end_date: {
+      label: "End Date*",
+      key: "end_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  },
+
+  bag_weight: {
+    bag_type: {
+      label: "Bag Type*",
+      key: "bag_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          "label": "Regular Bag",
+          "value": "normal"
+        },
+        {
+          "label": "Masterbag",
+          "value": "masterbag"
+        },
+        {
+          "label": "Bag Pra Runsheet",
+          "value": "pra runsheet"
+        },
+        {
+          "label": "Bag Return",
+          "value": "return"
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    routing_type: {
+      label: "Routing Type*",
+      key: "routing_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          "label":"All Routing",
+          "value":"all_routing"
+        },
+        {
+          "label":"Intracity",
+          "value":"intracity"
+        },
+        {
+          "label":"Intercity",
+          "value":"intercity"
+        },
+        {
+          "label":"Domestik",
+          "value":"domestik"
+        },
+        {
+          "label":"International",
+          "value":"international"
+        }
+      ],
+      valueData: null,
+      value: '',
+    },
+    service_type: {
+      label: "Service*",
+      key: "service_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    destination: {
+      label: "Destination*",
+      key: "destination",
+      rule:"required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  },
+
+  bag_limit: {
+    bag_type: {
+      label: "Bag Type*",
+      key: "bag_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          "label": "Regular Bag",
+          "value": "REGULAR"
+        },
+        {
+          "label": "Bag Pra Runsheet",
+          "value": "PRA RUNSHEET"
+        },
+        {
+          "label": "Bag Outbound",
+          "value": "OUTBOUND"
+        },
+        {
+          "label": "Bag Return",
+          "value": "RETURN"
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    reference_entity: {
+      label: "Reference Entity*",
+      key: "reference_entity",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Region',
+          value: 'REGION'
+        },
+        {
+          label: 'Branch',
+          value: 'BRANCH'
+        },
+        {
+          label: 'Origin',
+          value: 'ORIGIN'
+        },
+        {
+          label: 'Node',
+          value: 'NODE'
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    reference_value: {
+      label: "Reference Value*",
+      key: "reference_value",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      width: '12',
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    limit: {
+      label: "Limit*",
+      key: "limit",
+      rule: "required|numeric|min_value:1",
+      typeInput: "number",
+      typeData: "Number",
+      valueData: null,
+      value: null
+    }
+  },
 
   tariff: {
     tariff_group: {
@@ -3074,13 +3382,14 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      isDisabled: false,
     },
     max_weight: {
       label: "Max Weight",
       key: "max_weight",
       rule: "",
-      typeInput: "text",
+      typeInput: "number",
       typeData: "Number",
       valueData: null,
       value: null
@@ -3180,6 +3489,7 @@ export default {
       label: "Destination",
       key: "node_id_destination",
       rule:"",
+      visible: false,
       typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
@@ -3367,7 +3677,6 @@ export default {
           value: "kantor"
         },
       ],
-      isDisabled: true,
       valueData: null,
       value: 'rumah'
     },
@@ -3377,17 +3686,15 @@ export default {
       rule: "required",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
       valueData: null,
       value: ''
     },
     destination_phone: {
       label: "Telepon Penerima*",
       key: "destination_phone",
-      rule: "required|numeric|min:8",
+      rule: "min:8",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
       valueData: null,
       value: ''
     },
@@ -3397,7 +3704,6 @@ export default {
       rule: "",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
       valueData: null,
       value: ''
     },
@@ -3407,7 +3713,6 @@ export default {
       rule: "required",
       typeInput: "text",
       typeData: "String",
-      isDisabled: true,
       valueData: null,
       value: ''
     },
@@ -3417,7 +3722,6 @@ export default {
       rule: "required",
       typeInput: "text|onchange|location_selector",
       typeData: "String",
-      isDisabled: true,
       arrData: [],
       valueData: null,
       onchange: true,
@@ -3427,7 +3731,6 @@ export default {
       label: "Kode Pos*",
       key: "destination_subdistrict_id",
       rule: "",
-      isDisabled: true,
       typeInput: "hidden|disabled|dotted",
       typeData: "String",
       valueData: null,
@@ -3437,9 +3740,8 @@ export default {
       label: "Kode Pos",
       key: "zip_code",
       rule: "required",
-      isDisabled: true,
       width: '6',
-      typeInput: "text|disabled",
+      typeInput: "text",
       typeData: "String",
       valueData: null,
       value: ''
@@ -3448,9 +3750,8 @@ export default {
       label: "Kode Tujuan*",
       key: "tariff_code",
       rule: "required",
-      isDisabled: true,
       width: '6',
-      typeInput: "text|disabled",
+      typeInput: "text",
       typeData: "String",
       valueData: null,
       value: ''
@@ -3856,6 +4157,364 @@ export default {
       valueData: null,
       value: ''
     },
-  }
+  },
 
+  helpdesk_move_connote: {
+    node_location_id: {
+      label: "Node",
+      key: "node_location_id",
+      rule: "",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  },
+
+  helpdesk_move_bag: {
+    node_location_id: {
+      label: "Node",
+      key: "node_location_id",
+      rule: "",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  },
+
+  helpdesk_edit_connote: {
+    connote_shipper_name: {
+      label: "Connote Shipper Name",
+      key: "connote_shipper_name",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    connote_shipper_street_address: {
+      label: "Connote Shipper Street Address",
+      key: "connote_shipper_street_address",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    connote_shipper_email: {
+      label: "Connote Shipper Email",
+      key: "connote_shipper_email",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    connote_shipper_phone_number: {
+      label: "Connote Shipper Name",
+      key: "connote_shipper_phone_number",
+      rule: "numeric|min:8",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    connote_receiver_name: {
+      label: "Connote Receiver Name",
+      key: "connote_receiver_name",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    connote_receiver_street_address: {
+      label: "Connote Receiver Street Address",
+      key: "connote_receiver_street_address",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    connote_receiver_email: {
+      label: "Connote Receiver Email",
+      key: "connote_receiver_email",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    connote_receiver_phone_number: {
+      label: "Connote Receiver Name",
+      key: "connote_receiver_phone_number",
+      rule: "numeric|min:8",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    amount_cod: {
+      label: "Amount COD",
+      key: "amount_cod",
+      rule: "",
+      typeInput: "number",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    amount_price: {
+      label: "Amount Price",
+      key: "amount_price",
+      rule: "",
+      typeInput: "number",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    remarks: {
+      label: "Remarks",
+      key: "remarks",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+  },
+
+  facility_code: {
+    user_id: {
+      label: "User Name*",
+      key: "user_id",
+      rule: "required",
+      typeInput: "multipleSelector",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ""
+    },
+    code: {
+      label: "Facility Code*",
+      key: "code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "text",
+      valueData: null,
+      value: '',
+    },
+    name: {
+      label: "Facility Name*",
+      key: "name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "text",
+      valueData: null,
+      value: ''
+    },
+    address: {
+      label: "Address*",
+      key: "address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    facility_type: {
+      label: "Facility Type",
+      key: "facility_type",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    destination: {
+      label: "Destination",
+      key: "destination",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+  },
+
+  connote_forward: {
+    connote_shipper_name: {
+      label: "Nama Pengirim*",
+      key: "connote_shipper_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: false,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_name: {
+      label: "Nama Penerima*",
+      key: "connote_receiver_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: false,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_shipper_phone_number: {
+      label: "Telepon Pengirim*",
+      key: "connote_shipper_phone_number",
+      rule: "min:8",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: false,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_phone_number: {
+      label: "Telepon Penerima*",
+      key: "connote_receiver_phone_number",
+      rule: "min:8",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: false,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_shipper_email: {
+      label: "Email Pengirim",
+      key: "connote_shipper_email",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: false,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_email: {
+      label: "Email Penerima",
+      key: "connote_receiver_email",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: false,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_shipper_street_address: {
+      label: "Alamat & Kode Pos Pengirim",
+      key: "connote_shipper_street_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: false,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_street_address: {
+      label: "Alamat & Kode Pos Penerima",
+      key: "connote_receiver_street_address",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      isDisabled: false,
+      width: '6',
+      valueData: null,
+      value: ''
+    },
+    connote_shipper_administrative_address: {
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
+      key: "connote_shipper_administrative_address",
+      rule: "required",
+      typeInput: "text|onchange|location_selector",
+      typeData: "String",
+      isDisabled: false,
+      width: '6',
+      arrData: [],
+      valueData: null,
+      onchange: false,
+      value: ''
+    },
+    connote_receiver_administrative_address: {
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
+      key: "connote_receiver_administrative_address",
+      rule: "required",
+      typeInput: "text|onchange|location_selector",
+      typeData: "String",
+      isDisabled: false,
+      width: '6',
+      arrData: [],
+      valueData: null,
+      onchange: false,
+      value: ''
+    },
+    connote_shipper_zip_code: {
+      label: "Kode Pos",
+      key: "connote_shipper_zip_code",
+      rule: "required",
+      isDisabled: false,
+      width: '3',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    connote_shipper_tariff_code: {
+      label: "Kode Tujuan*",
+      key: "connote_shipper_tariff_code",
+      rule: "required",
+      isDisabled: false,
+      width: '3',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_zip_code: {
+      label: "Kode Pos",
+      key: "connote_receiver_zip_code",
+      rule: "required",
+      isDisabled: false,
+      width: '3',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    connote_receiver_tariff_code: {
+      label: "Kode Tujuan*",
+      key: "connote_receiver_tariff_code",
+      rule: "required",
+      isDisabled: false,
+      width: '3',
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    }
+  },
+
+  bag_is_auto_open_bag: {
+    bag_is_auto_open_bag: {
+      label: "Is Auto Open Bag",
+      key: "bag_is_auto_open_bag",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: false,
+      value: false
+    },
+  }
 }

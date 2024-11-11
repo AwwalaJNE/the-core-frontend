@@ -16,6 +16,42 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
+                                            :disabled="listenIsDisabled || InputObject[item].isDisabled"
+                                            @updateValue="updateValue" 
+                                            @inputFocus="onfocuslah"/>
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        
+                                    </template>
+                                </template>
+                                <template v-else>
+                                    <input-general 
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].value"
+                                    :typeInput="InputObject[item].typeInput"
+                                    :placeholder="InputObject[item].placeholder"
+                                    :disabled="listenIsDisabled || InputObject[item].isDisabled"
+                                    @updateValue="updateValue" 
+                                    @inputFocus="onfocuslah"/>
+                                </template>
+                                <template v-if="InputObject[item].hasOwnProperty('visible') && InputObject[item]['visible'] == true">
+                                    
+                                </template>
+                            </template>
+
+                            <template v-if="InputObject[item].typeInput.toLowerCase().includes('number')">
+                                <template v-if="InputObject[item].hasOwnProperty('visible')">
+                                    <template v-if="InputObject[item]['visible'] == true">
+                                        <div>
+                                            <input-general 
+                                            :name="InputObject[item].label"
+                                            :rules="InputObject[item].rule"
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].value"
+                                            :typeInput="InputObject[item].typeInput"
                                             :disabled="listenIsDisabled"
                                             @updateValue="updateValue" 
                                             @inputFocus="onfocuslah"/>
@@ -61,7 +97,7 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
-                                            :disabled="listenIsDisabled"
+                                            :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                             @updateValue="updateValue" />
                                         </div>
                                     </template>
@@ -77,7 +113,7 @@
                                         :formKey="InputObject[item].key"
                                         :valueData="InputObject[item].value"
                                         :typeInput="InputObject[item].typeInput"
-                                        :disabled="listenIsDisabled"
+                                        :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                         @updateValue="updateValue" />
                                     </div>
                                 </template>
@@ -134,7 +170,7 @@
                                             :selectedValue="InputObject[item].value"
                                             :isMultiple="false"
                                             :isAllowCreate="false"
-                                            :disabled="listenIsDisabled"
+                                            :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                             :customBind="InputObject[item].customBind"
                                             @updateValue="updateValue" />
                                         </div>
@@ -153,7 +189,7 @@
                                         :valueData="InputObject[item].arrData"
                                         :selectedValue="InputObject[item].value"
                                         :isMultiple="false"
-                                        :disabled="listenIsDisabled"
+                                        :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                         :customBind="InputObject[item].customBind"
                                         @updateValue="updateValue" />
                                     </div>
@@ -265,21 +301,46 @@
                                 </template>
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete')">
-                                <template v-if="querySearch !== undefined">
-                                    <auto-complete
-                                    :name="InputObject[item].label"
-                                    :rules="InputObject[item].rule"
-                                    :formKey="InputObject[item].key"
-                                    :valueData="InputObject[item].value"
-                                    :url="InputObject[item].url"
-                                    :flag="InputObject[item].flag"
-                                    :querySearch="querySearch"
-                                    :selectedValue="InputObject[item].value"
-                                    :typeForm="listenTypeForm"
-                                    :typeInput="InputObject[item].typeInput"
-                                    :disabled="listenIsDisabled || InputObject[item].isDisabled"
-                                    @updateValue="updateValue" 
-                                    @inputFocus="onfocuslah"/>
+                                
+                                <template v-if="InputObject[item].hasOwnProperty('visible')">
+                                    <template v-if="InputObject[item]['visible'] == true">
+                                        <template v-if="querySearch !== undefined">
+                                            <auto-complete
+                                                :name="InputObject[item].label"
+                                                :rules="InputObject[item].rule"
+                                                :formKey="InputObject[item].key"
+                                                :valueData="InputObject[item].value"
+                                                :url="InputObject[item].url"
+                                                :flag="InputObject[item].flag"
+                                                :querySearch="querySearch"
+                                                :selectedValue="InputObject[item].value"
+                                                :typeForm="listenTypeForm"
+                                                :typeInput="InputObject[item].typeInput"
+                                                :disabled="listenIsDisabled || InputObject[item].isDisabled"
+                                                @updateValue="updateValue" 
+                                                @inputFocus="onfocuslah"
+                                            />
+                                        </template>
+                                    </template>
+                                </template>
+                                <template v-else>
+                                    <template v-if="querySearch !== undefined">
+                                        <auto-complete
+                                            :name="InputObject[item].label"
+                                            :rules="InputObject[item].rule"
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].value"
+                                            :url="InputObject[item].url"
+                                            :flag="InputObject[item].flag"
+                                            :querySearch="querySearch"
+                                            :selectedValue="InputObject[item].value"
+                                            :typeForm="listenTypeForm"
+                                            :typeInput="InputObject[item].typeInput"
+                                            :disabled="listenIsDisabled || InputObject[item].isDisabled"
+                                            @updateValue="updateValue" 
+                                            @inputFocus="onfocuslah"
+                                        />
+                                </template>
                                 </template>
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('radtex')">
@@ -342,6 +403,7 @@ export default {
         querySearch1: Function,
         querySearch2: Function,
         querySearch3: Function,
+        partialDisabled: Function,
         itterateUrlAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         itterateFlagAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         isDisabled: Boolean,

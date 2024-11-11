@@ -116,6 +116,7 @@ export default {
         },
         back(){
           this.$router.push('/inbound-bandara')
+          this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {

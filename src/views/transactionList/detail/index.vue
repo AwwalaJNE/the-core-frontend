@@ -46,7 +46,7 @@
         </div>
         <template>
           <transition name="slide-fade">
-            <transactionDetailList :ref="'transactionList'" :query="tempSearch" @printAllData="printAllDataResolver" :dateFilter="tempDate" :searchBy="searchBy" :filterDateBy="filterDateBy" />
+            <transactionDetailList :ref="'transactionList'" :query="tempSearch" @handleSelectedRow="handleSelectedRow" @printAllData="printAllDataResolver" :dateFilter="tempDate" :searchBy="searchBy" :filterDateBy="filterDateBy" />
           </transition>
         </template>
 
@@ -152,7 +152,8 @@ export default {
           label: 'Due Date',
           value: 'connote_sla_date'
         },
-      ]
+      ],
+      selectedRow: []
     }
   },
   methods: {
@@ -171,6 +172,7 @@ export default {
 
     openDialog() {
       this.$router.push('/new-transactions')
+      this.setRoutePageHistory(this.$route.meta, false);
     },
 
     printAllDataResolver(arr) {
@@ -195,7 +197,15 @@ export default {
     printAll() {
       if (this.koli_number.length > 0) {
         let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': this.koli_number, 'type': 'koli-reprint', 'node_id': this.listenNodeId } });
-        window.open(routeData.href, '_blank');
+        
+        const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+        if (printWindow) {
+          printWindow.onload = function() {
+            printWindow.print();
+            printWindow.onafterprint = () => printWindow.close();
+          };
+        }
       }
     },
 
@@ -213,6 +223,21 @@ export default {
       this.tempDate = val
     },
 
+    handleSelectedRow(val) {
+      this.selectedRow = val
+    },
+
+    handleShortcutPrint() {
+      if (this.selectedRow.length > 0) {
+        this.$refs.transactionList.actionPrintSelected()
+      }
+      else {
+        this.$refs.transactionList.actionPrintSelected(this.koli_number)
+      }
+    }
+  },
+  mounted() {
+    this.handlePrintShortcut(this.handleShortcutPrint)
   }
 }
 </script>

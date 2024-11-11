@@ -138,12 +138,19 @@ export default {
         updateValue(){
 
         },
-        logout() {
-            localStorage.clear();
-            this.$router.go()
+        async logout() {
+            try {
+                await this.setRoutePageHistory({}, true);
+                
+            } catch (error) {} 
+            finally {
+                localStorage.clear();
+                this.$router.go(0);  
+            }
         },
         goToProfile() {
             if (this.$route.name !== 'profile') this.$router.push({ name: 'profile', params: { } });
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         async updateValue(key,val) {
             let node = this.datanode.filter(item => item.value == val)
@@ -224,6 +231,7 @@ export default {
                             obj["label"] = item.node_name
                             obj["value"] = String(item.node_id)
                             obj["node_code"] = String(item.node_code)
+                            obj["is_cdm"] = Boolean(item.is_cdm)
 
                             this.datanode.push(obj)
             })
@@ -237,11 +245,20 @@ export default {
                 this.$store.dispatch(`SET_USER_N`, n)
                 this.selectedNode = String(n.value)
             }
+        },
+        searchShortcut() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'f') {
+                    e.preventDefault();
+                    this.openDialog();
+                }
+            });
         }
     },
     mounted() {
         this.init()   
-        this.getListNode() 
+        this.getListNode()
+        this.searchShortcut()
     },
     created() {
         // this.$store.dispatch('SET_NAME', 'Laba-laba 2 biji')
@@ -259,6 +276,7 @@ export default {
         min-height: 1.5em;
         padding: .5em 0;
         background-color: $bgWhite;
+        position: sticky;
         .burger_custom{
             margin: auto;
             margin-top: .3em;

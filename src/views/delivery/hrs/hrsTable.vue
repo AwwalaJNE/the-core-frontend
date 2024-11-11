@@ -184,6 +184,7 @@ export default {
             }
             let routeName = 'handover-runsheet-courier'
             this.$router.push({ name: routeName, params: params })
+            this.setRoutePageHistory(this.$route.meta, false);
         },
 
     },

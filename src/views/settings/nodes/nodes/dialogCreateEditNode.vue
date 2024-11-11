@@ -349,8 +349,7 @@ export default {
         },
     },
     mounted() {
-        // this.getDataNodeType()
-        // this.getDataTariff()
+        this.handleSubmitShortcut(this.handleSubmit)
     },
 }
 </script>

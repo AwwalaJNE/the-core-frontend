@@ -7,9 +7,14 @@
       :pageSize="pagination.page_size"
       :page="pagination.page"
       :limit="pagination.limit"
+      :hasLinked="['sco']"
       :hasAction="false"
       :hasPagination="true"
       :expandable="true"
+      :printAction="true"
+      :checkDepositMethod="true"
+      :onRowClickCallback="updateSelected"
+      @actionPrint="actionPrint"
       @actionLimit="actionLimit"
       @actionPagination="actionPagination"
     />
@@ -88,6 +93,7 @@ export default {
         page_size: 1,
         page: 1,
       },
+      selectedRow: []
     };
   },
   watch: {
@@ -143,7 +149,9 @@ export default {
           this.Helper.header()
         )
         .then((res) => {
-          let arr = res.data.data
+          let is_cdm = this.listenNodeIsCDM ? ["TRB", "CDM"] : ["TRB"];
+          let arr = res.data.data.filter(item => is_cdm.includes(item.deposit_method));
+
           arr.map((item) => {
               let children = {}
               let delivery_runsheet_number = []
@@ -198,7 +206,7 @@ export default {
             err.response ? err.response.data.code : '',
             err?.response?.data?.code,
             "Get List Failed",
-            err?.response?.data?.message ?? "Failed to populate COD History"
+            err?.response?.data?.message ?? "Failed to populate Deposit COD History"
           );
         });
     },
@@ -220,9 +228,56 @@ export default {
         this.endDate
       );
     },
+    actionPrint(val){
+        let routeData = this.$router.resolve({ 
+            name: 'printGeneral', 
+            params: { 
+                'id': val.sco.replaceAll("/","~"), 
+                'type': 'cod-history',
+                'node_id': this.listenNodeId
+            }
+        });
+
+        const printWindow = window.open(routeData.href, '_blank', 'noopener');
+        
+        if (printWindow) {
+            printWindow.onload = function() {
+                printWindow.print();
+                printWindow.onafterprint = () => printWindow.close();
+            };
+        }
+    },
+    updateSelected(_event, _item, selected) {
+      this.selectedRow = selected.map(el => el.sco)
+    },
+    actionPrintSelected(){
+        if (this.selectedRow.length > 0) {
+            let routeData = this.$router.resolve({
+                name: 'printGeneral',
+                params: {
+                    'id': this.selectedRow.toString().replaceAll("/","~"),
+                    'type': 'cod-history',
+                    'node_id':this.listenNodeId
+                }
+            });
+            
+            const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+            if (printWindow) {
+                printWindow.onload = function() {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                };
+            }
+        }
+        else {
+            this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih History terlebih dahulu')
+        }
+    }
   },
   mounted() {
     this.refresh();
+    this.handlePrintShortcut(this.actionPrintSelected)
   },
 };
 </script>

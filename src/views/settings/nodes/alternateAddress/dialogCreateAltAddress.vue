@@ -385,6 +385,7 @@ export default {
         }
     },
     mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
     },
 }
 </script>
