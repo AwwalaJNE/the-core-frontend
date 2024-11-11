@@ -1,19 +1,23 @@
 <template>
-    <div style="text-align:left;">
-        <small style="padding-left:10px;">{{name}}</small>
-        <el-autocomplete
-        class="inline-input"
-        v-model="value"
-        :fetch-suggestions="querySearch"
-        :placeholder="`Search ${name}`"
-        :trigger-on-focus="false"
-        :debounce="400"
-        @select="handleSelect"
-        @input="updateValue"
-        @focus="inputFocus"
-        :disabled="isDisabled"
-        ></el-autocomplete>
-    </div>
+    <inputan :name="name" :rules="rules">
+        <template v-slot:inputan="props">
+            <div style="text-align:left;">
+                <small style="padding-left:10px;">{{name}}</small>
+                <el-autocomplete
+                    class="inline-input"
+                    v-model="value"
+                    :fetch-suggestions="querySearch"
+                    :placeholder="`Search ${name}`"
+                    :trigger-on-focus="false"
+                    :debounce="400"
+                    @select="handleSelect"
+                    @input="updateValue"
+                    @focus="inputFocus"
+                    :disabled="isDisabled"
+                />
+            </div>
+        </template>
+    </inputan>
 </template>
 <script>
 
