@@ -911,6 +911,17 @@ export default {
                 resource_name: resourceLookup["SETTINGS_BAG"].resource_name
               },
             },
+            {
+              label: "Settings Destination Zip Code",
+              url: "/settings/destination-zip-code",
+              icon: "",
+              permission: "", // TODO: Change after permission ready
+              meta: {
+                resource_type: resourceLookup["DESTINATION_ZIP_CODE"].resource_type,
+                resource_code: resourceLookup["DESTINATION_ZIP_CODE"].resource_code,
+                resource_name: resourceLookup["DESTINATION_ZIP_CODE"].resource_name
+              },
+            },
           ],
         },
         {

@@ -316,4 +316,10 @@ export default {
 
     // Audit
     audit_invalid_log: api + 'audit/invalid-item-log',
+
+    // Destination Zip Code
+    destination_zip_code: api + 'destination-zip-code',
+
+    // Zip Code List
+    zip_code_list: api + 'zip-code-list',
 }
