@@ -117,15 +117,15 @@ export default {
         async processSorting() {
             if (this.destination && this.item_number) {
                 this.form = {
-                    item_number: this.item_number,
-                    destination : this.destination,
+                    connote_number: this.item_number,
+                    destination_node_id : this.destination,
                 }
 
                 this.loading = true;
                 try {
-                    const res = await axios.post(`${this.URL.revamp_bag}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
+                    const res = await axios.post(`${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
 
-                    this.openNotification('success', null, "Success", res?.data?.message || "Update Success");
+                    this.openNotification('success-with-notif', null, "Success", res?.data?.message || "Update Success");
                 } catch (err) {
                     this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
                 } finally {
@@ -133,14 +133,14 @@ export default {
                     this.handleClearForm();
                 }
             } else {
-                this.openNotification("danger", '', "Failed", 'Complete all fields in the form');
+                this.openNotification("danger", '', "Failed", 'Destination is mandatory');
             }
         },
         
         inputFocus(obj){
             this.autoCompleteUrl = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
             this.input_label = "node_name";
-            this.input_value = "node_code";
+            this.input_value = "node_id";
         },
         querySearch(queryString, cb){
             axios.get(this.autoCompleteUrl +`?n=${this.listenNodeId}&s=${queryString}`,
