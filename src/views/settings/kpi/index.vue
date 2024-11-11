@@ -80,7 +80,7 @@
 import Breadcrumb from "@/components/breadcrumb/index";
 import NavItem from "@/components/navbar/navTab";
 import SearchInput from "@/components/search/searchInput";
-import SelectSearchBy from "@/views/inventory/connote/item/selectSearchBy";
+import SelectSearchBy from "@/components/search/selectSearchBy";
 
 import DialogCreateEdit from "@/views/settings/kpi/processTarget/dialogCreateEdit";
 import ProcessTargetTable from "@/views/settings/kpi/processTarget/index";
