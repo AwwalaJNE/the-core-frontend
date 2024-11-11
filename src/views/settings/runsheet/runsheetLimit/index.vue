@@ -33,7 +33,7 @@
         <dialog-create-edit
             btnBlue="Edit"
             ref="dialog_edit"
-            title="Edit Bag Limit"
+            title="Edit Runsheet Limit"
             :active="dialogEditActive" 
             :closeDialog="() => closeDialog('dialog_edit')"
             :dataItem="dataItem"
@@ -43,11 +43,11 @@
 
         <dialog-confirm
             ref="dialog_remove"
-            title="Remove Bag Limit"
+            title="Remove Runsheet Limit"
             :active="dialogRemoveActive"
             :closeDialog="() => closeDialog('dialog_remove')"
             :loading="loadingRemove"
-            :message="`Are you sure you want to remove this Bag Limit with id ${this.selected_id}?`"
+            :message="`Are you sure you want to remove this Runsheet Limit with id ${this.selected_id}?`"
             @cancel="() => closeDialog('dialog_remove')"
             @confirm="confirmRemove"
         />
@@ -65,10 +65,10 @@ import Inputan from "@/components/input/inputan";
 import SearchInput from "@/components/search/searchInput";
 import TableMaster from "@/components/table/tableMaster";
 
-import DialogCreateEdit from "@/views/settings/bag/bagLimit/dialogCreateEdit";
+import DialogCreateEdit from "@/views/settings/runsheet/RunsheeetLimit/dialogCreateEdit";
 
 export default {
-    name:"bag-limit-data-tabel",
+    name:"runsheet-limit-data-tabel",
     mixins: [master],
     props: {
         query: String,
@@ -92,8 +92,8 @@ export default {
                     width: "sm"
                 },
                 {
-                    label: "Bag Type",
-                    key: "bag_type",
+                    label: "Reference To",
+                    key: "reference_to",
                     width: "sm"
                 },
                 {
@@ -105,11 +105,6 @@ export default {
                     label: "Referece Value",
                     key: "reference_value",
                     width: "sm"
-                },
-                {
-                    label: "Limit",
-                    key: "limit",
-                    width: "xs"
                 },
                 {
                     label: "Created By",
@@ -182,7 +177,7 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.bag_limit_setting}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.runsheet_limit_setting}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
@@ -239,8 +234,8 @@ export default {
         async removeData() {
             this.loadingRemove = true;
             try {
-                const res = await axios.delete(`${this.URL.bag_limit_setting}/${this.selected_id}?n=${this.listenNodeId}`, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || "Remove Bag Limit success");
+                const res = await axios.delete(`${this.URL.runsheet_limit_setting}/${this.selected_id}?n=${this.listenNodeId}`, this.Helper.header());
+                this.openNotification('success', null, "Success", res?.data?.message || "Remove Runsheet Limit success");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {

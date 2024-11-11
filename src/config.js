@@ -316,4 +316,7 @@ export default {
 
     // Audit
     audit_invalid_log: api + 'audit/invalid-item-log',
+
+    // Masterdata Runsheet Limit
+    runsheet_limit_setting: api + 'runsheet-limit',
 }

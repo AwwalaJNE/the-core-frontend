@@ -62,7 +62,7 @@ import FormInputController from "@/components/form/formInputController";
 import Selector from "@/components/input/select";
 
 export default {
-    name:"bag-limit-dialog",
+    name:"runsheet-limit-dialog",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
@@ -125,9 +125,9 @@ export default {
                 value: val.reference_value
             }]
 
-            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE", val.reference_value);
-            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE_ValueData", val.reference_value);
-            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
+            this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE", val.reference_value);
+            this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ValueData", val.reference_value);
+            this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
         },
         formData(form){
             const { runsheet_limit_id, ...formWithoutId } = form;
@@ -138,7 +138,7 @@ export default {
         onChangeCustom(type, val, obj) {
             switch (type) {
                 case "reference_entity":
-                    this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE", "");
+                    this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE", "");
                     break;
                 default:
             }
