@@ -101,7 +101,7 @@ const Master = {
                 width: '80%',
                 icon: `
                     <div style="display: flex; flex-direction: column; align-items: center; min-width: 64px; margin-left: 30px;">
-                        <i class="bx ${type === 'success' ? 'bx-select-multiple' : 'bx-error'}" style="font-size: 24px;"></i>
+                        <i class="bx ${type === 'success' || type === 'success-with-notif' ? 'bx-select-multiple' : 'bx-error'}" style="font-size: 24px;"></i>
                         <div style="font-size: 12px; margin-top: 4px; color: #fff; font-weight: bold">
                             ${type === 'danger' && code ? code : ''}
                         </div>
@@ -113,6 +113,9 @@ const Master = {
             let soundPath;
             switch (type) {
                 case "success":
+                    soundPath = require('@/assets/sound/success.mp3');
+                    break;
+                case "success-with-notif":
                     soundPath = require('@/assets/sound/success.mp3');
                     break;
                 case "danger":
@@ -129,7 +132,7 @@ const Master = {
             sound.play();
         },          
         openProgress(type = null, title,msg) {
-            // type success, danger, warn
+            // type success, success-with-notif, danger, warn
             this.alert = this.$vs.notification({
                 duration: type == 'danger' ? 3000 : 3000,
                 progress: 'auto',
@@ -137,7 +140,7 @@ const Master = {
                 position: 'top-right',
                 title: title,
                 text: msg,
-                icon: `<i class="bx ${type == 'success' ? 'bx-select-multiple':'bx-error'}" ></i>`
+                icon: `<i class="bx ${type == 'success'  || type == 'success-with-notif' ? 'bx-select-multiple':'bx-error'}" ></i>`
             })
         },
         closeProgress() {

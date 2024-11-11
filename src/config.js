@@ -322,4 +322,7 @@ export default {
 
     // Zip Code List
     zip_code_list: api + 'zip-code-list',
+
+    // Sorting Validation Zip Code
+    sorting_zip_code_validation: api + 'validation/zip-code',
 }

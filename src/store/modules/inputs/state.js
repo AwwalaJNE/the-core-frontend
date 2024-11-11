@@ -411,7 +411,15 @@ export default {
       typeInput: "autocomplete",
       typeData: "String",
       width: '12',
-      arrData: [],
+      arrData: []
+    },
+    runsheet_limit: {
+      label: "Runsheet Limit",
+      key: "runsheet_item_limit",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
+      width: '12',
       valueData: null,
       value: ''
     },
@@ -3073,7 +3081,14 @@ export default {
       rule: "",
       typeInput: "autocomplete",
       typeData: "String",
-      arrData: [],
+      arrData: []
+    },
+    runsheet_limit: {
+      label: "Runsheet limit",
+      key: "runsheet_item_limit",
+      rule: "",
+      typeInput: "text",
+      typeData: "Number",
       valueData: null,
       value: ''
     },
