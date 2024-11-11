@@ -116,6 +116,12 @@ export default {
                     key: "created_at",
                     width: "sm"
                 },
+                {
+                    label: "Active",
+                    key: "is_active",
+                    width: "xs",
+                    type: "boolean|disabled",
+                },
             ],
             loading: false,
             dataItem: {},
@@ -181,7 +187,10 @@ export default {
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
-                    this.dataTable = arr
+                    arr.map(item => {
+                        item["is_active"] = item.is_active === "1" ? true : false;
+                    })
+                    this.dataTable = arr;
                     this.pagination = {
                         page: res.data.meta.current_page,
                         limit: parseInt(res.data.meta.per_page, 10),

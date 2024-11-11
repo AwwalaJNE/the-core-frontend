@@ -110,7 +110,7 @@ export default {
             tempSearch: "",
             dialogRunsheetLimit: false,
             searchRunsheetLimitPlaceholder: "Search Reference To",
-            searchRunsheetLimitBy: "runsheet_type",
+            searchRunsheetLimitBy: "reference_to",
             searchRunsheetLimitByDataType: false,
             searchRunsheetLimitParams: [
                 {
