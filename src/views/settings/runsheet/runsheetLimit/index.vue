@@ -3,6 +3,29 @@
         <vs-row justify="space-between">
             <vs-col xs="12" sm="12" lg="12">
                 <vs-row>
+                    <vs-col xs="6" sm="4" lg="2">
+                        <template v-if="filterStatus.length > 1">
+                            <vs-select
+                                class="m-select"
+                                filter
+                                v-model="filterStatusBy"
+                                :border="true"
+                                :multiple="false"
+                                @change="updateFilterStatus"
+                            >
+                            <template v-if="filterStatus.length > 1">
+                                <vs-option
+                                    v-for="(item,key) in filterStatus"
+                                    :key="key"
+                                    :label="item.label"
+                                    :value="item.value">
+                                {{item.label}}
+                                </vs-option>
+                            </template>
+
+                            </vs-select>
+                        </template>
+                    </vs-col>
                     <vs-col w="6">
                         <date-time 
                             :name="''" 
@@ -137,6 +160,21 @@ export default {
             dialogRemoveActive: false,
             loadingRemove:false,
             loadingEdit: false,
+            filterStatusBy: "",
+            filterStatus: [
+                {
+                    label: 'All Status',
+                    value: ''
+                },
+                {
+                    label: 'Active',
+                    value: '1'
+                },
+                {
+                    label: 'Inactive',
+                    value: '0'
+                }
+            ],
         }
     },
     computed: {
@@ -175,6 +213,10 @@ export default {
             this.dateRange = val
             this.refresh()
         },
+        updateFilterStatus(key) {
+            this.filterStatusBy = key;
+            this.refresh()
+        },
         async getTableData(limit, page, q, from, to, searchBy) {
             this.loading = true
 
@@ -183,7 +225,7 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.runsheet_limit_setting}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.runsheet_limit_setting}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
