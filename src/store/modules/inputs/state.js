@@ -411,8 +411,7 @@ export default {
       typeInput: "autocomplete",
       typeData: "String",
       width: '12',
-      arrData: [],
-      value: ''
+      arrData: []
     },
     runsheet_limit: {
       label: "Runsheet Limit",
@@ -3026,8 +3025,7 @@ export default {
       rule: "",
       typeInput: "autocomplete",
       typeData: "String",
-      arrData: [],
-      valueData: null
+      arrData: []
     },
     runsheet_limit: {
       label: "Runsheet limit",
