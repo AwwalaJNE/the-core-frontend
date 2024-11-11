@@ -39,9 +39,6 @@ export default {
         typeForm: String,
         querySearch: Function,
         disabled: Boolean
-
-        // url: String,
-        // flag: [String, Number]
     },
     components: {
         "inputan": Inputan
@@ -51,13 +48,6 @@ export default {
             value: this.selectedValue,
         }
     },
-    // watch: {
-    //     value: function(val){
-    //         if(val.length > 2) {
-    //             // this.resolveQuery()
-    //         }
-    //     }
-    // },
     computed: {
         listenFormKey(){
             return this.formKey
@@ -71,12 +61,6 @@ export default {
         listenTypeForm() {
             return this.typeForm
         },
-        // listenUrl() {
-        //     return this.url || ''
-        // },
-        // listenFlag() {
-        //     return this.flag || ''
-        // },
         isDisabled() {
             return this.typeInput.includes('disabled') || this.disabled
         }
@@ -89,39 +73,6 @@ export default {
         },
     },
     methods:{
-        // querySearch(queryString, cb){
-            
-        //     let flag = this.listenFlag
- 
- 
-        //     axios.get(this.listenUrl +`&s=${queryString}`, this.Helper.header())
-        //     .then(res => {
-        //         let result = res.data.data
- 
-        //         let suggestions = [];
-
-        //         result.length > 0 && result.map(item => {
-        //             if(item.hasOwnProperty(flag)) {
-        //                 suggestions.push({
-        //                         value: item[flag],
-        //                         data: item
-        //                 });
-        //             }
-        //         })
-                
-
- 
-
-        //         cb(suggestions);
-        //         })
-        //     .catch(error => console.log("error", error));
-        // },
-        // resolveQuery(){
-        //     let action = this.listenFormKey.toUpperCase() + '_Query'
-        //     let prefix = this.listenTypeForm.toUpperCase()
- 
-        //     this.$store.dispatch(`SET_${prefix}_${action}`, this.value)
-        // },
         updateValue(){
             this.$emit("updateValue", this.listenFormKey, this.value, {})
         },
