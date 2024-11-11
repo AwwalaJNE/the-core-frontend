@@ -316,4 +316,7 @@ export default {
 
     // Audit
     audit_invalid_log: api + 'audit/invalid-item-log',
+
+    // Sorting Validation Zip Code
+    sorting_zip_code_validation: api + 'validation/zip-code',
 }
