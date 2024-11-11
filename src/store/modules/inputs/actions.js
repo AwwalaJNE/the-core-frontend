@@ -3751,6 +3751,55 @@ export default {
   //====== END BAG LIMIT SETTINGS ======//
 
 
+
+
+  //====== RUNSHEET LIMIT SETTINGS ======//
+
+  SET_RUNSHEET_LIMIT_REFERENCE_TO({ commit }, payload) {
+    commit('SET_RUNSHEET_LIMIT_REFERENCE_TO', payload)
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_TO_ValueData({ commit }, payload) {
+    commit('SET_RUNSHEET_LIMIT_REFERENCE_TO_ValueData', payload)
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_TO_ArrData({ commit }, payload) {
+    commit('SET_RUNSHEET_LIMIT_REFERENCE_TO_ArrData', payload)
+  },
+
+
+  SET_RUNSHEET_LIMIT_REFERENCE_VALUE({ commit }, payload) {
+    commit('SET_RUNSHEET_LIMIT_REFERENCE_VALUE', payload)
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ValueData({ commit }, payload) {
+    commit('SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ValueData', payload)
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ArrData({ commit }, payload) {
+    commit('SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ArrData', payload)
+  },
+
+
+  SET_RUNSHEET_LIMIT_REFERENCE_ENTITY({ commit }, payload) {
+    commit('SET_RUNSHEET_LIMIT_REFERENCE_ENTITY', payload)
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_ENTITY_ValueData({ commit }, payload) {
+    commit('SET_RUNSHEET_LIMIT_REFERENCE_ENTITY_ValueData', payload)
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_ENTITY_ArrData({ commit }, payload) {
+    commit('SET_RUNSHEET_LIMIT_REFERENCE_ENTITY_ArrData', payload)
+  },
+
+
+  SET_RUNSHEET_LIMIT_IS_ACTIVE({ commit }, payload) {
+    commit('SET_RUNSHEET_LIMIT_IS_ACTIVE', payload)
+  },
+  SET_RUNSHEET_LIMIT_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_RUNSHEET_LIMIT_IS_ACTIVE_ValueData', payload)
+  },
+
+  //====== END RUNSHEET LIMIT SETTINGS ======//
+
+
+
+
   SET_BAG_IS_AUTO_OPEN_BAG({ commit }, payload) {
     commit('SET_BAG_IS_AUTO_OPEN_BAG', payload);
   },

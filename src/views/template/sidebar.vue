@@ -911,6 +911,17 @@ export default {
                 resource_name: resourceLookup["SETTINGS_BAG"].resource_name
               },
             },
+            {
+              label: "Settings Runsheet",
+              url: "/settings/runsheet",
+              icon: "",
+              permission: "", // TODO: Change after permission ready
+              meta: {
+                resource_type: resourceLookup["SETTINGS_RUNSHEET"].resource_type,
+                resource_code: resourceLookup["SETTINGS_RUNSHEET"].resource_code,
+                resource_name: resourceLookup["SETTINGS_RUNSHEET"].resource_name
+              },
+            },
           ],
         },
         {
