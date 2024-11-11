@@ -2216,6 +2216,10 @@ export default {
           "label": "Bag Return",
           "value": "return"
         },
+        {
+          "label": "Bag Pickup",
+          "value": "pickup"
+        },
       ],
       valueData: null,
       value: '',
@@ -2290,12 +2294,16 @@ export default {
           "value": "PRA RUNSHEET"
         },
         {
-          "label": "Bag Outbound",
-          "value": "OUTBOUND"
+          "label": "Bag Pickup",
+          "value": "PICKUP"
         },
         {
           "label": "Bag Return",
           "value": "RETURN"
+        },
+        {
+          "label": "Masterbag",
+          "value": "MASTERBAG"
         },
       ],
       valueData: null,
