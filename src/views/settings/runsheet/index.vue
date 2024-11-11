@@ -109,13 +109,13 @@ export default {
             navActive: "runsheet-limit",
             tempSearch: "",
             dialogRunsheetLimit: false,
-            searchRunsheetLimitPlaceholder: "Search Runsheet Type",
+            searchRunsheetLimitPlaceholder: "Search Reference To",
             searchRunsheetLimitBy: "runsheet_type",
             searchRunsheetLimitByDataType: false,
             searchRunsheetLimitParams: [
                 {
-                    label: "Runsheet Type",
-                    value: "runsheet_type"
+                    label: "Reference To",
+                    value: "reference_to"
                 },
                 {
                     label: "Reference Entity",
@@ -124,11 +124,6 @@ export default {
                 {
                     label: "Reference Value",
                     value: "reference_value"
-                },
-                {
-                    label: "Limit",
-                    value: "limit",
-                    isNumeric: true
                 },
                 {
                     label: "Created By",
