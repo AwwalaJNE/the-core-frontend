@@ -142,6 +142,8 @@ export default {
         querySearch(queryString, cb){
             if (this.listenRoutingType === 'intracity') {
                 this.autoCompleteUrl = `${this.URL.node}/${this.listenNodeId}/destination-intracity?n=${this.listenNodeId}&s=${queryString}`
+            } else if (this.listenRoutingType === 'all_routing') {
+                this.autoCompleteUrl = `${this.URL.node}?n=${this.listenNodeId}&s=${queryString}`
             } else {
                 this.autoCompleteUrl = `${this.URL.node}/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&routing_type=${this.listenRoutingType}&s=${queryString}`
             }
