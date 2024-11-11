@@ -3,6 +3,7 @@
         width="lg"
         :actived="listenActive" 
         :closeDialog="cancel"
+        :loading="listenLoading"
     >
         <template v-slot:header>
             {{listenTitle}}
@@ -83,7 +84,7 @@ export default {
             id: "",
             autoCompleteUrl: null,
             input_value: "",
-
+            loading: false,
         }
     },
     computed: {
@@ -95,6 +96,9 @@ export default {
         },
         listenDataItem() {
             return this.dataItem;
+        },
+        listenLoading() {
+            return this.loading;
         },
         listenEntity() {
             return this.$store.getters.getInputs.destination_zip_code.reference_entity.value;
