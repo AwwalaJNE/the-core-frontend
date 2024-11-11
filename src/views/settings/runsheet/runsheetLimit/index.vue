@@ -65,7 +65,7 @@ import Inputan from "@/components/input/inputan";
 import SearchInput from "@/components/search/searchInput";
 import TableMaster from "@/components/table/tableMaster";
 
-import DialogCreateEdit from "@/views/settings/runsheet/RunsheeetLimit/dialogCreateEdit";
+import DialogCreateEdit from "@/views/settings/runsheet/runsheetLimit/dialogCreateEdit";
 
 export default {
     name:"runsheet-limit-data-tabel",
