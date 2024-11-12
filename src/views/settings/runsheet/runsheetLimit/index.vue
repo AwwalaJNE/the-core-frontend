@@ -70,7 +70,7 @@
             :active="dialogRemoveActive"
             :closeDialog="() => closeDialog('dialog_remove')"
             :loading="loadingRemove"
-            :message="`Are you sure you want to remove this Runsheet Limit with id ${this.selected_id}?`"
+            :message="`Are you sure you want to remove this?`"
             @cancel="() => closeDialog('dialog_remove')"
             @confirm="confirmRemove"
         />
@@ -109,11 +109,6 @@ export default {
         return {
             dataTable: [],
             datacolumn: [
-                {
-                    label: "Id",
-                    key: "runsheet_limit_id",
-                    width: "sm"
-                },
                 {
                     label: "Reference To",
                     key: "reference_to",
