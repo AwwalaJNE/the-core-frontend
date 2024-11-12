@@ -210,6 +210,9 @@ import ConnoteReturn from '@/views/connoteAdjustment/connoteReturn'
 import InvalidReceiving from '@/views/audit/invalidReceiving'
 import InvalidOpeningBag from '@/views/audit/invalidOpeningBag'
 
+// === Destination Zip Code ===
+import DestinationZipCode from "@/views/settings/destinationZipCode"
+
 import { resourceLookup } from '@/constants'; 
 
 Vue.use(VueRouter)
@@ -420,6 +423,18 @@ const routes = [
               resource_type: resourceLookup["SETTINGS_BAG"].resource_type,
               resource_code: resourceLookup["SETTINGS_BAG"].resource_code,
               resource_name: resourceLookup["SETTINGS_BAG"].resource_name
+            }
+          },
+          {
+            path: "destination-zip-code",
+            name: "DestinationZipCode",
+            component: DestinationZipCode,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Destination Zip Code",
+              resource_type: resourceLookup["DESTINATION_ZIP_CODE"].resource_type,
+              resource_code: resourceLookup["DESTINATION_ZIP_CODE"].resource_code,
+              resource_name: resourceLookup["DESTINATION_ZIP_CODE"].resource_name
             }
           },
           {

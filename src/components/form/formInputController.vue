@@ -126,8 +126,11 @@
                                         :formKey="InputObject[item].key"
                                         :valueData="InputObject[item].arrData"
                                         :selectedValue="InputObject[item].value"
+                                        :typeInput="InputObject[item].typeInput"
                                         :url="asynchronousSelect_url"
-                                        @updateValue="updateValue" />
+                                        :limitExist="limitExist"
+                                        @updateValue="updateValue"
+                                        @inputFocus="onfocuslah"/>
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('selectmultipletag') && !InputObject[item].typeInput.toLowerCase().includes('hidden')">
                                     <div>
@@ -407,7 +410,8 @@ export default {
         itterateUrlAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         itterateFlagAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         isDisabled: Boolean,
-        permissionCreateSelect: Boolean
+        permissionCreateSelect: Boolean,
+        limitExist: Boolean
     },
     data() {
         return {

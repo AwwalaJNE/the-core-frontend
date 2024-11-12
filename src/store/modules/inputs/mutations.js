@@ -4142,5 +4142,47 @@ export default {
 
   SET_BAG_IS_AUTO_OPEN_BAG_ValueData(state, payload) {
     state.bag_is_auto_open_bag.bag_is_auto_open_bag.valueData = payload || false;
-  }
+  },
+
+  //====== DESTINATION ZIP CODE ======//
+
+  SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE(state, payload) {
+    state.destination_zip_code.reference_value.value = payload
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE_ValueData(state, payload) {
+    state.destination_zip_code.reference_value.valueData = payload
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE_ArrData(state, payload) {
+    state.destination_zip_code.reference_value.hasOwnProperty('arrData') ?
+    state.destination_zip_code.reference_value.arrData = payload :
+    state.destination_zip_code.reference_value.arrData = []
+  },
+
+
+  SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY(state, payload) {
+    state.destination_zip_code.reference_entity.value = payload
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY_ValueData(state, payload) {
+    state.destination_zip_code.reference_entity.valueData = payload
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY_ArrData(state, payload) {
+    state.destination_zip_code.reference_entity.hasOwnProperty('arrData') ?
+    state.destination_zip_code.reference_entity.arrData = payload :
+    state.destination_zip_code.reference_entity.arrData = []
+  },
+
+
+  SET_DESTINATION_ZIP_CODE_ZIP_CODE(state, payload) {
+    state.destination_zip_code.zip_code.value = payload
+  },
+  SET_DESTINATION_ZIP_CODE_ZIP_CODE_ValueData(state, payload) {
+    state.destination_zip_code.zip_code.valueData = payload
+  },
+  SET_DESTINATION_ZIP_CODE_ZIP_CODE_ArrData(state, payload) {
+    state.destination_zip_code.zip_code.hasOwnProperty('arrData') ?
+    state.destination_zip_code.zip_code.arrData = payload :
+    state.destination_zip_code.zip_code.arrData = []
+  },
+
+  //====== END DESTINATION ZIP CODE ======//
 }

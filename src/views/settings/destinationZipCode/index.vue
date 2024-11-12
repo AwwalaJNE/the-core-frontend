@@ -30,7 +30,7 @@
                             <nav-item :navItem="navItemm" @activeTab="activeTab" />
                         </vs-col>
                         <vs-col xs="12" sm="6" lg="4">
-                            <template v-if="navActive === 'KPI'">
+                            <template v-if="navActive === 'DestinationZipCode'">
                                 <vs-row>
                                     <vs-col vs-align="center" w="6">
                                         <select-search-by
@@ -56,9 +56,9 @@
                         </vs-col>
                     </vs-row>
                 </div>
-                <template v-if="navActive === 'KPI'">
+                <template v-if="navActive === 'DestinationZipCode'">
                     <transition name="slide-fade">
-                        <key-performance-indicator 
+                        <destination-zip-code
                             :ref="navActive" 
                             :query="tempSearch" 
                             :searchBy="searchBy"
@@ -68,7 +68,7 @@
             </div>
         </section>
         <dialog-create-edit
-            title="Create KPI Process Target"
+            title="Create Destination Zip Code Mapping"
             :active="dialogActive" 
             :closeDialog="closeDialog"
             @refresh="refresh"
@@ -82,16 +82,16 @@ import NavItem from "@/components/navbar/navTab";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
-import DialogCreateEdit from "@/views/settings/kpi/processTarget/dialogCreateEdit";
-import ProcessTargetTable from "@/views/settings/kpi/processTarget/index";
+import DialogCreateEdit from "@/views/settings/destinationZipCode/destinationZipCode/dialogCreateEdit";
+import ZipCodeTable from "@/views/settings/destinationZipCode/destinationZipCode/index";
 
 export default {
-    name:"kpi",
+    name:"destination-zip-code-index",
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
-        "key-performance-indicator": ProcessTargetTable,
+        "destination-zip-code": ZipCodeTable,
         "dialog-create-edit": DialogCreateEdit,
         "select-search-by": SelectSearchBy,
     },
@@ -99,13 +99,13 @@ export default {
         return {
             navItemm: [
                 {
-                    label: "KPI",
-                    key: "KPI",
-                    title: "Key Performance Indicator"
+                    label: "Destination Zip Code",
+                    key: "DestinationZipCode",
+                    title: "Destination Zip Code"
                 },
             ],
-            title:"Key Performance Indicator",
-            navActive: "KPI",
+            title:"Destination Zip Code",
+            navActive: "DestinationZipCode",
             tempSearch: "",
             dialogActive: false,
             searchPlaceholder: "Search Reference Value",
@@ -120,8 +120,8 @@ export default {
                     value: "reference_entity"
                 },
                 {
-                    label: "Process Name",
-                    value: "process_name"
+                    label: "Zip Code",
+                    value: "zip_code"
                 }
             ]
         }
@@ -148,7 +148,7 @@ export default {
         },
         openDialog(){
             switch(this.navActive) {
-                case "KPI":
+                case "DestinationZipCode":
                     this.dialogActive = true
                     break;
                 default:
@@ -157,7 +157,7 @@ export default {
         },
         closeDialog() {
             switch(this.navActive) {
-                case "KPI":
+                case "DestinationZipCode":
                     this.dialogActive = false
                     break;
                 default:
@@ -165,7 +165,7 @@ export default {
         },
         updateSearchBy(key, val) {
             switch(this.navActive) {
-                case "KPI":
+                case "DestinationZipCode":
                     this.searchBy = val;
                     this.searchPlaceholder = key;
                     this.clearSearch()

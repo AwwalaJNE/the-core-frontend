@@ -912,6 +912,17 @@ export default {
               },
             },
             {
+              label: "Settings Destination Zip Code",
+              url: "/settings/destination-zip-code",
+              icon: "",
+              permission: "", // TODO: Change after permission ready
+              meta: {
+                resource_type: resourceLookup["DESTINATION_ZIP_CODE"].resource_type,
+                resource_code: resourceLookup["DESTINATION_ZIP_CODE"].resource_code,
+                resource_name: resourceLookup["DESTINATION_ZIP_CODE"].resource_name
+              },
+            },
+            {
               label: "Settings Runsheet",
               url: "/settings/runsheet",
               icon: "",

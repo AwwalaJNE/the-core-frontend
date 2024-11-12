@@ -2200,6 +2200,62 @@ export default {
     },
   },
 
+  destination_zip_code: {
+    reference_entity: {
+      label: "Reference Entity*",
+      key: "reference_entity",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Region',
+          value: 'REGION'
+        },
+        {
+          label: 'Branch',
+          value: 'BRANCH'
+        },
+        {
+          label: 'Origin',
+          value: 'ORIGIN'
+        },
+        {
+          label: 'Node',
+          value: 'NODE'
+        },
+        {
+          label: 'User',
+          value: 'USER'
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    reference_value: {
+      label: "Reference Value*",
+      key: "reference_value",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      width: '12',
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    zip_code: {
+      label: "Zip Code*",
+      key: "zip_code",
+      rule: "required",
+      typeInput: "multipleSelector",
+      width: '12',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+  },
+
   bag_weight: {
     bag_type: {
       label: "Bag Type*",

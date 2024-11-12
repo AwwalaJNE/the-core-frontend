@@ -3806,5 +3806,40 @@ export default {
 
   SET_BAG_IS_AUTO_OPEN_BAG_ValueData({ commit }, payload) {
     commit('SET_BAG_IS_AUTO_OPEN_BAG_ValueData', payload);
-  }
+  },
+
+  //====== DESTINATION ZIP CODE ======//
+
+  SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE({ commit }, payload) {
+    commit('SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE', payload)
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE_ValueData({ commit }, payload) {
+    commit('SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE_ValueData', payload)
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE_ArrData({ commit }, payload) {
+    commit('SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE_ArrData', payload)
+  },
+
+
+  SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY({ commit }, payload) {
+    commit('SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY', payload)
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY_ValueData({ commit }, payload) {
+    commit('SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY_ValueData', payload)
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY_ArrData({ commit }, payload) {
+    commit('SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY_ArrData', payload)
+  },
+
+  SET_DESTINATION_ZIP_CODE_ZIP_CODE({ commit }, payload) {
+    commit('SET_DESTINATION_ZIP_CODE_ZIP_CODE', payload)
+  },
+  SET_DESTINATION_ZIP_CODE_ZIP_CODE_ValueData({ commit }, payload) {
+    commit('SET_DESTINATION_ZIP_CODE_ZIP_CODE_ValueData', payload)
+  },
+  SET_DESTINATION_ZIP_CODE_ZIP_CODE_ArrData({ commit }, payload) {
+    commit('SET_DESTINATION_ZIP_CODE_ZIP_CODE_ArrData', payload)
+  },
+
+  //====== END DESTINATION ZIP CODE ======//
 }
