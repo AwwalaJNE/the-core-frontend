@@ -87,8 +87,11 @@ import CashRegister from "@/views/cashRegister"
 // === Inventory Unbagging  ===
 import Unbagging from "@/views/inventory/unbag"
 
-// === Inventory Sorting  ===
-import Sorting from "@/views/inventory/sorting"
+// === Inventory Sorting Connote  ===
+import SortingConnote from "@/views/inventory/sorting/connote"
+
+// === Inventory Sorting Bag  ===
+import SortingBag from "@/views/inventory/sorting/bag"
 
 // === Pickup Request ===
 import PickupRequest from "@/views/pickup/request"
@@ -922,15 +925,27 @@ const routes = [
         }
       },
       {
-        path: "inventory/sorting",
-        name: "sorting",
-        component: Sorting,
+        path: "/sorting/connote",
+        name: "sorting-connote",
+        component: SortingConnote,
         meta: {
           requiresAuth: true,
           breadCrumb: "Sorting",
-          resource_type: resourceLookup["SORTING"].resource_type,
-          resource_code: resourceLookup["SORTING"].resource_code,
-          resource_name: resourceLookup["SORTING"].resource_name
+          resource_type: resourceLookup["SORTING_CONNOTE"].resource_type,
+          resource_code: resourceLookup["SORTING_CONNOTE"].resource_code,
+          resource_name: resourceLookup["SORTING_CONNOTE"].resource_name
+        }
+      },
+      {
+        path: "/sorting/bag",
+        name: "sorting-bag",
+        component: SortingBag,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Sorting",
+          resource_type: resourceLookup["SORTING_BAG"].resource_type,
+          resource_code: resourceLookup["SORTING_BAG"].resource_code,
+          resource_name: resourceLookup["SORTING_BAG"].resource_name
         }
       },
       {

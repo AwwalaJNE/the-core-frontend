@@ -14,7 +14,7 @@
                         <auto-complete
                             formKey="destination"
                             name="Destination"
-                            rules="required"
+                            rules=""
                             typeInput="autocomplete"
                             :url="autoCompleteUrl"
                             :querySearch="querySearch"
@@ -38,7 +38,7 @@
                                 v-on:keyup.enter="processSorting"
                                 v-uppercase
                                 :autofocus="true"
-                                :label-placeholder="'Masukkan Connote'"
+                                :label-placeholder="'Masukkan Bag'"
                                 @click-icon="$refs.cameraScanner.open('formInputSorting')"
                             >
                                 <template #icon>
@@ -52,7 +52,7 @@
                 <vs-row justify="space-between" class="mt-2">
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
                         <template>
-                            <img class="logo" :src="require('../../../assets/img/bagging-placeholder.png')" alt="jne" width="300" align="center">
+                            <img class="logo" :src="require('../../../../assets/img/bagging-placeholder.png')" alt="jne" width="300" align="center">
                         </template>
                         <h3>Scan barcode untuk melakukan sorting</h3>
                     </vs-col>
@@ -75,7 +75,7 @@ import CameraScanner from "@/components/scanner/camera";
 import Selector from "@/components/input/select";
 
 export default {
-    name:"inventory-sorting",
+    name:"inventory-sorting-bag",
     mixins: [master],
     components: {
         "auto-complete": AutoComplete,
@@ -85,7 +85,7 @@ export default {
     },
     data() {
         return {
-            title: 'Sorting',
+            title: 'Sorting Bag',
             item_number:'',
             form:{},
             loading: false,
@@ -117,13 +117,13 @@ export default {
         async processSorting() {
             if (this.destination && this.item_number) {
                 this.form = {
-                    connote_number: this.item_number,
+                    bag_number: this.item_number,
                     destination_node_id : this.destination,
                 }
 
                 this.loading = true;
                 try {
-                    const res = await axios.post(`${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
+                    const res = await axios.post(`${this.URL.sorting_zip_code_validation_bag}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
 
                     this.openNotification('success-with-notif', null, "Success", res?.data?.message || "Update Success");
                 } catch (err) {
