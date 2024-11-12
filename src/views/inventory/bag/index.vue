@@ -108,7 +108,7 @@
               </template>
             </vs-col>
             <vs-col xs="6" sm="3" lg="2" class="mt-2">
-              <vs-checkbox  v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+              <vs-checkbox  v-model="is_auto_open_bag" @change="handleAutoOpenBag" v-if="!disabled_auto_open_bag">
                 Auto Open Bag
               </vs-checkbox>
             </vs-col>
@@ -186,27 +186,33 @@ export default {
             this.title = 'Create Bag'
             this.placeholder = 'Masukkan Connote'
             this.is_disabled = false
+            this.disabled_auto_open_bag = false
             break;
           case "masterbag":
             this.title = 'Create Masterbag'
             this.placeholder = 'Masukkan Bag'
             this.is_disabled = false
+            this.is_auto_open_bag = false
+            this.disabled_auto_open_bag = true
             break;
           case "pra runsheet":
             this.title = 'Create Bag Prarunsheet'
             this.placeholder = 'Masukkan Connote'
             this.is_disabled = true
+            this.disabled_auto_open_bag = false
             this.handlePraRunsheet()
             break;
           case "return":
             this.title = 'Create Bag Return'
             this.placeholder = 'Masukkan Connote Return'
             this.is_disabled = false
+            this.disabled_auto_open_bag = false
             break;
           case "pickup":
             this.title = 'Create Bag Pickup'
             this.placeholder = 'Masukkan Connote Pickup'
             this.is_disabled = false
+            this.disabled_auto_open_bag = false
             break;
           default:
         }
@@ -413,6 +419,7 @@ export default {
           ],
           placeholder: 'Masukkan Connote',
           is_auto_open_bag: false,
+          disabled_auto_open_bag: false,
       }
   },
   computed: {
