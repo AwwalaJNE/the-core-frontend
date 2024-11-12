@@ -2984,7 +2984,7 @@ export default {
     vehicle_max_weight: {
       label: "Vehicle max weight",
       key: "vehicle_max_weight",
-      rule: "",
+      rule: "numeric",
       typeInput: "text",
       typeData: "Number",
       valueData: null,
