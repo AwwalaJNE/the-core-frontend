@@ -28,7 +28,7 @@
         <dialog-confirm
             ref="dialog_remove_destination_zip_code"
             title="Remove Destination Zip Code"
-            :message="`Are you sure you want to remove this Destination Zip Code with id ${this.selected_id}?`"
+            :message="`Are you sure you want to remove this?`"
             :active="activeDialogConfirmRemove"
             :loading="loadingConfirmRemove"
             :closeDialog="() => closeDialog('dialog_remove_destination_zip_code')"
@@ -71,24 +71,19 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Id",
-                    key: "id",
-                    width: "sm"
-                },
-                {
                     label: "Referece Value",
                     key: "reference_value",
-                    width: "sm"
+                    width: "auto"
                 },
                 {
                     label: "Reference Entity",
                     key: "reference_entity",
-                    width: "sm"
+                    width: "auto"
                 },
                 {
                     label: "Zip Code",
                     key: "merged_zip_code",
-                    width: "sm"
+                    width: "auto"
                 },
             ],
             loading: false,
