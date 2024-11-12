@@ -123,7 +123,7 @@ export default {
 
                 this.loading = true;
                 try {
-                    const res = await axios.post(`${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
+                    const res = await axios.post(`${this.URL.sorting_zip_code_validation_bag}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
 
                     this.openNotification('success-with-notif', null, "Success", res?.data?.message || "Update Success");
                 } catch (err) {
