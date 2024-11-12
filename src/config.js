@@ -323,6 +323,9 @@ export default {
     // Zip Code List
     zip_code_list: api + 'zip-code-list',
 
+    // Masterdata Runsheet Limit
+    runsheet_limit_setting: api + 'runsheet-limit',
+  
     // Sorting Validation Zip Code
     sorting_zip_code_validation: api + 'validation/zip-code',
 }

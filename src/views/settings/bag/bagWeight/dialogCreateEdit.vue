@@ -99,12 +99,6 @@ export default {
         listenLoading() {
             return this.loading || this.loadingDataService;
         },
-        listenRoutingType() {
-            const routing_type = this.$store.getters.getInputs.bag_weight.routing_type.value;
-            if (routing_type) {
-                return routing_type;
-            }
-        }
     },
     watch: {
         dataItem: function (val) {
@@ -140,13 +134,7 @@ export default {
             this.$refs.formBagWeight.handleSubmit();
         },
         querySearch(queryString, cb){
-            if (this.listenRoutingType === 'intracity') {
-                this.autoCompleteUrl = `${this.URL.node}/${this.listenNodeId}/destination-intracity?n=${this.listenNodeId}&s=${queryString}`
-            } else {
-                this.autoCompleteUrl = `${this.URL.node}/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&routing_type=${this.listenRoutingType}&s=${queryString}`
-            }
-
-            axios.get(this.autoCompleteUrl, this.Helper.header())
+            axios.get(`${this.URL.node_list}?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
                 .then(res => {
                     let result = res.data.data
                     let suggestions = [];

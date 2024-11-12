@@ -4081,6 +4081,60 @@ export default {
 
   //====== END BAG LIMIT SETTINGS ======//
 
+
+
+  //====== RUNSHEET LIMIT SETTINGS ======//
+
+  SET_RUNSHEET_LIMIT_REFERENCE_TO(state, payload) {
+    state.runsheet_limit.reference_to.value = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_TO_ValueData(state, payload) {
+    state.runsheet_limit.reference_to.valueData = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_TO_ArrData(state, payload) {
+    state.runsheet_limit.reference_to.hasOwnProperty('arrData') ?
+    state.runsheet_limit.reference_to.arrData = payload :
+    state.runsheet_limit.reference_to.arrData = []
+  },
+
+
+  SET_RUNSHEET_LIMIT_REFERENCE_VALUE(state, payload) {
+    state.runsheet_limit.reference_value.value = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ValueData(state, payload) {
+    state.runsheet_limit.reference_value.valueData = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ArrData(state, payload) {
+    state.runsheet_limit.reference_value.hasOwnProperty('arrData') ?
+    state.runsheet_limit.reference_value.arrData = payload :
+    state.runsheet_limit.reference_value.arrData = []
+  },
+
+
+  SET_RUNSHEET_LIMIT_REFERENCE_ENTITY(state, payload) {
+    state.runsheet_limit.reference_entity.value = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_ENTITY_ValueData(state, payload) {
+    state.runsheet_limit.reference_entity.valueData = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_ENTITY_ArrData(state, payload) {
+    state.runsheet_limit.reference_entity.hasOwnProperty('arrData') ?
+    state.runsheet_limit.reference_entity.arrData = payload :
+    state.runsheet_limit.reference_entity.arrData = []
+  },
+
+
+  SET_RUNSHEET_LIMIT_IS_ACTIVE(state, payload) {
+    state.runsheet_limit.is_active.value = payload
+  },
+  SET_RUNSHEET_LIMIT_IS_ACTIVE_ValueData(state, payload) {
+    state.runsheet_limit.is_active.valueData = payload
+  },
+
+
+  //====== END RUNSHEET LIMIT SETTINGS ======//
+  
+
   
   SET_BAG_IS_AUTO_OPEN_BAG(state, payload) {
     state.bag_is_auto_open_bag.bag_is_auto_open_bag.value = payload || false;

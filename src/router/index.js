@@ -198,6 +198,9 @@ import FacilityCode from '@/views/settings/facilityCode';
 // === Bag Settings ===
 import Bag from '@/views/settings/bag/index';
 
+// === Runsheet Settings ===
+import SettingsRunsheet from '@/views/settings/runsheet/index';
+
 // === Connote Adjustment ===
 import ConnoteCancel from '@/views/connoteAdjustment/connoteCancel'
 import ConnoteForward from '@/views/connoteAdjustment/connoteForward'
@@ -432,6 +435,18 @@ const routes = [
               resource_type: resourceLookup["DESTINATION_ZIP_CODE"].resource_type,
               resource_code: resourceLookup["DESTINATION_ZIP_CODE"].resource_code,
               resource_name: resourceLookup["DESTINATION_ZIP_CODE"].resource_name
+            }
+          },
+          {
+            path: "runsheet",
+            name: "Runsheet",
+            component: SettingsRunsheet,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Runsheet",
+              resource_type: resourceLookup["SETTINGS_RUNSHEET"].resource_type,
+              resource_code: resourceLookup["SETTINGS_RUNSHEET"].resource_code,
+              resource_name: resourceLookup["SETTINGS_RUNSHEET"].resource_name
             }
           },
         ],
