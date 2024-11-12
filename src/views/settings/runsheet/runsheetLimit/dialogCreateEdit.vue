@@ -13,7 +13,7 @@
             <div>
                 <form-input-controller
                     ref="formDataController" 
-                    typeForm="bag_limit"
+                    typeForm="runsheet_limit"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
                     @formData="formData"
@@ -24,7 +24,7 @@
         </template>
 
         <template v-slot:footer>
-            <vs-row justify="flex-end" style="margin-top: 2pc;">
+            <vs-row justify="flex-end">
                 <vs-col w="3">
                     <vs-button
                         block
@@ -62,7 +62,7 @@ import FormInputController from "@/components/form/formInputController";
 import Selector from "@/components/input/select";
 
 export default {
-    name:"bag-limit-dialog",
+    name:"runsheet-limit-dialog",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
@@ -80,7 +80,7 @@ export default {
     data() {
         return {
             form: {},
-            bag_limit_id: "",
+            runsheet_limit_id: "",
             autoCompleteUrl: null,
             input_value: "",
             loading: false,
@@ -100,7 +100,7 @@ export default {
             return this.dataItem;
         },
         listenEntity() {
-            return this.$store.getters.getInputs.bag_limit.reference_entity.value;
+            return this.$store.getters.getInputs.runsheet_limit.reference_entity.value;
         }
     },
     watch: {
@@ -118,19 +118,19 @@ export default {
     },
     methods: {
         async getDataDetail(val){
-            this.bag_limit_id = val.bag_limit_id;
+            this.runsheet_limit_id = val.runsheet_limit_id;
 
             let curr_reference_value_arr = [{
                 label: val.reference_value,
                 value: val.reference_value
             }]
 
-            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE", val.reference_value);
-            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE_ValueData", val.reference_value);
-            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
+            this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE", val.reference_value);
+            this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ValueData", val.reference_value);
+            this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
         },
         formData(form){
-            const { bag_limit_id, ...formWithoutId } = form;
+            const { runsheet_limit_id, ...formWithoutId } = form;
 
             this.form = formWithoutId;
             this.handleSubmitData();
@@ -138,7 +138,7 @@ export default {
         onChangeCustom(type, val, obj) {
             switch (type) {
                 case "reference_entity":
-                    this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE", "");
+                    this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE", "");
                     break;
                 default:
             }
@@ -190,8 +190,8 @@ export default {
         async handleSubmitData() {
             this.loading = true;
             try {
-                const res = this.bag_limit_id ? await axios.put(`${this.URL.bag_limit_setting}/${this.bag_limit_id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.bag_limit_setting}?n=${this.listenNodeId}`, this.form, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || this.bag_limit_id ? "Success Update Data" : "Success Create Data");
+                const res = this.runsheet_limit_id ? await axios.put(`${this.URL.runsheet_limit_setting}/${this.runsheet_limit_id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.runsheet_limit_setting}?n=${this.listenNodeId}`, this.form, this.Helper.header());
+                this.openNotification('success', null, "Success", res?.data?.message || this.runsheet_limit_id ? "Success Update Data" : "Success Create Data");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -207,7 +207,7 @@ export default {
         handleClearForm(){
             this.$refs.formDataController.handleClearForm();
             this.form = {}
-            this.bag_limit_id = ""
+            this.runsheet_limit_id = ""
         },
         cancel() {
             this.handleClearForm();

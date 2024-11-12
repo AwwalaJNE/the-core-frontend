@@ -203,6 +203,11 @@ export default {
             this.placeholder = 'Masukkan Connote Return'
             this.is_disabled = false
             break;
+          case "pickup":
+            this.title = 'Create Bag Pickup'
+            this.placeholder = 'Masukkan Connote Pickup'
+            this.is_disabled = false
+            break;
           default:
         }
       }
@@ -400,6 +405,10 @@ export default {
             {
               "label": "Bag Return",
               "value": "return"
+            },
+            {
+              "label": "Bag Pickup",
+              "value": "pickup"
             },
           ],
           placeholder: 'Masukkan Connote',

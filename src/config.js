@@ -317,6 +317,9 @@ export default {
     // Audit
     audit_invalid_log: api + 'audit/invalid-item-log',
 
+    // Masterdata Runsheet Limit
+    runsheet_limit_setting: api + 'runsheet-limit',
+  
     // Sorting Validation Zip Code
     sorting_zip_code_validation: api + 'validation/zip-code',
 }
