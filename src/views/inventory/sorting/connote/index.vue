@@ -14,7 +14,7 @@
                         <auto-complete
                             formKey="destination"
                             name="Destination"
-                            rules="required"
+                            rules=""
                             typeInput="autocomplete"
                             :url="autoCompleteUrl"
                             :querySearch="querySearch"
