@@ -413,13 +413,12 @@ export default {
       width: '12',
       arrData: []
     },
-    runsheet_limit: {
-      label: "Runsheet Limit",
+    runsheet_item_limit: {
+      label: "Runsheet limit",
       key: "runsheet_item_limit",
-      rule: "",
-      typeInput: "text",
+      rule: "numeric",
+      typeInput: "Number",
       typeData: "Number",
-      width: '12',
       valueData: null,
       value: ''
     },
@@ -3119,7 +3118,7 @@ export default {
       label: "Vehicle max weight",
       key: "vehicle_max_weight",
       rule: "numeric",
-      typeInput: "text",
+      typeInput: "Number",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -3127,8 +3126,8 @@ export default {
     vehicle_max_volume: {
       label: "Vehicle max volume",
       key: "vehicle_max_volume",
-      rule: "",
-      typeInput: "text",
+      rule: "numeric",
+      typeInput: "Number",
       typeData: "Number",
       valueData: null,
       value: ''
@@ -3161,11 +3160,11 @@ export default {
       typeData: "String",
       arrData: []
     },
-    runsheet_limit: {
+    runsheet_item_limit: {
       label: "Runsheet limit",
       key: "runsheet_item_limit",
-      rule: "",
-      typeInput: "text",
+      rule: "numeric",
+      typeInput: "Number",
       typeData: "Number",
       valueData: null,
       value: ''

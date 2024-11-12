@@ -1591,6 +1591,12 @@ export default {
   SET_VEHICLE_VEHICLE_MAX_VOLUME_ValueData(state, payload) {
     state.vehicle.vehicle_max_volume.valueData = payload
   },
+  SET_VEHICLE_RUNSHEET_ITEM_LIMIT(state, payload) {
+    state.vehicle.runsheet_item_limit.value = payload;
+  },
+  SET_VEHICLE_RUNSHEET_ITEM_LIMIT_ValueData(state, payload) {
+    state.vehicle.runsheet_item_limit.valueData = payload;
+  },
 
   SET_VEHICLE_VEHICLE_TYPE_ID(state, payload) {
     state.vehicle.vehicle_type_id.value = payload
@@ -2823,6 +2829,13 @@ export default {
   },
   SET_EMPLOYEE_IS_ACTIVE_ValueData(state, payload) {
     state.employee.is_active.valueData = payload
+  },
+
+  SET_EMPLOYEE_RUNSHEET_ITEM_LIMIT(state, payload) {
+    state.employee.runsheet_item_limit.value = payload
+  },
+  SET_EMPLOYEE_RUNSHEET_ITEM_LIMIT_ValueData(state, payload) {
+    state.employee.runsheet_item_limit.valueData = payload
   },
   //===== end employee ======
 
