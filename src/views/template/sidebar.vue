@@ -281,14 +281,25 @@ export default {
               },
             },
             {
-              label: "Sorting",
-              url: "/inventory/sorting",
+              label: "Sorting Connote",
+              url: "/sorting/connote",
               icon: "",
               permission: "read-bag", // TODO: CHECK PERMISSION LATER
               meta: {
-                resource_type: resourceLookup["SORTING"].resource_type,
-                resource_code: resourceLookup["SORTING"].resource_code,
-                resource_name: resourceLookup["SORTING"].resource_name
+                resource_type: resourceLookup["SORTING_CONNOTE"].resource_type,
+                resource_code: resourceLookup["SORTING_CONNOTE"].resource_code,
+                resource_name: resourceLookup["SORTING_CONNOTE"].resource_name
+              },
+            },
+            {
+              label: "Sorting Bag",
+              url: "/sorting/bag",
+              icon: "",
+              permission: "read-bag", // TODO: CHECK PERMISSION LATER
+              meta: {
+                resource_type: resourceLookup["SORTING_BAG"].resource_type,
+                resource_code: resourceLookup["SORTING_BAG"].resource_code,
+                resource_name: resourceLookup["SORTING_BAG"].resource_name
               },
             },
           ],
