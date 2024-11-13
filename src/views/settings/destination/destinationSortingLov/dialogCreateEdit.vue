@@ -86,7 +86,6 @@ export default {
             form: {},
             destination_sorting_lov_id: "",
             autoCompleteUrl: null,
-            autoCompleteUrlMultipleSelector: null,
             input_value: "",
             loading: false,
         }
