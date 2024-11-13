@@ -923,14 +923,14 @@ export default {
               },
             },
             {
-              label: "Settings Destination Zip Code",
-              url: "/settings/destination-zip-code",
+              label: "Settings Destination",
+              url: "/settings/destination",
               icon: "",
               permission: "", // TODO: Change after permission ready
               meta: {
-                resource_type: resourceLookup["DESTINATION_ZIP_CODE"].resource_type,
-                resource_code: resourceLookup["DESTINATION_ZIP_CODE"].resource_code,
-                resource_name: resourceLookup["DESTINATION_ZIP_CODE"].resource_name
+                resource_type: resourceLookup["DESTINATION"].resource_type,
+                resource_code: resourceLookup["DESTINATION"].resource_code,
+                resource_name: resourceLookup["DESTINATION"].resource_name
               },
             },
             {

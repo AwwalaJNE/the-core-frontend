@@ -214,7 +214,7 @@ import InvalidReceiving from '@/views/audit/invalidReceiving'
 import InvalidOpeningBag from '@/views/audit/invalidOpeningBag'
 
 // === Destination Zip Code ===
-import DestinationZipCode from "@/views/settings/destinationZipCode"
+import Destination from "@/views/settings/destination"
 
 import { resourceLookup } from '@/constants'; 
 
@@ -429,15 +429,15 @@ const routes = [
             }
           },
           {
-            path: "destination-zip-code",
-            name: "DestinationZipCode",
-            component: DestinationZipCode,
+            path: "destination",
+            name: "Destination",
+            component: Destination,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Destination Zip Code",
-              resource_type: resourceLookup["DESTINATION_ZIP_CODE"].resource_type,
-              resource_code: resourceLookup["DESTINATION_ZIP_CODE"].resource_code,
-              resource_name: resourceLookup["DESTINATION_ZIP_CODE"].resource_name
+              breadCrumb: "Destination",
+              resource_type: resourceLookup["DESTINATION"].resource_type,
+              resource_code: resourceLookup["DESTINATION"].resource_code,
+              resource_name: resourceLookup["DESTINATION"].resource_name
             }
           },
           {

@@ -56,7 +56,7 @@
         <dialog-create-edit
             btnBlue="Edit"
             ref="dialog_edit"
-            title="Edit Runsheet Limit"
+            title="Edit Destination Sorting LOV"
             :active="dialogEditActive" 
             :closeDialog="() => closeDialog('dialog_edit')"
             :dataItem="dataItem"
@@ -66,11 +66,11 @@
 
         <dialog-confirm
             ref="dialog_remove"
-            title="Remove Runsheet Limit"
+            title="Remove Destination Sorting LOV"
             :active="dialogRemoveActive"
             :closeDialog="() => closeDialog('dialog_remove')"
             :loading="loadingRemove"
-            :message="`Are you sure you want to remove this?`"
+            :message="`Are you sure you want to remove this Destination Sorting LOV?`"
             @cancel="() => closeDialog('dialog_remove')"
             @confirm="confirmRemove"
         />
@@ -88,10 +88,10 @@ import Inputan from "@/components/input/inputan";
 import SearchInput from "@/components/search/searchInput";
 import TableMaster from "@/components/table/tableMaster";
 
-import DialogCreateEdit from "@/views/settings/runsheet/runsheetLimit/dialogCreateEdit";
+import DialogCreateEdit from "@/views/settings/destination/destinationSortingLov/dialogCreateEdit";
 
 export default {
-    name:"runsheet-limit-data-tabel",
+    name:"destination-sorting-lov-data-tabel",
     mixins: [master],
     props: {
         query: String,
@@ -122,6 +122,16 @@ export default {
                 {
                     label: "Referece Value",
                     key: "reference_value",
+                    width: "sm"
+                },
+                {
+                    label: "Item Type",
+                    key: "item_type",
+                    width: "xxs"
+                },
+                {
+                    label: "Destination Node Code",
+                    key: "destination_node_code_list",
                     width: "sm"
                 },
                 {
@@ -220,14 +230,18 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.runsheet_limit_setting}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.destination_sorting_lov}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
                     arr.map(item => {
                         item["is_active"] = item.is_active === "1" ? true : false;
+                        item["destination_node_code_list"] = item.destination_node_code
+                            .map(itm => `- ${itm}`)
+                            .join("\n");
                     })
-                    this.dataTable = arr;
+                    
+                    this.dataTable = arr
                     this.pagination = {
                         page: res.data.meta.current_page,
                         limit: parseInt(res.data.meta.per_page, 10),
@@ -271,7 +285,7 @@ export default {
             }
         },
         actionRemove(val){
-            this.selected_id = val.runsheet_limit_id;
+            this.selected_id = val.id;
             this.dialogRemoveActive = true;
         },
         confirmRemove() {
@@ -280,8 +294,8 @@ export default {
         async removeData() {
             this.loadingRemove = true;
             try {
-                const res = await axios.delete(`${this.URL.runsheet_limit_setting}/${this.selected_id}?n=${this.listenNodeId}`, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || "Remove Runsheet Limit success");
+                const res = await axios.delete(`${this.URL.destination_sorting_lov}/${this.selected_id}?n=${this.listenNodeId}`, this.Helper.header());
+                this.openNotification('success', null, "Success", res?.data?.message || "Remove Destination Sorting Lov success");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {

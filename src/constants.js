@@ -85,7 +85,7 @@ const resources = [
     { resource_code: "CORE-01-084", resource_type: "PAGE", resource_name: "SETTINGS_BAG" },
     { resource_code: "CORE-01-085", resource_type: "PAGE", resource_name: "SORTING_CONNOTE" },
     { resource_code: "CORE-01-086", resource_type: "PAGE", resource_name: "SETTINGS_RUNSHEET" },
-    { resource_code: "CORE-01-087", resource_type: "PAGE", resource_name: "DESTINATION_ZIP_CODE" },
+    { resource_code: "CORE-01-087", resource_type: "PAGE", resource_name: "DESTINATION" },
     { resource_code: "CORE-01-088", resource_type: "PAGE", resource_name: "SORTING_BAG" },
 ];
 

@@ -320,6 +320,9 @@ export default {
     // Destination Zip Code
     destination_zip_code: api + 'destination-zip-code',
 
+    // Destination Sorting Lov
+    destination_sorting_lov: api + 'destination-lov',
+
     // Zip Code List
     zip_code_list: api + 'zip-code-list',
 

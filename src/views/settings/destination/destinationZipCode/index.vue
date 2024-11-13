@@ -49,7 +49,7 @@ import Inputan from "@/components/input/inputan";
 import SearchInput from "@/components/search/searchInput";
 import TableMaster from "@/components/table/tableMaster";
 
-import DialogCreateEdit from "@/views/settings/destinationZipCode/destinationZipCode/dialogCreateEdit";
+import DialogCreateEdit from "@/views/settings/destination/destinationZipCode/dialogCreateEdit";
 
 export default {
     name:"destination-zip-code-list",

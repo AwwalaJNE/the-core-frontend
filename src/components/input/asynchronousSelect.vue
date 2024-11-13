@@ -49,6 +49,8 @@ export default {
         formKey: String,
         typeInput: String,
         limitExist: Boolean,
+        selectLabel: String,
+        selectValue: String,
         url: String
     },
     components: {
@@ -102,7 +104,13 @@ export default {
                 let suggestions = [];
 
                 result.length > 0 && result.map(item => {
-                    if(item.hasOwnProperty('node_name')) {
+                    if (this.selectLabel && this.selectValue){
+                        suggestions.push({
+                            value: item[this.selectLabel],
+                            label: item[this.selectValue],
+                            data: item
+                        });
+                    } else if(item.hasOwnProperty('node_name')) {
                         suggestions.push({
                             value: item['node_id'],
                             label: item['node_name'],
