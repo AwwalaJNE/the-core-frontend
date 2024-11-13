@@ -173,16 +173,28 @@ export default {
             ],
             dialogActiveDestinationSortingLov: false,
             searchPlaceholderDestinationSortingLov: "Search Reference Value",
-            searchByDestinationSortingLov: "reference_entity",
+            searchByDestinationSortingLov: "reference_to",
             searchParamsDestinationSortingLov: [
+                {
+                    label: "Reference To",
+                    value: "reference_to"
+                },
                 {
                     label: "Reference Entity",
                     value: "reference_entity"
                 },
                 {
-                    label: "Zip Code",
-                    value: "zip_code"
-                }
+                    label: "Reference Value",
+                    value: "reference_value"
+                },
+                {
+                    label: "Item Type",
+                    value: "item_type"
+                },
+                {
+                    label: "Destination Node Code",
+                    value: "destination_node_code"
+                },
             ]
         }
     },

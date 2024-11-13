@@ -13,9 +13,10 @@
             <div>
                 <form-input-controller
                     ref="formDataController" 
-                    typeForm="bag_limit"
+                    typeForm="destination_sorting_lov"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
+                    :asynchronousSelect_url="autoCompleteUrlMultipleSelector"
                     @formData="formData"
                     @inputFocus="inputFocus"
                     @onChangeCustom="onChangeCustom"
@@ -80,8 +81,9 @@ export default {
     data() {
         return {
             form: {},
-            bag_limit_id: "",
+            destination_sorting_lov_id: "",
             autoCompleteUrl: null,
+            autoCompleteUrlMultipleSelector: null,
             input_value: "",
             loading: false,
         }
@@ -100,13 +102,14 @@ export default {
             return this.dataItem;
         },
         listenEntity() {
-            return this.$store.getters.getInputs.bag_limit.reference_entity.value;
+            return this.$store.getters.getInputs.destination_sorting_lov.reference_entity.value;
         }
     },
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.getDataDetail(val)
+                this.getDataDetail(val);
+                this.getUrlDestinationNodeCode();
             }
         },
         listenEntity: function (val, oldVal) {
@@ -118,19 +121,33 @@ export default {
     },
     methods: {
         async getDataDetail(val){
-            this.bag_limit_id = val.bag_limit_id;
+            this.destination_sorting_lov_id = val.destination_sorting_lov_id;
 
             let curr_reference_value_arr = [{
                 label: val.reference_value,
                 value: val.reference_value
             }]
 
-            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE", val.reference_value);
-            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE_ValueData", val.reference_value);
-            this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
+            this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE", val.reference_value);
+            this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ValueData", val.reference_value);
+            this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
+
+
+            let arr_destination_node_code = []
+            let arr = []
+            val.node.map(item => {
+                let obj = {}
+                obj["label"] = item.node_name
+                obj["value"] = item.destination_node_code
+
+                arr.push(obj)
+                arr_destination_node_code.push(item.destination_node_code)
+            })
+            this.$store.dispatch("SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE", arr_destination_node_code)
+            this.$store.dispatch("SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE_ArrData", arr)
         },
         formData(form){
-            const { bag_limit_id, ...formWithoutId } = form;
+            const { destination_sorting_lov_id, ...formWithoutId } = form;
 
             this.form = formWithoutId;
             this.handleSubmitData();
@@ -138,10 +155,14 @@ export default {
         onChangeCustom(type, val, obj) {
             switch (type) {
                 case "reference_entity":
-                    this.$store.dispatch("SET_BAG_LIMIT_REFERENCE_VALUE", "");
+                    this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE", "");
                     break;
                 default:
             }
+        },
+        getUrlDestinationNodeCode(){
+            let url = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+            this.autoCompleteUrlMultipleSelector = url
         },
         inputFocus(obj){
             if(obj.key == 'reference_value' && this.listenEntity){
@@ -190,8 +211,8 @@ export default {
         async handleSubmitData() {
             this.loading = true;
             try {
-                const res = this.bag_limit_id ? await axios.put(`${this.URL.bag_limit_setting}/${this.bag_limit_id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.bag_limit_setting}?n=${this.listenNodeId}`, this.form, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || this.bag_limit_id ? "Success Update Data" : "Success Create Data");
+                const res = this.destination_sorting_lov_id ? await axios.put(`${this.URL.destination_sorting_lov}/${this.destination_sorting_lov_id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.destination_sorting_lov}?n=${this.listenNodeId}`, this.form, this.Helper.header());
+                this.openNotification('success', null, "Success", res?.data?.message || this.destination_sorting_lov_id ? "Success Update Data" : "Success Create Data");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -207,7 +228,7 @@ export default {
         handleClearForm(){
             this.$refs.formDataController.handleClearForm();
             this.form = {}
-            this.bag_limit_id = ""
+            this.destination_sorting_lov_id = ""
         },
         cancel() {
             this.handleClearForm();
@@ -215,6 +236,7 @@ export default {
         },
     },
     mounted() {
+        this.getUrlDestinationNodeCode();
         this.handleSubmitShortcut(this.handleSubmit)
     },
 }
