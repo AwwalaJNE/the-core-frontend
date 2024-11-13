@@ -82,8 +82,8 @@ import NavItem from "@/components/navbar/navTab";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
-import DialogCreateEdit from "@/views/settings/destinationZipCode/destinationZipCode/dialogCreateEdit";
-import ZipCodeTable from "@/views/settings/destinationZipCode/destinationZipCode/index";
+import DialogCreateEdit from "@/views/settings/destination/destinationZipCode/dialogCreateEdit";
+import ZipCodeTable from "@/views/settings/destination/destinationZipCode/index";
 
 export default {
     name:"destination-zip-code-index",
