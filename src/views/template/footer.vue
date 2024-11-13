@@ -4,7 +4,7 @@
             <vs-row justify="space-between">
                 <p>Core JNE</p>
                 <p>&copy; 2024 JNE. All rights reserved</p>
-                <p>{{ version }}</p>
+                <p>v{{ version }}</p>
             </vs-row>
         </div>
     </footer>
