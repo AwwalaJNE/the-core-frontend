@@ -56,7 +56,7 @@
         <dialog-create-edit
             btnBlue="Edit"
             ref="dialog_edit"
-            title="Edit Bag Limit"
+            title="Edit Destination Sorting LOV"
             :active="dialogEditActive" 
             :closeDialog="() => closeDialog('dialog_edit')"
             :dataItem="dataItem"
@@ -66,11 +66,11 @@
 
         <dialog-confirm
             ref="dialog_remove"
-            title="Remove Bag Limit"
+            title="Remove Destination Sorting LOV"
             :active="dialogRemoveActive"
             :closeDialog="() => closeDialog('dialog_remove')"
             :loading="loadingRemove"
-            :message="`Are you sure you want to remove this Bag Limit with id ${this.selected_id}?`"
+            :message="`Are you sure you want to remove this Destination Sorting LOV?`"
             @cancel="() => closeDialog('dialog_remove')"
             @confirm="confirmRemove"
         />
@@ -235,13 +235,24 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.bag_limit_setting}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.destination_sorting_lov}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
                     arr.map(item => {
                         item["is_active"] = item.is_active === "1" ? true : false;
+                        // item["destination_node_code"] = item.destination_node_code.map((itm, index) => {
+                        //         const { destination_node_code } = itm || {};
+                        //         let newline = "\n";
+
+                        //         if (index == 0) {
+                        //             newline = "";
+                        //         }
+
+                        //         return newline + '- ' + destination_node_code;
+                        //     }).toString();
                     })
+                    
                     this.dataTable = arr
                     this.pagination = {
                         page: res.data.meta.current_page,
@@ -286,7 +297,7 @@ export default {
             }
         },
         actionRemove(val){
-            this.selected_id = val.bag_limit_id;
+            this.selected_id = val.destination_sorting_lov_id;
             this.dialogRemoveActive = true;
         },
         confirmRemove() {
@@ -295,8 +306,8 @@ export default {
         async removeData() {
             this.loadingRemove = true;
             try {
-                const res = await axios.delete(`${this.URL.bag_limit_setting}/${this.selected_id}?n=${this.listenNodeId}`, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || "Remove Bag Limit success");
+                const res = await axios.delete(`${this.URL.destination_sorting_lov}/${this.selected_id}?n=${this.listenNodeId}`, this.Helper.header());
+                this.openNotification('success', null, "Success", res?.data?.message || "Remove Destination Sorting Lov success");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {

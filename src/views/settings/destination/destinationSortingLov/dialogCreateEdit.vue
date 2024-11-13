@@ -16,7 +16,8 @@
                     typeForm="destination_sorting_lov"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
-                    :asynchronousSelect_url="autoCompleteUrlMultipleSelector"
+                    :asynchronousSelect_url="listenAsyncUrl"
+                    :limitExist="true"
                     @formData="formData"
                     @inputFocus="inputFocus"
                     @onChangeCustom="onChangeCustom"
@@ -25,7 +26,7 @@
         </template>
 
         <template v-slot:footer>
-            <vs-row justify="flex-end" style="margin-top: 2pc;">
+            <vs-row justify="flex-end">
                 <vs-col w="3">
                     <vs-button
                         block
@@ -103,13 +104,15 @@ export default {
         },
         listenEntity() {
             return this.$store.getters.getInputs.destination_sorting_lov.reference_entity.value;
+        },
+        listenAsyncUrl() {
+            return this.URL.node_list +'?n='+ this.listenNodeId;
         }
     },
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.getDataDetail(val);
-                this.getUrlDestinationNodeCode();
             }
         },
         listenEntity: function (val, oldVal) {
@@ -159,10 +162,6 @@ export default {
                     break;
                 default:
             }
-        },
-        getUrlDestinationNodeCode(){
-            let url = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
-            this.autoCompleteUrlMultipleSelector = url
         },
         inputFocus(obj){
             if(obj.key == 'reference_value' && this.listenEntity){
@@ -236,7 +235,6 @@ export default {
         },
     },
     mounted() {
-        this.getUrlDestinationNodeCode();
         this.handleSubmitShortcut(this.handleSubmit)
     },
 }
