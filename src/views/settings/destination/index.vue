@@ -195,6 +195,10 @@ export default {
                     label: "Destination Node Code",
                     value: "destination_node_code"
                 },
+                {
+                    label: "Created By",
+                    value: "created_by",
+                },
             ]
         }
     },

@@ -155,11 +155,11 @@ export default {
             dialogRemoveActive: false,
             loadingRemove:false,
             loadingEdit: false,
-            filterStatusBy: "",
+            filterStatusBy: "-",
             filterStatus: [
                 {
                     label: 'All Status',
-                    value: ''
+                    value: '-'
                 },
                 {
                     label: 'Active',

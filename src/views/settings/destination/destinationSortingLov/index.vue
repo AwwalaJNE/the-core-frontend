@@ -127,16 +127,11 @@ export default {
                 {
                     label: "Item Type",
                     key: "item_type",
-                    width: "sm"
+                    width: "xxs"
                 },
                 {
                     label: "Destination Node Code",
-                    key: "destination_node_code",
-                    width: "sm"
-                },
-                {
-                    label: "Item Type",
-                    key: "item_type",
+                    key: "destination_node_code_list",
                     width: "sm"
                 },
                 {
@@ -170,11 +165,11 @@ export default {
             dialogRemoveActive: false,
             loadingRemove:false,
             loadingEdit: false,
-            filterStatusBy: "",
+            filterStatusBy: "-",
             filterStatus: [
                 {
                     label: 'All Status',
-                    value: ''
+                    value: '-'
                 },
                 {
                     label: 'Active',
@@ -241,16 +236,9 @@ export default {
                     let arr = res.data.data;
                     arr.map(item => {
                         item["is_active"] = item.is_active === "1" ? true : false;
-                        // item["destination_node_code"] = item.destination_node_code.map((itm, index) => {
-                        //         const { destination_node_code } = itm || {};
-                        //         let newline = "\n";
-
-                        //         if (index == 0) {
-                        //             newline = "";
-                        //         }
-
-                        //         return newline + '- ' + destination_node_code;
-                        //     }).toString();
+                        item["destination_node_code_list"] = item.destination_node_code
+                            .map(itm => `- ${itm}`)
+                            .join("\n");
                     })
                     
                     this.dataTable = arr
