@@ -8,16 +8,19 @@
         <router-view></router-view>
       </div>
     </div>
+    <Footer />
     <dialogUpdatePassword />
   </div>
 </template>
 <script>
+import Footer from "./footer";
 import Header from "./header";
 import Sidebar from "./sidebar";
 import dialogUpdatePassword from "@/components/dialog/dialogUpdatePassword.vue";
 export default {
   name: "Content",
   components: {
+    Footer: Footer,
     MainHeader: Header,
     Sidebar: Sidebar,
     dialogUpdatePassword,
