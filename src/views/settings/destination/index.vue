@@ -34,11 +34,11 @@
                                 <vs-row>
                                     <vs-col vs-align="center" w="6">
                                         <select-search-by
-                                            key="searchBy"
+                                            key="searchByDestinationZipCode"
                                             :border="true"
                                             :isMultiple="false"
-                                            :selectedValue="searchBy" 
-                                            :valueData="searchParams" 
+                                            :selectedValue="searchByDestinationZipCode" 
+                                            :valueData="searchParamsDestinationZipCode" 
                                             @updateSearchBy="updateSearchBy" 
                                         />
                                     </vs-col>
@@ -47,7 +47,30 @@
                                             class="search-input"
                                             key="searchInput"
                                             ref="searchInput"  
-                                            :placeholder="searchPlaceholder" 
+                                            :placeholder="searchPlaceholderDestinationZipCode" 
+                                            @searchValue="searchValue"
+                                        />
+                                    </vs-col>
+                                </vs-row>
+                            </template>
+                            <template v-if="navActive === 'DestinationSortingLov'">
+                                <vs-row>
+                                    <vs-col vs-align="center" w="6">
+                                        <select-search-by
+                                            key="searchByDestinationSortingLov"
+                                            :border="true"
+                                            :isMultiple="false"
+                                            :selectedValue="searchByDestinationSortingLov" 
+                                            :valueData="searchParamsDestinationSortingLov" 
+                                            @updateSearchBy="updateSearchBy" 
+                                        />
+                                    </vs-col>
+                                    <vs-col vs-align="center" w="6">
+                                        <search-input 
+                                            class="search-input"
+                                            key="searchInput"
+                                            ref="searchInput"  
+                                            :placeholder="searchPlaceholderDestinationSortingLov" 
                                             @searchValue="searchValue"
                                         />
                                     </vs-col>
@@ -61,15 +84,30 @@
                         <destination-zip-code
                             :ref="navActive" 
                             :query="tempSearch" 
-                            :searchBy="searchBy"
+                            :searchBy="searchByDestinationZipCode"
+                        />
+                    </transition>
+                </template>
+                <template v-else-if="navActive === 'DestinationSortingLov'">
+                    <transition name="slide-fade">
+                        <destination-sorting-lov
+                            :ref="navActive" 
+                            :query="tempSearch" 
+                            :searchBy="searchByDestinationSortingLov"
                         />
                     </transition>
                 </template>
             </div>
         </section>
-        <dialog-create-edit
+        <dialog-create-edit-zip-code
             title="Create Destination Zip Code Mapping"
-            :active="dialogActive" 
+            :active="dialogActiveDestinationZipCode" 
+            :closeDialog="closeDialog"
+            @refresh="refresh"
+        />
+        <dialog-create-edit-sorting-lov
+            title="Create Destination Sorting LOV"
+            :active="dialogActiveDestinationSortingLov"
             :closeDialog="closeDialog"
             @refresh="refresh"
         />
@@ -82,8 +120,10 @@ import NavItem from "@/components/navbar/navTab";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
-import DialogCreateEdit from "@/views/settings/destination/destinationZipCode/dialogCreateEdit";
+import DialogCreateEditZipCode from "@/views/settings/destination/destinationZipCode/dialogCreateEdit";
+import DialogCreateEditSortingLov from "@/views/settings/destination/destinationSortingLov/dialogCreateEdit";
 import ZipCodeTable from "@/views/settings/destination/destinationZipCode/index";
+import SortingLovTable from "@/views/settings/destination/destinationSortingLov/index";
 
 export default {
     name:"destination-zip-code-index",
@@ -92,7 +132,9 @@ export default {
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
         "destination-zip-code": ZipCodeTable,
-        "dialog-create-edit": DialogCreateEdit,
+        "dialog-create-edit-zip-code": DialogCreateEditZipCode,
+        "destination-sorting-lov": SortingLovTable,
+        "dialog-create-edit-sorting-lov": DialogCreateEditSortingLov,
         "select-search-by": SelectSearchBy,
     },
     data() {
@@ -103,18 +145,36 @@ export default {
                     key: "DestinationZipCode",
                     title: "Destination Zip Code"
                 },
+                {
+                    label: "Destination Sorting LOV",
+                    key: "DestinationSortingLov",
+                    title: "Destination Sorting LOV"
+                },
             ],
             title:"Destination Zip Code",
             navActive: "DestinationZipCode",
             tempSearch: "",
-            dialogActive: false,
-            searchPlaceholder: "Search Reference Value",
-            searchBy: "reference_value",
-            searchParams: [
+            dialogActiveDestinationZipCode: false,
+            searchPlaceholderDestinationZipCode: "Search Reference Value",
+            searchByDestinationZipCode: "reference_value",
+            searchParamsDestinationZipCode: [
                 {
                     label: "Reference Value",
                     value: "reference_value"
                 },
+                {
+                    label: "Reference Entity",
+                    value: "reference_entity"
+                },
+                {
+                    label: "Zip Code",
+                    value: "zip_code"
+                }
+            ],
+            dialogActiveDestinationSortingLov: false,
+            searchPlaceholderDestinationSortingLov: "Search Reference Value",
+            searchByDestinationSortingLov: "reference_entity",
+            searchParamsDestinationSortingLov: [
                 {
                     label: "Reference Entity",
                     value: "reference_entity"
@@ -149,7 +209,10 @@ export default {
         openDialog(){
             switch(this.navActive) {
                 case "DestinationZipCode":
-                    this.dialogActive = true
+                    this.dialogActiveDestinationZipCode = true
+                    break;
+                case "DestinationSortingLov":
+                    this.dialogActiveDestinationSortingLov = true
                     break;
                 default:
             }
@@ -158,7 +221,10 @@ export default {
         closeDialog() {
             switch(this.navActive) {
                 case "DestinationZipCode":
-                    this.dialogActive = false
+                    this.dialogActiveDestinationZipCode = false
+                    break;
+                case "DestinationSortingLov":
+                    this.dialogActiveDestinationSortingLov = false
                     break;
                 default:
             }
@@ -166,8 +232,13 @@ export default {
         updateSearchBy(key, val) {
             switch(this.navActive) {
                 case "DestinationZipCode":
-                    this.searchBy = val;
-                    this.searchPlaceholder = key;
+                    this.searchByDestinationZipCode = val;
+                    this.searchPlaceholderDestinationZipCode = key;
+                    this.clearSearch()
+                    break;
+                case "DestinationSortingLov":
+                    this.searchByDestinationSortingLov = val;
+                    this.searchPlaceholderDestinationSortingLov = key;
                     this.clearSearch()
                     break;
                 default:
