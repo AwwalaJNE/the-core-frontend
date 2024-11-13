@@ -4,7 +4,7 @@
             <vs-row justify="space-between">
                 <p>Core JNE</p>
                 <p>&copy; 2024 JNE. All rights reserved</p>
-                <p>v{{ version }}</p>
+                <p>v.{{ version }}</p>
             </vs-row>
         </div>
     </footer>
@@ -15,7 +15,7 @@ export default {
     name:"footer",
     data() {
         return {
-            version: process.env.APP_VERSION
+            version: process.env.VUE_APP_VERSION
         }
     },
 }
