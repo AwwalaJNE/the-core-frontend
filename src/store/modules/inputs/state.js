@@ -2255,6 +2255,106 @@ export default {
     },
   },
 
+  destination_sorting_lov: {
+    reference_to: {
+      label: "Reference To*",
+      key: "reference_to",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          "label": "Sorting",
+          "value": "SORTING"
+        },
+        {
+          "label": "Origin",
+          "value": "ORIGIN"
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    reference_entity: {
+      label: "Reference Entity*",
+      key: "reference_entity",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Region',
+          value: 'REGION'
+        },
+        {
+          label: 'Branch',
+          value: 'BRANCH'
+        },
+        {
+          label: 'Origin',
+          value: 'ORIGIN'
+        },
+        {
+          label: 'Node',
+          value: 'NODE'
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    reference_value: {
+      label: "Reference Value*",
+      key: "reference_value",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      width: '12',
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    item_type: {
+      label: "Item Type*",
+      key: "item_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          "label": "Connote",
+          "value": "CONNOTE"
+        },
+        {
+          "label": "Bag",
+          "value": "BAG"
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    destination_node_code: {
+      label: "Destination Node Code*",
+      key: "destination_node_code",
+      rule: "required",
+      typeInput: "multipleSelector",
+      typeData: "String",
+      width: '12',
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true,
+      isDisabled: false,
+    },
+  },
+
   bag_weight: {
     bag_type: {
       label: "Bag Type*",

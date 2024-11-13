@@ -3856,4 +3856,73 @@ export default {
   },
 
   //====== END DESTINATION ZIP CODE ======//
+
+
+
+
+  //====== DESTINATION SORTING LOV ======//
+
+  SET_DESTINATION_SORTING_LOV_REFERENCE_TO({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_REFERENCE_TO', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_TO_ValueData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_REFERENCE_TO_ValueData', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_TO_ArrData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_REFERENCE_TO_ArrData', payload)
+  },
+
+
+  SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY_ValueData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY_ValueData', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY_ArrData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY_ArrData', payload)
+  },
+
+
+  SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ValueData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ValueData', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ArrData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ArrData', payload)
+  },
+
+
+  SET_DESTINATION_SORTING_LOV_ITEM_TYPE({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_ITEM_TYPE', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_ITEM_TYPE_ValueData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_ITEM_TYPE_ValueData', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_ITEM_TYPE_ArrData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_ITEM_TYPE_ArrData', payload)
+  },
+
+
+  SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE_ValueData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE_ValueData', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE_ArrData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE_ArrData', payload)
+  },
+
+
+  SET_DESTINATION_SORTING_LOV_IS_ACTIVE({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_IS_ACTIVE', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_IS_ACTIVE_ValueData', payload)
+  },
+
+  //====== END DESTINATION SORTING LOV ======//
 }
