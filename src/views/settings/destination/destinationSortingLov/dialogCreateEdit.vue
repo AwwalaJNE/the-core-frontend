@@ -18,6 +18,8 @@
                     :querySearch="querySearch"
                     :asynchronousSelect_url="listenAsyncUrl"
                     :limitExist="true"
+                    :selectLabel="'node_code'"
+                    :selectValue="'node_code'"
                     @formData="formData"
                     @inputFocus="inputFocus"
                     @onChangeCustom="onChangeCustom"

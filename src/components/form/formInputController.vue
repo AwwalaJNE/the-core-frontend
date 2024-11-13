@@ -129,6 +129,8 @@
                                         :typeInput="InputObject[item].typeInput"
                                         :url="asynchronousSelect_url"
                                         :limitExist="limitExist"
+                                        :selectLabel="selectLabel"
+                                        :selectValue="selectValue"
                                         @updateValue="updateValue"
                                         @inputFocus="onfocuslah"/>
                             </template>
@@ -411,7 +413,9 @@ export default {
         itterateFlagAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         isDisabled: Boolean,
         permissionCreateSelect: Boolean,
-        limitExist: Boolean
+        limitExist: Boolean,
+        selectLabel: String,
+        selectValue: String,
     },
     data() {
         return {
