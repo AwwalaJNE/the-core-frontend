@@ -285,7 +285,7 @@ export default {
             }
         },
         actionRemove(val){
-            this.selected_id = val.destination_sorting_lov_id;
+            this.selected_id = val.id;
             this.dialogRemoveActive = true;
         },
         confirmRemove() {

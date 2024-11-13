@@ -84,7 +84,7 @@ export default {
     data() {
         return {
             form: {},
-            destination_sorting_lov_id: "",
+            id: "",
             autoCompleteUrl: null,
             input_value: "",
             loading: false,
@@ -125,7 +125,7 @@ export default {
     },
     methods: {
         async getDataDetail(val){
-            this.destination_sorting_lov_id = val.destination_sorting_lov_id;
+            this.id = val.id;
 
             let curr_reference_value_arr = [{
                 label: val.reference_value,
@@ -151,7 +151,7 @@ export default {
             this.$store.dispatch("SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE_ArrData", arr)
         },
         formData(form){
-            const { destination_sorting_lov_id, ...formWithoutId } = form;
+            const { id, ...formWithoutId } = form;
 
             this.form = formWithoutId;
             this.handleSubmitData();
@@ -211,8 +211,8 @@ export default {
         async handleSubmitData() {
             this.loading = true;
             try {
-                const res = this.destination_sorting_lov_id ? await axios.put(`${this.URL.destination_sorting_lov}/${this.destination_sorting_lov_id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.destination_sorting_lov}?n=${this.listenNodeId}`, this.form, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || this.destination_sorting_lov_id ? "Success Update Data" : "Success Create Data");
+                const res = this.id ? await axios.put(`${this.URL.destination_sorting_lov}/${this.id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.destination_sorting_lov}?n=${this.listenNodeId}`, this.form, this.Helper.header());
+                this.openNotification('success', null, "Success", res?.data?.message || this.id ? "Success Update Data" : "Success Create Data");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -228,7 +228,7 @@ export default {
         handleClearForm(){
             this.$refs.formDataController.handleClearForm();
             this.form = {}
-            this.destination_sorting_lov_id = ""
+            this.id = ""
         },
         cancel() {
             this.handleClearForm();
