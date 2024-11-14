@@ -87,7 +87,7 @@
                       <vs-col xs="12" sm="4" lg="4">
                         <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
                       </vs-col>
-                      <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
+                      <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" :isNumeric="searchByNumeric" />
                     </vs-row>
                   </vs-col>
                 </vs-row>
@@ -273,12 +273,13 @@ export default {
               label: "All Status"
             }],
             filterDateBy:"received",
-            searchBy:"inbound number",
+            searchBy:"inbound_number",
+            searchByNumeric: false,
             searchPlaceholder: "Search Inbound Number",
             searchParams: [
               {
                 label: "Inbound Number",
-                value: "inbound number",
+                value: "inbound_number",
               },
               {
                 label: "IM Numbers",
@@ -301,25 +302,22 @@ export default {
               {
                 label: "Quantity Bag",
                 value: "inbound_total_bag",
+                isNumeric: true,
 
               },
               {
                 label: "Quantity Koli",
                 value: "inbound_total_koli",
-
+                isNumeric: true,
               },
               {
                 label: "Weight",
                 value: "inbound_total_weight",
-
+                isNumeric: true,
               },
               {
                 label: "PIC",
                 value: "carrier_employee_name",
-              },
-              {
-                label: "Status",
-                value: "status",
               },
               {
                 label: "Received At",
@@ -369,6 +367,11 @@ export default {
           }
         }
       },
+      searchByNumeric: function(val, old) {
+        if (val !== old) {
+          this.clearSearch()
+        }
+      }
     },
     methods: {
         refresh(){
@@ -456,10 +459,11 @@ export default {
           } 
           
         },
-      updateSearchBy(key, val) {
+      updateSearchBy(key, val, isNumeric) {
         val = val.replaceAll(" ", "_");
         this.searchBy = val;
         this.searchPlaceholder = key;
+        this.searchByNumeric = isNumeric;
       },
       updateFilterDateBy(key,val) {
         this.filterDateBy = val;
