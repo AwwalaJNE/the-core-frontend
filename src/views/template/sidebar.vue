@@ -176,7 +176,7 @@ export default {
               label: "Pickup Request",
               permission: "create-pickup",
               url: "/pickup/request",
-              icon: "",
+              icon: "bx bxs-checkbox",
               meta: {
                 resource_type: resourceLookup["PICKUP_REQUEST"].resource_type,
                 resource_code: resourceLookup["PICKUP_REQUEST"].resource_code,
@@ -187,7 +187,7 @@ export default {
               label: "Pickup Schedule",
               permission: "create-pickup-schedule",
               url: "/pickup/schedule",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-pickup-schedule",
               meta: {
                 resource_type: resourceLookup["PICKUP_SCHEDULE"].resource_type,
@@ -199,7 +199,7 @@ export default {
               label: "Pickup List",
               url: "/pickup/list",
               permission: "read-pickup",
-              icon: "",
+              icon: "bx bxs-checkbox",
               meta: {
                 resource_type: resourceLookup["PICKUP_LIST"].resource_type,
                 resource_code: resourceLookup["PICKUP_LIST"].resource_code,
@@ -216,7 +216,7 @@ export default {
             {
               label: "Inventory Item",
               url: "/inventory/item",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-bag",
               meta: {
                 resource_type: resourceLookup["INVENTORY_ITEM"].resource_type,
@@ -227,7 +227,7 @@ export default {
             {
               label: "Inventory Bag",
               url: "/inventory/bag",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-bag",
               meta: {
                 resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,
@@ -238,7 +238,7 @@ export default {
             {
               label: "Create Bag",
               url: "/inventory/bagging",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-bag",
               meta: {
                 resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
@@ -249,7 +249,7 @@ export default {
             {
               label: "Open Bag",
               url: "/inventory/unbagging",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-unbag",
               meta: {
                 resource_type: resourceLookup["UNBAGGING"].resource_type,
@@ -260,7 +260,7 @@ export default {
             {
               label: "Sorting Connote",
               url: "/sorting/connote",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-bag", // TODO: CHECK PERMISSION LATER
               meta: {
                 resource_type: resourceLookup["SORTING_CONNOTE"].resource_type,
@@ -271,7 +271,7 @@ export default {
             {
               label: "Sorting Bag",
               url: "/sorting/bag",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-bag", // TODO: CHECK PERMISSION LATER
               meta: {
                 resource_type: resourceLookup["SORTING_BAG"].resource_type,
@@ -289,7 +289,7 @@ export default {
             {
               label: "Transport Packing Kayu",
               url: "/transport/packingkayu",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-packing-kayu",
               meta: {
                 resource_type: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_type,
@@ -315,7 +315,7 @@ export default {
             {
               label: "Inventory Vehicle",
               url: "/transport/inventory-vehicle",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-inventory-vehicle",
               meta: {
                 resource_type: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_type,
@@ -326,7 +326,7 @@ export default {
             {
               label: "Surat Jalan",
               url: "/transport/manifest-jalan",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-manifest-delivery-order",
               meta: {
                 resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
@@ -337,7 +337,7 @@ export default {
             {
               label: "Surat Muatan",
               url: "/transport/manifest",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-manifest",
               meta: {
                 resource_type: resourceLookup["TRANSPORT_MANIFEST"].resource_type,
@@ -378,7 +378,7 @@ export default {
             {
               label: "Delivery Runsheet",
               url: "/delivery/runsheet",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-runsheet",
               meta: {
                 resource_type: resourceLookup["DELIVERY_RUNSHEET"].resource_type,
@@ -389,7 +389,7 @@ export default {
             {
               label: "Handover Runsheet",
               url: "/hrs",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-undelivery",
               meta: {
                 resource_type: resourceLookup["HANDOVER_RUNSHEET"].resource_type,
@@ -400,7 +400,7 @@ export default {
             {
               label: "HRS History",
               url: "/hrs-history",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-undelivery",
               meta: {
                 resource_type: resourceLookup["HANDOVER_RUNSHEET_HISTORY"].resource_type,
@@ -411,7 +411,7 @@ export default {
             {
               label: "Deposit COD",
               url: "/deposit-cod",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-cod",
               meta: {
                 resource_type: resourceLookup["DEPOSIT_COD"].resource_type,
@@ -422,7 +422,7 @@ export default {
             {
               label: "Deposit COD History",
               url: "/cod-history",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-cod",
               meta: {
                 resource_type: resourceLookup["DEPOSIT_COD_HISTORY"].resource_type,
@@ -440,7 +440,7 @@ export default {
             {
               label: "Invalid Receiving",
               url: "/audit/invalid-receiving",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-audit-receiving",
               meta: {
                 resource_type: resourceLookup["INVALID_RECEIVING"].resource_type,
@@ -451,7 +451,7 @@ export default {
             {
               label: "Invalid Opening Bag",
               url: "/audit/invalid-opening-bag",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-audit-opening-bag",
               meta: {
                 resource_type: resourceLookup["INVALID_OPENING_BAG"].resource_type,
@@ -469,7 +469,7 @@ export default {
             {
               label: "Connote Cancel",
               url: "/connote-adjustment/connote-cancel",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
               meta: {
                 resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_type,
@@ -480,7 +480,7 @@ export default {
             {
               label: "Connote Cancel History",
               url: "/connote-adjustment/connote-cancel-history",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
               meta: {
                 resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_type,
@@ -491,7 +491,7 @@ export default {
             {
               label: "Connote Forward",
               url: "/connote-adjustment/connote-forward",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
               meta: {
                 resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_type,
@@ -502,7 +502,7 @@ export default {
             {
               label: "Connote Return",
               url: "/connote-adjustment/connote-return",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
               meta: {
                 resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_type,
@@ -520,7 +520,7 @@ export default {
             {
               label: "Receiving & Inventory",
               url: "/tracing-outstanding",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
               meta: {
                 resource_type: resourceLookup["TRACING"].resource_type,
@@ -531,7 +531,7 @@ export default {
             {
               label: "Archive",
               url: "/tracing-history",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
               meta: {
                 resource_type: resourceLookup["TRACING_HISTORY"].resource_type,
@@ -549,7 +549,7 @@ export default {
             {
               label: "Packing List",
               url: "/report/packinglist",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-report-packing-list",
               meta: {
                 resource_type: resourceLookup["PACKINGLIST"].resource_type,
@@ -560,7 +560,7 @@ export default {
             {
               label: "Cashless",
               url: "/report/cashless",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-cashless",
               meta: {
                 resource_type: resourceLookup["CASHLESS"].resource_type,
@@ -578,7 +578,7 @@ export default {
             {
               label: "Inventory Irreguralities",
               url: "/irreguralities/inventory",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_INVENTORY"].resource_type,
@@ -589,7 +589,7 @@ export default {
             {
               label: "Irreguralities - Entry Status",
               url: "/irreguralities/entry-status",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_type,
@@ -614,7 +614,7 @@ export default {
             {
               label: "Irreguralities - Hold",
               url: "/irreguralities/hold",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_HOLD"].resource_type,
@@ -625,7 +625,7 @@ export default {
             {
               label: "Irreguralities - Failed",
               url: "/irreguralities/failed",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_FAILED"].resource_type,
@@ -643,7 +643,7 @@ export default {
             {
               label: "Settings",
               url: "/costing/list",
-              icon: "",
+              icon: "bx bxs-checkbox",
               meta: {
                 resource_type: resourceLookup["COST_TO_COST_SETTING"].resource_type,
                 resource_code: resourceLookup["COST_TO_COST_SETTING"].resource_code,
@@ -653,7 +653,7 @@ export default {
             {
               label: "Report",
               url: "/costing/report",
-              icon: "",
+              icon: "bx bxs-checkbox",
               meta: {
                 resource_type: resourceLookup["COST_TO_COST_REPORT"].resource_type,
                 resource_code: resourceLookup["COST_TO_COST_REPORT"].resource_code,
@@ -675,7 +675,7 @@ export default {
             {
               label: "Connote",
               url: "/helpdesk/connote",
-              icon: "",
+              icon: "bx bxs-checkbox",
               rolePermission: "HELPDESK",
               meta: {
                 resource_type: resourceLookup["HELPDESK_CONNOTE"].resource_type,
@@ -686,7 +686,7 @@ export default {
             {
               label: "Bag",
               url: "/helpdesk/bag",
-              icon: "",
+              icon: "bx bxs-checkbox",
               rolePermission: "HELPDESK",
               meta: {
                 resource_type: resourceLookup["HELPDESK_BAG"].resource_type,
@@ -697,7 +697,7 @@ export default {
             {
               label: "Surat Jalan",
               url: "/helpdesk/surat-jalan",
-              icon: "",
+              icon: "bx bxs-checkbox",
               rolePermission: "HELPDESK",
               meta: {
                 resource_type: resourceLookup["HELPDESK_SURAT_JALAN"].resource_type,
@@ -708,7 +708,7 @@ export default {
             {
               label: "Surat Muatan",
               url: "/helpdesk/surat-muatan",
-              icon: "",
+              icon: "bx bxs-checkbox",
               rolePermission: "HELPDESK",
               meta: {
                 resource_type: resourceLookup["HELPDESK_SURAT_MUATAN"].resource_type,
@@ -719,7 +719,7 @@ export default {
             {
               label: "Runsheet",
               url: "/helpdesk/runsheet",
-              icon: "",
+              icon: "bx bxs-checkbox",
               rolePermission: "HELPDESK",
               meta: {
                 resource_type: resourceLookup["HELPDESK_RUNSHEET"].resource_type,
@@ -737,7 +737,7 @@ export default {
             {
               label: "Settings Tariff",
               url: "/settings/tariff",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-tariff",
               meta: {
                 resource_type: resourceLookup["SETTINGS_TARIFF"].resource_type,
@@ -748,7 +748,7 @@ export default {
             {
               label: "Settings Surcharge",
               url: "/settings/surcharge",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-surcharge",
               meta: {
                 resource_type: resourceLookup["SETTINGS_SURCHARGE"].resource_type,
@@ -759,7 +759,7 @@ export default {
             {
               label: "Settings Geolocation",
               url: "/settings/geolocation",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-geolocation-country",
               meta: {
                 resource_type: resourceLookup["SETTINGS_GEOLOCATION"].resource_type,
@@ -770,7 +770,7 @@ export default {
             {
               label: "Settings Nodes",
               url: "/settings/nodes",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-node",
               meta: {
                 resource_type: resourceLookup["SETTINGS_NODES"].resource_type,
@@ -781,7 +781,7 @@ export default {
             {
               label: "Settings Vehicles",
               url: "/settings/vehicles",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-vehicle",
               meta: {
                 resource_type: resourceLookup["SETTINGS_VEHICLES"].resource_type,
@@ -792,7 +792,7 @@ export default {
             {
               label: "Settings Users",
               url: "/settings/users",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-user",
               meta: {
                 resource_type: resourceLookup["SETTINGS_USERS"].resource_type,
@@ -803,7 +803,7 @@ export default {
             {
               label: "Settings Employee",
               url: "/settings/employee",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-employee",
               meta: {
                 resource_type: resourceLookup["SETTINGS_EMPLOYEE"].resource_type,
@@ -814,7 +814,7 @@ export default {
             {
               label: "Settings Customer",
               url: "/settings/customer",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-customer",
               meta: {
                 resource_type: resourceLookup["SETTINGS_CUSTOMER"].resource_type,
@@ -825,7 +825,7 @@ export default {
             {
               label: "Settings Exchange Rate",
               url: "/settings/exchangerate",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-customer",
               meta: {
                 resource_type: resourceLookup["SETTING_EXCHANGE_RATE"].resource_type,
@@ -836,7 +836,7 @@ export default {
             {
               label: "Settings Access Token",
               url: "/settings/access-token",
-              icon: "",
+              icon: "bx bxs-checkbox",
               showAll: true,
               meta: {
                 resource_type: resourceLookup["SETTING_ACCESS_TOKEN"].resource_type,
@@ -847,7 +847,7 @@ export default {
             {
               label: "Settings SLA",
               url: "/settings/sla",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-sla",
               meta: {
                 resource_type: resourceLookup["SETTINGS_SLA"].resource_type,
@@ -858,7 +858,7 @@ export default {
             {
               label: "Settings Warning Runsheet",
               url: "/settings/configuration-warning-runsheet",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-warning-koli-setting",
               meta: {
                 resource_type: resourceLookup["SETTINGS_CONFIGURATION_WARNING_RUNSHEET"].resource_type,
@@ -869,7 +869,7 @@ export default {
             {
               label: "Settings Facility Code",
               url: "/settings/facility-code",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-facility-code",
               meta: {
                 resource_type: resourceLookup["SETTINGS_FACILITY_CODE"].resource_type,
@@ -880,7 +880,7 @@ export default {
             {
               label: "Settings KPI",
               url: "/settings/kpi",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "", // TODO: Change after permission ready
               meta: {
                 resource_type: resourceLookup["SETTINGS_KPI"].resource_type,
@@ -891,7 +891,7 @@ export default {
             {
               label: "Settings Bag",
               url: "/settings/bag",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "", // TODO: Change after permission ready
               meta: {
                 resource_type: resourceLookup["SETTINGS_BAG"].resource_type,
@@ -902,7 +902,7 @@ export default {
             {
               label: "Settings Destination",
               url: "/settings/destination",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "", // TODO: Change after permission ready
               meta: {
                 resource_type: resourceLookup["DESTINATION"].resource_type,
@@ -913,7 +913,7 @@ export default {
             {
               label: "Settings Runsheet",
               url: "/settings/runsheet",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "", // TODO: Change after permission ready
               meta: {
                 resource_type: resourceLookup["SETTINGS_RUNSHEET"].resource_type,
@@ -931,7 +931,7 @@ export default {
             {
               label: "Resync Runsheet",
               url: "/resync/runsheet",
-              icon: "",
+              icon: "bx bxs-checkbox",
               meta: {
                 resource_type: resourceLookup["RESYNC_RUNSHEET"].resource_type,
                 resource_code: resourceLookup["RESYNC_RUNSHEET"].resource_code,
