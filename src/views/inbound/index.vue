@@ -321,12 +321,12 @@ export default {
 
               },
               {
-                label: "Bag",
+                label: "Quantity Bag",
                 value: "inbound_total_bag",
 
               },
               {
-                label: "Koli",
+                label: "Quantity Koli",
                 value: "inbound_total_koli",
 
               },
