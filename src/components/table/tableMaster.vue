@@ -1151,9 +1151,9 @@
       </template>
     </vs-table>
 
-    <vs-row class="mt-2" justify="flex-end" align="center">
+    <vs-row class="mt-2" justify="space-between" align="center">
       <template v-if="hasPagination == true">
-        <vs-col w="4">
+        <vs-col w="2">
           <vs-button
             @click="handleExportCSV"
             >
