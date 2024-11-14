@@ -38,6 +38,7 @@ export default {
           default: () => ['inbound_number'],
         },
         filterDateBy: String,
+        isReset: Boolean
     },
     components: {
         "table-master" : TableMaster
@@ -142,7 +143,7 @@ export default {
         query: function(val, old) {
             if(val !== undefined) {
                 this.tempSearch = val
-                if(this.tempSearch !== old) {
+                if(this.tempSearch !== old && !this.isReset) {
                     this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
                 }
             }
@@ -150,7 +151,7 @@ export default {
         nodeType: function(val, old) {
           if(val !== undefined) {
             this.node_type = val
-            if(this.node_type !== old) {
+            if(this.node_type !== old && !this.isReset) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
             }
           }
@@ -158,7 +159,7 @@ export default {
         received: function(val, old) {
           if(val !== undefined) {
             this.statusReceived = val
-            if(this.statusReceived !== old) {
+            if(this.statusReceived !== old && !this.isReset) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.node_type, val, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
             }
           }
@@ -166,7 +167,7 @@ export default {
         origin: function(val, old) {
           if(val !== undefined) {
             this.nodeOrigin = val
-            if(this.nodeOrigin !== old) {
+            if(this.nodeOrigin !== old && !this.isReset) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
             }
           }
@@ -174,7 +175,7 @@ export default {
         prealert: function(val, old) {
           if(val !== undefined) {
             this.prealertFilter = val
-            if(this.prealertFilter !== old) {
+            if(this.prealertFilter !== old && !this.isReset) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.node_type, this.statusReceived,val, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
             }
           }
@@ -182,24 +183,33 @@ export default {
         dateFilter: function(val, old) {
           if(val !== undefined) {
             this.tempDate = val
-            if(this.tempDate !== old ) {
+            if(this.tempDate !== old) {
               this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
               this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
             }
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
+            if (!this.isReset) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, this.filterDateBy)
+            }
           }
         },
         searchBy: function(val, old) {
             if(val !== undefined) {
-                if(val !== old) {
+                if(val !== old && !this.isReset) {
                     this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, val, this.filterDateBy)
                 }
             }
         },
         filterDateBy: function(val, old) {
             if(val !== undefined) {
-                if(val !== old) {
+                if(val !== old && !this.isReset) {
                     this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.searchBy, val)
+                }
+            }
+        },
+        isReset: function(val, old) {
+            if(val !== undefined) {
+                if(val !== old && !val) {
+                    this.refresh()
                 }
             }
         },

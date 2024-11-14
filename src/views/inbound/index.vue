@@ -151,8 +151,17 @@
                   <vs-col xs="12" sm="4" lg="2">
                     <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
                   </vs-col>
-                  <vs-col xs="12" sm="4" lg="4">
-                    <daterange-filter @searchDate="searchDate" size="small" />
+                  <vs-col xs="12" sm="4" lg="3">
+                    <daterange-filter :ref="'dateFilter'" @searchDate="searchDate" size="small" />
+                  </vs-col>
+                  <vs-col xs="12" sm="8" lg="2" style="display: flex; justify-content: end;">
+                    <vs-button
+                        border
+                        style="margin: 0;"
+                        @click="resetFilters"
+                        :class="'span-button'"
+                        > Reset Filters
+                    </vs-button>
                   </vs-col>
                 </vs-row>                
               </div>
@@ -168,6 +177,7 @@
                           :hasLinkedItem="hasLinkedItems"
                           :filterDateBy="filterDateBy"
                           :dateFilter="tempDate"
+                          :isReset="reset"
                           :searchBy="searchBy"
                         />
                     </transition>
@@ -341,7 +351,8 @@ export default {
                 label: 'Departed Time',
                 value: 'departed'
               }
-            ]
+            ],
+            reset: false,
         }
     },
     computed: {
@@ -381,12 +392,14 @@ export default {
             this.tempSearch = val
         },
         searchDate (val) {
-          this.tempDate = val
+            this.tempDate = val
         },
         clearSearch() {
             this.$refs.searchInput.clear()
         },
-
+        clearDate() {
+            this.$refs.dateFilter.clear()
+        },
         openDialog(){
             this.$router.push('/inbound/prealert/scan')
             this.setRoutePageHistory(this.$route.meta, false);
@@ -468,7 +481,21 @@ export default {
       updateFilterDateBy(key,val) {
         this.filterDateBy = val;
       },
-
+      resetFilters() {
+        this.reset = true
+        this.searchBy = "inbound_number"
+        this.searchPlaceholder = "Search Inbound Number"
+        this.clearSearch()
+        this.filterDateBy = "received"
+        this.clearDate()
+        this.node_request = ""
+        this.node_origin = ""
+        this.value = "-"
+        this.values = "-"
+        this.$nextTick(() => {
+          this.reset = false
+        });
+      },
     },
 
     mounted() {
@@ -477,6 +504,18 @@ export default {
     }
 }
 </script>
+<style scoped>
+  .span-button.vs-button--border:before, .span-button.vs-button--border:hover:before {
+    border: 0;
+  }
+  .span-button:hover {
+    text-decoration: underline;
+  }
+  .span-button:focus {
+    background: transparent;
+    color: rgb(25, 91, 255);
+  }
+</style>
 <style lang="scss">
   .mb-15{
    margin-bottom: 1.5em;
