@@ -1,84 +1,79 @@
 <template>
-    
-        <header class="header shadow">
-            <div class="container">
-                <vs-row justify="space-between">
-                    <vs-col xs="12" sm="12" lg="2">
-                        <vs-row>
-                            <vs-col xs="3" sm="3" lg="3">
-                                <vs-button @click="clickProps" size="l" :active="true" border icon>
-                                    <i class='bx bx-menu'></i>
-                                </vs-button>
-                                <!-- <div class="burger_custom" @click="clickProps"><i class='bx bx-menu'></i></div> -->
-                            </vs-col>
-                            <vs-col xs="3" sm="3" lg="3">
-                                <Logo />
-                            </vs-col>
-                        </vs-row>
+    <header class="header shadow">
+        <vs-row justify="space-between">
+            <vs-col xs="12" sm="12" lg="2">
+                <vs-row>
+                    <vs-col xs="3" sm="3" lg="3">
+                        <vs-button @click="clickProps" size="l" :active="true" border icon>
+                            <i class='bx bx-menu'></i>
+                        </vs-button>
                     </vs-col>
-                    <vs-col xs="12" sm="12" lg="8">
-                        <vs-row justify="flex-end">
-                            <vs-col xs="10" sm="10" lg="4">
-                                <template v-if="datanode.length > 0">
-                                    <selector 
-                                    ref="node_selector"
-                                    :valueData="datanode"
-                                    :selectedValue="selectedNode"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    :tabindex="-1"
-                                    @updateValue="updateValue" />
-                                </template>
-                            </vs-col>
-                            <vs-col xs="1" sm="1" lg="1">
-                                <vs-avatar class="cus_search" @click="openDialog">
-                                    <i class='bx bx-search'></i>
-                                </vs-avatar>
-                                <!--Dialog Search General-->
-                                <search-general
-                                    :active="dialogSearchGeneral"
-                                    :closeDialog="closeDialogSearchGeneral"
-                                    title=""
-                                />
-                            </vs-col>
-                            <vs-col xs="1" sm="1" lg="1">                            
-                                <vs-tooltip bottom shadow interactivity not-hover v-model="activeTooltip1">
-                                    <vs-avatar class="cus_avatar" @click="activeTooltip1=!activeTooltip1">
-                                        <i class='bx bx-user'></i>
-                                    </vs-avatar>
-                                    <template #tooltip>
-                                    <div class="content-tooltip">
-                                        <div class="body">
-                                        <vs-avatar circle size="60">
-                                            <i class='bx bx-user'></i>
-                                        </vs-avatar> 
-                                        <div class="text">
-                                            {{userAuthFullName}}
-                                            <span>
-                                            {{userAuthLoginName}}
-                                            </span>
-                                        </div>
-                                        </div>
-                                        <footer>
-                                        <vs-button circle @click="goToProfile">
-                                            Edit Profile
-                                        </vs-button>
-                                        <vs-button circle @click="logout"  danger>
-                                            Logout
-                                        </vs-button>
-                                        </footer>
-                                    </div>
-                                    </template>
-                                </vs-tooltip>
-
-
-                            </vs-col>
-                        </vs-row>
+                    <vs-col xs="3" sm="3" lg="3">
+                        <Logo />
                     </vs-col>
                 </vs-row>
-            </div>
-        </header>
-    
+            </vs-col>
+            <vs-col xs="12" sm="12" lg="8">
+                <vs-row justify="flex-end">
+                    <vs-col xs="10" sm="10" lg="4">
+                        <template v-if="datanode.length > 0">
+                            <selector 
+                            ref="node_selector"
+                            :valueData="datanode"
+                            :selectedValue="selectedNode"
+                            :isMultiple="false"
+                            :border="true"
+                            :tabindex="-1"
+                            @updateValue="updateValue" />
+                        </template>
+                    </vs-col>
+                    <vs-col xs="1" sm="1" lg="1">
+                        <vs-avatar class="cus_search" @click="openDialog">
+                            <i class='bx bx-search'></i>
+                        </vs-avatar>
+                        <!--Dialog Search General-->
+                        <search-general
+                            :active="dialogSearchGeneral"
+                            :closeDialog="closeDialogSearchGeneral"
+                            title=""
+                        />
+                    </vs-col>
+                    <vs-col xs="1" sm="1" lg="1">                            
+                        <vs-tooltip bottom shadow interactivity not-hover v-model="activeTooltip1">
+                            <vs-avatar class="cus_avatar" @click="activeTooltip1=!activeTooltip1">
+                                <i class='bx bx-user'></i>
+                            </vs-avatar>
+                            <template #tooltip>
+                            <div class="content-tooltip">
+                                <div class="body">
+                                <vs-avatar circle size="60">
+                                    <i class='bx bx-user'></i>
+                                </vs-avatar> 
+                                <div class="text">
+                                    {{userAuthFullName}}
+                                    <span>
+                                    {{userAuthLoginName}}
+                                    </span>
+                                </div>
+                                </div>
+                                <footer>
+                                <vs-button circle @click="goToProfile">
+                                    Edit Profile
+                                </vs-button>
+                                <vs-button circle @click="logout"  danger>
+                                    Logout
+                                </vs-button>
+                                </footer>
+                            </div>
+                            </template>
+                        </vs-tooltip>
+
+
+                    </vs-col>
+                </vs-row>
+            </vs-col>
+        </vs-row>
+    </header>
 </template>
 <script>
 import axios from "axios";
@@ -272,7 +267,7 @@ export default {
         width: 100%;
         left: 0;
         top: 0;
-        z-index: 1000;
+        z-index: 100000;
         min-height: 1.5em;
         padding: .5em 0;
         background-color: $bgWhite;

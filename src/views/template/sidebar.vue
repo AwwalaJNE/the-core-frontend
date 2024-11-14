@@ -1,17 +1,11 @@
-<!-- eslint-disable vue/max-attributes-per-line -->
 <template>
-  <div class="hidden">
     <vs-sidebar
-      v-model="activeItem"
-      absolute
-      :open="isExpand"
-      @update:open="actionSidebar"
-      @input="redirect"
+      v-model="active"
+      open
+      :reduce="isExpand"
     >
       <template #logo>
-        <div class="box-logo">
-          <Logo />
-        </div>
+        <Logo />
       </template>
 
       <template v-for="(item, key) in getMenuWithPermissions()">
@@ -27,14 +21,6 @@
             </template>
 
             <template v-for="(child, i) in item.children">
-              <!-- <router-link :to="child.url" :key="i">
-                      <vs-sidebar-item :id="child.label.trim()">
-                        <template #icon>
-                          <i :class="`bx ${child.icon}`"></i>
-                        </template>
-                        {{child.label}}
-                      </vs-sidebar-item>
-                    </router-link> -->
                 <a 
                   :key="i"
                   :href="child.url" 
@@ -53,13 +39,6 @@
                     <p>{{ child.label }}</p>
                   </vs-sidebar-item>
                 </a>
-              
-              <!-- <vs-sidebar-item :id="child.label.trim()" :key="i" @input="redirect(child.url)">
-                        <template #icon>
-                          <i :class="`bx ${child.icon}`"></i>
-                        </template>
-                        {{child.label}}
-                    </vs-sidebar-item> -->
             </template>
           </vs-sidebar-group>
         </template>
@@ -86,19 +65,17 @@
         </template>
       </template>
     </vs-sidebar>
-  </div>
 </template>
 
 <script>
-import Logo from "../../components/logo/logo.vue";
-// eslint-disable-next-line import/extensions
 import master from "@/mixins/master";
+
+import Logo from "../../components/logo/logo.vue";
 import { resourceLookup } from '@/constants'; 
 
 export default {
   name: "Sidebar",
   components: {
-    // eslint-disable-next-line object-shorthand
     Logo: Logo,
   },
   mixins: [master],
@@ -1000,7 +977,6 @@ export default {
     };
   },
   watch: {
-    // eslint-disable-next-line object-shorthand, space-before-function-paren
     expand: function(val) {
       if (this.isExpand === false && val === false) {
         this.isExpand = true;
@@ -1028,7 +1004,6 @@ export default {
     },
     redirect(val) {
       this.isExpand = false;
-      // this.$router.push(`${val}`)
     },
     listenNodeType() {
       this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
@@ -1042,7 +1017,6 @@ export default {
       this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
     },
     customFilter() {
-      // eslint-disable-next-line default-case
       switch (this.nodeTypeCode) {
         case "SP":
           this.menus.push({

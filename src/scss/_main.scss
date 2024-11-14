@@ -1,9 +1,14 @@
+:root {
+    --sidebar-opened-width: 260px;
+    --sidebar-close-width: 50px;
+    --sidebar-transition: 0.3s ease-in-out all;
+}
+
 html,body{
     position: relative;
     width: 100%;
     padding: 0;
     margin: 0;
-    overflow-x: hidden;
 }
 .skip_pointer {
     // pointer-events: none; 
@@ -23,17 +28,24 @@ a{
         color: inherit;
     }
 }
-.main-container{
+.main-container-opened{
     position: relative;
-    width: 100%;
     min-height: 100vh;
+    margin-left: var(--sidebar-opened-width);
+    width: calc(100% - var(--sidebar-opened-width));
     background-color: $bgGrey;
-    padding-bottom: 2em;
+    transition: margin-left 0.3s ease, width 0.3s ease;
 }
-.container{
+.main-container-closed{
     position: relative;
-    width: 100%;
-    padding: 0 2em;
+    min-height: 100vh;
+    margin-left: var(--sidebar-close-width);
+    width: calc(100% - var(--sidebar-close-width));
+    background-color: $bgGrey;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+.container {
+    padding: 2em;
 }
 .box{
     position: relative;
