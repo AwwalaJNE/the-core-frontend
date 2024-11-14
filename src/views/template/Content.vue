@@ -2,7 +2,7 @@
     <div class="Content">
         <MainHeader :clickProps="sidabarAction" />
 
-        <Sidebar :expand="active" :actionSidebar="sidabarAction" />
+        <Sidebar :expand="active" />
         <div :class="active ? 'main-container-closed' : 'main-container-opened'">
             <div class="container">
                 <router-view></router-view>

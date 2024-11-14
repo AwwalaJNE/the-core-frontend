@@ -1,6 +1,6 @@
 <template>
     <vs-sidebar
-      v-model="active"
+      v-model="activeItem"
       open
       :reduce="isExpand"
     >
@@ -81,7 +81,6 @@ export default {
   mixins: [master],
   props: {
     expand: Boolean,
-    actionSidebar: Function,
   },
   data() {
     return {
