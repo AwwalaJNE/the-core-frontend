@@ -26,82 +26,63 @@
         <section class="nodes">
             <div class="box view">
               <div class="nav-box">
-                <vs-row>
-                  <vs-col xs="12" sm="2" lg="2">
-                    <template v-if="DataNode.length > 1">
-                      <vs-select
-                          class="m-select"
-                          filter
-                          :multiple="false"
-                          autocomplete="off"
-                          
-                          v-model="node_request"
-                          :border="true"
-                          @change="updateNode"
-                      >
+                <vs-row justify="space-between">
+                  <vs-col xs="12" sm="6" lg="6" style="padding: 0;">
+                    <vs-row>
+                      <vs-col xs="12" sm="6" lg="4">
                         <template v-if="DataNode.length > 1">
-                          <vs-option
-                              v-for="(item,key) in DataNode"
-                              :key="key"
-                              :label="item.label"
-                              :value="item.value">
-                            {{item.label}}
-                          </vs-option>
+                          <vs-select
+                              class="m-select"
+                              filter
+                              :multiple="false"
+                              autocomplete="off"
+                              
+                              v-model="node_request"
+                              :border="true"
+                              @change="updateNode"
+                          >
+                            <template v-if="DataNode.length > 1">
+                              <vs-option
+                                  v-for="(item,key) in DataNode"
+                                  :key="key"
+                                  :label="item.label"
+                                  :value="item.value">
+                                {{item.label}}
+                              </vs-option>
+                            </template>
+
+                          </vs-select>
+
                         </template>
-
-                      </vs-select>
-
-                    </template>
-                  </vs-col>
-                  <vs-col xs="12" sm="3" lg="3">
-                    <template v-if="nodeOrigin.length > 0">
-                      <vs-select
-                          class="m-select"
-                          filter
-                          :multiple="false"
-                          placeholder="Origin"
-                          v-model="node_origin"
-                          :border="false"
-                          @change="updateNode"
-                      >
+                      </vs-col>
+                      <vs-col xs="12" sm="6" lg="6">
                         <template v-if="nodeOrigin.length > 0">
-                          <vs-option
-                              v-for="(item,key) in nodeOrigin"
-                              :key="key"
-                              :label="item.label"
-                              :value="item.value">
-                            {{item.label}}
-                          </vs-option>
+                          <vs-select
+                              class="m-select"
+                              filter
+                              :multiple="false"
+                              placeholder="Origin"
+                              v-model="node_origin"
+                              :border="false"
+                              @change="updateNode"
+                          >
+                            <template v-if="nodeOrigin.length > 0">
+                              <vs-option
+                                  v-for="(item,key) in nodeOrigin"
+                                  :key="key"
+                                  :label="item.label"
+                                  :value="item.value">
+                                {{item.label}}
+                              </vs-option>
+                            </template>
+
+                          </vs-select>
+
                         </template>
-
-                      </vs-select>
-
-                    </template>
+                      </vs-col>
+                    </vs-row>
                   </vs-col>
-                  <vs-col xs="12" sm="3" lg="3">
-                    <template v-if="nodeDestination.length > 0">
-                      <vs-select
-                          class="m-select"
-                          filter
-                          placeholder="Destination"
-                          v-model="node_destination"
-                          :border="false"
-                      >
-                        <template v-if="nodeDestination.length > 0">
-                          <vs-option
-                              v-for="(items,keydes) in nodeDestination"
-                              :key="keydes"
-                              :label="items.label"
-                              :value="items.value">
-                            {{items.label}}
-                          </vs-option>
-                        </template>
-
-                      </vs-select>
-
-                    </template>
-                  </vs-col>
-                  <vs-col vs-col xs="6" sm="4" lg="4">
+                  <vs-col xs="12" sm="6" lg="6" style="padding: 0;">
                     <vs-row justify="end">
                       <vs-col xs="12" sm="4" lg="4">
                         <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
@@ -182,7 +163,6 @@
                           :nodeType="node_request" 
                           :received="value" 
                           :origin="node_origin" 
-                          :destination="node_destination" 
                           :query="tempSearch" 
                           :prealert="values" 
                           :hasLinkedItem="hasLinkedItems"
@@ -244,10 +224,8 @@ export default {
               }
             ],
             nodeOrigin:[],
-            nodeDestination:[],
             node_request:'',
             node_origin:'',
-            node_destination:'',
             DataArr: this.valueData ? this.valueData : [
               {
                 label: 'All Status',
@@ -460,29 +438,6 @@ export default {
                 this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err)
               })
         },
-        async getDataDestination() {
-          this.loading = true
-          await axios
-              .get(this.URL.node +
-                  `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&case=receiving_menu&s=`,
-                  this.Helper.header())
-              .then(res => {
-                if(res.data.data.length > 0) {
-                  res.data.data.map(item => {
-                    let obj = {}
-                    obj["label"] = item.node_name
-                    obj["value"] = Number(item.node_id)
-
-                    this.nodeDestination.push(obj)
-                  })
-                }
-
-                this.loading = false
-              }).catch(err => {
-                this.loading = false
-                this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err)
-              })
-        },
         updateNode(val){
 
         },
@@ -515,7 +470,6 @@ export default {
     mounted() {
         this.getDataNodeType()
         this.getDataOrigin()
-        this.getDataDestination()
     }
 }
 </script>
