@@ -418,7 +418,7 @@ export default {
             },
           ],
           placeholder: 'Masukkan Connote',
-          is_auto_open_bag: false,
+          is_auto_open_bag: true,
           disable_auto_open_bag: false,
       }
   },

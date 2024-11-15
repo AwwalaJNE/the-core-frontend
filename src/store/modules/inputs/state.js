@@ -4761,8 +4761,8 @@ export default {
       rule: "",
       typeInput: "Boolean",
       typeData: "Boolean",
-      valueData: false,
-      value: false
+      valueData: true,
+      value: true
     },
   }
 }
