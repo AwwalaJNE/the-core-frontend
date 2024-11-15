@@ -48,14 +48,65 @@
                         </vs-row>
                     </div>
                     <div class="box view">
-                        <vs-row justify="space-between" class="mt-2">
-                            <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
-                                <template>
-                                    <img class="logo" :src="require('../../../../assets/img/bagging-placeholder.png')" alt="jne" width="300" align="center">
-                                </template>
-                                <h3>Scan barcode connote untuk melakukan sorting</h3>
-                            </vs-col>
-                        </vs-row>
+                        <template v-if="type === 'initial'">
+                            <img class="logo" :src="require('../../../../assets/img/bagging-placeholder.png')" alt="jne" width="300" align="center">
+                            <h3>Scan barcode connote untuk melakukan sorting</h3>
+                        </template>
+                        <template v-else-if="type === 'success'">
+                            <div class="success-container">
+                                <vs-row class="header-row">
+                                    <vs-row>
+                                        <i class="bx bxs-check-circle"></i>
+                                    </vs-row>
+                                    <vs-row>
+                                        <label>CONNOTE NUMBER</label>
+                                    </vs-row>
+                                    <vs-row>
+                                        <h4>{{ sort_info.item_number }}</h4>
+                                    </vs-row>
+                                </vs-row>
+                                
+                                <vs-row class="details-row">
+                                    <vs-col xs="6" sm="6" lg="6">
+                                        <label>NODE DESTINATION</label>
+                                        <h4>{{ sort_info.information.destination }}</h4>
+                                    </vs-col>
+                                    <vs-col xs="6" sm="6" lg="6" class="details-row-left">
+                                        <label>ZIP CODE RECEIVER</label>
+                                        <h4>{{ sort_info.information.zip_code_receiver }}</h4>
+                                    </vs-col>
+                                </vs-row>
+
+                                <vs-row class="details-row">
+                                    <vs-col xs="6" sm="6" lg="6">
+                                        <label>SLA REMAINS</label>
+                                        <h4>{{ this.convertMinutesToTimeFormat(sort_info.information.sla_minutes_remains) }}</h4>
+                                    </vs-col>
+                                    <vs-col xs="6" sm="6" lg="6" class="details-row-left">
+                                        <label>SLA DATE</label>
+                                        <h4>{{ this.formatDateTime(sort_info.information.sla_date) }}</h4>
+                                    </vs-col>
+                                </vs-row>
+                            </div>
+                        </template>
+                        <template v-else-if="type === 'error'">
+                            <div class="error-container">
+                                <vs-row class="header-row">
+                                    <vs-row>
+                                        <i class='bx bxs-x-circle'></i>
+                                    </vs-row>
+                                    <vs-row>
+                                        <label>CONNOTE NUMBER</label>
+                                    </vs-row>
+                                    <vs-row>
+                                        <h4>{{ sort_info.item_number }}</h4>
+                                    </vs-row>
+                                </vs-row>
+                                <vs-row class="details-error-row">
+                                    <p>{{ sort_info.message }}</p>
+                                </vs-row>
+                            </div>
+                        </template>
                     </div>
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="6">
@@ -128,6 +179,14 @@ export default {
         "select-search-by": SelectSearchBy,
         "table-master" : TableMaster,
     },
+    watch: {
+        item_number(newValue) {
+            if (!newValue) {
+                this.type = 'initial';
+                this.sort_info = {};
+            }
+        }
+    },
     data() {
         return {
             title: 'Sorting Connote',
@@ -184,6 +243,8 @@ export default {
                     value: "destination"
                 }
             ],
+            type: 'initial',
+            sort_info: {},
         }
     },
     computed: {
@@ -212,6 +273,8 @@ export default {
             this.form = {};
             this.item_number = '';
             this.destination = '';
+            this.type = 'initial';
+            this.sort_info = {};
         },
         async processSorting() {
             if (this.destination && this.item_number) {
@@ -224,12 +287,19 @@ export default {
                 try {
                     const res = await axios.post(`${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
 
+                    this.sort_info = res.data.data;
+                    this.type = 'success';
+
                     this.openNotification('success', null, "Success", res?.data?.message || "Success");
                 } catch (err) {
+                    this.sort_info = err.response.data;
+                    this.type = 'error';
+                    
                     this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
                 } finally {
                     this.loading = false;
-                    this.handleClearForm();
+                    // TODO: Use Later
+                    // this.handleClearForm();
                 }
             } else {
                 this.openNotification("danger", '', "Failed", 'Destination is mandatory');
@@ -285,3 +355,55 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.success-container {
+    text-align: center;
+}
+
+.header-row {
+    padding: 1rem;
+
+    .vs-row {
+        justify-content: center !important;
+    }
+
+    i {
+        color: green;
+        font-size: 4rem;
+        margin: 10px;
+    }    
+}
+
+.details-row {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    margin-top: 1rem;
+}
+
+.details-row-left {
+    text-align: right;
+}
+ 
+.error-container {
+    padding: 1rem;
+
+    .vs-row {
+        justify-content: center !important;
+    }
+
+    i {
+        color: red;
+        font-size: 4rem;
+        margin: 10px;
+    }    
+}
+
+.details-error-row {
+    font-size: 20px;
+    font-weight: bold;
+    color:#2C3E50;
+}
+
+</style>
