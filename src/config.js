@@ -334,4 +334,7 @@ export default {
 
     // Sorting Validation Zip Code Bag
     sorting_zip_code_validation_bag: api + 'validation/bag-destination',
+
+    // Sorting Item History
+    sorting_item_history: api + 'sorting-item-history '
 }
