@@ -41,22 +41,24 @@
           </vs-sidebar-group>
         </template>
         <template v-else>
-          <router-link
-            :key="key"
-            :to="item.url"
-            :id="item.label.trim()" 
-            @click.native="setActive(item)" 
-          >
-            <vs-sidebar-item
-              :id="item.label.trim()"
-              :class="{ active: activeItem === item.url }"
+          <div :key="key" style="width: 100%;">
+            <router-link
+              :key="key"
+              :to="item.url"
+              :id="item.label.trim()" 
+              @click.native="setActive(item)" 
             >
-              <template #icon>
-                <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
-              </template>
-              <p>{{ item.label }}</p>
-            </vs-sidebar-item>
-          </router-link>
+              <vs-sidebar-item
+                :id="item.label.trim()"
+                :class="{ active: activeItem === item.url }"
+              >
+                <template #icon>
+                  <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
+                </template>
+                <p>{{ item.label }}</p>
+              </vs-sidebar-item>
+            </router-link>
+          </div>
         </template>
       </template>
     </vs-sidebar>
@@ -993,9 +995,11 @@ export default {
   },
   methods: {
     setActive(item) {
-      this.activeItem = item.url;
-      this.$router.push(item.url);
-      this.setRoutePageHistory(item.meta, false);
+      if (this.$route.path !== item.url) {
+        this.activeItem = item.url;
+        this.$router.push(item.url);
+        this.setRoutePageHistory(item.meta, false);
+      }
     },
     listenNodeType() {
       this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
