@@ -135,20 +135,6 @@ export default {
             this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE", val.reference_value);
             this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ValueData", val.reference_value);
             this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
-
-
-            let arr_destination_node_code = []
-            let arr = []
-            val.node.map(item => {
-                let obj = {}
-                obj["label"] = item.node_name
-                obj["value"] = item.destination_node_code
-
-                arr.push(obj)
-                arr_destination_node_code.push(item.destination_node_code)
-            })
-            this.$store.dispatch("SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE", arr_destination_node_code)
-            this.$store.dispatch("SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE_ArrData", arr)
         },
         formData(form){
             const { id, ...formWithoutId } = form;

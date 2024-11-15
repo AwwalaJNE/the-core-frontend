@@ -1,12 +1,10 @@
 <template>
     <footer class="footer">
-        <div class="container">
-            <vs-row justify="space-between">
-                <p>Core JNE</p>
-                <p>&copy; 2024 JNE. All rights reserved</p>
-                <p>v.{{ version }}</p>
-            </vs-row>
-        </div>
+        <vs-row justify="space-between" style="padding: 0 2em;">
+            <p>Core JNE</p>
+            <p>&copy; 2024 JNE. All rights reserved</p>
+            <p>v.{{ version }}</p>
+        </vs-row>
     </footer>
 </template>
 <script>

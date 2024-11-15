@@ -264,6 +264,18 @@ export default {
         "message-list": MessageList,
         "dialog-messages": DialogMessages,
     },
+    computed: {
+        is_history() {
+            return this.$route.fullPath.includes('history');
+        }
+    },
+    watch: {
+        is_history(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.refresh();
+            }
+        }
+    },
     data() {
         return {
             koli_number: this.$route.params.id,
@@ -385,8 +397,7 @@ export default {
                     label: 'Created Date',
                     value: 'create'
                 },
-            ],
-            is_history: this.$route.fullPath.includes('history')
+            ]
         }
     },
     methods: {
