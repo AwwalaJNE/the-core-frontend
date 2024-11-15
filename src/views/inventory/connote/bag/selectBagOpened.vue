@@ -2,37 +2,36 @@
   <inputan :name="name" :rules="rules">
     <template v-slot:inputan="props">
       <vs-select
-          class="m-select"
-          filter
-          :multiple="listenIsMultiple"
-          :placeholder="name"
-          :label="name"
-          v-model="value"
-          :border="border"
-          @change="updateBagStatus"
-          :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+        class="m-select"
+        filter
+        :multiple="listenIsMultiple"
+        :placeholder="name"
+        :label="name"
+        v-model="value"
+        :border="border"
+        @change="updateBagStatus"
+        :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
       >
         <template v-if="DataArr.length > 0">
           <vs-option
-              v-for="(item,key) in DataArr"
-              :key="key"
-              :label="item.label"
-              :value="item.value">
-            {{item.label}}
+            v-for="(item, key) in DataArr"
+            :key="key"
+            :label="item.label"
+            :value="item.value"
+          >
+            {{ item.label }}
           </vs-option>
         </template>
-
       </vs-select>
     </template>
   </inputan>
-
 </template>
 <script>
-import Inputan from "@/components/input/inputan"
+import Inputan from "@/components/input/inputan";
 export default {
-  name:"All-Status",
+  name: "All-Status",
   components: {
-    "inputan": Inputan
+    inputan: Inputan,
   },
   props: {
     name: String,
@@ -41,70 +40,79 @@ export default {
     selectedValue: [Array, String, Number],
     formKey: String,
     isMultiple: Boolean,
-    border: Boolean
+    border: Boolean,
   },
   data() {
     return {
-      DataArr: this.valueData ? this.valueData : [
-        {
-          label: 'All Bag',
-          value: '-'
-        },
-        {
-          label: 'Opened Bag',
-          value: '1'
-        },
-        {
-          label: 'Unopened Bag',
-          value: '0'
-        }
-      ],
-      value: this.selectedValue ? this.selectedValue :"0",
-      arrValue: this.selectedValue ? this.selectedValue : [{
-        label: 'Unopened Bag',
-        value: '0'
-      }],
-    }
+      DataArr: this.valueData
+        ? this.valueData
+        : [
+            {
+              label: "All Bag",
+              value: "-",
+            },
+            {
+              label: "Partial Opened Bag",
+              value: "1",
+            },
+            {
+              label: "Fully Opened Bag",
+              value: "fullyOpened",
+            },
+            {
+              label: "Unopened Bag",
+              value: "0",
+            },
+          ],
+      value: this.selectedValue ? this.selectedValue : "0",
+      arrValue: this.selectedValue
+        ? this.selectedValue
+        : [
+            {
+              label: "Unopened Bag",
+              value: "0",
+            },
+          ],
+    };
   },
   computed: {
-    listenFormKey(){
-      return this.formKey || ''
+    listenFormKey() {
+      return this.formKey || "";
     },
-    listenIsMultiple(){
-      return this.isMultiple ? this.isMultiple : false
-    }
+    listenIsMultiple() {
+      return this.isMultiple ? this.isMultiple : false;
+    },
   },
   watch: {
-    valueData: function (val) {
+    valueData: function(val) {
       if (val != undefined) {
-        this.DataArr = val
+        this.DataArr = val;
       }
     },
-    selectedValue: function (val) {
+    selectedValue: function(val) {
       if (val != undefined) {
-        if(this.isMultiple == false) {
-          this.value = val
+        if (this.isMultiple == false) {
+          this.value = val;
         } else {
-          this.arrValue = val
+          this.arrValue = val;
         }
       }
     },
   },
   methods: {
-    updateBagStatus(val){
-      this.$emit("updateBagStatus", this.listenFormKey, val)
-    }
+    updateBagStatus(val) {
+      this.$emit("updateBagStatus", this.listenFormKey, val);
+    },
   },
-
-}
+};
 </script>
 <style lang="scss">
-.m-select{
-  &.vs-select-content{
+.m-select {
+  &.vs-select-content {
     max-width: unset;
     margin: 10px 0;
   }
-  .vs-select__label--label{
+  .vs-select__label--label {
     transform: translate(-3px, -28px) !important;
   }
   .vs-select.activeOptions .vs-select__input:focus ~ .vs-select__label--label {
