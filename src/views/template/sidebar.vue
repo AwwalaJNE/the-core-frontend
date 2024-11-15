@@ -25,7 +25,7 @@
                   :key="i"
                   :to="child.url"
                   :id="child.label.trim()" 
-                  @click="navigate(child)" 
+                  @click.native="setActive(child)" 
                 >
                   <vs-sidebar-item
                     :id="child.label.trim()"
@@ -45,7 +45,7 @@
             :key="key"
             :to="item.url"
             :id="item.label.trim()" 
-            @click="navigate(item)"
+            @click.native="setActive(item)" 
           >
             <vs-sidebar-item
               :id="item.label.trim()"
@@ -992,22 +992,12 @@ export default {
     this.customFilter();
   },
   methods: {
-    setActive(url) {
-      this.activeItem = url;
-      this.$router.push(url);
-    },
-    redirect(val) {
-      this.isExpand = false;
-    },
-    listenNodeType() {
-      this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
-    },
-    navigate(item) {
+    setActive(item) {
+      this.activeItem = item.url;
       this.$router.push(item.url);
-
       this.setRoutePageHistory(item.meta, false);
     },
-    loadPermission() {
+    listenNodeType() {
       this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
     },
     customFilter() {
