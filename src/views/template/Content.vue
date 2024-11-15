@@ -7,7 +7,7 @@
             <div class="container">
                 <router-view></router-view>
             </div>
-            <Footer />
+            <AppFooter />
         </div>
         
         <dialogUpdatePassword />
@@ -21,7 +21,7 @@ import dialogUpdatePassword from "@/components/dialog/dialogUpdatePassword.vue";
 export default {
     name: "Content",
     components: {
-        Footer: Footer,
+        AppFooter: Footer,
         MainHeader: Header,
         Sidebar: Sidebar,
         dialogUpdatePassword,
