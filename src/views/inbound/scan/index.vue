@@ -131,6 +131,7 @@ export default {
           this.getTableData() // trigger function refresh form dari luar component list
         },
         updateValue(){
+          this.item_no = this.item_no.replaceAll(/\s+/g, "");
           this.form.item_no = this.item_no
           this.processInbond();
           this.$refs.formInputInbound.$el.querySelector("input").focus();
