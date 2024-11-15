@@ -485,6 +485,16 @@ export default {
             }
             else {
                 this.is_penerusan = val.target.checked;
+                if (this.manifest_do_number) {
+                    const updateMasterForm = (key, value) => {
+                        if (this.manifest_do_number && this.master_form?.[key] !== value) {
+                            this.master_form = { ...this.master_form, [key]: value };
+                            this.updateSuratJalan();
+                        }
+                    };
+                    
+                    updateMasterForm("is_penerusan", this.is_penerusan);
+                }
             }
         },
         submitSuratJalan() {
@@ -634,6 +644,7 @@ export default {
             this.handleClearForm();
             this.dataTable = [];
             this.closeDialog();
+            this.is_penerusan = true;
         },
         getLov() {
             const arr = this.manifest_lov_list.map(item => ({
