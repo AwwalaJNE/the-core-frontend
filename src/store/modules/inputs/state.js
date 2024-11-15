@@ -2272,8 +2272,9 @@ export default {
           "value": "ORIGIN"
         },
       ],
+      visible: false,
       valueData: null,
-      value: '',
+      value: 'SORTING',
     },
     reference_entity: {
       label: "Reference Entity*",
@@ -2299,8 +2300,9 @@ export default {
           value: 'NODE'
         },
       ],
+      visible: false,
       valueData: null,
-      value: '',
+      value: 'NODE',
     },
     reference_value: {
       label: "Reference Value*",

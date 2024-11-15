@@ -111,6 +111,12 @@ export default {
         }
     },
     watch: {
+        active: function (val) {
+            if (val) {
+                this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_TO", "SORTING");
+                this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY", "NODE");
+            }
+        },
         dataItem: function (val) {
             if(val !== undefined) {
                 this.getDataDetail(val);
