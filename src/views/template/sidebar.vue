@@ -21,47 +21,42 @@
             </template>
 
             <template v-for="(child, i) in item.children">
-                <a 
+                <router-link
                   :key="i"
-                  :href="child.url" 
+                  :to="child.url"
                   :id="child.label.trim()" 
                   @click="navigate(child)" 
                 >
                   <vs-sidebar-item
                     :id="child.label.trim()"
-                    :key="i"
                     :class="{ active: activeItem === child.url }"
-                    @click="setActive(child.url)"
                   >
                     <template #icon>
                       <i :class="`bx ${child.icon}`" />
                     </template>
                     <p>{{ child.label }}</p>
                   </vs-sidebar-item>
-                </a>
+                </router-link>
             </template>
           </vs-sidebar-group>
         </template>
-        
         <template v-else>
-          <a 
+          <router-link
             :key="key"
-            :href="item.url" 
+            :to="item.url"
             :id="item.label.trim()" 
-            @click="navigate(item)" 
+            @click="navigate(item)"
           >
             <vs-sidebar-item
               :id="item.label.trim()"
-              :key="key"
               :class="{ active: activeItem === item.url }"
-              @click="setActive(item.url)"
             >
               <template #icon>
                 <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
               </template>
               <p>{{ item.label }}</p>
             </vs-sidebar-item>
-          </a>
+          </router-link>
         </template>
       </template>
     </vs-sidebar>
