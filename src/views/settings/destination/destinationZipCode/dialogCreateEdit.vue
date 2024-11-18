@@ -182,7 +182,7 @@ export default {
                         this.input_label = "node_name";
                         break;
                     case "USER":
-                        this.autoCompleteUrl = `${this.URL.user_list}?n=${this.listenNodeId}&sort_order=desc&limit=${this.limit}&page=1`;
+                        this.autoCompleteUrl = `${this.URL.user_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
                         this.input_value = "user_login";
                         this.input_label = "user_name";
                         break;
