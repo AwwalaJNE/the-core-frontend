@@ -11,11 +11,11 @@
         <vs-row align="self-end" style="margin-top: 1rem;">
             <template>
                 <vs-col xs="12" sm="3" lg="3">
-                    <vs-row class="mb-2">
+                    <!-- <vs-row class="mb-2">
                         <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
                             Auto Open Bag
                         </vs-checkbox>
-                    </vs-row>
+                    </vs-row> -->
 
                     <vs-row>
                         <div class="center" style="width: 100%">

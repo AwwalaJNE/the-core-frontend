@@ -61,11 +61,11 @@
 
     <template v-if="!disabledApprove && !is_orion && !loading && !is_masterbag">
       <div class="center in-get-bag">
-        <vs-row class="mb-2 mt-2">
+        <!-- <vs-row class="mb-2 mt-2">
           <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
             Auto Open Bag
           </vs-checkbox>
-        </vs-row>
+        </vs-row> -->
         <vs-row style="margin-top:2em">
           <vs-col xs="4" sm="4" lg="2">
             <vs-radio
