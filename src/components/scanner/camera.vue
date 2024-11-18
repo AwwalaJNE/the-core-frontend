@@ -123,7 +123,7 @@ export default {
             // this.$emit("result", result);
 
             this.emitEvent("result", result);
-            this.handleClose();
+            // this.handleClose();
           }
 
           if (err && !(err instanceof NotFoundException)) {
