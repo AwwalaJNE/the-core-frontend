@@ -537,6 +537,7 @@ export default {
 .box {
     display: flex;
     flex-direction: column;
+    min-width: 200px !important;
 }
 .no-data-message {
     flex: 1;
