@@ -107,11 +107,11 @@
                 </div>
               </template>
             </vs-col>
-            <!-- <vs-col xs="6" sm="3" lg="2" class="mt-2">
+            <vs-col xs="6" sm="3" lg="2" class="mt-2">
               <vs-checkbox  v-model="is_auto_open_bag" @change="handleAutoOpenBag" v-if="!disable_auto_open_bag">
                 Auto Open Bag
               </vs-checkbox>
-            </vs-col> -->
+            </vs-col>
           </vs-row>
 
           <vs-row style="margin-top:1em">
