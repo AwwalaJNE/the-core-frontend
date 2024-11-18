@@ -28,7 +28,7 @@ export default {
     },
     data() {
         return {
-            active: false,
+            active: true,
         };
     },
     methods: {

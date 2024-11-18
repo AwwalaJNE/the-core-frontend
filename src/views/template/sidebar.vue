@@ -83,7 +83,7 @@ export default {
     return {
       nodeTypeCode: null,
       activeItem: "",
-      isExpand: false,
+      isExpand: true,
       menus: [
         {
           label: "New Transaction",
