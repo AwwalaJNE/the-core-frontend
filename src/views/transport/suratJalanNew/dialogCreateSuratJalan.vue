@@ -100,11 +100,11 @@
                                 </input-general>
                             </form>
                         </vs-col>
-                        <vs-col xs="6" sm="3" lg="3">
+                        <!-- <vs-col xs="6" sm="3" lg="3">
                             <vs-checkbox v-model="is_penerusan" @change="handlePenerusan">
                                 Penerusan
                             </vs-checkbox>
-                        </vs-col>
+                        </vs-col> -->
                     </vs-row>
                     <table-master
                         :dataTable="dataTable"
