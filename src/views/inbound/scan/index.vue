@@ -165,7 +165,7 @@ export default {
                   let typeNotif = null;
                   this.$ls.set('id_inbound',res.data.data.id_inbound)
                   if(res.data.data.inbound_id){
-                    typeNotif = 'success';                  
+                    typeNotif = 'success-with-notif';                  
                     message = null;
                     this.inbound_id = res.data.data.inbound_id
                   }
