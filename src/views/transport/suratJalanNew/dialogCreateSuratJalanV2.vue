@@ -53,7 +53,7 @@
         <template v-slot:content>
             <template v-if="Object.keys(editData).length === 0">
                 <vs-col xs="12" sm="6" lg="6">
-                    <form @submit.prevent="createFirstSuratJalan">
+                    <form @submit.prevent="createSuratJalan">
                         <input-general
                             icon-after
                             name="Scan Surat Muatan / Masterbag / Bag"
@@ -273,7 +273,6 @@ export default {
         active: function(val) {
             if (val == true) {
                 this.getDestination();
-                this.getFacilityCode();
                 this.getNoModeAngkutan();
                 this.getLov();
                 this.getDriver();
@@ -304,13 +303,12 @@ export default {
 
             this.total_weight = val.total_weight;
             this.editData = val;
-            this.editData.destination_id = val.node_id_destination ?? val.facility_code_destination
+            this.editData.destination_id = val.node_id_destination;
             this.no_moda_angkutan_id = val.no_moda_angkutan_id || null;
 
             this.master_form = {
                 node_id_origin: val.node_id_origin,
                 node_id_destination: val.node_id_destination,
-                facility_code_destination: val.facility_code_destination,
                 vehicle_mode_id: val.vehicle_mode_id,
                 vehicle_id: val.vehicle_id,
                 pic_employee_id: val.pic_employee_id,
@@ -481,50 +479,17 @@ export default {
                 }
             }
         },
-        async createFirstSuratJalan() {
-            this.loading = true;
-
-            let form = {
-                item_no: this.item_number,
-                is_penerusan: this.is_penerusan
-            }
-
-            try {
-                const res = await axios.post(`${this.URL.revamp_surat_jalan_v2}?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
-
-                let data = res.data.data;
-                if (data) {
-                    this.manifest_do_number = data.manifest_do_number;
-                    this.total_weight = data.total_weight;
-                    // this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID_ArrData", arr.length > 0 ? arr : null);
-                    this.editData = {
-                        node_id_origin: data.node_id_origin,
-                        node_id_destination: data.node_id_destination,
-                        etd: data.etd,
-                        eta: data.eta,
-                        manifest_lov: data.manifest_lov,
-                        item_no: data.item_number,
-                        is_penerusan: data.is_penerusan
-                    };
-                    
-                    await this.getSuratJalanDetail();
-                }
-                
-                this.openNotification('success', null, "Success", "Create surat jalan success");
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
-            } finally {
-                this.item_number = "";
-                this.loading = false;
-            }
-        },
         submitSuratJalan() {
             this.$refs.formSuratJalan.handleSubmit();
         },
         async createSuratJalan() {
             this.loading = true;
+            let form = {
+                item_no: this.item_number,
+                is_penerusan: this.is_penerusan
+            }
             try {
-                const res = await axios.post(`${this.URL.revamp_surat_jalan}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
+                const res = await axios.post(`${this.URL.revamp_surat_jalan_v2}?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
 
                 let data = res.data.data;
                 if (data) {
@@ -533,7 +498,6 @@ export default {
                     this.master_form = {
                         node_id_origin: data.node_id_origin,
                         node_id_destination: data.node_id_destination,
-                        facility_code_destination: data.facility_code_destination,
                         vehicle_mode_id: data.vehicle_mode_id,
                         vehicle_id: data.vehicle_id,
                         pic_employee_id: data.pic_employee_id,
@@ -541,6 +505,16 @@ export default {
                         eta: data.eta,
                         vehicle_type_id: data.vehicle_type_id || parseInt(data.vehicle_type_id),
                         max_weight: data.max_weight,
+                        manifest_lov: data.manifest_lov,
+                        item_no: data.item_number,
+                        is_penerusan: data.is_penerusan
+                    };
+                    this.editData = {
+                        destination_id: data.node_id_destination,
+                        node_id_origin: data.node_id_origin,
+                        node_id_destination: data.node_id_destination,
+                        etd: data.etd,
+                        eta: data.eta,
                         manifest_lov: data.manifest_lov,
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan
@@ -593,7 +567,7 @@ export default {
                     this.dataTable = arr;
                 } else {
                     this.dataTable = [];
-                    this.manifest_do_number = "";
+                    this.cancel();
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed 2", err?.response?.data?.message ?? 'Something went wrong');
@@ -626,8 +600,12 @@ export default {
             }
         },
         async approve() {
+            let form = {
+                ...this.master_form,
+                is_approve: this.is_approve ^ 1
+            }
             try {
-                const res = await axios.patch(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, { is_approve: this.is_approve ^ 1 }, this.Helper.header());
+                const res = await axios.patch(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, form, this.Helper.header());
                 
                 this.is_approve ^= 1;
                 this.isDisabled = !this.isDisabled;
@@ -655,9 +633,9 @@ export default {
             this.etd = null;
             this.estimated_time_in_hour = null;
             this.manifest_lov = "";
-            this.$refs.formSuratJalan.handleClearForm();
             this.form = {};
             this.master_form = {};
+            this.editData = {};
         },
         cancel() {
             this.loading = false;
@@ -714,45 +692,6 @@ export default {
                 })
                 .catch((err) => {
                     this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to get node destination list', err?.response?.data?.message ?? err)
-                });
-        },
-        async getFacilityCode() {
-            await axios
-                .get(
-                    this.URL.facility_code +
-                        `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.data.length > 0) {
-                        let arr = [];
-                        res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = item.name;
-                            obj["value"] = item.code;
-                            obj["item"] = item;
-
-                            arr.push(obj);
-                        });
-
-                        this.facilityDestination = arr
-                        if (this.dataItem?.facility_code_destination) {
-                            this.$store.dispatch(
-                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                                arr.length > 0 ? arr : null
-                            );
-                        }
-                    } else {
-                        if (this.dataItem?.facility_code_destination) {
-                            this.$store.dispatch(
-                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                                null
-                            );
-                        }
-                    }
-                })
-                .catch((err) => {
-                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to get facility code list', err?.response?.data?.message ?? err)
                 });
         },
         async getNoModeAngkutan() {
