@@ -287,7 +287,7 @@ export default {
                 try {
                     const res = await axios.post(`${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
 
-                    this.sort_info = res.data.data;
+                    this.sort_info = res.data;
                     this.type = 'success';
 
                     this.openNotification('success', null, "Success", res?.data?.message || "Success");
@@ -298,6 +298,7 @@ export default {
                     this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
                 } finally {
                     this.loading = false;
+                    this.refresh();
                     // TODO: Use Later
                     // this.handleClearForm();
                 }
@@ -324,6 +325,10 @@ export default {
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
+
+                    arr.map(item => {
+                        item["timestamp"] = this.formatTimestamp(item.timestamp);
+                    })
                     this.dataTable = arr
                     this.pagination = {
                         page: res.data.meta.current_page,
