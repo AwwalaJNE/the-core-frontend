@@ -162,6 +162,22 @@
                                             @updateValue="updateValue" />
                                     </div>
                             </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select-barcode')">
+                                <div>
+                                    <selector-barcode 
+                                        :ref="InputObject[item].key"
+                                        :name="InputObject[item].label" 
+                                        :rules="InputObject[item].rule" 
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].arrData"
+                                        :selectedValue="InputObject[item].value"
+                                        :isMultiple="false"
+                                        :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
+                                        :customBind="InputObject[item].customBind"
+                                        @updateValue="updateValue" 
+                                    />
+                                </div>
+                            </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
                                 <template v-if="InputObject[item].hasOwnProperty('visible')">
                                     <template v-if="InputObject[item]['visible'] == true">
@@ -374,6 +390,7 @@
 import FormMaster from "@/components/form/formMaster"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
+import SelectorBarcode from "@/components/input/selectBarcode"
 import Switch from "@/components/input/switch"
 import MapPicker from "@/components/map"
 import DateTime from "@/components/input/dateTime"
@@ -388,6 +405,7 @@ export default {
         "form-master": FormMaster,
         "input-general": InputGeneral,
         "selector": Selector,
+        "selector-barcode": SelectorBarcode,
         "switchNih": Switch,
         "map-picker": MapPicker,
         "iterate-selector": iterateSelector,

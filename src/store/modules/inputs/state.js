@@ -3886,7 +3886,7 @@ export default {
       label: "Nama Kendaraan",
       key: "no_moda_angkutan_id",
       rule:"required",
-      typeInput: "select",
+      typeInput: "select-barcode",
       typeData: "String",
       width: "6",
       arrData: [],
