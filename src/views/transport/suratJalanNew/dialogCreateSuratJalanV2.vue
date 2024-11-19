@@ -600,12 +600,8 @@ export default {
             }
         },
         async approve() {
-            let form = {
-                ...this.master_form,
-                is_approve: this.is_approve ^ 1
-            }
             try {
-                const res = await axios.patch(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, form, this.Helper.header());
+                const res = await axios.patch(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, {is_approve: this.is_approve ^ 1}, this.Helper.header());
                 
                 this.is_approve ^= 1;
                 this.isDisabled = !this.isDisabled;
