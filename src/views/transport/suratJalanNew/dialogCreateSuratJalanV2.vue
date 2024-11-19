@@ -567,7 +567,7 @@ export default {
         async updateSuratJalan() {
             this.loading = true;
             try {
-                const res = await axios.put(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}?n=${this.listenNodeId}`, JSON.stringify(this.master_form), this.Helper.header());
+                const res = await axios.put(`${this.URL.revamp_surat_jalan_v2}/${this.manifest_do_number}?n=${this.listenNodeId}`, JSON.stringify(this.master_form), this.Helper.header());
                 this.openNotification('success', null, "Success", "Update surat jalan success");
 
             } catch (err) {
@@ -590,7 +590,7 @@ export default {
         },
         async approve() {
             try {
-                const res = await axios.patch(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, {is_approve: this.is_approve ^ 1}, this.Helper.header());
+                const res = await axios.patch(`${this.URL.revamp_surat_jalan_v2}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, {is_approve: this.is_approve ^ 1}, this.Helper.header());
                 
                 this.is_approve ^= 1;
                 this.isDisabled = !this.isDisabled;
