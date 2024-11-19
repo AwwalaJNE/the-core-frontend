@@ -214,7 +214,6 @@ export default {
             ],
             item_number: "",
             vehicle_max_weight: 0,
-            vehicle_type_id: "",
             no_moda_angkutan_id: null,
             etd: null,
             estimated_time_in_hour: null,
@@ -309,12 +308,10 @@ export default {
             this.master_form = {
                 node_id_origin: val.node_id_origin,
                 node_id_destination: val.node_id_destination,
-                vehicle_mode_id: val.vehicle_mode_id,
                 vehicle_id: val.vehicle_id,
                 pic_employee_id: val.pic_employee_id,
                 etd: val.etd,
                 eta: val.eta,
-                vehicle_type_id: val.vehicle_type_id || parseInt(val.vehicle_type_id),
                 max_weight: val.max_weight,
                 manifest_lov: val.manifest_lov,
                 item_no: val.item_number,
@@ -331,12 +328,10 @@ export default {
                 const obj = {
                     node_id_origin: this.listenNodeId,
                     node_id_destination: form.destination_id,
-                    vehicle_mode_id: form.moda_angkutan_id,
                     vehicle_id: form.no_moda_angkutan_id,
                     pic_employee_id: form.driver_id,
                     etd: form.etd,
                     eta: form.eta,
-                    vehicle_type_id: this.vehicle_type_id || (this.dataItem.vehicle_type_id ? parseInt(this.dataItem.vehicle_type_id) : this.dataItem.vehicle_type_id),
                     max_weight: this.vehicle_max_weight,
                     manifest_lov: this.manifest_lov,
                     item_no: this.item_number,
@@ -346,10 +341,6 @@ export default {
                 this.form = obj;
                 if (this.form.eta > this.form.etd) {
                     if (this.manifest_do_number) {
-                        if (!this.vehicle_type_id) {
-                            this.form.vehicle_type_id = this.dataItem.vehicle_type_id  ? parseInt(this.dataItem.vehicle_type_id) : this.dataItem.vehicle_type_id;
-                        }
-
                         this.addSuratJalanDetail();
                     }
                     else {
@@ -498,12 +489,10 @@ export default {
                     this.master_form = {
                         node_id_origin: data.node_id_origin,
                         node_id_destination: data.node_id_destination,
-                        vehicle_mode_id: data.vehicle_mode_id,
                         vehicle_id: data.vehicle_id,
                         pic_employee_id: data.pic_employee_id,
                         etd: data.etd,
                         eta: data.eta,
-                        vehicle_type_id: data.vehicle_type_id || parseInt(data.vehicle_type_id),
                         max_weight: data.max_weight,
                         manifest_lov: data.manifest_lov,
                         item_no: data.item_number,
@@ -624,7 +613,6 @@ export default {
             this.isDisabledApprove = false;
             this.is_approve = 0;
             this.vehicle_max_weight = 0;
-            this.vehicle_type_id = "";
             this.no_moda_angkutan_id = null;
             this.etd = null;
             this.estimated_time_in_hour = null;
@@ -761,14 +749,6 @@ export default {
         refreshDetail() {
             this.getSuratJalanDetail();
         },
-        partialDisabled(key) {
-            if (key === 'destination_id') {
-                return false
-            }
-            else {
-                return true
-            }
-        }
     },
     mounted() {
         this.handlePrintShortcut(this.print)
