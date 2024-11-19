@@ -13,10 +13,10 @@
             </template>
             <template v-else>
                 <vs-row justify="flex-end">
-                    <vs-col w="7">
+                    <vs-col w="6">
                         {{ listenTitle }}
                     </vs-col>
-                    <vs-col w="2">
+                    <vs-col w="3" justify="flex-end" style="display: flex;">
                         <template v-if="is_approve === 1">
                             <vs-button
                                 class="button-item"
