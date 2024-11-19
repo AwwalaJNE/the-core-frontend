@@ -489,8 +489,8 @@ export default {
                     this.master_form = {
                         node_id_origin: data.node_id_origin,
                         node_id_destination: data.node_id_destination,
-                        vehicle_id: data.vehicle_id,
-                        pic_employee_id: data.pic_employee_id,
+                        vehicle_id: data.vehicle_id || null,
+                        pic_employee_id: data.pic_employee_id || null,
                         etd: data.etd,
                         eta: data.eta,
                         max_weight: data.max_weight,
