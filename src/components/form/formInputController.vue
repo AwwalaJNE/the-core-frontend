@@ -175,7 +175,7 @@
                                             :selectedValue="InputObject[item].value"
                                             :isMultiple="false"
                                             :isAllowCreate="false"
-                                            :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
+                                            :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                             :customBind="InputObject[item].customBind"
                                             @updateValue="updateValue" />
                                         </div>
@@ -194,7 +194,7 @@
                                         :valueData="InputObject[item].arrData"
                                         :selectedValue="InputObject[item].value"
                                         :isMultiple="false"
-                                        :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
+                                        :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                         :customBind="InputObject[item].customBind"
                                         @updateValue="updateValue" />
                                     </div>
