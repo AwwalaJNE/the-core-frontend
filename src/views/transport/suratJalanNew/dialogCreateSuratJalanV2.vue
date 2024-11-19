@@ -617,6 +617,7 @@ export default {
             this.etd = null;
             this.estimated_time_in_hour = null;
             this.manifest_lov = "";
+            this.$refs.formSuratJalan.handleClearForm();
             this.form = {};
             this.master_form = {};
             this.editData = {};
