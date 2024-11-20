@@ -213,14 +213,16 @@ export default {
         },
         handleIconClick() {
             if (!this.listenIsDisabled) {
-                this.$refs.cameraScanner.open('vehicle_id');
+                this.$refs.cameraScanner.open(this.listenFormKey);
             }
         },
         onCameraScannerGetData(data) {
-            if (!this.listenIsDisabled && data?.event === "result" && data.namespace === "vehicle_id") {
+            if (!this.listenIsDisabled && data?.event === "result" && data.namespace === this.listenFormKey) {
                 let dataValue = this.listenIsMultiple == false && this.isMultipleTag === false ? this.value : this.arrValue
                 let obj = this.DataArr.filter(item => item.value == data.data.text)[0]
-                this.$emit("updateValue", "vehicle_id", dataValue, obj, this.dataObj)
+
+                // NOTES: Possible change, based on the qr data (current code expectation is: qr scanned value = id)
+                this.$emit("updateValue", this.listenFormKey, data.data.text, obj, this.dataObj)
             }
         },
     },
