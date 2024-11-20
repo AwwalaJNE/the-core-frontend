@@ -578,20 +578,27 @@ export default {
             }
         },
         async approve() {
-            try {
-                const res = await axios.patch(`${this.URL.revamp_surat_jalan_v2}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, {is_approve: this.is_approve ^ 1}, this.Helper.header());
-                
-                this.is_approve ^= 1;
-                this.isDisabled = !this.isDisabled;
-                this.openNotification("success", null, "Success", res?.data?.message);
+            if (this.master_form.vehicle_id === null) {
+                this.openNotification("warning", null, "Warning", "Please choose vehicle");
+            }
+            else if (this.master_form.pic_employee_id === null) {
+                this.openNotification("warning", null, "Warning", "Please choose driver");
+            } else {
+                try {
+                    const res = await axios.patch(`${this.URL.revamp_surat_jalan_v2}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, {is_approve: this.is_approve ^ 1}, this.Helper.header());
+                    
+                    this.is_approve ^= 1;
+                    this.isDisabled = !this.isDisabled;
+                    this.openNotification("success", null, "Success", res?.data?.message);
 
-                if (this.is_approve === 1) {
-                    this.print();
+                    if (this.is_approve === 1) {
+                        this.print();
+                    }
+                } catch (err) {
+                    this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
+                } finally {
+                    this.$emit('refresh');
                 }
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
-            } finally {
-                this.$emit('refresh');
             }
         },
         handleClearForm() {
