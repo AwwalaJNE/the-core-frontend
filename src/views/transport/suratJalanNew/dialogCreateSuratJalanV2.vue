@@ -120,7 +120,6 @@
                         <table-master
                             :dataTable="dataTable"
                             :dataColumn="datacolumn"
-                            :tableLoading="loadingDetail"
                             :pageSize="pagination.page_size"
                             :page="pagination.page"
                             :limit="pagination.limit"
@@ -174,7 +173,6 @@ export default {
         return {
             form: {},
             loading: false,
-            loadingDetail: false,
             manifest_do_number: "",
             dataTable: [],
             datacolumn: [
@@ -319,38 +317,29 @@ export default {
             };
         },
         formData(form) {
-            let weight = this.dataTable.reduce((sum, item) => sum + (item.total_weight || 0), 0);
+            const obj = {
+                node_id_origin: this.listenNodeId,
+                node_id_destination: form.destination_id,
+                vehicle_id: form.no_moda_angkutan_id,
+                pic_employee_id: form.driver_id,
+                etd: form.etd,
+                eta: form.eta,
+                max_weight: this.vehicle_max_weight,
+                manifest_lov: this.manifest_lov,
+                item_no: this.item_number,
+                is_penerusan: this.is_penerusan
+            };
 
-            if (this.editData.max_weight > 0 && this.vehicle_max_weight < 1) {
-                this.vehicle_max_weight = this.editData.max_weight;
-            }
-            if (this.vehicle_max_weight >= weight) {
-                const obj = {
-                    node_id_origin: this.listenNodeId,
-                    node_id_destination: form.destination_id,
-                    vehicle_id: form.no_moda_angkutan_id,
-                    pic_employee_id: form.driver_id,
-                    etd: form.etd,
-                    eta: form.eta,
-                    max_weight: this.vehicle_max_weight,
-                    manifest_lov: this.manifest_lov,
-                    item_no: this.item_number,
-                    is_penerusan: this.is_penerusan
-                };
-
-                this.form = obj;
-                if (this.form.eta > this.form.etd) {
-                    if (this.manifest_do_number) {
-                        this.addSuratJalanDetail();
-                    }
-                    else {
-                        this.createSuratJalan();
-                    }
-                } else {
-                    this.openNotification("warning", null, "Wrong Input in ETA/ETD field", "ETA must more than ETD");
+            this.form = obj;
+            if (this.form.eta > this.form.etd) {
+                if (this.manifest_do_number) {
+                    this.addSuratJalanDetail();
+                }
+                else {
+                    this.createSuratJalan();
                 }
             } else {
-                this.openNotification("warning", null, "Melebihi berat", "Berat muatan melebihi batas berat kendaraan");
+                this.openNotification("warning", null, "Wrong Input in ETA/ETD field", "ETA must more than ETD");
             }
         },
         onChangeCustom(type, val, obj) {
@@ -540,7 +529,7 @@ export default {
             }
         },
         async getSuratJalanDetail() {
-            this.loadingDetail = true;
+            this.loading = true;
             try {
                 const res = await axios.get(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`, this.Helper.header());
 
@@ -561,7 +550,7 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed 2", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
-                this.loadingDetail = false;
+                this.loading = false;
             }
         },
         async updateSuratJalan() {
@@ -589,20 +578,27 @@ export default {
             }
         },
         async approve() {
-            try {
-                const res = await axios.patch(`${this.URL.revamp_surat_jalan_v2}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, {is_approve: this.is_approve ^ 1}, this.Helper.header());
-                
-                this.is_approve ^= 1;
-                this.isDisabled = !this.isDisabled;
-                this.openNotification("success", null, "Success", res?.data?.message);
+            if (this.master_form.vehicle_id === null) {
+                this.openNotification("warning", null, "Warning", "Please choose vehicle");
+            }
+            else if (this.master_form.pic_employee_id === null) {
+                this.openNotification("warning", null, "Warning", "Please choose driver");
+            } else {
+                try {
+                    const res = await axios.patch(`${this.URL.revamp_surat_jalan_v2}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, {is_approve: this.is_approve ^ 1}, this.Helper.header());
+                    
+                    this.is_approve ^= 1;
+                    this.isDisabled = !this.isDisabled;
+                    this.openNotification("success", null, "Success", res?.data?.message);
 
-                if (this.is_approve === 1) {
-                    this.print();
+                    if (this.is_approve === 1) {
+                        this.print();
+                    }
+                } catch (err) {
+                    this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
+                } finally {
+                    this.$emit('refresh');
                 }
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
-            } finally {
-                this.$emit('refresh');
             }
         },
         handleClearForm() {
