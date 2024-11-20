@@ -113,7 +113,7 @@
         <div v-if="true">
             <dialogCreateSuratJalanV2
                 btnBlue="Approve"
-                title="Transport Surat Jalan V2"
+                title="Transport Surat Jalan"
                 :active="dialogSuratJalan"
                 :closeDialog="closeDialogSuratJalan"
                 @refresh="refresh"

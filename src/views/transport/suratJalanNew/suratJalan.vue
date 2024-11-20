@@ -20,7 +20,7 @@
         <div v-if="true">
             <dialogCreateSuratJalanV2
                 btnBlue="Edit"
-                title="Edit Transport Surat Jalan V2"
+                title="Edit Transport Surat Jalan"
                 :active="dialogSuratJalan"
                 :closeDialog="closeDialogSuratJalan"
                 :dataItem="dataItem"
