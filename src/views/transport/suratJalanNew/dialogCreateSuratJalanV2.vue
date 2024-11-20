@@ -241,7 +241,8 @@ export default {
                 page_size: 1,
                 page: 1,
             },
-            editData: {}
+            editData: {},
+            destination_name_code: ''
         };
     },
     computed: {
@@ -269,7 +270,6 @@ export default {
         },
         active: function(val) {
             if (val == true) {
-                this.getDestination();
                 this.getNoModeAngkutan();
                 this.getLov();
                 this.getDriver();
@@ -301,6 +301,10 @@ export default {
             this.total_weight = val.total_weight;
             this.editData = val;
             this.editData.destination_id = val.node_id_destination;
+            this.destination_name_code = val?.destination?.node_name + " (" + val?.destination?.node_code + ")" || val.node_id_destination;
+            
+            this.getDestination(val.node_id_destination)
+
             this.no_moda_angkutan_id = val.no_moda_angkutan_id || null;
 
             this.master_form = {
@@ -315,6 +319,17 @@ export default {
                 item_no: val.item_number,
                 is_penerusan: val.is_penerusan
             };
+        },
+        getDestination(node_id_destination) {
+            let item_destination = {
+                label: this.destination_name_code,
+                value: node_id_destination
+            }
+
+            this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID_ArrData", [{
+                ...item_destination,
+                item: item_destination
+            }]);
         },
         formData(form) {
             const obj = {
@@ -487,6 +502,8 @@ export default {
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan
                     };
+                    this.destination_name_code = data?.destination?.node_name + " (" + data?.destination?.node_code + ")" || data.node_id_destination;
+                    this.getDestination(data.node_id_destination)
                     this.editData = {
                         destination_id: data.node_id_destination,
                         node_id_origin: data.node_id_origin,
@@ -616,6 +633,7 @@ export default {
             this.form = {};
             this.master_form = {};
             this.editData = {};
+            this.destination_name_code = ""
         },
         cancel() {
             if(Object.keys(this.editData).length !== 0) {
@@ -638,44 +656,6 @@ export default {
             if (this.dataItem?.manifest_lov) {
                 this.manifest_lov = this.dataItem.manifest_lov;
             }
-        },
-        async getDestination() {
-            await axios
-                .get(
-                    this.URL.node +
-                        `/${this.listenNodeId}/destination-link-manifest-delivery-order?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.data.length > 0) {
-                        let arr = [];
-                        res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = item.node_name + " (" + item.node_code + ")";
-                            obj["value"] = item.node_id;
-                            obj["item"] = item;
-
-                            arr.push(obj);
-                        });
-
-                        if (!this.manifest_do_number || this.dataItem.node_id_destination) {
-                            this.$store.dispatch(
-                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                                arr.length > 0 ? arr : null
-                            );
-                        }
-                    } else {
-                        if (!this.manifest_do_number || this.dataItem.node_id_destination) {
-                            this.$store.dispatch(
-                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                                null
-                            );
-                        }
-                    }
-                })
-                .catch((err) => {
-                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to get node destination list', err?.response?.data?.message ?? err)
-                });
         },
         async getNoModeAngkutan() {
             await axios
