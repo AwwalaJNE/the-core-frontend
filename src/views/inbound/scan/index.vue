@@ -277,6 +277,7 @@ export default {
     },
     mounted() {
       this.getParamRoute()
+      this.$refs.formInputInbound.$el.querySelector("input").focus();
     }
 }
 </script>
