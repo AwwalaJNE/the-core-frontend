@@ -17,14 +17,27 @@
             @handleEdit="handleEdit"
         />
 
-        <dialogCreateSuratJalan
-            btnBlue="Edit"
-            title="Edit Transport Surat Jalan"
-            :active="dialogSuratJalan"
-            :closeDialog="closeDialogSuratJalan"
-            :dataItem="dataItem"
-            @refresh="refresh"
-        />
+        <div v-if="true">
+            <dialogCreateSuratJalanV2
+                btnBlue="Edit"
+                title="Edit Transport Surat Jalan"
+                :active="dialogSuratJalan"
+                :closeDialog="closeDialogSuratJalan"
+                :dataItem="dataItem"
+                @refresh="refresh"
+            />
+        </div>
+        <div v-else>
+            <dialogCreateSuratJalan
+                btnBlue="Edit"
+                title="Edit Transport Surat Jalan"
+                :active="dialogSuratJalan"
+                :closeDialog="closeDialogSuratJalan"
+                :dataItem="dataItem"
+                @refresh="refresh"
+            />
+        </div>
+        
 
         <dialog-confirm
             title="Cancel Surat Jalan"
@@ -46,6 +59,7 @@ import DialogConfirm from "@/components/dialog/dialogConfirm";
 import TableMaster from "@/components/table/tableMaster";
 
 import DialogCreateSuratJalan from "@/views/transport/suratJalanNew/dialogCreateSuratJalan";
+import DialogCreateSuratJalanV2 from "@/views/transport/suratJalanNew/dialogCreateSuratJalanV2";
 
 export default {
     name:"transport-surat-jalan-table-new",
@@ -61,7 +75,8 @@ export default {
         "table-master" : TableMaster,
         "dialog-confirm": DialogConfirm,
 
-        "dialogCreateSuratJalan": DialogCreateSuratJalan
+        "dialogCreateSuratJalan": DialogCreateSuratJalan,
+        "dialogCreateSuratJalanV2": DialogCreateSuratJalanV2
     },
     data() {
         return {

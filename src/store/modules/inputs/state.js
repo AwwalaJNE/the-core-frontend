@@ -3827,31 +3827,30 @@ export default {
       width: "6",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      isDisabled: true
     },
-    // moda_angkutan_id: {
-    //   label: "Moda Angkutan",
-    //   key: "moda_angkutan_id",
-    //   rule:"required",
-    //   typeInput: "select",
-    //   typeData: "String",
-    //   width: "6",
-    //   arrData: [],
-    //   valueData: null,
-    //   value: ''
-    // },
-    no_moda_angkutan_id: {
-      label: "Nama Kendaraan",
-      key: "no_moda_angkutan_id",
-      rule:"required",
+    manifest_lov: {
+      label: "LOV",
+      key: "manifest_lov",
+      rule: "required",
       typeInput: "select",
       typeData: "String",
       width: "6",
-      arrData: [],
+      arrData: [
+        {
+          label: 'ALL',
+          value: 'ALL'
+        },
+        {
+          label: 'SAME DESTINATION',
+          value: 'SAME DESTINATION'
+        },
+      ],
       valueData: null,
-      value: ''
+      value: '',
+      isDisabled: true
     },
-
     etd: {
       label: "ETD",
       key: "etd",
@@ -3872,32 +3871,32 @@ export default {
       valueData: null,
       value: ''
     },
-
-    manifest_lov: {
-      label: "LOV",
-      key: "manifest_lov",
-      rule: "required",
-      typeInput: "select",
+    // moda_angkutan_id: {
+    //   label: "Moda Angkutan",
+    //   key: "moda_angkutan_id",
+    //   rule:"required",
+    //   typeInput: "select",
+    //   typeData: "String",
+    //   width: "6",
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
+    no_moda_angkutan_id: {
+      label: "Nama Kendaraan",
+      key: "no_moda_angkutan_id",
+      rule:"",
+      typeInput: "select-barcode",
       typeData: "String",
       width: "6",
-      arrData: [
-        {
-          label: 'ALL',
-          value: 'ALL'
-        },
-        {
-          label: 'SAME DESTINATION',
-          value: 'SAME DESTINATION'
-        },
-      ],
+      arrData: [],
       valueData: null,
       value: ''
     },
-
     driver_id: {
       label: "Driver",
       key: "driver_id",
-      rule:"required",
+      rule:"",
       typeInput: "select",
       typeData: "String",
       width: "6",

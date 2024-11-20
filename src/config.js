@@ -245,6 +245,9 @@ export default {
     // Surat Jalan Revamp
     revamp_surat_jalan: api + 'revamp/manifest-delivery-order',
 
+    // Surat Jalan Revamp V2
+    revamp_surat_jalan_v2: api + 'revamp/manifest-delivery-order-v2',
+
     // Surat Muatan Revamp
     revamp_surat_muatan: api + 'revamp/manifest',
 

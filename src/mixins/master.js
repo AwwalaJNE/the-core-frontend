@@ -361,11 +361,15 @@ const Master = {
             }
         },
         convertMinutesToTimeFormat(totalMinutes) {
-            const days = Math.floor(totalMinutes / 1440);
-            const hours = Math.floor((totalMinutes % 1440) / 60);
-            const minutes = totalMinutes % 60;
-        
-            return `${days} DAYS ${hours} HOURS ${minutes} MINUTES`;
+            if (totalMinutes < 0) {
+                return `OVER SLA`;
+            } else {
+                const days = Math.floor(totalMinutes / 1440);
+                const hours = Math.floor((totalMinutes % 1440) / 60);
+                const minutes = totalMinutes % 60;
+            
+                return `${days} DAYS ${hours} HOURS ${minutes} MINUTES`;
+            }
         },
         formatDateTime(dateTimeStr) {
             const date = new Date(dateTimeStr);
@@ -380,6 +384,14 @@ const Master = {
             const formattedTime = `${hours}:${minutes}`;
         
             return `${formattedDate}\n${formattedTime}`;
+        },
+        formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+
+            const formattedDate = date.toISOString().slice(0, 10);
+            const formattedTime = date.toTimeString().slice(0, 8);
+            
+            return `${formattedDate} ${formattedTime}`;
         }
     },
     created() {
