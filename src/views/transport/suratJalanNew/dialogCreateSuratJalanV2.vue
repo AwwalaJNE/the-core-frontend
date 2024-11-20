@@ -225,7 +225,7 @@ export default {
                     value: "ALL",
                 },
                 {
-                    label: "Same Destination",
+                    label: "Single Destination",
                     value: "SAME DESTINATION",
                 },
             ],
