@@ -120,7 +120,6 @@
                         <table-master
                             :dataTable="dataTable"
                             :dataColumn="datacolumn"
-                            :tableLoading="loadingDetail"
                             :pageSize="pagination.page_size"
                             :page="pagination.page"
                             :limit="pagination.limit"
@@ -174,7 +173,6 @@ export default {
         return {
             form: {},
             loading: false,
-            loadingDetail: false,
             manifest_do_number: "",
             dataTable: [],
             datacolumn: [
@@ -531,7 +529,7 @@ export default {
             }
         },
         async getSuratJalanDetail() {
-            this.loadingDetail = true;
+            this.loading = true;
             try {
                 const res = await axios.get(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`, this.Helper.header());
 
@@ -552,7 +550,7 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed 2", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
-                this.loadingDetail = false;
+                this.loading = false;
             }
         },
         async updateSuratJalan() {
