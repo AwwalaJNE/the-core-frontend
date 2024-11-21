@@ -360,7 +360,10 @@ export default {
         },
     },
     mounted() {
-        this.refresh()
+        this.refresh();
+        this.$nextTick(() => {
+            this.$refs.formInputSorting.focus();
+        });
     },
 }
 </script>
