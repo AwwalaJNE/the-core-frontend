@@ -1,9 +1,14 @@
 <template>
     <div class="fab-container">
         <button class="fab" @click="handleClick">
-            <img 
-                :src="require('../../assets/svg/receiving.svg')" 
-            >
+            <template v-if="customIcon">
+                <i :class="icon" @click="clear"></i>
+            </template>
+            <template v-else>
+                <img 
+                    :src="require('../../assets/svg/receiving.svg')" 
+                >
+            </template>
         </button>
     </div>
 </template>
@@ -11,7 +16,9 @@
 export default {
     name: "FloatingActionButton",
     props: {
-        handleClick: Function
+        handleClick: Function,
+        customIcon: Boolean,
+        icon: String,
     }
 };
 </script>
