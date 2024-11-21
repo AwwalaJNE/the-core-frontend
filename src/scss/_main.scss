@@ -39,7 +39,7 @@ a{
     position: relative;
     min-height: 100vh;
     background-color: $bgGrey;
-    @media (min-width: 361px) {
+    @media (min-width: 767px) {
         margin-left: var(--sidebar-close-width);
         width: calc(100% - var(--sidebar-close-width));
         transition: margin-left 0.3s ease, width 0.3s ease;   
@@ -49,7 +49,7 @@ a{
     position: relative;
     min-height: 100vh;
     background-color: $bgGrey;
-    @media (min-width: 361px) {
+    @media (min-width: 767px) {
         margin-left: var(--sidebar-close-width);
         width: calc(100% - var(--sidebar-close-width));
         transition: margin-left 0.3s ease, width 0.3s ease;   

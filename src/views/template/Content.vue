@@ -18,6 +18,7 @@ import Footer from "./footer";
 import Header from "./header";
 import Sidebar from "./sidebar";
 import dialogUpdatePassword from "@/components/dialog/dialogUpdatePassword.vue";
+import master from "@/mixins/master";
 export default {
     name: "Content",
     components: {
@@ -26,10 +27,18 @@ export default {
         Sidebar: Sidebar,
         dialogUpdatePassword,
     },
+    mixins: [master],
     data() {
         return {
             active: true,
         };
+    },
+    watch: {
+        isMobile: function(val, old) {
+            if (val !== old) {
+                this.sidabarAction()
+            }
+        }
     },
     methods: {
         sidabarAction() {

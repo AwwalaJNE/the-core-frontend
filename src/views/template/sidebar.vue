@@ -1,7 +1,7 @@
 <template>
     <vs-sidebar
       v-model="activeItem"
-      open
+      :open="isMobile ? isExpand : true"
       :reduce="isExpand"
     >
       <template #logo>
