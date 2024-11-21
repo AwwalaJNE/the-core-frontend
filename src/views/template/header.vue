@@ -267,7 +267,7 @@ export default {
         width: 100%;
         left: 0;
         top: 0;
-        z-index: 100000;
+        z-index: 95000;
         min-height: 1.5em;
         padding: .5em 0;
         background-color: $bgWhite;
