@@ -9,6 +9,7 @@
             :limit="pagination.limit"
             :hasPagination="true"
             :hasLinked="['manifest_do_number']"
+            :printAction="true"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
             @handleEdit="handleEdit"
