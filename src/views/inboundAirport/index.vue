@@ -9,20 +9,23 @@
             </vs-col>
             <template v-if="navActive === 'k-PREALERT'">
                 <vs-col v-if="!isMobile" xs="6" sm="3" lg="3" class="flex justify-end relative">
-                    <vs-button
-                        flat
-                        square
-                        block
-                        class="w-24 pr-1"
-                        :active="true"
-                        @click="openDialog"
-                    >
-                        RECEIVING
-                    </vs-button>
+                    <div style="position:relative;display:flex;justify-content: flex-end;">
+                        <div style="width: 100px;padding-right: 5px;">
+                            <vs-button
+                                flat
+                                square
+                                block
+                                :active="true"
+                                @click="openDialog"
+                            > 
+                                RECEIVING
+                            </vs-button>
+                        </div>
+                    </div>
                 </vs-col>
                 <vs-col v-else>
                     <floating-action-button 
-                    :handleClick="openDialog"
+                        :handleClick="openDialog"
                     />
                 </vs-col>
             </template>

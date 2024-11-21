@@ -1,20 +1,30 @@
 <template>
     <div>
         <template v-if="listenLoading == false">
-            <table-master 
-            :dataTable="dataTable" 
-            :dataColumn="datacolumn" 
-            :tableLoading="listenLoading"
-            
-            :hasAction="false"
-            :hasPagination="false"
-            />
+            <template v-if="isMobile">
+                <table-master 
+                    :dataTable="dataTable" 
+                    :dataColumn="datacolumn" 
+                    :tableLoading="listenLoading"
+                    :hasAction="false"
+                    :hasPagination="false"
+                />
+            </template>
+            <template v-else>
+                <table-master 
+                    :dataTable="dataTable" 
+                    :dataColumn="datacolumn" 
+                    :tableLoading="listenLoading"
+                    :hasAction="false"
+                    :hasPagination="false"
+                />
+            </template>
         </template>
     </div>
 </template>
 <script>
 import master from "@/mixins/master"
-import TableMaster from "@/components/table/tableMaster.vue"
+import TableMaster from "@/components/table/tableMaster"
 export default {
     name:"Inbound-Incoming",
     mixins: [master],
@@ -40,18 +50,16 @@ export default {
                     width: "xxs"
                 },
                 {
-                  label: "Unreceived",
-                  key: "total_unreceived",
-                  width: "xxs"
+                    label: "Unreceived",
+                    key: "total_unreceived",
+                    width: "xxs"
                 },
-
                 {
-                  label: "Status",
-                  key: "status_received",
-                  width: "xxs"
+                    label: "Status",
+                    key: "status_received",
+                    width: "xxs"
                 },
             ],
-            
         }
     },
     computed: {
