@@ -1,47 +1,47 @@
 <template>
     <div>
         <table-master 
-          :dataTable="dataTable" 
-          :dataColumn="datacolumn" 
-          :tableLoading="loading"
-          :pageSize="pagination.page_size"
-          :page="pagination.page"
-          :limit="pagination.limit"
-          :hasPagination="true"
-          @actionLimit="actionLimit"
-          @actionPagination="actionPagination"
-          :hasLinked="['manifest_do_number']"
-          :customAction="true"
-          :customActionList="customActionList"
-          @actionUpdate="actionUpdate"
-          @handleEdit="handleEdit"
-          >
-        </table-master>
-
+            :dataTable="dataTable" 
+            :dataColumn="!isMobile ? datacolumn.concat(allColumn) : datacolumn" 
+            :tableLoading="loading"
+            :pageSize="pagination.page_size"
+            :page="pagination.page"
+            :limit="pagination.limit"
+            :hasPagination="true"
+            :hasLinked="['manifest_do_number']"
+            :printAction="true"
+            @actionLimit="actionLimit"
+            @actionPagination="actionPagination"
+            @handleEdit="handleEdit"
+            @actionPrint="actionPrint"
+        />
         <dialogCreateSuratJalan
-          :active="dialogSuratJalan"
-          @refresh="refresh"
-          :closeDialog="closeDialogSuratJalan"
-          title="Edit Transport Surat Jalan"
-          :dataItem="dataItem"
-          btnBlue="Edit"
+            :active="dialogSuratJalan"
+            @refresh="refresh"
+            :closeDialog="closeDialogSuratJalan"
+            title="Edit Transport Surat Jalan"
+            :dataItem="dataItem"
+            btnBlue="Edit"
         />
     </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import TableMaster from "@/components/table/tableMaster.vue"
+
 import DialogConfirm from "@/components/dialog/dialogConfirm"
+import TableMaster from "@/components/table/tableMaster"
+
 import DialogCreateSuratJalan from "@/views/inboundAirport/suratJalan/dialogCreateSuratJalan"
+
 export default {
     name:"surat-jalan",
     mixins: [master],
     props: {
-        query: String,
         dateFilter: Array,
+        filterDateBy: String,
+        query: String,
         searchBy: String,
-        filterDateBy: String
     },
     components: {
       "table-master" : TableMaster,
@@ -54,79 +54,59 @@ export default {
             dataTable: [],
             dialogSuratJalan:false,
             datacolumn: [
-              {
-                label: "Surat Jalan #",
-                key: "manifest_do_number",
-                width: "xs"
-              },
-              {
-                label: "Vehicle Type",
-                key: "vehicle_type_name",
-                width: "auto"
-              },
-              {
-                label: "Driver",
-                key: "driver_name",
-                width: "xs"
-              },
-              {
-                label: "Mode#",
-                key: "vehicle_mode_name",
-                width: "auto"
-              },
-              {
-                label: "Origin",
-                key: "node_id_origin_name",
-                width: "sm"
-              },
-              {
-                label: "Destination",
-                key: "node_id_destination_name",
-                width: "sm"
-              },
-              {
-                label: "Kg",
-                key: "total_weight",
-                width: "auto"
-              },
-              {
-                label: "ETD",
-                key: "etd",
-                width: "sm"
-              },
-              {
-                label: "ETA",
-                key: "eta",
-                width: "sm"
-              },
-              {
-                label: "Status",
-                key: "status",
-                width: "auto"
-              },
+                {
+                    label: "Surat Jalan #",
+                    key: "manifest_do_number",
+                    width: "xs"
+                },
             ],
-            customActionList: [
-              {
-                label: 'Print',
-                key: 'print',
-                attribute: '',
-                option: {
-                  type: 'redirect',
-
-                }
-              },
-              {
-                label: 'Depart',
-                key: 'depart',
-                attribute: '',
-              },
-              {
-                label: 'Cancel',
-                key: 'cancel',
-                attribute: '',
-              }
+            allColumn: [
+                {
+                    label: "Vehicle Type",
+                    key: "vehicle_type_name",
+                    width: "auto"
+                },
+                {
+                    label: "Driver",
+                    key: "driver_name",
+                    width: "xs"
+                },
+                {
+                    label: "Mode#",
+                    key: "vehicle_mode_name",
+                    width: "auto"
+                },
+                {
+                    label: "Origin",
+                    key: "node_id_origin_name",
+                    width: "sm"
+                },
+                {
+                    label: "Destination",
+                    key: "node_id_destination_name",
+                    width: "sm"
+                },
+                {
+                    label: "Kg",
+                    key: "total_weight",
+                    width: "auto"
+                },
+                {
+                    label: "ETD",
+                    key: "etd",
+                    width: "sm"
+                },
+                {
+                    label: "ETA",
+                    key: "eta",
+                    width: "sm"
+                },
+                {
+                    label: "Status",
+                    key: "status",
+                    width: "auto"
+                },
             ],
-
             loading: false,
             dataItem: {},
             tempSearch: "",
@@ -134,7 +114,7 @@ export default {
             startDate: "",
             endDate: "",
             pagination: {
-                limit:20,
+                limit: 20,
                 page_size: 1,
                 page: 1
             },
@@ -163,56 +143,32 @@ export default {
     },
     methods: {
         async getTableData(limit,page,q, from, to) {
+            this.loading = true;
             let query = "";
             let startDate = "";
             let endDate = "";
-            if(q !== undefined) {
+            if (q !== undefined) {
                 query = q
                 if (q.includes("/")) {
-                  query = query.replaceAll("/", "-")
+                    query = query.replaceAll("/", "-")
                 }
             }
-            if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
+            if (from !== undefined && to !== undefined) {
+                startDate = from
+                endDate = to
             }
             await axios
-                .get(this.URL.manifest_delivery_order +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
-                this.Helper.header())
+                .get(this.URL.manifest_delivery_order + `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
-                    let buttonStatus = {
-                          'depart': true,
-                          'cancel': true
-                        }
                     
                     arr.map(item => {
-                      item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
-                      item["node_id_origin_name"] = (item.origin) ? item.origin.node_name: null
-                      item["node_id_destination_name"] = (item.destination) ? item.destination.node_name: null
-                      item["driver_id"] = (item.pic_employee_id) ? parseInt(item.pic_employee_id): null
-                      item["driver_name"] = (item.pic) ? item.pic.employee_name: null
-                      item["orion_number"] = item.mts || item.do || "";
-
-                      if (item.hasOwnProperty('status') && item["status"] !== null) {
-                          let str = item["status"].toLowerCase();
-                          if (!str.includes("ready")) {
-
-                              buttonStatus["depart"] = false;
-                              item["button_status"] = buttonStatus;
-                          }
-                          if (str.includes("cancel")) {
- 
-                              buttonStatus["cancel"] = false;
-                              item["button_status"] = buttonStatus;
-                          }
-                      }
-
-                      if (item.is_orion == "1") {
-                        buttonStatus["cancel"] = false;
-                        item["button_status"] = buttonStatus;
-                      }
+                        item["pickup_courier_employee_name"] = (item.employee_courier) ? item.employee_courier.employee_name: null
+                        item["node_id_origin_name"] = (item.origin) ? item.origin.node_name: null
+                        item["node_id_destination_name"] = (item.destination) ? item.destination.node_name: null
+                        item["driver_id"] = (item.pic_employee_id) ? parseInt(item.pic_employee_id): null
+                        item["driver_name"] = (item.pic) ? item.pic.employee_name: null
+                        item["orion_number"] = item.mts || item.do || "";
                     })
 
                     this.dataTable = arr
@@ -232,44 +188,23 @@ export default {
                 })
         },
 
-        actionUpdate(val, key) {
-          switch(key) {
-                case "print":
+        actionPrint(val) {
+            let routeData = this.$router.resolve({ 
+                name: 'printGeneral', 
+                params: { 
+                    'id': val.manifest_do_number, 
+                    'type': 'manifest-delivery-order', 
+                    'node_id':this.listenNodeId 
+                }
+            });
 
-                    let routeData = this.$router.resolve({ name: 'printGeneral', params: { 'id': val.manifest_do_number, 'type': 'manifest-delivery-order', 'node_id':this.listenNodeId } });
-                    
-                    const printWindow = window.open(routeData.href, '_blank', 'noopener');
+            const printWindow = window.open(routeData.href, '_blank', 'noopener');
       
-                    if (printWindow) {
-                        printWindow.onload = function() {
-                            printWindow.print();
-                            printWindow.onafterprint = () => printWindow.close();
-                        };
-                    }
-                    break;
-                case "depart":
-                    this.manifest_do_number = val.manifest_do_number
-                    let obj = {}
-                    obj['node_id_origin'] = val.node_id_origin
-                    obj['node_id_destination'] = val.node_id_destination
-                    obj['vehicle_mode_id'] = val.vehicle_mode_id
-                    obj['vehicle_type_id'] = val.vehicle_type_id
-                    obj['vehicle_id'] = val.vehicle_id
-                    obj['pic_employee_id'] = val.pic_employee_id
-                    obj['max_weight'] = val.max_weight
-                    obj['etd'] = val.etd
-                    obj['eta'] = val.eta
-                    obj['status'] = "DEPARTED"
-                    obj['is_penerusan'] = val.is_penerusan
-
-                    this.form = obj
-                    this.depart()
-
-                    break;
-                case 'cancel':
-                  this.manifest_do_number = val.manifest_do_number
-                  this.cancel()
-                default:
+            if (printWindow) {
+                printWindow.onload = function() {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                };
             }
         },
         handleEdit(val){
@@ -288,7 +223,6 @@ export default {
             });
           }
         },
-
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
@@ -299,64 +233,16 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-
         refresh(){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
-
-        async depart() {
-            this.loading = true
-            await axios
-                .put(
-                    this.URL.manifest_delivery_order + `/${this.manifest_do_number}/detail/${this.manifest_do_number}?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
-                    this.loading = false
-                    this.refresh()
-                    this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Update surat jalan success')
-                }).catch(err => {
-                    this.loading = false
-                    this.refresh()
-                    this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
-                })
-        },
-        async cancel() {
-            this.loading = true
-          let formCancel={}
-            await axios
-                .post(
-                    this.URL.manifest_delivery_order + `/${this.manifest_do_number}/cancel?n=${this.listenNodeId}`,
-                    JSON.stringify(formCancel),
-                    this.Helper.header())
-                .then(res => {
-                    this.loading = false
-                    this.refresh()
-                    this.$emit("refresh")
-                    this.openNotification(null, 'Success', 'Update surat jalan success')
-                }).catch(err => {
-                    this.loading = false
-                    this.refresh()
-                    this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update surat jalan failed', err.response ? err.response.data.message : 'something went wrong')
-                })
-        },
         closeDialogSuratJalan() {
-          this.dialogSuratJalan = false
-          this.refresh();
+            this.dialogSuratJalan = false
+            this.refresh();
         },
-
     },
     mounted() {
         this.refresh()
     }
 }
 </script>
-<style>
-  .el-picker-panel__content, .el-date-range-picker__content{
-    font-family: "NunitoSans-Regular";
-    -webkit-font-smoothing: antialiased;
-  }
-</style>
