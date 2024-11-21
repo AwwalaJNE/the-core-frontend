@@ -123,6 +123,9 @@ import InboundIncomingScan from "@/views/inbound/scan"
 // === Inbound Incoming Bandara ===
 import InboundBandara from "@/views/inboundAirport"
 
+// === Inbound Incoming Airpot Scan ===
+import InboundAirportScan from "@/views/inboundAirport/scan"
+
 // === Inbound Incoming Bandara Detail ===
 import InboundIncomingDetail from "@/views/inboundAirport/prealert/detail"
 
@@ -1094,6 +1097,18 @@ const routes = [
           resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
           resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
           resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
+        }
+      },
+      {
+        path: "/inbound-airport/scan",
+        name: "Receiving Airport",
+        component: InboundAirportScan,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Receiving Airport",
+          resource_type: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_type,
+          resource_code: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_code,
+          resource_name: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_name
         }
       },
       {
