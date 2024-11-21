@@ -360,7 +360,8 @@ export default {
         },
     },
     mounted() {
-        this.refresh()
+        this.refresh();
+        this.$refs.formInputSorting.$el.querySelector("input").focus();
     },
 }
 </script>
