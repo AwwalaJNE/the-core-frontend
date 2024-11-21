@@ -16,12 +16,11 @@
             @actionPrint="actionPrint"
         />
         <dialogCreateSuratJalan
+            title="Transport Surat Jalan"
             :active="dialogSuratJalan"
-            @refresh="refresh"
             :closeDialog="closeDialogSuratJalan"
-            title="Edit Transport Surat Jalan"
             :dataItem="dataItem"
-            btnBlue="Edit"
+            @refresh="refresh"
         />
     </div>
 </template>
@@ -33,6 +32,7 @@ import DialogConfirm from "@/components/dialog/dialogConfirm"
 import TableMaster from "@/components/table/tableMaster"
 
 import DialogCreateSuratJalan from "@/views/inboundAirport/suratJalan/dialogCreateSuratJalan"
+import DetailSuratJalanMobile from "@/views/inboundAirport/suratJalan/detailSuratJalan"
 
 export default {
     name:"surat-jalan",
@@ -46,7 +46,8 @@ export default {
     components: {
       "table-master" : TableMaster,
       "dialog-confirm": DialogConfirm,
-      "dialogCreateSuratJalan": DialogCreateSuratJalan
+      "dialogCreateSuratJalan": DialogCreateSuratJalan,
+      "detailSuratJalanMobile": DetailSuratJalanMobile
     },
     data() {
         return {
@@ -208,20 +209,24 @@ export default {
             }
         },
         handleEdit(val){
-          if(this.dataTable.length > 0) {
-            this.dataItem = val
-            this.dataItem["destination_id"] = val.node_id_destination ? val.node_id_destination : ''
-            this.dataItem["moda_angkutan_id"] = val.vehicle_mode_id ? parseInt(val.vehicle_mode_id) : ''
-            this.dataItem["no_moda_angkutan_id"] = val.vehicle_id ? parseInt(val.vehicle_id) : ''
-            this.dataItem["manifest_do_item"] = val.detail ? val.detail : ''
-            this.dataItem["driver_id"] = val.pic_employee_id ? parseInt(val.pic_employee_id) : ''
-            this.dataItem["max_weight"] = val.max_weight
-            this.dataItem["driver_id"] = val.driver_id ? parseInt(val.driver_id) : ''
-            this.dataItem["vehicle_type_id"] = val.vehicle_type_id ? parseInt(val.vehicle_type_id) : ''
-            this.$nextTick(() => {
-              this.dialogSuratJalan = true
-            });
-          }
+            if (this.isMobile) {
+                this.$router.push(`/inbound-bandara/${val.manifest_do_number}`);
+            } else {
+                if(this.dataTable.length > 0) {
+                    this.dataItem = val
+                    this.dataItem["destination_id"] = val.node_id_destination ? val.node_id_destination : ''
+                    this.dataItem["moda_angkutan_id"] = val.vehicle_mode_id ? parseInt(val.vehicle_mode_id) : ''
+                    this.dataItem["no_moda_angkutan_id"] = val.vehicle_id ? parseInt(val.vehicle_id) : ''
+                    this.dataItem["manifest_do_item"] = val.detail ? val.detail : ''
+                    this.dataItem["driver_id"] = val.pic_employee_id ? parseInt(val.pic_employee_id) : ''
+                    this.dataItem["max_weight"] = val.max_weight
+                    this.dataItem["driver_id"] = val.driver_id ? parseInt(val.driver_id) : ''
+                    this.dataItem["vehicle_type_id"] = val.vehicle_type_id ? parseInt(val.vehicle_type_id) : ''
+                    this.$nextTick(() => {
+                    this.dialogSuratJalan = true
+                    });
+                }
+            }
         },
         actionLimit(val){
             this.pagination.limit = val
