@@ -1,27 +1,29 @@
 <template>
     <div>
         <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
+            <vs-col xs="12" sm="6" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
             <template v-if="navActive === 'k-PREALERT'">
-                <vs-col xs="6" sm="3" lg="3">
-                    <div style="position:relative;display:flex;justify-content: flex-end;">
-                        <div style="width: 100px;padding-right: 5px;">
-                            <vs-button
-                                flat
-                                square
-                                block
-                                :active="true"
-                                @click="openDialog"
-                            > 
-                                RECEIVING
-                            </vs-button>
-                        </div>
-                    </div>
+                <vs-col v-if="!isMobile" xs="6" sm="3" lg="3" class="flex justify-end relative">
+                    <vs-button
+                        flat
+                        square
+                        block
+                        class="w-24 pr-1"
+                        :active="true"
+                        @click="openDialog"
+                    >
+                        RECEIVING
+                    </vs-button>
+                </vs-col>
+                <vs-col v-else>
+                    <floating-action-button 
+                    :handleClick="openDialog"
+                    />
                 </vs-col>
             </template>
         </vs-row>
@@ -36,7 +38,7 @@
                                     @activeTab="activeTab" 
                                 />
                             </vs-col>
-                            <vs-col xs="12" sm="12" lg="6">
+                            <vs-col v-if="!isMobile" xs="12" sm="12" lg="6">
                                 <template v-if="navActive === 'k-PREALERT'">
                                     <vs-row justify="end">
                                         <vs-col xs="6" sm="8" lg="4">
@@ -111,6 +113,7 @@
 import master from "@/mixins/master"
 
 import Breadcrumb from "@/components/breadcrumb/index";
+import FloatingActionButton from "@/components/buttonCustom/floatingActionButton"
 import NavItem from "@/components/navbar/navTab";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
@@ -130,6 +133,7 @@ export default {
         "select-search-by": SelectSearchBy,
         "inbound-incoming": InboundIncoming,
         "sj-list": SuratJalan,
+        "floating-action-button": FloatingActionButton
     },
     data() {
         return {
@@ -256,7 +260,9 @@ export default {
             this.tempSearch = val;
         },
         clearSearch() {
-            this.$refs.searchInput.clear();
+            if (!this.isMobile) {
+                this.$refs.searchInput.clear();
+            }
         },
         activeTab(val) {
             this.navActive = val;
@@ -270,6 +276,9 @@ export default {
         openDialog(){
             this.$router.push('inbound-airport/scan');
         },
+    },
+    mounted() {
+        console.log("PPPPP", this.isMobile)
     },
 }
 </script>

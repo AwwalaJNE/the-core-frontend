@@ -2,7 +2,7 @@
     <div>
         <table-master 
             :dataTable="dataTable" 
-            :dataColumn="datacolumn" 
+            :dataColumn="!isMobile ? datacolumn.concat(allColumn) : datacolumn" 
             :tableLoading="loading"
             :pageSize="pagination.page_size"
             :page="pagination.page"
@@ -59,6 +59,8 @@ export default {
                     key: "manifest_do_number",
                     width: "xs"
                 },
+            ],
+            allColumn: [
                 {
                     label: "Vehicle Type",
                     key: "vehicle_type_name",

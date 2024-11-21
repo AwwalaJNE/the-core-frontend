@@ -2,7 +2,7 @@
     <div>
         <table-master 
             :dataTable="dataTable" 
-            :dataColumn="datacolumn" 
+            :dataColumn="!isMobile ? datacolumn.concat(allColumn) : datacolumn" 
             :tableLoading="loading"
             :pageSize="pagination.page_size"
             :page="pagination.page"
@@ -48,14 +48,16 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                  label: "Inbound Number",
-                  key: "inbound_number",
-                  width: "xs"
+                    label: "Inbound Number",
+                    key: "inbound_number",
+                    width: "xs"
                 },
+            ],
+            allColumn: [
                 {
-                  label: "Vehicle",
-                  key: "vehicle",
-                  width: "xs"
+                    label: "Vehicle",
+                    key: "vehicle",
+                    width: "xs"
                 },
                 {
                     label: "From",

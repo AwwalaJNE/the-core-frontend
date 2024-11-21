@@ -1,7 +1,7 @@
 <template>
     <div>
         <section>
-            <vs-row>
+            <vs-row v-if="!isMobile">
                 <vs-col xs="12" sm="4" lg="2">
                     <select-search-by 
                         :border="true"
@@ -33,6 +33,8 @@
     </div>
 </template>
 <script>
+import master from "@/mixins/master"
+
 import Breadcrumb from "@/components/breadcrumb/index";
 import dateRange from "@/components/daterange/index";
 import NavItem from "@/components/navbar/navTab";
@@ -42,6 +44,7 @@ import SuratJalan from "@/views/inboundAirport/suratJalan/suratJalan";
 
 export default {
     name: "airport-receiving-surat-jalan",
+    mixins: [master],
     props: {
         query: String,
         searchBy: String

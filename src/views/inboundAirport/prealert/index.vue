@@ -1,7 +1,7 @@
 <template>
     <div>
         <section class="nodes">
-            <vs-row justify="space-between">
+            <vs-row v-if="!isMobile" justify="space-between">
                 <vs-col xs="12" sm="4" lg="2">
                     <div class="select-receiving-bandara">
                         <selector 
