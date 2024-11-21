@@ -20,7 +20,7 @@
                                     ref="formInputSorting"
                                     type="text"
                                     v-model="item_number"
-                                    v-on:keyup.enter="processSorting"
+                                    v-on:keyup.enter="handleEnter"
                                     v-uppercase
                                     :autofocus="true"
                                     :label-placeholder="'Masukkan Connote'"
@@ -268,6 +268,10 @@ export default {
         searchValue (val) {
             this.tempSearch = val;
             this.refresh();
+        },
+        handleEnter() {
+            this.processSorting();
+            this.item_number = '';
         },
         handleClearForm(){
             this.form = {};
