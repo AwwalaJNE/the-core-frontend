@@ -361,9 +361,7 @@ export default {
     },
     mounted() {
         this.refresh();
-        this.$nextTick(() => {
-            this.$refs.formInputSorting.focus();
-        });
+        this.$refs.formInputSorting.$el.querySelector("input").focus();
     },
 }
 </script>
