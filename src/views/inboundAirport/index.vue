@@ -12,41 +12,73 @@
                     <div style="position:relative;display:flex;justify-content: flex-end;">
                         <div style="width: 100px;padding-right: 5px;">
                             <vs-button
-                            flat
-                            square
-                            block
-                            :active="true"
-                            @click="openDialog"
-                            > RECEIVING
+                                flat
+                                square
+                                block
+                                :active="true"
+                                @click="openDialog"
+                            > 
+                                RECEIVING
                             </vs-button>
                         </div>
                     </div>
                 </vs-col>
             </template>
         </vs-row>
-        <section class="users">
+        <section>
             <vs-row justify="space-around">
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center" :w="`${navActive === 'k-PERMISSIONS'?'4':'12'}`">
                     <div class="box view">
                         <vs-row justify="space-between">
-                            <vs-col xs="12" sm="6" lg="8">
-                                <nav-item ref="navItemParent" :navItem="navItemm" @activeTab="activeTab" />
+                            <vs-col xs="12" sm="12" lg="6">
+                                <nav-item 
+                                    :navItem="navItem" 
+                                    @activeTab="activeTab" 
+                                />
                             </vs-col>
-                            <vs-col xs="12" sm="6" lg="4">
+                            <vs-col xs="12" sm="12" lg="6">
                                 <template v-if="navActive === 'k-PREALERT'">
                                     <vs-row justify="end">
-                                        <vs-col xs="12" sm="4" lg="5">
-                                            <select-search-by-prealert @updateSearchBy="updateSearchBy" />
+                                        <vs-col xs="6" sm="8" lg="4">
+                                            <select-search-by 
+                                                key="searchPreAlertBy"
+                                                :border="true" 
+                                                :isMultiple="false" 
+                                                :selectedValue="searchPreAlertBy" 
+                                                :valueData="searchPreAlertParams" 
+                                                @updateSearchBy="updateSearchBy" 
+                                            />
                                         </vs-col>
-                                        <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholderPrealert" />
+                                        <vs-col xs="6" sm="4" lg="4">
+                                            <search-input 
+                                                key="searchInput"
+                                                ref="searchInput" 
+                                                :placeholder="searchPreAlertPlaceholder"
+                                                @searchValue="searchValue"
+                                            />
+                                        </vs-col>
                                     </vs-row>
                                 </template>
                                 <template v-if="navActive === 'k-SURATJALAN'" >
                                     <vs-row justify="end">
-                                        <vs-col xs="6" sm="8" lg="5">
-                                            <select-search-by-sj @updateSearchBy="updateSearchBy" />
+                                        <vs-col xs="6" sm="8" lg="4">
+                                            <select-search-by 
+                                                key="searchSuratJalanBy"
+                                                :border="true" 
+                                                :isMultiple="false" 
+                                                :selectedValue="searchSuratJalanBy" 
+                                                :valueData="searchSuratJalanParams" 
+                                                @updateSearchBy="updateSearchBy" 
+                                            />
                                         </vs-col>
-                                        <search-input ref="searchInputSJ" @searchValue="searchValue" :placeholder="searchPlaceholderSJ" />
+                                        <vs-col xs="6" sm="4" lg="4">
+                                            <search-input 
+                                                key="searchInput"
+                                                ref="searchInput" 
+                                                :placeholder="searchSuratJalanPlaceholder"
+                                                @searchValue="searchValue"
+                                            />
+                                        </vs-col>
                                     </vs-row>
                                 </template>
                             </vs-col>
@@ -56,8 +88,7 @@
                                 <inbound-incoming 
                                     :ref="navActive"
                                     :query="tempSearch"
-                                    :searchBy="searchByPrealert"
-                                    @redirectSJ="redirectSJ"
+                                    :searchBy="searchPreAlertBy"
                                 />
                             </transition>
                         </template>
@@ -66,7 +97,7 @@
                                 <sj-list
                                     :ref="navActive"
                                     :query="tempSearch"
-                                    :searchBy="searchBySJ"
+                                    :searchBy="searchSuratJalanBy"
                                 />
                             </transition>
                         </template>
@@ -78,36 +109,35 @@
 </template>
 <script>
 import master from "@/mixins/master"
-import TableMaster from "@/components/table/tableMaster.vue"
-import NavItem from "@/components/navbar/navTab"
-import Breadcrumb from "@/components/breadcrumb/index"
-import SearchInput from "@/components/search/searchInput"
-import SelectSearchByPrealert from "@/views/inboundAirport/selectSearchByPrealert"
-import SelectSearchBySJ from "@/views/inboundAirport/selectSearchBySJ"
 
-import InboundIncoming from "@/views/inboundAirport/prealert/"
-import SuratJalan from "@/views/inboundAirport/suratJalan"
+import Breadcrumb from "@/components/breadcrumb/index";
+import NavItem from "@/components/navbar/navTab";
+import SearchInput from "@/components/search/searchInput";
+import SelectSearchBy from "@/components/search/selectSearchBy";
+import TableMaster from "@/components/table/tableMaster";
+
+import InboundIncoming from "@/views/inboundAirport/prealert/";
+import SuratJalan from "@/views/inboundAirport/suratJalan";
 
 export default {
-    name:"Receiving Bandara",
+    name:"Receiving-Airport",
     mixins: [master],
     components: {
         "table-master" : TableMaster,
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
-        "select-search-by-prealert": SelectSearchByPrealert,
-        "select-search-by-sj": SelectSearchBySJ,
+        "select-search-by": SelectSearchBy,
         "inbound-incoming": InboundIncoming,
         "sj-list": SuratJalan,
     },
     data() {
         return {
-            navItemm: [
+            navItem: [
                 {
                     label: "PREALERT",
                     key: "k-PREALERT",
-                    title: "Receiving Bandara"
+                    title: "Airport Receiving"
                 },
                 {
                     label: "SURAT JALAN",
@@ -116,76 +146,130 @@ export default {
                 }
             ],
             navActive: "k-PREALERT",
-            title: "Receiving Bandara",
-            searchBySJ: "manifest_do_number",
-            searchByPrealert: "inbound_number",
-            searchPlaceholderPrealert: "Search Inbound Number",
-            searchPlaceholderSJ: "Search Manifest DO Number",
-            tempSearch: ""
-        }
-    },
-    watch: {
-        navActive(val) {
-            if (val) {
-                switch(val) {
-                    case 'k-PREALERT':
-                        this.searchPlaceholderPrealert = "Search Inbound Number"
-                        break
-                    case 'k-SURATJALAN':
-                        this.searchPlaceholderSJ = "Search Manifest DO Number"
-                        break
-                    default:
+            title: "Airport Receiving",
+            tempSearch: "",
+
+            searchSuratJalanPlaceholder: "Search Manifest DO Number",
+            searchSuratJalanBy: "manifest_do_number",
+            searchSuratJalanByDataType: false,
+            searchSuratJalanParams: [
+                {
+                    label: 'Manifest DO Number',
+                    value: 'manifest_do_number'
+                },
+                {
+                    label: 'Vehicle Type',
+                    value: 'vehicle_type'
+                },
+                {
+                    label: 'Driver',
+                    value: 'pic'
+                },
+                {
+                    label: 'Mode',
+                    value: 'mode'
+                },
+                {
+                    label: 'Origin',
+                    value: 'origin'
+                },
+                {
+                    label: 'Destination',
+                    value: 'destination'
+                },
+                {
+                    label: 'Weight',
+                    value: 'weight'
+                },
+                {
+                    label: 'Status',
+                    value: 'status'
                 }
-            }
+            ],
+
+            searchPreAlertPlaceholder: "Search Inbound Number",
+            searchPreAlertBy: "inbound_number",
+            searchPreAlertByDataType: false,
+            searchPreAlertParams: [
+                {
+                    label: "Inbound Number",
+                    value: "inbound_number",
+                },
+                {
+                    label: "Vehicle",
+                    value: "vehicle_type_name",
+                },
+                {
+                    label: "Origin",
+                    value: "inbound_node_name_origin",
+
+                },
+                {
+                    label: "Bag",
+                    value: "inbound_total_bag",
+
+                },
+                {
+                    label: "Koli",
+                    value: "inbound_total_koli",
+
+                },
+                {
+                    label: "Weight",
+                    value: "inbound_total_weight",
+
+                },
+                {
+                    label: "PIC",
+                    value: "carrier_employee_name",
+                },
+                {
+                    label: "Status",
+                    value: "status",
+                },
+                {
+                    label: "Received At",
+                    value: "inbound_node_name_receiver",
+                }
+            ],
         }
     },
     methods: {
-        updateSearchBy(id,key,val) {
-            switch(id) {
+        updateSearchBy(key, val, dataType) {
+            switch(this.navActive) {
                 case "PREALERT":
-                    this.searchPlaceholderPrealert = key
-                    this.searchByPrealert = val
-                    break
+                    this.searchPreAlertBy = val;
+                    this.searchPreAlertPlaceholder = key;
+                    this.searchPreAlertByDataType = dataType;
+                    this.clearSearch();
+                    break;
                 case "SJ":
-                    this.searchPlaceholderSJ = key
-                    this.searchBySJ = val
-                    break
+                    this.searchSuratJalanBy = val;
+                    this.searchSuratJalanPlaceholder = key;
+                    this.searchSuratJalanByDataType = dataType;
+                    this.clearSearch();
+                    break;
                 default:
             }
         },
         searchValue (val) {
-            this.tempSearch = val
+            this.tempSearch = val;
         },
         clearSearch() {
-            this.$refs.searchInput.clear()
+            this.$refs.searchInput.clear();
         },
         activeTab(val) {
-            this.navActive = val
-            this.clearSearch()
+            this.navActive = val;
+            this.clearSearch();
+
+            let item = this.navItem.filter(item => {
+                return item.key == val;
+            })
+            this.title = item[0].title;
         },
         openDialog(){
-            this.$refs['k-PREALERT'].dialogSuratJalan = true
+            this.$router.push('inbound-airport/scan');
         },
-        redirectSJ(val){
-            const newActiveButton = document.querySelector(`.vs-navbar__item.k-SURATJALAN`);
-            if (newActiveButton) {
-                newActiveButton.click()
-            }
-            this.clearSearch()
-        }
     },
 }
 </script>
-<style lang="scss">
-    .users{
-        min-height: 50vh;
-        .view{
-            min-height: 400px;
-        }
-        .search-input{
-            @include for-phone-only{
-                margin-bottom: 1rem;
-            }
-        }
-    }
-</style>

@@ -1086,14 +1086,14 @@ const routes = [
       },
       {
         path: "/inbound-bandara",
-        name: "Receiving Bandara",
+        name: "Airport Receiving",
         component: InboundBandara,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Receiving Bandara / Prealert",
-          resource_type: resourceLookup["RECEIVING_BANDARA"].resource_type,
-          resource_code: resourceLookup["RECEIVING_BANDARA"].resource_code,
-          resource_name: resourceLookup["RECEIVING_BANDARA"].resource_name
+          breadCrumb: "Airport Receiving / Prealert",
+          resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
+          resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
+          resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
         }
       },
       {
