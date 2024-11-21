@@ -38,18 +38,22 @@ a{
 .main-container-opened{
     position: relative;
     min-height: 100vh;
-    margin-left: var(--sidebar-opened-width);
-    width: calc(100% - var(--sidebar-opened-width));
     background-color: $bgGrey;
-    transition: margin-left 0.3s ease, width 0.3s ease;
+    @media (min-width: 361px) {
+        margin-left: var(--sidebar-close-width);
+        width: calc(100% - var(--sidebar-close-width));
+        transition: margin-left 0.3s ease, width 0.3s ease;   
+    }
 }
 .main-container-closed{
     position: relative;
     min-height: 100vh;
-    margin-left: var(--sidebar-close-width);
-    width: calc(100% - var(--sidebar-close-width));
     background-color: $bgGrey;
-    transition: margin-left 0.3s ease, width 0.3s ease;
+    @media (min-width: 361px) {
+        margin-left: var(--sidebar-close-width);
+        width: calc(100% - var(--sidebar-close-width));
+        transition: margin-left 0.3s ease, width 0.3s ease;   
+    }
 }
 .container {
     padding: 2em;
@@ -131,8 +135,17 @@ ul{
 .mt-05{
     margin-top: .5em;
 }
+.my-05{
+    margin-top: 0.5em;
+    margin-bottom: .5em;
+}
 .mb-2 {
     margin-bottom: 2em;
+}
+
+.py-05{
+    padding-top: 0.5em;
+    padding-bottom: .5em;
 }
 
 // Global Anim
@@ -164,6 +177,7 @@ ul{
 
 .vs-table{
     table{
+        min-width: 0 !important;
         text-align: left;
         .md_5{
             width: calc(100% / 5) !important;

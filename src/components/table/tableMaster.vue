@@ -134,6 +134,11 @@
                 Action
               </vs-th>
             </template>
+            <template v-if="removeDanger == true">
+              <vs-th :class="[actionWidth ? actionWidth : '', 'action-responsive']">
+                Action
+              </vs-th>
+            </template>
           </template>
         </vs-tr>
       </template>
@@ -726,6 +731,29 @@
                 </vs-row>
               </vs-td>
             </template>
+            <template v-if="removeDanger == true">
+              <vs-td class="action-responsive">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      size="small"
+                      flat
+                      danger
+                      :active="true"
+                      :disabled="
+                        item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true
+                      "
+                      type="submit"
+                      @click="actionRemove(item)"
+                    >
+                      <span>Remove</span>
+                    </vs-button>
+                  </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
             <template v-if="runsheetAction == true">
               <vs-td class="action">
                 <vs-row justify="center" class="btn_action">
@@ -1222,6 +1250,7 @@ export default {
     customBtn_label: String,
     dynamicCancel: Function,
     dynamicCancelColumn: String,
+    removeDanger: Boolean,
 
     isMultipleSelect: Boolean,
     isMultipleSelectColoum: Boolean,
@@ -1229,6 +1258,7 @@ export default {
     isSearchAble: Boolean,
     isLocalPagination: Boolean,
     hasChildStatus: Boolean,
+    actionWidth: String,
 
     customAction: Boolean,
     customActionList: Array,
@@ -1546,6 +1576,7 @@ export default {
 .vs-table {
   table {
     text-align: left;
+    min-width: 0 !important;
     .md {
       width: calc(100% / 3) !important;
     }
@@ -1608,6 +1639,24 @@ export default {
     }
     .vs-select__input {
       min-height: 34px !important;
+    }
+    .action-responsive {
+      .vs-table__th__content {
+        justify-content: center !important;
+      }
+      &.vs-table__td {
+        .btn_action {
+          justify-content: center !important;
+          .vs-col {
+            display: flex !important;
+            justify-content: center !important;
+          }
+          button {
+            margin: 0 !important;
+            min-width: 5em !important;
+          }
+        }
+      }
     }
   }
 }
