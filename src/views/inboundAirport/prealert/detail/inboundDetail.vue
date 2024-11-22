@@ -2,7 +2,7 @@
     <div>
         <template v-if="listenLoading == false">
             <table-master 
-                :dataTable="dataTable" 
+                :dataTable="dataTableProp" 
                 :dataColumn="datacolumn" 
                 :tableLoading="listenLoading"
                 :hasAction="false"
@@ -54,26 +54,6 @@ export default {
         listendataTableProp(){
             return this.dataTableProp
         },
-    },
-    watch: {
-        dataTableProp: function(val) {
-            if(val != undefined) {
-                this.initialize(val[0])
-            }
-        },
-    },
-    methods: {
-        initialize(obj) {
-            if(obj != undefined){
-                if(obj.hasOwnProperty("detail_incoming")) {
-                    this.dataTable = obj["detail_incoming"]
-                }
-            }
-
-        },
-    },
-    mounted() {
-        this.initialize(this.listendataTableProp[0])
     }
 }
 </script>

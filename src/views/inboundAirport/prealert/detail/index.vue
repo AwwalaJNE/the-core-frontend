@@ -36,7 +36,7 @@
                                     <template v-if="loading == false">
                                         <InboundDetail 
                                             :ref="'inboundDetail'" 
-                                            :dataTableProp="dataTable" 
+                                            :dataTableProp="dataTableDetail" 
                                             :loading="loading"
                                         />
                                     </template>
@@ -83,6 +83,7 @@ export default {
             inbound_id:'',
             loading: false,
             dataTable: [],
+            dataTableDetail: [],
             inboundDetailData : []
         }
     },
@@ -109,6 +110,8 @@ export default {
                         item['total_unreceived'] = item.total_unreceived.toString()
                     })
                     this.dataTable = data
+
+                    this.dataTableDetail = res.data.detail;
 
                     this.loading = false
                 }).catch(err => {
