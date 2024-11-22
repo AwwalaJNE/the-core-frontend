@@ -118,7 +118,7 @@ export default {
             this.$ls.remove('id_inbound');
         },
         back(){
-            this.$router.push('/inbound-bandara')
+            this.$router.push('/inbound-airport')
             this.setRoutePageHistory(this.$route.meta, false);
         },
     },

@@ -356,7 +356,7 @@ export default {
         },
         {
           label: "Airport Receiving",
-          url: "/inbound-bandara",
+          url: "/inbound-airport",
           icon: "bx bxs-inbox",
           children: [],
           permission: "read-airport-prealert",

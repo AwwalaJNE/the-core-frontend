@@ -8,53 +8,64 @@
                 </div>
             </vs-col>
         </vs-row>
-        <section>
-            <div class="box view">
-                <vs-row 
-                    v-for="(info, index) in mainInfo" 
-                    :key="index" 
-                    class="info-row"
-                    align="center"
-                    justify="space-between"
+        <vs-row>
+            <section>
+                <div class="box view">
+                    <h3 align="left">SJ Information</h3>
+                    <vs-row 
+                        v-for="(info, index) in mainInfo" 
+                        :key="index" 
+                        class="info-row"
+                        align="center"
+                        justify="space-between"
+                    >
+                        <vs-col xs="12" sm="8" lg="4" class="info-label">
+                            <h4>{{ info.label }}</h4>
+                        </vs-col>
+                        <vs-col xs="12" sm="4" lg="8" class="info-value">
+                            <p>{{ main_info[info.value] || '-' }}</p>
+                        </vs-col>
+                    </vs-row>
+                </div>
+                <div class="box view">
+                    <template>
+                        <div class="card-container">
+                            <h3 align="left">SJ Detail</h3>
+                            <vs-row v-for="(item, index) in detail_info" :key="index">
+                                <vs-col xs="12" sm="6" lg="4">
+                                    <div class="card">
+                                        <div>
+                                            <vs-button
+                                                circle
+                                                icon
+                                                border
+                                                disabled
+                                                :danger="item.received ? true : false"
+                                                :active="false"
+                                            >
+                                                <i :class="`bx bx-${item.received ? 'x' : 'check'}`"/>
+                                            </vs-button>
+                                            <p>{{ item.item_type }}</p>
+                                        </div>
+                                        <div>
+                                            <h4>{{ item.item_number }}</h4>
+                                            <p>{{ item.total_weight }} kg • {{ item.item_destination }}</p>
+                                        </div>
+                                    </div>
+                                </vs-col>
+                            </vs-row>
+                        </div>
+                    </template>
+                </div>
+                <vs-button class="mt-2" style="float: right"
+                    square
+                    active
+                    @click="back"
                 >
-                    <vs-col xs="12" sm="8" lg="4" class="info-label">
-                        <h4>{{ info.label }}</h4>
-                    </vs-col>
-                    <vs-col xs="12" sm="4" lg="8" class="info-value">
-                        <p>{{ main_info[info.value] || '-' }}</p>
-                    </vs-col>
-                </vs-row>
-            </div>
-            <div class="box view">
-                <template>
-                    <div class="card-container">
-                        <vs-row v-for="(item, index) in detail_info" :key="index">
-                            <vs-col xs="12" sm="6" lg="4">
-                                <div class="card">
-                                    <div>
-                                        <vs-button
-                                            circle
-                                            icon
-                                            border
-                                            disabled
-                                            :danger="item.received ? true : false"
-                                            :active="false"
-                                        >
-                                            <i :class="`bx bx-${item.received ? 'x' : 'check'}`"/>
-                                        </vs-button>
-                                        <p>{{ item.item_type }}</p>
-                                    </div>
-                                    <div>
-                                        <h4>{{ item.item_number }}</h4>
-                                        <p>{{ item.total_weight }} kg • {{ item.item_destination }}</p>
-                                    </div>
-                                </div>
-                            </vs-col>
-                        </vs-row>
-                    </div>
-                </template>
-            </div>
-        </section>
+                    <i class="bx bxs-chevron-left"> </i>  BACK
+                </vs-button>
+            </section>
+        </vs-row>
     </div>
 </template>
 <script>
@@ -203,6 +214,10 @@ export default {
             } finally {
                 this.loading = false;
             }
+        },
+        back(){
+            this.$router.push('/inbound-airport')
+            this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {

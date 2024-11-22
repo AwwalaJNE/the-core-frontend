@@ -280,8 +280,5 @@ export default {
             this.$router.push('inbound-airport/scan');
         },
     },
-    mounted() {
-        console.log("PPPPP", this.isMobile)
-    },
 }
 </script>

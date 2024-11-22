@@ -210,7 +210,7 @@ export default {
         },
         handleEdit(val){
             if (this.isMobile) {
-                this.$router.push(`/inbound-bandara/${val.manifest_do_number}`);
+                this.$router.push(`/inbound-airport/sj/${val.manifest_do_number}`);
             } else {
                 if(this.dataTable.length > 0) {
                     this.dataItem = val
