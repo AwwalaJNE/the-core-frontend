@@ -315,7 +315,7 @@ export default {
                 } finally {
                     this.loading = false;
                     // TODO: RECHECK IT LATER
-                    this.is_auto_open_bag = true;
+                    // this.is_auto_open_bag = true;
                     this.refresh();
                     // TODO: Use Later
                     // this.handleClearForm();
