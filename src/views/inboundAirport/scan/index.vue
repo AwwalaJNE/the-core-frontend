@@ -142,7 +142,7 @@ export default {
     },
     data() {
         return {
-            title:"Receiving Airport",
+            title:"Airport Receiving",
             item_no:'',
             item_no_remove: '',
             form:{},
