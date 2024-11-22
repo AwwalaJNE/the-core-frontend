@@ -130,7 +130,7 @@
                   customAction == true
               "
             >
-              <vs-th class="action">
+              <vs-th :class="isMobile ? 'action-mobile' : 'action'">
                 Action
               </vs-th>
             </template>
@@ -801,7 +801,7 @@
               : printAction === true
                 ? true
                 : false">
-              <vs-td class="action">
+              <vs-td :class="isMobile ? 'action-mobile' : 'action'">
                 <vs-row justify="center" class="btn_action">
                   <template v-if="avoidAction == true">
                     <vs-col w="4">
@@ -1202,6 +1202,7 @@
   </div>
 </template>
 <script>
+import master from "@/mixins/master";
 import Pagination from "@/components/pagination/pagination.vue";
 import Checkbox from "@/components/input/checkbox.vue";
 import InputGeneral from "@/components/input/general";
@@ -1210,6 +1211,7 @@ import AutoComplete from "@/components/input/autoComplete";
 import { Dialog } from "element-ui";
 export default {
   name: "tabelMaster",
+  mixins: [master],
   components: {
     "pagination-master": Pagination,
     checkbox: Checkbox,
@@ -1576,7 +1578,7 @@ export default {
 .vs-table {
   table {
     text-align: left;
-    min-width: 0 !important;
+    min-width: fit-content !important;
     .md {
       width: calc(100% / 3) !important;
     }
@@ -1628,6 +1630,24 @@ export default {
       .vs-table__th__content {
         text-align: center;
         justify-content: center;
+      }
+    }
+    .action-mobile {
+      .vs-table__th__content {
+        justify-content: center !important;
+      }
+      &.vs-table__td {
+        .btn_action {
+          justify-content: center !important;
+          .vs-col {
+            display: flex !important;
+            justify-content: center !important;
+          }
+          button {
+            margin: 0 !important;
+            min-width: 5em !important;
+          }
+        }
       }
     }
     .checkbox-inp .vs-icon-check span {

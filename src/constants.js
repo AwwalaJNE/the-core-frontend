@@ -88,6 +88,7 @@ const resources = [
     { resource_code: "CORE-01-087", resource_type: "PAGE", resource_name: "DESTINATION" },
     { resource_code: "CORE-01-088", resource_type: "PAGE", resource_name: "SORTING_BAG" },
     { resource_code: "CORE-01-089", resource_type: "PAGE", resource_name: "RECEIVING_AIRPORT_SCAN" },
+    { resource_code: "CORE-01-090", resource_type: "PAGE", resource_name: "AIRPORT_RECEIVING_DETAIL" },
 ];
 
 

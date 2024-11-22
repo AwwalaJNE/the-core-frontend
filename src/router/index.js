@@ -126,6 +126,9 @@ import InboundBandara from "@/views/inboundAirport"
 // === Inbound Incoming Airpot Scan ===
 import InboundAirportScan from "@/views/inboundAirport/scan"
 
+// === Inbound Incoming Bandara ===
+import InboundBandaraDetail from "@/views/inboundAirport/suratJalan/detailSuratJalan"
+
 // === Inbound Incoming Bandara Detail ===
 import InboundIncomingDetail from "@/views/inboundAirport/prealert/detail"
 
@@ -1075,20 +1078,20 @@ const routes = [
         }
       },
       {
-        path: "/inbound-bandara/detail/:inbound_id?",
+        path: "/inbound-airport/detail/:inbound_id?",
         name: "InboundIncomingDetail",
         component: InboundIncomingDetail,
         meta: {
           requiresAuth: true,
           breadCrumb: "Inbound Incoming",
-          backPath: "/inbound-bandara",
+          backPath: "/inbound-airport",
           resource_type: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_type,
           resource_code: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_code,
           resource_name: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_name
         }
       },
       {
-        path: "/inbound-bandara",
+        path: "/inbound-airport",
         name: "Airport Receiving",
         component: InboundBandara,
         meta: {
@@ -1109,6 +1112,18 @@ const routes = [
           resource_type: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_type,
           resource_code: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_code,
           resource_name: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_name
+        }
+      },
+      {
+        path: "/inbound-airport/sj/:id",
+        name: "Airport Receiving Detail",
+        component: InboundBandaraDetail,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Airport Receiving",
+          resource_type: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_type,
+          resource_code: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_code,
+          resource_name: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_name
         }
       },
       {
