@@ -1101,11 +1101,11 @@ const routes = [
       },
       {
         path: "/inbound-airport/scan",
-        name: "Receiving Airport",
+        name: "Airport Receiving",
         component: InboundAirportScan,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Receiving Airport",
+          breadCrumb: "Airport Receiving",
           resource_type: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_type,
           resource_code: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_code,
           resource_name: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_name
