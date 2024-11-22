@@ -342,4 +342,7 @@ export default {
     inbound_staging: api + 'inbound-staging',
     inbound_staging_confirm: api + 'inbound-staging/confirm',
     inbound_staging_bulk: api + 'inbound-staging/bulk',
+
+    // Sorting Item History
+    sorting_item_history: api + 'sorting-item-history'
 }
