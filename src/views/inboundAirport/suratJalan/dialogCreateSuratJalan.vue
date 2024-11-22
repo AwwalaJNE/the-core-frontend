@@ -153,7 +153,6 @@ export default {
             });
 
             this.editData = val;
-            console.log(val)
 
             this.getArr(val.node_id_destination, val.destination.node_name, val.destination.node_code, "SET_SURAT_JALAN_DESTINATION_ID_ArrData");
             this.getArr(val.no_moda_angkutan_id, val.vehicle.vehicle_name, val.vehicle.vehicle_code, "SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ArrData");
@@ -187,8 +186,6 @@ export default {
                 label: data_code ? data_name + " (" + data_code + ")" : data_name,
                 value: data_id
             }
-
-            console.log("AS", data)
 
             this.$store.dispatch(data_table, [{
                 ...data,
