@@ -29,23 +29,6 @@
                 </div> 
             </div>
         </template>
-
-        <template v-slot:footer>
-            <vs-row justify="flex-end">
-                <vs-col w="3">
-                    <vs-button
-                        transparent
-                        block
-                        danger
-                        flat
-                        :active="true"
-                        @click="cancel"
-                    >
-                        Close
-                    </vs-button>
-                </vs-col>
-            </vs-row>
-        </template>
     </dialog-master>
 </template>
 <script>
