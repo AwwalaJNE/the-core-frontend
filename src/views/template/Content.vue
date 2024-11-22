@@ -33,13 +33,6 @@ export default {
             active: true,
         };
     },
-    watch: {
-        isMobile: function(val, old) {
-            if (val !== old) {
-                this.sidabarAction()
-            }
-        }
-    },
     methods: {
         sidabarAction() {
             this.active = !this.active;

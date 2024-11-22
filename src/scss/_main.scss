@@ -35,26 +35,36 @@ a{
     border-radius: 5px;
     padding: 5px;
 }
-.main-container-opened{
+.main-container-opened {
     position: relative;
     min-height: 100vh;
     background-color: $bgGrey;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+
+    margin-left: 0;
+    width: 100%;
+
     @media (min-width: 767px) {
-        margin-left: var(--sidebar-close-width);
-        width: calc(100% - var(--sidebar-close-width));
-        transition: margin-left 0.3s ease, width 0.3s ease;   
+        margin-left: var(--sidebar-opened-width);
+        width: calc(100% - var(--sidebar-opened-width));
     }
 }
-.main-container-closed{
+
+.main-container-closed {
     position: relative;
     min-height: 100vh;
     background-color: $bgGrey;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+
+    margin-left: 0;
+    width: 100%;
+
     @media (min-width: 767px) {
         margin-left: var(--sidebar-close-width);
         width: calc(100% - var(--sidebar-close-width));
-        transition: margin-left 0.3s ease, width 0.3s ease;   
     }
 }
+
 .container {
     padding: 2em;
     min-height: 100vh;
