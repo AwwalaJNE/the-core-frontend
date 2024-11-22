@@ -18,7 +18,8 @@ const Master = {
             Helper: null,
             day:null,
             Loading: null,
-            alert:null
+            alert:null,
+            isMobile: false,
         }
     },
     computed: {
@@ -392,7 +393,17 @@ const Master = {
             const formattedTime = date.toTimeString().slice(0, 8);
             
             return `${formattedDate} ${formattedTime}`;
+        },
+        checkIfMobile() {
+            this.isMobile = window.matchMedia("(max-width: 768px)").matches;
         }
+    },
+    mounted() {
+        this.checkIfMobile();
+        window.addEventListener('resize', this.checkIfMobile);
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.checkIfMobile);
     },
     created() {
         this.URL = URL

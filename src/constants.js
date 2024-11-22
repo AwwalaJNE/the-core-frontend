@@ -55,7 +55,7 @@ const resources = [
     { resource_code: "CORE-01-054", resource_type: "PAGE", resource_name: "RECEIVING" },
     { resource_code: "CORE-01-055", resource_type: "PAGE", resource_name: "INBOUND_INCOMING_SCAN" },
     { resource_code: "CORE-01-056", resource_type: "PAGE", resource_name: "INBOUND_INCOMING_DETAIL" },
-    { resource_code: "CORE-01-057", resource_type: "PAGE", resource_name: "RECEIVING_BANDARA" },
+    { resource_code: "CORE-01-057", resource_type: "PAGE", resource_name: "AIRPORT_RECEIVING" },
     { resource_code: "CORE-01-058", resource_type: "PAGE", resource_name: "DELIVERY_RUNSHEET" },
     { resource_code: "CORE-01-059", resource_type: "PAGE", resource_name: "DELIVERY_RUNSHEET DELETE SOON" },
     { resource_code: "CORE-01-060", resource_type: "PAGE", resource_name: "DELIVERY_RUNSHEET_EDIT" },
@@ -87,6 +87,7 @@ const resources = [
     { resource_code: "CORE-01-086", resource_type: "PAGE", resource_name: "SETTINGS_RUNSHEET" },
     { resource_code: "CORE-01-087", resource_type: "PAGE", resource_name: "DESTINATION" },
     { resource_code: "CORE-01-088", resource_type: "PAGE", resource_name: "SORTING_BAG" },
+    { resource_code: "CORE-01-090", resource_type: "PAGE", resource_name: "AIRPORT_RECEIVING_DETAIL" },
 ];
 
 

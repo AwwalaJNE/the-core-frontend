@@ -123,6 +123,9 @@ import InboundIncomingScan from "@/views/inbound/scan"
 // === Inbound Incoming Bandara ===
 import InboundBandara from "@/views/inboundAirport"
 
+// === Inbound Incoming Bandara ===
+import InboundBandaraDetail from "@/views/inboundAirport/suratJalan/detailSuratJalan"
+
 // === Inbound Incoming Bandara Detail ===
 import InboundIncomingDetail from "@/views/inboundAirport/prealert/detail"
 
@@ -1072,28 +1075,40 @@ const routes = [
         }
       },
       {
-        path: "/inbound-bandara/detail/:inbound_id?",
+        path: "/inbound-airport/detail/:inbound_id?",
         name: "InboundIncomingDetail",
         component: InboundIncomingDetail,
         meta: {
           requiresAuth: true,
           breadCrumb: "Inbound Incoming",
-          backPath: "/inbound-bandara",
+          backPath: "/inbound-airport",
           resource_type: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_type,
           resource_code: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_code,
           resource_name: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_name
         }
       },
       {
-        path: "/inbound-bandara",
-        name: "Receiving Bandara",
+        path: "/inbound-airport",
+        name: "Airport Receiving",
         component: InboundBandara,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Receiving Bandara / Prealert",
-          resource_type: resourceLookup["RECEIVING_BANDARA"].resource_type,
-          resource_code: resourceLookup["RECEIVING_BANDARA"].resource_code,
-          resource_name: resourceLookup["RECEIVING_BANDARA"].resource_name
+          breadCrumb: "Airport Receiving / Prealert",
+          resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
+          resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
+          resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
+        }
+      },
+      {
+        path: "/inbound-airport/sj/:id",
+        name: "Airport Receiving Detail",
+        component: InboundBandaraDetail,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Airport Receiving",
+          resource_type: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_type,
+          resource_code: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_code,
+          resource_name: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_name
         }
       },
       {

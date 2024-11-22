@@ -355,15 +355,15 @@ export default {
           },
         },
         {
-          label: "Receiving Bandara",
-          url: "/inbound-bandara",
+          label: "Airport Receiving",
+          url: "/inbound-airport",
           icon: "bx bxs-inbox",
           children: [],
-          permission: "create-manifest-delivery-order-airport",
+          permission: "read-airport-prealert",
           meta: {
-            resource_type: resourceLookup["RECEIVING_BANDARA"].resource_type,
-            resource_code: resourceLookup["RECEIVING_BANDARA"].resource_code,
-            resource_name: resourceLookup["RECEIVING_BANDARA"].resource_name
+            resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
+            resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
+            resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
           },
         },
         {
