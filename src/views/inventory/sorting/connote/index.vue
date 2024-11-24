@@ -12,6 +12,13 @@
             <vs-row>
                 <vs-col xs="12" sm="12" lg="6">
                     <div class="box view">
+                        <vs-row>
+                            <vs-col xs="12" sm="12" lg="12">
+                                <vs-checkbox  v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                                    Auto Open Bag
+                                </vs-checkbox>
+                            </vs-col>
+                        </vs-row>
                         <vs-row style="align-items: center; margin-top: 10px;">
                             <vs-col xs="12" sm="12" lg="6">
                                 <vs-input 
@@ -245,6 +252,7 @@ export default {
             ],
             type: 'initial',
             sort_info: {},
+            is_auto_open_bag: true,
         }
     },
     computed: {
@@ -253,6 +261,9 @@ export default {
         },
     },
     methods: {
+        handleAutoOpenBag(val) {
+            this.is_auto_open_bag = val.target.checked;
+        },
         updateValue(key, val, info){
             switch(key) {
                 case "destination":
@@ -285,6 +296,7 @@ export default {
                 this.form = {
                     item_number: this.item_number,
                     destination_scope : this.destination,
+                    auto_open_bag: this.is_auto_open_bag
                 }
 
                 this.loading = true;
@@ -302,6 +314,8 @@ export default {
                     this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
                 } finally {
                     this.loading = false;
+                    // TODO: RECHECK IT LATER
+                    // this.is_auto_open_bag = true;
                     this.refresh();
                     // TODO: Use Later
                     // this.handleClearForm();
