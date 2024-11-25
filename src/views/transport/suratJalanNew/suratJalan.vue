@@ -312,8 +312,6 @@ export default {
                         }
                     })
 
-                    console.log("-----------------------------------------")
-
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
