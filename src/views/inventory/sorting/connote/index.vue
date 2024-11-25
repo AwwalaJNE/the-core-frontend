@@ -63,24 +63,25 @@
                             <div class="success-container">
                                 <vs-row class="header-row">
                                     <vs-row>
-                                        <i class="bx bxs-check-circle"></i>
+                                        <i class="bx bxs-check-circle" style="margin-top: 0;"></i>
                                     </vs-row>
                                     <vs-row>
                                         <label>CONNOTE NUMBER</label>
                                     </vs-row>
                                     <vs-row>
-                                        <h4>{{ sort_info.item_number }}</h4>
+                                        <h4 style="margin: 0;">{{ sort_info.item_number }}</h4>
                                     </vs-row>
                                 </vs-row>
                                 
-                                <vs-row class="details-row">
-                                    <vs-col xs="6" sm="6" lg="6">
+                                <vs-row justify="center" class="mb-2" style="gap: 0.5em">
+                                    <vs-col w="12">
                                         <label>NODE DESTINATION</label>
-                                        <h3 class="outline">{{ sort_info.information.destination }}</h3>
+                                        <h1 class="destination">{{ sort_info.information.destination }}</h1>
                                     </vs-col>
-                                    <vs-col xs="6" sm="6" lg="6" class="details-row-left">
-                                        <label>SLA REMAINS</label>
-                                        <h3 :class="listenSLAType(sort_info.information.sla_minutes_remains)">{{ this.convertMinutesToTimeFormat(sort_info.information.sla_minutes_remains) }}</h3>
+                                    <vs-col xs="12" md="8" lg="6" :class="listenSLAType(sort_info.information.sla_minutes_remains) + ' sla'">
+                                        <label class="type">{{ this.getSLAType(sort_info.information.sla_minutes_remains) }}</label>
+                                        <br/>
+                                        <label class="remaining">{{ sort_info.information.sla_minutes_remains < 0 ? 'OVER BY:' : 'SLA REMAINS:' }} {{ this.convertMinutesToTimeFormat(sort_info.information.sla_minutes_remains) }}</label>
                                     </vs-col>
                                 </vs-row>
 
@@ -439,23 +440,36 @@ export default {
     color:#2C3E50;
 }
 
-.outline {
+.destination {
     -webkit-text-stroke: 0.5px #424242;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.sla {
+    color: white;
+    border-radius: 1.5em;
+    padding: 0.5em 0;
+    font-weight: bold;
+    .type {
+        font-size: 2.5rem;
+        margin: 0;
+    }
+    .remaining {
+        font-size: 0.75rem;
+    }
 }
 
 .over {
-    color: red;
-    -webkit-text-stroke: 0.5px red;
+    background-color: red;
 }
 
 .warning {
-    color: orange;
-    -webkit-text-stroke: 0.5px orange;
+    background-color: orange;
 }
 
 .safe {
-    color: green;
-    -webkit-text-stroke: 0.5px green;
+    background-color: green;
 }
 
 </style>
