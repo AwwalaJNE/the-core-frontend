@@ -3849,7 +3849,6 @@ export default {
       ],
       valueData: null,
       value: '',
-      isDisabled: true
     },
     etd: {
       label: "ETD",
