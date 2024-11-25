@@ -76,18 +76,18 @@
                                 <vs-row class="details-row">
                                     <vs-col xs="6" sm="6" lg="6">
                                         <label>NODE DESTINATION</label>
-                                        <h4>{{ sort_info.information.destination }}</h4>
+                                        <h3 class="outline">{{ sort_info.information.destination }}</h3>
                                     </vs-col>
                                     <vs-col xs="6" sm="6" lg="6" class="details-row-left">
-                                        <label>ZIP CODE RECEIVER</label>
-                                        <h4>{{ sort_info.information.zip_code_receiver }}</h4>
+                                        <label>SLA REMAINS</label>
+                                        <h3 :class="listenSLAType(sort_info.information.sla_minutes_remains)">{{ this.convertMinutesToTimeFormat(sort_info.information.sla_minutes_remains) }}</h3>
                                     </vs-col>
                                 </vs-row>
 
                                 <vs-row class="details-row">
                                     <vs-col xs="6" sm="6" lg="6">
-                                        <label>SLA REMAINS</label>
-                                        <h4>{{ this.convertMinutesToTimeFormat(sort_info.information.sla_minutes_remains) }}</h4>
+                                        <label>ZIP CODE RECEIVER</label>
+                                        <h4>{{ sort_info.information.zip_code_receiver }}</h4>
                                     </vs-col>
                                     <vs-col xs="6" sm="6" lg="6" class="details-row-left">
                                         <label>SLA DATE</label>
@@ -372,6 +372,15 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
+        listenSLAType(sla) {
+            if (sla < 0) {
+                return 'over'
+            }
+            else if (sla < 30) {
+                return 'warning'
+            }
+            return 'safe'
+        }
     },
     mounted() {
         this.refresh();
@@ -428,6 +437,25 @@ export default {
     font-size: 20px;
     font-weight: bold;
     color:#2C3E50;
+}
+
+.outline {
+    -webkit-text-stroke: 0.5px #424242;
+}
+
+.over {
+    color: red;
+    -webkit-text-stroke: 0.5px red;
+}
+
+.warning {
+    color: orange;
+    -webkit-text-stroke: 0.5px orange;
+}
+
+.safe {
+    color: green;
+    -webkit-text-stroke: 0.5px green;
 }
 
 </style>
