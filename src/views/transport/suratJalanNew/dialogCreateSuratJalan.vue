@@ -21,7 +21,7 @@
                     {{ listenTitle }}
                 </vs-col>
                 <vs-col class="button-helper" w="3">
-                    <template v-if="is_approve === 1">
+                    <!-- <template v-if="is_approve === 1">
                         <vs-button
                             class="button-item"
                             :disabled="isDisabledPrint"
@@ -29,7 +29,7 @@
                         >
                             Print
                         </vs-button>
-                    </template>
+                    </template> -->
                     <template v-if="listenUserRoleName === 'HELPDESK'">
                         <vs-button  
                             class="button-item"
