@@ -152,6 +152,11 @@ export default {
             ],
             customActionList: [
                 {
+                    label: 'Print',
+                    key: 'print',
+                    attribute: '',
+                },
+                {
                     label: 'Depart',
                     key: 'depart',
                     attribute: '',
@@ -236,6 +241,7 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     let buttonStatus = {
+                        'print': true,
                         'depart': true,
                         'cancel': true
                     }
@@ -247,23 +253,62 @@ export default {
                         item["driver_id"] = (item.pic_employee_id) ? parseInt(item.pic_employee_id): null
                         item["driver_name"] = (item.pic) ? item.pic.employee_name: null
                         item["orion_number"] = item.mts || item.do || "";
-                        item["approved"] = item.is_approve    === 1 ? 'YES' : 'NO';
+                        item["approved"] = item.is_approve === 1 ? 'YES' : 'NO';
                         
                         if (item.hasOwnProperty('status') && item["status"] !== null) {
                             let str = item["status"].toLowerCase();
-                            if (!str.includes("ready")) {
-                                buttonStatus["depart"] = false;
-                                item["button_status"] = buttonStatus;
+                            if (item.is_approve === 1) {
+                                
+                                if (str.includes("ready")) {
+                                    buttonStatus = { 
+                                        'print': true, 
+                                        'depart': true, 
+                                        'cancel': true 
+                                    };
+                                } else if (str.includes("depart") || str.includes("info") || str.includes("receive") || str.includes("complete")) {
+                                    buttonStatus = { 
+                                        'print': true, 
+                                        'depart': false, 
+                                        'cancel': false 
+                                    };
+                                } else if (str.includes("cancel")) {
+                                    buttonStatus = { 
+                                        'print': false, 
+                                        'depart': false, 
+                                        'cancel': false 
+                                    };
+                                }
+                            } else {
+                                if (str.includes("ready")) {
+                                    buttonStatus = { 
+                                        'print': false, 
+                                        'depart': false, 
+                                        'cancel': true 
+                                    };
+                                } else if (str.includes("depart") || str.includes("info") || str.includes("receive") || str.includes("complete")) {
+                                    buttonStatus = { 
+                                        'print': true, 
+                                        'depart': false, 
+                                        'cancel': false 
+                                    };
+                                } else if (str.includes("cancel")) {
+                                    buttonStatus = { 
+                                        'print': false, 
+                                        'depart': false, 
+                                        'cancel': false 
+                                    };
+                                }
                             }
-                            if (str.includes("cancel")) {
-                                buttonStatus["cancel"] = false;
-                                item["button_status"] = buttonStatus;
-                            }
+                            
+                            item["button_status"] = buttonStatus;
                         }
 
                         if (item.is_orion == "1") {
-                            buttonStatus["cancel"] = false;
-                            item["button_status"] = buttonStatus;
+                            item["button_status"] = {
+                                'print': true,
+                                'depart': false,
+                                'cancel': false
+                            };
                         }
                     })
 
@@ -291,6 +336,10 @@ export default {
 
         actionUpdate(val, key) {
             switch(key) {
+                case "print":
+                    this.manifest_do_number = val.manifest_do_number
+                    this.print()
+                    break;
                 case "depart":
                     this.manifest_do_number = val.manifest_do_number
                     this.depart()
@@ -331,6 +380,25 @@ export default {
         },
         refresh(){
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.filterDateBy)
+        },
+        print() {
+            let routeData = this.$router.resolve({ 
+                name: 'printGeneral', 
+                params: { 
+                    'id': this.manifest_do_number, 
+                    'type': 'manifest-delivery-order', 
+                    'node_id':this.listenNodeId 
+                } 
+            });
+
+            const printWindow = window.open(routeData.href, '_blank', 'noopener');
+      
+            if (printWindow) {
+                printWindow.onload = function() {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                };
+            }
         },
         async depart() {
             this.loading = true
