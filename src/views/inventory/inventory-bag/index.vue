@@ -90,8 +90,14 @@
                                     :selectedValue="filterDateBy" />
                             </vs-col>
                             <vs-col xs="12" sm="4" lg="3">
-                                <date-time :name="''" :rules="''" :formKey="'TRIGGER_DATE'" :valueData="tempDate"
-                                typeInput="daterange" @updateValue="searchDate" />
+                                <date-time 
+                                    :name="''" 
+                                    :rules="''" 
+                                    :formKey="'DATE_TIME_WITHOUT_SECONDS'" 
+                                    :valueData="tempDate"
+                                    typeInput="datetimerange" 
+                                    @updateValue="searchDate" 
+                                />
                             </vs-col>
                         </vs-row>
                         <transition name="slide-fade">
