@@ -362,14 +362,22 @@ const Master = {
             }
         },
         convertMinutesToTimeFormat(totalMinutes) {
+            totalMinutes = Math.abs(totalMinutes);
+            const days = Math.floor(totalMinutes / 1440);
+            const hours = Math.floor((totalMinutes % 1440) / 60);
+            const minutes = totalMinutes % 60;
+        
+            return `${days} DAYS, ${hours} HOURS, ${minutes} MINUTES`;
+        },
+        getSLAType(totalMinutes) {
             if (totalMinutes < 0) {
                 return `OVER SLA`;
-            } else {
-                const days = Math.floor(totalMinutes / 1440);
-                const hours = Math.floor((totalMinutes % 1440) / 60);
-                const minutes = totalMinutes % 60;
-            
-                return `${days} DAYS ${hours} HOURS ${minutes} MINUTES`;
+            }
+            else if (totalMinutes < 30) {
+                return 'WARNING SLA'
+            }
+            else {
+                return 'SAFE SLA'
             }
         },
         formatDateTime(dateTimeStr) {
