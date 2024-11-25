@@ -71,7 +71,7 @@
                     style="margin: 0.5em;"
                   >
                     <span>
-                      Approve
+                      Confirm
                     </span>
                   </vs-button>
                   </vs-col>
