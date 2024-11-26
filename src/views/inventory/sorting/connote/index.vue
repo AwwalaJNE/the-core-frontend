@@ -54,6 +54,8 @@
                             </vs-col>
                         </vs-row>
                     </div>
+                </vs-col>
+                <vs-col w="12">
                     <div class="box view">
                         <template v-if="type === 'initial'">
                             <img class="logo" :src="require('../../../../assets/img/bagging-placeholder.png')" alt="jne" width="300" align="center">
@@ -117,27 +119,31 @@
                         </template>
                     </div>
                 </vs-col>
-                <vs-col xs="12" sm="12" lg="6">
+                <vs-col w="12">
                     <div class="box view">
-                        <vs-row>
+                        <vs-row justify="space-between" class="my-05">
                             <vs-col xs="12" sm="12" lg="4">
                                 <h4 style="text-align: left;">Sorting History</h4>
                             </vs-col>
-                            <vs-col xs="12" sm="6" lg="4" style="margin-top: 8px;">
-                                <select-search-by 
-                                    :border="true" 
-                                    :isMultiple="false" 
-                                    :selectedValue="searchBy" 
-                                    :valueData="searchParams" 
-                                    @updateSearchBy="updateSearchBy" 
-                                />
-                            </vs-col>
-                            <vs-col xs="12" sm="6" lg="4" style="margin-top: 8px;">
-                                <search-input 
-                                    ref="searchInput" 
-                                    :placeholder="searchPlaceholder" 
-                                    @searchValue="searchValue" 
-                                />
+                            <vs-col xs="12" sm="12" lg="6" style="padding: 0;">
+                                <vs-row justify="end">
+                                    <vs-col xs="12" sm="6" lg="4" style="margin-top: 8px;">
+                                        <select-search-by 
+                                            :border="true" 
+                                            :isMultiple="false" 
+                                            :selectedValue="searchBy" 
+                                            :valueData="searchParams" 
+                                            @updateSearchBy="updateSearchBy" 
+                                        />
+                                    </vs-col>
+                                    <vs-col xs="12" sm="6" lg="4" style="margin-top: 8px;">
+                                        <search-input 
+                                            ref="searchInput" 
+                                            :placeholder="searchPlaceholder" 
+                                            @searchValue="searchValue" 
+                                        />
+                                    </vs-col>
+                                </vs-row>
                             </vs-col>
                         </vs-row>
                         <table-master 
@@ -470,6 +476,13 @@ export default {
 
 .safe {
     background-color: green;
+}
+
+.searchbox {
+    .vs-input-content {
+        max-width: none !important;
+        width: 100%;
+}
 }
 
 </style>
