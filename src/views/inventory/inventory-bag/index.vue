@@ -252,6 +252,10 @@ export default {
                 {
                     label: 'Opened Date',
                     value: 'opened'
+                },
+                {
+                    label: 'Received Date',
+                    value: 'receive'
                 }
             ]
 
