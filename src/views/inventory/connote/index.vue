@@ -348,7 +348,7 @@ export default {
                 },
                 {
                     label: 'Received Date',
-                    value: 'receive'
+                    value: 'received'
                 }
             ],
             bagRouting:"",
