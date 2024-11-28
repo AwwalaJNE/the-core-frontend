@@ -261,7 +261,7 @@ export default {
                                 
                                 if (str.includes("ready")) {
                                     buttonStatus = { 
-                                        'print': true, 
+                                        'print': false, 
                                         'depart': true, 
                                         'cancel': true 
                                     };
@@ -405,6 +405,7 @@ export default {
 
             try {
                 const res = await axios.patch(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/depart?n=${this.listenNodeId}&is_departed=1`, {}, this.Helper.header());
+                this.print();
                 this.openNotification('success', null, 'Success', 'Update surat jalan success')
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code ?? '', 'Update surat jalan failed', err?.response?.data?.message ?? 'something went wrong')
