@@ -181,6 +181,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Received Date",
+                    key: "received_at",
+                    width: "xs"
+                },
+                {
                     label: "# Item",
                     key: "bag_detail_qty",
                     width: "auto"
