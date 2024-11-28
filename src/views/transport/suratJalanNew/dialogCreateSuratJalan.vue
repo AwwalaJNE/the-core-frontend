@@ -304,7 +304,7 @@ export default {
             this.dataTable.forEach(item => {
                 item.destination = item.bag?.destination?.node_tariff_code || item.koli?.connote?.connote_receiver_tariff_code || item.manifest?.destination?.node_tariff_code || '';
 
-                if (val.status !== "READY") {
+                if (val.status !== "READY" || val.is_approve === 1) {
                     item.button_status = { remove: false };
                 }
 
@@ -611,10 +611,6 @@ export default {
                 this.is_approve ^= 1;
                 this.isDisabled = !this.isDisabled;
                 this.openNotification("success", null, "Success", res?.data?.message);
-
-                if (this.is_approve === 1) {
-                    this.print();
-                }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
             } finally {
