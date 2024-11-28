@@ -291,7 +291,7 @@ export default {
             this.dataTable.forEach(item => {
                 item.destination = item.bag?.destination?.node_tariff_code || item.koli?.connote?.connote_receiver_tariff_code || item.manifest?.destination?.node_tariff_code || '';
 
-                if (val.status !== "READY") {
+                if (val.status !== "READY" || val.is_approve === 1) {
                     item.button_status = { remove: false };
                 }
 
