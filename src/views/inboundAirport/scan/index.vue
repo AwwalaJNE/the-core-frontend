@@ -14,10 +14,11 @@
           <vs-row>
             <vs-col lg="6" sm="12" xs="12">
               <div class="box information scan-box">
-                  <vs-row>
-                    <vs-col xs="12" sm="12" lg="6" class="my-05">
-                      <template>
-                        <div class="center">
+                <vs-row>
+                  <vs-col xs="12" sm="12" lg="6" class="my-1">
+                    <template>
+                      <div class="center">
+                        <form @submit.prevent>
                           <vs-input border type="text"
                                     v-model="item_no"
                                     label-placeholder="Scan Bag Here"
@@ -31,12 +32,14 @@
                               <i class="bx bx-barcode-reader"></i>
                             </template>
                           </vs-input>
-                        </div>
-                      </template>
-                    </vs-col>
-                    <vs-col xs="12" sm="12" lg="6" class="my-05">
-                      <template>
-                        <div class="center">
+                        </form>
+                      </div>
+                    </template>
+                  </vs-col>
+                  <vs-col xs="12" sm="12" lg="6" class="my-1">
+                    <template>
+                      <div class="center">
+                        <form @submit.prevent>
                           <vs-input border type="text"
                                     v-model="item_no_remove"
                                     label-placeholder="Remove Bag Here"
@@ -50,10 +53,11 @@
                               <i class="bx bx-barcode-reader"></i>
                             </template>
                           </vs-input>
-                        </div>
-                      </template>
-                    </vs-col>
-                  </vs-row>
+                        </form>
+                      </div>
+                    </template>
+                  </vs-col>
+                </vs-row>
               </div>
             </vs-col>
 
@@ -276,6 +280,7 @@ export default {
         confirmRemove() {
             this.loadingConfirmRemove = true
             this.removeData()
+            this.handlerClearForm()
         },
         async removeData(){
             await axios
