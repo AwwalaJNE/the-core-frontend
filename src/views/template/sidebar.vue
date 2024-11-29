@@ -1031,7 +1031,11 @@ export default {
       const filtered = [];
 
       menus.forEach((menu) => {
-        const { permission, children, rolePermission, showAll } = menu;
+        const { permission, children, rolePermission, showAll, label } = menu;
+
+        if (permissions.includes("read-airport-prealert") && label === "Receiving") {
+          return;
+        }
 
         if (foundPermission?.type === 'exclusive') {
           if (children.length > 0) {
