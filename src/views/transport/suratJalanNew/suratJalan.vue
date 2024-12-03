@@ -278,7 +278,7 @@ export default {
               : null;
             item["node_id_origin_name"] = item.origin
               ? item.manifest_do_number?.startsWith("SJA")
-                ? `${item.origin.node_name} (Airport)`
+                ? `${item.origin.node_name} (AIRPORT)`
                 : item.origin.node_name
               : null;
             item["node_id_destination_name"] = item.destination
