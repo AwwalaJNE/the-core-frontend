@@ -12,9 +12,13 @@
                     />
                 </vs-col>
                 <vs-col xs="12" sm="4" lg="4">
-                    <daterange-filter 
-                        @searchDate="searchDate" 
-                        size="small"
+                     <date-time 
+                        :name="''" 
+                        :rules="''" 
+                        :formKey="'DATE_TIME_WITHOUT_SECONDS'" 
+                        :valueData="tempDate"
+                        typeInput="datetimerange" 
+                        @updateValue="searchDate" 
                     />
                 </vs-col>
             </vs-row>
@@ -37,6 +41,7 @@ import master from "@/mixins/master"
 
 import Breadcrumb from "@/components/breadcrumb/index";
 import dateRange from "@/components/daterange/index";
+import DateTime from "@/components/input/dateTime"
 import NavItem from "@/components/navbar/navTab";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
@@ -53,7 +58,7 @@ export default {
         "nav-item": NavItem,
         breadcrumb: Breadcrumb,
         "search-input": SearchInput,
-        "daterange-filter": dateRange,
+        "date-time": DateTime,
         "select-search-by": SelectSearchBy,
         SuratJalan: SuratJalan,
     },
@@ -82,7 +87,7 @@ export default {
         refresh() {
             this.$refs.SuratJalan.refresh();
         },
-        searchDate(val) {
+        searchDate(formKey, val) {
             this.tempDate = val;
         },
         updateFilterDateBy(key,val) {
