@@ -196,18 +196,33 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Origin",
+                    label: "Origin Node Code",
                     key: "origin_tariff_code",
                     width: "auto"
                 },
                 {
-                    label: "Destination",
+                    label: "Origin",
+                    key: "origin",
+                    width: "auto"
+                },
+                {
+                    label: "Origin Name",
+                    key: "origin_name",
+                    width: "auto"
+                },
+                {
+                    label: "Destination Node Code",
                     key: "destination_node_code",
                     width: "auto"
                 },
                 {
+                    label: "Destination",
+                    key: "destination",
+                    width: "auto"
+                },
+                {
                     label: "Destination Name",
-                    key: "destination_node_name",
+                    key: "destination_name",
                     width: "auto"
                 },
                 {
