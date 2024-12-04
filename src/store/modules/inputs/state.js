@@ -3884,7 +3884,7 @@ export default {
     no_moda_angkutan_id: {
       label: "Nama Kendaraan",
       key: "no_moda_angkutan_id",
-      rule:"",
+      rule:"required",
       typeInput: "select-barcode",
       typeData: "String",
       width: "6",
@@ -3895,14 +3895,11 @@ export default {
     driver_id: {
       label: "Driver",
       key: "driver_id",
-      rule:"",
+      rule:"required",
       typeInput: "select",
       typeData: "String",
       width: "6",
-      arrData: [{
-        'label':null,
-        'value':0
-      }],
+      arrData: [],
       valueData: null,
       value: ''
     }
