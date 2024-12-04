@@ -595,11 +595,10 @@ export default {
             }
         },
         async approve() {
-            if (this.master_form.vehicle_id === null) {
-                this.openNotification("warning", null, "Warning", "Please choose vehicle");
-            }
-            else if (this.master_form.pic_employee_id === null) {
-                this.openNotification("warning", null, "Warning", "Please choose driver");
+            this.$refs.formSuratJalan.handleSubmit();
+
+            if (this.master_form.vehicle_id === null || this.master_form.pic_employee_id === null) {
+                return
             } else {
                 this.loading = true;
                 try {
