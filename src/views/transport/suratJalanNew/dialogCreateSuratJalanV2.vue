@@ -595,10 +595,9 @@ export default {
             }
         },
         async approve() {
-            this.$refs.formSuratJalan.handleSubmit();
-
+            
             if (this.master_form.vehicle_id === null || this.master_form.pic_employee_id === null) {
-                return
+                this.$refs.formSuratJalan.handleSubmit();
             } else {
                 this.loading = true;
                 try {
