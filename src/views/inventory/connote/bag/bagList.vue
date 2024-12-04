@@ -264,7 +264,7 @@ export default {
             bagOriginFilter: this.bagOrigin ? this.bagOrigin : "",
             routingFilter: this.bagRouting ? this.bagRouting : "",
             tipeBagFilter: this.bagTipe ? this.bagTipe : "",
-            statusBagFilter: this.bagStatus ? this.bagStatus : "0",
+            statusBagFilter: this.bagStatus ? this.bagStatus : "",
             statusBagIrreg: this.bagIrreg ? this.bagIrreg : "",
             bagSourceFilter: this.bagSource ? this.bagSource : "",
             filterDateBy: this.searchDateBy ? this.searchDateBy : "",

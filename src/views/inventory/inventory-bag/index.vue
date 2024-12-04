@@ -182,7 +182,7 @@ export default {
             bagOrigin: "",
             bagRouting:"",
             bagTipe:"",
-            bagStatus:"0",
+            bagStatus:"",
             bagIrreg: "",
             bagSource: "",
             destination_tlc: [{

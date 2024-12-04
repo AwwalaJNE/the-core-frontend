@@ -87,7 +87,7 @@
 
                     <vs-row>
                         <vs-col style="overflow: auto;">
-                            <div v-if="!loadingDetail && !oading">
+                            <div v-if="!loadingDetail && !loading">
                                 <table-master
                                     :dataTable="dataTable"
                                     :dataColumn="datacolumn"
