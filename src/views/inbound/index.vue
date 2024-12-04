@@ -152,7 +152,14 @@
                     <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
                   </vs-col>
                   <vs-col xs="12" sm="4" lg="3">
-                    <daterange-filter :ref="'dateFilter'" @searchDate="searchDate" size="small" />
+                     <date-time 
+                        :name="''" 
+                        :rules="''" 
+                        :formKey="'DATE_TIME_WITHOUT_SECONDS'" 
+                        :valueData="tempDate"
+                        typeInput="datetimerange" 
+                        @updateValue="searchDate" 
+                    />
                   </vs-col>
                   <vs-col xs="12" sm="8" lg="2" style="display: flex; justify-content: end;">
                     <vs-button
@@ -196,7 +203,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import Inputan from "@/components/input/inputan"
 import InboundIncoming from "@/views/inbound/inboundList"
-
+import DateTime from "@/components/input/dateTime"
 import dateRange from "@/components/daterange/index"
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
@@ -207,7 +214,7 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
-        "daterange-filter": dateRange,
+        "date-time": DateTime,
         "InboundIncoming": InboundIncoming,
         "inputan": Inputan,
         "select-search-by": SelectSearchBy,
@@ -391,8 +398,8 @@ export default {
         searchValue (val) {
             this.tempSearch = val
         },
-        searchDate (val) {
-            this.tempDate = val
+        searchDate(formKey, val) {
+            this.tempDate = val;
         },
         clearSearch() {
             this.$refs.searchInput.clear()

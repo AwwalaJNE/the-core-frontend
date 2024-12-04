@@ -370,7 +370,7 @@ export default {
               isPrealert == "bag" ? item["bag_number"] : item["inbound_number"];
             if (item["inbound_number"]?.startsWith("SJA")) {
               item["inbound_node_name_origin"] =
-                item["inbound_node_name_origin"] + " (Airport)";
+                item["inbound_node_name_origin"] + " (AIRPORT)";
             }
             if (item["vehicle_name"] != null) {
               item["vehicle"] =
