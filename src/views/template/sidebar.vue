@@ -264,17 +264,18 @@ export default {
                 resource_name: resourceLookup["SORTING_CONNOTE"].resource_name
               },
             },
-            {
-              label: "Sorting Bag",
-              url: "/sorting/bag",
-              icon: "bx bxs-checkbox",
-              permission: "read-bag", // TODO: CHECK PERMISSION LATER
-              meta: {
-                resource_type: resourceLookup["SORTING_BAG"].resource_type,
-                resource_code: resourceLookup["SORTING_BAG"].resource_code,
-                resource_name: resourceLookup["SORTING_BAG"].resource_name
-              },
-            },
+            // TODO: UN COMMENT IF NEEDED
+            // {
+            //   label: "Sorting Bag",
+            //   url: "/sorting/bag",
+            //   icon: "bx bxs-checkbox",
+            //   permission: "read-bag", // TODO: CHECK PERMISSION LATER
+            //   meta: {
+            //     resource_type: resourceLookup["SORTING_BAG"].resource_type,
+            //     resource_code: resourceLookup["SORTING_BAG"].resource_code,
+            //     resource_name: resourceLookup["SORTING_BAG"].resource_name
+            //   },
+            // },
           ],
         },
         {
