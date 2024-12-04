@@ -65,6 +65,9 @@
           <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
             Auto Open Bag
           </vs-checkbox>
+          <vs-checkbox style="margin-left: 20px;" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery">
+            Validate Hub Delivery
+          </vs-checkbox>
         </vs-row>
         <vs-row style="margin-top:2em">
           <vs-col xs="4" sm="4" lg="2">
@@ -353,6 +356,7 @@ export default {
       is_approve: false,
       is_actual_weight_mandatory: false,
       is_auto_open_bag: this.$store.getters.getInputs.bag_is_auto_open_bag.bag_is_auto_open_bag.value,
+      is_hub_delivery_validation: this.$store.getters.getInputs.is_hub_delivery_validation.is_hub_delivery_validation.value
     }
   },
   computed: {
@@ -396,6 +400,9 @@ export default {
     },
     handleAutoOpenBag(val) {
       this.is_auto_open_bag = val.target.checked;
+    },
+    handleValidateHubDelivery(val) {
+      this.is_hub_delivery_validation = val.target.checked;
     },
     getResponse(data, loading) {
       
@@ -485,13 +492,15 @@ export default {
     updateItemOnBag() {
       this.form.item_number = this.item_code
       this.form.is_pra_runsheet = this.is_pra_runsheet
-      this.form.auto_open_bag = this.is_auto_open_bag
+      this.form.auto_open_bag = this.is_auto_open_bag,
+      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation
       this.ProccessAddBagItem()
     },
     updateItemOnBagOrion() {
       this.form.item_number = this.item_code_orion + "00"
       this.form.is_pra_runsheet = this.is_pra_runsheet
       this.form.auto_open_bag = this.is_auto_open_bag
+      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation
       this.ProccessAddBagItem()
     },
     updateValue(){

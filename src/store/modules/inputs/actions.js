@@ -3822,6 +3822,15 @@ export default {
     commit('SET_BAG_IS_AUTO_OPEN_BAG_ValueData', payload);
   },
 
+  // ====== VALIDATION HUB DELIVERY ======//
+  SET_IS_HUB_DELIVERY_VALIDATION({ commit }, payload) {
+    commit('SET_IS_HUB_DELIVERY_VALIDATION', payload);
+  },
+
+  SET_IS_HUB_DELIVERY_VALIDATION_ValueData({ commit }, payload) {
+    commit('SET_IS_HUB_DELIVERY_VALIDATION_ValueData', payload);
+  },
+
   //====== DESTINATION ZIP CODE ======//
 
   SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE({ commit }, payload) {

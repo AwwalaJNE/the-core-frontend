@@ -4765,5 +4765,17 @@ export default {
       valueData: true,
       value: true
     },
+  },
+
+  is_hub_delivery_validation: {
+    is_hub_delivery_validation: {
+      label: "Is Hub Delivery Validation",
+      key: "is_hub_delivery_validation",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: false,
+      value: false
+    }
   }
 }
