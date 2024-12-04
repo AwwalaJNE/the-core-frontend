@@ -4198,4 +4198,83 @@ export default {
   },
 
   //====== END DESTINATION ZIP CODE ======//
+
+
+
+  //====== DESTINATION SORTING LOV ======//
+
+  SET_DESTINATION_SORTING_LOV_REFERENCE_TO(state, payload) {
+    state.destination_sorting_lov.reference_to.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_TO_ValueData(state, payload) {
+    state.destination_sorting_lov.reference_to.valueData = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_TO_ArrData(state, payload) {
+    state.destination_sorting_lov.reference_to.hasOwnProperty('arrData') ?
+    state.destination_sorting_lov.reference_to.arrData = payload :
+    state.destination_sorting_lov.reference_to.arrData = []
+  },
+
+
+  SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY(state, payload) {
+    state.destination_sorting_lov.reference_entity.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY_ValueData(state, payload) {
+    state.destination_sorting_lov.reference_entity.valueData = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY_ArrData(state, payload) {
+    state.destination_sorting_lov.reference_entity.hasOwnProperty('arrData') ?
+    state.destination_sorting_lov.reference_entity.arrData = payload :
+    state.destination_sorting_lov.reference_entity.arrData = []
+  },
+
+
+  SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE(state, payload) {
+    state.destination_sorting_lov.reference_value.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ValueData(state, payload) {
+    state.destination_sorting_lov.reference_value.valueData = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ArrData(state, payload) {
+    state.destination_sorting_lov.reference_value.hasOwnProperty('arrData') ?
+    state.destination_sorting_lov.reference_value.arrData = payload :
+    state.destination_sorting_lov.reference_value.arrData = []
+  },  
+
+
+  SET_DESTINATION_SORTING_LOV_ITEM_TYPE(state, payload) {
+    state.destination_sorting_lov.item_type.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_ITEM_TYPE_ValueData(state, payload) {
+    state.destination_sorting_lov.item_type.valueData = payload
+  },
+  SET_DESTINATION_SORTING_LOV_ITEM_TYPE_ArrData(state, payload) {
+    state.destination_sorting_lov.item_type.hasOwnProperty('arrData') ?
+    state.destination_sorting_lov.item_type.arrData = payload :
+    state.destination_sorting_lov.item_type.arrData = []
+  },  
+
+
+  SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE(state, payload) {
+    state.destination_sorting_lov.destination_node_code.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE_ValueData(state, payload) {
+    state.destination_sorting_lov.destination_node_code.valueData = payload
+  },
+  SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE_ArrData(state, payload) {
+    state.destination_sorting_lov.destination_node_code.hasOwnProperty('arrData') ?
+    state.destination_sorting_lov.destination_node_code.arrData = payload :
+    state.destination_sorting_lov.destination_node_code.arrData = []
+  },  
+
+
+  SET_DESTINATION_SORTING_LOV_IS_ACTIVE(state, payload) {
+    state.destination_sorting_lov.is_active.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_IS_ACTIVE_ValueData(state, payload) {
+    state.destination_sorting_lov.is_active.valueData = payload
+  },
+
+
+  //====== END DESTINATION SORTING LOV ======//
 }

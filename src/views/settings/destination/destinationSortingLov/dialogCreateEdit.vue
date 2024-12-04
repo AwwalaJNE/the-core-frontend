@@ -13,10 +13,13 @@
             <div>
                 <form-input-controller
                     ref="formDataController" 
-                    typeForm="destination_zip_code"
+                    typeForm="destination_sorting_lov"
+                    :dataItem="listenDataItem"
                     :querySearch="querySearch"
                     :asynchronousSelect_url="listenAsyncUrl"
                     :limitExist="true"
+                    :selectLabel="'node_code'"
+                    :selectValue="'node_code'"
                     @formData="formData"
                     @inputFocus="inputFocus"
                     @onChangeCustom="onChangeCustom"
@@ -25,7 +28,7 @@
         </template>
 
         <template v-slot:footer>
-            <vs-row justify="flex-end" style="margin-top: 2pc;">
+            <vs-row justify="flex-end">
                 <vs-col w="3">
                     <vs-button
                         block
@@ -58,12 +61,12 @@
 import axios from "axios";
 import master from "@/mixins/master";
 
-import FormInputController from "@/components/form/formInputController";
 import DialogMaster from "@/components/dialog/dialogMaster";
+import FormInputController from "@/components/form/formInputController";
 import Selector from "@/components/input/select";
 
 export default {
-    name:"destination-zip-code-dialog",
+    name:"destination-sorting-lov-dialog",
     mixins: [master],
     components: {
         "dialog-master": DialogMaster,
@@ -74,8 +77,8 @@ export default {
         active: Boolean,
         btnRed: String,
         btnBlue: String,
-        dataItem: Object,
         closeDialog: Function,
+        dataItem: Object,
         title: String
     },
     data() {
@@ -94,23 +97,29 @@ export default {
         listenTitle(){
             return this.title;
         },
-        listenDataItem() {
-            return this.dataItem;
-        },
         listenLoading() {
             return this.loading;
         },
+        listenDataItem() {
+            return this.dataItem;
+        },
         listenEntity() {
-            return this.$store.getters.getInputs.destination_zip_code.reference_entity.value;
+            return this.$store.getters.getInputs.destination_sorting_lov.reference_entity.value;
         },
         listenAsyncUrl() {
-            return this.URL.zip_code_list +'?n='+ this.listenNodeId
+            return this.URL.node_list +'?n='+ this.listenNodeId;
         }
     },
     watch: {
+        active: function (val) {
+            if (val) {
+                this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_TO", "SORTING");
+                this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY", "NODE");
+            }
+        },
         dataItem: function (val) {
             if(val !== undefined) {
-                this.getDataDetail(val)
+                this.getDataDetail(val);
             }
         },
         listenEntity: function (val, oldVal) {
@@ -129,31 +138,20 @@ export default {
                 value: val.reference_value
             }]
 
-            let curr_zip_code_arr = []
-            val.zip_code.map((itm) => {
-                curr_zip_code_arr.push({
-                    label: itm,
-                    value: itm
-                })
-            });
-            this.$store.dispatch("SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY", val.reference_entity);
-
-            this.$store.dispatch("SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE", val.reference_value);
-            this.$store.dispatch("SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE_ValueData", val.reference_value);
-            this.$store.dispatch("SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
-
-            this.$store.dispatch("SET_DESTINATION_ZIP_CODE_ZIP_CODE", val.zip_code);
-            this.$store.dispatch("SET_DESTINATION_ZIP_CODE_ZIP_CODE_ArrData", curr_zip_code_arr);
+            this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE", val.reference_value);
+            this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ValueData", val.reference_value);
+            this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
         },
         formData(form){
-            const { destination_zipcode_id, id, ...formWithoutId } = form;
+            const { id, ...formWithoutId } = form;
+
             this.form = formWithoutId;
             this.handleSubmitData();
         },
         onChangeCustom(type, val, obj) {
             switch (type) {
                 case "reference_entity":
-                    this.$store.dispatch("SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE", "");
+                    this.$store.dispatch("SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE", "");
                     break;
                 default:
             }
@@ -179,19 +177,14 @@ export default {
                     case "NODE":
                         this.autoCompleteUrl = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
                         this.input_value = "node_code";
-                        this.input_label = "node_name";
-                        break;
-                    case "USER":
-                        this.autoCompleteUrl = `${this.URL.user_list}?n=${this.listenNodeId}&sort_order=desc&limit=${this.limit}&page=1`;
-                        this.input_value = "user_login";
-                        this.input_label = "user_name";
+                        this.input_label = "node_code";
                         break;
                     default:
                 }
             }
         },
         querySearch(queryString, cb){
-            axios.get(this.autoCompleteUrl +`?n=${this.listenNodeId}&s=${queryString}`,
+            axios.get(this.autoCompleteUrl +`&s=${queryString}`,
                 this.Helper.header()
             )
             .then(res => {
@@ -210,7 +203,7 @@ export default {
         async handleSubmitData() {
             this.loading = true;
             try {
-                const res = this.id ? await axios.put(`${this.URL.destination_zip_code}/${this.id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.destination_zip_code}?n=${this.listenNodeId}`, this.form, this.Helper.header());
+                const res = this.id ? await axios.put(`${this.URL.destination_sorting_lov}/${this.id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.destination_sorting_lov}?n=${this.listenNodeId}`, this.form, this.Helper.header());
                 this.openNotification('success', null, "Success", res?.data?.message || this.id ? "Success Update Data" : "Success Create Data");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');

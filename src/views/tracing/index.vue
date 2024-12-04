@@ -175,6 +175,18 @@ export default {
         "multi-input": MultiInput,
         "dialog-validate-tracing": DialogValidateTracing,
     },
+    computed: {
+        is_history() {
+            return this.$route.fullPath.includes('history');
+        }
+    },
+    watch: {
+        is_history(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.refresh();
+            }
+        }
+    },
     data() {
         return {
             tempSearch: "",
@@ -327,7 +339,6 @@ export default {
             loadingSubmit: false,
             loadingValidation: false,
             validateType: 'create',
-            is_history: this.$route.fullPath.includes('history')
         }
     },
     methods: {

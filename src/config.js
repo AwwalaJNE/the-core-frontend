@@ -245,6 +245,9 @@ export default {
     // Surat Jalan Revamp
     revamp_surat_jalan: api + 'revamp/manifest-delivery-order',
 
+    // Surat Jalan Revamp V2
+    revamp_surat_jalan_v2: api + 'revamp/manifest-delivery-order-v2',
+
     // Surat Muatan Revamp
     revamp_surat_muatan: api + 'revamp/manifest',
 
@@ -320,6 +323,9 @@ export default {
     // Destination Zip Code
     destination_zip_code: api + 'destination-zip-code',
 
+    // Destination Sorting Lov
+    destination_sorting_lov: api + 'destination-lov',
+
     // Zip Code List
     zip_code_list: api + 'zip-code-list',
 
@@ -327,5 +333,16 @@ export default {
     runsheet_limit_setting: api + 'runsheet-limit',
   
     // Sorting Validation Zip Code
-    sorting_zip_code_validation: api + 'validation/zip-code',
+    sorting_zip_code_validation: api + 'validation/zip-code-new',
+
+    // Sorting Validation Zip Code Bag
+    sorting_zip_code_validation_bag: api + 'validation/bag-destination',
+
+    // Inbound Staging
+    inbound_staging: api + 'inbound-staging',
+    inbound_staging_confirm: api + 'inbound-staging/confirm',
+    inbound_staging_bulk: api + 'inbound-staging/bulk',
+
+    // Sorting Item History
+    sorting_item_history: api + 'sorting-item-history'
 }

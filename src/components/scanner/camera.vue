@@ -13,9 +13,29 @@
 
       <div class="scanner-container">
         <div v-show="!isLoading">
-          <video poster="data:image/gif,AAAA" ref="scanner"></video>
-          <div class="overlay-element"></div>
-          <div class="laser"></div>
+          <template v-if="isScanner">
+            <video poster="data:image/gif,AAAA" ref="scanner"></video>
+            <div class="overlay-element"></div>
+            <div class="laser"></div>
+          </template>
+          <template v-else>
+            <video ref="scanner" autoplay></video>
+            <canvas ref="canvas" style="display: none;"></canvas>
+            <div class="capture-button">
+              <vs-button @click="takePhoto">Capture</vs-button>
+              <vs-button @click="handleSubmitPhoto">Submit</vs-button>
+            </div>
+            <div v-if="photos.length > 0">
+              <h3>Captured Photos:</h3>
+              <div style="margin-bottom: 10px;" class="thumbnails">
+                <div v-for="(photo, index) in photos" :key="index" class="photo-container">
+                  <div class="overlay-element"></div>
+                  <i class="bx bx-x" @click="removePhoto(index)"></i>
+                  <img :src="photo" :alt="'Captured Image ' + (index + 1)"/>
+                </div>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
 
@@ -37,6 +57,27 @@
               {{ camera.label }}
             </el-option>
           </el-select>
+          <template>
+            <vs-row>
+              <vs-col w="6">
+                <el-upload
+                  ref="upload"
+                  v-model:file-list="files"
+                  action=""
+                  class="upload-demo"
+                  :before-upload="beforeUpload"
+                  multiple
+                  accept="image/*,application/pdf"
+                  :http-request="handleUploadFile"
+                >
+                  <vs-button>Upload</vs-button>
+                </el-upload>
+              </vs-col>
+              <vs-col w="6" style="display: flex; justify-content: center;">
+                <vs-button @click="toggleScan">{{ listenButtonLabel }}</vs-button>
+              </vs-col>
+            </vs-row>
+          </template>
         </div>
       </template>
     </vs-dialog>
@@ -49,8 +90,14 @@ import {
   NotFoundException,
   Exception,
 } from "@zxing/library";
+import master from "@/mixins/master"
 
 export default {
+  mixins: [master],
+  props: {
+    handleSubmit: Function,
+    handleUpload: Function,
+  },
   data() {
     return {
       dialog: false,
@@ -66,10 +113,19 @@ export default {
       scannerRunning: false,
       availableCameras: [],
       eventNameSpace: null,
+      isScanner: true,
+      files: [],
+      photos: []
     };
   },
 
   watch: {},
+
+  computed: {
+    listenButtonLabel() {
+      return this.isScanner ? "Take Photo" : "Scan"
+    }
+  },
 
   mounted() {
     if (!this.isMediaStreamAPISupported) {
@@ -123,7 +179,7 @@ export default {
             // this.$emit("result", result);
 
             this.emitEvent("result", result);
-            this.handleClose();
+            // this.handleClose();
           }
 
           if (err && !(err instanceof NotFoundException)) {
@@ -169,6 +225,49 @@ export default {
         data,
       });
     },
+
+    async beforeUpload(file) {
+        if (!file.type.includes("image/") && !file.type.includes("application/pdf")) {
+            this.openNotification('danger', '', 'Invalid File Type', 'Only PDF or Images allowed')
+            this.openNotification('danger', err.response ? err.response.data.code : '', 'Invalid File Type', 'Only PDF or Images allowed')
+            return false
+        }
+        this.files.push(file);
+    },
+
+    toggleScan() {
+      this.isScanner = this.isScanner ^ 1
+    },
+
+    takePhoto() {
+      const video = this.$refs.scanner;
+      const canvas = this.$refs.canvas;
+      const context = canvas.getContext("2d");
+
+      canvas.width = video.offsetWidth;
+      canvas.height = video.offsetHeight;
+
+      context.drawImage(video, 0, 0, 368, 276);
+
+      const photo = canvas.toDataURL("image/png");
+      this.photos.push(photo);
+    },
+
+    removePhoto(index) {
+      this.photos.splice(index, 1);
+    },
+
+    handleUploadFile() {
+      this.handleUpload(this.files)
+      this.$refs.upload.clearFiles();
+      this.files = []
+
+    },
+
+    handleSubmitPhoto() {
+      this.handleSubmit(this.photos)
+      this.photos = []
+    }
   },
 };
 </script>
@@ -247,6 +346,47 @@ video {
   -webkit-animation: scanning 2s infinite;
   animation: scanning 2s infinite;
 }
+
+.capture-button {
+  display: flex;
+  gap: 0.5em;
+  justify-content: center;
+}
+
+.thumbnails {
+  display: flex;
+  gap: 0.5em;
+  overflow-x: scroll;
+}
+
+.photo-container {
+  position: relative;
+  i {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 3.5em;
+    color: #ff4757;
+  }
+  .overlay-element {
+    -webkit-clip-path: none;
+    clip-path: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+}
+
+.photo-container:hover {
+  i {
+    display: block;
+    cursor: pointer;
+  }
+  .overlay-element {
+    opacity: 0.75;
+  }
+}
+
 
 @-webkit-keyframes scanning {
   50% {

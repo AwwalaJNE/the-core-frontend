@@ -18,7 +18,8 @@ const Master = {
             Helper: null,
             day:null,
             Loading: null,
-            alert:null
+            alert:null,
+            isMobile: false,
         }
     },
     computed: {
@@ -359,7 +360,58 @@ const Master = {
                 // this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
             }
+        },
+        convertMinutesToTimeFormat(totalMinutes) {
+            totalMinutes = Math.abs(totalMinutes);
+            const days = Math.floor(totalMinutes / 1440);
+            const hours = Math.floor((totalMinutes % 1440) / 60);
+            const minutes = totalMinutes % 60;
+        
+            return `${days} DAYS, ${hours} HOURS, ${minutes} MINUTES`;
+        },
+        getSLAType(totalMinutes) {
+            if (totalMinutes < 0) {
+                return `OVER SLA`;
+            }
+            else if (totalMinutes < 30) {
+                return 'WARNING SLA'
+            }
+            else {
+                return 'SAFE SLA'
+            }
+        },
+        formatDateTime(dateTimeStr) {
+            const date = new Date(dateTimeStr);
+
+            const day = date.getDate();
+            const month = date.toLocaleString('default', { month: 'long' }).toUpperCase();
+            const year = date.getFullYear();
+            const formattedDate = `${day} ${month} ${year}`;
+
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const formattedTime = `${hours}:${minutes}`;
+        
+            return `${formattedDate}\n${formattedTime}`;
+        },
+        formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+
+            const formattedDate = date.toISOString().slice(0, 10);
+            const formattedTime = date.toTimeString().slice(0, 8);
+            
+            return `${formattedDate} ${formattedTime}`;
+        },
+        checkIfMobile() {
+            this.isMobile = window.matchMedia("(max-width: 768px)").matches;
         }
+    },
+    mounted() {
+        this.checkIfMobile();
+        window.addEventListener('resize', this.checkIfMobile);
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.checkIfMobile);
     },
     created() {
         this.URL = URL

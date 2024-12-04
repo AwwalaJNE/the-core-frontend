@@ -1,128 +1,139 @@
 <template>
     <dialog-master
-        width="xl"
+        width="lg"
         :actived="listenActive"
         :loading="listenLoading"
         :closeDialog="cancel"
     >
         <template v-slot:header>
-            <vs-row align="center">
-                <vs-col w="3">
-                    <destination-switch
-                        style="margin:0"
-                        formKey="destinationType"
-                        :name="'Node|Facility'"
-                        :valueData="isNodeDestination"
-                        @updateValue="updateValue"
-                        :disabled="listenDisableSwitch"
-                    />
-                </vs-col>
-                <vs-col w="6">
+            <template v-if="Object.keys(editData).length === 0">
+                <div>
                     {{ listenTitle }}
-                </vs-col>
-                <vs-col class="button-helper" w="3">
-                    <!-- <template v-if="is_approve === 1">
-                        <vs-button
-                            class="button-item"
-                            :disabled="isDisabledPrint"
-                            @click="print"
-                        >
-                            Print
-                        </vs-button>
-                    </template> -->
-                    <template v-if="listenUserRoleName === 'HELPDESK'">
-                        <vs-button  
-                            class="button-item"
-                            :danger="is_approve === 1"
-                            :disabled="isDisabledApprove"
-                            @click="approve" 
-                        >
-                            {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
-                        </vs-button>
-                    </template>
-                    <template v-else>
-                        <vs-button
-                            class="button-item"
-                            :disabled="is_approve === 1 || isDisabledApprove"
-                            @click="approve" 
-                        >
-                            {{ is_approve === 1 ? 'Approved' : 'Approve' }}
-                        </vs-button>
-                    </template>
-                </vs-col>
-            </vs-row>
+                </div>
+            </template>
+            <template v-else>
+                <vs-row justify="flex-end">
+                    <vs-col w="6">
+                        {{ listenTitle }}
+                    </vs-col>
+                    <vs-col w="3" justify="flex-end" style="display: flex;">
+                        <!-- <template v-if="is_approve === 1">
+                            <vs-button
+                                class="button-item"
+                                :disabled="isDisabledPrint"
+                                @click="print"
+                            >
+                                Print
+                            </vs-button>
+                        </template> -->
+                        <template v-if="listenUserRoleName === 'HELPDESK'">
+                            <vs-button  
+                                class="button-item"
+                                :danger="is_approve === 1"
+                                :disabled="isDisabledApprove"
+                                @click="approve" 
+                            >
+                                {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
+                            </vs-button>
+                        </template>
+                        <template v-else>
+                            <vs-button
+                                class="button-item"
+                                :disabled="is_approve === 1 || isDisabledApprove"
+                                @click="approve" 
+                            >
+                                {{ is_approve === 1 ? 'Approved' : 'Approve' }}
+                            </vs-button>
+                        </template>
+                    </vs-col>
+                </vs-row>
+            </template>
         </template>
 
         <template v-slot:content>
-            <div>
-                <camera-scanner 
-                    ref="cameraScanner" 
-                    @data="onCameraScannerGetData" 
-                />
-
-                <div class="nomor-sj" v-if="manifest_do_number">
-                    <input-general
-                        name="No Surat Jalan"
-                        :valueData="manifest_do_number"
-                        :typeInput="`text`"
-                        :disabled="true"
+            <template v-if="Object.keys(editData).length === 0">
+                <vs-col xs="12" sm="6" lg="6">
+                    <form @submit.prevent="createSuratJalan">
+                        <input-general
+                            icon-after
+                            name="Scan Surat Muatan / Masterbag / Bag"
+                            rules=""
+                            formKey="scanBag"
+                            :valueData="item_number"
+                            :typeInput="`text`"
+                            @click-icon="handleIconClick"
+                            @updateValue="updateValue"
+                        >
+                            <template #icon>
+                                <i class="bx bx-barcode-reader"></i>
+                            </template>
+                        </input-general>
+                    </form>
+                </vs-col>
+            </template>
+            <template v-else>
+                <div>
+                    <camera-scanner 
+                        ref="cameraScanner" 
+                        @data="onCameraScannerGetData" 
                     />
-                </div>
 
-                <form-input-controller
-                    ref="formSuratJalan"
-                    typeForm="surat_jalan"
-                    :dataItem="editData"
-                    :isDisabled="isDisabled"
-                    :partialDisabled="manifest_do_number && !isNodeDestination ? partialDisabled : () => false"
-                    @formData="formData"
-                    @onChangeCustom="onChangeCustom"
-                />
+                    <div class="nomor-sj" v-if="manifest_do_number">
+                        <input-general
+                            name="No Surat Jalan"
+                            :valueData="manifest_do_number"
+                            :typeInput="`text`"
+                            :disabled="true"
+                        />
+                    </div>
 
-                <div class="mt-2 mb-2">
-                    <vs-row align="center">
-                        <vs-col xs="6" sm="3" lg="3">
-                            <form @submit.prevent="submitSuratJalan">
-                                <input-general
-                                    icon-after
-                                    name="Scan Surat Muatan / Masterbag / Bag"
-                                    rules=""
-                                    formKey="scanBag"
-                                    :valueData="item_number"
-                                    :typeInput="`text|${isDestinationDisable}`"
-                                    :disabled="isDisabled"
-                                    @click-icon="handleIconClick"
-                                    @updateValue="updateValue"
-                                >
-                                    <template #icon>
-                                        <i class="bx bx-barcode-reader"></i>
-                                    </template>
-                                </input-general>
-                            </form>
-                        </vs-col>
-                        <!-- <vs-col xs="6" sm="3" lg="3">
-                            <vs-checkbox v-model="is_penerusan" @change="handlePenerusan">
-                                Penerusan
-                            </vs-checkbox>
-                        </vs-col> -->
-                    </vs-row>
-                    <table-master
-                        :dataTable="dataTable"
-                        :dataColumn="datacolumn"
-                        :tableLoading="loadingDetail"
-                        :pageSize="pagination.page_size"
-                        :page="pagination.page"
-                        :limit="pagination.limit"
-                        :hasAction="false"
-                        :hasPagination="true"
-                        :customAction="true"
-                        :customActionList="customActionList"
-                        @actionUpdate="actionUpdate"
-                        @actionLimit="actionLimit"
-                        @actionPagination="actionPagination"
+                    <form-input-controller
+                        ref="formSuratJalan"
+                        typeForm="surat_jalan"
+                        :dataItem="editData"
+                        :isDisabled="isDisabled"
+                        @formData="formData"
+                        @onChangeCustom="onChangeCustom"
                     />
+
+                    <div class="mt-2 mb-2">
+                        <vs-row align="center">
+                            <vs-col xs="6" sm="3" lg="3">
+                                <form @submit.prevent="submitSuratJalan">
+                                    <input-general
+                                        icon-after
+                                        name="Scan Surat Muatan / Masterbag / Bag"
+                                        rules=""
+                                        formKey="scanBag"
+                                        :valueData="item_number"
+                                        :typeInput="`text`"
+                                        @click-icon="handleIconClick"
+                                        @updateValue="updateValue"
+                                    >
+                                        <template #icon>
+                                            <i class="bx bx-barcode-reader"></i>
+                                        </template>
+                                    </input-general>
+                                </form>
+                            </vs-col>
+                        </vs-row>
+                        <table-master
+                            :dataTable="dataTable"
+                            :dataColumn="datacolumn"
+                            :pageSize="pagination.page_size"
+                            :page="pagination.page"
+                            :limit="pagination.limit"
+                            :hasAction="false"
+                            :hasPagination="true"
+                            :customAction="true"
+                            :customActionList="customActionList"
+                            @actionUpdate="actionUpdate"
+                            @actionLimit="actionLimit"
+                            @actionPagination="actionPagination"
+                        />
+                    </div>
                 </div>
-            </div>
+            </template> 
         </template>
     </dialog-master>
 </template>
@@ -162,7 +173,6 @@ export default {
         return {
             form: {},
             loading: false,
-            loadingDetail: false,
             manifest_do_number: "",
             dataTable: [],
             datacolumn: [
@@ -202,7 +212,6 @@ export default {
             ],
             item_number: "",
             vehicle_max_weight: 0,
-            vehicle_type_id: "",
             no_moda_angkutan_id: null,
             etd: null,
             estimated_time_in_hour: null,
@@ -219,7 +228,6 @@ export default {
                 },
             ],
             editData: {},
-            isDestinationDisable: "",
             is_penerusan: true,
             isDisabled: false,
             isDisabledPrint: false,
@@ -233,9 +241,8 @@ export default {
                 page_size: 1,
                 page: 1,
             },
-            isNodeDestination: true,
-            nodeDestination: [],
-            facilityDestination: []
+            editData: {},
+            destination_name_code: ''
         };
     },
     computed: {
@@ -263,31 +270,11 @@ export default {
         },
         active: function(val) {
             if (val == true) {
-                this.getDestination();
-                this.getFacilityCode();
                 this.getNoModeAngkutan();
                 this.getLov();
                 this.getDriver();
-                this.isDestinationDisableCheck();
             }
         },
-        isNodeDestination(val) {
-            if (val !== undefined) {
-                if (val) {
-                    this.$store.dispatch(
-                        "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                        this.nodeDestination?.length > 0 ? this.nodeDestination : null
-                    );
-                }
-                else {
-                    this.$store.dispatch(
-                        "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                        this.facilityDestination?.length > 0 ? this.facilityDestination : null
-                    );
-                }
-                this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID",'');
-            }
-        }
     },
     methods: {
         getEditData(val) {
@@ -313,66 +300,61 @@ export default {
 
             this.total_weight = val.total_weight;
             this.editData = val;
-            this.editData.destination_id = val.node_id_destination ?? val.facility_code_destination
+            this.editData.destination_id = val.node_id_destination;
+            this.destination_name_code = val?.destination?.node_name + " (" + val?.destination?.node_code + ")" || val.node_id_destination;
+            
+            this.getDestination(val.node_id_destination)
+
             this.no_moda_angkutan_id = val.no_moda_angkutan_id || null;
-            this.isNodeDestination = val.node_id_destination !== null ? true : false
 
             this.master_form = {
                 node_id_origin: val.node_id_origin,
                 node_id_destination: val.node_id_destination,
-                facility_code_destination: val.facility_code_destination,
-                vehicle_mode_id: val.vehicle_mode_id,
                 vehicle_id: val.vehicle_id,
                 pic_employee_id: val.pic_employee_id,
                 etd: val.etd,
                 eta: val.eta,
-                vehicle_type_id: val.vehicle_type_id || parseInt(val.vehicle_type_id),
                 max_weight: val.max_weight,
                 manifest_lov: val.manifest_lov,
                 item_no: val.item_number,
                 is_penerusan: val.is_penerusan
             };
         },
-        formData(form) {
-            let weight = this.dataTable.reduce((sum, item) => sum + (item.total_weight || 0), 0);
-
-            if (this.editData.max_weight > 0 && this.vehicle_max_weight < 1) {
-                this.vehicle_max_weight = this.editData.max_weight;
+        getDestination(node_id_destination) {
+            let item_destination = {
+                label: this.destination_name_code,
+                value: node_id_destination
             }
-            if (this.vehicle_max_weight >= weight) {
-                const obj = {
-                    node_id_origin: this.listenNodeId,
-                    node_id_destination: this.isNodeDestination ? form.destination_id : null,
-                    facility_code_destination: !this.isNodeDestination ? form.destination_id : null,
-                    vehicle_mode_id: form.moda_angkutan_id,
-                    vehicle_id: form.no_moda_angkutan_id,
-                    pic_employee_id: form.driver_id,
-                    etd: form.etd,
-                    eta: form.eta,
-                    vehicle_type_id: this.vehicle_type_id || (this.dataItem.vehicle_type_id ? parseInt(this.dataItem.vehicle_type_id) : this.dataItem.vehicle_type_id),
-                    max_weight: this.vehicle_max_weight,
-                    manifest_lov: this.manifest_lov,
-                    item_no: this.item_number,
-                    is_penerusan: this.is_penerusan
-                };
 
-                this.form = obj;
-                if (this.form.eta > this.form.etd) {
-                    if (this.manifest_do_number) {
-                        if (!this.vehicle_type_id) {
-                            this.form.vehicle_type_id = this.dataItem.vehicle_type_id  ? parseInt(this.dataItem.vehicle_type_id) : this.dataItem.vehicle_type_id;
-                        }
+            this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID_ArrData", [{
+                ...item_destination,
+                item: item_destination
+            }]);
+        },
+        formData(form) {
+            const obj = {
+                node_id_origin: this.listenNodeId,
+                node_id_destination: form.destination_id,
+                vehicle_id: form.no_moda_angkutan_id,
+                pic_employee_id: form.driver_id,
+                etd: form.etd,
+                eta: form.eta,
+                max_weight: this.vehicle_max_weight,
+                manifest_lov: this.manifest_lov,
+                item_no: this.item_number,
+                is_penerusan: this.is_penerusan
+            };
 
-                        this.addSuratJalanDetail();
-                    }
-                    else {
-                        this.createSuratJalan();
-                    }
-                } else {
-                    this.openNotification("warning", null, "Wrong Input in ETA/ETD field", "ETA must more than ETD");
+            this.form = obj;
+            if (this.form.eta > this.form.etd) {
+                if (this.manifest_do_number) {
+                    this.addSuratJalanDetail();
+                }
+                else {
+                    this.createSuratJalan();
                 }
             } else {
-                this.openNotification("warning", null, "Melebihi berat", "Berat muatan melebihi batas berat kendaraan");
+                this.openNotification("warning", null, "Wrong Input in ETA/ETD field", "ETA must more than ETD");
             }
         },
         onChangeCustom(type, val, obj) {
@@ -394,7 +376,6 @@ export default {
                         this.destinationUnlock = value;
                     }
                     updateMasterForm("node_id_destination", val);
-                    this.isDestinationDisableCheck();
                     break;
 
                 case "no_moda_angkutan_id":
@@ -423,7 +404,6 @@ export default {
                         this.$store.dispatch("SET_SURAT_JALAN_MANIFEST_LOV_ValueData", obj.value);
                     }
                     updateMasterForm("manifest_lov", val);
-                    this.isDestinationDisableCheck();
                     break;
 
                 case "driver_id":
@@ -443,9 +423,6 @@ export default {
             switch (key) {
                 case "scanBag":
                     this.item_number = val;
-                    break;
-                case "destinationType":
-                    this.isNodeDestination = val;
                     break;
                 default:
             }
@@ -502,8 +479,12 @@ export default {
         },
         async createSuratJalan() {
             this.loading = true;
+            let form = {
+                item_no: this.item_number,
+                is_penerusan: this.is_penerusan
+            }
             try {
-                const res = await axios.post(`${this.URL.revamp_surat_jalan}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
+                const res = await axios.post(`${this.URL.revamp_surat_jalan_v2}?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
 
                 let data = res.data.data;
                 if (data) {
@@ -512,14 +493,23 @@ export default {
                     this.master_form = {
                         node_id_origin: data.node_id_origin,
                         node_id_destination: data.node_id_destination,
-                        facility_code_destination: data.facility_code_destination,
-                        vehicle_mode_id: data.vehicle_mode_id,
-                        vehicle_id: data.vehicle_id,
-                        pic_employee_id: data.pic_employee_id,
+                        vehicle_id: data.vehicle_id || null,
+                        pic_employee_id: data.pic_employee_id || null,
                         etd: data.etd,
                         eta: data.eta,
-                        vehicle_type_id: data.vehicle_type_id || parseInt(data.vehicle_type_id),
                         max_weight: data.max_weight,
+                        manifest_lov: data.manifest_lov,
+                        item_no: data.item_number,
+                        is_penerusan: data.is_penerusan
+                    };
+                    this.destination_name_code = data?.destination?.node_name + " (" + data?.destination?.node_code + ")" || data.node_id_destination;
+                    this.getDestination(data.node_id_destination)
+                    this.editData = {
+                        destination_id: data.node_id_destination,
+                        node_id_origin: data.node_id_origin,
+                        node_id_destination: data.node_id_destination,
+                        etd: data.etd,
+                        eta: data.eta,
                         manifest_lov: data.manifest_lov,
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan
@@ -556,7 +546,7 @@ export default {
             }
         },
         async getSuratJalanDetail() {
-            this.loadingDetail = true;
+            this.loading = true;
             try {
                 const res = await axios.get(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`, this.Helper.header());
 
@@ -572,18 +562,18 @@ export default {
                     this.dataTable = arr;
                 } else {
                     this.dataTable = [];
-                    this.manifest_do_number = "";
+                    this.cancel();
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed 2", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
-                this.loadingDetail = false;
+                this.loading = false;
             }
         },
         async updateSuratJalan() {
             this.loading = true;
             try {
-                const res = await axios.put(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}?n=${this.listenNodeId}`, JSON.stringify(this.master_form), this.Helper.header());
+                const res = await axios.put(`${this.URL.revamp_surat_jalan_v2}/${this.manifest_do_number}?n=${this.listenNodeId}`, JSON.stringify(this.master_form), this.Helper.header());
                 this.openNotification('success', null, "Success", "Update surat jalan success");
 
             } catch (err) {
@@ -605,16 +595,23 @@ export default {
             }
         },
         async approve() {
-            try {
-                const res = await axios.patch(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, { is_approve: this.is_approve ^ 1 }, this.Helper.header());
-                
-                this.is_approve ^= 1;
-                this.isDisabled = !this.isDisabled;
-                this.openNotification("success", null, "Success", res?.data?.message);
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
-            } finally {
-                this.$emit('refresh');
+            if (this.master_form.vehicle_id === null) {
+                this.openNotification("warning", null, "Warning", "Please choose vehicle");
+            }
+            else if (this.master_form.pic_employee_id === null) {
+                this.openNotification("warning", null, "Warning", "Please choose driver");
+            } else {
+                try {
+                    const res = await axios.patch(`${this.URL.revamp_surat_jalan_v2}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`, {is_approve: this.is_approve ^ 1}, this.Helper.header());
+                    
+                    this.is_approve ^= 1;
+                    this.isDisabled = !this.isDisabled;
+                    this.openNotification("success", null, "Success", res?.data?.message);
+                } catch (err) {
+                    this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
+                } finally {
+                    this.$emit('refresh');
+                }
             }
         },
         handleClearForm() {
@@ -625,17 +622,19 @@ export default {
             this.isDisabledApprove = false;
             this.is_approve = 0;
             this.vehicle_max_weight = 0;
-            this.vehicle_type_id = "";
             this.no_moda_angkutan_id = null;
             this.etd = null;
             this.estimated_time_in_hour = null;
             this.manifest_lov = "";
-            this.isNodeDestination = true;
-            this.$refs.formSuratJalan.handleClearForm();
             this.form = {};
             this.master_form = {};
+            this.editData = {};
+            this.destination_name_code = ""
         },
         cancel() {
+            if(Object.keys(this.editData).length !== 0) {
+                this.$refs.formSuratJalan.handleClearForm();
+            }
             this.loading = false;
             this.handleClearForm();
             this.dataTable = [];
@@ -653,93 +652,6 @@ export default {
             if (this.dataItem?.manifest_lov) {
                 this.manifest_lov = this.dataItem.manifest_lov;
             }
-        },
-        isDestinationDisableCheck() {
-            if (!this.dataItem || !this.manifest_lov) {
-                this.isDestinationDisable = "disabled";
-            } 
-            
-            if (this.manifest_lov && (this.destinationUnlock || this?.dataItem?.node_id_destination)) {
-                this.isDestinationDisable = "";
-            }
-        },
-        async getDestination() {
-            await axios
-                .get(
-                    this.URL.node +
-                        `/${this.listenNodeId}/destination-link-manifest-delivery-order?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.data.length > 0) {
-                        let arr = [];
-                        res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = item.node_name + " (" + item.node_code + ")";
-                            obj["value"] = item.node_id;
-                            obj["item"] = item;
-
-                            arr.push(obj);
-                        });
-
-                        this.nodeDestination = arr
-                        if (!this.manifest_do_number || this.dataItem.node_id_destination) {
-                            this.$store.dispatch(
-                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                                arr.length > 0 ? arr : null
-                            );
-                        }
-                    } else {
-                        if (!this.manifest_do_number || this.dataItem.node_id_destination) {
-                            this.$store.dispatch(
-                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                                null
-                            );
-                        }
-                    }
-                })
-                .catch((err) => {
-                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to get node destination list', err?.response?.data?.message ?? err)
-                });
-        },
-        async getFacilityCode() {
-            await axios
-                .get(
-                    this.URL.facility_code +
-                        `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.data.length > 0) {
-                        let arr = [];
-                        res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = item.name;
-                            obj["value"] = item.code;
-                            obj["item"] = item;
-
-                            arr.push(obj);
-                        });
-
-                        this.facilityDestination = arr
-                        if (this.dataItem?.facility_code_destination) {
-                            this.$store.dispatch(
-                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                                arr.length > 0 ? arr : null
-                            );
-                        }
-                    } else {
-                        if (this.dataItem?.facility_code_destination) {
-                            this.$store.dispatch(
-                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                                null
-                            );
-                        }
-                    }
-                })
-                .catch((err) => {
-                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to get facility code list', err?.response?.data?.message ?? err)
-                });
         },
         async getNoModeAngkutan() {
             await axios
@@ -812,14 +724,6 @@ export default {
         refreshDetail() {
             this.getSuratJalanDetail();
         },
-        partialDisabled(key) {
-            if (key === 'destination_id') {
-                return false
-            }
-            else {
-                return true
-            }
-        }
     },
     mounted() {
         this.handlePrintShortcut(this.print)
@@ -832,13 +736,14 @@ export default {
 }
 </style>
 <style scoped>
-.button-item {
-    min-width: 77px;
+.title-helper {
+    width: 60%;
+    align-content: center;
 }
 
 .button-helper {
-    display: flex !important;
-    justify-content: flex-end !important;
+    display: flex; 
+    justify-content: flex-end;
 }
 
 button {

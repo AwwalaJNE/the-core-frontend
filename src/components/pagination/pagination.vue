@@ -2,8 +2,8 @@
   <div class="custom">
     <div class="row">
       <div class="col">
-        <vs-row justify="flex-end" class="mmxr">
-          <vs-col w="6" class="hide-on-phone">
+        <vs-row justify="flex-end" class="hide-on-phone">
+          <vs-col w="6">
             <p>Rows per page:</p>
           </vs-col>
           <vs-col w="4">
@@ -25,19 +25,31 @@
         </vs-row>
       </div>
       <div class="col">
-        <vs-pagination
-          v-model="current_page"
-          :dotted-number="limit_page"
-          :length="page_size"
-          @input="actionPagination"
-        />
+        <template v-if="!isMobile">
+          <vs-pagination
+            v-model="current_page"
+            :dotted-number="limit_page"
+            :length="page_size"
+            @input="actionPagination"
+          />
+        </template>
+        <template v-else>
+          <vs-pagination
+            only-arrows
+            v-model="current_page"
+            :length="page_size"
+            @input="actionPagination"
+          />
+        </template>
       </div>
     </div>
   </div>
 </template>
 <script>
+import master from "@/mixins/master"
 export default {
   name: "pagination-component",
+  mixins: [master],
   props: {
     page: [Number, String],
     limit: [Number, String],

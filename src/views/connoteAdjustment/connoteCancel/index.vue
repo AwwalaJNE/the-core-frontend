@@ -154,6 +154,18 @@ export default {
         "select-search-by": SelectSearchBy,
         "table-master" : TableMaster,
     },
+    computed: {
+        is_history() {
+            return this.$route.fullPath.includes('history');
+        }
+    },
+    watch: {
+        is_history(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.refresh();
+            }
+        }
+    },
     data() {
         return {
             title: "Connote Cancel",
@@ -223,7 +235,6 @@ export default {
                     value: 'created_at'
                 }
             ],
-            is_history: this.$route.fullPath.includes('history')
         }
     },
     methods: {

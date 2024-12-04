@@ -130,7 +130,12 @@
                   customAction == true
               "
             >
-              <vs-th class="action">
+              <vs-th :class="isMobile ? 'action-mobile' : 'action'">
+                Action
+              </vs-th>
+            </template>
+            <template v-if="removeDanger == true">
+              <vs-th :class="[actionWidth ? actionWidth : '', 'action-responsive']">
                 Action
               </vs-th>
             </template>
@@ -726,6 +731,29 @@
                 </vs-row>
               </vs-td>
             </template>
+            <template v-if="removeDanger == true">
+              <vs-td class="action-responsive">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      size="small"
+                      flat
+                      danger
+                      :active="true"
+                      :disabled="
+                        item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true
+                      "
+                      type="submit"
+                      @click="actionRemove(item)"
+                    >
+                      <span>Remove</span>
+                    </vs-button>
+                  </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
             <template v-if="runsheetAction == true">
               <vs-td class="action">
                 <vs-row justify="center" class="btn_action">
@@ -773,7 +801,7 @@
               : printAction === true
                 ? true
                 : false">
-              <vs-td class="action">
+              <vs-td :class="isMobile ? 'action-mobile' : 'action'">
                 <vs-row justify="center" class="btn_action">
                   <template v-if="avoidAction == true">
                     <vs-col w="4">
@@ -1151,9 +1179,9 @@
       </template>
     </vs-table>
 
-    <vs-row class="mt-2" justify="flex-end" align="center">
+    <vs-row class="mt-2" justify="space-between" align="center">
       <template v-if="hasPagination == true">
-        <vs-col w="4">
+        <vs-col w="2">
           <vs-button
             @click="handleExportCSV"
             >
@@ -1174,6 +1202,7 @@
   </div>
 </template>
 <script>
+import master from "@/mixins/master";
 import Pagination from "@/components/pagination/pagination.vue";
 import Checkbox from "@/components/input/checkbox.vue";
 import InputGeneral from "@/components/input/general";
@@ -1182,6 +1211,7 @@ import AutoComplete from "@/components/input/autoComplete";
 import { Dialog } from "element-ui";
 export default {
   name: "tabelMaster",
+  mixins: [master],
   components: {
     "pagination-master": Pagination,
     checkbox: Checkbox,
@@ -1222,6 +1252,7 @@ export default {
     customBtn_label: String,
     dynamicCancel: Function,
     dynamicCancelColumn: String,
+    removeDanger: Boolean,
 
     isMultipleSelect: Boolean,
     isMultipleSelectColoum: Boolean,
@@ -1229,6 +1260,7 @@ export default {
     isSearchAble: Boolean,
     isLocalPagination: Boolean,
     hasChildStatus: Boolean,
+    actionWidth: String,
 
     customAction: Boolean,
     customActionList: Array,
@@ -1546,6 +1578,7 @@ export default {
 .vs-table {
   table {
     text-align: left;
+    min-width: fit-content !important;
     .md {
       width: calc(100% / 3) !important;
     }
@@ -1599,6 +1632,24 @@ export default {
         justify-content: center;
       }
     }
+    .action-mobile {
+      .vs-table__th__content {
+        justify-content: center !important;
+      }
+      &.vs-table__td {
+        .btn_action {
+          justify-content: center !important;
+          .vs-col {
+            display: flex !important;
+            justify-content: center !important;
+          }
+          button {
+            margin: 0 !important;
+            min-width: 5em !important;
+          }
+        }
+      }
+    }
     .checkbox-inp .vs-icon-check span {
       width: 8px;
       margin-left: 0px;
@@ -1608,6 +1659,24 @@ export default {
     }
     .vs-select__input {
       min-height: 34px !important;
+    }
+    .action-responsive {
+      .vs-table__th__content {
+        justify-content: center !important;
+      }
+      &.vs-table__td {
+        .btn_action {
+          justify-content: center !important;
+          .vs-col {
+            display: flex !important;
+            justify-content: center !important;
+          }
+          button {
+            margin: 0 !important;
+            min-width: 5em !important;
+          }
+        }
+      }
     }
   }
 }

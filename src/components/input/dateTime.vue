@@ -8,7 +8,8 @@
                     :type="type"
                     :placeholder="`Select date ${typeInput.toLowerCase().includes('time') ? 'and time' : ''}`"
                     range-separator="To"
-                    value-format="yyyy-MM-dd HH:mm:ss"
+                    :value-format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd HH:mm:ss'"
+                    :format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : null"
                     start-placeholder="Start date"
                     end-placeholder="End date"
                     :picker-options="isETDnETA ? pickerOptions : null"
@@ -64,6 +65,13 @@ export default {
         isPlaceholderGabung() {
             return this.placeholderGabung || false
         },
+        isInventoryBag() {
+            if (this.formKey.toLowerCase() === 'date_time_without_seconds') {
+                return true;
+            } else {
+                return false;
+            }
+        },
         isETDnETA() {
             if (this.name.toLowerCase() === 'eta' || this.name.toLowerCase() === 'etd') {
                 return true;
@@ -109,6 +117,10 @@ export default {
         .el-date-editor.el-input {
             width: 100% !important;
         }
+        .el-date-editor .el-range-separator {
+            padding: 0 !important;
+            margin: 0 5px;
+        }        
         .el-input__inner {
             background-color: rgba(var(--vs-gray-2), 1) !important;
             border-radius: 12px !important;
@@ -132,5 +144,8 @@ export default {
     }
     .el-picker-panel{
         z-index: 999999 !important;
+    }
+    .el-time-spinner__item {
+        line-height: 16px !important;
     }
 </style>

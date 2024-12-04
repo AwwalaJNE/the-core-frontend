@@ -87,8 +87,11 @@ import CashRegister from "@/views/cashRegister"
 // === Inventory Unbagging  ===
 import Unbagging from "@/views/inventory/unbag"
 
-// === Inventory Sorting  ===
-import Sorting from "@/views/inventory/sorting"
+// === Inventory Sorting Connote  ===
+import SortingConnote from "@/views/inventory/sorting/connote"
+
+// === Inventory Sorting Bag  ===
+import SortingBag from "@/views/inventory/sorting/bag"
 
 // === Pickup Request ===
 import PickupRequest from "@/views/pickup/request"
@@ -119,6 +122,12 @@ import InboundIncomingScan from "@/views/inbound/scan"
 
 // === Inbound Incoming Bandara ===
 import InboundBandara from "@/views/inboundAirport"
+
+// === Inbound Incoming Airpot Scan ===
+import InboundAirportScan from "@/views/inboundAirport/scan"
+
+// === Inbound Incoming Bandara ===
+import InboundBandaraDetail from "@/views/inboundAirport/suratJalan/detailSuratJalan"
 
 // === Inbound Incoming Bandara Detail ===
 import InboundIncomingDetail from "@/views/inboundAirport/prealert/detail"
@@ -211,7 +220,7 @@ import InvalidReceiving from '@/views/audit/invalidReceiving'
 import InvalidOpeningBag from '@/views/audit/invalidOpeningBag'
 
 // === Destination Zip Code ===
-import DestinationZipCode from "@/views/settings/destinationZipCode"
+import Destination from "@/views/settings/destination"
 
 import { resourceLookup } from '@/constants'; 
 
@@ -426,15 +435,15 @@ const routes = [
             }
           },
           {
-            path: "destination-zip-code",
-            name: "DestinationZipCode",
-            component: DestinationZipCode,
+            path: "destination",
+            name: "Destination",
+            component: Destination,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Destination Zip Code",
-              resource_type: resourceLookup["DESTINATION_ZIP_CODE"].resource_type,
-              resource_code: resourceLookup["DESTINATION_ZIP_CODE"].resource_code,
-              resource_name: resourceLookup["DESTINATION_ZIP_CODE"].resource_name
+              breadCrumb: "Destination",
+              resource_type: resourceLookup["DESTINATION"].resource_type,
+              resource_code: resourceLookup["DESTINATION"].resource_code,
+              resource_name: resourceLookup["DESTINATION"].resource_name
             }
           },
           {
@@ -922,15 +931,27 @@ const routes = [
         }
       },
       {
-        path: "inventory/sorting",
-        name: "sorting",
-        component: Sorting,
+        path: "/sorting/connote",
+        name: "sorting-connote",
+        component: SortingConnote,
         meta: {
           requiresAuth: true,
           breadCrumb: "Sorting",
-          resource_type: resourceLookup["SORTING"].resource_type,
-          resource_code: resourceLookup["SORTING"].resource_code,
-          resource_name: resourceLookup["SORTING"].resource_name
+          resource_type: resourceLookup["SORTING_CONNOTE"].resource_type,
+          resource_code: resourceLookup["SORTING_CONNOTE"].resource_code,
+          resource_name: resourceLookup["SORTING_CONNOTE"].resource_name
+        }
+      },
+      {
+        path: "/sorting/bag",
+        name: "sorting-bag",
+        component: SortingBag,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Sorting",
+          resource_type: resourceLookup["SORTING_BAG"].resource_type,
+          resource_code: resourceLookup["SORTING_BAG"].resource_code,
+          resource_name: resourceLookup["SORTING_BAG"].resource_name
         }
       },
       {
@@ -1057,28 +1078,52 @@ const routes = [
         }
       },
       {
-        path: "/inbound-bandara/detail/:inbound_id?",
+        path: "/inbound-airport/detail/:inbound_id?",
         name: "InboundIncomingDetail",
         component: InboundIncomingDetail,
         meta: {
           requiresAuth: true,
           breadCrumb: "Inbound Incoming",
-          backPath: "/inbound-bandara",
+          backPath: "/inbound-airport",
           resource_type: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_type,
           resource_code: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_code,
           resource_name: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_name
         }
       },
       {
-        path: "/inbound-bandara",
-        name: "Receiving Bandara",
+        path: "/inbound-airport",
+        name: "Airport Receiving",
         component: InboundBandara,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Receiving Bandara / Prealert",
-          resource_type: resourceLookup["RECEIVING_BANDARA"].resource_type,
-          resource_code: resourceLookup["RECEIVING_BANDARA"].resource_code,
-          resource_name: resourceLookup["RECEIVING_BANDARA"].resource_name
+          breadCrumb: "Airport Receiving / Prealert",
+          resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
+          resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
+          resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
+        }
+      },
+      {
+        path: "/inbound-airport/scan",
+        name: "Airport Receiving",
+        component: InboundAirportScan,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Airport Receiving",
+          resource_type: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_type,
+          resource_code: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_code,
+          resource_name: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_name
+        }
+      },
+      {
+        path: "/inbound-airport/sj/:id",
+        name: "Airport Receiving Detail",
+        component: InboundBandaraDetail,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Airport Receiving",
+          resource_type: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_type,
+          resource_code: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_code,
+          resource_name: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_name
         }
       },
       {

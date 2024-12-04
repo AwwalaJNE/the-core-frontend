@@ -352,7 +352,7 @@ export default {
       dialogHelpdeskEditBag: false,
       is_approve: false,
       is_actual_weight_mandatory: false,
-      is_auto_open_bag: this.$store.getters.getInputs.bag_is_auto_open_bag.bag_is_auto_open_bag.value || false,
+      is_auto_open_bag: this.$store.getters.getInputs.bag_is_auto_open_bag.bag_is_auto_open_bag.value,
     }
   },
   computed: {

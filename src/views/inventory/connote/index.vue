@@ -166,9 +166,9 @@
                                     <date-time
                                         :name="''"
                                         :rules="''"
-                                        :formKey="'TRIGGER_DATE'"
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                         :valueData="tempDate"
-                                        typeInput="daterange"
+                                        typeInput="datetimerange"
                                         @updateValue="searchDate" 
                                     />
                                 </vs-col>
@@ -345,6 +345,10 @@ export default {
                 {
                     label: 'Opened Date',
                     value: 'opened'
+                },
+                {
+                    label: 'Received Date',
+                    value: 'received'
                 }
             ],
             bagRouting:"",
