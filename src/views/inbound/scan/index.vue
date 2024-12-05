@@ -13,32 +13,73 @@
         <section>
           <vs-row>
             <vs-col lg="6" sm="6" xs="12">
-              <div class="box information" style="padding-top: 1px !important;">
-                <h4 align="left">List of Bags</h4>
-                <div class="nav-box">
+              <template v-if="is_prealert">
+                <div class="box information">
+                  <h4 align="left">List of Bags</h4>
+                  <div class="nav-box">
+                    <vs-row>
+                      <vs-col xs="12" sm="12" lg="6">
+                        <template>
+                          <div class="center">
+                            <vs-input border type="text"
+                              v-model="item_no"
+                              label-placeholder="Masukkan code BAG / Koli / SM"
+                              autofocus
+                              icon-after
+                              v-uppercase
+                              ref="formInputInbound"
+                              @keyup.enter.native="updateValue()"
+                              @click-icon="$refs.cameraScanner.open('formInputInbound')"
+                            >
+                              <template #icon>
+                                <i class="bx bx-barcode-reader"></i>
+                              </template>
+                            </vs-input>
+                          </div>
+                        </template>
+                      </vs-col>
+                    </vs-row>
+                  </div>
+                </div>
+              </template>
+              <template v-else-if="!is_prealert">
+                <div class="box information" style="align-content: space-around">
                   <vs-row>
                     <vs-col xs="12" sm="12" lg="6">
-                      <template>
-                        <div class="center">
-                          <vs-input border type="text"
-                                    v-model="item_no"
-                                    label-placeholder="Masukkan code BAG / Koli / SM"
-                                    autofocus
-                                    icon-after
-                                    v-uppercase
-                                    ref="formInputInbound"
-                                    @keyup.enter.native="updateValue"
-                                    @click-icon="$refs.cameraScanner.open('formInputInbound')">
-                            <template #icon>
-                              <i class="bx bx-barcode-reader"></i>
-                            </template>
-                          </vs-input>
-                        </div>
-                      </template>
+                      <vs-input border type="text"
+                        v-model="parent_no"
+                        label-placeholder="Masukkan SM / SJ / Pickup"
+                        autofocus
+                        icon-after
+                        v-uppercase
+                        ref="formInputParentInbound"
+                        @keyup.enter.native="updateValue()"
+                        @click-icon="$refs.cameraScanner.open('formInputParentInbound')"
+                      >
+                        <template #icon>
+                          <i class="bx bx-barcode-reader"></i>
+                        </template>
+                      </vs-input>
+                    </vs-col>
+                    <vs-col xs="12" sm="12" lg="6">
+                      <vs-input border type="text"
+                        v-model="child_no"
+                        label-placeholder="Masukkan Item"
+                        autofocus
+                        icon-after
+                        v-uppercase
+                        ref="formInputChildInbound"
+                        @keyup.enter.native="updateValue()"
+                        @click-icon="$refs.cameraScanner.open('formInputChildInbound')"
+                      >
+                        <template #icon>
+                          <i class="bx bx-barcode-reader"></i>
+                        </template>
+                      </vs-input>
                     </vs-col>
                   </vs-row>
                 </div>
-              </div>
+              </template>
             </vs-col>
 
             <!-- col for detail unreceive item-->
@@ -111,6 +152,19 @@ export default {
         "InboundDetail": InboundDetail,
         CameraScanner,
     },
+    computed: {
+      is_prealert() {
+        const pattern = /\/scan\/[\w-]+$/;
+        return pattern.test(this.$route.fullPath);
+      }
+    },
+    watch: {
+      is_prealert(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          this.refresh();
+        }
+      }
+    },
     data() {
         return {
             title:"Receiving",
@@ -124,6 +178,8 @@ export default {
             limit:20,
             page_size: 1,
             page: 1,
+            parent_no: '',
+            child_no: '',
         }
     },
     methods: {
@@ -281,19 +337,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-  .mb-15{
-   margin-bottom: 1.5em;
-  }
-  .custom-title{
-    padding: 0.6em;
-    text-align: right;
-    font-weight: 600;
-  }
-  .information{
-    min-height: 190px;
-  }
-  .nav-box{
-    margin-top: 1em;
-  }
-</style>
