@@ -447,7 +447,9 @@ export default {
     actionDetail(row) {
       this.$router.push({
         name: "InboundIncomingScan",
-        params: { inbound_id: row.inbound_id },
+        params: { 
+          inbound_number: row.inbound_number 
+        },
       });
       this.setRoutePageHistory(this.$route.meta, false);
     },
