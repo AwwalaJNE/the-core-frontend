@@ -66,7 +66,7 @@ export default {
             return this.placeholderGabung || false
         },
         isInventoryBag() {
-            if (this.formKey.toLowerCase() === 'date_time_without_seconds') {
+            if (this?.formKey?.toLowerCase() === 'date_time_without_seconds') {
                 return true;
             } else {
                 return false;
