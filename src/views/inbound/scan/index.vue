@@ -29,7 +29,7 @@
                                                     icon-after
                                                     v-uppercase
                                                     ref="formInputInbound"
-                                                    @keyup.enter.native="updateValue()"
+                                                    @keyup.enter.native="updateValue('item_no')"
                                                     @click-icon="$refs.cameraScanner.open('formInputInbound')"
                                                 >
                                                     <template #icon>
@@ -55,7 +55,7 @@
                                         icon-after
                                         v-uppercase
                                         ref="formInputParentInbound"
-                                        @keyup.enter.native="updateValueParent()"
+                                        @keyup.enter.native="updateValue('parent_no')"
                                         @click-icon="$refs.cameraScanner.open('formInputParentInbound')"
                                     >
                                         <template #icon>
@@ -72,7 +72,7 @@
                                         icon-after
                                         v-uppercase
                                         ref="formInputChildInbound"
-                                        @keyup.enter.native="updateValueChild()"
+                                        @keyup.enter.native="updateValue('child_no')"
                                         @click-icon="$refs.cameraScanner.open('formInputChildInbound')"
                                     >
                                         <template #icon>
@@ -184,35 +184,39 @@ export default {
         refresh(){
             this.getTableData();
         },
-        updateValue(){
-            this.item_no = this.item_no.replaceAll(/\s+/g, "");
-            this.form.item_no = this.item_no
-            this.processInbond();
-            this.$refs.formInputInbound.$el.querySelector("input").focus();
-        },
-        updateValueParent(){
-            this.inbound_number = this.parent_no;
-            this.refresh();
-        },
-        updateValueChild(){
-            this.child_no = this.child_no.replaceAll(/\s+/g, "");
-            this.form.item_no = this.child_no
-            this.processInbond();
-            this.$refs.formInputChildInbound.$el.querySelector("input").focus();
+        updateValue(type) {
+            switch (type) {
+                case 'item_no':
+                    this.item_no = this.item_no.replaceAll(/\s+/g, "");
+                    this.form = {
+                        item_no: this.item_no,
+                        inbound_number: this.inbound_number
+                    }
+                    this.processInbond();
+                    this.$refs.formInputInbound.$el.querySelector("input").focus();
+                    break;
+
+                case 'parent_no':
+                    this.inbound_number = this.parent_no;
+                    this.refresh();
+                    break;
+
+                case 'child_no':
+                    this.child_no = this.child_no.replaceAll(/\s+/g, "");
+                    this.form.item_no = this.child_no
+                    this.processInbond();
+                    this.$refs.formInputChildInbound.$el.querySelector("input").focus();
+                    break;
+            }
         },
         getParamRoute(){
-            if(this.$route.params.inbound_number){
+            if(this.is_prealert){
                 this.inbound_number = this.$route.params.inbound_number.toString()
                 this.refresh()
             }
         },
         async processInbond() {
             this.openProgress(null, "Processing", `${this.form.item_no ? this.form.item_no : 'Item' } is in process`);
-            
-            if(this.$route.params.inbound_number){
-                let inbound_number = this.dataTable.length > 0 ? this.dataTable[0].inbound_number : null;
-                this.form.inbound_number = inbound_number;
-            }
 
             try {
                 const res = await axios.post(`${this.URL.receiving}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());
@@ -291,9 +295,19 @@ export default {
             // this.inbound_number = "";
         },
         onCameraScannerGetData(data) {
-            if (data && data.event === "result" && data.namespace === "formInputInbound") {
-                this.item_no = data.data.text;
-                this.updateValue();
+            if (data?.event === "result" && data?.data?.text) {
+                const { namespace, data: { text } } = data;
+
+                if (namespace === "formInputInbound") {
+                    this.item_no = text;
+                    this.updateValue('item_no');
+                } else if (namespace === "formInputParentInbound") {
+                    this.parent_no = text;
+                    this.updateValue('parent_no');
+                } else if (namespace === "formInputChildInbound") {
+                    this.child_no = text;
+                    this.updateValue('child_no');
+                }
             }
         },
         actionLimit(val){
