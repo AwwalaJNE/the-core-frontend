@@ -203,41 +203,37 @@ export default {
 
                 case 'child_no':
                     this.child_no = this.child_no.replaceAll(/\s+/g, "");
-                    this.form.item_no = this.child_no
+                    this.form = {
+                        item_no: this.child_no
+                    }
                     this.processInbond();
                     this.$refs.formInputChildInbound.$el.querySelector("input").focus();
                     break;
             }
         },
         getParamRoute(){
-            if(this.is_prealert){
+            if (this.is_prealert){
                 this.inbound_number = this.$route.params.inbound_number.toString()
                 this.refresh()
             }
         },
         async processInbond() {
             this.openProgress(null, "Processing", `${this.form.item_no ? this.form.item_no : 'Item' } is in process`);
+            
 
             try {
                 const res = await axios.post(`${this.URL.receiving}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());
 
                 this.openNotification('success', null, "Success", res?.data?.message ?? "Receiving success");
                 this.inbound_number = res?.data?.data?.inbound_number ?? this.inbound_number;
-
-                this.loading = false;
-                this.closeProgress();
-                this.handlerClearForm();
                 this.refresh();
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
                 this.inbound_number = err?.response?.data?.reference ?? this.inbound_number;
-
-                this.loading = false;
+                this.handleClearTableInfo();
+            } finally {
                 this.closeProgress();
                 this.handlerClearForm();
-                this.dataTable = [];
-                this.dataTableProp = [];
-                this.inbound_number = "";
             }
         },
         async getTableData() {
@@ -269,12 +265,10 @@ export default {
                     this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
 
                     if (!this.is_prealert) {
-                        this.$refs.formInputParentInbound.$el.querySelector("input").focus();
                         this.handlerClearForm();
+                        this.$refs.formInputParentInbound.$el.querySelector("input").focus();
                     }
-                    this.dataTable = [];
-                    this.dataTableProp = [];
-                    this.inbound_number = "";
+                    this.handleClearTableInfo();
                 } finally {
                     this.loading = false;
                 }
@@ -286,13 +280,13 @@ export default {
         },
         handlerClearForm(){
             this.item_no = "";
-
-            // NEW, TODO: RECHECK
             this.child_no = "";
             this.parent_no = "";
-            // this.dataTable = [];
-            // this.dataTableProp = [];
-            // this.inbound_number = "";
+        },
+        handleClearTableInfo() {
+            this.dataTable = [];
+            this.dataTableProp = [];
+            this.inbound_number = "";
         },
         onCameraScannerGetData(data) {
             if (data?.event === "result" && data?.data?.text) {
