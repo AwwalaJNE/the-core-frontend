@@ -396,7 +396,7 @@
                     >
                       <div style="margin-top:20px">
                         <input-general
-                          :name="column.label"
+                          :name="column.label + '*'"
                           :rules="''"
                           :formKey="
                             `${column.key}|${item[listenColumn[0].key]}`
