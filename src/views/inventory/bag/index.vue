@@ -107,9 +107,20 @@
                 </div>
               </template>
             </vs-col>
-            <vs-col xs="6" sm="3" lg="2" class="mt-2">
-              <vs-checkbox  v-model="is_auto_open_bag" @change="handleAutoOpenBag" v-if="!disable_auto_open_bag">
+          </vs-row>
+
+          <vs-row style="margin-bottom: 1.5em;">
+            <!-- Auto Open Bag -->
+            <vs-col xs="6" sm="3" lg="2">
+              <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
                 Auto Open Bag
+              </vs-checkbox>
+            </vs-col>
+
+            <!-- Validate Hub Delivery -->
+            <vs-col xs="6" sm="3" lg="2">
+              <vs-checkbox v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery">
+                Validate Hub Delivery
               </vs-checkbox>
             </vs-col>
           </vs-row>
@@ -420,6 +431,7 @@ export default {
           placeholder: 'Masukkan Connote',
           is_auto_open_bag: true,
           disable_auto_open_bag: false,
+          is_hub_delivery_validation: false,
       }
   },
   computed: {
@@ -534,6 +546,9 @@ export default {
     handleAutoOpenBag(val) {
       this.is_auto_open_bag = val.target.checked;
     },
+    handleValidateHubDelivery(val) {
+      this.is_hub_delivery_validation = val.target.checked;
+    },
     handlePraRunsheet() {
       this.regional = ''
       this.service = ''
@@ -560,7 +575,8 @@ export default {
           destination : this.regional,
           service: this.service,
           type: this.bag_type,
-          auto_open_bag: this.is_auto_open_bag
+          auto_open_bag: this.is_auto_open_bag,
+          is_hub_delivery_validation: this.is_hub_delivery_validation
       }
       // if(this.weight !== null) {
       //   this.form["bag_weight"] = parseInt(this.weight)
@@ -607,6 +623,9 @@ export default {
 
             this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG", this.is_auto_open_bag);
             this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG_ValueData", this.is_auto_open_bag);
+
+            this.$store.dispatch("SET_IS_HUB_DELIVERY_VALIDATION", this.is_hub_delivery_validation);
+            this.$store.dispatch("SET_IS_HUB_DELIVERY_VALIDATION_ValueData", this.is_hub_delivery_validation);
 
             this.$router.push('/bagging-detail/'+bagNumber)
             this.setRoutePageHistory(this.$route.meta, false);
@@ -669,6 +688,9 @@ export default {
   created() {
     this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG", false);
     this.$store.dispatch("SET_BAG_IS_AUTO_OPEN_BAG_ValueData", false);
+
+    this.$store.dispatch("SET_IS_HUB_DELIVERY_VALIDATION", false);
+    this.$store.dispatch("SET_IS_HUB_DELIVERY_VALIDATION_ValueData", false);
   },
   mounted() {
     this.getNodeLink()

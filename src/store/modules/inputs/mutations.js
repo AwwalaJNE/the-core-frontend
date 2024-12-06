@@ -4157,6 +4157,15 @@ export default {
     state.bag_is_auto_open_bag.bag_is_auto_open_bag.valueData = payload || false;
   },
 
+  // ====== VALIDATION HUB DELIVERY ======//
+  SET_IS_HUB_DELIVERY_VALIDATION(state, payload) {
+    state.is_hub_delivery_validation = payload || false
+  },
+
+  SET_IS_HUB_DELIVERY_VALIDATION_ValueData(state, payload) {
+    state.is_hub_delivery_validation.valueData = payload || false
+  },
+
   //====== DESTINATION ZIP CODE ======//
 
   SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE(state, payload) {
