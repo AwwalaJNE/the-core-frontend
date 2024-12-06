@@ -285,7 +285,6 @@ export default {
                     this.closeDialogConfirmRemove()
                     this.loadingConfirmRemove = false
                     if(res.data.detail.length > 0){
-                        this.$emit("resetBagActualWeight")
                         this.refresh()
                     }else{
                         this.$router.push({ name: 'InventoryBag', params: { } });
