@@ -981,7 +981,7 @@ export default {
                     this.updatePOD(dataPOD);
                 });
             } else {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? "Please select at least one item");
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || "Please select at least one item");
             }
         },
         approveAction(val){
