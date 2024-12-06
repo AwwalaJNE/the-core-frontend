@@ -1078,7 +1078,7 @@ const routes = [
         }
       },
       {
-        path: "/inbound-airport/detail/:inbound_id?",
+        path: "/inbound-airport/detail/:inbound_number?",
         name: "InboundIncomingDetail",
         component: InboundIncomingDetail,
         meta: {

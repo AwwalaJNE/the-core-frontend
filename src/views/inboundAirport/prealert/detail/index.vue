@@ -80,7 +80,7 @@ export default {
             title:"Inbound Detail",
             item_no:'',
             form:{},
-            inbound_id:'',
+            inbound_number:'',
             loading: false,
             dataTable: [],
             dataTableDetail: [],
@@ -92,9 +92,9 @@ export default {
           this.getTableData();
         },
         getParamRoute(){
-            if(this.$route.params.inbound_id){
-                this.inbound_id = this.$route.params.inbound_id.toString()
-                this.tempSearch = this.inbound_id.toString()
+            if(this.$route.params.inbound_number){
+                this.inbound_number = this.$route.params.inbound_number.toString()
+                this.tempSearch = this.inbound_number.toString()
                 this.refresh()
             }
         },
@@ -102,7 +102,7 @@ export default {
             this.loading = true
             this.dataTable = []
             await axios
-                .get(this.URL.inbound + `/${this.inbound_id}/inbound-status?n=${this.listenNodeId}`, this.Helper.header())
+                .get(this.URL.inbound + `/${this.inbound_number}/inbound-status?n=${this.listenNodeId}`, this.Helper.header())
                 .then(res => {
                     let data=[res.data.data]
                     data.map(item=>{
