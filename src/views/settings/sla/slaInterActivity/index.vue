@@ -264,6 +264,7 @@ export default {
             if(val !== undefined) {
                 this.searchValue = val
                 if(this.searchValue !== old) {
+                    this.pagination.page = 1
                     this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.searchBy, this.filterCurrentActivityBy, this.filterNextActivityBy, this.filterStatusBy)
                 }
             }
