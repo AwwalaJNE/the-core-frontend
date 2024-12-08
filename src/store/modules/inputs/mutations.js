@@ -4159,7 +4159,7 @@ export default {
 
   // ====== VALIDATION HUB DELIVERY ======//
   SET_IS_HUB_DELIVERY_VALIDATION(state, payload) {
-    state.is_hub_delivery_validation = payload || false
+    state.is_hub_delivery_validation.value = payload || false
   },
 
   SET_IS_HUB_DELIVERY_VALIDATION_ValueData(state, payload) {
