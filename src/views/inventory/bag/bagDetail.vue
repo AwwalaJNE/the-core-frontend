@@ -259,7 +259,7 @@
       <div class="box view">
         <vs-row justify="space-between">
           <vs-col xs="12" sm="12" lg="12">
-            <detailbagList ref="detailbagList"  :bagId="bag_id" @getResponse="getResponse" @resetBagActualWeight="resetBagActualWeight"/>
+            <detailbagList ref="detailbagList"  :bagId="bag_id" @getResponse="getResponse" />
           </vs-col>
         </vs-row>
       </div>
@@ -522,14 +522,6 @@ export default {
       this.item_code_orion = ''
       this.weight =''
     },
-    resetBagActualWeight() {
-      this.form={
-          bag_number : this.bag_id,
-          bag_actual_weight : 0
-      }
-      this.loading = true
-      this.putBag(true)
-    },
     async ProccessAddBagItem(){
       await axios
           .post(this.URL.bag+'/'+this.bag_id+`/detail?n=${this.listenNodeId}`,
@@ -539,7 +531,6 @@ export default {
           .then(res => {
             this.handleClearForm()
             this.openNotification('success', null, 'Success', 'Add Bagging is success')
-            this.resetBagActualWeight()
             this.refresh()
           }).catch(err => {
             this.loading = false
