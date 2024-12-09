@@ -24,7 +24,7 @@
                                                     border 
                                                     type="text"
                                                     v-model="item_no"
-                                                    label-placeholder="Masukkan code BAG / Koli / SM"
+                                                    label-placeholder="Masukkan code BAG / Koli"
                                                     autofocus
                                                     icon-after
                                                     v-uppercase
