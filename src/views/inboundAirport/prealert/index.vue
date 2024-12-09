@@ -162,7 +162,7 @@ export default {
                 },
                 {
                     label: 'Created Date',
-                    value: 'created'
+                    value: 'created_at'
                 }
             ],
         }
