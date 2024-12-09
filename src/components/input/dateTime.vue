@@ -13,6 +13,7 @@
                     start-placeholder="Start date"
                     end-placeholder="End date"
                     :picker-options="isETDnETA ? pickerOptions : null"
+                    :default-time="['00:00:00', '23:59:59']"
                     :disabled="listenIsDisabled"
                     @change="updateValue">
                 </el-date-picker>
