@@ -198,7 +198,7 @@ export default {
                 },
                 {
                     label: "Origin Node Code",
-                    key: "origin_tariff_code",
+                    key: "origin_node_code",
                     width: "auto"
                 },
                 {
