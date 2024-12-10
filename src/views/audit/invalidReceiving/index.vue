@@ -119,6 +119,10 @@ export default {
                     value: 'item_number'
                 },
                 {
+                    label: 'Item Type',
+                    value: 'item_type'
+                },
+                {
                     label: 'Process',
                     value: 'process'
                 },
@@ -165,6 +169,11 @@ export default {
                 {
                     label: "Item Number",
                     key: "item_number",
+                    width: "xs"
+                },
+                {
+                    label: "Item Type",
+                    key: "item_type",
                     width: "xs"
                 },
                 {
