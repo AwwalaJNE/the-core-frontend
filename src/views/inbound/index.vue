@@ -405,7 +405,7 @@ export default {
             this.$refs.searchInput.clear()
         },
         clearDate() {
-            this.$refs.dateFilter.clear()
+            this.tempDate = [];
         },
         openDialog(){
             this.$router.push('/inbound/prealert/scan')
