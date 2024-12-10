@@ -60,8 +60,8 @@ export default {
           value: 'OUTBOUND'
         },
         {
-          label: 'Bag',
-          value: 'BAGS'
+          label: 'Bag Regular',
+          value: 'REGULAR'
         },
         {
           label: 'Bag Pra Runsheet',

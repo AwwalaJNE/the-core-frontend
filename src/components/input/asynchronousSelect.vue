@@ -11,40 +11,27 @@
     }
 -->
 <template>
-<div style="text-align:left;">
+<div style="text-align:left;" class="el-select-async">
     <span class="c-label">{{name}}</span>
-    <div class="el-select-async">
-        <el-select
-            v-model="value"
-            multiple
-            filterable
-            remote
-            placeholder="Please enter a keyword"
-            :remote-method="asynchronousSelect"
-            @change="handleSelect"
-            :loading="loading">
-                <template v-if="options.length > 0">
-                    <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </template>
-                
-        </el-select>
-    </div>
+    <el-select
+        v-model="value"
+        multiple
+        filterable
+        remote
+        placeholder="Please enter a keyword"
+        :remote-method="asynchronousSelect"
+        @change="handleSelect"
+        :loading="loading">
+            <template v-if="options.length > 0">
+                <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+                </el-option>
+            </template>
+    </el-select>
 </div>
-    <!-- <inputan :name="name" :rules="rules">
-        <template v-slot:inputan="props">
-            <div style="text-align:left;">
-                <small style="padding-left:10px;">{{name}}</small>
-                <el-form-item :slot-scope="props.err" :error="props.err" :label="name">
-                    
-                </el-form-item>
-            </div>
-        </template>
-    </inputan> -->
 </template>
 <script>
 import axios from "axios";
@@ -61,7 +48,9 @@ export default {
         querySearch: Function,
         formKey: String,
         typeInput: String,
-
+        limitExist: Boolean,
+        selectLabel: String,
+        selectValue: String,
         url: String
     },
     components: {
@@ -83,6 +72,8 @@ export default {
             value: this.selectedValue ?? null,
             options: this.valueData ?? [{"label": null, "value": null}],
             loading: false,
+            query: '',
+            limit: 10,
         }
     },
     watch: {
@@ -91,6 +82,11 @@ export default {
                 this.value = val
             }
         },
+        limit: function (val, old) {
+            if (val !== old) {
+                this.asynchronousSelect(this.query)
+            }
+        }
         // valueData: function(val) {
         //     if (val != undefined) {
         //         this.options = val
@@ -100,14 +96,21 @@ export default {
     methods: {
         asynchronousSelect(queryString) {
             this.loading = true
+            this.query = queryString
 
-            queryString != '' && axios.get(this.listenUrl +`&s=${queryString}`, this.Helper.header())
+            queryString != '' && axios.get(this.listenUrl +`&s=${queryString}` + `${this.limit ? `&limit=${this.limit}` : ''}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
                 let suggestions = [];
 
                 result.length > 0 && result.map(item => {
-                    if(item.hasOwnProperty('node_name')) {
+                    if (this.selectLabel && this.selectValue){
+                        suggestions.push({
+                            value: item[this.selectLabel],
+                            label: item[this.selectValue],
+                            data: item
+                        });
+                    } else if(item.hasOwnProperty('node_name')) {
                         suggestions.push({
                             value: item['node_id'],
                             label: item['node_name'],
@@ -117,6 +120,12 @@ export default {
                         suggestions.push({
                             value: item['user_id'],
                             label: item['user_name'],
+                            data: item
+                        });
+                    } else if (typeof item === 'string') {
+                        suggestions.push({
+                            value: item,
+                            label: item,
                             data: item
                         });
                     }
@@ -154,6 +163,16 @@ export default {
 
 
             this.$emit("updateValue", this.listenFormKey, item, info)
+        }
+    },
+    mounted() {
+        if (this.limitExist) {
+            const masonry = document.querySelector('.el-select-async .el-select-dropdown__wrap.el-scrollbar__wrap');
+            masonry.addEventListener('scroll', e => {
+                if (masonry.scrollHeight - (masonry.scrollTop + masonry.clientHeight) < 1) {
+                    this.limit += 10;
+                }
+            });
         }
     }
 }

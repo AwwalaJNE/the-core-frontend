@@ -1,26 +1,27 @@
 <template>
     <div>
         <table-master 
-        :dataTable="dataTable" 
-        :dataColumn="datacolumn" 
-        :tableLoading="loading"
-        :pageSize="pagination.page_size"
-        :page="pagination.page"
-        :limit="pagination.limit"
-        :hasAction="false"
-        :hasLinked="hasLinkedItem"
-        :hasPagination="true"
-        @actionLimit="actionLimit"
-        @actionPagination="actionPagination"
-        @handleEdit="actionDetail"
+            :dataTable="dataTable" 
+            :dataColumn="!isMobile ? datacolumn.concat(allColumn) : datacolumn" 
+            :tableLoading="loading"
+            :pageSize="pagination.page_size"
+            :page="pagination.page"
+            :limit="pagination.limit"
+            :hasAction="false"
+            :hasLinked="hasLinkedItem"
+            :hasPagination="true"
+            @actionLimit="actionLimit"
+            @actionPagination="actionPagination"
+            @handleEdit="actionDetail"
         />
-
     </div>
 </template>
 <script>
 import axios from "axios";
-import master from "@/mixins/master"
-import TableMaster from "@/components/table/tableMaster.vue"
+import master from "@/mixins/master";
+
+import TableMaster from "@/components/table/tableMaster";
+
 export default {
     name:"Inbound-Incoming",
     mixins: [master],
@@ -47,14 +48,16 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                  label: "Inbound Number",
-                  key: "inbound_number",
-                  width: "xs"
+                    label: "Inbound Number",
+                    key: "inbound_number",
+                    width: "xs"
                 },
+            ],
+            allColumn: [
                 {
-                  label: "Vehicle",
-                  key: "vehicle",
-                  width: "xs"
+                    label: "Vehicle",
+                    key: "vehicle",
+                    width: "xs"
                 },
                 {
                     label: "From",
@@ -77,39 +80,44 @@ export default {
                     width: "auto"
                 },
                 {
-                  label: "PIC",
-                  key: "carrier_employee_name",
-                  width: "xs"
+                    label: "PIC",
+                    key: "carrier_employee_name",
+                    width: "xs"
                 },
                 {
-                  label: "ETA",
-                  key: "inbound_eta",
-                  width: "xs"
+                    label: "Created",
+                    key: "created_at",
+                    width: "xs"
                 },
                 {
-                  label: "ETD",
-                  key: "inbound_etd",
-                  width: "xs"
+                    label: "ETA",
+                    key: "inbound_eta",
+                    width: "xs"
                 },
                 {
-                  label: "Departed",
-                  key: "departed_at",
-                  width: "xs"
+                    label: "ETD",
+                    key: "inbound_etd",
+                    width: "xs"
                 },
                 {
-                  label: "Status",
-                  key: "status",
-                  width: "auto"
+                    label: "Departed",
+                    key: "departed_at",
+                    width: "xs"
                 },
                 {
-                  label: "Received At",
-                  key: "inbound_node_name_receiver",
-                  width: "auto"
+                    label: "Status",
+                    key: "status",
+                    width: "auto"
                 },
                 {
-                  label: "Received Time",
-                  key: "received_at",
-                  width: "auto"
+                    label: "Received At",
+                    key: "inbound_node_name_receiver",
+                    width: "auto"
+                },
+                {
+                    label: "Received Time",
+                    key: "received_at",
+                    width: "auto"
                 },
             ],
             loading: false,
@@ -119,7 +127,7 @@ export default {
             nodeDestination: "",
             node_type:'',
             pagination: {
-                limit:20,
+                limit: 20,
                 page_size: 1,
                 page: 1
             },
@@ -132,7 +140,8 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate)
+                    this.pagination.page = 1
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
                 }
             }
         },
@@ -140,7 +149,7 @@ export default {
           if(val !== undefined) {
             this.node_type = val
             if(this.node_type !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
             }
           }
         },
@@ -148,7 +157,7 @@ export default {
           if(val !== undefined) {
             this.statusReceived = val
             if(this.statusReceived !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.node_type, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.node_type, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
             }
           }
         },
@@ -156,7 +165,7 @@ export default {
           if(val !== undefined) {
             this.nodeOrigin = val
             if(this.nodeOrigin !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
             }
           }
         },
@@ -164,7 +173,7 @@ export default {
           if(val !== undefined) {
             this.nodeDestination = val
             if(this.nodeDestination !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type,this.prealertFilter, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
             }
           }
         },
@@ -172,7 +181,7 @@ export default {
           if(val !== undefined) {
             this.prealertFilter = val
             if(this.prealertFilter !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived,val, this.startDate, this.endDate)
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived,val, this.startDate, this.endDate, this.filterDateBy)
             }
           }
         },
@@ -183,12 +192,19 @@ export default {
               this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
               this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
             }
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
           }
-        }
+        }, 
+        filterDateBy: function(val, old) {
+            if (val !== undefined) {
+                if (val !== old && !this.isReset) {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, val);
+                }
+            }
+        },
     },
     methods: {
-        async getTableData(limit,page,q, origin, destination,node_type,statusReceived, prealertFilter, from, to) {
+        async getTableData(limit,page,q, origin, destination,node_type,statusReceived, prealertFilter, from, to, dateFilter) {
             this.loading = true
             let query = "";
             let startDate = "";
@@ -201,18 +217,21 @@ export default {
 
             
             if(statusReceived !== undefined && statusReceived !== '-') {
-              isReceived = statusReceived
+                isReceived = statusReceived
             }
             if(prealertFilter !== undefined && prealertFilter !== '-') {
-              isPrealert = prealertFilter
+                isPrealert = prealertFilter
             }
             if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
+                startDate = from
+                endDate = to
             }
+            
+            let dateFilterBy = dateFilter || '';
+
             await axios
                 .get(this.URL.inbound_incoming +
-                `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}&is_airport=true`,
+                `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${this.searchBy}&filter_date_by=${dateFilterBy}&start_date=${startDate}&end_date=${endDate}&is_airport=true&prealert_airport=1`,
                 this.Helper.header())
                 .then(res => {
                     let total = 0
@@ -258,24 +277,26 @@ export default {
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate data', err)
                 })
         },
-
         actionLimit(val){
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
         },
-
         actionPagination(val) {
             this.pagination.page = val
             this.refresh()
         },
-
         refresh(){
             this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate)
         },
-
         actionDetail(row){
-          this.$router.push({ name: 'InboundIncomingDetail', params: { inbound_id: row.inbound_id } });
+            this.$router.push({ 
+                name: 'InboundIncomingDetail', 
+                params: { 
+                  inbound_number: row.inbound_number 
+                } 
+            });
+            this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {

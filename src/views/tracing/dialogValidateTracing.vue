@@ -126,24 +126,20 @@ export default {
     },
     methods: {
         initDataItem() {
-            // TODO: REMOVE after API validation ready
-            this.validItemNumber = this.listenValidItem?.item_number;
-
-            // TODO: USE after API validation ready
-            // if (this.listenValidItem.length > 0) {
-            //     this.validItemNumber = this.listenValidItem
-            //         .filter(item => item.status === 'SUCCESS')
-            //         .map(item => item.item_number);
-            //     this.invalidItemNumber = this.listenValidItem
-            //         .filter(item => item.status !== 'SUCCESS')
-            //         .map(item => item.item_number);
-            // }
+            if (this.listenValidItem.length > 0) {
+                this.validItemNumber = this.listenValidItem
+                    .filter(item => item.status === 'SUCCESS')
+                    .map(item => item.item_number);
+                this.invalidItemNumber = this.listenValidItem
+                    .filter(item => item.status !== 'SUCCESS')
+                    .map(item => item.item_number);
+            }
         },
         async handleSubmit() {
             if (this.listenValidateType === 'create') {
-                this.$emit("updateValue", 'SUBMIT_DIALOG_CREATE_VALIDATE_TRACING', this.listenValidItem);
+                this.$emit("updateValue", 'SUBMIT_DIALOG_CREATE_VALIDATE_TRACING', {item_number: this.validItemNumber});
             } else {
-                this.$emit("updateValue", 'SUBMIT_DIALOG_REMOVE_VALIDATE_TRACING', this.listenValidItem);
+                this.$emit("updateValue", 'SUBMIT_DIALOG_REMOVE_VALIDATE_TRACING', {item_number: this.validItemNumber});
             }
         },
         cancel() {

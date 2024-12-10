@@ -6,34 +6,51 @@
         :closeDialog="cancel"
     >
         <template v-slot:header>
-            <div class="button-helper">
-                <div class="title-helper">
+            <vs-row align="center">
+                <vs-col w="3">
+                    <destination-switch
+                        style="margin:0"
+                        formKey="destinationType"
+                        :name="'Node|Facility'"
+                        :valueData="isNodeDestination"
+                        @updateValue="updateValue"
+                        :disabled="listenDisableSwitch"
+                    />
+                </vs-col>
+                <vs-col w="6">
                     {{ listenTitle }}
-                </div>
-                <vs-button 
-                    :disabled="isDisabledPrint"
-                    @click="print"
-                >
-                    Print
-                </vs-button>
-                <template v-if="listenUserRoleName === 'HELPDESK'">
-                    <vs-button  
-                        :danger="is_approve === 1"
-                        :disabled="isDisabledApprove"
-                        @click="approve" 
-                    >
-                        {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
-                    </vs-button>
-                </template>
-                <template v-else>
-                    <vs-button
-                        :disabled="is_approve === 1 || isDisabledApprove"
-                        @click="approve" 
-                    >
-                        {{ is_approve === 1 ? 'Approved' : 'Approve' }}
-                    </vs-button>
-                </template>
-            </div>
+                </vs-col>
+                <vs-col class="button-helper" w="3">
+                    <!-- <template v-if="is_approve === 1">
+                        <vs-button
+                            class="button-item"
+                            :disabled="isDisabledPrint"
+                            @click="print"
+                        >
+                            Print
+                        </vs-button>
+                    </template> -->
+                    <template v-if="listenUserRoleName === 'HELPDESK'">
+                        <vs-button  
+                            class="button-item"
+                            :danger="is_approve === 1"
+                            :disabled="isDisabledApprove"
+                            @click="approve" 
+                        >
+                            {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
+                        </vs-button>
+                    </template>
+                    <template v-else>
+                        <vs-button
+                            class="button-item"
+                            :disabled="is_approve === 1 || isDisabledApprove"
+                            @click="approve" 
+                        >
+                            {{ is_approve === 1 ? 'Approved' : 'Approve' }}
+                        </vs-button>
+                    </template>
+                </vs-col>
+            </vs-row>
         </template>
 
         <template v-slot:content>
@@ -57,6 +74,7 @@
                     typeForm="surat_jalan"
                     :dataItem="editData"
                     :isDisabled="isDisabled"
+                    :partialDisabled="manifest_do_number && !isNodeDestination ? partialDisabled : () => false"
                     @formData="formData"
                     @onChangeCustom="onChangeCustom"
                 />
@@ -82,11 +100,11 @@
                                 </input-general>
                             </form>
                         </vs-col>
-                        <vs-col xs="6" sm="3" lg="3">
+                        <!-- <vs-col xs="6" sm="3" lg="3">
                             <vs-checkbox v-model="is_penerusan" @change="handlePenerusan">
                                 Penerusan
                             </vs-checkbox>
-                        </vs-col>
+                        </vs-col> -->
                     </vs-row>
                     <table-master
                         :dataTable="dataTable"
@@ -118,6 +136,7 @@ import DialogMaster from "@/components/dialog/dialogMaster";
 import FormInputController from "@/components/form/formInputController";
 import InputGeneral from "@/components/input/general";
 import TableMaster from "@/components/table/tableMaster";
+import Switch from "@/components/input/switch"
 
 export default {
     name: "transport-surat-jalan-dialog-new",
@@ -128,6 +147,7 @@ export default {
         "input-general": InputGeneral,
         "form-input-controller": FormInputController,
         CameraScanner,
+        "destination-switch": Switch,
     },
     props: {
         active: Boolean,
@@ -194,7 +214,7 @@ export default {
                     value: "ALL",
                 },
                 {
-                    label: "Same Destination",
+                    label: "Single Destination",
                     value: "SAME DESTINATION",
                 },
             ],
@@ -213,6 +233,9 @@ export default {
                 page_size: 1,
                 page: 1,
             },
+            isNodeDestination: true,
+            nodeDestination: [],
+            facilityDestination: []
         };
     },
     computed: {
@@ -227,6 +250,9 @@ export default {
         },
         listenUserRoleName() {
             return this.listenUserRole.user_role_name
+        },
+        listenDisableSwitch() {
+            return this.manifest_do_number ? true : false
         }
     },
     watch: {
@@ -238,12 +264,30 @@ export default {
         active: function(val) {
             if (val == true) {
                 this.getDestination();
+                this.getFacilityCode();
                 this.getNoModeAngkutan();
                 this.getLov();
                 this.getDriver();
                 this.isDestinationDisableCheck();
             }
         },
+        isNodeDestination(val) {
+            if (val !== undefined) {
+                if (val) {
+                    this.$store.dispatch(
+                        "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
+                        this.nodeDestination?.length > 0 ? this.nodeDestination : null
+                    );
+                }
+                else {
+                    this.$store.dispatch(
+                        "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
+                        this.facilityDestination?.length > 0 ? this.facilityDestination : null
+                    );
+                }
+                this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID",'');
+            }
+        }
     },
     methods: {
         getEditData(val) {
@@ -260,7 +304,7 @@ export default {
             this.dataTable.forEach(item => {
                 item.destination = item.bag?.destination?.node_tariff_code || item.koli?.connote?.connote_receiver_tariff_code || item.manifest?.destination?.node_tariff_code || '';
 
-                if (val.status !== "READY") {
+                if (val.status !== "READY" || val.is_approve === 1) {
                     item.button_status = { remove: false };
                 }
 
@@ -269,11 +313,14 @@ export default {
 
             this.total_weight = val.total_weight;
             this.editData = val;
+            this.editData.destination_id = val.node_id_destination ?? val.facility_code_destination
             this.no_moda_angkutan_id = val.no_moda_angkutan_id || null;
+            this.isNodeDestination = val.node_id_destination !== null ? true : false
 
             this.master_form = {
                 node_id_origin: val.node_id_origin,
                 node_id_destination: val.node_id_destination,
+                facility_code_destination: val.facility_code_destination,
                 vehicle_mode_id: val.vehicle_mode_id,
                 vehicle_id: val.vehicle_id,
                 pic_employee_id: val.pic_employee_id,
@@ -295,7 +342,8 @@ export default {
             if (this.vehicle_max_weight >= weight) {
                 const obj = {
                     node_id_origin: this.listenNodeId,
-                    node_id_destination: form.destination_id,
+                    node_id_destination: this.isNodeDestination ? form.destination_id : null,
+                    facility_code_destination: !this.isNodeDestination ? form.destination_id : null,
                     vehicle_mode_id: form.moda_angkutan_id,
                     vehicle_id: form.no_moda_angkutan_id,
                     pic_employee_id: form.driver_id,
@@ -343,7 +391,7 @@ export default {
                             this.estimated_time_in_hour = item.estimated_time_in_hour;
                             this.handleEta(this.etd, this.estimated_time_in_hour);
                         }
-                        this.destinationUnlock = parseInt(value);
+                        this.destinationUnlock = value;
                     }
                     updateMasterForm("node_id_destination", val);
                     this.isDestinationDisableCheck();
@@ -396,6 +444,9 @@ export default {
                 case "scanBag":
                     this.item_number = val;
                     break;
+                case "destinationType":
+                    this.isNodeDestination = val;
+                    break;
                 default:
             }
         },
@@ -434,6 +485,16 @@ export default {
             }
             else {
                 this.is_penerusan = val.target.checked;
+                if (this.manifest_do_number) {
+                    const updateMasterForm = (key, value) => {
+                        if (this.manifest_do_number && this.master_form?.[key] !== value) {
+                            this.master_form = { ...this.master_form, [key]: value };
+                            this.updateSuratJalan();
+                        }
+                    };
+                    
+                    updateMasterForm("is_penerusan", this.is_penerusan);
+                }
             }
         },
         submitSuratJalan() {
@@ -451,6 +512,7 @@ export default {
                     this.master_form = {
                         node_id_origin: data.node_id_origin,
                         node_id_destination: data.node_id_destination,
+                        facility_code_destination: data.facility_code_destination,
                         vehicle_mode_id: data.vehicle_mode_id,
                         vehicle_id: data.vehicle_id,
                         pic_employee_id: data.pic_employee_id,
@@ -498,7 +560,7 @@ export default {
             try {
                 const res = await axios.get(`${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`, this.Helper.header());
 
-                if (res.data.data) {
+                if (res.data.data.length > 0) {
                     let arr = res.data.data;
 
                     arr = arr.map(item => ({
@@ -508,6 +570,9 @@ export default {
                     }));
 
                     this.dataTable = arr;
+                } else {
+                    this.dataTable = [];
+                    this.manifest_do_number = "";
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed 2", err?.response?.data?.message ?? 'Something went wrong');
@@ -546,10 +611,6 @@ export default {
                 this.is_approve ^= 1;
                 this.isDisabled = !this.isDisabled;
                 this.openNotification("success", null, "Success", res?.data?.message);
-
-                if (this.is_approve === 1) {
-                    this.print();
-                }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
             } finally {
@@ -559,14 +620,27 @@ export default {
         handleClearForm() {
             this.manifest_do_number = "";
             this.item_number = "";
+            this.isDisabled = false;
+            this.isDisabledPrint = false;
+            this.isDisabledApprove = false;
+            this.is_approve = 0;
+            this.vehicle_max_weight = 0;
+            this.vehicle_type_id = "";
+            this.no_moda_angkutan_id = null;
+            this.etd = null;
+            this.estimated_time_in_hour = null;
+            this.manifest_lov = "";
+            this.isNodeDestination = true;
             this.$refs.formSuratJalan.handleClearForm();
             this.form = {};
+            this.master_form = {};
         },
         cancel() {
             this.loading = false;
             this.handleClearForm();
             this.dataTable = [];
             this.closeDialog();
+            this.is_penerusan = true;
         },
         getLov() {
             const arr = this.manifest_lov_list.map(item => ({
@@ -608,20 +682,63 @@ export default {
                             arr.push(obj);
                         });
 
-                        this.$store.dispatch(
-                            "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                            arr.length > 0 ? arr : null
-                        );
+                        this.nodeDestination = arr
+                        if (!this.manifest_do_number || this.dataItem.node_id_destination) {
+                            this.$store.dispatch(
+                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
+                                arr.length > 0 ? arr : null
+                            );
+                        }
                     } else {
-                        this.$store.dispatch(
-                            "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                            null
-                        );
-                        // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
+                        if (!this.manifest_do_number || this.dataItem.node_id_destination) {
+                            this.$store.dispatch(
+                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
+                                null
+                            );
+                        }
                     }
                 })
                 .catch((err) => {
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to get node destination list', err?.response?.data?.message ?? err)
+                });
+        },
+        async getFacilityCode() {
+            await axios
+                .get(
+                    this.URL.facility_code +
+                        `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
+                        let arr = [];
+                        res.data.data.map((item) => {
+                            let obj = {};
+                            obj["label"] = item.name;
+                            obj["value"] = item.code;
+                            obj["item"] = item;
+
+                            arr.push(obj);
+                        });
+
+                        this.facilityDestination = arr
+                        if (this.dataItem?.facility_code_destination) {
+                            this.$store.dispatch(
+                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
+                                arr.length > 0 ? arr : null
+                            );
+                        }
+                    } else {
+                        if (this.dataItem?.facility_code_destination) {
+                            this.$store.dispatch(
+                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
+                                null
+                            );
+                        }
+                    }
+                })
+                .catch((err) => {
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to get facility code list', err?.response?.data?.message ?? err)
                 });
         },
         async getNoModeAngkutan() {
@@ -694,6 +811,14 @@ export default {
         },
         refreshDetail() {
             this.getSuratJalanDetail();
+        },
+        partialDisabled(key) {
+            if (key === 'destination_id') {
+                return false
+            }
+            else {
+                return true
+            }
         }
     },
     mounted() {
@@ -707,14 +832,13 @@ export default {
 }
 </style>
 <style scoped>
-.title-helper {
-    width: 70%;
-    align-content: center;
+.button-item {
+    min-width: 77px;
 }
 
 .button-helper {
-    display: flex; 
-    justify-content: flex-end;
+    display: flex !important;
+    justify-content: flex-end !important;
 }
 
 button {

@@ -1591,6 +1591,12 @@ export default {
   SET_VEHICLE_VEHICLE_MAX_VOLUME_ValueData(state, payload) {
     state.vehicle.vehicle_max_volume.valueData = payload
   },
+  SET_VEHICLE_RUNSHEET_ITEM_LIMIT(state, payload) {
+    state.vehicle.runsheet_item_limit.value = payload;
+  },
+  SET_VEHICLE_RUNSHEET_ITEM_LIMIT_ValueData(state, payload) {
+    state.vehicle.runsheet_item_limit.valueData = payload;
+  },
 
   SET_VEHICLE_VEHICLE_TYPE_ID(state, payload) {
     state.vehicle.vehicle_type_id.value = payload
@@ -2824,6 +2830,13 @@ export default {
   SET_EMPLOYEE_IS_ACTIVE_ValueData(state, payload) {
     state.employee.is_active.valueData = payload
   },
+
+  SET_EMPLOYEE_RUNSHEET_ITEM_LIMIT(state, payload) {
+    state.employee.runsheet_item_limit.value = payload
+  },
+  SET_EMPLOYEE_RUNSHEET_ITEM_LIMIT_ValueData(state, payload) {
+    state.employee.runsheet_item_limit.valueData = payload
+  },
   //===== end employee ======
 
   //======= START Employee Type =======
@@ -3729,4 +3742,548 @@ export default {
   },
 
   //====== END FACILITY CODE ======
+
+
+
+  //====== KPI PROCESS TARGET ======//
+
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE(state, payload) {
+    state.kpi_process_target.reference_value.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ValueData(state, payload) {
+    state.kpi_process_target.reference_value.valueData = payload
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_VALUE_ArrData(state, payload) {
+    state.kpi_process_target.reference_value.hasOwnProperty('arrData') ?
+    state.kpi_process_target.reference_value.arrData = payload :
+    state.kpi_process_target.reference_value.arrData = []
+  },
+
+
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY(state, payload) {
+    state.kpi_process_target.reference_entity.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ValueData(state, payload) {
+    state.kpi_process_target.reference_entity.valueData = payload
+  },
+  SET_KPI_PROCESS_TARGET_REFERENCE_ENTITY_ArrData(state, payload) {
+    state.kpi_process_target.reference_entity.hasOwnProperty('arrData') ?
+    state.kpi_process_target.reference_entity.arrData = payload :
+    state.kpi_process_target.reference_entity.arrData = []
+  },
+
+
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME(state, payload) {
+    state.kpi_process_target.process_name.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME_ValueData(state, payload) {
+    state.kpi_process_target.process_name.valueData = payload
+  },
+  SET_KPI_PROCESS_TARGET_PROCESS_NAME_ArrData(state, payload) {
+    state.kpi_process_target.process_name.hasOwnProperty('arrData') ?
+    state.kpi_process_target.process_name.arrData = payload :
+    state.kpi_process_target.process_name.arrData = []
+  },
+
+
+  SET_KPI_PROCESS_TARGET_VALUE(state, payload) {
+    state.kpi_process_target.value.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_VALUE_ValueData(state, payload) {
+    state.kpi_process_target.value.valueData = payload
+  },
+
+
+  SET_KPI_PROCESS_TARGET_DESCRIPTION(state, payload) {
+    state.kpi_process_target.description.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_DESCRIPTION_ValueData(state, payload) {
+    state.kpi_process_target.description.valueData = payload
+  },
+
+
+  SET_KPI_PROCESS_TARGET_START_DATE(state, payload) {
+    state.kpi_process_target.start_date.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_START_DATE_ValueData(state, payload) {
+    state.kpi_process_target.start_date.valueData = payload
+  },
+  SET_KPI_PROCESS_TARGET_START_DATE_ArrData(state, payload) {
+    state.kpi_process_target.start_date.hasOwnProperty('arrData') ?
+    state.kpi_process_target.start_date.arrData = payload :
+    state.kpi_process_target.start_date.arrData = []
+  },
+
+
+  SET_KPI_PROCESS_TARGET_END_DATE(state, payload) {
+    state.kpi_process_target.end_date.value = payload
+  },
+  SET_KPI_PROCESS_TARGET_END_DATE_ValueData(state, payload) {
+    state.kpi_process_target.end_date.valueData = payload
+  },
+  SET_KPI_PROCESS_TARGET_END_DATE_ArrData(state, payload) {
+    state.kpi_process_target.end_date.hasOwnProperty('arrData') ?
+    state.kpi_process_target.end_date.arrData = payload :
+    state.kpi_process_target.end_date.arrData = []
+  },
+
+  //====== END KPI PROCESS TARGET ======//
+
+  //====== CONNOTE FORWARD ======//
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME(state, payload) {
+    state.connote_forward.connote_shipper_name.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_name.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_name.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER(state, payload) {
+    state.connote_forward.connote_shipper_phone_number.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_phone_number.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_phone_number.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL(state, payload) {
+    state.connote_forward.connote_shipper_email.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_email.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_email.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS(state, payload) {
+    state.connote_forward.connote_shipper_street_address.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_street_address.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_street_address.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS(state, payload) {
+    state.connote_forward.connote_shipper_administrative_address.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_administrative_address.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_administrative_address.valueData = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_ArrData(state, payload) {
+    state.connote_forward.connote_shipper_administrative_address.hasOwnProperty('arrData') ?
+      state.connote_forward.connote_shipper_administrative_address.arrData = payload :
+      state.connote_forward.connote_shipper_administrative_address.arrData = []
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE(state, payload) {
+    state.connote_forward.connote_shipper_zip_code.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_zip_code.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_zip_code.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE(state, payload) {
+    state.connote_forward.connote_shipper_tariff_code.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled(state, payload) {
+    state.connote_forward.connote_shipper_tariff_code.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_ValueData(state, payload) {
+    state.connote_forward.connote_shipper_tariff_code.valueData = payload
+  },
+
+
+
+
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME(state, payload) {
+    state.connote_forward.connote_receiver_name.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_name.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_name.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER(state, payload) {
+    state.connote_forward.connote_receiver_phone_number.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_phone_number.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_phone_number.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL(state, payload) {
+    state.connote_forward.connote_receiver_email.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_email.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_EMAIL_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_email.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS(state, payload) {
+    state.connote_forward.connote_receiver_street_address.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_street_address.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_STREET_ADDRESS_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_street_address.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS(state, payload) {
+    state.connote_forward.connote_receiver_administrative_address.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_administrative_address.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_administrative_address.valueData = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ArrData(state, payload) {
+    state.connote_forward.connote_receiver_administrative_address.hasOwnProperty('arrData') ?
+      state.connote_forward.connote_receiver_administrative_address.arrData = payload :
+      state.connote_forward.connote_receiver_administrative_address.arrData = []
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE(state, payload) {
+    state.connote_forward.connote_receiver_zip_code.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_zip_code.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_zip_code.valueData = payload
+  },
+
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE(state, payload) {
+    state.connote_forward.connote_receiver_tariff_code.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_tariff_code.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_tariff_code.valueData = payload
+  },
+  //====== END CONNOTE FORWARD ======//
+
+
+  //====== BAG WEIGHT SETTINGS ======//
+
+  SET_BAG_WEIGHT_BAG_TYPE(state, payload) {
+    state.bag_weight.bag_type.value = payload
+  },
+  SET_BAG_WEIGHT_BAG_TYPE_ValueData(state, payload) {
+    state.bag_weight.bag_type.valueData = payload
+  },
+  SET_BAG_WEIGHT_BAG_TYPE_ArrData(state, payload) {
+    state.bag_weight.bag_type.hasOwnProperty('arrData') ?
+    state.bag_weight.bag_type.arrData = payload :
+    state.bag_weight.bag_type.arrData = []
+  },
+
+
+  SET_BAG_WEIGHT_ROUTING_TYPE(state, payload) {
+    state.bag_weight.routing_type.value = payload
+  },
+  SET_BAG_WEIGHT_ROUTING_TYPE_ValueData(state, payload) {
+    state.bag_weight.routing_type.valueData = payload
+  },
+  SET_BAG_WEIGHT_ROUTING_TYPE_ArrData(state, payload) {
+    state.bag_weight.routing_type.hasOwnProperty('arrData') ?
+    state.bag_weight.routing_type.arrData = payload :
+    state.bag_weight.routing_type.arrData = []
+  },
+
+
+  SET_BAG_WEIGHT_SERVICE_TYPE(state, payload) {
+    state.bag_weight.service_type.value = payload
+  },
+  SET_BAG_WEIGHT_SERVICE_TYPE_ValueData(state, payload) {
+    state.bag_weight.service_type.valueData = payload
+  },
+  SET_BAG_WEIGHT_SERVICE_TYPE_ArrData(state, payload) {
+    state.bag_weight.service_type.hasOwnProperty('arrData') ?
+    state.bag_weight.service_type.arrData = payload :
+    state.bag_weight.service_type.arrData = []
+  },
+
+
+  SET_BAG_WEIGHT_DESTINATION(state, payload) {
+    state.bag_weight.destination.value = payload
+  },
+  SET_BAG_WEIGHT_DESTINATION_ValueData(state, payload) {
+    state.bag_weight.destination.valueData = payload
+  },
+  SET_BAG_WEIGHT_DESTINATION_ArrData(state, payload) {
+    state.bag_weight.destination.hasOwnProperty('arrData') ?
+    state.bag_weight.destination.arrData = payload :
+    state.bag_weight.destination.arrData = []
+  },
+
+  //====== END BAG WEIGHT SETTINGS ======//
+
+
+
+  //====== BAG LIMIT SETTINGS ======//
+
+  SET_BAG_LIMIT_BAG_TYPE(state, payload) {
+    state.bag_limit.bag_type.value = payload
+  },
+  SET_BAG_LIMIT_BAG_TYPE_ValueData(state, payload) {
+    state.bag_limit.bag_type.valueData = payload
+  },
+  SET_BAG_LIMIT_BAG_TYPE_ArrData(state, payload) {
+    state.bag_limit.bag_type.hasOwnProperty('arrData') ?
+    state.bag_limit.bag_type.arrData = payload :
+    state.bag_limit.bag_type.arrData = []
+  },
+
+
+  SET_BAG_LIMIT_REFERENCE_VALUE(state, payload) {
+    state.bag_limit.reference_value.value = payload
+  },
+  SET_BAG_LIMIT_REFERENCE_VALUE_ValueData(state, payload) {
+    state.bag_limit.reference_value.valueData = payload
+  },
+  SET_BAG_LIMIT_REFERENCE_VALUE_ArrData(state, payload) {
+    state.bag_limit.reference_value.hasOwnProperty('arrData') ?
+    state.bag_limit.reference_value.arrData = payload :
+    state.bag_limit.reference_value.arrData = []
+  },
+
+
+  SET_BAG_LIMIT_REFERENCE_ENTITY(state, payload) {
+    state.bag_limit.reference_entity.value = payload
+  },
+  SET_BAG_LIMIT_REFERENCE_ENTITY_ValueData(state, payload) {
+    state.bag_limit.reference_entity.valueData = payload
+  },
+  SET_BAG_LIMIT_REFERENCE_ENTITY_ArrData(state, payload) {
+    state.bag_limit.reference_entity.hasOwnProperty('arrData') ?
+    state.bag_limit.reference_entity.arrData = payload :
+    state.bag_limit.reference_entity.arrData = []
+  },
+
+
+  SET_BAG_LIMIT_LIMIT(state, payload) {
+    state.bag_limit.limit.value = payload
+  },
+  SET_BAG_LIMIT_LIMIT_ValueData(state, payload) {
+    state.bag_limit.limit.valueData = payload
+  },
+
+
+  //====== END BAG LIMIT SETTINGS ======//
+
+
+
+  //====== RUNSHEET LIMIT SETTINGS ======//
+
+  SET_RUNSHEET_LIMIT_REFERENCE_TO(state, payload) {
+    state.runsheet_limit.reference_to.value = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_TO_ValueData(state, payload) {
+    state.runsheet_limit.reference_to.valueData = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_TO_ArrData(state, payload) {
+    state.runsheet_limit.reference_to.hasOwnProperty('arrData') ?
+    state.runsheet_limit.reference_to.arrData = payload :
+    state.runsheet_limit.reference_to.arrData = []
+  },
+
+
+  SET_RUNSHEET_LIMIT_REFERENCE_VALUE(state, payload) {
+    state.runsheet_limit.reference_value.value = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ValueData(state, payload) {
+    state.runsheet_limit.reference_value.valueData = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ArrData(state, payload) {
+    state.runsheet_limit.reference_value.hasOwnProperty('arrData') ?
+    state.runsheet_limit.reference_value.arrData = payload :
+    state.runsheet_limit.reference_value.arrData = []
+  },
+
+
+  SET_RUNSHEET_LIMIT_REFERENCE_ENTITY(state, payload) {
+    state.runsheet_limit.reference_entity.value = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_ENTITY_ValueData(state, payload) {
+    state.runsheet_limit.reference_entity.valueData = payload
+  },
+  SET_RUNSHEET_LIMIT_REFERENCE_ENTITY_ArrData(state, payload) {
+    state.runsheet_limit.reference_entity.hasOwnProperty('arrData') ?
+    state.runsheet_limit.reference_entity.arrData = payload :
+    state.runsheet_limit.reference_entity.arrData = []
+  },
+
+
+  SET_RUNSHEET_LIMIT_IS_ACTIVE(state, payload) {
+    state.runsheet_limit.is_active.value = payload
+  },
+  SET_RUNSHEET_LIMIT_IS_ACTIVE_ValueData(state, payload) {
+    state.runsheet_limit.is_active.valueData = payload
+  },
+
+
+  //====== END RUNSHEET LIMIT SETTINGS ======//
+  
+
+  
+  SET_BAG_IS_AUTO_OPEN_BAG(state, payload) {
+    state.bag_is_auto_open_bag.bag_is_auto_open_bag.value = payload || false;
+  },
+
+  SET_BAG_IS_AUTO_OPEN_BAG_ValueData(state, payload) {
+    state.bag_is_auto_open_bag.bag_is_auto_open_bag.valueData = payload || false;
+  },
+
+  // ====== VALIDATION HUB DELIVERY ======//
+  SET_IS_HUB_DELIVERY_VALIDATION(state, payload) {
+    state.is_hub_delivery_validation.value = payload || false
+  },
+
+  SET_IS_HUB_DELIVERY_VALIDATION_ValueData(state, payload) {
+    state.is_hub_delivery_validation.valueData = payload || false
+  },
+
+  //====== DESTINATION ZIP CODE ======//
+
+  SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE(state, payload) {
+    state.destination_zip_code.reference_value.value = payload
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE_ValueData(state, payload) {
+    state.destination_zip_code.reference_value.valueData = payload
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_VALUE_ArrData(state, payload) {
+    state.destination_zip_code.reference_value.hasOwnProperty('arrData') ?
+    state.destination_zip_code.reference_value.arrData = payload :
+    state.destination_zip_code.reference_value.arrData = []
+  },
+
+
+  SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY(state, payload) {
+    state.destination_zip_code.reference_entity.value = payload
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY_ValueData(state, payload) {
+    state.destination_zip_code.reference_entity.valueData = payload
+  },
+  SET_DESTINATION_ZIP_CODE_REFERENCE_ENTITY_ArrData(state, payload) {
+    state.destination_zip_code.reference_entity.hasOwnProperty('arrData') ?
+    state.destination_zip_code.reference_entity.arrData = payload :
+    state.destination_zip_code.reference_entity.arrData = []
+  },
+
+
+  SET_DESTINATION_ZIP_CODE_ZIP_CODE(state, payload) {
+    state.destination_zip_code.zip_code.value = payload
+  },
+  SET_DESTINATION_ZIP_CODE_ZIP_CODE_ValueData(state, payload) {
+    state.destination_zip_code.zip_code.valueData = payload
+  },
+  SET_DESTINATION_ZIP_CODE_ZIP_CODE_ArrData(state, payload) {
+    state.destination_zip_code.zip_code.hasOwnProperty('arrData') ?
+    state.destination_zip_code.zip_code.arrData = payload :
+    state.destination_zip_code.zip_code.arrData = []
+  },
+
+  //====== END DESTINATION ZIP CODE ======//
+
+
+
+  //====== DESTINATION SORTING LOV ======//
+
+  SET_DESTINATION_SORTING_LOV_REFERENCE_TO(state, payload) {
+    state.destination_sorting_lov.reference_to.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_TO_ValueData(state, payload) {
+    state.destination_sorting_lov.reference_to.valueData = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_TO_ArrData(state, payload) {
+    state.destination_sorting_lov.reference_to.hasOwnProperty('arrData') ?
+    state.destination_sorting_lov.reference_to.arrData = payload :
+    state.destination_sorting_lov.reference_to.arrData = []
+  },
+
+
+  SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY(state, payload) {
+    state.destination_sorting_lov.reference_entity.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY_ValueData(state, payload) {
+    state.destination_sorting_lov.reference_entity.valueData = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_ENTITY_ArrData(state, payload) {
+    state.destination_sorting_lov.reference_entity.hasOwnProperty('arrData') ?
+    state.destination_sorting_lov.reference_entity.arrData = payload :
+    state.destination_sorting_lov.reference_entity.arrData = []
+  },
+
+
+  SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE(state, payload) {
+    state.destination_sorting_lov.reference_value.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ValueData(state, payload) {
+    state.destination_sorting_lov.reference_value.valueData = payload
+  },
+  SET_DESTINATION_SORTING_LOV_REFERENCE_VALUE_ArrData(state, payload) {
+    state.destination_sorting_lov.reference_value.hasOwnProperty('arrData') ?
+    state.destination_sorting_lov.reference_value.arrData = payload :
+    state.destination_sorting_lov.reference_value.arrData = []
+  },  
+
+
+  SET_DESTINATION_SORTING_LOV_ITEM_TYPE(state, payload) {
+    state.destination_sorting_lov.item_type.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_ITEM_TYPE_ValueData(state, payload) {
+    state.destination_sorting_lov.item_type.valueData = payload
+  },
+  SET_DESTINATION_SORTING_LOV_ITEM_TYPE_ArrData(state, payload) {
+    state.destination_sorting_lov.item_type.hasOwnProperty('arrData') ?
+    state.destination_sorting_lov.item_type.arrData = payload :
+    state.destination_sorting_lov.item_type.arrData = []
+  },  
+
+
+  SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE(state, payload) {
+    state.destination_sorting_lov.destination_node_code.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE_ValueData(state, payload) {
+    state.destination_sorting_lov.destination_node_code.valueData = payload
+  },
+  SET_DESTINATION_SORTING_LOV_DESTINATION_NODE_CODE_ArrData(state, payload) {
+    state.destination_sorting_lov.destination_node_code.hasOwnProperty('arrData') ?
+    state.destination_sorting_lov.destination_node_code.arrData = payload :
+    state.destination_sorting_lov.destination_node_code.arrData = []
+  },  
+
+
+  SET_DESTINATION_SORTING_LOV_IS_ACTIVE(state, payload) {
+    state.destination_sorting_lov.is_active.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_IS_ACTIVE_ValueData(state, payload) {
+    state.destination_sorting_lov.is_active.valueData = payload
+  },
+
+
+  //====== END DESTINATION SORTING LOV ======//
 }

@@ -15,7 +15,7 @@
                         @click="finishReceiving"
                         :disabled="!isFinishReceiving"
                     >
-                        Finish HRS
+                        Approve HRS
                     </vs-button>
                 </div>
             </vs-col>
@@ -209,6 +209,7 @@ export default {
         },
         back(){
             this.$router.push('/hrs')
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         handleClearForm(){
             this.form = {}

@@ -56,17 +56,18 @@ export default {
   vehicle_type: `${api}vehicle-type`,
   pickup_vehicle_type: `${api}pickup-vehicle-type`,
 
-  // transaction
-  tariff_shipping_service: `${api}tariff-shipping-service`,
-  connote: `${api}connote`,
-  upload_connote: `${api}upload-connote`,
-  booking_connote: `${api}booking-connote`,
-  transaction: `${api}transaction`,
-  koli: `${api}koli`,
-  bag: `${api}bag`,
-  unbagging: `${api}unbagging`,
-  cash_register: `${api}cash-register`,
-  payment: `${api}payment`,
+    // transaction
+    tariff_shipping_service: api + "tariff-shipping-service",
+    connote: api + "connote",
+    upload_connote: api + "upload-connote",
+    booking_connote: api + "booking-connote",
+    transaction: api + "transaction",
+    koli: api + "koli",
+    bag: api + "bag",
+    bag_inventory: api + "bag-inventory",
+    unbagging: api + "unbagging",
+    cash_register: api + "cash-register",
+    payment: api + "payment",
 
   // Service
   service: `${api}service-list`,
@@ -242,8 +243,8 @@ export default {
   // Approval
   approval: `${api}approval`,
 
-  // Surat Jalan Revamp
-  revamp_surat_jalan: `${api}revamp/manifest-delivery-order`,
+    // Surat Jalan Revamp
+    revamp_surat_jalan: api + 'revamp/manifest-delivery-order',
 
   // Surat Muatan Revamp
   revamp_surat_muatan: `${api}revamp/manifest`,
@@ -260,6 +261,6 @@ export default {
   // Facility Code
   facility_code: `${api}facility-code`,
 
-  // Bag Revamp
-  revamp_bag: `${api}revamp/bag`,
+    // Bag Revamp
+    revamp_bag: api + 'revamp/bag',
 }

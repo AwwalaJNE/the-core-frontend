@@ -81,7 +81,8 @@ export default {
           this.$ls.set("is_first_login", res.data.data.user.is_first_login);
 
           loading.close();
-          this.$router.push({ name: "profile" });
+          this.$router.push({ name: "mainPage" });
+          this.setRoutePageHistory(this.$route.meta, false);
         }
       } catch (err) {
         loading.close();

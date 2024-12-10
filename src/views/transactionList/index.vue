@@ -142,6 +142,7 @@ export default {
 
         openDialog(){
             this.$router.push('/transaction/new-transactions')
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         getTotalAmount(val){
           this.totalAmount = val

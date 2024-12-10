@@ -92,6 +92,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
+                    this.pagination.page = 1
                     this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
                 }
             }
@@ -128,24 +129,33 @@ export default {
                         'Runsheet #': [],
                         'DRI Number': [],
                         'HRS Number': [],
+                        'Connote Number': [],
                         'Status': [],
-                        'Status Delivery': []
+                        'Status Delivery': [],
+                        'Payment Type': [],
+                        'Amount COD': []
                     };
 
                     item?.runsheets.forEach(el => {
                         children['Runsheet #'].push(el.delivery_runsheet_number);
                         children['DRI Number'].push(el.dri ?? '-');
                         children['HRS Number'].push(el.hrs ?? '-');
+                        children['Connote Number'].push(el.connote_number);
                         children['Status'].push(el.status);
                         children['Status Delivery'].push(el.status_delivery);
+                        children['Payment Type'].push(el.cod_payment_type ?? 'Non COD');
+                        children['Amount COD'].push(el.amount_cod ?? '-');
                     });
 
                     item.children_width = {
                         'Runsheet #': 'auto',
                         'DRI Number': 'auto',
                         'HRS Number': 'auto',
+                        'Connote Number': 'auto',
                         'Status': 'auto',
-                        'Status Delivery': 'auto'
+                        'Status Delivery': 'auto',
+                        'Payment Type': 'auto',
+                        'Amount COD': 'auto'
                     };
                     item.children = children;
 

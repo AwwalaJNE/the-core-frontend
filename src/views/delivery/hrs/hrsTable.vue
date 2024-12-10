@@ -97,6 +97,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
+                    this.pagination.page = 1
                     this.getTableData(this.pagination.limit, 1, val)
                 }
             }
@@ -184,6 +185,7 @@ export default {
             }
             let routeName = 'handover-runsheet-courier'
             this.$router.push({ name: routeName, params: params })
+            this.setRoutePageHistory(this.$route.meta, false);
         },
 
     },

@@ -175,6 +175,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
+                  this.pagination.page = 1
                   this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
                 }
             }
@@ -247,7 +248,8 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
         },
         actionDetail(row){
-          this.$router.push({name:'InventoryItem-detail', params:{ id:row.connote_number}});
+          this.$router.push({name:'InventoryItem-detail', params:{ id:row.connote_number + "00"}});
+          this.setRoutePageHistory(this.$route.meta, false);
         },
         getTransactionIdParam(){
           let paramId =  this.$route.params.id

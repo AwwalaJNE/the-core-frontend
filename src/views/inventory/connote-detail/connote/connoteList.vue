@@ -47,6 +47,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
+                    this.pagination.page = 1
                     this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag, this.statusinventory)
                 }
             }
@@ -220,6 +221,7 @@ export default {
 
         showData(row) {
           this.$router.push(`/connote-detail/${row.koli_number}`);
+          this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {

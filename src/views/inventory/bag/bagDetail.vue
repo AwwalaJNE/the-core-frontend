@@ -52,7 +52,7 @@
         <vs-button v-if="listenUserRoleName !== 'HELPDESK'" style="width: 6rem;" @click="newBag">
           <i class="bx bx-plus"></i> New
         </vs-button>
-        <vs-button v-if="listenUserRoleName !== 'HELPDESK'" style="width: 6rem;" @click="print">Print</vs-button>
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK' && is_approve" style="width: 6rem;" @click="print">Print</vs-button>
         <vs-button v-if="listenUserRoleName === 'HELPDESK'" style="width: 6rem;" @click="editBag">
           Edit
         </vs-button>
@@ -61,6 +61,14 @@
 
     <template v-if="!disabledApprove && !is_orion && !loading && !is_masterbag">
       <div class="center in-get-bag">
+        <vs-row class="mb-2 mt-2">
+          <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+            Auto Open Bag
+          </vs-checkbox>
+          <vs-checkbox style="margin-left: 20px;" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery">
+            Validate Hub Delivery
+          </vs-checkbox>
+        </vs-row>
         <vs-row style="margin-top:2em">
           <vs-col xs="4" sm="4" lg="2">
             <vs-radio
@@ -251,13 +259,13 @@
       <div class="box view">
         <vs-row justify="space-between">
           <vs-col xs="12" sm="12" lg="12">
-            <detailbagList ref="detailbagList"  :bagId="bag_id" @getResponse="getResponse" @resetBagActualWeight="resetBagActualWeight"/>
+            <detailbagList ref="detailbagList"  :bagId="bag_id" @getResponse="getResponse" />
           </vs-col>
         </vs-row>
       </div>
       
       <vs-col xs="12" sm="12" lg="12" align="right" style="padding:20px 5px;">
-        <vs-button @click="$router.go(-1)">Back</vs-button>
+        <vs-button @click="back">Back</vs-button>
       </vs-col>
 
     </section>
@@ -345,6 +353,10 @@ export default {
       activeDialogConfirmUnpproveBag: false,
       loadingConfirmUnpproveBag: false,
       dialogHelpdeskEditBag: false,
+      is_approve: false,
+      is_actual_weight_mandatory: false,
+      is_auto_open_bag: this.$store.getters.getInputs.bag_is_auto_open_bag.bag_is_auto_open_bag.value,
+      is_hub_delivery_validation: this.$store.getters.getInputs.is_hub_delivery_validation.is_hub_delivery_validation.value
     }
   },
   computed: {
@@ -386,13 +398,20 @@ export default {
     refresh() {
       this.$refs.detailbagList.refresh()
     },
+    handleAutoOpenBag(val) {
+      this.is_auto_open_bag = val.target.checked;
+    },
+    handleValidateHubDelivery(val) {
+      this.is_hub_delivery_validation = val.target.checked;
+    },
     getResponse(data, loading) {
       
 
       this.is_orion = data.data.is_orion === '1' ? true : false;
       let bag_des = data.data ? data?.data?.destination?.node_code  : null
       this.is_pra_runsheet = data.data.is_pra_runsheet === "1" ? true : false
-      
+      this.is_actual_weight_mandatory = data.data.is_actual_weight_mandatory === "0" ? false : true;
+
       this.is_masterbag = data.data.is_consolidated === "1" ? true : false
       if (data.data.is_consolidated === "1") {
         this.radio_option = "bag"
@@ -449,6 +468,7 @@ export default {
 
       this.employee = data.employee_name ? data.employee_name : ""
       this.disabledApprove = data.data.is_approve === 0 ? false : true
+      this.is_approve = data.data.is_approve === 0 ? false : true
       this.actual_weight = data.data.bag_actual_weight
 
       this.loading = loading
@@ -465,21 +485,26 @@ export default {
           bag_number : this.bag_id,
           destination : this.listenDestination,
           service: this.listenServiceType,
-          is_pra_runsheet: this.is_pra_runsheet
+          is_pra_runsheet: this.is_pra_runsheet,
+          auto_open_bag: this.is_auto_open_bag
       }
     },
     updateItemOnBag() {
       this.form.item_number = this.item_code
       this.form.is_pra_runsheet = this.is_pra_runsheet
+      this.form.auto_open_bag = this.is_auto_open_bag,
+      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation
       this.ProccessAddBagItem()
     },
     updateItemOnBagOrion() {
       this.form.item_number = this.item_code_orion + "00"
       this.form.is_pra_runsheet = this.is_pra_runsheet
+      this.form.auto_open_bag = this.is_auto_open_bag
+      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation
       this.ProccessAddBagItem()
     },
     updateValue(){
-      if (this.weight === '' || this.weight == 0) {
+      if ((this.weight === '' || this.weight == 0) && this.is_actual_weight_mandatory) {
         this.openNotification('warning', null, 'Empty Weight!', 'Bag Actual Weight must not be 0!')
       }
       else {
@@ -497,14 +522,6 @@ export default {
       this.item_code_orion = ''
       this.weight =''
     },
-    resetBagActualWeight() {
-      this.form={
-          bag_number : this.bag_id,
-          bag_actual_weight : 0
-      }
-      this.loading = true
-      this.putBag(true)
-    },
     async ProccessAddBagItem(){
       await axios
           .post(this.URL.bag+'/'+this.bag_id+`/detail?n=${this.listenNodeId}`,
@@ -514,7 +531,6 @@ export default {
           .then(res => {
             this.handleClearForm()
             this.openNotification('success', null, 'Success', 'Add Bagging is success')
-            this.resetBagActualWeight()
             this.refresh()
           }).catch(err => {
             this.loading = false
@@ -593,7 +609,8 @@ export default {
         }
     },
     back() {
-      this.$router.go(-1);
+      this.$router.push('/inventory/bag')
+      this.setRoutePageHistory(this.$route.meta, false);
     },
     onCameraScannerGetData(data) {
       if (data && data.event === "result" && (data.namespace === "formInputBagging" || data.namespace === "formInputBaggingConnote" || data.namespace === "formInputBaggingKoli" || data.namespace === "formInputBaggingBag")) {
@@ -608,6 +625,8 @@ export default {
     },
     newBag() {
       this.$router.push('/inventory/bagging')
+      this.setRoutePageHistory(this.$route.meta, false);
+      
     },
     editBag() {
       this.dialogHelpdeskEditBag = true;
@@ -634,7 +653,7 @@ export default {
       });
     },
     approveAction(val){
-      if (this.isAllowed && !this.is_pra_runsheet && this.actual_weight == 0) {
+      if (this.isAllowed && !this.is_pra_runsheet && (this.actual_weight == 0 && this.is_actual_weight_mandatory)) {
         this.openNotification('warning', null, 'Empty Weight!', 'Bag Actual Weight must not be 0!')
       }
       else {

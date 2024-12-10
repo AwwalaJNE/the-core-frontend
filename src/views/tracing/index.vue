@@ -4,7 +4,7 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{ title }} {{  is_history ? "History" : "Outstanding" }}</h2>
+                    <h2>{{  is_history ? "Archive" : "Receiving & Inventory" }}</h2>
                 </div>                
             </vs-col>
         </vs-row>
@@ -175,9 +175,20 @@ export default {
         "multi-input": MultiInput,
         "dialog-validate-tracing": DialogValidateTracing,
     },
+    computed: {
+        is_history() {
+            return this.$route.fullPath.includes('history');
+        }
+    },
+    watch: {
+        is_history(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.refresh();
+            }
+        }
+    },
     data() {
         return {
-            title:"Tracing",
             tempSearch: "",
             loading:false,
             dateRange: [],
@@ -234,6 +245,16 @@ export default {
                     width: "xxs"
                 },
                 {
+                    label: "Service",
+                    key: "service_code",
+                    width: "xxs"
+                },
+                {
+                    label: "Payment Type",
+                    key: "payment_type_name",
+                    width: "xxs"
+                },
+                {
                     label: "Status Code",
                     key: "status_code",
                     width: "xxs"
@@ -243,7 +264,7 @@ export default {
                     key: "status_name",
                     width: "xxs"
                 },
-            ],    
+            ],
             form: {},
             pagination: {
                 limit:20,
@@ -318,7 +339,6 @@ export default {
             loadingSubmit: false,
             loadingValidation: false,
             validateType: 'create',
-            is_history: this.$route.fullPath.includes('history')
         }
     },
     methods: {
@@ -347,6 +367,7 @@ export default {
         showData(row) {
             const baseRoute = this.is_history ? 'history' : 'outstanding';
             this.$router.push(`/tracing-${baseRoute}/${row.koli_number}`);
+            this.setRoutePageHistory(this.$route.meta, false);
             this.refresh();
         },
         refresh(){
@@ -417,13 +438,15 @@ export default {
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
+            this.refresh();
         },
         openDialog(actionType) {
             this.validateType = actionType;
             if (actionType === 'create' && this.koliCode?.length) {
-                this.validationCreateItem({ item_number: this.koliCode });
+                this.validateCreateItem({ items: this.koliCode });
             } else if (actionType === 'remove' && this.removeKoliCode?.length) {
-                this.validationRemoveItem({ item_number: this.removeKoliCode });
+                // TODO: Adjust after Remove Validation API ready
+                this.validateRemoveItem(this.removeKoliCode.map(el => ({item_number: el, status: "SUCCESS"})));
             }
         },
         closeDialog() {
@@ -453,41 +476,36 @@ export default {
                 default:
             }
         },
-        async validationCreateItem(validationKoliCode) {
+        async validateCreateItem(validationKoliCode) {
             this.loadingValidation = true
             
-            // TODO: REMOVE after API validation ready
-            this.validItem = validationKoliCode;
-            this.dialogValidateTracingActive = true;
-            
-            // TODO: USE after API validation ready
-            // await axios
-            //     .post(
-            //         this.URL.validation + `/create-irregularity?n=${this.listenNodeId}`,
-            //         JSON.stringify(validationKoliCode), 
-            //         this.Helper.header())
-            //     .then(res => {
-            //         this.validItem = res.data.data
-            //         this.listValidItem = this.validItem
-            //             .filter(item => item.status === 'SUCCESS')
-            //             .map(item => item.item_number);
+            await axios
+                .post(
+                    this.URL.validation + `/create-tracing?n=${this.listenNodeId}`,
+                    validationKoliCode, 
+                    this.Helper.header())
+                .then(res => {
+                    this.validItem = res.data.data
+                    this.listValidItem = this.validItem
+                        .filter(item => item.status === 'SUCCESS')
+                        .map(item => item.item_number);
 
-            //         if (this.listValidItem.length > 0) {
-            //             this.dialogValidateTracingActive = true
-            //         } else {
-            //             this.refresh();
-            //             this.handleClearForm();
-            //             this.openNotification('danger', err.response ? err.response.data.code : '', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
-            //         }                    
-            //     }).catch(err => {
-            //         this.refresh();
-            //         this.handleClearForm();
-            //         this.openNotification('danger', err.response ? err.response.data.code : '', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
-            //     })
+                    if (this.listValidItem.length > 0) {
+                        this.dialogValidateTracingActive = true
+                    } else {
+                        this.refresh();
+                        this.handleClearForm();
+                        this.openNotification('danger', err?.response?.data?.code ?? '', 'Error', this.validItem?.[0].message ?? 'something went wrong')
+                    }                    
+                }).catch(err => {
+                    this.refresh();
+                    this.handleClearForm();
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Input Validation Failed', err?.response?.data?.message ?? 'something went wrong')
+                })
 
             this.loadingValidation = false
         },
-        async validationRemoveItem(validationKoliCode) {
+        async validateRemoveItem(validationKoliCode) {
             this.loadingValidation = true
             
             // TODO: REMOVE after API validation ready

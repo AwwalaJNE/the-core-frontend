@@ -87,7 +87,7 @@ export default {
             loading: false,
             bag_number: "",
             item_number : '',
-            total_bag : 1,
+            total_bag : 0,
             total_confirmed : 0,
             total_unconfirmed: 0,
             pagination: {
@@ -134,6 +134,7 @@ export default {
                         if (data.unbagging_summary !== null && res.data.detail !== null) {
                           this.bag_number = data.bag_number
                           this.$emit("saveBagNumber", this.bag_number)
+                          this.total_bag = 1;
                           let dataBag = {
                             no: 1,
                             item_number: data.bag_number
@@ -172,6 +173,7 @@ export default {
           this.item_number =""
           this.total_confirmed = 0
           this.total_unconfirmed = 0
+          this.total_bag = 0
           this.$emit("resetInput", "RESET");
         },
         actionLimit(val){

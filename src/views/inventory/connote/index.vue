@@ -107,45 +107,75 @@
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-BAG'">
-                            <vs-row >
-                               <vs-col vs-align="center" xs="12" sm="4" lg="3">
-                                <select-bag-destination
-                                    ref="bag_destination"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagDestination="updateBagDestination" />
+                            <vs-row align="center">
+                               <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                                    <select-bag-origin
+                                        ref="bag_origin"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagOrigin="updateBagOrigin" 
+                                    />
                                 </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="4" lg="2">
+                                <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                                    <select-bag-destination
+                                        ref="bag_destination"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagDestination="updateBagDestination" 
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="6" lg="3">
                                 <select-bag-routing
                                     ref="bag_routing"
                                     :isMultiple="false"
                                     :border="true"
                                     @updateBagRouting="updateBagRouting" />
                                 </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="4" lg="2">
+                                <vs-col vs-align="center" xs="6" sm="4" lg="3">
                                 <select-bag-tipe
                                     ref="bag_tipe"
                                     :isMultiple="false"
                                     :border="true"
                                     @updateBagTipe="updateBagTipe" />
                                 </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="3" lg="2">
-                                    <select-search-by :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
+                                <vs-col vs-align="center" xs="6" sm="4" lg="3">
+                                <select-bag-status
+                                    ref="bag_status"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    @updateBagStatus="updateBagStatus" />
                                 </vs-col>
-                                <vs-col xs="6" sm="5" lg="3">
+                                <vs-col vs-align="center" xs="6" sm="4" lg="3">
+                                <select-bag-irreg
+                                    ref="bag_irreg"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    @updateBagIrreg="updateBagIrreg" />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="4" lg="3">
+                                    <select-bag-source
+                                        ref="bag_source"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagSource="updateBagSource" />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                                    <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
+                                </vs-col>
+                                <vs-col xs="12" sm="6" lg="3">
                                     <date-time
                                         :name="''"
                                         :rules="''"
-                                        :formKey="'TRIGGER_DATE'"
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                         :valueData="tempDate"
-                                        typeInput="daterange"
+                                        typeInput="datetimerange"
                                         @updateValue="searchDate" 
                                     />
                                 </vs-col>
                             
                           </vs-row>
                             <transition name="slide-fade">
-                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagRouting="bagRouting" :bagTipe="bagTipe" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateBy" :searchBy="searchByBag"/>
+                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagOrigin="bagOrigin" :bagRouting="bagRouting" :bagTipe="bagTipe" :bagStatus="bagStatus" :bagIrreg="bagIrreg" :bagSource="bagSource" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateBy" :searchBy="searchByBag"/>
                             </transition>
                         </template>
                         
@@ -171,8 +201,12 @@ import SelectSearchByConnote from "@/views/inventory/connote/item/selectSearchBy
 import SelectSearchBy from "@/components/search/selectSearchBy"
 import SelectFilterDateBy from "@/views/inventory/connote/item/selectFilterDateBy"
 import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDestination"
+import SelectBagOrigin from "@/views/inventory/connote/bag/selectBagOrigin"
 import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
 import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
+import SelectBagStatus from "@/views/inventory/connote/bag/selectBagOpened"
+import SelectBagStatusIrreg from "@/views/inventory/connote/bag/selectBagIrreg"
+import SelectBagSource from "@/views/inventory/connote/bag/selectBagSource"
 import DateTime from "@/components/input/dateTime"
 import SelectBagStatusConnote from "@/views/inventory/connote/connote/selectBagStatus"
 import SelectInventoryConnote from "@/views/inventory/connote/connote/selectInventoryStatus"
@@ -205,8 +239,12 @@ export default {
         "select-search-by": SelectSearchBy,
         "select-filter-date-by": SelectFilterDateBy,
         "select-bag-destination": SelectBagDestinationVue,
+        "select-bag-origin": SelectBagOrigin,
         "select-bag-routing": SelectBagRouting,
         "select-bag-tipe": SelectBagTipe,
+        "select-bag-status": SelectBagStatus,
+        "select-bag-irreg": SelectBagStatusIrreg,
+        "select-bag-source": SelectBagSource,
         "date-time": DateTime,
         "select-status-bag-cnote": SelectBagStatusConnote,
         "select-status-inventory-cnote": SelectInventoryConnote,
@@ -249,6 +287,7 @@ export default {
             status_bag_cnote:"",
             statusinventorycnote:"",
             bagDestination:"",
+            bagOrigin: "",
             searchBy:"connote",
             searchByBag:"bag_number",
             searchByCnote:"connote",
@@ -302,10 +341,21 @@ export default {
                 {
                     label: 'Created Date',
                     value: 'create'
+                },
+                {
+                    label: 'Opened Date',
+                    value: 'opened'
+                },
+                {
+                    label: 'Received Date',
+                    value: 'received'
                 }
             ],
             bagRouting:"",
             bagTipe:"",
+            bagStatus: "",
+            bagIrreg: "",
+            bagSource: "",
             searchByDataType: false,
             searchByDataTypeCnote: false,
         }
@@ -339,15 +389,31 @@ export default {
         },
         updateFilterDateBy(key,val) {
           this.filterDateBy = val;
+
+          if (this.tempDate.length !== 0) {
+                this.tempDate = [];
+            }
         },
         updateBagDestination(key,val) {
           this.bagDestination = val
+        },
+        updateBagOrigin(key,val) {
+          this.bagOrigin = val
         },
         updateBagRouting(key,val){
             this.bagRouting = val
         },
         updateBagTipe(key,val){
             this.bagTipe = val
+        },
+        updateBagStatus(key,val){
+            this.bagStatus = val
+        },
+        updateBagIrreg(key,val){
+            this.bagIrreg = val
+        },
+        updateBagSource(key,val){
+            this.bagSource = val
         },
         refresh(){
             let el = this.refreshInject

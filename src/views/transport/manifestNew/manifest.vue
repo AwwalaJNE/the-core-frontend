@@ -154,7 +154,15 @@ export default {
                 if(val !== undefined) {
                     this.tempSearch = val
                     if(this.tempSearch !== old) {
-                        this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
+                        this.pagination.page = 1
+                        this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.filterDateBy)
+                    }
+                }
+            },
+            filterDateBy: function(val, old) {
+            if(val !== undefined) {
+                    if(val !== old) {
+                        this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val)
                     }
                 }
             },
@@ -165,19 +173,20 @@ export default {
                         this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
                         this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
                     }
-                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
+                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.filterDateBy)
                 }
             },
         },
         methods: {
-            async getTableData(limit, page, q, from, to) {
+            async getTableData(limit, page, q, from, to, qDate) {
                 this.loading = true;
                 const query = q || '';
                 const startDate = from || '';
                 const endDate = to || '';
+                const queryDate = qDate || '';
 
                 try {
-                    const res = await axios.get(`${this.URL.surat_muatan}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&status=${this.status}`, 
+                    const res = await axios.get(`${this.URL.surat_muatan}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}`, 
                     this.Helper.header());
 
                     const arr = res.data.data.map(item => ({
@@ -224,7 +233,7 @@ export default {
                 this.refresh();
             },
             refresh(){
-                this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate);
+                this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.filterDateBy);
             },
             actionUpdate(val){
                 if(this.dataTable.length > 0) {

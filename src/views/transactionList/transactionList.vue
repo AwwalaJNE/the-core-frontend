@@ -112,6 +112,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
+                    this.pagination.page = 1
                     this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
                 }
             }
@@ -224,6 +225,7 @@ export default {
         },
         actionDetail(row){
           this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
+          this.setRoutePageHistory(this.$route.meta, false);
         },
         updateSelected(_event, _item, selected) {
           this.selectedRow = selected.map(el => el.transaction_id)

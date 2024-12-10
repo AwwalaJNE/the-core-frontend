@@ -18,7 +18,8 @@ const Master = {
             Helper: null,
             day:null,
             Loading: null,
-            alert:null
+            alert:null,
+            isMobile: false,
         }
     },
     computed: {
@@ -78,10 +79,21 @@ const Master = {
         },
         openNotification(type = null, code, title, msg) {
             this.playNotificationSound(type);
+            if (type === 'success') {
+                return
+            }
+
+            const notifications = document.querySelectorAll('.vs-notification');
+            for (const notification of notifications) {
+                const message = notification.querySelector('p').textContent;
+                if (msg === message) {
+                    return;
+                }
+            }
 
             // type success, danger, warn
             const noti = this.$vs.notification({
-                duration: 6000,
+                duration: 3000,
                 progress: 'auto',
                 color: type,
                 position: 'top-right',
@@ -90,7 +102,7 @@ const Master = {
                 width: '80%',
                 icon: `
                     <div style="display: flex; flex-direction: column; align-items: center; min-width: 64px; margin-left: 30px;">
-                        <i class="bx ${type === 'success' ? 'bx-select-multiple' : 'bx-error'}" style="font-size: 24px;"></i>
+                        <i class="bx ${type === 'success' || type === 'success-with-notif' ? 'bx-select-multiple' : 'bx-error'}" style="font-size: 24px;"></i>
                         <div style="font-size: 12px; margin-top: 4px; color: #fff; font-weight: bold">
                             ${type === 'danger' && code ? code : ''}
                         </div>
@@ -102,6 +114,9 @@ const Master = {
             let soundPath;
             switch (type) {
                 case "success":
+                    soundPath = require('@/assets/sound/success.mp3');
+                    break;
+                case "success-with-notif":
                     soundPath = require('@/assets/sound/success.mp3');
                     break;
                 case "danger":
@@ -118,7 +133,7 @@ const Master = {
             sound.play();
         },          
         openProgress(type = null, title,msg) {
-            // type success, danger, warn
+            // type success, success-with-notif, danger, warn
             this.alert = this.$vs.notification({
                 duration: type == 'danger' ? 3000 : 3000,
                 progress: 'auto',
@@ -126,7 +141,7 @@ const Master = {
                 position: 'top-right',
                 title: title,
                 text: msg,
-                icon: `<i class="bx ${type == 'success' ? 'bx-select-multiple':'bx-error'}" ></i>`
+                icon: `<i class="bx ${type == 'success'  || type == 'success-with-notif' ? 'bx-select-multiple':'bx-error'}" ></i>`
             })
         },
         closeProgress() {
@@ -256,7 +271,7 @@ const Master = {
         redirectShortcut() {
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
-                    if (e.key.toLowerCase() !== 'i') {
+                    if (e.key.toLowerCase() !== 'i' && e.key.toLowerCase() !== 'c') {
                         e.preventDefault();
                     }
                     switch (e.key.toLowerCase()) {
@@ -266,8 +281,8 @@ const Master = {
                         case "x":
                             this.$router.push('/transaction/new-transactions')
                             break;
-                        case "c":
-                            this.$router.push('/trace-connote')
+                        case "?":
+                            this.$router.push('/trace-bag')
                             break;
                         case "v":
                             this.$router.push('/inbound/prealert/scan')
@@ -286,6 +301,11 @@ const Master = {
                         this.$router.push('/inventory/item')
                     }
                 }
+                if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+                    if (!e.shiftKey) {
+                        this.$router.push('/trace-connote')
+                    }
+                }
             });
         },
         handleSubmitShortcut(submitFunction) {
@@ -296,6 +316,102 @@ const Master = {
                 }
             });
         },
+
+
+        setRoutePageHistory(meta, isFinish) {
+            const routeHistory = this.$ls.get('route_history') || [];
+
+            if (!isFinish) {
+                let temp = {
+                    event_id: this.generateRandomUUID(),
+                    timestamp: new Date().toISOString(),
+                    resource_code: meta?.resource_code || "",
+                    resource_type: meta?.resource_type || "",
+                    resource_name: meta?.resource_name || "",
+                };
+                routeHistory.push(temp);
+            }
+            
+            this.$ls.set('route_history', routeHistory);
+
+            if ((routeHistory.length === 10 || isFinish) && routeHistory.length !== 0) {
+                return this.handleAuditLog(routeHistory);
+            }
+            
+            return Promise.resolve()
+        },
+        generateRandomUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const randomHex = Math.random() * 16 | 0;
+                const value = c === 'x' ? randomHex : (randomHex & 0x3 | 0x8);
+                return value.toString(16);
+            });
+        },          
+        async handleAuditLog(route_history) {
+            let form = {
+                track_logs: route_history
+            }
+            try {
+                const res = await axios.post(`${this.URL.tracking_audit}?n=${this.listenNodeId}`, form, this.Helper.header());
+
+                // this.openNotification('success', null, "Success", res?.data?.message ?? "success");
+                localStorage.removeItem('vuejs__route_history');
+            } catch (err) {
+                // this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+            }
+        },
+        convertMinutesToTimeFormat(totalMinutes) {
+            totalMinutes = Math.abs(totalMinutes);
+            const days = Math.floor(totalMinutes / 1440);
+            const hours = Math.floor((totalMinutes % 1440) / 60);
+            const minutes = totalMinutes % 60;
+        
+            return `${days} DAYS, ${hours} HOURS, ${minutes} MINUTES`;
+        },
+        getSLAType(totalMinutes) {
+            if (totalMinutes < 0) {
+                return `OVER SLA`;
+            }
+            else if (totalMinutes < 30) {
+                return 'WARNING SLA'
+            }
+            else {
+                return 'SAFE SLA'
+            }
+        },
+        formatDateTime(dateTimeStr) {
+            const date = new Date(dateTimeStr);
+
+            const day = date.getDate();
+            const month = date.toLocaleString('default', { month: 'long' }).toUpperCase();
+            const year = date.getFullYear();
+            const formattedDate = `${day} ${month} ${year}`;
+
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const formattedTime = `${hours}:${minutes}`;
+        
+            return `${formattedDate}\n${formattedTime}`;
+        },
+        formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+
+            const formattedDate = date.toISOString().slice(0, 10);
+            const formattedTime = date.toTimeString().slice(0, 8);
+            
+            return `${formattedDate} ${formattedTime}`;
+        },
+        checkIfMobile() {
+            this.isMobile = window.matchMedia("(max-width: 768px)").matches;
+        }
+    },
+    mounted() {
+        this.checkIfMobile();
+        window.addEventListener('resize', this.checkIfMobile);
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.checkIfMobile);
     },
     created() {
         this.URL = URL

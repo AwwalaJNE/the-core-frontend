@@ -110,13 +110,24 @@
             </div>
         </section>
 
-        <dialogCreateSuratJalan
-            btnBlue="Approve"
-            title="Transport Surat Jalan"
-            :active="dialogSuratJalan"
-            :closeDialog="closeDialogSuratJalan"
-            @refresh="refresh"
-        />
+        <div v-if="true">
+            <dialogCreateSuratJalanV2
+                btnBlue="Approve"
+                title="Transport Surat Jalan"
+                :active="dialogSuratJalan"
+                :closeDialog="closeDialogSuratJalan"
+                @refresh="refresh"
+            />
+        </div>
+        <div v-else>
+            <dialogCreateSuratJalan
+                btnBlue="Approve"
+                title="Transport Surat Jalan"
+                :active="dialogSuratJalan"
+                :closeDialog="closeDialogSuratJalan"
+                @refresh="refresh"
+            />
+        </div>        
     </div>
 </template>
 
@@ -130,6 +141,7 @@ import SelectSearchBy from "@/components/search/selectSearchBy";
 
 import SuratJalan from "@/views/transport/suratJalanNew/suratJalan";
 import DialogCreateSuratJalan from "@/views/transport/suratJalanNew/dialogCreateSuratJalan";
+import DialogCreateSuratJalanV2 from "@/views/transport/suratJalanNew/dialogCreateSuratJalanV2";
 
 
 export default {
@@ -143,6 +155,7 @@ export default {
 
         "SuratJalan": SuratJalan,
         "dialogCreateSuratJalan": DialogCreateSuratJalan,
+        "dialogCreateSuratJalanV2": DialogCreateSuratJalanV2,
     },
     data() {
         return {

@@ -1,17 +1,11 @@
-<!-- eslint-disable vue/max-attributes-per-line -->
 <template>
-  <div class="hidden">
     <vs-sidebar
-      v-model="active"
-      absolute
-      :open="isExpand"
-      @update:open="actionSidebar"
-      @input="redirect"
+      v-model="activeItem"
+      :open="!isMobile || isExpand"
+      :reduce="!isMobile && isExpand"
     >
       <template #logo>
-        <div class="box-logo">
-          <Logo />
-        </div>
+        <Logo />
       </template>
 
       <template v-for="(item, key) in getMenuWithPermissions()">
@@ -27,66 +21,69 @@
             </template>
 
             <template v-for="(child, i) in item.children">
-              <!-- <router-link :to="child.url" :key="i">
-                      <vs-sidebar-item :id="child.label.trim()">
-                        <template #icon>
-                          <i :class="`bx ${child.icon}`"></i>
-                        </template>
-                        {{child.label}}
-                      </vs-sidebar-item>
-                    </router-link> -->
-              <a :href="child.url" :id="child.label.trim()">
-                <vs-sidebar-item :id="child.label.trim()" :key="i" :to="child.url" :class="activeNav(child.url)">
-                  <template #icon>
-                    <i :class="`bx ${child.icon}`" />
-                  </template>
-                  <p>{{ child.label }}</p>
-                </vs-sidebar-item>
-              </a>
-              <!-- <vs-sidebar-item :id="child.label.trim()" :key="i" @input="redirect(child.url)">
-                        <template #icon>
-                          <i :class="`bx ${child.icon}`"></i>
-                        </template>
-                        {{child.label}}
-                    </vs-sidebar-item> -->
+                <router-link
+                  :key="i"
+                  :to="child.url"
+                  :id="child.label.trim()" 
+                  @click.native="setActive(child)" 
+                >
+                  <vs-sidebar-item
+                    :id="child.label.trim()"
+                    :class="{ active: activeItem === child.url }"
+                  >
+                    <template #icon>
+                      <i :class="`bx ${child.icon}`" />
+                    </template>
+                    <p>{{ child.label }}</p>
+                  </vs-sidebar-item>
+                </router-link>
             </template>
           </vs-sidebar-group>
         </template>
         <template v-else>
-          <a :href="item.url" :id="item.label.trim()">
-            <vs-sidebar-item :id="item.label.trim()" :key="key" :to="item.url" :class="activeNav(item.url)">
-              <template #icon>
-                <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
-              </template>
-              <p>{{ item.label }}</p>
-            </vs-sidebar-item>
-          </a>
+          <div :key="key" style="width: 100%;">
+            <router-link
+              :key="key"
+              :to="item.url"
+              :id="item.label.trim()" 
+              @click.native="setActive(item)" 
+            >
+              <vs-sidebar-item
+                :id="item.label.trim()"
+                :class="{ active: activeItem === item.url }"
+              >
+                <template #icon>
+                  <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
+                </template>
+                <p>{{ item.label }}</p>
+              </vs-sidebar-item>
+            </router-link>
+          </div>
         </template>
       </template>
     </vs-sidebar>
-  </div>
 </template>
 
 <script>
-import Logo from "../../components/logo/logo.vue";
-// eslint-disable-next-line import/extensions
 import master from "@/mixins/master";
+
+import Logo from "../../components/logo/logo.vue";
+import { resourceLookup } from '@/constants'; 
+
 export default {
   name: "Sidebar",
   components: {
-    // eslint-disable-next-line object-shorthand
     Logo: Logo,
   },
   mixins: [master],
   props: {
     expand: Boolean,
-    actionSidebar: Function,
   },
   data() {
     return {
       nodeTypeCode: null,
-      active: "home",
-      isExpand: false,
+      activeItem: "",
+      isExpand: true,
       menus: [
         {
           label: "New Transaction",
@@ -94,14 +91,24 @@ export default {
           icon: "bx-archive",
           permission: "create-transaction",
           children: [],
+          meta: {
+            resource_type: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_type,
+            resource_code: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_code,
+            resource_name: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_name
+          },
         },
         {
           label: "Trace Connote",
           url: "/trace-connote",
-          icon: "bx-search",
+          icon: "bx-search-alt",
           permission: "",
           children: [],
           showAll: true,
+          meta: {
+            resource_type: resourceLookup["TRACE_CONNOTE"].resource_type,
+            resource_code: resourceLookup["TRACE_CONNOTE"].resource_code,
+            resource_name: resourceLookup["TRACE_CONNOTE"].resource_name
+          },
         },
         {
           label: "Trace Bag",
@@ -110,6 +117,11 @@ export default {
           permission: "",
           children: [],
           showAll: true,
+          meta: {
+            resource_type: resourceLookup["TRACE_BAG"].resource_type,
+            resource_code: resourceLookup["TRACE_BAG"].resource_code,
+            resource_name: resourceLookup["TRACE_BAG"].resource_name
+          },
         },
         {
           label: "Transaction",
@@ -121,88 +133,166 @@ export default {
               url: "/sales/transaction",
               icon: "bx-list-ol",
               permission: "read-transaction",
+              meta: {
+                resource_type: resourceLookup["SALES_TRANSACTION_LIST"].resource_type,
+                resource_code: resourceLookup["SALES_TRANSACTION_LIST"].resource_code,
+                resource_name: resourceLookup["SALES_TRANSACTION_LIST"].resource_name
+              },
             },
             {
               label: "Cash Register",
               url: "/sales/cashregister",
               icon: "bx-money",
               permission: "create-transaction",
+              meta: {
+                resource_type: resourceLookup["SALES_CASH_REGISTER"].resource_type,
+                resource_code: resourceLookup["SALES_CASH_REGISTER"].resource_code,
+                resource_name: resourceLookup["SALES_CASH_REGISTER"].resource_name
+              },
             },
             {
               label: "Upload Transaction",
               url: "/transaction/upload-connote",
               icon: "bx-upload",
               permission: "create-transaction",
+              meta: {
+                resource_type: resourceLookup["TRANSACTION_UPLOAD_CONNOTE"].resource_type,
+                resource_code: resourceLookup["TRANSACTION_UPLOAD_CONNOTE"].resource_code,
+                resource_name: resourceLookup["TRANSACTION_UPLOAD_CONNOTE"].resource_name
+              },
             },
           ],
         },
         {
           label: "Pick Up",
           url: null,
-          icon: "",
+          icon: "bx-package",
           children: [
             {
               label: "Pickup Request",
               permission: "create-pickup",
               url: "/pickup/request",
-              icon: "",
+              icon: "bx bxs-checkbox",
+              meta: {
+                resource_type: resourceLookup["PICKUP_REQUEST"].resource_type,
+                resource_code: resourceLookup["PICKUP_REQUEST"].resource_code,
+                resource_name: resourceLookup["PICKUP_REQUEST"].resource_name
+              },
             },
             {
               label: "Pickup Schedule",
               permission: "create-pickup-schedule",
               url: "/pickup/schedule",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-pickup-schedule",
+              meta: {
+                resource_type: resourceLookup["PICKUP_SCHEDULE"].resource_type,
+                resource_code: resourceLookup["PICKUP_SCHEDULE"].resource_code,
+                resource_name: resourceLookup["PICKUP_SCHEDULE"].resource_name
+              },
             },
             {
               label: "Pickup List",
               url: "/pickup/list",
               permission: "read-pickup",
-              icon: "",
+              icon: "bx bxs-checkbox",
+              meta: {
+                resource_type: resourceLookup["PICKUP_LIST"].resource_type,
+                resource_code: resourceLookup["PICKUP_LIST"].resource_code,
+                resource_name: resourceLookup["PICKUP_LIST"].resource_name
+              },
             },
           ],
         },
         {
           label: "Inventory",
           url: null,
-          icon: "",
+          icon: "bx bx-archive",
           children: [
             {
               label: "Inventory Item",
               url: "/inventory/item",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-bag",
+              meta: {
+                resource_type: resourceLookup["INVENTORY_ITEM"].resource_type,
+                resource_code: resourceLookup["INVENTORY_ITEM"].resource_code,
+                resource_name: resourceLookup["INVENTORY_ITEM"].resource_name
+              },
             },
             {
               label: "Inventory Bag",
               url: "/inventory/bag",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-bag",
+              meta: {
+                resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,
+                resource_code: resourceLookup["INVENTORY_BAG_ITEM"].resource_code,
+                resource_name: resourceLookup["INVENTORY_BAG_ITEM"].resource_name
+              },
             },
             {
               label: "Create Bag",
               url: "/inventory/bagging",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-bag",
+              meta: {
+                resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
+                resource_code: resourceLookup["INVENTORY_BAG"].resource_code,
+                resource_name: resourceLookup["INVENTORY_BAG"].resource_name
+              },
             },
             {
               label: "Open Bag",
               url: "/inventory/unbagging",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-unbag",
+              meta: {
+                resource_type: resourceLookup["UNBAGGING"].resource_type,
+                resource_code: resourceLookup["UNBAGGING"].resource_code,
+                resource_name: resourceLookup["UNBAGGING"].resource_name
+              },
             },
+            {
+              label: "Sorting Connote",
+              url: "/sorting/connote",
+              icon: "bx bxs-checkbox",
+              permission: "read-bag", // TODO: CHECK PERMISSION LATER
+              meta: {
+                resource_type: resourceLookup["SORTING_CONNOTE"].resource_type,
+                resource_code: resourceLookup["SORTING_CONNOTE"].resource_code,
+                resource_name: resourceLookup["SORTING_CONNOTE"].resource_name
+              },
+            },
+            // TODO: UN COMMENT IF NEEDED
+            // {
+            //   label: "Sorting Bag",
+            //   url: "/sorting/bag",
+            //   icon: "bx bxs-checkbox",
+            //   permission: "read-bag", // TODO: CHECK PERMISSION LATER
+            //   meta: {
+            //     resource_type: resourceLookup["SORTING_BAG"].resource_type,
+            //     resource_code: resourceLookup["SORTING_BAG"].resource_code,
+            //     resource_name: resourceLookup["SORTING_BAG"].resource_name
+            //   },
+            // },
           ],
         },
         {
           label: "Transport",
           url: null,
-          icon: "",
+          icon: "bx bxs-truck",
           children: [
             {
               label: "Transport Packing Kayu",
               url: "/transport/packingkayu",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-packing-kayu",
+              meta: {
+                resource_type: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_type,
+                resource_code: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_code,
+                resource_name: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_name
+              },
             },
             // {
             //     label: 'Transport Booking',
@@ -222,70 +312,149 @@ export default {
             {
               label: "Inventory Vehicle",
               url: "/transport/inventory-vehicle",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-inventory-vehicle",
+              meta: {
+                resource_type: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_type,
+                resource_code: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_code,
+                resource_name: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_name
+              },
             },
             {
               label: "Surat Jalan",
               url: "/transport/manifest-jalan",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-manifest-delivery-order",
+              meta: {
+                resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+                resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+                resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name
+              },
             },
             {
               label: "Surat Muatan",
               url: "/transport/manifest",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-manifest",
+              meta: {
+                resource_type: resourceLookup["TRANSPORT_MANIFEST"].resource_type,
+                resource_code: resourceLookup["TRANSPORT_MANIFEST"].resource_code,
+                resource_name: resourceLookup["TRANSPORT_MANIFEST"].resource_name
+              },
             },
           ],
         },
         {
           label: "Receiving",
           url: "/inbound/prealert",
-          icon: "",
+          icon: "bx bxs-inbox",
           children: [],
+          meta: {
+            resource_type: resourceLookup["RECEIVING"].resource_type,
+            resource_code: resourceLookup["RECEIVING"].resource_code,
+            resource_name: resourceLookup["RECEIVING"].resource_name
+          },
         },
         {
-          label: "Receiving Bandara",
-          url: "/inbound-bandara",
-          icon: "",
+          label: "Airport Receiving",
+          url: "/inbound-airport",
+          icon: "bx bxs-inbox",
           children: [],
-          permission: "create-manifest-delivery-order-airport",
+          permission: "read-airport-prealert",
+          meta: {
+            resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
+            resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
+            resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
+          },
         },
         {
           label: "Delivery",
           url: null,
-          icon: "",
+          icon: "bx bx-paper-plane",
           children: [
             {
               label: "Delivery Runsheet",
               url: "/delivery/runsheet",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-runsheet",
+              meta: {
+                resource_type: resourceLookup["DELIVERY_RUNSHEET"].resource_type,
+                resource_code: resourceLookup["DELIVERY_RUNSHEET"].resource_code,
+                resource_name: resourceLookup["DELIVERY_RUNSHEET"].resource_name
+              },
             },
             {
               label: "Handover Runsheet",
               url: "/hrs",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-undelivery",
+              meta: {
+                resource_type: resourceLookup["HANDOVER_RUNSHEET"].resource_type,
+                resource_code: resourceLookup["HANDOVER_RUNSHEET"].resource_code,
+                resource_name: resourceLookup["HANDOVER_RUNSHEET"].resource_name
+              },
             },
             {
               label: "HRS History",
               url: "/hrs-history",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-undelivery",
+              meta: {
+                resource_type: resourceLookup["HANDOVER_RUNSHEET_HISTORY"].resource_type,
+                resource_code: resourceLookup["HANDOVER_RUNSHEET_HISTORY"].resource_code,
+                resource_name: resourceLookup["HANDOVER_RUNSHEET_HISTORY"].resource_name
+              },
             },
             {
               label: "Deposit COD",
               url: "/deposit-cod",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-cod",
+              meta: {
+                resource_type: resourceLookup["DEPOSIT_COD"].resource_type,
+                resource_code: resourceLookup["DEPOSIT_COD"].resource_code,
+                resource_name: resourceLookup["DEPOSIT_COD"].resource_name
+              },
             },
             {
               label: "Deposit COD History",
               url: "/cod-history",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-cod",
+              meta: {
+                resource_type: resourceLookup["DEPOSIT_COD_HISTORY"].resource_type,
+                resource_code: resourceLookup["DEPOSIT_COD_HISTORY"].resource_code,
+                resource_name: resourceLookup["DEPOSIT_COD_HISTORY"].resource_name
+              },
+            },
+          ],
+        },
+        {
+          label: "Audit",
+          url: null,
+          icon: "bx bxs-file-find",
+          children: [
+            {
+              label: "Invalid Receiving",
+              url: "/audit/invalid-receiving",
+              icon: "bx bxs-checkbox",
+              permission: "read-audit-receiving",
+              meta: {
+                resource_type: resourceLookup["INVALID_RECEIVING"].resource_type,
+                resource_code: resourceLookup["INVALID_RECEIVING"].resource_code,
+                resource_name: resourceLookup["INVALID_RECEIVING"].resource_name
+              },
+            },
+            {
+              label: "Invalid Opening Bag",
+              url: "/audit/invalid-opening-bag",
+              icon: "bx bxs-checkbox",
+              permission: "read-audit-opening-bag",
+              meta: {
+                resource_type: resourceLookup["INVALID_OPENING_BAG"].resource_type,
+                resource_code: resourceLookup["INVALID_OPENING_BAG"].resource_code,
+                resource_name: resourceLookup["INVALID_OPENING_BAG"].resource_name
+              },
             },
           ],
         },
@@ -297,118 +466,196 @@ export default {
             {
               label: "Connote Cancel",
               url: "/connote-adjustment/connote-cancel",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
+              meta: {
+                resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_type,
+                resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_code,
+                resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_name
+              },
+            },
+            {
+              label: "Connote Cancel History",
+              url: "/connote-adjustment/connote-cancel-history",
+              icon: "bx bxs-checkbox",
+              permission: "read-irreg",
+              meta: {
+                resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_type,
+                resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_code,
+                resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_name
+              },
             },
             {
               label: "Connote Forward",
               url: "/connote-adjustment/connote-forward",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
+              meta: {
+                resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_type,
+                resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_code,
+                resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_name
+              },
             },
             {
               label: "Connote Return",
               url: "/connote-adjustment/connote-return",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
+              meta: {
+                resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_type,
+                resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_code,
+                resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_name
+              },
             }
           ],
         },
         {
-          label: "Tracing",
+          label: "WUS",
           url: null,
-          icon: "",
+          icon: "bx bx-store-alt",
           children: [
             {
-              label: "Tracing Outstanding",
+              label: "Receiving & Inventory",
               url: "/tracing-outstanding",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
+              meta: {
+                resource_type: resourceLookup["TRACING"].resource_type,
+                resource_code: resourceLookup["TRACING"].resource_code,
+                resource_name: resourceLookup["TRACING"].resource_name
+              },
             },
             {
-              label: "Tracing History",
+              label: "Archive",
               url: "/tracing-history",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
+              meta: {
+                resource_type: resourceLookup["TRACING_HISTORY"].resource_type,
+                resource_code: resourceLookup["TRACING_HISTORY"].resource_code,
+                resource_name: resourceLookup["TRACING_HISTORY"].resource_name
+              },
             },
           ],
         },
         {
           label: "Report",
           url: null,
-          icon: "",
+          icon: "bx bxs-report",
           children: [
             {
               label: "Packing List",
               url: "/report/packinglist",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-report-packing-list",
+              meta: {
+                resource_type: resourceLookup["PACKINGLIST"].resource_type,
+                resource_code: resourceLookup["PACKINGLIST"].resource_code,
+                resource_name: resourceLookup["PACKINGLIST"].resource_name
+              },
             },
             {
               label: "Cashless",
               url: "/report/cashless",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-cashless",
+              meta: {
+                resource_type: resourceLookup["CASHLESS"].resource_type,
+                resource_code: resourceLookup["CASHLESS"].resource_code,
+                resource_name: resourceLookup["CASHLESS"].resource_name
+              },
             },
           ],
         },
         {
           label: "Irreguralities",
           url: null,
-          icon: "",
+          icon: "bx bx-alarm-exclamation",
           children: [
             {
               label: "Inventory Irreguralities",
               url: "/irreguralities/inventory",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
+              meta: {
+                resource_type: resourceLookup["IRREGURALITIES_INVENTORY"].resource_type,
+                resource_code: resourceLookup["IRREGURALITIES_INVENTORY"].resource_code,
+                resource_name: resourceLookup["IRREGURALITIES_INVENTORY"].resource_name
+              },
             },
             {
               label: "Irreguralities - Entry Status",
               url: "/irreguralities/entry-status",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
+              meta: {
+                resource_type: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_type,
+                resource_code: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_code,
+                resource_name: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_name
+              },
             },
-            {
-              label: "Irreguralities - Cancel",
-              url: "/irreguralities/cancel",
-              icon: "",
-              permission: "read-irreg",
-            },
-            {
-              label: "Irreguralities - Return",
-              url: "/irreguralities/return",
-              icon: "",
-              permission: "read-irreg",
-            },
+            // // TODO: DELETE SOON
+            // {
+            //   label: "Irreguralities - Cancel",
+            //   url: "/irreguralities/cancel",
+            //   icon: "",
+            //   permission: "read-irreg",
+            // },
+            // // TODO: DELETE SOON
+            // {
+            //   label: "Irreguralities - Return",
+            //   url: "/irreguralities/return",
+            //   icon: "",
+            //   permission: "read-irreg",
+            // },
             {
               label: "Irreguralities - Hold",
               url: "/irreguralities/hold",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
+              meta: {
+                resource_type: resourceLookup["IRREGURALITIES_HOLD"].resource_type,
+                resource_code: resourceLookup["IRREGURALITIES_HOLD"].resource_code,
+                resource_name: resourceLookup["IRREGURALITIES_HOLD"].resource_name
+              },
             },
             {
               label: "Irreguralities - Failed",
               url: "/irreguralities/failed",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-irreg",
+              meta: {
+                resource_type: resourceLookup["IRREGURALITIES_FAILED"].resource_type,
+                resource_code: resourceLookup["IRREGURALITIES_FAILED"].resource_code,
+                resource_name: resourceLookup["IRREGURALITIES_FAILED"].resource_name
+              },
             }
           ],
         },
         {
           label: "Cost To Cost",
           url: null,
-          icon: "",
+          icon: "bx bx-wallet",
           children: [
             {
               label: "Settings",
               url: "/costing/list",
-              icon: "",
+              icon: "bx bxs-checkbox",
+              meta: {
+                resource_type: resourceLookup["COST_TO_COST_SETTING"].resource_type,
+                resource_code: resourceLookup["COST_TO_COST_SETTING"].resource_code,
+                resource_name: resourceLookup["COST_TO_COST_SETTING"].resource_name
+              },
             },
             {
               label: "Report",
               url: "/costing/report",
-              icon: "",
+              icon: "bx bxs-checkbox",
+              meta: {
+                resource_type: resourceLookup["COST_TO_COST_REPORT"].resource_type,
+                resource_code: resourceLookup["COST_TO_COST_REPORT"].resource_code,
+                resource_name: resourceLookup["COST_TO_COST_REPORT"].resource_name
+              },
             },
             {
               label: "Summary",
@@ -425,32 +672,57 @@ export default {
             {
               label: "Connote",
               url: "/helpdesk/connote",
-              icon: "",
+              icon: "bx bxs-checkbox",
               rolePermission: "HELPDESK",
+              meta: {
+                resource_type: resourceLookup["HELPDESK_CONNOTE"].resource_type,
+                resource_code: resourceLookup["HELPDESK_CONNOTE"].resource_code,
+                resource_name: resourceLookup["HELPDESK_CONNOTE"].resource_name
+              },
             },
             {
               label: "Bag",
               url: "/helpdesk/bag",
-              icon: "",
+              icon: "bx bxs-checkbox",
               rolePermission: "HELPDESK",
+              meta: {
+                resource_type: resourceLookup["HELPDESK_BAG"].resource_type,
+                resource_code: resourceLookup["HELPDESK_BAG"].resource_code,
+                resource_name: resourceLookup["HELPDESK_BAG"].resource_name
+              },
             },
             {
               label: "Surat Jalan",
               url: "/helpdesk/surat-jalan",
-              icon: "",
+              icon: "bx bxs-checkbox",
               rolePermission: "HELPDESK",
+              meta: {
+                resource_type: resourceLookup["HELPDESK_SURAT_JALAN"].resource_type,
+                resource_code: resourceLookup["HELPDESK_SURAT_JALAN"].resource_code,
+                resource_name: resourceLookup["HELPDESK_SURAT_JALAN"].resource_name
+              },
             },
             {
               label: "Surat Muatan",
               url: "/helpdesk/surat-muatan",
-              icon: "",
+              icon: "bx bxs-checkbox",
               rolePermission: "HELPDESK",
+              meta: {
+                resource_type: resourceLookup["HELPDESK_SURAT_MUATAN"].resource_type,
+                resource_code: resourceLookup["HELPDESK_SURAT_MUATAN"].resource_code,
+                resource_name: resourceLookup["HELPDESK_SURAT_MUATAN"].resource_name
+              },
             },
             {
               label: "Runsheet",
               url: "/helpdesk/runsheet",
-              icon: "",
+              icon: "bx bxs-checkbox",
               rolePermission: "HELPDESK",
+              meta: {
+                resource_type: resourceLookup["HELPDESK_RUNSHEET"].resource_type,
+                resource_code: resourceLookup["HELPDESK_RUNSHEET"].resource_code,
+                resource_name: resourceLookup["HELPDESK_RUNSHEET"].resource_name
+              },
             },
           ],
         },
@@ -462,80 +734,189 @@ export default {
             {
               label: "Settings Tariff",
               url: "/settings/tariff",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-tariff",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_TARIFF"].resource_type,
+                resource_code: resourceLookup["SETTINGS_TARIFF"].resource_code,
+                resource_name: resourceLookup["SETTINGS_TARIFF"].resource_name
+              },
             },
             {
               label: "Settings Surcharge",
               url: "/settings/surcharge",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-surcharge",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_SURCHARGE"].resource_type,
+                resource_code: resourceLookup["SETTINGS_SURCHARGE"].resource_code,
+                resource_name: resourceLookup["SETTINGS_SURCHARGE"].resource_name
+              },
             },
             {
               label: "Settings Geolocation",
               url: "/settings/geolocation",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-geolocation-country",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_GEOLOCATION"].resource_type,
+                resource_code: resourceLookup["SETTINGS_GEOLOCATION"].resource_code,
+                resource_name: resourceLookup["SETTINGS_GEOLOCATION"].resource_name
+              },
             },
             {
               label: "Settings Nodes",
               url: "/settings/nodes",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-node",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_NODES"].resource_type,
+                resource_code: resourceLookup["SETTINGS_NODES"].resource_code,
+                resource_name: resourceLookup["SETTINGS_NODES"].resource_name
+              },
             },
             {
               label: "Settings Vehicles",
               url: "/settings/vehicles",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-vehicle",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_VEHICLES"].resource_type,
+                resource_code: resourceLookup["SETTINGS_VEHICLES"].resource_code,
+                resource_name: resourceLookup["SETTINGS_VEHICLES"].resource_name
+              },
             },
             {
               label: "Settings Users",
               url: "/settings/users",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-user",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_USERS"].resource_type,
+                resource_code: resourceLookup["SETTINGS_USERS"].resource_code,
+                resource_name: resourceLookup["SETTINGS_USERS"].resource_name
+              },
             },
             {
               label: "Settings Employee",
               url: "/settings/employee",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-employee",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_EMPLOYEE"].resource_type,
+                resource_code: resourceLookup["SETTINGS_EMPLOYEE"].resource_code,
+                resource_name: resourceLookup["SETTINGS_EMPLOYEE"].resource_name
+              },
             },
             {
               label: "Settings Customer",
               url: "/settings/customer",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-customer",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_CUSTOMER"].resource_type,
+                resource_code: resourceLookup["SETTINGS_CUSTOMER"].resource_code,
+                resource_name: resourceLookup["SETTINGS_CUSTOMER"].resource_name
+              },
             },
             {
               label: "Settings Exchange Rate",
               url: "/settings/exchangerate",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-customer",
+              meta: {
+                resource_type: resourceLookup["SETTING_EXCHANGE_RATE"].resource_type,
+                resource_code: resourceLookup["SETTING_EXCHANGE_RATE"].resource_code,
+                resource_name: resourceLookup["SETTING_EXCHANGE_RATE"].resource_name
+              },
             },
             {
               label: "Settings Access Token",
               url: "/settings/access-token",
-              icon: "",
-              showAll: true
+              icon: "bx bxs-checkbox",
+              showAll: true,
+              meta: {
+                resource_type: resourceLookup["SETTING_ACCESS_TOKEN"].resource_type,
+                resource_code: resourceLookup["SETTING_ACCESS_TOKEN"].resource_code,
+                resource_name: resourceLookup["SETTING_ACCESS_TOKEN"].resource_name
+              },
             },
             {
               label: "Settings SLA",
               url: "/settings/sla",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-sla",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_SLA"].resource_type,
+                resource_code: resourceLookup["SETTINGS_SLA"].resource_code,
+                resource_name: resourceLookup["SETTINGS_SLA"].resource_name
+              },
             },
             {
               label: "Settings Warning Runsheet",
               url: "/settings/configuration-warning-runsheet",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-warning-koli-setting",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_CONFIGURATION_WARNING_RUNSHEET"].resource_type,
+                resource_code: resourceLookup["SETTINGS_CONFIGURATION_WARNING_RUNSHEET"].resource_code,
+                resource_name: resourceLookup["SETTINGS_CONFIGURATION_WARNING_RUNSHEET"].resource_name
+              },
             },
             {
               label: "Settings Facility Code",
               url: "/settings/facility-code",
-              icon: "",
+              icon: "bx bxs-checkbox",
               permission: "read-facility-code",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_FACILITY_CODE"].resource_type,
+                resource_code: resourceLookup["SETTINGS_FACILITY_CODE"].resource_code,
+                resource_name: resourceLookup["SETTINGS_FACILITY_CODE"].resource_name
+              },
+            },
+            {
+              label: "Settings KPI",
+              url: "/settings/kpi",
+              icon: "bx bxs-checkbox",
+              permission: "", // TODO: Change after permission ready
+              meta: {
+                resource_type: resourceLookup["SETTINGS_KPI"].resource_type,
+                resource_code: resourceLookup["SETTINGS_KPI"].resource_code,
+                resource_name: resourceLookup["SETTINGS_KPI"].resource_name
+              },
+            },
+            {
+              label: "Settings Bag",
+              url: "/settings/bag",
+              icon: "bx bxs-checkbox",
+              permission: "", // TODO: Change after permission ready
+              meta: {
+                resource_type: resourceLookup["SETTINGS_BAG"].resource_type,
+                resource_code: resourceLookup["SETTINGS_BAG"].resource_code,
+                resource_name: resourceLookup["SETTINGS_BAG"].resource_name
+              },
+            },
+            {
+              label: "Settings Destination",
+              url: "/settings/destination",
+              icon: "bx bxs-checkbox",
+              permission: "", // TODO: Change after permission ready
+              meta: {
+                resource_type: resourceLookup["DESTINATION"].resource_type,
+                resource_code: resourceLookup["DESTINATION"].resource_code,
+                resource_name: resourceLookup["DESTINATION"].resource_name
+              },
+            },
+            {
+              label: "Settings Runsheet",
+              url: "/settings/runsheet",
+              icon: "bx bxs-checkbox",
+              permission: "", // TODO: Change after permission ready
+              meta: {
+                resource_type: resourceLookup["SETTINGS_RUNSHEET"].resource_type,
+                resource_code: resourceLookup["SETTINGS_RUNSHEET"].resource_code,
+                resource_name: resourceLookup["SETTINGS_RUNSHEET"].resource_name
+              },
             },
           ],
         },
@@ -547,7 +928,12 @@ export default {
             {
               label: "Resync Runsheet",
               url: "/resync/runsheet",
-              icon: "",
+              icon: "bx bxs-checkbox",
+              meta: {
+                resource_type: resourceLookup["RESYNC_RUNSHEET"].resource_type,
+                resource_code: resourceLookup["RESYNC_RUNSHEET"].resource_code,
+                resource_name: resourceLookup["RESYNC_RUNSHEET"].resource_name
+              },
             },
           ],
         },
@@ -560,11 +946,21 @@ export default {
               label: "Error Dictionary",
               url: "/help/error-dictionary",
               icon: "bx-message-alt-error",
+              meta: {
+                resource_type: resourceLookup["HELP_ERROR_DICTIONARY"].resource_type,
+                resource_code: resourceLookup["HELP_ERROR_DICTIONARY"].resource_code,
+                resource_name: resourceLookup["HELP_ERROR_DICTIONARY"].resource_name
+              },
             },
             {
               label: "Shortcut Dictionary",
               url: "/help/shortcut-dictionary",
               icon: "bxs-keyboard",
+              meta: {
+                resource_type: resourceLookup["HELP_SHORTCUT_DICTIONARY"].resource_type,
+                resource_code: resourceLookup["HELP_SHORTCUT_DICTIONARY"].resource_code,
+                resource_name: resourceLookup["HELP_SHORTCUT_DICTIONARY"].resource_name
+              },
             },
           ],
         },
@@ -578,7 +974,6 @@ export default {
     };
   },
   watch: {
-    // eslint-disable-next-line object-shorthand, space-before-function-paren
     expand: function(val) {
       if (this.isExpand === false && val === false) {
         this.isExpand = true;
@@ -588,27 +983,29 @@ export default {
         this.isExpand = val;
       }
     },
+    '$route.path'(newPath) {
+      this.activeItem = newPath;
+    }
+  },
+  created() {
+    this.activeItem = this.$route.path;
   },
   mounted() {
     this.listenNodeType();
     this.customFilter();
   },
   methods: {
-    redirect(val) {
-      this.isExpand = false;
-      // this.$router.push(`${val}`)
+    setActive(item) {
+      if (this.$route.path !== item.url) {
+        this.activeItem = item.url;
+        this.$router.push(item.url);
+        this.setRoutePageHistory(item.meta, false);
+      }
     },
     listenNodeType() {
       this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
     },
-    activeNav(url) {
-      return url === window.location.pathname ? 'active' : ''
-    },
-    loadPermission() {
-      this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
-    },
     customFilter() {
-      // eslint-disable-next-line default-case
       switch (this.nodeTypeCode) {
         case "SP":
           this.menus.push({
@@ -635,7 +1032,11 @@ export default {
       const filtered = [];
 
       menus.forEach((menu) => {
-        const { permission, children, rolePermission, showAll } = menu;
+        const { permission, children, rolePermission, showAll, label } = menu;
+
+        if (permissions.includes("read-airport-prealert") && label === "Receiving") {
+          return;
+        }
 
         if (foundPermission?.type === 'exclusive') {
           if (children.length > 0) {

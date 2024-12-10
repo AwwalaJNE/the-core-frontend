@@ -57,6 +57,29 @@
                             <vs-col xs="6" sm="9" lg="9">
                                 <nav-item :navItem="navItem" @activeTab="activeTab" />
                             </vs-col>
+                            <vs-col xs="12" sm="3" lg="3" >
+                                <template v-if="filterStatus.length > 1 && navActive === 'k-ACTIVITY'">
+                                    <vs-select
+                                        class="m-select"
+                                        filter
+                                        v-model="filterStatusBy"
+                                        :border="true"
+                                        :multiple="false"
+                                        @change="updateFilterStatus"
+                                    >
+                                    <template v-if="filterStatus.length > 1">
+                                        <vs-option
+                                            v-for="(item,key) in filterStatus"
+                                            :key="key"
+                                            :label="item.label"
+                                            :value="item.value">
+                                        {{item.label}}
+                                        </vs-option>
+                                    </template>
+
+                                    </vs-select>
+                                </template>
+                            </vs-col>
                         </vs-row>
                         <template v-if="navActive === 'k-INFO'">
                             <vs-row justify="space-between">
@@ -89,8 +112,10 @@
                             <vs-row>
                                 <vs-col vs-align="center" xs="3" sm="3" lg="12">
                                     <select-status-inventory 
+                                        ref="activityInventory"
                                         :isMultiple="false"
                                         :border="true"
+                                        :filterStatusBy="filterStatusBy"
                                         @updateStatusinventory="updateStatusinventory" 
                                     />
                                 </vs-col>
@@ -193,7 +218,26 @@ export default {
         statusinventory: "",
         koli_number: "",
         connote_number: "",
-        connote_found: false
+        connote_found: false,
+        filterStatusBy: "All",
+        filterStatus: [
+            {
+                label: 'All Connote Type',
+                value: 'All'
+            },
+            {
+                label: 'Connote Forward',
+                value: 'FW'
+            },
+            {
+                label: 'Connote Return',
+                value: 'RT'
+            },
+            {
+                label: 'Connote Return Failed',
+                value: 'RF'
+            }
+        ],
       };
     },
     methods: {
@@ -214,13 +258,15 @@ export default {
             this.loading = false;
             this.activeTab("k-INFO");
             this.$router.push("/trace-connote");
+            this.setRoutePageHistory(this.$route.meta, false);
         },
 
         async processConnoteNumber() {
             this.connote_number = this.connoteNumber;
-            this.koli_number = this.connoteNumber + "00";
+            this.koli_number = this.connoteNumber;
             const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
             await this.$router.push(url); 
+            this.setRoutePageHistory(this.$route.meta, false);
             this.hasConnoteNumber = true
             this.getConnote();
         },
@@ -228,6 +274,7 @@ export default {
             this.statusinventory = val;
         },
         activeTab(val) {
+            this.filterStatusBy = 'All';
             this.navActive = val;
             let item = this.navItem.filter(item => {
                 return item.key == val;
@@ -416,11 +463,17 @@ export default {
 
         updateValueOrion() {
             this.connote_number = this.connoteNumber;
-            this.koli_number = `${this.connoteNumber}` + "00";
+            this.koli_number = `${this.connoteNumber}`;
             const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
             this.$router.push(url); 
+            this.setRoutePageHistory(this.$route.meta, false);
             this.hasConnoteNumber = true
             this.getConnote();
+        },
+
+        updateFilterStatus(key) {
+            this.filterStatusBy = key;
+            this.$refs.activityInventory.refresh();
         },
     },
     mounted() {

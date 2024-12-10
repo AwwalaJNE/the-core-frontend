@@ -368,6 +368,7 @@ export default {
             this.refresh();
           } else {
             this.$router.push({ name: "DeliveryRunsheetEdit", params: {} });
+            this.setRoutePageHistory(this.$route.meta, false);
           }
           this.openNotification(
             "success",

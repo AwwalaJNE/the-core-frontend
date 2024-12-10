@@ -10,12 +10,15 @@
                 <div class="title-helper">
                     {{ listenTitle }}
                 </div>
-                <vs-button 
-                    :disabled="isDisabledPrint"
-                    @click="print"
-                >
-                    Print
-                </vs-button>
+                
+                <template v-if="is_approve === 1">
+                    <vs-button 
+                        :disabled="isDisabledPrint"
+                        @click="print"
+                    >
+                        Print
+                    </vs-button>
+                </template>
                 <template v-if="listenUserRoleName === 'HELPDESK'">
                     <vs-button  
                         :danger="is_approve === 1"
@@ -84,7 +87,7 @@
 
                     <vs-row>
                         <vs-col style="overflow: auto;">
-                            <div v-if="!loadingDetail && !oading">
+                            <div v-if="!loadingDetail && !loading">
                                 <table-master
                                     :dataTable="dataTable"
                                     :dataColumn="datacolumn"
@@ -663,6 +666,7 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
             this.isDisabledApprove = false;
             this.isDisabled = false
+            this.is_approve = 0
             this.resetForm();
             this.handleClearForm();
             this.closeDialog();

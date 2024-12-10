@@ -8,29 +8,38 @@
                 </div>
             </vs-col>
         </vs-row>
-        <vs-row align="center" style="margin-top: 1rem;">
+        <vs-row align="self-end" style="margin-top: 1rem;">
             <template>
                 <vs-col xs="12" sm="3" lg="3">
-                    <div class="center">
-                        <vs-input
-                            ref="formInputBag"
-                            v-model="item_bag"
-                            border
-                            type="text"
-                            label-placeholder="Scan Bag Pra Runsheet Here"
-                            autofocus
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove"
-                            @keydown.enter="updateValueBag"
-                            @click-icon="$refs.cameraScanner.open('formInputBag')"
-                        >
-                            <template #icon>
+                    <vs-row class="mb-2">
+                        <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                            Auto Open Bag
+                        </vs-checkbox>
+                    </vs-row>
+
+                    <vs-row>
+                        <div class="center" style="width: 100%">
+                            <vs-input
+                                ref="formInputBag"
+                                v-model="item_bag"
+                                border
+                                type="text"
+                                label-placeholder="Scan Bag Pra Runsheet Here"
+                                autofocus
+                                icon-after
+                                v-uppercase
+                                :disabled="disabledApprove"
+                                @keydown.enter="updateValueBag"
+                                @click-icon="$refs.cameraScanner.open('formInputBag')"
+                            >
+                                <template #icon>
                                 <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
+                                </template>
+                            </vs-input>
+                        </div>
+                    </vs-row>
                 </vs-col>
+
                 <vs-col xs="12" sm="3" lg="3">
                     <div class="center">
                         <vs-input
@@ -209,15 +218,18 @@
                 </vs-col>
             </vs-row>
             <vs-row justify="flex-end">
-                <vs-button
-                    class="mt-1"
-                    style="float: right"
-                    square
-                    active
-                    @click="print"
-                >
-                    <i class="bx bxs-printer" /> PRINT
-                </vs-button>
+                <template v-if="is_approve === '1'">
+                    <vs-button
+                        class="mt-1"
+                        style="float: right"
+                        square
+                        active
+                        @click="print"
+                    >
+                        <i class="bx bxs-printer" /> PRINT
+                    </vs-button>
+                </template>
+                
                 <vs-button
                     class="mt-1"
                     style="float: right"
@@ -351,6 +363,8 @@ export default {
             hrsStatus: false,
             courier_arr: [],
             selectedCourier: "",
+            is_approve: '0',
+            is_auto_open_bag: true,
         };
     },
     computed: {
@@ -428,21 +442,33 @@ export default {
                     break;
             }
         },
-        async updateRunsheetCourier() {
-            try {
-                const res = await axios.put(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}?n=${this.listenNodeId}`, {courier_employee_id: this.selectedCourier}, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message ?? "Sukses mengganti kurir");
+        async updateRunsheetCourier() { 
+            if (this.delivery_runsheet_number) {
+                try {
+                    const res = await axios.put(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}?n=${this.listenNodeId}`, {courier_employee_id: this.selectedCourier}, this.Helper.header());
+                    this.openNotification('success', null, "Success", res?.data?.message ?? "Sukses mengganti kurir");
+                    this.$router.push({ 
+                        name: 'delivery-runsheet-edit', 
+                        params: { 
+                            employee_id: this.selectedCourier,
+                            delivery_runsheet_number: this.delivery_runsheet_number,
+                            date_filter: this.tempDate
+                        } 
+                    });
+                    this.setRoutePageHistory(this.$route.meta, false);
+                } catch (err) {
+                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                    this.selectedCourier = this.employee_name + "( " + this.employee_code + " )";
+                }   
+            } else {
+                this.employee_id = this.selectedCourier;
                 this.$router.push({ 
-                    name: 'delivery-runsheet-edit', 
+                    name: 'delivery-runsheet-new', 
                     params: { 
-                        employee_id: this.selectedCourier,
-                        delivery_runsheet_number: this.delivery_runsheet_number,
-                        date_filter: this.tempDate
+                        employee_id: this.selectedCourier
                     } 
                 });
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
-                this.selectedCourier = this.employee_name + "( " + this.employee_code + " )";
+                this.setRoutePageHistory(this.$route.meta, false);
             }
         },
         updateValueBag(val) {
@@ -450,6 +476,7 @@ export default {
             this.form.courier_employee_id = this.employee_id;
             this.item_no = null;
             this.form.koli_number = null;
+            this.form.auto_open_bag = this.is_auto_open_bag;
             document.activeElement.blur();
             this.validateBagPraRunsheet(val);
         },
@@ -457,6 +484,7 @@ export default {
             this.form.koli_number = this.item_no;
             this.form.courier_employee_id = this.employee_id;
             this.form.bag_number = null;
+            this.form.auto_open_bag = this.is_auto_open_bag;
             document.activeElement.blur();
             this.scanConnote();
         },
@@ -504,7 +532,8 @@ export default {
             let valForm = {
                 item_number: this.item_bag,
                 delivery_runsheet_number: this.delivery_runsheet_number,
-                courier_id: this.employee_id
+                courier_id: this.employee_id,
+                auto_open_bag: this.is_auto_open_bag
             }
             await axios
                 .post(this.URL.validation + `/create-runsheet-pra?n=${this.listenNodeId}`, valForm, this.Helper.header())
@@ -523,7 +552,8 @@ export default {
                     const postData = {
                         bag_number: this.form.bag_number,
                         courier_employee_id: this.employee_id,
-                        delivery_runsheet_number: this.delivery_runsheet_number
+                        delivery_runsheet_number: this.delivery_runsheet_number,
+                        auto_open_bag: this.is_auto_open_bag
                     };
 
                     if (postData) {
@@ -556,13 +586,15 @@ export default {
                 valForm = {
                     item_number: postData.koli_number,
                     delivery_runsheet_number: this.delivery_runsheet_number,
-                    courier_id: this.employee_id
+                    courier_id: this.employee_id,
+                    auto_open_bag: this.is_auto_open_bag
                 }
             } else {
                 valForm = {
                     item_number: this.form.koli_number,
                     delivery_runsheet_number: this.delivery_runsheet_number,
-                    courier_id: this.employee_id
+                    courier_id: this.employee_id,
+                    auto_open_bag: this.is_auto_open_bag
                 }
             }
 
@@ -640,6 +672,7 @@ export default {
                             delivery_runsheet_number: this.delivery_runsheet_number
                         } 
                     });
+                    this.setRoutePageHistory(this.$route.meta, false);
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Create runsheet success");
                 } else {
@@ -666,6 +699,17 @@ export default {
                 if (!this.delivery_runsheet_number) {
                     const res = await axios.post(`${this.URL.revamp_delivery_bag_pra}?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
 
+                    this.dataDeliverySummary = res.data.summary;
+                    this.delivery_runsheet_number = this.dataDeliverySummary.delivery_runsheet_number.toString();
+                    this.$router.push({ 
+                        name: 'delivery-runsheet-edit', 
+                        params: { 
+                            employee_id: this.employee_id,
+                            delivery_runsheet_number: this.delivery_runsheet_number
+                        } 
+                    });
+                    this.setRoutePageHistory(this.$route.meta, false);
+                    
                     this.getDataDelivery();
                     this.openNotification('success', null, "Success", res?.data?.message ?? "Create runsheet success");
                 } else {
@@ -728,6 +772,9 @@ export default {
                     this.arrStatus = res.data.data.map((item) => {
                         const obj = {};
                         obj.label = `${item.status_description}(${item.status_code})`;
+                        if (obj.label.length > 60) {
+                            obj.formattedLabel = this.splitText(obj.label, 60);
+                        }
                         obj.value = item.status_code;
                         obj.data = item;
 
@@ -780,6 +827,7 @@ export default {
             delivery.map((item) => {
                 item.status_delivery = [];
                 item.is_disabled_input = false;
+                
                 if (item.hasOwnProperty("koli_number")) {
                     if (item.koli_number.toLowerCase().includes("rt")) {
                         item.status_delivery = [...status.rt, ...status.all];
@@ -798,6 +846,8 @@ export default {
                         item["is_disabled_input_reveiver"] = item["receiver_name"] !== null || item["receiver_name"] !== "" ? true : false;
                     }
                 }
+                
+                this.is_approve = item.is_approve;
                 if (item.is_approve === '1') {
                     this.disabledApprove = true
                 } else {
@@ -890,6 +940,7 @@ export default {
         },
         back() {
             this.$router.push("/delivery/runsheet");
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         print() {
             const routeData = this.$router.resolve({
@@ -930,7 +981,7 @@ export default {
                     this.updatePOD(dataPOD);
                 });
             } else {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? "Please select at least one item");
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || "Please select at least one item");
             }
         },
         approveAction(val){
@@ -956,6 +1007,7 @@ export default {
                 const res = await axios.patch(`${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/approval?n=${this.listenNodeId}`, JSON.stringify(this.data_is_approve), this.Helper.header());
                 
                 this.form = {};
+                this.is_approve = val;
                 this.disabledApprove = val;
                 this.openNotification("success", null, "Success", res?.data?.message);
                 this.reload()
@@ -995,7 +1047,31 @@ export default {
             delete this.form.delivery_runsheet_number; 
             this.openDialogReCheckConnoteZone = false;
             this.openDialogReCheckConnoteSla = false;
-        }
+        },
+        splitText(text, maxLineLength) {
+            const words = text.split(' ');
+            let lines = [];
+            let currentLine = '';
+
+            words.forEach((word) => {
+                if ((currentLine + word).length <= maxLineLength) {
+                    currentLine += word + ' ';
+                }
+                else {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                }
+            });
+
+            if (currentLine.length > 0) {
+                lines.push(currentLine.trim());
+            }
+
+            return lines;
+        },
+        handleAutoOpenBag(val) {
+            this.is_auto_open_bag = val.target.checked;
+        },
     }
 };
 </script>

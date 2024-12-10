@@ -16,6 +16,7 @@
         :limit="pagination.limit"
         :hasAction="false"
         :hasLinked="['koli_number']"
+        :hasLinkedDanger="'status_irregularity'"
         :hasPagination="true"
         :hasId="true"
         @actionUpdate="actionUpdate"
@@ -51,6 +52,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
+                    this.pagination.page = 1
                     this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
                 }
             }
@@ -60,6 +62,13 @@ export default {
             this.statusinventory = val
             if(this.statusinventory !== old) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, val, this.startDate, this.endDate, this.querySearch, this.queryDate)
+            }
+          }
+        },
+        queryDate: function(val, old) {
+          if(val !== undefined) {
+            if(val !== old) {
+              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, val)
             }
           }
         },
@@ -120,13 +129,18 @@ export default {
                     width: "xxxs"
                 },
                 {
-                    label: "Created Date",
+                    label: "Connote Created Date",
                     key: "created_at",
                     width: "xs"
                 },
                 {
                     label: "Receiving Date",
                     key: "received_at",
+                    width: "xs"
+                },
+                {
+                    label: "Last Bag Opened Date",
+                    key: "latest_opened_bag",
                     width: "xs"
                 },
                 {
@@ -164,6 +178,11 @@ export default {
                 {
                     label: "SLA",
                     key: "connote_sla_date",
+                    width: "xs"
+                },
+                {
+                    label: "Runsheet Number",
+                    key: "delivery_runsheet_number",
                     width: "xs"
                 },
                 {
@@ -301,6 +320,7 @@ export default {
 
         showData(row) {
           this.$router.push(`/connote-detail/${row.koli_number}`);
+          this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {

@@ -172,6 +172,7 @@ export default {
 
     openDialog() {
       this.$router.push('/new-transactions')
+      this.setRoutePageHistory(this.$route.meta, false);
     },
 
     printAllDataResolver(arr) {

@@ -1,3 +1,9 @@
+:root {
+    --sidebar-opened-width: 260px;
+    --sidebar-close-width: 50px;
+    --sidebar-transition: 0.3s ease-in-out all;
+}
+
 html,body{
     position: relative;
     width: 100%;
@@ -22,16 +28,46 @@ a{
         color: inherit;
     }
 }
-.main-container{
+
+.vs-sidebar__item__text-tooltip {
+    background-color: #2C3E50 !important;
+    color: white;    
+    border-radius: 5px;
+    padding: 5px;
+}
+.main-container-opened {
     position: relative;
-    width: 100%;
     min-height: 100vh;
     background-color: $bgGrey;
-}
-.container{
-    position: relative;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+
+    margin-left: 0;
     width: 100%;
-    padding: 0 2em;
+
+    @media (min-width: 767px) {
+        margin-left: var(--sidebar-opened-width);
+        width: calc(100% - var(--sidebar-opened-width));
+    }
+}
+
+.main-container-closed {
+    position: relative;
+    min-height: 100vh;
+    background-color: $bgGrey;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+
+    margin-left: 0;
+    width: 100%;
+
+    @media (min-width: 767px) {
+        margin-left: var(--sidebar-close-width);
+        width: calc(100% - var(--sidebar-close-width));
+    }
+}
+
+.container {
+    padding: 2em;
+    min-height: 100vh;
 }
 .box{
     position: relative;
@@ -109,8 +145,21 @@ ul{
 .mt-05{
     margin-top: .5em;
 }
+.my-05{
+    margin-top: 0.5em;
+    margin-bottom: .5em;
+}
+.my-1{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
 .mb-2 {
     margin-bottom: 2em;
+}
+
+.py-05{
+    padding-top: 0.5em;
+    padding-bottom: .5em;
 }
 
 // Global Anim
@@ -142,6 +191,7 @@ ul{
 
 .vs-table{
     table{
+        min-width: 0 !important;
         text-align: left;
         .md_5{
             width: calc(100% / 5) !important;

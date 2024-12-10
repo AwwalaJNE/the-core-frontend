@@ -47,7 +47,7 @@
                         <template v-if="navActive === 'k-ACTIVE'">
                             <vs-row >
                                 <vs-col vs-align="center" xs="4" sm="3" lg="2">
-                                    <select-search-by ref="" :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
+                                    <select-search-by key="filterDateActive" ref="" :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
                                 </vs-col>
                                 <vs-col xs="8" sm="5" lg="6">
                                     <date-time
@@ -61,13 +61,13 @@
                                 </vs-col>
                             </vs-row>
                             <transition name="slide-fade">
-                                <active-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" querySearch="searchBy" :queryDate="filterDateBy" />
+                                <active-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :querySearch="searchBy" :queryDate="filterDateBy" />
                             </transition>
                         </template>
                         <template v-if="navActive === 'k-HISTORY'">
                             <vs-row >
                                 <vs-col vs-align="center" xs="4" sm="3" lg="2">
-                                    <select-search-by :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" :valueData="dateParamsBag" :selectedValue="filterDateByBag"/>
+                                    <select-search-by key="filterDateHistory" :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParamsBag" :selectedValue="filterDateByBag"/>
                                 </vs-col>
                                 <vs-col xs="8" sm="5" lg="6">
                                     <date-time
@@ -81,7 +81,7 @@
                                 </vs-col>
                             </vs-row>
                             <transition name="slide-fade">
-                                <history-list :ref="navActive" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateBy" :searchBy="searchByBag"/>
+                                <history-list :ref="navActive" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateByBag" :searchBy="searchByBag"/>
                             </transition>
                         </template>
                         

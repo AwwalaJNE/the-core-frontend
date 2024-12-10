@@ -97,7 +97,7 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
-                                            :disabled="listenIsDisabled"
+                                            :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                             @updateValue="updateValue" />
                                         </div>
                                     </template>
@@ -113,7 +113,7 @@
                                         :formKey="InputObject[item].key"
                                         :valueData="InputObject[item].value"
                                         :typeInput="InputObject[item].typeInput"
-                                        :disabled="listenIsDisabled"
+                                        :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                         @updateValue="updateValue" />
                                     </div>
                                 </template>
@@ -126,8 +126,13 @@
                                         :formKey="InputObject[item].key"
                                         :valueData="InputObject[item].arrData"
                                         :selectedValue="InputObject[item].value"
+                                        :typeInput="InputObject[item].typeInput"
                                         :url="asynchronousSelect_url"
-                                        @updateValue="updateValue" />
+                                        :limitExist="limitExist"
+                                        :selectLabel="selectLabel"
+                                        :selectValue="selectValue"
+                                        @updateValue="updateValue"
+                                        @inputFocus="onfocuslah"/>
                             </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('selectmultipletag') && !InputObject[item].typeInput.toLowerCase().includes('hidden')">
                                     <div>
@@ -157,6 +162,22 @@
                                             @updateValue="updateValue" />
                                     </div>
                             </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select-barcode')">
+                                <div>
+                                    <selector-barcode 
+                                        :ref="InputObject[item].key"
+                                        :name="InputObject[item].label" 
+                                        :rules="InputObject[item].rule" 
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].arrData"
+                                        :selectedValue="InputObject[item].value"
+                                        :isMultiple="false"
+                                        :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
+                                        :customBind="InputObject[item].customBind"
+                                        @updateValue="updateValue" 
+                                    />
+                                </div>
+                            </template>
                             <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
                                 <template v-if="InputObject[item].hasOwnProperty('visible')">
                                     <template v-if="InputObject[item]['visible'] == true">
@@ -170,7 +191,7 @@
                                             :selectedValue="InputObject[item].value"
                                             :isMultiple="false"
                                             :isAllowCreate="false"
-                                            :disabled="listenIsDisabled"
+                                            :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                             :customBind="InputObject[item].customBind"
                                             @updateValue="updateValue" />
                                         </div>
@@ -189,7 +210,7 @@
                                         :valueData="InputObject[item].arrData"
                                         :selectedValue="InputObject[item].value"
                                         :isMultiple="false"
-                                        :disabled="listenIsDisabled"
+                                        :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                         :customBind="InputObject[item].customBind"
                                         @updateValue="updateValue" />
                                     </div>
@@ -369,6 +390,7 @@
 import FormMaster from "@/components/form/formMaster"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
+import SelectorBarcode from "@/components/input/selectBarcode"
 import Switch from "@/components/input/switch"
 import MapPicker from "@/components/map"
 import DateTime from "@/components/input/dateTime"
@@ -383,6 +405,7 @@ export default {
         "form-master": FormMaster,
         "input-general": InputGeneral,
         "selector": Selector,
+        "selector-barcode": SelectorBarcode,
         "switchNih": Switch,
         "map-picker": MapPicker,
         "iterate-selector": iterateSelector,
@@ -403,10 +426,14 @@ export default {
         querySearch1: Function,
         querySearch2: Function,
         querySearch3: Function,
+        partialDisabled: Function,
         itterateUrlAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         itterateFlagAutoComplete: String, // klo pke itterate component dan ada auto complete [required]
         isDisabled: Boolean,
-        permissionCreateSelect: Boolean
+        permissionCreateSelect: Boolean,
+        limitExist: Boolean,
+        selectLabel: String,
+        selectValue: String,
     },
     data() {
         return {

@@ -218,6 +218,7 @@
             :active="dialogRemarkActive" 
             :closeDialog="closeDialogRemark"
             :callRefreshRemarkFunction="callRefreshRemarkFunction" 
+            :itemNumber="koli_number"
         />
 
         <dialog-messages 
@@ -262,6 +263,18 @@ export default {
         "runsheet-list": RunsheetList,
         "message-list": MessageList,
         "dialog-messages": DialogMessages,
+    },
+    computed: {
+        is_history() {
+            return this.$route.fullPath.includes('history');
+        }
+    },
+    watch: {
+        is_history(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.refresh();
+            }
+        }
     },
     data() {
         return {
@@ -384,8 +397,7 @@ export default {
                     label: 'Created Date',
                     value: 'create'
                 },
-            ],
-            is_history: this.$route.fullPath.includes('history')
+            ]
         }
     },
     methods: {
@@ -440,6 +452,7 @@ export default {
         back() {
             const baseRoute = this.is_history ? 'history' : 'outstanding';
             this.$router.push(`/tracing-${baseRoute}`);
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         searchValue(val) {
             this.tempSearch = val

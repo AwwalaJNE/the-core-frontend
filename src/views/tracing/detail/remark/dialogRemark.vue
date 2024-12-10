@@ -110,7 +110,8 @@ export default {
        closeDialog: Function, 
        active: Boolean,
        title: String,
-       callRefreshRemarkFunction: Function
+       callRefreshRemarkFunction: Function,
+       itemNumber: String
     },
     computed: {
         listenActive(){
@@ -170,17 +171,19 @@ export default {
         async getDataStatus(){
             this.loadingStatus = true
             await axios
-                .get(this.URL.tracing_status + `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, this.Helper.header())
+                .get(this.URL.tracing_status + `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1&item_number=${this.itemNumber}`, this.Helper.header())
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = []
                         res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.lov_value
-                            obj["value"] = item.lov_value_code
-                            obj["item"] = item
+                            if (item.lov_value) {
+                                let obj = {}
+                                obj["label"] = item.lov_value
+                                obj["value"] = item.lov_value_code
+                                obj["item"] = item
 
-                            arr.push(obj)
+                                arr.push(obj)
+                            }
                         })
 
                         if(arr.length == 0) {

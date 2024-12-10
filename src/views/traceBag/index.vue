@@ -116,6 +116,7 @@ export default {
     },
     data() {
         return {
+            bagNumber: "",
             hasBagNumber: false,
             navItem: [
                 { 
@@ -143,11 +144,13 @@ export default {
             this.bag_found = false;
             this.loading = false;
             this.$router.push("/trace-bag");
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         async processBagNumber() {         
             this.bag_number = this.bagNumber.replace(/\//g, '~'); 
             try {
                 await this.$router.push(`/trace-bag/${this.bag_number}`);
+                this.setRoutePageHistory(this.$route.meta, false);
                 this.hasBagNumber = true;
                 await this.getBag();
             } catch (err) {

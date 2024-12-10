@@ -45,6 +45,7 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
+                    this.pagination.page = 1
                     this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.searchByBag, this.filterDateBy);
                 }
             }
@@ -188,6 +189,7 @@ export default {
         actionDetail(val){
             let bag = val.bag_number.replaceAll("/", "-")
             this.$router.push('/bagging-detail/'+bag)
+            this.setRoutePageHistory(this.$route.meta, false);
         },
         actionLimit(val){
             this.pagination.limit = val

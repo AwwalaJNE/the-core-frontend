@@ -38,11 +38,12 @@ export default {
             if(val !== undefined) {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
+                    this.pagination.page = 1
                     this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.querySearch, this.queryDate)
                 }
             }
         },
-        searchDateBy: function(val, old) {
+        queryDate: function(val, old) {
           if(val !== undefined) {
             this.filterDateBy = val
             if(this.filterDateBy !== old) {
@@ -50,10 +51,9 @@ export default {
             }
           }
         },
-        searchBy: function(val, old) {
+        querySearch: function(val, old) {
           if(val !== undefined) {
-            this.searchByBag = val
-            if(this.searchByBag !== old) {
+            if(val !== old) {
                 this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val, this.queryDate);
             }
           }
@@ -182,6 +182,7 @@ export default {
         },
         showData(row) {
           this.$router.push(`/connote-detail/${row.koli_number}`);
+          this.setRoutePageHistory(this.$route.meta, false);
         },
     },
     mounted() {
