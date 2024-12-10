@@ -85,6 +85,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Created",
+                    key: "created_at",
+                    width: "xs"
+                },
+                {
                     label: "ETA",
                     key: "inbound_eta",
                     width: "xs"
