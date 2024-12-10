@@ -180,28 +180,33 @@ export default {
                 {
                     label: "Item Number",
                     key: "item_number",
-                    width: "xs",
+                    width: "sm",
                 },
                 {
-                    label: "Weight (Kg)",
+                    label: "Actual Weight (Kg)",
+                    key: "actual_weight",
+                    width: "sm",
+                },
+                {
+                    label: "Total Weight (Kg)",
                     key: "total_weight",
-                    width: "auto",
+                    width: "sm",
                 },
                 {
                     label: "Destination",
                     key: "destination",
-                    width: "auto",
+                    width: "sm",
                 },
                 {
                     label: "Type",
                     key: "item_type",
-                    width: "auto",
+                    width: "sm",
                 },
                 {
                     label: "Received",
                     key: "received_status",
                     type: "status",
-                    width: "auto",
+                    width: "sm",
                 },
             ],
             customActionList: [
