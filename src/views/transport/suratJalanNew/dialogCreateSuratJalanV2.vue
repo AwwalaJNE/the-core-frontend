@@ -107,6 +107,7 @@
                                         formKey="scanBag"
                                         :valueData="item_number"
                                         :typeInput="`text`"
+                                        :disabled="isDisabled"
                                         @click-icon="handleIconClick"
                                         @updateValue="updateValue"
                                     >
