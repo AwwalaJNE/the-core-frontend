@@ -55,13 +55,21 @@
                                         icon-after
                                         v-uppercase
                                         ref="formInputParentInbound"
+                                        :disabled="hasInboundNumber"
                                         @keyup.enter.native="updateValue('parent_no')"
                                         @click-icon="$refs.cameraScanner.open('formInputParentInbound')"
                                     >
-                                        <template #icon>
+                                        <template #icon v-if="!hasInboundNumber">
                                             <i class="bx bx-barcode-reader"></i>
                                         </template>
                                     </vs-input>
+                                    <template v-if="hasInboundNumber">
+                                        <div style="position:absolute;right:20px; top:15px;">
+                                            <span class="vs-select__chips__chip__close" @click="removeInboundNumber">
+                                                <i class="vs-icon-close vs-icon-hover-less"></i>
+                                            </span>
+                                        </div>
+                                    </template>
                                 </vs-col>
                                 <vs-col xs="12" sm="12" lg="6">
                                     <vs-input 
@@ -178,6 +186,7 @@ export default {
             page: 1,
             parent_no: '',
             child_no: '',
+            hasInboundNumber: false,
         }
     },
     methods: {
@@ -198,14 +207,16 @@ export default {
 
                 case 'parent_no':
                     this.inbound_number = this.parent_no;
+                    this.hasInboundNumber = true;
                     this.refresh();
                     break;
 
                 case 'child_no':
                     this.child_no = this.child_no.replaceAll(/\s+/g, "");
-                    this.form = {
-                        item_no: this.child_no
-                    }
+                    this.form = this.parent_no
+                        ? { item_no: this.child_no, inbound_number: this.parent_no }
+                        : { item_no: this.child_no };
+
                     this.processInbond();
                     this.$refs.formInputChildInbound.$el.querySelector("input").focus();
                     break;
@@ -230,7 +241,10 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
                 this.inbound_number = err?.response?.data?.reference ?? this.inbound_number;
-                this.handleClearTableInfo();
+                
+                if (!this.is_prealert && !this.parent_no) {
+                    this.handleClearTableInfo();
+                }
             } finally {
                 this.closeProgress();
                 this.handlerClearForm();
@@ -239,7 +253,6 @@ export default {
         async getTableData() {
             if (this.inbound_number) {
                 this.loading = true;
-                this.dataTable = []
                 try {
                     const res = await axios.get(`${this.URL.inbound}/${this.inbound_number}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, this.Helper.header());
 
@@ -258,17 +271,14 @@ export default {
                     this.page_size = res.data.meta.last_page
 
                     if (!this.is_prealert) {
-                        this.handlerClearForm();
                         this.$refs.formInputChildInbound.$el.querySelector("input").focus();
                     }
                 } catch (err) {
                     this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
 
                     if (!this.is_prealert) {
-                        this.handlerClearForm();
-                        this.$refs.formInputParentInbound.$el.querySelector("input").focus();
+                        this.removeInboundNumber();
                     }
-                    this.handleClearTableInfo();
                 } finally {
                     this.loading = false;
                 }
@@ -278,15 +288,30 @@ export default {
             this.$router.push('/inbound/prealert')
             this.setRoutePageHistory(this.$route.meta, false);
         },
-        handlerClearForm(){
-            this.item_no = "";
-            this.child_no = "";
-            this.parent_no = "";
+        handlerClearForm() {
+            if (this.is_prealert) {
+                this.item_no = "";
+                this.$refs.formInputInbound.$el.querySelector("input").focus();
+            } else {
+                this.child_no = "";
+                this.$refs.formInputChildInbound.$el.querySelector("input").focus();
+            }
         },
         handleClearTableInfo() {
             this.dataTable = [];
             this.dataTableProp = [];
             this.inbound_number = "";
+        },
+        removeInboundNumber() {
+            this.parent_no = '';
+            this.inbound_number = '';
+            this.hasInboundNumber = false;
+            this.dataTable = [];
+            this.dataTableProp = [];
+
+            this.$nextTick(() => {
+                this.$refs.formInputParentInbound.$el.querySelector("input").focus();
+            });
         },
         onCameraScannerGetData(data) {
             if (data?.event === "result" && data?.data?.text) {
