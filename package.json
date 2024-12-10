@@ -7,7 +7,7 @@
     "Bagus"
   ],
   "engines": {
-    "node": "10.13.0"
+    "node": ">=10.13.0"
   },
   "main": "server.js",
   "description": "Core",
@@ -16,7 +16,6 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "stylelint '**/*.vue' '**/*.scss' --fix scss",
     "build:digitalocean": "npm install --production=false && npm run build && npm ci",
     "test": "cross-env NODE_NO_WARNINGS=1 jest"
   },
@@ -65,7 +64,8 @@
     "jsdom": "^24.1.1",
     "pug-plain-loader": "^1.0.0",
     "sass-loader": "^8.0.0",
-    "stylelint-config-standard": "^18.3.0",
+    "stylelint": "^16.9.0",
+    "stylelint-config-standard": "^36.0.1",
     "stylelint-processor-html": "^1.0.0",
     "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.10"
@@ -96,6 +96,8 @@
     "testMatch": [
       "**/tests/unit/**/*.spec.[jt]s?(x)"
     ],
-    "setupFilesAfterEnv": ["<rootDir>/tests/jest.setup.js"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/jest.setup.js"
+    ]
   }
 }
