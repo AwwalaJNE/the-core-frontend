@@ -129,7 +129,7 @@ export default {
                     width: "xxxs"
                 },
                 {
-                    label: "Created Date",
+                    label: "Connote Created Date",
                     key: "created_at",
                     width: "xs"
                 },
@@ -178,6 +178,11 @@ export default {
                 {
                     label: "SLA",
                     key: "connote_sla_date",
+                    width: "xs"
+                },
+                {
+                    label: "Runsheet Number",
+                    key: "delivery_runsheet_number",
                     width: "xs"
                 },
                 {
