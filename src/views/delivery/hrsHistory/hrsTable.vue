@@ -132,7 +132,7 @@ export default {
                         'Connote Number': [],
                         'Status': [],
                         'Status Delivery': [],
-                        'Payment Type COD': [],
+                        'Payment Type': [],
                         'Amount COD': []
                     };
 
@@ -143,7 +143,7 @@ export default {
                         children['Connote Number'].push(el.connote_number);
                         children['Status'].push(el.status);
                         children['Status Delivery'].push(el.status_delivery);
-                        children['Payment Type COD'].push(el.cod_payment_type ?? '-');
+                        children['Payment Type'].push(el.cod_payment_type ?? 'Non COD');
                         children['Amount COD'].push(el.amount_cod ?? '-');
                     });
 
@@ -154,7 +154,7 @@ export default {
                         'Connote Number': 'auto',
                         'Status': 'auto',
                         'Status Delivery': 'auto',
-                        'Payment Type COD': 'auto',
+                        'Payment Type': 'auto',
                         'Amount COD': 'auto'
                     };
                     item.children = children;
