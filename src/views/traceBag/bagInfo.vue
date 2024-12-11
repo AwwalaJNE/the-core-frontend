@@ -120,11 +120,11 @@ export default {
                     value: 'service' 
                 },
                 { 
-                    label: 'Total Weight', 
+                    label: 'Total Weight (Kg)', 
                     value: 'bag_weight' 
                 },
                 { 
-                    label: 'Actual Weight', 
+                    label: 'Actual Weight (Kg)', 
                     value: 'bag_actual_weight' 
                 }
             ],
