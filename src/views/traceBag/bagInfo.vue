@@ -120,11 +120,11 @@ export default {
                     value: 'service' 
                 },
                 { 
-                    label: 'Total Weight (Kg)', 
+                    label: 'Total Weight', 
                     value: 'bag_weight' 
                 },
                 { 
-                    label: 'Actual Weight (Kg)', 
+                    label: 'Actual Weight', 
                     value: 'bag_actual_weight' 
                 }
             ],
@@ -280,8 +280,8 @@ export default {
                             .map(item => item.service)
                             .filter(service => service !== null)
                             .join(", "),
-                        bag_weight: data.bag_weight,
-                        bag_actual_weight: data.bag_actual_weight
+                        bag_weight: data.bag_weight + " Kg",
+                        bag_actual_weight: data.bag_actual_weight + " Kg"
                     };
                     
                     if (this.isEmptyAddInfo) {
