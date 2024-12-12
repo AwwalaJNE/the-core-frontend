@@ -198,7 +198,7 @@ export default {
                 },
                 {
                     label: "Origin Node Code",
-                    key: "origin_tariff_code",
+                    key: "origin_node_code",
                     width: "auto"
                 },
                 {
@@ -225,16 +225,6 @@ export default {
                     label: "Destination Name",
                     key: "destination_name",
                     width: "auto"
-                },
-                {
-                    label: "Runsheet",
-                    key: "runsheet_count",
-                    width: "xxxxs"
-                },
-                {
-                    label: "Un Runsheet",
-                    key: "un_runsheet_count",
-                    width: "xxxxs"
                 },
                 {
                     label: "Consolidation",
@@ -267,6 +257,16 @@ export default {
                 //     width: "xxxxs",
                 //     tooltip_desc: "Status SM/SJ"
                 // },
+                {
+                    label: "Runsheet",
+                    key: "runsheet_count",
+                    width: "xxxxs"
+                },
+                {
+                    label: "Un Runsheet",
+                    key: "un_runsheet_count",
+                    width: "xxxxs"
+                },
                 {
                     label: "Status Irregularity",
                     key: "status_irregularity_description",

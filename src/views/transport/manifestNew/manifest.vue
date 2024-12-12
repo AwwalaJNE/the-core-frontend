@@ -114,13 +114,13 @@ export default {
                         width: "auto"
                     },
                     {
-                        label: "ETA",
-                        key: "eta",
+                        label: "ETD",
+                        key: "etd",
                         width: "sm"
                     },
                     {
-                        label: "ETD",
-                        key: "etd",
+                        label: "ETA",
+                        key: "eta",
                         width: "sm"
                     },
                     {

@@ -139,6 +139,7 @@ export default {
     },
     methods: {
         removeBagNumber() {
+            this.bagNumber = "";
             this.bag_number = "";
             this.hasBagNumber = false;
             this.bag_found = false;

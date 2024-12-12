@@ -84,6 +84,9 @@
                                         <label class="type">{{ this.getSLAType(sort_info.information.sla_minutes_remains) }}</label>
                                         <br/>
                                         <label class="remaining">{{ sort_info.information.sla_minutes_remains < 0 ? 'OVER BY:' : 'SLA REMAINS:' }} {{ this.convertMinutesToTimeFormat(sort_info.information.sla_minutes_remains) }}</label>
+                                        <br/>
+                                        <br/>
+                                        <label class="service">{{ sort_info.information.service }}</label>
                                     </vs-col>
                                 </vs-row>
 
@@ -463,6 +466,10 @@ export default {
     }
     .remaining {
         font-size: 0.75rem;
+    }
+    .service {
+        font-size: 1.5rem;
+        margin: 0;
     }
 }
 
