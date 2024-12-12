@@ -255,13 +255,18 @@ export default {
                     width: "xxs"
                 },
                 {
-                    label: "Status Code",
+                    label: "Remark Code",
                     key: "status_code",
                     width: "xxs"
                 },
                 {
-                    label: "Status Name",
-                    key: "status_name",
+                  label: "Remark Label",
+                  key: "status_name",
+                  width: "xxs"
+                },
+                {
+                    label: "Date #",
+                    key: "created_at",
                     width: "xxs"
                 },
             ],
