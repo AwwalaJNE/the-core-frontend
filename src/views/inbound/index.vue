@@ -359,7 +359,7 @@ export default {
                 value: 'departed'
               },
               {
-                label: 'Create Date',
+                label: 'Created Date',
                 value: 'created'
               }
             ],

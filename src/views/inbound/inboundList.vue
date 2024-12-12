@@ -92,7 +92,7 @@ export default {
           width: "xs",
         },
         {
-          label: "Create",
+          label: "Created",
           key: "created_at",
           width: "xs",
         },
