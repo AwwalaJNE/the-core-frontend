@@ -92,6 +92,11 @@ export default {
           width: "xs",
         },
         {
+          label: "Create",
+          key: "created_at",
+          width: "xs",
+        },
+        {
           label: "ETD",
           key: "inbound_etd",
           width: "xs",
@@ -362,9 +367,11 @@ export default {
           this.dataTable = res.data.data;
           this.dataTable.map((item) => {
             let im = [];
+            item["created_at"] = this.dateConvert(item["created_at"]);
             item["inbound_eta"] = this.dateConvert(item["inbound_eta"]);
             item["inbound_etd"] = this.dateConvert(item["inbound_etd"]);
             item["departed_at"] = this.dateConvert(item["departed_at"]);
+            item["received_at"] = this.dateConvert(item["received_at"]);
             item["vehicle"] = item["vehicle_type_name"];
             // item['is_prealert'] = isPrealert
             item["inbound_number"] =

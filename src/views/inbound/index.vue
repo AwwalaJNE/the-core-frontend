@@ -357,6 +357,10 @@ export default {
               {
                 label: 'Departed Time',
                 value: 'departed'
+              },
+              {
+                label: 'Create Date',
+                value: 'created'
               }
             ],
             reset: false,
