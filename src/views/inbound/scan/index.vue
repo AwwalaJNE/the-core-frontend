@@ -68,7 +68,7 @@
                                         border 
                                         type="text"
                                         v-model="child_no"
-                                        label-placeholder="Masukkan Item"
+                                        label-placeholder="Master / Bag / Koli"
                                         icon-after
                                         v-uppercase
                                         ref="formInputChildInbound"
