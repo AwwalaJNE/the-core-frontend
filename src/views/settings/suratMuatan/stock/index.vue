@@ -16,6 +16,17 @@
                         </div>
                     </vs-col>
                     <vs-col xs="6" sm="3" lg="2">
+                        <div class="select-surat-muatan-stock">
+                            <selector 
+                                formKey="filter_status"
+                                :valueData="filterStatus"
+                                :selectedValue="filterStatusBy"
+                                :isMultiple="false"
+                                @updateValue="updateValue2" 
+                            />
+                        </div>
+                    </vs-col>
+                    <vs-col xs="6" sm="3" lg="2">
                         <select-search-by 
                             :border="true"
                             :isMultiple="false" 
@@ -169,14 +180,29 @@ export default {
                     value: 'create'
                 }
             ],
-            filterVehicleModeBy: "-",
+            loadingVehicleMode: false,
+            filterVehicleModeBy: "ALL",
             filterVehicleMode: [
                 {
                     label: 'All Mode',
-                    value: '-'
+                    value: 'ALL'
                 },
             ],
-            loadingVehicleMode: false,
+            filterStatusBy: "-",
+            filterStatus: [
+                {
+                    label: 'All Status',
+                    value: '-'
+                },
+                {
+                    label: 'Active',
+                    value: '1'
+                },
+                {
+                    label: 'Inactive',
+                    value: '0'
+                }
+            ],
         }
     },
     computed: {
@@ -220,13 +246,14 @@ export default {
             switch(key) {
                 case "filter_vehicle_mode":
                     this.filterVehicleModeBy = this.filterVehicleMode.find(item => item.value == val)?.value;
+                    this.refresh();
+                    break;
+                case "filter_status":
+                    this.filterStatusBy = this.filterStatus.find(item => item.value == val)?.value;
+                    this.refresh();
                     break;
                 default:
             }
-        },
-        updateFilterVehicleMode(key) {
-            this.filterVehicleModeBy = key;
-            this.refresh()
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
@@ -243,7 +270,7 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.sm_stock}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.sm_stock}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}&vehicle_mode=${this.filterVehicleModeBy}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
