@@ -222,6 +222,9 @@ import InvalidOpeningBag from '@/views/audit/invalidOpeningBag'
 // === Destination Zip Code ===
 import Destination from "@/views/settings/destination"
 
+// === Surat Muatan Settings ===
+import SuratMuatanSettings from "@/views/settings/suratMuatan"
+
 import { resourceLookup } from '@/constants'; 
 
 Vue.use(VueRouter)
@@ -444,6 +447,18 @@ const routes = [
               resource_type: resourceLookup["DESTINATION"].resource_type,
               resource_code: resourceLookup["DESTINATION"].resource_code,
               resource_name: resourceLookup["DESTINATION"].resource_name
+            }
+          },
+          {
+            path: "surat-muatan",
+            name: "SuratMuatanSettings",
+            component: SuratMuatanSettings,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Surat Muatan",
+              resource_type: resourceLookup["SETTINGS_SURAT_MUATAN"].resource_type,
+              resource_code: resourceLookup["SETTINGS_SURAT_MUATAN"].resource_code,
+              resource_name: resourceLookup["SETTINGS_SURAT_MUATAN"].resource_name
             }
           },
           {
