@@ -148,7 +148,7 @@ export default {
             // TODO: CHANGE irregularity_type
             await axios
                 .get(this.URL.irregularities +
-                    `?n=${this.listenNodeId}&irregularity_type=PROBLEM&show_archive=false&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${from}&end_date=${to}&search_by=${searchBy}&filter_date_by=${filterDateBy}`,
+                    `?n=${this.listenNodeId}&show_archive=false&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${from}&end_date=${to}&search_by=${searchBy}&filter_date_by=${filterDateBy}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data

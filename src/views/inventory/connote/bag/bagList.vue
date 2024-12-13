@@ -197,6 +197,16 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Cost Weight",
+                    key: "cost_weight",
+                    width: "auto"
+                },
+                {
+                    label: "Actual Weight",
+                    key: "bag_actual_weight",
+                    width: "auto"
+                },
+                {
                     label: "Origin Node Code",
                     key: "origin_node_code",
                     width: "auto"

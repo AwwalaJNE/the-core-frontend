@@ -133,6 +133,11 @@ export default {
                         key: "status",
                         width: "xs"
                     },
+                    {
+                        label: "Received At",
+                        key: "latest_node_code_receiver",
+                        width: "xs"
+                    },
                 ],
                 loading: false,
                 dataItem: {},

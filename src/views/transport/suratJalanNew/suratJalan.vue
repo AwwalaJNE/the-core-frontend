@@ -155,6 +155,11 @@ export default {
           key: "status",
           width: "xxs",
         },
+        {
+          label: "Received At",
+          key: "latest_node_code_receiver",
+          width: "xxs",
+        },
       ],
       customActionList: [
         {
