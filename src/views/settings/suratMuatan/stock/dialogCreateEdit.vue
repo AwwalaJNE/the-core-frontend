@@ -263,8 +263,6 @@ export default {
             } finally {
                 this.loading = false;
                 this.cancel();
-                this.$emit("handleClearInput");
-                this.$emit("refresh");
             }
         },
         handleSubmit(){
@@ -277,6 +275,8 @@ export default {
             this.vehicle_mode_arr = [];
             this.vehicle_mode = '';
             this.vehicle_id = '';
+            this.$emit("handleClearInput");
+            this.$emit("refresh");
         },
         cancel() {
             this.handleClearForm();
