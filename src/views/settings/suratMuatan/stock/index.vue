@@ -11,7 +11,7 @@
                                 :selectedValue="filterVehicleModeBy"
                                 :isMultiple="false"
                                 :loading="loadingVehicleMode"
-                                @updateValue="updateValue2" 
+                                @updateValue="updateValue" 
                             />
                         </div>
                     </vs-col>
@@ -22,7 +22,7 @@
                                 :valueData="filterStatus"
                                 :selectedValue="filterStatusBy"
                                 :isMultiple="false"
-                                @updateValue="updateValue2" 
+                                @updateValue="updateValue" 
                             />
                         </div>
                     </vs-col>
@@ -37,6 +37,7 @@
                     </vs-col>
                     <vs-col xs="12" sm="6" lg="6">
                         <date-time 
+                            formKey="date_range"
                             :name="''" 
                             :rules="''" 
                             :valueData="dateRange"
@@ -188,7 +189,7 @@ export default {
                     value: 'ALL'
                 },
             ],
-            filterStatusBy: "-",
+            filterStatusBy: "ALL",
             filterStatus: [
                 {
                     label: 'All Status',
@@ -228,21 +229,9 @@ export default {
     },
     methods: {
         refresh(){
-            let from = ''
-            let to = ''
-
-            if(this.dateRange != null && this.dateRange.length > 0) {
-                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
-                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
-            }
-
-            this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, from, to, this.searchBy)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.dateRange[0], this.dateRange[1], this.searchBy)
         },
-        updateValue(key, val) {
-            this.dateRange = val
-            this.refresh()
-        },
-        updateValue2(key, val, info){
+        updateValue(key, val, info){
             switch(key) {
                 case "filter_vehicle_mode":
                     this.filterVehicleModeBy = this.filterVehicleMode.find(item => item.value == val)?.value;
@@ -252,15 +241,18 @@ export default {
                     this.filterStatusBy = this.filterStatus.find(item => item.value == val)?.value;
                     this.refresh();
                     break;
+                case "date_range":
+                    this.dateRange = val
+                    this.startDate = this.dateRange[0];
+                    this.endDate = this.dateRange[1];
+                    this.refresh()
+                    break;
                 default:
             }
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
-
-            if (this.dateRange.length !== 0) {
-                this.dateRange = [];
-            }
+            this.refresh();
         },
         async getTableData(limit, page, q, from, to, searchBy) {
             this.loading = true
