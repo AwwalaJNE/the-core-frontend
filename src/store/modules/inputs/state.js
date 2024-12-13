@@ -2538,9 +2538,8 @@ export default {
       label: "Surat Muatan",
       key: "no_sm",
       rule: "required",
-      typeInput: "select",
+      typeInput: "text",
       typeData: "String",
-      arrData: [],
       valueData: null,
       value: ''
     },

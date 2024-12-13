@@ -172,7 +172,7 @@ export default {
             filterVehicleModeBy: "-",
             filterVehicleMode: [
                 {
-                    label: 'ALL MODE',
+                    label: 'All Mode',
                     value: '-'
                 },
             ],
