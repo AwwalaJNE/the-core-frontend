@@ -4286,4 +4286,60 @@ export default {
 
 
   //====== END DESTINATION SORTING LOV ======//
+
+
+
+  //====== SURAT MUATAN STOCK ======//
+
+  SET_SURAT_MUATAN_STOCK_VEHICLE_ID(state, payload) {
+    state.surat_muatan_stock.vehicle_id.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ValueData(state, payload) {
+    state.surat_muatan_stock.vehicle_id.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ArrData(state, payload) {
+    state.surat_muatan_stock.vehicle_id.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.vehicle_id.arrData = payload :
+    state.surat_muatan_stock.vehicle_id.arrData = []
+  },
+  
+  
+  SET_SURAT_MUATAN_STOCK_NO_SM(state, payload) {
+    state.surat_muatan_stock.no_sm.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_NO_SM_ValueData(state, payload) {
+    state.surat_muatan_stock.no_sm.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_NO_SM_ArrData(state, payload) {
+    state.surat_muatan_stock.no_sm.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.no_sm.arrData = payload :
+    state.surat_muatan_stock.no_sm.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_ETA(state, payload) {
+    state.surat_muatan_stock.eta.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETA_ValueData(state, payload) {
+    state.surat_muatan_stock.eta.valueData = payload
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_ETD(state, payload) {
+    state.surat_muatan_stock.etd.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_ValueData(state, payload) {
+    state.surat_muatan_stock.etd.valueData = payload
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_IS_ACTIVE(state, payload) {
+    state.surat_muatan_stock.is_active.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_IS_ACTIVE_ValueData(state, payload) {
+    state.surat_muatan_stock.is_active.valueData = payload
+  },
+
+
+  //====== END SURAT MUATAN STOCK ======//
 }
