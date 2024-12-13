@@ -131,6 +131,10 @@ export default {
                     value: 'user_login'
                 },
                 {
+                    label: 'Origin',
+                    value: 'origin'
+                },
+                {
                     label: 'Node Name',
                     value: 'node_name'
                 },
@@ -179,6 +183,11 @@ export default {
                 {
                     label: "Process",
                     key: "process",
+                    width: "xs"
+                },
+                {
+                    label: "Origin",
+                    key: "origin",
                     width: "xs"
                 },
                 {
