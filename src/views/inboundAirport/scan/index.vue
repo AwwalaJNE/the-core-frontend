@@ -301,8 +301,6 @@ export default {
           this.handlerClearForm()
         },
         async processInbound() {
-          console.log(this.form);
-          // return
           this.openProgress(null, "Processing", `${this?.form?.item_no ?? 'Item' } is in process`);
           try {
               const res = await axios
