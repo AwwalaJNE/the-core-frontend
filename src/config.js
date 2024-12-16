@@ -344,5 +344,17 @@ export default {
     inbound_staging_bulk: api + 'inbound-staging/bulk',
 
     // Sorting Item History
-    sorting_item_history: api + 'sorting-item-history'
+    sorting_item_history: api + 'sorting-item-history',
+
+    // Setting Surat Muatan Stock
+    sm_stock: api + 'sm-stock',
+
+    // Vehicle Mode V2
+    vehicle_mode_list_v2: api + 'vehicle/mode/list',
+
+    // Vehicle Id V2
+    vehicle_list_v2: api + 'vehicle/list',
+
+    // List SM 
+    list_sm: api + 'list/sm-number',
 }

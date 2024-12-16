@@ -908,6 +908,17 @@ export default {
               },
             },
             {
+              label: "Settings Surat Muatan",
+              url: "/settings/surat-muatan",
+              icon: "bx bxs-checkbox",
+              permission: "", // TODO: Change after permission ready
+              meta: {
+                resource_type: resourceLookup["SETTINGS_SURAT_MUATAN"].resource_type,
+                resource_code: resourceLookup["SETTINGS_SURAT_MUATAN"].resource_code,
+                resource_name: resourceLookup["SETTINGS_SURAT_MUATAN"].resource_name
+              },
+            },
+            {
               label: "Settings Runsheet",
               url: "/settings/runsheet",
               icon: "bx bxs-checkbox",

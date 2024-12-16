@@ -237,10 +237,10 @@ export default {
 
                 this.openNotification('success', null, "Success", res?.data?.message ?? "Receiving success");
                 this.inbound_number = res?.data?.data?.inbound_number ?? this.inbound_number;
+                this.hasInboundNumber = true;
                 let prealert = ['SM', 'SJ', 'PICKUP'];
                 if (prealert.includes(res?.data?.data?.inbound_type)) {
                     this.parent_no = this.inbound_number;
-                    this.hasInboundNumber = true;
                 }
                 this.refresh();
             } catch (err) {

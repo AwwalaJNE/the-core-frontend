@@ -43,7 +43,7 @@
                 </div>
               </template>
             </vs-col>
-            <vs-col xs="12" sm="3" lg="3">
+            <vs-col xs="12" sm="3" lg="6">
               <template  v-if="this.regional !== 'all_routing'">
                 <div class="center in-get-bag">
                  <vs-col lg="12">

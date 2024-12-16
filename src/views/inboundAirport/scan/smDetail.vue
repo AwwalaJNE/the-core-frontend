@@ -46,11 +46,6 @@ export default {
                     width: "xxxxs"
                 },
                 {
-                    label: "Item type",
-                    key: "item_type",
-                    width: "xxs"
-                },
-                {
                   label: "Status receiving",
                   key: "is_received",
                   type: 'status',
