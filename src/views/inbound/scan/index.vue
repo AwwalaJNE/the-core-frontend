@@ -76,7 +76,7 @@
                                         border 
                                         type="text"
                                         v-model="child_no"
-                                        label-placeholder="Master / Bag / Koli"
+                                        label-placeholder="Master Bag / Bag / Koli"
                                         icon-after
                                         v-uppercase
                                         ref="formInputChildInbound"
