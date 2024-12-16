@@ -257,9 +257,10 @@ export default {
           this.getSmDetails()
         },
         removeSmNumber() {
-          this.sm_no = "";
+          this.sm_no = '';
+          this.form.sm_number = ''
           this.isSmFilled = false
-                    this.itemDataTable = []
+          this.itemDataTable = []
           this.itemDataTableProp = []
 
           this.$nextTick(() => {
@@ -300,6 +301,8 @@ export default {
           this.handlerClearForm()
         },
         async processInbound() {
+          console.log(this.form);
+          // return
           this.openProgress(null, "Processing", `${this?.form?.item_no ?? 'Item' } is in process`);
           try {
               const res = await axios
