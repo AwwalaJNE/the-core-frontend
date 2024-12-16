@@ -41,7 +41,7 @@
                                 </template>
                             </vs-col>
                             <vs-col>
-                                <vs-button type="submit">Search</vs-button>
+                                <vs-button type="submit" :disabled="hasBagNumber">Search</vs-button>
                             </vs-col>
                         </form>
                     </div>
