@@ -99,12 +99,13 @@ export default {
             bag_additional_info: {},
             current_node_id: '',
             current_node_name: '',
+            current_node_code: '',
             data: this.dataItem || {},
             loading: false,
             isEmptyAddInfo: false,
             mainInfo: [
                 { 
-                    label: 'Current Location', 
+                    label: 'Current Locations',
                     value: 'current_location' 
                 },
                 { 
@@ -158,6 +159,10 @@ export default {
                 { 
                     label: 'With Courier', 
                     value: 'with_courier' 
+                },
+                {
+                    label: 'Received At',
+                    value: 'current_location_node_code'
                 },
                 { 
                     label: 'Irregularity Status', 
@@ -237,7 +242,8 @@ export default {
                             surat_jalan: item.sj?.[0]?.manifest_do_number || '-',
                             with_courier: item.courier?.employee_name || '-',
                             irregularity_status_description: item.irregularity_status_description || '-',
-                            bag_type: item.tipe_bag || "-"
+                            bag_type: item.tipe_bag || "-",
+                            current_location_node_code: this.current_node_code || '-'
                         };
                     } else {
                         this.bag_additional_info = {}; 
@@ -267,7 +273,8 @@ export default {
                 
                 if (data) {            
                     this.current_node_id = data.current_node_id;        
-                    const currentLocationNode = await this.getNodeById(parseInt(this.current_node_id)); 
+                    const currentLocationNode = await this.getNodeById(parseInt(this.current_node_id));
+                    this.current_node_code = currentLocationNode?.node_code;
 
                     await this.getBag();
 
@@ -293,7 +300,8 @@ export default {
                             surat_jalan: '-',
                             with_courier: data.employee_code || '-',
                             irregularity_status_description: data.irregularity_status_description || '-',
-                            bag_type: data.tipe_bag || "-"
+                            bag_type: data.tipe_bag || "-",
+                            current_location_node_code: this.current_node_code || '-'
                         };
                     }
                 }
