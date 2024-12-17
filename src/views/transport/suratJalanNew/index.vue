@@ -162,15 +162,15 @@ export default {
             dialogSuratJalan: false,
             title: "Surat Jalan",
             tempSearch: "",            
-            searchPlaceholder: "Search Manifest DO Number",
+            searchPlaceholder: "Search Surat Jalan",
             searchBy:"manifest do number",
             searchParams: [
                 {
-                    label: 'Manifest DO Number',
+                    label: 'Surat Jalan',
                     value: 'manifest do number'
                 },
                 {
-                    label: 'DO Number',
+                    label: 'Orion Number',
                     value: 'do_number'
                 },
                 {
