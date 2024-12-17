@@ -109,13 +109,13 @@ export default {
                     key: "status",
                     width: "auto"
                 },
-                // {
-                //     label: "Received At",
-                //     key: "inbound_node_name_receiver",
-                //     width: "auto"
-                // },
                 {
-                    label: "Received Time",
+                    label: "Received At",
+                    key: "inbound_node_name_receiver",
+                    width: "auto"
+                },
+                {
+                    label: "Received Times",
                     key: "received_at",
                     width: "auto"
                 },
