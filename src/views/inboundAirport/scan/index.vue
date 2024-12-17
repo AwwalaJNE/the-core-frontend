@@ -257,9 +257,10 @@ export default {
           this.getSmDetails()
         },
         removeSmNumber() {
-          this.sm_no = "";
+          this.sm_no = '';
+          this.form.sm_number = ''
           this.isSmFilled = false
-                    this.itemDataTable = []
+          this.itemDataTable = []
           this.itemDataTableProp = []
 
           this.$nextTick(() => {
