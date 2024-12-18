@@ -65,7 +65,14 @@
           <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
             Auto Open Bag
           </vs-checkbox>
-          <vs-checkbox style="margin-left: 20px;" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery">
+          <!-- Validate hub delivery -->
+           <!-- Enabled -->
+          <vs-checkbox v-if="!disable_hub_delivery" style="margin-left: 20px;" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery">
+            Validate Hub Delivery
+          </vs-checkbox>
+
+          <!-- Disabled -->
+          <vs-checkbox v-if="disable_hub_delivery" style="margin-left: 20px;" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery" disabled>
             Validate Hub Delivery
           </vs-checkbox>
         </vs-row>
@@ -356,7 +363,8 @@ export default {
       is_approve: false,
       is_actual_weight_mandatory: false,
       is_auto_open_bag: this.$store.getters.getInputs.bag_is_auto_open_bag.bag_is_auto_open_bag.value,
-      is_hub_delivery_validation: this.$store.getters.getInputs.is_hub_delivery_validation.is_hub_delivery_validation.value
+      is_hub_delivery_validation: this.$store.getters.getInputs.is_hub_delivery_validation.value,
+      disable_hub_delivery: false
     }
   },
   computed: {
@@ -415,6 +423,10 @@ export default {
       this.is_masterbag = data.data.is_consolidated === "1" ? true : false
       if (data.data.is_consolidated === "1") {
         this.radio_option = "bag"
+      }
+
+      if (this.is_pra_runsheet) {
+        this.disable_hub_delivery = true
       }
 
       this.isAllowed = data.status.is_allowed
@@ -703,6 +715,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.$store.getters.getInputs)
     this.getBagIdParam()
     this.getIsPraRunsheet()
     this.setInputFocus()
