@@ -204,6 +204,14 @@ export default {
             this.is_disabled = false
             this.disable_auto_open_bag = false
             this.disable_hub_delivery = false
+
+            this.service = ["ALL_SERVICE"]
+            this.$nextTick(() => {
+              if (this.$refs.service) {
+                this.$refs.service.$emit('updateValue', ["ALL_SERVICE"])
+              }
+            })
+            
             break;
           case "masterbag":
             this.title = 'Create Masterbag'
