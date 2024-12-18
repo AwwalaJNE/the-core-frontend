@@ -86,7 +86,7 @@ export default {
       dialogSuratJalan: false,
       datacolumn: [
         {
-          label: "Surat Jalan #",
+          label: "Surat Jalan",
           key: "manifest_do_number",
           width: "xs",
         },
@@ -106,7 +106,7 @@ export default {
           width: "xs",
         },
         {
-          label: "Mode#",
+          label: "Mode",
           key: "vehicle_mode_name",
           width: "auto",
         },
@@ -121,7 +121,7 @@ export default {
           width: "sm",
         },
         {
-          label: "Kg",
+          label: "Weight (Kg)",
           key: "total_weight",
           width: "auto",
         },
@@ -156,9 +156,9 @@ export default {
           width: "xxs",
         },
         {
-          label: "Received At",
+          label: "Latest Node Receiver",
           key: "latest_node_code_receiver",
-          width: "xxs",
+          width: "xs",
         },
       ],
       customActionList: [
