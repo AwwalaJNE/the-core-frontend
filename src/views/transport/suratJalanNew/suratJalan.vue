@@ -302,6 +302,13 @@ export default {
             item["orion_number"] = item.mts || item.do || "";
             item["approved"] = item.is_approve === 1 ? "YES" : "NO";
 
+            if (item.manifest_do_number?.startsWith("SJA") || item.manifest_do_number?.startsWith("BM")) {
+              item['orion_number'] = 'SYSTEM'
+              item['vehicle_type_name'] = 'SYSTEM'
+              item['driver_name'] = 'SYSTEM',
+              item['vehicle_mode_name'] = 'SYSTEM'
+            }
+
             if (item.hasOwnProperty("status") && item["status"] !== null) {
               let str = item["status"].toLowerCase();
               if (item.is_approve === 1) {
