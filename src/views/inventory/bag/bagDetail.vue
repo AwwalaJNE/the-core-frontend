@@ -435,15 +435,12 @@ export default {
       
       // this.DataNode
       // this.selected_data_node
-      if(bag_des != null) {
-        let obj = {}
-        obj["label"] = bag_des
-        obj["value"] = bag_des
-        this.DataNode.push(obj)
-        
-        this.selected_data_node = bag_des
+      if (bag_des != null) {
+        this.DataNode = [{ label: bag_des, value: bag_des }];
+        this.selected_data_node = bag_des;
       } else {
-        this.selected_data_node = "all"
+        this.DataNode = []
+        this.selected_data_node = "all";
       }
       
       
