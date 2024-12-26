@@ -94,6 +94,8 @@
                                 typeForm="connote_forward"
                                 :dataItem="dataItem"
                                 :isDisabled="!!crisscross_number"
+                                :querySearch="querySearch"
+                                @onChangeCustom="onChangeCustom"
                             />
                         </div>
                     </vs-col>
@@ -388,7 +390,37 @@ export default {
         cancel() {
             this.handleClearForm();
             this.closeDialog();
+        },
+        async querySearch(queryString, cb){
+
+          try {
+            const response = await axios.get(`${this.URL.geolocation_search}?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header());
+            let data = response.data.data;
+            let suggestions = [];
+            data.length > 0 && data.map(item => {
+              suggestions.push({
+                value: item.geolocation_location_name,
+                data: item
+              });
+            });
+            cb(suggestions);
+          } catch (_) {}
+        },
+      onChangeCustom(type, val, obj) {
+        switch (type) {
+          case "connote_shipper_administrative_address":
+            this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS", obj?.data?.geolocation_location_name);
+            this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE", obj?.data?.geolocation_subdistrict_zip_code);
+            this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE", obj?.data?.geolocation_subdistrict_tarif_code);
+            break;
+          case "connote_receiver_administrative_address":
+            this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS", obj?.data?.geolocation_location_name);
+            this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE", obj?.data?.geolocation_subdistrict_zip_code);
+            this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE", obj?.data?.geolocation_subdistrict_tarif_code);
+            break;
+          default:
         }
+      },
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)
