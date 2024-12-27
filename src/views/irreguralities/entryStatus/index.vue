@@ -246,10 +246,10 @@ export default {
             dialogEntryStatusActive: false,
             searchBy: "koli_number",
             filterDateBy: "create",
-            searchPlaceholder: "Search Koli Number",
+            searchPlaceholder: "Search Connote Number",
             searchParams: [
                 {
-                    label: 'Koli number',
+                    label: 'Connote number',
                     value: 'koli_number'
                 },
                 {

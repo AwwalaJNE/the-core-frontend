@@ -146,7 +146,7 @@ export default {
             searchPlaceholder: "Search Koli",
             searchParams: [
                 {
-                    label: "Koli Number",
+                    label: "Connote Number",
                     value: "koli_number",
 
                 },
@@ -174,7 +174,7 @@ export default {
             searchPlaceholderBag: "Search Koli",
             searchParamsBag: [
                 {
-                    label: "Koli Number",
+                    label: "Connote Number",
                     value: "koli_number",
 
                 },

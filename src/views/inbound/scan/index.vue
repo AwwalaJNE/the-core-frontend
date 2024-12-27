@@ -24,7 +24,7 @@
                                                     border 
                                                     type="text"
                                                     v-model="item_no"
-                                                    label-placeholder="Masukkan code BAG / Koli"
+                                                    label-placeholder="Masukkan code BAG / Connote"
                                                     autofocus
                                                     icon-after
                                                     v-uppercase
@@ -76,7 +76,7 @@
                                         border 
                                         type="text"
                                         v-model="child_no"
-                                        label-placeholder="Master Bag / Bag / Koli"
+                                        label-placeholder="Master Bag / Bag / Connote"
                                         icon-after
                                         v-uppercase
                                         ref="formInputChildInbound"
