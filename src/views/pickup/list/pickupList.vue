@@ -163,7 +163,7 @@ export default {
                   width: "auto"
                 },
                 {
-                  label: "Koli",
+                  label: "Connote",
                   key: "total_koli",
                   width: "auto"
                 },
@@ -173,7 +173,7 @@ export default {
                   width: "auto"
                 },
                 {
-                  label: "Koli Picked",
+                  label: "Connote Picked",
                   key: "total_picked_koli",
                   width: "auto"
                 },

@@ -99,12 +99,12 @@ export default {
                         width: "sm"
                     },
                     {
-                        label: "Bag",
+                        label: "Bag/Masterbag",
                         key: "detail_count",
                         width: "auto"
                     },
                     {
-                        label: "Koli",
+                        label: "Connote",
                         key: "koli_count",
                         width: "auto"
                     },

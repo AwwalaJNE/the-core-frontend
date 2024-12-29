@@ -63,7 +63,7 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Total Koli",
+                    label: "Total Connote",
                     key: "total_koli",
                     width: "xs"
                 },
