@@ -65,7 +65,7 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Bag/Masterbag",
+                    label: "Item",
                     key: "inbound_total_bag",
                     width: "auto"
                 },

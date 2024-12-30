@@ -99,7 +99,7 @@ export default {
                         width: "sm"
                     },
                     {
-                        label: "Bag/Masterbag",
+                        label: "Item",
                         key: "detail_count",
                         width: "auto"
                     },
