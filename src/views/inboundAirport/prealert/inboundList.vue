@@ -65,12 +65,12 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Bag",
+                    label: "Bag/Masterbag",
                     key: "inbound_total_bag",
                     width: "auto"
                 },
                 {
-                    label: "Koli",
+                    label: "Connote",
                     key: "inbound_total_koli",
                     width: "auto"
                 },
