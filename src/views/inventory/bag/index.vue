@@ -219,7 +219,8 @@ export default {
             this.is_disabled = false
             this.is_auto_open_bag = false
             this.disable_auto_open_bag = true
-            this.disable_hub_delivery = false
+            this.is_hub_delivery_validation = false
+            this.disable_hub_delivery = true
             break;
           case "pra runsheet":
             this.title = 'Create Bag Prarunsheet'

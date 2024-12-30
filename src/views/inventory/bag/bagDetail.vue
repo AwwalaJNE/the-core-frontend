@@ -425,7 +425,7 @@ export default {
         this.radio_option = "bag"
       }
 
-      if (this.is_pra_runsheet) {
+      if (this.is_pra_runsheet || this.is_masterbag) {
         this.disable_hub_delivery = true
       }
 
