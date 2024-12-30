@@ -191,11 +191,11 @@ export default {
                     key: "bag_detail_qty",
                     width: "auto"
                 },
-                {
-                    label: "Weight (Kg)",
-                    key: "bag_weight",
-                    width: "auto"
-                },
+                // {
+                //     label: "Weight (Kg)",
+                //     key: "bag_weight",
+                //     width: "auto"
+                // },
                 {
                     label: "Cost Weight",
                     key: "cost_weight",
