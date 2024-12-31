@@ -114,6 +114,27 @@
                                     </vs-col>
                                 </vs-row>
                             </template>
+                            <template v-else-if="navActive === 'sla-bag'">
+                                <vs-row>
+                                    <vs-col vs-align="center" w="6">
+                                        <select-search-by
+                                            :isMultiple="false"
+                                            :border="true"
+                                            :valueData="searchSlaBagParams"
+                                            :selectedValue="searchSlaBagBy"
+                                            @updateSearchBy="updateSearchBy"
+                                        />
+                                    </vs-col>
+                                    <vs-col vs-align="center" w="6">
+                                        <search-input 
+                                            ref="searchInput" 
+                                            @searchValue="searchValue" 
+                                            :placeholder="searchSlaBagPlaceholder" 
+                                            class="search-input"
+                                        />
+                                    </vs-col>
+                                </vs-row>
+                            </template>
                         </vs-col>
                     </vs-row>
                 </div>
@@ -135,6 +156,11 @@
                 <template v-else-if="navActive === 'sla-node-to-node-b'">
                     <transition name="slide-fade">
                         <sla-node-to-node-b :ref="navActive" :query="tempSearch" :searchBy="searchSlaNodeToNodeBBy"/>
+                    </transition>
+                </template>
+                <template v-else-if="navActive === 'sla-bag'">
+                    <transition name="slide-fade">
+                        <sla-bag :ref="navActive" :query="tempSearch" :searchBy="searchSlaBagBy"></sla-bag>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'upload-sla'">
@@ -168,6 +194,12 @@
             :closeDialog="closeDialog"
             title="Create SLA Node To Node B"
         />
+        <dialog-create-edit-sla-bag
+            :active="dialogSlaBag" 
+            @refresh="refresh"
+            :closeDialog="closeDialog"
+            title="Create SLA Bag"
+        />
     </div>
 </template>
 <script>
@@ -180,10 +212,12 @@ import SlaKoli from "@/views/settings/sla/slaKoli/index"
 import SlaInterActivity from "@/views/settings/sla/slaInterActivity/index"
 import SlaNodeToNodeA from "@/views/settings/sla/slaNodeToNodeA/index"
 import SlaNodeToNodeB from "@/views/settings/sla/slaNodeToNodeB/index"
+import SlaBag from "@/views/settings/sla/slaBag/index"
 import DialogCreateEditSlaKoli from "@/views/settings/sla/slaKoli/dialogCreateEditSla"
 import DialogCreateEditSlaInterActivity from "@/views/settings/sla/slaInterActivity/dialogCreateEditSla"
 import DialogCreateEditSlaNodeToNodeA from "@/views/settings/sla/slaNodeToNodeA/dialogCreateEditSla"
 import DialogCreateEditSlaNodeToNodeB from "@/views/settings/sla/slaNodeToNodeB/dialogCreateEditSla"
+import DialogCreateEditSlaBag from "./slaBag/dialogCreateEditSla.vue"
 import UploadSla from "@/views/settings/sla/uploadSla/index"
 
 export default {
@@ -196,10 +230,12 @@ export default {
         "sla-inter-activity": SlaInterActivity,
         "sla-node-to-node-a": SlaNodeToNodeA,
         "sla-node-to-node-b": SlaNodeToNodeB,
+        "sla-bag": SlaBag,
         "dialog-create-edit-sla-koli": DialogCreateEditSlaKoli,
         "dialog-create-edit-sla-inter-activity": DialogCreateEditSlaInterActivity,
         "dialog-create-edit-sla-node-to-node-a": DialogCreateEditSlaNodeToNodeA,
         "dialog-create-edit-sla-node-to-node-b": DialogCreateEditSlaNodeToNodeB,
+        "dialog-create-edit-sla-bag": DialogCreateEditSlaBag,
         "select-search-by": SelectSearchBy,
         "upload-sla": UploadSla
     },
@@ -227,6 +263,11 @@ export default {
                     title: "SLA NODE TO NODE B"
                 },
                 {
+                    label: "SLA BAG",
+                    key: "sla-bag",
+                    title: "SLA BAG"
+                },
+                {
                     label: "UPLOAD SLA",
                     key: "upload-sla",
                     title: "UPLOAD SLA"
@@ -240,6 +281,7 @@ export default {
             dialogSlaInterActivity: false,
             dialogSlaNodeToNodeA: false,
             dialogSlaNodeToNodeB: false,
+            dialogSlaBag: false,
             searchSlaKoliPlaceholder: "Search Group Name",
             searchSlaKoliBy: "group_name",
             searchSlaKoliParams: [
@@ -372,6 +414,22 @@ export default {
                     value: "sla"
                 },
             ],
+            searchSlaBagPlaceholder: "Search Group Name",
+            searchSlaBagBy: "group_name",
+            searchSlaBagParams: [
+                {
+                    label: "Group Name",
+                    value: "group_name"
+                },
+                {
+                    label: "Bag Type",
+                    value: "bag_type"
+                },
+                {
+                    label: "SLA Type",
+                    value: "sla_type"
+                },
+            ],
         }
     },
     methods: {
@@ -408,6 +466,9 @@ export default {
                 case "sla-node-to-node-b":
                     this.dialogSlaNodeToNodeB = true
                     break;
+                case "sla-bag":
+                    this.dialogSlaBag = true
+                    break;
                 default:
             }
             this.refreshInject = this.navActive
@@ -425,6 +486,9 @@ export default {
                     break;
                 case "sla-node-to-node-b":
                     this.dialogSlaNodeToNodeB = false
+                    break;
+                case "sla-bag":
+                    this.dialogSlaBag = false
                     break;
                 default:
             }
@@ -446,6 +510,10 @@ export default {
                 case "sla-node-to-node-b":
                     this.searchSlaNodeToNodeBBy = val;
                     this.searchSlaNodeToNodeBPlaceholder = key;
+                    break;
+                case "sla-bag":
+                    this.searchSlaBagBy = val;
+                    this.searchSlaBagPlaceholder = key;
                     break;
                 default:
             }
