@@ -135,7 +135,7 @@ export default {
                     },
                     {
                         label: "Received At",
-                        key: "latest_node_code_receiver",
+                        key: "latest_node_name_receiver",
                         width: "xs"
                     },
                 ],
