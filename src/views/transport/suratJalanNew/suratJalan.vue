@@ -121,8 +121,13 @@ export default {
           width: "sm",
         },
         {
-          label: "Weight (Kg)",
-          key: "total_weight",
+          label: "Cost Weight(Kg)",
+          key: "cost_weight",
+          width: "auto",
+        },
+        {
+          label: "Actual Weight(Kg)",
+          key: "actual_weight",
           width: "auto",
         },
         {
