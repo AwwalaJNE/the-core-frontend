@@ -135,7 +135,7 @@ export default {
                     },
                     {
                         label: "Received At",
-                        key: "latest_node_name_receiver",
+                        key: "latest_node_receiver",
                         width: "xs"
                     },
                 ],
@@ -205,7 +205,10 @@ export default {
                         etd: this.dateConvert(item.etd),
                         created_at: this.dateConvert(item.created_at),
                         approved: item.is_approve === 1 ? 'YES' : 'NO',
-                        isDisabled: item.is_orion == "1" || !item.status?.toLowerCase().includes('ready')
+                        isDisabled: item.is_orion == "1" || !item.status?.toLowerCase().includes('ready'),
+                        latest_node_receiver: item.latest_node_name_receiver && item.latest_node_code_receiver
+                                            ? `${item.latest_node_name_receiver} (${item.latest_node_code_receiver})`
+                                            : '-'
                     }));
 
                     this.dataTable = arr;
