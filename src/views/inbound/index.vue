@@ -323,7 +323,7 @@ export default {
 
               },
               {
-                label: "Quantity Koli",
+                label: "Quantity Connote",
                 value: "inbound_total_koli",
                 isNumeric: true,
               },

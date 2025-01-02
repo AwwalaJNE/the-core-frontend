@@ -191,11 +191,11 @@ export default {
                     key: "bag_detail_qty",
                     width: "auto"
                 },
-                {
-                    label: "Weight (Kg)",
-                    key: "bag_weight",
-                    width: "auto"
-                },
+                // {
+                //     label: "Weight (Kg)",
+                //     key: "bag_weight",
+                //     width: "auto"
+                // },
                 {
                     label: "Cost Weight",
                     key: "cost_weight",
@@ -383,7 +383,8 @@ export default {
                             })
                         }
 
-                        el.surat_muatan = el.surat_muatan.join(", ")
+                        // el.surat_muatan = el.surat_muatan.join(", ")
+                        el.surat_muatan = el.manifest_numbers
                         el.surat_jalan = el.surat_jalan.join(", ")
                         el.with_courier = el.courier ? el.courier.employee_name : ""
                         el.approved = el.is_approve === 1 ? "Yes" : "No"

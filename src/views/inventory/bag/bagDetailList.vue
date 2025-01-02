@@ -230,7 +230,7 @@ export default {
         getSummaryBag(val){
           this.bag_number = val.data.data.bag_number
           this.bag_detail_qty = val.data.data.bag_detail_qty
-          this.total_connote = val.data.detail.length
+          this.total_connote = val.data.total_item_connote
           this.total_weight = val.data.data.bag_weight
           this.actual_weight = val.data.data.bag_actual_weight
           this.bag_destination = val?.data?.data?.destination?.node_code ?? ''

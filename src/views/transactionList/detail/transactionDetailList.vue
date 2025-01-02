@@ -60,7 +60,7 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Koli",
+                    label: "Connote",
                     key: "koli_qty",
                     width: "auto"
                 },
