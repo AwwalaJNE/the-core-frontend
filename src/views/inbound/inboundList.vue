@@ -38,7 +38,7 @@ export default {
     },
     filterDateBy: String,
     isReset: Boolean,
-    created: Function
+    updateLocalStorage: Function
   },
   components: {
     "table-master": TableMaster,
@@ -130,18 +130,18 @@ export default {
       ],
       loading: false,
       dataItem: {},
-      tempSearch: "",
-      tempDate: [],
-      nodeOrigin: "",
-      node_type: "",
+      tempSearch: this.query || '',
+      tempDate: this.dateFilter || [],
+      nodeOrigin: this.origin || '',
+      node_type: this.nodeType || '',
       dialogTariff: false,
       pagination: {
         limit: 20,
         page_size: 1,
         page: 1,
       },
-      statusReceived: "",
-      prealertFilter: "",
+      statusReceived: this.received || '',
+      prealertFilter: this.prealert || '',
     };
   },
   watch: {
@@ -257,6 +257,7 @@ export default {
         if (this.tempDate !== old) {
           this.startDate = this.tempDate !== null ? this.tempDate[0] : "";
           this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
+          this.$emit("updateLocalStorage")
         }
         if (!this.isReset) {
           this.getTableData(
@@ -474,6 +475,18 @@ export default {
   },
   mounted() {
     this.refresh();
+    this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.nodeOrigin,
+            this.node_type,
+            this.statusReceived,
+            this.prealertFilter,
+            this.tempDate[0],
+            this.tempDate[1],
+            this.searchBy,
+            this.filterDateBy);
   },
 };
 </script>
