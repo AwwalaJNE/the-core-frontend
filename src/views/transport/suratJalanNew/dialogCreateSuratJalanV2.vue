@@ -188,8 +188,8 @@ export default {
                     width: "sm",
                 },
                 {
-                    label: "Total Weight (Kg)",
-                    key: "total_weight",
+                    label: "Cost Weight (Kg)",
+                    key: "cost_weight",
                     width: "sm",
                 },
                 {

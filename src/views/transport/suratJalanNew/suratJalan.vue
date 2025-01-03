@@ -122,12 +122,12 @@ export default {
         },
         {
           label: "Cost Weight(Kg)",
-          key: "cost_weight",
+          key: "total_cost_weight",
           width: "auto",
         },
         {
           label: "Actual Weight(Kg)",
-          key: "actual_weight",
+          key: "total_actual_weight",
           width: "auto",
         },
         {
