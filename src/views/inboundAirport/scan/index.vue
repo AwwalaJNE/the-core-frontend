@@ -282,7 +282,15 @@ export default {
                     }));
 
                     this.itemDataTable = arr;
-                    this.itemDataTableProp = res.data.detail
+                    let detail = res.data.detail
+                    detail.map(item => {
+                      if (item.is_masterbag === '1') {
+                        item.item_type = 'MASTERBAG';
+                      } else {
+                        item.item_type = 'BAG';
+                      }
+                    })
+                    this.itemDataTableProp = detail
 
                     this.$nextTick(() => {
                       this.$refs.formInputInbound.$el.querySelector("input").focus();

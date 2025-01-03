@@ -288,7 +288,6 @@ export default {
             if (val?.detail) {
                 let arr = [];
 
-                console.log('DETAIL = ', val.detail)
                 val.detail.forEach(data => {
                     data.received_status = data.received_at ? 1 : 0;
                     
@@ -300,6 +299,11 @@ export default {
                         data.actual_weight = data.bag?.bag_actual_weight || '0';
                         data.total_inner = data.bag_detail_count || '0';
                         data.destination_name = data.bag?.destination?.node_tariff_code || '';
+                        if (data.is_masterbag === '1') {
+                            data.item_type = 'MASTERBAG'
+                        } else {
+                            data.item_type = 'BAG'
+                        }
                         
                         if (val.status !== "READY") {
                             data.button_status = { remove: false };
