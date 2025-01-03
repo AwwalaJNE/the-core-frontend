@@ -38,6 +38,7 @@ export default {
     },
     filterDateBy: String,
     isReset: Boolean,
+    created: Function
   },
   components: {
     "table-master": TableMaster,
@@ -162,6 +163,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -182,6 +184,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -202,6 +205,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -222,6 +226,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -242,6 +247,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -266,6 +272,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -285,6 +292,7 @@ export default {
             val,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -302,8 +310,9 @@ export default {
             this.startDate,
             this.endDate,
             this.searchBy,
-            val
+            val || savedFilters
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
