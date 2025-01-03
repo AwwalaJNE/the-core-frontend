@@ -271,6 +271,13 @@ export default {
 
                     this.dataTable = arr;
                     this.dataTableProp = res.data.detail
+                    this.dataTableProp.forEach(item => {
+                        if (item.is_masterbag === '1') {
+                            item.item_type = 'MASTERBAG';
+                        } else {
+                            item.item_type = 'BAG';
+                        }
+                    })
                     this.page = res.data.meta.current_page
                     this.limit = parseInt(res.data.meta.per_page)
                     this.page_size = res.data.meta.last_page

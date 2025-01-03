@@ -160,13 +160,23 @@ export default {
                     width: "xs",
                 },
                 {
-                    label: "Weight (Kg)",
-                    key: "total_weight",
+                    label: "Cost Weight (Kg)",
+                    key: "cost_weight",
+                    width: "xs",
+                },
+                {
+                    label: "Actual Weight (Kg)",
+                    key: "actual_weight",
                     width: "xs",
                 },
                 {
                     label: "Destination",
                     key: "destination_name",
+                    width: "xs",
+                },
+                {
+                    label: "Total Inner",
+                    key: "total_inner",
                     width: "xs",
                 },
                 {
@@ -285,7 +295,15 @@ export default {
                         data.bag_number = data.item_number;
                         data.type = data.item_type;
                         data.bag_weight = data.total_weight;
+                        data.cost_weight = data.cost_weight || '0';
+                        data.actual_weight = data.bag?.bag_actual_weight || '0';
+                        data.total_inner = data.bag_detail_count || '0';
                         data.destination_name = data.bag?.destination?.node_tariff_code || '';
+                        if (data.is_masterbag === '1') {
+                            data.item_type = 'MASTERBAG'
+                        } else {
+                            data.item_type = 'BAG'
+                        }
                         
                         if (val.status !== "READY") {
                             data.button_status = { remove: false };
