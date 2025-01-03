@@ -87,6 +87,16 @@ export default {
           width: "auto",
         },
         {
+          label: "Actual Weight",
+          key: "actual_weight",
+          width: "auto"
+        },
+        {
+          label: "Cost Weight",
+          key: "cost_weight",
+          width: "auto"
+        },
+        {
           label: "PIC",
           key: "carrier_employee_name",
           width: "xs",
