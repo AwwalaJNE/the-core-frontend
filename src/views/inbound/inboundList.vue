@@ -310,7 +310,7 @@ export default {
             this.startDate,
             this.endDate,
             this.searchBy,
-            val || savedFilters
+            val
           );
           this.$emit("updateLocalStorage")
         }
