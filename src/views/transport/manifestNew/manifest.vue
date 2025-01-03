@@ -109,8 +109,13 @@ export default {
                         width: "auto"
                     },
                     {
-                        label: "Weight",
-                        key: "max_weight",
+                        label: "Cost Weight(Kg)",
+                        key: "cost_weight",
+                        width: "auto"
+                    },
+                    {
+                        label: "Actual Weight(Kg)",
+                        key: "actual_weight",
                         width: "auto"
                     },
                     {
