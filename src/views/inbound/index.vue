@@ -290,8 +290,8 @@ export default {
               value: "-",
               label: "All Status"
             }],
-            filterDateBy:"received",
-            searchBy:"inbound_number",
+            filterDateBy:JSON.parse(localStorage.getItem("InboundFilters"))?.filterDateBy || 'received',
+            searchBy:JSON.parse(localStorage.getItem("InboundFilters"))?.searchBy || 'inbound_number',
             searchByNumeric: false,
             searchPlaceholder: "Search Inbound Number",
             searchParams: [
@@ -430,6 +430,7 @@ export default {
             node_origin: this.node_origin,
             value: this.value,
             values: this.values,
+            searchPlaceholder: this.searchPlaceholder,
           };
           localStorage.setItem("InboundFilters", JSON.stringify(filterData));
         },
@@ -528,6 +529,9 @@ export default {
         this.getDataNodeType()
         this.getDataOrigin()
         this.$refs.searchInput.value = JSON.parse(localStorage.getItem("InboundFilters"))?.tempSearch;
+        this.filterDateBy = JSON.parse(localStorage.getItem("InboundFilters"))?.filterDateBy || 'received';
+        this.searchBy = JSON.parse(localStorage.getItem("InboundFilters"))?.searchBy || 'inbound_number';
+        this.searchPlaceholder = JSON.parse(localStorage.getItem("InboundFilters"))?.searchPlaceholder || 'Search Inbound Number';
     },
 }
 </script>
