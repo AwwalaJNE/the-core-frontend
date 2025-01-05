@@ -141,6 +141,8 @@ export default {
             this.endDate
           );
         }
+
+        this.updateLocalStorage();
       }
     },
     dateFilter: function(val, old) {
@@ -149,6 +151,7 @@ export default {
         if (this.tempDate !== old) {
           this.startDate = this.tempDate !== null ? this.tempDate[0] : "";
           this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
+          this.updateLocalStorage();
         }
         this.getTableData(
           this.pagination.limit,
@@ -157,6 +160,7 @@ export default {
           this.startDate,
           this.endDate
         );
+        this.updateLocalStorage();
       }
     },
   },
@@ -295,6 +299,14 @@ export default {
         this.startDate,
         this.endDate
       );
+    },
+    updateLocalStorage() {
+      const filterData = {
+          tempSearch: this.tempSearch,
+          filterDateBy: this.filterDateBy,
+          tempDate: this.tempDate,
+      };
+      localStorage.setItem("InboundAirportSuratJalanFilters", JSON.stringify(filterData));
     },
     closeDialogSuratJalan() {
       this.dialogSuratJalan = false;

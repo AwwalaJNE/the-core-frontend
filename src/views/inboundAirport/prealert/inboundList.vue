@@ -121,18 +121,18 @@ export default {
                 },
             ],
             loading: false,
-            tempSearch: "",
-            tempDate: [],
-            nodeOrigin: "",
-            nodeDestination: "",
-            node_type:'',
+            tempSearch: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.tempSearch || '',
+            tempDate: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.tempDate || [],
+            nodeOrigin: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.origin || '',
+            nodeDestination: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.destination || '',
+            node_type: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.node_type || '',
             pagination: {
                 limit: 20,
                 page_size: 1,
                 page: 1
             },
-            statusReceived:"",
-            prealertFilter:""
+            statusReceived: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.statusReceived || '',
+            prealertFilter: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.prealertFilter || ''
         }
     },
     watch: {
@@ -143,6 +143,7 @@ export default {
                     this.pagination.page = 1
                     this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
                 }
+                this.updateLocalStorage();
             }
         },
         nodeType: function(val, old) {
@@ -151,6 +152,7 @@ export default {
             if(this.node_type !== old) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
             }
+            this.updateLocalStorage();
           }
         },
         received: function(val, old) {
@@ -159,6 +161,7 @@ export default {
             if(this.statusReceived !== old) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.node_type, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
             }
+            this.updateLocalStorage();
           }
         },
         origin: function(val, old) {
@@ -167,6 +170,7 @@ export default {
             if(this.nodeOrigin !== old) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
             }
+            this.updateLocalStorage();
           }
         },
         destination: function(val, old) {
@@ -175,6 +179,7 @@ export default {
             if(this.nodeDestination !== old) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
             }
+            this.updateLocalStorage();
           }
         },
         prealert: function(val, old) {
@@ -183,6 +188,7 @@ export default {
             if(this.prealertFilter !== old) {
               this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived,val, this.startDate, this.endDate, this.filterDateBy)
             }
+            this.updateLocalStorage();
           }
         },
         dateFilter: function(val, old) {
@@ -193,6 +199,7 @@ export default {
               this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
             }
             this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+            this.updateLocalStorage();
           }
         }, 
         filterDateBy: function(val, old) {
@@ -200,6 +207,7 @@ export default {
                 if (val !== old && !this.isReset) {
                 this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, val);
                 }
+                this.updateLocalStorage();
             }
         },
     },
@@ -289,6 +297,20 @@ export default {
         refresh(){
             this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate)
         },
+        updateLocalStorage() {
+            const filterData = {
+              origin: this.nodeOrigin,
+              destination: this.nodeDestination,
+              node_type: this.node_type,
+              tempSearch: this.tempSearch,
+              tempDate: this.tempDate,
+              prealertFilter: this.prealertFilter,
+              filterDateBy: this.filterDateBy,
+              statusReceived: this.statusReceived,
+              // searchBy: this.searchBy,
+            };
+            localStorage.setItem("InboundAirportPreAlertFilters", JSON.stringify(filterData));
+        },
         actionDetail(row){
             this.$router.push({ 
                 name: 'InboundIncomingDetail', 
@@ -301,6 +323,7 @@ export default {
     },
     mounted() {
         this.refresh()
+        this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type,this.prealertFilter, this.tempDate[0], this.tempDate[1], this.filterDateBy)
     }
 }
 </script>
