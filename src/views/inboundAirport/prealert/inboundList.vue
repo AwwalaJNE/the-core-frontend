@@ -74,11 +74,11 @@ export default {
                     key: "inbound_total_koli",
                     width: "auto"
                 },
-                {
-                    label: "Weight (Kg)",
-                    key: "inbound_total_weight",
-                    width: "auto"
-                },
+                // {
+                //     label: "Weight (Kg)",
+                //     key: "inbound_total_weight",
+                //     width: "auto"
+                // },
                 {
                     label: "Actual Weight",
                     key: "actual_weight",
