@@ -282,7 +282,7 @@ export default {
     },
     mounted() {
         this.searchPreAlertBy = JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.searchBy || 'inbound_number';
-        this.$refs.searchInput.value = JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.tempSearch
+        this.searchSuratJalanBy = JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.searchBy || 'manifest_do_number';
     }
 }
 </script>

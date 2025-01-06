@@ -64,9 +64,9 @@ export default {
     },
     data() {
         return {
-            tempSearch: '',
-            tempDate: [],
-            filterDateBy: 'create',
+            tempSearch:JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.tempSearch || '' ,
+            tempDate: JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.tempDate || [],
+            filterDateBy: JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.filterDateBy || 'create',
             dateParams: [
                 {
                     label: 'Created Date',
