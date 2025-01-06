@@ -152,6 +152,8 @@ export default {
       },
       statusReceived: this.received || '',
       prealertFilter: this.prealert || '',
+      filterDateBy: this.filterDateBy || '',
+      searchBy: this.searchBy || '',
     };
   },
   watch: {
