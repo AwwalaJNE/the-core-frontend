@@ -94,7 +94,7 @@ export default {
         },
         {
           label: "Total Item",
-          key: "total_items",
+          key: "total_detail_items",
           width: "auto",
         },
         {
