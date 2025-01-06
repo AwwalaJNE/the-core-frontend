@@ -281,8 +281,8 @@ export default {
         },
     },
     mounted() {
-        this.searchPreAlertPlaceholder = JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.tempSearch || 'Search Inbound Number';
-        this.$refs.searchInput.value = JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.tempSearch;
+        this.searchPreAlertBy = JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.searchBy || 'inbound_number';
+        this.$refs.searchInput.value = JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.tempSearch
     }
 }
 </script>
