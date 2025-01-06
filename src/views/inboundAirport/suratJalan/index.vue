@@ -64,9 +64,9 @@ export default {
     },
     data() {
         return {
-            tempSearch: JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.tempSearch || '',
-            tempDate: JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.tempDate || [],
-            filterDateBy: JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.filterDateBy || 'create',
+            tempSearch: '',
+            tempDate: [],
+            filterDateBy: 'create',
             dateParams: [
                 {
                     label: 'Created Date',
@@ -94,9 +94,5 @@ export default {
             this.filterDateBy = val;
         },
     },
-    mounted() {
-        this.$refs.SuratJalan.SearchInput.value = JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.tempSearch;
-        this.filterDateBy = JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.filterDateBy || 'create';
-    }
 };
 </script>

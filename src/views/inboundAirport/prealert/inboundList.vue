@@ -131,18 +131,19 @@ export default {
                 },
             ],
             loading: false,
-            tempSearch: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.tempSearch || '',
-            tempDate: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.tempDate || [],
-            nodeOrigin: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.origin || '',
-            nodeDestination: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.destination || '',
-            node_type: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.node_type || '',
+            tempSearch: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.tempSearch || '',
+            tempDate: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.tempDate || [],
+            nodeOrigin: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.origin || '',
+            nodeDestination: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.destination || '',
+            node_type: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.node_type || '',
             pagination: {
                 limit: 20,
                 page_size: 1,
                 page: 1
             },
-            statusReceived: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.statusReceived || '',
-            prealertFilter: JSON.parse(localStorage.getItem("InboundAirportFilters"))?.prealertFilter || ''
+            search_by: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.searchBy || '',
+            statusReceived: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.statusReceived || '',
+            prealertFilter: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.prealertFilter || ''
         }
     },
     watch: {
@@ -151,54 +152,150 @@ export default {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
                     this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+                    this.getTableData(
+                      this.pagination.limit, 
+                      this.pagination.page, 
+                      val, 
+                      this.nodeOrigin, 
+                      this.nodeDestination, 
+                      this.node_type,
+                      this.prealertFilter, 
+                      this.startDate, 
+                      this.endDate, 
+                      this.search_by, 
+                      this.filterDateBy
+                    )
+                    this.updateLocalStorage();
                 }
-                this.updateLocalStorage();
             }
         },
         nodeType: function(val, old) {
           if(val !== undefined) {
             this.node_type = val
             if(this.node_type !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+              this.getTableData(
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                this.nodeOrigin, 
+                this.nodeDestination, 
+                val,
+                this.prealertFilter, 
+                this.startDate, 
+                this.endDate, 
+                this.search_by, 
+                this.filterDateBy
+              )
+              this.updateLocalStorage();
             }
-            this.updateLocalStorage();
           }
         },
         received: function(val, old) {
           if(val !== undefined) {
             this.statusReceived = val
             if(this.statusReceived !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.node_type, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+              this.getTableData(
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                this.node_type, 
+                this.nodeOrigin, 
+                this.nodeDestination, 
+                val,
+                this.prealertFilter, 
+                this.startDate, 
+                this.endDate, 
+                this.search_by, 
+                this.filterDateBy
+              )
+              this.updateLocalStorage();
             }
-            this.updateLocalStorage();
           }
         },
         origin: function(val, old) {
           if(val !== undefined) {
             this.nodeOrigin = val
             if(this.nodeOrigin !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+              this.getTableData(
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                val, 
+                this.nodeDestination, 
+                this.node_type,
+                this.prealertFilter, 
+                this.startDate, 
+                this.endDate, 
+                this.search_by, 
+                this.filterDateBy
+              )
+              this.updateLocalStorage();
             }
-            this.updateLocalStorage();
           }
         },
         destination: function(val, old) {
           if(val !== undefined) {
             this.nodeDestination = val
             if(this.nodeDestination !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+              this.getTableData(
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                this.nodeOrigin, 
+                val, 
+                this.node_type,
+                this.prealertFilter, 
+                this.startDate, 
+                this.endDate, 
+                this.search_by,
+                this.filterDateBy
+              )
+              this.updateLocalStorage();
             }
-            this.updateLocalStorage();
           }
         },
         prealert: function(val, old) {
           if(val !== undefined) {
             this.prealertFilter = val
             if(this.prealertFilter !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived,val, this.startDate, this.endDate, this.filterDateBy)
+              this.getTableData(
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                this.nodeOrigin, 
+                this.nodeDestination,  
+                this.node_type, 
+                this.statusReceived,
+                val, 
+                this.startDate, 
+                this.endDate, 
+                this.search_by, 
+                this.filterDateBy
+              )
+              this.updateLocalStorage();
             }
-            this.updateLocalStorage();
+          }
+        },
+        searchBy: function(val, old) {
+          if (val !== undefined) {
+            this.search_by = val;
+            if (this.search_by !== old) {
+              this.getTableData(
+                this.pagination.limit,
+                this.pagination.page,
+                this.tempSearch,
+                this.nodeOrigin,
+                this.nodeDestination,
+                this.node_type,
+                this.statusReceived,
+                this.prealertFilter,
+                this.startDate,
+                this.endDate,
+                val,
+                this.filterDateBy
+              );
+              this.updateLocalStorage()
+            }
           }
         },
         dateFilter: function(val, old) {
@@ -207,27 +304,55 @@ export default {
             if(this.tempDate !== old ) {
               this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
               this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
+              this.updateLocalStorage()
             }
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+            this.getTableData(
+              this.pagination.limit, 
+              this.pagination.page, 
+              this.tempSearch, 
+              this.nodeOrigin, 
+              this.nodeDestination, 
+              this.node_type, 
+              this.statusReceived, 
+              this.prealertFilter, 
+              this.startDate, 
+              this.endDate, 
+              this.search_by, 
+              this.filterDateBy
+            )
             this.updateLocalStorage();
           }
         }, 
         filterDateBy: function(val, old) {
             if (val !== undefined) {
                 if (val !== old && !this.isReset) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, val);
-                }
+                this.getTableData(
+                  this.pagination.limit, 
+                  this.pagination.page, 
+                  this.tempSearch, 
+                  this.nodeOrigin, 
+                  this.nodeDestination,  
+                  this.node_type, 
+                  this.statusReceived, 
+                  this.prealertFilter, 
+                  this.startDate, 
+                  this.endDate, 
+                  this.search_by, 
+                  val
+                );
                 this.updateLocalStorage();
+              }
             }
         },
     },
     methods: {
-        async getTableData(limit,page,q, origin, destination,node_type,statusReceived, prealertFilter, from, to, dateFilter) {
+        async getTableData(limit,page,q, origin, destination,node_type,statusReceived, prealertFilter, from, to, qFilter, dateFilter) {
             this.loading = true
             let query = "";
             let startDate = "";
             let endDate = "";
             let isReceived = "";
+            let queryFilter = "";
             let isPrealert = "";
             if(q !== undefined) {
                 query = q
@@ -245,11 +370,15 @@ export default {
                 endDate = to
             }
             
+            if(qFilter !== undefined) {
+                queryFilter = qFilter
+            }
+
             let dateFilterBy = dateFilter || '';
 
             await axios
                 .get(this.URL.inbound_incoming +
-                `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${this.searchBy}&filter_date_by=${dateFilterBy}&start_date=${startDate}&end_date=${endDate}&is_airport=true&prealert_airport=1`,
+                `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${queryFilter}&filter_date_by=${dateFilterBy}&start_date=${startDate}&end_date=${endDate}&is_airport=true&prealert_airport=1`,
                 this.Helper.header())
                 .then(res => {
                     let total = 0
@@ -305,19 +434,31 @@ export default {
             this.refresh()
         },
         refresh(){
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate)
+            this.getTableData(
+              this.pagination.limit, 
+              this.pagination.page, 
+              this.tempSearch, 
+              this.nodeOrigin, 
+              this.nodeDestination, 
+              this.node_type, 
+              this.statusReceived, 
+              this.prealertFilter, 
+              this.startDate, 
+              this.endDate,
+              this.search_by,
+              this.filterDateBy
+            )
         },
         updateLocalStorage() {
             const filterData = {
               origin: this.nodeOrigin,
               destination: this.nodeDestination,
-              node_type: this.node_type,
               tempSearch: this.tempSearch,
               tempDate: this.tempDate,
               prealertFilter: this.prealertFilter,
               filterDateBy: this.filterDateBy,
               statusReceived: this.statusReceived,
-              // searchBy: this.searchBy,
+              searchBy: this.search_by,
             };
             localStorage.setItem("InboundAirportPreAlertFilters", JSON.stringify(filterData));
         },
@@ -333,7 +474,20 @@ export default {
     },
     mounted() {
         this.refresh()
-        this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type,this.prealertFilter, this.tempDate[0], this.tempDate[1], this.filterDateBy)
+        this.getTableData(
+          this.pagination.limit, 
+          this.pagination.page, 
+          this.tempSearch, 
+          this.nodeOrigin, 
+          this.nodeDestination, 
+          this.node_type, 
+          this.statusReceived, 
+          this.prealertFilter, 
+          this.startDate, 
+          this.endDate,
+          this.search_by,
+          this.filterDateBy
+        )
     }
 }
 </script>
