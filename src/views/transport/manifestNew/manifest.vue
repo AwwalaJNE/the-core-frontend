@@ -109,14 +109,24 @@ export default {
                         width: "auto"
                     },
                     {
-                        label: "Cost Weight(Kg)",
-                        key: "cost_weight",
-                        width: "auto"
+                        label: "Fix Cost Weight",
+                        key: "fix_cost_weight",
+                        width: "auto",
                     },
                     {
-                        label: "Actual Weight(Kg)",
-                        key: "actual_weight",
-                        width: "auto"
+                        label: "Live Cost Weight",
+                        key: "live_cost_weight",
+                        width: "auto",
+                    },
+                    {
+                        label: "Fix Actual Weight",
+                        key: "fix_actual_weight",
+                        width: "auto",
+                    },
+                    {
+                        label: "Live Actual Weight",
+                        key: "live_actual_weight",
+                        width: "auto",
                     },
                     {
                         label: "ETD",
