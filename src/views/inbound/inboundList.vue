@@ -82,19 +82,24 @@ export default {
           key: "inbound_total_koli",
           width: "auto",
         },
-        // {
-        //   label: "Weight (Kg)",
-        //   key: "inbound_total_weight",
-        //   width: "auto",
-        // },
         {
-          label: "Actual Weight",
-          key: "actual_weight",
+          label: "Fix Cost Weight",
+          key: "fix_cost_weight",
           width: "auto"
         },
         {
-          label: "Cost Weight",
-          key: "cost_weight",
+          label: "Live Cost Weight",
+          key: "live_cost_weight",
+          width: "auto"
+        },
+        {
+          label: "Fix Actual Weight",
+          key: "fix_actual_weight",
+          width: "auto"
+        },
+        {
+          label: "Live Actual Weight",
+          key: "live_actual_weight",
           width: "auto"
         },
         {
