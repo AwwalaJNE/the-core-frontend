@@ -121,13 +121,23 @@ export default {
           width: "sm",
         },
         {
-          label: "Cost Weight(Kg)",
-          key: "total_cost_weight",
+          label: "Fix Cost Weight",
+          key: "fix_cost_weight",
           width: "auto",
         },
         {
-          label: "Actual Weight(Kg)",
-          key: "total_actual_weight",
+          label: "Live Cost Weight",
+          key: "live_cost_weight",
+          width: "auto",
+        },
+        {
+          label: "Fix Actual Weight",
+          key: "fix_actual_weight",
+          width: "auto",
+        },
+        {
+          label: "Live Actual Weight",
+          key: "live_actual_weight",
           width: "auto",
         },
         {
@@ -282,6 +292,7 @@ export default {
         )
         .then((res) => {
           let arr = res.data.data;
+          console.log('DATA = ', arr)
           let buttonStatus = {
             print: true,
             depart: true,
