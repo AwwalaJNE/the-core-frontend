@@ -118,7 +118,7 @@ export default {
     data() {
         return {
             node_request:'',
-            status: "-",
+            status: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.statusReceived || '-',
             statusArr: [
                 {
                     label: 'All Status',
@@ -137,12 +137,12 @@ export default {
                     value: 'OUTSTANDING'
                 }
             ],
-            origin:'',
+            origin:JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.origin || '',
             originArr:[],
-            destination:'',
+            destination:JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.destination || '',
             destinationArr:[],
-            filterDateBy:"received",
-            tempDate: [],
+            filterDateBy:JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.filterDateBy || 'received',
+            tempDate: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.tempDate || [],
             dateParams: [
                 {
                     label: 'Received Time',

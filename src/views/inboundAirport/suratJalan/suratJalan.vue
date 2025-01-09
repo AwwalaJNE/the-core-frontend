@@ -87,14 +87,34 @@ export default {
           key: "node_id_destination_name",
           width: "sm",
         },
+        // {
+        //   label: "Kg",
+        //   key: "total_weight",
+        //   width: "auto",
+        // },
         {
-          label: "Kg",
-          key: "total_weight",
+          label: "Fix Cost Weight",
+          key: "fix_cost_weight",
+          width: "auto",
+        },
+        {
+          label: "Live Cost Weight",
+          key: "live_cost_weight",
+          width: "auto",
+        },
+        {
+          label: "Fix Actual Weight",
+          key: "fix_actual_weight",
+          width: "auto",
+        },
+        {
+          label: "Live Actual Weight",
+          key: "live_actual_weight",
           width: "auto",
         },
         {
           label: "Total Item",
-          key: "total_items",
+          key: "total_detail_items",
           width: "auto",
         },
         {
@@ -115,8 +135,8 @@ export default {
       ],
       loading: false,
       dataItem: {},
-      tempSearch: "",
-      tempDate: [],
+      tempSearch: JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.tempSearch || '',
+      tempDate: JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.tempDate || [],
       startDate: "",
       endDate: "",
       pagination: {
@@ -125,6 +145,8 @@ export default {
         page: 1,
       },
       manifest_do_number: "",
+      search_by: JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.searchBy || '',
+      filterDateBy: JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.filterDateBy || 'create',
     };
   },
   watch: {
@@ -138,8 +160,11 @@ export default {
             this.pagination.page,
             val,
             this.startDate,
-            this.endDate
+            this.endDate,
+            this.filterDateBy,
+            this.search_by
           );
+          this.updateLocalStorage();
         }
       }
     },
@@ -149,23 +174,60 @@ export default {
         if (this.tempDate !== old) {
           this.startDate = this.tempDate !== null ? this.tempDate[0] : "";
           this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
+          this.updateLocalStorage();
         }
         this.getTableData(
           this.pagination.limit,
           this.pagination.page,
           this.tempSearch,
           this.startDate,
-          this.endDate
+          this.endDate,
+          this.filterDateBy,
+          this.search_by
         );
+        this.updateLocalStorage();
       }
     },
+    filterDateBy: function(val, old) {
+      if (val !== undefined) {
+        if (val !== old && !this.isReset) {
+          this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.startDate,
+            this.endDate,
+            val
+          );
+          this.updateLocalStorage();
+        }
+      }
+    },
+    searchBy: function(val, old) {
+      if (val !== undefined) {
+        this.search_by = val;
+        if (this.search_by !== old) {
+          this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.startDate,
+            this.endDate,
+            this.filterDateBy,
+            val
+          );
+          this.updateLocalStorage()
+        }
+      }
+    }
   },
   methods: {
-    async getTableData(limit, page, q, from, to) {
+    async getTableData(limit, page, q, from, to, dateFilter, qFilter) {
       this.loading = true;
       let query = "";
       let startDate = "";
       let endDate = "";
+      let queryFilter = "";
       if (q !== undefined) {
         query = q;
         if (q.includes("/")) {
@@ -176,10 +238,15 @@ export default {
         startDate = from;
         endDate = to;
       }
+      if (qFilter !== undefined) {
+        queryFilter = qFilter
+      }
+
+      let dateFilterBy = dateFilter || '';
       await axios
         .get(
           this.URL.manifest_delivery_order +
-            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${queryFilter}&filter_date_by=${dateFilterBy}`,
           this.Helper.header()
         )
         .then((res) => {
@@ -293,8 +360,20 @@ export default {
         this.pagination.page,
         this.tempSearch,
         this.startDate,
-        this.endDate
+        this.endDate,
+        this.filterDateBy,
+        this.search_by
       );
+    },
+    updateLocalStorage() {
+      const filterData = {
+        tempSearch: this.tempSearch,
+        tempDate: this.tempDate,
+        filterDateBy: this.filterDateBy,
+        searchBy: this.search_by
+      }
+
+      localStorage.setItem("InboundAirportSuratJalanFilters", JSON.stringify(filterData))
     },
     closeDialogSuratJalan() {
       this.dialogSuratJalan = false;
@@ -303,6 +382,15 @@ export default {
   },
   mounted() {
     this.refresh();
+    this.getTableData(
+      this.pagination.limit,
+      this.pagination.page,
+      this.tempSearch,
+      this.startDate,
+      this.endDate,
+      this.filterDateBy,
+      this.search_by
+    );
   },
 };
 </script>

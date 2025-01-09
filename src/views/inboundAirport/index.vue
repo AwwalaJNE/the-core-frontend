@@ -57,7 +57,7 @@
                                         <vs-col xs="6" sm="4" lg="4">
                                             <search-input 
                                                 key="searchInput"
-                                                ref="searchInput" 
+                                                ref="searchInput"
                                                 :placeholder="searchPreAlertPlaceholder"
                                                 @searchValue="searchValue"
                                             />
@@ -244,13 +244,13 @@ export default {
     methods: {
         updateSearchBy(key, val, dataType) {
             switch(this.navActive) {
-                case "PREALERT":
+                case "k-PREALERT":
                     this.searchPreAlertBy = val;
                     this.searchPreAlertPlaceholder = key;
                     this.searchPreAlertByDataType = dataType;
                     this.clearSearch();
                     break;
-                case "SJ":
+                case "k-SURATJALAN":
                     this.searchSuratJalanBy = val;
                     this.searchSuratJalanPlaceholder = key;
                     this.searchSuratJalanByDataType = dataType;
@@ -280,5 +280,9 @@ export default {
             this.$router.push('inbound-airport/scan');
         },
     },
+    mounted() {
+        this.searchPreAlertBy = JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.searchBy || 'inbound_number';
+        this.searchSuratJalanBy = JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.searchBy || 'manifest_do_number';
+    }
 }
 </script>

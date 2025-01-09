@@ -109,6 +109,14 @@ export default {
                         item['total_received'] = item.total_received.toString()
                         item['total_unreceived'] = item.total_unreceived.toString()
                     })
+                    let detail = res.data.detail
+                    detail.map(item=>{
+                        if (item.is_masterbag === '1') {
+                            item.item_type = 'MASTERBAG';
+                        } else {
+                            item.item_type = 'BAG';
+                        }
+                    })
                     this.dataTable = data
 
                     this.dataTableDetail = res.data.detail;

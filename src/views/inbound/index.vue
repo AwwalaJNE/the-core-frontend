@@ -186,6 +186,7 @@
                           :dateFilter="tempDate"
                           :isReset="reset"
                           :searchBy="searchBy"
+                          @updateLocalStorage="updateLocalStorage"
                         />
                     </transition>
                 </template>
@@ -232,8 +233,8 @@ export default {
     data() {
         return {
             title:"Receiving ",
-            tempSearch: "",
-            tempDate: [],
+            tempSearch: JSON.parse(localStorage.getItem("InboundFilters"))?.tempSearch || '',
+            tempDate: JSON.parse(localStorage.getItem("InboundFilters"))?.tempDate || [],
             DataNode:[
               {
                 label: "All Nodes",
@@ -241,8 +242,8 @@ export default {
               }
             ],
             nodeOrigin:[],
-            node_request:'',
-            node_origin:'',
+            node_request: JSON.parse(localStorage.getItem("InboundFilters"))?.node_request || '',
+            node_origin: JSON.parse(localStorage.getItem("InboundFilters"))?.node_origin || '',
             DataArr: this.valueData ? this.valueData : [
               {
                 label: 'All Status',
@@ -261,7 +262,7 @@ export default {
                 value: 'OUTSTANDING'
               }
             ],
-            values: this.selectedValue ? this.selectedValue :"-",
+            values: JSON.parse(localStorage.getItem("InboundFilters"))?.values || '-',
             DataFilterPrealert: this.valueData ? this.valueData : [
               {
                 label: 'All Prealert',
@@ -284,13 +285,13 @@ export default {
                 value: 'RECEIVING ORION'
               }
             ],
-            value: this.selectedValue ? this.selectedValue :"-",
+            value: JSON.parse(localStorage.getItem("InboundFilters"))?.value || '-',
             arrValue: this.selectedValue ? this.selectedValue : [ {
               value: "-",
               label: "All Status"
             }],
-            filterDateBy:"received",
-            searchBy:"inbound_number",
+            filterDateBy:JSON.parse(localStorage.getItem("InboundFilters"))?.filterDateBy || 'received',
+            searchBy:JSON.parse(localStorage.getItem("InboundFilters"))?.searchBy || 'inbound_number',
             searchByNumeric: false,
             searchPlaceholder: "Search Inbound Number",
             searchParams: [
@@ -419,6 +420,21 @@ export default {
           this.filterDateBy = val;
         },
 
+        updateLocalStorage() {
+          const filterData = {
+            searchBy: this.searchBy,
+            tempSearch: this.tempSearch,
+            filterDateBy: this.filterDateBy,
+            tempDate: this.tempDate,
+            node_request: this.node_request,
+            node_origin: this.node_origin,
+            value: this.value,
+            values: this.values,
+            searchPlaceholder: this.searchPlaceholder,
+          };
+          localStorage.setItem("InboundFilters", JSON.stringify(filterData));
+        },
+
         async getDataNodeType() {
           this.loading = true
           await axios
@@ -466,7 +482,7 @@ export default {
               })
         },
         updateNode(val){
-
+          // this.node_request = val
         },
         getNodeTypeLogin(){
           return this.listenActiveUser.nodes[0].node_type ? this.listenActiveUser.nodes[0].node_type.node_type_name.toLowerCase() : '';
@@ -481,7 +497,6 @@ export default {
           } else if (indexOfBag === -1) {
             this.hasLinkedItems = ['inbound_number'];
           } 
-          
         },
       updateSearchBy(key, val, isNumeric) {
         val = val.replaceAll(" ", "_");
@@ -506,13 +521,18 @@ export default {
         this.$nextTick(() => {
           this.reset = false
         });
+        localStorage.removeItem("InboundFilters")
       },
     },
 
     mounted() {
         this.getDataNodeType()
         this.getDataOrigin()
-    }
+        this.$refs.searchInput.value = JSON.parse(localStorage.getItem("InboundFilters"))?.tempSearch;
+        this.filterDateBy = JSON.parse(localStorage.getItem("InboundFilters"))?.filterDateBy || 'received';
+        this.searchBy = JSON.parse(localStorage.getItem("InboundFilters"))?.searchBy || 'inbound_number';
+        this.searchPlaceholder = JSON.parse(localStorage.getItem("InboundFilters"))?.searchPlaceholder || 'Search Inbound Number';
+    },
 }
 </script>
 <style scoped>
