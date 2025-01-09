@@ -105,13 +105,13 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "ETA",
-                    key: "inbound_eta",
+                    label: "ETD",
+                    key: "inbound_etd",
                     width: "xs"
                 },
                 {
-                    label: "ETD",
-                    key: "inbound_etd",
+                    label: "ETA",
+                    key: "inbound_eta",
                     width: "xs"
                 },
                 {
