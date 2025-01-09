@@ -69,11 +69,11 @@ export default {
                     key: "inbound_total_bag",
                     width: "auto"
                 },
-                {
-                    label: "Connote",
-                    key: "inbound_total_koli",
-                    width: "auto"
-                },
+                // {
+                //     label: "Connote",
+                //     key: "inbound_total_koli",
+                //     width: "auto"
+                // },
                 {
                   label: "Fix Cost Weight",
                   key: "fix_cost_weight",
