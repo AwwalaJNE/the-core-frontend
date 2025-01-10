@@ -107,10 +107,10 @@ export default {
             ],
             manifest_lov: "",
             manifest_lov_list: [
-                {
-                    label: "Multi Destination",
-                    value: "ALL",
-                },
+                // {
+                //     label: "Multi Destination",
+                //     value: "ALL",
+                // },
                 {
                     label: "Single Destination",
                     value: "SAME DESTINATION",
