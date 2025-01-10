@@ -438,21 +438,21 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-        refresh(){
+        refresh() {
             this.getTableData(
-              this.pagination.limit, 
-              this.pagination.page, 
-              this.tempSearch, 
-              this.nodeOrigin, 
-              this.nodeDestination, 
-              this.node_type, 
-              this.statusReceived, 
-              this.prealertFilter, 
-              this.startDate, 
-              this.endDate,
-              this.search_by,
-              this.filterDateBy
-            )
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                this.nodeOrigin, 
+                this.nodeDestination, 
+                this.node_type, 
+                this.statusReceived, 
+                this.prealertFilter, 
+                this.startDate, 
+                this.endDate,
+                this.search_by,
+                this.filterDateBy
+            );
         },
         updateLocalStorage() {
             const filterData = {
@@ -476,23 +476,44 @@ export default {
             });
             this.setRoutePageHistory(this.$route.meta, false);
         },
+        loadFiltersFromStorage() {
+            const storedFilters = localStorage.getItem("InboundAirportPreAlertFilters");
+            if (storedFilters) {
+                const filters = JSON.parse(storedFilters);
+                
+                this.nodeOrigin = filters.origin;
+                this.nodeDestination = filters.destination;
+                this.tempSearch = filters.tempSearch;
+                this.tempDate = filters.tempDate;
+                this.prealertFilter = filters.prealertFilter;
+                this.filterDateBy = filters.filterDateBy;
+                this.statusReceived = filters.statusReceived;
+                this.search_by = filters.searchBy;
+
+                if (this.tempDate) {
+                    this.startDate = this.tempDate[0];
+                    this.endDate = this.tempDate[1];
+                }
+            }
+        },
     },
-    mounted() {
-        this.refresh()
-        this.getTableData(
-          this.pagination.limit, 
-          this.pagination.page, 
-          this.tempSearch, 
-          this.nodeOrigin, 
-          this.nodeDestination, 
-          this.node_type, 
-          this.statusReceived, 
-          this.prealertFilter, 
-          this.startDate, 
-          this.endDate,
-          this.search_by,
-          this.filterDateBy
-        )
+    async mounted() {
+        this.loadFiltersFromStorage();
+
+        await this.getTableData(
+            this.pagination.limit, 
+            this.pagination.page, 
+            this.tempSearch, 
+            this.nodeOrigin, 
+            this.nodeDestination, 
+            this.node_type, 
+            this.statusReceived, 
+            this.prealertFilter, 
+            this.startDate, 
+            this.endDate,
+            this.search_by,
+            this.filterDateBy
+        );
     }
 }
 </script>

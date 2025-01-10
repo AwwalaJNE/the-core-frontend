@@ -222,6 +222,21 @@ export default {
     }
   },
   methods: {
+      loadFiltersFromLocalStorage() {
+      const savedFilters = localStorage.getItem("InboundAirportSuratJalanFilters");
+      if (savedFilters) {
+        const filters = JSON.parse(savedFilters);
+        this.tempSearch = filters.tempSearch;
+        this.tempDate = filters.tempDate;
+        this.filterDateBy = filters.filterDateBy;
+        this.search_by = filters.searchBy;
+
+        if (this.tempDate && this.tempDate.length === 2) {
+          this.startDate = this.tempDate[0];
+          this.endDate = this.tempDate[1];
+        }
+      }
+    },
     async getTableData(limit, page, q, from, to, dateFilter, qFilter) {
       this.loading = true;
       let query = "";
@@ -366,14 +381,14 @@ export default {
       );
     },
     updateLocalStorage() {
-      const filterData = {
+    const filterData = {
         tempSearch: this.tempSearch,
         tempDate: this.tempDate,
         filterDateBy: this.filterDateBy,
         searchBy: this.search_by
-      }
+      };
 
-      localStorage.setItem("InboundAirportSuratJalanFilters", JSON.stringify(filterData))
+      localStorage.setItem("InboundAirportSuratJalanFilters", JSON.stringify(filterData));
     },
     closeDialogSuratJalan() {
       this.dialogSuratJalan = false;
@@ -381,16 +396,9 @@ export default {
     },
   },
   mounted() {
+    this.loadFiltersFromLocalStorage();
+  
     this.refresh();
-    this.getTableData(
-      this.pagination.limit,
-      this.pagination.page,
-      this.tempSearch,
-      this.startDate,
-      this.endDate,
-      this.filterDateBy,
-      this.search_by
-    );
   },
 };
 </script>
