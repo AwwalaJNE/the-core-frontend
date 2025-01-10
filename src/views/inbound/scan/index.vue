@@ -190,6 +190,32 @@ export default {
         }
     },
     methods: {
+        saveInboundToStorage() {
+            const inboundData = {
+                parent_no: this.parent_no,
+                inbound_number: this.inbound_number,
+                hasInboundNumber: this.hasInboundNumber
+            };
+            localStorage.setItem('inboundScanData', JSON.stringify(inboundData));
+        },
+
+        async loadInboundFromStorage() {
+            const storedData = localStorage.getItem('inboundScanData');
+            if (storedData) {
+                const inboundData = JSON.parse(storedData);
+                this.parent_no = inboundData.parent_no;
+                this.inbound_number = inboundData.inbound_number;
+                this.hasInboundNumber = inboundData.hasInboundNumber;
+
+                if (this.inbound_number) {
+                    await this.getTableData();
+                }
+            }
+        },
+
+        clearInboundFromStorage() {
+            localStorage.removeItem('inboundScanData');
+        },
         refresh(){
             this.getTableData();
         },
@@ -208,6 +234,7 @@ export default {
                 case 'parent_no':
                     this.inbound_number = this.parent_no;
                     this.hasInboundNumber = true;
+                    this.saveInboundToStorage();
                     this.refresh();
                     break;
 
@@ -259,7 +286,10 @@ export default {
             if (this.inbound_number) {
                 this.loading = true;
                 try {
-                    const res = await axios.get(`${this.URL.inbound}/${this.inbound_number}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, this.Helper.header());
+                    const res = await axios.get(
+                        `${this.URL.inbound}/${this.inbound_number}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, 
+                        this.Helper.header()
+                    );
 
                     let arr = [res.data.data];
 
@@ -270,23 +300,28 @@ export default {
                     }));
 
                     this.dataTable = arr;
-                    this.dataTableProp = res.data.detail
+                    this.dataTableProp = res.data.detail;
                     this.dataTableProp.forEach(item => {
                         if (item.is_masterbag === '1') {
                             item.item_type = 'MASTERBAG';
                         } else {
                             item.item_type = 'BAG';
                         }
-                    })
-                    this.page = res.data.meta.current_page
-                    this.limit = parseInt(res.data.meta.per_page)
-                    this.page_size = res.data.meta.last_page
+                    });
+                    this.page = res.data.meta.current_page;
+                    this.limit = parseInt(res.data.meta.per_page);
+                    this.page_size = res.data.meta.last_page;
 
                     if (!this.is_prealert) {
                         this.$refs.formInputChildInbound.$el.querySelector("input").focus();
                     }
                 } catch (err) {
-                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                    this.openNotification(
+                        "danger", 
+                        err?.response?.data?.code ?? '', 
+                        "Failed", 
+                        err?.response?.data?.message ?? 'Something went wrong'
+                    );
 
                     if (!this.is_prealert) {
                         this.removeInboundNumber();
@@ -320,6 +355,8 @@ export default {
             this.hasInboundNumber = false;
             this.dataTable = [];
             this.dataTableProp = [];
+            
+            this.clearInboundFromStorage();
 
             this.$nextTick(() => {
                 this.$refs.formInputParentInbound.$el.querySelector("input").focus();
@@ -351,10 +388,13 @@ export default {
             this.refresh()
         },
     },
-    mounted() {
+    async mounted() {
+        await this.loadInboundFromStorage();
         this.getParamRoute();
 
-        if (this.is_prealert) {
+        if (!this.hasInboundNumber && !this.is_prealert && this.$refs.formInputParentInbound) {
+            this.$refs.formInputParentInbound.$el.querySelector("input").focus();
+        } else if (this.is_prealert && this.$refs.formInputInbound) {
             this.$refs.formInputInbound.$el.querySelector("input").focus();
         }
     }
