@@ -4767,6 +4767,25 @@ export default {
   },
 
   connote_forward: {
+    connote_receiver_address_type: {
+      label: "Tipe Destinasi",
+      key: "connote_receiver_address_type",
+      rule: "",
+      typeInput: "radio",
+      typeData: "String",
+      arrData: [
+        {
+          label: "Rumah",
+          value: "RUMAH"
+        },
+        {
+          label: "Kantor",
+          value: "KANTOR"
+        },
+      ],
+      valueData: null,
+      value: 'rumah'
+    },
     connote_shipper_name: {
       label: "Nama Pengirim*",
       key: "connote_shipper_name",
