@@ -111,7 +111,7 @@ export default {
           },
         },
         {
-          label: "Trace Bag",
+          label: "Trace Bag / Masterbag",
           url: "/trace-bag",
           icon: "bx-search",
           permission: "",

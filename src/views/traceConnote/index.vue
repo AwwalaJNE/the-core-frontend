@@ -20,7 +20,7 @@
                                     type="text"
                                     v-model="connoteNumber"
                                     label-placeholder="Masukkan Nomor Connote"
-                                    autofocus
+                                    :autofocus="true"
                                     :disabled="hasConnoteNumber"
                                     icon-after
                                     v-uppercase
@@ -478,6 +478,7 @@ export default {
     },
     mounted() {
       this.getConnote();
+      this.$refs.formInputConnoteOrion.$el.querySelector("input").focus();
     }
 };
 </script>

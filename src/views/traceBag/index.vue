@@ -4,7 +4,7 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>Trace Bag</h2>
+                    <h2>Trace Bag / Masterbag</h2>
                 </div>
             </vs-col>
         </vs-row>
@@ -18,13 +18,13 @@
                                 <vs-input 
                                     ref="formInputBag"
                                     id="traceBag"
-                                    autofocus
                                     border 
-                                    label-placeholder="Masukkan Nomor Bag"
+                                    label-placeholder="Masukkan Nomor Bag / Masterbag"
                                     icon-after
                                     type="text"
                                     v-model="bagNumber"
                                     v-uppercase
+                                    :autofocus="true"
                                     :disabled="hasBagNumber"
                                     @click-icon="$refs.cameraScanner.open('formInputBag')"
                                 >
@@ -189,6 +189,7 @@ export default {
     },
     mounted() {
         this.getBag();
+        this.$refs.formInputBag.$el.querySelector("input").focus();
     }
 };
 </script>
