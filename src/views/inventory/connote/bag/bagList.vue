@@ -212,6 +212,11 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Origin Node Name",
+                    key: "origin_node_name",
+                    width: "auto"
+                },
+                {
                     label: "Origin",
                     key: "origin",
                     width: "auto"
@@ -224,6 +229,11 @@ export default {
                 {
                     label: "Destination Node Code",
                     key: "destination_node_code",
+                    width: "auto"
+                },
+                {
+                    label: "Destination Node Name",
+                    key: "destination_node_name",
                     width: "auto"
                 },
                 {
