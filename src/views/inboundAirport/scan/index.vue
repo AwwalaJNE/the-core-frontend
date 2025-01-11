@@ -369,6 +369,7 @@ export default {
         },
         async confirmInbound() {
           this.openProgress(null, "Processing", `Confirming Inbound`);
+          this.loading = true
           try {
               const res = await axios
                 .post(this.URL.inbound_staging_confirm + `?n=${this.listenNodeId}`,
@@ -378,6 +379,7 @@ export default {
           } catch (err) {
               this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
           } finally {
+              this.loading = false
               this.closeProgress();
               this.handlerClearForm();
               this.handleClearSm();
