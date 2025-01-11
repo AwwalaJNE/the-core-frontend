@@ -4,7 +4,7 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>Trace Bag</h2>
+                    <h2>Trace Bag / Masterbag</h2>
                 </div>
             </vs-col>
         </vs-row>
@@ -20,7 +20,7 @@
                                     id="traceBag"
                                     autofocus
                                     border 
-                                    label-placeholder="Masukkan Nomor Bag"
+                                    label-placeholder="Masukkan Nomor Bag / Masterbag"
                                     icon-after
                                     type="text"
                                     v-model="bagNumber"
