@@ -18,13 +18,13 @@
                                 <vs-input 
                                     ref="formInputBag"
                                     id="traceBag"
-                                    autofocus
                                     border 
                                     label-placeholder="Masukkan Nomor Bag / Masterbag"
                                     icon-after
                                     type="text"
                                     v-model="bagNumber"
                                     v-uppercase
+                                    :autofocus="true"
                                     :disabled="hasBagNumber"
                                     @click-icon="$refs.cameraScanner.open('formInputBag')"
                                 >
@@ -189,6 +189,7 @@ export default {
     },
     mounted() {
         this.getBag();
+        this.$refs.formInputBag.$el.querySelector("input").focus();
     }
 };
 </script>
