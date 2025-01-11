@@ -95,6 +95,7 @@
                                 :dataItem="dataItem"
                                 :isDisabled="!!crisscross_number"
                                 :querySearch="querySearch"
+                                @formData="formData"
                                 @onChangeCustom="onChangeCustom"
                             />
                         </div>
@@ -173,6 +174,8 @@ export default {
     watch: {
         isEdit: function (val) {
             if (val == false) {
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_isDisabled", true);
+
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled", true);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled", true);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled", true);
@@ -189,6 +192,8 @@ export default {
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_isDisabled", true);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_isDisabled", true);
             } else {
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_isDisabled", false);
+
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled", false);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled", false);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled", false);
@@ -214,6 +219,7 @@ export default {
             connote_number: "",
             crisscross_number: "",
             form: {},
+            original_form: {},
             dataItem: {},
             dataTable: [],
             datacolumn: [
@@ -316,6 +322,8 @@ export default {
                 if(res.data.data) {
                     let data = res.data.data;
 
+                    console.log("PP", data)
+
                     let obj = {
                         connote_shipper_name: data.connote_shipper_name || '',
                         connote_shipper_phone_number: data.connote_shipper_phone_number || '',
@@ -338,7 +346,8 @@ export default {
                         connote_receiver_tlc: data.connote_receiver_tlc || '',
                         connote_receiver_city_zone: data.connote_receiver_city_zone || ''
                     };
-
+                    
+                    this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE", data?.connote_receiver_address_type);
                     this.dataItem = obj
                     this.connote_number = this.crisscross_number ? this.connote_number : res.data.data.connote_number || this.connote_number
                     this.status = res.data.status || this.status;
@@ -349,10 +358,14 @@ export default {
                         }
                     }
 
-                    this.form = {
+                    const formObject = {
                         connote_number: this.connote_number,
                         connote: this.dataItem
-                    }
+                    };
+
+                    this.form = formObject;
+                    this.original_form = formObject;
+
                 }
                 
             } catch (err) {
@@ -362,11 +375,43 @@ export default {
                 this.loading = false;
             }
         },
+        async getTLC(zipCode) {
+            try {
+                const response = await axios.get(
+                    `${this.URL.geolocation_search}?n=${this.listenNodeId}&s=${zipCode}`, 
+                    this.Helper.header()
+                );
+                if (response.status === 200 && response.data.data.length > 0) {
+                    return response.data.data[0].geolocation_subdistrict_tarif_code.substring(0, 3);
+                }
+            } catch (err) {
+                this.checkAuth(err.response);
+                return null;
+            }
+        },
         selectCreate() {
             this.isCreateManually = !this.isCreateManually;
             this.scanConnote();
         },
-        async handleSubmit() {            
+        async formData(form){
+            console.log("a", this.form, form, this.original_form)
+            const { connote_receiver_administrative_address, connote_shipper_administrative_address, ...formWithoutAdministrativeAddress } = form;
+            const tlc_receiver = await this.getTLC(form.connote_receiver_zip_code);
+            this.form = {
+                ...this.form,
+                connote: {
+                    ...formWithoutAdministrativeAddress,
+                    connote_receiver_administrative_address: connote_receiver_administrative_address?.geolocation_location_name || this.original_form?.connote?.connote_receiver_administrative_address || '',
+                    connote_shipper_administrative_address: connote_shipper_administrative_address?.geolocation_location_name || this.original_form?.connote?.connote_shipper_administrative_address || '',
+                    connote_receiver_tlc: tlc_receiver,
+                    connote_receiver_city_zone:tlc_receiver
+                } 
+            };
+
+            console.log("b", this.form)
+            this.handleSubmitData();
+        },
+        async handleSubmitData() {
             this.loading = true;
             try {
                 const res = await axios.post(`${this.URL.connote_forward}?n=${this.listenNodeId}`, this.form, this.Helper.header());
@@ -377,6 +422,9 @@ export default {
                 this.loading = false;
                 this.cancel();
             }
+        },
+        handleSubmit(){
+            this.$refs.irreguralitiesReturnDestination.handleSubmit();
         },
         handleClearForm(){
             this.status = '';
