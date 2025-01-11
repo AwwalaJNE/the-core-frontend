@@ -322,8 +322,6 @@ export default {
                 if(res.data.data) {
                     let data = res.data.data;
 
-                    console.log("PP", data)
-
                     let obj = {
                         connote_shipper_name: data.connote_shipper_name || '',
                         connote_shipper_phone_number: data.connote_shipper_phone_number || '',
@@ -346,7 +344,7 @@ export default {
                         connote_receiver_tlc: data.connote_receiver_tlc || '',
                         connote_receiver_city_zone: data.connote_receiver_city_zone || ''
                     };
-                    
+
                     this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE", data?.connote_receiver_address_type);
                     this.dataItem = obj
                     this.connote_number = this.crisscross_number ? this.connote_number : res.data.data.connote_number || this.connote_number
@@ -394,7 +392,6 @@ export default {
             this.scanConnote();
         },
         async formData(form){
-            console.log("a", this.form, form, this.original_form)
             const { connote_receiver_administrative_address, connote_shipper_administrative_address, ...formWithoutAdministrativeAddress } = form;
             const tlc_receiver = await this.getTLC(form.connote_receiver_zip_code);
             this.form = {
@@ -408,7 +405,6 @@ export default {
                 } 
             };
 
-            console.log("b", this.form)
             this.handleSubmitData();
         },
         async handleSubmitData() {
