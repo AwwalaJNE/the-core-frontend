@@ -94,6 +94,11 @@ export default {
                     width: "sm",
                 },
                 {
+                    label: "Destination Name",
+                    key: "destination_name",
+                    width: "sm",
+                },
+                {
                     label: "Type",
                     key: "item_type",
                     width: "xs",
@@ -153,7 +158,7 @@ export default {
                 if (val.status !== "READY") {
                     item.button_status = { remove: false };
                 }
-
+                item.destination_name = item?.bag?.destination?.node_name || '';
                 item.received_status = item.received_at ? 1 : 0;
             });
 
