@@ -169,6 +169,12 @@ export default {
         },
         listenLoading() {
             return this.loading;
+        },
+        listenGetUserNodeList() {
+        return this.$store.getters.getUser.user_data['nodes'];
+        },
+        nodeOrigin() {
+            return this.listenGetUserNodeList.length > 0 ? this.listenGetUserNodeList[0].node_origin : null;
         }
     },
     watch: {
@@ -320,8 +326,7 @@ export default {
                 const res = this.crisscross_number && !this.isCreateManually ? await axios.get(`${this.URL.connote}/${this.crisscross_number}?n=${this.listenNodeId}`, this.Helper.header()) : await axios.get(`${this.URL.connote_forward}/${this.connote_number}/scan?n=${this.listenNodeId}`, this.Helper.header());
                 if(res.data.data) {
                     let data = res.data.data;
-                    const userData = JSON.parse(localStorage.getItem('vuejs__user'));
-                    const nodeOrigin = userData.value.nodes[0].node_origin;
+                    const nodeOrigin = this.nodeOrigin;
                 
                     let obj = {
                         connote_shipper_name: data.connote_shipper_name || '',
