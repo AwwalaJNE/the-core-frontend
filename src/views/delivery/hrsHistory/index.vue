@@ -37,6 +37,7 @@
                                 ref="searchInput" 
                                 :placeholder="searchPlaceholder" 
                                 @searchValue="searchValue" 
+                                @handleSearch="handleSearch"
                             />
                         </vs-col>
                     </vs-row>
@@ -116,6 +117,15 @@ export default {
             this.$refs.searchInput.clear();
             this.dateRange = [];
         },
+        refresh() {
+            this.$refs.HRSTable.refresh();
+        },
+        handleSearch() {
+            this.$nextTick(() => {
+                this.refresh();
+                this.$refs.searchInput.clear();
+            });
+        }
     },
 };
 </script>]

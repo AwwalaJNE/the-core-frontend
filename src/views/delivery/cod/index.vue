@@ -69,6 +69,7 @@
                 ref="searchInput"
                 @searchValue="searchValue"
                 :placeholder="searchPlaceholder"
+                @handleSearch="handleSearch"
               />
             </vs-col>
           </vs-row>
@@ -242,6 +243,12 @@ export default {
         default:
       }
     },
+    handleSearch() {
+        this.$nextTick(() => {
+            this.refresh();
+            this.$refs.searchInput.clear();
+        });
+    }
   },
 };
 </script>

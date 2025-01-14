@@ -237,6 +237,9 @@ export default {
                 this.loading = false
             }
         },
+        refresh() {
+            this.$refs.inboundIncoming.refresh()
+        }
     },
     mounted() {
         this.getDataOrigin()

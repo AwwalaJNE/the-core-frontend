@@ -17,7 +17,7 @@
               <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
             </vs-col>
             <vs-col xs="6" sm="4" lg="2">
-              <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
+              <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" @handleSearch="handleSearch" />
             </vs-col>
           </vs-row>
         </div>
@@ -88,6 +88,15 @@ export default {
       this.searchBy = val;
       this.searchPlaceholder = key;
     },
+    refresh() {
+      this.$refs.HRSTable.refresh();
+    },
+    handleSearch() {
+        this.$nextTick(() => {
+            this.refresh();
+            this.$refs.searchInput.clear();
+        });
+    }
   },
 };
 </script>
