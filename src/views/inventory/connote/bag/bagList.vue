@@ -257,6 +257,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Masterbag",
+                    key: "masterbag_parent",
+                    width: "xs"
+                },
+                {
                     label: "Surat Muatan",
                     key: "surat_muatan",
                     width: "xs"

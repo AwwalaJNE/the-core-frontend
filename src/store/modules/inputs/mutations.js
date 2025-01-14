@@ -3932,6 +3932,21 @@ export default {
   //====== END KPI PROCESS TARGET ======//
 
   //====== CONNOTE FORWARD ======//
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE(state, payload) {
+    state.connote_forward.connote_receiver_address_type.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_address_type.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_address_type.valueData = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ArrData(state, payload) {
+    state.connote_forward.connote_receiver_address_type.hasOwnProperty('arrData') ?
+    state.connote_forward.connote_receiver_address_type.arrData = payload :
+    state.connote_forward.connote_receiver_address_type.arrData = []
+  },
+
   SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME(state, payload) {
     state.connote_forward.connote_shipper_name.value = payload
   },

@@ -110,6 +110,9 @@ export default {
       this.bag_number = val;
     }
   },
+  mounted() {
+    this.$refs.formInputUnbagging.$el.querySelector("input").focus();
+  },
 };
 </script>
 <style lang="scss">
