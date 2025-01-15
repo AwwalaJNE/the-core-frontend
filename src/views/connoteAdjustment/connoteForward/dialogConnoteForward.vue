@@ -417,7 +417,16 @@ export default {
             this.loading = true;
             try {
                 const res = await axios.post(`${this.URL.connote_forward}?n=${this.listenNodeId}`, this.form, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || "Request connote forward is success");
+                if (res.status === 200) {
+                    const { amount_total_price } = res.data.data;
+                    console.log("amount_total_price:", amount_total_price);
+
+                    if (amount_total_price <= 0) {
+                        this.openNotification("warning", '', "Warning", "Connote Forward berhasil dibuat tanpa Tariff");
+                    } else {
+                        this.openNotification(null, '', "Success", "Connote Forward berhasil dibuat");
+                    }
+                }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
