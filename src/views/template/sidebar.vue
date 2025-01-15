@@ -208,6 +208,7 @@ export default {
           label: "Inventory",
           url: null,
           icon: "bx bx-archive",
+          permission: "read-inventory",
           children: [
             {
               label: "Inventory Item",
@@ -349,6 +350,7 @@ export default {
           url: "/inbound/prealert",
           icon: "bx bxs-inbox",
           children: [],
+          permission: "read-receiving",
           meta: {
             resource_type: resourceLookup["RECEIVING"].resource_type,
             resource_code: resourceLookup["RECEIVING"].resource_code,
@@ -636,6 +638,7 @@ export default {
           label: "Cost To Cost",
           url: null,
           icon: "bx bx-wallet",
+          permission: "read-cost-to-cost",
           children: [
             {
               label: "Settings",
@@ -730,6 +733,7 @@ export default {
           label: "Settings",
           url: null,
           icon: "bx-cog",
+          permission: "read-settings",
           children: [
             {
               label: "Settings Tariff",
@@ -935,6 +939,7 @@ export default {
           label: "Admin",
           url: null,
           icon: "bx-user",
+          permission: "read-admin",
           children: [
             {
               label: "Resync Runsheet",
