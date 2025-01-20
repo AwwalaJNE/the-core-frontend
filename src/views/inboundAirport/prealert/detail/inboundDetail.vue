@@ -7,6 +7,7 @@
                 :tableLoading="listenLoading"
                 :hasAction="false"
                 :hasPagination="false"
+                :expandable="true"
             />
         </template>
     </div>
