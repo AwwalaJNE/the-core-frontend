@@ -169,6 +169,12 @@ export default {
         },
         listenLoading() {
             return this.loading;
+        },
+        listenGetUserNodeList() {
+        return this.$store.getters.getUser.user_data['nodes'];
+        },
+        nodeOrigin() {
+            return this.listenGetUserNodeList.length > 0 ? this.listenGetUserNodeList[0].node_origin : null;
         }
     },
     watch: {
@@ -200,7 +206,7 @@ export default {
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_isDisabled", false);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_isDisabled", false);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_isDisabled", false);
-                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled", true);
 
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_isDisabled", false);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_isDisabled", false);
@@ -318,10 +324,10 @@ export default {
             this.loading = true;
             try {
                 const res = this.crisscross_number && !this.isCreateManually ? await axios.get(`${this.URL.connote}/${this.crisscross_number}?n=${this.listenNodeId}`, this.Helper.header()) : await axios.get(`${this.URL.connote_forward}/${this.connote_number}/scan?n=${this.listenNodeId}`, this.Helper.header());
-
                 if(res.data.data) {
                     let data = res.data.data;
-
+                    const nodeOrigin = this.nodeOrigin;
+                
                     let obj = {
                         connote_shipper_name: data.connote_shipper_name || '',
                         connote_shipper_phone_number: data.connote_shipper_phone_number || '',
@@ -329,7 +335,7 @@ export default {
                         connote_shipper_street_address: data.connote_shipper_street_address || '',
                         connote_shipper_administrative_address: data.connote_shipper_administrative_address || '',
                         connote_shipper_zip_code: data.connote_shipper_zip_code || '',
-                        connote_shipper_tariff_code: data.connote_shipper_tariff_code || '',
+                        connote_shipper_tariff_code: nodeOrigin || '',
 
                         connote_receiver_name: data.connote_receiver_name || '',
                         connote_receiver_phone_number: data.connote_receiver_phone_number || '',
@@ -411,7 +417,16 @@ export default {
             this.loading = true;
             try {
                 const res = await axios.post(`${this.URL.connote_forward}?n=${this.listenNodeId}`, this.form, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || "Request connote forward is success");
+                if (res.status === 200) {
+                    const { amount_total_price } = res.data.data;
+                    console.log("amount_total_price:", amount_total_price);
+
+                    if (amount_total_price <= 0) {
+                        this.openNotification("warning", '', "Warning", "Connote Forward berhasil dibuat tanpa Tariff");
+                    } else {
+                        this.openNotification(null, '', "Success", "Connote Forward berhasil dibuat");
+                    }
+                }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -451,11 +466,10 @@ export default {
           } catch (_) {}
         },
       onChangeCustom(type, val, obj) {
-        switch (type) {
+          switch (type) {
           case "connote_shipper_administrative_address":
             this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS", obj?.data?.geolocation_location_name);
             this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE", obj?.data?.geolocation_subdistrict_zip_code);
-            this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE", obj?.data?.geolocation_subdistrict_tarif_code);
             break;
           case "connote_receiver_administrative_address":
             this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS", obj?.data?.geolocation_location_name);

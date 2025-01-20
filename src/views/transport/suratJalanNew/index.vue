@@ -309,6 +309,7 @@ export default {
         handleSearch() {
             this.$nextTick(() => {
                 this.refresh();
+                this.$refs.searchInput.clear();
             });
         }
     },

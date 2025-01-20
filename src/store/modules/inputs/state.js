@@ -4914,10 +4914,10 @@ export default {
       value: ''
     },
     connote_shipper_tariff_code: {
-      label: "Kode Tujuan*",
+      label: "Kode Asal*",
       key: "connote_shipper_tariff_code",
-      rule: "required",
-      isDisabled: false,
+      typeInput: "hidden|disabled|dotted",
+      isDisabled: true,
       width: '3',
       typeInput: "text",
       typeData: "String",
