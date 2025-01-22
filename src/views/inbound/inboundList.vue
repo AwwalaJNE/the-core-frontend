@@ -38,7 +38,8 @@ export default {
     },
     filterDateBy: String,
     isReset: Boolean,
-    created: Function
+    created: Function,
+    updateLocalStorage: Function
   },
   components: {
     "table-master": TableMaster,
@@ -77,15 +78,30 @@ export default {
           key: "inbound_total_bag",
           width: "auto",
         },
+        // {
+        //   label: "Connote",
+        //   key: "inbound_total_koli",
+        //   width: "auto",
+        // },
         {
-          label: "Connote",
-          key: "inbound_total_koli",
-          width: "auto",
+          label: "Fix Cost Weight",
+          key: "fix_cost_weight",
+          width: "auto"
         },
         {
-          label: "Weight (Kg)",
-          key: "inbound_total_weight",
-          width: "auto",
+          label: "Live Cost Weight",
+          key: "live_cost_weight",
+          width: "auto"
+        },
+        {
+          label: "Fix Actual Weight",
+          key: "fix_actual_weight",
+          width: "auto"
+        },
+        {
+          label: "Live Actual Weight",
+          key: "live_actual_weight",
+          width: "auto"
         },
         {
           label: "PIC",
@@ -130,18 +146,20 @@ export default {
       ],
       loading: false,
       dataItem: {},
-      tempSearch: "",
-      tempDate: [],
-      nodeOrigin: "",
-      node_type: "",
+      tempSearch: this.query || '',
+      tempDate: this.dateFilter || [],
+      nodeOrigin: this.origin || '',
+      node_type: this.nodeType || '',
       dialogTariff: false,
       pagination: {
         limit: 20,
         page_size: 1,
         page: 1,
       },
-      statusReceived: "",
-      prealertFilter: "",
+      statusReceived: this.received || '',
+      prealertFilter: this.prealert || '',
+      filterDateBy: this.filterDateBy || '',
+      searchBy: this.searchBy || '',
     };
   },
   watch: {
@@ -257,6 +275,7 @@ export default {
         if (this.tempDate !== old) {
           this.startDate = this.tempDate !== null ? this.tempDate[0] : "";
           this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
+          this.$emit("updateLocalStorage")
         }
         if (!this.isReset) {
           this.getTableData(
@@ -474,6 +493,18 @@ export default {
   },
   mounted() {
     this.refresh();
+    this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.nodeOrigin,
+            this.node_type,
+            this.statusReceived,
+            this.prealertFilter,
+            this.tempDate[0],
+            this.tempDate[1],
+            this.searchBy,
+            this.filterDateBy);
   },
 };
 </script>

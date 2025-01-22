@@ -3614,6 +3614,20 @@ export default {
 
 
   //====== CONNOTE FORWARD ======//
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_isDisabled', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ArrData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ArrData', payload)
+  },
+
   
   SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME({ commit }, payload) {
     commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME', payload);

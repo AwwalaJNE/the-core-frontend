@@ -249,29 +249,63 @@ export default {
           this.$refs.formInputInbound.$el.querySelector("input").focus();
           this.handlerClearForm()
         },
-        scanSm() {
-          this.sm_no = this.sm_no.replaceAll(/\s+/g, "");
-          this.form.sm_number = this.sm_no
-          this.isSmFilled = true
+        saveSmToStorage() {
+            const smData = {
+                sm_no: this.sm_no,
+                form_sm_number: this.form.sm_number,
+                isSmFilled: this.isSmFilled,
+                itemDataTable: this.itemDataTable,
+                itemDataTableProp: this.itemDataTableProp
+            };
+            localStorage.setItem('inboundAirportSmData', JSON.stringify(smData));
+        },
 
-          this.getSmDetails()
+        async loadSmFromStorage() {
+            const storedData = localStorage.getItem('inboundAirportSmData');
+            if (storedData) {
+                const smData = JSON.parse(storedData);
+                this.sm_no = smData.sm_no;
+                this.form.sm_number = smData.form_sm_number;
+                this.isSmFilled = smData.isSmFilled;
+                
+                if (this.sm_no) {
+                    await this.getSmDetails();
+                }
+            }
+        },
+
+        clearSmFromStorage() {
+            localStorage.removeItem('inboundAirportSmData');
+        },
+        scanSm() {
+            this.sm_no = this.sm_no.replaceAll(/\s+/g, "");
+            this.form.sm_number = this.sm_no;
+            this.isSmFilled = true;
+            
+            this.saveSmToStorage();
+            this.getSmDetails();
         },
         removeSmNumber() {
-          this.sm_no = '';
-          this.form.sm_number = ''
-          this.isSmFilled = false
-          this.itemDataTable = []
-          this.itemDataTableProp = []
+            this.sm_no = '';
+            this.form.sm_number = '';
+            this.isSmFilled = false;
+            this.itemDataTable = [];
+            this.itemDataTableProp = [];
+            
+            this.clearSmFromStorage();
 
-          this.$nextTick(() => {
-            this.$refs.formInputParentSm.$el.querySelector("input").focus();
-          })
+            this.$nextTick(() => {
+                this.$refs.formInputParentSm.$el.querySelector("input").focus();
+            });
         },
-        async getSmDetails() {
+         async getSmDetails() {
             if (this.sm_no) {
                 this.itemLoading = true;
                 try {
-                    const res = await axios.get(`${this.URL.inbound}/${this.sm_no}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, this.Helper.header());
+                    const res = await axios.get(
+                        `${this.URL.inbound}/${this.sm_no}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, 
+                        this.Helper.header()
+                    );
 
                     let arr = [res.data.data];
 
@@ -284,19 +318,28 @@ export default {
                     this.itemDataTable = arr;
                     let detail = res.data.detail
                     detail.map(item => {
-                      if (item.is_masterbag === '1') {
-                        item.item_type = 'MASTERBAG';
-                      } else {
-                        item.item_type = 'BAG';
-                      }
+                        if (item.is_masterbag === '1') {
+                            item.item_type = 'MASTERBAG';
+                        } else {
+                            item.item_type = 'BAG';
+                        }
                     })
-                    this.itemDataTableProp = detail
+                    this.itemDataTableProp = detail;
+
+                    this.saveSmToStorage();
 
                     this.$nextTick(() => {
-                      this.$refs.formInputInbound.$el.querySelector("input").focus();
+                        if (this.$refs.formInputInbound) {
+                            this.$refs.formInputInbound.$el.querySelector("input").focus();
+                        }
                     })
                 } catch (err) {
-                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                    this.openNotification(
+                        "danger", 
+                        err?.response?.data?.code ?? '', 
+                        "Failed", 
+                        err?.response?.data?.message ?? 'Something went wrong'
+                    );
                 } finally {
                     this.itemLoading = false;
                 }
@@ -326,6 +369,7 @@ export default {
         },
         async confirmInbound() {
           this.openProgress(null, "Processing", `Confirming Inbound`);
+          this.loading = true
           try {
               const res = await axios
                 .post(this.URL.inbound_staging_confirm + `?n=${this.listenNodeId}`,
@@ -335,6 +379,7 @@ export default {
           } catch (err) {
               this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
           } finally {
+              this.loading = false
               this.closeProgress();
               this.handlerClearForm();
               this.handleClearSm();
@@ -417,13 +462,16 @@ export default {
           this.item_no_remove = ''
         },
         handleClearSm() {
-          this.sm_no = ''
-          this.form.sm_number = ''
-          this.itemDataTable = []
-          this.itemDataTableProp = []
-          this.isSmFilled = false
-          this.$refs.formInputParentSm.$el.querySelector("input").focus();
-          this.handlerClearForm()
+            this.sm_no = '';
+            this.form.sm_number = '';
+            this.itemDataTable = [];
+            this.itemDataTableProp = [];
+            this.isSmFilled = false;
+            
+            this.clearSmFromStorage();
+            
+            this.$refs.formInputParentSm.$el.querySelector("input").focus();
+            this.handlerClearForm();
         },
         onCameraScannerGetData(data) {
           if (data && data.event === "result" && data.namespace === "formInputInbound") {
@@ -448,9 +496,13 @@ export default {
           this.$refs.cameraScanner.open('formInputInbound')
         },
     },
-    mounted() {
-      this.refresh()
-      this.$refs.formInputParentSm.$el.querySelector("input").focus();
+    async mounted() {
+      await this.loadSmFromStorage();
+      this.refresh();
+        
+      if (!this.isSmFilled && this.$refs.formInputParentSm) {
+          this.$refs.formInputParentSm.$el.querySelector("input").focus();
+      }
     }
 }
 </script>

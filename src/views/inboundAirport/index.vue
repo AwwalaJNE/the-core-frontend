@@ -57,9 +57,10 @@
                                         <vs-col xs="6" sm="4" lg="4">
                                             <search-input 
                                                 key="searchInput"
-                                                ref="searchInput" 
+                                                ref="searchInput"
                                                 :placeholder="searchPreAlertPlaceholder"
                                                 @searchValue="searchValue"
+                                                @handleSearch="handleSearch"
                                             />
                                         </vs-col>
                                     </vs-row>
@@ -82,6 +83,7 @@
                                                 ref="searchInput" 
                                                 :placeholder="searchSuratJalanPlaceholder"
                                                 @searchValue="searchValue"
+                                                @handleSearch="handleSearch"
                                             />
                                         </vs-col>
                                     </vs-row>
@@ -244,13 +246,13 @@ export default {
     methods: {
         updateSearchBy(key, val, dataType) {
             switch(this.navActive) {
-                case "PREALERT":
+                case "k-PREALERT":
                     this.searchPreAlertBy = val;
                     this.searchPreAlertPlaceholder = key;
                     this.searchPreAlertByDataType = dataType;
                     this.clearSearch();
                     break;
-                case "SJ":
+                case "k-SURATJALAN":
                     this.searchSuratJalanBy = val;
                     this.searchSuratJalanPlaceholder = key;
                     this.searchSuratJalanByDataType = dataType;
@@ -270,6 +272,7 @@ export default {
         activeTab(val) {
             this.navActive = val;
             this.clearSearch();
+            this.loadSearchFilter();
 
             let item = this.navItem.filter(item => {
                 return item.key == val;
@@ -279,6 +282,36 @@ export default {
         openDialog(){
             this.$router.push('inbound-airport/scan');
         },
+        loadSearchFilter(){
+            switch(this.navActive) {
+                case "k-PREALERT":
+                    let prealertSearch = JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.tempSearch || ''
+                    this.$refs.searchInput.value = prealertSearch
+                    this.tempSearch = prealertSearch
+                    break;
+                case "k-SURATJALAN":
+                    let sjSearch = JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.tempSearch || ''
+                    this.$refs.searchInput.value = sjSearch
+                    this.tempSearch = sjSearch
+                    break;
+                default:
+            }
+        },
+        handleSearch() {
+            this.$nextTick(() => {
+                this.refresh();
+                this.$refs.searchInput.clear();
+            });
+        },
+        refresh(){
+            let el = this.navActive
+            this.$refs[el].refresh()
+        },
     },
+    mounted() {
+        this.searchPreAlertBy = JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.searchBy || 'inbound_number';
+        this.searchSuratJalanBy = JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.searchBy || 'manifest_do_number';
+        this.loadSearchFilter()
+    }
 }
 </script>

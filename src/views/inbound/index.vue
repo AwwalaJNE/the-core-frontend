@@ -87,7 +87,7 @@
                       <vs-col xs="12" sm="4" lg="4">
                         <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
                       </vs-col>
-                      <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" :isNumeric="searchByNumeric" />
+                      <search-input ref="searchInput" @handleSearch="handleSearch" @searchValue="searchValue" :placeholder="searchPlaceholder" :isNumeric="searchByNumeric" />
                     </vs-row>
                   </vs-col>
                 </vs-row>
@@ -233,7 +233,7 @@ export default {
     data() {
         return {
             title:"Receiving ",
-            tempSearch: localStorage.getItem("InboundFilters")?.indexOf("tempSearch") || '',
+            tempSearch: "",
             tempDate: [],
             DataNode:[
               {
@@ -242,8 +242,8 @@ export default {
               }
             ],
             nodeOrigin:[],
-            node_request: localStorage.getItem("InboundFilters")?.indexOf("node_request") || '',
-            node_origin:localStorage.getItem("InboundFilters")?.indexOf("node_origin") || '',
+            node_request:'',
+            node_origin:'',
             DataArr: this.valueData ? this.valueData : [
               {
                 label: 'All Status',
@@ -262,7 +262,7 @@ export default {
                 value: 'OUTSTANDING'
               }
             ],
-            values: this.selectedValue ? this.selectedValue :"-",
+            values: JSON.parse(localStorage.getItem("InboundFilters"))?.values || '-',
             DataFilterPrealert: this.valueData ? this.valueData : [
               {
                 label: 'All Prealert',
@@ -285,13 +285,13 @@ export default {
                 value: 'RECEIVING ORION'
               }
             ],
-            value: this.selectedValue ? this.selectedValue :"-",
+            value: JSON.parse(localStorage.getItem("InboundFilters"))?.value || '-',
             arrValue: this.selectedValue ? this.selectedValue : [ {
               value: "-",
               label: "All Status"
             }],
-            filterDateBy:"received",
-            searchBy:"inbound_number",
+            filterDateBy:JSON.parse(localStorage.getItem("InboundFilters"))?.filterDateBy || 'received',
+            searchBy:JSON.parse(localStorage.getItem("InboundFilters"))?.searchBy || 'inbound_number',
             searchByNumeric: false,
             searchPlaceholder: "Search Inbound Number",
             searchParams: [
@@ -442,6 +442,21 @@ export default {
           localStorage.setItem("InboundFilters", JSON.stringify(filterData));
         },
 
+        updateLocalStorage() {
+          const filterData = {
+            searchBy: this.searchBy,
+            tempSearch: this.tempSearch,
+            filterDateBy: this.filterDateBy,
+            tempDate: this.tempDate,
+            node_request: this.node_request,
+            node_origin: this.node_origin,
+            value: this.value,
+            values: this.values,
+            searchPlaceholder: this.searchPlaceholder,
+          };
+          localStorage.setItem("InboundFilters", JSON.stringify(filterData));
+        },
+
         async getDataNodeType() {
           this.loading = true
           await axios
@@ -489,8 +504,7 @@ export default {
               })
         },
         updateNode(val){
-          // this.node_request = val
-          // this.updateLocalStorage()
+
         },
         getNodeTypeLogin(){
           return this.listenActiveUser.nodes[0].node_type ? this.listenActiveUser.nodes[0].node_type.node_type_name.toLowerCase() : '';
@@ -506,7 +520,7 @@ export default {
           } else if (indexOfBag === -1) {
             this.hasLinkedItems = ['inbound_number'];
           } 
-          // this.updateLocalStorage()
+          
         },
       updateSearchBy(key, val, isNumeric) {
         val = val.replaceAll(" ", "_");
@@ -533,14 +547,20 @@ export default {
         this.$nextTick(() => {
           this.reset = false
         });
+        localStorage.removeItem("InboundFilters")
       },
+      handleSearch() {
+          this.$nextTick(() => {
+              this.refresh();
+              this.$refs.searchInput.clear();
+          });
+      }
     },
 
     mounted() {
         this.getDataNodeType()
         this.getDataOrigin()
-        console.log(localStorage.getItem("InboundFilters").indexOf("node_request"))
-    },
+    }
 }
 </script>
 <style scoped>

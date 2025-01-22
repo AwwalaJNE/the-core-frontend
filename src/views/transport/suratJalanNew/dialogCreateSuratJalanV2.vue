@@ -188,13 +188,18 @@ export default {
                     width: "sm",
                 },
                 {
-                    label: "Total Weight (Kg)",
-                    key: "total_weight",
+                    label: "Cost Weight (Kg)",
+                    key: "cost_weight",
                     width: "sm",
                 },
                 {
                     label: "Node Code Destination",
                     key: "node_code_destination",
+                    width: "sm",
+                },
+                {
+                    label: "Node Name Destination",
+                    key: "node_name_destination",
                     width: "sm",
                 },
                 {
@@ -229,10 +234,10 @@ export default {
             manifest_lov: "",
             destinationUnlock: "",
             manifest_lov_list: [
-                {
-                    label: "Multi Destination",
-                    value: "ALL",
-                },
+                // {
+                //     label: "Multi Destination",
+                //     value: "ALL",
+                // },
                 {
                     label: "Single Destination",
                     value: "SAME DESTINATION",
@@ -302,6 +307,7 @@ export default {
             this.dataTable.forEach(item => {
                 item.destination = item.bag?.destination?.node_tariff_code || item.koli?.connote?.connote_receiver_tariff_code || item.manifest?.destination?.node_tariff_code || '';
                 item.node_code_destination = item?.bag?.destination?.node_code || item?.manifest?.destination?.branch_code || '';
+                item.node_name_destination = item?.bag?.destination?.node_name || '';
 
                 if (val.status !== "READY" || val.is_approve === 1) {
                     item.button_status = { remove: false };

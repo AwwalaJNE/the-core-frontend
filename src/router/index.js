@@ -559,7 +559,7 @@ const routes = [
         children: [],
         meta: {
           requiresAuth: true,
-          breadCrumb: "Trace Bag",
+          breadCrumb: "Trace Bag / Masterbag",
           resource_type: resourceLookup["TRACE_BAG"].resource_type,
           resource_code: resourceLookup["TRACE_BAG"].resource_code,
           resource_name: resourceLookup["TRACE_BAG"].resource_name

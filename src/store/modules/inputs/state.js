@@ -4767,6 +4767,25 @@ export default {
   },
 
   connote_forward: {
+    connote_receiver_address_type: {
+      label: "Tipe Destinasi",
+      key: "connote_receiver_address_type",
+      rule: "",
+      typeInput: "radio",
+      typeData: "String",
+      arrData: [
+        {
+          label: "Rumah",
+          value: "RUMAH"
+        },
+        {
+          label: "Kantor",
+          value: "KANTOR"
+        },
+      ],
+      valueData: null,
+      value: 'rumah'
+    },
     connote_shipper_name: {
       label: "Nama Pengirim*",
       key: "connote_shipper_name",
@@ -4895,10 +4914,10 @@ export default {
       value: ''
     },
     connote_shipper_tariff_code: {
-      label: "Kode Tujuan*",
+      label: "Kode Asal*",
       key: "connote_shipper_tariff_code",
-      rule: "required",
-      isDisabled: false,
+      typeInput: "hidden|disabled|dotted",
+      isDisabled: true,
       width: '3',
       typeInput: "text",
       typeData: "String",
