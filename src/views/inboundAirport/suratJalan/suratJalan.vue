@@ -63,6 +63,11 @@ export default {
       ],
       allColumn: [
         {
+          label:"Type",
+          key: "sj_type",
+          width: "auto",
+        },
+        {
           label: "Vehicle Type",
           key: "vehicle_type_name",
           width: "auto",
