@@ -99,11 +99,11 @@
                                 <transition name="slide-fade">
                                     <ReceivingLog 
                                         ref="ReceivingLog" 
-                                        :dataTableProp="dataTable" 
+                                        :dataTableProp="dataTableReceivingLog" 
                                         :loading="loading" 
-                                        :pageSize="page_size" 
-                                        :page="page" 
-                                        :limit="limit" 
+                                        :pageSize="pagination.page_size"
+                                        :page="pagination.page"
+                                        :limit="pagination.limit"
                                         :actionLimit="actionLimit" 
                                         :actionPagination="actionPagination"
                                     />
@@ -210,6 +210,11 @@ export default {
             parent_no: '',
             child_no: '',
             hasInboundNumber: false,
+            pagination: {
+                limit: 20,
+                page_size: 1,
+                page: 1
+            },
         }
     },
     methods: {
@@ -232,6 +237,7 @@ export default {
 
                 if (this.inbound_number) {
                     await this.getTableData();
+                    await this.getTableDataReceivingLog();
                 }
             }
         },
@@ -241,6 +247,7 @@ export default {
         },
         refresh(){
             this.getTableData();
+            this.getTableDataReceivingLog();
         },
         updateValue(type) {
             switch (type) {
@@ -349,6 +356,30 @@ export default {
                 }
             }
         },
+        async getTableDataReceivingLog() {
+            this.loading = true;
+            try {
+                const endpoint = this.inbound_number 
+                    ? `${this.URL.receiving_log}/${this.inbound_number}?n=${this.listenNodeId}`
+                    : `${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`;
+                
+                const res = await axios.get(endpoint, this.Helper.header());
+                const data = res.data.data;
+
+                this.dataTable = Array.isArray(data) ? data : [data];
+
+                if (!this.inbound_number) {
+                    const meta = res.data.meta;
+                    this.page = meta.current_page;
+                    this.limit = parseInt(meta.per_page);
+                    this.page_size = meta.last_page;
+                }
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
         back(){
             this.$router.push('/inbound/prealert')
             this.setRoutePageHistory(this.$route.meta, false);
@@ -375,6 +406,7 @@ export default {
             this.dataTableProp = [];
             
             this.clearInboundFromStorage();
+            this.getTableDataReceivingLog();
 
             this.$nextTick(() => {
                 this.$refs.formInputParentInbound.$el.querySelector("input").focus();
@@ -408,6 +440,7 @@ export default {
     },
     async mounted() {
         await this.loadInboundFromStorage();
+        await this.getTableDataReceivingLog();
         this.getParamRoute();
 
         if (!this.hasInboundNumber && !this.is_prealert && this.$refs.formInputParentInbound) {
