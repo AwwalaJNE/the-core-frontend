@@ -366,7 +366,7 @@ export default {
                 const res = await axios.get(endpoint, this.Helper.header());
                 const data = res.data.data;
 
-                this.dataTable = Array.isArray(data) ? data : [data];
+                this.dataTableReceivingLog = Array.isArray(data) ? data : [data];
 
                 if (!this.inbound_number) {
                     const meta = res.data.meta;
