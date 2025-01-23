@@ -14,8 +14,9 @@
           <vs-row>
             <vs-col lg="6" sm="12" xs="12">
               <div class="box information scan-box">
-                <vs-row>
-                  <vs-col xs="12" sm="12" lg="6" class="my-1">
+                <h4 align="left">Scan Item</h4>
+                <vs-row style="padding-bottom: 10px;">
+                  <vs-col xs="12" sm="12" lg="12" style="padding: 10px 0;">
                     <template>
                       <div class="center">
                         <form @submit.prevent>
@@ -44,7 +45,7 @@
                       </div>
                     </template>
                   </vs-col>
-                  <vs-col xs="12" sm="12" lg="6" class="my-1">
+                  <vs-col xs="12" sm="12" lg="12" style="padding: 10px 0;">
                     <template>
                       <div class="center">
                         <form @submit.prevent>
@@ -65,7 +66,7 @@
                       </div>
                     </template>
                   </vs-col>
-                  <vs-col xs="12" sm="12" lg="6" class="my-1">
+                  <vs-col xs="12" sm="12" lg="12" style="padding: 10px 0;">
                     <template>
                       <div class="center">
                         <form @submit.prevent>
@@ -88,25 +89,51 @@
                   </vs-col>
                 </vs-row>
               </div>
+              <div class="box information" style="padding-top: 1px !important;margin-top: 10px !important;">
+                <h4 align="left">Receiving Log</h4>
+                <div class="nav-box">
+                  <template>
+                    <transition name="slide-fade">
+                      <ReceivingLog 
+                        ref="ReceivingLog" 
+                        :dataTableProp="dataTableReceivingLog" 
+                        :loading="loading" 
+                        :pageSize="page_size" 
+                        :page="page" 
+                        :limit="limit" 
+                        :actionLimit="actionLimit" 
+                        :actionPagination="actionPagination"
+                      />
+                    </transition>
+                  </template>
+                </div>
+              </div>
             </vs-col>
 
             <!-- col for detail unreceive item-->
             <vs-col lg="6" sm="12" xs="12">
               <div class="box information" style="padding-top: 0px;">
-                <vs-row class="py-05" align="center">
-                  <vs-col w="6">
+                <vs-row class="py-05">
+                  <vs-col lg="8" sm="6" xs="6">
                     <h4 align="left">Scanned Items</h4>
                   </vs-col>
-                  <vs-col w="6" style="display: flex; align-items: center; justify-content: end;" >
+                  <vs-col lg="2" sm="3" xs="3">
+                    <switchNih
+                      name="Auto SJ|Manual" 
+                      formKey="is_auto_sj"
+                      @updateValue="updateValue"
+                    />
+                  </vs-col>
+                  <vs-col lg="2" sm="3" xs="3">
                     <vs-button
-                    @click="confirmInbound"
-                    :disabled="listenEmpty"
-                    style="margin: 0.5em;"
-                  >
-                    <span>
-                      Confirm
-                    </span>
-                  </vs-button>
+                      @click="confirmInbound"
+                      :disabled="listenEmpty"
+                      style="margin: 0.5em;"
+                    >
+                      <span>
+                        Confirm
+                      </span>
+                    </vs-button>
                   </vs-col>
                 </vs-row>
                 <div class="nav-box">
@@ -175,8 +202,10 @@ import axios from "axios";
 import master from "@/mixins/master"
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
+import Switch from "@/components/input/switch"
 
 import InboundDetail from "@/views/inboundAirport/scan/inboundDetail"
+import InboundReceivingLog from "@/views/inbound/scan/inboundReceivingLog"
 import smDetail from "@/views/inboundAirport/scan/smDetail"
 import CameraScanner from "@/components/scanner/camera.vue";
 import FloatingActionButton from "@/components/buttonCustom/floatingActionButton"
@@ -193,6 +222,8 @@ export default {
         CameraScanner,
         "floating-action-button": FloatingActionButton,
         "dialog-confirm": DialogConfirm,
+        "ReceivingLog": InboundReceivingLog,
+        "switchNih": Switch
     },
     data() {
         return {
@@ -204,6 +235,7 @@ export default {
             inbound_staging_id:'',
             loading: false,
             dataTable: [],
+            dataTableReceivingLog: [],
             limit:20,
             page_size: 1,
             page: 1,
@@ -525,10 +557,5 @@ export default {
   }
   .scan-box {
     padding: 1em;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
   }
 </style>

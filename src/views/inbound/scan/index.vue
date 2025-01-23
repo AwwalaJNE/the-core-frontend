@@ -13,11 +13,11 @@
             <vs-row>
                 <vs-col lg="6" sm="6" xs="12">
                     <template v-if="is_prealert">
-                        <div class="box information">
+                        <div class="box information" >
                             <h4 align="left">List of Bags</h4>
                             <div class="nav-box">
-                                <vs-row>
-                                    <vs-col xs="12" sm="12" lg="6">
+                                <vs-row style="padding-bottom: 5px;">
+                                    <vs-col xs="12" sm="12" lg="12" style="padding: 30px 0;">
                                         <template>
                                             <div class="center">
                                                 <vs-input 
@@ -44,9 +44,10 @@
                         </div>
                     </template>
                     <template v-else-if="!is_prealert">
-                        <div class="box information" style="align-content: space-around">
-                            <vs-row>
-                                <vs-col xs="12" sm="12" lg="6">
+                        <div class="box information" style="padding-top: 1px !important;">
+                            <h4 align="left">Scan Item</h4>
+                            <vs-row style="padding-bottom: 5px;">
+                                <vs-col xs="12" sm="12" lg="12" style="padding: 15px 0;">
                                     <vs-input 
                                         border 
                                         type="text"
@@ -71,7 +72,7 @@
                                         </div>
                                     </template>
                                 </vs-col>
-                                <vs-col xs="12" sm="12" lg="6">
+                                <vs-col xs="12" sm="12" lg="12" style="padding: 15px 0 ;">
                                     <vs-input 
                                         border 
                                         type="text"
@@ -91,6 +92,25 @@
                             </vs-row>
                         </div>
                     </template>
+                    <div class="box information" style="padding-top: 1px !important;margin-top: 10px !important;">
+                        <h4 align="left">Receiving Log</h4>
+                        <div class="nav-box">
+                            <template>
+                                <transition name="slide-fade">
+                                    <ReceivingLog 
+                                        ref="ReceivingLog" 
+                                        :dataTableProp="dataTable" 
+                                        :loading="loading" 
+                                        :pageSize="page_size" 
+                                        :page="page" 
+                                        :limit="limit" 
+                                        :actionLimit="actionLimit" 
+                                        :actionPagination="actionPagination"
+                                    />
+                                </transition>
+                            </template>
+                        </div>
+                    </div>
                 </vs-col>
 
                 <vs-col lg="6" sm="6" xs="12">
@@ -146,6 +166,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 
 import InboundInformation from "@/views/inbound/scan/inboundInformation"
 import InboundDetail from "@/views/inbound/scan/inboundDetail"
+import InboundReceivingLog from "@/views/inbound/scan/inboundReceivingLog"
 import CameraScanner from "@/components/scanner/camera.vue";
 
 
@@ -157,6 +178,7 @@ export default {
         "breadcrumb": Breadcrumb,
         "InboundInformation": InboundInformation,
         "InboundDetail": InboundDetail,
+        "ReceivingLog": InboundReceivingLog,
         CameraScanner,
     },
     computed: {
@@ -181,6 +203,7 @@ export default {
             loading: false,
             dataTable: [],
             dataTableProp: [],
+            dataTableReceivingLog: [],
             limit: 20,
             page_size: 1,
             page: 1,

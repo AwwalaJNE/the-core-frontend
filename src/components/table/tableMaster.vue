@@ -101,6 +101,11 @@
                 Action
               </vs-th>
             </template>
+            <template v-if="editOnly == true">
+              <vs-th class="action">
+                Action
+              </vs-th>
+            </template>
             <template v-if="removeOnly == true">
               <vs-th class="action">
                 Action
@@ -709,6 +714,28 @@
                 </vs-row>
               </vs-td>
             </template>
+            <template v-if="editOnly == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      size="small"
+                      flat
+                      :active="true"
+                      :disabled="
+                        item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true
+                      "
+                      type="submit"
+                      @click="actionEdit(item)"
+                    >
+                      <span>Edit</span>
+                    </vs-button>
+                  </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
             <template v-if="removeOnly == true">
               <vs-td class="action">
                 <vs-row justify="center" class="btn_action">
@@ -1237,6 +1264,7 @@ export default {
     hasLinked4: Array,
     hasLinkedChild: Array,
     hasId: Boolean,
+    editOnly: Boolean,
     removeOnly: Boolean,
     runsheetAction: Boolean,
     printAction: Boolean,
@@ -1422,6 +1450,9 @@ export default {
     },
     actionCollect(val) {
       this.$emit("actionCollect", val);
+    },
+    actionEdit(val) {
+      this.$emit("actionEdit", val);
     },
     actionRemove(val) {
       this.$emit("actionRemove", val);
