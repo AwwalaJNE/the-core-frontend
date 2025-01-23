@@ -121,7 +121,8 @@
                     <switchNih
                       name="Auto SJ|Manual" 
                       formKey="is_auto_sj"
-                      @updateValue="updateValue"
+                      :valueData="is_auto_sj"
+                      @updateValue="updateValueSwitch"
                     />
                   </vs-col>
                   <vs-col lg="2" sm="3" xs="3">
@@ -245,7 +246,8 @@ export default {
             isSmFilled: false,
             itemDataTable: [],
             itemDataTableProp: [],
-            itemLoading: false
+            itemLoading: false,
+            is_auto_sj: false
         }
     },
     computed: {
@@ -280,6 +282,9 @@ export default {
           this.processInbound();
           this.$refs.formInputInbound.$el.querySelector("input").focus();
           this.handlerClearForm()
+        },
+        updateValueSwitch(formKey, value) {
+            this[formKey] = value
         },
         saveSmToStorage() {
             const smData = {
@@ -405,13 +410,16 @@ export default {
           try {
               const res = await axios
                 .post(this.URL.inbound_staging_confirm + `?n=${this.listenNodeId}`,
-                null,
+                {
+                  auto_sj: this.is_auto_sj
+                },
                 this.Helper.header())
               this.openNotification('success', null, "Success", res?.data?.message ?? "Success Confirm Inbound");
           } catch (err) {
               this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
           } finally {
               this.loading = false
+              this.is_auto_sj = false
               this.closeProgress();
               this.handlerClearForm();
               this.handleClearSm();
