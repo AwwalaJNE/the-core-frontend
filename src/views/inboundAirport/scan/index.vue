@@ -307,6 +307,7 @@ export default {
                 
                 if (this.sm_no) {
                     await this.getSmDetails();
+                    await this.getTableDataReceivingLog();
                 }
             }
         },
@@ -321,6 +322,7 @@ export default {
             
             this.saveSmToStorage();
             this.getSmDetails();
+            this.getTableDataReceivingLog();
         },
         removeSmNumber() {
             this.sm_no = '';
@@ -330,6 +332,7 @@ export default {
             this.itemDataTableProp = [];
             
             this.clearSmFromStorage();
+            this.getTableDataReceivingLog();
 
             this.$nextTick(() => {
                 this.$refs.formInputParentSm.$el.querySelector("input").focus();
@@ -380,6 +383,30 @@ export default {
                 } finally {
                     this.itemLoading = false;
                 }
+            }
+        },
+        async getTableDataReceivingLog() {
+            this.loading = true;
+            try {
+                const endpoint = this.sm_no 
+                    ? `${this.URL.receiving_log}/${this.sm_no}?n=${this.listenNodeId}`
+                    : `${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`;
+                
+                const res = await axios.get(endpoint, this.Helper.header());
+                const data = res.data.data;
+
+                this.dataTableReceivingLog = Array.isArray(data) ? data : [data];
+
+                if (!this.sm_no) {
+                    const meta = res.data.meta;
+                    this.page = meta.current_page;
+                    this.limit = parseInt(meta.per_page);
+                    this.page_size = meta.last_page;
+                }
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
             }
         },
         updateValueRemove(){
@@ -538,6 +565,7 @@ export default {
     },
     async mounted() {
       await this.loadSmFromStorage();
+      await this.getTableDataReceivingLog();
       this.refresh();
         
       if (!this.isSmFilled && this.$refs.formInputParentSm) {
