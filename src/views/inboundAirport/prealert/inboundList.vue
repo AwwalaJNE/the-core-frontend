@@ -101,7 +101,7 @@ export default {
                 },
                 {
                     label: "Created",
-                    key: "created_at",
+                    key: "created_orion",
                     width: "xs"
                 },
                 {
