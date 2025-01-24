@@ -360,4 +360,7 @@ export default {
 
     // List SM 
     list_sm: api + 'list/sm-number',
+
+    // Receiving Log
+    receiving_log: api + 'receiving-log'
 }
