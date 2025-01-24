@@ -310,6 +310,11 @@ export default {
                 default:
             }
         },
+        async convertUrlToBlob(url) {
+    const response = await fetch(url);
+    const blob = await response.blob(); // Convert response to Blob
+    return blob;
+},
         async handleSubmit() {
             const uploadComponent = this.$refs.upload;
             if (!uploadComponent) return;
@@ -321,9 +326,12 @@ export default {
             formData.append('remark', this.remark);
 
             if (uploadedFiles.length > 0) {
-                uploadedFiles.forEach((file, index) => {
+                uploadedFiles.forEach(async (file, index) => {
                     if (file.raw instanceof Blob) {
                         formData.append(`file_${this.generateRandomString(5)}`, file.raw);
+                    } else if (file?.url) {
+                        const blob = await this.convertUrlToBlob(file.url);
+                        formData.append(`file_${this.generateRandomString(5)}`, blob, file.actual_file_name);
                     } else if (file?.uid) {
                         formData.append(`file_${file.uid}`, this.fileList[index].attachment_id);
                     } else {
