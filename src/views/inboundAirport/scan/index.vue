@@ -103,6 +103,7 @@
                         :limit="limit" 
                         :actionLimit="actionLimit" 
                         :actionPagination="actionPagination"
+                        @refresh="getTableDataReceivingLog"
                       />
                     </transition>
                   </template>

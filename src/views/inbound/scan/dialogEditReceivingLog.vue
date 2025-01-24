@@ -356,7 +356,7 @@ export default {
         },
         cancel() {
             this.handleClearForm()
-            this.closeDialog()
+            this.$emit('closeDialog')
         },
         handleFileChange(file, fileList) {
         if (fileList.length > this.maxFiles) {

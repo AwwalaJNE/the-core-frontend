@@ -18,8 +18,8 @@
         <dialog-edit-receiving-log
             ref="dialogEditReceivingLog"
             :active="dialogEditReceivingLogActive"
-            :closeDialog="closeDialog"
             :receivingLogId="receivingLogId"
+            @closeDialog="closeDialog"
         />
     </div>
 </template>
@@ -42,6 +42,7 @@ export default {
         limit: Number,
         actionLimit: Function,
         actionPagination: Function,
+        refresh: Function
     },
     components: {
         "table-master" : TableMaster,
@@ -85,6 +86,7 @@ export default {
         closeDialog() {
             this.dialogEditReceivingLogActive = false
             this.receivingLogId = "";
+            this.$emit('refresh')
         },
     },
 }
