@@ -20,7 +20,6 @@
             :active="dialogEditReceivingLogActive"
             :closeDialog="closeDialog"
             :receivingLogId="receivingLogId"
-            @updateValue="updateValue"
         />
     </div>
 </template>
@@ -86,86 +85,6 @@ export default {
         closeDialog() {
             this.dialogEditReceivingLogActive = false
             this.receivingLogId = "";
-        },
-        updateValue(key, val) {
-            switch(key) {
-                case "KOLI_CODE":
-                    this.koliCode = this.$refs.koliCode.value;
-                    break;
-                case "REMOVE_KOLI_CODE":
-                    this.removeKoliCode = this.$refs.removeKoliCode.value;
-                    break;
-                case "TRIGGER_DATE":
-                    this.dateRange = val
-                    this.refresh()
-                    break;
-                case "DIALOG_ENTRY_STATUS":
-                    this.form = val
-                    let formattedItems = {};
-                        
-                    this.listValidItem.forEach(item => {
-                        let key = `item_number_${this.generateRandomString(5)}`;
-                        formattedItems[key] = item;
-                    });
-
-                    this.form = {
-                        ...this.form,
-                        ...formattedItems
-                    };
-
-                    this.handleSubmit()
-                    break;
-                default:
-            }
-        },
-        async handleSubmit() {
-            const formData = new FormData();
-            for (const key in this.form) {
-                formData.append(key, this.form[key]);
-            }
-
-            this.loadingSubmit = true;
-
-            if (this.form.irregularity_id) {
-                await axios
-                    .post(
-                        this.URL.irregularities + `/update?n=${this.listenNodeId}`,
-                        formData, 
-                        this.Helper.header())
-                    .then(res => {
-                        this.loadingSubmit = false;
-                        this.dialogEditReceivingLogActive = false
-                        this.refresh()
-                        this.openNotification(null, 'Success', 'Create new entry status is success')
-                        this.handleClearForm();
-                    }).catch(err => {
-                        this.loadingSubmit = false;
-                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
-                    })
-            } else {
-                await axios
-                    .post(
-                        this.URL.irregularities + `?n=${this.listenNodeId}`,
-                        formData, 
-                        this.Helper.header())
-                    .then(res => {
-                        this.loadingSubmit = false;
-                        this.dialogEditReceivingLogActive = false
-                        this.refresh()
-                        this.openNotification(null, 'Success', 'Create new entry status is success')
-                        this.handleClearForm();
-                    }).catch(err => {
-                        this.loadingSubmit = false;
-                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
-                    })
-            }   
-
-            this.$nextTick(() => {
-                const inputElement = this.$refs.koliCode.$el.querySelector('input');
-                if (inputElement) {
-                    inputElement.focus();
-                }
-            });
         },
     },
 }
