@@ -69,14 +69,13 @@
                                     >
                                         <i class="el-icon-zoom-in"></i>
                                     </span>
-                                    <!-- // TODO: UNCOMMENT IF NEEDED
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
                                         @click="handleRemove(file)"
                                     >
                                         <i class="el-icon-delete"></i>
-                                    </span> -->
+                                    </span>
                                 </span>
                             </template>
                             <template v-else-if="isPDF(file)">
@@ -92,14 +91,13 @@
                                     >
                                         <i class="el-icon-zoom-in"></i>
                                     </span>
-                                    <!-- // TODO: UNCOMMENT IF NEEDED
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
                                         @click="handleRemove(file)"
                                     >
                                         <i class="el-icon-delete"></i>
-                                    </span> -->
+                                    </span>
                                 </span>
                             </template>
                             <template v-else>
@@ -116,14 +114,13 @@
                                             <i class="el-icon-download"></i>
                                         </a>
                                     </span>
-                                    <!-- // TODO: UNCOMMENT IF NEEDED
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
                                         @click="handleRemove(file)"
                                     >
                                         <i class="el-icon-delete"></i>
-                                    </span> -->
+                                    </span>
                                 </span>
                             </template>
                         </template>
