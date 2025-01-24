@@ -247,7 +247,6 @@ export default {
         },
         refresh(){
             this.getTableData();
-            this.getTableDataReceivingLog();
         },
         updateValue(type) {
             switch (type) {
@@ -283,8 +282,6 @@ export default {
             if (this.is_prealert){
                 this.inbound_number = this.$route.params.inbound_number.toString()
                 this.refresh()
-            } else {
-                this.getTableDataReceivingLog();
             }
         },
         async processInbond() {
@@ -296,7 +293,7 @@ export default {
 
                 this.openNotification('success', null, "Success", res?.data?.message ?? "Receiving success");
                 this.inbound_number = res?.data?.data?.inbound_number ?? this.inbound_number;
-                this.refresh();
+                
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
                 this.inbound_number = err?.response?.data?.reference ?? this.inbound_number;
@@ -305,6 +302,7 @@ export default {
                     this.handleClearTableInfo();
                 }
             } finally {
+                this.refresh();
                 this.closeProgress();
                 this.handlerClearForm();
             }
@@ -342,6 +340,8 @@ export default {
                     if (!this.is_prealert) {
                         this.$refs.formInputChildInbound.$el.querySelector("input").focus();
                     }
+
+                    this.getTableDataReceivingLog();
                 } catch (err) {
                     this.openNotification(
                         "danger", 
@@ -361,17 +361,19 @@ export default {
         async getTableDataReceivingLog() {
             this.loading = true;
             try {
-                const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=inbound_number&s=${this.inbound_number}`, this.Helper.header());
-                const data = res.data.data;
+                let search_by = '';
+                let s = '';
 
-                this.dataTableReceivingLog = Array.isArray(data) ? data : [data];
-
-                if (!this.inbound_number) {
-                    const meta = res.data.meta;
-                    this.page = meta.current_page;
-                    this.limit = parseInt(meta.per_page);
-                    this.page_size = meta.last_page;
+                if (this.inbound_number) {
+                    search_by = 'inbound_number'
+                    s = this.inbound_number
+                } else if (this.item_no || this.child_no) {
+                    search_by = 'item_number'
+                    s = this.item_no || this.child_no
                 }
+
+                const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=${search_by}&s=${s}`, this.Helper.header());
+                this.dataTableReceivingLog = res.data.data;
             } catch (err) {
                 this.dataTableReceivingLog = []
                 // this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
@@ -403,9 +405,9 @@ export default {
             this.hasInboundNumber = false;
             this.dataTable = [];
             this.dataTableProp = [];
+            this.dataTableReceivingLog = [];
             
             this.clearInboundFromStorage();
-            this.getTableDataReceivingLog();
 
             this.$nextTick(() => {
                 this.$refs.formInputParentInbound.$el.querySelector("input").focus();
