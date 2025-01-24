@@ -48,7 +48,7 @@ export default {
             if (!this.value) {
                 setTimeout(() => {
                     this.searchValue()
-                }, 100);
+                }, 1000);
             }
         },
         handleSearch() {

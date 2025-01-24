@@ -38,6 +38,7 @@ export default {
     },
     filterDateBy: String,
     isReset: Boolean,
+    created: Function,
     updateLocalStorage: Function
   },
   components: {
@@ -109,7 +110,7 @@ export default {
         },
         {
           label: "Created",
-          key: "created_at",
+          key: "created_orion",
           width: "xs",
         },
         {
@@ -328,7 +329,7 @@ export default {
             this.startDate,
             this.endDate,
             this.searchBy,
-            val
+            val || savedFilters
           );
           this.$emit("updateLocalStorage")
         }
