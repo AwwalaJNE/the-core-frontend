@@ -237,7 +237,6 @@ export default {
 
                 if (this.inbound_number) {
                     await this.getTableData();
-                    await this.getTableDataReceivingLog();
                 }
             }
         },
@@ -283,6 +282,8 @@ export default {
             if (this.is_prealert){
                 this.inbound_number = this.$route.params.inbound_number.toString()
                 this.refresh()
+            } else {
+                this.getTableDataReceivingLog();
             }
         },
         async processInbond() {
@@ -375,7 +376,8 @@ export default {
                     this.page_size = meta.last_page;
                 }
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.dataTableReceivingLog = []
+                // this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
             }
@@ -440,7 +442,7 @@ export default {
     },
     async mounted() {
         await this.loadInboundFromStorage();
-        await this.getTableDataReceivingLog();
+
         this.getParamRoute();
 
         if (!this.hasInboundNumber && !this.is_prealert && this.$refs.formInputParentInbound) {
