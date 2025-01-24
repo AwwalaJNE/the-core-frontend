@@ -404,7 +404,8 @@ export default {
                     this.page_size = meta.last_page;
                 }
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.dataTableReceivingLog = []
+                // this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
             }
