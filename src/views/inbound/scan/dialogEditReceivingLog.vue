@@ -69,13 +69,14 @@
                                     >
                                         <i class="el-icon-zoom-in"></i>
                                     </span>
+                                    <!-- // TODO: UNCOMMENT IF NEEDED
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
                                         @click="handleRemove(file)"
                                     >
                                         <i class="el-icon-delete"></i>
-                                    </span>
+                                    </span> -->
                                 </span>
                             </template>
                             <template v-else-if="isPDF(file)">
@@ -91,13 +92,14 @@
                                     >
                                         <i class="el-icon-zoom-in"></i>
                                     </span>
+                                    <!-- // TODO: UNCOMMENT IF NEEDED
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
                                         @click="handleRemove(file)"
                                     >
                                         <i class="el-icon-delete"></i>
-                                    </span>
+                                    </span> -->
                                 </span>
                             </template>
                             <template v-else>
@@ -114,13 +116,14 @@
                                             <i class="el-icon-download"></i>
                                         </a>
                                     </span>
+                                    <!-- // TODO: UNCOMMENT IF NEEDED
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
                                         @click="handleRemove(file)"
                                     >
                                         <i class="el-icon-delete"></i>
-                                    </span>
+                                    </span> -->
                                 </span>
                             </template>
                         </template>
@@ -324,11 +327,14 @@ export default {
                 uploadedFiles.forEach((file, index) => {
                     if (file.raw instanceof Blob) {
                         formData.append(`file_${this.generateRandomString(5)}`, file.raw);
-                    } else if (file?.uid) {
-                        formData.append(`file_${file.uid}`, this.fileList[index].attachment_id);
-                    } else {
-                        this.openNotification('warn', null, 'File is not valid', ' Please put in the expected format');
-                    }
+                    } 
+                    // TODO: UNCOMMENT IF NEEDED
+                    // else if (file?.uid) {
+                    //     formData.append(`file_${file.uid}`, this.fileList[index].attachment_id);
+                    // } 
+                    // else {
+                    //     this.openNotification('warn', null, 'File is not valid', ' Please put in the expected format');
+                    // }
                 });
             }
 
