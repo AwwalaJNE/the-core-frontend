@@ -379,7 +379,7 @@ export default {
       valueData: function (val) {
         if (val != undefined) {
           this.DataArr = val
-          // this.updateLocalStorage()
+          this.updateLocalStorage()
         }
       },
       selectedValue: function (val) {
@@ -389,13 +389,13 @@ export default {
           } else {
             this.arrValue = val
           }
-          // this.updateLocalStorage()
+          this.updateLocalStorage()
         }
       },
       searchByNumeric: function(val, old) {
         if (val !== old) {
           this.clearSearch()
-          // this.updateLocalStorage()
+          this.updateLocalStorage()
         }
       }
     },
@@ -405,19 +405,19 @@ export default {
         },
         searchValue (val) {
             this.tempSearch = val
-            // this.updateLocalStorage()
+            this.updateLocalStorage()
         },
         searchDate(formKey, val) {
             this.tempDate = val;
-            // this.updateLocalStorage()
+            this.updateLocalStorage()
         },
         clearSearch() {
             this.$refs.searchInput.clear()
-            // this.updateLocalStorage()
+            this.updateLocalStorage()
         },
         clearDate() {
             this.tempDate = [];
-            // this.updateLocalStorage()
+            this.updateLocalStorage()
         },
         openDialog(){
             this.$router.push('/inbound/prealert/scan')
@@ -425,7 +425,7 @@ export default {
         },
         updateFilterDateBy(key,val) {
           this.filterDateBy = val;
-          // this.updateLocalStorage()
+          this.updateLocalStorage()
         },
 
         updateLocalStorage() {
@@ -511,7 +511,7 @@ export default {
         },
         updateStatusInbound(val){
           this.$emit("updateStatusInbound", this.listenFormKey, val)
-          // this.updateLocalStorage()
+          this.updateLocalStorage()
         },
         updatePrealert(val){
           const indexOfBag = val.indexOf('bag');
@@ -527,11 +527,11 @@ export default {
         this.searchBy = val;
         this.searchPlaceholder = key;
         this.searchByNumeric = isNumeric;
-        // this.updateLocalStorage()
+        this.updateLocalStorage()
       },
       updateFilterDateBy(key,val) {
         this.filterDateBy = val;
-        // this.updateLocalStorage()
+        this.updateLocalStorage()
       },
       resetFilters() {
         this.reset = true
