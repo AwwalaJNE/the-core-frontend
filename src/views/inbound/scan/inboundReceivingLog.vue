@@ -12,14 +12,26 @@
             :editOnly="true"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
-            @actionEdit="actionDetail"
+            @actionEdit="editReceivingLog"
+        />
+
+        <dialog-edit-receiving-log
+            ref="dialogEditReceivingLog"
+            :active="dialogEditReceivingLogActive"
+            :closeDialog="closeDialog"
+            :receivingLogId="receivingLogId"
+            @updateValue="updateValue"
         />
     </div>
 </template>
 
 <script>
+import axios from "axios";
 import master from "@/mixins/master"
+
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogEditReceivingLog from '@/views/inbound/scan/dialogEditReceivingLog'
+
 export default {
     name:"Inbound-Receiving-Log",
     mixins: [master],
@@ -33,7 +45,8 @@ export default {
         actionPagination: Function,
     },
     components: {
-        "table-master" : TableMaster
+        "table-master" : TableMaster,
+        "dialog-edit-receiving-log": DialogEditReceivingLog
     },
     data() {
         return {
@@ -55,6 +68,9 @@ export default {
                     width: "lg"
                 },
             ],
+            loadingDetail: false,
+            receivingLogId: "",
+            dialogEditReceivingLogActive: false,
         }
     },
     computed: {
@@ -63,21 +79,93 @@ export default {
         }
     },
     methods: {
-        actionDetail(row){
-            let userRole = this.listenUserRole["user_role_code"] ? this.listenUserRole["user_role_code"].toLowerCase() : ""
-            
+        async editReceivingLog(val){
+            this.dialogEditReceivingLogActive = true;  
+            this.receivingLogId = val.receiving_log_id
+        },
+        closeDialog() {
+            this.dialogEditReceivingLogActive = false
+            this.receivingLogId = "";
+        },
+        updateValue(key, val) {
+            switch(key) {
+                case "KOLI_CODE":
+                    this.koliCode = this.$refs.koliCode.value;
+                    break;
+                case "REMOVE_KOLI_CODE":
+                    this.removeKoliCode = this.$refs.removeKoliCode.value;
+                    break;
+                case "TRIGGER_DATE":
+                    this.dateRange = val
+                    this.refresh()
+                    break;
+                case "DIALOG_ENTRY_STATUS":
+                    this.form = val
+                    let formattedItems = {};
+                        
+                    this.listValidItem.forEach(item => {
+                        let key = `item_number_${this.generateRandomString(5)}`;
+                        formattedItems[key] = item;
+                    });
 
-            if(this.dataTable.length > 0 && !userRole.includes("courier")) {
-                val["pickup_node_id_destination"] = val["node_destination"] ? val["node_destination"]["node_name"] : ""     
-                this.dataItem = val
-                this.dataItem.pickup_date = (val.pickup_date) ? val.pickup_date.substring(0,10) : val.pickup_date
+                    this.form = {
+                        ...this.form,
+                        ...formattedItems
+                    };
 
-                this.$store.dispatch(`SET_PICKUP_LIST_PICKUP_NODE_ID_DESTINATION_ValueData`, val["node_destination"])
-
-                this.$nextTick(() => {
-                this.dialogPickupList = true
-                });
+                    this.handleSubmit()
+                    break;
+                default:
             }
+        },
+        async handleSubmit() {
+            const formData = new FormData();
+            for (const key in this.form) {
+                formData.append(key, this.form[key]);
+            }
+
+            this.loadingSubmit = true;
+
+            if (this.form.irregularity_id) {
+                await axios
+                    .post(
+                        this.URL.irregularities + `/update?n=${this.listenNodeId}`,
+                        formData, 
+                        this.Helper.header())
+                    .then(res => {
+                        this.loadingSubmit = false;
+                        this.dialogEditReceivingLogActive = false
+                        this.refresh()
+                        this.openNotification(null, 'Success', 'Create new entry status is success')
+                        this.handleClearForm();
+                    }).catch(err => {
+                        this.loadingSubmit = false;
+                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
+                    })
+            } else {
+                await axios
+                    .post(
+                        this.URL.irregularities + `?n=${this.listenNodeId}`,
+                        formData, 
+                        this.Helper.header())
+                    .then(res => {
+                        this.loadingSubmit = false;
+                        this.dialogEditReceivingLogActive = false
+                        this.refresh()
+                        this.openNotification(null, 'Success', 'Create new entry status is success')
+                        this.handleClearForm();
+                    }).catch(err => {
+                        this.loadingSubmit = false;
+                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
+                    })
+            }   
+
+            this.$nextTick(() => {
+                const inputElement = this.$refs.koliCode.$el.querySelector('input');
+                if (inputElement) {
+                    inputElement.focus();
+                }
+            });
         },
     },
 }
