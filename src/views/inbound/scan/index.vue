@@ -360,7 +360,7 @@ export default {
         async getTableDataReceivingLog() {
             this.loading = true;
             try {
-                const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&s=${this.inbound_number}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&s=${this.inbound_number}&pov=receiver`, this.Helper.header());
                 const data = res.data.data;
 
                 this.dataTableReceivingLog = Array.isArray(data) ? data : [data];
