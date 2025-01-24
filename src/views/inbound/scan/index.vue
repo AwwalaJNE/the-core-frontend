@@ -13,11 +13,11 @@
             <vs-row>
                 <vs-col lg="6" sm="6" xs="12">
                     <template v-if="is_prealert">
-                        <div class="box information">
+                        <div class="box information" >
                             <h4 align="left">List of Bags</h4>
                             <div class="nav-box">
-                                <vs-row>
-                                    <vs-col xs="12" sm="12" lg="6">
+                                <vs-row style="padding-bottom: 5px;">
+                                    <vs-col xs="12" sm="12" lg="12" style="padding: 30px 0;">
                                         <template>
                                             <div class="center">
                                                 <vs-input 
@@ -44,9 +44,10 @@
                         </div>
                     </template>
                     <template v-else-if="!is_prealert">
-                        <div class="box information" style="align-content: space-around">
-                            <vs-row>
-                                <vs-col xs="12" sm="12" lg="6">
+                        <div class="box information" style="padding-top: 1px !important;">
+                            <h4 align="left">Scan Item</h4>
+                            <vs-row style="padding-bottom: 5px;">
+                                <vs-col xs="12" sm="12" lg="12" style="padding: 15px 0;">
                                     <vs-input 
                                         border 
                                         type="text"
@@ -71,7 +72,7 @@
                                         </div>
                                     </template>
                                 </vs-col>
-                                <vs-col xs="12" sm="12" lg="6">
+                                <vs-col xs="12" sm="12" lg="12" style="padding: 15px 0 ;">
                                     <vs-input 
                                         border 
                                         type="text"
@@ -91,6 +92,26 @@
                             </vs-row>
                         </div>
                     </template>
+                    <div class="box information" style="padding-top: 1px !important;margin-top: 10px !important;">
+                        <h4 align="left">Receiving Log</h4>
+                        <div class="nav-box">
+                            <template>
+                                <transition name="slide-fade">
+                                    <ReceivingLog 
+                                        ref="ReceivingLog" 
+                                        :dataTableProp="dataTableReceivingLog" 
+                                        :loading="loading" 
+                                        :pageSize="pagination.page_size"
+                                        :page="pagination.page"
+                                        :limit="pagination.limit"
+                                        :actionLimit="actionLimit" 
+                                        :actionPagination="actionPagination"
+                                        @refresh="getTableDataReceivingLog"
+                                    />
+                                </transition>
+                            </template>
+                        </div>
+                    </div>
                 </vs-col>
 
                 <vs-col lg="6" sm="6" xs="12">
@@ -146,6 +167,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 
 import InboundInformation from "@/views/inbound/scan/inboundInformation"
 import InboundDetail from "@/views/inbound/scan/inboundDetail"
+import InboundReceivingLog from "@/views/inbound/scan/inboundReceivingLog"
 import CameraScanner from "@/components/scanner/camera.vue";
 
 
@@ -157,6 +179,7 @@ export default {
         "breadcrumb": Breadcrumb,
         "InboundInformation": InboundInformation,
         "InboundDetail": InboundDetail,
+        "ReceivingLog": InboundReceivingLog,
         CameraScanner,
     },
     computed: {
@@ -181,12 +204,18 @@ export default {
             loading: false,
             dataTable: [],
             dataTableProp: [],
+            dataTableReceivingLog: [],
             limit: 20,
             page_size: 1,
             page: 1,
             parent_no: '',
             child_no: '',
             hasInboundNumber: false,
+            pagination: {
+                limit: 20,
+                page_size: 1,
+                page: 1
+            },
         }
     },
     methods: {
@@ -218,6 +247,7 @@ export default {
         },
         refresh(){
             this.getTableData();
+            this.getTableDataReceivingLog();
         },
         updateValue(type) {
             switch (type) {
@@ -253,6 +283,8 @@ export default {
             if (this.is_prealert){
                 this.inbound_number = this.$route.params.inbound_number.toString()
                 this.refresh()
+            } else {
+                this.getTableDataReceivingLog();
             }
         },
         async processInbond() {
@@ -326,6 +358,27 @@ export default {
                 }
             }
         },
+        async getTableDataReceivingLog() {
+            this.loading = true;
+            try {
+                const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=inbound_number&s=${this.inbound_number}`, this.Helper.header());
+                const data = res.data.data;
+
+                this.dataTableReceivingLog = Array.isArray(data) ? data : [data];
+
+                if (!this.inbound_number) {
+                    const meta = res.data.meta;
+                    this.page = meta.current_page;
+                    this.limit = parseInt(meta.per_page);
+                    this.page_size = meta.last_page;
+                }
+            } catch (err) {
+                this.dataTableReceivingLog = []
+                // this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
         back(){
             this.$router.push('/inbound/prealert')
             this.setRoutePageHistory(this.$route.meta, false);
@@ -352,6 +405,7 @@ export default {
             this.dataTableProp = [];
             
             this.clearInboundFromStorage();
+            this.getTableDataReceivingLog();
 
             this.$nextTick(() => {
                 this.$refs.formInputParentInbound.$el.querySelector("input").focus();
@@ -385,6 +439,7 @@ export default {
     },
     async mounted() {
         await this.loadInboundFromStorage();
+
         this.getParamRoute();
 
         if (!this.hasInboundNumber && !this.is_prealert && this.$refs.formInputParentInbound) {
