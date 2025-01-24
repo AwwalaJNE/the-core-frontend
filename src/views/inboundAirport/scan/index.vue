@@ -248,7 +248,8 @@ export default {
             itemDataTable: [],
             itemDataTableProp: [],
             itemLoading: false,
-            is_auto_sj: false
+            is_auto_sj: false,
+            list_receiving_log: []
         }
     },
     computed: {
@@ -271,6 +272,16 @@ export default {
               this.page = res.data.meta.current_page
               this.limit = parseInt(res.data.meta.per_page)
               this.page_size = res.data.meta.last_page
+
+              this.dataTable.forEach(item => {
+                if (!this.list_receiving_log.some(list => list.item_number === item.item_number)) {
+                  this.list_receiving_log.push({
+                    item_number: item.item_number,
+                    sm_no: ''
+                  });
+                }
+              });
+              
               this.loading = false
             }).catch(err => {
               this.loading = false
@@ -296,6 +307,14 @@ export default {
                 itemDataTableProp: this.itemDataTableProp
             };
             localStorage.setItem('inboundAirportSmData', JSON.stringify(smData));
+            
+            if (!this.list_receiving_log.some(item => item.sm_no === this.sm_no)) {
+              this.list_receiving_log.push({
+                item_number: '',
+                sm_no: this.sm_no,
+              });
+              this.getTableDataReceivingLog();
+            }
         },
 
         async loadSmFromStorage() {
@@ -305,10 +324,18 @@ export default {
                 this.sm_no = smData.sm_no;
                 this.form.sm_number = smData.form_sm_number;
                 this.isSmFilled = smData.isSmFilled;
+
+                if (!this.list_receiving_log.some(item => item.sm_no === this.sm_no)) {
+                  this.list_receiving_log.push({
+                    item_number: '',
+                    sm_no: this.sm_no,
+                  });
+
+                  this.getTableDataReceivingLog();
+                }
                 
                 if (this.sm_no) {
-                    await this.getSmDetails();
-                    await this.getTableDataReceivingLog();
+                  await this.getSmDetails();
                 }
             }
         },
@@ -323,17 +350,17 @@ export default {
             
             this.saveSmToStorage();
             this.getSmDetails();
-            this.getTableDataReceivingLog();
         },
         removeSmNumber() {
+            this.list_receiving_log = this.list_receiving_log.filter(item => item.sm_no !== this.sm_no);
             this.sm_no = '';
             this.form.sm_number = '';
             this.isSmFilled = false;
             this.itemDataTable = [];
             this.itemDataTableProp = [];
+            this.dataTableReceivingLog = [];
             
             this.clearSmFromStorage();
-            this.getTableDataReceivingLog();
 
             this.$nextTick(() => {
                 this.$refs.formInputParentSm.$el.querySelector("input").focus();
@@ -387,25 +414,37 @@ export default {
             }
         },
         async getTableDataReceivingLog() {
-            this.loading = true;
-            try {
-              const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=inbound_number&s=${this.sm_no}`, this.Helper.header());
-                const data = res.data.data;
+          this.loading = true;
+          this.dataTableReceivingLog = [];
 
-                this.dataTableReceivingLog = Array.isArray(data) ? data : [data];
+          try {
+            const existingRecords = new Set(
+              this.dataTableReceivingLog.map(item => JSON.stringify(item))
+            );
 
-                if (!this.sm_no) {
-                    const meta = res.data.meta;
-                    this.page = meta.current_page;
-                    this.limit = parseInt(meta.per_page);
-                    this.page_size = meta.last_page;
+            for (const { sm_no, item_number } of this.list_receiving_log) {
+              if (!sm_no && !item_number) continue;
+
+              const search_by = sm_no ? 'inbound_number' : 'item_number';
+              const s = sm_no || item_number;
+
+              const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=${search_by}&s=${s}`, this.Helper.header());
+
+              res.data.data.forEach(newItem => {
+                const serializedItem = JSON.stringify(newItem);
+
+                if (!existingRecords.has(serializedItem)) {
+                  this.dataTableReceivingLog.push(newItem);
+                  existingRecords.add(serializedItem);
                 }
-            } catch (err) {
-                this.dataTableReceivingLog = []
-                // this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loading = false;
+              });
             }
+          } catch (err) {
+            this.dataTableReceivingLog = [];
+            // this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+          } finally {
+            this.loading = false;
+          }
         },
         updateValueRemove(){
           this.item_no_remove = this.item_no_remove.replaceAll(/\s+/g, "");
@@ -439,6 +478,7 @@ export default {
                   auto_sj: this.is_auto_sj
                 },
                 this.Helper.header())
+              this.getTableDataReceivingLog();
               this.openNotification('success', null, "Success", res?.data?.message ?? "Success Confirm Inbound");
           } catch (err) {
               this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
@@ -507,6 +547,7 @@ export default {
                     this.URL.inbound_staging + `/${this.item_no_remove}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
+                    this.list_receiving_log = this.list_receiving_log.filter(log => log.item_number !== res.data.reference);
                     this.closeDialogConfirmRemove()
                     this.loadingConfirmRemove = false
                     this.refresh()
@@ -527,6 +568,7 @@ export default {
           this.item_no_remove = ''
         },
         handleClearSm() {
+            this.list_receiving_log = this.list_receiving_log.filter(item => item.sm_no !== this.sm_no);
             this.sm_no = '';
             this.form.sm_number = '';
             this.itemDataTable = [];
@@ -563,7 +605,6 @@ export default {
     },
     async mounted() {
       await this.loadSmFromStorage();
-      await this.getTableDataReceivingLog();
       this.refresh();
         
       if (!this.isSmFilled && this.$refs.formInputParentSm) {
