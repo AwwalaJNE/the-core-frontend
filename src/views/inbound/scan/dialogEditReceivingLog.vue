@@ -325,13 +325,12 @@ export default {
                     if (file.raw instanceof Blob) {
                         formData.append(`file_${this.generateRandomString(5)}`, file.raw);
                     } 
-                    // TODO: UNCOMMENT IF NEEDED
-                    // else if (file?.uid) {
-                    //     formData.append(`file_${file.uid}`, this.fileList[index].attachment_id);
-                    // } 
-                    // else {
-                    //     this.openNotification('warn', null, 'File is not valid', ' Please put in the expected format');
-                    // }
+                    else if (file?.uid) {
+                        formData.append(`file_${file.uid}`, this.fileList[index].attachment_id);
+                    } 
+                    else {
+                        this.openNotification('warn', null, 'File is not valid', ' Please put in the expected format');
+                    }
                 });
             }
 
