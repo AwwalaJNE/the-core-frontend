@@ -15,7 +15,7 @@
             <vs-col lg="6" sm="12" xs="12">
               <div class="box information scan-box">
                 <h4 align="left">Scan Item</h4>
-                <vs-row style="padding-bottom: 10px;">
+                <vs-row style="padding-bottom: 10px; padding: 0 20px;">
                   <vs-col xs="12" sm="12" lg="12" style="padding: 10px 0;">
                     <template>
                       <div class="center">
@@ -388,7 +388,7 @@ export default {
         async getTableDataReceivingLog() {
             this.loading = true;
             try {
-              const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&s=${this.sm_no}&pov=receiver`, this.Helper.header());
+              const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=inbound_number&s=${this.sm_no}`, this.Helper.header());
                 const data = res.data.data;
 
                 this.dataTableReceivingLog = Array.isArray(data) ? data : [data];
