@@ -98,15 +98,24 @@
                     <h4 align="left">Scanned Items</h4>
                   </vs-col>
                   <vs-col w="6" style="display: flex; align-items: center; justify-content: end;" >
+                    <switchComponent
+                      :name="'AUTO SJ'" 
+                      :titleLabel="''"
+                      :rules="''" 
+                      :formKey="'auto_sj'"
+                      :valueData="isAutoSJ"
+                      @updateValue="updateValueSwitch"
+                      :disabled="listenIsDisabled" />
+
                     <vs-button
-                    @click="confirmInbound"
-                    :disabled="listenEmpty"
-                    style="margin: 0.5em;"
-                  >
-                    <span>
-                      Confirm
-                    </span>
-                  </vs-button>
+                      @click="confirmInbound"
+                      :disabled="listenEmpty"
+                      style="margin: 0.5em;"
+                    >
+                      <span>
+                        Confirm
+                      </span>
+                    </vs-button>
                   </vs-col>
                 </vs-row>
                 <div class="nav-box">
@@ -181,6 +190,7 @@ import smDetail from "@/views/inboundAirport/scan/smDetail"
 import CameraScanner from "@/components/scanner/camera.vue";
 import FloatingActionButton from "@/components/buttonCustom/floatingActionButton"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
+import Switch from "@/components/input/switch"
 
 export default {
     name:"inbound-airport-scan",
@@ -193,6 +203,7 @@ export default {
         CameraScanner,
         "floating-action-button": FloatingActionButton,
         "dialog-confirm": DialogConfirm,
+        "switchComponent": Switch,
     },
     data() {
         return {
@@ -213,7 +224,10 @@ export default {
             isSmFilled: false,
             itemDataTable: [],
             itemDataTableProp: [],
-            itemLoading: false
+            itemLoading: false,
+            isAutoSJ: true,
+            disabledSwitch: false,
+            listenIsDisabled: false
         }
     },
     computed: {
@@ -371,9 +385,12 @@ export default {
           this.openProgress(null, "Processing", `Confirming Inbound`);
           this.loading = true
           try {
+              const req = {
+                  is_auto_sj: this.isAutoSJ
+              }
               const res = await axios
                 .post(this.URL.inbound_staging_confirm + `?n=${this.listenNodeId}`,
-                null,
+                req,
                 this.Helper.header())
               this.openNotification('success', null, "Success", res?.data?.message ?? "Success Confirm Inbound");
           } catch (err) {
@@ -495,6 +512,12 @@ export default {
         handleClickFAB() {
           this.$refs.cameraScanner.open('formInputInbound')
         },
+        updateValueSwitch(type, val, obj = {}) {
+          this.isAutoSJ = val;
+        },
+        listenDisabled() {
+          return this.disabledSwitch || false
+        }
     },
     async mounted() {
       await this.loadSmFromStorage();
