@@ -212,6 +212,7 @@ import smDetail from "@/views/inboundAirport/scan/smDetail"
 import CameraScanner from "@/components/scanner/camera.vue";
 import FloatingActionButton from "@/components/buttonCustom/floatingActionButton"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
+import Switch from "@/components/input/switch"
 
 export default {
     name:"inbound-airport-scan",
@@ -433,6 +434,9 @@ export default {
           this.openProgress(null, "Processing", `Confirming Inbound`);
           this.loading = true
           try {
+              const req = {
+                  is_auto_sj: this.isAutoSJ
+              }
               const res = await axios
                 .post(this.URL.inbound_staging_confirm + `?n=${this.listenNodeId}`,
                 {
@@ -560,6 +564,12 @@ export default {
         handleClickFAB() {
           this.$refs.cameraScanner.open('formInputInbound')
         },
+        updateValueSwitch(type, val, obj = {}) {
+          this.isAutoSJ = val;
+        },
+        listenDisabled() {
+          return this.disabledSwitch || false
+        }
     },
     async mounted() {
       await this.loadSmFromStorage();
