@@ -4970,5 +4970,45 @@ export default {
       valueData: false,
       value: false
     }
+  },
+
+  receiving_log: {
+    inbound_number: {
+      label: "Inbound Number",
+      key: "inbound_number",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    item_number: {
+      label: "Item Number",
+      key: "item_number",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    status: {
+      label: "Status*",
+      key: "status",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    remark: {
+      label: "Remark",
+      key: "remark",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    }
   }
 }

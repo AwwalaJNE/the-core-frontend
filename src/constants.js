@@ -90,6 +90,7 @@ const resources = [
     { resource_code: "CORE-01-089", resource_type: "PAGE", resource_name: "RECEIVING_AIRPORT_SCAN" },
     { resource_code: "CORE-01-090", resource_type: "PAGE", resource_name: "AIRPORT_RECEIVING_DETAIL" },
     { resource_code: "CORE-01-091", resource_type: "PAGE", resource_name: "SETTINGS_SURAT_MUATAN" },
+    { resource_code: "CORE-01-092", resource_type: "PAGE", resource_name: "RECEIVING_LOG" },
 ];
 
 
