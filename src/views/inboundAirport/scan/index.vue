@@ -472,13 +472,10 @@ export default {
           this.openProgress(null, "Processing", `Confirming Inbound`);
           this.loading = true
           try {
-              const req = {
-                  is_auto_sj: this.isAutoSJ
-              }
               const res = await axios
                 .post(this.URL.inbound_staging_confirm + `?n=${this.listenNodeId}`,
                 {
-                  auto_sj: this.is_auto_sj
+                  is_auto_sj: this.is_auto_sj
                 },
                 this.Helper.header())
               this.getTableDataReceivingLog();
@@ -604,9 +601,6 @@ export default {
         },
         handleClickFAB() {
           this.$refs.cameraScanner.open('formInputInbound')
-        },
-        updateValueSwitch(type, val, obj = {}) {
-          this.isAutoSJ = val;
         },
         listenDisabled() {
           return this.disabledSwitch || false
