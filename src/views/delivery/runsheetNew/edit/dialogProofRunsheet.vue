@@ -9,7 +9,7 @@
         </template>
 
         <template v-slot:content>
-            <div class="image-container">
+            <div>
                 <img 
                     v-if="dataItem.pod_image" 
                     alt="Proof Image"
@@ -42,13 +42,7 @@ export default {
 </script>
 
 <style scoped>
-.image-container {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
 .image-preview {
-    object-fit: contain;
+    width: -webkit-fill-available;
 }
 </style>
