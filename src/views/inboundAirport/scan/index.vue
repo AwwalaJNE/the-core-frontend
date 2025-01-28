@@ -428,7 +428,7 @@ export default {
               const search_by = sm_no ? 'inbound_number' : 'item_number';
               const s = sm_no || item_number;
 
-              const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=${search_by}&s=${s}`, this.Helper.header());
+              const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=${search_by}&s=${s}&pov=receiver`, this.Helper.header());
 
               res.data.data.forEach(newItem => {
                 const serializedItem = JSON.stringify(newItem);

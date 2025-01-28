@@ -372,7 +372,7 @@ export default {
                     s = this.item_no || this.child_no
                 }
 
-                const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=${search_by}&s=${s}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=${search_by}&s=${s}&pov=receiver`, this.Helper.header());
                 this.dataTableReceivingLog = res.data.data;
             } catch (err) {
                 this.dataTableReceivingLog = []
