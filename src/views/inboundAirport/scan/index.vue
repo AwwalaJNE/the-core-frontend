@@ -212,7 +212,6 @@ import smDetail from "@/views/inboundAirport/scan/smDetail"
 import CameraScanner from "@/components/scanner/camera.vue";
 import FloatingActionButton from "@/components/buttonCustom/floatingActionButton"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
-import Switch from "@/components/input/switch"
 
 export default {
     name:"inbound-airport-scan",
