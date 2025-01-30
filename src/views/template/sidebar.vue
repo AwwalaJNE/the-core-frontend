@@ -1068,11 +1068,6 @@ export default {
 
       menus.forEach((menu) => {
         const { permission, children, rolePermission, showAll, label } = menu;
-
-        if (permissions.includes("read-airport-prealert") && label === "Receiving") {
-          return;
-        }
-
         if (foundPermission?.type === 'exclusive') {
           if (children.length > 0) {
             const filteredChildren = [];
@@ -1104,22 +1099,21 @@ export default {
             filtered.push(menu);
           }
         } else if (children.length > 0) {
-          const filteredChildren = [];
+          const filteredChildren = children.filter((child) => {
 
-          children.forEach((child) => {
+            // NOTES: If have permission 'read-airport-prealert', hide 'Receiving'
+            if (permissions.includes("read-airport-prealert") && child.label === "Receiving") {
+              return false;
+            }
+
             if (child.permission) {
-              if (permissions.includes(child.permission)) {
-                filteredChildren.push(child);
-              }
+              return permissions.includes(child.permission);
             }
-            else if (child.rolePermission) {
-              if (child.rolePermission === foundPermission?.role) {
-                filteredChildren.push(child);
-              }
+
+            if (child.rolePermission) {
+              return child.rolePermission === foundPermission?.role;
             }
-            else {
-              filteredChildren.push(child);
-            }
+            return true;
           });
 
           if (filteredChildren.length > 0) {
