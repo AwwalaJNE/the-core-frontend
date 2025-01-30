@@ -1,7 +1,7 @@
 <template>
     <dialog-master 
         :actived="active"
-        @closeDialog="closeDialog"
+        :closeDialog="cancel"
         width="md"
     >
         <template v-slot:header>
