@@ -4099,4 +4099,33 @@ export default {
   },
 
   //====== END SURAT MUATAN STOCK ======//
+
+  //====== START OF RECEIVING LOG ======//
+  SET_RECEIVING_LOG_INBOUND_NUMBER({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_INBOUND_NUMBER', payload)
+  },
+  SET_RECEIVING_LOG_INBOUND_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_INBOUND_NUMBER_ValueData', payload)
+  },
+  SET_RECEIVING_LOG_ITEM_NUMBER({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_ITEM_NUMBER', payload)
+  },
+  SET_RECEIVING_LOG_ITEM_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_ITEM_NUMBER_ValueData', payload)
+  },
+  SET_RECEIVING_LOG_STATUS({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_STATUS', payload)
+  },
+  SET_RECEIVING_LOG_STATUS_ValueData({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_STATUS_ValueData', payload)
+  },
+  SET_RECEIVING_LOG_STATUS_ArrData({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_STATUS_ArrData', payload)
+  },
+  SET_RECEIVING_LOG_REMARK({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_REMARK', payload)
+  },
+  SET_RECEIVING_LOG_REMARK_ValueData({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_REMARK_ValueData', payload)
+  },
 }

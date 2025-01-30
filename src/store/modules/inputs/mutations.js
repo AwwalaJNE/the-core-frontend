@@ -4459,4 +4459,29 @@ export default {
 
 
   //====== END SURAT MUATAN STOCK ======//
+
+    //====== START RECEIVING LOG ======//
+    SET_RECEIVING_LOG_INBOUND_NUMBER(state, payload) {
+      state.receiving_log.inbound_number.value = payload
+    },
+    SET_RECEIVING_LOG_INBOUND_NUMBER_ValueData(state, payload) {
+      state.receiving_log.inbound_number.valueData = payload
+    },
+    SET_RECEIVING_LOG_ITEM_NUMBER(state, payload) {
+      state.receiving_log.item_number.value = payload
+    },
+    SET_RECEIVING_LOG_ITEM_NUMBER_ValueData(state, payload) {
+      state.receiving_log.item_number.valueData = payload
+    },
+    SET_RECEIVING_LOG_STATUS(state, payload) {
+      state.receiving_log.status.value = payload
+    },
+    SET_RECEIVING_LOG_STATUS_ValueData(state, payload) {
+      state.receiving_log.status.valueData = payload
+    },
+    SET_RECEIVING_LOG_STATUS_ArrData(state, payload) {
+      state.receiving_log.status.hasOwnProperty('arrData') ?
+      state.receiving_log.status.arrData = payload :
+      state.receiving_log.status.arrData = []
+    },
 }

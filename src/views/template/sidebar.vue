@@ -347,27 +347,46 @@ export default {
         },
         {
           label: "Receiving",
-          url: "/inbound/prealert",
+          url: null,
           icon: "bx bxs-inbox",
-          children: [],
-          permission: "read-receiving",
-          meta: {
-            resource_type: resourceLookup["RECEIVING"].resource_type,
-            resource_code: resourceLookup["RECEIVING"].resource_code,
-            resource_name: resourceLookup["RECEIVING"].resource_name
-          },
-        },
-        {
-          label: "Airport Receiving",
-          url: "/inbound-airport",
-          icon: "bx bxs-inbox",
-          children: [],
-          permission: "read-airport-prealert",
-          meta: {
-            resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
-            resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
-            resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
-          },
+          children: [
+              {
+              label: "Receiving",
+              url: "/inbound/prealert",
+              icon: "bx bxs-checkbox",
+              children: [],
+              permission: "read-receiving",
+              meta: {
+                resource_type: resourceLookup["RECEIVING"].resource_type,
+                resource_code: resourceLookup["RECEIVING"].resource_code,
+                resource_name: resourceLookup["RECEIVING"].resource_name
+              },
+            },
+            {
+              label: "Airport Receiving",
+              url: "/inbound-airport",
+              icon: "bx bxs-checkbox",
+              children: [],
+              permission: "read-airport-prealert",
+              meta: {
+                resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
+                resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
+                resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
+              },
+            },
+            {
+              label: "Receiving Log",
+              url: "/receiving-log",
+              icon: "bx bxs-checkbox",
+              children: [],
+              permission: "read-receiving",
+              meta: {
+                resource_type: resourceLookup["RECEIVING_LOG"].resource_type,
+                resource_code: resourceLookup["RECEIVING_LOG"].resource_code,
+                resource_name: resourceLookup["RECEIVING_LOG"].resource_name
+              },
+            },
+          ]
         },
         {
           label: "Delivery",
