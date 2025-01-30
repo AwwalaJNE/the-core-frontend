@@ -2,7 +2,7 @@
     <footer id="custom-footer" class="footer">
         <vs-row justify="space-between" style="padding: 0 2em;">
             <p>Core JNE</p>
-            <p>&copy; 2024 JNE. All rights reserved</p>
+            <p>&copy; 2025 JNE. All rights reserved</p>
             <p>v.{{ version }}</p>
         </vs-row>
     </footer>
