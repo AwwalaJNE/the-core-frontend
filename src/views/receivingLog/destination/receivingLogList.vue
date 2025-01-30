@@ -4,15 +4,15 @@
             :dataTable="dataTable" 
             :dataColumn="dataColumn" 
             :tableLoading="listenLoading"
-            :hasAction="false"
             :hasPagination="true"
             :pageSize="pageSize"
             :page="page"
             :limit="limit"
-            :editOnly="true"
+            :customAction="true"
+            :customActionList="customActionList"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
-            @actionEdit="actionUpdate"
+            @actionUpdate="actionUpdate"
         />
         <dialog-edit-receiving-log
             :active="dialogEdit"
@@ -75,6 +75,13 @@ export default {
                     width: "auto"
                 }
             ],
+            customActionList: [
+              {
+                label: 'Edit',
+                key: 'edit',
+                attribute: '',
+              }
+            ],
             dialogEdit: false,
             receivingLogId: "",
         }
@@ -97,6 +104,9 @@ export default {
         async getTableDataReceivingLog(status = this.statusSearch, startDate = this.startDate, endDate = this.endDate) {
             this.loading = true;
             try {
+                let buttonStatus = {
+                    edit: true,
+                };
                 const searchBy = this.searchValue ? this.searchOriginBy : '';
                 const searchValue = this.searchValue || '';
                 const pov = 'receiver';
@@ -111,6 +121,9 @@ export default {
                 const data = res.data.data;
 
                 this.dataTable = Array.isArray(data) ? data : [data];
+                data.map(item => {
+                    item["button_status"] = buttonStatus;
+                })
 
                 const meta = res.data.meta;
                 this.page = meta.current_page;
