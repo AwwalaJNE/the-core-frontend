@@ -126,6 +126,11 @@
                 Action
               </vs-th>
             </template>
+            <template v-if="runsheetProofAction == true">
+              <vs-th class="action">
+                Proof
+              </vs-th>
+            </template>
             <template
               v-if="
                 printAction == true ||
@@ -822,6 +827,31 @@
                 </vs-row>
               </vs-td>
             </template>
+            <template v-if="runsheetProofAction == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <i 
+                    class="bx bxs-show" 
+                    style="font-size: 36px;" 
+                    @click="actionRunsheetProofAction(item)">
+                  </i>
+                    <!-- <vs-button
+                      block
+                      :disabled="
+                        item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true
+                      "
+                      size="small"
+                      flat
+                      warn
+                      :active="true"
+                      @click="actionConfirmed(item)"
+                    >
+                      <span>Confirmed</span>
+                    </vs-button> -->
+                </vs-row>
+              </vs-td>
+            </template>
             <template v-if="
               printAction == true && item.hasOwnProperty('is_approve') 
               ? item.is_approve === 1 
@@ -1267,6 +1297,7 @@ export default {
     editOnly: Boolean,
     removeOnly: Boolean,
     runsheetAction: Boolean,
+    runsheetProofAction: Boolean,
     printAction: Boolean,
     pickupListAction: Boolean,
     tracingListAction: Boolean,
@@ -1459,6 +1490,9 @@ export default {
     },
     actionConfirmed(val, key) {
       this.$emit("actionConfirmed", val, key);
+    },
+    actionRunsheetProofAction(val, key) {
+      this.$emit("actionRunsheetProofAction", val, key);
     },
     actionPrint(val) {
       this.$emit("actionPrint", val);

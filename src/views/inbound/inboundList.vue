@@ -139,6 +139,11 @@ export default {
           width: "auto",
         },
         {
+          label: "Received By",
+          key: "received_by_user_name",
+          width: "auto"
+        },
+        {
           label: "Received Time",
           key: "received_at",
           width: "auto",

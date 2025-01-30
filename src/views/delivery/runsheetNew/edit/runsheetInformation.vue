@@ -14,16 +14,24 @@
         :isMultipleSelectColoum="true"
         :onRowClickCallback="onRowClickCallback"
         :allCheckCallback="onAllCheckCallback"
+        :runsheetProofAction="true"
         @updateValue="updateValue"
         @updateSelected="updateSelected"
         @inputFocus="onClickClear"
         @actionPopup="actionPopup"
+        @actionRunsheetProofAction="actionRunsheetProofAction"
       />
       <dialog-warning-runsheet
         title="Warning Info"
         :warning_id="warning_id"
         :active="openDialogWarning"
         :closeDialog="closeActionPopup"
+      />
+      <dialog-proof-runsheet
+        title="Proof Image"
+        :dataItem="dataItem"
+        :active="openDialogRunsheetProofAction"
+        :closeDialog="closeRunsheetProofAction"
       />
     </template>
   </div>
@@ -36,12 +44,14 @@ import master from "@/mixins/master";
 import TableMaster from "@/components/table/tableMaster.vue";
 
 import DialogWarningRunsheet from "@/views/delivery/runsheetNew/edit/dialogWarningRunsheet"
+import DialogProofRunsheet from "./dialogProofRunsheet.vue";
 
 export default {
   name: "InboundIncoming",
   components: {
     "table-master": TableMaster,
     "dialog-warning-runsheet": DialogWarningRunsheet,
+    "dialog-proof-runsheet": DialogProofRunsheet
   },
   mixins: [master],
   props: {
@@ -158,7 +168,9 @@ export default {
         page: 1,
       },
       openDialogWarning: false,
-      warning_id: ''
+      openDialogRunsheetProofAction: false,
+      warning_id: '',
+      dataItem: {}
     };
   },
   computed: {
@@ -271,6 +283,14 @@ export default {
     },
     closeActionPopup() {
       this.openDialogWarning = false;
+    },
+    actionRunsheetProofAction(val) {
+      this.dataItem = val;
+      this.openDialogRunsheetProofAction = true;
+    },
+    closeRunsheetProofAction() {
+      this.openDialogRunsheetProofAction = false;
+      this.dataItem = {};
     },
     updateSelected(arr) {
       const { selected } = this.$refs.tableMaster;

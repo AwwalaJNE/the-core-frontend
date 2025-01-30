@@ -225,6 +225,9 @@ import Destination from "@/views/settings/destination"
 // === Surat Muatan Settings ===
 import SuratMuatanSettings from "@/views/settings/suratMuatan"
 
+// === Receiving Log ===
+import ReceivingLog from "@/views/receivingLog"
+
 import { resourceLookup } from '@/constants'; 
 
 Vue.use(VueRouter)
@@ -1139,6 +1142,18 @@ const routes = [
           resource_type: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_type,
           resource_code: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_code,
           resource_name: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_name
+        }
+      },
+      {
+        path: "/receiving-log",
+        name: "Receiving Log",
+        component: ReceivingLog,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Receiving Log",
+          resource_type: resourceLookup["RECEIVING_LOG"].resource_type,
+          resource_code: resourceLookup["RECEIVING_LOG"].resource_code,
+          resource_name: resourceLookup["RECEIVING_LOG"].resource_name
         }
       },
       {

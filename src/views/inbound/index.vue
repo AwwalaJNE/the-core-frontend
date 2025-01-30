@@ -438,20 +438,6 @@ export default {
             node_origin: this.node_origin,
             value: this.value,
             values: this.values,
-          };
-          localStorage.setItem("InboundFilters", JSON.stringify(filterData));
-        },
-
-        updateLocalStorage() {
-          const filterData = {
-            searchBy: this.searchBy,
-            tempSearch: this.tempSearch,
-            filterDateBy: this.filterDateBy,
-            tempDate: this.tempDate,
-            node_request: this.node_request,
-            node_origin: this.node_origin,
-            value: this.value,
-            values: this.values,
             searchPlaceholder: this.searchPlaceholder,
           };
           localStorage.setItem("InboundFilters", JSON.stringify(filterData));
