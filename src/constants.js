@@ -98,4 +98,609 @@ export const resourceLookup = resources.reduce((acc, { resource_code, resource_t
     acc[resource_name] = { resource_code, resource_type, resource_name };
     return acc;
 }, {});
-  
+
+
+const dataTableColumn = [
+    {
+        RECEIVING: [
+            {
+                label: 'Inbound Number',
+                key: 'inbound_number',
+            },
+            {
+                label: 'IM Numbers',
+                key: 'im_numbers',
+            },
+            {
+                label: 'Vehicle',
+                key: 'vehicle',
+            },
+            {
+                label: 'From',
+                key: 'inbound_node_name_origin',
+            },
+            {
+                label: '#SM /SJ /PICKUP',
+                key: 'inbound_type',
+            },
+            {
+                label: 'Item',
+                key: 'inbound_total_bag',
+            },
+            {
+                label: 'Connote',
+                key: 'inbound_total_koli',
+            },
+            {
+                label: 'Fix Cost Weight',
+                key: 'fix_cost_weight',
+            },
+            {
+                label: 'Live Cost Weight',
+                key: 'live_cost_weight',
+            },
+            {
+                label: 'Fix Actual Weight',
+                key: 'fix_actual_weight',
+            },
+            {
+                label: 'Live Actual Weight',
+                key: 'live_actual_weight',
+            },
+            {
+                label: 'PIC',
+                key: 'carrier_employee_name',
+            },
+            {
+                label: 'Created',
+                key: 'created_orion',
+            },
+            {
+                label: 'ETD',
+                key: 'inbound_etd',
+            },
+            {
+                label: 'ETA',
+                key: 'inbound_eta',
+            },
+            {
+                label: 'Departed',
+                key: 'departed_at',
+            },
+            {
+                label: 'Status',
+                key: 'status',
+            },
+            {
+                label: 'Received At',
+                key: 'inbound_node_name_receiver',
+            },
+            {
+                label: 'Received By',
+                key: 'received_by_user_name',
+            },
+            {
+                label: 'Received Time',
+                key: 'received_at',
+            },
+        ],
+        RECEIVING_AIRPORT_PRE_ALERT: [
+            {
+                label: 'Inbound Number',
+                key: 'inbound_number',
+            },
+            {
+                label: 'Vehicle',
+                key: 'vehicle',
+            },
+            {
+                label: 'From',
+                key: 'inbound_node_name_origin',
+            },
+            {
+                label: 'Item',
+                key: 'inbound_total_bag',
+            },
+            {
+                label: 'Connote',
+                key: 'inbound_total_koli',
+            },
+            {
+                label: 'Fix Cost Weight',
+                key: 'fix_cost_weight',
+            },
+            {
+                label: 'Live Cost Weight',
+                key: 'live_cost_weight',
+            },
+            {
+                label: 'Fix Actual Weight',
+                key: 'fix_actual_weight',
+            },
+            {
+                label: 'Live Actual Weight',
+                key: 'live_actual_weight',
+            },
+            {
+                label: 'PIC',
+                key: 'carrier_employee_name',
+            },
+            {
+                label: 'Created',
+                key: 'created_orion',
+            },
+            {
+                label: 'ETD',
+                key: 'inbound_etd',
+            },
+            {
+                label: 'ETA',
+                key: 'inbound_eta',
+            },
+            {
+                label: 'Departed',
+                key: 'departed_at',
+            },
+            {
+                label: 'Status',
+                key: 'status',
+            },
+            {
+                label: 'Received At',
+                key: 'inbound_node_name_receiver',
+            },
+            {
+                label: 'Received By',
+                key: 'received_by_user_name',
+            },
+            {
+                label: 'Received Times',
+                key: 'received_at',
+            },
+        ],
+        RECEIVING_AIRPORT_SURAT_JALAN: [
+            {
+                label: 'Surat Jalan #',
+                key: 'manifest_do_number',
+            },
+            {
+                label: 'Type',
+                key: 'sj_type',
+            },
+            {
+                label: 'Vehicle Type',
+                key: 'vehicle_type_name',
+            },
+            {
+                label: 'Driver',
+                key: 'driver_name'
+            },
+            {
+                label: 'Mode#',
+                key: 'vehicle_mode_name',
+            },
+            {
+                label: 'Origin',
+                key: 'node_id_origin_name',
+            },
+            {
+                label: 'Destination',
+                key: 'node_id_destination_name',
+            },
+            {
+                label: 'Kg',
+                key: 'total_weight',
+            },
+            {
+                label: 'Fix Cost Weight',
+                key: 'fix_cost_weight',
+            },
+            {
+                label: 'Live Cost Weight',
+                key: 'live_cost_weight',
+            },
+            {
+                label: 'Fix Actual Weight',
+                key: 'fix_actual_weight',
+            },
+            {
+                label: 'Live Actual Weight',
+                key: 'live_actual_weight',
+            },
+            {
+                label: 'Total Item',
+                key: 'total_detail_items',
+            },
+            {
+                label: 'ETD',
+                key: 'etd',
+            },
+            {
+                label: 'ETA',
+                key: 'eta',
+            },
+            {
+                label: 'Status',
+                key: 'status',
+            },
+        ],
+        INVENTORY_KOLI: [
+            {
+                label: 'Koli Number',
+                key: 'koli_number',
+            },
+            {
+                label: 'Bag',
+                key: 'bag_number',
+            },
+            {
+                label: 'Connote Created Date',
+                key: 'created_at',
+            },
+            {
+                label: 'Receiving Date',
+                key: 'received_at',
+            },
+            {
+                label: 'Last Bag Opened Date',
+                key: 'latest_opened_bag',
+            },
+            {
+                label: 'Origin',
+                key: 'origin_tariff_code',
+            },
+            {
+                label: 'Destination',
+                key: 'destination_tariff_code',
+            },
+            {
+                label: 'Weight(Kg)',
+                key: 'connote_chargeable_weight',
+            },
+            {
+                label: 'Service',
+                key: 'connote_service_code',
+            },
+            {
+                label: 'COD',
+                key: 'is_cod',
+            },
+            {
+                label: 'Amount COD (Rp)',
+                key: 'amount_cod',
+            },
+            {
+                label: 'SLA',
+                key: 'connote_sla_date',
+            },
+            {
+                label: 'Runsheet Number',
+                key: 'delivery_runsheet_number',
+            },
+            {
+                label: 'Wood Package',
+                key: 'packing_kayu_type',
+            },
+            {
+                label: 'Cancel',
+                key: 'is_void_status',
+            },
+            {
+                label: 'Status POD',
+                key: 'delivery_status_code',
+            },
+            {
+                label: 'Status Irregularity',
+                key: 'status_irregularity',
+            },
+            {
+                label: 'Status',
+                key: 'is_confirmed',
+            },
+        ],
+        INVENTORY_CONNOTE: [
+            {
+                label: 'Connote Number',
+                key: 'connote_number',
+            },
+            {
+                label: 'Origin',
+                key: 'connote_shipper_tariff_code',
+            },
+            {
+                label: 'Destination',
+                key: 'connote_receiver_tariff_code',
+            },
+            {
+                label: 'Weight(Kg)',
+                key: 'connote_chargeable_weight',
+            },
+            {
+                label: 'Service',
+                key: 'connote_service_code',
+            },
+            {
+                label: 'COD',
+                key: 'is_cod',
+            },
+            {
+                label: 'Amount COD (Rp)',
+                key: 'amount_cod',
+            },
+            {
+                label: 'SLA',
+                key: 'connote_sla_date',
+            },
+            {
+                label: 'Created At',
+                key: 'created_at',
+            },
+            {
+                label: 'Cancel',
+                key: 'is_void_status',
+            },
+        ],
+        INVENTORY_BAG: [
+            {
+                label: 'Bag #',
+                key: 'bag_number',
+            },
+            {
+                label: 'Source',
+                key: 'source',
+            },
+            {
+                label: 'Bag type',
+                key: 'tipe_bag',
+            },
+            {
+                label: 'Date #',
+                key: 'created_at',
+            },
+            {
+                label: 'Scanned Date',
+                key: 'first_opened_bag',
+            },
+            {
+                label: 'Received Date',
+                key: 'received_at',
+            },
+            {
+                label: '# Item',
+                key: 'bag_detail_qty',
+            },
+            {
+                label: 'Weight (Kg)',
+                key: 'bag_weight',
+            },
+            {
+                label: 'Cost Weight',
+                key: 'cost_weight',
+            },
+            {
+                label: 'Actual Weight',
+                key: 'bag_actual_weight',
+            },
+            {
+                label: 'Origin Node Code',
+                key: 'origin_node_code',
+            },
+            {
+                label: 'Origin Node Name',
+                key: 'origin_node_name',
+            },
+            {
+                label: 'Origin',
+                key: 'origin',
+            },
+            {
+                label: 'Origin Name',
+                key: 'origin_name',
+            },
+            {
+                label: 'Destination Node Code',
+                key: 'destination_node_code',
+            },
+            {
+                label: 'Destination Node Name',
+                key: 'destination_node_name',
+            },
+            {
+                label: 'Destination',
+                key: 'destination',
+            },
+            {
+                label: 'Destination Name',
+                key: 'destination_name',
+            },
+            {
+                label: 'Consolidation',
+                key: 'is_consolidated',
+            },
+            {
+                label: 'With Courier',
+                key: 'with_courier',
+            },
+            {
+                label: 'Masterbag',
+                key: 'masterbag_parent',
+            },
+            {
+                label: 'Surat Muatan',
+                key: 'surat_muatan',
+            },
+            {
+                label: 'Surat Jalan',
+                key: 'surat_jalan',
+            },
+            {
+                label: 'Approved',
+                key: 'approved',
+            },
+            {
+                label: 'Status',
+                key: 'summary_status',
+            },
+            {
+                label: 'Runsheet',
+                key: 'runsheet_count',
+            },
+            {
+                label: 'Un Runsheet',
+                key: 'un_runsheet_count',
+            },
+            {
+                label: 'Status Irregularity',
+                key: 'status_irregularity_description',
+            },
+        ],
+        SURAT_MUATAN: [
+            {
+                label: 'No Surat Muatan',
+                key: 'manifest_number',
+            },
+            {
+                label: 'Date#',
+                key: 'created_at',
+            },
+            {
+                label: 'Type SM',
+                key: 'manifest_type_name',
+            },
+            {
+                label: 'Jenis Kiriman',
+                key: 'jenis_kiriman',
+            },
+            {
+                label: 'Origin',
+                key: 'origin_name',
+            },
+            {
+                label: 'Destination',
+                key: 'destination_name',
+            },
+            {
+                label: 'Item',
+                key: 'detail_count',
+            },
+            {
+                label: 'Connote',
+                key: 'koli_count',
+            },
+            {
+                label: 'Fix Cost Weight',
+                key: 'fix_cost_weight',
+            },
+            {
+                label: 'Live Cost Weight',
+                key: 'live_cost_weight',
+            },
+            {
+                label: 'Fix Actual Weight',
+                key: 'fix_actual_weight',
+            },
+            {
+                label: 'Live Actual Weight',
+                key: 'live_actual_weight',
+            },
+            {
+                label: 'ETD',
+                key: 'etd',
+            },
+            {
+                label: 'ETA',
+                key: 'eta',
+            },
+            {
+                label: 'Approved',
+                key: 'approved',
+            },
+            {
+                label: 'Status',
+                key: 'status',
+            },
+            {
+                label: 'Received At',
+                key: 'latest_node_receiver',
+            },
+        ],
+        SURAT_JALAN: [
+            {
+                label: 'Surat Jalan',
+                key: 'manifest_do_number',
+            },
+            {
+                label: 'Type',
+                key: 'sj_type',
+            },
+            {
+                label: 'Orion Number',
+                key: 'orion_number',
+            },
+            {
+                label: 'Vehicle Type',
+                key: 'vehicle_type_name',
+            },
+            {
+                label: 'Driver',
+                key: 'driver_name',
+            },
+            {
+                label: 'Mode',
+                key: 'vehicle_mode_name',
+            },
+            {
+                label: 'Origin',
+                key: 'node_id_origin_name',
+            },
+            {
+                label: 'Destination',
+                key: 'node_id_destination_name',
+            },
+            {
+                label: 'Fix Cost Weight',
+                key: 'fix_cost_weight',
+            },
+            {
+                label: 'Live Cost Weight',
+                key: 'live_cost_weight',
+            },
+            {
+                label: 'Fix Actual Weight',
+                key: 'fix_actual_weight',
+            },
+            {
+                label: 'Live Actual Weight',
+                key: 'live_actual_weight',
+            },
+            {
+                label: 'Total Item',
+                key: 'total_detail_items',
+            },
+            {
+                label: 'ETD',
+                key: 'etd',
+            },
+            {
+                label: 'ETA',
+                key: 'eta',
+            },
+            {
+                label: 'Departed Time',
+                key: 'departed_time',
+            },
+            {
+                label: 'Approved',
+                key: 'approved',
+            },
+            {
+                label: 'Status',
+                key: 'status',
+            },
+            {
+                label: 'Latest Node Receiver',
+                key: 'latest_node_code_receiver',
+            },
+        ],
+    },
+];
