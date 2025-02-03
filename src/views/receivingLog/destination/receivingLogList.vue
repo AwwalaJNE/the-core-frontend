@@ -152,7 +152,6 @@ export default {
         },
     },
     mounted() {
-        console.log('startDate', this.startDate, 'endDate', this.endDate)
         this.getTableDataReceivingLog();
     }
 }
