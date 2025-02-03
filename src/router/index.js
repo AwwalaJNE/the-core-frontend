@@ -496,6 +496,7 @@ const routes = [
               resource_type: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_type,
               resource_code: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_code,
               resource_name: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_name,
+              isMaintenanceMode: false,
               permission: 'create-transaction',
             }
           },
@@ -1510,10 +1511,14 @@ router.beforeEach((to, from, next) => {
     return next({ path: "/", params: { nextUrl: to.fullPath } });
   }
   
-  if (!to?.meta?.permission || permissions.includes(to?.meta?.permission)) {
-    next();
+  if (to?.meta?.isMaintenanceMode) {
+    next({ path: "/system-maintenance" });
   } else {
-    next({ path: "/forbidden" });
+    if (!to?.meta?.permission || permissions.includes(to?.meta?.permission)) {
+      next();
+    } else {
+      next({ path: "/forbidden" });
+    }
   }
 })
 
