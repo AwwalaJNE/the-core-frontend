@@ -243,11 +243,6 @@ const routes = [
     component: Content,
     children: [
       {
-        path: '*',
-        name: 'NotFound',
-        component: NotFound,
-      },
-      {
         path: "",
         name: "mainPage",
         component: MainPage,
@@ -256,7 +251,7 @@ const routes = [
           breadCrumb: "",
           resource_type: resourceLookup["MAINPAGE"].resource_type,
           resource_code: resourceLookup["MAINPAGE"].resource_code,
-          resource_name: resourceLookup["MAINPAGE"].resource_name
+          resource_name: resourceLookup["MAINPAGE"].resource_name,
         }
       },
       {
@@ -500,7 +495,8 @@ const routes = [
               breadCrumb: "New Transaction",
               resource_type: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_type,
               resource_code: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_code,
-              resource_name: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_name
+              resource_name: resourceLookup["TRANSACTION_NEW_TRANSACTION"].resource_name,
+              permission: 'create-transaction',
             }
           },
           {
@@ -1436,6 +1432,26 @@ const routes = [
           breadCrumb: "helpdesk"
         }
       },
+      {
+        path: "forbidden",
+        name: "forbidden",
+        component: Forbidden,
+      },
+      {
+        path: "server-error",
+        name: "ServerError",
+        component: ServerError,
+      },
+      {
+        path: "system-maintenance",
+        name: "SystemMaintenance",
+        component: SystemMaintenance,
+      },
+      {
+        path: '*',
+        name: 'NotFound',
+        component: NotFound,
+      },
     ],
     meta: {
       requiresAuth: true,
@@ -1484,26 +1500,20 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   let path = to.path;
   let token= localStorage.getItem("vuejs__tokenBearer")
+  let permissions = JSON.parse(localStorage.getItem("vuejs__permissions"))?.value
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if(token == null) {
-      next({
-        path: "/login",
-        params: { nextUrl: to.fullPath }
-      });
-    } else {
-      next();
+    if (!token) {
+      return next({ path: "/login", params: { nextUrl: to.fullPath } });
     }
+  } else if (to.path.includes("login") && token) {
+    return next({ path: "/", params: { nextUrl: to.fullPath } });
+  }
+  
+  if (!to?.meta?.permission || permissions.includes(to?.meta?.permission)) {
+    next();
   } else {
-    if (path.includes("login") && token !== null) {
-      next({
-        path: "/",
-        params: { nextUrl: to.fullPath }
-      });
-    }
-    else{
-      next();
-    }
+    next({ path: "/forbidden" });
   }
 })
 
