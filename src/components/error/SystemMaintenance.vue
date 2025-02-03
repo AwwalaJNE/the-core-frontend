@@ -22,7 +22,6 @@ export default {
 	justify-content: space-around;
 	align-items: center;
 	text-align: left;
-	padding: 2rem;
 
 	&-title {
 		font-size: 4rem;

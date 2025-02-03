@@ -26,7 +26,6 @@ export default {
 		display: flex;
 		justify-content: center;
 		gap: 2rem;
-		padding: 2rem;
 	}
 
 	&-title {

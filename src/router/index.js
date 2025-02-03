@@ -236,16 +236,17 @@ import { resourceLookup } from '@/constants';
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '*',
-    name: 'NotFound',
-    component: NotFound,
-  },
+  
   {
     path: '/',
     name: 'main',
     component: Content,
     children: [
+      {
+        path: '*',
+        name: 'NotFound',
+        component: NotFound,
+      },
       {
         path: "",
         name: "mainPage",
