@@ -98,4 +98,3 @@ export const resourceLookup = resources.reduce((acc, { resource_code, resource_t
     acc[resource_name] = { resource_code, resource_type, resource_name };
     return acc;
 }, {});
-  
