@@ -241,7 +241,6 @@ export default {
                 this.connote_number = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number;
             }
 
-            console.log('list connote koli => ', this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive])
         },
         async getShippingService(booking_connote_service_code, fromBooking = false) {
 

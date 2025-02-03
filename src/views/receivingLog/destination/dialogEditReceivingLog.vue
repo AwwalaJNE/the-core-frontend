@@ -230,7 +230,6 @@ export default {
     },
     watch: {
         active: function (val) {
-            console.log('active', val)
             if (val) {
                 this.getDetail(this.receivingLogId);
                 this.getDataStatus();
