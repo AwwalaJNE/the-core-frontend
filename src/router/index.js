@@ -1620,11 +1620,11 @@ const routes = [
         name: "SystemMaintenance",
         component: SystemMaintenance,
       },
-      {
-        path: '*',
-        name: 'NotFound',
-        component: NotFound,
-      },
+      // {
+      //   path: '*',
+      //   name: 'NotFound',
+      //   component: NotFound,
+      // },
     ],
     meta: {
       requiresAuth: true,
@@ -1679,7 +1679,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   let path = to.path;
   let token= localStorage.getItem("vuejs__tokenBearer")
-  let permissions = JSON.parse(localStorage.getItem("vuejs__permissions"))?.value
+  let permissions = JSON.parse(localStorage.getItem("vuejs__permissions"))?.value || []
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!token) {
@@ -1704,5 +1704,4 @@ router.beforeEach((to, from, next) => {
     
   }
 })
-
 export default router
