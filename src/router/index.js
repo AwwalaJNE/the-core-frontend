@@ -252,6 +252,8 @@ const routes = [
           resource_type: resourceLookup["MAINPAGE"].resource_type,
           resource_code: resourceLookup["MAINPAGE"].resource_code,
           resource_name: resourceLookup["MAINPAGE"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -263,7 +265,9 @@ const routes = [
           breadCrumb: "User Profile",
           resource_type: resourceLookup["PROFILE"].resource_type,
           resource_code: resourceLookup["PROFILE"].resource_code,
-          resource_name: resourceLookup["PROFILE"].resource_name
+          resource_name: resourceLookup["PROFILE"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -275,7 +279,9 @@ const routes = [
           breadCrumb: "Example Blank Page",
           resource_type: resourceLookup["BLANK"].resource_type,
           resource_code: resourceLookup["BLANK"].resource_code,
-          resource_name: resourceLookup["BLANK"].resource_name
+          resource_name: resourceLookup["BLANK"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -292,7 +298,9 @@ const routes = [
               breadCrumb: "Users",
               resource_type: resourceLookup["SETTINGS_USERS"].resource_type,
               resource_code: resourceLookup["SETTINGS_USERS"].resource_code,
-              resource_name: resourceLookup["SETTINGS_USERS"].resource_name
+              resource_name: resourceLookup["SETTINGS_USERS"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-user',
             }
           },
           {
@@ -304,7 +312,9 @@ const routes = [
               breadCrumb: "Geolocation",
               resource_type: resourceLookup["SETTINGS_GEOLOCATION"].resource_type,
               resource_code: resourceLookup["SETTINGS_GEOLOCATION"].resource_code,
-              resource_name: resourceLookup["SETTINGS_GEOLOCATION"].resource_name
+              resource_name: resourceLookup["SETTINGS_GEOLOCATION"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-geolocation-country',
             }
           },
           {
@@ -316,7 +326,9 @@ const routes = [
               breadCrumb: "Nodes",
               resource_type: resourceLookup["SETTINGS_NODES"].resource_type,
               resource_code: resourceLookup["SETTINGS_NODES"].resource_code,
-              resource_name: resourceLookup["SETTINGS_NODES"].resource_name
+              resource_name: resourceLookup["SETTINGS_NODES"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-node',
             }
           },
           {
@@ -328,7 +340,9 @@ const routes = [
               breadCrumb: "Tariff",
               resource_type: resourceLookup["SETTINGS_TARIFF"].resource_type,
               resource_code: resourceLookup["SETTINGS_TARIFF"].resource_code,
-              resource_name: resourceLookup["SETTINGS_TARIFF"].resource_name
+              resource_name: resourceLookup["SETTINGS_TARIFF"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-tariff',
             }
           },
           {
@@ -340,7 +354,9 @@ const routes = [
               breadCrumb: "Employee",
               resource_type: resourceLookup["SETTINGS_EMPLOYEE"].resource_type,
               resource_code: resourceLookup["SETTINGS_EMPLOYEE"].resource_code,
-              resource_name: resourceLookup["SETTINGS_EMPLOYEE"].resource_name
+              resource_name: resourceLookup["SETTINGS_EMPLOYEE"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-employee',
             }
           },
           {
@@ -352,7 +368,9 @@ const routes = [
               breadCrumb: "Vehicles",
               resource_type: resourceLookup["SETTINGS_VEHICLES"].resource_type,
               resource_code: resourceLookup["SETTINGS_VEHICLES"].resource_code,
-              resource_name: resourceLookup["SETTINGS_VEHICLES"].resource_name
+              resource_name: resourceLookup["SETTINGS_VEHICLES"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-vehicle',
             }
           },
           {
@@ -364,7 +382,9 @@ const routes = [
               breadCrumb: "Customer",
               resource_type: resourceLookup["SETTINGS_CUSTOMER"].resource_type,
               resource_code: resourceLookup["SETTINGS_CUSTOMER"].resource_code,
-              resource_name: resourceLookup["SETTINGS_CUSTOMER"].resource_name
+              resource_name: resourceLookup["SETTINGS_CUSTOMER"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-customer',
             }
           },
           {
@@ -376,7 +396,9 @@ const routes = [
               breadCrumb: "Surcharge",
               resource_type: resourceLookup["SETTINGS_SURCHARGE"].resource_type,
               resource_code: resourceLookup["SETTINGS_SURCHARGE"].resource_code,
-              resource_name: resourceLookup["SETTINGS_SURCHARGE"].resource_name
+              resource_name: resourceLookup["SETTINGS_SURCHARGE"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-surcharge',
             }
           },
           {
@@ -388,7 +410,9 @@ const routes = [
               breadCrumb: "SLA",
               resource_type: resourceLookup["SETTINGS_SLA"].resource_type,
               resource_code: resourceLookup["SETTINGS_SLA"].resource_code,
-              resource_name: resourceLookup["SETTINGS_SLA"].resource_name
+              resource_name: resourceLookup["SETTINGS_SLA"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-sla',
             }
           },
           {
@@ -400,7 +424,9 @@ const routes = [
               breadCrumb: "Configuration Warning Runsheet",
               resource_type: resourceLookup["SETTINGS_CONFIGURATION_WARNING_RUNSHEET"].resource_type,
               resource_code: resourceLookup["SETTINGS_CONFIGURATION_WARNING_RUNSHEET"].resource_code,
-              resource_name: resourceLookup["SETTINGS_CONFIGURATION_WARNING_RUNSHEET"].resource_name
+              resource_name: resourceLookup["SETTINGS_CONFIGURATION_WARNING_RUNSHEET"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-warning-koli-setting',
             }
           },
           {
@@ -412,7 +438,9 @@ const routes = [
               breadCrumb: "Facility Code",
               resource_type: resourceLookup["SETTINGS_FACILITY_CODE"].resource_type,
               resource_code: resourceLookup["SETTINGS_FACILITY_CODE"].resource_code,
-              resource_name: resourceLookup["SETTINGS_FACILITY_CODE"].resource_name
+              resource_name: resourceLookup["SETTINGS_FACILITY_CODE"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-facility-code',
             }
           },
           {
@@ -424,7 +452,9 @@ const routes = [
               breadCrumb: "KPI",
               resource_type: resourceLookup["SETTINGS_KPI"].resource_type,
               resource_code: resourceLookup["SETTINGS_KPI"].resource_code,
-              resource_name: resourceLookup["SETTINGS_KPI"].resource_name
+              resource_name: resourceLookup["SETTINGS_KPI"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
           {
@@ -436,7 +466,9 @@ const routes = [
               breadCrumb: "Bag",
               resource_type: resourceLookup["SETTINGS_BAG"].resource_type,
               resource_code: resourceLookup["SETTINGS_BAG"].resource_code,
-              resource_name: resourceLookup["SETTINGS_BAG"].resource_name
+              resource_name: resourceLookup["SETTINGS_BAG"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
           {
@@ -448,7 +480,9 @@ const routes = [
               breadCrumb: "Destination",
               resource_type: resourceLookup["DESTINATION"].resource_type,
               resource_code: resourceLookup["DESTINATION"].resource_code,
-              resource_name: resourceLookup["DESTINATION"].resource_name
+              resource_name: resourceLookup["DESTINATION"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
           {
@@ -460,7 +494,9 @@ const routes = [
               breadCrumb: "Surat Muatan",
               resource_type: resourceLookup["SETTINGS_SURAT_MUATAN"].resource_type,
               resource_code: resourceLookup["SETTINGS_SURAT_MUATAN"].resource_code,
-              resource_name: resourceLookup["SETTINGS_SURAT_MUATAN"].resource_name
+              resource_name: resourceLookup["SETTINGS_SURAT_MUATAN"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
           {
@@ -472,7 +508,9 @@ const routes = [
               breadCrumb: "Runsheet",
               resource_type: resourceLookup["SETTINGS_RUNSHEET"].resource_type,
               resource_code: resourceLookup["SETTINGS_RUNSHEET"].resource_code,
-              resource_name: resourceLookup["SETTINGS_RUNSHEET"].resource_name
+              resource_name: resourceLookup["SETTINGS_RUNSHEET"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
         ],
@@ -509,7 +547,9 @@ const routes = [
               breadCrumb: "Upload Connote",
               resource_type: resourceLookup["TRANSACTION_UPLOAD_CONNOTE"].resource_type,
               resource_code: resourceLookup["TRANSACTION_UPLOAD_CONNOTE"].resource_code,
-              resource_name: resourceLookup["TRANSACTION_UPLOAD_CONNOTE"].resource_name
+              resource_name: resourceLookup["TRANSACTION_UPLOAD_CONNOTE"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'create-transaction',
             }
           },
           {
@@ -521,7 +561,9 @@ const routes = [
               breadCrumb: "Transaction Complete",
               resource_type: resourceLookup["TRANSACTION_COMPLETE"].resource_type,
               resource_code: resourceLookup["TRANSACTION_COMPLETE"].resource_code,
-              resource_name: resourceLookup["TRANSACTION_COMPLETE"].resource_name
+              resource_name: resourceLookup["TRANSACTION_COMPLETE"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
           {
@@ -534,7 +576,9 @@ const routes = [
               backPath: "/sales/transaction",
               resource_type: resourceLookup["TRANSACTION_DETAIL"].resource_type,
               resource_code: resourceLookup["TRANSACTION_DETAIL"].resource_code,
-              resource_name: resourceLookup["TRANSACTION_DETAIL"].resource_name
+              resource_name: resourceLookup["TRANSACTION_DETAIL"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
         ],
@@ -553,7 +597,9 @@ const routes = [
           breadCrumb: "Trace Connote",
           resource_type: resourceLookup["TRACE_CONNOTE"].resource_type,
           resource_code: resourceLookup["TRACE_CONNOTE"].resource_code,
-          resource_name: resourceLookup["TRACE_CONNOTE"].resource_name
+          resource_name: resourceLookup["TRACE_CONNOTE"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -566,7 +612,9 @@ const routes = [
           breadCrumb: "Trace Bag / Masterbag",
           resource_type: resourceLookup["TRACE_BAG"].resource_type,
           resource_code: resourceLookup["TRACE_BAG"].resource_code,
-          resource_name: resourceLookup["TRACE_BAG"].resource_name
+          resource_name: resourceLookup["TRACE_BAG"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -583,7 +631,9 @@ const routes = [
               breadCrumb: "Transaction List",
               resource_type: resourceLookup["SALES_TRANSACTION_LIST"].resource_type,
               resource_code: resourceLookup["SALES_TRANSACTION_LIST"].resource_code,
-              resource_name: resourceLookup["SALES_TRANSACTION_LIST"].resource_name
+              resource_name: resourceLookup["SALES_TRANSACTION_LIST"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-transaction',
             }
           },
 
@@ -596,7 +646,9 @@ const routes = [
               breadCrumb: "Cash Register",
               resource_type: resourceLookup["SALES_CASH_REGISTER"].resource_type,
               resource_code: resourceLookup["SALES_CASH_REGISTER"].resource_code,
-              resource_name: resourceLookup["SALES_CASH_REGISTER"].resource_name
+              resource_name: resourceLookup["SALES_CASH_REGISTER"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'create-transaction',
             }
           },
         ],
@@ -619,7 +671,9 @@ const routes = [
               breadCrumb: "Invalid Receiving",
               resource_type: resourceLookup["INVALID_RECEIVING"].resource_type,
               resource_code: resourceLookup["INVALID_RECEIVING"].resource_code,
-              resource_name: resourceLookup["INVALID_RECEIVING"].resource_name
+              resource_name: resourceLookup["INVALID_RECEIVING"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-audit-receiving',
             }
           },
           {
@@ -631,7 +685,9 @@ const routes = [
               breadCrumb: "Invalid Opening Bag",
               resource_type: resourceLookup["INVALID_OPENING_BAG"].resource_type,
               resource_code: resourceLookup["INVALID_OPENING_BAG"].resource_code,
-              resource_name: resourceLookup["INVALID_OPENING_BAG"].resource_name
+              resource_name: resourceLookup["INVALID_OPENING_BAG"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-audit-opening-bag',
             }
           },
         ],
@@ -654,7 +710,9 @@ const routes = [
               breadCrumb: "Connote Cancel",
               resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_type,
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_code,
-              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_name
+              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-irreg',
             }
           },
           {
@@ -666,7 +724,9 @@ const routes = [
               breadCrumb: "Connote Cancel History",
               resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_type,
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_code,
-              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_name
+              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-irreg',
             }
           },
           {
@@ -678,7 +738,9 @@ const routes = [
               breadCrumb: "Connote Forward",
               resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_type,
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_code,
-              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_name
+              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-irreg',
             }
           },
           {
@@ -690,7 +752,9 @@ const routes = [
               breadCrumb: "Connote Return",
               resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_type,
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_code,
-              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_name
+              resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-irreg',
             }
           },
         ],
@@ -713,7 +777,9 @@ const routes = [
               breadCrumb: "Tracing Outstanding",
               resource_type: resourceLookup["TRACING"].resource_type,
               resource_code: resourceLookup["TRACING"].resource_code,
-              resource_name: resourceLookup["TRACING"].resource_name
+              resource_name: resourceLookup["TRACING"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-irreg',
             },
           },
           {
@@ -726,7 +792,9 @@ const routes = [
               backPath: "/tracing-outstanding",
               resource_type: resourceLookup["TRACING_DETAIL"].resource_type,
               resource_code: resourceLookup["TRACING_DETAIL"].resource_code,
-              resource_name: resourceLookup["TRACING_DETAIL"].resource_name
+              resource_name: resourceLookup["TRACING_DETAIL"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
           {
@@ -738,7 +806,9 @@ const routes = [
               breadCrumb: "History",
               resource_type: resourceLookup["TRACING_HISTORY"].resource_type,
               resource_code: resourceLookup["TRACING_HISTORY"].resource_code,
-              resource_name: resourceLookup["TRACING_HISTORY"].resource_name
+              resource_name: resourceLookup["TRACING_HISTORY"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-irreg',
             },
           },
           {
@@ -751,7 +821,9 @@ const routes = [
               backPath: "/tracing-history",
               resource_type: resourceLookup["TRACING_HISTORY_DETAIL"].resource_type,
               resource_code: resourceLookup["TRACING_HISTORY_DETAIL"].resource_code,
-              resource_name: resourceLookup["TRACING_HISTORY_DETAIL"].resource_name
+              resource_name: resourceLookup["TRACING_HISTORY_DETAIL"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           }
         ],
@@ -774,7 +846,9 @@ const routes = [
               breadCrumb: "Inventory Irreguralities",
               resource_type: resourceLookup["IRREGURALITIES_INVENTORY"].resource_type,
               resource_code: resourceLookup["IRREGURALITIES_INVENTORY"].resource_code,
-              resource_name: resourceLookup["IRREGURALITIES_INVENTORY"].resource_name
+              resource_name: resourceLookup["IRREGURALITIES_INVENTORY"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-irreg',
             }
           },
           {
@@ -786,7 +860,9 @@ const routes = [
               breadCrumb: "Entry Status",
               resource_type: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_type,
               resource_code: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_code,
-              resource_name: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_name
+              resource_name: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-irreg',
             }
           },
           // {
@@ -816,7 +892,9 @@ const routes = [
               breadCrumb: "hold",
               resource_type: resourceLookup["IRREGURALITIES_HOLD"].resource_type,
               resource_code: resourceLookup["IRREGURALITIES_HOLD"].resource_code,
-              resource_name: resourceLookup["IRREGURALITIES_HOLD"].resource_name
+              resource_name: resourceLookup["IRREGURALITIES_HOLD"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-irreg',
             }
           },
           {
@@ -828,7 +906,9 @@ const routes = [
               breadCrumb: "failed",
               resource_type: resourceLookup["IRREGURALITIES_FAILED"].resource_type,
               resource_code: resourceLookup["IRREGURALITIES_FAILED"].resource_code,
-              resource_name: resourceLookup["IRREGURALITIES_FAILED"].resource_name
+              resource_name: resourceLookup["IRREGURALITIES_FAILED"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-irreg',
             }
           },
         ],
@@ -846,7 +926,9 @@ const routes = [
           breadCrumb: "Report",
           resource_type: resourceLookup["CASHLESS"].resource_type,
           resource_code: resourceLookup["CASHLESS"].resource_code,
-          resource_name: resourceLookup["CASHLESS"].resource_name
+          resource_name: resourceLookup["CASHLESS"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-cashless',
         }
       },
       {
@@ -858,7 +940,9 @@ const routes = [
           breadCrumb: "report",
           resource_type: resourceLookup["PACKINGLIST"].resource_type,
           resource_code: resourceLookup["PACKINGLIST"].resource_code,
-          resource_name: resourceLookup["PACKINGLIST"].resource_name
+          resource_name: resourceLookup["PACKINGLIST"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-report-packing-list',
         }
       },
       {
@@ -870,7 +954,9 @@ const routes = [
           breadCrumb: "Upload",
           resource_type: resourceLookup["UPLOAD"].resource_type,
           resource_code: resourceLookup["UPLOAD"].resource_code,
-          resource_name: resourceLookup["UPLOAD"].resource_name
+          resource_name: resourceLookup["UPLOAD"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
 
@@ -883,7 +969,9 @@ const routes = [
           breadCrumb: "inventory Item",
           resource_type: resourceLookup["INVENTORY_ITEM"].resource_type,
           resource_code: resourceLookup["INVENTORY_ITEM"].resource_code,
-          resource_name: resourceLookup["INVENTORY_ITEM"].resource_name
+          resource_name: resourceLookup["INVENTORY_ITEM"].resource_name,
+          isMaintenanceMode: false,
+          permission: ['read-inventory', 'read-bag'],
         }
       },
       {
@@ -895,7 +983,9 @@ const routes = [
           breadCrumb: "Inventory Item",
           resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,
           resource_code: resourceLookup["INVENTORY_BAG_ITEM"].resource_code,
-          resource_name: resourceLookup["INVENTORY_BAG_ITEM"].resource_name
+          resource_name: resourceLookup["INVENTORY_BAG_ITEM"].resource_name,
+          isMaintenanceMode: false,
+          permission: ['read-inventory', 'read-bag'],
         }
       },
       {
@@ -908,7 +998,9 @@ const routes = [
           backPath: "/inventory/item",
           resource_type: resourceLookup["INVENTORY_ITEM_DETAIL"].resource_type,
           resource_code: resourceLookup["INVENTORY_ITEM_DETAIL"].resource_code,
-          resource_name: resourceLookup["INVENTORY_ITEM_DETAIL"].resource_name
+          resource_name: resourceLookup["INVENTORY_ITEM_DETAIL"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
         }
       },
       {
@@ -920,7 +1012,9 @@ const routes = [
           breadCrumb: "bagging",
           resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
           resource_code: resourceLookup["INVENTORY_BAG"].resource_code,
-          resource_name: resourceLookup["INVENTORY_BAG"].resource_name
+          resource_name: resourceLookup["INVENTORY_BAG"].resource_name,
+          isMaintenanceMode: false,
+          permission: ['read-inventory', 'read-bag'],
         }
       },
       {
@@ -933,7 +1027,9 @@ const routes = [
           backPath: "/inventory/bag",
           resource_type: resourceLookup["INVENTORY_BAG_DETAIL"].resource_type,
           resource_code: resourceLookup["INVENTORY_BAG_DETAIL"].resource_code,
-          resource_name: resourceLookup["INVENTORY_BAG_DETAIL"].resource_name
+          resource_name: resourceLookup["INVENTORY_BAG_DETAIL"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
 
@@ -946,7 +1042,9 @@ const routes = [
           breadCrumb: "Unbagging",
           resource_type: resourceLookup["UNBAGGING"].resource_type,
           resource_code: resourceLookup["UNBAGGING"].resource_code,
-          resource_name: resourceLookup["UNBAGGING"].resource_name
+          resource_name: resourceLookup["UNBAGGING"].resource_name,
+          isMaintenanceMode: false,
+          permission: ['read-inventory', 'read-unbag'],
         }
       },
       {
@@ -958,7 +1056,9 @@ const routes = [
           breadCrumb: "Sorting",
           resource_type: resourceLookup["SORTING_CONNOTE"].resource_type,
           resource_code: resourceLookup["SORTING_CONNOTE"].resource_code,
-          resource_name: resourceLookup["SORTING_CONNOTE"].resource_name
+          resource_name: resourceLookup["SORTING_CONNOTE"].resource_name,
+          isMaintenanceMode: false,
+          permission: ['read-inventory', 'read-bag'],
         }
       },
       {
@@ -970,7 +1070,9 @@ const routes = [
           breadCrumb: "Sorting",
           resource_type: resourceLookup["SORTING_BAG"].resource_type,
           resource_code: resourceLookup["SORTING_BAG"].resource_code,
-          resource_name: resourceLookup["SORTING_BAG"].resource_name
+          resource_name: resourceLookup["SORTING_BAG"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -982,7 +1084,9 @@ const routes = [
             breadCrumb: "Request Pickup",
             resource_type: resourceLookup["PICKUP_REQUEST"].resource_type,
             resource_code: resourceLookup["PICKUP_REQUEST"].resource_code,
-            resource_name: resourceLookup["PICKUP_REQUEST"].resource_name
+            resource_name: resourceLookup["PICKUP_REQUEST"].resource_name,
+            isMaintenanceMode: false,
+            permission: 'create-pickup',
         }
       },
       {
@@ -994,7 +1098,9 @@ const routes = [
           breadCrumb: "Pickup List",
           resource_type: resourceLookup["PICKUP_LIST"].resource_type,
           resource_code: resourceLookup["PICKUP_LIST"].resource_code,
-          resource_name: resourceLookup["PICKUP_LIST"].resource_name
+          resource_name: resourceLookup["PICKUP_LIST"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-pickup',
         }
       },
       {
@@ -1006,7 +1112,9 @@ const routes = [
           breadCrumb: "Pickup Schedule",
           resource_type: resourceLookup["PICKUP_SCHEDULE"].resource_type,
           resource_code: resourceLookup["PICKUP_SCHEDULE"].resource_code,
-          resource_name: resourceLookup["PICKUP_SCHEDULE"].resource_name
+          resource_name: resourceLookup["PICKUP_SCHEDULE"].resource_name,
+          isMaintenanceMode: false,
+          permission: ['create-pickup-schedule', 'read-pickup-schedule'],
         }
       },
       //parent transport
@@ -1024,7 +1132,9 @@ const routes = [
               breadCrumb: "Surat Muatan",
               resource_type: resourceLookup["TRANSPORT_MANIFEST"].resource_type,
               resource_code: resourceLookup["TRANSPORT_MANIFEST"].resource_code,
-              resource_name: resourceLookup["TRANSPORT_MANIFEST"].resource_name
+              resource_name: resourceLookup["TRANSPORT_MANIFEST"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest',
             }
           },
           {
@@ -1036,7 +1146,9 @@ const routes = [
               breadCrumb: "Packing Kayu",
               resource_type: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_type,
               resource_code: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_code,
-              resource_name: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_name
+              resource_name: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-packing-kayu',
             }
           },
           {
@@ -1048,7 +1160,9 @@ const routes = [
               breadCrumb: "Surat Jalan",
               resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
               resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
-              resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name
+              resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-delivery-order',
             }
           },
           {
@@ -1060,7 +1174,9 @@ const routes = [
               breadCrumb: "Inventory Vehicle",
               resource_type: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_type,
               resource_code: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_code,
-              resource_name: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_name
+              resource_name: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-inventory-vehicle',
             }
           },
 
@@ -1080,7 +1196,9 @@ const routes = [
           breadCrumb: "Receiving",
           resource_type: resourceLookup["RECEIVING"].resource_type,
           resource_code: resourceLookup["RECEIVING"].resource_code,
-          resource_name: resourceLookup["RECEIVING"].resource_name
+          resource_name: resourceLookup["RECEIVING"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-receiving',
         }
       },
       {
@@ -1093,7 +1211,9 @@ const routes = [
           backPath: "/inbound/prealert",
           resource_type: resourceLookup["INBOUND_INCOMING_SCAN"].resource_type,
           resource_code: resourceLookup["INBOUND_INCOMING_SCAN"].resource_code,
-          resource_name: resourceLookup["INBOUND_INCOMING_SCAN"].resource_name
+          resource_name: resourceLookup["INBOUND_INCOMING_SCAN"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -1106,7 +1226,9 @@ const routes = [
           backPath: "/inbound-airport",
           resource_type: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_type,
           resource_code: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_code,
-          resource_name: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_name
+          resource_name: resourceLookup["INBOUND_INCOMING_DETAIL"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -1118,7 +1240,9 @@ const routes = [
           breadCrumb: "Airport Receiving / Prealert",
           resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
           resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
-          resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
+          resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-airport-prealert',
         }
       },
       {
@@ -1130,7 +1254,9 @@ const routes = [
           breadCrumb: "Airport Receiving",
           resource_type: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_type,
           resource_code: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_code,
-          resource_name: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_name
+          resource_name: resourceLookup["RECEIVING_AIRPORT_SCAN"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-inbound-staging',
         }
       },
       {
@@ -1142,7 +1268,9 @@ const routes = [
           breadCrumb: "Airport Receiving",
           resource_type: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_type,
           resource_code: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_code,
-          resource_name: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_name
+          resource_name: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-airport-prealert',
         }
       },
       {
@@ -1154,7 +1282,9 @@ const routes = [
           breadCrumb: "Receiving Log",
           resource_type: resourceLookup["RECEIVING_LOG"].resource_type,
           resource_code: resourceLookup["RECEIVING_LOG"].resource_code,
-          resource_name: resourceLookup["RECEIVING_LOG"].resource_name
+          resource_name: resourceLookup["RECEIVING_LOG"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-receiving',
         }
       },
       {
@@ -1166,7 +1296,9 @@ const routes = [
           breadCrumb: "Delivery Assign",
           resource_type: resourceLookup["DELIVERY_RUNSHEET"].resource_type,
           resource_code: resourceLookup["DELIVERY_RUNSHEET"].resource_code,
-          resource_name: resourceLookup["DELIVERY_RUNSHEET"].resource_name
+          resource_name: resourceLookup["DELIVERY_RUNSHEET"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-runsheet',
         }
       },
       {
@@ -1179,7 +1311,9 @@ const routes = [
           backPath: "/delivery/runsheet",
           resource_type: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_type,
           resource_code: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_code,
-          resource_name: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_name
+          resource_name: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -1192,7 +1326,9 @@ const routes = [
           backPath: "/delivery/runsheet",
           resource_type: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_type,
           resource_code: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_code,
-          resource_name: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_name
+          resource_name: resourceLookup["DELIVERY_RUNSHEET_EDIT"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -1204,7 +1340,9 @@ const routes = [
           breadCrumb: "Deposit COD",
           resource_type: resourceLookup["DEPOSIT_COD"].resource_type,
           resource_code: resourceLookup["DEPOSIT_COD"].resource_code,
-          resource_name: resourceLookup["DEPOSIT_COD"].resource_name
+          resource_name: resourceLookup["DEPOSIT_COD"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-cod',
         }
       },
       {
@@ -1216,7 +1354,9 @@ const routes = [
           breadCrumb: "HRS",
           resource_type: resourceLookup["HANDOVER_RUNSHEET"].resource_type,
           resource_code: resourceLookup["HANDOVER_RUNSHEET"].resource_code,
-          resource_name: resourceLookup["HANDOVER_RUNSHEET"].resource_name
+          resource_name: resourceLookup["HANDOVER_RUNSHEET"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-undelivery',
         }
       },
       {
@@ -1228,7 +1368,9 @@ const routes = [
           breadCrumb: "HRS History",
           resource_type: resourceLookup["HANDOVER_RUNSHEET_HISTORY"].resource_type,
           resource_code: resourceLookup["HANDOVER_RUNSHEET_HISTORY"].resource_code,
-          resource_name: resourceLookup["HANDOVER_RUNSHEET_HISTORY"].resource_name
+          resource_name: resourceLookup["HANDOVER_RUNSHEET_HISTORY"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-undelivery',
         }
       },
       {
@@ -1240,7 +1382,9 @@ const routes = [
           breadCrumb: "HRS / Handover Runsheet",
           resource_type: resourceLookup["HANDOVER_RUNSHEET_COURIER"].resource_type,
           resource_code: resourceLookup["HANDOVER_RUNSHEET_COURIER"].resource_code,
-          resource_name: resourceLookup["HANDOVER_RUNSHEET_COURIER"].resource_name
+          resource_name: resourceLookup["HANDOVER_RUNSHEET_COURIER"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -1252,7 +1396,9 @@ const routes = [
           breadCrumb: "Deposit Cod History",
           resource_type: resourceLookup["DEPOSIT_COD_HISTORY"].resource_type,
           resource_code: resourceLookup["DEPOSIT_COD_HISTORY"].resource_code,
-          resource_name: resourceLookup["DEPOSIT_COD_HISTORY"].resource_name
+          resource_name: resourceLookup["DEPOSIT_COD_HISTORY"].resource_name,
+          isMaintenanceMode: false,
+          permission: 'read-cod',
         }
       },
       {
@@ -1264,7 +1410,9 @@ const routes = [
             breadCrumb: "Cost To Cost",
             resource_type: resourceLookup["COST_TO_COST_SETTING"].resource_type,
             resource_code: resourceLookup["COST_TO_COST_SETTING"].resource_code,
-            resource_name: resourceLookup["COST_TO_COST_SETTING"].resource_name
+            resource_name: resourceLookup["COST_TO_COST_SETTING"].resource_name,
+            isMaintenanceMode: false,
+            permission: 'read-cost-to-cost',
         }
       },
       {
@@ -1276,7 +1424,9 @@ const routes = [
             breadCrumb: "Cost To Cost",
             resource_type: resourceLookup["COST_TO_COST_REPORT"].resource_type,
             resource_code: resourceLookup["COST_TO_COST_REPORT"].resource_code,
-            resource_name: resourceLookup["COST_TO_COST_REPORT"].resource_name
+            resource_name: resourceLookup["COST_TO_COST_REPORT"].resource_name,
+            isMaintenanceMode: false,
+            permission: '',
         }
       },
       {
@@ -1288,7 +1438,9 @@ const routes = [
             breadCrumb: "setting",
             resource_type: resourceLookup["SETTING_EXCHANGE_RATE"].resource_type,
             resource_code: resourceLookup["SETTING_EXCHANGE_RATE"].resource_code,
-            resource_name: resourceLookup["SETTING_EXCHANGE_RATE"].resource_name
+            resource_name: resourceLookup["SETTING_EXCHANGE_RATE"].resource_name,
+            isMaintenanceMode: false,
+            permission: 'read-customer',
         }
       },
       {
@@ -1300,7 +1452,9 @@ const routes = [
             breadCrumb: "setting",
             resource_type: resourceLookup["SETTING_ACCESS_TOKEN"].resource_type,
             resource_code: resourceLookup["SETTING_ACCESS_TOKEN"].resource_code,
-            resource_name: resourceLookup["SETTING_ACCESS_TOKEN"].resource_name
+            resource_name: resourceLookup["SETTING_ACCESS_TOKEN"].resource_name,
+            isMaintenanceMode: false,
+            permission: '',
         }
       },
       {
@@ -1312,7 +1466,9 @@ const routes = [
           breadCrumb: "Dashboard",
           resource_type: resourceLookup["DASHBOARD_SMART_POINT"].resource_type,
           resource_code: resourceLookup["DASHBOARD_SMART_POINT"].resource_code,
-          resource_name: resourceLookup["DASHBOARD_SMART_POINT"].resource_name
+          resource_name: resourceLookup["DASHBOARD_SMART_POINT"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
         }
       },
       {
@@ -1324,7 +1480,9 @@ const routes = [
               breadCrumb: "Admin",
               resource_type: resourceLookup["RESYNC_RUNSHEET"].resource_type,
               resource_code: resourceLookup["RESYNC_RUNSHEET"].resource_code,
-              resource_name: resourceLookup["RESYNC_RUNSHEET"].resource_name
+              resource_name: resourceLookup["RESYNC_RUNSHEET"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-admin',
           }
       },
       {
@@ -1341,7 +1499,9 @@ const routes = [
               breadCrumb: "Error Dictionary",
               resource_type: resourceLookup["HELP_ERROR_DICTIONARY"].resource_type,
               resource_code: resourceLookup["HELP_ERROR_DICTIONARY"].resource_code,
-              resource_name: resourceLookup["HELP_ERROR_DICTIONARY"].resource_name
+              resource_name: resourceLookup["HELP_ERROR_DICTIONARY"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
           {
@@ -1353,7 +1513,9 @@ const routes = [
               breadCrumb: "Shortcut Dictionary",
               resource_type: resourceLookup["HELP_SHORTCUT_DICTIONARY"].resource_type,
               resource_code: resourceLookup["HELP_SHORTCUT_DICTIONARY"].resource_code,
-              resource_name: resourceLookup["HELP_SHORTCUT_DICTIONARY"].resource_name
+              resource_name: resourceLookup["HELP_SHORTCUT_DICTIONARY"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
         ],
@@ -1376,7 +1538,9 @@ const routes = [
               breadCrumb: "Connote",
               resource_type: resourceLookup["HELPDESK_CONNOTE"].resource_type,
               resource_code: resourceLookup["HELPDESK_CONNOTE"].resource_code,
-              resource_name: resourceLookup["HELPDESK_CONNOTE"].resource_name
+              resource_name: resourceLookup["HELPDESK_CONNOTE"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
           {
@@ -1388,7 +1552,9 @@ const routes = [
               breadCrumb: "bag",
               resource_type: resourceLookup["HELPDESK_BAG"].resource_type,
               resource_code: resourceLookup["HELPDESK_BAG"].resource_code,
-              resource_name: resourceLookup["HELPDESK_BAG"].resource_name
+              resource_name: resourceLookup["HELPDESK_BAG"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
           {
@@ -1400,7 +1566,9 @@ const routes = [
               breadCrumb: "Surat Muatan",
               resource_type: resourceLookup["HELPDESK_SURAT_MUATAN"].resource_type,
               resource_code: resourceLookup["HELPDESK_SURAT_MUATAN"].resource_code,
-              resource_name: resourceLookup["HELPDESK_SURAT_MUATAN"].resource_name
+              resource_name: resourceLookup["HELPDESK_SURAT_MUATAN"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
           {
@@ -1412,7 +1580,9 @@ const routes = [
               breadCrumb: "Surat Jalan",
               resource_type: resourceLookup["HELPDESK_SURAT_JALAN"].resource_type,
               resource_code: resourceLookup["HELPDESK_SURAT_JALAN"].resource_code,
-              resource_name: resourceLookup["HELPDESK_SURAT_JALAN"].resource_name
+              resource_name: resourceLookup["HELPDESK_SURAT_JALAN"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
           {
@@ -1424,7 +1594,9 @@ const routes = [
               breadCrumb: "Runsheet",
               resource_type: resourceLookup["HELPDESK_RUNSHEET"].resource_type,
               resource_code: resourceLookup["HELPDESK_RUNSHEET"].resource_code,
-              resource_name: resourceLookup["HELPDESK_RUNSHEET"].resource_name
+              resource_name: resourceLookup["HELPDESK_RUNSHEET"].resource_name,
+              isMaintenanceMode: false,
+              permission: '',
             }
           },
         ],
@@ -1470,7 +1642,9 @@ const routes = [
     component: PrintBPIK,
     resource_type: resourceLookup["PRINT_BPIK"].resource_type,
     resource_code: resourceLookup["PRINT_BPIK"].resource_code,
-    resource_name: resourceLookup["PRINT_BPIK"].resource_name
+    resource_name: resourceLookup["PRINT_BPIK"].resource_name,
+    isMaintenanceMode: false,
+    permission: '',
   },
   {
     path: '/print/:id/:type/:node_id?/:employee_id?',
@@ -1478,7 +1652,9 @@ const routes = [
     component: printGeneral,
     resource_type: resourceLookup["PRINT_GENERAL"].resource_type,
     resource_code: resourceLookup["PRINT_GENERAL"].resource_code,
-    resource_name: resourceLookup["PRINT_GENERAL"].resource_name
+    resource_name: resourceLookup["PRINT_GENERAL"].resource_name,
+    isMaintenanceMode: false,
+    permission: '',
   },
   {
     path: '/print-sppap',
@@ -1486,7 +1662,9 @@ const routes = [
     component: printSPPAP,
     resource_type: resourceLookup["PRINT_SPPAP"].resource_type,
     resource_code: resourceLookup["PRINT_SPPAP"].resource_code,
-    resource_name: resourceLookup["PRINT_SPPAP"].resource_name
+    resource_name: resourceLookup["PRINT_SPPAP"].resource_name,
+    isMaintenanceMode: false,
+    permission: '',
   },
 ]
 
@@ -1510,15 +1688,20 @@ router.beforeEach((to, from, next) => {
   } else if (to.path.includes("login") && token) {
     return next({ path: "/", params: { nextUrl: to.fullPath } });
   }
-  
+
   if (to?.meta?.isMaintenanceMode) {
     next({ path: "/system-maintenance" });
   } else {
-    if (!to?.meta?.permission || permissions.includes(to?.meta?.permission)) {
+    if (
+      !to?.meta?.permission ||
+      permissions.includes(to?.meta?.permission) || 
+      (Array.isArray(to.meta.permission) && to.meta.permission.some(perm => permissions.includes(perm))) 
+    ) {
       next();
     } else {
       next({ path: "/forbidden" });
     }
+    
   }
 })
 
