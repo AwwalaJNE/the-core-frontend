@@ -236,7 +236,41 @@ import { resourceLookup } from '@/constants';
 Vue.use(VueRouter)
 
 const routes = [
-  
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/print-bpik',
+    name: 'printBpik',
+    component: PrintBPIK,
+    resource_type: resourceLookup["PRINT_BPIK"].resource_type,
+    resource_code: resourceLookup["PRINT_BPIK"].resource_code,
+    resource_name: resourceLookup["PRINT_BPIK"].resource_name,
+    isMaintenanceMode: false,
+    permission: '',
+  },
+  {
+    path: '/print/:id/:type/:node_id?/:employee_id?',
+    name: 'printGeneral',
+    component: printGeneral,
+    resource_type: resourceLookup["PRINT_GENERAL"].resource_type,
+    resource_code: resourceLookup["PRINT_GENERAL"].resource_code,
+    resource_name: resourceLookup["PRINT_GENERAL"].resource_name,
+    isMaintenanceMode: false,
+    permission: '',
+  },
+  {
+    path: '/print-sppap',
+    name: 'printSPPAP',
+    component: printSPPAP,
+    resource_type: resourceLookup["PRINT_SPPAP"].resource_type,
+    resource_code: resourceLookup["PRINT_SPPAP"].resource_code,
+    resource_name: resourceLookup["PRINT_SPPAP"].resource_name,
+    isMaintenanceMode: false,
+    permission: '',
+  },
   {
     path: '/',
     name: 'main',
@@ -1620,51 +1654,16 @@ const routes = [
         name: "SystemMaintenance",
         component: SystemMaintenance,
       },
-      // {
-      //   path: '*',
-      //   name: 'NotFound',
-      //   component: NotFound,
-      // },
+      {
+        path: '*',
+        name: 'NotFound',
+        component: NotFound,
+      },
     ],
     meta: {
       requiresAuth: true,
       breadCrumb: "main"
     }
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: Login
-  },
-  {
-    path: '/print-bpik',
-    name: 'printBpik',
-    component: PrintBPIK,
-    resource_type: resourceLookup["PRINT_BPIK"].resource_type,
-    resource_code: resourceLookup["PRINT_BPIK"].resource_code,
-    resource_name: resourceLookup["PRINT_BPIK"].resource_name,
-    isMaintenanceMode: false,
-    permission: '',
-  },
-  {
-    path: '/print/:id/:type/:node_id?/:employee_id?',
-    name: 'printGeneral',
-    component: printGeneral,
-    resource_type: resourceLookup["PRINT_GENERAL"].resource_type,
-    resource_code: resourceLookup["PRINT_GENERAL"].resource_code,
-    resource_name: resourceLookup["PRINT_GENERAL"].resource_name,
-    isMaintenanceMode: false,
-    permission: '',
-  },
-  {
-    path: '/print-sppap',
-    name: 'printSPPAP',
-    component: printSPPAP,
-    resource_type: resourceLookup["PRINT_SPPAP"].resource_type,
-    resource_code: resourceLookup["PRINT_SPPAP"].resource_code,
-    resource_name: resourceLookup["PRINT_SPPAP"].resource_name,
-    isMaintenanceMode: false,
-    permission: '',
   },
 ]
 
