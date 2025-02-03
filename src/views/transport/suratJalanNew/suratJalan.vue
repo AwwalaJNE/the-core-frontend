@@ -297,7 +297,6 @@ export default {
         )
         .then((res) => {
           let arr = res.data.data;
-          console.log('DATA = ', arr)
           let buttonStatus = {
             print: true,
             depart: true,
