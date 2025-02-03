@@ -324,10 +324,10 @@ export default {
             item["approved"] = item.is_approve === 1 ? "YES" : "NO";
 
             if (item.manifest_do_number?.startsWith("SJA") || item.manifest_do_number?.startsWith("BM")) {
-              item['orion_number'] = item['orion_number'] || item['status'] === 'READY' ? item['orion_number'] : 'Auto By System'
-              item['vehicle_type_name'] = item['vehicle_type_name'] ? item['vehicle_type_name'] : 'Auto By System'
-              item['driver_name'] = item['driver_name'] ? item['driver_name'] : 'Auto By System',
-              item['vehicle_mode_name'] = item['vehicle_mode_name'] ? item['vehicle_mode_name'] : 'Auto By System'
+              item['orion_number'] = 'Auto By System'
+              item['vehicle_type_name'] = 'Auto By System'
+              item['driver_name'] = 'Auto By System',
+              item['vehicle_mode_name'] = 'Auto By System'
             }
 
             if (item.hasOwnProperty("status") && item["status"] !== null) {
