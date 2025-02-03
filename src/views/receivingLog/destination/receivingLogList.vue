@@ -5,7 +5,7 @@
             :dataColumn="dataColumn" 
             :tableLoading="listenLoading"
             :hasPagination="true"
-            :pageSize="pageSize"
+            :pageSize="page_size"
             :page="page"
             :limit="limit"
             :customAction="true"
@@ -152,7 +152,6 @@ export default {
         },
     },
     mounted() {
-        console.log('startDate', this.startDate, 'endDate', this.endDate)
         this.getTableDataReceivingLog();
     }
 }
