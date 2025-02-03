@@ -11,7 +11,10 @@ import MainPage from '@/views/template/mainPage'
 import Upload from '@/views/upload/index.vue'
 import UploadTransaction from '@/views/upload/transaction.vue'
 
-import NotFound from '@/components/NotFound.vue'
+import NotFound from '@/components/error/404-NotFound.vue'
+import Forbidden from '@/components/error/403-Forbidden.vue'
+import ServerError from '@/components/error/500-ServerError.vue'
+import SystemMaintenance from '@/components/error/SystemMaintenance.vue'
 
 import Transaction from '@/views/transaction'
 
