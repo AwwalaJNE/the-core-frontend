@@ -301,11 +301,6 @@ export default {
 
         this.dataTable = arr;
       }
-      console.log(
-        "init listenDataItem, bag",
-        this.listenDataItem,
-        this.dataTable
-      );
       // siapin url untuk input autocomplete
       // let url = this.URL.node +'/'+ this.listenNodeId +'/origin-link?n=' +this.listenNodeId+ '&sort_order=desc&limit=15&page=1'
       // this.autoComplateUrl = url

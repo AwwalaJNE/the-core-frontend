@@ -469,7 +469,6 @@ export default {
                 ).then(res => {
                     if(res.status == 200){
                         this.prosesDataTransaction = {}
-                        console.log('res connote ========>', res)
                         this.tempConnote = res.data.data
                         this.handleDataTransaction()
                         this.wrapKoliNumber()
