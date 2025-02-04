@@ -7,6 +7,16 @@
 			<p class="error-page-text">
 				The page you are trying to access doesn’t exist or has been moved.<br /> Try going back to our homepage.
 			</p>
+			<vs-button
+				block
+				flat
+				transparent
+				type="submit"
+				:active="true"
+				@click="handleSubmit"
+			>
+				Go to Homepage
+			</vs-button>
 		</div>
 	</div>
 </template>
@@ -14,6 +24,11 @@
 <script>
 export default {
 	name: "NotFound",
+	methods: {
+		handleSubmit() {
+			this.$router.push("/");
+		},
+	},
 };
 </script>
 
@@ -24,9 +39,15 @@ export default {
 	align-items: center;
 	text-align: center;
 
+	.error-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+	}
+
 	&-title {
 		font-size: 4rem;
-		margin-bottom: 10px;
 		color: #263238;
 	}
 
