@@ -409,7 +409,7 @@ const Master = {
         redirectError(err) {
             if (err?.response?.status === 403) {
                 this.$router.push('/forbidden')
-            } else if (err?.response?.status === 400) {
+            } else if (err?.response?.status === 500) {
                 this.$router.push('/server-error')
             }
         }
