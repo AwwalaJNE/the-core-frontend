@@ -254,26 +254,6 @@ export default {
                 }  
                 
             } catch (err) {
-                // TODO: REMOVE LATER
-                let arr = [
-                        {
-                            "courier_delivery_area_id": "a48111b9-f747-4a96-b930-c0ba61264acb",
-                            "courier_id": "76122",
-                            "courier_name": "CGK AWWALA;",
-                            "node_name": "CGK, KANTOR PERWAKILAN TOMANG 11 / 45",
-                            "area_type": "TLC-ZONE",
-                            "area_value": ["AMI-A","AMI-B"],
-                            "created_at": "2024-12-11 06:12:00"
-                        }
-                    ]
-                    arr.map(item => {
-                        item["courier_node"] = item.node_name;
-                        item["area_value_data"] = item.area_value
-                            .map((itm, index) => `${index === 0 ? '' : '\n'}- ${itm}`)
-                            .join('');
-
-                    })
-                    this.dataTable = arr;
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;

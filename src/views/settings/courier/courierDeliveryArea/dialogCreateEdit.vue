@@ -114,12 +114,14 @@ export default {
     methods: {
         async getDataDetail(val){
             this.courier_delivery_area_id = val.courier_delivery_area_id;
+
+            await this.getDataCourier();
+            this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID", parseInt(val.courier_id));
         },
         formData(form){
-            // form['employee_node_id'] = form['employee_node_id']['node_id'];
+            const { id, ...formWithoutId } = form;
 
-            console.log("12121", form)
-            this.form = form;
+            this.form = formWithoutId;
             this.handleSubmitData();
         },
         onChangeCustom(type, val, obj) {
@@ -130,12 +132,9 @@ export default {
 
                 switch (val) {
                     case "DELIVERY_ZONE":
-                        // this.autoCompleteUrl = `${this.URL.tlc_zone}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
-                        // this.input_value = "tlc_zone";
-                        // this.input_label = "tlc_zone";
-                        this.autoCompleteUrl = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "node_code";
-                        this.input_label = "node_name";
+                        this.autoCompleteUrl = `${this.URL.tlc_zone}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
+                        this.input_value = "tlc_zone";
+                        this.input_label = "tlc_zone";
                         break;
                     case "ZIP_CODE":
                         this.autoCompleteUrl = `${this.URL.zip_code_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
@@ -171,10 +170,10 @@ export default {
                         item: item
                     }));
 
-                    this.courier_arr = arr;
                     this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData", arr)
                 } else {
-                    this.courier_arr = [];
+                    this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID", "");
+                    this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData", []);
                     this.openNotification('warn', null, 'Courier data is empty!', ' Please create a new courier delivery')
                 }
             } catch (err) {
