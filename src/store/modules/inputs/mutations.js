@@ -4278,6 +4278,9 @@ export default {
     state.courier_delivery_area.courier_id.arrData = payload :
     state.courier_delivery_area.courier_id.arrData = []
   },
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled(state, payload) {
+    state.courier_delivery_area.courier_id.isDisabled = payload
+  },
 
 
   SET_COURIER_DELIVERY_AREA_AREA_TYPE(state, payload) {

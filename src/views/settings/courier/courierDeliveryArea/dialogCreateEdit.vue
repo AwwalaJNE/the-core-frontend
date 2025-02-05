@@ -117,6 +117,7 @@ export default {
 
             await this.getDataCourier();
             this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID", parseInt(val.courier_id));
+            this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled", true);
         },
         formData(form){
             const { id, ...formWithoutId } = form;
@@ -203,6 +204,7 @@ export default {
             this.$refs.formDataController.handleClearForm();
             this.form = {}
             this.courier_delivery_area_id = ""
+            this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled", false);
         },
         cancel() {
             this.handleClearForm();

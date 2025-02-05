@@ -2776,6 +2776,7 @@ export default {
       rule: "required",
       typeInput: "select",
       typeData: "String",
+      isDisabled: false,
       arrData: [],
       valueData: null,
       value: '',

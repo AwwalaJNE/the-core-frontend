@@ -3937,7 +3937,10 @@ export default {
   SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData({ commit }, payload) {
     commit('SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData', payload)
   },
-
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled', payload)
+  },
+  
 
   SET_COURIER_DELIVERY_AREA_AREA_TYPE({ commit }, payload) {
     commit('SET_COURIER_DELIVERY_AREA_AREA_TYPE', payload)
