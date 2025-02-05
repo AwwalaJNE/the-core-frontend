@@ -2770,9 +2770,9 @@ export default {
   },
 
   courier_delivery_area: {
-    courier: {
+    courier_id: {
       label: "Courier*",
-      key: "courier",
+      key: "courier_id",
       rule: "required",
       typeInput: "select",
       typeData: "String",

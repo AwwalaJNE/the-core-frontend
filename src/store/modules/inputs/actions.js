@@ -3928,14 +3928,14 @@ export default {
 
   //====== COURIER DELIVERY AREA SETTINGS ======//
 
-  SET_COURIER_DELIVERY_AREA_COURIER({ commit }, payload) {
-    commit('SET_COURIER_DELIVERY_AREA_COURIER', payload)
+  SET_COURIER_DELIVERY_AREA_COURIER_ID({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID', payload)
   },
-  SET_COURIER_DELIVERY_AREA_COURIER_ValueData({ commit }, payload) {
-    commit('SET_COURIER_DELIVERY_AREA_COURIER_ValueData', payload)
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_ValueData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID_ValueData', payload)
   },
-  SET_COURIER_DELIVERY_AREA_COURIER_ArrData({ commit }, payload) {
-    commit('SET_COURIER_DELIVERY_AREA_COURIER_ArrData', payload)
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData', payload)
   },
 
 

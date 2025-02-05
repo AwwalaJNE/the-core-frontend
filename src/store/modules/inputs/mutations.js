@@ -4267,16 +4267,16 @@ export default {
 
   //====== COURIER DELIVERY AREA SETTINGS ======//
 
-  SET_COURIER_DELIVERY_AREA_COURIER(state, payload) {
-    state.courier_delivery_area.courier.value = payload
+  SET_COURIER_DELIVERY_AREA_COURIER_ID(state, payload) {
+    state.courier_delivery_area.courier_id.value = payload
   },
-  SET_COURIER_DELIVERY_AREA_COURIER_ValueData(state, payload) {
-    state.courier_delivery_area.courier.valueData = payload
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_ValueData(state, payload) {
+    state.courier_delivery_area.courier_id.valueData = payload
   },
-  SET_COURIER_DELIVERY_AREA_COURIER_ArrData(state, payload) {
-    state.courier_delivery_area.courier.hasOwnProperty('arrData') ?
-    state.courier_delivery_area.courier.arrData = payload :
-    state.courier_delivery_area.courier.arrData = []
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData(state, payload) {
+    state.courier_delivery_area.courier_id.hasOwnProperty('arrData') ?
+    state.courier_delivery_area.courier_id.arrData = payload :
+    state.courier_delivery_area.courier_id.arrData = []
   },
 
 

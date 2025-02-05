@@ -87,7 +87,6 @@ export default {
     computed: {
         listenActive(){
             if (this.active) {
-                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_TYPE", '');
                 this.getDataCourier();
             }
             return this.active;
@@ -108,7 +107,6 @@ export default {
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
-                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_TYPE", '');
                 this.getDataDetail(val)
             }
         },
@@ -116,7 +114,6 @@ export default {
     methods: {
         async getDataDetail(val){
             this.courier_delivery_area_id = val.courier_delivery_area_id;
-            this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER", val.courier_name);
         },
         formData(form){
             // form['employee_node_id'] = form['employee_node_id']['node_id'];
@@ -126,8 +123,6 @@ export default {
             this.handleSubmitData();
         },
         onChangeCustom(type, val, obj) {
-            console.log("HALO", type)
-
             if (type === 'area_type') {
                 this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE", null);
                 this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE_ValueData", null);
@@ -177,7 +172,7 @@ export default {
                     }));
 
                     this.courier_arr = arr;
-                    this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ArrData", arr)
+                    this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData", arr)
                 } else {
                     this.courier_arr = [];
                     this.openNotification('warn', null, 'Courier data is empty!', ' Please create a new courier delivery')
