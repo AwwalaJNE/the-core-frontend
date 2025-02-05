@@ -952,6 +952,17 @@ export default {
                 resource_name: resourceLookup["SETTINGS_RUNSHEET"].resource_name
               },
             },
+            {
+              label: "Settings Courier",
+              url: "/settings/courier",
+              icon: "bx bxs-checkbox",
+              permission: "read-courier-delivery-area",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_COURIER"].resource_type,
+                resource_code: resourceLookup["SETTINGS_COURIER"].resource_code,
+                resource_name: resourceLookup["SETTINGS_COURIER"].resource_name
+              },
+            },
           ],
         },
         {
