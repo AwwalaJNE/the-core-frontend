@@ -2769,6 +2769,57 @@ export default {
     },
   },
 
+  courier_delivery_area: {
+    courier: {
+      label: "Courier*",
+      key: "courier",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    area_type: {
+      label: "Area Type*",
+      key: "area_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Delivery Zone',
+          value: 'DELIVERY_ZONE'
+        },
+        {
+          label: 'Zip Code',
+          value: 'ZIP_CODE'
+        },
+        {
+          label: 'District',
+          value: 'DISTRICT'
+        },
+        {
+          label: 'Subdistrict',
+          value: 'SUBDISTRICT'
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    area_value: {
+      label: "Area Value*",
+      key: "area_value",
+      rule: "required",
+      typeInput: "multipleSelector",
+      typeData: "String",
+      width: '12',
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+  },
+
   tariff: {
     tariff_group: {
       label: "Tariff Group",

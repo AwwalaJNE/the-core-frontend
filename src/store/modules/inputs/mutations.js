@@ -4263,8 +4263,50 @@ export default {
 
 
   //====== END RUNSHEET LIMIT SETTINGS ======//
-  
 
+
+  //====== COURIER DELIVERY AREA SETTINGS ======//
+
+  SET_COURIER_DELIVERY_AREA_COURIER(state, payload) {
+    state.courier_delivery_area.courier.value = payload
+  },
+  SET_COURIER_DELIVERY_AREA_COURIER_ValueData(state, payload) {
+    state.courier_delivery_area.courier.valueData = payload
+  },
+  SET_COURIER_DELIVERY_AREA_COURIER_ArrData(state, payload) {
+    state.courier_delivery_area.courier.hasOwnProperty('arrData') ?
+    state.courier_delivery_area.courier.arrData = payload :
+    state.courier_delivery_area.courier.arrData = []
+  },
+
+
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE(state, payload) {
+    state.courier_delivery_area.area_type.value = payload
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE_ValueData(state, payload) {
+    state.courier_delivery_area.area_type.valueData = payload
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE_ArrData(state, payload) {
+    state.courier_delivery_area.area_type.hasOwnProperty('arrData') ?
+    state.courier_delivery_area.area_type.arrData = payload :
+    state.courier_delivery_area.area_type.arrData = []
+  },
+
+
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE(state, payload) {
+    state.courier_delivery_area.area_value.value = payload
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE_ValueData(state, payload) {
+    state.courier_delivery_area.area_value.valueData = payload
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE_ArrData(state, payload) {
+    state.courier_delivery_area.area_value.hasOwnProperty('arrData') ?
+    state.courier_delivery_area.area_value.arrData = payload :
+    state.courier_delivery_area.area_value.arrData = []
+  },
+
+  //====== END COURIER DELIVERY AREA SETTINGS ======//
+  
   
   SET_BAG_IS_AUTO_OPEN_BAG(state, payload) {
     state.bag_is_auto_open_bag.bag_is_auto_open_bag.value = payload || false;
