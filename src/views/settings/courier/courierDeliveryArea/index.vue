@@ -4,6 +4,18 @@
             <vs-col xs="12" sm="12" lg="12">
                 <vs-row>
                     <vs-col xs="6" sm="3" lg="2">
+                        <div class="select-courier-delivery-area">
+                            <selector 
+                                formKey="filter_area_type"
+                                :valueData="filterAreaType"
+                                :selectedValue="filterAreaTypeBy"
+                                :isMultiple="false"
+                                :loading="loading"
+                                @updateValue="updateFilterAreaTypeBy" 
+                            />
+                        </div>
+                    </vs-col>
+                    <vs-col xs="6" sm="3" lg="2">
                         <select-search-by 
                             :border="true"
                             :isMultiple="false" 
@@ -72,6 +84,7 @@ import DateTime from "@/components/input/dateTime"
 import DialogConfirm from "@/components/dialog/dialogConfirm";
 import Inputan from "@/components/input/inputan";
 import SearchInput from "@/components/search/searchInput";
+import Selector from "@/components/input/select";
 import SelectSearchBy from "@/components/search/selectSearchBy";
 import TableMaster from "@/components/table/tableMaster";
 
@@ -92,6 +105,7 @@ export default {
         "inputan": Inputan,
         "dialog-confirm": DialogConfirm,
         "select-search-by": SelectSearchBy,
+        "selector": Selector,
     },
     data() {
         return {
@@ -137,6 +151,29 @@ export default {
             dialogRemoveActive: false,
             loadingRemove:false,
             loadingEdit: false,
+            filterAreaTypeBy: "ALL",
+            filterAreaType: [
+                {
+                    label: 'All Area Type',
+                    value: 'ALL'
+                },
+                {
+                    label: 'Delivery Zone',
+                    value: 'DELIVERY_ZONE'
+                },
+                {
+                    label: 'Zip Code',
+                    value: 'ZIP_CODE'
+                },
+                {
+                    label: 'District',
+                    value: 'DISTRICT'
+                },
+                {
+                    label: 'Subdistrict',
+                    value: 'SUBDISTRICT'
+                },
+            ],
             filterDateBy: "created_at",
             filterDate: [
                 {
@@ -187,6 +224,10 @@ export default {
             this.filterDateBy = key;
             this.refresh()
         },
+        updateFilterAreaTypeBy(key, val) {
+            this.filterAreaTypeBy = val;
+            this.refresh()
+        },
         async getTableData(limit, page, q, from, to, searchBy) {
             this.loading = true
 
@@ -195,7 +236,7 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.courier_delivery_area}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&filter_date_by=${this.filterDateBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.courier_delivery_area}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&filter_date_by=${this.filterDateBy}&area_type=${this.filterAreaTypeBy}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
@@ -290,3 +331,8 @@ export default {
     },
 }
 </script>
+<style scoped>
+.select-courier-delivery-area {
+    margin-top: -10px !important;
+}
+</style>
