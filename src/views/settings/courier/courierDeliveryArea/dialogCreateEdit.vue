@@ -126,9 +126,8 @@ export default {
         },
         onChangeCustom(type, val, obj) {
             if (type === 'area_type') {
-                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE", null);
-                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE_ValueData", null);
-                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE_ArrData", null);
+                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE", '');
+                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE_ArrData", []);
 
                 switch (val) {
                     case "DELIVERY_ZONE":
