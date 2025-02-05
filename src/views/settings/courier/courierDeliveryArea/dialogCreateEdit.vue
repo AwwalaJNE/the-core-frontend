@@ -1,0 +1,223 @@
+<template>
+    <dialog-master 
+        width="lg"
+        :actived="listenActive" 
+        :closeDialog="cancel"
+        :loading="listenLoading"
+    >
+        <template v-slot:header>
+            {{listenTitle}}
+        </template>
+
+        <template v-slot:content>
+            <div>
+                <form-input-controller
+                    ref="formDataController" 
+                    typeForm="courier_delivery_area"
+                    :asynchronousSelect_url="autoCompleteUrl"
+                    :dataItem="listenDataItem"
+                    @formData="formData"
+                    @onChangeCustom="onChangeCustom"
+                />
+            </div>
+        </template>
+
+        <template v-slot:footer>
+            <vs-row justify="flex-end" style="margin-top: 2rem;">
+                <vs-col w="3">
+                    <vs-button
+                        block
+                        danger
+                        flat
+                        transparent
+                        :active="true"
+                        @click="cancel"
+                    >
+                        Cancel
+                    </vs-button>
+                </vs-col>
+                <vs-col w="3">
+                    <vs-button
+                        block
+                        flat
+                        transparent
+                        type="submit"
+                        :active="true"
+                        @click="handleSubmit"
+                    >
+                        {{btnBlue || 'Add'}}
+                    </vs-button>
+                </vs-col>
+            </vs-row>                
+        </template>
+    </dialog-master>
+</template>
+<script>
+import axios from "axios";
+import master from "@/mixins/master";
+
+import DialogMaster from "@/components/dialog/dialogMaster";
+import FormInputController from "@/components/form/formInputController";
+import Selector from "@/components/input/select";
+
+export default {
+    name:"dialog-courier-delivery-area",
+    mixins: [master],
+    components: {
+        "dialog-master": DialogMaster,
+        "form-input-controller": FormInputController,
+        "selector": Selector   
+    },
+    props: {
+        active: Boolean,
+        btnBlue: String,
+        closeDialog: Function,
+        dataItem: Object,
+        title: String
+    },
+    data() {
+        return {
+            form: {},
+            courier_delivery_area_id: "",
+            autoCompleteUrl: null,
+            input_value: "",
+            loading: false,
+        }
+    },
+    computed: {
+        listenActive(){
+            if (this.active) {
+                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_TYPE", '');
+                this.getDataCourier();
+            }
+            return this.active;
+        },
+        listenAsyncUrl() {
+            return this.URL.node_list +'?n='+ this.listenNodeId;
+        },
+        listenTitle(){
+            return this.title;
+        },
+        listenLoading() {
+            return this.loading;
+        },
+        listenDataItem() {
+            return this.dataItem;
+        }
+    },
+    watch: {
+        dataItem: function (val) {
+            if(val !== undefined) {
+                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_TYPE", '');
+                this.getDataDetail(val)
+            }
+        },
+    },
+    methods: {
+        async getDataDetail(val){
+            this.courier_delivery_area_id = val.courier_delivery_area_id;
+            this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER", val.courier_name);
+        },
+        formData(form){
+            // form['employee_node_id'] = form['employee_node_id']['node_id'];
+
+            console.log("12121", form)
+            this.form = form;
+            this.handleSubmitData();
+        },
+        onChangeCustom(type, val, obj) {
+            console.log("HALO", type)
+
+            if (type === 'area_type') {
+                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE", null);
+                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE_ValueData", null);
+                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE_ArrData", null);
+
+                switch (val) {
+                    case "DELIVERY_ZONE":
+                        // this.autoCompleteUrl = `${this.URL.tlc_zone}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
+                        // this.input_value = "tlc_zone";
+                        // this.input_label = "tlc_zone";
+                        this.autoCompleteUrl = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
+                        this.input_value = "node_code";
+                        this.input_label = "node_name";
+                        break;
+                    case "ZIP_CODE":
+                        this.autoCompleteUrl = `${this.URL.zip_code_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
+                        this.input_value = "zip_code";
+                        this.input_label = "zip_code";
+                        break;
+                    case "DISTRICT":
+                        this.autoCompleteUrl = `${this.URL.district_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
+                        this.input_value = "geolocation_district_name";
+                        this.input_label = "geolocation_district_name";
+                        break;
+                    case "SUBDISTRICT":
+                        this.autoCompleteUrl = `${this.URL.subdistrict_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
+                        this.input_value = "geolocation_subdistrict_name";
+                        this.input_label = "geolocation_subdistrict_name";
+                        break;
+                    default:
+                }   
+            }
+        },
+        async getDataCourier() {
+            this.loading = true;
+
+            try {
+                const res = await axios.get(`${this.URL.courier_delivery}/list?n=${this.listenNodeId}`, this.Helper.header());
+
+                if (res.data.data.length > 0) {
+                    let arr = res.data.data;
+
+                    arr = arr.map(item => ({
+                        label: item.employee_name + ' ( ' + item.employee_code + ' ) ',
+                        value: item.employee_id,
+                        item: item
+                    }));
+
+                    this.courier_arr = arr;
+                    this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ArrData", arr)
+                } else {
+                    this.courier_arr = [];
+                    this.openNotification('warn', null, 'Courier data is empty!', ' Please create a new courier delivery')
+                }
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
+        async handleSubmitData() {
+            this.loading = true;
+            try {
+                const url = `${this.URL.courier_delivery_area}${this.courier_delivery_area_id ? `/${this.courier_delivery_area_id}` : ''}?n=${this.listenNodeId}`;
+                const method = this.courier_delivery_area_id ? 'put' : 'post';
+                const res = await axios[method](url, this.form, this.Helper.header());
+
+                this.openNotification('success', null, "Success", res?.data?.message || this.courier_delivery_area_id ? "Success Update Data" : "Success Create Data");
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+                this.cancel();
+            }
+        },
+        handleSubmit(){
+            this.$refs.formDataController.handleSubmit();
+        },
+        handleClearForm(){
+            this.$refs.formDataController.handleClearForm();
+            this.form = {}
+            this.courier_delivery_area_id = ""
+        },
+        cancel() {
+            this.handleClearForm();
+            this.closeDialog();
+        },
+    },
+    mounted() {
+        this.handleSubmitShortcut(this.handleSubmit)
+    },
+}
+</script>
