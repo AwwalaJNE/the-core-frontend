@@ -106,8 +106,8 @@ export default {
                 result.length > 0 && result.map(item => {
                     if (this.selectLabel && this.selectValue){
                         suggestions.push({
-                            value: item[this.selectLabel],
-                            label: item[this.selectValue],
+                            value: item[this.selectValue],
+                            label: item[this.selectLabel],
                             data: item
                         });
                     } else if(item.hasOwnProperty('node_name')) {

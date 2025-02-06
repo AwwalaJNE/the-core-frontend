@@ -24,110 +24,162 @@
                 :customBind="'data-kt-bag-type'"
                 @updateValue="updateFilter" />
             </vs-col>
-            <vs-col xs="12" sm="3" lg="2">
-              <template>
-                <div class="center in-get-bag">
-                 <vs-col lg="12">
-                   <selector 
-                   ref="destination"
-                   name="Routing" 
-                   rules="" 
-                   placeholder="Select routing"
-                   formKey="regional"
-                   :valueData="filteredRegionalArray"
-                   :selectedValue="regional"
-                   :disabled="listenDisabled"
-                   :customBind="'data-kt-routing'"
-                   @updateValue="updateFilter" />
-                 </vs-col>
-                </div>
-              </template>
-            </vs-col>
-            <vs-col xs="12" sm="3" lg="6">
-              <template  v-if="this.regional !== 'all_routing'">
-                <div class="center in-get-bag">
-                 <vs-col lg="12">
-                   <selector 
-                   ref="destination"
-                   name="Destination" 
-                   rules="" 
-                   placeholder="Select destination"
-                   formKey="destination"
-                   :loading="loading"
-                   :valueData="destinationArray"
-                   :selectedValue="destination"
-                   :disabled="listenDisabled"
-                   :customBind="'data-kt-destination'"
-                   @updateValue="updateFilter" />
-                 </vs-col>
-                </div>
-              </template>
-              <template v-else>
-                <div class=" in-get-bag">
-                 <vs-col lg="12">
-                  <div class="title my-5 text-lg font-semibold text-gray-700" style="text-transform: lowercase; font-size: 14px; text-align: left;  padding-top: 10px;">Destination All</div>
-                  <el-autocomplete
-                    name="Destination"
-                    v-model="searchTerm"
-                    :fetch-suggestions="querySearchAsync"
-                    placeholder="Search Destination"
+            <!-- <template v-if="bag_type === ('normal' || 'masterbag' || 'return' || 'pickup')"> -->
+              <template v-if="['normal', 'masterbag', 'return', 'pickup'].includes(bag_type)">
+              <vs-col xs="12" sm="3" lg="2">
+                <template>
+                  <div class="center in-get-bag">
+                  <vs-col lg="12">
+                    <selector 
+                    ref="destination"
+                    name="Routing" 
+                    rules="" 
+                    placeholder="Select routing"
+                    formKey="regional"
+                    :valueData="filteredRegionalArray"
+                    :selectedValue="regional"
                     :disabled="listenDisabled"
-                    @select="handleSelect"
-                  >
-                    <template v-slot="{ item }">
-                        <div
-                            v-bind:data-kt-destination="item.value"
-                        >
-                            {{ item.value }}
-                        </div>
-                    </template>
-                  </el-autocomplete>
-                 </vs-col>
-                </div>
-              </template>
-            </vs-col>
-            <vs-col xs="12" sm="3" lg="2">
-              <template>
-                <div class="center in-get-bag">
-                 <vs-col lg="12">
-                   <selector 
-                   ref="service"
-                   name="Service" 
-                   rules="" 
-                   placeholder="Select service"
-                   formKey="service"
-                   :loading="loading"
-                   :valueData="filteredServiceArray"
-                   :selectedValue="service"
-                   :isMultiple="true"
-                   :disabled="listenDisabled"
-                   :customBind="'data-kt-service'"
-                   @updateValue="updateFilter" />
-                 </vs-col>
-                </div>
-              </template>
-            </vs-col>
+                    :customBind="'data-kt-routing'"
+                    @updateValue="updateFilter" />
+                  </vs-col>
+                  </div>
+                </template>
+              </vs-col>
+              <vs-col xs="12" sm="3" lg="6">
+                <template  v-if="this.regional !== 'all_routing'">
+                  <div class="center in-get-bag">
+                  <vs-col lg="12">
+                    <selector 
+                    ref="destination"
+                    name="Destination" 
+                    rules="" 
+                    placeholder="Select destination"
+                    formKey="destination"
+                    :loading="loading"
+                    :valueData="destinationArray"
+                    :selectedValue="destination"
+                    :disabled="listenDisabled"
+                    :customBind="'data-kt-destination'"
+                    @updateValue="updateFilter" />
+                  </vs-col>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class=" in-get-bag">
+                  <vs-col lg="12">
+                    <div class="title my-5 text-lg font-semibold text-gray-700" style="text-transform: lowercase; font-size: 14px; text-align: left;  padding-top: 10px;">Destination All</div>
+                    <el-autocomplete
+                      name="Destination"
+                      v-model="searchTerm"
+                      :fetch-suggestions="querySearchAsync"
+                      placeholder="Search Destination"
+                      :disabled="listenDisabled"
+                      @select="handleSelect"
+                    >
+                      <template v-slot="{ item }">
+                          <div
+                              v-bind:data-kt-destination="item.value"
+                          >
+                              {{ item.value }}
+                          </div>
+                      </template>
+                    </el-autocomplete>
+                  </vs-col>
+                  </div>
+                </template>
+              </vs-col>
+              <vs-col xs="12" sm="3" lg="2">
+                <template>
+                  <div class="center in-get-bag">
+                  <vs-col lg="12">
+                    <selector 
+                    ref="service"
+                    name="Service" 
+                    rules="" 
+                    placeholder="Select service"
+                    formKey="service"
+                    :loading="loading"
+                    :valueData="filteredServiceArray"
+                    :selectedValue="service"
+                    :isMultiple="true"
+                    :disabled="listenDisabled"
+                    :customBind="'data-kt-service'"
+                    @updateValue="updateFilter" />
+                  </vs-col>
+                  </div>
+                </template>
+              </vs-col>
+            </template>
+            <template v-if="bag_type === 'pra runsheet'">
+              <vs-col xs="12" sm="3" lg="2">
+                <template>
+                  <div class="center in-get-bag">
+                    <vs-col lg="12">
+                      <selector 
+                        ref="validation"
+                        name="Validation" 
+                        rules="" 
+                        placeholder="Select Validation"
+                        formKey="validation"
+                        :loading="loading"
+                        :valueData="validationArray"
+                        :selectedValue="validation"
+                        :disabled="listenDisabled"
+                        :customBind="'data-kt-routing'"
+                        @updateValue="updateFilter" 
+                      />
+                    </vs-col>
+                  </div>
+                </template>
+              </vs-col>
+              <vs-col xs="12" sm="6" lg="8">
+                <template>
+                  <div class="center in-get-bag">
+                    <vs-col lg="12">
+                      <asynchronousSelect 
+                        ref="validation_reference"
+                        name="Validation Reference"
+                        rules="" 
+                        formKey="validation_reference"
+                        typeInput="multipleselector"
+                        :loading="loading"
+                        :valueData="validationReferenceArray"
+                        :selectedValue="validation_reference"
+                        :url="autoCompleteUrl"
+                        :selectLabel="'employee_name'"
+                        :selectValue="'employee_id'"
+                        @updateValue="updateFilter"
+                      />
+                    </vs-col>
+                  </div>
+                </template>
+              </vs-col>
+            </template>
           </vs-row>
 
           <vs-row style="margin-bottom: 1.5em;">
             <!-- Auto Open Bag -->
-            <vs-col xs="6" sm="3" lg="2">
-              <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
-                Auto Open Bag
-              </vs-checkbox>
-            </vs-col>
+              <template v-if="['normal', 'masterbag', 'pra runsheet', 'return', 'pickup'].includes(bag_type)">
+              <vs-col xs="6" sm="3" lg="2">
+                <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                  Auto Open Bag
+                </vs-checkbox>
+              </vs-col>
+            </template>
 
             <!-- Validate Hub Delivery -->
-            <vs-col xs="6" sm="3" lg="2">
-              <!-- Enabled -->
-              <vs-checkbox v-if="!disable_hub_delivery" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery">
-                Validate Hub Delivery
-              </vs-checkbox>
-              <!-- Disabled -->
-              <vs-checkbox v-if="disable_hub_delivery" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery" disabled>
-                Validate Hub Delivery
-              </vs-checkbox>
-            </vs-col>
+            <template v-if="['normal', 'return', 'pickup'].includes(bag_type)">
+              <vs-col xs="6" sm="3" lg="2">
+                <!-- Enabled -->
+                <vs-checkbox v-if="!disable_hub_delivery" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery">
+                  Validate Hub Delivery
+                </vs-checkbox>
+                <!-- Disabled -->
+                <vs-checkbox v-if="disable_hub_delivery" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery" disabled>
+                  Validate Hub Delivery
+                </vs-checkbox>
+              </vs-col>
+            </template>
           </vs-row>
 
           <vs-row style="margin-top:1em">
@@ -173,6 +225,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import Selector from "@/components/input/select"
 import AutoComplete from "@/components/input/autoComplete"
 import CameraScanner from "@/components/scanner/camera.vue";
+import asynchronousSelect from "@/components/input/asynchronousSelect"
 
 export default {
   name:"InventoryBagging",
@@ -181,6 +234,7 @@ export default {
       "breadcrumb": Breadcrumb,
       "selector": Selector,
       "auto-complete": AutoComplete,
+      "asynchronousSelect": asynchronousSelect,
       CameraScanner,
   },
   watch: {
@@ -225,10 +279,10 @@ export default {
           case "pra runsheet":
             this.title = 'Create Bag Prarunsheet'
             this.placeholder = 'Masukkan Connote'
-            this.is_disabled = true
-            this.disable_auto_open_bag = false
-            this.is_hub_delivery_validation = false
-            this.disable_hub_delivery = true
+            // this.is_disabled = true
+            // this.disable_auto_open_bag = false
+            // this.is_hub_delivery_validation = false
+            // this.disable_hub_delivery = true
             this.handlePraRunsheet()
             break;
           case "return":
@@ -453,6 +507,29 @@ export default {
           disable_auto_open_bag: false,
           is_hub_delivery_validation: false,
           disable_hub_delivery: false,
+          autoCompleteUrl: '',
+          validation: '',
+          validationArray: [
+            {
+              label: "Courier",
+              value: "COURIER"
+            },
+            {
+              label: "Delivery Zone",
+              value: "DELIVERY_ZONE"
+            },
+            {
+              label: "District",
+              value: "DISTRICT"
+            },
+          ],
+          validation_reference: '',
+          validationReferenceArray: [
+            {
+              "label": "",
+              "value": ""
+            },
+          ],
       }
   },
   computed: {
@@ -541,29 +618,50 @@ export default {
           })
       }
     },
-      async getService(){
-        
-      this.loading = true
-        await axios
-              .get(this.URL.service +
-              `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-              this.Helper.header())
-              .then(res => {
-              let arr = []
-                      res.data.data.map(item => {
-                          let obj = {}
-                          obj["label"] = item.service_code
-                          obj["value"] = item.service_code
+    async getService(){
+      
+    this.loading = true
+      await axios
+            .get(this.URL.service +
+            `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+            this.Helper.header())
+            .then(res => {
+            let arr = []
+                    res.data.data.map(item => {
+                        let obj = {}
+                        obj["label"] = item.service_code
+                        obj["value"] = item.service_code
 
-                          this.serviceArrayNew.push(obj)
-                      })
+                        this.serviceArrayNew.push(obj)
+                    })
 
-                      this.loading = false
-          }).catch(err => {
-            this.loading = false
-            this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
-          })
-      },
+                    this.loading = false
+        }).catch(err => {
+          this.loading = false
+          this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
+        })
+    },
+    async getDataCourier() {
+      this.loading = true;
+      try {
+        const res = await axios.get(`${this.URL.courier_delivery}/list?n=${this.listenNodeId}`, this.Helper.header());
+        if (res.data.data.length > 0) {
+          let arr = res.data.data;
+          arr = arr.map(item => ({
+            label: item.employee_name + ' ( ' + item.employee_code + ' ) ',
+            value: item.employee_id,
+          }));
+          this.validationReferenceArray = arr
+        } else {
+          this.validationReferenceArray = [];
+          this.openNotification('warn', null, 'Courier data is empty!', ' Please create a new courier delivery')
+        }
+      } catch (err) {
+        this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+      } finally {
+        this.loading = false;
+      }
+    },
     handleAutoOpenBag(val) {
       this.is_auto_open_bag = val.target.checked;
     },
@@ -597,7 +695,9 @@ export default {
           service: this.service,
           type: this.bag_type,
           auto_open_bag: this.is_auto_open_bag,
-          is_hub_delivery_validation: this.is_hub_delivery_validation
+          is_hub_delivery_validation: this.is_hub_delivery_validation,
+          validation: this.validation,
+          validation_reference: this.validation_reference.join(',')
       }
       // if(this.weight !== null) {
       //   this.form["bag_weight"] = parseInt(this.weight)
@@ -605,6 +705,7 @@ export default {
       if(this.destination !== "") {
         this.form["destination_node_id"] = this.destination
       }
+      console.log("HALO", this.form)
       this.ProccessBagging()
     },
     handleClearForm(){
@@ -613,8 +714,6 @@ export default {
       this.item_code_orion = "";
     },
     updateFilter(key, value) {
-
-      
       switch(true) {
           case key.toLowerCase().includes("regional"):
               this.regional = value
@@ -629,6 +728,17 @@ export default {
               break;
           case key.toLowerCase().includes('bag_type'):
               this.bag_type = value
+              break;
+          case key.toLowerCase() === ('validation'):
+              this.validation = value
+
+              if (value.toLowerCase() === 'courier') {
+                this.getDataCourier()
+                this.autoCompleteUrl = `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
+              }
+              break;
+          case key.toLowerCase() === ('validation_reference'):
+              this.validation_reference = value
               break;
           default:
       }
