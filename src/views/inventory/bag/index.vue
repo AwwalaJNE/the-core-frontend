@@ -146,8 +146,8 @@
                         :valueData="validationReferenceArray"
                         :selectedValue="validation_reference"
                         :url="autoCompleteUrl"
-                        :selectLabel="'employee_name'"
-                        :selectValue="'employee_id'"
+                        :selectLabel="selectLabel"
+                        :selectValue="selectValue"
                         @updateValue="updateFilter"
                       />
                     </vs-col>
@@ -508,6 +508,8 @@ export default {
           is_hub_delivery_validation: false,
           disable_hub_delivery: false,
           autoCompleteUrl: '',
+          selectLabel: '',
+          selectValue: '',
           validation: '',
           validationArray: [
             {
@@ -733,8 +735,17 @@ export default {
               this.validation = value
 
               if (value.toLowerCase() === 'courier') {
-                this.getDataCourier()
                 this.autoCompleteUrl = `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
+                this.selectLabel = 'employee_name'
+                this.selectValue = 'employee_id'
+              } else if (value.toLowerCase() === 'delivery_zone') {
+                this.autoCompleteUrl = `${this.URL.tlc_zone}?n=${this.listenNodeId}`
+                this.selectLabel = "tlc_zone";
+                this.selectValue = "tlc_zone";
+              } else if (value.toLowerCase() === 'district') {
+                this.autoCompleteUrl = `${this.URL.district_list}?n=${this.listenNodeId}`
+                this.selectLabel = "geolocation_district_name";
+                this.selectValue = "geolocation_district_name";
               }
               break;
           case key.toLowerCase() === ('validation_reference'):

@@ -21,7 +21,9 @@
         placeholder="Please enter a keyword"
         :remote-method="asynchronousSelect"
         @change="handleSelect"
-        :loading="loading">
+        :loading="loading"
+        :disabled="listenIsDisabled"
+    >
             <template v-if="options.length > 0">
                 <el-option
                 v-for="item in options"
@@ -51,7 +53,8 @@ export default {
         limitExist: Boolean,
         selectLabel: String,
         selectValue: String,
-        url: String
+        url: String,
+        disabled: Boolean
     },
     components: {
         "inputan": Inputan
@@ -65,7 +68,10 @@ export default {
         },
         listenUrl() {
             return this.url
-        }
+        },
+        listenIsDisabled() {
+            return this.disabled ? this.disabled : false
+        },
     },
     data() {
         return {

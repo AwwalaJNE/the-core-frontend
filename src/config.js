@@ -362,5 +362,17 @@ export default {
     list_sm: api + 'list/sm-number',
 
     // Receiving Log
-    receiving_log: api + 'receiving-log'
+    receiving_log: api + 'receiving-log',
+
+    // Courier Delivery Area
+    courier_delivery_area: api + 'courier-delivery-area',
+
+    // TLC Zone
+    tlc_zone: api + 'tlc-zone-list',
+
+    // District List
+    district_list: api + 'district-list',
+
+    // Subdistrict List
+    subdistrict_list: api + 'subdistrict-list'
 }
