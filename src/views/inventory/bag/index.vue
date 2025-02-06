@@ -124,7 +124,6 @@
                         :loading="loading"
                         :valueData="validationArray"
                         :selectedValue="validation"
-                        :disabled="listenDisabled"
                         :customBind="'data-kt-routing'"
                         @updateValue="updateFilter" 
                       />
@@ -258,6 +257,8 @@ export default {
             this.is_disabled = false
             this.disable_auto_open_bag = false
             this.disable_hub_delivery = false
+            this.validation = '';
+            this.validation_reference = '';
 
             this.service = ["ALL_SERVICE"]
             this.$nextTick(() => {
@@ -275,13 +276,15 @@ export default {
             this.disable_auto_open_bag = true
             this.is_hub_delivery_validation = false
             this.disable_hub_delivery = true
+            this.validation = '';
+            this.validation_reference = '';
             break;
           case "pra runsheet":
             this.title = 'Create Bag Prarunsheet'
             this.placeholder = 'Masukkan Connote'
-            // this.is_disabled = true
-            // this.disable_auto_open_bag = false
-            // this.is_hub_delivery_validation = false
+            this.is_disabled = true
+            this.disable_auto_open_bag = false
+            this.is_hub_delivery_validation = false
             // this.disable_hub_delivery = true
             this.handlePraRunsheet()
             break;
@@ -291,6 +294,8 @@ export default {
             this.is_disabled = false
             this.disable_auto_open_bag = false
             this.disable_hub_delivery = false
+            this.validation = '';
+            this.validation_reference = '';
             break;
           case "pickup":
             this.title = 'Create Bag Pickup'
@@ -298,6 +303,8 @@ export default {
             this.is_disabled = false
             this.disable_auto_open_bag = false
             this.disable_hub_delivery = false
+            this.validation = '';
+            this.validation_reference = '';
             break;
           default:
         }
@@ -643,27 +650,6 @@ export default {
           this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
         })
     },
-    async getDataCourier() {
-      this.loading = true;
-      try {
-        const res = await axios.get(`${this.URL.courier_delivery}/list?n=${this.listenNodeId}`, this.Helper.header());
-        if (res.data.data.length > 0) {
-          let arr = res.data.data;
-          arr = arr.map(item => ({
-            label: item.employee_name + ' ( ' + item.employee_code + ' ) ',
-            value: item.employee_id,
-          }));
-          this.validationReferenceArray = arr
-        } else {
-          this.validationReferenceArray = [];
-          this.openNotification('warn', null, 'Courier data is empty!', ' Please create a new courier delivery')
-        }
-      } catch (err) {
-        this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
-      } finally {
-        this.loading = false;
-      }
-    },
     handleAutoOpenBag(val) {
       this.is_auto_open_bag = val.target.checked;
     },
@@ -733,6 +719,7 @@ export default {
               break;
           case key.toLowerCase() === ('validation'):
               this.validation = value
+              this.validation_reference = '';
 
               if (value.toLowerCase() === 'courier') {
                 this.autoCompleteUrl = `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
