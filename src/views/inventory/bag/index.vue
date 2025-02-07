@@ -252,6 +252,7 @@ export default {
       if (val !== undefined) {
         switch (val) {
           case "normal":
+            this.getService()
             this.title = 'Create Bag'
             this.placeholder = 'Masukkan Connote'
             this.is_disabled = false
@@ -269,6 +270,7 @@ export default {
             
             break;
           case "masterbag":
+            this.getService()
             this.title = 'Create Masterbag'
             this.placeholder = 'Masukkan Bag'
             this.is_disabled = false
@@ -289,6 +291,7 @@ export default {
             this.handlePraRunsheet()
             break;
           case "return":
+            this.getService()
             this.title = 'Create Bag Return'
             this.placeholder = 'Masukkan Connote Return'
             this.is_disabled = false
@@ -298,6 +301,7 @@ export default {
             this.validation_reference = '';
             break;
           case "pickup":
+            this.getService()
             this.title = 'Create Bag Pickup'
             this.placeholder = 'Masukkan Connote Pickup'
             this.is_disabled = false
@@ -693,7 +697,6 @@ export default {
       if(this.destination !== "") {
         this.form["destination_node_id"] = this.destination
       }
-      console.log("HALO", this.form)
       this.ProccessBagging()
     },
     handleClearForm(){
@@ -824,7 +827,6 @@ export default {
   mounted() {
     this.getNodeLink()
     this.getNodeIntracity()
-    this.getService()
     this.setInputFocus();
   }
 }
