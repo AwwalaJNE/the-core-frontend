@@ -404,6 +404,14 @@ const Master = {
         },
         checkIfMobile() {
             this.isMobile = window.matchMedia("(max-width: 768px)").matches;
+        },
+
+        redirectError(err) {
+            if (err?.response?.status === 403) {
+                this.$router.push('/forbidden')
+            } else if (err?.response?.status === 500) {
+                this.$router.push('/server-error')
+            }
         }
     },
     mounted() {
