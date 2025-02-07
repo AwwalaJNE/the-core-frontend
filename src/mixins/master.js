@@ -377,7 +377,7 @@ const Master = {
                 return 'WARNING SLA'
             }
             else {
-                return 'SAFE SLA'
+                return 'ON SLA'
             }
         },
         formatDateTime(dateTimeStr) {
