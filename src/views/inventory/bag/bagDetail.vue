@@ -530,7 +530,7 @@ export default {
       this.validation = data.data.validation;
 
       
-      this.validation_reference = data.data.validation_reference.split(",")
+      this.validation_reference = String(data.data.validation_reference || "").split(",");
 
       if (this.validation === 'COURIER') {
         await this.getDataCourier()
