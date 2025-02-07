@@ -78,7 +78,7 @@ export default {
     data() {
         return {
             form: {},
-            courier_delivery_area_id: "",
+            courier_id: "",
             autoCompleteUrl: null,
             input_value: "",
             loading: false,
@@ -90,9 +90,6 @@ export default {
                 this.getDataCourier();
             }
             return this.active;
-        },
-        listenAsyncUrl() {
-            return this.URL.node_list +'?n='+ this.listenNodeId;
         },
         listenTitle(){
             return this.title;
@@ -113,7 +110,7 @@ export default {
     },
     methods: {
         async getDataDetail(val){
-            this.courier_delivery_area_id = val.courier_delivery_area_id;
+            this.courier_id = val.courier_id;
 
             await this.getDataCourier();
             this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID", parseInt(val.courier_id));
@@ -185,11 +182,11 @@ export default {
         async handleSubmitData() {
             this.loading = true;
             try {
-                const url = `${this.URL.courier_delivery_area}${this.courier_delivery_area_id ? `/${this.courier_delivery_area_id}` : ''}?n=${this.listenNodeId}`;
-                const method = this.courier_delivery_area_id ? 'put' : 'post';
+                const url = `${this.URL.courier_delivery_area}${this.courier_id ? `/${this.courier_id}` : ''}?n=${this.listenNodeId}`;
+                const method = this.courier_id ? 'put' : 'post';
                 const res = await axios[method](url, this.form, this.Helper.header());
 
-                this.openNotification('success', null, "Success", res?.data?.message || this.courier_delivery_area_id ? "Success Update Data" : "Success Create Data");
+                this.openNotification('success', null, "Success", res?.data?.message || this.courier_id ? "Success Update Data" : "Success Create Data");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -203,11 +200,12 @@ export default {
         handleClearForm(){
             this.$refs.formDataController.handleClearForm();
             this.form = {}
-            this.courier_delivery_area_id = ""
+            this.courier_id = ""
             this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled", false);
         },
         cancel() {
             this.handleClearForm();
+            this.$emit("refresh");
             this.closeDialog();
         },
     },

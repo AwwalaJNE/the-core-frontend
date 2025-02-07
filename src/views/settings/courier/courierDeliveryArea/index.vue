@@ -288,7 +288,7 @@ export default {
             }
         },
         actionRemove(val){
-            this.selected_id = val.courier_delivery_area_id;
+            this.selected_id = val.courier_id;
             this.dialogRemoveActive = true;
         },
         confirmRemove() {
