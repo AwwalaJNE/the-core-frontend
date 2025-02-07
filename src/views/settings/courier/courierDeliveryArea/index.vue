@@ -242,6 +242,9 @@ export default {
                     let arr = res.data.data;
                     arr.map(item => {
                         item["courier_node"] = item.node_name;
+                        item["area_value_data"] = item.area_value
+                            .map((itm, index) => `${index === 0 ? '' : '\n'}- ${itm}`)
+                            .join('');
                     })
                     this.dataTable = arr;
                     this.pagination = {
