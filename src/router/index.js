@@ -213,6 +213,9 @@ import Bag from '@/views/settings/bag/index';
 // === Runsheet Settings ===
 import SettingsRunsheet from '@/views/settings/runsheet/index';
 
+// === Courier Settings ===
+import SettingsCourier from '@/views/settings/courier/index';
+
 // === Connote Adjustment ===
 import ConnoteCancel from '@/views/connoteAdjustment/connoteCancel'
 import ConnoteForward from '@/views/connoteAdjustment/connoteForward'
@@ -545,6 +548,20 @@ const routes = [
               resource_name: resourceLookup["SETTINGS_RUNSHEET"].resource_name,
               isMaintenanceMode: false,
               permission: '',
+            }
+          },
+          {
+            path: "courier",
+            name: "Courier",
+            component: SettingsCourier,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Courier",
+              resource_type: resourceLookup["SETTINGS_COURIER"].resource_type,
+              resource_code: resourceLookup["SETTINGS_COURIER"].resource_code,
+              resource_name: resourceLookup["SETTINGS_COURIER"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-courier-delivery-area',
             }
           },
         ],
