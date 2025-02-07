@@ -131,28 +131,30 @@
                   </div>
                 </template>
               </vs-col>
-              <vs-col xs="12" sm="6" lg="8">
-                <template>
-                  <div class="center in-get-bag">
-                    <vs-col lg="12">
-                      <asynchronousSelect 
-                        ref="validation_reference"
-                        name="Validation Reference"
-                        rules="" 
-                        formKey="validation_reference"
-                        typeInput="multipleselector"
-                        :loading="loading"
-                        :valueData="validationReferenceArray"
-                        :selectedValue="validation_reference"
-                        :url="autoCompleteUrl"
-                        :selectLabel="selectLabel"
-                        :selectValue="selectValue"
-                        @updateValue="updateFilter"
-                      />
-                    </vs-col>
-                  </div>
-                </template>
-              </vs-col>
+              <template v-if="validation">
+                <vs-col xs="12" sm="6" lg="8">
+                  <template>
+                    <div class="center in-get-bag">
+                      <vs-col lg="12">
+                        <asynchronousSelect 
+                          ref="validation_reference"
+                          name="Validation Reference"
+                          rules="" 
+                          formKey="validation_reference"
+                          typeInput="multipleselector"
+                          :loading="loading"
+                          :valueData="validationReferenceArray"
+                          :selectedValue="validation_reference"
+                          :url="autoCompleteUrl"
+                          :selectLabel="selectLabel"
+                          :selectValue="selectValue"
+                          @updateValue="updateFilter"
+                        />
+                      </vs-col>
+                    </div>
+                  </template>
+                </vs-col>
+              </template>
             </template>
           </vs-row>
 
