@@ -245,6 +245,7 @@ export default {
                         item["area_value_data"] = item.area_value
                             .map((itm, index) => `${index === 0 ? '' : '\n'}- ${itm}`)
                             .join('');
+                        item["created_at"] = this.formatTimestamp(item.created_at)
                     })
                     this.dataTable = arr;
                     this.pagination = {

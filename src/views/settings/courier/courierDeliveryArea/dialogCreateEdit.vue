@@ -115,6 +115,8 @@ export default {
             await this.getDataCourier();
             this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID", parseInt(val.courier_id));
             this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled", true);
+            
+            this.areaType(val.area_type)
         },
         formData(form){
             const { id, ...formWithoutId } = form;
@@ -127,29 +129,32 @@ export default {
                 this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE", '');
                 this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE_ArrData", []);
 
-                switch (val) {
-                    case "DELIVERY_ZONE":
-                        this.autoCompleteUrl = `${this.URL.tlc_zone}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
-                        this.input_value = "tlc_zone";
-                        this.input_label = "tlc_zone";
-                        break;
-                    case "ZIP_CODE":
-                        this.autoCompleteUrl = `${this.URL.zip_code_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
-                        this.input_value = "zip_code";
-                        this.input_label = "zip_code";
-                        break;
-                    case "DISTRICT":
-                        this.autoCompleteUrl = `${this.URL.district_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
-                        this.input_value = "geolocation_district_name";
-                        this.input_label = "geolocation_district_name";
-                        break;
-                    case "SUBDISTRICT":
-                        this.autoCompleteUrl = `${this.URL.subdistrict_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
-                        this.input_value = "geolocation_subdistrict_name";
-                        this.input_label = "geolocation_subdistrict_name";
-                        break;
-                    default:
-                }   
+                this.areaType(val);
+            }
+        },
+        areaType(val) {
+            switch (val) {
+                case "DELIVERY_ZONE":
+                    this.autoCompleteUrl = `${this.URL.tlc_zone}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
+                    this.input_value = "tlc_zone";
+                    this.input_label = "tlc_zone";
+                    break;
+                case "ZIP_CODE":
+                    this.autoCompleteUrl = `${this.URL.zip_code_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
+                    this.input_value = "zip_code";
+                    this.input_label = "zip_code";
+                    break;
+                case "DISTRICT":
+                    this.autoCompleteUrl = `${this.URL.district_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
+                    this.input_value = "geolocation_district_name";
+                    this.input_label = "geolocation_district_name";
+                    break;
+                case "SUBDISTRICT":
+                    this.autoCompleteUrl = `${this.URL.subdistrict_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
+                    this.input_value = "geolocation_subdistrict_name";
+                    this.input_label = "geolocation_subdistrict_name";
+                    break;
+                default:
             }
         },
         async getDataCourier() {
