@@ -11,9 +11,12 @@
         <vs-row align="self-end" style="margin-top: 1rem;">
             <template>
                 <vs-col xs="12" sm="3" lg="3">
-                    <vs-row class="mb-2">
+                    <vs-row class="mb-2" style="gap: 1rem;">
                         <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
                             Auto Open Bag
+                        </vs-checkbox>
+                        <vs-checkbox v-model="is_validate_courier" @change="handleValidateCourier">
+                            Validate Courier
                         </vs-checkbox>
                     </vs-row>
 
@@ -365,6 +368,7 @@ export default {
             selectedCourier: "",
             is_approve: '0',
             is_auto_open_bag: true,
+            is_validate_courier: false
         };
     },
     computed: {
@@ -533,7 +537,8 @@ export default {
                 item_number: this.item_bag,
                 delivery_runsheet_number: this.delivery_runsheet_number,
                 courier_id: this.employee_id,
-                auto_open_bag: this.is_auto_open_bag
+                auto_open_bag: this.is_auto_open_bag,
+                validate_courier: this.is_validate_courier
             }
             await axios
                 .post(this.URL.validation + `/create-runsheet-pra?n=${this.listenNodeId}`, valForm, this.Helper.header())
@@ -553,7 +558,8 @@ export default {
                         bag_number: this.form.bag_number,
                         courier_employee_id: this.employee_id,
                         delivery_runsheet_number: this.delivery_runsheet_number,
-                        auto_open_bag: this.is_auto_open_bag
+                        auto_open_bag: this.is_auto_open_bag,
+                        validate_courier: this.is_validate_courier
                     };
 
                     if (postData) {
@@ -1071,6 +1077,9 @@ export default {
         },
         handleAutoOpenBag(val) {
             this.is_auto_open_bag = val.target.checked;
+        },
+        handleValidateCourier(val) {
+            this.is_validate_courier = val.target.checked;
         },
     }
 };
