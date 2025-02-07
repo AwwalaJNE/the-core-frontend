@@ -685,7 +685,7 @@ export default {
           auto_open_bag: this.is_auto_open_bag,
           is_hub_delivery_validation: this.is_hub_delivery_validation,
           validation: this.validation,
-          validation_reference: this.validation_reference.join(',')
+          validation_reference: (this.validation_reference || []).join(',')
       }
       // if(this.weight !== null) {
       //   this.form["bag_weight"] = parseInt(this.weight)
