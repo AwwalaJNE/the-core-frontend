@@ -56,7 +56,7 @@
                     </div>
                 </vs-col>
                 <vs-col w="12">
-                    <div class="box view">
+                    <div class="box view" v-if="destination === 'HUB_DELIVERY'">
                         <template v-if="type === 'initial'">
                             <img class="logo" :src="require('../../../../assets/img/bagging-placeholder.png')" alt="jne" width="300" align="center">
                             <h3>Scan barcode connote untuk melakukan sorting</h3>
@@ -94,6 +94,95 @@
                                     <vs-col xs="6" sm="6" lg="6">
                                         <label>ZIP CODE RECEIVER</label>
                                         <h4>{{ sort_info.information.zip_code_receiver }}</h4>
+                                    </vs-col>
+                                    <vs-col xs="6" sm="6" lg="6" class="details-row-left">
+                                        <label>SLA DATE</label>
+                                        <h4>{{ this.formatDateTime(sort_info.information.sla_date) }}</h4>
+                                    </vs-col>
+                                </vs-row>
+                            </div>
+                        </template>
+                        <template v-else-if="type === 'error'">
+                            <div class="error-container">
+                                <vs-row class="header-row">
+                                    <vs-row>
+                                        <i class='bx bxs-x-circle'></i>
+                                    </vs-row>
+                                    <vs-row>
+                                        <label>CONNOTE NUMBER</label>
+                                    </vs-row>
+                                    <vs-row>
+                                        <h4>{{ sort_info.item_number }}</h4>
+                                    </vs-row>
+                                </vs-row>
+                                <vs-row class="details-error-row">
+                                    <p>{{ sort_info.message }}</p>
+                                </vs-row>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="box view" v-if="destination === 'DELIVERY_AREA'">
+                        <template v-if="type === 'initial'">
+                            <img class="logo" :src="require('../../../../assets/img/bagging-placeholder.png')" alt="jne" width="300" align="center">
+                            <h3>Scan barcode connote untuk melakukan sorting</h3>
+                        </template>
+                        <template v-else-if="type === 'success'">
+                            <div class="success-container">
+                                <vs-row class="header-row">
+                                    <vs-row class="upper-rows">
+                                        <vs-col xs="4" sm="4" lg="4" style="text-align: left;">
+                                            <label>SUBDISTRICT NAME</label>
+                                            <h2>{{ sort_info.information.subdistrict_name }}</h2>
+                                        </vs-col>
+                                        <vs-col xs="4" sm="4" lg="4">
+                                            <i class="bx bxs-check-circle" style="margin-top: 0;"></i>
+                                        </vs-col>
+                                        <vs-col xs="4" sm="4" lg="4" style="text-align: right;">
+                                            <label>ZIP CODE RECEIVER</label>
+                                            <h2>{{ sort_info.information.zip_code_receiver }}</h2>
+                                        </vs-col>
+                                    </vs-row>
+                                    <vs-row>
+                                        <label>CONNOTE NUMBER</label>
+                                    </vs-row>
+                                    <vs-row>
+                                        <h4 style="margin: 0;">{{ sort_info.item_number }}</h4>
+                                    </vs-row>
+                                </vs-row>
+                                
+                                <vs-row justify="center" class="mb-2" style="gap: 0.5em; display: flex; flex-direction: column; align-items: center;">
+                                    <div style="display: flex; width: 50%; align-items: center; justify-content: center;">
+                                        <vs-col w="12" style="justify-content: center;">
+                                            <vs-row style="justify-content: center;">
+                                                <label>TLC AREA</label>
+                                            </vs-row>
+                                            <vs-row style="justify-content: center;">
+                                                <h2 style="margin: 0;">{{ sort_info.information.tlc_zone }}</h2>
+                                            </vs-row>
+                                    </vs-col>
+                                    <vs-col w="12" style="justify-content: center;">
+                                        <vs-row style="justify-content: center;">
+                                            <label>DELIVERY ZONE</label>
+                                        </vs-row>
+                                        <vs-row style="justify-content: center;">
+                                            <h2 style="margin: 0;">{{ sort_info.information.delivery_zone }}</h2>
+                                        </vs-row>
+                                    </vs-col>
+                                    </div>
+                                    <vs-col xs="12" md="8" lg="6" :class="listenSLAType(sort_info.information.sla_minutes_remains) + ' sla'">
+                                        <label class="type">{{ this.getSLAType(sort_info.information.sla_minutes_remains) }}</label>
+                                        <br/>
+                                        <label class="remaining">{{ sort_info.information.sla_minutes_remains < 0 ? 'OVER BY:' : 'SLA REMAINS:' }} {{ this.convertMinutesToTimeFormat(sort_info.information.sla_minutes_remains) }}</label>
+                                        <br/>
+                                        <br/>
+                                        <label class="service">{{ sort_info.information.service }}</label>
+                                    </vs-col>
+                                </vs-row>
+
+                                <vs-row class="details-row">
+                                    <vs-col xs="6" sm="6" lg="6">
+                                        <label>DESTINATION CODE</label>
+                                        <h4>{{ sort_info.information.destination_code }}</h4>
                                     </vs-col>
                                     <vs-col xs="6" sm="6" lg="6" class="details-row-left">
                                         <label>SLA DATE</label>
@@ -216,6 +305,10 @@ export default {
                     "label": "Hub Delivery",
                     "value": "HUB_DELIVERY"
                 },
+                {
+                    "label": "Delivery Area",
+                    "value": "DELIVERY_AREA"
+                }
             ],
             loading: false,
             dataTable: [],
@@ -415,7 +508,7 @@ export default {
         color: green;
         font-size: 4rem;
         margin: 10px;
-    }    
+    }
 }
 
 .details-row {
