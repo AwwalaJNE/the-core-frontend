@@ -36,7 +36,7 @@
             <transition name="slide-fade">
                 <div style="text-align:left;" class="el-select-async">
                     <div class="area-value-title">
-                        <span class="c-label">Area Value</span>
+                        <span class="c-label">{{ formatLabel(labelKey) }}*</span>
                         <span 
                             class="show-detail"
                             @click="showDataDetail"
@@ -62,7 +62,7 @@
             <transition name="slide-fade">
                 <div>
                     <div class="area-value-title">
-                        <span class="c-label">Area Value</span>
+                        <span class="c-label">{{ formatLabel(labelKey) }}*</span>
                         <span 
                             class="show-detail"
                             @click="showDataDetail"
@@ -108,6 +108,8 @@ export default {
         disabled: Boolean,
         url: String,
         tableKey: String,
+        labelKey: String,
+        typeForm: String,
     },
     components: {
         "table-master" : TableMaster,
@@ -124,25 +126,25 @@ export default {
         },
         listenTableKey() {
             return this.tableKey.toLowerCase()
+        },
+        listenLabelKey() {
+            return this.labelKey
+        },
+        listenTypeForm() {
+            return this.typeForm;
         }
     },
     watch: {
-        // value(newValue) {
-        //     if (newValue) {
-        //         this.asynchronousSelect();
-        //     }
-        // },
-        // limit: function (val, old) {
-        //     if (val !== old) {
-        //         this.asynchronousSelect(this.value)
-        //     }
-        // }
+        tableKey: function (val, old) {
+            if (val !== old) {
+                this.handleClear()
+            }
+        }
     },
     data() {
         return {
             dataTable: [],
-            dataColumn: [
-            ],
+            dataColumn: [],
             dataTableDetail: [],
             dataColumnDetail: [],
             pagination: {
@@ -167,12 +169,15 @@ export default {
                 this.cardValue.push(val[this.listenTableKey]);
                 this.dataColumnDetail = [
                     {
-                        label: this.formatLabel(this.tableKey),
+                        label: this.formatLabel(this.listenTableKey),
                         key: this.listenTableKey,
                         width: "xs"
                     },
                 ];
                 this.dataTableDetail.push(val);
+                
+                this.$store.dispatch(`SET_${this.listenTypeForm.toUpperCase()}_${this.listenLabelKey.toUpperCase()}`, this.cardValue)
+                
             }
         },
         actionRemove(val) {
@@ -193,7 +198,7 @@ export default {
 
                 this.dataColumn = [
                     {
-                        label: this.formatLabel(this.tableKey),
+                        label: this.formatLabel(this.listenTableKey),
                         key: this.listenTableKey,
                         width: "md"
                     },
@@ -241,6 +246,15 @@ export default {
         onFocus() {
             this.value = ""
         },
+        handleClear() {
+            this.dataTable = [];
+            this.dataColumn = [];
+            this.dataTableDetail = [];
+            this.dataColumnDetail = [];
+            this.value = [];
+            this.cardValue = []
+            this.isShowDetail = false
+        }
     }
 }
 </script>

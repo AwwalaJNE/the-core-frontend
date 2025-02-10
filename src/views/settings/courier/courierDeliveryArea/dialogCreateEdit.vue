@@ -16,6 +16,8 @@
                     typeForm="courier_delivery_area"
                     :asynchronousSelect_url="autoCompleteUrl"
                     :dataItem="listenDataItem"
+                    :tableKey="tableKey"
+                    :labelKey="labelKey"
                     @formData="formData"
                     @onChangeCustom="onChangeCustom"
                 />
@@ -81,6 +83,8 @@ export default {
             courier_id: "",
             autoCompleteUrl: null,
             input_value: "",
+            tableKey: "",
+            labelKey: "",
             loading: false,
         }
     },
@@ -119,43 +123,20 @@ export default {
             this.areaType(val.area_type)
         },
         formData(form){
-            const { id, ...formWithoutId } = form;
+            const { id, search_area, ...formWithoutId } = form;
 
             this.form = formWithoutId;
             this.handleSubmitData();
         },
         onChangeCustom(type, val, obj) {
             if (type === 'area_type') {
-                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE", '');
-                this.$store.dispatch("SET_COURIER_DELIVERY_AREA_AREA_VALUE_ArrData", []);
-
                 this.areaType(val);
             }
         },
         areaType(val) {
-            switch (val) {
-                case "DELIVERY_ZONE":
-                    this.autoCompleteUrl = `${this.URL.tlc_zone}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
-                    this.input_value = "tlc_zone";
-                    this.input_label = "tlc_zone";
-                    break;
-                case "ZIP_CODE":
-                    this.autoCompleteUrl = `${this.URL.zip_code_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
-                    this.input_value = "zip_code";
-                    this.input_label = "zip_code";
-                    break;
-                case "DISTRICT":
-                    this.autoCompleteUrl = `${this.URL.district_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
-                    this.input_value = "geolocation_district_name";
-                    this.input_label = "geolocation_district_name";
-                    break;
-                case "SUBDISTRICT":
-                    this.autoCompleteUrl = `${this.URL.subdistrict_list}?n=${this.listenNodeId}&sort_order=desc&limit=10&page=1`;
-                    this.input_value = "geolocation_subdistrict_name";
-                    this.input_label = "geolocation_subdistrict_name";
-                    break;
-                default:
-            }
+            this.autoCompleteUrl = `${this.URL.geolocation_search_by}?n=${this.listenNodeId}&search_by=${val}&sort_order=desc&page=1`;
+            this.tableKey = val;
+            this.labelKey = 'AREA_VALUE'
         },
         async getDataCourier() {
             this.loading = true;

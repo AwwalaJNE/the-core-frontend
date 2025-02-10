@@ -388,6 +388,8 @@
                                     :url="asynchronousSelect_url"
                                     :limitExist="limitExist"
                                     :tableKey="tableKey"
+                                    :labelKey="labelKey"
+                                    :typeForm="listenTypeForm"
                                     :disabled="listenIsDisabled"
                                     @updateValue="updateValue"
                                     @inputFocus="onfocuslah"
@@ -452,7 +454,8 @@ export default {
         limitExist: Boolean,
         selectLabel: String,
         selectValue: String,
-        tableKey: String
+        tableKey: String,
+        labelKey: String
     },
     data() {
         return {
