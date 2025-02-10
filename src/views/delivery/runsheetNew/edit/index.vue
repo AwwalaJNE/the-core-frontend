@@ -593,14 +593,16 @@ export default {
                     item_number: postData.koli_number,
                     delivery_runsheet_number: this.delivery_runsheet_number,
                     courier_id: this.employee_id,
-                    auto_open_bag: this.is_auto_open_bag
+                    auto_open_bag: this.is_auto_open_bag,
+                    validate_courier: this.is_validate_courier
                 }
             } else {
                 valForm = {
                     item_number: this.form.koli_number,
                     delivery_runsheet_number: this.delivery_runsheet_number,
                     courier_id: this.employee_id,
-                    auto_open_bag: this.is_auto_open_bag
+                    auto_open_bag: this.is_auto_open_bag,
+                    validate_courier: this.is_validate_courier
                 }
             }
 
@@ -609,6 +611,7 @@ export default {
                 .post(`${this.URL.validation}/create-runsheet?n=${this.listenNodeId}`, valForm, this.Helper.header())
                 .then((res) => {
                     this.checkItemSla('KOLI')
+                    this.validateCourier(postData)
                 })
                 .catch((err) => {
                     this.openNotification("danger", err.response ? err.response.data.code : '', err.response.data.status, err.response.data.message);
