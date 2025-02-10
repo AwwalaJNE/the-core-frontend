@@ -413,6 +413,7 @@ const Master = {
                 this.$router.push('/server-error')
             }
         },
+        formatLabel(key) {
             return key
                 .replace(/_/g, " ")
                 .replace(/\b\w/g, match => match.toUpperCase())
