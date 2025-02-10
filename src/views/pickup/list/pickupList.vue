@@ -336,7 +336,7 @@ export default {
                           }
                         }
 
-                        item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE' || item["is_disabled_failed_button"] || item["is_disabled_approve_button"]) ? true : false;
+                        item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'UNRECEIVED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'CANCELLED' || item.pickup_status == 'RECEIVED' || item.pickup_status == 'COMPLETED' || item["is_disabled_failed_button"] || item["is_disabled_approve_button"]) ? true : false;
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
