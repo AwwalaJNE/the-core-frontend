@@ -412,6 +412,12 @@ const Master = {
             } else if (err?.response?.status === 500) {
                 this.$router.push('/server-error')
             }
+        },
+            return key
+                .replace(/_/g, " ")
+                .replace(/\b\w/g, match => match.toUpperCase())
+                .toLowerCase()
+                .replace(/\b\w/g, match => match.toUpperCase());
         }
     },
     mounted() {
