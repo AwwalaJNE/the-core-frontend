@@ -17,7 +17,7 @@
                     :asynchronousSelect_url="autoCompleteUrl"
                     :dataItem="listenDataItem"
                     :tableKey="tableKey"
-                    :labelKey="labelKey"
+                    :labelKey="'AREA_VALUE'"
                     @formData="formData"
                     @onChangeCustom="onChangeCustom"
                 />

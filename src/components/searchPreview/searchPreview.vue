@@ -128,19 +128,19 @@ export default {
             return this.tableKey.toLowerCase()
         },
         listenLabelKey() {
-            return this.labelKey
+            return this.labelKey.toLowerCase()
         },
         listenTypeForm() {
             return this.typeForm;
         }
     },
-    watch: {
-        tableKey: function (val, old) {
-            if (val !== old) {
-                this.handleClear()
-            }
-        }
-    },
+    // watch: {
+    //     tableKey: function (val, old) {
+    //         if (val !== old) {
+    //             this.handleClear()
+    //         }
+    //     }
+    // },
     data() {
         return {
             dataTable: [],
@@ -161,6 +161,21 @@ export default {
         }
     },    
     methods: {
+        initComponents() {
+            this.$nextTick(() => {
+                if (this.$store.getters.getInputs[this.listenTypeForm][this.listenLabelKey].value) {
+                    this.cardValue = this.$store.getters.getInputs[this.listenTypeForm][this.listenLabelKey].value;
+                    this.dataColumnDetail = [
+                        {
+                            label: this.formatLabel(this.listenTableKey),
+                            key: this.listenTableKey,
+                            width: "xs"
+                        },
+                    ];
+                }
+            });
+
+        },
         showDataDetail() {
             this.isShowDetail = !this.isShowDetail;
         },
@@ -255,7 +270,10 @@ export default {
             this.cardValue = []
             this.isShowDetail = false
         }
-    }
+    },
+    created() {
+        this.initComponents();
+    },
 }
 </script>
 <style lang="scss" scoped>
