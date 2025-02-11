@@ -196,22 +196,26 @@ export default {
                         width: "md"
                     },
                 ];
+                
                 this.dataTable = Array.isArray(res.data.data) && res.data.data.length > 0
-                    ? res.data.data.map(item => ({
-                        ...item,
-                        disabled: false,
-                        children_width: Object.fromEntries(
-                            Object.keys(item.detail?.[0] || {}).map(key => [key, "md"])
-                        ),
-                        children: item.detail?.reduce((acc, el) => {
-                            Object.entries(el).forEach(([key, value]) => {
-                                acc[key] = acc[key] || [];
-                                acc[key].push(value);
-                            });
-                            return acc;
-                        }, {}) || {}
-                    }))
+                    ? res.data.data
+                        .filter(item => !this.cardValue.includes(item[this.listenTableKey]))
+                        .map(item => ({
+                            ...item,
+                            disabled: false,
+                            children_width: Object.fromEntries(
+                                Object.keys(item.detail?.[0] || {}).map(key => [key, "md"])
+                            ),
+                            children: item.detail?.reduce((acc, el) => {
+                                Object.entries(el).forEach(([key, value]) => {
+                                    acc[key] = acc[key] || [];
+                                    acc[key].push(value);
+                                });
+                                return acc;
+                            }, {}) || {}
+                        }))
                     : [];
+
 
                 this.openNotification('success', null, "Success", res?.data?.message || this.courier_id ? "Success Update Data" : "Success Create Data");
             } catch (err) {
