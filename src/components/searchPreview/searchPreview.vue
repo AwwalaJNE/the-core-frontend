@@ -29,11 +29,11 @@
         </div>
 
         <div style="margin-top: 10px;">
-            <template v-if="dataTable.length > 0">
+            <template v-if="this.typingValue">
                 <table-master
                     :dataTable="dataTable" 
                     :dataColumn="dataColumn" 
-                    :tableLoading="false"
+                    :tableLoading="loading"
                     :pageSize="pagination.page_size"
                     :page="pagination.page"
                     :limit="pagination.limit"
@@ -131,6 +131,8 @@ export default {
             isShowDetail: false,
 
             limit: 10,
+            typingValue: '',
+            loading: false
         }
     },    
     methods: {
@@ -182,6 +184,8 @@ export default {
         async asynchronousSelect(queryString) {
             this.loading = true
 
+            this.typingValue = queryString;
+
             if (queryString) {
                 this.handleHideDetail();
             }
@@ -217,7 +221,7 @@ export default {
                     : [];
 
 
-                this.openNotification('success', null, "Success", res?.data?.message || this.courier_id ? "Success Update Data" : "Success Create Data");
+                // this.openNotification('success', null, "Success", res?.data?.message || this.courier_id ? "Success Update Data" : "Success Create Data");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -267,12 +271,14 @@ export default {
             this.dataTableDetail = [];
             this.dataColumnDetail = [];
             this.value = [];
-            this.cardValue = []
-            this.isShowDetail = false
+            this.cardValue = [];
+            this.isShowDetail = false;
+            this.typingValue = '';
         },
         handleClearSearch() {
             this.dataTable = [];
             this.dataColumn = [];
+            this.typingValue = '';
         },
         handleHideDetail() {
             this.dataTableDetail = [];
