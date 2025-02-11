@@ -123,9 +123,8 @@ export default {
         formData(form){
             const { id, ...formWithoutId } = form;
 
-            console.log(formWithoutId)
             this.form = formWithoutId;
-            // this.handleSubmitData();
+            this.handleSubmitData();
         },
         onChangeCustom(type, val, obj) {
             if (type === 'area_type') {
