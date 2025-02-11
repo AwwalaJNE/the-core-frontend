@@ -17,7 +17,6 @@
                     :asynchronousSelect_url="autoCompleteUrl"
                     :dataItem="listenDataItem"
                     :tableKey="tableKey"
-                    :labelKey="'AREA_VALUE'"
                     @formData="formData"
                     @onChangeCustom="onChangeCustom"
                 />
@@ -84,7 +83,6 @@ export default {
             autoCompleteUrl: null,
             input_value: "",
             tableKey: "",
-            labelKey: "",
             loading: false,
         }
     },
@@ -114,19 +112,20 @@ export default {
     },
     methods: {
         async getDataDetail(val){
+            this.areaType(val.area_type)
+
             this.courier_id = val.courier_id;
 
             await this.getDataCourier();
             this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID", parseInt(val.courier_id));
             this.$store.dispatch("SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled", true);
-            
-            this.areaType(val.area_type)
         },
         formData(form){
-            const { id, search_area, ...formWithoutId } = form;
+            const { id, ...formWithoutId } = form;
 
+            console.log(formWithoutId)
             this.form = formWithoutId;
-            this.handleSubmitData();
+            // this.handleSubmitData();
         },
         onChangeCustom(type, val, obj) {
             if (type === 'area_type') {
@@ -136,7 +135,6 @@ export default {
         areaType(val) {
             this.autoCompleteUrl = `${this.URL.geolocation_search_by}?n=${this.listenNodeId}&search_by=${val}&sort_order=desc&page=1`;
             this.tableKey = val;
-            this.labelKey = 'AREA_VALUE'
         },
         async getDataCourier() {
             this.loading = true;

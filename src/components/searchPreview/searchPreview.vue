@@ -1,92 +1,68 @@
 <template>
     <div class="search-preview">
-        <div class="search-input">
-            <vs-input
-                icon-after
-                placeholder="Plese enter a keyword"
-                type="text"
-                v-model="value"
-                :label="name" 
-                @input="searchValueDebounced"
-                @focus="onFocus"
-                @keyup.enter="searchValue"
+        <div style="text-align:left;" class="el-select-async">
+            <div class="area-value-title">
+                <span class="c-label">{{ name }}</span>
+                <span 
+                    class="show-detail"
+                    @click="showDataDetail"
+                    v-if="cardValue.length > 0"
+                >
+                    {{ isShowDetail ? 'Hide Detail' : 'Show Detail' }}
+                </span>
+            </div>
+            
+            <el-select
+                v-model="cardValue"
+                multiple
+                filterable
+                remote
+                placeholder="Please enter a keyword"
+                :loading="false"
+                :disabled="false"
+                :remote-method="asynchronousSelect"
+                :popper-class="'hide-dropdown'"
+                @remove-tag="actionRemove"
             >
-            </vs-input>
-            <button>
-                <i class='bx bx-search search-input-icon' @click="searchValue"></i>
-            </button>
+            </el-select>
+            
         </div>
 
-        <template v-if="dataTable.length > 0 && value !== '' ">
-            <table-master
-                :dataTable="dataTable" 
-                :dataColumn="dataColumn" 
-                :tableLoading="false"
-                :pageSize="pagination.page_size"
-                :page="pagination.page"
-                :limit="pagination.limit"
-                :hasPagination="false"
-                :scrollableAndStaticHeader="true"
-                :expandable="true"
-                :searchPreviewAction="true"
-                @actionSearchPreview="actionSearchPreview"
-            />
-        </template>
-        <template v-if="!isShowDetail && cardValue.length > 0">
-            <transition name="slide-fade">
-                <div style="text-align:left;" class="el-select-async">
-                    <div class="area-value-title">
-                        <span class="c-label">{{ formatLabel(labelKey) }}*</span>
-                        <span 
-                            class="show-detail"
-                            @click="showDataDetail"
-                        >
-                            Show Detail
-                        </span>
-                    </div>
-                    
-                    <el-select
-                        v-model="cardValue"
-                        multiple
-                        filterable
-                        remote
-                        placeholder="Please enter a keyword"
-                        :loading="false"
-                        :disabled="false"
-                        @remove-tag="actionRemove"
-                    />
-                </div>
-            </transition>
-        </template>
-        <template v-if="isShowDetail && cardValue.length > 0">
-            <transition name="slide-fade">
-                <div>
-                    <div class="area-value-title">
-                        <span class="c-label">{{ formatLabel(labelKey) }}*</span>
-                        <span 
-                            class="show-detail"
-                            @click="showDataDetail"
-                        >
-                        Hide Detail
-                        </span>
-                    </div>
-                    <table-master
-                        :dataTable="dataTableDetail" 
-                        :dataColumn="dataColumnDetail" 
-                        :tableLoading="false"
-                        :pageSize="pagination.page_size"
-                        :page="pagination.page"
-                        :limit="pagination.limit"
-                        :hasPagination="false"
-                        :scrollableAndStaticHeader="true"
-                        :expandable="true"
-                        :removeOnly="true"
-                        @actionRemove="actionRemove"
-                    />
-                </div>
-            </transition>
-        </template>
-        
+        <div style="margin-top: 10px;">
+            <template v-if="dataTable.length > 0">
+                <table-master
+                    :dataTable="dataTable" 
+                    :dataColumn="dataColumn" 
+                    :tableLoading="false"
+                    :pageSize="pagination.page_size"
+                    :page="pagination.page"
+                    :limit="pagination.limit"
+                    :hasPagination="false"
+                    :scrollableAndStaticHeader="true"
+                    :expandable="true"
+                    :searchPreviewAction="true"
+                    :isDisabled="dataTable.isDisabled"
+                    @actionSearchPreview="actionSearchPreview"
+                />
+            </template>
+
+            <template v-if="isShowDetail && cardValue.length > 0">
+                <table-master
+                    :dataTable="dataTableDetail" 
+                    :dataColumn="dataColumnDetail" 
+                    :tableLoading="false"
+                    :pageSize="pagination.page_size"
+                    :page="pagination.page"
+                    :limit="pagination.limit"
+                    :hasPagination="false"
+                    :scrollableAndStaticHeader="true"
+                    :expandable="true"
+                    :removeOnly="true"
+                    @actionRemove="actionRemove"
+                />
+            </template>
+            
+        </div>
     </div>
 </template>
 <script>
@@ -108,7 +84,6 @@ export default {
         disabled: Boolean,
         url: String,
         tableKey: String,
-        labelKey: String,
         typeForm: String,
     },
     components: {
@@ -127,20 +102,19 @@ export default {
         listenTableKey() {
             return this.tableKey.toLowerCase()
         },
-        listenLabelKey() {
-            return this.labelKey.toLowerCase()
-        },
         listenTypeForm() {
             return this.typeForm;
         }
     },
-    // watch: {
-    //     tableKey: function (val, old) {
-    //         if (val !== old) {
-    //             this.handleClear()
-    //         }
-    //     }
-    // },
+    watch: {
+        tableKey: function (val, old) {
+            if (val !== old) {
+                this.$store.dispatch(`SET_${this.listenTypeForm.toUpperCase()}_${this.listenFormKey.toUpperCase()}`, '');
+                this.$store.dispatch(`SET_${this.listenTypeForm.toUpperCase()}_${this.listenFormKey.toUpperCase()}_ArrData`, [])
+                this.handleClearAll();
+            }
+        }
+    },
     data() {
         return {
             dataTable: [],
@@ -157,24 +131,23 @@ export default {
             isShowDetail: false,
 
             limit: 10,
-            timeoutID: null
         }
     },    
     methods: {
-        initComponents() {
+        async initComponents() {
             this.$nextTick(() => {
-                if (this.$store.getters.getInputs[this.listenTypeForm][this.listenLabelKey].value) {
-                    this.cardValue = this.$store.getters.getInputs[this.listenTypeForm][this.listenLabelKey].value;
+                if (this.$store.getters.getInputs[this.listenTypeForm][this.listenFormKey]?.value) {
+                    this.cardValue = this.$store.getters.getInputs[this.listenTypeForm][this.listenFormKey].value;
                     this.dataColumnDetail = [
                         {
                             label: this.formatLabel(this.listenTableKey),
                             key: this.listenTableKey,
                             width: "xs"
                         },
-                    ];
+                    ]; 
+                    this.asynchronousSelectOnEdit(this.cardValue);                    
                 }
             });
-
         },
         showDataDetail() {
             this.isShowDetail = !this.isShowDetail;
@@ -191,7 +164,8 @@ export default {
                 ];
                 this.dataTableDetail.push(val);
                 
-                this.$store.dispatch(`SET_${this.listenTypeForm.toUpperCase()}_${this.listenLabelKey.toUpperCase()}`, this.cardValue)
+                this.$store.dispatch(`SET_${this.listenTypeForm.toUpperCase()}_${this.listenFormKey.toUpperCase()}`, this.cardValue)
+                this.handleClearSearch();
                 
             }
         },
@@ -203,13 +177,17 @@ export default {
                 this.cardValue.splice(index, 1);
             }
 
-            this.dataTableDetail = this.dataTableDetail.filter(item => item[this.listenTableKey] !== key);
-            
+            this.dataTableDetail = this.dataTableDetail.filter(item => item[this.listenTableKey] !== key); 
         },
-        async asynchronousSelect() {
+        async asynchronousSelect(queryString) {
             this.loading = true
+
+            if (queryString) {
+                this.handleHideDetail();
+            }
+
             try {
-                const res = await axios.get(this.listenUrl +`&s=${this.value}` + `${this.limit ? `&limit=${this.limit}` : ''}`, this.Helper.header());
+                const res = await axios.get(this.listenUrl +`&s=${queryString}` + `${this.limit ? `&limit=${this.limit}` : ''}`, this.Helper.header());
 
                 this.dataColumn = [
                     {
@@ -221,6 +199,7 @@ export default {
                 this.dataTable = Array.isArray(res.data.data) && res.data.data.length > 0
                     ? res.data.data.map(item => ({
                         ...item,
+                        disabled: false,
                         children_width: Object.fromEntries(
                             Object.keys(item.detail?.[0] || {}).map(key => [key, "md"])
                         ),
@@ -234,7 +213,6 @@ export default {
                     }))
                     : [];
 
-
                 this.openNotification('success', null, "Success", res?.data?.message || this.courier_id ? "Success Update Data" : "Success Create Data");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
@@ -242,26 +220,44 @@ export default {
                 this.loading = false;
             }
         },
-        searchValueDebounced() {
-            clearTimeout(this.timeoutID);
-            this.timeoutID = setTimeout(() => {
-                this.searchValue();
-                this.asynchronousSelect();
-            }, 1500);
-        },
-        searchValue() {
-            let info = {
-                name: this.name,
-                key: this.listenFormKey,
-                typeInput: this.listenTypeInput
-            }
+        async asynchronousSelectOnEdit(queryString) {
+            this.loading = true;
+            try {
+                const responses = await Promise.allSettled(
+                    queryString.map(query => 
+                        axios.get(
+                            `${this.listenUrl}&s=${query}${this.limit ? `&limit=${this.limit}` : ''}`,
+                            this.Helper.header()
+                        )
+                    )
+                );
 
-            this.$emit("updateValue", this.listenFormKey, this.value, info)
+                this.dataTableDetail = responses
+                    .filter(res => res.status === "fulfilled" && Array.isArray(res.value.data.data))
+                    .flatMap(res => res.value.data.data.map(item => ({
+                        ...item,
+                        disabled: false,
+                        children_width: Object.fromEntries(
+                            Object.keys(item.detail?.[0] || {}).map(key => [key, "md"])
+                        ),
+                        children: item.detail?.reduce((acc, el) => {
+                            Object.entries(el).forEach(([key, value]) => {
+                                acc[key] = acc[key] || [];
+                                acc[key].push(value);
+                            });
+                            return acc;
+                        }, {}) || {}
+                    })));
+
+                // this.openNotification('success', null, "Success", "Data Loaded Successfully");
+
+            } catch (err) {
+                this.openNotification("danger", '', "Failed", "Something went wrong");
+            } finally {
+                this.loading = false;
+            }
         },
-        onFocus() {
-            this.value = ""
-        },
-        handleClear() {
+        handleClearAll() {
             this.dataTable = [];
             this.dataColumn = [];
             this.dataTableDetail = [];
@@ -269,6 +265,15 @@ export default {
             this.value = [];
             this.cardValue = []
             this.isShowDetail = false
+        },
+        handleClearSearch() {
+            this.dataTable = [];
+            this.dataColumn = [];
+        },
+        handleHideDetail() {
+            this.dataTableDetail = [];
+            this.dataColumnDetail = [];
+            this.isShowDetail = false;
         }
     },
     created() {
@@ -312,5 +317,15 @@ export default {
             }
         }
     }
+}
+</style>
+
+<style>
+.hide-dropdown .el-select-dropdown__empty {
+    display: none !important;
+}
+
+.hide-dropdown {
+    border: none !important;
 }
 </style>
