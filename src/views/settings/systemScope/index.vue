@@ -14,47 +14,51 @@
                             flat
                             block
                             :active="true"
-                            @click="openDialog"
+                            @click="(navActive === 'role-permission' ? openDialog : openDialog)()"
                         > 
-                            <i class="bx bx-plus"></i> New
+                            <i v-if="navActive !== 'role-permission'" class="bx bx-plus"></i> 
+                            {{ navActive === 'role-permission' ? 'Save All' : 'New' }}
                         </vs-button>
                     </div>
                 </div>
             </vs-col>
         </vs-row>
-        <section class="nodes">
-            <div class="box view">
-                <div class="nav-box">
-                    <vs-row justify="space-between">
-                        <vs-col xs="12" sm="6" lg="8">
-                            <nav-item 
-                                :navItem="navItem" 
-                                @activeTab="activeTab" 
-                            />
-                        </vs-col>
-                    </vs-row>
+        <section style="display: flex;">
+            <vs-col :w="`${navActive === 'role-permission'? '4' : '12'}`">
+                <div class="box view">
+                    <div class="nav-box">
+                        <vs-row justify="space-between">
+                            <vs-col xs="6" sm="9" lg="9">
+                                <nav-item 
+                                    :navItem="navItem" 
+                                    @activeTab="activeTab" 
+                                />
+                            </vs-col>
+                        </vs-row>
+                    </div>
+                    <template v-if="navActive === 'application-role'">
+                        <transition name="slide-fade">
+                            <application-role :ref="navActive" />
+                        </transition>
+                    </template>
+                    <template v-else-if="navActive === 'role-permission'">
+                        <transition name="slide-fade">
+                            <role-list :ref="navActive" />
+                        </transition>
+                    </template>
                 </div>
-                <template v-if="navActive === 'application-role'">
-                    <transition name="slide-fade">
-                        <application-role :ref="navActive" />
-                    </transition>
-                </template>
-                <template v-else-if="navActive === 'role-permission'">
-                    <transition name="slide-fade">
-                        <role-permission :ref="navActive" />
-                    </transition>
-                </template>
-            </div>
+            </vs-col>
+            <vs-col v-if="navActive === 'role-permission'" :w="`${navActive === 'role-permission'? '8' : ''}`">
+                <transition name="slide-fade">
+                    <div class="box">
+                        <edit-list :ref="navActive" />
+                    </div>
+                </transition>
+            </vs-col>
         </section>
         <dialog-create-edit-application-role
             title="Create Application Role"
             :active="dialogApplicationRole" 
-            :closeDialog="closeDialog"
-            @refresh="refresh"
-        />
-        <dialog-create-edit-role-permission
-            title="Create Role Permission"
-            :active="dialogRolePermission" 
             :closeDialog="closeDialog"
             @refresh="refresh"
         />
@@ -68,8 +72,8 @@ import NavItem from "@/components/navbar/navTab";
 import ApplicationRole from "@/views/settings/systemScope/applicationRole/index";
 import DialogCreateEditApplicationRole from "@/views/settings/systemScope/applicationRole/dialogCreateEdit";
 
-import RolePermission from "@/views/settings/systemScope/rolePermission/index";
-import DialogCreateEditRolePermission from "@/views/settings/systemScope/applicationRole/dialogCreateEdit";
+import EditList from "@/views/settings/systemScope/rolePermission/editList";
+import RoleList from "@/views/settings/systemScope/rolePermission/roleList";
 
 export default {
     name:"setting-system-scope-index",
@@ -77,9 +81,9 @@ export default {
         "breadcrumb": Breadcrumb,
         "nav-item": NavItem,
         "application-role": ApplicationRole,
-        "role-permission": RolePermission,
-        "dialog-create-edit-application-role": DialogCreateEditApplicationRole,
-        "dialog-create-edit-role-permission": DialogCreateEditRolePermission,
+        "edit-list": EditList,
+        "role-list": RoleList,
+        "dialog-create-edit-application-role": DialogCreateEditApplicationRole
     },
     data() {
         return {

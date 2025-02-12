@@ -2828,32 +2828,7 @@ export default {
       rule: "required",
       typeInput: "select",
       typeData: "String",
-      arrData: [
-        {
-          label: 'Core',
-          value: 'CORE'
-        },
-        {
-          label: 'Ticketing',
-          value: 'TICKETING'
-        },
-        {
-          label: 'Dashboard Irregularity',
-          value: 'DASHBOARD_IRREGULARITY'
-        },
-        {
-          label: 'Dashboard KPI',
-          value: 'DASHBOARD_KPI'
-        },
-        {
-          label: 'Dashboard Reporting',
-          value: 'DASHBOARD_REPORTING'
-        },
-        {
-          label: 'Dashboard Ticketing',
-          value: 'DASHBOARD_TICKETING'
-        },
-      ],
+      arrData: [],
       valueData: null,
       value: '',
     },
