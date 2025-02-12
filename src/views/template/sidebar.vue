@@ -963,6 +963,18 @@ export default {
                 resource_name: resourceLookup["SETTINGS_COURIER"].resource_name
               },
             },
+            {
+              label: "Settings System Scope",
+              url: "/settings/system-scope",
+              icon: "bx bxs-checkbox",
+              permission: "", // TODO: REMOVE AND CHANGE TO BELOW LATER
+              // permission: "read-application-role",
+              meta: {
+                resource_type: resourceLookup["SYSTEM_SCOPE"].resource_type,
+                resource_code: resourceLookup["SYSTEM_SCOPE"].resource_code,
+                resource_name: resourceLookup["SYSTEM_SCOPE"].resource_name
+              },
+            },
           ],
         },
         {

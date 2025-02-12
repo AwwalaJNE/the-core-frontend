@@ -216,6 +216,9 @@ import SettingsRunsheet from '@/views/settings/runsheet/index';
 // === Courier Settings ===
 import SettingsCourier from '@/views/settings/courier/index';
 
+// === System Scope ===
+import SettingsSystemScope from '@/views/settings/systemScope/index';
+
 // === Connote Adjustment ===
 import ConnoteCancel from '@/views/connoteAdjustment/connoteCancel'
 import ConnoteForward from '@/views/connoteAdjustment/connoteForward'
@@ -562,6 +565,21 @@ const routes = [
               resource_name: resourceLookup["SETTINGS_COURIER"].resource_name,
               isMaintenanceMode: false,
               permission: 'read-courier-delivery-area',
+            }
+          },
+          {
+            path: "system-scope",
+            name: "SystemScope",
+            component: SettingsSystemScope,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "System Scope",
+              resource_type: resourceLookup["SYSTEM_SCOPE"].resource_type,
+              resource_code: resourceLookup["SYSTEM_SCOPE"].resource_code,
+              resource_name: resourceLookup["SYSTEM_SCOPE"].resource_name,
+              isMaintenanceMode: false,
+              permission: '', // TODO: REMOVE AND CHANGE TO BELOW LATER
+              // permission: 'read-application-role',
             }
           },
         ],

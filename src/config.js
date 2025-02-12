@@ -374,5 +374,23 @@ export default {
     district_list: api + 'district-list',
 
     // Subdistrict List
-    subdistrict_list: api + 'subdistrict-list'
+    subdistrict_list: api + 'subdistrict-list',
+
+    // Delivery Zone List
+    delivery_zone_list: api + 'delivery-zone-list',
+
+    // Application Role
+    application_role: api + 'application-role',
+
+    // Application Role List
+    application_role_list: api + 'application-role-list',
+
+    // Application List
+    application_list: api + 'application-list',
+
+    // Feature List
+    feature_list: api + 'feature-list',
+
+    // Column List
+    column_list: api + 'column-list',
 }
