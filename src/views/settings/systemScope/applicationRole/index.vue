@@ -186,8 +186,6 @@ export default {
             ],
         }
     },
-    computed: {
-    },
     methods: {
         refresh(){
             let from = ''
@@ -243,18 +241,7 @@ export default {
                 }  
                 
             } catch (err) {
-                // TODO: REMOVE BELOW LATER
-                this.dataTable = [
-                    {
-                        "app_role_id": "a48111b9-f747-4a96-b930-c0ba61264acb",
-                        "app": "DASHBOARD_TICKETING",
-                        "app_role_name": "SALES COUNTER OFFICER",
-                        "app_role_code": "SCO",
-                        "created_at": "2024-12-11 06:12:00"
-                    }
-                ],
-                // TODO: UNCOMMENT BELOW LATER
-                // this.redirectError(err)
+                this.redirectError(err)
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
