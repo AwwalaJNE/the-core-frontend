@@ -101,6 +101,11 @@
                 Action
               </vs-th>
             </template>
+            <template v-if="hasDuplicateEditRemove == true">
+              <vs-th class="action">
+                Action
+              </vs-th>
+            </template>
             <template v-if="editOnly == true">
               <vs-th class="action">
                 Action
@@ -719,6 +724,47 @@
                 </vs-row>
               </vs-td>
             </template>
+            <template v-if="hasDuplicateEditRemove == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      flat
+                      size="small"
+                      :active="true"
+                      @click="actionDuplicate(item)"
+                    >
+                      <span>Duplicate</span>
+                    </vs-button>
+                  </vs-col>
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      flat
+                      size="small"
+                      :active="true"
+                      @click="actionUpdate(item)"
+                    >
+                      <span>Edit</span>
+                    </vs-button>
+                  </vs-col>
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      danger
+                      size="small"
+                      flat
+                      :active="true"
+                      type="submit"
+                      @click="actionRemove(item)"
+                    >
+                      <span>Remove</span>
+                    </vs-button>
+                  </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
             <template v-if="editOnly == true">
               <vs-td class="action">
                 <vs-row justify="center" class="btn_action">
@@ -1285,6 +1331,7 @@ export default {
     page: Number,
     limit: Number,
     hasAction: Boolean,
+    hasDuplicateEditRemove: Boolean,
     hasPagination: Boolean,
     expandable: Boolean,
     hasLinkedDanger: String,
@@ -1475,6 +1522,9 @@ export default {
     },
     actionUpdate(val, key) {
       this.$emit("actionUpdate", val, key);
+    },
+    actionDuplicate(val, key) {
+      this.$emit("actionDuplicate", val, key);
     },
     actionPopup(val, key) {
       this.$emit("actionPopup", val, key);
