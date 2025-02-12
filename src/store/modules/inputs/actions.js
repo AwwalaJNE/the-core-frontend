@@ -3967,6 +3967,44 @@ export default {
 
 
 
+  //====== APPLICATION ROLE SETTINGS ======//
+
+  SET_APPLICATION_ROLE_APP({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ValueData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ValueData', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ArrData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ArrData', payload)
+  },
+  
+
+  SET_APPLICATION_ROLE_APP_ROLE_NAME({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_NAME', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_NAME_ValueData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_NAME_ValueData', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_NAME_ArrData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_NAME_ArrData', payload)
+  },
+
+
+  SET_APPLICATION_ROLE_APP_ROLE_CODE({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_CODE', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_CODE_ValueData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_CODE_ValueData', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_CODE_ArrData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_CODE_ArrData', payload)
+  },
+
+  //====== END APPLICATION ROLE SETTINGS ======//
+
+
+
   SET_BAG_IS_AUTO_OPEN_BAG({ commit }, payload) {
     commit('SET_BAG_IS_AUTO_OPEN_BAG', payload);
   },

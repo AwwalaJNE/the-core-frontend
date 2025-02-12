@@ -4309,6 +4309,49 @@ export default {
   },
 
   //====== END COURIER DELIVERY AREA SETTINGS ======//
+
+
+  //====== APPLICATION ROLE SETTINGS ======//
+
+  SET_APPLICATION_ROLE_APP(state, payload) {
+    state.application_role.app.value = payload
+  },
+  SET_APPLICATION_ROLE_APP_ValueData(state, payload) {
+    state.application_role.app.valueData = payload
+  },
+  SET_APPLICATION_ROLE_APP_ArrData(state, payload) {
+    state.application_role.app.hasOwnProperty('arrData') ?
+    state.application_role.app.arrData = payload :
+    state.application_role.app.arrData = []
+  },
+
+
+  SET_APPLICATION_ROLE_APP_ROLE_NAME(state, payload) {
+    state.application_role.app_role_name.value = payload
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_NAME_ValueData(state, payload) {
+    state.application_role.app_role_name.valueData = payload
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_NAME_ArrData(state, payload) {
+    state.application_role.app_role_name.hasOwnProperty('arrData') ?
+    state.application_role.app_role_name.arrData = payload :
+    state.application_role.app_role_name.arrData = []
+  },
+
+
+  SET_APPLICATION_ROLE_APP_ROLE_CODE(state, payload) {
+    state.application_role.app_role_code.value = payload
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_CODE_ValueData(state, payload) {
+    state.application_role.app_role_code.valueData = payload
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_CODE_ArrData(state, payload) {
+    state.application_role.app_role_code.hasOwnProperty('arrData') ?
+    state.application_role.app_role_code.arrData = payload :
+    state.application_role.app_role_code.arrData = []
+  },
+
+  //====== END APPLICATION ROLE SETTINGS ======//
   
   
   SET_BAG_IS_AUTO_OPEN_BAG(state, payload) {

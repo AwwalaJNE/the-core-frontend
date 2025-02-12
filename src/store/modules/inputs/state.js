@@ -2821,6 +2821,62 @@ export default {
     },
   },
 
+  application_role: {
+    app: {
+      label: "Application*",
+      key: "app",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Core',
+          value: 'CORE'
+        },
+        {
+          label: 'Ticketing',
+          value: 'TICKETING'
+        },
+        {
+          label: 'Dashboard Irregularity',
+          value: 'DASHBOARD_IRREGULARITY'
+        },
+        {
+          label: 'Dashboard KPI',
+          value: 'DASHBOARD_KPI'
+        },
+        {
+          label: 'Dashboard Reporting',
+          value: 'DASHBOARD_REPORTING'
+        },
+        {
+          label: 'Dashboard Ticketing',
+          value: 'DASHBOARD_TICKETING'
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    app_role_name: {
+      label: "Role*",
+      key: "app_role_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    app_role_code: {
+      label: "Role Code*",
+      key: "app_role_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+  },
+
   tariff: {
     tariff_group: {
       label: "Tariff Group",
