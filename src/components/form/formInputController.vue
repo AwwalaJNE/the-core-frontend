@@ -378,6 +378,22 @@
                                     @inputFocus="onfocuslah"
                                 />
                             </template>
+                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('search-preview')">
+                                <search-preview
+                                    :ref="InputObject[item].key"
+                                    :name="InputObject[item].label" 
+                                    :rules="InputObject[item].rule" 
+                                    :formKey="InputObject[item].key"
+                                    :typeInput="InputObject[item].typeInput"
+                                    :url="asynchronousSelect_url"
+                                    :limitExist="limitExist"
+                                    :tableKey="tableKey"
+                                    :typeForm="listenTypeForm"
+                                    :disabled="listenIsDisabled"
+                                    @updateValue="updateValue"
+                                    @inputFocus="onfocuslah"
+                                />
+                            </template>
                         </vs-col>
                         <vs-col v-if="InputObject[item].reduce" :key="'reducer'+keys" :w="InputObject[item].reduce || null" />
                     </template>
@@ -399,6 +415,8 @@ import AutoComplete from "@/components/input/autoComplete"
 import iterateSelector from "@/components/input/iterateInput2"
 import asynchronousSelect from "@/components/input/asynchronousSelect"
 import RadioInputGeneral from "@/components/input/radioInputGeneral.vue"
+import SearchPreview from "@/components/searchPreview/searchPreview.vue"
+
 export default {
     name:"input-controller",
     components: {
@@ -413,7 +431,8 @@ export default {
         "radio": Radio,
         "auto-complete": AutoComplete,
         "asynchronousSelect": asynchronousSelect,
-        "radio-input-general": RadioInputGeneral
+        "radio-input-general": RadioInputGeneral,
+        "search-preview": SearchPreview
     },
     props: {
         arrData: Array,
@@ -434,6 +453,7 @@ export default {
         limitExist: Boolean,
         selectLabel: String,
         selectValue: String,
+        tableKey: String
     },
     data() {
         return {

@@ -18,6 +18,7 @@ export default {
     geolocation_province: api + "geolocation-province",
     geolocation_timezone: api + "geolocation-timezone",
     geolocation_search: api + "geolocation-search",
+    geolocation_search_by: api + "geolocation-search-by",
 
     // node
     node: api + "node",
