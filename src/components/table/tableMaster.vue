@@ -49,7 +49,7 @@
 -->
 <template>
   <div>
-    <vs-table ref="tablee" v-model="selected">
+    <vs-table ref="tablee" v-model="selected" :class="{ 'scrollableAndStaticHeader': scrollableAndStaticHeader }">
       <template #header>
         <template v-if="listenIsSearchAble">
           <vs-input v-model="search" border placeholder="Search" />
@@ -107,6 +107,11 @@
               </vs-th>
             </template>
             <template v-if="removeOnly == true">
+              <vs-th class="action">
+                Action
+              </vs-th>
+            </template>
+            <template v-if="searchPreviewAction == true">
               <vs-th class="action">
                 Action
               </vs-th>
@@ -763,6 +768,28 @@
                 </vs-row>
               </vs-td>
             </template>
+            <template v-if="searchPreviewAction == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      size="small"
+                      flat
+                      :active="true"
+                      :disabled="
+                        item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true
+                      "
+                      type="submit"
+                      @click="actionSearchPreview(item)"
+                    >
+                      <span>Choose</span>
+                    </vs-button>
+                  </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
             <template v-if="removeDanger == true">
               <vs-td class="action-responsive">
                 <vs-row justify="center" class="btn_action">
@@ -1285,6 +1312,7 @@ export default {
     page: Number,
     limit: Number,
     hasAction: Boolean,
+    scrollableAndStaticHeader: Boolean,
     hasPagination: Boolean,
     expandable: Boolean,
     hasLinkedDanger: String,
@@ -1296,6 +1324,7 @@ export default {
     hasId: Boolean,
     editOnly: Boolean,
     removeOnly: Boolean,
+    searchPreviewAction: Boolean,
     runsheetAction: Boolean,
     runsheetProofAction: Boolean,
     printAction: Boolean,
@@ -1341,6 +1370,10 @@ export default {
       default: undefined,
     },
     onRowClickSelected: {
+      type: Function,
+      default: undefined,
+    },
+    onRowClickSelectDelete: {
       type: Function,
       default: undefined,
     },
@@ -1487,6 +1520,9 @@ export default {
     },
     actionRemove(val) {
       this.$emit("actionRemove", val);
+    },
+    actionSearchPreview(val) {
+      this.$emit("actionSearchPreview", val);
     },
     actionConfirmed(val, key) {
       this.$emit("actionConfirmed", val, key);
@@ -1744,6 +1780,19 @@ export default {
       }
     }
   }
+}
+
+.scrollableAndStaticHeader {
+  .vs-table {
+    height: fit-content;
+    max-height: 200px;
+
+    .vs-tr {
+      position: 'sticky';
+      top: '0';
+      z-index: 9999 ;
+    }
+  } 
 }
 
 span.text-link {

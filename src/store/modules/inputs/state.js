@@ -2812,7 +2812,7 @@ export default {
       label: "Area Value*",
       key: "area_value",
       rule: "required",
-      typeInput: "multipleSelector",
+      typeInput: "search-preview",
       typeData: "String",
       width: '12',
       arrData: [],
