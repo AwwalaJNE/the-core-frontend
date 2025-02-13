@@ -60,7 +60,7 @@ export default {
     },
     data() {
         return {
-            loading: false,
+            refLoading: null,
             dataTable: [],
             pagination: {
                 limit: 20,
@@ -90,11 +90,23 @@ export default {
         }
     },
     methods: {
+        toggleLoading(show) {
+            if (show) {
+                this.refLoading = this.$vs.loading({
+                    target: this.$el,
+                    type: "scale",
+                    text: "Loading...",
+                    background: "#EAEAEA",
+                });
+            } else if (this.refLoading) {
+                this.refLoading.close();
+            }
+        },
         refresh(){
             this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.searchBy)
         },
         async getTableData(limit, page, q, searchBy) {
-            this.loading = true
+            this.toggleLoading(true);
 
             let query = q || '';
             
@@ -145,7 +157,7 @@ export default {
                 // this.redirectError(err)
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
-                this.loading = false;
+                this.toggleLoading(false);
             }
         },
         selectRole(role) {
