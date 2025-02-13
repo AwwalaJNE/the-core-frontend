@@ -14,7 +14,7 @@
                             flat
                             block
                             :active="true"
-                            @click="(navActive === 'role-permission' ? openDialog : openDialog)()"
+                            @click="openDialog"
                         > 
                             <i v-if="navActive !== 'role-permission'" class="bx bx-plus"></i> 
                             {{ navActive === 'role-permission' ? 'Save All' : 'New' }}
@@ -43,15 +43,21 @@
                     </template>
                     <template v-else-if="navActive === 'role-permission'">
                         <transition name="slide-fade">
-                            <role-list :ref="navActive" />
+                            <role-list 
+                                :ref="navActive" 
+                                @getAppRoleId="getAppRoleId"
+                            />
                         </transition>
                     </template>
                 </div>
             </vs-col>
-            <vs-col v-if="navActive === 'role-permission'" :w="`${navActive === 'role-permission'? '8' : ''}`">
+            <vs-col v-if="navActive === 'role-permission'" :w="8">
                 <transition name="slide-fade">
                     <div class="box">
-                        <edit-list :ref="navActive" />
+                        <edit-list 
+                            :ref="navActive"
+                            :app_role_id="listenAppRoleId"
+                        />
                     </div>
                 </transition>
             </vs-col>
@@ -66,6 +72,9 @@
 </template>
 <script>
 
+import axios from "axios";
+import master from "@/mixins/master";
+
 import Breadcrumb from "@/components/breadcrumb/index";
 import NavItem from "@/components/navbar/navTab";
 
@@ -77,6 +86,7 @@ import RoleList from "@/views/settings/systemScope/rolePermission/roleList";
 
 export default {
     name:"setting-system-scope-index",
+    mixins: [master],
     components: {
         "breadcrumb": Breadcrumb,
         "nav-item": NavItem,
@@ -103,6 +113,13 @@ export default {
             navActive: "application-role",
             dialogApplicationRole: false,
             dialogRolePermission: false,
+            loading: false,
+            app_role_id: ''
+        }
+    },
+    computed: {
+        listenAppRoleId() {
+            return this.app_role_id;
         }
     },
     methods: {
@@ -118,13 +135,28 @@ export default {
             })
             this.title = item[0].title
         },
+        getAppRoleId(id) {
+            this.app_role_id = id;
+        },
+        async saveAll(){
+            this.loading = true;
+            try {
+                const res = await axios.put(`${this.URL.application_role}/${this.app_role_id}/permission?n=${this.listenNodeId}`, this.form, this.Helper.header());
+
+                this.openNotification('success', null, "Success", res?.data?.message || "Success Update Data");
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
         openDialog(){
             switch(this.navActive) {
                 case "application-role":
                     this.dialogApplicationRole = true;
                     break;
                 case "role-permission":
-                    this.dialogRolePermission = true;
+                    this.saveAll();
                     break;
                 default:
             }
