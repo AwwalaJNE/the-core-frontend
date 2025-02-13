@@ -122,39 +122,9 @@ export default {
                     };
                 } else {
                     this.dataTable = [];
-                }  
-                
+                }
             } catch (err) {
-                // TODO: REMOVE BELOW LATER
-                this.dataTable = [
-                    {
-                        "app": "DASHBOARD_TICKETING",
-                        "role": [
-                            {
-                                "app_role_id": "a48111b9-f747-4a96-b930-c0ba61264acb",
-                                "app_role_name": "SALES COUNTER OFFICER",
-                                "app_role_code": "SCO"
-                            },
-                            {
-                                "app_role_id": "a48111b9-f747-4a96-b930-c0ba61264acd",
-                                "app_role_name": "CUSTOMER SERVICE",
-                                "app_role_code": "CS"
-                            }
-                        ]
-                    },
-                    {
-                        "app": "TICKETING",
-                        "role": [
-                            {
-                                "app_role_id": "a48111b9-f747-4a96-b930-c0ba61264acc",
-                                "app_role_name": "CUSTOMER SERVICE",
-                                "app_role_code": "CS"
-                            }
-                        ]
-                    }
-                ]
-                // TODO: UNCOMMENT BELOW LATER
-                // this.redirectError(err)
+                this.redirectError(err)
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.toggleLoading(false);
@@ -181,17 +151,24 @@ export default {
 </script>
 <style lang="scss" scoped>
 .roles-container {
-    padding: 20px 0;
     max-height: 600px;
     overflow-y: auto;
     text-align: left;
+
+    /* Hide scrollbar for Chrome, Safari, and Edge */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for Firefox */
+    scrollbar-width: none;
 
     .app-header {
         position: sticky;
         top: 0;
         background-color: white;
         z-index: 1000;
-        padding: 10px;
+        padding: 20px;
         font-weight: bolder;
         border-bottom: 1px solid #ddd;
     }
@@ -213,6 +190,5 @@ export default {
         }
     }
 }
-
 
 </style>

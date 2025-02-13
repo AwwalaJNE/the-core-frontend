@@ -293,6 +293,9 @@ export default {
     // Node List
     node_list: api + 'node-list',
 
+    // Customer List
+    customer_list: api + 'customer-list',
+
     // User List
     user_list: api + 'user-list',
 
