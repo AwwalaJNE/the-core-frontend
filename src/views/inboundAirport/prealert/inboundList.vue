@@ -395,7 +395,7 @@ export default {
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
                       let im = []
-                      item['created_orion'] = this.dateConvert(item['created_orion'])
+                      item['created_orion'] = item['created_orion'] == null ? this.dateConvert(item['created_at']) : this.dateConvert(item['created_orion']);
                       item['inbound_eta'] = this.dateConvert(item['inbound_eta'])
                       item['inbound_etd'] = this.dateConvert(item['inbound_etd'])
                       item['departed_at'] = this.dateConvert(item['departed_at'])
