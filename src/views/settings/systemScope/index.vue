@@ -139,9 +139,16 @@ export default {
             this.app_role_id = id;
         },
         async saveAll(){
+            let form = this.$refs['role-permission']?.changes_form || [];
+
+            if (form.length === 0) {
+                this.openNotification("warn", '', "Warning", 'Please update permission first');
+                return;
+            }
+
             this.loading = true;
             try {
-                const res = await axios.put(`${this.URL.application_role}/${this.app_role_id}/permission?n=${this.listenNodeId}`, this.form, this.Helper.header());
+                const res = await axios.put(`${this.URL.application_role}/${this.app_role_id}/permission?n=${this.listenNodeId}`, form, this.Helper.header());
 
                 this.openNotification('success', null, "Success", res?.data?.message || "Success Update Data");
             } catch (err) {

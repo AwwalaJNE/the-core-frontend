@@ -46,6 +46,7 @@ export default {
         name: String,
         rules: String,
         selectedValue: [String, Number, Array],
+        dataObj: [Object, String, Array],
         valueData: Array,
         querySearch: Function,
         formKey: String,
@@ -168,7 +169,7 @@ export default {
 
 
 
-            this.$emit("updateValue", this.listenFormKey, item, info)
+            this.$emit("updateValue", this.listenFormKey, item, info, this.dataObj)
         }
     },
     mounted() {

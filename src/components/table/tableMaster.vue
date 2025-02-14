@@ -478,6 +478,78 @@
                         ></i>
                       </template>
                     </template>
+                    <template
+                      v-if="
+                        column.typeInput !== undefined &&
+                          column.typeInput.toLowerCase() === 'multi-select-by'
+                      "
+                    >
+                      <template v-if="!item.filter">
+                        <vs-button
+                          shadow
+                          relief
+                          :active="true"
+                          @click="handleAddData(item, key)"
+                        >
+                          <i class="bx bx-plus"></i> Add Filter
+                        </vs-button>
+                      </template>
+                      <template v-else>
+                        <vs-row
+                          v-for="(filterItem, filterIndex) in item.filter"
+                          :key="filterIndex"
+                          align="center"
+                          justify="space-between"
+                        >
+                          <vs-col xs="6" sm="3" lg="3">
+                            <selector
+                              :name="column.selector.label" 
+                              :rules="column.selector.rules" 
+                              :formKey="column.selector.key"
+                              :valueData="column.selector.data"
+                              :selectedValue="filterItem[column.selector.key]"
+                              :dataObj="item"
+                              @updateValue="updateValue2(filterIndex, ...arguments)"
+                            />
+                          </vs-col>
+                          <vs-col xs="6" sm="3" lg="7">
+                            <asynchronousSelect 
+                              :ref="column.multipleSelector.key"
+                              :name="column.multipleSelector.label" 
+                              :rules="column.multipleSelector.rules" 
+                              :formKey="column.multipleSelector.key"
+                              :selectedValue="filterItem[column.multipleSelector.key]"
+                              :typeInput="column.multipleSelector.typeInput"
+                              :url="column.multipleSelector.autoCompleteUrl"
+                              :selectLabel="column.multipleSelector.selectLabel"
+                              :selectValue="column.multipleSelector.selectValue"
+                              :dataObj="item"
+                              @updateValue="updateValue2(filterIndex, ...arguments)"
+                            />
+                          </vs-col>
+                          <vs-col  xs="6" sm="3" lg="2">
+                            <vs-button
+                              danger
+                              border
+                              style="margin-top: 20px;"
+                              @click="handleRemoveData(item, filterIndex, key)"
+                            >
+                              <i class="bx bx-minus"></i> Del
+                            </vs-button>
+                          </vs-col>
+                        </vs-row>
+                        <vs-row>
+                          <vs-button
+                            shadow
+                            relief
+                            :active="true"
+                            @click="handleAddData(item, key)"
+                          >
+                            <i class="bx bx-plus"></i> Add Filter
+                          </vs-button>
+                        </vs-row>
+                      </template>
+                    </template>
                   </vs-td>
                 </template>
                 <template
@@ -1337,6 +1409,8 @@ import Pagination from "@/components/pagination/pagination.vue";
 import Checkbox from "@/components/input/checkbox.vue";
 import InputGeneral from "@/components/input/general";
 import Selector from "@/components/input/select";
+import asynchronousSelect from "@/components/input/asynchronousSelect"
+import iterateSelector from "@/components/input/iterateInput2"
 import AutoComplete from "@/components/input/autoComplete";
 import { Dialog } from "element-ui";
 export default {
@@ -1347,6 +1421,8 @@ export default {
     checkbox: Checkbox,
     "input-general": InputGeneral,
     selector: Selector,
+    "asynchronousSelect": asynchronousSelect,
+    "iterate-selector": iterateSelector,
     "auto-complete": AutoComplete,
     "el-dialog": Dialog,
   },
@@ -1359,6 +1435,9 @@ export default {
     limit: Number,
     hasAction: Boolean,
     scrollableAndStaticHeader: Boolean,
+    hasAutoCompleteUrl: String,
+    hasSelectLabel: String,
+    hasSelectValue: String,
     hasDuplicateEditRemove: Boolean,
     hasPagination: Boolean,
     expandable: Boolean,
@@ -1553,6 +1632,12 @@ export default {
     actionPagination(val) {
       this.$emit("actionPagination", val);
     },
+    handleAddData(val, key, parentKey) {
+      this.$emit("handleAddData", val, key, parentKey);
+    },
+    handleRemoveData(val, key, parentKey) {
+      this.$emit("handleRemoveData", val, key, parentKey);
+    },
     actionUpdate(val, key) {
       this.$emit("actionUpdate", val, key);
     },
@@ -1630,6 +1715,9 @@ export default {
         }
       }
       this.$emit("updateValue", key, val, info, dataObj);
+    },
+    updateValue2(index, key, val, info = {}, dataObj) {
+      this.$emit("updateValue", index, key, val, info, dataObj);
     },
     updateFormValue(value, formKey) {
 

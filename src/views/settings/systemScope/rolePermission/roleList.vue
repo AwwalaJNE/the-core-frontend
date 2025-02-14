@@ -92,14 +92,17 @@ export default {
     methods: {
         toggleLoading(show) {
             if (show) {
-                this.refLoading = this.$vs.loading({
-                    target: this.$el,
-                    type: "scale",
-                    text: "Loading...",
-                    background: "#EAEAEA",
-                });
+                if (!this.refLoading && this.$el) {
+                    this.refLoading = this.$vs.loading({
+                        target: this.$el,
+                        type: "scale",
+                        text: "Loading...",
+                        background: "#EAEAEA",
+                    });
+                }
             } else if (this.refLoading) {
                 this.refLoading.close();
+                this.refLoading = null;
             }
         },
         refresh(){
