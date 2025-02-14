@@ -57,6 +57,7 @@
                         <edit-list 
                             :ref="navActive"
                             :app_role_id="listenAppRoleId"
+                            @updateChangesForm="handleChangesForm"
                         />
                     </div>
                 </transition>
@@ -114,7 +115,8 @@ export default {
             dialogApplicationRole: false,
             dialogRolePermission: false,
             loading: false,
-            app_role_id: ''
+            app_role_id: '',
+            changes_form: []
         }
     },
     computed: {
@@ -123,6 +125,9 @@ export default {
         }
     },
     methods: {
+        handleChangesForm(form) {
+            this.changes_form = form;
+        },
         refresh(){
             let el = this.refreshInject
             this.$refs[el].refresh()
@@ -139,11 +144,13 @@ export default {
             this.app_role_id = id;
         },
         async saveAll(){
-            let form = this.$refs['role-permission']?.changes_form || [];
-
-            if (form.length === 0) {
+            if (this.changes_form.length === 0) {
                 this.openNotification("warn", '', "Warning", 'Please update permission first');
                 return;
+            }
+
+            let form = {
+                permission: this.changes_form
             }
 
             this.loading = true;

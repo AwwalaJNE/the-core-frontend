@@ -489,7 +489,7 @@
                           shadow
                           relief
                           :active="true"
-                          @click="handleAddData(item, key)"
+                          @click="handleAddData(item)"
                         >
                           <i class="bx bx-plus"></i> Add Filter
                         </vs-button>
@@ -532,7 +532,7 @@
                               danger
                               border
                               style="margin-top: 20px;"
-                              @click="handleRemoveData(item, filterIndex, key)"
+                              @click="handleRemoveData(item, filterIndex)"
                             >
                               <i class="bx bx-minus"></i> Del
                             </vs-button>
@@ -543,7 +543,7 @@
                             shadow
                             relief
                             :active="true"
-                            @click="handleAddData(item, key)"
+                            @click="handleAddData(item)"
                           >
                             <i class="bx bx-plus"></i> Add Filter
                           </vs-button>
@@ -1632,11 +1632,11 @@ export default {
     actionPagination(val) {
       this.$emit("actionPagination", val);
     },
-    handleAddData(val, key, parentKey) {
-      this.$emit("handleAddData", val, key, parentKey);
+    handleAddData(val) {
+      this.$emit("handleAddData", val);
     },
-    handleRemoveData(val, key, parentKey) {
-      this.$emit("handleRemoveData", val, key, parentKey);
+    handleRemoveData(val, index) {
+      this.$emit("handleRemoveData", val, index);
     },
     actionUpdate(val, key) {
       this.$emit("actionUpdate", val, key);

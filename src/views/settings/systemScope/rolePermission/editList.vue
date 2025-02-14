@@ -1,18 +1,16 @@
 <template>
     <div>
         <table-master 
+            ref="tableMaster"
             :dataTable="dataTable" 
-            :dataColumn="datacolumn" 
+            :dataColumn="dataColumn" 
             :tableLoading="loading"
-            :pageSize="pagination.page_size"
-            :page="pagination.page"
-            :limit="pagination.limit"
             :hasAction="false"
             :isSearchAble="true"
             :isMultipleSelect="true"
-            :selectedData="user_role_permission"
-            @updateSelected="updateSelected"
             @updateValue="updateValue"
+            @handleAddData="handleAddData"
+            @handleRemoveData="handleRemoveData"
         />
     </div>
 </template>
@@ -20,13 +18,7 @@
 
 import axios from "axios";
 import master from "@/mixins/master";
-import moment from "moment";
 
-import DateTime from "@/components/input/dateTime"
-import DialogConfirm from "@/components/dialog/dialogConfirm";
-import Inputan from "@/components/input/inputan";
-import SearchInput from "@/components/search/searchInput";
-import SelectSearchBy from "@/components/search/selectSearchBy";
 import TableMaster from "@/components/table/tableMaster";
 
 export default {
@@ -36,17 +28,12 @@ export default {
         app_role_id: String
     },
     components: {
-        "table-master" : TableMaster,
-        "search-input": SearchInput,
-        "date-time": DateTime,
-        "inputan": Inputan,
-        "dialog-confirm": DialogConfirm,
-        "select-search-by": SelectSearchBy
+        "table-master" : TableMaster
     },
     data() {
         return {
             dataTable: [],
-            datacolumn: [
+            dataColumn: [
                 {
                     label: "Menu",
                     key: "feature_name",
@@ -57,40 +44,88 @@ export default {
                     label: "Access Data",
                     key: "access_data",
                     type: "inputan",
-                    typeInput: "select",
-                    data: [
-                        {
-                            "label": "USER",
-                            "value": "USER"
-                        },
-                        {
-                            "label": "NODE",
-                            "value": "NODE"
-                        },
-                        {
-                            "label": "SAME-TLC",
-                            "value": "SAME-TLC"
-                        },
-                        {
-                            "label": "ALL",
-                            "value": "ALL"
-                        }
-                    ],
-                    width: "auto"
+                    typeInput: "multi-select-by",
+                    selector: {
+                        label: "Reference Entity*",
+                        key: "reference_entity",
+                        rules: "required",
+                        typeInput: 'selector',
+                        value: '',
+                        data: [
+                            {
+                                label: "REGION",
+                                value: "REGION",
+                            },
+                            {
+                                "label": "BRANCH",
+                                "value": "BRANCH"
+                            },
+                            {
+                                "label": "ORIGIN",
+                                "value": "ORIGIN"
+                            },
+                            {
+                                "label": "NODE",
+                                "value": "NODE"
+                            },
+                            {
+                                "label": "USER",
+                                "value": "USER"
+                            },
+                            {
+                                "label": "EMPLOYEE",
+                                "value": "EMPLOYEE"
+                            },
+                            {
+                                "label": "CUSTOMER",
+                                "value": "CUSTOMER"
+                            },
+                            {
+                                "label": "SUBDISTRICT",
+                                "value": "SUBDISTRICT"
+                            },
+                            {
+                                "label": "DELIVERY ZONE",
+                                "value": "DELIVERY_ZONE"
+                            },
+                            {
+                                "label": "ZIP_CODE",
+                                "value": "ZIP_CODE"
+                            },
+                            {
+                                "label": "SERVICE",
+                                "value": "SERVICE"
+                            },
+                            {
+                                "label": "HIDDEN_COLUMN",
+                                "value": "HIDDEN_COLUMN"
+                            }
+                        ],
+                    },
+                    multipleSelector: {
+                        label: "Reference Value*",
+                        key: "reference_value",
+                        rules: "required",
+                        typeInput: 'multipleSelector',
+                        value: '',
+                        autoCompleteUrl: '',
+                        selectLabel: '',
+                        selectValue: ''
+                    },
+                    width: "auto",
                 }
             ],
             loading: false,
-            dataItem: {},
-            dateRange: [],
             pagination: {
-                limit: 20,
+                limit: 1000,
                 page_size: 1,
                 page: 1
             },
-            selected_id: '',
             tempSearch: '',
-
-            user_role_permission: [],
+            autoCompleteUrl: '',
+            input_value: '',
+            input_label: '',
+            changes_form: []
         }
     },
     watch: {
@@ -99,59 +134,106 @@ export default {
                 this.refresh()
             }
         },
+        changes_form: function (val) {
+            if (val !== undefined) {
+                this.sendChangesForm()
+            }
+        },
+        dataColumn: function (val) {
+            if (val !== undefined) {
+                this.$nextTick(() => {
+                    this.dataColumn = val;
+                });
+            }
+        },
+        dataTable: function (val) {
+            if (val !== undefined) {
+                this.$nextTick(() => {
+                    this.dataTable = val;
+                });
+            }
+        },
+    },
+    computed: {
+        permissionMap() {
+            return new Map(this.dataTable.map(item => [item.feature_permission_id, item]));
+        },
     },
     methods: {
+        sendChangesForm() {
+            this.$emit('updateChangesForm', this.changes_form);
+        },
+        handleAddData(val) {
+            const newFilter = {
+                reference_entity: "",
+                reference_value: []
+            };
+            
+            if (Array.isArray(val.filter)) {
+                val.filter.push(newFilter);
+            } else {
+                val.filter = [newFilter];
+            }  
+        },
+        handleRemoveData(val, key) {
+            val.filter.splice(key, 1);
+        },
         refresh(){
-            let from = ''
-            let to = ''
-
-            if(this.dateRange != null && this.dateRange.length > 0) {
-                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
-                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
-            }
-
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, from, to)
+            if (!this.app_role_id) return;
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
         },
-        updateSelected(arr){
-            this.filterNow()
-            this.user_role_permission = arr
-            this.user_role_permission.map(item => {
-                if(item["access_data"] == "") {
-                    item["access_data"] = "USER"
+        updateValue(index, key, val, info, dataObj) {
+            const referenceMap = {
+                REGION: { url: this.URL.regional_list, value: "regional_code", label: "regional_code" },
+                BRANCH: { url: this.URL.branch_list, value: "branch_code", label: "branch_code" },
+                ORIGIN: { url: this.URL.origin_list, value: "origin_code", label: "origin_code" },
+                NODE: { url: this.URL.node_list, value: "node_code", label: "node_code" },
+                USER: { url: this.URL.user_list, value: "user_login", label: "user_name" },
+                EMPLOYEE: { url: this.URL.employee_list, value: "employee_nik", label: "employee_name" },
+                CUSTOMER: { url: this.URL.customer_list, value: "customer_code", label: "customer_name" },
+                SUBDISTRICT: { url: this.URL.subdistrict_list, value: "geolocation_subdistrict_name", label: "geolocation_subdistrict_name" },
+                DELIVERY_ZONE: { url: this.URL.tlc_zone, value: "tlc_zone", label: "tlc_zone" },
+                ZIP_CODE: { url: this.URL.zip_code_list, value: "zip_code", label: "zip_code" },
+                SERVICE: { url: this.URL.service, value: "service_code", label: "service_code" }
+            };
+
+            dataObj.filter[index][key] = val;
+
+            if (key === "reference_entity" && referenceMap[val]) {
+                this.autoCompleteUrl = `${referenceMap[val].url}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`;
+                this.input_value = referenceMap[val].value;
+                this.input_label = referenceMap[val].label;
+
+                const col = this.dataColumn.find(col => col.key === "access_data");
+                if (col) {
+                    col.selector.value = val;
+                    col.multipleSelector.value = [];
+                    col.multipleSelector.autoCompleteUrl = this.autoCompleteUrl;
+                    col.multipleSelector.selectValue = this.input_value;
+                    col.multipleSelector.selectLabel = this.input_label;
                 }
-            })
-            this.filterArray = this.user_role_permission.filter(item => item.selected === false);
-            if (this.filterArray.length == 0) {
-                this.filterArray = this.getMissingPermissions()
             }
+            
+            let changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
+            changesMap.set(dataObj.feature_permission_id, dataObj);
+            this.changes_form = Array.from(changesMap.values());
 
-            if(this.waitToRoleRenderer == false) {
-                this.updateRole()
-            }
-        },
-        updateValue(key, val) {
-            this.dateRange = val;
-            this.refresh();
+            console.log("PP", this.changes_form)
         },
         searchValue (val) {
             this.tempSearch = val
             this.refresh();
         },
-        async getTableData(limit, page, q, from, to) {
+        async getTableData(limit, page, q) {
             this.loading = true
 
-            let query = q || '';            
-            let startDate = from || "";
-            let endDate = to || "";
+            let query = q || '';
             
             try {
-                const res = await axios.get(`${this.URL.application_role}/${this.app_role_id}/permission?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.application_role}/${this.app_role_id}/permission?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
-                    arr.map(item => {
-                        item["created_at"] = this.formatTimestamp(item.created_at)
-                    })
                     this.dataTable = arr;
                     this.pagination = {
                         page: res.data.meta.current_page,
@@ -161,45 +243,12 @@ export default {
                 } else {
                     this.dataTable = [];
                 }  
-                
             } catch (err) {
-                // TODO: REMOVE BELOW LATER
-                if (this.app_role_id) {
-                    this.dataTable = [
-                        {
-                            "feature_permission_id": "a48111b9-f747-4a96-b930-c0ba61264acb",
-                            "feature_name": "READ LIVE SURAT JALAN",
-                            "feature_code": "read-live-surat-jalan",
-                            "feature_scope_id": "a48111b9-f747-4a96-b930-c0ba61264acb",
-                            "filter": [
-                                {
-                                    "reference_entity": "BRANCH",
-                                    "reference_value": [
-                                        "CGK000"
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "feature_permission_id": "a48111b9-f747-4a96-b930-c0ba61264acb",
-                            "feature_name": "READ LIVE SURAT JALAN",
-                            "feature_code": "read-live-surat-jalan",
-                            "feature_scope_id": null,
-                            "filter": null
-                        }
-                    ]
-                }
-                
-                // TODO: UNCOMMENT BELOW LATER
-                // this.redirectError(err)
+                this.redirectError(err)
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
             }
-        },
-        actionUpdate(val){
-            this.dataItem = val;
-            this.dialogEditActive = true;
         },
         actionLimit(val){
             this.pagination.limit = val
