@@ -25,7 +25,8 @@ export default {
     name:"role-permission-data-table",
     mixins: [master],
     props: {
-        app_role_id: String
+        app_role_id: String,
+        changes_form: Array
     },
     components: {
         "table-master" : TableMaster
@@ -125,7 +126,6 @@ export default {
             autoCompleteUrl: '',
             input_value: '',
             input_label: '',
-            changes_form: []
         }
     },
     watch: {
@@ -136,7 +136,8 @@ export default {
         },
         changes_form: function (val) {
             if (val !== undefined) {
-                this.sendChangesForm()
+                this.changes_form = val;
+                this.sendChangesForm();
             }
         },
         dataColumn: function (val) {

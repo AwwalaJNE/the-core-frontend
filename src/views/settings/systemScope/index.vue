@@ -57,6 +57,7 @@
                         <edit-list 
                             :ref="navActive"
                             :app_role_id="listenAppRoleId"
+                            :changes_form="changes_form"
                             @updateChangesForm="handleChangesForm"
                         />
                     </div>
@@ -162,6 +163,7 @@ export default {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
+                this.changes_form = []
             }
         },
         openDialog(){
