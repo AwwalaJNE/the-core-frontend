@@ -161,6 +161,54 @@ export default {
       valueData: null,
       value: ''
     },
+    dynamicinputcomponent_user_other_application_role: {
+      label: "Add Other Application Role",
+      key: "dynamicinputcomponent_user_other_application_role",
+      rule:"",
+      typeInput: "dynamicinputcomponent",
+      typeData: "Array",
+      inputs: [
+        {
+          key: "user_application_name",
+          typeInput: "select",
+          value: '',
+          width: '4'
+        },
+        {
+          key: "user_application_role",
+          typeInput: "multipleSelector",
+          value: '',
+          width: '8'
+        },
+      ],
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    user_application_name: {
+      label: "Application Name",
+      key: "user_application_name",
+      rule: "",
+      typeInput: "select|hidden",
+      width: '4',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      visible: false
+    },
+    user_application_role: {
+      label: "Application Role",
+      key: "user_application_role",
+      rule: "",
+      typeInput: "multipleSelector|hidden",
+      width: '8',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      visible: false
+    },
     is_login_enable: {
       label: "Enable Login|Disable Login",
       key: "is_login_enable",

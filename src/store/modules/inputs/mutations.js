@@ -178,6 +178,63 @@ export default {
       state.user.dynamicinputcomponent_user_additional_role.arrData = []
   },
 
+  SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE(state, payload) {
+    let arr = state.user.dynamicinputcomponent_user_other_application_role.inputs
+    let final = []
+    if (payload && payload.length > 0) {
+      let obj = {}
+      let template = arr
+
+      payload.map(item => {
+        let newArr = []
+        template.map(tmpl => {
+          if (item.hasOwnProperty(tmpl.key.toLowerCase())) {
+            let val = item[tmpl.key.toLowerCase()]
+            let newObj = {}
+            newObj['key'] = tmpl.key
+            newObj['typeInput'] = tmpl.typeInput
+            newObj['value'] = val
+
+            newArr.push(newObj)
+          } else if (item.hasOwnProperty("inputs")) {
+            newArr = item["inputs"]
+          }
+        })
+
+        let newData = { 'inputs': [] }
+        newData['inputs'] = newArr
+        final.push(newData)
+      })
+    }
+    state.user.dynamicinputcomponent_user_other_application_role.hasOwnProperty('arrData') ?
+      state.user.dynamicinputcomponent_user_other_application_role.arrData = final :
+      state.user.dynamicinputcomponent_user_other_application_role.arrData = []
+  },
+
+  SET_USER_USER_APPLICATION_NAME(state, payload) {
+    state.user.user_application_name.value = payload
+  },
+  SET_USER_USER_APPLICATION_NAME_ValueData(state, payload) {
+    state.user.user_application_name.valueData = payload
+  },
+  SET_USER_USER_APPLICATION_NAME_ArrData(state, payload) {
+    state.user.user_application_name.hasOwnProperty('arrData') ?
+      state.user.user_application_name.arrData = payload :
+      state.user.user_application_name.arrData = []
+  },
+
+  SET_USER_USER_APPLICATION_ROLE(state, payload) {
+    state.user.user_application_role.value = payload
+  },
+  SET_USER_USER_APPLICATION_ROLE_ValueData(state, payload) {
+    state.user.user_application_role.valueData = payload
+  },
+  SET_USER_USER_APPLICATION_ROLE_ArrData(state, payload) {
+    state.user.user_application_role.hasOwnProperty('arrData') ?
+      state.user.user_application_role.arrData = payload :
+      state.user.user_application_role.arrData = []
+  },
+
   // ==== user role ====
   SET_ROLE_USER_ROLE_NAME(state, payload) {
     state.role.user_role_name.value = payload
