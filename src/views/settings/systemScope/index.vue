@@ -160,8 +160,11 @@ export default {
             }
 
             let form = {
-                permission: this.changes_form
-            }
+                permission: this.changes_form.map(item => ({
+                    ...item,
+                    selected: true
+                }))
+            };
 
             this.loading = true;
             try {
@@ -172,7 +175,8 @@ export default {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
-                this.changes_form = []
+                this.changes_form = [];
+                this.refresh();
             }
         },
         openDialog(){
