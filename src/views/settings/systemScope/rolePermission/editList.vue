@@ -25,6 +25,7 @@ export default {
     name:"role-permission-data-table",
     mixins: [master],
     props: {
+        app: String,
         app_role_id: String,
         changes_form: Array
     },
@@ -34,88 +35,7 @@ export default {
     data() {
         return {
             dataTable: [],
-            dataColumn: [
-                {
-                    label: "Menu",
-                    key: "feature_name",
-                    type: "text",
-                    width: "sm"
-                },
-                {
-                    label: "Access Data",
-                    key: "access_data",
-                    type: "inputan",
-                    typeInput: "multi-select-by",
-                    selector: {
-                        label: "Reference Entity*",
-                        key: "reference_entity",
-                        rules: "required",
-                        typeInput: 'selector',
-                        value: '',
-                        data: [
-                            {
-                                label: "REGION",
-                                value: "REGION",
-                            },
-                            {
-                                "label": "BRANCH",
-                                "value": "BRANCH"
-                            },
-                            {
-                                "label": "ORIGIN",
-                                "value": "ORIGIN"
-                            },
-                            {
-                                "label": "NODE",
-                                "value": "NODE"
-                            },
-                            {
-                                "label": "USER",
-                                "value": "USER"
-                            },
-                            {
-                                "label": "EMPLOYEE",
-                                "value": "EMPLOYEE"
-                            },
-                            {
-                                "label": "CUSTOMER",
-                                "value": "CUSTOMER"
-                            },
-                            {
-                                "label": "SUBDISTRICT",
-                                "value": "SUBDISTRICT"
-                            },
-                            {
-                                "label": "DELIVERY ZONE",
-                                "value": "DELIVERY_ZONE"
-                            },
-                            {
-                                "label": "ZIP_CODE",
-                                "value": "ZIP_CODE"
-                            },
-                            {
-                                "label": "SERVICE",
-                                "value": "SERVICE"
-                            },
-                            {
-                                "label": "HIDDEN_COLUMN",
-                                "value": "HIDDEN_COLUMN"
-                            }
-                        ],
-                    },
-                    multipleSelector: {
-                        label: "Reference Value*",
-                        key: "reference_value",
-                        rules: "required",
-                        typeInput: 'multipleSelector',
-                        value: '',
-                        autoCompleteUrl: '',
-                        selectLabel: '',
-                        selectValue: ''
-                    },
-                    width: "auto",
-                }
-            ],
+            dataColumn: [],
             loading: false,
             pagination: {
                 limit: 1000,
@@ -174,14 +94,20 @@ export default {
                 val.filter.push(newFilter);
             } else {
                 val.filter = [newFilter];
-            }  
+            }
         },
         handleRemoveData(val, key) {
             val.filter.splice(key, 1);
         },
         refresh(){
             if (!this.app_role_id) return;
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
+            
+            if (this.app === 'CORE DATA TABLE') {
+                this.getTableData2(this.pagination.limit, this.pagination.page, this.tempSearch)
+            } else {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
+            }
+            
         },
         updateValue(index, key, val, info, dataObj) {
             const referenceMap = {
@@ -195,7 +121,8 @@ export default {
                 SUBDISTRICT: { url: this.URL.subdistrict_list, value: "geolocation_subdistrict_name", label: "geolocation_subdistrict_name" },
                 DELIVERY_ZONE: { url: this.URL.tlc_zone, value: "tlc_zone", label: "tlc_zone" },
                 ZIP_CODE: { url: this.URL.zip_code_list, value: "zip_code", label: "zip_code" },
-                SERVICE: { url: this.URL.service, value: "service_code", label: "service_code" }
+                SERVICE: { url: this.URL.service, value: "service_code", label: "service_code" },
+                HIDDEN_COLUMN: { url: this.URL.column_list, value: "reference_value", label: "reference_value" }
             };
 
             dataObj.filter[index][key] = val;
@@ -236,6 +163,7 @@ export default {
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
                     this.dataTable = arr;
+                    this.dataColumn = this.getColumnDefinition('others');
                     this.pagination = {
                         page: res.data.meta.current_page,
                         limit: parseInt(res.data.meta.per_page, 10),
@@ -250,6 +178,82 @@ export default {
             } finally {
                 this.loading = false;
             }
+        },
+        async getTableData2(limit, page, q) {
+            this.loading = true
+
+            let query = q || '';
+            
+            try {
+                const res = await axios.get(`${this.URL.feature_list}?n=${this.listenNodeId}&sort_order=desc`, this.Helper.header());
+
+                if(res.data.data.length > 0) {
+                    let arr = res.data.data;
+                    this.dataTable = arr;
+                    this.dataColumn = this.getColumnDefinition('hide_column');
+                } else {
+                    this.dataTable = [];
+                }  
+            } catch (err) {
+                // this.redirectError(err)
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
+        getColumnDefinition(typeInputDetail) {
+            const referenceEntities = typeInputDetail === 'others' 
+                ? [
+                    { label: "REGION", value: "REGION" },
+                    { label: "BRANCH", value: "BRANCH" },
+                    { label: "ORIGIN", value: "ORIGIN" },
+                    { label: "NODE", value: "NODE" },
+                    { label: "USER", value: "USER" },
+                    { label: "EMPLOYEE", value: "EMPLOYEE" },
+                    { label: "CUSTOMER", value: "CUSTOMER" },
+                    { label: "SUBDISTRICT", value: "SUBDISTRICT" },
+                    { label: "DELIVERY ZONE", value: "DELIVERY_ZONE" },
+                    { label: "ZIP_CODE", value: "ZIP_CODE" },
+                    { label: "SERVICE", value: "SERVICE" }
+                ]
+                : [
+                    { label: "HIDDEN_COLUMN", value: "HIDDEN_COLUMN" }
+                ];
+
+            return [
+                {
+                    label: "Menu",
+                    key: "feature_name",
+                    type: "text",
+                    width: "sm"
+                },
+                {
+                    label: "Access Data",
+                    key: "access_data",
+                    type: "inputan",
+                    typeInput: "multi-select-by",
+                    typeInputDetail,
+                    selector: {
+                        label: "Reference Entity*",
+                        key: "reference_entity",
+                        rules: "required",
+                        typeInput: 'selector',
+                        value: '',
+                        data: referenceEntities,
+                    },
+                    multipleSelector: {
+                        label: "Reference Value*",
+                        key: "reference_value",
+                        rules: "required",
+                        typeInput: 'multipleSelector',
+                        value: '',
+                        autoCompleteUrl: '',
+                        selectLabel: '',
+                        selectValue: ''
+                    },
+                    width: "auto",
+                }
+            ];
         },
         actionLimit(val){
             this.pagination.limit = val
