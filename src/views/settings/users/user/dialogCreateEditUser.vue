@@ -11,12 +11,13 @@
             <div>
                 <form-input-controller 
                     ref="formUserController"
-                    @formData="formData"
-                    :dataItem="listenDataItem"
-                    :querySearch="querySearch"
-                    @inputFocus="inputFocus"
                     typeForm="user"
                     :asynchronousSelect_url="autoComplateUrl"
+                    :dataItem="listenDataItem"
+                    :selectValue="input_value"
+                    :selectLabel="input_label"
+                    @formData="formData"
+                    @inputFocus="inputFocus"
                 />
             </div>
         </template>
@@ -78,9 +79,13 @@ export default {
             formUser: this.$store.getters.getInputs.user ? this.$store.getters.getInputs.user : {},
             user_id: '',
             dataRole: [],
+            dataApplicationRole: [],
             loadingDataRole: false,
             loadingDataNode: false,
-            autoComplateUrl: null
+            loadingDataApplicationList: false,
+            autoComplateUrl: null,
+            input_value: '',
+            input_label: ''
         }
     },
     computed: {
@@ -88,6 +93,7 @@ export default {
             if(this.active){
                 this.getDataRole()
                 this.getDataEmployee()
+                this.getApplicationList();
             }
             return this.active
         },
@@ -122,6 +128,14 @@ export default {
                 form.user_additional_node_id = additional_node;
                 form.user_expiry_additional_role = expiry_additional_role;
             }
+            if (form.dynamicinputcomponent_user_other_application_role) {
+                let application_name = []
+                let application_role = []
+                form['app_role'] = form.dynamicinputcomponent_user_other_application_role.map(item => ({
+                    app: item.inputs[0].value,
+                    role: item.inputs.slice(1).map(roleItem => roleItem.value)[0] // Collects all role values in an array
+                }));
+            }
             if(this.user_id !== undefined && this.user_id !== '') {
                     let obj = form
                     if(obj["password"] == '') {
@@ -142,27 +156,40 @@ export default {
             this.form = {}
             this.user_id = ""
         },
-        querySearch(queryString, cb){
-            axios.get(this.autoComplateUrl +`?n=${this.listenNodeId}&s=${queryString}`,
-                this.Helper.header()
-            )
-            .then(res => {
-                let result = res.data.data
-                let suggestions = [];
-                result.length > 0 && result.map(item => {
-                    suggestions.push({
-                        value: item['node_name'],
-                        data: item
-                    });
-                });
-                cb(suggestions);
-                })
-            .catch();
-        },
         inputFocus(obj){
-            if(obj.key == 'user_node_id'){
-                this.autoComplateUrl = this.URL.node;
+            console
+            if (obj.key === 'user_node_id' || obj.key.includes('user_additional_node_id')){
+                this.autoComplateUrl = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+                this.input_value = "node_id";
+                this.input_label = "node_name";
+            } else if (obj.key.includes('user_application_role')) {
+                this.autoComplateUrl = this.URL.role +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
+                this.input_value = "user_role_id";
+                this.input_label = "user_role_name";
             }
+        },
+        async getApplicationList(){
+            this.loadingDataApplicationList = true
+            await axios
+                .get(this.URL.application_list + `?n=${this.listenNodeId}&limit=-1`, 
+                this.Helper.header())
+                .then(res => {
+                        let arr = []
+                        res.data.data.map(item => {
+                            let obj = {}
+                            obj["label"] = item.lov_value
+                            obj["value"] = item.lov_value
+
+                            arr.push(obj)
+                        })
+                        this.dataApplicationRole = arr
+                        this.$store.dispatch("SET_USER_USER_APPLICATION_NAME_ArrData", arr)
+                    
+                    this.loadingDataApplicationList = false
+                }).catch(err => {
+                    this.loadingDataApplicationList = false
+                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
+                })
         },
         async getDataRole(){
             this.loadingDataRole = true
@@ -296,8 +323,6 @@ export default {
         },
     },
     mounted() {
-        let url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
-        this.autoComplateUrl = url
         this.handleSubmitShortcut(this.handleSubmit)
     },
 }
