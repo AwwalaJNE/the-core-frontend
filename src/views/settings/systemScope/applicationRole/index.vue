@@ -168,12 +168,12 @@ export default {
                 },
             ],
             searchPlaceholder: "Search Application",
-            searchBy: "app",
+            searchBy: "application",
             searchByDataType: false,
             searchParams: [
                 {
                     label: "Application",
-                    value: "app"
+                    value: "application"
                 },
                 {
                     label: "Role",
