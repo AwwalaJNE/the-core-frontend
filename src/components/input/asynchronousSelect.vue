@@ -21,6 +21,7 @@
         placeholder="Please enter a keyword"
         :remote-method="asynchronousSelect"
         @change="handleSelect"
+        @focus="inputFocus"
         :loading="loading"
         :disabled="listenIsDisabled"
     >

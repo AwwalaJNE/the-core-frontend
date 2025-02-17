@@ -41,7 +41,10 @@
                                                 :valueData="InputObject[input.key].arrData"
                                                 :selectedValue="input.value"
                                                 :url="asynchronousSelect_url"
-                                                @updateValue="updateValue" />
+                                                :selectLabel="selectLabel"
+                                                :selectValue="selectValue"
+                                                @updateValue="updateValue"
+                                                @inputFocus="onfocuslah" />
                                     </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('selectmultipletag')">
                                             <div>
@@ -57,7 +60,6 @@
                                             </div>
                                     </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('select')">
-                                        <div class="mt-1">
                                             <selector 
                                             :ref="input.key"
                                             :name="InputObject[input.key].label" 
@@ -66,8 +68,8 @@
                                             :valueData="InputObject[input.key].arrData"
                                             :selectedValue="input.value"
                                             :isMultiple="false"
+                                            :isAllowCreate="false"
                                             @updateValue="updateValue" />
-                                        </div>
                                     </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('autocomplete')">
                                         <template v-if="querySearch !== undefined">
@@ -109,6 +111,7 @@
             :active="false"
             @click="Add"
             :disabled="addDisabled"
+            style="max-width: 200px !important;"
         >
             <i class='bx bx-plus' style="margin-right:5px"></i> {{ addBtn || 'Add' }}
         </vs-button>
@@ -134,7 +137,9 @@ export default {
         itterateFlagAutoComplete: String,
         asynchronousSelect_url: String,
         fromKey: String,
-        disabled: Boolean
+        disabled: Boolean,
+        selectLabel: String,
+        selectValue: String,
     },
     components: {
         "input-general": InputGeneral,

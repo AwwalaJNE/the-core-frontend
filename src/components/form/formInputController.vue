@@ -234,6 +234,8 @@
                                     :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
                                     :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
                                     :asynchronousSelect_url="listenAsynchronousSelectUrl"
+                                    :selectLabel="selectLabel"
+                                    :selectValue="selectValue"
                                     :disabled="listenIsDisabled"
                                     @updateValue="updateValue"
                                     @inputFocus="onfocuslah"/>
@@ -604,7 +606,7 @@ export default {
             this.$emit("onChangeCustom", type, val, obj)
         },
         onfocuslah(info) {
-            if(info.typeInput !== '' && info.typeInput.includes('location_selector')) {
+            if(info.typeInput !== '' && info.typeInput !== undefined && info.typeInput.includes('location_selector')) {
               this.$emit("onFocus_location_selector", info)
             }
             this.$emit("inputFocus", info)
