@@ -97,6 +97,9 @@ export default {
             }
         },
         handleRemoveData(val, key) {
+            let changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
+            changesMap.set(val.feature_permission_id, { ...val, selected: false });
+            this.changes_form = Array.from(changesMap.values());
             val.filter.splice(key, 1);
         },
         refresh(){
@@ -143,10 +146,8 @@ export default {
             }
             
             let changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
-            changesMap.set(dataObj.feature_permission_id, dataObj);
+            changesMap.set(dataObj.feature_permission_id, { ...dataObj, selected: true });
             this.changes_form = Array.from(changesMap.values());
-
-            console.log("PP", this.changes_form)
         },
         searchValue (val) {
             this.tempSearch = val

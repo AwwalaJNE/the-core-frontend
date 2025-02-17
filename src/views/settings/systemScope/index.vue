@@ -160,11 +160,8 @@ export default {
             }
 
             let form = {
-                permission: this.changes_form.map(item => ({
-                    ...item,
-                    selected: true
-                }))
-            };
+                permission: this.changes_form
+            }
 
             this.loading = true;
             try {
