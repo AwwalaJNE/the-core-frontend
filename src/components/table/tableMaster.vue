@@ -538,7 +538,10 @@
                             </vs-button>
                           </vs-col>
                         </vs-row>
-                        <vs-row>
+                        <vs-row v-if="
+                          column.typeInputDetail.toLowerCase() === 'others' || 
+                          column.typeInputDetail.toLowerCase() === 'hide_column' && item.filter.length === 0
+                        ">
                           <vs-button
                             shadow
                             relief

@@ -45,7 +45,7 @@
                         <transition name="slide-fade">
                             <role-list 
                                 :ref="navActive" 
-                                @getAppRoleId="getAppRoleId"
+                                @getRoleInfo="getRoleInfo"
                             />
                         </transition>
                     </template>
@@ -56,8 +56,9 @@
                     <div class="box">
                         <edit-list 
                             :ref="navActive"
+                            :app="listenApp"
                             :app_role_id="listenAppRoleId"
-                            :changes_form="changes_form"
+                            :changes_form="listenChangesForm"
                             @updateChangesForm="handleChangesForm"
                         />
                     </div>
@@ -112,17 +113,25 @@ export default {
                 },
             ],
             title:"Application Role",
-            navActive: "application-role",
+            // navActive: "application-role",
+            navActive: "role-permission",
             dialogApplicationRole: false,
             dialogRolePermission: false,
             loading: false,
+            app: '',
             app_role_id: '',
             changes_form: []
         }
     },
     computed: {
+        listenApp() {
+            return this.app;
+        },
         listenAppRoleId() {
             return this.app_role_id;
+        },
+        listenChangesForm() {
+            return this.changes_form;
         }
     },
     methods: {
@@ -141,8 +150,9 @@ export default {
             })
             this.title = item[0].title
         },
-        getAppRoleId(id) {
+        getRoleInfo(id, val) {
             this.app_role_id = id;
+            this.app = val;
         },
         async saveAll(){
             if (this.changes_form.length === 0) {

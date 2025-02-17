@@ -30,7 +30,7 @@
                         :key="role.app_role_id"
                         class="role"
                         :class="{ selected: selectedRoleId === role.app_role_id }"
-                        @click="selectRole(role)"
+                        @click="selectRole(role, item.app)"
                     >
                         {{ role.app_role_name }}
                     </div>
@@ -52,7 +52,7 @@ export default {
     name:"role-list",
     mixins: [master],
     props: {
-        getAppRoleId: Function
+        getRoleInfo: Function
     },
     components: {
         "search-input": SearchInput,
@@ -133,9 +133,9 @@ export default {
                 this.toggleLoading(false);
             }
         },
-        selectRole(role) {
+        selectRole(role, app) {
             this.selectedRoleId = role.app_role_id;
-            this.$emit('getAppRoleId', role.app_role_id)
+            this.$emit('getRoleInfo', role.app_role_id, app)
         },
         searchValue (val) {
             this.tempSearch = val
