@@ -108,12 +108,37 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.user_id = val.user_id
+                this.getDataDetail(val);
                 this.getUserDetail()
                 // this.user_node_id = val.user_nodes
             }
         }
     },
     methods: {
+        getDataDetail(val) {
+            if (val.app_role.length > 0) {
+                let arr = val.app_role.map(item => ({
+                    inputs: [
+                        {
+                            key: "user_application_name",
+                            typeInput: "select",
+                            value: item.app,
+                            width: "4",
+                            data: {}
+                        },
+                        {
+                            key: "user_application_role",
+                            typeInput: "multipleSelector",
+                            value: item.role.map(roleItem => roleItem.app_role_name),
+                            width: "8",
+                            data: {}
+                        }
+                    ]
+                }));
+
+                this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", arr)
+            }
+        },
         formData(form){
             if (form.dynamicinputcomponent_user_additional_role) {
                 let additional_role = []
