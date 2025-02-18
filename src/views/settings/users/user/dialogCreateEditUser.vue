@@ -121,26 +121,33 @@ export default {
     methods: {
         getDataDetail(val) {
             if (val.app_role.length > 0) {
+                let template = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.inputs;
                 let arr = val.app_role.map(item => ({
-                    inputs: [
-                        {
-                            key: "user_application_name",
-                            typeInput: "select",
-                            value: item.app,
-                            width: "4",
-                            data: {}
-                        },
-                        {
-                            key: "user_application_role",
-                            typeInput: "multipleSelector",
-                            value: item.role.map(roleItem => roleItem.app_role_name),
-                            width: "8",
-                            data: {}
-                        }
-                    ]
+                    inputs: template.map(field => ({
+                        ...field,
+                        value: field.key === "user_application_name" 
+                            ? item.app
+                            : field.key === "user_application_role" 
+                                ? item.role.map(roleItem => roleItem.app_role_id)
+                                : field.value,
+                        data: field.key === "user_application_name" 
+                            ? {}
+                            : item.role.map(roleItem => ({
+                                label: roleItem.app_role_name,
+                                value: roleItem.app_role_id
+                            }))
+                    }))
                 }));
 
-                this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", arr)
+                let dataInfo = val.app_role.flatMap(item => 
+                    item.role.map(roleItem => ({
+                        label: roleItem.app_role_name,
+                        value: roleItem.app_role_id
+                    }))
+                );
+
+                this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", arr);
+                this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE_ArrData", dataInfo);
             }
         },
         formData(form){
@@ -186,7 +193,6 @@ export default {
             this.user_id = ""
         },
         inputFocus(obj){
-            console
             if (obj.key === 'user_node_id' || obj.key.includes('user_additional_node_id')){
                 this.autoComplateUrl = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
                 this.input_value = "node_id";
