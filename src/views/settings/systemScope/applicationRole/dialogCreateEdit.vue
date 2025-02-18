@@ -130,40 +130,6 @@ export default {
                     this.openNotification('warn', null, 'Application list data is empty!', ' Please create a new application list')
                 }
             } catch (err) {
-                // TODO: REMOVE LATER
-                let arr = [
-                    {
-                        "lov_id": "a48111b9-f747-4a96-b930-c0ba61264acb",
-                        "lov_group_value": "application.application_name",
-                        lov_value: "DASHBOARD KPI"
-                    },
-                    {
-                        "lov_id": "a48111b9-f747-4a96-b930-c0ba61264acb",
-                        "lov_group_value": "application.application_name",
-                        "lov_value": "DASHBOARD TICKETING"
-                    },
-                    {
-                        "lov_id": "a48111b9-f747-4a96-b930-c0ba61264acb",
-                        "lov_group_value": "application.application_name",
-                        "lov_value": "DASHBOARD REPORTING"
-                    },
-                    {
-                        "lov_id": "a48111b9-f747-4a96-b930-c0ba61264acb",
-                        "lov_group_value": "application.application_name",
-                        "lov_value": "TICKETING"
-                    },
-                    {
-                        "lov_id": "a48111b9-f747-4a96-b930-c0ba61264acb",
-                        "lov_group_value": "application.application_name",
-                        "lov_value": "CORE"
-                    }
-                ]
-                arr = arr.map(item => ({
-                        label: item.lov_value,
-                        value: item.lov_value,
-                        item: item
-                    }));
-                this.$store.dispatch("SET_APPLICATION_ROLE_APP_ArrData", arr);
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;

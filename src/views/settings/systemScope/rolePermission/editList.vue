@@ -11,6 +11,7 @@
             @updateValue="updateValue"
             @handleAddData="handleAddData"
             @handleRemoveData="handleRemoveData"
+            @inputFocus="inputFocus"
         />
     </div>
 </template>
@@ -112,7 +113,7 @@ export default {
             }
             
         },
-        updateValue(index, key, val, info, dataObj) {
+        getReference(entity) {
             const referenceMap = {
                 REGION: { url: this.URL.regional_list, value: "regional_code", label: "regional_code" },
                 BRANCH: { url: this.URL.branch_list, value: "branch_code", label: "branch_code" },
@@ -127,25 +128,36 @@ export default {
                 SERVICE: { url: this.URL.service, value: "service_code", label: "service_code" },
                 HIDDEN_COLUMN: { url: this.URL.column_list, value: "reference_value", label: "reference_value" }
             };
+            return referenceMap[entity] || null;
+        },
+        setAutoCompleteData(reference, val) {
+            if (!reference) return;
+            
+            this.autoCompleteUrl = `${reference.url}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`;
+            this.input_value = reference.value;
+            this.input_label = reference.label;
 
+            const col = this.dataColumn.find(col => col.key === "access_data");
+            if (col) {
+                col.selector.value = val;
+                col.multipleSelector.value = [];
+                col.multipleSelector.autoCompleteUrl = this.autoCompleteUrl;
+                col.multipleSelector.selectValue = this.input_value;
+                col.multipleSelector.selectLabel = this.input_label;
+            }
+        },
+        inputFocus(index, val, info) {
+            const entity = val?.filter[index]?.reference_entity;
+            this.setAutoCompleteData(this.getReference(entity), val);
+        },
+        updateValue(index, key, val, info, dataObj) {
             dataObj.filter[index][key] = val;
 
-            if (key === "reference_entity" && referenceMap[val]) {
-                this.autoCompleteUrl = `${referenceMap[val].url}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`;
-                this.input_value = referenceMap[val].value;
-                this.input_label = referenceMap[val].label;
-
-                const col = this.dataColumn.find(col => col.key === "access_data");
-                if (col) {
-                    col.selector.value = val;
-                    col.multipleSelector.value = [];
-                    col.multipleSelector.autoCompleteUrl = this.autoCompleteUrl;
-                    col.multipleSelector.selectValue = this.input_value;
-                    col.multipleSelector.selectLabel = this.input_label;
-                }
+            if (key === "reference_entity") {
+                this.setAutoCompleteData(this.getReference(val), val);
             }
-            
-            let changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
+
+            const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
             changesMap.set(dataObj.feature_permission_id, { ...dataObj, selected: true });
             this.changes_form = Array.from(changesMap.values());
         },

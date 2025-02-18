@@ -524,6 +524,7 @@
                               :selectLabel="column.multipleSelector.selectLabel"
                               :selectValue="column.multipleSelector.selectValue"
                               :dataObj="item"
+                              @inputFocus="inputFocus(filterIndex, item, ...arguments)"
                               @updateValue="updateValue2(filterIndex, ...arguments)"
                             />
                           </vs-col>
@@ -1707,6 +1708,9 @@ export default {
         this.$emit("onFocus_location_selector", info);
       }
       this.$emit("inputFocus", info);
+    },
+    inputFocus(index, val, info) {
+      this.$emit("inputFocus", index, val, info);
     },
 
     updateValue(key, val, info = {}, dataObj) {
