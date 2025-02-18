@@ -98,9 +98,14 @@ export default {
             }
         },
         handleRemoveData(val, key) {
-            let changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
-            changesMap.set(val.feature_permission_id, { ...val, selected: false });
-            this.changes_form = Array.from(changesMap.values());
+            let tempVal = structuredClone?.(val) || JSON.parse(JSON.stringify(val));
+
+            this.changes_form = [
+                ...new Map(
+                    this.changes_form.map(item => [item.feature_permission_id, item])
+                ).set(tempVal.feature_permission_id, { ...tempVal, selected: false }).values()
+            ];
+
             val.filter.splice(key, 1);
         },
         refresh(){
