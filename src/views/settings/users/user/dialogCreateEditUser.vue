@@ -1,6 +1,7 @@
 <template>
     <dialog-master 
     :actived="listenActive" 
+    :loading="listenLoading"
     :closeDialog="cancel">
 
         <template v-slot:header>
@@ -102,6 +103,9 @@ export default {
         },
         listenDataItem() {
             return this.dataItem
+        },
+        listenLoading() {
+            return this.loadingDataRole || this.loadingDataNode || this.loadingDataApplicationList
         }
     },
     watch: {

@@ -273,7 +273,7 @@ export default {
                     return item.user_id === val.user_id
                 })
                 this.dataItem = obj[0]
-                this.loading = true
+                this.openDialogUser()
             }
         },
         actionLimit(val){
