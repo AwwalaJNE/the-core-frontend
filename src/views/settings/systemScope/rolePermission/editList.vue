@@ -7,7 +7,9 @@
             :tableLoading="loading"
             :hasAction="false"
             :isSearchAble="true"
-            :isMultipleSelect="true"
+            :isMultipleSelectWithIndex="true"
+            :selectedData="changes_form"
+            @updateSelected2="updateSelected"
             @updateValue="updateValue"
             @handleAddData="handleAddData"
             @handleRemoveData="handleRemoveData"
@@ -47,6 +49,7 @@ export default {
             autoCompleteUrl: '',
             input_value: '',
             input_label: '',
+            checked_data: [],
         }
     },
     watch: {
@@ -107,6 +110,14 @@ export default {
             ];
 
             val.filter.splice(key, 1);
+        },
+        updateSelected(val, all){
+            const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
+            changesMap.set(val.feature_permission_id, {
+                ...val,
+                selected: val.hasOwnProperty('selected') ? !val.selected : true
+            });
+            this.changes_form = Array.from(changesMap.values());
         },
         refresh(){
             if (!this.app_role_id) return;
@@ -180,6 +191,10 @@ export default {
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
+                    arr = arr.map(item => ({
+                        ...item,
+                        selected: item.feature_scope_id ? true : false
+                    }));
                     this.dataTable = arr;
                     this.dataColumn = this.getColumnDefinition('others');
                     this.pagination = {
@@ -187,6 +202,7 @@ export default {
                         limit: parseInt(res.data.meta.per_page, 10),
                         page_size: res.data.meta.last_page,
                     };
+                    this.changes_form = this.dataTable.filter(item => item.selected)
                 } else {
                     this.dataTable = [];
                 }  

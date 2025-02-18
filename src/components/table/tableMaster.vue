@@ -57,7 +57,7 @@
       </template>
       <template #thead>
         <vs-tr>
-          <template v-if="listenIsMultipleSelect">
+          <template v-if="listenIsMultipleSelect || listenIsMultipleSelectWithIndex">
             <vs-th>
               <vs-checkbox
                 v-model="allCheck"
@@ -181,6 +181,15 @@
                   v-model="selected"
                   :val="item"
                   @change="updateSelected"
+                />
+              </vs-td>
+            </template>
+            <template v-if="listenIsMultipleSelectWithIndex">
+              <vs-td checkbox class="xs">
+                <vs-checkbox
+                  v-model="selected"
+                  :val="item"
+                  @change="updateSelected2(item)"
                 />
               </vs-td>
             </template>
@@ -1473,6 +1482,7 @@ export default {
     removeDanger: Boolean,
 
     isMultipleSelect: Boolean,
+    isMultipleSelectWithIndex: Boolean,
     isMultipleSelectColoum: Boolean,
     selectedData: Array,
     isSearchAble: Boolean,
@@ -1547,6 +1557,9 @@ export default {
     },
     listCustomActionList() {
       return this.customActionList || [];
+    },
+    listenIsMultipleSelectWithIndex() {
+      return this.isMultipleSelectWithIndex;
     },
     listenIsMultipleSelect() {
       return this.isMultipleSelect;
@@ -1735,6 +1748,10 @@ export default {
     updateSelected() {
 
       this.$emit("updateSelected", this.selected);
+    },
+
+    updateSelected2(val) {
+      this.$emit("updateSelected2", val, this.selected);
     },
 
     handleEdit(val) {
