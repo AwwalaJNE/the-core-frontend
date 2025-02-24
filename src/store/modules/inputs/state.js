@@ -52,7 +52,7 @@ export default {
     user_email: {
       label: "Email",
       key: "user_email",
-      rule: "email",
+      rule: "email|required",
       typeInput: "text|email",
       typeData: "String",
       valueData: null,
@@ -61,7 +61,7 @@ export default {
     password: {
       label: "Password",
       key: "password",
-      rule: "min:7",
+      rule: "min:7|required",
       typeInput: "text|password",
       typeData: "String",
       valueData: null,
@@ -75,7 +75,7 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: []
     },
     employee_id: {
       label: "Employee Courier Delivery Name",
@@ -103,7 +103,7 @@ export default {
         {
           key: "user_application_role",
           typeInput: "multipleSelector",
-          value: '',
+          value: [],
           width: '8'
         },
       ],
@@ -132,7 +132,7 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: '',
+      value: [],
       visible: false
     },
     is_login_enable: {
@@ -2154,7 +2154,7 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ""
+      value: []
     },
   },
 
@@ -2196,7 +2196,7 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ""
+      value: []
     },
   },
 
@@ -2351,7 +2351,7 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: []
     },
   },
 
@@ -2443,7 +2443,7 @@ export default {
       width: '12',
       arrData: [],
       valueData: null,
-      value: '',
+      value: [],
     },
     is_active: {
       label: "Active|Unactive",
@@ -4774,7 +4774,7 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ""
+      value: []
     },
     code: {
       label: "Facility Code*",

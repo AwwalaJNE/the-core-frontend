@@ -11,30 +11,34 @@
     }
 -->
 <template>
-<div style="text-align:left;" class="el-select-async">
-    <span class="c-label">{{name}}</span>
-    <el-select
-        v-model="value"
-        :multiple="!listenIsSingleInput"
-        filterable
-        remote
-        placeholder="Please enter a keyword"
-        :remote-method="asynchronousSelect"
-        @change="handleSelect"
-        @focus="inputFocus"
-        :loading="loading"
-        :disabled="listenIsDisabled"
-    >
-            <template v-if="options.length > 0">
-                <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-                </el-option>
-            </template>
-    </el-select>
-</div>
+    <inputan :name="name" :rules="rules">
+        <template v-slot:inputan="props">
+            <div style="text-align:left;" class="el-select-async">
+                <span class="c-label">{{name}}</span>
+                <el-select
+                    v-model="value"
+                    :multiple="!listenIsSingleInput"
+                    filterable
+                    remote
+                    placeholder="Please enter a keyword"
+                    :remote-method="asynchronousSelect"
+                    @change="handleSelect"
+                    @focus="inputFocus"
+                    :loading="loading"
+                    :disabled="listenIsDisabled"
+                >
+                        <template v-if="options.length > 0">
+                            <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </template>
+                </el-select>
+            </div>
+        </template>
+    </inputan>
 </template>
 <script>
 import axios from "axios";
