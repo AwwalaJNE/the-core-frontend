@@ -97,7 +97,7 @@ export default {
     },
     computed: {
         listenActive(){
-            if(this.active){
+            if (this.active){
                 this.getDataEmployee()
                 this.getApplicationList();
             }
@@ -117,9 +117,8 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.user_id = val.user_id
+                this.isSingleInput = true;
                 this.getDataDetail(val);
-                this.getUserDetail()
-                // this.user_node_id = val.user_nodes
             }
         }
     },
@@ -133,7 +132,7 @@ export default {
                         value: field.key === "user_application_name" 
                             ? item.app
                             : field.key === "user_application_role" 
-                                ? item.role.map(roleItem => roleItem.app_role_id)
+                                ? item.role.map(roleItem => roleItem.app_role_id)[0]
                                 : field.value,
                         data: field.key === "user_application_name" 
                             ? {}
@@ -255,49 +254,6 @@ export default {
                 }).catch(err => {
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
-        },
-        async getUserDetail(){
-            this.loadingDataRole = true
-            await axios
-                .get(this.URL.user + `/${this.user_id}?n=${this.listenNodeId}`, 
-                this.Helper.header())
-                .then(res => {
-                    let arr = []
-                    let nodeArr = []
-                    
-                    // if (res.data.data.user_additional_role_id.length > 0) {
-                    //     for (let i = 0; i < res.data.data.user_additional_role_id.length; i++) {
-                    //         let obj = {};
-
-                    //         obj["user_additional_role_id"] = res.data.data.user_additional_role_id[i]
-                    //         obj["user_additional_node_id"] = res.data.data.user_additional_node_id[i]
-                    //         obj["user_expiry_additional_role"] = res.data.data.user_expiry_additional_role[i]
-
-                    //         arr.push(obj)
-                    //     }
-                    // }
-                    
-                    res.data.data.user_nodes.map(item => {
-                        let obj = {}
-                        obj["label"] = item.node_name
-                        obj["value"] = item.node_id
-
-                        nodeArr.push(obj)
-                    })
-                    this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE", arr)
-                    // this.$store.dispatch("SET_USER_USER_NODE_ID", res.data.data.user_node_id)
-                    // this.dataItem["user_node_id"] = res.data.data.user_node_id
-                    
-                    this.$store.dispatch("SET_USER_USER_ADDITIONAL_NODE_ID_ArrData", nodeArr)
-                    this.$store.dispatch("SET_USER_USER_NODE_ID_ArrData", nodeArr)
-                    this.finishGetUser()
-                }).catch(err => {
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed!', 'Failed to get data user')
-                    this.finishGetUser()
-                })
-            this.$nextTick(() => {
-                this.openDialogUser()
-            });
         },
         async updateData() {
             await axios
