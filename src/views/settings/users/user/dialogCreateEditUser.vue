@@ -156,38 +156,30 @@ export default {
             }
         },
         formData(form){
-            console.log("PP", form)
-            if (form.dynamicinputcomponent_user_additional_role) {
-                let additional_role = []
-                let additional_node = []
-                let expiry_additional_role = []
-                form.dynamicinputcomponent_user_additional_role.map((item, index) =>{
-                    additional_role.push(item.inputs[0].value)
-                    additional_node.push(item.inputs[1].value)
-                    expiry_additional_role.push(item.inputs[2].value)
-                })
-                form.user_additional_role_id = additional_role;
-                form.user_additional_node_id = additional_node;
-                form.user_expiry_additional_role = expiry_additional_role;
-            }
+            const { 
+                dynamicinputcomponent_user_other_application_role, 
+                user_application_name, 
+                user_application_role,
+                ...formPayload 
+            } = form;
+            
             if (form.dynamicinputcomponent_user_other_application_role) {
-                let application_name = []
-                let application_role = []
-                form['app_role'] = form.dynamicinputcomponent_user_other_application_role.map(item => ({
+                formPayload['app_role'] = form.dynamicinputcomponent_user_other_application_role.map(item => ({
                     app: item.inputs[0].value,
-                    role: item.inputs.slice(1).map(roleItem => roleItem.value)[0] // Collects all role values in an array
+                    role: [item.inputs[1].value]
                 }));
             }
-            if(this.user_id !== undefined && this.user_id !== '') {
-                    let obj = form
-                    if(obj["password"] == '') {
-                        delete obj.password
-                    }
-                    this.form = obj
-                    this.updateData()
+
+            if (this.user_id !== undefined && this.user_id !== '') {
+                let obj = formPayload
+                if(obj["password"] == '') {
+                    delete obj.password
+                }
+                this.form = obj
+                this.updateData()
             } else {                    
-                    this.form = form
-                    this.addData()
+                this.form = formPayload
+                this.addData()
             }
         },
         handleSubmit(){
