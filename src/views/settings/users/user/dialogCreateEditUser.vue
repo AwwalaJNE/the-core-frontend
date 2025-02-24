@@ -200,7 +200,7 @@ export default {
             this.$refs.formUserController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
-            this.$refs.formUserController.handleClearForm()
+            this.$refs.formUserController.handleClearAllForm()
             this.form = {}
             this.user_id = ""
         },
@@ -308,6 +308,7 @@ export default {
         cancel() {
             this.handleClearForm()
             this.closeDialogUser()
+            this.$emit("refresh")
         },
     },
     mounted() {

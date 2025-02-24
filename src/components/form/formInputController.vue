@@ -683,6 +683,35 @@ export default {
             })
             this.form = {}
         },
+        handleClearAllForm() {
+            let prefix = this.listenTypeForm.toUpperCase()
+            let tempKey = this.Keys
+            tempKey.map(item => {
+                let action = item.toUpperCase()
+                try {
+                    if(this.InputObject[item].hasOwnProperty('typeData')) {
+                        if(this.InputObject[item]["typeData"].toLowerCase() == 'boolean') {
+                            this.$store.dispatch(`SET_${prefix}_${action}`, true)
+                            this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, true)
+                        } else {
+                            this.$store.dispatch(`SET_${prefix}_${action}`, '')
+                            this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
+                        }
+                    } else {
+                        this.$store.dispatch(`SET_${prefix}_${action}`, '')
+                        this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
+                    }
+                    
+                    if(this.InputObject[item].hasOwnProperty('arrData') && !InputObject[item].typeInput.toLowerCase().includes('radtex')) {
+                        this.$store.dispatch(`SET_${prefix}_${action}_ArrData`, [{"label": null, "value": null}])
+                    }
+                } catch (error) {
+                    
+                }
+                
+            })
+            this.form = {}
+        },
         handleEmptyForm(){
             let prefix = this.listenTypeForm.toUpperCase()
             let tempKey = this.Keys.filter(item => !item.includes('mapPicker') && !item.includes('dynamicinputcomponent'))
