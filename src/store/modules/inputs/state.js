@@ -67,85 +67,11 @@ export default {
       valueData: null,
       value: ''
     },
-    user_role_id: {
-      label: "Role*",
-      key: "user_role_id",
-      rule: "required",
-      typeInput: "select",
-      width: '8',
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
     user_node_id: {
       label: "User Node",
       key: "user_node_id",
       rule: "required",
       typeInput: "multipleSelector",
-      width: '4',
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    dynamicinputcomponent_user_additional_role: {
-      label: "Add Additional Role",
-      key: "dynamicinputcomponent_user_additional_role",
-      rule:"",
-      typeInput: "dynamicinputcomponent",
-      typeData: "Array",
-      inputs: [
-        {
-          key: "user_additional_role_id",
-          typeInput: "selectmultipletag",
-          value: ''
-        },
-        {
-          key: "user_additional_node_id",
-          typeInput: "multipleSelector",
-          value: ''
-        },
-        {
-          key: "user_expiry_additional_role",
-          typeInput: "date",
-          value: ''
-        }
-      ],
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    user_additional_role_id: {
-      label: "Additional Role",
-      key: "user_additional_role_id",
-      rule: "",
-      typeInput: "selectmultipletag|hidden",
-      width: '4',
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      visible: false
-    },
-    user_additional_node_id: {
-      label: "Additional Node",
-      key: "user_additional_node_id",
-      rule: "",
-      typeInput: "multipleSelector|hidden",
-      width: '4',
-      typeData: "String",
-      visible: false,
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    user_expiry_additional_role: {
-      label: "Date Expiry Additional Role",
-      key: "user_expiry_additional_role",
-      rule: "",
-      typeInput: "date|hidden",
-      width: '4',
       typeData: "String",
       arrData: [],
       valueData: null,

@@ -43,6 +43,9 @@
                                                 :url="asynchronousSelect_url"
                                                 :selectLabel="selectLabel"
                                                 :selectValue="selectValue"
+                                                :isSingleInput="isSingleInput"
+                                                :isNestedData="isNestedData"
+                                                :nestedKey="nestedKey"
                                                 @updateValue="updateValue"
                                                 @inputFocus="onfocuslah" />
                                     </template>
@@ -140,6 +143,9 @@ export default {
         disabled: Boolean,
         selectLabel: String,
         selectValue: String,
+        isSingleInput: Boolean,
+        isNestedData: Boolean,
+        nestedKey: String
     },
     components: {
         "input-general": InputGeneral,

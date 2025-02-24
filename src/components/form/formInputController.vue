@@ -236,6 +236,9 @@
                                     :asynchronousSelect_url="listenAsynchronousSelectUrl"
                                     :selectLabel="selectLabel"
                                     :selectValue="selectValue"
+                                    :isSingleInput="isSingleInput"
+                                    :isNestedData="isNestedData"
+                                    :nestedKey="nestedKey"
                                     :disabled="listenIsDisabled"
                                     @updateValue="updateValue"
                                     @inputFocus="onfocuslah"/>
@@ -455,6 +458,9 @@ export default {
         limitExist: Boolean,
         selectLabel: String,
         selectValue: String,
+        isSingleInput: Boolean,
+        isNestedData: Boolean,
+        nestedKey: String,
         tableKey: String
     },
     data() {

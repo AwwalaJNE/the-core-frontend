@@ -17,6 +17,9 @@
                     :dataItem="listenDataItem"
                     :selectValue="input_value"
                     :selectLabel="input_label"
+                    :isSingleInput="isSingleInput"
+                    :isNestedData="isNestedData"
+                    :nestedKey="nestedKey"
                     @formData="formData"
                     @inputFocus="inputFocus"
                 />
@@ -86,13 +89,15 @@ export default {
             loadingDataApplicationList: false,
             autoComplateUrl: null,
             input_value: '',
-            input_label: ''
+            input_label: '',
+            isNestedData: false,
+            isSingleInput: false,
+            nestedKey: ''
         }
     },
     computed: {
         listenActive(){
             if(this.active){
-                this.getDataRole()
                 this.getDataEmployee()
                 this.getApplicationList();
             }
@@ -151,6 +156,7 @@ export default {
             }
         },
         formData(form){
+            console.log("PP", form)
             if (form.dynamicinputcomponent_user_additional_role) {
                 let additional_role = []
                 let additional_node = []
@@ -198,57 +204,41 @@ export default {
                 this.input_value = "node_id";
                 this.input_label = "node_name";
             } else if (obj.key.includes('user_application_role')) {
-                this.autoComplateUrl = this.URL.role +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                this.input_value = "user_role_id";
-                this.input_label = "user_role_name";
+                let index = obj.key.split("|")[0];
+                let app_role_name_index = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.arrData?.[index]?.inputs[0]?.value;
+
+                this.autoComplateUrl = this.URL.application_role_list +'?n='+ this.listenNodeId + `&sort_order=desc&limit=10&page=1&search_by=${app_role_name_index}`;
+                this.isNestedData = true;
+                this.isSingleInput = true;
+                this.nestedKey = "role";
+                this.input_value = "app_role_id";
+                this.input_label = "app_role_name";
             }
         },
-        async getApplicationList(){
-            this.loadingDataApplicationList = true
-            await axios
-                .get(this.URL.application_list + `?n=${this.listenNodeId}&limit=-1`, 
-                this.Helper.header())
-                .then(res => {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.lov_value
-                            obj["value"] = item.lov_value
+        async getApplicationList() {
+            this.loadingDataApplicationList = true;
+            try {
+                const res = await axios.get(`${this.URL.application_list}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&search_by=${this.listenUserApplicationName || 'ALL_APPLICATION'}`, this.Helper.header());
 
-                            arr.push(obj)
-                        })
-                        this.dataApplicationRole = arr
-                        this.$store.dispatch("SET_USER_USER_APPLICATION_NAME_ArrData", arr)
-                    
-                    this.loadingDataApplicationList = false
-                }).catch(err => {
-                    this.loadingDataApplicationList = false
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
-                })
-        },
-        async getDataRole(){
-            this.loadingDataRole = true
-            await axios
-                .get(this.URL.role + `?n=${this.listenNodeId}&limit=-1`, 
-                this.Helper.header())
-                .then(res => {
-                        let arr = []
-                        res.data.data.map(item => {
-                            let obj = {}
-                            obj["label"] = item.user_role_name
-                            obj["value"] = item.user_role_id
+                if(res.data.data.length > 0) {
+                    let arr = []
+                    res.data.data.map(item => {
+                        let obj = {}
+                        obj["label"] = item.lov_value
+                        obj["value"] = item.lov_value
 
-                            arr.push(obj)
-                        })
-                        this.dataRole = arr
-                        this.$store.dispatch("SET_USER_USER_ROLE_ID_ArrData", arr)
-                        this.$store.dispatch("SET_USER_USER_ADDITIONAL_ROLE_ID_ArrData", arr)
-                    
-                    this.loadingDataRole = false
-                }).catch(err => {
-                    this.loadingDataRole = false
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
-                })
+                        arr.push(obj)
+                    })
+                    this.$store.dispatch("SET_USER_USER_APPLICATION_NAME_ArrData", arr)
+                } else {
+                    this.$store.dispatch("SET_USER_USER_APPLICATION_NAME_ArrData", [])
+                }
+            } catch (err) {
+                this.redirectError(err)
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loadingDataApplicationList = false
+            }
         },
         async getDataEmployee(){
             await axios
