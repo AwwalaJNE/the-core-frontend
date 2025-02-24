@@ -137,7 +137,7 @@ export default {
                 },
                 {
                     label: "Node",
-                    key: "user_nodes",
+                    key: "user_nodes_list",
                     width: "auto"
                 },
             ],
@@ -241,7 +241,7 @@ export default {
                         //     item['children'] = children
                         // }
 
-                        item["user_nodes"] = item.user_nodes.map((nodes,index) => {
+                        item["user_nodes_list"] = item.user_nodes.map((nodes,index) => {
                             let newline = "\n";
                             if(index == 0){
                                 newline = "";
@@ -268,13 +268,8 @@ export default {
                 })
         },
         actionUpdate(val){
-            if(this.dataTable.length > 0) {
-                let obj = this.dataTable.filter(item => {
-                    return item.user_id === val.user_id
-                })
-                this.dataItem = obj[0]
-                this.openDialogUser()
-            }
+            this.dataItem = val
+            this.openDialogUser()
         },
         actionLimit(val){
             this.pagination.limit = val

@@ -153,6 +153,21 @@ export default {
                 this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", arr);
                 this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE_ArrData", dataInfo);
             }
+
+            if (val.user_nodes.length > 0) {
+                let arr_node_id = []
+                let arr = []
+                val.user_nodes.map(item => {
+                    let obj = {}
+                    obj["label"] = item.node_name
+                    obj["value"] = item.node_id
+
+                    arr.push(obj)
+                    arr_node_id.push(item.node_id)
+                })
+                this.$store.dispatch("SET_USER_USER_NODE_ID", arr_node_id)
+                this.$store.dispatch("SET_USER_USER_NODE_ID_ArrData", arr)
+            }
         },
         formData(form){
             const { 
