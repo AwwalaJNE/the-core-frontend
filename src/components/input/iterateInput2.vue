@@ -46,7 +46,8 @@
                                                 :isSingleInput="isSingleInput"
                                                 :isNestedData="isNestedData"
                                                 :nestedKey="nestedKey"
-                                                @updateValue="updateValue"
+                                                :typeInput="InputObject[input.key].typeInput"
+                                                @updateValue="updateValue(InputObject[input.key].typeInput, ...arguments)"
                                                 @inputFocus="onfocuslah" />
                                     </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('selectmultipletag')">
@@ -62,6 +63,21 @@
                                                 @updateValue="updateValue" />
                                             </div>
                                     </template>
+                                    <template v-else-if="input.typeInput.toLowerCase().includes('dynamic-select')">
+                                        <selector 
+                                            :ref="input.key"
+                                            :name="InputObject[input.key].label" 
+                                            :rules="InputObject[input.key].rule" 
+                                            :formKey="`${index}|${input.key}`"
+                                            :valueData="InputObject[input.key].arrData.filter(item => !removed_selector.includes(item.value))"
+                                            :selectedValue="input.value"
+                                            :isMultiple="false"
+                                            :isAllowCreate="false"
+                                            :typeInput="InputObject[input.key].typeInput"
+                                            @updateValue="updateValue(InputObject[input.key].typeInput, ...arguments)"
+                                            @inputFocus="onfocuslah"
+                                        />
+                                    </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('select')">
                                             <selector 
                                             :ref="input.key"
@@ -72,7 +88,8 @@
                                             :selectedValue="input.value"
                                             :isMultiple="false"
                                             :isAllowCreate="false"
-                                            @updateValue="updateValue" />
+                                            @updateValue="updateValue"
+                                            @inputFocus="onfocuslah" />
                                     </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('autocomplete')">
                                         <template v-if="querySearch !== undefined">
@@ -145,7 +162,8 @@ export default {
         selectValue: String,
         isSingleInput: Boolean,
         isNestedData: Boolean,
-        nestedKey: String
+        nestedKey: String,
+        removed_selector: Array
     },
     components: {
         "input-general": InputGeneral,
@@ -281,7 +299,7 @@ export default {
             this.$store.dispatch(`SET_${prefix}_${action}`, this.tempform)
 
         },
-        updateValue(key, value, info = {}){
+        updateValue(typeInput, key, value, info = {}){
             let index = key.split("|")[0]
             let getkey = key.split("|")[1]
 
@@ -300,6 +318,7 @@ export default {
                     'key': getkey,
                     'value': value,
                 }
+                info['typeInput'] = typeInput;
             }
             
             this.$emit("updateValue", this.listenFromKey, this.tempform, info)

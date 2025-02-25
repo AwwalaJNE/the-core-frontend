@@ -20,8 +20,10 @@
                     :isSingleInput="isSingleInput"
                     :isNestedData="isNestedData"
                     :nestedKey="nestedKey"
+                    :removed_selector="removed_selector"
                     @formData="formData"
                     @inputFocus="inputFocus"
+                    @onChangeCustom="onChangeCustom"
                 />
             </div>
         </template>
@@ -82,17 +84,14 @@ export default {
             form: {},
             formUser: this.$store.getters.getInputs.user ? this.$store.getters.getInputs.user : {},
             user_id: '',
-            dataRole: [],
-            dataApplicationRole: [],
-            loadingDataRole: false,
-            loadingDataNode: false,
-            loadingDataApplicationList: false,
+            loading: false,
             autoComplateUrl: null,
             input_value: '',
             input_label: '',
             isNestedData: false,
             isSingleInput: false,
-            nestedKey: ''
+            nestedKey: '',
+            removed_selector: []
         }
     },
     computed: {
@@ -110,7 +109,7 @@ export default {
             return this.dataItem
         },
         listenLoading() {
-            return this.loadingDataRole || this.loadingDataNode || this.loadingDataApplicationList
+            return this.loading
         }
     },
     watch: {
@@ -204,7 +203,36 @@ export default {
             this.form = {}
             this.user_id = ""
         },
-        inputFocus(obj){
+        onChangeCustom(type, val, obj) {
+            switch (type) {
+                case "dynamicinputcomponent_user_other_application_role":
+                    switch (obj?.typeInput) {
+                        case "select":
+                        case "select|hidden":
+                            let index = obj?.option?.index;
+                            let selected = obj?.value;
+
+                            this.removed_selector.push(selected);
+
+                            let latest_data = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.arrData;
+
+                            if (latest_data[index]?.inputs?.[1]) {
+                                latest_data[index].inputs[1].value = "";
+                            }
+
+                            this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", latest_data);
+                            this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE_ArrData", []);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    break;
+                default:
+                break;
+            }
+        },
+        inputFocus(obj, val, info){
             if (obj.key === 'user_node_id' || obj.key.includes('user_additional_node_id')){
                 this.autoComplateUrl = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
                 this.input_value = "node_id";
@@ -222,7 +250,7 @@ export default {
             }
         },
         async getApplicationList() {
-            this.loadingDataApplicationList = true;
+            this.loading = true;
             try {
                 const res = await axios.get(`${this.URL.application_list}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&search_by=${this.listenUserApplicationName || 'ALL_APPLICATION'}`, this.Helper.header());
 
@@ -243,7 +271,7 @@ export default {
                 this.redirectError(err)
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
-                this.loadingDataApplicationList = false
+                this.loading = false
             }
         },
         async getDataEmployee(){

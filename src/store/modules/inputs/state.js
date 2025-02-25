@@ -50,7 +50,7 @@ export default {
       value: ''
     },
     user_email: {
-      label: "Email",
+      label: "Email*",
       key: "user_email",
       rule: "email|required",
       typeInput: "text|email",
@@ -96,7 +96,7 @@ export default {
       inputs: [
         {
           key: "user_application_name",
-          typeInput: "select",
+          typeInput: "dynamic-select",
           value: '',
           width: '4'
         },
