@@ -58,8 +58,6 @@
                             :ref="navActive"
                             :app="listenApp"
                             :app_role_id="listenAppRoleId"
-                            :changes_form="listenChangesForm"
-                            @updateChangesForm="handleChangesForm"
                         />
                     </div>
                 </transition>
@@ -118,8 +116,7 @@ export default {
             dialogRolePermission: false,
             loading: false,
             app: '',
-            app_role_id: '',
-            changes_form: []
+            app_role_id: ''
         }
     },
     computed: {
@@ -128,15 +125,9 @@ export default {
         },
         listenAppRoleId() {
             return this.app_role_id;
-        },
-        listenChangesForm() {
-            return this.changes_form;
         }
     },
     methods: {
-        handleChangesForm(form) {
-            this.changes_form = form;
-        },
         refresh(){
             let el = this.refreshInject
             this.$refs[el].refresh()
@@ -154,13 +145,13 @@ export default {
             this.app = val;
         },
         async saveAll(){
-            if (this.changes_form.length === 0) {
+            if (this.$refs['role-permission'].changes_form.length === 0) {
                 this.openNotification("warn", '', "Warning", 'Please update permission first');
                 return;
             }
 
             let form = {
-                permission: this.changes_form
+                permission: this.$refs['role-permission'].changes_form
             }
 
             this.loading = true;
@@ -172,7 +163,7 @@ export default {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
-                this.changes_form = [];
+                // this.changes_form = [];
                 this.refresh();
             }
         },

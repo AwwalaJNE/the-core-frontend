@@ -57,7 +57,7 @@
       </template>
       <template #thead>
         <vs-tr>
-          <template v-if="listenIsMultipleSelect || listenIsMultipleSelectWithIndex">
+          <template v-if="listenIsMultipleSelect">
             <vs-th>
               <vs-checkbox
                 v-model="allCheck"
@@ -66,7 +66,7 @@
               />
             </vs-th>
           </template>
-          <template v-if="listenIsMultipleSelectColoum">
+          <template v-if="listenIsMultipleSelectColoum || listenIsMultipleSelectWithIndex">
             <vs-th>
               <vs-checkbox
                 v-model="allCheck"

@@ -9,6 +9,8 @@
             :isSearchAble="true"
             :isMultipleSelectWithIndex="true"
             :selectedData="changes_form"
+            :onRowClickCallback="onRowClickCallback"
+            :allCheckCallback="onAllCheckCallback"
             @updateSelected2="updateSelected"
             @updateValue="updateValue"
             @handleAddData="handleAddData"
@@ -29,8 +31,7 @@ export default {
     mixins: [master],
     props: {
         app: String,
-        app_role_id: String,
-        changes_form: Array
+        app_role_id: String
     },
     components: {
         "table-master" : TableMaster
@@ -48,20 +49,13 @@ export default {
             tempSearch: '',
             autoCompleteUrl: '',
             input_value: '',
-            input_label: '',
-            checked_data: [],
+            input_label: ''
         }
     },
     watch: {
         app_role_id: function (val) {
             if (val !== undefined) {
                 this.refresh()
-            }
-        },
-        changes_form: function (val) {
-            if (val !== undefined) {
-                this.changes_form = val;
-                this.sendChangesForm();
             }
         },
         dataColumn: function (val) {
@@ -85,9 +79,6 @@ export default {
         },
     },
     methods: {
-        sendChangesForm() {
-            this.$emit('updateChangesForm', this.changes_form);
-        },
         handleAddData(val) {
             const newFilter = {
                 reference_entity: "",
@@ -111,13 +102,66 @@ export default {
 
             val.filter.splice(key, 1);
         },
-        updateSelected(val, all){
+        updateSelected(val, checkedItem){
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
+            
             const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
             changesMap.set(val.feature_permission_id, {
                 ...val,
-                selected: val.hasOwnProperty('selected') ? !val.selected : true
+                selected: checkedItem.some(item => item.feature_permission_id === val.feature_permission_id)
             });
             this.changes_form = Array.from(changesMap.values());
+            this.$emit("update-selected", changesMap);
+        },
+        // onAllCheckCallback(val, checkedItem) {
+        //     console.time("onAllCheckCallback");
+        //     console.log("PPASD", val, checkedItem);
+        //     this.$emit("update-selected", checkedItem.map(item => item.feature_permission_id));
+        //     console.timeEnd("onAllCheckCallback");
+        // },
+        onAllCheckCallback(val, checkedItem) {
+            console.log("{}", val);
+            console.time("onAllCheckCallback");
+
+            if (val) {
+                const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
+                changesMap.set(val.feature_permission_id, {
+                    ...val,
+                    selected: true
+                });
+                this.changes_form = Array.from(changesMap.values());
+                this.$emit("update-selected", checkedItem.map(item => item.feature_permission_id));
+            }
+            else {
+                this.$emit("update-selected", checkedItem);
+            }
+
+            console.timeEnd("onAllCheckCallback");
+        },
+        // onAllCheckCallback(val, checkedItem) {
+        //     if (val) {
+        //         const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
+        //         changesMap.set(val.feature_permission_id, {
+        //             ...val,
+        //             selected: true
+        //         });
+        //         this.changes_form = Array.from(changesMap.values());
+        //         this.$emit("update-selected", checkedItem.map(item => item.feature_permission_id));
+        //     }
+        //     else {
+        //         this.$emit("update-selected", checkedItem);
+        //     }
+        // },
+        onRowClickCallback(event, val, checkedItem) {
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
+
+            const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
+            changesMap.set(val.feature_permission_id, {
+                ...val,
+                selected: checkedItem.some(item => item.feature_permission_id === val.feature_permission_id)
+            });
+            this.changes_form = Array.from(changesMap.values());
+            this.$emit("update-selected", changesMap);
         },
         refresh(){
             if (!this.app_role_id) return;
