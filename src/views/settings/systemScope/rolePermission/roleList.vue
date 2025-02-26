@@ -170,7 +170,6 @@ export default {
         position: sticky;
         top: 0;
         background-color: white;
-        z-index: 1000;
         padding: 20px;
         font-weight: bolder;
         border-bottom: 1px solid #ddd;

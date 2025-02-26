@@ -84,8 +84,10 @@ export default {
             
             if (Array.isArray(val.filter)) {
                 val.filter.push(newFilter);
+                val.selected = true;
             } else {
                 val.filter = [newFilter];
+                val.selected = true;
             }
         },
         handleRemoveData(val, key) {

@@ -81,7 +81,7 @@
               <vs-checkbox
                 v-model="isAllChecked"
                 :indeterminate="selected.length == listenDataTable.length"
-                @change="onAllCheckChange"
+                @change="onAllCheckWithIndexChange"
               />
               <div style="margin-left: 10px;">All</div>
             </vs-th>
@@ -1666,6 +1666,9 @@ export default {
       this.$emit("handleAddData", val);
     },
     handleRemoveData(val, index) {
+      if (!val?.feature_scope_id) {
+        this.selected = this.selected.filter(item => item.feature_permission_id !== val.feature_permission_id);
+      }
       this.$emit("handleRemoveData", val, index);
     },
     actionUpdate(val, key) {
@@ -1790,6 +1793,14 @@ export default {
 
       if (typeof this.allCheckCallback === "function") {
         this.allCheckCallback(this.allCheck, this.selected);
+      }
+    },
+    
+    onAllCheckWithIndexChange() {
+      this.selected = this.$vs.checkAll(this.selected, this.listenDataTable);
+
+      if (typeof this.allCheckCallback === "function") {
+        this.allCheckCallback(this.isAllChecked, this.selected);
       }
     },
 
