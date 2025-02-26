@@ -75,11 +75,6 @@ export default {
             }
         },
     },
-    computed: {
-        permissionMap() {
-            return new Map(this.dataTable.map(item => [item.feature_permission_id, item]));
-        },
-    },
     methods: {
         handleAddData(val) {
             const newFilter = {
@@ -94,15 +89,18 @@ export default {
             }
         },
         handleRemoveData(val, key) {
-            let tempVal = structuredClone?.(val) || JSON.parse(JSON.stringify(val));
-
-            this.changes_form = [
-                ...new Map(
-                    this.changes_form.map(item => [item.feature_permission_id, item])
-                ).set(tempVal.feature_permission_id, { ...tempVal, selected: false }).values()
-            ];
-
+            console.log("TEST", val, key)
             val.filter.splice(key, 1);
+            
+            // if (val.filter.length === 0) {
+            //     val.filter = null
+            //     val.feature_scope_id = null
+            // }
+            this.changes_form = this.changes_form.map(item =>
+                item.feature_permission_id === val.feature_permission_id ? val : item
+            );
+
+            console.log(this.changes_form)
         },
         updateSelected(val, checkedItem){
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
