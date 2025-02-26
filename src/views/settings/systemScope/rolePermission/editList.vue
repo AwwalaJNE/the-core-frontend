@@ -167,11 +167,15 @@ export default {
             return referenceMap[entity] || null;
         },
         setAutoCompleteData(reference, val) {
-            if (!reference) return;
-            
-            this.autoCompleteUrl = `${reference.url}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`;
-            this.input_value = reference.value;
-            this.input_label = reference.label;
+            if (!reference || reference === null) {
+                this.autoCompleteUrl = "";
+                this.input_value = "";
+                this.input_label = "";
+            } else {
+                this.autoCompleteUrl = `${reference.url}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`;
+                this.input_value = reference.value;
+                this.input_label = reference.label;
+            }
 
             const col = this.dataColumn.find(col => col.key === "access_data");
             if (col) {
@@ -183,7 +187,6 @@ export default {
             }
         },
         inputFocus(index, val, info) {
-            console.log("TEST INPUT FOCUS", index, val, info)
             const entity = val?.filter[index]?.reference_entity;
             this.setAutoCompleteData(this.getReference(entity), val);
         },
