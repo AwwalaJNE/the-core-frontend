@@ -89,18 +89,15 @@ export default {
             }
         },
         handleRemoveData(val, key) {
-            console.log("TEST", val, key)
             val.filter.splice(key, 1);
             
-            // if (val.filter.length === 0) {
-            //     val.filter = null
-            //     val.feature_scope_id = null
-            // }
+            if (val.filter.length === 0) {
+                val.filter = null
+                val.feature_scope_id = null
+            }
             this.changes_form = this.changes_form.map(item =>
                 item.feature_permission_id === val.feature_permission_id ? val : item
             );
-
-            console.log(this.changes_form)
         },
         updateSelected(val, checkedItem){
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
@@ -186,6 +183,7 @@ export default {
             }
         },
         inputFocus(index, val, info) {
+            console.log("TEST INPUT FOCUS", index, val, info)
             const entity = val?.filter[index]?.reference_entity;
             this.setAutoCompleteData(this.getReference(entity), val);
         },

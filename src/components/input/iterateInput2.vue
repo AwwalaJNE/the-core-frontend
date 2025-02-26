@@ -63,21 +63,6 @@
                                                 @updateValue="updateValue" />
                                             </div>
                                     </template>
-                                    <template v-else-if="input.typeInput.toLowerCase().includes('dynamic-select')">
-                                        <selector 
-                                            :ref="input.key"
-                                            :name="InputObject[input.key].label" 
-                                            :rules="InputObject[input.key].rule" 
-                                            :formKey="`${index}|${input.key}`"
-                                            :valueData="InputObject[input.key].arrData.filter(item => !removed_selector.includes(item.value))"
-                                            :selectedValue="input.value"
-                                            :isMultiple="false"
-                                            :isAllowCreate="false"
-                                            :typeInput="InputObject[input.key].typeInput"
-                                            @updateValue="updateValue(InputObject[input.key].typeInput, ...arguments)"
-                                            @inputFocus="onfocuslah"
-                                        />
-                                    </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('select')">
                                             <selector 
                                             :ref="input.key"
@@ -162,8 +147,7 @@ export default {
         selectValue: String,
         isSingleInput: Boolean,
         isNestedData: Boolean,
-        nestedKey: String,
-        removed_selector: Array
+        nestedKey: String
     },
     components: {
         "input-general": InputGeneral,

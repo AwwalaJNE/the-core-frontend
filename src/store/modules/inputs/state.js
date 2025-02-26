@@ -96,7 +96,7 @@ export default {
       inputs: [
         {
           key: "user_application_name",
-          typeInput: "dynamic-select",
+          typeInput: "select",
           value: '',
           width: '4'
         },

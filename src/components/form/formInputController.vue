@@ -239,7 +239,6 @@
                                     :isSingleInput="isSingleInput"
                                     :isNestedData="isNestedData"
                                     :nestedKey="nestedKey"
-                                    :removed_selector="removed_selector"
                                     :disabled="listenIsDisabled"
                                     @updateValue="updateValue"
                                     @inputFocus="onfocuslah"/>
@@ -462,7 +461,6 @@ export default {
         isSingleInput: Boolean,
         isNestedData: Boolean,
         nestedKey: String,
-        removed_selector: Array,
         tableKey: String
     },
     data() {

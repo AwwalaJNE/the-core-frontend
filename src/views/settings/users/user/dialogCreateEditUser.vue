@@ -20,7 +20,6 @@
                     :isSingleInput="isSingleInput"
                     :isNestedData="isNestedData"
                     :nestedKey="nestedKey"
-                    :removed_selector="removed_selector"
                     @formData="formData"
                     @inputFocus="inputFocus"
                     @onChangeCustom="onChangeCustom"
@@ -90,8 +89,7 @@ export default {
             input_label: '',
             isNestedData: false,
             isSingleInput: false,
-            nestedKey: '',
-            removed_selector: []
+            nestedKey: ''
         }
     },
     computed: {
@@ -211,8 +209,6 @@ export default {
                         case "select|hidden":
                             let index = obj?.option?.index;
                             let selected = obj?.value;
-
-                            this.removed_selector.push(selected);
 
                             let latest_data = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.arrData;
 
