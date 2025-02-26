@@ -1516,6 +1516,10 @@ export default {
       type: Function,
       default: undefined,
     },
+    isAllCheckedCheckCallback: {
+      type: Function,
+      default: undefined,
+    },
 
     onRowClickCallback: {
       type: Function,
@@ -1666,9 +1670,6 @@ export default {
       this.$emit("handleAddData", val);
     },
     handleRemoveData(val, index) {
-      if (!val?.feature_scope_id) {
-        this.selected = this.selected.filter(item => item.feature_permission_id !== val.feature_permission_id);
-      }
       this.$emit("handleRemoveData", val, index);
     },
     actionUpdate(val, key) {
@@ -1796,11 +1797,11 @@ export default {
       }
     },
     
-    onAllCheckWithIndexChange() {
+    onAllCheckWithIndexChange(val) {
       this.selected = this.$vs.checkAll(this.selected, this.listenDataTable);
 
-      if (typeof this.allCheckCallback === "function") {
-        this.allCheckCallback(this.isAllChecked, this.selected);
+      if (typeof this.isAllCheckedCheckCallback === "function") {
+        this.isAllCheckedCheckCallback(this.isAllChecked);
       }
     },
 

@@ -8,9 +8,9 @@
             :hasAction="false"
             :isSearchAble="true"
             :isMultipleSelectWithIndex="true"
-            :selectedData="changes_form"
+            :selectedData="dataTableSelected"
             :onRowClickCallback="onRowClickCallback"
-            :allCheckCallback="onAllCheckCallback"
+            :isAllCheckedCheckCallback="onAllCheckCallback"
             :isAllChecked="isAllChecked"
             @updateSelected2="updateSelected"
             @updateValue="updateValue"
@@ -39,6 +39,7 @@ export default {
     },
     data() {
         return {
+            dataTableSelected: [],
             dataTable: [],
             dataColumn: [],
             loading: false,
@@ -52,6 +53,7 @@ export default {
             input_value: '',
             input_label: '',
             isAllChecked: false,
+            changes_form: []
         }
     },
     watch: {
@@ -76,69 +78,78 @@ export default {
         },
     },
     methods: {
+        resetChangesForm() {
+            this.changes_form = [];
+        },
         handleAddData(val) {
-            const newFilter = {
-                reference_entity: "",
-                reference_value: []
-            };
-            
-            if (Array.isArray(val.filter)) {
-                val.filter.push(newFilter);
-                val.selected = true;
-            } else {
-                val.filter = [newFilter];
-                val.selected = true;
-            }
+            val.filter = Array.isArray(val.filter) ? [...val.filter, { reference_entity: "", reference_value: [] }] : [{ reference_entity: "", reference_value: [] }];
+            val.selected = true;
+
+            const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
+            changesMap.set(val.feature_permission_id, val);
+
+            this.$emit("update-selected", this.changes_form = Array.from(changesMap.values()));
         },
         handleRemoveData(val, key) {
             val.filter.splice(key, 1);
-            
-            if (val.filter.length === 0) {
-                val.filter = null
-            }
-            this.changes_form = this.changes_form.map(item =>
-                item.feature_permission_id === val.feature_permission_id ? val : item
-            );
+            if (!val.filter.length) val.filter = null;
+
+            const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
+            changesMap.set(val.feature_permission_id, val);
+
+            this.$emit("update-selected", this.changes_form = Array.from(changesMap.values()));
         },
         updateSelected(val, checkedItem){
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
             
+            const selectedSet = new Set(checkedItem.map(item => item.feature_permission_id));
             const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
-            changesMap.set(val.feature_permission_id, {
-                ...val,
-                selected: checkedItem.some(item => item.feature_permission_id === val.feature_permission_id)
-            });
-            this.changes_form = Array.from(changesMap.values());
-            this.$emit("update-selected", changesMap);
-        },
-        onAllCheckCallback(val, checkedItem) {
-            // BELOW ALREADY CORRECT
-            
-            if (val) {
-                this.$emit("update-selected", checkedItem.map(item => item.feature_permission_id));
-                for (let i = 0; i < checkedItem.length; i++) {
-                    checkedItem[i].selected = val;
-                }
 
-                this.changes_form = checkedItem;
+            const isSelected = selectedSet.has(val.feature_permission_id);
+
+            if (changesMap.has(val.feature_permission_id)) {
+                changesMap.get(val.feature_permission_id).selected !== isSelected
+                    ? changesMap.delete(val.feature_permission_id)
+                    : changesMap.set(val.feature_permission_id, { ...val, selected: isSelected });
             } else {
-                this.$emit("update-selected", checkedItem);
-                
-                for (let i = 0; i < this.changes_form.length; i++) {
-                    this.changes_form[i].selected = false;
-                }
+                changesMap.set(val.feature_permission_id, { ...val, selected: isSelected });
             }
+
+            this.$emit("update-selected", this.changes_form = [...changesMap.values()]);
+        },
+        onAllCheckCallback(val) {
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ALL CHECKBOX
+
+            const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
+
+            this.dataTable.forEach(item => {
+                if (changesMap.has(item.feature_permission_id)) {
+                    changesMap.get(item.feature_permission_id).selected = val;
+                } else {
+                    changesMap.set(item.feature_permission_id, { ...item, selected: val });
+                }
+            });
+
+            this.changes_form = [...changesMap.values()];
+            this.$emit("update-selected", this.changes_form);
         },
         onRowClickCallback(event, val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
 
+            const selectedSet = new Set(checkedItem.map(item => item.feature_permission_id));
             const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
-            changesMap.set(val.feature_permission_id, {
-                ...val,
-                selected: checkedItem.some(item => item.feature_permission_id === val.feature_permission_id)
-            });
-            this.changes_form = Array.from(changesMap.values());
-            this.$emit("update-selected", changesMap);
+
+            const isSelected = selectedSet.has(val.feature_permission_id);
+
+            if (changesMap.has(val.feature_permission_id)) {
+                changesMap.get(val.feature_permission_id).selected !== isSelected
+                    ? changesMap.delete(val.feature_permission_id)
+                    : changesMap.set(val.feature_permission_id, { ...val, selected: isSelected });
+            } else {
+                changesMap.set(val.feature_permission_id, { ...val, selected: isSelected });
+            }
+
+            this.$emit("update-selected", this.changes_form = [...changesMap.values()]);
         },
         refresh(){
             if (!this.app_role_id) return;
@@ -202,10 +213,6 @@ export default {
             changesMap.set(dataObj.feature_permission_id, { ...dataObj, selected: true });
             this.changes_form = Array.from(changesMap.values());
         },
-        searchValue (val) {
-            this.tempSearch = val
-            this.refresh();
-        },
         async getTableData(limit, page, q) {
             this.loading = true
 
@@ -227,7 +234,7 @@ export default {
                         limit: parseInt(res.data.meta.per_page, 10),
                         page_size: res.data.meta.last_page,
                     };
-                    this.changes_form = this.dataTable.filter(item => item.selected)
+                    this.dataTableSelected = this.dataTable.filter(item => item.selected)
                     this.isAllChecked = this.dataTable.every(item => item.selected);
                 } else {
                     this.dataTable = [];
@@ -314,15 +321,6 @@ export default {
                     width: "auto",
                 }
             ];
-        },
-        actionLimit(val){
-            this.pagination.limit = val
-            this.pagination.page = 1
-            this.refresh()
-        },
-        actionPagination(val) {
-            this.pagination.page = val
-            this.refresh()
         },
     },
     mounted() {
