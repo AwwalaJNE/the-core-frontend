@@ -324,7 +324,6 @@ export default {
                     this.openNotification(null, 'Success', 'Create user is success')
                 }).catch(err => {
                     this.loading = false
-                    this.handleClearForm()
                     this.checkAuth(err.response)
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed add data', err.response ? err.response.data.message : 'something went wrong')
                 })

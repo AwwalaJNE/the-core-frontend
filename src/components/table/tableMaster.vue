@@ -79,7 +79,7 @@
           <template v-if="listenIsMultipleSelectWithIndex">
             <vs-th>
               <vs-checkbox
-                v-model="isAllChecked ? isAllChecked : allCheck"
+                v-model="isAllChecked"
                 :indeterminate="selected.length == listenDataTable.length"
                 @change="onAllCheckChange"
               />
@@ -1662,6 +1662,7 @@ export default {
       this.$emit("actionPagination", val);
     },
     handleAddData(val) {
+      this.selected.push(val);
       this.$emit("handleAddData", val);
     },
     handleRemoveData(val, index) {
