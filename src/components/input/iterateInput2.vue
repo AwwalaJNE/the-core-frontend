@@ -73,7 +73,8 @@
                                             :selectedValue="input.value"
                                             :isMultiple="false"
                                             :isAllowCreate="false"
-                                            @updateValue="updateValue"
+                                            :typeInput="InputObject[input.key].typeInput"
+                                            @updateValue="updateValue(InputObject[input.key].typeInput, ...arguments)"
                                             @inputFocus="onfocuslah" />
                                     </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('autocomplete')">

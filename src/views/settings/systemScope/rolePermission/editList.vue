@@ -93,7 +93,6 @@ export default {
             
             if (val.filter.length === 0) {
                 val.filter = null
-                val.feature_scope_id = null
             }
             this.changes_form = this.changes_form.map(item =>
                 item.feature_permission_id === val.feature_permission_id ? val : item
