@@ -66,10 +66,20 @@
               />
             </vs-th>
           </template>
-          <template v-if="listenIsMultipleSelectColoum || listenIsMultipleSelectWithIndex">
+          <template v-if="listenIsMultipleSelectColoum">
             <vs-th>
               <vs-checkbox
                 v-model="allCheck"
+                :indeterminate="selected.length == listenDataTable.length"
+                @change="onAllCheckChange"
+              />
+              <div style="margin-left: 10px;">All</div>
+            </vs-th>
+          </template>
+          <template v-if="listenIsMultipleSelectWithIndex">
+            <vs-th>
+              <vs-checkbox
+                v-model="isAllChecked ? isAllChecked : allCheck"
                 :indeterminate="selected.length == listenDataTable.length"
                 @change="onAllCheckChange"
               />
@@ -1481,6 +1491,8 @@ export default {
     dynamicCancelColumn: String,
     removeDanger: Boolean,
 
+    isAllChecked: Boolean, 
+    
     isMultipleSelect: Boolean,
     isMultipleSelectWithIndex: Boolean,
     isMultipleSelectColoum: Boolean,

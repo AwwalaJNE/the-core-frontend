@@ -11,6 +11,7 @@
             :selectedData="changes_form"
             :onRowClickCallback="onRowClickCallback"
             :allCheckCallback="onAllCheckCallback"
+            :isAllChecked="isAllChecked"
             @updateSelected2="updateSelected"
             @updateValue="updateValue"
             @handleAddData="handleAddData"
@@ -49,7 +50,8 @@ export default {
             tempSearch: '',
             autoCompleteUrl: '',
             input_value: '',
-            input_label: ''
+            input_label: '',
+            isAllChecked: false,
         }
     },
     watch: {
@@ -113,45 +115,24 @@ export default {
             this.changes_form = Array.from(changesMap.values());
             this.$emit("update-selected", changesMap);
         },
-        // onAllCheckCallback(val, checkedItem) {
-        //     console.time("onAllCheckCallback");
-        //     console.log("PPASD", val, checkedItem);
-        //     this.$emit("update-selected", checkedItem.map(item => item.feature_permission_id));
-        //     console.timeEnd("onAllCheckCallback");
-        // },
         onAllCheckCallback(val, checkedItem) {
-            console.log("{}", val);
-            console.time("onAllCheckCallback");
-
+            // BELOW ALREADY CORRECT
+            
             if (val) {
-                const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
-                changesMap.set(val.feature_permission_id, {
-                    ...val,
-                    selected: true
-                });
-                this.changes_form = Array.from(changesMap.values());
                 this.$emit("update-selected", checkedItem.map(item => item.feature_permission_id));
-            }
-            else {
-                this.$emit("update-selected", checkedItem);
-            }
+                for (let i = 0; i < checkedItem.length; i++) {
+                    checkedItem[i].selected = val;
+                }
 
-            console.timeEnd("onAllCheckCallback");
+                this.changes_form = checkedItem;
+            } else {
+                this.$emit("update-selected", checkedItem);
+                
+                for (let i = 0; i < this.changes_form.length; i++) {
+                    this.changes_form[i].selected = false;
+                }
+            }
         },
-        // onAllCheckCallback(val, checkedItem) {
-        //     if (val) {
-        //         const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));
-        //         changesMap.set(val.feature_permission_id, {
-        //             ...val,
-        //             selected: true
-        //         });
-        //         this.changes_form = Array.from(changesMap.values());
-        //         this.$emit("update-selected", checkedItem.map(item => item.feature_permission_id));
-        //     }
-        //     else {
-        //         this.$emit("update-selected", checkedItem);
-        //     }
-        // },
         onRowClickCallback(event, val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
 
@@ -247,6 +228,7 @@ export default {
                         page_size: res.data.meta.last_page,
                     };
                     this.changes_form = this.dataTable.filter(item => item.selected)
+                    this.isAllChecked = this.dataTable.every(item => item.selected);
                 } else {
                     this.dataTable = [];
                 }  
