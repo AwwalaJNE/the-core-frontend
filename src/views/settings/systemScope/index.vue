@@ -114,7 +114,6 @@ export default {
             navActive: "application-role",
             dialogApplicationRole: false,
             dialogRolePermission: false,
-            loading: false,
             app: '',
             app_role_id: ''
         }
@@ -154,7 +153,7 @@ export default {
                 permission: this.$refs['role-permission'].changes_form
             }
 
-            this.loading = true;
+            this.$refs['role-permission'].loading = true;
             try {
                 const res = await axios.put(`${this.URL.application_role}/${this.app_role_id}/permission?n=${this.listenNodeId}`, form, this.Helper.header());
 
@@ -162,8 +161,8 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
-                this.loading = false;
-                // this.changes_form = [];
+                this.$refs['role-permission'].loading = false;
+                this.$refs['role-permission'].resetChangesForm();
                 this.refresh();
             }
         },
