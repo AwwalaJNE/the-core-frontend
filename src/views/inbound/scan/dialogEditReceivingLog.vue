@@ -41,6 +41,7 @@
                             :valueData="status_arr"
                             :selectedValue="status"
                             :isMultiple="false"
+                            :disabled="disableStatus"
                             @updateValue="updateValue" />
                     </template>
                 </vs-col> 
@@ -239,6 +240,7 @@ export default {
             dialogFileUrl: '',
             dialogFileVisible: false,
             disabled: false,
+            disableStatus: false,
 
             fileList: [],
             maxFiles: 5
@@ -262,6 +264,8 @@ export default {
                         attachment_id: item.attachment_id,
                         url: item.url,
                     }));
+
+                    this.disableStatus = !!this.status;
                 }
 
             } catch (err) {
