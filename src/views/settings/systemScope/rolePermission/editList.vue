@@ -207,6 +207,7 @@ export default {
 
             if (key === "reference_entity") {
                 this.setAutoCompleteData(this.getReference(val), val);
+                dataObj.filter[index].reference_value = [];
             }
 
             const changesMap = new Map(this.changes_form.map(item => [item.feature_permission_id, item]));

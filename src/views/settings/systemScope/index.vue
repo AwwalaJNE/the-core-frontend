@@ -55,7 +55,7 @@
                 <transition name="slide-fade">
                     <div class="box">
                         <edit-list 
-                            :ref="navActive"
+                            ref="role_permission"
                             :app="listenApp"
                             :app_role_id="listenAppRoleId"
                         />
@@ -144,16 +144,16 @@ export default {
             this.app = val;
         },
         async saveAll(){
-            if (this.$refs['role-permission'].changes_form.length === 0) {
+            if (!this.$refs.role_permission.changes_form?.length) {
                 this.openNotification("warn", '', "Warning", 'Please update permission first');
                 return;
             }
 
             let form = {
-                permission: this.$refs['role-permission'].changes_form
+                permission: this.$refs.role_permission.changes_form
             }
 
-            this.$refs['role-permission'].loading = true;
+            this.$refs.role_permission.loading = true;
             try {
                 const res = await axios.put(`${this.URL.application_role}/${this.app_role_id}/permission?n=${this.listenNodeId}`, form, this.Helper.header());
 
@@ -161,8 +161,8 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
-                this.$refs['role-permission'].loading = false;
-                this.$refs['role-permission'].resetChangesForm();
+                this.$refs.role_permission.loading = false;
+                this.$refs.role_permission.resetChangesForm();
                 this.refresh();
             }
         },
