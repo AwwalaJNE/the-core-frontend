@@ -121,7 +121,21 @@ export default {
     },
     methods: {
         getDataDetail(val) {
-            if (val.app_role.length > 0) {
+            if (val?.app_role?.length === 1) {
+                const appRole = val.app_role[0];
+
+                this.$store.dispatch("SET_USER_USER_APPLICATION_NAME", appRole.app);
+                this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE", appRole.role?.[0]?.app_role_id || "");
+
+                let dataInfo = appRole.role?.map(roleItem => ({
+                    label: roleItem.app_role_name,
+                    value: roleItem.app_role_id
+                })) || [];
+
+                this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE_ArrData", dataInfo);
+            }
+            
+            if (val?.app_role?.length > 1) {
                 let template = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.inputs;
                 let arr = val.app_role.map(item => ({
                     inputs: template.map(field => ({
@@ -173,12 +187,19 @@ export default {
                 user_application_role,
                 ...formPayload 
             } = form;
+
+            formPayload['app_role'] = [{
+                app: user_application_name,
+                role: [user_application_role]
+            }]
             
-            if (form.dynamicinputcomponent_user_other_application_role) {
-                formPayload['app_role'] = form.dynamicinputcomponent_user_other_application_role.map(item => ({
-                    app: item.inputs[0].value,
-                    role: [item.inputs[1].value]
-                }));
+            if (Array.isArray(form.dynamicinputcomponent_user_other_application_role) && form.dynamicinputcomponent_user_other_application_role.length) {
+                formPayload['app_role'].push(
+                    ...form.dynamicinputcomponent_user_other_application_role.map(item => ({
+                        app: item.inputs?.[0]?.value || "",
+                        role: Array.isArray(item.inputs?.[1]?.value) ? item.inputs[1].value : [item.inputs?.[1]?.value]
+                    }))
+                );
             }
 
             if (this.user_id !== undefined && this.user_id !== '') {
@@ -211,21 +232,38 @@ export default {
                             let selected = obj?.value;
 
                             let latest_data = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.arrData;
-
-                            if (latest_data[index]?.inputs?.[1]) {
-                                latest_data[index].inputs[1].value = "";
-                            }
+                            latest_data[index].inputs[1].value = [];
 
                             this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", latest_data);
                             this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE_ArrData", []);
+                            this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE", "");
+
+                            this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", latest_data).then(() => {
+                                this.$nextTick(() => {
+                                    console.log("Updated Store:", this.$store.getters.getInputs.user);
+                                });
+                            });
+                            break;
+                        case "multipleSelector":
+                        case "multipleSelector|hidden":
+                            let index_ = obj?.option?.index;
+                            let selected_ = obj?.option?.value;
+
+                            let latest_data_ = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.arrData;
+                            latest_data_[index_].inputs[1].value = selected_;
+
+                            this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", latest_data_);
                             break;
                         default:
                             break;
                     }
 
                     break;
+                case "user_application_name":
+                    this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE", "");
+                    break;
                 default:
-                break;
+                    break;
             }
         },
         inputFocus(obj, val, info){
@@ -233,9 +271,13 @@ export default {
                 this.autoComplateUrl = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
                 this.input_value = "node_id";
                 this.input_label = "node_name";
+                this.isNestedData = false;
+                this.isSingleInput = false;
             } else if (obj.key.includes('user_application_role')) {
                 let index = obj.key.split("|")[0];
-                let app_role_name_index = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.arrData?.[index]?.inputs[0]?.value;
+                let app_role_name_index = Number.isInteger(index)
+                    ? this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.arrData?.[index]?.inputs[0]?.value
+                    : this.$store.getters.getInputs.user.user_application_name.value;
 
                 this.autoComplateUrl = this.URL.application_role_list +'?n='+ this.listenNodeId + `&sort_order=desc&limit=10&page=1&search_by=${app_role_name_index}`;
                 this.isNestedData = true;

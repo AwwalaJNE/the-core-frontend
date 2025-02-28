@@ -131,6 +131,9 @@
                                         :limitExist="limitExist"
                                         :selectLabel="selectLabel"
                                         :selectValue="selectValue"
+                                        :isSingleInput="isSingleInput"
+                                        :isNestedData="isNestedData"
+                                        :nestedKey="nestedKey"
                                         @updateValue="updateValue"
                                         @inputFocus="onfocuslah"/>
                             </template>
