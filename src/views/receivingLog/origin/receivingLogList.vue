@@ -77,7 +77,7 @@ export default {
             ],
             customActionList: [
               {
-                label: 'Edit',
+                label: 'Entry Status',
                 key: 'edit',
                 attribute: '',
               }
@@ -156,3 +156,8 @@ export default {
     }
 }
 </script>
+<style>
+    .vs-table__td.action .vs-row.btn_action .vs-col {
+        width: 100px !important;
+    }
+</style>

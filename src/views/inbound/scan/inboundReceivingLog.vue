@@ -4,15 +4,15 @@
             :dataTable="dataTableProp" 
             :dataColumn="datacolumn" 
             :tableLoading="listenLoading"
-            :hasAction="false"
             :hasPagination="true"
             :pageSize="pageSize"
             :page="page"
             :limit="limit"
-            :editOnly="true"
+            :customAction="true"
+            :customActionList="customActionList"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
-            @actionEdit="editReceivingLog"
+            @actionUpdate="editReceivingLog"
         />
 
         <dialog-edit-receiving-log
@@ -20,6 +20,8 @@
             :active="dialogEditReceivingLogActive"
             :receivingLogId="receivingLogId"
             @closeDialog="closeDialog"
+            btnBlue="Edit"
+            title="Edit Receiving Log"
         />
     </div>
 </template>
@@ -67,6 +69,13 @@ export default {
                     key: "status",
                     width: "lg"
                 },
+            ],
+            customActionList: [
+                {
+                    label: 'Entry Status',
+                    key: 'edit',
+                    attribute: '',
+                }
             ],
             loadingDetail: false,
             receivingLogId: "",
