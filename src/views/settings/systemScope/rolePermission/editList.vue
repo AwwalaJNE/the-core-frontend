@@ -178,15 +178,22 @@ export default {
             };
             return referenceMap[entity] || null;
         },
-        setAutoCompleteData(reference, val) {
+        setAutoCompleteData(reference, entity, val) {
             if (!reference || reference === null) {
                 this.autoCompleteUrl = "";
                 this.input_value = "";
                 this.input_label = "";
             } else {
-                this.autoCompleteUrl = `${reference.url}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`;
-                this.input_value = reference.value;
-                this.input_label = reference.label;
+                if (entity === 'HIDDEN_COLUMN') {
+                    this.autoCompleteUrl = `${reference.url}?n=${this.listenNodeId}&feature=${val.feature_name}`;
+                    this.input_value = reference.value;
+                    this.input_label = reference.label;
+                } else {
+                    this.autoCompleteUrl = `${reference.url}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`;
+                    this.input_value = reference.value;
+                    this.input_label = reference.label;
+                }
+                
             }
 
             const col = this.dataColumn.find(col => col.key === "access_data");
@@ -200,7 +207,7 @@ export default {
         },
         inputFocus(index, val, info) {
             const entity = val?.filter[index]?.reference_entity;
-            this.setAutoCompleteData(this.getReference(entity), val);
+            this.setAutoCompleteData(this.getReference(entity), entity, val);
         },
         updateValue(index, key, val, info, dataObj) {
             dataObj.filter[index][key] = val;

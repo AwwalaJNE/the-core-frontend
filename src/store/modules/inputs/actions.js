@@ -49,6 +49,12 @@ export default {
   SET_USER_USER_APPLICATION_NAME({ commit }, payload) {
     commit('SET_USER_USER_APPLICATION_NAME', payload)
   },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE', payload)
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME', payload)
+  },
   SET_USER_USER_NODE_ID({ commit }, payload) {
     commit('SET_USER_USER_NODE_ID', payload)
   },
@@ -120,6 +126,25 @@ export default {
   },
   SET_USER_USER_APPLICATION_ROLE_isSingleData({ commit }, payload) {
     commit('SET_USER_USER_APPLICATION_ROLE_isSingleData', payload)
+  },
+
+
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ValueData({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ArrData({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ArrData', payload)
+  },
+
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ValueData({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ValueData', payload)
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ArrData({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ArrData', payload)
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_isSingleData({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_isSingleData', payload)
   },
 
   SET_USER_EMPLOYEE_ID({ commit }, payload) {

@@ -238,6 +238,34 @@ export default {
     state.user.user_application_role.isSingleInput = payload
   },
 
+
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME(state, payload) {
+    state.user.helper_dynamic_user_application_name.value = payload
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ValueData(state, payload) {
+    state.user.helper_dynamic_user_application_name.valueData = payload
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ArrData(state, payload) {
+    state.user.helper_dynamic_user_application_name.hasOwnProperty('arrData') ?
+      state.user.helper_dynamic_user_application_name.arrData = payload :
+      state.user.helper_dynamic_user_application_name.arrData = []
+  },
+
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE(state, payload) {
+    state.user.helper_dynamic_user_application_role.value = payload
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ValueData(state, payload) {
+    state.user.helper_dynamic_user_application_role.valueData = payload
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ArrData(state, payload) {
+    state.user.helper_dynamic_user_application_role.hasOwnProperty('arrData') ?
+      state.user.helper_dynamic_user_application_role.arrData = payload :
+      state.user.helper_dynamic_user_application_role.arrData = []
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_isSingleInput(state, payload) {
+    state.user.user_application_role.isSingleInput = payload
+  },
+
   // ==== user role ====
   SET_ROLE_USER_ROLE_NAME(state, payload) {
     state.role.user_role_name.value = payload

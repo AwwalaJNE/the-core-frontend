@@ -123,18 +123,25 @@ export default {
                 this.$store.dispatch("SET_USER_USER_APPLICATION_NAME", mainAppRole.app);
                 this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE", mainAppRole.role?.[0]?.app_role_id || "");
 
+                const dataInfo = mainAppRole.role?.map(({ app_role_name, app_role_id }) => ({
+                    label: app_role_name,
+                    value: app_role_id
+                })) || [];
+
+                this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE_ArrData", dataInfo);
+
                 if (otherAppRoles.length) {
                     const template = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.inputs;
 
                     const arr = otherAppRoles.map(({ app, role }) => ({
                         inputs: template.map(field => ({
                             ...field,
-                            value: field.key === "user_application_name" 
+                            value: field.key === "helper_dynamic_user_application_name" 
                                 ? app
-                                : field.key === "user_application_role" 
+                                : field.key === "helper_dynamic_user_application_role" 
                                     ? role?.[0]?.app_role_id || ""
                                     : field.value,
-                            data: field.key === "user_application_name" 
+                            data: field.key === "helper_dynamic_user_application_name" 
                                 ? {}
                                 : role.map(({ app_role_name, app_role_id }) => ({
                                     label: app_role_name,
@@ -144,16 +151,16 @@ export default {
                     }));
 
                     this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", arr);
+
+                    const otherDataInfo = otherAppRoles.flatMap(item => 
+                        item.role.map(roleItem => ({
+                            label: roleItem.app_role_name,
+                            value: roleItem.app_role_id
+                        }))
+                    );
+
+                    this.$store.dispatch("SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ArrData", otherDataInfo);
                 }
-
-                const dataInfo = val.app_role.flatMap(item => 
-                    item.role.map(roleItem => ({
-                        label: roleItem.app_role_name,
-                        value: roleItem.app_role_id
-                    }))
-                );
-
-                this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE_ArrData", dataInfo);
             }
 
 
@@ -177,6 +184,8 @@ export default {
                 dynamicinputcomponent_user_other_application_role, 
                 user_application_name, 
                 user_application_role,
+                helper_dynamic_user_application_name, 
+                helper_dynamic_user_application_role,
                 ...formPayload 
             } = form;
 
@@ -288,8 +297,10 @@ export default {
                         arr.push(obj)
                     })
                     this.$store.dispatch("SET_USER_USER_APPLICATION_NAME_ArrData", arr)
+                    this.$store.dispatch("SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ArrData", arr)
                 } else {
                     this.$store.dispatch("SET_USER_USER_APPLICATION_NAME_ArrData", [])
+                    this.$store.dispatch("SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ArrData", [])
                 }
             } catch (err) {
                 this.redirectError(err)

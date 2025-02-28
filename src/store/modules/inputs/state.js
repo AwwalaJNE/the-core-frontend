@@ -118,24 +118,48 @@ export default {
       typeData: "Array",
       inputs: [
         {
-          key: "user_application_name",
+          key: "helper_dynamic_user_application_name",
           rule:"",
           typeInput: "select",
           value: '',
           width: '4'
         },
         {
-          key: "user_application_role",
+          key: "helper_dynamic_user_application_role",
           rule:"",
           typeInput: "multipleSelector",
           value: [],
           width: '8',
-          isSingleInput: true,
         },
       ],
       arrData: [],
       valueData: null,
       value: ''
+    },
+    helper_dynamic_user_application_name: {
+      label: "Application Name temp",
+      key: "helper_dynamic_user_application_name",
+      rule: "",
+      typeInput: "select|hidden",
+      width: '4',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      visible: false,
+      value: ''
+    },
+    helper_dynamic_user_application_role: {
+      label: "Application Role temp",
+      key: "helper_dynamic_user_application_role",
+      rule: "",
+      typeInput: "multipleSelector|hidden",
+      width: '8',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: [],
+      visible: false,
+      isSingleInput: true,
     },
     is_login_enable: {
       label: "Enable Login|Disable Login",
