@@ -123,13 +123,6 @@ export default {
                 this.$store.dispatch("SET_USER_USER_APPLICATION_NAME", mainAppRole.app);
                 this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE", mainAppRole.role?.[0]?.app_role_id || "");
 
-                const dataInfo = mainAppRole.role?.map(({ app_role_name, app_role_id }) => ({
-                    label: app_role_name,
-                    value: app_role_id
-                })) || [];
-
-                this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE_ArrData", dataInfo);
-
                 if (otherAppRoles.length) {
                     const template = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.inputs;
 
@@ -152,6 +145,15 @@ export default {
 
                     this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", arr);
                 }
+
+                const dataInfo = val.app_role.flatMap(item => 
+                    item.role.map(roleItem => ({
+                        label: roleItem.app_role_name,
+                        value: roleItem.app_role_id
+                    }))
+                );
+
+                this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE_ArrData", dataInfo);
             }
 
 
@@ -227,14 +229,6 @@ export default {
                             latest_data[index].inputs[1].value = [];
 
                             this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", latest_data);
-                            this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE_ArrData", []);
-                            this.$store.dispatch("SET_USER_USER_APPLICATION_ROLE", "");
-
-                            this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE", latest_data).then(() => {
-                                this.$nextTick(() => {
-                                    console.log("Updated Store:", this.$store.getters.getInputs.user);
-                                });
-                            });
                             break;
                         case "multipleSelector":
                         case "multipleSelector|hidden":
@@ -266,8 +260,10 @@ export default {
                 this.isNestedData = false;
             } else if (obj.key.includes('user_application_role')) {
                 let index = obj.key.split("|")[0];
-                let app_role_name_index = Number.isInteger(index)
-                    ? this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.arrData?.[index]?.inputs[0]?.value
+                let parsedIndex = isNaN(index) ? index : parseInt(index, 10);
+
+                let app_role_name_index = Number.isInteger(parsedIndex)
+                    ? this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.arrData?.[parsedIndex]?.inputs[0]?.value
                     : this.$store.getters.getInputs.user.user_application_name.value;
 
                 this.autoComplateUrl = this.URL.application_role_list +'?n='+ this.listenNodeId + `&sort_order=desc&limit=10&page=1&search_by=${app_role_name_index}`;

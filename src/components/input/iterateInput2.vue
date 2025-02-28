@@ -43,7 +43,7 @@
                                                 :url="asynchronousSelect_url"
                                                 :selectLabel="selectLabel"
                                                 :selectValue="selectValue"
-                                                :isSingleInput="isSingleInput"
+                                                :isSingleInput="InputObject[input.key].isSingleInput"
                                                 :isNestedData="isNestedData"
                                                 :nestedKey="nestedKey"
                                                 :typeInput="InputObject[input.key].typeInput"
