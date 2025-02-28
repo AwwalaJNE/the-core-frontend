@@ -93,17 +93,6 @@ export default {
         "date-time": DateTime,
         "dialog-confirm": DialogConfirm,
     },
-    watch: {
-        query: function(val, old) {
-            if(val !== undefined) {
-                // this.tempSearch = val
-                if(this.tempSearch !== old) {
-                    this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
-                }
-            }
-        }
-    },
     data() {
         return {
             dataTable: [],
@@ -169,10 +158,6 @@ export default {
                 {
                     label: "Email",
                     value: "user_email",
-                },
-                {
-                    label: "Primary Roles",
-                    value: "userNodeRoles",
                 },
                 {
                     label: "Node",

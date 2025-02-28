@@ -119,12 +119,14 @@ export default {
       inputs: [
         {
           key: "user_application_name",
+          rule:"",
           typeInput: "select",
           value: '',
           width: '4'
         },
         {
           key: "user_application_role",
+          rule:"",
           typeInput: "multipleSelector",
           value: [],
           width: '8',

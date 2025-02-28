@@ -171,8 +171,6 @@ export default {
                 this.$store.dispatch("SET_USER_USER_NODE_ID", arr_node_id)
                 this.$store.dispatch("SET_USER_USER_NODE_ID_ArrData", arr)
             }
-
-            console.log("A", val, this.$store.getters.getInputs.user)
         },
         formData(form){
             const { 
@@ -189,10 +187,12 @@ export default {
             
             if (Array.isArray(form.dynamicinputcomponent_user_other_application_role) && form.dynamicinputcomponent_user_other_application_role.length) {
                 formPayload['app_role'].push(
-                    ...form.dynamicinputcomponent_user_other_application_role.map(item => ({
-                        app: item.inputs?.[0]?.value || "",
-                        role: Array.isArray(item.inputs?.[1]?.value) ? item.inputs[1].value : [item.inputs?.[1]?.value]
-                    }))
+                    ...form.dynamicinputcomponent_user_other_application_role
+                        .map(item => ({
+                            app: item.inputs?.[0]?.value || "",
+                            role: Array.isArray(item.inputs?.[1]?.value) ? item.inputs[1].value : [item.inputs?.[1]?.value]
+                        }))
+                        .filter(item => item.app && item.role.some(role => role)) // Remove empty values
                 );
             }
 

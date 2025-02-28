@@ -36,7 +36,7 @@
                                         <asynchronousSelect 
                                                 :ref="input.key"
                                                 :name="InputObject[input.key].label" 
-                                                :rules="InputObject[input.key].rule" 
+                                                :rules="input.rule" 
                                                 :formKey="`${index}|${input.key}`"
                                                 :valueData="InputObject[input.key].arrData"
                                                 :selectedValue="input.value"
@@ -67,7 +67,7 @@
                                             <selector 
                                             :ref="input.key"
                                             :name="InputObject[input.key].label" 
-                                            :rules="InputObject[input.key].rule" 
+                                            :rules="input.rule" 
                                             :formKey="`${index}|${input.key}`"
                                             :valueData="InputObject[input.key].arrData"
                                             :selectedValue="input.value"
