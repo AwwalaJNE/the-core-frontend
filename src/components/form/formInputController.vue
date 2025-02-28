@@ -131,7 +131,7 @@
                                         :limitExist="limitExist"
                                         :selectLabel="selectLabel"
                                         :selectValue="selectValue"
-                                        :isSingleInput="isSingleInput"
+                                        :isSingleInput="InputObject[item].isSingleInput"
                                         :isNestedData="isNestedData"
                                         :nestedKey="nestedKey"
                                         @updateValue="updateValue"
@@ -239,7 +239,7 @@
                                     :asynchronousSelect_url="listenAsynchronousSelectUrl"
                                     :selectLabel="selectLabel"
                                     :selectValue="selectValue"
-                                    :isSingleInput="isSingleInput"
+                                    :isSingleInput="InputObject[item].isSingleInput"
                                     :isNestedData="isNestedData"
                                     :nestedKey="nestedKey"
                                     :disabled="listenIsDisabled"
@@ -461,7 +461,6 @@ export default {
         limitExist: Boolean,
         selectLabel: String,
         selectValue: String,
-        isSingleInput: Boolean,
         isNestedData: Boolean,
         nestedKey: String,
         tableKey: String

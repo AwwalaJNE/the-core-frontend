@@ -234,6 +234,9 @@ export default {
       state.user.user_application_role.arrData = payload :
       state.user.user_application_role.arrData = []
   },
+  SET_USER_USER_APPLICATION_ROLE_isSingleInput(state, payload) {
+    state.user.user_application_role.isSingleInput = payload
+  },
 
   // ==== user role ====
   SET_ROLE_USER_ROLE_NAME(state, payload) {

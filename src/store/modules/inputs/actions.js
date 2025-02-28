@@ -118,6 +118,9 @@ export default {
   SET_USER_USER_APPLICATION_ROLE_ArrData({ commit }, payload) {
     commit('SET_USER_USER_APPLICATION_ROLE_ArrData', payload)
   },
+  SET_USER_USER_APPLICATION_ROLE_isSingleData({ commit }, payload) {
+    commit('SET_USER_USER_APPLICATION_ROLE_isSingleData', payload)
+  },
 
   SET_USER_EMPLOYEE_ID({ commit }, payload) {
     commit('SET_USER_EMPLOYEE_ID', payload)

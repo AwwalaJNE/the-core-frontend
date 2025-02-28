@@ -68,7 +68,7 @@ export default {
       value: ''
     },
     user_node_id: {
-      label: "User Node",
+      label: "User Node*",
       key: "user_node_id",
       rule: "required",
       typeInput: "multipleSelector",
@@ -107,7 +107,8 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: []
+      value: [],
+      isSingleInput: true,
     },
     dynamicinputcomponent_user_other_application_role: {
       label: "Add Other Application Role",
@@ -126,7 +127,8 @@ export default {
           key: "user_application_role",
           typeInput: "multipleSelector",
           value: [],
-          width: '8'
+          width: '8',
+          isSingleInput: true,
         },
       ],
       arrData: [],

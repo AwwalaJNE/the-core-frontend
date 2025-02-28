@@ -17,7 +17,6 @@
                     :dataItem="listenDataItem"
                     :selectValue="input_value"
                     :selectLabel="input_label"
-                    :isSingleInput="isSingleInput"
                     :isNestedData="isNestedData"
                     :nestedKey="nestedKey"
                     @formData="formData"
@@ -88,7 +87,6 @@ export default {
             input_value: '',
             input_label: '',
             isNestedData: false,
-            isSingleInput: false,
             nestedKey: ''
         }
     },
@@ -114,7 +112,6 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.user_id = val.user_id
-                this.isSingleInput = true;
                 this.getDataDetail(val);
             }
         }
@@ -272,7 +269,6 @@ export default {
                 this.input_value = "node_id";
                 this.input_label = "node_name";
                 this.isNestedData = false;
-                this.isSingleInput = false;
             } else if (obj.key.includes('user_application_role')) {
                 let index = obj.key.split("|")[0];
                 let app_role_name_index = Number.isInteger(index)
@@ -281,7 +277,6 @@ export default {
 
                 this.autoComplateUrl = this.URL.application_role_list +'?n='+ this.listenNodeId + `&sort_order=desc&limit=10&page=1&search_by=${app_role_name_index}`;
                 this.isNestedData = true;
-                this.isSingleInput = true;
                 this.nestedKey = "role";
                 this.input_value = "app_role_id";
                 this.input_label = "app_role_name";
