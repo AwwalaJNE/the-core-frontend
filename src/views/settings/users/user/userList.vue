@@ -33,27 +33,25 @@
             </vs-col>
         </vs-row>
         <table-master
-        :dataTable="dataTable" 
-        :dataColumn="datacolumn" 
-        :tableLoading="loading"
-        :pageSize="pagination.page_size"
-        :page="pagination.page"
-        :limit="pagination.limit"
-        :hasAction="true"
-        :hasPagination="true"
-        :expandable="true"
-        @actionUpdate="actionUpdate"
-        @actionRemove="actionRemove"
-        @actionLimit="actionLimit"
-        @actionPagination="actionPagination"
+            :dataTable="dataTable" 
+            :dataColumn="datacolumn" 
+            :tableLoading="loading"
+            :pageSize="pagination.page_size"
+            :page="pagination.page"
+            :limit="pagination.limit"
+            :hasAction="true"
+            :hasPagination="true"
+            :expandable="true"
+            @actionUpdate="actionUpdate"
+            @actionRemove="actionRemove"
+            @actionLimit="actionLimit"
+            @actionPagination="actionPagination"
         />
 
         <!--Create User Dialog end-->
             <dialog-create-edit-user
             :active="dialogUser" 
-            :openDialogUser="openDialogUser"
             :closeDialogUser="closeDialogUser"
-            :finishGetUser="finishGetUser"
             @refresh="refresh"
             btnBlue="Edit"
             title="Edit User"
@@ -98,7 +96,7 @@ export default {
     watch: {
         query: function(val, old) {
             if(val !== undefined) {
-                this.tempSearch = val
+                // this.tempSearch = val
                 if(this.tempSearch !== old) {
                     this.pagination.page = 1
                     this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
@@ -131,8 +129,13 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Primary Roles",
-                    key: "user_role_name",
+                    label: "Primary Role",
+                    key: "primary_user_application_name",
+                    width: "sm"
+                },
+                {
+                    label: "Primary App",
+                    key: "primary_user_application_role",
                     width: "sm"
                 },
                 {
@@ -212,34 +215,10 @@ export default {
                         let additional_role = []
                         let children = {}
 
-                        // item.user_additionals.map(value => {
-                        //     if (!additional_node.includes(value.node_name)) {
-                        //         additional_node.push(value.node_name)
-                        //     }
-
-                        //     let idx = additional_node.indexOf(value.node_name)
-                        //     if (additional_role[idx]) {
-                        //         additional_role[idx].push(...value.roles)
-                        //     }
-                        //     else if (!additional_role[idx]) {
-                        //         additional_role[idx] = value.roles
-                        //     }
-                        // })
-
-                        // if (additional_node.length > 0 && additional_role.length > 0) {
-                        //     additional_role.forEach(function(elements, idx) {
-                        //         if (elements.length > 0) {
-                        //             this[idx] = elements.join(", ");
-                        //         }
-                        //         else {
-                        //             this[idx] = "-";
-                        //         }
-                        //     }, additional_role);
-                        //     children['Additional Node'] = additional_node
-                        //     children['Additional Role'] = additional_role
-
-                        //     item['children'] = children
-                        // }
+                        if (item?.app_role?.length === 1) {
+                            item["primary_user_application_name"] = item?.app_role?.[0]?.app || "";
+                            item["primary_user_application_role"] = item?.app_role?.[0]?.role?.[0]?.app_role_name || "";
+                        }
 
                         item["user_nodes_list"] = item.user_nodes.map((nodes,index) => {
                             let newline = "\n";
@@ -248,17 +227,11 @@ export default {
                             }
                             return newline+'- '+nodes.node_name;
                         }).toString();
-                        // if (item.user_additional_role_name && Array.isArray(item.user_additional_role_name)) {
-                        //     item.user_additional_role_name = item.user_additional_role_name.join(", ");
-                        // }
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
-                    // if(res.data.data.length == 0) {
-                    //     this.openNotification('warn', null, 'Failed to populate User data', )
-                    // }
                     
                     this.loading = false
                 }).catch(err => {
@@ -297,9 +270,6 @@ export default {
         },
         openDialogUser(){
             this.dialogUser = true
-        },
-        finishGetUser(){
-            this.loading = false
         },
         updateValue(key, val) {
             this.dateRange = val
