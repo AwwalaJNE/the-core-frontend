@@ -764,10 +764,19 @@ export default {
             this.$router.push('/bagging-detail/'+bagNumber)
             this.setRoutePageHistory(this.$route.meta, false);
           }).catch(err => {
-            this.loading = false
-            this.handleClearForm()
-            this.openNotification('danger', err?.response?.data?.code ?? '', "FAILED", err?.response?.data?.message ?? 'Something went wrong')
-          })
+              this.loading = false;
+              this.handleClearForm();
+
+              const errorCode = err?.response?.data?.code ?? '';
+              const errorMessage = err?.response?.data?.message ?? 'Something went wrong';
+
+              if (errorCode === 'CORE-1135') {
+                  this.openNotificationCenter('danger', errorCode, "FAILED", errorMessage);
+              } else {
+                  this.openNotification('danger', errorCode, "FAILED", errorMessage);
+              }
+          });
+
     },
     querySearchAsync(queryString, cb) {
       const url = this.URL.node +

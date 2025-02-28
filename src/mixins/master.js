@@ -110,6 +110,94 @@ const Master = {
                 `
             });
         },
+        openNotificationCenter(type = null, code, title, msg) {
+            this.playNotificationSound(type);
+            if (type === 'success') {
+                return;
+            }
+        
+            // Cek apakah notifikasi dengan pesan yang sama sudah ada
+            const existingNotifications = document.querySelectorAll('.custom-notification');
+            for (const notification of existingNotifications) {
+                const message = notification.querySelector('p').textContent;
+                if (msg === message) {
+                    return;
+                }
+            }
+        
+            // Buat elemen notifikasi
+            const notification = document.createElement("div");
+            notification.classList.add("custom-notification");
+            notification.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                border: 3px solid red;
+                color: red;
+                padding: 20px 30px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                min-width: 500px;
+                max-width: 90%;
+                z-index: 1000;
+                font-size: 18px;
+                box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+                text-align: center;
+                opacity: 1;
+                transition: opacity 0.5s ease-in-out;
+                font-family: Arial, sans-serif;
+            `;
+        
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; flex-grow: 1; gap: 20px;">
+                    <div style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        background: red;
+                        color: white;
+                        padding: 12px;
+                        border-radius: 5px;
+                        min-width: 80px;
+                        min-height: 80px;
+                        text-align: center;
+                        font-size: 20px;
+                        font-weight: bold;
+                    ">
+                        <i class="bx bx-error" style="font-size: 32px;"></i>
+                        ${code ? `<span>${code}</span>` : ''}
+                    </div>
+                    <div style="flex-grow: 1; text-align: left;">
+                        <strong style="font-size: 20px;">${title}</strong>
+                        <p style="margin: 5px 0; font-size: 16px; color: black;">${msg}</p>
+                    </div>
+                </div>
+                <button onclick="this.parentElement.remove()" style="
+                    background: none;
+                    border: none;
+                    color: red;
+                    font-size: 24px;
+                    font-weight: bold;
+                    cursor: pointer;
+                "><i class="bx bx-x"></i></button>
+            `;
+        
+            // Tambahkan ke dalam body
+            document.body.appendChild(notification);
+        
+            // Hapus otomatis setelah 5 detik
+            setTimeout(() => {
+                if (notification) {
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 500);
+                }
+            }, 5000);
+        },        
         playNotificationSound(type) {
             let soundPath;
             switch (type) {
