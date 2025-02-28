@@ -137,7 +137,7 @@ export default {
       value: ''
     },
     helper_dynamic_user_application_name: {
-      label: "Application Name temp",
+      label: "Application Name",
       key: "helper_dynamic_user_application_name",
       rule: "",
       typeInput: "select|hidden",
@@ -149,7 +149,7 @@ export default {
       value: ''
     },
     helper_dynamic_user_application_role: {
-      label: "Application Role temp",
+      label: "Application Role",
       key: "helper_dynamic_user_application_role",
       rule: "",
       typeInput: "multipleSelector|hidden",
