@@ -1450,6 +1450,7 @@ export default {
     "el-dialog": Dialog,
   },
   props: {
+    hideColumnKey: String,
     dataTable: Array,
     dataColumn: Array,
     tableLoading: Boolean,
@@ -1558,7 +1559,15 @@ export default {
   },
   computed: {
     listenColumn() {
-      return this.dataColumn;
+      if (this.hideColumnKey) {
+        // TODO: RECHECK LATER -> REDIS USER
+        const userData = JSON.parse(localStorage.getItem('vuejs__redis_user') || '{}')?.value || [];
+        const hiddenKeys = userData?.permission?.["CORE DATA TABLE"]?.find(v => v.feature === this.hideColumnKey)?.filter?.hidden_column || [];
+        return this.dataColumn.filter(item => !hiddenKeys.includes(item.key));
+      } else {
+        return this.dataColumn;
+      }
+      
     },
     listenDataTable() {
 
