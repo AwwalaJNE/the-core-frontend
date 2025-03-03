@@ -26,6 +26,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+        hideColumnKey="setting-base-tariff" 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

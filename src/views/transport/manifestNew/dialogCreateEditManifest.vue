@@ -88,7 +88,8 @@
                     <vs-row>
                         <vs-col style="overflow: auto;">
                             <div v-if="!loadingDetail && !loading">
-                                <table-master
+                                <table-master 
+                                    hideColumnKey="dialog-surat-muatan"
                                     :dataTable="dataTable"
                                     :dataColumn="datacolumn"
                                     :tableLoading="loadingDetail"

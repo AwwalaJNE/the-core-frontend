@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="tracing-message" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loadingMessage"

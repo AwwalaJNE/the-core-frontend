@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="destination-zip-code" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

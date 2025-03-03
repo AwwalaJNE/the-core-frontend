@@ -64,7 +64,8 @@
           <!-- display informasi surat muatan-->
           <vs-row>
             <vs-col style="overflow: auto;">
-              <table-master
+              <table-master 
+                hideColumnKey="dialog-surat-muatan"
                 :dataTable="dataTable"
                 :dataColumn="datacolumn"
                 :tableLoading="loading"

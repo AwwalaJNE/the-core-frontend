@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="tracing-runsheet" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loadingRunsheet"

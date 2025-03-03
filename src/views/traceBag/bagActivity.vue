@@ -1,6 +1,7 @@
 <template>
     <div>
-        <table-master
+        <table-master 
+            hideColumnKey="trace-bag-activity"
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

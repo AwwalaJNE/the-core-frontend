@@ -44,6 +44,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="setting-application-role" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

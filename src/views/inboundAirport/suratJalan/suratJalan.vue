@@ -1,6 +1,7 @@
 <template>
   <div>
-    <table-master
+    <table-master 
+        hideColumnKey="surat-jalan-airport"
       :dataTable="dataTable"
       :dataColumn="!isMobile ? datacolumn.concat(allColumn) : datacolumn"
       :tableLoading="loading"

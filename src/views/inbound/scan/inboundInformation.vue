@@ -2,6 +2,7 @@
     <div>
         <template v-if="listenLoading == false">
             <table-master 
+            hideColumnKey="receiving-master-info" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="listenLoading"

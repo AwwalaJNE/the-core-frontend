@@ -119,6 +119,7 @@
 
                 <div class="mt-05">
                     <table-master 
+                        hideColumnKey="tracing" 
                         :dataTable="dataTable" 
                         :dataColumn="datacolumn" 
                         :tableLoading="loading"

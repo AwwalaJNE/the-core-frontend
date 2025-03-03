@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="surat-muatan"
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

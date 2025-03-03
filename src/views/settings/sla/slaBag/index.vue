@@ -11,6 +11,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="sla-bag" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

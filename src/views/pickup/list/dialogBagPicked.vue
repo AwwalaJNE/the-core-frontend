@@ -19,6 +19,7 @@
       </vs-col>
       <div class="dialog-content-row center">
         <table-master 
+          hideColumnKey="dialog-bag-pickup" 
           :dataTable="bagNumberList" 
           :dataColumn="datacolumn" 
           :tableLoading="loadingSelectedData"

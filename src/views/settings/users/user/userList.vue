@@ -32,7 +32,8 @@
                 </vs-row>
             </vs-col>
         </vs-row>
-        <table-master
+        <table-master 
+            hideColumnKey="setting-user"
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

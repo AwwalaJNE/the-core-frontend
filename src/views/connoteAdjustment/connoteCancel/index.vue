@@ -84,6 +84,7 @@
 
                 <div class="mt-05">
                     <table-master 
+                        hideColumnKey="connote-cancel"
                         :dataTable="dataTable" 
                         :dataColumn="datacolumn" 
                         :tableLoading="loading"

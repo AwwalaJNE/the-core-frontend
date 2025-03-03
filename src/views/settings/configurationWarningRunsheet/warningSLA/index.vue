@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="warning-sla" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

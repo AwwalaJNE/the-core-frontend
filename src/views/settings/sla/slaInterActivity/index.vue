@@ -85,6 +85,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="sla-inter-activity" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

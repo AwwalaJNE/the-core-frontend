@@ -49,6 +49,7 @@
 
                 <div class="mt-05">
                     <table-master 
+                    hideColumnKey="irregularity-failed" 
                     :dataTable="dataTable" 
                     :dataColumn="datacolumn" 
                     :tableLoading="loading"

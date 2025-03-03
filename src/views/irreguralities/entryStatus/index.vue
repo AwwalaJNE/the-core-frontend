@@ -105,6 +105,7 @@
 
                 <div class="mt-05">
                     <table-master 
+                        hideColumnKey="irregularity-entry-status" 
                         :dataTable="dataTable" 
                         :dataColumn="datacolumn" 
                         :tableLoading="loading"

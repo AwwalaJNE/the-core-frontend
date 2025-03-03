@@ -83,6 +83,7 @@
 
                 <div class="mt-05">
                     <table-master 
+                    hideColumnKey="irregularity-cancel" 
                     :dataTable="dataTable" 
                     :dataColumn="datacolumn" 
                     :tableLoading="loading"

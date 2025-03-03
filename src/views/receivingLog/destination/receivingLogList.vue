@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="receiving-log-destination" 
             :dataTable="dataTable" 
             :dataColumn="dataColumn" 
             :tableLoading="listenLoading"

@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="irregularity-inventory-history" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

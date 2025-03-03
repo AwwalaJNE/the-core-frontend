@@ -49,6 +49,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="surat-muatan-stock" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

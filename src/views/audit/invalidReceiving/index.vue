@@ -65,6 +65,7 @@
 
                 <transition name="slide-fade">
                     <table-master 
+                        hideColumnKey="invalid-receiving"
                         :dataTable="dataTable" 
                         :dataColumn="datacolumn" 
                         :tableLoading="loading"

@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+        hideColumnKey="pickup-schedule" 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

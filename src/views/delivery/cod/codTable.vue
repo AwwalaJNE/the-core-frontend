@@ -1,6 +1,7 @@
 <template>
   <div>
-    <table-master
+    <table-master 
+      hideColumnKey="cod"
       :dataTable="dataTable"
       :dataColumn="datacolumn"
       :tableLoading="loading"

@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="setting-application-role-detail" 
             ref="tableMaster"
             :dataTable="dataTable" 
             :dataColumn="dataColumn" 

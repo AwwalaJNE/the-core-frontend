@@ -51,7 +51,8 @@
                         </div>
                     </div>
                     <div class="mt-05 mb-2 ">
-                        <table-master
+                        <table-master 
+                            hideColumnKey="dialog-connote-forward"
                             :dataTable="dataTable" 
                             :dataColumn="datacolumn" 
                             :tableLoading="loading"

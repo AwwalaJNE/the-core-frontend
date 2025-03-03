@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="facility-code-list" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

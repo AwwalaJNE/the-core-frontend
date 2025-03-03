@@ -1,6 +1,7 @@
 <template>
     <div>
-        <table-master
+        <table-master 
+        hideColumnKey="resync-runsheet"
         :dataTable="dataTable"
         :dataColumn="datacolumn"
         :tableLoading="loading"
