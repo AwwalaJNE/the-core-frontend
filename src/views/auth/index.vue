@@ -79,8 +79,6 @@ export default {
           this.$ls.set("user", res.data.data.user);
           this.$ls.set("config", res.data.data.config);
           this.$ls.set("is_first_login", res.data.data.user.is_first_login);
-          // TODO: CHANGE THIS LATER -> GET REDIS USER
-          this.$ls.set('redis_user', {})
 
           loading.close();
           this.$router.push({ name: "mainPage" });
