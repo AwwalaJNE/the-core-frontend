@@ -138,6 +138,7 @@ export default {
                 return item.key == val
             })
             this.title = item[0].title
+            this.app_role_id = ""
         },
         getRoleInfo(id, val) {
             this.app_role_id = id;
