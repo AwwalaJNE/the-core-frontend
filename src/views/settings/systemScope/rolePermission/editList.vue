@@ -260,12 +260,18 @@ export default {
             let query = q || '';
             
             try {
-                const res = await axios.get(`${this.URL.feature_list}?n=${this.listenNodeId}&sort_order=desc`, this.Helper.header());
+                const res = await axios.get(`${this.URL.feature_list}/${this.app_role_id}?n=${this.listenNodeId}&sort_order=desc`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
+                    arr = arr.map(item => ({
+                        ...item,
+                        selected: item.feature_scope_id ? true : false
+                    }));
                     this.dataTable = arr;
                     this.dataColumn = this.getColumnDefinition('hide_column');
+                    this.dataTableSelected = this.dataTable.filter(item => item.selected)
+                    this.isAllChecked = this.dataTable.every(item => item.selected);
                 } else {
                     this.dataTable = [];
                 }  
