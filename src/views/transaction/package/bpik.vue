@@ -124,12 +124,13 @@
     </div>
 </template>
 <script>
+import Master from "@/mixins/master"
 import TransactionMixin from "@/mixins/transaction.js"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 export default {
     name: "bpik-form",
-    mixins: [TransactionMixin],
+    mixins: [TransactionMixin, Master],
     components: {
         "input-general": InputGeneral,
         "selector": Selector,
@@ -351,7 +352,7 @@ export default {
             obj['pengirim'] = data.connote_shipper_name
             obj['penerima'] = data.connote_receiver_name
             obj['insured_goods_value'] = data.insured_goods_value
-            obj['origin'] = this.$store.getters.getUser['node_id'].node_code
+            obj['origin'] = this.listenCurrentNode.node_code
             obj['destination'] = data.connote_receiver_tariff_code
             obj['asuransi'] = data.is_insured
             obj['packing_kayu'] = data.is_packing_kayu // nnti di update

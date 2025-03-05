@@ -1061,7 +1061,7 @@ export default {
       }
     },
     listenNodeType() {
-      this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
+      this.nodeTypeCode = this.listenCurrentNode.node_type.node_type_code;
     },
     customFilter() {
       switch (this.nodeTypeCode) {

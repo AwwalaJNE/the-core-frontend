@@ -171,11 +171,8 @@ export default {
         listenLoading() {
             return this.loading;
         },
-        listenGetUserNodeList() {
-        return this.$store.getters.getUser.user_data['nodes'];
-        },
         nodeOrigin() {
-            return this.listenGetUserNodeList.length > 0 ? this.listenGetUserNodeList[0].node_origin : null;
+            return this.listenNode.length > 0 ? this.listenNode[0].origin_code : null;
         }
     },
     watch: {
