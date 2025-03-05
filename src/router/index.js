@@ -1728,8 +1728,8 @@ router.beforeEach((to, from, next) => {
   } else {
     if (
       !to?.meta?.permission ||
-      permissions.includes(to?.meta?.permission) || 
-      (Array.isArray(to.meta.permission) && to.meta.permission.some(perm => permissions.includes(perm))) 
+      permissions?.core.includes(to?.meta?.permission) || 
+      (Array.isArray(to.meta.permission) && to.meta.permission.some(perm => permissions?.core.includes(perm))) 
     ) {
       next();
     } else {

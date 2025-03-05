@@ -24,19 +24,28 @@ const Master = {
     },
     computed: {
         listenActiveUser() {
-            return this.$ls.get('user')
+            return this.$store.getters.getUserInfo.info_user;
+        },
+        listenNode() {
+            return this.$store.getters.getUserInfo.info_node;
+        },
+        listenPermissions() {
+            return this.$store.getters.getUserInfo.info_permission;
         },
         listenNodeId() {
-            return this.$store.getters.getUser['node_id'].value
+            return this.listenActiveUser?.currently_used_node;
+        },
+        listenCurrentNode() {
+            return this.listenNode.find(item => item.node_id === this.listenNodeId);
         },
         listenNodeCode() {
-            return this.$store.getters.getUser['node_id'].node_code
+            return this.listenCurrentNode?.node_code;
         },
         listenNodeIsCDM() {
-            return this.$store.getters.getUser['node_id'].is_cdm
+            return this.listenCurrentNode?.is_cdm;
         },
         listenUserRole() {
-            return this.$store.getters.getUser['user_data'].role
+            return this.listenActiveUser.role;
         }
     },
     methods: {

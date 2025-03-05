@@ -1061,7 +1061,7 @@ export default {
       }
     },
     listenNodeType() {
-      this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
+      this.nodeTypeCode = this.listenCurrentNode.node_type.node_type_code;
     },
     customFilter() {
       switch (this.nodeTypeCode) {
@@ -1083,8 +1083,8 @@ export default {
     },
 
     getMenuWithPermissions() {
-      const permissions = this.$ls.get("permissions") || [];
-      const userRole = this.$ls.get("user")?.role || {};
+      const permissions = this.listenPermissions?.core || [];
+      const userRole = this.listenUserRole || {};
       const { menus, menuRolePermission } = this;
       const foundPermission = menuRolePermission.find(permission => permission.role === userRole?.user_role_name);
       const filtered = [];

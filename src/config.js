@@ -5,6 +5,7 @@ const urlFOrmated = new URL(api);
 // console.log('process.env.VUE_APP_API',process.env.VUE_APP_API);
 export default {
     login: api + "login",
+    user_auth_data: api + "user-auth-data",
     user: api + "user",
     role: api + "role",
     permission: api + "permission",
