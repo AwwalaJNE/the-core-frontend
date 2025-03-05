@@ -42,7 +42,7 @@ export default {
         let user = this.$ls.get("user");
         let node = this.$ls.get("node_id");
         let permission = this.$ls.get("permissions");
-        let surcharge = this.$ls.get("config")["surcharge"];
+        let surcharge = this.$ls.get("config")?.["surcharge"];
         this.$store.dispatch(`SET_PACKAGE_PACKAGE_SURCHARGE_arrData`, surcharge != null ? surcharge : []);
         this.$store.dispatch(`SET_INFO_USER`, user);
         this.$store.dispatch(`SET_INFO_NODE`, node);

@@ -1560,9 +1560,7 @@ export default {
   computed: {
     listenColumn() {
       if (this.hideColumnKey) {
-        // TODO: RECHECK LATER -> REDIS USER
-        const userData = JSON.parse(localStorage.getItem('vuejs__user') || '{}')?.value || [];
-        const hiddenKeys = userData?.permission?.["CORE DATA TABLE"]?.find(v => v.feature === this.hideColumnKey)?.filter?.hidden_column || [];
+        const hiddenKeys = this.listenPermissions?.["CORE DATA TABLE"]?.find(v => v.feature === this.hideColumnKey)?.filter?.hidden_column || [];
         return this.dataColumn.filter(item => !hiddenKeys.includes(item.key));
       } else {
         return this.dataColumn;
