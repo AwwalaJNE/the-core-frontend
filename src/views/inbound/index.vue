@@ -493,7 +493,7 @@ export default {
 
         },
         getNodeTypeLogin(){
-          return this.listenActiveUser.nodes[0].node_type ? this.listenActiveUser.nodes[0].node_type.node_type_name.toLowerCase() : '';
+          return this.listenCurrentNode.node_type ? this.listenCurrentNode.node_type.node_type_name.toLowerCase() : '';
         },
         updateStatusInbound(val){
           this.$emit("updateStatusInbound", this.listenFormKey, val)
