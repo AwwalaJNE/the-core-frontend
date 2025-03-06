@@ -221,7 +221,7 @@ export default {
           {
             label: "CLAIM BURDEN",
             key: "k-CALIM-BURDEN",
-            title: "Claim an Burden"
+            title: "Claim and Burden"
           }
         ],
         navActive: "k-INFO",

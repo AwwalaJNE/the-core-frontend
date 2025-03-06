@@ -74,7 +74,7 @@
             :pageSize="pagination.page_size"
             :page="pagination.page"
             :limit="pagination.limit"
-            :hasAction="true"
+            :hasAction="false"
             :hasPagination="true"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
@@ -126,7 +126,7 @@ export default {
                 {
                     label: "Status",
                     key: "status",
-                    width: "sm"
+                    width: "xxxs"
                 },
                 {
                     label: "Proposed Claim (Rp)",
@@ -141,22 +141,22 @@ export default {
                 {
                     label: "Reason",
                     key: "reason",
-                    width: "sm"
+                    width: "xxxs"
                 },
                 {
                     label: "Burden (%)",
-                    key: "burden_percentage_1",
-                    width: "sm"
+                    key: "percentage_array",
+                    width: "xxxs"
                 },
                 {
                     label: "Burden PIC",
-                    key: "burdened_pic_1",
+                    key: "pic_array",
                     width: "sm"
                 },
                 {
                     label: "Burden Value (Rp)",
-                    key: "eta",
-                    width: "sm"
+                    key: "value_array",
+                    width: "md" 
                 },
                 {
                     label: "Created At",
@@ -261,8 +261,8 @@ export default {
                 this.pagination.limit,
                 this.pagination.page,
                 this.searchValue,
-                this.dateRange[0],
-                this.dateRange[1]
+                this.startDate,
+                this.endDate
             )
         },
         updateValue(key, val, info){
@@ -277,8 +277,13 @@ export default {
                     break;
                 case "date_range":
                     this.dateRange = val
-                    this.startDate = this.dateRange[0];
-                    this.endDate = this.dateRange[1];
+                    if(this.dateRange == null){
+                        this.startDate = '';
+                        this.endDate = '';
+                    }else{
+                        this.startDate = this.dateRange[0];
+                        this.endDate = this.dateRange[1];
+                    }
                     this.refresh()
                     break;
                 default:
@@ -315,21 +320,39 @@ export default {
             let searchBy = this.searchByClaimAndBurden; // Pakai ini langsung
             try {
                 const res = await axios.get(
-                    `${this.URL.claim_and_burden}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&status=${status}&reason=${reason}`,
-                    this.Helper.header()
+                `${this.URL.claim_and_burden}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&status=${status}&reason=${reason}`,
+                this.Helper.header()
                 );
 
-                if (res.data.data.length > 0) {
-                    let arr = res.data.data;
-                   
-                    this.dataTable = arr;
+                const result = res.data;
+
+                if (result.data && result.data.length > 0) {
+                    this.dataTable = result.data.map(item => ({
+                        ...item,
+                        pic_array: [
+                            item.burdened_pic_1,
+                            item.burdened_pic_2,
+                            item.burdened_pic_3
+                        ].filter(Boolean).join(', \n'), // Buat newline dan hapus null
+                        percentage_array: [
+                            item.burden_percentage_1,
+                            item.burden_percentage_2,
+                            item.burden_percentage_3
+                        ].filter(Boolean).join(', \n'),
+                        value_array: [
+                            this.formatCurrency(item.burden_value_1),
+                            this.formatCurrency(item.burden_value_2),
+                            this.formatCurrency(item.burden_value_3)
+                        ].filter(Boolean).join(', \n'),
+                        }));
+
                     this.pagination = {
-                        page: res.data.meta.current_page,
-                        limit: parseInt(res.data.meta.per_page, 10),
-                        page_size: res.data.meta.last_page,
+                        page: result.meta.current_page,
+                        limit: parseInt(result.meta.per_page, 10),
+                        page_size: result.meta.last_page,
                     };
                 } else {
-                    this.dataTable = [];
+                this.dataTable = [];
                 }
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
@@ -364,6 +387,10 @@ export default {
                     break;
             }
         },
+        formatCurrency(value) {
+        if (!value) return "Rp. 0";
+        return "Rp. " + Number(value).toLocaleString("id-ID");
+        }
        
        
     },
