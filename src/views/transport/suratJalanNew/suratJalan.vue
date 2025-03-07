@@ -1,6 +1,7 @@
 <template>
   <div>
-    <table-master
+    <table-master 
+      hideColumnKey="surat-jalan"
       :dataTable="dataTable"
       :dataColumn="datacolumn"
       :tableLoading="loading"

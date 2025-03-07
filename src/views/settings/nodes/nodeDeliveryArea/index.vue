@@ -44,6 +44,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="node-delivery-area" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

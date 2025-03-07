@@ -93,6 +93,7 @@
             <template v-if="dataTable.length > 0">
                 <transition name="slide-fade">
                     <table-master 
+                    hideColumnKey="upload-transaction" 
                     :dataTable="dataTable" 
                     :dataColumn="datacolumn" 
                     :hasAction="false"

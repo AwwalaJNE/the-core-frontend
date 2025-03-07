@@ -12,7 +12,8 @@
           <span class="subtitle" align="right"><p>{{total_bag}}</p></span>
           <span class="title" align="right"><h4>Unbagged</h4></span>
         </div>
-        <table-master
+        <table-master 
+            hideColumnKey="open-bag-master"
             :dataTable="dataTableBag"
             :dataColumn="datacolumn"
             :tableLoading="loading"
@@ -34,7 +35,8 @@
           <span class="subtitle" align="right"><p>{{ total_confirmed }}/{{ total_confirmed + total_unconfirmed }}</p></span>
           <span class="title" align="right"><h4>Item Scanned</h4></span>
         </div>
-        <table-master
+        <table-master 
+            hideColumnKey="open-bag-detail"
             :dataTable="dataTable"
             :dataColumn="datacolumn"
             :tableLoading="loading"

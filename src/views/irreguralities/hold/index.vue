@@ -71,6 +71,7 @@
 
                 <div class="mt-05">
                     <table-master 
+                    hideColumnKey="irregularity-hold" 
                     :dataTable="dataTable" 
                     :dataColumn="datacolumn" 
                     :tableLoading="loading"

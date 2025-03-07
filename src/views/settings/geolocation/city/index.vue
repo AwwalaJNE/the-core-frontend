@@ -26,6 +26,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+        hideColumnKey="geolocation-city" 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

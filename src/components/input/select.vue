@@ -1,6 +1,6 @@
 <template>
     <div>
-        <template v-if="DataArr.length > 0">
+        <template>
             <inputan :name="name" :rules="rules">
                 <template v-slot:inputan="props">
                     <!-- <vs-select

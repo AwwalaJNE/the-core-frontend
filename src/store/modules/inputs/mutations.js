@@ -178,6 +178,94 @@ export default {
       state.user.dynamicinputcomponent_user_additional_role.arrData = []
   },
 
+  SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE(state, payload) {
+    let arr = state.user.dynamicinputcomponent_user_other_application_role.inputs
+    let final = []
+    if (payload && payload.length > 0) {
+      let obj = {}
+      let template = arr
+
+      payload.map(item => {
+        let newArr = []
+        template.map(tmpl => {
+          if (item.hasOwnProperty(tmpl.key.toLowerCase())) {
+            let val = item[tmpl.key.toLowerCase()]
+            let newObj = {}
+            newObj['key'] = tmpl.key
+            newObj['typeInput'] = tmpl.typeInput
+            newObj['value'] = val
+
+            newArr.push(newObj)
+          } else if (item.hasOwnProperty("inputs")) {
+            newArr = item["inputs"]
+          }
+        })
+
+        let newData = { 'inputs': [] }
+        newData['inputs'] = newArr
+        final.push(newData)
+      })
+    }
+    state.user.dynamicinputcomponent_user_other_application_role.hasOwnProperty('arrData') ?
+      state.user.dynamicinputcomponent_user_other_application_role.arrData = final :
+      state.user.dynamicinputcomponent_user_other_application_role.arrData = []
+  },
+
+  SET_USER_USER_APPLICATION_NAME(state, payload) {
+    state.user.user_application_name.value = payload
+  },
+  SET_USER_USER_APPLICATION_NAME_ValueData(state, payload) {
+    state.user.user_application_name.valueData = payload
+  },
+  SET_USER_USER_APPLICATION_NAME_ArrData(state, payload) {
+    state.user.user_application_name.hasOwnProperty('arrData') ?
+      state.user.user_application_name.arrData = payload :
+      state.user.user_application_name.arrData = []
+  },
+
+  SET_USER_USER_APPLICATION_ROLE(state, payload) {
+    state.user.user_application_role.value = payload
+  },
+  SET_USER_USER_APPLICATION_ROLE_ValueData(state, payload) {
+    state.user.user_application_role.valueData = payload
+  },
+  SET_USER_USER_APPLICATION_ROLE_ArrData(state, payload) {
+    state.user.user_application_role.hasOwnProperty('arrData') ?
+      state.user.user_application_role.arrData = payload :
+      state.user.user_application_role.arrData = []
+  },
+  SET_USER_USER_APPLICATION_ROLE_isSingleInput(state, payload) {
+    state.user.user_application_role.isSingleInput = payload
+  },
+
+
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME(state, payload) {
+    state.user.helper_dynamic_user_application_name.value = payload
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ValueData(state, payload) {
+    state.user.helper_dynamic_user_application_name.valueData = payload
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ArrData(state, payload) {
+    state.user.helper_dynamic_user_application_name.hasOwnProperty('arrData') ?
+      state.user.helper_dynamic_user_application_name.arrData = payload :
+      state.user.helper_dynamic_user_application_name.arrData = []
+  },
+
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE(state, payload) {
+    state.user.helper_dynamic_user_application_role.value = payload
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ValueData(state, payload) {
+    state.user.helper_dynamic_user_application_role.valueData = payload
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ArrData(state, payload) {
+    state.user.helper_dynamic_user_application_role.hasOwnProperty('arrData') ?
+      state.user.helper_dynamic_user_application_role.arrData = payload :
+      state.user.helper_dynamic_user_application_role.arrData = []
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_isSingleInput(state, payload) {
+    state.user.user_application_role.isSingleInput = payload
+  },
+
   // ==== user role ====
   SET_ROLE_USER_ROLE_NAME(state, payload) {
     state.role.user_role_name.value = payload
@@ -4309,6 +4397,49 @@ export default {
   },
 
   //====== END COURIER DELIVERY AREA SETTINGS ======//
+
+
+  //====== APPLICATION ROLE SETTINGS ======//
+
+  SET_APPLICATION_ROLE_APP(state, payload) {
+    state.application_role.app.value = payload
+  },
+  SET_APPLICATION_ROLE_APP_ValueData(state, payload) {
+    state.application_role.app.valueData = payload
+  },
+  SET_APPLICATION_ROLE_APP_ArrData(state, payload) {
+    state.application_role.app.hasOwnProperty('arrData') ?
+    state.application_role.app.arrData = payload :
+    state.application_role.app.arrData = []
+  },
+
+
+  SET_APPLICATION_ROLE_APP_ROLE_NAME(state, payload) {
+    state.application_role.app_role_name.value = payload
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_NAME_ValueData(state, payload) {
+    state.application_role.app_role_name.valueData = payload
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_NAME_ArrData(state, payload) {
+    state.application_role.app_role_name.hasOwnProperty('arrData') ?
+    state.application_role.app_role_name.arrData = payload :
+    state.application_role.app_role_name.arrData = []
+  },
+
+
+  SET_APPLICATION_ROLE_APP_ROLE_CODE(state, payload) {
+    state.application_role.app_role_code.value = payload
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_CODE_ValueData(state, payload) {
+    state.application_role.app_role_code.valueData = payload
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_CODE_ArrData(state, payload) {
+    state.application_role.app_role_code.hasOwnProperty('arrData') ?
+    state.application_role.app_role_code.arrData = payload :
+    state.application_role.app_role_code.arrData = []
+  },
+
+  //====== END APPLICATION ROLE SETTINGS ======//
   
   
   SET_BAG_IS_AUTO_OPEN_BAG(state, payload) {

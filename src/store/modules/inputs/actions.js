@@ -43,6 +43,18 @@ export default {
   SET_USER_USER_EXPIRY_ADDITIONAL_ROLE({ commit }, payload) {
     commit('SET_USER_USER_EXPIRY_ADDITIONAL_ROLE', payload)
   },
+  SET_USER_USER_APPLICATION_ROLE({ commit }, payload) {
+    commit('SET_USER_USER_APPLICATION_ROLE', payload)
+  },
+  SET_USER_USER_APPLICATION_NAME({ commit }, payload) {
+    commit('SET_USER_USER_APPLICATION_NAME', payload)
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE', payload)
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME', payload)
+  },
   SET_USER_USER_NODE_ID({ commit }, payload) {
     commit('SET_USER_USER_NODE_ID', payload)
   },
@@ -51,6 +63,9 @@ export default {
   },
   SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE({ commit }, payload) {
     commit('SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE', payload)
+  },
+  SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE({ commit }, payload) {
+    commit('SET_USER_DYNAMICINPUTCOMPONENT_USER_OTHER_APPLICATION_ROLE', payload)
   },
   SET_USER_USER_NAME_ValueData({ commit }, payload) {
     commit('SET_USER_USER_NAME_ValueData', payload)
@@ -95,6 +110,41 @@ export default {
   },
   SET_USER_USER_EXPIRY_ADDITIONAL_ROLE_ValueData({ commit }, payload) {
     commit('SET_USER_USER_EXPIRY_ADDITIONAL_ROLE_ValueData', payload)
+  },
+  SET_USER_USER_APPLICATION_NAME_ValueData({ commit }, payload) {
+    commit('SET_USER_USER_APPLICATION_NAME_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_USER_USER_APPLICATION_NAME_ArrData({ commit }, payload) {
+    commit('SET_USER_USER_APPLICATION_NAME_ArrData', payload)
+  },
+  SET_USER_USER_APPLICATION_ROLE_ValueData({ commit }, payload) {
+    commit('SET_USER_USER_APPLICATION_ROLE_ValueData', payload)
+  },
+  SET_USER_USER_APPLICATION_ROLE_ArrData({ commit }, payload) {
+    commit('SET_USER_USER_APPLICATION_ROLE_ArrData', payload)
+  },
+  SET_USER_USER_APPLICATION_ROLE_isSingleData({ commit }, payload) {
+    commit('SET_USER_USER_APPLICATION_ROLE_isSingleData', payload)
+  },
+
+
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ValueData({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ArrData({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_NAME_ArrData', payload)
+  },
+
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ValueData({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ValueData', payload)
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ArrData({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_ArrData', payload)
+  },
+  SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_isSingleData({ commit }, payload) {
+    commit('SET_USER_HELPER_DYNAMIC_USER_APPLICATION_ROLE_isSingleData', payload)
   },
 
   SET_USER_EMPLOYEE_ID({ commit }, payload) {
@@ -3964,6 +4014,44 @@ export default {
   },
 
   //====== END COURIER DELIVERY AREA SETTINGS ======//
+
+
+
+  //====== APPLICATION ROLE SETTINGS ======//
+
+  SET_APPLICATION_ROLE_APP({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ValueData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ValueData', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ArrData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ArrData', payload)
+  },
+  
+
+  SET_APPLICATION_ROLE_APP_ROLE_NAME({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_NAME', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_NAME_ValueData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_NAME_ValueData', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_NAME_ArrData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_NAME_ArrData', payload)
+  },
+
+
+  SET_APPLICATION_ROLE_APP_ROLE_CODE({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_CODE', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_CODE_ValueData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_CODE_ValueData', payload)
+  },
+  SET_APPLICATION_ROLE_APP_ROLE_CODE_ArrData({ commit }, payload) {
+    commit('SET_APPLICATION_ROLE_APP_ROLE_CODE_ArrData', payload)
+  },
+
+  //====== END APPLICATION ROLE SETTINGS ======//
 
 
 

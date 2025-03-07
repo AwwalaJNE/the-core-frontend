@@ -5,6 +5,7 @@ const urlFOrmated = new URL(api);
 // console.log('process.env.VUE_APP_API',process.env.VUE_APP_API);
 export default {
     login: api + "login",
+    user_auth_data: api + "user-auth-data",
     user: api + "user",
     role: api + "role",
     permission: api + "permission",
@@ -294,6 +295,9 @@ export default {
     // Node List
     node_list: api + 'node-list',
 
+    // Customer List
+    customer_list: api + 'customer-list',
+
     // User List
     user_list: api + 'user-list',
 
@@ -375,5 +379,23 @@ export default {
     district_list: api + 'district-list',
 
     // Subdistrict List
-    subdistrict_list: api + 'subdistrict-list'
+    subdistrict_list: api + 'subdistrict-list',
+
+    // Delivery Zone List
+    delivery_zone_list: api + 'delivery-zone-list',
+
+    // Application Role
+    application_role: api + 'application-role',
+
+    // Application Role List
+    application_role_list: api + 'application-role-list',
+
+    // Application List
+    application_list: api + 'application-list',
+
+    // Feature List
+    feature_list: api + 'feature-list',
+
+    // Column List
+    column_list: api + 'column-list',
 }

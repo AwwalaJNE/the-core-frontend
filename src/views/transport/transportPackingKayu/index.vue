@@ -19,6 +19,7 @@
 
         <div class="box">
             <table-master 
+            hideColumnKey="transport-packing-kayu" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

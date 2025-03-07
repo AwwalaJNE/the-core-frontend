@@ -65,7 +65,8 @@
 
         <vs-row justify="center">
             <vs-col xs="12" class="table-col">
-                <table-master
+                <table-master 
+                    hideColumnKey="trace-bag-info"
                     :dataTable="dataTable"
                     :dataColumn="datacolumn"
                     :tableLoading="loading"

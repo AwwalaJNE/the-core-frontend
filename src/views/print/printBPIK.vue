@@ -170,7 +170,7 @@ export default {
             let printBPIK = this.$ls.get('printBPIK')
             let date = new Date()
             this.date = moment(date).format("DD MMM YYYY/h:mm")
-            this.counter = this.$ls.get('node_id')['label'] || ''
+            this.counter = this.listenCurrentNode?.node_name || ''
             this.pengirim = printBPIK['pengirim'] || ''
             this.penerima = printBPIK['penerima'] || ''
             this.no_connote = printBPIK['no_connote'] || '-'

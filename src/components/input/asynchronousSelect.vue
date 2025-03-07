@@ -11,29 +11,34 @@
     }
 -->
 <template>
-<div style="text-align:left;" class="el-select-async">
-    <span class="c-label">{{name}}</span>
-    <el-select
-        v-model="value"
-        multiple
-        filterable
-        remote
-        placeholder="Please enter a keyword"
-        :remote-method="asynchronousSelect"
-        @change="handleSelect"
-        :loading="loading"
-        :disabled="listenIsDisabled"
-    >
-            <template v-if="options.length > 0">
-                <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-                </el-option>
-            </template>
-    </el-select>
-</div>
+    <inputan :name="name" :rules="rules">
+        <template v-slot:inputan="props">
+            <div style="text-align:left;" class="el-select-async">
+                <span class="c-label">{{name}}</span>
+                <el-select
+                    v-model="value"
+                    :multiple="!listenIsSingleInput"
+                    filterable
+                    remote
+                    placeholder="Please enter a keyword"
+                    :remote-method="asynchronousSelect"
+                    @change="handleSelect"
+                    @focus="inputFocus"
+                    :loading="loading"
+                    :disabled="listenIsDisabled"
+                >
+                        <template v-if="options.length > 0">
+                            <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </template>
+                </el-select>
+            </div>
+        </template>
+    </inputan>
 </template>
 <script>
 import axios from "axios";
@@ -46,6 +51,7 @@ export default {
         name: String,
         rules: String,
         selectedValue: [String, Number, Array],
+        dataObj: [Object, String, Array],
         valueData: Array,
         querySearch: Function,
         formKey: String,
@@ -54,7 +60,10 @@ export default {
         selectLabel: String,
         selectValue: String,
         url: String,
-        disabled: Boolean
+        disabled: Boolean,
+        isSingleInput: Boolean,
+        isNestedData: Boolean,
+        nestedKey: String
     },
     components: {
         "inputan": Inputan
@@ -71,6 +80,9 @@ export default {
         },
         listenIsDisabled() {
             return this.disabled ? this.disabled : false
+        },
+        listenIsSingleInput() {
+            return this.isSingleInput ? this.isSingleInput : false
         },
     },
     data() {
@@ -109,37 +121,54 @@ export default {
                 let result = res.data.data
                 let suggestions = [];
 
-                result.length > 0 && result.map(item => {
-                    if (this.selectLabel && this.selectValue){
-                        suggestions.push({
-                            value: item[this.selectValue],
-                            label: item[this.selectLabel],
-                            data: item
-                        });
-                    } else if(item.hasOwnProperty('node_name')) {
-                        suggestions.push({
-                            value: item['node_id'],
-                            label: item['node_name'],
-                            data: item
-                        });
-                    } else if(item.hasOwnProperty('user_name')) {
-                        suggestions.push({
-                            value: item['user_id'],
-                            label: item['user_name'],
-                            data: item
-                        });
-                    } else if (typeof item === 'string') {
-                        suggestions.push({
-                            value: item,
-                            label: item,
-                            data: item
-                        });
-                    }
-                })
+                if (this.isNestedData) {
+                    result.length > 0 && result[0][this.nestedKey].map(item => {
+                        if (this.selectLabel && this.selectValue){
+                            suggestions.push({
+                                value: item[this.selectValue],
+                                label: item[this.selectLabel],
+                                data: item
+                            });
+                        }
+                    })
+                    
+                    this.options = suggestions
+                    // this.$store.dispatch("SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC_ArrData", suggestions.length > 0 ? suggestions : [{"label": null, "value": null, "data": {}}])
+                    this.loading = false
+                } else {
+                    result.length > 0 && result.map(item => {
+                        if (this.selectLabel && this.selectValue){
+                            suggestions.push({
+                                value: item[this.selectValue],
+                                label: item[this.selectLabel],
+                                data: item
+                            });
+                        } else if(item.hasOwnProperty('node_name')) {
+                            suggestions.push({
+                                value: item['node_id'],
+                                label: item['node_name'],
+                                data: item
+                            });
+                        } else if(item.hasOwnProperty('user_name')) {
+                            suggestions.push({
+                                value: item['user_id'],
+                                label: item['user_name'],
+                                data: item
+                            });
+                        } else if (typeof item === 'string') {
+                            suggestions.push({
+                                value: item,
+                                label: item,
+                                data: item
+                            });
+                        }
+                    })
+                    
+                    this.options = suggestions
+                    // this.$store.dispatch("SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC_ArrData", suggestions.length > 0 ? suggestions : [{"label": null, "value": null, "data": {}}])
+                    this.loading = false
+                }
                 
-                this.options = suggestions
-                // this.$store.dispatch("SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC_ArrData", suggestions.length > 0 ? suggestions : [{"label": null, "value": null, "data": {}}])
-                this.loading = false
             })
             .catch(error => {
                 this.loading = false
@@ -168,7 +197,7 @@ export default {
 
 
 
-            this.$emit("updateValue", this.listenFormKey, item, info)
+            this.$emit("updateValue", this.listenFormKey, item, info, this.dataObj)
         }
     },
     mounted() {

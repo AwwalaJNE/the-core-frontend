@@ -146,9 +146,6 @@ export default {
       }
 
       return progress;
-    },
-    getUserData() {
-      return this.$store.getters.getUser.user_data;
     }
   },
   watch: {
@@ -207,7 +204,7 @@ export default {
         this.openNotification("success", null, "Success!", "Password Updated!");
 
         this.$ls.set("is_first_login", false);
-        const user = this.getUserData;
+        const user = this.listenActiveUser;
         user.last_password_updated_at = res.data.data.last_password_updated_at;
         this.$store.dispatch(`SET_USER_DATA`, user);
 
@@ -227,7 +224,7 @@ export default {
     async fetchProfileData() {
       this.showLoading();
       try {
-        this.profileData = this.getUserData
+        this.profileData = this.listenActiveUser
       } catch (err) {
         this.openNotification(
           "danger",

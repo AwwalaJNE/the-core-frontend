@@ -8,6 +8,7 @@
 <template>
     <div>
         <table-master 
+        hideColumnKey="inventory-bag" 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

@@ -65,7 +65,7 @@ const TransactionMixin = {
     },
     methods: {
         async autoApply(){
-            let node_code = this.$store.getters.getUser['node_id'].node_code
+            let node_code = this.$store.getters.getUserInfo.info_node[0].node_code
             let tempSurchargeActualWeight = 0
 
             if(node_code !== undefined) {

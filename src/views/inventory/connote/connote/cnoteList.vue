@@ -7,7 +7,8 @@
 
 <template>
     <div>
-        <table-master
+        <table-master 
+            hideColumnKey="inventory-connote"
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

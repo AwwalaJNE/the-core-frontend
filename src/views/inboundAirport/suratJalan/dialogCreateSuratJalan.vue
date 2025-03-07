@@ -26,7 +26,8 @@
                     :isDisabled="true"
                 />
                 <div class="mt-2 mb-2">
-                    <table-master
+                    <table-master 
+                        hideColumnKey="dialog-surat-jalan-airport"
                         :dataTable="dataTable"
                         :dataColumn="datacolumn"
                         :hasAction="false"

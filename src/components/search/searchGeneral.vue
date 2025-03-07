@@ -86,7 +86,7 @@ export default {
           return this.loading
         },
         listenUserId() {
-            return this.$ls.get('user')['user_id'];
+            return this.listenActiveUser['user_id'];
         }
     },
     methods: {

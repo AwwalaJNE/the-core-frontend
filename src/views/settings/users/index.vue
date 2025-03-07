@@ -67,6 +67,7 @@
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="8">
                        <div class="box">
                            <table-master 
+                                hideColumnKey="setting-all-user" 
                                 :dataTable="permissionDisplay" 
                                 :dataColumn="datacolumn" 
                                 :tableLoading="loadingPermission"

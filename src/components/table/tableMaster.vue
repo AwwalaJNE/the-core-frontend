@@ -76,6 +76,16 @@
               <div style="margin-left: 10px;">All</div>
             </vs-th>
           </template>
+          <template v-if="listenIsMultipleSelectWithIndex">
+            <vs-th>
+              <vs-checkbox
+                v-model="isAllChecked"
+                :indeterminate="selected.length == listenDataTable.length"
+                @change="onAllCheckWithIndexChange"
+              />
+              <div style="margin-left: 10px;">All</div>
+            </vs-th>
+          </template>
 
           <template v-if="listenColumn.length > 0">
             <template v-if="hasId == true">
@@ -97,6 +107,11 @@
               </template>
             </template>
             <template v-if="hasAction == true">
+              <vs-th class="action">
+                Action
+              </vs-th>
+            </template>
+            <template v-if="hasDuplicateEditRemove == true">
               <vs-th class="action">
                 Action
               </vs-th>
@@ -176,6 +191,15 @@
                   v-model="selected"
                   :val="item"
                   @change="updateSelected"
+                />
+              </vs-td>
+            </template>
+            <template v-if="listenIsMultipleSelectWithIndex">
+              <vs-td checkbox class="xs">
+                <vs-checkbox
+                  v-model="selected"
+                  :val="item"
+                  @change="updateSelected2(item)"
                 />
               </vs-td>
             </template>
@@ -473,6 +497,82 @@
                         ></i>
                       </template>
                     </template>
+                    <template
+                      v-if="
+                        column.typeInput !== undefined &&
+                          column.typeInput.toLowerCase() === 'multi-select-by'
+                      "
+                    >
+                      <template v-if="!item.filter">
+                        <vs-button
+                          shadow
+                          relief
+                          :active="true"
+                          @click="handleAddData(item)"
+                        >
+                          <i class="bx bx-plus"></i> Add Filter
+                        </vs-button>
+                      </template>
+                      <template v-else>
+                        <vs-row
+                          v-for="(filterItem, filterIndex) in item.filter"
+                          :key="filterIndex"
+                          align="center"
+                          justify="space-between"
+                        >
+                          <vs-col xs="6" sm="3" lg="3">
+                            <selector
+                              :name="column.selector.label" 
+                              :rules="column.selector.rules" 
+                              :formKey="column.selector.key"
+                              :valueData="column.selector.data"
+                              :selectedValue="filterItem[column.selector.key]"
+                              :dataObj="item"
+                              @updateValue="updateValue2(filterIndex, ...arguments)"
+                            />
+                          </vs-col>
+                          <vs-col xs="6" sm="3" lg="7">
+                            <asynchronousSelect 
+                              :ref="column.multipleSelector.key"
+                              :name="column.multipleSelector.label" 
+                              :rules="column.multipleSelector.rules" 
+                              :formKey="column.multipleSelector.key"
+                              :selectedValue="filterItem[column.multipleSelector.key]"
+                              :typeInput="column.multipleSelector.typeInput"
+                              :url="column.multipleSelector.autoCompleteUrl"
+                              :selectLabel="column.multipleSelector.selectLabel"
+                              :selectValue="column.multipleSelector.selectValue"
+                              :dataObj="item"
+                              @inputFocus="inputFocus(filterIndex, item, ...arguments)"
+                              @updateValue="updateValue2(filterIndex, ...arguments)"
+                            />
+                          </vs-col>
+                          <vs-col  xs="6" sm="3" lg="2">
+                            <vs-button
+                              danger
+                              border
+                              style="margin-top: 20px;"
+                              @click="handleRemoveData(item, filterIndex)"
+                            >
+                              <i class="bx bx-minus"></i> Del
+                            </vs-button>
+                          </vs-col>
+                        </vs-row>
+                        <vs-row v-if="
+                          column.typeInputDetail.toLowerCase() === 'others' || 
+                          column.typeInputDetail.toLowerCase() === 'hide_column' && item.filter.length === 0
+                        ">
+                          <vs-button
+                            shadow
+                            relief
+                            :active="true"
+                            @click="handleAddData(item)"
+                          >
+                            <i class="bx bx-plus"></i> Add Filter
+                          </vs-button>
+                        </vs-row>
+                      </template>
+                    </template>
                   </vs-td>
                 </template>
                 <template
@@ -697,6 +797,47 @@
             <template v-if="hasAction == true">
               <vs-td class="action">
                 <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      flat
+                      size="small"
+                      :active="true"
+                      @click="actionUpdate(item)"
+                    >
+                      <span>Edit</span>
+                    </vs-button>
+                  </vs-col>
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      danger
+                      size="small"
+                      flat
+                      :active="true"
+                      type="submit"
+                      @click="actionRemove(item)"
+                    >
+                      <span>Remove</span>
+                    </vs-button>
+                  </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
+            <template v-if="hasDuplicateEditRemove == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      flat
+                      size="small"
+                      :active="true"
+                      @click="actionDuplicate(item)"
+                    >
+                      <span>Duplicate</span>
+                    </vs-button>
+                  </vs-col>
                   <vs-col w="4">
                     <vs-button
                       block
@@ -1291,6 +1432,8 @@ import Pagination from "@/components/pagination/pagination.vue";
 import Checkbox from "@/components/input/checkbox.vue";
 import InputGeneral from "@/components/input/general";
 import Selector from "@/components/input/select";
+import asynchronousSelect from "@/components/input/asynchronousSelect"
+import iterateSelector from "@/components/input/iterateInput2"
 import AutoComplete from "@/components/input/autoComplete";
 import { Dialog } from "element-ui";
 export default {
@@ -1301,10 +1444,13 @@ export default {
     checkbox: Checkbox,
     "input-general": InputGeneral,
     selector: Selector,
+    "asynchronousSelect": asynchronousSelect,
+    "iterate-selector": iterateSelector,
     "auto-complete": AutoComplete,
     "el-dialog": Dialog,
   },
   props: {
+    hideColumnKey: String,
     dataTable: Array,
     dataColumn: Array,
     tableLoading: Boolean,
@@ -1313,6 +1459,10 @@ export default {
     limit: Number,
     hasAction: Boolean,
     scrollableAndStaticHeader: Boolean,
+    hasAutoCompleteUrl: String,
+    hasSelectLabel: String,
+    hasSelectValue: String,
+    hasDuplicateEditRemove: Boolean,
     hasPagination: Boolean,
     expandable: Boolean,
     hasLinkedDanger: String,
@@ -1342,7 +1492,10 @@ export default {
     dynamicCancelColumn: String,
     removeDanger: Boolean,
 
+    isAllChecked: Boolean, 
+    
     isMultipleSelect: Boolean,
+    isMultipleSelectWithIndex: Boolean,
     isMultipleSelectColoum: Boolean,
     selectedData: Array,
     isSearchAble: Boolean,
@@ -1361,6 +1514,10 @@ export default {
     checkDepositMethod: Boolean,
 
     allCheckCallback: {
+      type: Function,
+      default: undefined,
+    },
+    isAllCheckedCheckCallback: {
       type: Function,
       default: undefined,
     },
@@ -1402,7 +1559,13 @@ export default {
   },
   computed: {
     listenColumn() {
-      return this.dataColumn;
+      if (this.hideColumnKey) {
+        const hiddenKeys = this.listenPermissions?.["CORE DATA TABLE"]?.find(v => v.feature === this.hideColumnKey)?.filter?.hidden_column || [];
+        return this.dataColumn.filter(item => !hiddenKeys.includes(item.key));
+      } else {
+        return this.dataColumn;
+      }
+      
     },
     listenDataTable() {
 
@@ -1417,6 +1580,9 @@ export default {
     },
     listCustomActionList() {
       return this.customActionList || [];
+    },
+    listenIsMultipleSelectWithIndex() {
+      return this.isMultipleSelectWithIndex;
     },
     listenIsMultipleSelect() {
       return this.isMultipleSelect;
@@ -1506,8 +1672,18 @@ export default {
     actionPagination(val) {
       this.$emit("actionPagination", val);
     },
+    handleAddData(val) {
+      this.selected.push(val);
+      this.$emit("handleAddData", val);
+    },
+    handleRemoveData(val, index) {
+      this.$emit("handleRemoveData", val, index);
+    },
     actionUpdate(val, key) {
       this.$emit("actionUpdate", val, key);
+    },
+    actionDuplicate(val, key) {
+      this.$emit("actionDuplicate", val, key);
     },
     actionPopup(val, key) {
       this.$emit("actionPopup", val, key);
@@ -1570,6 +1746,9 @@ export default {
       }
       this.$emit("inputFocus", info);
     },
+    inputFocus(index, val, info) {
+      this.$emit("inputFocus", index, val, info);
+    },
 
     updateValue(key, val, info = {}, dataObj) {
       if (this.listenIsMultipleSelect == true && dataObj != undefined) {
@@ -1581,6 +1760,9 @@ export default {
       }
       this.$emit("updateValue", key, val, info, dataObj);
     },
+    updateValue2(index, key, val, info = {}, dataObj) {
+      this.$emit("updateValue", index, key, val, info, dataObj);
+    },
     updateFormValue(value, formKey) {
 
       // Kirim aksi (action) ke Vuex store
@@ -1590,6 +1772,10 @@ export default {
     updateSelected() {
 
       this.$emit("updateSelected", this.selected);
+    },
+
+    updateSelected2(val) {
+      this.$emit("updateSelected2", val, this.selected);
     },
 
     handleEdit(val) {
@@ -1615,6 +1801,14 @@ export default {
 
       if (typeof this.allCheckCallback === "function") {
         this.allCheckCallback(this.allCheck, this.selected);
+      }
+    },
+    
+    onAllCheckWithIndexChange(val) {
+      this.selected = this.$vs.checkAll(this.selected, this.listenDataTable);
+
+      if (typeof this.isAllCheckedCheckCallback === "function") {
+        this.isAllCheckedCheckCallback(this.isAllChecked);
       }
     },
 

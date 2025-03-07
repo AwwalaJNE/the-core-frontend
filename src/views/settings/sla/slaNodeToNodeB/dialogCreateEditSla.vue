@@ -128,7 +128,7 @@ export default {
     },
     methods: {
         checkPermission(permission) {
-            const permissions = this.$ls.get('permissions') || [];
+            const permissions = this.listenPermissions?.core || [];
             return permissions.includes(permission);
         },
         formData(form){

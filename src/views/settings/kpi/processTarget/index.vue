@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="kpi-process-target" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"
