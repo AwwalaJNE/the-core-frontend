@@ -104,6 +104,16 @@
                             </vs-col>
                           </vs-row>
                         </template>
+                        <template v-if="navActive === 'k-CALIM-BURDEN'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                <claim-and-burden 
+                                    :connoteNumber="connote_number"
+                                    :koliNumber="koli_number"
+                                />
+                            </vs-col>
+                          </vs-row>
+                        </template>
                     </div>
                 </vs-col>
                 
@@ -122,6 +132,7 @@ import selectorDetailVue from "@/views/inventory/connote-detail/connote/selector
 import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
 import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
 import connoteCustomerView from "@/views/inventory/connote-detail/connote/connoteCustomerView.vue";
+import claimAndBurden from "@/views/inventory/connote-detail/connote/claimBurden.vue";
 
 
 export default {
@@ -131,6 +142,7 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "connote-customer-view": connoteCustomerView,
+        "claim-and-burden": claimAndBurden,
         "search-input": SearchInput,
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
@@ -159,6 +171,11 @@ export default {
                     label: "CUSTOMER VIEW",
                     key: "k-CUSTOMER-VIEW",
                     title: "Connote's Customer View"
+                },
+                {
+                    label: "CLAIM BURDEN",
+                    key: "k-CALIM-BURDEN",
+                    title: "Claim and Burden"
                 }
             ],
             navActive: "k-INFO",
