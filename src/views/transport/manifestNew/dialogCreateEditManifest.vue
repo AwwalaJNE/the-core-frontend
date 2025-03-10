@@ -2,6 +2,7 @@
     <dialog-master
         width="lg"
         :actived="listenActive"
+        :loading="listenLoading"
         :closeDialog="cancel"
         class="custom-width"
     >
@@ -239,6 +240,9 @@ export default {
         },
         listenUserRoleName() {
             return this.listenUserRole.user_role_name
+        },
+        listenLoading() {
+            return this.loading || this.loadingDetail || this.loadingConfirmApprove;
         }
     },
     watch: {
@@ -653,11 +657,17 @@ export default {
                     this.dataTable.forEach(data => {
                         data.button_status = { remove: false };
                     });
+                } else {
+                    this.isDisabled = false;
+                    this.isDisabledApprove = false;
+                    
+                    this.dataTable.forEach(data => {
+                        data.button_status = { remove: true };
+                    });
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
             } finally {
-                this.$emit('refresh');
                 this.loadingDetail = false;
             }
         },
