@@ -68,12 +68,12 @@ export default {
                 page: 1
             },
             tempSearch: '',
-            searchPlaceholder: "Search All Application",
+            searchPlaceholder: "Search All App Role",
             searchBy: "ALL_APPLICATION",
             searchByDataType: false,
             searchParams: [
                 {
-                    label: "All Application",
+                    label: "All App Role",
                     value: "ALL_APPLICATION"
                 },
                 {

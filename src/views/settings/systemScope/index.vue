@@ -164,7 +164,7 @@ export default {
             } finally {
                 this.$refs.role_permission.loading = false;
                 this.$refs.role_permission.resetChangesForm();
-                this.refresh();
+                this.$refs.role_permission.refresh();
             }
         },
         openDialog(){
