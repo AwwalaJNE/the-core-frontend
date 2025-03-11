@@ -302,40 +302,52 @@ export default {
                     { label: "HIDDEN_COLUMN", value: "HIDDEN_COLUMN" }
                 ];
 
-            return [
-                {
-                    label: "Menu",
-                    key: "feature_name",
-                    type: "text",
-                    width: "sm"
-                },
-                {
-                    label: "Access Data",
-                    key: "access_data",
-                    type: "inputan",
-                    typeInput: "multi-select-by",
-                    typeInputDetail,
-                    selector: {
-                        label: "Reference Entity*",
-                        key: "reference_entity",
-                        rules: "required",
-                        typeInput: 'selector',
-                        value: '',
-                        data: referenceEntities,
-                    },
-                    multipleSelector: {
-                        label: "Reference Value*",
-                        key: "reference_value",
-                        rules: "required",
-                        typeInput: 'multipleSelector',
-                        value: '',
-                        autoCompleteUrl: '',
-                        selectLabel: '',
-                        selectValue: ''
-                    },
-                    width: "auto",
+                if (this.app.toLowerCase().includes('dashboard')) {
+                    return [
+                        {
+                            label: "Menu",
+                            key: "feature_name",
+                            type: "text",
+                            width: "sm"
+                        },
+                        {
+                            label: "Access Data",
+                            key: "access_data",
+                            type: "inputan",
+                            typeInput: "multi-select-by",
+                            typeInputDetail,
+                            selector: {
+                                label: "Reference Entity*",
+                                key: "reference_entity",
+                                rules: "required",
+                                typeInput: 'selector',
+                                value: '',
+                                data: referenceEntities,
+                            },
+                            multipleSelector: {
+                                label: "Reference Value*",
+                                key: "reference_value",
+                                rules: "required",
+                                typeInput: 'multipleSelector',
+                                value: '',
+                                autoCompleteUrl: '',
+                                selectLabel: '',
+                                selectValue: ''
+                            },
+                            width: "auto",
+                        }
+                    ];
+                } else {
+                    return [
+                        {
+                            label: "Menu",
+                            key: "feature_name",
+                            type: "text",
+                            width: "auto"
+                        }
+                    ]
                 }
-            ];
+            
         },
     },
     mounted() {

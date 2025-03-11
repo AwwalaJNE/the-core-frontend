@@ -334,6 +334,8 @@ export default {
                 })
         },
         async updateData() {
+            this.loading = true;
+            
             await axios
                 .put(
                     this.URL.user + `/${this.user_id}?n=${this.listenNodeId}`,
@@ -344,6 +346,7 @@ export default {
                     this.closeDialogUser()
                     this.$emit("refresh")
                     this.openNotification(null, 'Success', 'Update user is success')
+                    this.loading = false;
                 }).catch(err => {
                     this.loading = false
                     this.checkAuth(err.response)
@@ -351,6 +354,8 @@ export default {
                 })
         },
         async addData() {
+            this.loading = true;
+
             await axios
                 .post(
                     this.URL.user + `?n=${this.listenNodeId}`,
@@ -359,6 +364,7 @@ export default {
                 .then(res => {
                     this.handleClearForm()
                     this.closeDialogUser()
+                    this.loading = false
                     this.$emit("refresh")
                     this.openNotification(null, 'Success', 'Create user is success')
                 }).catch(err => {
