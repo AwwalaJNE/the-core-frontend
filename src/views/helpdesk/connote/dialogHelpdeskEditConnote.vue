@@ -30,6 +30,7 @@
                         ref="formHelpdeskEditConnote"
                         typeForm="helpdesk_edit_connote"
                         :dataItem="formHelpdeskEditConnote"
+                        :querySearch="geolocationQuerySearch"
                         @formData="formDataEditConnote"
                         @onChangeCustom="onChangeCustom"
                     />
@@ -257,6 +258,20 @@ export default {
         onChangeCustom(type, val, obj) {
             this.formHelpdeskEditConnote[type] = val;
         },
+        async geolocationQuerySearch(queryString, cb){
+            try {
+                const response = await axios.get(`${this.URL.geolocation_search}?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header());
+                let data = response.data.data;
+                let suggestions = [];
+                data.length > 0 && data.map(item => {
+                    suggestions.push({
+                    value: item.geolocation_location_name,
+                    data: item
+                    });
+                });
+                cb(suggestions);
+            } catch (_) {}
+        }
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)
