@@ -120,7 +120,7 @@ export default {
     },
     methods: {
         checkPermission(permission) {
-            const permissions = this.listenPermissions?.core || [];
+            const permissions = this.listenPermissions?.CORE || [];
             return permissions.includes(permission);
         },
         formData(form){
