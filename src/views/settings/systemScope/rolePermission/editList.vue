@@ -302,7 +302,7 @@ export default {
                     { label: "HIDDEN_COLUMN", value: "HIDDEN_COLUMN" }
                 ];
 
-                if (this.app.toLowerCase().includes('dashboard')) {
+                if (this.app.toLowerCase().includes('dashboard') || this.app.toLowerCase() === 'core data table') {
                     return [
                         {
                             label: "Menu",

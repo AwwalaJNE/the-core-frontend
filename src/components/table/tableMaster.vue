@@ -1560,7 +1560,7 @@ export default {
   computed: {
     listenColumn() {
       if (this.hideColumnKey) {
-        const hiddenKeys = this.listenPermissions?.["CORE DATA TABLE"]?.find(v => v.feature === this.hideColumnKey)?.filter?.hidden_column || [];
+        const hiddenKeys = this.listenPermissions?.["CORE DATA TABLE"]?.find(v => v.feature === this.hideColumnKey)?.filter?.["HIDDEN_COLUMN"] || [];
         return this.dataColumn.filter(item => !hiddenKeys.includes(item.key));
       } else {
         return this.dataColumn;
