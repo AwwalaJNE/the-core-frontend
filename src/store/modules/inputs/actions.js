@@ -3926,6 +3926,46 @@ export default {
 
 
 
+  //====== COURIER DELIVERY AREA SETTINGS ======//
+
+  SET_COURIER_DELIVERY_AREA_COURIER_ID({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_ValueData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID_ValueData', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled', payload)
+  },
+  
+
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_TYPE', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE_ValueData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_TYPE_ValueData', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE_ArrData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_TYPE_ArrData', payload)
+  },
+
+
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_VALUE', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE_ValueData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_VALUE_ValueData', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE_ArrData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_VALUE_ArrData', payload)
+  },
+
+  //====== END COURIER DELIVERY AREA SETTINGS ======//
+
+
 
   SET_BAG_IS_AUTO_OPEN_BAG({ commit }, payload) {
     commit('SET_BAG_IS_AUTO_OPEN_BAG', payload);

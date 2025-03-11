@@ -18,6 +18,7 @@ export default {
     geolocation_province: api + "geolocation-province",
     geolocation_timezone: api + "geolocation-timezone",
     geolocation_search: api + "geolocation-search",
+    geolocation_search_by: api + "geolocation-search-by",
 
     // node
     node: api + "node",
@@ -352,6 +353,9 @@ export default {
     // Setting Surat Muatan Stock
     sm_stock: api + 'sm-stock',
 
+    // Claim and burden
+    claim_and_burden: api + 'claim-and-burden',
+
     // Vehicle Mode V2
     vehicle_mode_list_v2: api + 'vehicle/mode/list',
 
@@ -362,5 +366,17 @@ export default {
     list_sm: api + 'list/sm-number',
 
     // Receiving Log
-    receiving_log: api + 'receiving-log'
+    receiving_log: api + 'receiving-log',
+
+    // Courier Delivery Area
+    courier_delivery_area: api + 'courier-delivery-area',
+
+    // TLC Zone
+    tlc_zone: api + 'tlc-zone-list',
+
+    // District List
+    district_list: api + 'district-list',
+
+    // Subdistrict List
+    subdistrict_list: api + 'subdistrict-list'
 }

@@ -2,6 +2,7 @@
     <dialog-master
         width="lg"
         :actived="listenActive"
+        :loading="listenLoading"
         :closeDialog="cancel"
         class="custom-width"
     >
@@ -239,6 +240,9 @@ export default {
         },
         listenUserRoleName() {
             return this.listenUserRole.user_role_name
+        },
+        listenLoading() {
+            return this.loading || this.loadingDetail || this.loadingConfirmApprove;
         }
     },
     watch: {
@@ -246,9 +250,10 @@ export default {
             if (val !== undefined) {
                 this.getEditData(val);
 
-                this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
+                this.isDisabled = (val.status !== 'READY' && val.status !== 'UNRECEIVED') || val.is_orion === "1" || val.is_approve === 1;
                 this.isDisabledPrint = val.status === 'CANCELED';
-                this.isDisabledApprove = val.status !== 'READY' || val.is_orion === "1";
+                this.isDisabledApprove = (val.status !== 'READY' && val.status !== 'UNRECEIVED') || val.is_orion === "1";
+
                 this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
             }
         },
@@ -305,7 +310,7 @@ export default {
                             data.item_type = 'BAG'
                         }
                         
-                        if (val.status !== "READY") {
+                        if (val.status !== "READY" && val.status !== "UNRECEIVED") {
                             data.button_status = { remove: false };
                         }
 
@@ -652,11 +657,17 @@ export default {
                     this.dataTable.forEach(data => {
                         data.button_status = { remove: false };
                     });
+                } else {
+                    this.isDisabled = false;
+                    this.isDisabledApprove = false;
+                    
+                    this.dataTable.forEach(data => {
+                        data.button_status = { remove: true };
+                    });
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
             } finally {
-                this.$emit('refresh');
                 this.loadingDetail = false;
             }
         },

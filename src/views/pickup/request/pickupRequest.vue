@@ -214,7 +214,7 @@ export default {
                       // item["pickup_courier_employee_name"] = (item.user_courier) ? item.employee_courier.employee_name: null
                         item.total_unpicked = parseInt(item.total_bag) + parseInt(item.total_koli);
                         item.total_picked = item.total_picked+" / "+item.total_unpicked;
-                      item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'DONE') ? true : false
+                      item["isDisabled"] = (item.pickup_status == 'PICKED' || item.pickup_status == 'UNRECEIVED' || item.pickup_status == 'CANCELED' || item.pickup_status == 'CANCELLED'  || item.pickup_status == 'DONE') ? true : false
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page

@@ -151,20 +151,20 @@ export default {
       ],
       loading: false,
       dataItem: {},
-      tempSearch: this.query || '',
-      tempDate: this.dateFilter || [],
-      nodeOrigin: this.origin || '',
-      node_type: this.nodeType || '',
+      tempSearch: JSON.parse(localStorage.getItem('InboundFilters'))?.tempSearch || '',
+      tempDate: JSON.parse(localStorage.getItem('InboundFilters'))?.tempDate || [],
+      nodeOrigin: JSON.parse(localStorage.getItem('InboundFilters'))?.node_origin || '',
+      node_type: JSON.parse(localStorage.getItem('InboundFilters'))?.node_request || '',
       dialogTariff: false,
       pagination: {
         limit: 20,
         page_size: 1,
         page: 1,
       },
-      statusReceived: this.received || '',
-      prealertFilter: this.prealert || '',
-      filterDateBy: this.filterDateBy || '',
-      searchBy: this.searchBy || '',
+      statusReceived: JSON.parse(localStorage.getItem('InboundFilters'))?.value || '',
+      prealertFilter: JSON.parse(localStorage.getItem('InboundFilters'))?.values || '',
+      filterDateBy: JSON.parse(localStorage.getItem('InboundFilters'))?.filterDateBy || '',
+      searchBy: JSON.parse(localStorage.getItem('InboundFilters'))?.searchBy || '',
     };
   },
   watch: {
@@ -400,7 +400,7 @@ export default {
           this.dataTable = res.data.data;
           this.dataTable.map((item) => {
             let im = [];
-            item["created_at"] = this.dateConvert(item["created_at"]);
+            item['created_orion'] = item['created_orion'] == null ? this.dateConvert(item['created_at']) : this.dateConvert(item['created_orion']);
             item["inbound_eta"] = this.dateConvert(item["inbound_eta"]);
             item["inbound_etd"] = this.dateConvert(item["inbound_etd"]);
             item["departed_at"] = this.dateConvert(item["departed_at"]);
@@ -499,17 +499,18 @@ export default {
   mounted() {
     this.refresh();
     this.getTableData(
-            this.pagination.limit,
-            this.pagination.page,
-            this.tempSearch,
-            this.nodeOrigin,
-            this.node_type,
-            this.statusReceived,
-            this.prealertFilter,
-            this.tempDate[0],
-            this.tempDate[1],
-            this.searchBy,
-            this.filterDateBy);
+          this.pagination.limit,
+          this.pagination.page,
+          this.tempSearch,
+          this.nodeOrigin,
+          this.node_type,
+          this.statusReceived,
+          this.prealertFilter,
+          this.tempDate[0],
+          this.tempDate[1],
+          this.searchBy,
+          this.filterDateBy
+        );
   },
 };
 </script>

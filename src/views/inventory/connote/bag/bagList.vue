@@ -167,7 +167,7 @@ export default {
                     width: "xxxxs"
                 },
                 {
-                    label: "Bag type",
+                    label: "Bag type*",
                     key: "tipe_bag",
                     width: "xs"
                 },

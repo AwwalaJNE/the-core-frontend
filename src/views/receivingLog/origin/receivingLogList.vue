@@ -4,15 +4,15 @@
             :dataTable="dataTable" 
             :dataColumn="dataColumn" 
             :tableLoading="listenLoading"
-            :hasAction="false"
             :hasPagination="true"
-            :pageSize="pageSize"
+            :pageSize="page_size"
             :page="page"
             :limit="limit"
-            :editOnly="true"
+            :customAction="true"
+            :customActionList="customActionList"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
-            @actionEdit="actionUpdate"
+            @actionUpdate="actionUpdate"
         />
         <dialog-edit-receiving-log
             :active="dialogEdit"
@@ -75,13 +75,13 @@ export default {
                     width: "auto"
                 }
             ],
-            // customActionList: [
-            //   {
-            //     label: 'Edit',
-            //     key: 'edit',
-            //     attribute: '',
-            //   }
-            // ],
+            customActionList: [
+              {
+                label: 'Entry Status',
+                key: 'edit',
+                attribute: '',
+              }
+            ],
             dialogEdit: false,
             receivingLogId: "",
         }
@@ -104,6 +104,9 @@ export default {
         async getTableDataReceivingLog(status = this.statusSearch, startDate = this.startDate, endDate = this.endDate) {
             this.loading = true;
             try {
+                let buttonStatus = {
+                    edit: false,
+                };
                 const searchBy = this.searchValue ? this.searchOriginBy : '';
                 const searchValue = this.searchValue || '';
                 const pov = 'origin';
@@ -118,6 +121,9 @@ export default {
                 const data = res.data.data;
 
                 this.dataTable = Array.isArray(data) ? data : [data];
+                data.map(item => {
+                    item["button_status"] = buttonStatus;
+                })
 
                 const meta = res.data.meta;
                 this.page = meta.current_page;
@@ -146,8 +152,12 @@ export default {
         },
     },
     mounted() {
-        console.log('startDate', this.startDate, 'endDate', this.endDate)
         this.getTableDataReceivingLog();
     }
 }
 </script>
+<style>
+    .vs-table__td.action .vs-row.btn_action .vs-col {
+        width: 100px !important;
+    }
+</style>

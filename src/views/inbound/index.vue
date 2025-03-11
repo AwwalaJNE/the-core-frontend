@@ -233,8 +233,8 @@ export default {
     data() {
         return {
             title:"Receiving ",
-            tempSearch: "",
-            tempDate: [],
+            tempSearch: JSON.parse(localStorage.getItem("InboundFilters"))?.tempSearch|| '',
+            tempDate: JSON.parse(localStorage.getItem("InboundFilters"))?.tempDate || [],
             DataNode:[
               {
                 label: "All Nodes",
@@ -242,8 +242,8 @@ export default {
               }
             ],
             nodeOrigin:[],
-            node_request:'',
-            node_origin:'',
+            node_request: JSON.parse(localStorage.getItem("InboundFilters"))?.node_request||'',
+            node_origin: JSON.parse(localStorage.getItem("InboundFilters"))?.node_origin||'',
             DataArr: this.valueData ? this.valueData : [
               {
                 label: 'All Status',
@@ -506,7 +506,7 @@ export default {
           } else if (indexOfBag === -1) {
             this.hasLinkedItems = ['inbound_number'];
           } 
-          
+          this.updateLocalStorage()
         },
       updateSearchBy(key, val, isNumeric) {
         val = val.replaceAll(" ", "_");

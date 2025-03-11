@@ -1,7 +1,7 @@
 <template>
     <dialog-master 
         :actived="active"
-        @closeDialog="closeDialog"
+        :closeDialog="cancel"
         width="md"
     >
         <template v-slot:header>
@@ -39,6 +39,7 @@
                             :valueData="statusTypeArray"
                             :selectedValue="status"
                             :isMultiple="false"
+                            :disabled="disableStatus"
                             @updateValue="updateValue" />
                     </template>
                 </vs-col> 
@@ -214,7 +215,8 @@ export default {
             dialogFileVisible: false,
             fileList: [],
             maxFiles: 5,
-            disabled: false
+            disabled: false,
+            disableStatus: false
         };
     },
     computed: {
@@ -230,7 +232,6 @@ export default {
     },
     watch: {
         active: function (val) {
-            console.log('active', val)
             if (val) {
                 this.getDetail(this.receivingLogId);
                 this.getDataStatus();
@@ -255,6 +256,8 @@ export default {
                         attachment_id: item.attachment_id,
                         url: item.url,
                     }));
+
+                    this.disableStatus = !!this.status;
                 }
 
             } catch (err) {
