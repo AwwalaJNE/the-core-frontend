@@ -813,7 +813,7 @@ export default {
 
         },
         permissionCustomerCode(){
-            const permissions = this.listenPermissions?.core || [];
+            const permissions = this.listenPermissions?.CORE || [];
             this.isDisabled = permissions.includes('create-customer-code') ? false : true;
 
         }
