@@ -186,7 +186,7 @@ export default {
                 this.input_label = "";
             } else {
                 if (entity === 'HIDDEN_COLUMN') {
-                    this.autoCompleteUrl = `${reference.url}?n=${this.listenNodeId}&feature=${val.feature_name}`;
+                    this.autoCompleteUrl = `${reference.url}?n=${this.listenNodeId}&feature=${val.feature_code}`;
                     this.input_value = reference.value;
                     this.input_label = reference.label;
                 } else {

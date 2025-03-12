@@ -201,7 +201,7 @@ export default {
                         let additional_role = []
                         let children = {}
 
-                        if (item?.app_role?.length === 1) {
+                        if (item?.app_role?.length) {
                             item["primary_user_application_name"] = item?.app_role?.[0]?.app || "";
                             item["primary_user_application_role"] = item?.app_role?.[0]?.role?.[0]?.app_role_name || "";
                         }
