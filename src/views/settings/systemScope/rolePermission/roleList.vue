@@ -76,20 +76,38 @@ export default {
                     label: "All App Role",
                     value: "ALL_APPLICATION"
                 },
-                {
-                    label: "Dashboard Ticketing",
-                    value: "DASHBOARD_TICKETING"
-                },
-                {
-                    label: "Core",
-                    value: "CORE"
-                }
             ],
             searchQuery: "",
             selectedRoleId: null,
         }
     },
     methods: {
+        async getApplicationList() {
+            this.loading = true;
+            try {
+                const res = await axios.get(`${this.URL.application_list}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&search_by=${this.listenUserApplicationName || 'ALL_APPLICATION'}`, this.Helper.header());
+
+                if(res.data.data.length > 0) {
+                    let arr = []
+                    res.data.data.map(item => {
+                        let obj = {}
+                        obj["label"] = item.lov_value
+                        obj["value"] = item.lov_value
+
+                        arr.push(obj)
+                    })
+
+                    
+                    this.searchParams = [...this.searchParams, ...arr];
+                }
+            } catch (err) {
+                this.redirectError(err)
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false
+                this.refresh()
+            }
+        },
         toggleLoading(show) {
             if (show) {
                 if (!this.refLoading && this.$el) {
@@ -148,7 +166,7 @@ export default {
         },
     },
     mounted() {
-        this.refresh()
+        this.getApplicationList();
     },
 }
 </script>
