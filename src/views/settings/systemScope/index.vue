@@ -24,7 +24,7 @@
             </vs-col>
         </vs-row>
         <section style="display: flex;">
-            <vs-col :w="`${navActive === 'role-permission'? '3' : '12'}`">
+            <vs-col :w="`${navActive === 'role-permission'? '4' : '12'}`">
                 <div class="box view">
                     <div class="nav-box">
                         <vs-row justify="space-between">
@@ -51,7 +51,7 @@
                     </template>
                 </div>
             </vs-col>
-            <vs-col v-if="navActive === 'role-permission'" :w="9">
+            <vs-col v-if="navActive === 'role-permission'" :w="8">
                 <transition name="slide-fade">
                     <div class="box">
                         <edit-list 
