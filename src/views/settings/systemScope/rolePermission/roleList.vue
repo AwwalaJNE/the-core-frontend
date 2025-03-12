@@ -1,7 +1,7 @@
 <template>
     <div>
         <vs-row>
-            <vs-col xs="12" sm="6" lg="6">
+            <vs-col xs="12" sm="6" lg="6" v-if="searchParams.length > 1">
                 <select-search-by 
                     :border="true" 
                     :isMultiple="false" 
