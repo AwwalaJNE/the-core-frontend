@@ -270,6 +270,7 @@ export default {
         },
         closeDialogUser() {
             this.dialogUser = false
+            this.refresh();
         },
         closeDialogRole() {
             this.dialogRole = false
