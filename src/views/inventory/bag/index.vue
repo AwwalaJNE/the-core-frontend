@@ -550,13 +550,13 @@ export default {
   computed: {
     filteredRegionalArray() {
       // value 'All Routing' ditampilkan  berdasarkan permission role
-      const permissions = this.listenPermissions?.CORE || [];
+      const permissions = this.listenPermissions?.core || [];
       const isPermissions = permissions.includes('read-all-routing');
       return isPermissions ? this.regionalArray : this.regionalArray.filter(item => item.value !== 'all_routing');
     },
     filteredServiceArray() {
       // value 'All Service' ditampilkan  berdasarkan permission role
-      const permissions = this.listenPermissions?.CORE || [];
+      const permissions = this.listenPermissions?.core || [];
       const isPermissions = permissions.includes('read-all-service');
       return isPermissions ? this.serviceArrayNew : this.serviceArrayNew.filter(item => item.value !== 'ALL_SERVICE');
     },
@@ -569,7 +569,7 @@ export default {
   },
   methods: {
     checkPermission(permission) {
-      const permissions = this.listenPermissions?.CORE || [];
+      const permissions = this.listenPermissions?.core || [];
       return permissions.includes(permission);
     },
     async getNodeLink() {
