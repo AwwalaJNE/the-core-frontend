@@ -344,7 +344,6 @@ export default {
                 .then(res => {
                     this.handleClearForm()
                     this.closeDialogUser()
-                    this.$emit("refresh")
                     this.openNotification(null, 'Success', 'Update user is success')
                     this.loading = false;
                 }).catch(err => {
@@ -365,7 +364,6 @@ export default {
                     this.handleClearForm()
                     this.closeDialogUser()
                     this.loading = false
-                    this.$emit("refresh")
                     this.openNotification(null, 'Success', 'Create user is success')
                 }).catch(err => {
                     this.loading = false

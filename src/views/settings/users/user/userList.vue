@@ -251,8 +251,8 @@ export default {
         },
         closeDialogUser(){
             this.dialogUser = false
-            this.dataItem = undefined
-            this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE", {})
+            this.dataItem = {};
+            this.refresh();
         },
         openDialogUser(){
             this.dialogUser = true
