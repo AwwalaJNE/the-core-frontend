@@ -155,7 +155,7 @@ export default {
         refresh(){
             if (!this.app_role_id) return;
             
-            if (this.app === 'CORE DATA TABLE') {
+            if (this.app.toLowerCase() === 'core data table') {
                 this.getTableData2(this.pagination.limit, this.pagination.page, this.tempSearch)
             } else {
                 this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
