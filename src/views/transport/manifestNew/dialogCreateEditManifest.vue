@@ -310,7 +310,7 @@ export default {
                             data.item_type = 'BAG'
                         }
                         
-                        if (val.status !== "READY" && val.status !== "UNRECEIVED") {
+                        if ((val.status !== "READY" && val.status !== "UNRECEIVED") || val.is_approve === 1) {
                             data.button_status = { remove: false };
                         }
 
