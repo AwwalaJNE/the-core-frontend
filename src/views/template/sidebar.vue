@@ -687,6 +687,18 @@ export default {
           ],
         },
         {
+          label: "Claim and Burden",
+          url: "/claim-and-burden",
+          icon: "bx-dollar",
+          permission: "",
+          children: [],
+          meta: {
+            resource_type: resourceLookup["CLAIM_AND_BURDEN"].resource_type,
+            resource_code: resourceLookup["CLAIM_AND_BURDEN"].resource_code,
+            resource_name: resourceLookup["CLAIM_AND_BURDEN"].resource_name
+          },
+        },
+        {
           label: "Helpdesk",
           url: null,
           icon: "bx-user-voice",

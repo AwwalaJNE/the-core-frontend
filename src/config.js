@@ -357,6 +357,9 @@ export default {
     // Setting Surat Muatan Stock
     sm_stock: api + 'sm-stock',
 
+    // Claim and burden
+    claim_and_burden: api + 'claim-and-burden',
+
     // Vehicle Mode V2
     vehicle_mode_list_v2: api + 'vehicle/mode/list',
 
