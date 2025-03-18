@@ -323,7 +323,7 @@ export default {
 
               },
               {
-                label: "Quantity Koli",
+                label: "Quantity Connote",
                 value: "inbound_total_koli",
                 isNumeric: true,
               },
@@ -357,6 +357,10 @@ export default {
               {
                 label: 'Departed Time',
                 value: 'departed'
+              },
+              {
+                label: 'Created Date',
+                value: 'created'
               }
             ],
             reset: false,

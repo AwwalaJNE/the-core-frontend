@@ -263,4 +263,99 @@ export default {
 
     // Bag Revamp
     revamp_bag: api + 'revamp/bag',
+<<<<<<< HEAD
+=======
+
+    // Connote Cancel
+    connote_cancel: api + 'request-cancel',
+
+    // Connote Forward
+    connote_forward: api + 'forward',
+
+    // Crisscross
+    crisscross: api + 'crisscross',
+
+    // KPI
+    kpi_process_target: api + 'kpi/process-target',
+
+    // Region List
+    regional_list: api + 'regional-list',
+
+    // Branch List
+    branch_list: api + 'branch-list',
+
+    // Origin List
+    origin_list: api + 'origin-list',
+
+    // Node List
+    node_list: api + 'node-list',
+
+    // User List
+    user_list: api + 'user-list',
+
+    // Employee List
+    employee_list: api + 'employee-list',
+
+    // Insight Inventory
+    insight_inventory: api + 'insight/inventory',
+
+    // Insight Receive
+    insight_receive: api + 'insight/receive',
+
+    // Insight Depart
+    insight_depart: api + 'insight/depart',
+
+    // Insight Runsheet
+    insight_runsheet: api + 'insight/runsheet',
+
+    // Tracking Audit
+    tracking_audit: api + 'tracking/audit',
+
+    // Masterdata Bag Weight
+    bag_weight_setting: api + 'bag-weight',
+
+    // Masterdata Bag Item Limit
+    bag_limit_setting: api + 'bag-limit',
+
+    // Audit
+    audit_invalid_log: api + 'audit/invalid-item-log',
+
+    // Destination Zip Code
+    destination_zip_code: api + 'destination-zip-code',
+
+    // Destination Sorting Lov
+    destination_sorting_lov: api + 'destination-lov',
+
+    // Zip Code List
+    zip_code_list: api + 'zip-code-list',
+
+    // Masterdata Runsheet Limit
+    runsheet_limit_setting: api + 'runsheet-limit',
+  
+    // Sorting Validation Zip Code
+    sorting_zip_code_validation: api + 'validation/zip-code-new',
+
+    // Sorting Validation Zip Code Bag
+    sorting_zip_code_validation_bag: api + 'validation/bag-destination',
+
+    // Inbound Staging
+    inbound_staging: api + 'inbound-staging',
+    inbound_staging_confirm: api + 'inbound-staging/confirm',
+    inbound_staging_bulk: api + 'inbound-staging/bulk',
+
+    // Sorting Item History
+    sorting_item_history: api + 'sorting-item-history',
+
+    // Setting Surat Muatan Stock
+    sm_stock: api + 'sm-stock',
+
+    // Vehicle Mode V2
+    vehicle_mode_list_v2: api + 'vehicle/mode/list',
+
+    // Vehicle Id V2
+    vehicle_list_v2: api + 'vehicle/list',
+
+    // List SM 
+    list_sm: api + 'list/sm-number',
+>>>>>>> 31131793d1acd70d54625297fc4d3ba559a059cf
 }

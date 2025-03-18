@@ -119,12 +119,20 @@ export default {
                     value: 'item_number'
                 },
                 {
+                    label: 'Item Type',
+                    value: 'item_type'
+                },
+                {
                     label: 'Process',
                     value: 'process'
                 },
                 {
                     label: 'User Login',
                     value: 'user_login'
+                },
+                {
+                    label: 'Origin',
+                    value: 'origin'
                 },
                 {
                     label: 'Node Name',
@@ -168,8 +176,18 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Item Type",
+                    key: "item_type",
+                    width: "xs"
+                },
+                {
                     label: "Process",
                     key: "process",
+                    width: "xs"
+                },
+                {
+                    label: "Origin",
+                    key: "origin",
                     width: "xs"
                 },
                 {

@@ -101,7 +101,7 @@ export default {
                     width: "md"
                 },
                 {
-                    label: "Koli",
+                    label: "Connote",
                     key: "koli_number",
                     width: "auto"
                 },
@@ -135,10 +135,10 @@ export default {
             form: {},
             searchBy: "koli number",
             filterDateBy: "create",
-            searchPlaceholder: "Search Koli Number",
+            searchPlaceholder: "Search Connote Number",
             searchParams: [
               {
-                label: 'Koli number',
+                label: 'Connote number',
                 value: 'koli number'
               },
               {

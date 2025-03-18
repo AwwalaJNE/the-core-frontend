@@ -24,7 +24,7 @@
                                                     border 
                                                     type="text"
                                                     v-model="item_no"
-                                                    label-placeholder="Masukkan code BAG / Koli"
+                                                    label-placeholder="Masukkan code BAG / Connote"
                                                     autofocus
                                                     icon-after
                                                     v-uppercase
@@ -76,7 +76,7 @@
                                         border 
                                         type="text"
                                         v-model="child_no"
-                                        label-placeholder="Masukkan Item"
+                                        label-placeholder="Master Bag / Bag / Connote"
                                         icon-after
                                         v-uppercase
                                         ref="formInputChildInbound"
@@ -237,6 +237,11 @@ export default {
 
                 this.openNotification('success', null, "Success", res?.data?.message ?? "Receiving success");
                 this.inbound_number = res?.data?.data?.inbound_number ?? this.inbound_number;
+                this.hasInboundNumber = true;
+                let prealert = ['SM', 'SJ', 'PICKUP'];
+                if (prealert.includes(res?.data?.data?.inbound_type)) {
+                    this.parent_no = this.inbound_number;
+                }
                 this.refresh();
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');

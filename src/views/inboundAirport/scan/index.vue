@@ -20,6 +20,35 @@
                       <div class="center">
                         <form @submit.prevent>
                           <vs-input border type="text"
+                                    v-model="sm_no"
+                                    :disabled="isSmFilled"
+                                    label-placeholder="Scan SM Here"
+                                    autofocus
+                                    icon-after
+                                    v-uppercase
+                                    ref="formInputParentSm"
+                                    @keyup.enter.native="scanSm"
+                                    @click-icon="$refs.cameraScanner.open('formInputParentSm')">
+                            <template #icon>
+                              <i class="bx bx-barcode-reader" v-if="!isSmFilled"></i>
+                            </template>
+                          </vs-input>
+                          <template v-if="isSmFilled">
+                              <div style="position:absolute;right:20px; top:15px;">
+                                  <span class="vs-select__chips__chip__close" @click="removeSmNumber">
+                                      <i class="vs-icon-close vs-icon-hover-less"></i>
+                                  </span>
+                              </div>
+                          </template>
+                        </form>
+                      </div>
+                    </template>
+                  </vs-col>
+                  <vs-col xs="12" sm="12" lg="6" class="my-1">
+                    <template>
+                      <div class="center">
+                        <form @submit.prevent>
+                          <vs-input border type="text"
                                     v-model="item_no"
                                     label-placeholder="Scan Bag Here"
                                     autofocus
@@ -98,6 +127,25 @@
                   </template>
                 </div>
               </div>
+              <div class="box information" style="padding-top: 1px !important;margin-top: 10px !important;">
+                  <h4 align="left">Inbound Detail</h4>
+                  <div class="nav-box">
+                      <template>
+                          <transition name="slide-fade">
+                              <smDetail 
+                                  ref="smDetail" 
+                                  :dataTable="itemDataTableProp" 
+                                  :loading="itemLoading" 
+                                  :pageSize="page_size" 
+                                  :page="page" 
+                                  :limit="limit" 
+                                  :actionLimit="actionLimit" 
+                                  :actionPagination="actionPagination"
+                              />
+                          </transition>
+                      </template>
+                  </div>
+              </div>
               <vs-button class="mt-1" style="float: right"
                  square
                  active
@@ -129,6 +177,7 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 
 import InboundDetail from "@/views/inboundAirport/scan/inboundDetail"
+import smDetail from "@/views/inboundAirport/scan/smDetail"
 import CameraScanner from "@/components/scanner/camera.vue";
 import FloatingActionButton from "@/components/buttonCustom/floatingActionButton"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
@@ -140,6 +189,7 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "InboundDetail": InboundDetail,
+        "smDetail": smDetail,
         CameraScanner,
         "floating-action-button": FloatingActionButton,
         "dialog-confirm": DialogConfirm,
@@ -149,6 +199,7 @@ export default {
             title:"Airport Receiving",
             item_no:'',
             item_no_remove: '',
+            sm_no: '',
             form:{},
             inbound_staging_id:'',
             loading: false,
@@ -159,6 +210,10 @@ export default {
             progress: 0,
             activeDialogConfirmRemove: false,
             loadingConfirmRemove:false,
+            isSmFilled: false,
+            itemDataTable: [],
+            itemDataTableProp: [],
+            itemLoading: false
         }
     },
     computed: {
@@ -193,6 +248,51 @@ export default {
           this.processInbound();
           this.$refs.formInputInbound.$el.querySelector("input").focus();
           this.handlerClearForm()
+        },
+        scanSm() {
+          this.sm_no = this.sm_no.replaceAll(/\s+/g, "");
+          this.form.sm_number = this.sm_no
+          this.isSmFilled = true
+
+          this.getSmDetails()
+        },
+        removeSmNumber() {
+          this.sm_no = '';
+          this.form.sm_number = ''
+          this.isSmFilled = false
+          this.itemDataTable = []
+          this.itemDataTableProp = []
+
+          this.$nextTick(() => {
+            this.$refs.formInputParentSm.$el.querySelector("input").focus();
+          })
+        },
+        async getSmDetails() {
+            if (this.sm_no) {
+                this.itemLoading = true;
+                try {
+                    const res = await axios.get(`${this.URL.inbound}/${this.sm_no}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, this.Helper.header());
+
+                    let arr = [res.data.data];
+
+                    arr = arr.map(item => ({
+                        ...item,
+                        total_received: item.total_received.toString(),
+                        total_unreceived: item.total_unreceived.toString()
+                    }));
+
+                    this.itemDataTable = arr;
+                    this.itemDataTableProp = res.data.detail
+
+                    this.$nextTick(() => {
+                      this.$refs.formInputInbound.$el.querySelector("input").focus();
+                    })
+                } catch (err) {
+                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                } finally {
+                    this.itemLoading = false;
+                }
+            }
         },
         updateValueRemove(){
           this.item_no_remove = this.item_no_remove.replaceAll(/\s+/g, "");
@@ -229,6 +329,7 @@ export default {
           } finally {
               this.closeProgress();
               this.handlerClearForm();
+              this.handleClearSm();
               this.refresh();
           }
         },
@@ -307,6 +408,15 @@ export default {
           this.item_no = ''
           this.item_no_remove = ''
         },
+        handleClearSm() {
+          this.sm_no = ''
+          this.form.sm_number = ''
+          this.itemDataTable = []
+          this.itemDataTableProp = []
+          this.isSmFilled = false
+          this.$refs.formInputParentSm.$el.querySelector("input").focus();
+          this.handlerClearForm()
+        },
         onCameraScannerGetData(data) {
           if (data && data.event === "result" && data.namespace === "formInputInbound") {
             this.item_no = data.data.text;
@@ -332,7 +442,7 @@ export default {
     },
     mounted() {
       this.refresh()
-      this.$refs.formInputInbound.$el.querySelector("input").focus();
+      this.$refs.formInputParentSm.$el.querySelector("input").focus();
     }
 }
 </script>
@@ -358,5 +468,7 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    flex-direction: column;
+    gap: 20px;
   }
 </style>

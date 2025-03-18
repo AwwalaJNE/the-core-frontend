@@ -71,32 +71,6 @@
                             </vs-row>
                         </vs-col>
                         <vs-col xs="6" sm="6" lg="6">
-                            <vs-row justify="space-between">
-                                <vs-col xs="12" sm="12" lg="12">
-                                    <template v-if="loading == false && status_code_arr.length > 0">
-                                        <div class="mt-1">
-                                            <selector 
-                                            :ref="''"
-                                            name="Status Code" 
-                                            :rules="'required'" 
-                                            formKey="status_code"
-                                            :valueData="status_code_arr"
-                                            :selectedValue="selectedStatusCode"
-                                            :isMultiple="false"
-                                            @updateValue="updateValue" />
-                                        </div>
-                                    </template>
-                                </vs-col>
-                                <vs-col xs="12" sm="12" lg="12">
-                                    <input-general
-                                    name="Remark"
-                                    :rules="'required'"
-                                    formKey="remark"
-                                    :valueData="remark"
-                                    typeInput="text"
-                                    @updateValue="updateValue" />
-                                </vs-col>
-                            </vs-row>
                             <div>
                                 <location-selector
                                     :active="locationSelectorActive" 

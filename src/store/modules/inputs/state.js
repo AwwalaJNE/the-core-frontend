@@ -2523,6 +2523,56 @@ export default {
     }
   },
 
+  surat_muatan_stock: {
+    vehicle_id: {
+      label: "Vehicle Name",
+      key: "vehicle_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    no_sm: {
+      label: "Surat Muatan",
+      key: "no_sm",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    etd: {
+      label: "ETD",
+      key: "etd",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    eta: {
+      label: "ETA",
+      key: "eta",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true,
+      isDisabled: false,
+    },
+  },
+  
   runsheet_limit: {
     reference_to: {
       label: "Reference To*",
@@ -3190,7 +3240,7 @@ export default {
 
   vehicle: {
     vehicle_name: {
-      label: "Vehicle Name *",
+      label: "Vehicle Name / Maskapai *",
       key: "vehicle_name",
       rule: "required",
       typeInput: "text",
@@ -3199,7 +3249,7 @@ export default {
       value: ''
     },
     vehicle_police_no: {
-      label: "Vehicle No / Plate Number *",
+      label: "Vehicle No / Plate Number / Flight Number *",
       key: "vehicle_police_no",
       rule: "required",
       typeInput: "text",
@@ -4683,26 +4733,28 @@ export default {
       label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
       key: "connote_shipper_administrative_address",
       rule: "required",
-      typeInput: "text|onchange|location_selector",
+      // typeInput: "text|onchange|location_selector",
+      typeInput: "autocomplete",
       typeData: "String",
       isDisabled: false,
       width: '6',
       arrData: [],
       valueData: null,
-      onchange: false,
+      // onchange: false,
       value: ''
     },
     connote_receiver_administrative_address: {
       label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
       key: "connote_receiver_administrative_address",
       rule: "required",
-      typeInput: "text|onchange|location_selector",
+      // typeInput: "text|onchange|location_selector",
+      typeInput: "autocomplete",
       typeData: "String",
       isDisabled: false,
       width: '6',
       arrData: [],
       valueData: null,
-      onchange: false,
+      // onchange: false,
       value: ''
     },
     connote_shipper_zip_code: {

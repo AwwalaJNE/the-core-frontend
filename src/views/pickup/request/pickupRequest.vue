@@ -71,7 +71,7 @@ export default {
                 width: "auto"
               },
               {
-                label: "Koli",
+                label: "Connote",
                 key: "total_koli",
                 width: "auto"
               },

@@ -43,7 +43,7 @@
                 </div>
               </template>
             </vs-col>
-            <vs-col xs="12" sm="3" lg="3">
+            <vs-col xs="12" sm="3" lg="6">
               <template  v-if="this.regional !== 'all_routing'">
                 <div class="center in-get-bag">
                  <vs-col lg="12">
@@ -119,7 +119,12 @@
 
             <!-- Validate Hub Delivery -->
             <vs-col xs="6" sm="3" lg="2">
-              <vs-checkbox v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery">
+              <!-- Enabled -->
+              <vs-checkbox v-if="!disable_hub_delivery" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery">
+                Validate Hub Delivery
+              </vs-checkbox>
+              <!-- Disabled -->
+              <vs-checkbox v-if="disable_hub_delivery" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery" disabled>
                 Validate Hub Delivery
               </vs-checkbox>
             </vs-col>
@@ -198,6 +203,15 @@ export default {
             this.placeholder = 'Masukkan Connote'
             this.is_disabled = false
             this.disable_auto_open_bag = false
+            this.disable_hub_delivery = false
+
+            this.service = ["ALL_SERVICE"]
+            this.$nextTick(() => {
+              if (this.$refs.service) {
+                this.$refs.service.$emit('updateValue', ["ALL_SERVICE"])
+              }
+            })
+            
             break;
           case "masterbag":
             this.title = 'Create Masterbag'
@@ -205,12 +219,16 @@ export default {
             this.is_disabled = false
             this.is_auto_open_bag = false
             this.disable_auto_open_bag = true
+            this.is_hub_delivery_validation = false
+            this.disable_hub_delivery = true
             break;
           case "pra runsheet":
             this.title = 'Create Bag Prarunsheet'
             this.placeholder = 'Masukkan Connote'
             this.is_disabled = true
             this.disable_auto_open_bag = false
+            this.is_hub_delivery_validation = false
+            this.disable_hub_delivery = true
             this.handlePraRunsheet()
             break;
           case "return":
@@ -218,12 +236,14 @@ export default {
             this.placeholder = 'Masukkan Connote Return'
             this.is_disabled = false
             this.disable_auto_open_bag = false
+            this.disable_hub_delivery = false
             break;
           case "pickup":
             this.title = 'Create Bag Pickup'
             this.placeholder = 'Masukkan Connote Pickup'
             this.is_disabled = false
             this.disable_auto_open_bag = false
+            this.disable_hub_delivery = false
             break;
           default:
         }
@@ -432,6 +452,7 @@ export default {
           is_auto_open_bag: true,
           disable_auto_open_bag: false,
           is_hub_delivery_validation: false,
+          disable_hub_delivery: false,
       }
   },
   computed: {

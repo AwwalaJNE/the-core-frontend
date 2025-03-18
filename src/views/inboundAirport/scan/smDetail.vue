@@ -1,16 +1,15 @@
 <template>
     <div>
         <table-master 
-            :dataTable="dataTableProp" 
+            :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="listenLoading"
+            :removeDanger="false"
             :hasAction="false"
-            :hasPagination="true"
+            :hasPagination="false"
             :pageSize="pageSize"
             :page="page"
             :limit="limit"
-            @actionLimit="actionLimit"
-            @actionPagination="actionPagination"
         />
     </div>
 </template>
@@ -18,10 +17,10 @@
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 export default {
-    name:"Inbound-Detail",
+    name:"inbound-airport-scan-sm-table",
     mixins: [master],
     props: {
-        dataTableProp: Array,
+        dataTable: Array,
         loading: Boolean,
         pageSize: Number,
         page: Number,
@@ -32,31 +31,20 @@ export default {
     components: {
         "table-master" : TableMaster
     },
+
     data() {
         return {
-            dataTable: [],
             datacolumn: [
                 {
-                    label: "No item.",
+                    label: "Item Number",
                     key: "item_number",
-                    width: "xs"
-                },
-                {
-                    label: "IM Number",
-                    key: "im_number",
-                    width: "xs"
-                },
-                {
-                    label: "OM Number",
-                    key: "om_number",
-                    width: "xs"
+                    width: "xxxxs"
                 },
                 {
                     label: "Item type",
                     key: "item_type",
-                    width: "xxs"
+                    width: "xxxxs"
                 },
-
                 {
                   label: "Status receiving",
                   key: "is_received",
@@ -70,6 +58,6 @@ export default {
         listenLoading(){
             return this.loading
         }
-    },
+    }
 }
 </script>

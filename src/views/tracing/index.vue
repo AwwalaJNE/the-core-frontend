@@ -195,7 +195,7 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Koli",
+                    label: "Connote",
                     key: "koli_number",
                     width: "xxs"
                 },
@@ -255,13 +255,18 @@ export default {
                     width: "xxs"
                 },
                 {
-                    label: "Status Code",
+                    label: "Remark Code",
                     key: "status_code",
                     width: "xxs"
                 },
                 {
-                    label: "Status Name",
-                    key: "status_name",
+                  label: "Remark Label",
+                  key: "status_name",
+                  width: "xxs"
+                },
+                {
+                    label: "Date #",
+                    key: "created_at",
                     width: "xxs"
                 },
             ],
@@ -273,10 +278,10 @@ export default {
             },
             searchBy: "koli_number",
             filterDateBy: "created_at",
-            searchPlaceholder: "Search Koli Number",
+            searchPlaceholder: "Search Connote Number",
             searchParams: [
                 {
-                    label: "Koli Number",
+                    label: "Connote Number",
                     value: "koli_number",
                 },
                 {

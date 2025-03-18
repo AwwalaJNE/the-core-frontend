@@ -93,6 +93,11 @@ export default {
           width: "auto",
         },
         {
+          label: "Total Item",
+          key: "total_items",
+          width: "auto",
+        },
+        {
           label: "ETD",
           key: "etd",
           width: "sm",

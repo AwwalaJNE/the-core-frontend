@@ -246,10 +246,10 @@ export default {
             dialogEntryStatusActive: false,
             searchBy: "koli_number",
             filterDateBy: "create",
-            searchPlaceholder: "Search Koli Number",
+            searchPlaceholder: "Search Connote Number",
             searchParams: [
                 {
-                    label: 'Koli number',
+                    label: 'Connote number',
                     value: 'koli_number'
                 },
                 {
@@ -334,7 +334,7 @@ export default {
             }
             await axios
                 .get(this.URL.irregularities +
-                `?n=${this.listenNodeId}&irregularity_type=PROBLEM&show_archive=false&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+                `?n=${this.listenNodeId}&show_archive=false&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data

@@ -99,12 +99,12 @@ export default {
                         width: "sm"
                     },
                     {
-                        label: "Bag",
+                        label: "Bag/Masterbag",
                         key: "detail_count",
                         width: "auto"
                     },
                     {
-                        label: "Koli",
+                        label: "Connote",
                         key: "koli_count",
                         width: "auto"
                     },
@@ -114,13 +114,13 @@ export default {
                         width: "auto"
                     },
                     {
-                        label: "ETA",
-                        key: "eta",
+                        label: "ETD",
+                        key: "etd",
                         width: "sm"
                     },
                     {
-                        label: "ETD",
-                        key: "etd",
+                        label: "ETA",
+                        key: "eta",
                         width: "sm"
                     },
                     {
@@ -131,6 +131,11 @@ export default {
                     {
                         label: "Status",
                         key: "status",
+                        width: "xs"
+                    },
+                    {
+                        label: "Received At",
+                        key: "latest_node_code_receiver",
                         width: "xs"
                     },
                 ],
