@@ -434,6 +434,7 @@ export default {
                 const serializedItem = JSON.stringify(newItem);
 
                 if (!existingRecords.has(serializedItem)) {
+                  newItem.button_status = { edit: (newItem.status == null || newItem.status == undefined || newItem.status == '') };
                   this.dataTableReceivingLog.push(newItem);
                   existingRecords.add(serializedItem);
                 }
