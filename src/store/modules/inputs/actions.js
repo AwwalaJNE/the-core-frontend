@@ -3172,7 +3172,106 @@ export default {
   //====== END SLA NODE TO NODE A ======//
 
 
+  // ===== START OF SLA BAG ===== //
+  SET_SLA_BAG_SLA_ID({ commit }, payload) {
+    commit('SET_SLA_BAG_SLA_ID', payload)
+  },
+  SET_SLA_BAG_SLA_ID_visible({ commit }, payload) {
+    commit('SET_SLA_BAG_SLA_ID_visible', payload)
+  },
+  SET_SLA_BAG_SLA_ID_ValueData({ commit }, payload) {
+    commit('SET_SLA_BAG_SLA_ID_ValueData', payload)
+  },
 
+  SET_SLA_BAG_GROUP_NAME({ commit }, payload) {
+    commit('SET_SLA_BAG_GROUP_NAME', payload)
+  },
+  SET_SLA_BAG_GROUP_NAME_ValueData({ commit }, payload) {
+    commit('SET_SLA_BAG_GROUP_NAME_ValueData', payload)
+  },
+
+  SET_SLA_BAG_START_DATE({ commit }, payload) {
+    commit('SET_SLA_BAG_START_DATE', payload)
+  },
+  SET_SLA_BAG_START_DATE_ValueData({ commit }, payload) {
+    commit('SET_SLA_BAG_START_DATE_ValueData', payload)
+  },
+  SET_SLA_BAG_START_DATE_ArrData({ commit }, payload) {
+    commit('SET_SLA_BAG_START_DATE_ArrData', payload)
+  },
+
+
+  SET_SLA_BAG_END_DATE({ commit }, payload) {
+    commit('SET_SLA_BAG_END_DATE', payload)
+  },
+  SET_SLA_BAG_END_DATE_ValueData({ commit }, payload) {
+    commit('SET_SLA_BAG_END_DATE_ValueData', payload)
+  },
+  SET_SLA_BAG_END_DATE_ArrData({ commit }, payload) {
+    commit('SET_SLA_BAG_END_DATE_ArrData', payload)
+  },
+
+  SET_SLA_BAG_BAG_TYPE({ commit }, payload) {
+    commit('SET_SLA_BAG_BAG_TYPE', payload)
+  },
+  SET_SLA_BAG_BAG_TYPE_ValueData({ commit }, payload) {
+    commit('SET_SLA_BAG_BAG_TYPE_ValueData', payload)
+  },
+  SET_SLA_BAG_BAG_TYPE_ArrData({ commit }, payload) {
+    commit('SET_SLA_BAG_BAG_TYPE_ArrData', payload)
+  },
+
+  SET_SLA_BAG_REFERENCE_ENTITY({ commit }, payload) {
+    commit('SET_SLA_BAG_REFERENCE_ENTITY', payload)
+  },
+  SET_SLA_BAG_REFERENCE_ENTITY_ValueData({ commit }, payload) {
+    commit('SET_SLA_BAG_REFERENCE_ENTITY_ValueData', payload)
+  },
+  SET_SLA_BAG_REFERENCE_ENTITY_ArrData({ commit }, payload) {
+    commit('SET_SLA_BAG_REFERENCE_ENTITY_ArrData', payload)
+  },
+
+  SET_SLA_BAG_REFERENCE_VALUE({ commit }, payload) {
+    commit('SET_SLA_BAG_REFERENCE_VALUE', payload)
+  },
+  SET_SLA_BAG_REFERENCE_VALUE_ValueData({ commit }, payload) {
+    commit('SET_SLA_BAG_REFERENCE_VALUE_ValueData', payload)
+  },
+  SET_SLA_BAG_REFERENCE_VALUE_ArrData({ commit }, payload) {
+    commit('SET_SLA_BAG_REFERENCE_VALUE_ArrData', payload)
+  },
+
+  SET_SLA_BAG_SLA_TYPE({ commit }, payload) {
+    commit('SET_SLA_BAG_SLA_TYPE', payload)
+  },
+  SET_SLA_BAG_SLA_TYPE_ValueData({ commit }, payload) {
+    commit('SET_SLA_BAG_SLA_TYPE_ValueData', payload)
+  },
+  SET_SLA_BAG_SLA_TYPE_ArrData({ commit }, payload) {
+    commit('SET_SLA_BAG_SLA_TYPE_ArrData', payload)
+  },
+
+  SET_SLA_BAG_BAG_ITEMS_QTY({ commit }, payload) {
+    commit('SET_SLA_BAG_BAG_ITEMS_QTY', payload)
+  },
+  SET_SLA_BAG_BAG_ITEMS_QTY_ValueData({ commit }, payload) {
+    commit('SET_SLA_BAG_BAG_ITEMS_QTY_ValueData', payload)
+  },
+
+  SET_SLA_BAG_SLA({ commit }, payload) {
+    commit('SET_SLA_BAG_SLA', payload)
+  },
+  SET_SLA_BAG_SLA_ValueData({ commit }, payload) {
+    commit('SET_SLA_BAG_SLA_ValueData', payload)
+  },
+
+  SET_SLA_BAG_IS_ACTIVE({ commit }, payload) {
+    commit('SET_SLA_BAG_IS_ACTIVE', payload)
+  },
+  SET_SLA_BAG_IS_ACTIVE_ValueData({ commit }, payload) {
+    commit('SET_SLA_BAG_IS_ACTIVE_ValueData', payload)
+  },
+  // ===== END OF SLA BAG ===== //
 
 
 
@@ -3515,6 +3614,20 @@ export default {
 
 
   //====== CONNOTE FORWARD ======//
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_isDisabled({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_isDisabled', payload)
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ValueData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ValueData', payload)
+  },
+  // type select perlu data array
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ArrData({ commit }, payload) {
+    commit('SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ArrData', payload)
+  },
+
   
   SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME({ commit }, payload) {
     commit('SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME', payload);
@@ -3813,6 +3926,46 @@ export default {
 
 
 
+  //====== COURIER DELIVERY AREA SETTINGS ======//
+
+  SET_COURIER_DELIVERY_AREA_COURIER_ID({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_ValueData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID_ValueData', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled', payload)
+  },
+  
+
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_TYPE', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE_ValueData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_TYPE_ValueData', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE_ArrData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_TYPE_ArrData', payload)
+  },
+
+
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_VALUE', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE_ValueData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_VALUE_ValueData', payload)
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE_ArrData({ commit }, payload) {
+    commit('SET_COURIER_DELIVERY_AREA_AREA_VALUE_ArrData', payload)
+  },
+
+  //====== END COURIER DELIVERY AREA SETTINGS ======//
+
+
 
   SET_BAG_IS_AUTO_OPEN_BAG({ commit }, payload) {
     commit('SET_BAG_IS_AUTO_OPEN_BAG', payload);
@@ -3986,4 +4139,33 @@ export default {
   },
 
   //====== END SURAT MUATAN STOCK ======//
+
+  //====== START OF RECEIVING LOG ======//
+  SET_RECEIVING_LOG_INBOUND_NUMBER({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_INBOUND_NUMBER', payload)
+  },
+  SET_RECEIVING_LOG_INBOUND_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_INBOUND_NUMBER_ValueData', payload)
+  },
+  SET_RECEIVING_LOG_ITEM_NUMBER({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_ITEM_NUMBER', payload)
+  },
+  SET_RECEIVING_LOG_ITEM_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_ITEM_NUMBER_ValueData', payload)
+  },
+  SET_RECEIVING_LOG_STATUS({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_STATUS', payload)
+  },
+  SET_RECEIVING_LOG_STATUS_ValueData({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_STATUS_ValueData', payload)
+  },
+  SET_RECEIVING_LOG_STATUS_ArrData({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_STATUS_ArrData', payload)
+  },
+  SET_RECEIVING_LOG_REMARK({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_REMARK', payload)
+  },
+  SET_RECEIVING_LOG_REMARK_ValueData({ commit }, payload) {
+    commit('SET_RECEIVING_LOG_REMARK_ValueData', payload)
+  },
 }

@@ -320,7 +320,6 @@ export default {
                     this.Helper.header()
                 ).then(res => {
                     if(res.status == 200){
-                        console.log('res connote ========>', res)
                         if (this.progress <= 100) {
                                 loading.changeProgress(this.progress++)
                         }

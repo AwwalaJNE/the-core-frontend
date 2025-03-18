@@ -38,6 +38,8 @@ export default {
     },
     filterDateBy: String,
     isReset: Boolean,
+    created: Function,
+    updateLocalStorage: Function
   },
   components: {
     "table-master": TableMaster,
@@ -72,19 +74,34 @@ export default {
           width: "xs",
         },
         {
-          label: "Bag/Masterbag",
+          label: "Item",
           key: "inbound_total_bag",
           width: "auto",
         },
+        // {
+        //   label: "Connote",
+        //   key: "inbound_total_koli",
+        //   width: "auto",
+        // },
         {
-          label: "Connote",
-          key: "inbound_total_koli",
-          width: "auto",
+          label: "Fix Cost Weight",
+          key: "fix_cost_weight",
+          width: "auto"
         },
         {
-          label: "Weight (Kg)",
-          key: "inbound_total_weight",
-          width: "auto",
+          label: "Live Cost Weight",
+          key: "live_cost_weight",
+          width: "auto"
+        },
+        {
+          label: "Fix Actual Weight",
+          key: "fix_actual_weight",
+          width: "auto"
+        },
+        {
+          label: "Live Actual Weight",
+          key: "live_actual_weight",
+          width: "auto"
         },
         {
           label: "PIC",
@@ -93,7 +110,7 @@ export default {
         },
         {
           label: "Created",
-          key: "created_at",
+          key: "created_orion",
           width: "xs",
         },
         {
@@ -122,6 +139,11 @@ export default {
           width: "auto",
         },
         {
+          label: "Received By",
+          key: "received_by_user_name",
+          width: "auto"
+        },
+        {
           label: "Received Time",
           key: "received_at",
           width: "auto",
@@ -129,18 +151,20 @@ export default {
       ],
       loading: false,
       dataItem: {},
-      tempSearch: "",
-      tempDate: [],
-      nodeOrigin: "",
-      node_type: "",
+      tempSearch: JSON.parse(localStorage.getItem('InboundFilters'))?.tempSearch || '',
+      tempDate: JSON.parse(localStorage.getItem('InboundFilters'))?.tempDate || [],
+      nodeOrigin: JSON.parse(localStorage.getItem('InboundFilters'))?.node_origin || '',
+      node_type: JSON.parse(localStorage.getItem('InboundFilters'))?.node_request || '',
       dialogTariff: false,
       pagination: {
         limit: 20,
         page_size: 1,
         page: 1,
       },
-      statusReceived: "",
-      prealertFilter: "",
+      statusReceived: JSON.parse(localStorage.getItem('InboundFilters'))?.value || '',
+      prealertFilter: JSON.parse(localStorage.getItem('InboundFilters'))?.values || '',
+      filterDateBy: JSON.parse(localStorage.getItem('InboundFilters'))?.filterDateBy || '',
+      searchBy: JSON.parse(localStorage.getItem('InboundFilters'))?.searchBy || '',
     };
   },
   watch: {
@@ -162,6 +186,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -182,6 +207,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -202,6 +228,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -222,6 +249,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -242,6 +270,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -251,6 +280,7 @@ export default {
         if (this.tempDate !== old) {
           this.startDate = this.tempDate !== null ? this.tempDate[0] : "";
           this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
+          this.$emit("updateLocalStorage")
         }
         if (!this.isReset) {
           this.getTableData(
@@ -266,6 +296,7 @@ export default {
             this.searchBy,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -285,6 +316,7 @@ export default {
             val,
             this.filterDateBy
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -302,8 +334,9 @@ export default {
             this.startDate,
             this.endDate,
             this.searchBy,
-            val
+            val || savedFilters
           );
+          this.$emit("updateLocalStorage")
         }
       }
     },
@@ -367,7 +400,7 @@ export default {
           this.dataTable = res.data.data;
           this.dataTable.map((item) => {
             let im = [];
-            item["created_at"] = this.dateConvert(item["created_at"]);
+            item['created_orion'] = item['created_orion'] == null ? this.dateConvert(item['created_at']) : this.dateConvert(item['created_orion']);
             item["inbound_eta"] = this.dateConvert(item["inbound_eta"]);
             item["inbound_etd"] = this.dateConvert(item["inbound_etd"]);
             item["departed_at"] = this.dateConvert(item["departed_at"]);
@@ -465,6 +498,19 @@ export default {
   },
   mounted() {
     this.refresh();
+    this.getTableData(
+          this.pagination.limit,
+          this.pagination.page,
+          this.tempSearch,
+          this.nodeOrigin,
+          this.node_type,
+          this.statusReceived,
+          this.prealertFilter,
+          this.tempDate[0],
+          this.tempDate[1],
+          this.searchBy,
+          this.filterDateBy
+        );
   },
 };
 </script>

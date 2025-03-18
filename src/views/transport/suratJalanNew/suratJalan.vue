@@ -91,6 +91,11 @@ export default {
           width: "xs",
         },
         {
+          label:"Type",
+          key: "sj_type",
+          width: "auto",
+        },
+        {
           label: "Orion Number",
           key: "orion_number",
           width: "xs",
@@ -121,13 +126,28 @@ export default {
           width: "sm",
         },
         {
-          label: "Weight (Kg)",
-          key: "total_weight",
+          label: "Fix Cost Weight",
+          key: "fix_cost_weight",
+          width: "auto",
+        },
+        {
+          label: "Live Cost Weight",
+          key: "live_cost_weight",
+          width: "auto",
+        },
+        {
+          label: "Fix Actual Weight",
+          key: "fix_actual_weight",
+          width: "auto",
+        },
+        {
+          label: "Live Actual Weight",
+          key: "live_actual_weight",
           width: "auto",
         },
         {
           label: "Total Item",
-          key: "total_items",
+          key: "total_detail_items",
           width: "auto",
         },
         {
@@ -302,12 +322,17 @@ export default {
             item["orion_number"] = item.mts || item.do || "";
             item["approved"] = item.is_approve === 1 ? "YES" : "NO";
 
-            if (item.manifest_do_number?.startsWith("SJA") || item.manifest_do_number?.startsWith("BM")) {
-              item['orion_number'] = 'Auto By System'
-              item['vehicle_type_name'] = 'Auto By System'
-              item['driver_name'] = 'Auto By System',
-              item['vehicle_mode_name'] = 'Auto By System'
-            }
+            if (
+                  (item.manifest_do_number?.startsWith("SJA") ||
+                  item.manifest_do_number?.startsWith("BM")) &&
+                  item['driver_name'] === null &&
+                  item['vehicle_mode_name'] === null
+                ) {
+                  item['orion_number'] = 'Auto By System';
+                  item['vehicle_type_name'] = 'Auto By System';
+                  item['driver_name'] = 'Auto By System';
+                  item['vehicle_mode_name'] = 'Auto By System';
+                }
 
             if (item.hasOwnProperty("status") && item["status"] !== null) {
               let str = item["status"].toLowerCase();

@@ -109,10 +109,41 @@ export default {
                         item['total_received'] = item.total_received.toString()
                         item['total_unreceived'] = item.total_unreceived.toString()
                     })
+                    let detail = res.data.detail
+                    detail.map(item=>{
+                        if (item.is_masterbag === '1') {
+                            item.item_type = 'MASTERBAG';
+                        } else {
+                            item.item_type = 'BAG';
+                        }
+                    })
                     this.dataTable = data
 
-                    this.dataTableDetail = res.data.detail;
+                    const arr = res.data.detail.map(item => {
+                        const children = {
+                            'No item': [],
+                            'Item type': []
+                        };
 
+                        if (item.masterbag_childs != undefined) {
+                            item?.masterbag_childs.forEach(el => {
+                                children['No item'].push(el.bag_number);
+                                children['Item type'].push(el.item_type);
+                            });
+
+                            item.children_width = {
+                                'No item': 'auto',
+                                'Item type': 'auto'
+                            };
+
+                            item.children = children;
+                        }
+                        
+                        return item;
+                    });
+
+                    // this.dataTableDetail = res.data.detail;
+                    this.dataTableDetail = arr;
                     this.loading = false
                 }).catch(err => {
                   this.loading = false

@@ -294,7 +294,7 @@ export default {
                     if (this.isEmptyAddInfo) {
                         this.bag_additional_info = {
                             created_at: data.created_at,
-                            is_masterbag: data.is_consolidated === 1 ? true : false,
+                            is_masterbag: data.is_consolidated === '1' ? true : false,
                             is_approve: data.is_approve === 1 ? true : false,
                             surat_muatan: '-',
                             surat_jalan: '-',

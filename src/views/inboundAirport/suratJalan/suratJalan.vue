@@ -9,11 +9,13 @@
       :limit="pagination.limit"
       :hasPagination="true"
       :hasLinked="['manifest_do_number']"
-      :printAction="true"
+      :customAction="true"
+      :customActionList="customActionList"
       @actionLimit="actionLimit"
       @actionPagination="actionPagination"
       @handleEdit="handleEdit"
       @actionPrint="actionPrint"
+      @actionUpdate="actionUpdate"
     />
     <dialogCreateSuratJalan
       title="Transport Surat Jalan"
@@ -21,6 +23,15 @@
       :closeDialog="closeDialogSuratJalan"
       :dataItem="dataItem"
       @refresh="refresh"
+    />
+    <dialog-confirm
+      title="Cancel Surat Jalan"
+      :message="`Are you sure you want to cancel this surat jalan with number ${this.id}?`"
+      :active="activeDialogConfirmCancel"
+      :loading="loadingConfirmCancel"
+      :closeDialog="closeDialogConfirmCancel"
+      @confirm="confirmCancel"
+      @cancel="closeDialogConfirmCancel"
     />
   </div>
 </template>
@@ -63,6 +74,11 @@ export default {
       ],
       allColumn: [
         {
+          label:"Type",
+          key: "sj_type",
+          width: "auto",
+        },
+        {
           label: "Vehicle Type",
           key: "vehicle_type_name",
           width: "auto",
@@ -88,13 +104,28 @@ export default {
           width: "sm",
         },
         {
-          label: "Kg",
-          key: "total_weight",
+          label: "Fix Cost Weight",
+          key: "fix_cost_weight",
+          width: "auto",
+        },
+        {
+          label: "Live Cost Weight",
+          key: "live_cost_weight",
+          width: "auto",
+        },
+        {
+          label: "Fix Actual Weight",
+          key: "fix_actual_weight",
+          width: "auto",
+        },
+        {
+          label: "Live Actual Weight",
+          key: "live_actual_weight",
           width: "auto",
         },
         {
           label: "Total Item",
-          key: "total_items",
+          key: "total_detail_items",
           width: "auto",
         },
         {
@@ -113,10 +144,27 @@ export default {
           width: "auto",
         },
       ],
+      customActionList: [
+        {
+          label: "Print",
+          key: "print",
+          attribute: "",
+        },
+        {
+          label: "Depart",
+          key: "depart",
+          attribute: "",
+        },
+        {
+          label: "Cancel",
+          key: "cancel",
+          attribute: "danger",
+        },
+      ],
       loading: false,
       dataItem: {},
-      tempSearch: "",
-      tempDate: [],
+      tempSearch: JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.tempSearch || '',
+      tempDate: JSON.parse(localStorage.getItem("InboundAirportSuratJalanFilters"))?.tempDate || [],
       startDate: "",
       endDate: "",
       pagination: {
@@ -125,6 +173,9 @@ export default {
         page: 1,
       },
       manifest_do_number: "",
+      id: "",
+      activeDialogConfirmCancel: false,
+      loadingConfirmCancel: false,
     };
   },
   watch: {
@@ -138,8 +189,11 @@ export default {
             this.pagination.page,
             val,
             this.startDate,
-            this.endDate
+            this.endDate,
+            this.filterDateBy,
+            this.search_by
           );
+          this.updateLocalStorage();
         }
       }
     },
@@ -149,23 +203,75 @@ export default {
         if (this.tempDate !== old) {
           this.startDate = this.tempDate !== null ? this.tempDate[0] : "";
           this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
+          this.updateLocalStorage();
         }
         this.getTableData(
           this.pagination.limit,
           this.pagination.page,
           this.tempSearch,
           this.startDate,
-          this.endDate
+          this.endDate,
+          this.filterDateBy,
+          this.search_by
         );
+        this.updateLocalStorage();
       }
     },
+    filterDateBy: function(val, old) {
+      if (val !== undefined) {
+        if (val !== old && !this.isReset) {
+          this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.startDate,
+            this.endDate,
+            val
+          );
+          this.updateLocalStorage();
+        }
+      }
+    },
+    searchBy: function(val, old) {
+      if (val !== undefined) {
+        this.search_by = val;
+        if (this.search_by !== old) {
+          this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.startDate,
+            this.endDate,
+            this.filterDateBy,
+            val
+          );
+          this.updateLocalStorage()
+        }
+      }
+    }
   },
   methods: {
-    async getTableData(limit, page, q, from, to) {
+    loadFiltersFromLocalStorage() {
+      const savedFilters = localStorage.getItem("InboundAirportSuratJalanFilters");
+      if (savedFilters) {
+        const filters = JSON.parse(savedFilters);
+        this.tempSearch = filters.tempSearch;
+        this.tempDate = filters.tempDate;
+        this.filterDateBy = filters.filterDateBy;
+        this.search_by = filters.searchBy;
+
+        if (this.tempDate && this.tempDate.length === 2) {
+          this.startDate = this.tempDate[0];
+          this.endDate = this.tempDate[1];
+        }
+      }
+    },
+    async getTableData(limit, page, q, from, to, dateFilter, qFilter) {
       this.loading = true;
       let query = "";
       let startDate = "";
       let endDate = "";
+      let queryFilter = "";
       if (q !== undefined) {
         query = q;
         if (q.includes("/")) {
@@ -176,14 +282,24 @@ export default {
         startDate = from;
         endDate = to;
       }
+      if (qFilter !== undefined) {
+        queryFilter = qFilter
+      }
+
+      let dateFilterBy = dateFilter || '';
       await axios
         .get(
           this.URL.manifest_delivery_order +
-            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${queryFilter}&filter_date_by=${dateFilterBy}`,
           this.Helper.header()
         )
         .then((res) => {
           let arr = res.data.data;
+          let buttonStatus = {
+            print: true,
+            depart: true,
+            cancel: true,
+          };
 
           arr.map((item) => {
             item["pickup_courier_employee_name"] = item.employee_courier
@@ -202,7 +318,85 @@ export default {
               : null;
             item["driver_name"] = item.pic ? item.pic.employee_name : null;
             item["orion_number"] = item.mts || item.do || "";
+
+            if (
+                    (item.manifest_do_number?.startsWith("SJA") ||
+                    item.manifest_do_number?.startsWith("BM")) &&
+                    item['driver_name'] === null &&
+                    item['vehicle_mode_name'] === null
+                  ) {
+                    item['orion_number'] = 'Auto By System';
+                    item['vehicle_type_name'] = 'Auto By System';
+                    item['driver_name'] = 'Auto By System';
+                    item['vehicle_mode_name'] = 'Auto By System';
+            }
+
+              if (item.hasOwnProperty("status") && item["status"] !== null) {
+              let str = item["status"].toLowerCase();
+              if (item.is_approve === 1) {
+                if (str.includes("ready")) {
+                  buttonStatus = {
+                    print: false,
+                    depart: true,
+                    cancel: true,
+                  };
+                } else if (
+                  str.includes("depart") ||
+                  str.includes("info") ||
+                  str.includes("receive") ||
+                  str.includes("complete")
+                ) {
+                  buttonStatus = {
+                    print: true,
+                    depart: false,
+                    cancel: false,
+                  };
+                } else if (str.includes("cancel")) {
+                  buttonStatus = {
+                    print: false,
+                    depart: false,
+                    cancel: false,
+                  };
+                }
+              } else {
+                if (str.includes("ready")) {
+                  buttonStatus = {
+                    print: false,
+                    depart: false,
+                    cancel: true,
+                  };
+                } else if (
+                  str.includes("depart") ||
+                  str.includes("info") ||
+                  str.includes("receive") ||
+                  str.includes("complete")
+                ) {
+                  buttonStatus = {
+                    print: true,
+                    depart: false,
+                    cancel: false,
+                  };
+                } else if (str.includes("cancel")) {
+                  buttonStatus = {
+                    print: false,
+                    depart: false,
+                    cancel: false,
+                  };
+                }
+              }
+
+              item["button_status"] = buttonStatus;
+            }
+
+            if (item.is_orion == "1") {
+              item["button_status"] = {
+                print: true,
+                depart: false,
+                cancel: false,
+              };
+            }
           });
+
 
           this.dataTable = arr;
           this.pagination.page = res.data.meta.current_page;
@@ -293,15 +487,125 @@ export default {
         this.pagination.page,
         this.tempSearch,
         this.startDate,
-        this.endDate
+        this.endDate,
+        this.filterDateBy,
+        this.search_by
       );
+    },
+    updateLocalStorage() {
+    const filterData = {
+        tempSearch: this.tempSearch,
+        tempDate: this.tempDate,
+        filterDateBy: this.filterDateBy,
+        searchBy: this.search_by
+      };
+
+      localStorage.setItem("InboundAirportSuratJalanFilters", JSON.stringify(filterData));
     },
     closeDialogSuratJalan() {
       this.dialogSuratJalan = false;
       this.refresh();
     },
+    actionUpdate(val, key) {
+      switch (key) {
+        case "print":
+          this.manifest_do_number = val.manifest_do_number;
+          this.print();
+          break;
+        case "depart":
+          this.manifest_do_number = val.manifest_do_number;
+          this.depart();
+          break;
+        case "cancel":
+          this.manifest_do_number = val.manifest_do_number;
+          this.id = val.manifest_do_number;
+          this.activeDialogConfirmCancel = true;
+          break;
+        default:
+      }
+    },
+    print() {
+      let routeData = this.$router.resolve({
+        name: "printGeneral",
+        params: {
+          id: this.manifest_do_number,
+          type: "manifest-delivery-order",
+          node_id: this.listenNodeId,
+        },
+      });
+
+      const printWindow = window.open(routeData.href, "_blank", "noopener");
+
+      if (printWindow) {
+        printWindow.onload = function() {
+          printWindow.print();
+          printWindow.onafterprint = () => printWindow.close();
+        };
+      }
+    },
+    async depart() {
+      this.loading = true;
+
+      try {
+        const res = await axios.patch(
+          `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/depart?n=${this.listenNodeId}&is_departed=1`,
+          {},
+          this.Helper.header()
+        );
+        this.print();
+        this.openNotification(
+          "success",
+          null,
+          "Success",
+          "Update surat jalan success"
+        );
+      } catch (err) {
+        this.openNotification(
+          "danger",
+          err?.response?.data?.code ?? "",
+          "Update surat jalan failed",
+          err?.response?.data?.message ?? "something went wrong"
+        );
+      } finally {
+        this.loading = false;
+        this.refresh();
+      }
+    },
+    confirmCancel() {
+      this.loadingConfirmCancel = true;
+      this.cancel();
+    },
+    async cancel() {
+      try {
+        const res = await axios.delete(
+          `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}?n=${this.listenNodeId}`,
+          this.Helper.header()
+        );
+        this.openNotification(
+          "success",
+          null,
+          "Success",
+          "Cancel surat jalan success"
+        );
+      } catch (err) {
+        this.openNotification(
+          "danger",
+          err?.response?.data?.code ?? "",
+          "Failed",
+          err?.response?.data?.message ?? "Something went wrong"
+        );
+      } finally {
+        this.closeDialogConfirmCancel();
+        this.refresh();
+      }
+    },
+    closeDialogConfirmCancel() {
+      this.activeDialogConfirmCancel = false;
+      this.loadingConfirmCancel = false;
+    },
   },
   mounted() {
+    this.loadFiltersFromLocalStorage();
     this.refresh();
   },
 };

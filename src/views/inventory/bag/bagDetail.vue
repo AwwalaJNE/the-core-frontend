@@ -61,7 +61,7 @@
 
     <template v-if="!disabledApprove && !is_orion && !loading && !is_masterbag">
       <div class="center in-get-bag">
-        <vs-row class="mb-2 mt-2">
+        <vs-row class="mb-2 mt-2" align="center">
           <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
             Auto Open Bag
           </vs-checkbox>
@@ -75,6 +75,47 @@
           <vs-checkbox v-if="disable_hub_delivery" style="margin-left: 20px;" v-model="is_hub_delivery_validation" @change="handleValidateHubDelivery" disabled>
             Validate Hub Delivery
           </vs-checkbox>
+
+          <!-- COURIER -->
+          <template v-if="is_pra_runsheet">
+            <vs-col xs="12" sm="2" lg="2">
+              <template>
+                <div class="center in-get-bag">
+                  <vs-col lg="12">
+                    <selector 
+                      ref="validation"
+                      name="" 
+                      rules="" 
+                      placeholder="Select Validation"
+                      formKey="validation"
+                      :loading="loading"
+                      :selectedValue="validation"
+                      :disabled="true"
+                      :customBind="'data-kt-routing'" 
+                    />
+                  </vs-col>
+                </div>
+              </template>
+            </vs-col>
+            <vs-col xs="12" sm="6" lg="6">
+              <template>
+                <div class="center in-get-bag">
+                  <vs-col lg="12">
+                    <asynchronousSelect 
+                      ref="validation_reference"
+                      name=""
+                      rules="" 
+                      formKey="validation_reference"
+                      typeInput="multipleselector"
+                      :selectedValue="validation_reference"
+                      :disabled="true"
+                    />
+                  </vs-col>
+                </div>
+              </template>
+            </vs-col>
+          </template>
+          
         </vs-row>
         <vs-row style="margin-top:2em">
           <vs-col xs="4" sm="4" lg="2">
@@ -304,6 +345,8 @@ import CameraScanner from "@/components/scanner/camera.vue";
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogHelpdeskEditBag from "@/views/helpdesk/bag/dialogHelpdeskEditBag";
 
+import asynchronousSelect from "@/components/input/asynchronousSelect"
+
 export default {
   name: "InventoryBaggingList",
   mixins: [master],
@@ -314,6 +357,7 @@ export default {
     CameraScanner,
     "dialog-confirm": DialogConfirm,
     "dialog-helpdesk-edit-bag": DialogHelpdeskEditBag,
+    "asynchronousSelect": asynchronousSelect,
   },
   data() {
     return {
@@ -364,7 +408,10 @@ export default {
       is_actual_weight_mandatory: false,
       is_auto_open_bag: this.$store.getters.getInputs.bag_is_auto_open_bag.bag_is_auto_open_bag.value,
       is_hub_delivery_validation: this.$store.getters.getInputs.is_hub_delivery_validation.value,
-      disable_hub_delivery: false
+      disable_hub_delivery: false,
+      validation: '',
+      validation_reference: [], 
+      courierArr: []
     }
   },
   computed: {
@@ -412,7 +459,7 @@ export default {
     handleValidateHubDelivery(val) {
       this.is_hub_delivery_validation = val.target.checked;
     },
-    getResponse(data, loading) {
+    async getResponse(data, loading) {
       
 
       this.is_orion = data.data.is_orion === '1' ? true : false;
@@ -480,7 +527,41 @@ export default {
       this.is_approve = data.data.is_approve === 0 ? false : true
       this.actual_weight = data.data.bag_actual_weight
 
+      this.validation = data.data.validation;
+
+      
+      this.validation_reference = String(data.data.validation_reference || "").split(",");
+
+      if (this.validation === 'COURIER') {
+        await this.getDataCourier()
+        this.validation_reference =  this.courierArr
+          .filter(item => this.validation_reference.includes(String(item.value)))
+          .map(item => item.label);
+      }
+      
+
       this.loading = loading
+    },
+    async getDataCourier() {
+      this.loading = true;
+      try {
+        const res = await axios.get(`${this.URL.courier_delivery}/list?n=${this.listenNodeId}`, this.Helper.header());
+        if (res.data.data.length > 0) {
+          let arr = res.data.data;
+          arr = arr.map(item => ({
+            label: item.employee_name + ' ( ' + item.employee_code + ' ) ',
+            value: item.employee_id,
+          }));
+          this.courierArr = arr
+        } else {
+          this.courierArr = [];
+          this.openNotification('warn', null, 'Courier data is empty!', ' Please create a new courier delivery')
+        }
+      } catch (err) {
+        this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+      } finally {
+        this.loading = false;
+      }
     },
     getIsPraRunsheet(){
       this.is_pra_runsheet = this.$store.getters.getInputs.is_pra_runsheet

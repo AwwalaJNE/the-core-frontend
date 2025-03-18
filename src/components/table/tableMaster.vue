@@ -49,7 +49,7 @@
 -->
 <template>
   <div>
-    <vs-table ref="tablee" v-model="selected">
+    <vs-table ref="tablee" v-model="selected" :class="{ 'scrollableAndStaticHeader': scrollableAndStaticHeader }">
       <template #header>
         <template v-if="listenIsSearchAble">
           <vs-input v-model="search" border placeholder="Search" />
@@ -101,7 +101,17 @@
                 Action
               </vs-th>
             </template>
+            <template v-if="editOnly == true">
+              <vs-th class="action">
+                Action
+              </vs-th>
+            </template>
             <template v-if="removeOnly == true">
+              <vs-th class="action">
+                Action
+              </vs-th>
+            </template>
+            <template v-if="searchPreviewAction == true">
               <vs-th class="action">
                 Action
               </vs-th>
@@ -119,6 +129,11 @@
             <template v-if="runsheetAction == true">
               <vs-th class="action">
                 Action
+              </vs-th>
+            </template>
+            <template v-if="runsheetProofAction == true">
+              <vs-th class="action">
+                Proof
               </vs-th>
             </template>
             <template
@@ -709,6 +724,28 @@
                 </vs-row>
               </vs-td>
             </template>
+            <template v-if="editOnly == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      size="small"
+                      flat
+                      :active="true"
+                      :disabled="
+                        item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true
+                      "
+                      type="submit"
+                      @click="actionEdit(item)"
+                    >
+                      <span>Edit</span>
+                    </vs-button>
+                  </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
             <template v-if="removeOnly == true">
               <vs-td class="action">
                 <vs-row justify="center" class="btn_action">
@@ -726,6 +763,28 @@
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>
+                    </vs-button>
+                  </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
+            <template v-if="searchPreviewAction == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      size="small"
+                      flat
+                      :active="true"
+                      :disabled="
+                        item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true
+                      "
+                      type="submit"
+                      @click="actionSearchPreview(item)"
+                    >
+                      <span>Choose</span>
                     </vs-button>
                   </vs-col>
                 </vs-row>
@@ -792,6 +851,31 @@
                       <span>Edit</span>
                     </vs-button>
                   </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
+            <template v-if="runsheetProofAction == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <i 
+                    class="bx bxs-show" 
+                    style="font-size: 36px;" 
+                    @click="actionRunsheetProofAction(item)">
+                  </i>
+                    <!-- <vs-button
+                      block
+                      :disabled="
+                        item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true
+                      "
+                      size="small"
+                      flat
+                      warn
+                      :active="true"
+                      @click="actionConfirmed(item)"
+                    >
+                      <span>Confirmed</span>
+                    </vs-button> -->
                 </vs-row>
               </vs-td>
             </template>
@@ -1228,6 +1312,7 @@ export default {
     page: Number,
     limit: Number,
     hasAction: Boolean,
+    scrollableAndStaticHeader: Boolean,
     hasPagination: Boolean,
     expandable: Boolean,
     hasLinkedDanger: String,
@@ -1237,8 +1322,11 @@ export default {
     hasLinked4: Array,
     hasLinkedChild: Array,
     hasId: Boolean,
+    editOnly: Boolean,
     removeOnly: Boolean,
+    searchPreviewAction: Boolean,
     runsheetAction: Boolean,
+    runsheetProofAction: Boolean,
     printAction: Boolean,
     pickupListAction: Boolean,
     tracingListAction: Boolean,
@@ -1282,6 +1370,10 @@ export default {
       default: undefined,
     },
     onRowClickSelected: {
+      type: Function,
+      default: undefined,
+    },
+    onRowClickSelectDelete: {
       type: Function,
       default: undefined,
     },
@@ -1423,11 +1515,20 @@ export default {
     actionCollect(val) {
       this.$emit("actionCollect", val);
     },
+    actionEdit(val) {
+      this.$emit("actionEdit", val);
+    },
     actionRemove(val) {
       this.$emit("actionRemove", val);
     },
+    actionSearchPreview(val) {
+      this.$emit("actionSearchPreview", val);
+    },
     actionConfirmed(val, key) {
       this.$emit("actionConfirmed", val, key);
+    },
+    actionRunsheetProofAction(val, key) {
+      this.$emit("actionRunsheetProofAction", val, key);
     },
     actionPrint(val) {
       this.$emit("actionPrint", val);
@@ -1679,6 +1780,19 @@ export default {
       }
     }
   }
+}
+
+.scrollableAndStaticHeader {
+  .vs-table {
+    height: fit-content;
+    max-height: 200px;
+
+    .vs-tr {
+      position: 'sticky';
+      top: '0';
+      z-index: 9999 ;
+    }
+  } 
 }
 
 span.text-link {

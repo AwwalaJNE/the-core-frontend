@@ -95,6 +95,7 @@
                                 :dataItem="dataItem"
                                 :isDisabled="!!crisscross_number"
                                 :querySearch="querySearch"
+                                @formData="formData"
                                 @onChangeCustom="onChangeCustom"
                             />
                         </div>
@@ -168,11 +169,19 @@ export default {
         },
         listenLoading() {
             return this.loading;
+        },
+        listenGetUserNodeList() {
+        return this.$store.getters.getUser.user_data['nodes'];
+        },
+        nodeOrigin() {
+            return this.listenGetUserNodeList.length > 0 ? this.listenGetUserNodeList[0].node_origin : null;
         }
     },
     watch: {
         isEdit: function (val) {
             if (val == false) {
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_isDisabled", true);
+
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled", true);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled", true);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled", true);
@@ -189,13 +198,15 @@ export default {
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ZIP_CODE_isDisabled", true);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_TARIFF_CODE_isDisabled", true);
             } else {
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_isDisabled", false);
+
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME_isDisabled", false);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_PHONE_NUMBER_isDisabled", false);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_EMAIL_isDisabled", false);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_STREET_ADDRESS_isDisabled", false);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS_isDisabled", false);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE_isDisabled", false);
-                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled", false);
+                this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE_isDisabled", true);
 
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_NAME_isDisabled", false);
                 this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_PHONE_NUMBER_isDisabled", false);
@@ -214,6 +225,7 @@ export default {
             connote_number: "",
             crisscross_number: "",
             form: {},
+            original_form: {},
             dataItem: {},
             dataTable: [],
             datacolumn: [
@@ -312,10 +324,10 @@ export default {
             this.loading = true;
             try {
                 const res = this.crisscross_number && !this.isCreateManually ? await axios.get(`${this.URL.connote}/${this.crisscross_number}?n=${this.listenNodeId}`, this.Helper.header()) : await axios.get(`${this.URL.connote_forward}/${this.connote_number}/scan?n=${this.listenNodeId}`, this.Helper.header());
-
                 if(res.data.data) {
                     let data = res.data.data;
-
+                    const nodeOrigin = this.nodeOrigin;
+                
                     let obj = {
                         connote_shipper_name: data.connote_shipper_name || '',
                         connote_shipper_phone_number: data.connote_shipper_phone_number || '',
@@ -323,7 +335,7 @@ export default {
                         connote_shipper_street_address: data.connote_shipper_street_address || '',
                         connote_shipper_administrative_address: data.connote_shipper_administrative_address || '',
                         connote_shipper_zip_code: data.connote_shipper_zip_code || '',
-                        connote_shipper_tariff_code: data.connote_shipper_tariff_code || '',
+                        connote_shipper_tariff_code: nodeOrigin || '',
 
                         connote_receiver_name: data.connote_receiver_name || '',
                         connote_receiver_phone_number: data.connote_receiver_phone_number || '',
@@ -339,6 +351,7 @@ export default {
                         connote_receiver_city_zone: data.connote_receiver_city_zone || ''
                     };
 
+                    this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE", data?.connote_receiver_address_type);
                     this.dataItem = obj
                     this.connote_number = this.crisscross_number ? this.connote_number : res.data.data.connote_number || this.connote_number
                     this.status = res.data.status || this.status;
@@ -349,10 +362,14 @@ export default {
                         }
                     }
 
-                    this.form = {
+                    const formObject = {
                         connote_number: this.connote_number,
                         connote: this.dataItem
-                    }
+                    };
+
+                    this.form = formObject;
+                    this.original_form = formObject;
+
                 }
                 
             } catch (err) {
@@ -362,21 +379,63 @@ export default {
                 this.loading = false;
             }
         },
+        async getTLC(zipCode) {
+            try {
+                const response = await axios.get(
+                    `${this.URL.geolocation_search}?n=${this.listenNodeId}&s=${zipCode}`, 
+                    this.Helper.header()
+                );
+                if (response.status === 200 && response.data.data.length > 0) {
+                    return response.data.data[0].geolocation_subdistrict_tarif_code.substring(0, 3);
+                }
+            } catch (err) {
+                this.checkAuth(err.response);
+                return null;
+            }
+        },
         selectCreate() {
             this.isCreateManually = !this.isCreateManually;
             this.scanConnote();
         },
-        async handleSubmit() {            
+        async formData(form){
+            const { connote_receiver_administrative_address, connote_shipper_administrative_address, ...formWithoutAdministrativeAddress } = form;
+            const tlc_receiver = await this.getTLC(form.connote_receiver_zip_code);
+            this.form = {
+                ...this.form,
+                connote: {
+                    ...formWithoutAdministrativeAddress,
+                    connote_receiver_administrative_address: connote_receiver_administrative_address?.geolocation_location_name || this.original_form?.connote?.connote_receiver_administrative_address || '',
+                    connote_shipper_administrative_address: connote_shipper_administrative_address?.geolocation_location_name || this.original_form?.connote?.connote_shipper_administrative_address || '',
+                    connote_receiver_tlc: tlc_receiver,
+                    connote_receiver_city_zone:tlc_receiver
+                } 
+            };
+
+            this.handleSubmitData();
+        },
+        async handleSubmitData() {
             this.loading = true;
             try {
                 const res = await axios.post(`${this.URL.connote_forward}?n=${this.listenNodeId}`, this.form, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || "Request connote forward is success");
+                if (res.status === 200) {
+                    const { amount_total_price } = res.data.data;
+                    console.log("amount_total_price:", amount_total_price);
+
+                    if (amount_total_price <= 0) {
+                        this.openNotification("warning", '', "Warning", "Connote Forward berhasil dibuat tanpa Tariff");
+                    } else {
+                        this.openNotification(null, '', "Success", "Connote Forward berhasil dibuat");
+                    }
+                }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
                 this.cancel();
             }
+        },
+        handleSubmit(){
+            this.$refs.irreguralitiesReturnDestination.handleSubmit();
         },
         handleClearForm(){
             this.status = '';
@@ -407,11 +466,10 @@ export default {
           } catch (_) {}
         },
       onChangeCustom(type, val, obj) {
-        switch (type) {
+          switch (type) {
           case "connote_shipper_administrative_address":
             this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ADMINISTRATIVE_ADDRESS", obj?.data?.geolocation_location_name);
             this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_ZIP_CODE", obj?.data?.geolocation_subdistrict_zip_code);
-            this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_TARIFF_CODE", obj?.data?.geolocation_subdistrict_tarif_code);
             break;
           case "connote_receiver_administrative_address":
             this.$store.dispatch("SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS", obj?.data?.geolocation_location_name);

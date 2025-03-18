@@ -311,7 +311,6 @@ export default {
         prosesBpik(key, value, index) {
             if(this.listBpik[index].hasOwnProperty(key)) {
                this.listBpik[index][key] = value
-               console.log('===> dipanggil ke', index, this.listBpik[index])
             }
 
             this.$store.dispatch("SET_CONNOTE_BPIK", this.listBpik)

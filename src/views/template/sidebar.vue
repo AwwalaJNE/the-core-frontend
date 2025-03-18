@@ -111,7 +111,7 @@ export default {
           },
         },
         {
-          label: "Trace Bag",
+          label: "Trace Bag / Masterbag",
           url: "/trace-bag",
           icon: "bx-search",
           permission: "",
@@ -208,6 +208,7 @@ export default {
           label: "Inventory",
           url: null,
           icon: "bx bx-archive",
+          permission: "read-inventory",
           children: [
             {
               label: "Inventory Item",
@@ -346,26 +347,46 @@ export default {
         },
         {
           label: "Receiving",
-          url: "/inbound/prealert",
+          url: null,
           icon: "bx bxs-inbox",
-          children: [],
-          meta: {
-            resource_type: resourceLookup["RECEIVING"].resource_type,
-            resource_code: resourceLookup["RECEIVING"].resource_code,
-            resource_name: resourceLookup["RECEIVING"].resource_name
-          },
-        },
-        {
-          label: "Airport Receiving",
-          url: "/inbound-airport",
-          icon: "bx bxs-inbox",
-          children: [],
-          permission: "read-airport-prealert",
-          meta: {
-            resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
-            resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
-            resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
-          },
+          children: [
+              {
+              label: "Receiving",
+              url: "/inbound/prealert",
+              icon: "bx bxs-checkbox",
+              children: [],
+              permission: "read-receiving",
+              meta: {
+                resource_type: resourceLookup["RECEIVING"].resource_type,
+                resource_code: resourceLookup["RECEIVING"].resource_code,
+                resource_name: resourceLookup["RECEIVING"].resource_name
+              },
+            },
+            {
+              label: "Airport Receiving",
+              url: "/inbound-airport",
+              icon: "bx bxs-checkbox",
+              children: [],
+              permission: "read-airport-prealert",
+              meta: {
+                resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
+                resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
+                resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
+              },
+            },
+            {
+              label: "Receiving Log",
+              url: "/receiving-log",
+              icon: "bx bxs-checkbox",
+              children: [],
+              permission: "read-receiving",
+              meta: {
+                resource_type: resourceLookup["RECEIVING_LOG"].resource_type,
+                resource_code: resourceLookup["RECEIVING_LOG"].resource_code,
+                resource_name: resourceLookup["RECEIVING_LOG"].resource_name
+              },
+            },
+          ]
         },
         {
           label: "Delivery",
@@ -636,6 +657,7 @@ export default {
           label: "Cost To Cost",
           url: null,
           icon: "bx bx-wallet",
+          permission: "read-cost-to-cost",
           children: [
             {
               label: "Settings",
@@ -663,6 +685,18 @@ export default {
               icon: "",
             },
           ],
+        },
+        {
+          label: "Claim and Burden",
+          url: "/claim-and-burden",
+          icon: "bx-dollar",
+          permission: "",
+          children: [],
+          meta: {
+            resource_type: resourceLookup["CLAIM_AND_BURDEN"].resource_type,
+            resource_code: resourceLookup["CLAIM_AND_BURDEN"].resource_code,
+            resource_name: resourceLookup["CLAIM_AND_BURDEN"].resource_name
+          },
         },
         {
           label: "Helpdesk",
@@ -730,6 +764,7 @@ export default {
           label: "Settings",
           url: null,
           icon: "bx-cog",
+          permission: "read-settings",
           children: [
             {
               label: "Settings Tariff",
@@ -929,12 +964,24 @@ export default {
                 resource_name: resourceLookup["SETTINGS_RUNSHEET"].resource_name
               },
             },
+            {
+              label: "Settings Courier",
+              url: "/settings/courier",
+              icon: "bx bxs-checkbox",
+              permission: "read-courier-delivery-area",
+              meta: {
+                resource_type: resourceLookup["SETTINGS_COURIER"].resource_type,
+                resource_code: resourceLookup["SETTINGS_COURIER"].resource_code,
+                resource_name: resourceLookup["SETTINGS_COURIER"].resource_name
+              },
+            },
           ],
         },
         {
           label: "Admin",
           url: null,
           icon: "bx-user",
+          permission: "read-admin",
           children: [
             {
               label: "Resync Runsheet",
@@ -1044,11 +1091,6 @@ export default {
 
       menus.forEach((menu) => {
         const { permission, children, rolePermission, showAll, label } = menu;
-
-        if (permissions.includes("read-airport-prealert") && label === "Receiving") {
-          return;
-        }
-
         if (foundPermission?.type === 'exclusive') {
           if (children.length > 0) {
             const filteredChildren = [];
@@ -1080,22 +1122,21 @@ export default {
             filtered.push(menu);
           }
         } else if (children.length > 0) {
-          const filteredChildren = [];
+          const filteredChildren = children.filter((child) => {
 
-          children.forEach((child) => {
+            // NOTES: If have permission 'read-airport-prealert', hide 'Receiving'
+            if (permissions.includes("read-airport-prealert") && child.label === "Receiving") {
+              return false;
+            }
+
             if (child.permission) {
-              if (permissions.includes(child.permission)) {
-                filteredChildren.push(child);
-              }
+              return permissions.includes(child.permission);
             }
-            else if (child.rolePermission) {
-              if (child.rolePermission === foundPermission?.role) {
-                filteredChildren.push(child);
-              }
+
+            if (child.rolePermission) {
+              return child.rolePermission === foundPermission?.role;
             }
-            else {
-              filteredChildren.push(child);
-            }
+            return true;
           });
 
           if (filteredChildren.length > 0) {

@@ -167,7 +167,7 @@ export default {
                     width: "xxxxs"
                 },
                 {
-                    label: "Bag type",
+                    label: "Bag type*",
                     key: "tipe_bag",
                     width: "xs"
                 },
@@ -191,11 +191,11 @@ export default {
                     key: "bag_detail_qty",
                     width: "auto"
                 },
-                {
-                    label: "Weight (Kg)",
-                    key: "bag_weight",
-                    width: "auto"
-                },
+                // {
+                //     label: "Weight (Kg)",
+                //     key: "bag_weight",
+                //     width: "auto"
+                // },
                 {
                     label: "Cost Weight",
                     key: "cost_weight",
@@ -212,6 +212,11 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Origin Node Name",
+                    key: "origin_node_name",
+                    width: "auto"
+                },
+                {
                     label: "Origin",
                     key: "origin",
                     width: "auto"
@@ -224,6 +229,11 @@ export default {
                 {
                     label: "Destination Node Code",
                     key: "destination_node_code",
+                    width: "auto"
+                },
+                {
+                    label: "Destination Node Name",
+                    key: "destination_node_name",
                     width: "auto"
                 },
                 {
@@ -244,6 +254,11 @@ export default {
                 {
                     label: "With Courier",
                     key: "with_courier",
+                    width: "xs"
+                },
+                {
+                    label: "Masterbag",
+                    key: "masterbag_parent",
                     width: "xs"
                 },
                 {
@@ -383,7 +398,8 @@ export default {
                             })
                         }
 
-                        el.surat_muatan = el.surat_muatan.join(", ")
+                        // el.surat_muatan = el.surat_muatan.join(", ")
+                        el.surat_muatan = el.manifest_numbers
                         el.surat_jalan = el.surat_jalan.join(", ")
                         el.with_courier = el.courier ? el.courier.employee_name : ""
                         el.approved = el.is_approve === 1 ? "Yes" : "No"

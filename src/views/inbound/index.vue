@@ -87,7 +87,7 @@
                       <vs-col xs="12" sm="4" lg="4">
                         <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
                       </vs-col>
-                      <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" :isNumeric="searchByNumeric" />
+                      <search-input ref="searchInput" @handleSearch="handleSearch" @searchValue="searchValue" :placeholder="searchPlaceholder" :isNumeric="searchByNumeric" />
                     </vs-row>
                   </vs-col>
                 </vs-row>
@@ -186,6 +186,7 @@
                           :dateFilter="tempDate"
                           :isReset="reset"
                           :searchBy="searchBy"
+                          @updateLocalStorage="updateLocalStorage"
                         />
                     </transition>
                 </template>
@@ -232,8 +233,8 @@ export default {
     data() {
         return {
             title:"Receiving ",
-            tempSearch: "",
-            tempDate: [],
+            tempSearch: JSON.parse(localStorage.getItem("InboundFilters"))?.tempSearch|| '',
+            tempDate: JSON.parse(localStorage.getItem("InboundFilters"))?.tempDate || [],
             DataNode:[
               {
                 label: "All Nodes",
@@ -241,8 +242,8 @@ export default {
               }
             ],
             nodeOrigin:[],
-            node_request:'',
-            node_origin:'',
+            node_request: JSON.parse(localStorage.getItem("InboundFilters"))?.node_request||'',
+            node_origin: JSON.parse(localStorage.getItem("InboundFilters"))?.node_origin||'',
             DataArr: this.valueData ? this.valueData : [
               {
                 label: 'All Status',
@@ -261,7 +262,7 @@ export default {
                 value: 'OUTSTANDING'
               }
             ],
-            values: this.selectedValue ? this.selectedValue :"-",
+            values: JSON.parse(localStorage.getItem("InboundFilters"))?.values || '-',
             DataFilterPrealert: this.valueData ? this.valueData : [
               {
                 label: 'All Prealert',
@@ -284,13 +285,13 @@ export default {
                 value: 'RECEIVING ORION'
               }
             ],
-            value: this.selectedValue ? this.selectedValue :"-",
+            value: JSON.parse(localStorage.getItem("InboundFilters"))?.value || '-',
             arrValue: this.selectedValue ? this.selectedValue : [ {
               value: "-",
               label: "All Status"
             }],
-            filterDateBy:"received",
-            searchBy:"inbound_number",
+            filterDateBy:JSON.parse(localStorage.getItem("InboundFilters"))?.filterDateBy || 'received',
+            searchBy:JSON.parse(localStorage.getItem("InboundFilters"))?.searchBy || 'inbound_number',
             searchByNumeric: false,
             searchPlaceholder: "Search Inbound Number",
             searchParams: [
@@ -378,6 +379,7 @@ export default {
       valueData: function (val) {
         if (val != undefined) {
           this.DataArr = val
+          this.updateLocalStorage()
         }
       },
       selectedValue: function (val) {
@@ -387,11 +389,13 @@ export default {
           } else {
             this.arrValue = val
           }
+          this.updateLocalStorage()
         }
       },
       searchByNumeric: function(val, old) {
         if (val !== old) {
           this.clearSearch()
+          this.updateLocalStorage()
         }
       }
     },
@@ -401,15 +405,19 @@ export default {
         },
         searchValue (val) {
             this.tempSearch = val
+            this.updateLocalStorage()
         },
         searchDate(formKey, val) {
             this.tempDate = val;
+            this.updateLocalStorage()
         },
         clearSearch() {
             this.$refs.searchInput.clear()
+            this.updateLocalStorage()
         },
         clearDate() {
             this.tempDate = [];
+            this.updateLocalStorage()
         },
         openDialog(){
             this.$router.push('/inbound/prealert/scan')
@@ -417,6 +425,22 @@ export default {
         },
         updateFilterDateBy(key,val) {
           this.filterDateBy = val;
+          this.updateLocalStorage()
+        },
+
+        updateLocalStorage() {
+          const filterData = {
+            searchBy: this.searchBy,
+            tempSearch: this.tempSearch,
+            filterDateBy: this.filterDateBy,
+            tempDate: this.tempDate,
+            node_request: this.node_request,
+            node_origin: this.node_origin,
+            value: this.value,
+            values: this.values,
+            searchPlaceholder: this.searchPlaceholder,
+          };
+          localStorage.setItem("InboundFilters", JSON.stringify(filterData));
         },
 
         async getDataNodeType() {
@@ -473,6 +497,7 @@ export default {
         },
         updateStatusInbound(val){
           this.$emit("updateStatusInbound", this.listenFormKey, val)
+          this.updateLocalStorage()
         },
         updatePrealert(val){
           const indexOfBag = val.indexOf('bag');
@@ -481,16 +506,18 @@ export default {
           } else if (indexOfBag === -1) {
             this.hasLinkedItems = ['inbound_number'];
           } 
-          
+          this.updateLocalStorage()
         },
       updateSearchBy(key, val, isNumeric) {
         val = val.replaceAll(" ", "_");
         this.searchBy = val;
         this.searchPlaceholder = key;
         this.searchByNumeric = isNumeric;
+        this.updateLocalStorage()
       },
       updateFilterDateBy(key,val) {
         this.filterDateBy = val;
+        this.updateLocalStorage()
       },
       resetFilters() {
         this.reset = true
@@ -506,7 +533,14 @@ export default {
         this.$nextTick(() => {
           this.reset = false
         });
+        localStorage.removeItem("InboundFilters")
       },
+      handleSearch() {
+          this.$nextTick(() => {
+              this.refresh();
+              this.$refs.searchInput.clear();
+          });
+      }
     },
 
     mounted() {

@@ -90,6 +90,9 @@ const resources = [
     { resource_code: "CORE-01-089", resource_type: "PAGE", resource_name: "RECEIVING_AIRPORT_SCAN" },
     { resource_code: "CORE-01-090", resource_type: "PAGE", resource_name: "AIRPORT_RECEIVING_DETAIL" },
     { resource_code: "CORE-01-091", resource_type: "PAGE", resource_name: "SETTINGS_SURAT_MUATAN" },
+    { resource_code: "CORE-01-092", resource_type: "PAGE", resource_name: "RECEIVING_LOG" },
+    { resource_code: "CORE-01-093", resource_type: "PAGE", resource_name: "SETTINGS_COURIER" },
+    { resource_code: "CORE-01-094", resource_type: "PAGE", resource_name: "CLAIM_AND_BURDEN" }
 ];
 
 
@@ -97,4 +100,3 @@ export const resourceLookup = resources.reduce((acc, { resource_code, resource_t
     acc[resource_name] = { resource_code, resource_type, resource_name };
     return acc;
 }, {});
-  

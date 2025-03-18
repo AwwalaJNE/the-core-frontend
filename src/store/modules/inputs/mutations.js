@@ -3454,6 +3454,108 @@ export default {
   },
   //====== END SLA NODE TO NODE B ======
 
+  // ====== SLA BAG ======
+
+  SET_SLA_BAG_SLA_ID(state, payload) {
+    state.sla_bag.sla_id.value = payload
+  },
+  SET_SLA_BAG_SLA_ID_ValueData(state, payload) {
+    state.sla_bag.sla_id.valueData = payload
+  },
+  SET_SLA_BAG_SLA_ID_visible(state, payload) {
+    state.sla_bag.sla_id.visible = payload
+  },
+
+  SET_SLA_BAG_GROUP_NAME(state, payload) {
+    state.sla_bag.group_name.value = payload
+  },
+  SET_SLA_BAG_GROUP_NAME_ValueData(state, payload) {
+    state.sla_bag.group_name.valueData = payload
+  },
+
+  SET_SLA_BAG_START_DATE(state, payload) {
+    state.sla_bag.start_date.value = payload
+  },
+  SET_SLA_BAG_START_DATE_ValueData(state, payload) {
+    state.sla_bag.start_date.valueData = payload
+  },
+
+  SET_SLA_BAG_END_DATE(state, payload) {
+    state.sla_bag.end_date.value = payload
+  },
+  SET_SLA_BAG_END_DATE_ValueData(state, payload) {
+    state.sla_bag.end_date.valueData = payload
+  },
+
+  SET_SLA_BAG_BAG_TYPE(state, payload) {
+    state.sla_bag.bag_type.value = payload
+  },
+  SET_SLA_BAG_BAG_TYPE_ValueData(state, payload) {
+    state.sla_bag.bag_type.valueData = payload
+  },
+  SET_SLA_BAG_BAG_TYPE_ArrData(state, payload) {
+    state.sla_bag.bag_type.hasOwnProperty('arrData') ?
+    state.sla_bag.bag_type.arrData = payload :
+    state.sla_bag.bag_type.arrData = []
+  },
+
+  SET_SLA_BAG_REFERENCE_ENTITY(state, payload) {
+    state.sla_bag.reference_entity.value = payload
+  },
+  SET_SLA_BAG_REFERENCE_ENTITY_ValueData(state, payload) {
+    state.sla_bag.reference_entity.valueData = payload
+  },
+  SET_SLA_BAG_REFERENCE_ENTITY_ArrData(state, payload) {
+    state.sla_bag.reference_entity.hasOwnProperty('arrData') ?
+    state.sla_bag.reference_entity.arrData = payload :
+    state.sla_bag.reference_entity.arrData = []
+  },
+
+  SET_SLA_BAG_REFERENCE_VALUE(state, payload) {
+    state.sla_bag.reference_value.value = payload
+  },
+  SET_SLA_BAG_REFERENCE_VALUE_ValueData(state, payload) {
+    state.sla_bag.reference_value.valueData = payload
+  },
+  SET_SLA_BAG_REFERENCE_VALUE_ArrData(state, payload) {
+    state.sla_bag.reference_value.hasOwnProperty('arrData') ?
+    state.sla_bag.reference_value.arrData = payload :
+    state.sla_bag.reference_value.arrData = []
+  },
+
+  SET_SLA_BAG_SLA_TYPE(state, payload) {
+    state.sla_bag.sla_type.value = payload
+  },
+  SET_SLA_BAG_SLA_TYPE_ValueData(state, payload) {
+    state.sla_bag.sla_type.valueData = payload
+  },
+  SET_SLA_BAG_SLA_TYPE_ArrData(state, payload) {
+    state.sla_bag.sla_type.hasOwnProperty('arrData') ?
+    state.sla_bag.sla_type.arrData = payload :
+    state.sla_bag.sla_type.arrData = []
+  },
+
+  SET_SLA_BAG_BAG_ITEMS_QTY(state, payload) {
+    state.sla_bag.bag_items_qty.value = payload
+  },
+  SET_SLA_BAG_BAG_ITEMS_QTY_ValueData(state, payload) {
+    state.sla_bag.bag_items_qty.valueData = payload
+  },
+
+  SET_SLA_BAG_SLA(state, payload) {
+    state.sla_bag.sla.value = payload
+  },
+  SET_SLA_BAG_SLA_ValueData(state, payload) {
+    state.sla_bag.sla.valueData = payload
+  },
+
+  SET_SLA_BAG_IS_ACTIVE(state, payload) {
+    state.sla_bag.is_active.value = payload
+  },
+  SET_SLA_BAG_IS_ACTIVE_ValueData(state, payload) {
+    state.sla_bag.is_active.valueData = payload
+  },
+  // ====== END SLA BAG ======
 
 
 
@@ -3830,6 +3932,21 @@ export default {
   //====== END KPI PROCESS TARGET ======//
 
   //====== CONNOTE FORWARD ======//
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE(state, payload) {
+    state.connote_forward.connote_receiver_address_type.value = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_isDisabled(state, payload) {
+    state.connote_forward.connote_receiver_address_type.isDisabled = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ValueData(state, payload) {
+    state.connote_forward.connote_receiver_address_type.valueData = payload
+  },
+  SET_CONNOTE_FORWARD_CONNOTE_RECEIVER_ADDRESS_TYPE_ArrData(state, payload) {
+    state.connote_forward.connote_receiver_address_type.hasOwnProperty('arrData') ?
+    state.connote_forward.connote_receiver_address_type.arrData = payload :
+    state.connote_forward.connote_receiver_address_type.arrData = []
+  },
+
   SET_CONNOTE_FORWARD_CONNOTE_SHIPPER_NAME(state, payload) {
     state.connote_forward.connote_shipper_name.value = payload
   },
@@ -4146,8 +4263,53 @@ export default {
 
 
   //====== END RUNSHEET LIMIT SETTINGS ======//
-  
 
+
+  //====== COURIER DELIVERY AREA SETTINGS ======//
+
+  SET_COURIER_DELIVERY_AREA_COURIER_ID(state, payload) {
+    state.courier_delivery_area.courier_id.value = payload
+  },
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_ValueData(state, payload) {
+    state.courier_delivery_area.courier_id.valueData = payload
+  },
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData(state, payload) {
+    state.courier_delivery_area.courier_id.hasOwnProperty('arrData') ?
+    state.courier_delivery_area.courier_id.arrData = payload :
+    state.courier_delivery_area.courier_id.arrData = []
+  },
+  SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled(state, payload) {
+    state.courier_delivery_area.courier_id.isDisabled = payload
+  },
+
+
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE(state, payload) {
+    state.courier_delivery_area.area_type.value = payload
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE_ValueData(state, payload) {
+    state.courier_delivery_area.area_type.valueData = payload
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_TYPE_ArrData(state, payload) {
+    state.courier_delivery_area.area_type.hasOwnProperty('arrData') ?
+    state.courier_delivery_area.area_type.arrData = payload :
+    state.courier_delivery_area.area_type.arrData = []
+  },
+
+
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE(state, payload) {
+    state.courier_delivery_area.area_value.value = payload
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE_ValueData(state, payload) {
+    state.courier_delivery_area.area_value.valueData = payload
+  },
+  SET_COURIER_DELIVERY_AREA_AREA_VALUE_ArrData(state, payload) {
+    state.courier_delivery_area.area_value.hasOwnProperty('arrData') ?
+    state.courier_delivery_area.area_value.arrData = payload :
+    state.courier_delivery_area.area_value.arrData = []
+  },
+
+  //====== END COURIER DELIVERY AREA SETTINGS ======//
+  
   
   SET_BAG_IS_AUTO_OPEN_BAG(state, payload) {
     state.bag_is_auto_open_bag.bag_is_auto_open_bag.value = payload || false;
@@ -4342,4 +4504,29 @@ export default {
 
 
   //====== END SURAT MUATAN STOCK ======//
+
+    //====== START RECEIVING LOG ======//
+    SET_RECEIVING_LOG_INBOUND_NUMBER(state, payload) {
+      state.receiving_log.inbound_number.value = payload
+    },
+    SET_RECEIVING_LOG_INBOUND_NUMBER_ValueData(state, payload) {
+      state.receiving_log.inbound_number.valueData = payload
+    },
+    SET_RECEIVING_LOG_ITEM_NUMBER(state, payload) {
+      state.receiving_log.item_number.value = payload
+    },
+    SET_RECEIVING_LOG_ITEM_NUMBER_ValueData(state, payload) {
+      state.receiving_log.item_number.valueData = payload
+    },
+    SET_RECEIVING_LOG_STATUS(state, payload) {
+      state.receiving_log.status.value = payload
+    },
+    SET_RECEIVING_LOG_STATUS_ValueData(state, payload) {
+      state.receiving_log.status.valueData = payload
+    },
+    SET_RECEIVING_LOG_STATUS_ArrData(state, payload) {
+      state.receiving_log.status.hasOwnProperty('arrData') ?
+      state.receiving_log.status.arrData = payload :
+      state.receiving_log.status.arrData = []
+    },
 }

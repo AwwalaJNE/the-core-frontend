@@ -2,6 +2,7 @@
     <dialog-master
         width="lg"
         :actived="listenActive"
+        :loading="listenLoading"
         :closeDialog="cancel"
         class="custom-width"
     >
@@ -160,13 +161,23 @@ export default {
                     width: "xs",
                 },
                 {
-                    label: "Weight (Kg)",
-                    key: "total_weight",
+                    label: "Cost Weight (Kg)",
+                    key: "cost_weight",
+                    width: "xs",
+                },
+                {
+                    label: "Actual Weight (Kg)",
+                    key: "actual_weight",
                     width: "xs",
                 },
                 {
                     label: "Destination",
                     key: "destination_name",
+                    width: "xs",
+                },
+                {
+                    label: "Total Inner",
+                    key: "total_inner",
                     width: "xs",
                 },
                 {
@@ -229,6 +240,9 @@ export default {
         },
         listenUserRoleName() {
             return this.listenUserRole.user_role_name
+        },
+        listenLoading() {
+            return this.loading || this.loadingDetail || this.loadingConfirmApprove;
         }
     },
     watch: {
@@ -236,9 +250,10 @@ export default {
             if (val !== undefined) {
                 this.getEditData(val);
 
-                this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
+                this.isDisabled = (val.status !== 'READY' && val.status !== 'UNRECEIVED') || val.is_approve === 1;
                 this.isDisabledPrint = val.status === 'CANCELED';
-                this.isDisabledApprove = val.status !== 'READY' || val.is_orion === "1";
+                this.isDisabledApprove = (val.status !== 'READY' && val.status !== 'UNRECEIVED') ;
+
                 this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
             }
         },
@@ -285,9 +300,17 @@ export default {
                         data.bag_number = data.item_number;
                         data.type = data.item_type;
                         data.bag_weight = data.total_weight;
+                        data.cost_weight = data.cost_weight || '0';
+                        data.actual_weight = data.bag?.bag_actual_weight || '0';
+                        data.total_inner = data.bag_detail_count || '0';
                         data.destination_name = data.bag?.destination?.node_tariff_code || '';
+                        if (data.is_masterbag === '1') {
+                            data.item_type = 'MASTERBAG'
+                        } else {
+                            data.item_type = 'BAG'
+                        }
                         
-                        if (val.status !== "READY") {
+                        if ((val.status !== "READY" && val.status !== "UNRECEIVED") || val.is_approve === 1) {
                             data.button_status = { remove: false };
                         }
 
@@ -634,11 +657,17 @@ export default {
                     this.dataTable.forEach(data => {
                         data.button_status = { remove: false };
                     });
+                } else {
+                    this.isDisabled = false;
+                    this.isDisabledApprove = false;
+                    
+                    this.dataTable.forEach(data => {
+                        data.button_status = { remove: true };
+                    });
                 }
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
             } finally {
-                this.$emit('refresh');
                 this.loadingDetail = false;
             }
         },

@@ -79,13 +79,23 @@ export default {
                     width: "xs",
                 },
                 {
-                    label: "Weight (Kg)",
-                    key: "total_weight",
+                    label: "Cost Weight (Kg)",
+                    key: "cost_weight",
+                    width: "xs",
+                },
+                {
+                    label: "Actual Weight (Kg)",
+                    key: "actual_weight",
                     width: "xs",
                 },
                 {
                     label: "Destination",
                     key: "destination",
+                    width: "sm",
+                },
+                {
+                    label: "Destination Name",
+                    key: "destination_name",
                     width: "sm",
                 },
                 {
@@ -102,10 +112,10 @@ export default {
             ],
             manifest_lov: "",
             manifest_lov_list: [
-                {
-                    label: "Multi Destination",
-                    value: "ALL",
-                },
+                // {
+                //     label: "Multi Destination",
+                //     value: "ALL",
+                // },
                 {
                     label: "Single Destination",
                     value: "SAME DESTINATION",
@@ -148,7 +158,7 @@ export default {
                 if (val.status !== "READY") {
                     item.button_status = { remove: false };
                 }
-
+                item.destination_name = item?.bag?.destination?.node_name || '';
                 item.received_status = item.received_at ? 1 : 0;
             });
 

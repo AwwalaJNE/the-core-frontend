@@ -99,7 +99,7 @@ export default {
                         width: "sm"
                     },
                     {
-                        label: "Bag/Masterbag",
+                        label: "Item",
                         key: "detail_count",
                         width: "auto"
                     },
@@ -109,9 +109,24 @@ export default {
                         width: "auto"
                     },
                     {
-                        label: "Weight",
-                        key: "max_weight",
-                        width: "auto"
+                        label: "Fix Cost Weight",
+                        key: "fix_cost_weight",
+                        width: "auto",
+                    },
+                    {
+                        label: "Live Cost Weight",
+                        key: "live_cost_weight",
+                        width: "auto",
+                    },
+                    {
+                        label: "Fix Actual Weight",
+                        key: "fix_actual_weight",
+                        width: "auto",
+                    },
+                    {
+                        label: "Live Actual Weight",
+                        key: "live_actual_weight",
+                        width: "auto",
                     },
                     {
                         label: "ETD",
@@ -135,7 +150,7 @@ export default {
                     },
                     {
                         label: "Received At",
-                        key: "latest_node_code_receiver",
+                        key: "latest_node_receiver",
                         width: "xs"
                     },
                 ],
@@ -205,7 +220,10 @@ export default {
                         etd: this.dateConvert(item.etd),
                         created_at: this.dateConvert(item.created_at),
                         approved: item.is_approve === 1 ? 'YES' : 'NO',
-                        isDisabled: item.is_orion == "1" || !item.status?.toLowerCase().includes('ready')
+                        isDisabled: !item.status?.toLowerCase().includes('ready') && !item.status?.toLowerCase().includes('unreceived'),
+                        latest_node_receiver: item.latest_node_name_receiver && item.latest_node_code_receiver
+                                            ? `${item.latest_node_name_receiver} (${item.latest_node_code_receiver})`
+                                            : '-'
                     }));
 
                     this.dataTable = arr;

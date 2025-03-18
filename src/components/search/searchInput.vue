@@ -40,17 +40,19 @@ export default {
         },
         clear() {
             this.value = ""
-            this.$emit("searchValue",this.value)
         },
         onFocus() {
             this.value = ""
         },
         onBlur() {
             if (!this.value) {
-                this.searchValue()
+                setTimeout(() => {
+                    this.searchValue()
+                }, 1000);
             }
         },
         handleSearch() {
+            this.searchValue()
             this.$emit("handleSearch")
         }
     },

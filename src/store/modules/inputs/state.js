@@ -2006,6 +2006,132 @@ export default {
       value: true
     },
   },
+  sla_bag: {
+    sla_id: {
+      label: "Sla ID",
+      key: "sla_id",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      visible: false,
+      valueData: null,
+      value: '',
+    },
+    group_name: {
+      label: "Group Name*",
+      key: "group_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    start_date: {
+      label: "Start Date*",
+      key: "start_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    end_date: {
+      label: "End Date*",
+      key: "end_date",
+      rule: "required",
+      typeInput: "date",
+      width: '6',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    bag_type: {
+      label: "Bag Type*",
+      key: "bag_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    reference_entity: {
+      label: "Reference Entity*",
+      key: "reference_entity",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    reference_value: {
+      label: "Reference Value*",
+      key: "reference_value",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      width: '12',
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    sla_type: {
+      label: "SLA Type*",
+      key: "sla_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    bag_items_qty: {
+      label: "Bag Items Qty",
+      key: "bag_items_qty",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    sla: {
+      label: "SLA",
+      key: "sla",
+      rule: "",
+      typeInput: "radtex",
+      typeData: "Number",
+      arrData: [
+        {
+          label: "Menit",
+          value: "menit"
+        },
+        {
+          label: "Jam",
+          value: "jam"
+        },
+        {
+          label: "Hari",
+          value: "hari"
+        },        
+      ],
+      arrValue: '',
+      valueData: null,
+      value: '',
+    },
+    is_active: {
+      label: "Active|Unactive",
+      key: "is_active",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true
+    },
+  },
 
   configuration_warning_runsheet: {
     setting_id: {
@@ -2640,6 +2766,58 @@ export default {
       valueData: true,
       value: true,
       isDisabled: false,
+    },
+  },
+
+  courier_delivery_area: {
+    courier_id: {
+      label: "Courier*",
+      key: "courier_id",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      isDisabled: false,
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    area_type: {
+      label: "Area Type*",
+      key: "area_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Delivery Zone',
+          value: 'DELIVERY_ZONE'
+        },
+        {
+          label: 'Zip Code',
+          value: 'ZIP_CODE'
+        },
+        {
+          label: 'District',
+          value: 'DISTRICT'
+        },
+        {
+          label: 'Subdistrict',
+          value: 'SUBDISTRICT'
+        },
+      ],
+      valueData: null,
+      value: '',
+    },
+    area_value: {
+      label: "Area Value*",
+      key: "area_value",
+      rule: "required",
+      typeInput: "search-preview",
+      typeData: "String",
+      width: '12',
+      arrData: [],
+      valueData: null,
+      value: '',
     },
   },
 
@@ -4527,11 +4705,14 @@ export default {
       value: '',
     },
     connote_receiver_street_address: {
-      label: "Connote Receiver Street Address",
+      label: "Connote Receiver Street Address WILL UPDATE",
       key: "connote_receiver_street_address",
-      rule: "",
-      typeInput: "text",
+      rule: "required",
+      typeInput: "autocomplete",
+      // typeInput: "text",
       typeData: "String",
+      isDisabled: false,
+      arrData: [],
       valueData: null,
       value: '',
     },
@@ -4641,6 +4822,25 @@ export default {
   },
 
   connote_forward: {
+    connote_receiver_address_type: {
+      label: "Tipe Destinasi",
+      key: "connote_receiver_address_type",
+      rule: "",
+      typeInput: "radio",
+      typeData: "String",
+      arrData: [
+        {
+          label: "Rumah",
+          value: "RUMAH"
+        },
+        {
+          label: "Kantor",
+          value: "KANTOR"
+        },
+      ],
+      valueData: null,
+      value: 'rumah'
+    },
     connote_shipper_name: {
       label: "Nama Pengirim*",
       key: "connote_shipper_name",
@@ -4769,10 +4969,10 @@ export default {
       value: ''
     },
     connote_shipper_tariff_code: {
-      label: "Kode Tujuan*",
+      label: "Kode Asal*",
       key: "connote_shipper_tariff_code",
-      rule: "required",
-      isDisabled: false,
+      typeInput: "hidden|disabled|dotted",
+      isDisabled: true,
       width: '3',
       typeInput: "text",
       typeData: "String",
@@ -4824,6 +5024,46 @@ export default {
       typeData: "Boolean",
       valueData: false,
       value: false
+    }
+  },
+
+  receiving_log: {
+    inbound_number: {
+      label: "Inbound Number",
+      key: "inbound_number",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    item_number: {
+      label: "Item Number",
+      key: "item_number",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    status: {
+      label: "Status*",
+      key: "status",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    remark: {
+      label: "Remark",
+      key: "remark",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
     }
   }
 }

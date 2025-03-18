@@ -13,11 +13,11 @@
             <vs-row>
                 <vs-col lg="6" sm="6" xs="12">
                     <template v-if="is_prealert">
-                        <div class="box information">
+                        <div class="box information" >
                             <h4 align="left">List of Bags</h4>
                             <div class="nav-box">
-                                <vs-row>
-                                    <vs-col xs="12" sm="12" lg="6">
+                                <vs-row style="padding-bottom: 5px;">
+                                    <vs-col xs="12" sm="12" lg="12" style="padding: 30px 0;">
                                         <template>
                                             <div class="center">
                                                 <vs-input 
@@ -44,9 +44,10 @@
                         </div>
                     </template>
                     <template v-else-if="!is_prealert">
-                        <div class="box information" style="align-content: space-around">
-                            <vs-row>
-                                <vs-col xs="12" sm="12" lg="6">
+                        <div class="box information" style="padding-top: 1px !important;">
+                            <h4 align="left">Scan Item</h4>
+                            <vs-row style="padding-bottom: 5px;">
+                                <vs-col xs="12" sm="12" lg="12" style="padding: 15px 0;">
                                     <vs-input 
                                         border 
                                         type="text"
@@ -71,7 +72,7 @@
                                         </div>
                                     </template>
                                 </vs-col>
-                                <vs-col xs="12" sm="12" lg="6">
+                                <vs-col xs="12" sm="12" lg="12" style="padding: 15px 0 ;">
                                     <vs-input 
                                         border 
                                         type="text"
@@ -91,6 +92,26 @@
                             </vs-row>
                         </div>
                     </template>
+                    <div class="box information" style="padding-top: 1px !important;margin-top: 10px !important;">
+                        <h4 align="left">Receiving Log</h4>
+                        <div class="nav-box">
+                            <template>
+                                <transition name="slide-fade">
+                                    <ReceivingLog 
+                                        ref="ReceivingLog" 
+                                        :dataTableProp="dataTableReceivingLog" 
+                                        :loading="loading" 
+                                        :pageSize="pagination.page_size"
+                                        :page="pagination.page"
+                                        :limit="pagination.limit"
+                                        :actionLimit="actionLimit" 
+                                        :actionPagination="actionPagination"
+                                        @refresh="getTableDataReceivingLog"
+                                    />
+                                </transition>
+                            </template>
+                        </div>
+                    </div>
                 </vs-col>
 
                 <vs-col lg="6" sm="6" xs="12">
@@ -146,6 +167,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 
 import InboundInformation from "@/views/inbound/scan/inboundInformation"
 import InboundDetail from "@/views/inbound/scan/inboundDetail"
+import InboundReceivingLog from "@/views/inbound/scan/inboundReceivingLog"
 import CameraScanner from "@/components/scanner/camera.vue";
 
 
@@ -157,6 +179,7 @@ export default {
         "breadcrumb": Breadcrumb,
         "InboundInformation": InboundInformation,
         "InboundDetail": InboundDetail,
+        "ReceivingLog": InboundReceivingLog,
         CameraScanner,
     },
     computed: {
@@ -181,15 +204,47 @@ export default {
             loading: false,
             dataTable: [],
             dataTableProp: [],
+            dataTableReceivingLog: [],
             limit: 20,
             page_size: 1,
             page: 1,
             parent_no: '',
             child_no: '',
             hasInboundNumber: false,
+            pagination: {
+                limit: 20,
+                page_size: 1,
+                page: 1
+            },
         }
     },
     methods: {
+        saveInboundToStorage() {
+            const inboundData = {
+                parent_no: this.parent_no,
+                inbound_number: this.inbound_number,
+                hasInboundNumber: this.hasInboundNumber
+            };
+            localStorage.setItem('inboundScanData', JSON.stringify(inboundData));
+        },
+
+        async loadInboundFromStorage() {
+            const storedData = localStorage.getItem('inboundScanData');
+            if (storedData) {
+                const inboundData = JSON.parse(storedData);
+                this.parent_no = inboundData.parent_no;
+                this.inbound_number = inboundData.inbound_number;
+                this.hasInboundNumber = inboundData.hasInboundNumber;
+
+                if (this.inbound_number) {
+                    await this.getTableData();
+                }
+            }
+        },
+
+        clearInboundFromStorage() {
+            localStorage.removeItem('inboundScanData');
+        },
         refresh(){
             this.getTableData();
         },
@@ -208,6 +263,7 @@ export default {
                 case 'parent_no':
                     this.inbound_number = this.parent_no;
                     this.hasInboundNumber = true;
+                    this.saveInboundToStorage();
                     this.refresh();
                     break;
 
@@ -237,12 +293,7 @@ export default {
 
                 this.openNotification('success', null, "Success", res?.data?.message ?? "Receiving success");
                 this.inbound_number = res?.data?.data?.inbound_number ?? this.inbound_number;
-                this.hasInboundNumber = true;
-                let prealert = ['SM', 'SJ', 'PICKUP'];
-                if (prealert.includes(res?.data?.data?.inbound_type)) {
-                    this.parent_no = this.inbound_number;
-                }
-                this.refresh();
+                
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
                 this.inbound_number = err?.response?.data?.reference ?? this.inbound_number;
@@ -251,6 +302,7 @@ export default {
                     this.handleClearTableInfo();
                 }
             } finally {
+                this.refresh();
                 this.closeProgress();
                 this.handlerClearForm();
             }
@@ -259,7 +311,10 @@ export default {
             if (this.inbound_number) {
                 this.loading = true;
                 try {
-                    const res = await axios.get(`${this.URL.inbound}/${this.inbound_number}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, this.Helper.header());
+                    const res = await axios.get(
+                        `${this.URL.inbound}/${this.inbound_number}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, 
+                        this.Helper.header()
+                    );
 
                     let arr = [res.data.data];
 
@@ -270,16 +325,30 @@ export default {
                     }));
 
                     this.dataTable = arr;
-                    this.dataTableProp = res.data.detail
-                    this.page = res.data.meta.current_page
-                    this.limit = parseInt(res.data.meta.per_page)
-                    this.page_size = res.data.meta.last_page
+                    this.dataTableProp = res.data.detail;
+                    this.dataTableProp.forEach(item => {
+                        if (item.is_masterbag === '1') {
+                            item.item_type = 'MASTERBAG';
+                        } else {
+                            item.item_type = 'BAG';
+                        }
+                    });
+                    this.page = res.data.meta.current_page;
+                    this.limit = parseInt(res.data.meta.per_page);
+                    this.page_size = res.data.meta.last_page;
 
                     if (!this.is_prealert) {
                         this.$refs.formInputChildInbound.$el.querySelector("input").focus();
                     }
+
+                    this.getTableDataReceivingLog();
                 } catch (err) {
-                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                    this.openNotification(
+                        "danger", 
+                        err?.response?.data?.code ?? '', 
+                        "Failed", 
+                        err?.response?.data?.message ?? 'Something went wrong'
+                    );
 
                     if (!this.is_prealert) {
                         this.removeInboundNumber();
@@ -287,6 +356,32 @@ export default {
                 } finally {
                     this.loading = false;
                 }
+            }
+        },
+        async getTableDataReceivingLog() {
+            this.loading = true;
+            try {
+                let search_by = '';
+                let s = '';
+
+                if (this.inbound_number) {
+                    search_by = 'inbound_number'
+                    s = this.inbound_number
+                } else if (this.item_no || this.child_no) {
+                    search_by = 'item_number'
+                    s = this.item_no || this.child_no
+                }
+
+                const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=${search_by}&s=${s}&pov=receiver`, this.Helper.header());
+                this.dataTableReceivingLog = res.data.data;
+                this.dataTableReceivingLog.forEach(item => {
+                    item.button_status = { edit: (item.status == null || item.status == undefined || item.status == '') };
+                });
+            } catch (err) {
+                this.dataTableReceivingLog = []
+                // this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
             }
         },
         back(){
@@ -313,6 +408,9 @@ export default {
             this.hasInboundNumber = false;
             this.dataTable = [];
             this.dataTableProp = [];
+            this.dataTableReceivingLog = [];
+            
+            this.clearInboundFromStorage();
 
             this.$nextTick(() => {
                 this.$refs.formInputParentInbound.$el.querySelector("input").focus();
@@ -344,10 +442,14 @@ export default {
             this.refresh()
         },
     },
-    mounted() {
+    async mounted() {
+        await this.loadInboundFromStorage();
+
         this.getParamRoute();
 
-        if (this.is_prealert) {
+        if (!this.hasInboundNumber && !this.is_prealert && this.$refs.formInputParentInbound) {
+            this.$refs.formInputParentInbound.$el.querySelector("input").focus();
+        } else if (this.is_prealert && this.$refs.formInputInbound) {
             this.$refs.formInputInbound.$el.querySelector("input").focus();
         }
     }

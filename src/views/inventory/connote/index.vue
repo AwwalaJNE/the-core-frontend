@@ -426,6 +426,7 @@ export default {
             this.tempDate = val;
         },
         clearSearch() {
+            this.tempSearch = ""
             this.$refs.searchInput.clear()
             if (this.navActive === 'k-BAG') {
                 this.filterDateBy = 'create'
@@ -450,6 +451,7 @@ export default {
         handleSearch() {
             this.$nextTick(() => {
                 this.refresh();
+                this.$refs.searchInput.clear();
             });
         }
     },

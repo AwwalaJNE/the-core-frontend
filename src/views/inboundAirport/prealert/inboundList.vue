@@ -65,19 +65,34 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Bag/Masterbag",
+                    label: "Item",
                     key: "inbound_total_bag",
                     width: "auto"
                 },
+                // {
+                //     label: "Connote",
+                //     key: "inbound_total_koli",
+                //     width: "auto"
+                // },
                 {
-                    label: "Connote",
-                    key: "inbound_total_koli",
-                    width: "auto"
+                  label: "Fix Cost Weight",
+                  key: "fix_cost_weight",
+                  width: "auto"
                 },
                 {
-                    label: "Weight (Kg)",
-                    key: "inbound_total_weight",
-                    width: "auto"
+                  label: "Live Cost Weight",
+                  key: "live_cost_weight",
+                  width: "auto"
+                },
+                {
+                  label: "Fix Actual Weight",
+                  key: "fix_actual_weight",
+                  width: "auto"
+                },
+                {
+                  label: "Live Actual Weight",
+                  key: "live_actual_weight",
+                  width: "auto"
                 },
                 {
                     label: "PIC",
@@ -86,17 +101,17 @@ export default {
                 },
                 {
                     label: "Created",
-                    key: "created_at",
-                    width: "xs"
-                },
-                {
-                    label: "ETA",
-                    key: "inbound_eta",
+                    key: "created_orion",
                     width: "xs"
                 },
                 {
                     label: "ETD",
                     key: "inbound_etd",
+                    width: "xs"
+                },
+                {
+                    label: "ETA",
+                    key: "inbound_eta",
                     width: "xs"
                 },
                 {
@@ -115,24 +130,30 @@ export default {
                     width: "auto"
                 },
                 {
+                    label: "Received By",
+                    key: "received_by_user_name",
+                    width: "auto"
+                },
+                {
                     label: "Received Times",
                     key: "received_at",
                     width: "auto"
                 },
             ],
             loading: false,
-            tempSearch: "",
-            tempDate: [],
-            nodeOrigin: "",
-            nodeDestination: "",
-            node_type:'',
+            tempSearch: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.tempSearch || '',
+            tempDate: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.tempDate || [],
+            nodeOrigin: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.origin || '',
+            nodeDestination: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.destination || '',
+            node_type: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.node_type || '',
             pagination: {
                 limit: 20,
                 page_size: 1,
                 page: 1
             },
-            statusReceived:"",
-            prealertFilter:""
+            search_by: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.searchBy || '',
+            statusReceived: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.statusReceived || '',
+            prealertFilter: JSON.parse(localStorage.getItem("InboundAirportPreAlertFilters"))?.prealertFilter || ''
         }
     },
     watch: {
@@ -141,7 +162,20 @@ export default {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
                     this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.nodeOrigin, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+                    this.getTableData(
+                      this.pagination.limit, 
+                      this.pagination.page, 
+                      val, 
+                      this.nodeOrigin, 
+                      this.nodeDestination, 
+                      this.node_type,
+                      this.prealertFilter, 
+                      this.startDate, 
+                      this.endDate, 
+                      this.search_by, 
+                      this.filterDateBy
+                    )
+                    this.updateLocalStorage();
                 }
             }
         },
@@ -149,7 +183,20 @@ export default {
           if(val !== undefined) {
             this.node_type = val
             if(this.node_type !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+              this.getTableData(
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                this.nodeOrigin, 
+                this.nodeDestination, 
+                val,
+                this.prealertFilter, 
+                this.startDate, 
+                this.endDate, 
+                this.search_by, 
+                this.filterDateBy
+              )
+              this.updateLocalStorage();
             }
           }
         },
@@ -157,7 +204,21 @@ export default {
           if(val !== undefined) {
             this.statusReceived = val
             if(this.statusReceived !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.node_type, this.nodeOrigin, this.nodeDestination, val,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+              this.getTableData(
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                this.node_type, 
+                this.nodeOrigin, 
+                this.nodeDestination, 
+                val,
+                this.prealertFilter, 
+                this.startDate, 
+                this.endDate, 
+                this.search_by, 
+                this.filterDateBy
+              )
+              this.updateLocalStorage();
             }
           }
         },
@@ -165,7 +226,20 @@ export default {
           if(val !== undefined) {
             this.nodeOrigin = val
             if(this.nodeOrigin !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.nodeDestination, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+              this.getTableData(
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                val, 
+                this.nodeDestination, 
+                this.node_type,
+                this.prealertFilter, 
+                this.startDate, 
+                this.endDate, 
+                this.search_by, 
+                this.filterDateBy
+              )
+              this.updateLocalStorage();
             }
           }
         },
@@ -173,7 +247,20 @@ export default {
           if(val !== undefined) {
             this.nodeDestination = val
             if(this.nodeDestination !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, val, this.node_type,this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+              this.getTableData(
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                this.nodeOrigin, 
+                val, 
+                this.node_type,
+                this.prealertFilter, 
+                this.startDate, 
+                this.endDate, 
+                this.search_by,
+                this.filterDateBy
+              )
+              this.updateLocalStorage();
             }
           }
         },
@@ -181,7 +268,43 @@ export default {
           if(val !== undefined) {
             this.prealertFilter = val
             if(this.prealertFilter !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived,val, this.startDate, this.endDate, this.filterDateBy)
+              this.getTableData(
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                this.nodeOrigin, 
+                this.nodeDestination,  
+                this.node_type, 
+                this.statusReceived,
+                val, 
+                this.startDate, 
+                this.endDate, 
+                this.search_by, 
+                this.filterDateBy
+              )
+              this.updateLocalStorage();
+            }
+          }
+        },
+        searchBy: function(val, old) {
+          if (val !== undefined) {
+            this.search_by = val;
+            if (this.search_by !== old) {
+              this.getTableData(
+                this.pagination.limit,
+                this.pagination.page,
+                this.tempSearch,
+                this.nodeOrigin,
+                this.nodeDestination,
+                this.node_type,
+                this.statusReceived,
+                this.prealertFilter,
+                this.startDate,
+                this.endDate,
+                val,
+                this.filterDateBy
+              );
+              this.updateLocalStorage()
             }
           }
         },
@@ -191,25 +314,55 @@ export default {
             if(this.tempDate !== old ) {
               this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
               this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
+              this.updateLocalStorage()
             }
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, this.filterDateBy)
+            this.getTableData(
+              this.pagination.limit, 
+              this.pagination.page, 
+              this.tempSearch, 
+              this.nodeOrigin, 
+              this.nodeDestination, 
+              this.node_type, 
+              this.statusReceived, 
+              this.prealertFilter, 
+              this.startDate, 
+              this.endDate, 
+              this.search_by, 
+              this.filterDateBy
+            )
+            this.updateLocalStorage();
           }
         }, 
         filterDateBy: function(val, old) {
             if (val !== undefined) {
                 if (val !== old && !this.isReset) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination,  this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate, val);
-                }
+                this.getTableData(
+                  this.pagination.limit, 
+                  this.pagination.page, 
+                  this.tempSearch, 
+                  this.nodeOrigin, 
+                  this.nodeDestination,  
+                  this.node_type, 
+                  this.statusReceived, 
+                  this.prealertFilter, 
+                  this.startDate, 
+                  this.endDate, 
+                  this.search_by, 
+                  val
+                );
+                this.updateLocalStorage();
+              }
             }
         },
     },
     methods: {
-        async getTableData(limit,page,q, origin, destination,node_type,statusReceived, prealertFilter, from, to, dateFilter) {
+        async getTableData(limit,page,q, origin, destination,node_type,statusReceived, prealertFilter, from, to, qFilter, dateFilter) {
             this.loading = true
             let query = "";
             let startDate = "";
             let endDate = "";
             let isReceived = "";
+            let queryFilter = "";
             let isPrealert = "";
             if(q !== undefined) {
                 query = q
@@ -227,17 +380,22 @@ export default {
                 endDate = to
             }
             
+            if(qFilter !== undefined) {
+                queryFilter = qFilter
+            }
+
             let dateFilterBy = dateFilter || '';
 
             await axios
                 .get(this.URL.inbound_incoming +
-                `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${this.searchBy}&filter_date_by=${dateFilterBy}&start_date=${startDate}&end_date=${endDate}&is_airport=true&prealert_airport=1`,
+                `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&destination=${destination}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${queryFilter}&filter_date_by=${dateFilterBy}&start_date=${startDate}&end_date=${endDate}&is_airport=true&prealert_airport=1`,
                 this.Helper.header())
                 .then(res => {
                     let total = 0
                     this.dataTable = res.data.data
                     this.dataTable.map(item=>{
                       let im = []
+                      item['created_orion'] = item['created_orion'] == null ? this.dateConvert(item['created_at']) : this.dateConvert(item['created_orion']);
                       item['inbound_eta'] = this.dateConvert(item['inbound_eta'])
                       item['inbound_etd'] = this.dateConvert(item['inbound_etd'])
                       item['departed_at'] = this.dateConvert(item['departed_at'])
@@ -286,8 +444,34 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-        refresh(){
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.nodeOrigin, this.nodeDestination, this.node_type, this.statusReceived, this.prealertFilter, this.startDate, this.endDate)
+        refresh() {
+            this.getTableData(
+                this.pagination.limit, 
+                this.pagination.page, 
+                this.tempSearch, 
+                this.nodeOrigin, 
+                this.nodeDestination, 
+                this.node_type, 
+                this.statusReceived, 
+                this.prealertFilter, 
+                this.startDate, 
+                this.endDate,
+                this.search_by,
+                this.filterDateBy
+            );
+        },
+        updateLocalStorage() {
+            const filterData = {
+              origin: this.nodeOrigin,
+              destination: this.nodeDestination,
+              tempSearch: this.tempSearch,
+              tempDate: this.tempDate,
+              prealertFilter: this.prealertFilter,
+              filterDateBy: this.filterDateBy,
+              statusReceived: this.statusReceived,
+              searchBy: this.search_by,
+            };
+            localStorage.setItem("InboundAirportPreAlertFilters", JSON.stringify(filterData));
         },
         actionDetail(row){
             this.$router.push({ 
@@ -298,9 +482,44 @@ export default {
             });
             this.setRoutePageHistory(this.$route.meta, false);
         },
+        loadFiltersFromStorage() {
+            const storedFilters = localStorage.getItem("InboundAirportPreAlertFilters");
+            if (storedFilters) {
+                const filters = JSON.parse(storedFilters);
+                
+                this.nodeOrigin = filters.origin;
+                this.nodeDestination = filters.destination;
+                this.tempSearch = filters.tempSearch;
+                this.tempDate = filters.tempDate;
+                this.prealertFilter = filters.prealertFilter;
+                this.filterDateBy = filters.filterDateBy;
+                this.statusReceived = filters.statusReceived;
+                this.search_by = filters.searchBy;
+
+                if (this.tempDate) {
+                    this.startDate = this.tempDate[0];
+                    this.endDate = this.tempDate[1];
+                }
+            }
+        },
     },
-    mounted() {
-        this.refresh()
+    async mounted() {
+        this.loadFiltersFromStorage();
+
+        await this.getTableData(
+            this.pagination.limit, 
+            this.pagination.page, 
+            this.tempSearch, 
+            this.nodeOrigin, 
+            this.nodeDestination, 
+            this.node_type, 
+            this.statusReceived, 
+            this.prealertFilter, 
+            this.startDate, 
+            this.endDate,
+            this.search_by,
+            this.filterDateBy
+        );
     }
 }
 </script>

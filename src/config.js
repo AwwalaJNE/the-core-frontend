@@ -10,6 +10,7 @@ export default {
   role: `${api}role`,
   permission: `${api}permission`,
 
+<<<<<<< HEAD
   // geolocation
   geolocation: `${api}geolocation`,
   geolocation_country: `${api}geolocation-country`,
@@ -19,6 +20,18 @@ export default {
   geolocation_province: `${api}geolocation-province`,
   geolocation_timezone: `${api}geolocation-timezone`,
   geolocation_search: `${api}geolocation-search`,
+=======
+    // geolocation
+    geolocation: api + "geolocation",
+    geolocation_country: api + "geolocation-country",
+    geolocation_city: api + "geolocation-city",
+    geolocation_district: api + "geolocation-district",
+    geolocation_subdistrict: api + "geolocation-subdistrict",
+    geolocation_province: api + "geolocation-province",
+    geolocation_timezone: api + "geolocation-timezone",
+    geolocation_search: api + "geolocation-search",
+    geolocation_search_by: api + "geolocation-search-by",
+>>>>>>> ad8bb08f66274032ee664c1a0d42b2324024a424
 
   // node
   node: `${api}node`,
@@ -205,12 +218,24 @@ export default {
   // destination code
   destination_code: `${api}get-destination`,
 
+<<<<<<< HEAD
   // sla
   sla: `${api}sla`,
   sla_koli: `${api}sla/koli`,
   sla_inter_activity: `${api}sla/inter-activity`,
   sla_node_to_node_a: `${api}sla/node-to-node-a`,
   sla_node_to_node_b: `${api}sla/node-to-node-b`,
+=======
+    //sla
+    sla : api + "sla",
+    sla_koli : api + "sla/koli",
+    sla_inter_activity : api + "sla/inter-activity",
+    sla_node_to_node_a : api + "sla/node-to-node-a",
+    sla_node_to_node_b : api + "sla/node-to-node-b",
+    
+    // SLA Bag
+    sla_bag : api + "sla-bag",
+>>>>>>> ad8bb08f66274032ee664c1a0d42b2324024a424
 
   // Configuration Warning Runsheet
   configuration_warning_runsheet: `${api}warning-koli-setting`,
@@ -349,6 +374,9 @@ export default {
     // Setting Surat Muatan Stock
     sm_stock: api + 'sm-stock',
 
+    // Claim and burden
+    claim_and_burden: api + 'claim-and-burden',
+
     // Vehicle Mode V2
     vehicle_mode_list_v2: api + 'vehicle/mode/list',
 
@@ -357,5 +385,23 @@ export default {
 
     // List SM 
     list_sm: api + 'list/sm-number',
+<<<<<<< HEAD
 >>>>>>> 31131793d1acd70d54625297fc4d3ba559a059cf
+=======
+
+    // Receiving Log
+    receiving_log: api + 'receiving-log',
+
+    // Courier Delivery Area
+    courier_delivery_area: api + 'courier-delivery-area',
+
+    // TLC Zone
+    tlc_zone: api + 'tlc-zone-list',
+
+    // District List
+    district_list: api + 'district-list',
+
+    // Subdistrict List
+    subdistrict_list: api + 'subdistrict-list'
+>>>>>>> ad8bb08f66274032ee664c1a0d42b2324024a424
 }

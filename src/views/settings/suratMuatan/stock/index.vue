@@ -193,7 +193,7 @@ export default {
             filterStatus: [
                 {
                     label: 'All Status',
-                    value: '-'
+                    value: 'ALL'
                 },
                 {
                     label: 'Active',

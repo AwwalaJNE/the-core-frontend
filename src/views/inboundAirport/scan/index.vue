@@ -14,8 +14,9 @@
           <vs-row>
             <vs-col lg="6" sm="12" xs="12">
               <div class="box information scan-box">
-                <vs-row>
-                  <vs-col xs="12" sm="12" lg="6" class="my-1">
+                <h4 align="left">Scan Item</h4>
+                <vs-row style="padding-bottom: 10px; padding: 0 20px;">
+                  <vs-col xs="12" sm="12" lg="12" style="padding: 10px 0;">
                     <template>
                       <div class="center">
                         <form @submit.prevent>
@@ -44,7 +45,7 @@
                       </div>
                     </template>
                   </vs-col>
-                  <vs-col xs="12" sm="12" lg="6" class="my-1">
+                  <vs-col xs="12" sm="12" lg="12" style="padding: 10px 0;">
                     <template>
                       <div class="center">
                         <form @submit.prevent>
@@ -65,7 +66,7 @@
                       </div>
                     </template>
                   </vs-col>
-                  <vs-col xs="12" sm="12" lg="6" class="my-1">
+                  <vs-col xs="12" sm="12" lg="12" style="padding: 10px 0;">
                     <template>
                       <div class="center">
                         <form @submit.prevent>
@@ -88,25 +89,53 @@
                   </vs-col>
                 </vs-row>
               </div>
+              <div class="box information" style="padding-top: 1px !important;margin-top: 10px !important;">
+                <h4 align="left">Receiving Log</h4>
+                <div class="nav-box">
+                  <template>
+                    <transition name="slide-fade">
+                      <ReceivingLog 
+                        ref="ReceivingLog" 
+                        :dataTableProp="dataTableReceivingLog" 
+                        :loading="loading" 
+                        :pageSize="page_size" 
+                        :page="page" 
+                        :limit="limit" 
+                        :actionLimit="actionLimit" 
+                        :actionPagination="actionPagination"
+                        @refresh="getTableDataReceivingLog"
+                      />
+                    </transition>
+                  </template>
+                </div>
+              </div>
             </vs-col>
 
             <!-- col for detail unreceive item-->
             <vs-col lg="6" sm="12" xs="12">
               <div class="box information" style="padding-top: 0px;">
-                <vs-row class="py-05" align="center">
-                  <vs-col w="6">
+                <vs-row class="py-05">
+                  <vs-col lg="8" sm="6" xs="6">
                     <h4 align="left">Scanned Items</h4>
                   </vs-col>
-                  <vs-col w="6" style="display: flex; align-items: center; justify-content: end;" >
+                  <vs-col lg="2" sm="3" xs="3">
+                    <switchNih
+                      name="Auto SJ|Manual" 
+                      formKey="is_auto_sj"
+                      :valueData="is_auto_sj"
+                      @updateValue="updateValueSwitch"
+                    />
+                  </vs-col>
+                  <vs-col lg="2" sm="3" xs="3">
                     <vs-button
-                    @click="confirmInbound"
-                    :disabled="listenEmpty"
-                    style="margin: 0.5em;"
-                  >
-                    <span>
-                      Confirm
-                    </span>
-                  </vs-button>
+                      @click="confirmInbound"
+                      :disabled="listenEmpty"
+                      style="margin: 0.5em;"
+                    >
+                      <span>
+                        Confirm
+                      </span>
+                    </vs-button>
                   </vs-col>
                 </vs-row>
                 <div class="nav-box">
@@ -175,8 +204,10 @@ import axios from "axios";
 import master from "@/mixins/master"
 import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
+import Switch from "@/components/input/switch"
 
 import InboundDetail from "@/views/inboundAirport/scan/inboundDetail"
+import InboundReceivingLog from "@/views/inbound/scan/inboundReceivingLog"
 import smDetail from "@/views/inboundAirport/scan/smDetail"
 import CameraScanner from "@/components/scanner/camera.vue";
 import FloatingActionButton from "@/components/buttonCustom/floatingActionButton"
@@ -193,6 +224,8 @@ export default {
         CameraScanner,
         "floating-action-button": FloatingActionButton,
         "dialog-confirm": DialogConfirm,
+        "ReceivingLog": InboundReceivingLog,
+        "switchNih": Switch
     },
     data() {
         return {
@@ -204,6 +237,7 @@ export default {
             inbound_staging_id:'',
             loading: false,
             dataTable: [],
+            dataTableReceivingLog: [],
             limit:20,
             page_size: 1,
             page: 1,
@@ -213,7 +247,9 @@ export default {
             isSmFilled: false,
             itemDataTable: [],
             itemDataTableProp: [],
-            itemLoading: false
+            itemLoading: false,
+            is_auto_sj: false,
+            list_receiving_log: []
         }
     },
     computed: {
@@ -236,6 +272,16 @@ export default {
               this.page = res.data.meta.current_page
               this.limit = parseInt(res.data.meta.per_page)
               this.page_size = res.data.meta.last_page
+
+              this.dataTable.forEach(item => {
+                if (!this.list_receiving_log.some(list => list.item_number === item.item_number)) {
+                  this.list_receiving_log.push({
+                    item_number: item.item_number,
+                    sm_no: ''
+                  });
+                }
+              });
+              
               this.loading = false
             }).catch(err => {
               this.loading = false
@@ -249,29 +295,85 @@ export default {
           this.$refs.formInputInbound.$el.querySelector("input").focus();
           this.handlerClearForm()
         },
-        scanSm() {
-          this.sm_no = this.sm_no.replaceAll(/\s+/g, "");
-          this.form.sm_number = this.sm_no
-          this.isSmFilled = true
+        updateValueSwitch(formKey, value) {
+            this[formKey] = value
+        },
+        saveSmToStorage() {
+            const smData = {
+                sm_no: this.sm_no,
+                form_sm_number: this.form.sm_number,
+                isSmFilled: this.isSmFilled,
+                itemDataTable: this.itemDataTable,
+                itemDataTableProp: this.itemDataTableProp
+            };
+            localStorage.setItem('inboundAirportSmData', JSON.stringify(smData));
+            
+            if (!this.list_receiving_log.some(item => item.sm_no === this.sm_no)) {
+              this.list_receiving_log.push({
+                item_number: '',
+                sm_no: this.sm_no,
+              });
+              this.getTableDataReceivingLog();
+            }
+        },
 
-          this.getSmDetails()
+        async loadSmFromStorage() {
+            const storedData = localStorage.getItem('inboundAirportSmData');
+            if (storedData) {
+                const smData = JSON.parse(storedData);
+                this.sm_no = smData.sm_no;
+                this.form.sm_number = smData.form_sm_number;
+                this.isSmFilled = smData.isSmFilled;
+
+                if (!this.list_receiving_log.some(item => item.sm_no === this.sm_no)) {
+                  this.list_receiving_log.push({
+                    item_number: '',
+                    sm_no: this.sm_no,
+                  });
+
+                  this.getTableDataReceivingLog();
+                }
+                
+                if (this.sm_no) {
+                  await this.getSmDetails();
+                }
+            }
+        },
+
+        clearSmFromStorage() {
+            localStorage.removeItem('inboundAirportSmData');
+        },
+        scanSm() {
+            this.sm_no = this.sm_no.replaceAll(/\s+/g, "");
+            this.form.sm_number = this.sm_no;
+            this.isSmFilled = true;
+            
+            this.saveSmToStorage();
+            this.getSmDetails();
         },
         removeSmNumber() {
-          this.sm_no = '';
-          this.form.sm_number = ''
-          this.isSmFilled = false
-          this.itemDataTable = []
-          this.itemDataTableProp = []
+            this.list_receiving_log = this.list_receiving_log.filter(item => item.sm_no !== this.sm_no);
+            this.sm_no = '';
+            this.form.sm_number = '';
+            this.isSmFilled = false;
+            this.itemDataTable = [];
+            this.itemDataTableProp = [];
+            this.dataTableReceivingLog = [];
+            
+            this.clearSmFromStorage();
 
-          this.$nextTick(() => {
-            this.$refs.formInputParentSm.$el.querySelector("input").focus();
-          })
+            this.$nextTick(() => {
+                this.$refs.formInputParentSm.$el.querySelector("input").focus();
+            });
         },
-        async getSmDetails() {
+         async getSmDetails() {
             if (this.sm_no) {
                 this.itemLoading = true;
                 try {
-                    const res = await axios.get(`${this.URL.inbound}/${this.sm_no}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, this.Helper.header());
+                    const res = await axios.get(
+                        `${this.URL.inbound}/${this.sm_no}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, 
+                        this.Helper.header()
+                    );
 
                     let arr = [res.data.data];
 
@@ -282,17 +384,68 @@ export default {
                     }));
 
                     this.itemDataTable = arr;
-                    this.itemDataTableProp = res.data.detail
+                    let detail = res.data.detail
+                    detail.map(item => {
+                        if (item.is_masterbag === '1') {
+                            item.item_type = 'MASTERBAG';
+                        } else {
+                            item.item_type = 'BAG';
+                        }
+                    })
+                    this.itemDataTableProp = detail;
+
+                    this.saveSmToStorage();
 
                     this.$nextTick(() => {
-                      this.$refs.formInputInbound.$el.querySelector("input").focus();
+                        if (this.$refs.formInputInbound) {
+                            this.$refs.formInputInbound.$el.querySelector("input").focus();
+                        }
                     })
                 } catch (err) {
-                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                    this.openNotification(
+                        "danger", 
+                        err?.response?.data?.code ?? '', 
+                        "Failed", 
+                        err?.response?.data?.message ?? 'Something went wrong'
+                    );
                 } finally {
                     this.itemLoading = false;
                 }
             }
+        },
+        async getTableDataReceivingLog() {
+          this.loading = true;
+          this.dataTableReceivingLog = [];
+
+          try {
+            const existingRecords = new Set(
+              this.dataTableReceivingLog.map(item => JSON.stringify(item))
+            );
+
+            for (const { sm_no, item_number } of this.list_receiving_log) {
+              if (!sm_no && !item_number) continue;
+
+              const search_by = sm_no ? 'inbound_number' : 'item_number';
+              const s = sm_no || item_number;
+
+              const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=${search_by}&s=${s}&pov=receiver`, this.Helper.header());
+
+              res.data.data.forEach(newItem => {
+                const serializedItem = JSON.stringify(newItem);
+
+                if (!existingRecords.has(serializedItem)) {
+                  newItem.button_status = { edit: (newItem.status == null || newItem.status == undefined || newItem.status == '') };
+                  this.dataTableReceivingLog.push(newItem);
+                  existingRecords.add(serializedItem);
+                }
+              });
+            }
+          } catch (err) {
+            this.dataTableReceivingLog = [];
+            // this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+          } finally {
+            this.loading = false;
+          }
         },
         updateValueRemove(){
           this.item_no_remove = this.item_no_remove.replaceAll(/\s+/g, "");
@@ -318,15 +471,21 @@ export default {
         },
         async confirmInbound() {
           this.openProgress(null, "Processing", `Confirming Inbound`);
+          this.loading = true
           try {
               const res = await axios
                 .post(this.URL.inbound_staging_confirm + `?n=${this.listenNodeId}`,
-                null,
+                {
+                  is_auto_sj: this.is_auto_sj
+                },
                 this.Helper.header())
+              this.getTableDataReceivingLog();
               this.openNotification('success', null, "Success", res?.data?.message ?? "Success Confirm Inbound");
           } catch (err) {
               this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
           } finally {
+              this.loading = false
+              this.is_auto_sj = false
               this.closeProgress();
               this.handlerClearForm();
               this.handleClearSm();
@@ -389,6 +548,7 @@ export default {
                     this.URL.inbound_staging + `/${this.item_no_remove}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
+                    this.list_receiving_log = this.list_receiving_log.filter(log => log.item_number !== res.data.reference);
                     this.closeDialogConfirmRemove()
                     this.loadingConfirmRemove = false
                     this.refresh()
@@ -409,13 +569,17 @@ export default {
           this.item_no_remove = ''
         },
         handleClearSm() {
-          this.sm_no = ''
-          this.form.sm_number = ''
-          this.itemDataTable = []
-          this.itemDataTableProp = []
-          this.isSmFilled = false
-          this.$refs.formInputParentSm.$el.querySelector("input").focus();
-          this.handlerClearForm()
+            this.list_receiving_log = this.list_receiving_log.filter(item => item.sm_no !== this.sm_no);
+            this.sm_no = '';
+            this.form.sm_number = '';
+            this.itemDataTable = [];
+            this.itemDataTableProp = [];
+            this.isSmFilled = false;
+            
+            this.clearSmFromStorage();
+            
+            this.$refs.formInputParentSm.$el.querySelector("input").focus();
+            this.handlerClearForm();
         },
         onCameraScannerGetData(data) {
           if (data && data.event === "result" && data.namespace === "formInputInbound") {
@@ -439,10 +603,17 @@ export default {
         handleClickFAB() {
           this.$refs.cameraScanner.open('formInputInbound')
         },
+        listenDisabled() {
+          return this.disabledSwitch || false
+        }
     },
-    mounted() {
-      this.refresh()
-      this.$refs.formInputParentSm.$el.querySelector("input").focus();
+    async mounted() {
+      await this.loadSmFromStorage();
+      this.refresh();
+        
+      if (!this.isSmFilled && this.$refs.formInputParentSm) {
+          this.$refs.formInputParentSm.$el.querySelector("input").focus();
+      }
     }
 }
 </script>
@@ -465,10 +636,5 @@ export default {
   }
   .scan-box {
     padding: 1em;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
   }
 </style>

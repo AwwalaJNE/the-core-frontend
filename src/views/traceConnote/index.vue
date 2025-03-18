@@ -20,7 +20,7 @@
                                     type="text"
                                     v-model="connoteNumber"
                                     label-placeholder="Masukkan Nomor Connote"
-                                    autofocus
+                                    :autofocus="true"
                                     :disabled="hasConnoteNumber"
                                     icon-after
                                     v-uppercase
@@ -138,6 +138,16 @@
                             </vs-col>
                           </vs-row>
                         </template>
+                        <template v-if="navActive === 'k-CALIM-BURDEN'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                <claim-and-burden 
+                                    :connoteNumber="connote_number"
+                                    :koliNumber="koli_number"
+                                />
+                            </vs-col>
+                          </vs-row>
+                        </template>
                     </div>
                     <div class="box view" v-else-if="(koli_number && !connote_found && !loading) || (koli_number !== '' && !connote_found && !loading)">
                         <div style="margin-top: 2.5em;">
@@ -164,6 +174,7 @@ import selectorDetailVue from "@/views/inventory/connote-detail/connote/selector
 import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
 import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
 import connoteCustomerView from "@/views/inventory/connote-detail/connote/connoteCustomerView.vue";
+import claimAndBurden from "@/views/inventory/connote-detail/connote/claimBurden.vue";
 
 export default {
     name: "trace-connote",
@@ -172,6 +183,7 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "connote-customer-view": connoteCustomerView,
+        "claim-and-burden": claimAndBurden,
         "search-input": SearchInput,
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
@@ -205,6 +217,11 @@ export default {
             label: "CUSTOMER VIEW",
             key: "k-CUSTOMER-VIEW",
             title: "Connote's Customer View"
+          },
+          {
+            label: "CLAIM BURDEN",
+            key: "k-CALIM-BURDEN",
+            title: "Claim and Burden"
           }
         ],
         navActive: "k-INFO",
@@ -478,6 +495,7 @@ export default {
     },
     mounted() {
       this.getConnote();
+      this.$refs.formInputConnoteOrion.$el.querySelector("input").focus();
     }
 };
 </script>

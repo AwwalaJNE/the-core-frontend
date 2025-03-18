@@ -31,6 +31,7 @@
                   class="search-input"
                   :placeholder="searchPlaceholder"
                   @searchValue="searchValue"
+                  @handleSearch="handleSearch"
                 />
               </vs-col>
           </vs-row>
@@ -123,6 +124,15 @@ export default {
       this.searchBy = val;
       this.searchPlaceholder = key;
     },
+    refresh() {
+        this.$refs.DeliveryCodHistoryTable.refresh();
+    },
+    handleSearch() {
+        this.$nextTick(() => {
+            this.refresh();
+            this.$refs.searchInput.clear();
+        });
+    }
   },
 };
 </script>
