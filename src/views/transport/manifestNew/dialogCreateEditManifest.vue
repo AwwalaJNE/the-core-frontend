@@ -250,9 +250,9 @@ export default {
             if (val !== undefined) {
                 this.getEditData(val);
 
-                this.isDisabled = (val.status !== 'READY' && val.status !== 'UNRECEIVED') || val.is_orion === "1" || val.is_approve === 1;
+                this.isDisabled = (val.status !== 'READY' && val.status !== 'UNRECEIVED') || val.is_approve === 1;
                 this.isDisabledPrint = val.status === 'CANCELED';
-                this.isDisabledApprove = (val.status !== 'READY' && val.status !== 'UNRECEIVED') || val.is_orion === "1";
+                this.isDisabledApprove = (val.status !== 'READY' && val.status !== 'UNRECEIVED') ;
 
                 this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
             }

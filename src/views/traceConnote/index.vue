@@ -43,7 +43,7 @@
                             <vs-col lg="1" sm="2" xs="1">
                             <vs-button type="submit">Search</vs-button>
                         </vs-col>
-                        <vs-col lg="2" v-if="multiKolis.length > 0">
+                        <vs-col lg="3" v-if="multiKolis.length > 0" class="multi-koli-col">
                             <template v-if="multiKolis.length > 0">
                                 <div class="multi-koli-section">
                                     <selector 
@@ -554,6 +554,9 @@ export default {
 }
 .outline:hover {
     background-color: #153478;
+}
+.multi-koli-col {
+    width: 210px;
 }
 .multi-koli-section {
     margin-top: -22px !important;
