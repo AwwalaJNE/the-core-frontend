@@ -234,6 +234,9 @@ import SuratMuatanSettings from "@/views/settings/suratMuatan"
 // === Receiving Log ===
 import ReceivingLog from "@/views/receivingLog"
 
+// === Claim and Burden ===
+import ClaimAndBurden from "@/views/claimBurden"
+
 import { resourceLookup } from '@/constants'; 
 
 Vue.use(VueRouter)
@@ -1336,6 +1339,20 @@ const routes = [
           resource_name: resourceLookup["RECEIVING_LOG"].resource_name,
           isMaintenanceMode: false,
           permission: 'read-receiving',
+        }
+      },
+      {
+        path: "/claim-and-burden",
+        name: "Claim and Burden",
+        component: ClaimAndBurden,
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Claim And Burden",
+          resource_type: resourceLookup["CLAIM_AND_BURDEN"].resource_type,
+          resource_code: resourceLookup["CLAIM_AND_BURDEN"].resource_code,
+          resource_name: resourceLookup["CLAIM_AND_BURDEN"].resource_name,
+          isMaintenanceMode: false,
+          // permission: ['read-inventory', 'read-bag'],
         }
       },
       {

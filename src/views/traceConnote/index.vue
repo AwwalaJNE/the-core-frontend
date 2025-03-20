@@ -40,8 +40,23 @@
                                     </div>
                                 </template>
                             </vs-col>
-                            <vs-col>
+                            <vs-col lg="1" sm="2" xs="1">
                             <vs-button type="submit">Search</vs-button>
+                        </vs-col>
+                        <vs-col lg="3" v-if="multiKolis.length > 0" class="multi-koli-col">
+                            <template v-if="multiKolis.length > 0">
+                                <div class="multi-koli-section">
+                                    <selector 
+                                    :name="'Multi Koli'"
+                                    ref="trace_connote"
+                                    :valueData="multiKolis"
+                                    :selectedValue="selectedConnote"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    :tabindex="-1"
+                                    @updateValue="updateMultiKoliValues" />
+                                </div>
+                            </template>
                         </vs-col>
                         </form>
                     </div>
@@ -138,6 +153,16 @@
                             </vs-col>
                           </vs-row>
                         </template>
+                        <template v-if="navActive === 'k-CALIM-BURDEN'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                <claim-and-burden 
+                                    :connoteNumber="connote_number"
+                                    :koliNumber="koli_number"
+                                />
+                            </vs-col>
+                          </vs-row>
+                        </template>
                     </div>
                     <div class="box view" v-else-if="(koli_number && !connote_found && !loading) || (koli_number !== '' && !connote_found && !loading)">
                         <div style="margin-top: 2.5em;">
@@ -164,6 +189,8 @@ import selectorDetailVue from "@/views/inventory/connote-detail/connote/selector
 import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
 import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
 import connoteCustomerView from "@/views/inventory/connote-detail/connote/connoteCustomerView.vue";
+import claimAndBurden from "@/views/inventory/connote-detail/connote/claimBurden.vue";
+import Selector from "@/components/input/select";
 
 export default {
     name: "trace-connote",
@@ -172,12 +199,14 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "connote-customer-view": connoteCustomerView,
+        "claim-and-burden": claimAndBurden,
         "search-input": SearchInput,
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
         "select-status-inventory": SelectInventoryVue,
         "select-bag-history": SelectBagHistory,
-        CameraScanner
+        CameraScanner,
+        "selector": Selector
     },
     computed: {
     },
@@ -205,6 +234,11 @@ export default {
             label: "CUSTOMER VIEW",
             key: "k-CUSTOMER-VIEW",
             title: "Connote's Customer View"
+          },
+          {
+            label: "CLAIM BURDEN",
+            key: "k-CALIM-BURDEN",
+            title: "Claim and Burden"
           }
         ],
         navActive: "k-INFO",
@@ -238,6 +272,8 @@ export default {
                 value: 'RF'
             }
         ],
+        multiKolis: [],
+        selectedConnote: ""
       };
     },
     methods: {
@@ -256,6 +292,8 @@ export default {
             this.statusinventory = "";
             this.connote_found = false;
             this.loading = false;
+            this.multiKolis = [];
+            this.selectedConnote = "";
             this.activeTab("k-INFO");
             this.$router.push("/trace-connote");
             this.setRoutePageHistory(this.$route.meta, false);
@@ -290,6 +328,21 @@ export default {
                     if(res.data.data && Object.keys(res.data.data).length > 0) {
                         this.connote_found = true;
                         let response = res.data.data;
+                        let multiKolis = response?.multi_kolis ?? [];
+                        multiKolis.length > 0 && multiKolis.map(item => {
+                            let obj = {};
+                            obj["label"] = item.connote_number;
+                            obj["value"] = item.connote_number;
+                            this.multiKolis.push(obj);
+                        });
+                        const filteredConnote = this.findConnoteByNumber(multiKolis, this.koli_number);
+                        if (filteredConnote == undefined) {
+                            const koliTrimed = this.koli_number.slice(0, -2);
+                            const filteredConnoteAfterTrimed = this.findConnoteByNumber(multiKolis, koliTrimed);
+                            this.selectedConnote = filteredConnoteAfterTrimed == undefined ? null : filteredConnoteAfterTrimed.connote_number;
+                        } else {
+                            this.selectedConnote = filteredConnote;
+                        }
                         let dataorigin={};
                         let dataDestination={}; 
                         let dataInformation={}; 
@@ -475,6 +528,18 @@ export default {
             this.filterStatusBy = key;
             this.$refs.activityInventory.refresh();
         },
+
+        async updateMultiKoliValues(key, val) {
+            this.multiKolis = [];
+            this.koli_number = val;
+            this.connote_number = val;
+            this.connoteNumber = val;
+            this.updateValueOrion();
+        },
+
+        findConnoteByNumber(data, targetConnoteNumber) {
+            return data.find(item => item.connote_number === targetConnoteNumber);
+        }
     },
     mounted() {
       this.getConnote();
@@ -489,6 +554,12 @@ export default {
 }
 .outline:hover {
     background-color: #153478;
+}
+.multi-koli-col {
+    width: 210px;
+}
+.multi-koli-section {
+    margin-top: -22px !important;
 }
 </style>
   

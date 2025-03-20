@@ -18,6 +18,7 @@ export default {
     geolocation_province: api + "geolocation-province",
     geolocation_timezone: api + "geolocation-timezone",
     geolocation_search: api + "geolocation-search",
+    geolocation_search_by: api + "geolocation-search-by",
 
     // node
     node: api + "node",
@@ -351,6 +352,9 @@ export default {
 
     // Setting Surat Muatan Stock
     sm_stock: api + 'sm-stock',
+
+    // Claim and burden
+    claim_and_burden: api + 'claim-and-burden',
 
     // Vehicle Mode V2
     vehicle_mode_list_v2: api + 'vehicle/mode/list',

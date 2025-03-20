@@ -374,6 +374,9 @@ export default {
 
                 const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=${search_by}&s=${s}&pov=receiver`, this.Helper.header());
                 this.dataTableReceivingLog = res.data.data;
+                this.dataTableReceivingLog.forEach(item => {
+                    item.button_status = { edit: (item.status == null || item.status == undefined || item.status == '') };
+                });
             } catch (err) {
                 this.dataTableReceivingLog = []
                 // this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');

@@ -76,11 +76,11 @@ export default {
                 }
             ],
             customActionList: [
-              {
-                label: 'Edit',
-                key: 'edit',
-                attribute: '',
-              }
+                {
+                    label: 'Entry Status',
+                    key: 'edit',
+                    attribute: '',
+                }
             ],
             dialogEdit: false,
             receivingLogId: "",
@@ -104,9 +104,6 @@ export default {
         async getTableDataReceivingLog(status = this.statusSearch, startDate = this.startDate, endDate = this.endDate) {
             this.loading = true;
             try {
-                let buttonStatus = {
-                    edit: true,
-                };
                 const searchBy = this.searchValue ? this.searchOriginBy : '';
                 const searchValue = this.searchValue || '';
                 const pov = 'receiver';
@@ -121,9 +118,10 @@ export default {
                 const data = res.data.data;
 
                 this.dataTable = Array.isArray(data) ? data : [data];
-                data.map(item => {
-                    item["button_status"] = buttonStatus;
-                })
+                this.dataTable.forEach(item => {
+                    item.button_status = { edit: (item.status == null || item.status == undefined || item.status == '') };
+                });
+
 
                 const meta = res.data.meta;
                 this.page = meta.current_page;
@@ -156,3 +154,10 @@ export default {
     }
 }
 </script>
+<style>
+    .vs-table__td.action .vs-row.btn_action .vs-col {
+        width: 100px !important;
+    }
+</style>
+
+
