@@ -868,7 +868,7 @@ export default {
 </script>
 <style scoped>
 .title-helper {
-    width: 80%;
+    width: 60%;
     align-content: center;
 }
 
