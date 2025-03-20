@@ -47,25 +47,9 @@
             />
 
             <vs-row>
-                <vs-col lg="5" sm="5">
-                    <div>
-                        <form-input-controller
-                            ref="formSuratMuatanController"
-                            typeForm="surat_muatan"
-                            :dataItem="listenDataItem"
-                            :isDisabled="isDisabled"
-                            :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
-                            :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
-                            :querySearch="querySearch"
-                            @formData="formData"
-                            @inputFocus="inputFocus"
-                            @onChangeCustom="onChangeCustom"
-                        />
-                    </div>
-                </vs-col>
-                <vs-col lg="7" sm="7">
+                <vs-col lg="12" sm="12">
                     <vs-row>
-                        <vs-col>
+                        <vs-col lg="5" sm="5">
                             <vs-input
                                 border
                                 icon-after
@@ -103,6 +87,22 @@
                                     @actionUpdate="actionUpdate"
                                     @actionLimit="actionLimit"
                                     @actionPagination="actionPagination"
+                                />
+                            </div>
+                        </vs-col>
+                        <vs-col lg="12" sm="12">
+                            <div>
+                                <form-input-controller
+                                    ref="formSuratMuatanController"
+                                    typeForm="surat_muatan"
+                                    :dataItem="listenDataItem"
+                                    :isDisabled="isDisabled"
+                                    :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
+                                    :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
+                                    :querySearch="querySearch"
+                                    @formData="formData"
+                                    @inputFocus="inputFocus"
+                                    @onChangeCustom="onChangeCustom"
                                 />
                             </div>
                         </vs-col>
@@ -868,7 +868,7 @@ export default {
 </script>
 <style scoped>
 .title-helper {
-    width: 60%;
+    width: 80%;
     align-content: center;
 }
 
