@@ -87,11 +87,18 @@
                         />
                     </div>
 
+                    <div class="destination-container">
+                        <label class="destination-label">Enable Destination</label>
+                        <vs-switch v-model="isDestinationEnabled" class="custom-switch"/>
+                    </div>
+
+                    <!-- Form Utama -->
                     <form-input-controller
                         ref="formSuratJalan"
                         typeForm="surat_jalan"
                         :dataItem="editData"
                         :isDisabled="isDisabled"
+                        :partialDisabled="(key) => partialDisabled(key)"
                         @formData="formData"
                         @onChangeCustom="onChangeCustom"
                     />
@@ -234,10 +241,10 @@ export default {
             manifest_lov: "",
             destinationUnlock: "",
             manifest_lov_list: [
-                // {
-                //     label: "Multi Destination",
-                //     value: "ALL",
-                // },
+                {
+                    label: "Multi Destination",
+                    value: "ALL",
+                },
                 {
                     label: "Single Destination",
                     value: "SAME DESTINATION",
@@ -248,6 +255,7 @@ export default {
             isDisabled: false,
             isDisabledPrint: false,
             isDisabledApprove: false,
+            isDestinationEnabled: false,
             is_approve: 0,
             item_remove: "",
             total_weight: 0,
@@ -286,6 +294,7 @@ export default {
         },
         active: function(val) {
             if (val == true) {
+                this.getDestination2();
                 this.getNoModeAngkutan();
                 this.getLov();
                 this.getDriver();
@@ -321,7 +330,7 @@ export default {
             this.editData.destination_id = val.node_id_destination;
             this.destination_name_code = val?.destination?.node_name + " (" + val?.destination?.node_code + ")" || val.node_id_destination;
             
-            this.getDestination(val.node_id_destination)
+            // this.getDestination(val.node_id_destination)
 
             this.no_moda_angkutan_id = val.no_moda_angkutan_id || null;
 
@@ -338,17 +347,24 @@ export default {
                 is_penerusan: val.is_penerusan
             };
         },
-        getDestination(node_id_destination) {
-            let item_destination = {
-                label: this.destination_name_code,
-                value: node_id_destination
+        partialDisabled(key) {
+            if (key === "destination_id") {
+                return !this.isDestinationEnabled; // Jika switch aktif, destination enabled, sebaliknya disabled
             }
-
-            this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID_ArrData", [{
-                ...item_destination,
-                item: item_destination
-            }]);
+            return false; // Field lain tetap aktif
         },
+        // JANGAN DIHAPUS TAKUT NANTI DIPAKE LAGI
+        // getDestination(node_id_destination) {
+        //     let item_destination = {
+        //         label: this.destination_name_code,
+        //         value: node_id_destination
+        //     }
+
+        //     this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID_ArrData", [{
+        //         ...item_destination,
+        //         item: item_destination
+        //     }]);
+        // },
         formData(form) {
             const obj = {
                 node_id_origin: this.listenNodeId,
@@ -521,7 +537,7 @@ export default {
                         is_penerusan: data.is_penerusan
                     };
                     this.destination_name_code = data?.destination?.node_name + " (" + data?.destination?.node_code + ")" || data.node_id_destination;
-                    this.getDestination(data.node_id_destination)
+                    // this.getDestination(data.node_id_destination)
                     this.editData = {
                         destination_id: data.node_id_destination,
                         node_id_origin: data.node_id_origin,
@@ -672,6 +688,45 @@ export default {
                 this.manifest_lov = this.dataItem.manifest_lov;
             }
         },
+        async getDestination2() {
+            await axios
+                .get(
+                    this.URL.node +
+                        `/${this.listenNodeId}/destination-link-manifest-delivery-order?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
+                        let arr = [];
+                        res.data.data.map((item) => {
+                            let obj = {};
+                            obj["label"] = item.node_name + " (" + item.node_code + ")";
+                            obj["value"] = item.node_id;
+                            obj["item"] = item;
+
+                            arr.push(obj);
+                        });
+
+                        this.nodeDestination = arr
+                        if (!this.manifest_do_number || this.dataItem.node_id_destination) {
+                            this.$store.dispatch(
+                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
+                                arr.length > 0 ? arr : null
+                            );
+                        }
+                    } else {
+                        if (!this.manifest_do_number || this.dataItem.node_id_destination) {
+                            this.$store.dispatch(
+                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
+                                null
+                            );
+                        }
+                    }
+                })
+                .catch((err) => {
+                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to get node destination list', err?.response?.data?.message ?? err)
+                });
+        },
         async getNoModeAngkutan() {
             await axios
                 .get(
@@ -745,7 +800,10 @@ export default {
         },
     },
     mounted() {
-        this.handlePrintShortcut(this.print)
+        this.handlePrintShortcut(this.print);
+        console.log("editData sebelum dikirim ke form-input-controller:", this.editData);
+        console.log("Form dataItem:", this.dataItem);
+        console.log("InputObject keys:", Object.keys(this.InputObject));
     }
 };
 </script>
@@ -767,5 +825,20 @@ export default {
 
 button {
     width: 6em;
+}
+.destination-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Beri jarak antara label dan switch */
+}
+
+.destination-label {
+    font-size: 12px; /* Sesuaikan ukuran label */
+    font-weight: 450;
+    margin-left: 10px;
+}
+
+.custom-switch {
+    transform: scale(0.8); /* Mengecilkan ukuran switch */
 }
 </style>
