@@ -1,10 +1,10 @@
 <template>
     <dialog-master
-        width="lg"
+        width="xl"
         :actived="listenActive"
         :loading="listenLoading"
         :closeDialog="cancel"
-        class="custom-width"
+        class="custom-width-manifest"
     >
         <template v-slot:header>
             <div class="button-helper">
@@ -868,7 +868,7 @@ export default {
 </script>
 <style scoped>
 .title-helper {
-    width: 60%;
+    width: 73%;
     align-content: center;
 }
 
@@ -880,4 +880,20 @@ export default {
 button {
     width: 6em;
 }
+
+::v-deep(.vs-dialog-content.xl) {
+    width: 95vw !important;
+    max-width: 95vw !important;
+}
+
+::v-deep(.vs-dialog) {
+    width: 95vw !important;
+    max-width: 95vw !important;
+}
+
+::v-deep(table) {
+    width: 100%;
+    min-width: 1200px;
+}
+
 </style>
