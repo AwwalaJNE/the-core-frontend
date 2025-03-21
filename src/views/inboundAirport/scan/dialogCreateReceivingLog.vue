@@ -256,6 +256,7 @@ export default {
         },
         async getDataStatus() {},
         updateValue(key, val, info){},
+        
         async handleSubmit() {
             const uploadComponent = this.$refs.upload;
             if (!uploadComponent) return;
@@ -263,6 +264,8 @@ export default {
             const uploadedFiles = uploadComponent.uploadFiles;
             const formData = new FormData();            
 
+            formData.append('inbound_number', this.inbound_number);
+            formData.append('item_number', this.item_number);
             formData.append('status', this.status);
             formData.append('remark', this.remark);
 
