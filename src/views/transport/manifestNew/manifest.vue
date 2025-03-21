@@ -153,6 +153,11 @@ export default {
                         key: "latest_node_receiver",
                         width: "xs"
                     },
+                    {
+                        label: "Total Irregularity",
+                        key: "total_irregularity",
+                        width: "xs"
+                    },
                 ],
                 loading: false,
                 dataItem: {},

@@ -186,6 +186,11 @@ export default {
                     type: "status",
                     width: "xs",
                 },
+                {
+                    label: "Status Irregularity",
+                    key: "status_irregularity",
+                    width: "xs",
+                },
             ],
             customActionList: [
                 {
