@@ -62,7 +62,7 @@ export default {
                 {
                     label: "Item Number",
                     key: "item_number",
-                    width: "sm"
+                    width: "auto"
                 },
                 {
                     label: "Origin",
@@ -77,22 +77,27 @@ export default {
                 {
                     label: "Status",
                     key: "status",
-                    width: "sm"
+                    width: "auto"
                 },
                 {
                     label: "Remark",
                     key: "remark",
-                    width: "sm"
+                    width: "auto"
                 },
                 {
                     label: "Received At",
                     key: "received_time",
-                    width: "sm"
+                    width: "auto"
                 },
                 {
                     label: "Created By",
                     key: "created_by",
-                    width: "sm"
+                    width: "auto"
+                },
+                {
+                    label: "Created At",
+                    key: "created_at",
+                    width: "auto"
                 }
             ],
             customActionList: [
