@@ -57,12 +57,22 @@ export default {
                 {
                     label: "Inbound Number",
                     key: "inbound_number",
-                    width: "auto"
+                    width: "sm"
                 },
                 {
                     label: "Item Number",
                     key: "item_number",
                     width: "auto"
+                },
+                {
+                    label: "Origin",
+                    key: "origin",
+                    width: "md"
+                },
+                {
+                    label: "Receiver",
+                    key: "receiver",
+                    width: "md"
                 },
                 {
                     label: "Status",
@@ -73,14 +83,29 @@ export default {
                     label: "Remark",
                     key: "remark",
                     width: "auto"
+                },
+                {
+                    label: "Received At",
+                    key: "received_time",
+                    width: "auto"
+                },
+                {
+                    label: "Created By",
+                    key: "created_by",
+                    width: "auto"
+                },
+                {
+                    label: "Created At",
+                    key: "created_at",
+                    width: "auto"
                 }
             ],
             customActionList: [
-              {
+            {
                 label: 'Entry Status',
                 key: 'edit',
                 attribute: '',
-              }
+            }
             ],
             dialogEdit: false,
             receivingLogId: "",
@@ -120,10 +145,17 @@ export default {
                 const res = await axios.get(`${this.URL.receiving_log}?${queryParams}`, this.Helper.header());
                 const data = res.data.data;
 
-                this.dataTable = Array.isArray(data) ? data : [data];
-                data.map(item => {
-                    item["button_status"] = buttonStatus;
-                })
+                let processedData = Array.isArray(data) ? data : [data];
+                processedData = processedData.map(item => {
+                    return {
+                        ...item,
+                        origin: `${item.origin_node_name} (${item.origin_node_code})`,
+                        receiver: `${item.receiver_node_name} (${item.receiver_node_code})`,
+                        button_status: buttonStatus
+                    };
+                });
+
+                this.dataTable = processedData;
 
                 const meta = res.data.meta;
                 this.page = meta.current_page;
@@ -149,7 +181,7 @@ export default {
         actionPagination(val) {
             this.page = val;
             this.getTableDataReceivingLog();
-        },
+        }
     },
     mounted() {
         this.getTableDataReceivingLog();
