@@ -801,9 +801,6 @@ export default {
     },
     mounted() {
         this.handlePrintShortcut(this.print);
-        console.log("editData sebelum dikirim ke form-input-controller:", this.editData);
-        console.log("Form dataItem:", this.dataItem);
-        console.log("InputObject keys:", Object.keys(this.InputObject));
     }
 };
 </script>
