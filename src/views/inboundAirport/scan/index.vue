@@ -170,6 +170,7 @@
                                   :limit="limit" 
                                   :actionLimit="actionLimit" 
                                   :actionPagination="actionPagination"
+                                  :smNumber="sm_no"
                               />
                           </transition>
                       </template>
@@ -393,6 +394,11 @@ export default {
                         }
                     })
                     this.itemDataTableProp = detail;
+                    this.itemDataTableProp.map(item => {
+                      item,
+                      item.isDisabled = item.is_received === '1';
+                    });
+                    console.log(this.itemDataTableProp, 'itemDataTableProp');
 
                     this.saveSmToStorage();
 
