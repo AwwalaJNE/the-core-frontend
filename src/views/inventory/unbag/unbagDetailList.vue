@@ -28,12 +28,26 @@
       </div>
 
     </vs-col>
-    <vs-col xs="12" sm="6" lg="6" >
-      <div class="box view">
-        <div class="summary-unbag">
-          <span class="subtitle" align="right"><p>{{ total_confirmed }}/{{ total_confirmed + total_unconfirmed }}</p></span>
-          <span class="title" align="right"><h4>Item Scanned</h4></span>
+    <vs-col xs="12" sm="6" lg="6">
+    <div class="box view">
+      <div class="summary-unbag">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+          <div>
+            <switchNih
+                v-if="showSwitchNih"
+                name="Auto SJ|Manual" 
+                formKey="is_auto_sj"
+                :valueData="is_auto_sj"
+                @updateValue="updateValueSwitch"
+            />
+          </div>
+
+          <div>
+            <span class="title" align="right"><h4>Item Scanned</h4></span>
+            <span class="subtitle" align="right"><p>{{ total_confirmed }}/{{ total_confirmed + total_unconfirmed }}</p></span>
+          </div>
         </div>
+      </div>
         <table-master
             :dataTable="dataTable"
             :dataColumn="datacolumn"
@@ -55,6 +69,7 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import Switch from "@/components/input/switch"
 export default {
     name:"list-detailbag",
     mixins: [master],
@@ -66,7 +81,8 @@ export default {
 
     },
     components: {
-        "table-master" : TableMaster
+      "table-master": TableMaster,
+      "switchNih": Switch
     },
     data() {
         return {
@@ -94,7 +110,9 @@ export default {
                 limit:20,
                 page_size: 1,
                 page: 1
-            }
+            },
+            is_auto_sj: false,
+            showSwitchNih: false,
         }
     },
     watch: {
@@ -122,6 +140,9 @@ export default {
             if(this.bag_number !== null || this.bag_number !== undefined){
               form.bag_number = this.bag_number
             }
+
+            form.is_auto_sj = this.is_auto_sj
+            
             await axios
                 .post(
                     this.URL.unbagging + `/bag?n=${this.listenNodeId}&limit=${limit}&page=${page}`,
@@ -130,6 +151,7 @@ export default {
                 .then(res => {
                     if(res.data.data.bag_number != undefined) {
                         let data = res.data.data
+                        this.showSwitchNih = data.is_consolidated === "1" || data.is_consolidated === 1;
 
                         if (data.unbagging_summary !== null && res.data.detail !== null) {
                           this.bag_number = data.bag_number
@@ -213,7 +235,10 @@ export default {
                     this.loading = false
                     this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to change page', err?.response?.data?.message ?? err)
                 })
-        },
+      },
+      updateValueSwitch(formKey, value) {
+          this[formKey] = value
+      },
     }
 }
 </script>
