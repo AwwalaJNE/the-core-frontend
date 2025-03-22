@@ -143,14 +143,20 @@ export default {
                 const data = res.data.data;
 
                 let processedData = Array.isArray(data) ? data : [data];
-                processedData = processedData.map(item => {
-                    return {
-                        ...item,
-                        origin: `${item.origin_node_name} (${item.origin_node_code})`,
-                        receiver: `${item.receiver_node_name} (${item.receiver_node_code})`,
-                        button_status: { edit: (item.status == null || item.status == undefined || item.status == '') }
-                    };
-                });
+                processedData = processedData.map(item => ({
+                    ...item,
+                    origin: (item.origin_node_name || item.origin_node_code) 
+                        ? ((item.origin_node_name || '') + 
+                        ((item.origin_node_name && item.origin_node_code) ? ' ' : '') + 
+                        (item.origin_node_code ? `(${item.origin_node_code})` : ''))
+                        : '',
+                    receiver: (item.receiver_node_name || item.receiver_node_code) 
+                        ? ((item.receiver_node_name || '') + 
+                        ((item.receiver_node_name && item.receiver_node_code) ? ' ' : '') + 
+                        (item.receiver_node_code ? `(${item.receiver_node_code})` : ''))
+                        : '',
+                    button_status: { edit: (item.status == null || item.status == undefined || item.status == '') }
+                }));
 
                 this.dataTable = processedData;
 
