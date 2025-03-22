@@ -171,6 +171,7 @@
                                   :actionLimit="actionLimit" 
                                   :actionPagination="actionPagination"
                                   :smNumber="sm_no"
+                                  :receivingLogs="receivingLogs"
                               />
                           </transition>
                       </template>
@@ -250,7 +251,8 @@ export default {
             itemDataTableProp: [],
             itemLoading: false,
             is_auto_sj: false,
-            list_receiving_log: []
+            list_receiving_log: [],
+            receivingLogs: []
         }
     },
     computed: {
@@ -377,6 +379,7 @@ export default {
                     );
 
                     let arr = [res.data.data];
+                    this.receivingLogs = res.data.data.receiving_log;
 
                     arr = arr.map(item => ({
                         ...item,
@@ -398,7 +401,6 @@ export default {
                       item,
                       item['button_status'] = {entry_status: item.is_received == '0'};
                     });
-                    console.log(this.itemDataTableProp, 'itemDataTableProp');
 
                     this.saveSmToStorage();
 

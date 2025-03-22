@@ -23,6 +23,7 @@
             @closeDialog="closeDialog"
             btnBlue="Edit"
             title="Edit Receiving Log"
+            :receivingLogs="receivingLogs"
         />
     </div>
 </template>
@@ -42,7 +43,8 @@ export default {
         limit: Number,
         actionLimit: Function,
         actionPagination: Function,
-        smNumber: String
+        smNumber: String,
+        receivingLogs: Array
     },
     components: {
         "table-master" : TableMaster,

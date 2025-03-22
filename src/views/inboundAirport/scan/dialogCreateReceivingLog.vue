@@ -202,7 +202,8 @@ export default {
         active: Boolean,
         title: String,
         inboundDetail: Object,
-        flag: String
+        flag: String,
+        receivingLogs: Array
     },
     computed: {
         listenActive(){
@@ -220,6 +221,7 @@ export default {
             if (val == true) {
                 this.getDataStatus()
                 this.setValue()
+                this.checkExistingReceivingLog()
             }
         }
     },
@@ -246,16 +248,14 @@ export default {
             disableStatus: true,
 
             fileList: [],
-            maxFiles: 5
+            maxFiles: 5,
+            receivingLogId: ''
         }
     },
     methods: {
         setValue() {
             this.inbound_number = this.inboundDetail?.inbound_number || ''
             this.item_number = this.inboundDetail?.item_number || ''
-        },
-        async checkExistingData() {
-
         },
         async getDataStatus() {},
         updateValue(key, val, info){
@@ -295,7 +295,12 @@ export default {
         async handleSubmitData(formData) {
             this.loading = true;
             try {
-                const res = await axios.post(`${this.URL.receiving_log}?n=${this.listenNodeId}`, formData, this.Helper.header());
+                const endpoint = this.receivingLogId ? `${this.URL.receiving_log}/${this.receivingLogId}?n=${this.listenNodeId}` : `${this.URL.receiving_log}?n=${this.listenNodeId}`;
+                const res = await axios.post(`${endpoint}`, formData, this.Helper.header());
+                if (!this.receivingLogId) {
+                    const resData = res.data.data;
+                    this.receivingLogId = resData.receiving_log_id;
+                }
                 this.openNotification('success', null, "Success", res?.data?.message ||  "Success Update Data");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
@@ -320,7 +325,7 @@ export default {
             this.openNotification('warn', null, 'File limit exceeded', 'You can upload up to 5 files only.');
             this.fileList = fileList.slice(0, this.maxFiles);
         }
-    },
+        },
         generateRandomString(length) {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let result = '';
@@ -359,7 +364,34 @@ export default {
             this.dialogFileUrl = file.url;
             this.dialogFileVisible = true;
         },
-        
+        async checkExistingReceivingLog() {
+            const existingReceivingLog = this.receivingLogs.find(item => item.item_number == this.item_number && item.inbound_number == this.inbound_number);
+            if (this.receivingLogId) {
+                await this.findReceivingLog(this.receivingLogId);
+            } else if (existingReceivingLog && this.receivingLogId == '') {
+                await this.findReceivingLog(existingReceivingLog.receiving_log_id);
+            }
+        },
+        async findReceivingLog(receivingLogId) {
+            try {
+                this.loading = true;
+                const res = await axios.get(`${this.URL.receiving_log}/${receivingLogId}?n=${this.listenNodeId}`, this.Helper.header());
+                if (res) {
+                    const resData = res.data.data;
+                    this.receivingLogId = resData.receiving_log_id;
+                    this.remark = resData.remark;
+                }
+                this.loading = false;
+            } catch (error) {
+                this.loading = false;
+                this.openNotification(
+                    "danger", 
+                    error?.response?.data?.code ?? '', 
+                    "Failed", 
+                    error?.response?.data?.message ?? 'Something went wrong'
+                );
+            }
+        }
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)
