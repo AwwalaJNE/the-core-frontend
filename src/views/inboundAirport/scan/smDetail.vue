@@ -72,7 +72,7 @@ export default {
             customActionList: [
                 {
                     label: 'Entry Status',
-                    key: 'edit',
+                    key: 'entry_status',
                     attribute: ''
                 }
             ],

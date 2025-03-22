@@ -396,7 +396,7 @@ export default {
                     this.itemDataTableProp = detail;
                     this.itemDataTableProp.map(item => {
                       item,
-                      item.isDisabled = item.is_received === '1';
+                      item['button_status'] = {entry_status: item.is_received == '0'};
                     });
                     console.log(this.itemDataTableProp, 'itemDataTableProp');
 

@@ -254,8 +254,15 @@ export default {
             this.inbound_number = this.inboundDetail?.inbound_number || ''
             this.item_number = this.inboundDetail?.item_number || ''
         },
+        async checkExistingData() {
+
+        },
         async getDataStatus() {},
-        updateValue(key, val, info){},
+        updateValue(key, val, info){
+            if (key === "remark") {
+                this.remark = val;
+            }
+        },
         
         async handleSubmit() {
             const uploadComponent = this.$refs.upload;
@@ -300,7 +307,7 @@ export default {
         handleClearForm(){
             this.inbound_number = '',  
             this.item_number = '',  
-            this.status = '', 
+            // this.status = '', 
             this.remark = '',
             this.fileList = [];
         },
