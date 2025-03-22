@@ -4087,7 +4087,7 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      isDisabled: true
+      isDisabled: false
     },
     manifest_lov: {
       label: "LOV",

@@ -1,10 +1,10 @@
 <template>
     <dialog-master
-        width="lg"
+        width="xl"
         :actived="listenActive"
         :loading="listenLoading"
         :closeDialog="cancel"
-        class="custom-width"
+        class="manifest-dialog"
     >
         <template v-slot:header>
             <div class="button-helper">
@@ -179,6 +179,11 @@ export default {
                 {
                     label: "Total Inner",
                     key: "total_inner",
+                    width: "xs",
+                },
+                {
+                    label: "Status Irregularity",
+                    key: "status_irregularity",
                     width: "xs",
                 },
                 {
@@ -876,4 +881,20 @@ export default {
 button {
     width: 6em;
 }
+
+.manifest-dialog .vs-dialog-content {
+    width: 95vw !important;  /* Lebar 95% dari viewport */
+    max-width: 95vw !important;
+}
+
+.manifest-dialog .vs-dialog {
+    width: 95vw !important;
+    max-width: 95vw !important;
+}
+
+.manifest-dialog table {
+    width: 100%;
+    min-width: 1200px; /* Pastikan tabel cukup lebar */
+}
+
 </style>
