@@ -150,8 +150,12 @@ export default {
                 processedData = processedData.map(item => {
                     return {
                         ...item,
-                        origin: `${item.origin_node_name} (${item.origin_node_code})`,
-                        receiver: `${item.receiver_node_name} (${item.receiver_node_code})`,
+                        origin: item.origin_node_name || item.origin_node_code 
+                            ? `${item.origin_node_name || ''} ${item.origin_node_code ? `(${item.origin_node_code})` : ''}`.trim()
+                            : '',
+                        receiver: item.receiver_node_name || item.receiver_node_code
+                            ? `${item.receiver_node_name || ''} ${item.receiver_node_code ? `(${item.receiver_node_code})` : ''}`.trim()
+                            : '',
                         button_status: buttonStatus
                     };
                 });

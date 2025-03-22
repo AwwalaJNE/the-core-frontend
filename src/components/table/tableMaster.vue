@@ -785,7 +785,8 @@
                           :active="true"
                           @click="actionUpdate(item, actionItem.key)"
                         >
-                          <span>{{ (item.hasOwnProperty('button_label') && item['button_label'][actionItem.key.toLowerCase()]) || actionItem.label }}</span>
+                          <span v-if="!isIconButton">{{ (item.hasOwnProperty('button_label') && item['button_label'][actionItem.key.toLowerCase()]) || actionItem.label }}</span>
+                          <span v-if="isIconButton"><i class="bx bx-edit"></i></span>
                         </vs-button>
                       </vs-col>
                     </template>
@@ -1512,6 +1513,10 @@ export default {
     isKurirAccount: Boolean,
     isControlTowerAccount: Boolean,
     checkDepositMethod: Boolean,
+    isIconButton: {
+      type: Boolean,
+      default: false,
+    },
 
     allCheckCallback: {
       type: Function,
