@@ -319,6 +319,10 @@ export default {
                             data.button_status = { remove: false };
                         }
 
+                        if (data.status_irregularity !== null) {
+                            data.status_irregularity += " (" + data.status_description + ") ";
+                        }
+
                         arr.push(data);
                     }
                 });
