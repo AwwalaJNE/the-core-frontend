@@ -30,21 +30,21 @@
             <vs-row justify="flex-end">
                 <vs-col w="3">
                     <vs-button
-                        block
-                        danger
-                        flat
-                        :active="true"
-                        @click="cancel"
+                    block
+                    danger
+                    flat
+                    :active="true"
+                    @click="cancel"
                     >
                         Cancel
                     </vs-button>
                 </vs-col>
                 <vs-col w="3">
                     <vs-button
-                        block
-                        flat
-                        :active="true"
-                        @click="handleSubmit"
+                    block
+                    flat
+                    :active="true"
+                    @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}
                     </vs-button>
@@ -67,15 +67,17 @@ export default {
         "form-input-controller": FormInputController,
     },
     props: {
-        active: Boolean,
-        btnBlue: String,
-        closeDialog: Function,
-        dataItem: Object,
-        title: String,
+       closeDialogUser: Function,
+       refresh: Function,
+       active: Boolean,
+       title: String,
+       dataItem: Object,
+       btnBlue: String
     },
     data() {
         return {
             form: {},
+            formUser: this.$store.getters.getInputs.user ? this.$store.getters.getInputs.user : {},
             user_id: '',
             loading: false,
             autoComplateUrl: null,
@@ -161,6 +163,7 @@ export default {
                 }
             }
 
+
             if (val.user_nodes.length > 0) {
                 let arr_node_id = []
                 let arr = []
@@ -215,7 +218,7 @@ export default {
             }
         },
         handleSubmit(){
-            this.$refs.formUserController.handleSubmit()
+            this.$refs.formUserController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
         handleClearForm(){
             this.$refs.formUserController.handleClearAllForm()
@@ -340,7 +343,7 @@ export default {
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
-                    this.closeDialog()
+                    this.closeDialogUser()
                     this.openNotification(null, 'Success', 'Update user is success')
                     this.loading = false;
                 }).catch(err => {
@@ -359,7 +362,7 @@ export default {
                     this.Helper.header())
                 .then(res => {
                     this.handleClearForm()
-                    this.closeDialog()
+                    this.closeDialogUser()
                     this.loading = false
                     this.openNotification(null, 'Success', 'Create user is success')
                 }).catch(err => {
@@ -370,7 +373,8 @@ export default {
         },
         cancel() {
             this.handleClearForm()
-            this.closeDialog()
+            this.closeDialogUser()
+            this.$emit("refresh")
         },
     },
     mounted() {
