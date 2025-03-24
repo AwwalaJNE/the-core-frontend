@@ -1096,9 +1096,9 @@ export default {
 
     getMenuWithPermissions() {
       const permissions = this.listenPermissions?.core || [];
-      const userRole = this.listenUserRole || {};
+      const userRole = this.listenUserRole[0] || {};
       const { menus, menuRolePermission } = this;
-      const foundPermission = menuRolePermission.find(permission => permission.role === userRole?.user_role_name);
+      const foundPermission = menuRolePermission.find(permission => permission.role === userRole?.app_role_name);
       const filtered = [];
 
       menus.forEach((menu) => {
