@@ -41,7 +41,6 @@
                             :valueData="status_arr"
                             :selectedValue="status"
                             :isMultiple="false"
-                            :disabled="disableStatus"
                             @updateValue="updateValue" />
                     </template>
                 </vs-col> 
@@ -227,10 +226,7 @@ export default {
     },
     data() {
         return {
-            status_arr: [{
-                label: "NOT FOUND",
-                value: "NF1"
-            }],
+            status_arr: [],
 
             loading: false,
 
@@ -257,7 +253,29 @@ export default {
             this.inbound_number = this.inboundDetail?.inbound_number || ''
             this.item_number = this.inboundDetail?.item_number || ''
         },
-        async getDataStatus() {},
+        async getDataStatus() {
+            this.loadingStatus = true;
+            try {
+                const res = await axios.get(`${this.URL.status}?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, this.Helper.header());
+                const data = res.data.data;
+
+                this.status_arr = data
+                    .filter(item => item.status_type?.toLowerCase() === 'irregularity')
+                    .map(item => ({
+                        label: item.status_description,
+                        value: item.status_code,
+                        item,
+                    }));
+
+                if (this.status_arr.length === 0) {
+                    this.status_arr = [{ label: null, value: null }];
+                }
+            } catch (err) {
+                // Handle error (e.g., notify user)
+            } finally {
+                this.loadingStatus = false;
+            }
+        },
         updateValue(key, val, info){
             if (key === "remark") {
                 this.remark = val;
