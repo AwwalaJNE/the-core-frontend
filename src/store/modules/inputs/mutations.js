@@ -3873,6 +3873,25 @@ export default {
   SET_HELPDESK_EDIT_CONNOTE_REMARKS_ValueData(state, payload) {
     state.helpdesk_edit_connote.remarks.valueData = payload
   },
+
+  SET_HELPDESK_EDIT_CONNOTE_SERVICE(state, payload) {
+    state.helpdesk_edit_connote.connote_service_code.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_SERVICE_ValueData(state, payload) {
+    state.helpdesk_edit_connote.connote_service_code.valueData = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_SERVICE_arrData(state, payload) {
+    state.helpdesk_edit_connote.connote_service_code.arrData = payload
+  },
+
+  SET_HELPDESK_EDIT_CONNOTE_WEIGHT(state, payload) {
+    state.helpdesk_edit_connote.connote_actual_weight.value = payload
+  },
+  SET_HELPDESK_EDIT_CONNOTE_WEIGHT_ValueData(state, payload) {
+    state.helpdesk_edit_connote.connote_actual_weight.valueData = payload
+  },
+
+
   //====== END HELPDESK EDIT CONNOTE ======//
 
 
