@@ -186,6 +186,8 @@ export default {
             info["data"] = this.value
 
             this.$emit("inputFocus", info)
+
+            this.options = []
         },
         handleSelect(item) {
             let info = {}
