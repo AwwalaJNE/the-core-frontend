@@ -259,7 +259,6 @@ export default {
             this.refresh()
         },
         refresh(){
-            console.log("REFRESH EDIT")
             let from = ''
             let to = ''
 
