@@ -11,42 +11,23 @@
             <vs-col xs="12" sm="12" lg="6">
                 <vs-row>
                     <vs-col w="4">
-                        <select-search-by 
-                            :border="true"
-                            :isMultiple="false"  
-                            :selectedValue="filterDateBy" 
-                            :valueData="dateParams" 
-                            @updateSearchBy="updateFilterDateBy"
-                        />
+                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy"
+                            :valueData="dateParams" :selectedValue="filterDateBy" />
                     </vs-col>
                     <vs-col w="8">
-                        <date-time 
-                            typeInput="daterange" 
-                            :name="''" 
-                            :rules="''" 
-                            :valueData="dateRange"
-                            @updateValue="updateValue" 
-                        />
+                        <date-time :name="''" :rules="''" :valueData="dateRange"
+                            typeInput="daterange" @updateValue="updateValue" />
                     </vs-col>
                 </vs-row>
             </vs-col>
             <vs-col xs="12" sm="12" lg="6">
                 <vs-row justify="end">
                     <vs-col xs="6" sm="8" lg="4">
-                        <select-search-by 
-                            :border="true"
-                            :isMultiple="false"  
-                            :selectedValue="searchBy" 
-                            :valueData="searchParams" 
-                            @updateSearchBy="updateSearchBy"
-                        />
+                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"
+                            :valueData="searchParams" :selectedValue="searchBy" />
                     </vs-col>
                     <vs-col xs="6" sm="4" lg="4">
-                        <search-input 
-                            ref="searchInput" 
-                            :placeholder="searchPlaceholder" 
-                            @searchValue="searchValue" 
-                        />
+                        <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
                     </vs-col>
                 </vs-row>
             </vs-col>
@@ -68,24 +49,24 @@
             @actionPagination="actionPagination"
         />
 
-        <dialog-create-edit-user
-            btnBlue="Edit"
-            ref="dialog_edit"
-            title="Edit User"
+        <!--Create User Dialog end-->
+            <dialog-create-edit-user
             :active="dialogUser" 
-            :closeDialog="() => closeDialog('dialog_edit')"
+            :closeDialogUser="closeDialogUser"
+            @refresh="refresh"
+            btnBlue="Edit"
+            title="Edit User"
             :dataItem="dataItem"
-        />
+            />
 
         <dialog-confirm
-            ref="dialog_remove"
             title="Remove User"
-            :message="`Are you sure you want to remove this user?`"
-            :active="dialogRemove"
-            :loading="loadingRemove"
-            :closeDialog="() => closeDialog('dialog_remove')"
+            :message="`Are you sure you want to remove this user with id ${this.id}?`"
+            :active="activeDialogConfirmRemove"
+            :loading="loadingConfirmRemove"
+            :closeDialog="closeDialogConfirmRemove"
             @confirm="confirmRemove"
-            @cancel="() => closeDialog('dialog_remove')"
+            @cancel="closeDialogConfirmRemove"
         />
     </div>
 </template>
@@ -185,28 +166,35 @@ export default {
                 },
             ],
             dateParams: [
-                {
-                    label: 'Created Date',
-                    value: 'create'
-                }
+              {
+                label: 'Created Date',
+                value: 'create'
+              }
             ],
             id: '',
-            dialogRemove: false,
-            loadingRemove:false,
+            activeDialogConfirmRemove: false,
+            loadingConfirmRemove:false,
         }
     },
     methods: {
-        async getTableData(limit, page, q, from, to, searchBy) {
+        async getTableData(limit,page,q,from,to) {
             this.loading = true
-
-            let query = q || '';            
-            let startDate = from || "";
-            let endDate = to || "";
-
-            try {
-                const res = await axios.get(`${this.URL.user}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&filter_date_by=${this.filterDateBy}`, this.Helper.header());
-
-                if(res.data.data.length > 0) {
+            let query = "";
+            let startDate = "";
+            let endDate = "";
+            if(q !== undefined) {
+                query = q
+            }
+            if(from !== undefined && to !== undefined) {
+              startDate = from
+              endDate = to
+            }
+            await axios
+                .get(
+                    this.URL.user + 
+                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
+                    this.Helper.header())
+                .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
                         let additional_node = []
@@ -226,28 +214,21 @@ export default {
                             return newline+'- '+nodes.node_name;
                         }).toString();
                     })
+                    this.dataTable = arr
+                    this.pagination.page = res.data.meta.current_page
+                    this.pagination.limit = parseInt(res.data.meta.per_page)
+                    this.pagination.page_size = res.data.meta.last_page
                     
-                    this.dataTable = arr;
-                    this.pagination = {
-                        page: res.data.meta.current_page,
-                        limit: parseInt(res.data.meta.per_page, 10),
-                        page_size: res.data.meta.last_page,
-                    };
-                } else {
-                    this.dataTable = [];
-                }  
-                
-            } catch (err) {
-                this.redirectError(err)
-                this.checkAuth(err.response)
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loading = false;
-            }
+                    this.loading = false
+                }).catch(err => {
+                    this.loading = false
+                    this.checkAuth(err.response)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate users list', err.response.data.message)
+                })
         },
         actionUpdate(val){
-            this.dataItem = val;
-            this.dialogUser = true;
+            this.dataItem = val
+            this.openDialogUser()
         },
         actionLimit(val){
             this.pagination.limit = val
@@ -266,21 +247,15 @@ export default {
                 from = moment(this.dateRange[0]).format("YYYY-MM-DD")
                 to = moment(this.dateRange[1]).format("YYYY-MM-DD")
             }
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, from, to, this.searchBy)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch,from,to)
         },
-        closeDialog(ref){
-            switch (ref) {
-                case 'dialog_edit':
-                    this.dialogUser = false;
-                    this.refresh();
-                    break;
-                case 'dialog_remove':
-                    this.dialogRemove = false;
-                    this.refresh();
-                    break;
-                default:
-                    break;
-            }
+        closeDialogUser(){
+            this.dialogUser = false
+            this.dataItem = {};
+            this.refresh();
+        },
+        openDialogUser(){
+            this.dialogUser = true
         },
         updateValue(key, val) {
             this.dateRange = val
@@ -300,24 +275,34 @@ export default {
         },
         actionRemove(val){
             this.id = val.user_id;
-            this.dialogRemove = true
+            this.activeDialogConfirmRemove = true
         },
         confirmRemove() {
+            this.loadingConfirmRemove=true
             this.removeData()
         },
-        async removeData() {
-            this.loadingRemove = true;
-            try {
-                const res = await axios.delete(`${this.URL.user}/${this.id}?n=${this.listenNodeId}`, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || "Remove User is success");
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
-                this.checkAuth(err.response)
-            } finally {
-                this.loadingRemove = false;
-                this.closeDialog('dialog_remove');
-            }
-        }
+        async removeData(){
+            await axios
+                .delete(
+                    this.URL.user + `/${this.id}?n=${this.listenNodeId}`,
+                    this.Helper.header())
+                .then(res => {
+                    this.closeDialogConfirmRemove()
+                    this.loadingConfirmRemove = false
+                    this.refresh()
+                    this.openNotification(null, 'Romove success', 'Romove User is success')
+                }).catch(err => {
+                    this.loadingConfirmRemove = false
+                    this.closeDialogConfirmRemove()
+                    this.loading = false
+                    this.checkAuth(err.response)
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Romove User is failed', err.response.data.message)
+                })
+        },
+        closeDialogConfirmRemove(){
+            this.activeDialogConfirmRemove = false
+            this.loadingConfirmRemove=false
+        },
     },
     mounted() {
         this.refresh()
