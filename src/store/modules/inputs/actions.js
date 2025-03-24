@@ -3485,6 +3485,23 @@ export default {
   SET_HELPDESK_EDIT_CONNOTE_REMARKS_ValueData({ commit }, payload) {
     commit('SET_HELPDESK_EDIT_CONNOTE_REMARKS_ValueData', payload)
   },
+
+  SET_HELPDESK_EDIT_CONNOTE_SERVICE({ commit, dispatch }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_SERVICE', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_SERVICE_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_SERVICE_ValueData', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_SERVICE_arrData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_SERVICE_arrData', payload)
+  },
+
+  SET_HELPDESK_EDIT_CONNOTE_WEIGHT({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_WEIGHT', payload)
+  },
+  SET_HELPDESK_EDIT_CONNOTE_WEIGHT_ValueData({ commit }, payload) {
+    commit('SET_HELPDESK_EDIT_CONNOTE_WEIGHT_ValueData', payload)
+  },
   //====== END HELPDESK EDIT CONNOTE ======//
 
 

@@ -4761,6 +4761,25 @@ export default {
       valueData: null,
       value: '',
     },
+    connote_service_code: {
+      label: "Service*",
+      key: "connote_service_code",
+      rule: "",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    connote_actual_weight: {
+      label: "Weight",
+      key: "connote_actual_weight",
+      rule: "",
+      typeInput: "number",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    }
   },
 
   facility_code: {
@@ -4818,7 +4837,7 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-    },
+    }
   },
 
   connote_forward: {
