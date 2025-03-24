@@ -62,7 +62,7 @@ export default {
                 {
                     label: "Item Number",
                     key: "item_number",
-                    width: "sm"
+                    width: "auto"
                 },
                 {
                     label: "Origin",
@@ -77,22 +77,27 @@ export default {
                 {
                     label: "Status",
                     key: "status",
-                    width: "sm"
+                    width: "auto"
                 },
                 {
                     label: "Remark",
                     key: "remark",
-                    width: "sm"
+                    width: "auto"
                 },
                 {
                     label: "Received At",
                     key: "received_time",
-                    width: "sm"
+                    width: "auto"
                 },
                 {
                     label: "Created By",
                     key: "created_by",
-                    width: "sm"
+                    width: "auto"
+                },
+                {
+                    label: "Created At",
+                    key: "created_at",
+                    width: "auto"
                 }
             ],
             customActionList: [
@@ -144,8 +149,12 @@ export default {
                 processedData = processedData.map(item => {
                     return {
                         ...item,
-                        origin: `${item.origin_node_name} (${item.origin_node_code})`,
-                        receiver: `${item.receiver_node_name} (${item.receiver_node_code})`,
+                        origin: item.origin_node_name || item.origin_node_code 
+                            ? `${item.origin_node_name || ''} ${item.origin_node_code ? `(${item.origin_node_code})` : ''}`.trim()
+                            : '',
+                        receiver: item.receiver_node_name || item.receiver_node_code
+                            ? `${item.receiver_node_name || ''} ${item.receiver_node_code ? `(${item.receiver_node_code})` : ''}`.trim()
+                            : '',
                         button_status: buttonStatus
                     };
                 });

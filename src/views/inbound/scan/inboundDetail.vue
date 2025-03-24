@@ -11,12 +11,27 @@
             :limit="limit"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
+            :customAction="true"
+            :customActionList="customActionList"
+            @actionUpdate="entryReceivingLog"
+            :isIconButton="true"
+        />
+
+        <dialog-create-receiving-log
+            ref="dialogEditReceivingLog"
+            :active="dialogEditReceivingLogActive"
+            :inboundDetail="inboundDetail"
+            @closeDialog="closeDialog"
+            btnBlue="Edit"
+            title="Edit Receiving Log"
+            :receivingLogs="receivingLogs"
         />
     </div>
 </template>
 <script>
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
+import DialogCreateReceivingLog from "../../inboundAirport/scan/dialogCreateReceivingLog.vue"
 export default {
     name:"Inbound-Detail",
     mixins: [master],
@@ -28,9 +43,12 @@ export default {
         limit: Number,
         actionLimit: Function,
         actionPagination: Function,
+        receivingLogs: Array,
+        inboundNumber: String
     },
     components: {
-        "table-master" : TableMaster
+        "table-master" : TableMaster,
+        "dialog-create-receiving-log": DialogCreateReceivingLog
     },
     data() {
         return {
@@ -64,7 +82,29 @@ export default {
                   width: "xxs"
                 },
             ],
+            customActionList: [
+                {
+                    label: 'Entry Status',
+                    key: 'entry_status',
+                    attribute: ''
+                }
+            ],
+            dialogEditReceivingLogActive: false,
+            inboundDetail: null
         }
+    },
+    methods: {
+        entryReceivingLog(val) {
+            this.dialogEditReceivingLogActive = true;
+            this.inboundDetail = val;
+            this.inboundDetail.inbound_number = this.inboundNumber;
+        },
+
+        closeDialog() {
+            this.dialogEditReceivingLogActive = false
+            this.inboundDetail = null;
+            this.$emit('refresh')
+        },
     },
     computed: {
         listenLoading(){
