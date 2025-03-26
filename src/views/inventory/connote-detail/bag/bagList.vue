@@ -8,6 +8,7 @@
 <template>
     <div>
         <table-master 
+        hideColumnKey="-" 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

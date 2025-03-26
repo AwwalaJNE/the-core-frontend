@@ -183,10 +183,10 @@ export default {
             return (this.$store.getters.getTransaction.transaction.connote).length
         },
         listenNodeLabel() {
-            return this.$store.getters.getUser.node_id.label
+            return this.listenCurrentNode.label
         },
         listenUserRole() {
-            return this.$store.getters.getUser['user_data'].role
+            return this.listenUserRole
         }
     },
     data() {
@@ -813,7 +813,7 @@ export default {
 
         },
         permissionCustomerCode(){
-            const permissions = this.$ls.get("permissions") || [];
+            const permissions = this.listenPermissions?.core || [];
             this.isDisabled = permissions.includes('create-customer-code') ? false : true;
 
         }

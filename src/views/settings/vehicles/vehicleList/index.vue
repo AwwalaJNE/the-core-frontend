@@ -25,6 +25,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+        hideColumnKey="setting-vehicle" 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

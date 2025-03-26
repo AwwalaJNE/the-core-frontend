@@ -30,7 +30,8 @@
 
         <div style="margin-top: 10px;">
             <template v-if="this.typingValue">
-                <table-master
+                <table-master 
+                    hideColumnKey="search-preview"
                     :dataTable="dataTable" 
                     :dataColumn="dataColumn" 
                     :tableLoading="loading"
@@ -47,7 +48,8 @@
             </template>
 
             <template v-if="isShowDetail && cardValue.length > 0">
-                <table-master
+                <table-master 
+                    hideColumnKey="search-preview-detail"
                     :dataTable="dataTableDetail" 
                     :dataColumn="dataColumnDetail" 
                     :tableLoading="false"

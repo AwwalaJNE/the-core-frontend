@@ -125,7 +125,8 @@
                                 </form>
                             </vs-col>
                         </vs-row>
-                        <table-master
+                        <table-master 
+                            hideColumnKey="dialog-surat-jalan"
                             :dataTable="dataTable"
                             :dataColumn="datacolumn"
                             :pageSize="pagination.page_size"

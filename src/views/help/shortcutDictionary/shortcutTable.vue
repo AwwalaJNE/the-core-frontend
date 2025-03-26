@@ -1,6 +1,7 @@
 <template>
   <div>
-    <table-master
+    <table-master 
+      hideColumnKey="shortcut-dictionary"
       :dataTable="dataTable"
       :dataColumn="datacolumn"
       :hasAction="false"

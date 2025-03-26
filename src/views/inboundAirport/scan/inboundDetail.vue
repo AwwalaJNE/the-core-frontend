@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="receiving-airport-master" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="listenLoading"

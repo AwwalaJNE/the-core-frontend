@@ -50,9 +50,9 @@ export default {
       value: ''
     },
     user_email: {
-      label: "Email",
+      label: "Email*",
       key: "user_email",
-      rule: "email",
+      rule: "email|required",
       typeInput: "text|email",
       typeData: "String",
       valueData: null,
@@ -67,89 +67,15 @@ export default {
       valueData: null,
       value: ''
     },
-    user_role_id: {
-      label: "Role*",
-      key: "user_role_id",
-      rule: "required",
-      typeInput: "select",
-      width: '8',
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
     user_node_id: {
-      label: "User Node",
+      label: "User Node*",
       key: "user_node_id",
       rule: "required",
       typeInput: "multipleSelector",
-      width: '4',
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
-    },
-    dynamicinputcomponent_user_additional_role: {
-      label: "Add Additional Role",
-      key: "dynamicinputcomponent_user_additional_role",
-      rule:"",
-      typeInput: "dynamicinputcomponent",
-      typeData: "Array",
-      inputs: [
-        {
-          key: "user_additional_role_id",
-          typeInput: "selectmultipletag",
-          value: ''
-        },
-        {
-          key: "user_additional_node_id",
-          typeInput: "multipleSelector",
-          value: ''
-        },
-        {
-          key: "user_expiry_additional_role",
-          typeInput: "date",
-          value: ''
-        }
-      ],
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    user_additional_role_id: {
-      label: "Additional Role",
-      key: "user_additional_role_id",
-      rule: "",
-      typeInput: "selectmultipletag|hidden",
-      width: '4',
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      visible: false
-    },
-    user_additional_node_id: {
-      label: "Additional Node",
-      key: "user_additional_node_id",
-      rule: "",
-      typeInput: "multipleSelector|hidden",
-      width: '4',
-      typeData: "String",
-      visible: false,
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    user_expiry_additional_role: {
-      label: "Date Expiry Additional Role",
-      key: "user_expiry_additional_role",
-      rule: "",
-      typeInput: "date|hidden",
-      width: '4',
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
+      value: []
     },
     employee_id: {
       label: "Employee Courier Delivery Name",
@@ -160,6 +86,80 @@ export default {
       arrData: [],
       valueData: null,
       value: ''
+    },
+    user_application_name: {
+      label: "Application Name",
+      key: "user_application_name",
+      rule: "required",
+      typeInput: "select",
+      width: '4',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    user_application_role: {
+      label: "Application Role",
+      key: "user_application_role",
+      rule: "required",
+      typeInput: "multipleSelector",
+      width: '8',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: [],
+      isSingleInput: true,
+    },
+    dynamicinputcomponent_user_other_application_role: {
+      label: "Add Other Application Role",
+      key: "dynamicinputcomponent_user_other_application_role",
+      rule:"",
+      typeInput: "dynamicinputcomponent",
+      typeData: "Array",
+      inputs: [
+        {
+          key: "helper_dynamic_user_application_name",
+          rule:"",
+          typeInput: "select",
+          value: '',
+          width: '4'
+        },
+        {
+          key: "helper_dynamic_user_application_role",
+          rule:"",
+          typeInput: "multipleSelector",
+          value: [],
+          width: '8',
+        },
+      ],
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    helper_dynamic_user_application_name: {
+      label: "Application Name",
+      key: "helper_dynamic_user_application_name",
+      rule: "",
+      typeInput: "select|hidden",
+      width: '4',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      visible: false,
+      value: ''
+    },
+    helper_dynamic_user_application_role: {
+      label: "Application Role",
+      key: "helper_dynamic_user_application_role",
+      rule: "",
+      typeInput: "multipleSelector|hidden",
+      width: '8',
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: [],
+      visible: false,
+      isSingleInput: true,
     },
     is_login_enable: {
       label: "Enable Login|Disable Login",
@@ -2180,7 +2180,7 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ""
+      value: []
     },
   },
 
@@ -2222,7 +2222,7 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ""
+      value: []
     },
   },
 
@@ -2377,7 +2377,7 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: []
     },
   },
 
@@ -2469,7 +2469,7 @@ export default {
       width: '12',
       arrData: [],
       valueData: null,
-      value: '',
+      value: [],
     },
     is_active: {
       label: "Active|Unactive",
@@ -2818,6 +2818,37 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
+    },
+  },
+
+  application_role: {
+    app: {
+      label: "Application*",
+      key: "app",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+    },
+    app_role_name: {
+      label: "Role*",
+      key: "app_role_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    app_role_code: {
+      label: "Role Code*",
+      key: "app_role_code",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
     },
   },
 
@@ -4791,7 +4822,7 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ""
+      value: []
     },
     code: {
       label: "Facility Code*",

@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="hrs-history" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

@@ -106,17 +106,6 @@ export default {
             userAuthLoginName:''
         }
     },
-    computed: {
-        listenGetUser() {
-            return this.$store.getters.getUser.user_data
-        },
-        listenGetUserNodeList() {
-            return this.$store.getters.getUser.user_data['nodes']
-        },
-        // getLabaLaba() {
-        //     return this.$store.getters.getLABA
-        // },
-    },
     methods: {
         searchValue (val) {
             this.tempSearch = val
@@ -154,7 +143,7 @@ export default {
             }
             await axios
                 .patch(
-                    `${this.URL.user}/${this.listenGetUser['user_id']}/node?n=${this.listenNodeId}`, form, this.Helper.header()
+                    `${this.URL.user}/${this.listenActiveUser['user_id']}/node?n=${this.listenNodeId}`, form, this.Helper.header()
                 )
                 .then((res) => {
                     this.$ls.set('node_id', node[0])
@@ -174,21 +163,22 @@ export default {
         async getListNode() {
             await axios
                 .get(
-                    `${this.URL.user}/${this.listenGetUser['user_id']}/node?n=${this.listenNodeId}`, this.Helper.header()
+                    `${this.URL.user}/${this.listenActiveUser['user_id']}/node?n=${this.listenNodeId}`, this.Helper.header()
                 )
                 .then((res) => {
-                    this.datanode = []
+                    let arr = []
                     let node = res.data.data
                         node.length > 0 && node.map(item => {
-                                    let obj = {}
-                                    obj["label"] = item.node_name
-                                    obj["value"] = String(item.node_id)
-                                    obj["node_code"] = String(item.node_code)
-                                    obj["is_currently_used"] = item.is_currently_used
+                            let obj = {}
+                            obj["label"] = item.node_name
+                            obj["value"] = String(item.node_id)
+                            obj["node_code"] = String(item.node_code)
+                            obj["is_currently_used"] = item.is_currently_used
 
-                                    this.datanode.push(obj)
+                            arr.push(obj)
                     })
                     
+                    this.datanode = arr
                     let current_node = this.datanode.find(node => node.is_currently_used).value
 
                     let n = this.$ls.get('node_id')
@@ -212,34 +202,24 @@ export default {
                     );
                 });
         },
-        init(){
-            let userObjLocalStorage = JSON.parse(localStorage.getItem('vuejs__user')).value;
-            this.userAuthLoginName = userObjLocalStorage.user_login;
-            this.userAuthFullName = userObjLocalStorage.user_name;
+        init() {
+            this.userAuthLoginName = this.listenActiveUser?.user_login;
+            this.userAuthFullName = this.listenActiveUser?.user_name;
+            this.selectedNode = this.listenNodeId.toString();
 
-            let currently_used_node = userObjLocalStorage.currently_used_node;
-
-            this.datanode = []
-            let node = this.listenGetUserNodeList.filter(item => item.node_id === currently_used_node);
+            let arr = []
+            let node = this.listenNode.filter(item => item.node_id === this.listenNodeId);
                 node.length > 0 && node.map(item => {
-                            let obj = {}
-                            obj["label"] = item.node_name
-                            obj["value"] = String(item.node_id)
-                            obj["node_code"] = String(item.node_code)
-                            obj["is_cdm"] = Boolean(item.is_cdm)
+                    let obj = {}
+                    obj["label"] = item.node_name
+                    obj["value"] = String(item.node_id)
+                    obj["node_code"] = String(item.node_code)
+                    obj["is_cdm"] = Boolean(item.is_cdm)
 
-                            this.datanode.push(obj)
+                    arr.push(obj)
             })
 
-            let n = this.$ls.get('node_id')
-            if(n == null) {
-                this.$ls.set('node_id', this.datanode[0])
-                this.selectedNode = String(this.datanode[0].value)
-                this.$store.dispatch(`SET_USER_N`, this.datanode[0])
-            } else {
-                this.$store.dispatch(`SET_USER_N`, n)
-                this.selectedNode = String(n.value)
-            }
+            this.datanode = arr;
         },
         searchShortcut() {
             document.addEventListener('keydown', (e) => {
@@ -252,7 +232,7 @@ export default {
     },
     mounted() {
         this.init()   
-        this.getListNode()
+        // this.getListNode()
         this.searchShortcut()
     },
     created() {

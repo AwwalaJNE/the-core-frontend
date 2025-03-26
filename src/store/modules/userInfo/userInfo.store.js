@@ -7,11 +7,11 @@ import state from "./state";
 
 Vue.use(Vuex);
 
-const userStore = {
+const userInfoStore = {
   actions,
   mutations,
   getters,
   state,
 };
 
-export default userStore;
+export default userInfoStore;

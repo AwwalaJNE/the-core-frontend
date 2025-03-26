@@ -41,7 +41,14 @@
                                                 :valueData="InputObject[input.key].arrData"
                                                 :selectedValue="input.value"
                                                 :url="asynchronousSelect_url"
-                                                @updateValue="updateValue" />
+                                                :selectLabel="selectLabel"
+                                                :selectValue="selectValue"
+                                                :isSingleInput="InputObject[input.key].isSingleInput"
+                                                :isNestedData="isNestedData"
+                                                :nestedKey="nestedKey"
+                                                :typeInput="InputObject[input.key].typeInput"
+                                                @updateValue="updateValue(InputObject[input.key].typeInput, ...arguments)"
+                                                @inputFocus="onfocuslah" />
                                     </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('selectmultipletag')">
                                             <div>
@@ -57,7 +64,6 @@
                                             </div>
                                     </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('select')">
-                                        <div class="mt-1">
                                             <selector 
                                             :ref="input.key"
                                             :name="InputObject[input.key].label" 
@@ -66,8 +72,10 @@
                                             :valueData="InputObject[input.key].arrData"
                                             :selectedValue="input.value"
                                             :isMultiple="false"
-                                            @updateValue="updateValue" />
-                                        </div>
+                                            :isAllowCreate="false"
+                                            :typeInput="InputObject[input.key].typeInput"
+                                            @updateValue="updateValue(InputObject[input.key].typeInput, ...arguments)"
+                                            @inputFocus="onfocuslah" />
                                     </template>
                                     <template v-else-if="input.typeInput.toLowerCase().includes('autocomplete')">
                                         <template v-if="querySearch !== undefined">
@@ -109,6 +117,7 @@
             :active="false"
             @click="Add"
             :disabled="addDisabled"
+            style="max-width: 200px !important;"
         >
             <i class='bx bx-plus' style="margin-right:5px"></i> {{ addBtn || 'Add' }}
         </vs-button>
@@ -134,7 +143,12 @@ export default {
         itterateFlagAutoComplete: String,
         asynchronousSelect_url: String,
         fromKey: String,
-        disabled: Boolean
+        disabled: Boolean,
+        selectLabel: String,
+        selectValue: String,
+        isSingleInput: Boolean,
+        isNestedData: Boolean,
+        nestedKey: String
     },
     components: {
         "input-general": InputGeneral,
@@ -270,7 +284,7 @@ export default {
             this.$store.dispatch(`SET_${prefix}_${action}`, this.tempform)
 
         },
-        updateValue(key, value, info = {}){
+        updateValue(typeInput, key, value, info = {}){
             let index = key.split("|")[0]
             let getkey = key.split("|")[1]
 
@@ -289,6 +303,7 @@ export default {
                     'key': getkey,
                     'value': value,
                 }
+                info['typeInput'] = typeInput;
             }
             
             this.$emit("updateValue", this.listenFromKey, this.tempform, info)

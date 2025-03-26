@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+        hideColumnKey="transaction-list" 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

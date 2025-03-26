@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+        hideColumnKey="setting-special-tariff" 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

@@ -10,6 +10,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+        hideColumnKey="geolocation-geolocation" 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

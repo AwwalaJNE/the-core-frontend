@@ -38,6 +38,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="courier-delivery-area" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

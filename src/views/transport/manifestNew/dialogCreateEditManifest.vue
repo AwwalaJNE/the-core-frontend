@@ -89,7 +89,8 @@
                     <vs-row>
                         <vs-col style="overflow: auto;">
                             <div v-if="!loadingDetail && !loading">
-                                <table-master
+                                <table-master 
+                                    hideColumnKey="dialog-surat-muatan"
                                     :dataTable="dataTable"
                                     :dataColumn="datacolumn"
                                     :tableLoading="loadingDetail"
@@ -402,7 +403,7 @@ export default {
                 .catch((error) => console.log("error", error));
         },
         formData(form) {
-            let node_id = form.node_id_origin?.node_id || this.listenActiveUser.nodes[0].node_id;
+            let node_id = form.node_id_origin?.node_id || this.listenCurrentNode.node_id;
             form.node_id_origin = node_id;
             form.node_id_destination = form.node_id_destination?.node_id;
 
@@ -819,8 +820,8 @@ export default {
         },
         originNode(){
             if (this.listenActiveUser.nodes.length > 0) {
-                const nodeName = this.listenActiveUser.nodes[0].node_name;
-                const nodeId = this.listenActiveUser.nodes[0].node_id;
+                const nodeName = this.listenCurrentNode.node_name;
+                const nodeId = this.listenCurrentNode.node_id;
                 this.node_id_origin = nodeId;
                 this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN', nodeName);
             }

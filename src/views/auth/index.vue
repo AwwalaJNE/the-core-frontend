@@ -76,21 +76,36 @@ export default {
 
         if (res.status == 200) {
           this.$ls.set("tokenBearer", res.data.data.token);
-          this.$ls.set("user", res.data.data.user);
-          this.$ls.set("config", res.data.data.config);
-          this.$ls.set("is_first_login", res.data.data.user.is_first_login);
 
-          loading.close();
-          this.$router.push({ name: "mainPage" });
-          this.setRoutePageHistory(this.$route.meta, false);
+          try {
+            const resDetail = await axios.get(this.URL.user_auth_data, this.Helper.header());
+
+            if (resDetail.status === 200) {
+              this.$ls.set("user", resDetail.data.data.user);
+              this.$ls.set("node_id", resDetail.data.data.node);
+              this.$ls.set("permissions", resDetail.data.data.permission)
+              this.$ls.set("config", resDetail.data.data.config);
+              this.$ls.set("is_first_login", resDetail.data.data.user?.is_first_login || false);
+
+              this.$router.push({ name: "mainPage" });
+              this.setRoutePageHistory(this.$route.meta, false);
+            } else {
+              throw new Error("Failed to fetch user details");
+            }
+          } catch (errDetail) {
+            this.openNotification("danger", errDetail.response?.data?.code || "", "Failed", errDetail.response?.data?.message || "Something went Wrong");
+          }
+        } else {
+          throw new Error("Invalid login response");
         }
       } catch (err) {
-        loading.close();
         const errorMessage = err.response && err.response.data && err.response.data.message
           ? err.response.data.message
           : "Something went wrong";
 
         this.openNotification("danger", err.response ? err.response.data.code : '', "Login Gagal !", errorMessage);
+      } finally {
+        loading.close();
       }
     },
     //     logout() {

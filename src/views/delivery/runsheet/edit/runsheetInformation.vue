@@ -2,7 +2,8 @@
 <template>
   <div>
     <template>
-      <table-master
+      <table-master 
+        hideColumnKey="runsheet-detail"
         ref="tableMaster"
         :dataTable="dataTable"
         :dataColumn="datacolumn"
