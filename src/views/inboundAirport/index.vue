@@ -120,6 +120,7 @@ import NavItem from "@/components/navbar/navTab"
 import SearchInput from "@/components/search/searchInput"
 import TableMaster from "@/components/table/tableMaster.vue"
 import master from "@/mixins/master"
+import SelectSearchBy from "@/components/search/selectSearchBy";
 
 import InboundIncoming from "@/views/inboundAirport/prealert/"
 import SuratJalan from "@/views/inboundAirport/suratJalan"
