@@ -57,12 +57,22 @@ export default {
                 {
                     label: "Inbound Number",
                     key: "inbound_number",
-                    width: "auto"
+                    width: "sm"
                 },
                 {
                     label: "Item Number",
                     key: "item_number",
                     width: "auto"
+                },
+                {
+                    label: "Origin",
+                    key: "origin",
+                    width: "md"
+                },
+                {
+                    label: "Receiver",
+                    key: "receiver",
+                    width: "md"
                 },
                 {
                     label: "Status",
@@ -72,6 +82,21 @@ export default {
                 {
                     label: "Remark",
                     key: "remark",
+                    width: "auto"
+                },
+                {
+                    label: "Received At",
+                    key: "received_time",
+                    width: "auto"
+                },
+                {
+                    label: "Created By",
+                    key: "created_by",
+                    width: "auto"
+                },
+                {
+                    label: "Created At",
+                    key: "created_at",
                     width: "auto"
                 }
             ],
@@ -117,11 +142,23 @@ export default {
                 const res = await axios.get(`${this.URL.receiving_log}?${queryParams}`, this.Helper.header());
                 const data = res.data.data;
 
-                this.dataTable = Array.isArray(data) ? data : [data];
-                this.dataTable.forEach(item => {
-                    item.button_status = { edit: (item.status == null || item.status == undefined || item.status == '') };
-                });
+                let processedData = Array.isArray(data) ? data : [data];
+                processedData = processedData.map(item => ({
+                    ...item,
+                    origin: (item.origin_node_name || item.origin_node_code) 
+                        ? ((item.origin_node_name || '') + 
+                        ((item.origin_node_name && item.origin_node_code) ? ' ' : '') + 
+                        (item.origin_node_code ? `(${item.origin_node_code})` : ''))
+                        : '',
+                    receiver: (item.receiver_node_name || item.receiver_node_code) 
+                        ? ((item.receiver_node_name || '') + 
+                        ((item.receiver_node_name && item.receiver_node_code) ? ' ' : '') + 
+                        (item.receiver_node_code ? `(${item.receiver_node_code})` : ''))
+                        : '',
+                    button_status: { edit: (item.status == null || item.status == undefined || item.status == '') }
+                }));
 
+                this.dataTable = processedData;
 
                 const meta = res.data.meta;
                 this.page = meta.current_page;

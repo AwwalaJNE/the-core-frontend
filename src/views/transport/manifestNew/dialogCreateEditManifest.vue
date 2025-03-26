@@ -1,10 +1,10 @@
 <template>
     <dialog-master
-        width="lg"
+        width="xl"
         :actived="listenActive"
         :loading="listenLoading"
         :closeDialog="cancel"
-        class="custom-width"
+        class="manifest-dialog"
     >
         <template v-slot:header>
             <div class="button-helper">
@@ -181,6 +181,11 @@ export default {
                     width: "xs",
                 },
                 {
+                    label: "Status Irregularity",
+                    key: "status_irregularity",
+                    width: "xs",
+                },
+                {
                     label: "Received",
                     key: "received_status",
                     type: "status",
@@ -312,6 +317,10 @@ export default {
                         
                         if ((val.status !== "READY" && val.status !== "UNRECEIVED") || val.is_approve === 1) {
                             data.button_status = { remove: false };
+                        }
+
+                        if (data.status_irregularity !== null) {
+                            data.status_irregularity += " (" + data.status_description + ") ";
                         }
 
                         arr.push(data);
@@ -875,4 +884,20 @@ export default {
 button {
     width: 6em;
 }
+
+.manifest-dialog .vs-dialog-content {
+    width: 95vw !important;  /* Lebar 95% dari viewport */
+    max-width: 95vw !important;
+}
+
+.manifest-dialog .vs-dialog {
+    width: 95vw !important;
+    max-width: 95vw !important;
+}
+
+.manifest-dialog table {
+    width: 100%;
+    min-width: 1200px; /* Pastikan tabel cukup lebar */
+}
+
 </style>

@@ -144,6 +144,7 @@ export default {
                     value: "MOVE_CONNOTE",
                 },
             ],
+            services: []
         };
     },
     methods: {
@@ -153,9 +154,13 @@ export default {
                     let res = await axios.get(`${this.URL.connote}/${this.listenConnoteNumber}?n=${this.listenNodeId}`, this.Helper.header());
                     let val = res.data.data;
                     
+                    const connoteServiceTariffCode = val.connote_shipper_tariff_code;
+                    const customerCodeTariff = val.customer_code_tariff;
+                    
                     
                     this.formHelpdeskMoveConnote = val.node_id;
                     this.$store.dispatch(`SET_HELPDESK_MOVE_CONNOTE_NODE_LOCATION_ID`, val?.current_location_name);
+                    this.$store.dispatch(`SET_HELPDESK_EDIT_CONNOTE_WEIGHT`, val?.connote_actual_weight);
                     this.formHelpdeskEditConnote = {
                         connote_shipper_name: val.connote_shipper_name,
                         connote_shipper_street_address: val.connote_shipper_street_address,
@@ -167,8 +172,12 @@ export default {
                         connote_receiver_phone_number: val.connote_receiver_phone_number,
                         amount_cod: val.amount_cod,
                         amount_price: val.amount_price,
-                        remarks: val.remarks
+                        remarks: val.remarks,
+                        connote_service_code: val.connote_service_code,
+                        connote_actual_weight: val.connote_actual_weight
                     };
+
+                    await this.getShippingService(connoteServiceTariffCode, customerCodeTariff);
                 } catch (err) {
                     this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate list',  err?.response?.data?.message ?? '');
                 } finally {
@@ -271,6 +280,51 @@ export default {
                 });
                 cb(suggestions);
             } catch (_) {}
+        },
+        async getShippingService(destination, customerCodeTariff) {
+            try {
+                const res = await axios.get(`${this.URL.tariff_shipping_service}?n=${this.listenNodeId}&destination=${destination}&customer_code_tariff=${customerCodeTariff}`, this.Helper.header())
+                const resData = res.data.data;
+                const serviceData = []
+
+                resData.map((item) => {
+                    const obj = {}
+                    obj.label = item.service_name
+                    obj.value = item.tariff_service_code
+
+                    // tiering tarrif
+                    const tariffAkumulatif = {}
+                    const tariffStandar = {}
+                    const keys = Object.keys(item)
+
+                    // sudah dipastikan tiering sampe 50 biji
+                    for (let i = 1; i <= 50; i++) {
+                        if (i == 1) {
+                            tariffStandar.weight = item.tariff_weight_1 || 0
+                            tariffStandar.value = item.tariff_amount_1 || 0
+                        } else if (Number(item[`tariff_amount_${i}`]) != 0) {
+                            tariffAkumulatif[item[`tariff_weight_${i}`]] = item[`tariff_amount_${i}`] || 0
+                        }
+                    }
+
+                    obj.tariffAkumulatif = tariffAkumulatif
+                    obj.tariffStandar = tariffStandar
+
+                    if (item.tariff_service_code.toLowerCase().includes('reg')) {
+                        serviceData.unshift(obj)
+                    } else {
+                        serviceData.push(obj)
+                    }
+                })
+
+                console.log(serviceData, 'service data');
+                this.services = serviceData;
+                // this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE', serviceData.length > 0 ? serviceData[0].value : '')
+                // this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE_ValueData', serviceData.length > 0 ? serviceData[0] : '')
+                this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE_arrData', serviceData.length > 0 ? serviceData : [])
+            } catch (err) {}
+            
+        
         }
     },
     mounted() {

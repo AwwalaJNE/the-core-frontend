@@ -141,6 +141,8 @@
                                         :limit="limit" 
                                         :actionLimit="actionLimit" 
                                         :actionPagination="actionPagination"
+                                        :receivingLogs="receivingLogs"
+                                        :inboundNumber="inboundNumber"
                                     />
                                 </transition>
                             </template>
@@ -216,6 +218,8 @@ export default {
                 page_size: 1,
                 page: 1
             },
+            receivingLogs: [],
+            inboundNumber: ''
         }
     },
     methods: {
@@ -317,6 +321,8 @@ export default {
                     );
 
                     let arr = [res.data.data];
+                    this.receivingLogs = res.data.data.receiving_log;
+                    this.inboundNumber = res.data.data.inbound_number;
 
                     arr = arr.map(item => ({
                         ...item,
@@ -332,6 +338,10 @@ export default {
                         } else {
                             item.item_type = 'BAG';
                         }
+                    });
+                    this.dataTableProp.map(item => {
+                      item,
+                      item['button_status'] = {entry_status: item.is_received == '0'};
                     });
                     this.page = res.data.meta.current_page;
                     this.limit = parseInt(res.data.meta.per_page);

@@ -180,6 +180,8 @@ export default {
             }
 
             this.dataTableDetail = this.dataTableDetail.filter(item => item[this.listenTableKey] !== key); 
+
+            this.$store.dispatch(`SET_${this.listenTypeForm.toUpperCase()}_${this.listenFormKey.toUpperCase()}`, this.cardValue)
         },
         async asynchronousSelect(queryString) {
             this.loading = true
