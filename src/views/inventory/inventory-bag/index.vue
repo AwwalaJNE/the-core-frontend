@@ -344,9 +344,9 @@ export default {
             this.tempSearch = ""
         },
         activeTab(val) {
-            this.navActive = val
             this.clearSearch()
             this.clearFilter()
+            this.navActive = val
             let item = this.navItem.filter(item => {
                 return item.key == val
             })
