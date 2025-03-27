@@ -63,7 +63,7 @@ export default {
     },
     computed: {
         listenIsMasterbag() {
-            return this.isMasterbag ? 'MASTERBAG' : false;
+            return this.isMasterbag ? '1' : '0' && '';
         }
     },
     watch: {
@@ -378,7 +378,7 @@ export default {
             }
             await axios
                 .get(this.URL.bag_inventory +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${this.listenIsMasterbag || bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}&is_consolidated=${this.listenIsMasterbag}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length == 0) {
