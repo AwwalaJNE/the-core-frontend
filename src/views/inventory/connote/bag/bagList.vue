@@ -53,12 +53,18 @@ export default {
         bagStatus: String,
         bagIrreg: String,
         bagSource: String,
+        isMasterbag: Boolean,
     },
     components: {
         "table-master" : TableMaster,
         "select-search-by": SelectSearchBy,
         "search-input": SearchInput,
         "date-time": DateTime
+    },
+    computed: {
+        listenIsMasterbag() {
+            return this.isMasterbag ? 'MASTERBAG' : false;
+        }
     },
     watch: {
         query: function(val, old) {
@@ -372,7 +378,7 @@ export default {
             }
             await axios
                 .get(this.URL.bag_inventory +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}`,
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${this.listenIsMasterbag || bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}`,
                 this.Helper.header())
                 .then(res => {
                     if(res.data.data.length == 0) {
