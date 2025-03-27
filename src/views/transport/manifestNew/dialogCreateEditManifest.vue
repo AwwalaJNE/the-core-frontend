@@ -244,9 +244,6 @@ export default {
         listenItterateFlagAutoComplete() {
             return this.itterateFlagAutoComplete;
         },
-        listenUserRoleName() {
-            return this.listenUserRole.user_role_name
-        },
         listenLoading() {
             return this.loading || this.loadingDetail || this.loadingConfirmApprove;
         }

@@ -154,8 +154,10 @@ export default {
                     let res = await axios.get(`${this.URL.connote}/${this.listenConnoteNumber}?n=${this.listenNodeId}`, this.Helper.header());
                     let val = res.data.data;
                     
-                    const connoteServiceTariffCode = val.connote_shipper_tariff_code;
-                    const customerCodeTariff = val.customer_code_tariff;
+                    const connoteReceiverTariffCode = val.connote_receiver_tariff_code;
+                    const connoteServiceCode = val.connote_service_code;
+                    // const customerCodeTariff = val.customer_code_tariff;
+                    const customerCodeTariff = "";
                     
                     
                     this.formHelpdeskMoveConnote = val.node_id;
@@ -177,7 +179,7 @@ export default {
                         connote_actual_weight: val.connote_actual_weight
                     };
 
-                    await this.getShippingService(connoteServiceTariffCode, customerCodeTariff);
+                    await this.getShippingService(connoteReceiverTariffCode, customerCodeTariff, connoteServiceCode);
                 } catch (err) {
                     this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate list',  err?.response?.data?.message ?? '');
                 } finally {
@@ -281,7 +283,7 @@ export default {
                 cb(suggestions);
             } catch (_) {}
         },
-        async getShippingService(destination, customerCodeTariff) {
+        async getShippingService(destination, customerCodeTariff, connoteServiceCode) {
             try {
                 const res = await axios.get(`${this.URL.tariff_shipping_service}?n=${this.listenNodeId}&destination=${destination}&customer_code_tariff=${customerCodeTariff}`, this.Helper.header())
                 const resData = res.data.data;
@@ -319,7 +321,7 @@ export default {
 
                 console.log(serviceData, 'service data');
                 this.services = serviceData;
-                // this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE', serviceData.length > 0 ? serviceData[0].value : '')
+                this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE', connoteServiceCode)
                 // this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE_ValueData', serviceData.length > 0 ? serviceData[0] : '')
                 this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE_arrData', serviceData.length > 0 ? serviceData : [])
             } catch (err) {}

@@ -46,6 +46,9 @@ const Master = {
         },
         listenUserRole() {
             return this.listenActiveUser.role;
+        },
+        listenUserRoleName() {
+            return this.listenUserRole.find(item => item.app === 'CORE')?.app_role_name;
         }
     },
     methods: {

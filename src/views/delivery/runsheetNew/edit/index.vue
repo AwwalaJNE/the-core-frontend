@@ -374,9 +374,6 @@ export default {
     computed: {
         listenDataDelivery() {
             return this.dataDelivery;
-        },
-        listenUserRoleName() {
-            return this.listenUserRole.user_role_name
         }
     },
     mounted() {
