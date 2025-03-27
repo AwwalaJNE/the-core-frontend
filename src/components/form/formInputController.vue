@@ -131,6 +131,9 @@
                                         :limitExist="limitExist"
                                         :selectLabel="selectLabel"
                                         :selectValue="selectValue"
+                                        :isSingleInput="InputObject[item].isSingleInput"
+                                        :isNestedData="isNestedData"
+                                        :nestedKey="nestedKey"
                                         @updateValue="updateValue"
                                         @inputFocus="onfocuslah"/>
                             </template>
@@ -234,6 +237,11 @@
                                     :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
                                     :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
                                     :asynchronousSelect_url="listenAsynchronousSelectUrl"
+                                    :selectLabel="selectLabel"
+                                    :selectValue="selectValue"
+                                    :isSingleInput="InputObject[item].isSingleInput"
+                                    :isNestedData="isNestedData"
+                                    :nestedKey="nestedKey"
                                     :disabled="listenIsDisabled"
                                     @updateValue="updateValue"
                                     @inputFocus="onfocuslah"/>
@@ -453,6 +461,8 @@ export default {
         limitExist: Boolean,
         selectLabel: String,
         selectValue: String,
+        isNestedData: Boolean,
+        nestedKey: String,
         tableKey: String
     },
     data() {
@@ -604,7 +614,7 @@ export default {
             this.$emit("onChangeCustom", type, val, obj)
         },
         onfocuslah(info) {
-            if(info.typeInput !== '' && info.typeInput.includes('location_selector')) {
+            if(info.typeInput !== '' && info.typeInput !== undefined && info.typeInput.includes('location_selector')) {
               this.$emit("onFocus_location_selector", info)
             }
             this.$emit("inputFocus", info)
@@ -649,6 +659,35 @@ export default {
         handleClearForm(){
             let prefix = this.listenTypeForm.toUpperCase()
             let tempKey = this.Keys.filter(item => !item.includes('mapPicker') && !item.includes('dynamicinputcomponent'))
+            tempKey.map(item => {
+                let action = item.toUpperCase()
+                try {
+                    if(this.InputObject[item].hasOwnProperty('typeData')) {
+                        if(this.InputObject[item]["typeData"].toLowerCase() == 'boolean') {
+                            this.$store.dispatch(`SET_${prefix}_${action}`, true)
+                            this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, true)
+                        } else {
+                            this.$store.dispatch(`SET_${prefix}_${action}`, '')
+                            this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
+                        }
+                    } else {
+                        this.$store.dispatch(`SET_${prefix}_${action}`, '')
+                        this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
+                    }
+                    
+                    if(this.InputObject[item].hasOwnProperty('arrData') && !InputObject[item].typeInput.toLowerCase().includes('radtex')) {
+                        this.$store.dispatch(`SET_${prefix}_${action}_ArrData`, [{"label": null, "value": null}])
+                    }
+                } catch (error) {
+                    
+                }
+                
+            })
+            this.form = {}
+        },
+        handleClearAllForm() {
+            let prefix = this.listenTypeForm.toUpperCase()
+            let tempKey = this.Keys
             tempKey.map(item => {
                 let action = item.toUpperCase()
                 try {

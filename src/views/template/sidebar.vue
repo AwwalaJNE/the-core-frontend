@@ -975,6 +975,18 @@ export default {
                 resource_name: resourceLookup["SETTINGS_COURIER"].resource_name
               },
             },
+            {
+              label: "Settings System Scope",
+              url: "/settings/system-scope",
+              icon: "bx bxs-checkbox",
+              permission: "", // TODO: REMOVE AND CHANGE TO BELOW LATER
+              // permission: "read-application-role",
+              meta: {
+                resource_type: resourceLookup["SYSTEM_SCOPE"].resource_type,
+                resource_code: resourceLookup["SYSTEM_SCOPE"].resource_code,
+                resource_name: resourceLookup["SYSTEM_SCOPE"].resource_name
+              },
+            },
           ],
         },
         {
@@ -1061,7 +1073,7 @@ export default {
       }
     },
     listenNodeType() {
-      this.nodeTypeCode = this.listenActiveUser.nodes[0].node_type.node_type_code;
+      this.nodeTypeCode = this.listenCurrentNode.node_type.node_type_code;
     },
     customFilter() {
       switch (this.nodeTypeCode) {
@@ -1083,10 +1095,10 @@ export default {
     },
 
     getMenuWithPermissions() {
-      const permissions = this.$ls.get("permissions") || [];
-      const userRole = this.$ls.get("user")?.role || {};
+      const permissions = this.listenPermissions?.core || [];
+      const userRole = this.listenUserRole[0] || {};
       const { menus, menuRolePermission } = this;
-      const foundPermission = menuRolePermission.find(permission => permission.role === userRole?.user_role_name);
+      const foundPermission = menuRolePermission.find(permission => permission.role === userRole?.app_role_name);
       const filtered = [];
 
       menus.forEach((menu) => {

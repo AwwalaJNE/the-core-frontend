@@ -1,6 +1,7 @@
 <template>
   <div>
-    <table-master
+    <table-master 
+      hideColumnKey="error-dictionary"
       :dataTable="dataTable"
       :dataColumn="datacolumn"
       :tableLoading="loading"

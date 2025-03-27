@@ -115,17 +115,15 @@
     </div>
 </template>
 <script>
-import master from "@/mixins/master"
-
-import Breadcrumb from "@/components/breadcrumb/index";
+import Breadcrumb from "@/components/breadcrumb/index"
 import FloatingActionButton from "@/components/buttonCustom/floatingActionButton"
-import NavItem from "@/components/navbar/navTab";
-import SearchInput from "@/components/search/searchInput";
-import SelectSearchBy from "@/components/search/selectSearchBy";
-import TableMaster from "@/components/table/tableMaster";
-
-import InboundIncoming from "@/views/inboundAirport/prealert/";
-import SuratJalan from "@/views/inboundAirport/suratJalan";
+import NavItem from "@/components/navbar/navTab"
+import SearchInput from "@/components/search/searchInput"
+import SelectSearchBy from "@/components/search/selectSearchBy"
+import TableMaster from "@/components/table/tableMaster.vue"
+import master from "@/mixins/master"
+import InboundIncoming from "@/views/inboundAirport/prealert/"
+import SuratJalan from "@/views/inboundAirport/suratJalan"
 
 export default {
     name:"Receiving-Airport",
@@ -315,3 +313,16 @@ export default {
     }
 }
 </script>
+<style lang="scss">
+    .users{
+        min-height: 50vh;
+        .view{
+            min-height: 400px;
+        }
+        .search-input{
+            @include for-phone-only{
+                margin-bottom: 1rem;
+            }
+        }
+    }
+</style>

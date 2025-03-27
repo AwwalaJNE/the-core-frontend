@@ -92,6 +92,7 @@ const resources = [
     { resource_code: "CORE-01-091", resource_type: "PAGE", resource_name: "SETTINGS_SURAT_MUATAN" },
     { resource_code: "CORE-01-092", resource_type: "PAGE", resource_name: "RECEIVING_LOG" },
     { resource_code: "CORE-01-093", resource_type: "PAGE", resource_name: "SETTINGS_COURIER" },
+    { resource_code: "CORE-01-094", resource_type: "PAGE", resource_name: "SYSTEM_SCOPE" },
     { resource_code: "CORE-01-094", resource_type: "PAGE", resource_name: "CLAIM_AND_BURDEN" }
 ];
 

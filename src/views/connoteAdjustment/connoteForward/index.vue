@@ -75,6 +75,7 @@
 
                 <div class="mt-05">
                     <table-master 
+                        hideColumnKey="connote-forward"
                         :dataTable="dataTable" 
                         :dataColumn="datacolumn" 
                         :tableLoading="loading"

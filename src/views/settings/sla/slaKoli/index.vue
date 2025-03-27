@@ -39,6 +39,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="sla-koli" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

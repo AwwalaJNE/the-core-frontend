@@ -12,7 +12,8 @@
           <span class="subtitle" align="right"><p>{{total_bag}}</p></span>
           <span class="title" align="right"><h4>Unbagged</h4></span>
         </div>
-        <table-master
+        <table-master 
+            hideColumnKey="open-bag-master"
             :dataTable="dataTableBag"
             :dataColumn="datacolumn"
             :tableLoading="loading"
@@ -66,10 +67,10 @@
   </vs-row>
 </template>
 <script>
+import Switch from "@/components/input/switch";
+import TableMaster from "@/components/table/tableMaster.vue";
+import master from "@/mixins/master";
 import axios from "axios";
-import master from "@/mixins/master"
-import TableMaster from "@/components/table/tableMaster.vue"
-import Switch from "@/components/input/switch"
 export default {
     name:"list-detailbag",
     mixins: [master],

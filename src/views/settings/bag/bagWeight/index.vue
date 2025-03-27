@@ -16,6 +16,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="bag-weight" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

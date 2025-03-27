@@ -33,6 +33,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+        hideColumnKey="setting-role" 
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

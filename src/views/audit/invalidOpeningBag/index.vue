@@ -65,6 +65,7 @@
 
                 <transition name="slide-fade">
                     <table-master 
+                        hideColumnKey="invalid-open-bag"
                         :dataTable="dataTable" 
                         :dataColumn="datacolumn" 
                         :tableLoading="loading"

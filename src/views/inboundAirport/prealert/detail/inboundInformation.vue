@@ -17,6 +17,7 @@
             </template>
             <template v-else>
                 <table-master 
+                    hideColumnKey="receiving-airport-detail-info" 
                     :dataTable="dataTable" 
                     :dataColumn="datacolumn" 
                     :tableLoading="listenLoading"

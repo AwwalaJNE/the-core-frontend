@@ -39,6 +39,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="destination-sorting-lov" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

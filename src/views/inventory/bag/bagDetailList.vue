@@ -37,7 +37,8 @@
           </vs-row>
         </div>
 
-        <table-master
+        <table-master 
+        hideColumnKey="bag-detail"
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

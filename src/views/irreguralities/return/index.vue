@@ -63,6 +63,7 @@
 
                 <div class="mt-05">
                     <table-master 
+                    hideColumnKey="irregularity-return" 
                     :dataTable="dataTable" 
                     :dataColumn="datacolumn" 
                     :tableLoading="loading"

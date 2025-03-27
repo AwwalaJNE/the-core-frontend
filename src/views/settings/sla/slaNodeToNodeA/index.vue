@@ -39,6 +39,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="sla-node-to-node-a" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

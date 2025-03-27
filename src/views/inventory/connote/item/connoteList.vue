@@ -7,7 +7,8 @@
 
 <template>
     <div>
-        <table-master
+        <table-master 
+        hideColumnKey="inventory-koli"
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

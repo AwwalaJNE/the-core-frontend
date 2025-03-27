@@ -1,6 +1,7 @@
 <template>
     <div>
-        <table-master
+        <table-master 
+        hideColumnKey="bag-history"
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

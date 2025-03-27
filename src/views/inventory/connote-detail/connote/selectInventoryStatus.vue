@@ -7,7 +7,8 @@
 
 <template>
     <div>
-        <table-master
+        <table-master 
+        hideColumnKey="koli-activity"
         :dataTable="dataTable" 
         :dataColumn="datacolumn" 
         :tableLoading="loading"

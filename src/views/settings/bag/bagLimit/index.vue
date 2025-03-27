@@ -16,6 +16,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="bag-limit" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"

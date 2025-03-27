@@ -239,6 +239,7 @@
                             </vs-col>
                         </vs-row>
                         <table-master 
+                        hideColumnKey="sorting-connote" 
                             :dataTable="dataTable" 
                             :dataColumn="datacolumn" 
                             :tableLoading="loading"

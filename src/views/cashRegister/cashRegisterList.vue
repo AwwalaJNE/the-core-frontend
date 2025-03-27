@@ -1,6 +1,7 @@
 <template>
   <div>
-    <table-master
+    <table-master 
+      hideColumnKey="cash-register"
       :dataTable="dataTable"
       :dataColumn="datacolumn"
       :tableLoading="loading"

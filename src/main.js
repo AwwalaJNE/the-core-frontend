@@ -1,15 +1,15 @@
+import { Autocomplete, Checkbox, CheckboxButton, CheckboxGroup, Collapse, CollapseItem, DatePicker, FormItem, Option, Select, TimePicker, Upload } from 'element-ui'
+import locale from 'element-ui/lib/locale'
+import lang from 'element-ui/lib/locale/lang/en'
+import 'element-ui/lib/theme-chalk/index.css'
 import Vue from 'vue'
+import VueClipboard from 'vue-clipboard2'
+import VueCurrencyInput from 'vue-currency-input'
 import Vuesax from 'vuesax'
-import 'vuesax/dist/vuesax.css' //Vuesax styles
+import 'vuesax/dist/vuesax.css'; //Vuesax styles
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { Upload, Autocomplete, Collapse, CollapseItem, DatePicker, TimePicker, CheckboxGroup, Checkbox, CheckboxButton, Select, Option, FormItem} from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-import lang from 'element-ui/lib/locale/lang/en'
-import locale from 'element-ui/lib/locale'
-import VueCurrencyInput from 'vue-currency-input'
-import VueClipboard from 'vue-clipboard2'
 
 
 // import VueMoment from 'vue-moment'

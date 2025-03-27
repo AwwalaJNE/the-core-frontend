@@ -2,6 +2,7 @@
     <div>
         <template v-if="listenLoading == false">
             <table-master 
+                hideColumnKey="pre-alert-receiving-airport-detail" 
                 :dataTable="dataTableProp" 
                 :dataColumn="datacolumn" 
                 :tableLoading="listenLoading"

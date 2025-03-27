@@ -11,63 +11,81 @@
             <vs-col xs="12" sm="12" lg="6">
                 <vs-row>
                     <vs-col w="4">
-                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy"
-                            :valueData="dateParams" :selectedValue="filterDateBy" />
+                        <select-search-by 
+                            :border="true"
+                            :isMultiple="false"  
+                            :selectedValue="filterDateBy" 
+                            :valueData="dateParams" 
+                            @updateSearchBy="updateFilterDateBy"
+                        />
                     </vs-col>
                     <vs-col w="8">
-                        <date-time :name="''" :rules="''" :valueData="dateRange"
-                            typeInput="daterange" @updateValue="updateValue" />
+                        <date-time 
+                            typeInput="daterange" 
+                            :name="''" 
+                            :rules="''" 
+                            :valueData="dateRange"
+                            @updateValue="updateValue" 
+                        />
                     </vs-col>
                 </vs-row>
             </vs-col>
             <vs-col xs="12" sm="12" lg="6">
                 <vs-row justify="end">
                     <vs-col xs="6" sm="8" lg="4">
-                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"
-                            :valueData="searchParams" :selectedValue="searchBy" />
+                        <select-search-by 
+                            :border="true"
+                            :isMultiple="false"  
+                            :selectedValue="searchBy" 
+                            :valueData="searchParams" 
+                            @updateSearchBy="updateSearchBy"
+                        />
                     </vs-col>
                     <vs-col xs="6" sm="4" lg="4">
-                        <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" />
+                        <search-input 
+                            ref="searchInput" 
+                            :placeholder="searchPlaceholder" 
+                            @searchValue="searchValue" 
+                        />
                     </vs-col>
                 </vs-row>
             </vs-col>
         </vs-row>
-        <table-master
-        :dataTable="dataTable" 
-        :dataColumn="datacolumn" 
-        :tableLoading="loading"
-        :pageSize="pagination.page_size"
-        :page="pagination.page"
-        :limit="pagination.limit"
-        :hasAction="true"
-        :hasPagination="true"
-        :expandable="true"
-        @actionUpdate="actionUpdate"
-        @actionRemove="actionRemove"
-        @actionLimit="actionLimit"
-        @actionPagination="actionPagination"
+        <table-master 
+            hideColumnKey="setting-user"
+            :dataTable="dataTable" 
+            :dataColumn="datacolumn" 
+            :tableLoading="loading"
+            :pageSize="pagination.page_size"
+            :page="pagination.page"
+            :limit="pagination.limit"
+            :hasAction="true"
+            :hasPagination="true"
+            :expandable="true"
+            @actionUpdate="actionUpdate"
+            @actionRemove="actionRemove"
+            @actionLimit="actionLimit"
+            @actionPagination="actionPagination"
         />
 
-        <!--Create User Dialog end-->
-            <dialog-create-edit-user
-            :active="dialogUser" 
-            :openDialogUser="openDialogUser"
-            :closeDialogUser="closeDialogUser"
-            :finishGetUser="finishGetUser"
-            @refresh="refresh"
+        <dialog-create-edit-user
             btnBlue="Edit"
+            ref="dialog_edit"
             title="Edit User"
+            :active="dialogUser" 
+            :closeDialog="() => closeDialog('dialog_edit')"
             :dataItem="dataItem"
-            />
+        />
 
         <dialog-confirm
+            ref="dialog_remove"
             title="Remove User"
-            :message="`Are you sure you want to remove this user with id ${this.id}?`"
-            :active="activeDialogConfirmRemove"
-            :loading="loadingConfirmRemove"
-            :closeDialog="closeDialogConfirmRemove"
+            :message="`Are you sure you want to remove this user?`"
+            :active="dialogRemove"
+            :loading="loadingRemove"
+            :closeDialog="() => closeDialog('dialog_remove')"
             @confirm="confirmRemove"
-            @cancel="closeDialogConfirmRemove"
+            @cancel="() => closeDialog('dialog_remove')"
         />
     </div>
 </template>
@@ -95,17 +113,6 @@ export default {
         "date-time": DateTime,
         "dialog-confirm": DialogConfirm,
     },
-    watch: {
-        query: function(val, old) {
-            if(val !== undefined) {
-                this.tempSearch = val
-                if(this.tempSearch !== old) {
-                    this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate)
-                }
-            }
-        }
-    },
     data() {
         return {
             dataTable: [],
@@ -131,13 +138,18 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Primary Roles",
-                    key: "user_role_name",
+                    label: "Primary Role",
+                    key: "primary_user_application_name",
+                    width: "sm"
+                },
+                {
+                    label: "Primary App",
+                    key: "primary_user_application_role",
                     width: "sm"
                 },
                 {
                     label: "Node",
-                    key: "user_nodes",
+                    key: "user_nodes_list",
                     width: "auto"
                 },
             ],
@@ -168,113 +180,74 @@ export default {
                     value: "user_email",
                 },
                 {
-                    label: "Primary Roles",
-                    value: "userNodeRoles",
-                },
-                {
                     label: "Node",
                     value: "userNodes"
                 },
             ],
             dateParams: [
-              {
-                label: 'Created Date',
-                value: 'create'
-              }
+                {
+                    label: 'Created Date',
+                    value: 'create'
+                }
             ],
             id: '',
-            activeDialogConfirmRemove: false,
-            loadingConfirmRemove:false,
+            dialogRemove: false,
+            loadingRemove:false,
         }
     },
     methods: {
-        async getTableData(limit,page,q,from,to) {
+        async getTableData(limit, page, q, from, to, searchBy) {
             this.loading = true
-            let query = "";
-            let startDate = "";
-            let endDate = "";
-            if(q !== undefined) {
-                query = q
-            }
-            if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
-            }
-            await axios
-                .get(
-                    this.URL.user + 
-                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
-                    this.Helper.header())
-                .then(res => {
+
+            let query = q || '';            
+            let startDate = from || "";
+            let endDate = to || "";
+
+            try {
+                const res = await axios.get(`${this.URL.user}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&filter_date_by=${this.filterDateBy}`, this.Helper.header());
+
+                if(res.data.data.length > 0) {
                     let arr = res.data.data
                     arr.map(item => {
                         let additional_node = []
                         let additional_role = []
                         let children = {}
 
-                        // item.user_additionals.map(value => {
-                        //     if (!additional_node.includes(value.node_name)) {
-                        //         additional_node.push(value.node_name)
-                        //     }
+                        if (item?.app_role?.length) {
+                            item["primary_user_application_name"] = item?.app_role?.[0]?.app || "";
+                            item["primary_user_application_role"] = item?.app_role?.[0]?.role?.[0]?.app_role_name || "";
+                        }
 
-                        //     let idx = additional_node.indexOf(value.node_name)
-                        //     if (additional_role[idx]) {
-                        //         additional_role[idx].push(...value.roles)
-                        //     }
-                        //     else if (!additional_role[idx]) {
-                        //         additional_role[idx] = value.roles
-                        //     }
-                        // })
-
-                        // if (additional_node.length > 0 && additional_role.length > 0) {
-                        //     additional_role.forEach(function(elements, idx) {
-                        //         if (elements.length > 0) {
-                        //             this[idx] = elements.join(", ");
-                        //         }
-                        //         else {
-                        //             this[idx] = "-";
-                        //         }
-                        //     }, additional_role);
-                        //     children['Additional Node'] = additional_node
-                        //     children['Additional Role'] = additional_role
-
-                        //     item['children'] = children
-                        // }
-
-                        item["user_nodes"] = item.user_nodes.map((nodes,index) => {
+                        item["user_nodes_list"] = item.user_nodes.map((nodes,index) => {
                             let newline = "\n";
                             if(index == 0){
                                 newline = "";
                             }
                             return newline+'- '+nodes.node_name;
                         }).toString();
-                        // if (item.user_additional_role_name && Array.isArray(item.user_additional_role_name)) {
-                        //     item.user_additional_role_name = item.user_additional_role_name.join(", ");
-                        // }
                     })
-                    this.dataTable = arr
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
-                    // if(res.data.data.length == 0) {
-                    //     this.openNotification('warn', null, 'Failed to populate User data', )
-                    // }
                     
-                    this.loading = false
-                }).catch(err => {
-                    this.loading = false
-                    this.checkAuth(err.response)
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate users list', err.response.data.message)
-                })
+                    this.dataTable = arr;
+                    this.pagination = {
+                        page: res.data.meta.current_page,
+                        limit: parseInt(res.data.meta.per_page, 10),
+                        page_size: res.data.meta.last_page,
+                    };
+                } else {
+                    this.dataTable = [];
+                }  
+                
+            } catch (err) {
+                this.redirectError(err)
+                this.checkAuth(err.response)
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
         },
         actionUpdate(val){
-            if(this.dataTable.length > 0) {
-                let obj = this.dataTable.filter(item => {
-                    return item.user_id === val.user_id
-                })
-                this.dataItem = obj[0]
-                this.loading = true
-            }
+            this.dataItem = val;
+            this.dialogUser = true;
         },
         actionLimit(val){
             this.pagination.limit = val
@@ -293,18 +266,21 @@ export default {
                 from = moment(this.dateRange[0]).format("YYYY-MM-DD")
                 to = moment(this.dateRange[1]).format("YYYY-MM-DD")
             }
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch,from,to)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, from, to, this.searchBy)
         },
-        closeDialogUser(){
-            this.dialogUser = false
-            this.dataItem = undefined
-            this.$store.dispatch("SET_USER_DYNAMICINPUTCOMPONENT_USER_ADDITIONAL_ROLE", {})
-        },
-        openDialogUser(){
-            this.dialogUser = true
-        },
-        finishGetUser(){
-            this.loading = false
+        closeDialog(ref){
+            switch (ref) {
+                case 'dialog_edit':
+                    this.dialogUser = false;
+                    this.refresh();
+                    break;
+                case 'dialog_remove':
+                    this.dialogRemove = false;
+                    this.refresh();
+                    break;
+                default:
+                    break;
+            }
         },
         updateValue(key, val) {
             this.dateRange = val
@@ -324,34 +300,24 @@ export default {
         },
         actionRemove(val){
             this.id = val.user_id;
-            this.activeDialogConfirmRemove = true
+            this.dialogRemove = true
         },
         confirmRemove() {
-            this.loadingConfirmRemove=true
             this.removeData()
         },
-        async removeData(){
-            await axios
-                .delete(
-                    this.URL.user + `/${this.id}?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-                    this.closeDialogConfirmRemove()
-                    this.loadingConfirmRemove = false
-                    this.refresh()
-                    this.openNotification(null, 'Romove success', 'Romove User is success')
-                }).catch(err => {
-                    this.loadingConfirmRemove = false
-                    this.closeDialogConfirmRemove()
-                    this.loading = false
-                    this.checkAuth(err.response)
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Romove User is failed', err.response.data.message)
-                })
-        },
-        closeDialogConfirmRemove(){
-            this.activeDialogConfirmRemove = false
-            this.loadingConfirmRemove=false
-        },
+        async removeData() {
+            this.loadingRemove = true;
+            try {
+                const res = await axios.delete(`${this.URL.user}/${this.id}?n=${this.listenNodeId}`, this.Helper.header());
+                this.openNotification('success', null, "Success", res?.data?.message || "Remove User is success");
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.checkAuth(err.response)
+            } finally {
+                this.loadingRemove = false;
+                this.closeDialog('dialog_remove');
+            }
+        }
     },
     mounted() {
         this.refresh()

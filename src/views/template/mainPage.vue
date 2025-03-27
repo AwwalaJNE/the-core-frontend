@@ -113,17 +113,7 @@ export default {
         "bar-chart": Bar,
         "doughnut-chart": Doughnut
     },
-    computed: {
-        listenUser() {
-            return this.listenActiveUser;
-        }
-    },
     watch: {
-        listenUser(val) {
-            if (val) {
-                this.getInfo(val);
-            }
-        },
         dataInsightInventory(newData) {
             if (newData) {
                 this.$refs.insightInventoryChart.renderChart(newData, this.optionsInsightInventory);
@@ -335,11 +325,11 @@ export default {
         };
     },
     methods: {
-        getInfo(val) {
-            this.role_name = val?.role?.user_role_name || "";
-            this.node_name = val?.nodes?.[0]?.node_name || "";
-            this.node_code = val?.nodes?.[0]?.node_code || "";
-            this.user_login = val?.user_login || "";
+        getInfo() {
+            this.role_name = this.listenActiveUser?.role?.[0]?.app_role_name || "";
+            this.node_name = this.listenCurrentNode?.node_name || "";
+            this.node_code = this.listenCurrentNode?.node_code || "";
+            this.user_login = this.listenActiveUser?.user_login || "";
         },
         handleRedirect(url) {
             const newWindow = window.open(url, '_blank', 'noopener');
@@ -507,9 +497,7 @@ export default {
     mounted() {
         this.updateTime();
 
-        if (this.listenUser) {
-            this.getInfo(this.listenUser);
-        }
+        this.getInfo();
 
         this.getInsightInventory().then(() => {
             this.$refs.insightInventoryChart?.renderChart(this.dataInsightInventory, this.optionsInsightInventory);

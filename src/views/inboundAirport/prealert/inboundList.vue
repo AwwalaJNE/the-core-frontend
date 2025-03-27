@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master 
+            hideColumnKey="pre-alert-receiving-airport" 
             :dataTable="dataTable" 
             :dataColumn="!isMobile ? datacolumn.concat(allColumn) : datacolumn" 
             :tableLoading="loading"

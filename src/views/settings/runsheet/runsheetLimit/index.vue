@@ -39,6 +39,7 @@
             </vs-col>
         </vs-row>
         <table-master 
+            hideColumnKey="runsheet-limit" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
             :tableLoading="loading"
