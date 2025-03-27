@@ -139,7 +139,7 @@
                                 :query="tempSearch" 
                                 :searchDateBy="filterDateBy" 
                                 :searchBy="searchByBag"
-                                :isMasterbag="navActive === 'k-BAG' ? false : true"
+                                :isMasterbag="navActive === 'k-BAG' ? '0' : '1'"
                             />
                         </transition>
                     </template>

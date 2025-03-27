@@ -311,7 +311,7 @@ export default {
             loading: false,
             dataItem: {},
             tempSearch: this.query ? this.query : "",
-            isMasterbagFilter: this.isMasterbag ? this.isMasterbag : "",
+            isMasterbagFilter: this.isMasterbag ? this.isMasterbag : null,
             bagFilter: this.bagDestination ? this.bagDestination : "",
             bagOriginFilter: this.bagOrigin ? this.bagOrigin : "",
             routingFilter: this.bagRouting ? this.bagRouting : "",
@@ -347,7 +347,7 @@ export default {
             let bagStat = "";
             let bagIrregStatus = "";
             let bagSourceFilter = "";
-            let isMasterbagFilter = isMasterbag ? "1" : "0"
+            let isMasterbagFilter = "";
             if(q !== undefined) {
                 query = q
             }
@@ -380,6 +380,9 @@ export default {
             }
             if(bagSource !== undefined && bagSource !== '-') {
                 bagSourceFilter = bagSource
+            }
+            if(isMasterbag !== undefined && isMasterbag !== null) {
+                isMasterbagFilter = isMasterbag === "1" ? "1" : "0";
             }
             await axios
                 .get(this.URL.bag_inventory +
@@ -503,14 +506,14 @@ export default {
             let [from, to] = this.dateRange.length > 0 
                 ? [moment(this.dateRange[0]).format("YYYY-MM-DD"), moment(this.dateRange[1]).format("YYYY-MM-DD")] 
                 : ["", ""];
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, from, to, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, from, to, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter)
         },
         updateSelected(_event, _item, selected) {
             this.selectedRow = selected.filter(bag => bag.is_approve !== 0).map(bag => bag.bag_number);
         },
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter)
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter)
         this.handlePrintShortcut(this.actionPrintSelected)
     },
 }
