@@ -4735,9 +4735,21 @@ export default {
       valueData: null,
       value: '',
     },
-    connote_receiver_street_address: {
-      label: "Connote Receiver Street Address WILL UPDATE",
-      key: "connote_receiver_street_address",
+    // connote_receiver_street_address: {
+    //   label: "Connote Receiver Street Address",
+    //   key: "connote_receiver_street_address",
+    //   rule: "required",
+    //   typeInput: "autocomplete",
+    //   // typeInput: "text",
+    //   typeData: "String",
+    //   isDisabled: false,
+    //   arrData: [],
+    //   valueData: null,
+    //   value: '',
+    // },
+    connote_receiver_administrative_address: {
+      label: "Connote Receiver Street Address",
+      key: "connote_receiver_administrative_address",
       rule: "required",
       typeInput: "autocomplete",
       // typeInput: "text",
@@ -4774,14 +4786,16 @@ export default {
       valueData: null,
       value: '',
     },
-    amount_price: {
-      label: "Amount Price",
-      key: "amount_price",
+    amount_tariff: {
+      label: "Amount Tarif",
+      key: "amount_tariff",
       rule: "",
       typeInput: "number",
+      // typeInput: "text",
       typeData: "String",
       valueData: null,
       value: '',
+      isDisabled: true
     },
     remarks: {
       label: "Remarks",
