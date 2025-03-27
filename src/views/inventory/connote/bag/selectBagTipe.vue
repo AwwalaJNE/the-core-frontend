@@ -64,10 +64,6 @@ export default {
           value: 'REGULAR'
         },
         {
-          label: 'Masterbag',
-          value: 'MASTERBAG'
-        },
-        {
           label: 'Bag Pra Runsheet',
           value: 'PRA_RUNSHEET'
         }
