@@ -347,7 +347,7 @@ export default {
             let bagStat = "";
             let bagIrregStatus = "";
             let bagSourceFilter = "";
-            let isMasterbagFilter = isMasterbag ? "1" : "0" && "" && !"1"
+            let isMasterbagFilter = isMasterbag ? "1" : "0"
             if(q !== undefined) {
                 query = q
             }
