@@ -332,9 +332,21 @@ export default {
             }
             this.tempDate = []
         },
+        clearSearch() {
+            this.bagDestination = "";
+            this.bagOrigin = "";
+            this.bagRouting = "";
+            this.bagTipe = "";
+            this.bagStatus = "";
+            this.bagIrreg = "",
+            this.bagSource = "";
+            this.tempDate = [];
+            this.tempSearch = ""
+        },
         activeTab(val) {
             this.navActive = val
             this.clearSearch()
+            this.clearFilter()
             let item = this.navItem.filter(item => {
                 return item.key == val
             })
