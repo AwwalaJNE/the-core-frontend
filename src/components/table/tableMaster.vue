@@ -1875,13 +1875,19 @@ export default {
 };
 </script>
 <style lang="scss">
+.vs-table-content > .vs-table > table {
+  width: max-content !important;
+  min-width: 100% !important;
+  table-layout: fixed !important;
+  text-align: left;
+}
+
 .vs-table {
   table {
     width: max-content;
     table-layout: fixed;
 
     text-align: left;
-    min-width: fit-content !important;
     .md {
       width: calc(100% / 3) !important;
     }
