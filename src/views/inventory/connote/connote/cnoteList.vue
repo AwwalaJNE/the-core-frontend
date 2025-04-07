@@ -204,11 +204,6 @@ export default {
             connote_number: ''
         }
     },
-    computed: {
-        listenUserRoleName() {
-            return this.listenUserRole.user_role_name
-        }
-    },
     methods: {
         pollData () {
             this.loadInterval = setInterval(() => {

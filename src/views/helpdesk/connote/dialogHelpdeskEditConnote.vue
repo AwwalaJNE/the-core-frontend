@@ -33,6 +33,7 @@
                         :querySearch="geolocationQuerySearch"
                         @formData="formDataEditConnote"
                         @onChangeCustom="onChangeCustom"
+                        :listenIsDisabled="true"
                     />
                 </div>
                 <div v-else-if="selectedEditType === 'MOVE_CONNOTE'">
@@ -154,8 +155,10 @@ export default {
                     let res = await axios.get(`${this.URL.connote}/${this.listenConnoteNumber}?n=${this.listenNodeId}`, this.Helper.header());
                     let val = res.data.data;
                     
-                    const connoteServiceTariffCode = val.connote_shipper_tariff_code;
-                    const customerCodeTariff = val.customer_code_tariff;
+                    const connoteReceiverTariffCode = val.connote_receiver_tariff_code;
+                    const connoteServiceCode = val.connote_service_code;
+                    // const customerCodeTariff = val.customer_code_tariff;
+                    const customerCodeTariff = "";
                     
                     
                     this.formHelpdeskMoveConnote = val.node_id;
@@ -167,17 +170,18 @@ export default {
                         connote_shipper_email: val.connote_shipper_email,
                         connote_shipper_phone_number: val.connote_shipper_phone_number,
                         connote_receiver_name: val.connote_receiver_name,
-                        connote_receiver_street_address: val.connote_receiver_street_address,
+                        // connote_receiver_street_address: val.connote_receiver_street_address,
+                        connote_receiver_administrative_address: val.connote_receiver_administrative_address,
                         connote_receiver_email: val.connote_receiver_email,
                         connote_receiver_phone_number: val.connote_receiver_phone_number,
                         amount_cod: val.amount_cod,
-                        amount_price: val.amount_price,
+                        amount_tariff: val.amount_tariff,
                         remarks: val.remarks,
                         connote_service_code: val.connote_service_code,
                         connote_actual_weight: val.connote_actual_weight
                     };
 
-                    await this.getShippingService(connoteServiceTariffCode, customerCodeTariff);
+                    await this.getShippingService(connoteReceiverTariffCode, customerCodeTariff, connoteServiceCode);
                 } catch (err) {
                     this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to populate list',  err?.response?.data?.message ?? '');
                 } finally {
@@ -266,6 +270,18 @@ export default {
         },
         onChangeCustom(type, val, obj) {
             this.formHelpdeskEditConnote[type] = val;
+            if (type == 'connote_receiver_administrative_address') {
+                if (obj != null && obj != undefined) {
+                    const { data } = obj;
+                    if (data == null || data == undefined) {
+                        return;
+                    }
+                    const destination = data.geolocation_subdistrict_tarif_code;
+                    this.getShippingService(destination, '', this.formHelpdeskEditConnote.connote_service_code, 'update');
+                    this.formHelpdeskEditConnote["amount_tariff"] = this.services.length > 0 ? this.services[0].data.tariff_amount_1 : 0;
+                    this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_AMOUNT_TARIFF', this.formHelpdeskEditConnote["amount_tariff"]);
+                }
+            }
         },
         async geolocationQuerySearch(queryString, cb){
             try {
@@ -281,7 +297,7 @@ export default {
                 cb(suggestions);
             } catch (_) {}
         },
-        async getShippingService(destination, customerCodeTariff) {
+        async getShippingService(destination, customerCodeTariff, connoteServiceCode, action = "init") {
             try {
                 const res = await axios.get(`${this.URL.tariff_shipping_service}?n=${this.listenNodeId}&destination=${destination}&customer_code_tariff=${customerCodeTariff}`, this.Helper.header())
                 const resData = res.data.data;
@@ -291,6 +307,7 @@ export default {
                     const obj = {}
                     obj.label = item.service_name
                     obj.value = item.tariff_service_code
+                    obj.data = item
 
                     // tiering tarrif
                     const tariffAkumulatif = {}
@@ -317,9 +334,12 @@ export default {
                     }
                 })
 
-                console.log(serviceData, 'service data');
                 this.services = serviceData;
-                // this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE', serviceData.length > 0 ? serviceData[0].value : '')
+                if (action == "init") {
+                    this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE', connoteServiceCode)
+                } else {
+                    this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE', serviceData.length > 0 ? serviceData[0].value : '')
+                }
                 // this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE_ValueData', serviceData.length > 0 ? serviceData[0] : '')
                 this.$store.dispatch('SET_HELPDESK_EDIT_CONNOTE_SERVICE_arrData', serviceData.length > 0 ? serviceData : [])
             } catch (err) {}

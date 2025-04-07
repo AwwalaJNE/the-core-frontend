@@ -249,9 +249,6 @@ export default {
         listenTitle() {
             return this.title;
         },
-        listenUserRoleName() {
-            return this.listenUserRole.user_role_name
-        },
         listenDisableSwitch() {
             return this.manifest_do_number ? true : false
         }

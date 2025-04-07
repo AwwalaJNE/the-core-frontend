@@ -3827,11 +3827,11 @@ export default {
   },
 
   
-  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_STREET_ADDRESS(state, payload) {
-    state.helpdesk_edit_connote.connote_receiver_street_address.value = payload
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS(state, payload) {
+    state.helpdesk_edit_connote.connote_receiver_administrative_address.value = payload
   },
-  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_STREET_ADDRESS_ValueData(state, payload) {
-    state.helpdesk_edit_connote.connote_receiver_street_address.valueData = payload
+  SET_HELPDESK_EDIT_CONNOTE_CONNOTE_RECEIVER_ADMINISTRATIVE_ADDRESS_ValueData(state, payload) {
+    state.helpdesk_edit_connote.connote_receiver_administrative_address.valueData = payload
   },
 
 
@@ -3859,11 +3859,11 @@ export default {
   },
 
 
-  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_PRICE(state, payload) {
-    state.helpdesk_edit_connote.amount_price.value = payload
+  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_TARIFF(state, payload) {
+    state.helpdesk_edit_connote.amount_tariff.value = payload
   },
-  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_PRICE_ValueData(state, payload) {
-    state.helpdesk_edit_connote.amount_price.valueData = payload
+  SET_HELPDESK_EDIT_CONNOTE_AMOUNT_TARIFF_ValueData(state, payload) {
+    state.helpdesk_edit_connote.amount_tariff.valueData = payload
   },
 
 
