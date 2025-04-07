@@ -197,15 +197,15 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "# Item",
-                    key: "bag_detail_qty",
-                    width: "auto"
+                    label: "Total Bag",
+                    key: "total_bag",
+                    width: "xs"
                 },
-                // {
-                //     label: "Weight (Kg)",
-                //     key: "bag_weight",
-                //     width: "auto"
-                // },
+                {
+                    label: "Total Connote",
+                    key: "total_connote",
+                    width: "xs"
+                },
                 {
                     label: "Cost Weight",
                     key: "cost_weight",
