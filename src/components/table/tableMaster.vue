@@ -1877,6 +1877,9 @@ export default {
 <style lang="scss">
 .vs-table {
   table {
+    width: max-content;
+    table-layout: fixed;
+
     text-align: left;
     min-width: fit-content !important;
     .md {
