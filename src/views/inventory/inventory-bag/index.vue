@@ -332,7 +332,7 @@ export default {
             }
             this.tempDate = []
         },
-        clearSearch() {
+        clearFilter() {
             this.bagDestination = "";
             this.bagOrigin = "";
             this.bagRouting = "";
