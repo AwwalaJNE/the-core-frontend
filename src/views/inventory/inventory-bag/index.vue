@@ -128,6 +128,7 @@
                         <transition name="slide-fade" >
                             <bag-list 
                                 :ref="navActive" 
+                                :key="navActive" 
                                 :bagDestination="bagDestination" 
                                 :bagIrreg="bagIrreg" 
                                 :bagOrigin="bagOrigin" 
@@ -338,7 +339,7 @@ export default {
             this.bagRouting = "";
             this.bagTipe = "";
             this.bagStatus = "";
-            this.bagIrreg = "",
+            this.bagIrreg = "";
             this.bagSource = "";
             this.tempDate = [];
             this.tempSearch = ""
