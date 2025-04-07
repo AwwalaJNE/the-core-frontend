@@ -432,9 +432,6 @@ export default {
     },
     listenDataBag(){
       return this.$ls.get('getDataBag')
-    },
-    listenUserRoleName() {
-      return this.listenUserRole.user_role_name
     }
   },
   watch: {
