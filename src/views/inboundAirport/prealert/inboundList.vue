@@ -415,10 +415,10 @@ export default {
                       item['inbound_eta'] = this.dateConvert(item['inbound_eta'])
                       item['inbound_etd'] = this.dateConvert(item['inbound_etd'])
                       item['departed_at'] = this.dateConvert(item['departed_at'])
-                      item['vehicle'] = item['vehicle_type_name']
+                      item['vehicle'] = item['vehicle_name']
                       item['inbound_number'] = isPrealert == 'bag' ? item['bag_number'] : item['inbound_number']
                       if(item['vehicle_name'] != null){
-                        item['vehicle'] = item['vehicle'] + '('+item['vehicle_name']+')'
+                        item['vehicle'] = item['vehicle'] + '('+item['vehicle_police_no']+')'
                       }
                       if (item['manifest_do_items'].length > 0) {
                         item['manifest_do_items'].map(el => {

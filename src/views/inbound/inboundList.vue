@@ -421,7 +421,7 @@ export default {
             item["inbound_etd"] = this.dateConvert(item["inbound_etd"]);
             item["departed_at"] = this.dateConvert(item["departed_at"]);
             item["received_at"] = this.dateConvert(item["received_at"]);
-            item["vehicle"] = item["vehicle_type_name"];
+            item["vehicle"] = item["vehicle_name"];
             // item['is_prealert'] = isPrealert
             item["inbound_number"] =
               isPrealert == "bag" ? item["bag_number"] : item["inbound_number"];
@@ -431,7 +431,7 @@ export default {
             }
             if (item["vehicle_name"] != null) {
               item["vehicle"] =
-                item["vehicle"] + "(" + item["vehicle_name"] + ")";
+                item["vehicle"] + "(" + item["vehicle_police_no"] + ")";
             }
             if (item["manifest_do_items"].length > 0) {
               item["manifest_do_items"].map((el) => {

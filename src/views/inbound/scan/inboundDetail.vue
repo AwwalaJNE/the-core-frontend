@@ -58,29 +58,19 @@ export default {
                 {
                     label: "No item.",
                     key: "item_number",
-                    width: "xs"
-                },
-                {
-                    label: "IM Number",
-                    key: "im_number",
-                    width: "xs"
-                },
-                {
-                    label: "OM Number",
-                    key: "om_number",
-                    width: "xs"
+                    width: "sm"
                 },
                 {
                     label: "Item type",
                     key: "item_type",
-                    width: "xxs"
+                    width: "sm"
                 },
 
                 {
                   label: "Status receiving",
                   key: "is_received",
                   type: 'status',
-                  width: "xxs"
+                  width: "sm"
                 },
             ],
             customActionList: [

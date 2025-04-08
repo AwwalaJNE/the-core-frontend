@@ -284,6 +284,7 @@ export default {
                 {
                     label: "Approved",
                     key: "approved",
+                    type: "status",
                     width: "xxxxs"
                 },
                 // {
@@ -417,7 +418,7 @@ export default {
                         el.surat_muatan = el.manifest_numbers
                         el.surat_jalan = el.surat_jalan.join(", ")
                         el.with_courier = el.courier ? el.courier.employee_name : ""
-                        el.approved = el.is_approve === 1 ? "Yes" : "No"
+                        el.approved = el.is_approve === 1 ? true : false
                         el.status_irregularity_description = el.irregularity_status_description || ""
                         
                         if (this.listenNodeId === el.origin_node_id) {
