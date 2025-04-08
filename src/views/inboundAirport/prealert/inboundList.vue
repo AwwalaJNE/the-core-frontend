@@ -66,10 +66,25 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Item",
-                    key: "inbound_total_bag",
-                    width: "auto"
+                    label: "Total Bag",
+                    key: "total_bag",
+                    width: "auto",
                 },
+                {
+                    label: "Total Master Bag",
+                    key: "total_master_bag",
+                    width: "auto",
+                },
+                {
+                    label: "Total Connote",
+                    key: "total_koli",
+                    width: "auto",
+                },
+                // {
+                //     label: "Item",
+                //     key: "inbound_total_bag",
+                //     width: "auto"
+                // },
                 // {
                 //     label: "Connote",
                 //     key: "inbound_total_koli",
