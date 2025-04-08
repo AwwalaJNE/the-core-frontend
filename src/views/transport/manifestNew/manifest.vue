@@ -85,6 +85,11 @@ export default {
                         width: "xs"
                     },
                     {
+                        label: "Vehicle",
+                        key: "formatted_vehicle",
+                        width: "xs"
+                    },
+                    {
                         label: "Jenis Kiriman",
                         key: "jenis_kiriman",
                         width: "xs"
