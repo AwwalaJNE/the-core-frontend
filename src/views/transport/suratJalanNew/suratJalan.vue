@@ -101,9 +101,14 @@ export default {
           key: "orion_number",
           width: "xs",
         },
+        // {
+        //   label: "Vehicle Type",
+        //   key: "vehicle_type_name",
+        //   width: "xs",
+        // },
         {
-          label: "Vehicle Type",
-          key: "vehicle_type_name",
+          label: "Vehicle",
+          key: "formatted_vehicle",
           width: "xs",
         },
         {
