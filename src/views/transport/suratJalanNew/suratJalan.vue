@@ -311,10 +311,10 @@ export default {
             item["node_id_origin_name"] = item.origin
               ? item.manifest_do_number?.startsWith("SJA")
                 ? `${item.origin.node_name} (AIRPORT)`
-                : item.origin.node_name
-              : null;
+                : `${item.origin.node_code ? item.origin.node_code : "null"} - ${item.origin.node_name}`
+    : null; 
             item["node_id_destination_name"] = item.destination
-              ? item.destination.node_name
+              ? `${item.destination.node_code ? item.destination.node_code : "null"} - ${item.destination.node_name}`
               : item.facility_code_destination;
             item["driver_id"] = item.pic_employee_id
               ? parseInt(item.pic_employee_id)
