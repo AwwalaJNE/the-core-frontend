@@ -169,6 +169,7 @@ export default {
         {
           label: "Approved",
           key: "approved",
+          type: "status",
           width: "xxs",
         },
         {
@@ -321,7 +322,7 @@ export default {
               : null;
             item["driver_name"] = item.pic ? item.pic.employee_name : null;
             item["orion_number"] = item.mts || item.do || "";
-            item["approved"] = item.is_approve === 1 ? "YES" : "NO";
+            item["approved"] = item.is_approve === 1 ? true : false;
 
             if (
                   (item.manifest_do_number?.startsWith("SJA") ||

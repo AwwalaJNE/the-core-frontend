@@ -142,6 +142,7 @@ export default {
                     {
                         label: "Approved",
                         key: "approved",
+                        type: "status",
                         width: "xs"
                     },
                     {
@@ -225,7 +226,7 @@ export default {
                         eta: this.dateConvert(item.eta),
                         etd: this.dateConvert(item.etd),
                         created_at: this.dateConvert(item.created_at),
-                        approved: item.is_approve === 1 ? 'YES' : 'NO',
+                        approved: item.is_approve === 1 ? true : false,
                         isDisabled: !item.status?.toLowerCase().includes('ready') && !item.status?.toLowerCase().includes('unreceived'),
                         latest_node_receiver: item.latest_node_name_receiver && item.latest_node_code_receiver
                                             ? `${item.latest_node_name_receiver} (${item.latest_node_code_receiver})`
