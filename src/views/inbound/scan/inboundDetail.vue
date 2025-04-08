@@ -61,11 +61,15 @@ export default {
                     width: "sm"
                 },
                 {
+                    label: "Total Connote",
+                    key: "total_connote",
+                    width: "sm"
+                },
+                {
                     label: "Item type",
                     key: "item_type",
                     width: "sm"
                 },
-
                 {
                   label: "Status receiving",
                   key: "is_received",

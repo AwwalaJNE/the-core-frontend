@@ -61,6 +61,11 @@ export default {
                     width: "lg"
                 },
                 {
+                    label: "Total Connote",
+                    key: "total_connote",
+                    width: "xs"
+                },
+                {
                     label: "Item type",
                     key: "item_type",
                     width: "lg"
