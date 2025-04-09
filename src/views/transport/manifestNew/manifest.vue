@@ -85,6 +85,11 @@ export default {
                         width: "xs"
                     },
                     {
+                        label: "Vehicle",
+                        key: "formatted_vehicle",
+                        width: "xs"
+                    },
+                    {
                         label: "Jenis Kiriman",
                         key: "jenis_kiriman",
                         width: "xs"
@@ -221,8 +226,8 @@ export default {
                         pickup_courier_employee_name: item.employee_courier?.employee_name || null,
                         manifest_type_name: item.manifest_method?.vehicle_mode_name || null,
                         jenis_kiriman: item.vehicle_type?.vehicle_type_name || '-',
-                        origin_name: item.origin?.node_name || '-',
-                        destination_name: item.destination?.node_name || '-',
+                        origin_name: `${item.origin?.node_code || 'null'} - ${item.origin?.node_name || '-'}`,
+                        destination_name: `${item.destination?.node_code || 'null'} - ${item.destination?.node_name || '-'}`,
                         eta: this.dateConvert(item.eta),
                         etd: this.dateConvert(item.etd),
                         created_at: this.dateConvert(item.created_at),
