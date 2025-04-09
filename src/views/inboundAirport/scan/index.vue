@@ -392,8 +392,6 @@ export default {
                     detail.map(item => {
                         if (item.is_masterbag === '1') {
                             item.item_type = 'MASTERBAG';
-                        } else {
-                            item.item_type = 'BAG';
                         }
                     })
                     this.itemDataTableProp = detail;
