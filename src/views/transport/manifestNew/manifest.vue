@@ -99,11 +99,11 @@ export default {
                         key: "destination_name",
                         width: "sm"
                     },
-                    {
-                        label: "Item",
-                        key: "detail_count",
-                        width: "auto"
-                    },
+                    // {
+                    //     label: "Item",
+                    //     key: "detail_count",
+                    //     width: "auto"
+                    // },
                     // {
                     //     label: "Connote",
                     //     key: "koli_count",
