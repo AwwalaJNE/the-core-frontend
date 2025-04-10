@@ -159,6 +159,21 @@ export default {
                         key: "total_irregularity",
                         width: "xs"
                     },
+                    {
+                        label: "Total Master Bag",
+                        key: "total_masterbag",
+                        width: "xs"
+                    },
+                    {
+                        label: "Total Bag",
+                        key: "total_bag",
+                        width: "xs"
+                    },
+                    {
+                        label: "Total Connote",
+                        key: "total_connote",
+                        width: "xs"
+                    },
                 ],
                 loading: false,
                 dataItem: {},
@@ -224,6 +239,9 @@ export default {
                         destination_name: `${item.destination?.node_code || 'null'} - ${item.destination?.node_name || '-'}`,
                         eta: this.dateConvert(item.eta),
                         etd: this.dateConvert(item.etd),
+                        total_masterbag: item.total_masterbag === 0 ? '0' : item.total_masterbag,
+                        total_bag: item.total_bag === 0 ? '0' : item.total_bag,
+                        total_connote: item.koli_count === 0 ? '0' : item.koli_count,
                         created_at: this.dateConvert(item.created_at),
                         approved: item.is_approve === 1 ? 'YES' : 'NO',
                         isDisabled: !item.status?.toLowerCase().includes('ready') && !item.status?.toLowerCase().includes('unreceived'),

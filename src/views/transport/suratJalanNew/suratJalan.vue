@@ -181,6 +181,21 @@ export default {
           key: "latest_node_code_receiver",
           width: "xs",
         },
+        {
+          label: "Total Master Bag",
+          key: "total_masterbag",
+          width: "xs",
+        },
+        {
+          label: "Total Bag",
+          key: "total_bag",
+          width: "xs",
+        },
+        {
+          label: "Total Connote",
+          key: "total_connote",
+          width: "xs",
+        },
       ],
       customActionList: [
         {
@@ -323,6 +338,10 @@ export default {
             item["orion_number"] = item.mts || item.do || "";
             item["approved"] = item.is_approve === 1 ? "YES" : "NO";
 
+            item["total_masterbag"] = item.total_masterbag === 0 ? '0' : item.total_masterbag;
+            item["total_bag"] = item.total_bag === 0 ? '0' : item.total_bag;
+            item["total_connote"] = item.total_connote === 0 ? '0' : item.total_connote;
+            
             if (
                   (item.manifest_do_number?.startsWith("SJA") ||
                   item.manifest_do_number?.startsWith("BM")) &&
