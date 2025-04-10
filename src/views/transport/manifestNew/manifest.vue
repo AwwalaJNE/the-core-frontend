@@ -163,7 +163,9 @@ export default {
                     {
                         label: "Total Irregularity",
                         key: "total_irregularity",
-                        width: "xs"
+                        width: "xs",
+                        textAlign: "center",
+                        textColor: "red"
                     },
                 ],
                 loading: false,
@@ -235,7 +237,8 @@ export default {
                         isDisabled: !item.status?.toLowerCase().includes('ready') && !item.status?.toLowerCase().includes('unreceived'),
                         latest_node_receiver: item.latest_node_name_receiver && item.latest_node_code_receiver
                                             ? `${item.latest_node_name_receiver} (${item.latest_node_code_receiver})`
-                                            : '-'
+                            : '-',
+                        total_irregularity: item.total_irregularity == 0 ? '' : item.total_irregularity,
                     }));
 
                     this.dataTable = arr;

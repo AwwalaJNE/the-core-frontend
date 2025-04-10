@@ -36,11 +36,6 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "OM Number",
-                    key: "om_number",
-                    width: "xs"
-                },
-                {
                     label: "Item type",
                     key: "item_type",
                     width: "xxs"
