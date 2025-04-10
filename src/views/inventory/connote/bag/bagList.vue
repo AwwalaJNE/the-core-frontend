@@ -217,13 +217,8 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Origin Node Code",
-                    key: "origin_node_code",
-                    width: "auto"
-                },
-                {
-                    label: "Origin Node Name",
-                    key: "origin_node_name",
+                    label: "Node Origin",
+                    key: "node_origin",
                     width: "auto"
                 },
                 {
@@ -232,28 +227,13 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Origin Name",
-                    key: "origin_name",
-                    width: "auto"
-                },
-                {
-                    label: "Destination Node Code",
-                    key: "destination_node_code",
-                    width: "auto"
-                },
-                {
-                    label: "Destination Node Name",
-                    key: "destination_node_name",
+                    label: "Node Destination",
+                    key: "node_destination",
                     width: "auto"
                 },
                 {
                     label: "Destination",
                     key: "destination",
-                    width: "auto"
-                },
-                {
-                    label: "Destination Name",
-                    key: "destination_name",
                     width: "auto"
                 },
                 {
