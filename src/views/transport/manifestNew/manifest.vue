@@ -104,11 +104,11 @@ export default {
                         key: "detail_count",
                         width: "auto"
                     },
-                    {
-                        label: "Connote",
-                        key: "koli_count",
-                        width: "auto"
-                    },
+                    // {
+                    //     label: "Connote",
+                    //     key: "koli_count",
+                    //     width: "auto"
+                    // },
                     {
                         label: "Fix Cost Weight",
                         key: "fix_cost_weight",

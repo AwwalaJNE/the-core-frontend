@@ -146,11 +146,11 @@ export default {
           key: "live_actual_weight",
           width: "auto",
         },
-        {
-          label: "Total Item",
-          key: "total_detail_items",
-          width: "auto",
-        },
+        // {
+        //   label: "Total Item",
+        //   key: "total_detail_items",
+        //   width: "auto",
+        // },
         {
           label: "ETD",
           key: "etd",
