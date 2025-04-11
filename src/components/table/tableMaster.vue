@@ -605,6 +605,7 @@
                     :key="key"
                     :class="[column.textAlign ? column.textAlign : '', item.width ? item.width : '']"
                     class="manual-padding"
+                    :style="column['textColor'] ? { color: column['textColor'] } : {}"
                   >
                     <template
                       v-if="
@@ -1906,8 +1907,14 @@ export default {
     .xxxxs {
       width: calc(100% / 25) !important;
     }
+    .center {
+      text-align: center !important;
+    }
     .right {
-      text-align: right !important;               
+      text-align: right !important;
+    }
+    .left {
+      text-align: left !important;
     }
     .auto {
       width: auto;

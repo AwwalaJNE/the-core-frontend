@@ -816,7 +816,7 @@ export default {
             }
         },
         originNode(){
-            if (this.listenActiveUser.nodes.length > 0) {
+            if (this.listenNode.length > 0) {
                 const nodeName = this.listenCurrentNode.node_name;
                 const nodeId = this.listenCurrentNode.node_id;
                 this.node_id_origin = nodeId;

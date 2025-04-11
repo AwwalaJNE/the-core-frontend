@@ -3939,7 +3939,6 @@ export default {
       rule: "required",
       typeInput: "autocomplete",
       typeData: "String",
-      isDisabled: true,
       arrData: [],
       valueData: null,
       value: ''
