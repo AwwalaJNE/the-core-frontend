@@ -629,7 +629,6 @@ export default {
       await this.loadSmFromStorage();
       this.refresh();
       this.getParamRoute();
-      console.log(this.is_prealert, 'is prealert');
         
       if (!this.isSmFilled && this.$refs.formInputParentSm) {
           this.$refs.formInputParentSm.$el.querySelector("input").focus();
