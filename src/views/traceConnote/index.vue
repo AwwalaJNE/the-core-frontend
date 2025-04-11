@@ -236,7 +236,7 @@ export default {
             title: "Connote's Customer View"
           },
           {
-            label: "CLAIM BURDEN",
+            label: "CLAIM CHARGE",
             key: "k-CALIM-BURDEN",
             title: "Claim and Burden"
           }
