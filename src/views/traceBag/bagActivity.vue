@@ -10,11 +10,12 @@
             :limit="pagination.limit"
             :hasAction="false"
             :hasLinked="['bag_number']"
-            :hasLinked2="['value']"
+            :hasLinkedCustom="['value']"
+            :hasLinkedCustomValidation="['sm_value']"
             :hasPagination="true"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
-            @handleEdit2="openDialog"
+            @handleEditCustom="openDialog"
         />
 
         <dialogCreateManifest
@@ -110,7 +111,7 @@ export default {
                     ...item,
                     counter: index + 1,
                     user_name: item.employee_name ?? item.user_name,
-                    sm_value: item.activity_name?.startsWith('SM_') ? item.value : ''
+                    sm_value: item.activity_name?.startsWith('SM_') ? true : false
                 }));
                 
                 this.pagination = {
