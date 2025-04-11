@@ -151,11 +151,11 @@ export default {
           key: "live_actual_weight",
           width: "auto",
         },
-        {
-          label: "Total Item",
-          key: "total_detail_items",
-          width: "auto",
-        },
+        // {
+        //   label: "Total Item",
+        //   key: "total_detail_items",
+        //   width: "auto",
+        // },
         {
           label: "ETD",
           key: "etd",
@@ -185,6 +185,21 @@ export default {
         {
           label: "Latest Node Receiver",
           key: "latest_node_code_receiver",
+          width: "xs",
+        },
+        {
+          label: "Total Master Bag",
+          key: "total_masterbag",
+          width: "xs",
+        },
+        {
+          label: "Total Bag",
+          key: "total_bag",
+          width: "xs",
+        },
+        {
+          label: "Total Connote",
+          key: "total_connote",
           width: "xs",
         },
       ],
@@ -329,6 +344,10 @@ export default {
             item["orion_number"] = item.mts || item.do || "";
             item["approved"] = item.is_approve === 1 ? true : false;
 
+            item["total_masterbag"] = item.total_masterbag === 0 ? '0' : item.total_masterbag;
+            item["total_bag"] = item.total_bag === 0 ? '0' : item.total_bag;
+            item["total_connote"] = item.total_connote === 0 ? '0' : item.total_connote;
+            
             if (
                   (item.manifest_do_number?.startsWith("SJA") ||
                   item.manifest_do_number?.startsWith("BM")) &&

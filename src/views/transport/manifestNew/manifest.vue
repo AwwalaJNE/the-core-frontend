@@ -104,16 +104,16 @@ export default {
                         key: "destination_name",
                         width: "sm"
                     },
-                    {
-                        label: "Item",
-                        key: "detail_count",
-                        width: "auto"
-                    },
-                    {
-                        label: "Connote",
-                        key: "koli_count",
-                        width: "auto"
-                    },
+                    // {
+                    //     label: "Item",
+                    //     key: "detail_count",
+                    //     width: "auto"
+                    // },
+                    // {
+                    //     label: "Connote",
+                    //     key: "koli_count",
+                    //     width: "auto"
+                    // },
                     {
                         label: "Fix Cost Weight",
                         key: "fix_cost_weight",
@@ -166,6 +166,21 @@ export default {
                         width: "xs",
                         textAlign: "center",
                         textColor: "red"
+                    },
+                    {
+                        label: "Total Master Bag",
+                        key: "total_masterbag",
+                        width: "xs"
+                    },
+                    {
+                        label: "Total Bag",
+                        key: "total_bag",
+                        width: "xs"
+                    },
+                    {
+                        label: "Total Connote",
+                        key: "total_connote",
+                        width: "xs"
                     },
                 ],
                 loading: false,
@@ -232,6 +247,9 @@ export default {
                         destination_name: `${item.destination?.node_code || 'null'} - ${item.destination?.node_name || '-'}`,
                         eta: this.dateConvert(item.eta),
                         etd: this.dateConvert(item.etd),
+                        total_masterbag: item.total_masterbag === 0 ? '0' : item.total_masterbag,
+                        total_bag: item.total_bag === 0 ? '0' : item.total_bag,
+                        total_connote: item.koli_count === 0 ? '0' : item.koli_count,
                         created_at: this.dateConvert(item.created_at),
                         approved: item.is_approve === 1 ? true : false,
                         isDisabled: !item.status?.toLowerCase().includes('ready') && !item.status?.toLowerCase().includes('unreceived'),
