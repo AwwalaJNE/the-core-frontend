@@ -52,9 +52,10 @@
                 <vs-col lg="5" sm="5">
                     <div>
                         <form-input-controller
+                            v-if="!listenIsReadOnly || !loadingSuratMuatan"
                             ref="formSuratMuatanController"
                             typeForm="surat_muatan"
-                            :dataItem="listenDataItem"
+                            :dataItem="listenIsReadOnly ? listenGetByApi : listenDataItem"
                             :isDisabled="isDisabled"
                             :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
                             :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
@@ -143,8 +144,8 @@ export default {
         dataItem: Object,
         refresh: Function,
         isReadOnly: Boolean,
-        title: String,   
-        loadingByNumber: Boolean,     
+        title: String,
+        sm_number: String, 
     },
     data() {
         return {
@@ -231,6 +232,7 @@ export default {
             item_remove: "",
             master_form: {},
             dataByApi: {},
+            loadingSuratMuatan: false,
         };
     },
     computed: {
@@ -241,7 +243,10 @@ export default {
             return this.title;
         },
         listenDataItem() {
-            return this.dataItem || this.dataByApi || {};
+            return this.dataItem || {};
+        },
+        listenGetByApi() {
+            return this.dataByApi || {};
         },
         listenItterateUrlAutoComplete() {
             return this.itterateUrlAutoComplete;
@@ -250,32 +255,40 @@ export default {
             return this.itterateFlagAutoComplete;
         },
         listenLoading() {
-            return this.loading || this.loadingByNumber || this.loadingDetail || this.loadingConfirmApprove;
+            return this.loading || this.loadingSuratMuatan || this.loadingDetail || this.loadingConfirmApprove;
         },
         listenIsReadOnly() {
             return this.isReadOnly;
+        },
+        listenSMNumber() {
+            return this.sm_number;
         }
     },
     watch: {
         dataItem: function(val) {
             if (val !== undefined) {
+                this.getEditData(val);
+
+                this.isDisabled = (val.status !== 'READY' && val.status !== 'UNRECEIVED') || val.is_approve === 1;
+                this.isDisabledPrint = val.status === 'CANCELED';
+                this.isDisabledApprove = (val.status !== 'READY' && val.status !== 'UNRECEIVED') ;
+
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
+            }
+        },
+        dataByApi: function(val) {
+            if (val !== undefined) {
                 if (this.listenIsReadOnly) {
-                    this.getDataPreview(val);
-
                     this.isDisabled = true
-                } else {
-                    this.getEditData(val);
-
-                    this.isDisabled = (val.status !== 'READY' && val.status !== 'UNRECEIVED') || val.is_approve === 1;
-                    this.isDisabledPrint = val.status === 'CANCELED';
-                    this.isDisabledApprove = (val.status !== 'READY' && val.status !== 'UNRECEIVED') ;
-
-                    this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);                
                 }
             }
         },
-        active: function(val) {
+        active: async function(val) {
             if (val == true) {
+                if (this.listenIsReadOnly) {
+                    await this.getEditDataByApi();
+                }
+                
                 this.getDataVehicleMode();
                 this.originNode()
                 this.getDataEmployee();
@@ -358,6 +371,32 @@ export default {
                 eta: val.eta,
                 auto_depart: val.auto_depart
             };
+        },
+            this.loadingSuratMuatan = true;
+            try {
+                const res = await axios.get(`${this.URL.surat_muatan}/${this.listenSMNumber}?n=${this.listenNodeId}`, this.Helper.header());
+
+                let data = res.data.data
+                if (data) {
+                    data["node_id_origin"] = data["origin"]["node_name"];
+                    data["node_id_destination"] = data["destination"]["node_name"];
+                    data['manifest_method_id'] = parseInt(data['manifest_method_id']);
+                    data['vehicle_id'] = parseInt(data['vehicle_id']);
+                    data['pic_employee_id'] = parseInt(data['pic_employee_id']);
+                    data['vehicle_type_id'] = parseInt(data['vehicle_type_id']);
+                    data['flight_number'] = data['flight_number'];
+                    data['flight_schedule'] = data['flight_schedule'];
+                    
+                    this.dataByApi = data;
+
+                    this.getDataPreview(data);
+                }
+
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.loadingSuratMuatan = false;
+            }
         },
         getDataPreview(val) {
             this.vehicle_mode_id = val.vehicle_mode_id;

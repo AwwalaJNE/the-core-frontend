@@ -22,9 +22,8 @@
             title="Manifest Info"
             :active="dialogManifestList"
             :closeDialog="closeDialog"
-            :dataItem="dataItem"
-            :loadingByNumber="loadingSuratMuatan"
             :isReadOnly="true"
+            :sm_number="sm_number"
             @refresh="refresh"
         />
     </div>
@@ -96,7 +95,7 @@ export default {
                 page: 1
             },
             loadingSuratMuatan: false,
-            dataItem: {},
+            sm_number: "",
             dialogManifestList:false,
         }
     },
@@ -137,39 +136,10 @@ export default {
         refresh(){
             this.getTableData(this.pagination.limit, this.pagination.page)
         },
-        async getEditDataByApi(sm_number) {
-            this.loadingSuratMuatan = true;
-            try {
-                const res = await axios.get(`${this.URL.surat_muatan}/${sm_number}?n=${this.listenNodeId}`, this.Helper.header());
-
-                let data = res.data.data
-                if (data) {
-                    data["node_id_origin"] = data["origin"]["node_name"];
-                    data["node_id_destination"] = data["destination"]["node_name"];
-                    data['manifest_method_id'] = parseInt(data['manifest_method_id']);
-                    data['vehicle_id'] = parseInt(data['vehicle_id']);
-                    data['pic_employee_id'] = parseInt(data['pic_employee_id']);
-                    data['vehicle_type_id'] = parseInt(data['vehicle_type_id']);
-                    data['flight_number'] = data['flight_number'];
-                    data['flight_schedule'] = data['flight_schedule'];
-                    
-                    this.dataItem = data;
-                    this.dialogManifestList = true;
-                }
-                
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
-            } finally {
-                this.loadingSuratMuatan = false;
-                
-            }
-        },
         async openDialog(val) {
             if (val.sm_value) {
-                // this.dialogManifestList = true;
-                await this.getEditDataByApi(val.value);
-            } else {
-                console.log("BUKAN SM")
+                this.sm_number = val.value;
+                this.dialogManifestList = true;
             }
         },
         closeDialog() {
