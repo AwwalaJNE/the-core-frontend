@@ -27,7 +27,7 @@
                 <h5>Approved Claim</h5>
                 <p>{{ formatCurrency(claimBurden.approved_claim) }}</p>
 
-                <h5>Burden Date</h5>
+                <h5>Charge Date</h5>
                 <p>{{ claimBurden.created_at }}</p>
               </vs-col>
             </vs-row>
@@ -36,7 +36,7 @@
         <!-- Card Burden -->
         <vs-col xs="12" sm="6" lg="6">
           <div class="custom-card"  v-if="!loading">
-            <h4 align="left">Burden</h4>
+            <h4 align="left">Charge</h4>
             <template  v-if="claimBurden.burdened_pic_1 != null">
               <vs-row>
                 <!-- Kolom 1 -->
@@ -53,25 +53,25 @@
 
                 <!-- Kolom 2 -->
                 <vs-col xs="12" sm="4" lg="4">
-                  <h5>Burden Percentage 1</h5>
+                  <h5>Charge Percentage 1</h5>
                   <p>{{ claimBurden.burden_percentage_1 }}</p>
 
-                  <h5>Burden Percentage 2</h5>
+                  <h5>Charge Percentage 2</h5>
                   <p>{{ claimBurden.burden_percentage_2 }}</p>
 
-                  <h5>Burden Percentage 3</h5>
+                  <h5>Charge Percentage 3</h5>
                   <p>{{ claimBurden.burden_percentage_3 }}</p>
                 </vs-col>
 
                 <!-- Kolom 3 -->
                 <vs-col xs="12" sm="4" lg="4">
-                  <h5>Burden Value 1</h5>
+                  <h5>Charge Value 1</h5>
                   <p>{{formatCurrency(claimBurden.burden_value_1)}}</p>
 
-                  <h5>Burden Value 2</h5>
+                  <h5>Charge Value 2</h5>
                   <p>{{formatCurrency(claimBurden.burden_value_2)}}</p>
 
-                  <h5>Burden Value 3</h5>
+                  <h5>Charge Value 3</h5>
                   <p>{{formatCurrency(claimBurden.burden_value_3)}}</p> 
                 </vs-col>
               </vs-row>
