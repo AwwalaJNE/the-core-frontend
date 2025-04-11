@@ -372,6 +372,7 @@ export default {
                 auto_depart: val.auto_depart
             };
         },
+        async getEditDataByApi() {
             this.loadingSuratMuatan = true;
             try {
                 const res = await axios.get(`${this.URL.surat_muatan}/${this.listenSMNumber}?n=${this.listenNodeId}`, this.Helper.header());
