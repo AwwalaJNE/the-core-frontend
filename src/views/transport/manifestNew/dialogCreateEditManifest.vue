@@ -12,30 +12,32 @@
                     {{ listenTitle }}
                 </div>
                 
-                <template v-if="is_approve === 1">
-                    <vs-button 
-                        :disabled="isDisabledPrint"
-                        @click="print"
-                    >
-                        Print
-                    </vs-button>
-                </template>
-                <template v-if="listenUserRoleName === 'HELPDESK'">
-                    <vs-button  
-                        :danger="is_approve === 1"
-                        :disabled="isDisabledApprove"
-                        @click="approve" 
-                    >
-                        {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
-                    </vs-button>
-                </template>
-                <template v-else>
-                    <vs-button
-                        :disabled="is_approve === 1 || isDisabledApprove"
-                        @click="approve" 
-                    >
-                        {{ is_approve === 1 ? 'Approved' : 'Approve' }}
-                    </vs-button>
+                <template v-if="!listenIsReadOnly">
+                    <template v-if="is_approve === 1">
+                        <vs-button 
+                            :disabled="isDisabledPrint"
+                            @click="print"
+                        >
+                            Print
+                        </vs-button>
+                    </template>
+                    <template v-if="listenUserRoleName === 'HELPDESK'">
+                        <vs-button  
+                            :danger="is_approve === 1"
+                            :disabled="isDisabledApprove"
+                            @click="approve" 
+                        >
+                            {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
+                        </vs-button>
+                    </template>
+                    <template v-else>
+                        <vs-button
+                            :disabled="is_approve === 1 || isDisabledApprove"
+                            @click="approve" 
+                        >
+                            {{ is_approve === 1 ? 'Approved' : 'Approve' }}
+                        </vs-button>
+                    </template>
                 </template>
             </div>
         </template>
@@ -64,7 +66,7 @@
                     </div>
                 </vs-col>
                 <vs-col lg="7" sm="7">
-                    <vs-row>
+                    <vs-row v-if="!listenIsReadOnly">
                         <vs-col>
                             <vs-input
                                 border
@@ -99,8 +101,8 @@
                                     :limit="pagination.limit"
                                     :hasAction="false"
                                     :hasPagination="true"
-                                    :customAction="true"
-                                    :customActionList="customActionList"
+                                    :customAction="!listenIsReadOnly"
+                                    :customActionList="!listenIsReadOnly ? customActionList : null"
                                     @actionUpdate="actionUpdate"
                                     @actionLimit="actionLimit"
                                     @actionPagination="actionPagination"
@@ -140,7 +142,9 @@ export default {
         closeDialog: Function,
         dataItem: Object,
         refresh: Function,
-        title: String,        
+        isReadOnly: Boolean,
+        title: String,   
+        loadingByNumber: Boolean,     
     },
     data() {
         return {
@@ -225,7 +229,8 @@ export default {
             isDisabledApprove: false,
             is_approve: 0,
             item_remove: "",
-            master_form: {}
+            master_form: {},
+            dataByApi: {},
         };
     },
     computed: {
@@ -236,7 +241,7 @@ export default {
             return this.title;
         },
         listenDataItem() {
-            return this.dataItem || {};
+            return this.dataItem || this.dataByApi || {};
         },
         listenItterateUrlAutoComplete() {
             return this.itterateUrlAutoComplete;
@@ -245,19 +250,28 @@ export default {
             return this.itterateFlagAutoComplete;
         },
         listenLoading() {
-            return this.loading || this.loadingDetail || this.loadingConfirmApprove;
+            return this.loading || this.loadingByNumber || this.loadingDetail || this.loadingConfirmApprove;
+        },
+        listenIsReadOnly() {
+            return this.isReadOnly;
         }
     },
     watch: {
         dataItem: function(val) {
             if (val !== undefined) {
-                this.getEditData(val);
+                if (this.listenIsReadOnly) {
+                    this.getDataPreview(val);
 
-                this.isDisabled = (val.status !== 'READY' && val.status !== 'UNRECEIVED') || val.is_approve === 1;
-                this.isDisabledPrint = val.status === 'CANCELED';
-                this.isDisabledApprove = (val.status !== 'READY' && val.status !== 'UNRECEIVED') ;
+                    this.isDisabled = true
+                } else {
+                    this.getEditData(val);
 
-                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
+                    this.isDisabled = (val.status !== 'READY' && val.status !== 'UNRECEIVED') || val.is_approve === 1;
+                    this.isDisabledPrint = val.status === 'CANCELED';
+                    this.isDisabledApprove = (val.status !== 'READY' && val.status !== 'UNRECEIVED') ;
+
+                    this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);                
+                }
             }
         },
         active: function(val) {
@@ -317,7 +331,7 @@ export default {
                             data.button_status = { remove: false };
                         }
 
-                        if (data.status_irregularity !== null) {
+                        if (data.status_irregularity !== null && data.status_irregularity !== undefined) {
                             data.status_irregularity += " (" + data.status_description + ") ";
                         }
 
@@ -344,6 +358,61 @@ export default {
                 eta: val.eta,
                 auto_depart: val.auto_depart
             };
+        },
+        getDataPreview(val) {
+            this.vehicle_mode_id = val.vehicle_mode_id;
+            this.vehicle_type_id = val?.vehicle_type_id ?? null;
+
+            if (this.vehicle_mode_id) {
+                this.getDataVehicleType();
+            }
+
+            if (this.vehicle_type_id) {
+                this.getDataVehicle();
+            }
+            
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", true);
+
+            if (val.manifest_method_id === 2) {
+                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true);
+            } else {
+                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
+            }
+
+            if (val?.detail) {
+                let arr = [];
+
+                val.detail.forEach(data => {
+                    data.received_status = data.received_at ? 1 : 0;
+                    
+                    if (data.item_number) {
+                        data.bag_number = data.item_number;
+                        data.type = data.item_type;
+                        data.bag_weight = data.total_weight;
+                        data.cost_weight = data.cost_weight || '0';
+                        data.actual_weight = data.bag?.bag_actual_weight || '0';
+                        data.total_inner = data.bag_detail_count || '0';
+                        data.destination_name = data.bag?.destination?.node_tariff_code || '';
+                        if (data.is_masterbag === '1') {
+                            data.item_type = 'MASTERBAG'
+                        } else {
+                            data.item_type = 'BAG'
+                        }
+                        
+                        if ((val.status !== "READY" && val.status !== "UNRECEIVED") || val.is_approve === 1) {
+                            data.button_status = { remove: false };
+                        }
+
+                        if (data.status_irregularity !== null && data.status_irregularity !== undefined) {
+                            data.status_irregularity += " (" + data.status_description + ") ";
+                        }
+
+                        arr.push(data);
+                    }
+                });
+
+                this.dataTable = arr;
+            }
         },
         actionUpdate(val, key) {
             switch (key) {
