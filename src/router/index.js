@@ -1318,8 +1318,8 @@ const routes = [
         }
       },
       {
-        path: "/inbound-airport/scan",
-        name: "Airport Receiving",
+        path: "/inbound-airport/scan/:inbound_number?",
+        name: "InboundAirportScan",
         component: InboundAirportScan,
         meta: {
           requiresAuth: true,

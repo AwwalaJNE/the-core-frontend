@@ -17,7 +17,7 @@
                 <h4 align="left">Scan Item</h4>
                 <vs-row style="padding-bottom: 10px; padding: 0 20px;">
                   <vs-col xs="12" sm="12" lg="12" style="padding: 10px 0;">
-                    <template>
+                    <template v-if="!is_prealert">
                       <div class="center">
                         <form @submit.prevent>
                           <vs-input border type="text"
@@ -252,13 +252,17 @@ export default {
             itemLoading: false,
             is_auto_sj: false,
             list_receiving_log: [],
-            receivingLogs: []
+            receivingLogs: [],
         }
     },
     computed: {
         listenEmpty(){
             return this.dataTable.length === 0
         },
+        is_prealert() {
+            const pattern = /\/scan\/[\w-]+$/;
+            return pattern.test(this.$route.fullPath);
+        }
     },
     methods: {
         refresh(){
@@ -347,8 +351,10 @@ export default {
             localStorage.removeItem('inboundAirportSmData');
         },
         scanSm() {
+            if (!this.is_prealert) {
+              this.form.sm_number = this.sm_no;
+            }
             this.sm_no = this.sm_no.replaceAll(/\s+/g, "");
-            this.form.sm_number = this.sm_no;
             this.isSmFilled = true;
             
             this.saveSmToStorage();
@@ -611,11 +617,19 @@ export default {
         },
         listenDisabled() {
           return this.disabledSwitch || false
-        }
+        },
+        getParamRoute() {
+          if (this.is_prealert){
+            this.sm_no = this.$route.params.inbound_number.toString()
+            this.scanSm();
+          }
+        },
     },
     async mounted() {
       await this.loadSmFromStorage();
       this.refresh();
+      this.getParamRoute();
+      console.log(this.is_prealert, 'is prealert');
         
       if (!this.isSmFilled && this.$refs.formInputParentSm) {
           this.$refs.formInputParentSm.$el.querySelector("input").focus();
