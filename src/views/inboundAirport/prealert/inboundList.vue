@@ -490,8 +490,8 @@ export default {
             localStorage.setItem("InboundAirportPreAlertFilters", JSON.stringify(filterData));
         },
         actionDetail(row){
-            this.$router.push({ 
-                name: 'InboundIncomingDetail', 
+            this.$router.push({
+                name: 'InboundAirportScan', 
                 params: { 
                   inbound_number: row.inbound_number 
                 } 
