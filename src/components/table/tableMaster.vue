@@ -683,6 +683,19 @@
                         <img width="100%" :src="dialogImageUrl" alt="" />
                       </el-dialog>
                     </template>
+                    <template
+                      v-else-if="
+                        item[hasLinkedCustomValidation] &&
+                        hasLinkedCustom !== undefined &&
+                        hasLinkedCustom.length > 0 &&
+                          column.key !== undefined &&
+                          hasLinkedCustom.includes(column.key.toLowerCase())
+                      "
+                    >
+                      <span class="text-link" @click="handleEditCustom(item)">{{
+                        item[column.key] ? item[column.key] : ""
+                      }}</span>
+                    </template>
                     <template v-else-if="column.key === 'is_confirmed'">
                       <span
                         v-if="item[column.key] === 'Confirmed'"
@@ -1472,6 +1485,8 @@ export default {
     hasLinked2: Array,
     hasLinked3: Array,
     hasLinked4: Array,
+    hasLinkedCustom: Array,
+    hasLinkedCustomValidation: Array,
     hasLinkedChild: Array,
     hasId: Boolean,
     editOnly: Boolean,
@@ -1795,6 +1810,9 @@ export default {
     },
     handleEditLinkedChild(val, key) {
       this.$emit("handleEditLinkedChild", val, key);
+    },
+    handleEditCustom(val, key) {
+      this.$emit("handleEditCustom", val);
     },
     handlePictureCardPreview(val) {
 

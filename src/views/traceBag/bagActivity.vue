@@ -10,9 +10,21 @@
             :limit="pagination.limit"
             :hasAction="false"
             :hasLinked="['bag_number']"
+            :hasLinkedCustom="['value']"
+            :hasLinkedCustomValidation="['sm_value']"
             :hasPagination="true"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
+            @handleEditCustom="openDialog"
+        />
+
+        <dialogCreateManifest
+            title="Manifest Info"
+            :active="dialogManifestList"
+            :closeDialog="closeDialog"
+            :isReadOnly="true"
+            :sm_number="sm_number"
+            @refresh="refresh"
         />
     </div>
 </template>
@@ -22,6 +34,8 @@ import master from "@/mixins/master"
 
 import TableMaster from "@/components/table/tableMaster.vue"
 
+import DialogCreateManifest from "@/views/transport/manifestNew/dialogCreateEditManifest"
+
 export default {
     name:"bag-activity",
     mixins: [master],
@@ -29,7 +43,8 @@ export default {
         bagNumber: String
     },
     components: {
-        "table-master": TableMaster
+        "table-master": TableMaster,
+        "dialogCreateManifest": DialogCreateManifest,
     },
     data() {
         return {
@@ -78,7 +93,10 @@ export default {
                 limit: 20,
                 page_size: 1,
                 page: 1
-            }
+            },
+            loadingSuratMuatan: false,
+            sm_number: "",
+            dialogManifestList:false,
         }
     },
     methods: {
@@ -87,11 +105,12 @@ export default {
             
             try {
                 const res = await axios.get(`${this.URL.bag}/${this.bag_number}/history?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}`,  this.Helper.header());
-                
+
                 this.dataTable = res.data.data.map((item, index) => ({
                     ...item,
                     counter: index + 1,
-                    user_name: item.employee_name ?? item.user_name
+                    user_name: item.employee_name ?? item.user_name,
+                    sm_value: item.activity_name?.startsWith('SM_') ? true : false
                 }));
                 
                 this.pagination = {
@@ -116,6 +135,16 @@ export default {
         },
         refresh(){
             this.getTableData(this.pagination.limit, this.pagination.page)
+        },
+        async openDialog(val) {
+            if (val.sm_value) {
+                this.sm_number = val.value;
+                this.dialogManifestList = true;
+            }
+        },
+        closeDialog() {
+            this.dialogManifestList = false
+            this.refresh();
         },
     },
     mounted() {
