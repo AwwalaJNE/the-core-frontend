@@ -2,6 +2,7 @@
     <div>
         <table-master 
             hideColumnKey="receiving-log" 
+            :isSearchAble="true"
             :dataTable="dataTableProp" 
             :dataColumn="datacolumn" 
             :tableLoading="listenLoading"
