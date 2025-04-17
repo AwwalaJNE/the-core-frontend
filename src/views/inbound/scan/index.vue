@@ -98,28 +98,6 @@
                         <h4 align="left">Receiving Log</h4>
                         <div class="nav-box">
                             <template>
-                                <vs-col xs="12" sm="12" lg="12">
-                                    <template>
-                                        <vs-row justify="end">
-                                            <vs-col xs="6" sm="8" lg="4">
-                                                <select-search-by
-                                                    :border="true"
-                                                    :isMultiple="false"
-                                                    :selectedValue="searchBy"
-                                                    :valueData="searchParams"
-                                                    @updateSearchBy="updateSearchBy"
-                                                />
-                                            </vs-col>
-                                            <vs-col xs="6" sm="4" lg="4">
-                                                <search-input
-                                                    ref="searchInput"
-                                                    :placeholder="searchPlaceholder"
-                                                    @searchValue="searchValue"
-                                                />
-                                            </vs-col>
-                                        </vs-row>
-                                    </template>
-                                </vs-col>
                                 <transition name="slide-fade">
                                     <ReceivingLog 
                                         ref="ReceivingLog" 
@@ -195,8 +173,7 @@ import InboundInformation from "@/views/inbound/scan/inboundInformation"
 import InboundDetail from "@/views/inbound/scan/inboundDetail"
 import InboundReceivingLog from "@/views/inbound/scan/inboundReceivingLog"
 import CameraScanner from "@/components/scanner/camera.vue";
-import SearchInput from "@/components/search/searchInput";
-import SelectSearchBy from "@/components/search/selectSearchBy";
+
 
 export default {
     name:"inbound-scan",
@@ -207,8 +184,6 @@ export default {
         "InboundInformation": InboundInformation,
         "InboundDetail": InboundDetail,
         "ReceivingLog": InboundReceivingLog,
-        "search-input": SearchInput,
-        "select-search-by": SelectSearchBy,
         CameraScanner,
     },
     computed: {
@@ -247,18 +222,7 @@ export default {
             },
             receivingLogs: [],
             inboundNumber: '',
-            processing: false,
-
-            tempSearch: "",
-            searchPlaceholder: "Search Inbound Number",
-            searchBy: "item_number",
-            searchByDataType: false,
-            searchParams: [
-                {
-                    label: "Item Number",
-                    value: "item_number"
-                },
-            ],
+            processing: false
         }
     },
     methods: {
@@ -414,17 +378,12 @@ export default {
                 let search_by = '';
                 let s = '';
 
-                if (this.tempSearch !== '') {
+                if (this.inbound_number) {
+                    search_by = 'inbound_number'
+                    s = this.inbound_number
+                } else if (this.item_no || this.child_no) {
                     search_by = 'item_number'
-                    s = this.tempSearch
-                } else {
-                    if (this.inbound_number) {
-                        search_by = 'inbound_number'
-                        s = this.inbound_number
-                    } else if (this.item_no || this.child_no) {
-                        search_by = 'item_number'
-                        s = this.item_no || this.child_no
-                    }
+                    s = this.item_no || this.child_no
                 }
 
                 const res = await axios.get(`${this.URL.receiving_log}?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=${search_by}&s=${s}&pov=receiver`, this.Helper.header());
@@ -495,19 +454,6 @@ export default {
         actionPagination(val) {
             this.page = val
             this.refresh()
-        },
-        updateSearchBy(key, value, info) {
-            this.searchPlaceholder = key;
-            this.searchBy = value;
-        },
-        searchValue(value) {
-            this.tempSearch = value;
-
-            if (value !== "") {
-                this.getTableDataReceivingLog();
-            } else {
-                this.dataTableReceivingLog = []
-            }
         },
     },
     async mounted() {
