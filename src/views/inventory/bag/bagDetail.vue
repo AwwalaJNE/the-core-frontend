@@ -117,7 +117,7 @@
           </template>
           
         </vs-row>
-        <vs-row style="margin-top:2em">
+        <!-- <vs-row style="margin-top:2em">
           <vs-col xs="4" sm="4" lg="2">
             <vs-radio
               v-model="radio_option"
@@ -132,7 +132,7 @@
               Koli
             </vs-radio>
           </vs-col>
-        </vs-row>
+        </vs-row> -->
       </div>
     </template>
 
@@ -140,7 +140,7 @@
       <vs-row justify="space-between">
         <vs-col xs="12" sm="2" lg="2">
           <template v-if="!disabledApprove && !is_orion && !loading">
-            <div v-if="radio_option === 'connote'" class="center in-get-bag">
+            <!-- <div v-if="radio_option === 'connote'" class="center in-get-bag">
               <vs-input 
                 border 
                 type="text" 
@@ -159,13 +159,13 @@
                 </template>
 
               </vs-input>
-            </div>
+            </div> -->
             <div v-if="radio_option === 'koli'" class="center in-get-bag">
               <vs-input 
                 border 
                 type="text" 
                 v-model="item_code" 
-                label-placeholder="Masukkan code Koli"
+                label-placeholder="Masukkan Koli/Connote"
                 v-on:keyup.enter="updateItemOnBag" 
                 icon-after 
                 :autofocus="true" 
@@ -361,7 +361,7 @@ export default {
   },
   data() {
     return {
-      radio_option: "connote",
+      radio_option: "koli",
       title: "Bagging Detail",
       item_code_orion: '',
       item_code:'',
@@ -721,10 +721,10 @@ export default {
     setInputFocus() {
       this.$nextTick(() => {
         let inputElement = null
-        if (this.radio_option === "connote") {
-          inputElement = this.$refs.formInputBaggingConnote?.$el.querySelector('input');
-        }
-        else if (this.radio_option === "koli") {
+        // if (this.radio_option === "connote") {
+        //   inputElement = this.$refs.formInputBaggingConnote?.$el.querySelector('input');
+        // }
+        if (this.radio_option === "koli") {
           inputElement = this.$refs.formInputBaggingKoli?.$el.querySelector('input');
         }
         else if (this.radio_option === "bag") {
