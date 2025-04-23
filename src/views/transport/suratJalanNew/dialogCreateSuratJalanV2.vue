@@ -548,6 +548,7 @@ export default {
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan
                     };
+                    this.isDestinationEnabled = data.node_id_destination === null;
                     await this.getSuratJalanDetail();
                 }
 
