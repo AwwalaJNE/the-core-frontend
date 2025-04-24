@@ -56,6 +56,11 @@ export default {
             ],
             allColumn: [
                 {
+                    label: "Status",
+                    key: "status",
+                    width: "auto"
+                },
+                {
                     label: "Vehicle",
                     key: "vehicle",
                     width: "xs"
@@ -134,11 +139,6 @@ export default {
                     label: "Departed",
                     key: "departed_at",
                     width: "xs"
-                },
-                {
-                    label: "Status",
-                    key: "status",
-                    width: "auto"
                 },
                 {
                     label: "Received At",
