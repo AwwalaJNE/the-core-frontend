@@ -631,17 +631,19 @@ export default {
         listenDisabled() {
           return this.disabledSwitch || false
         },
-        getParamRoute() {
+        async getParamRoute() {
           if (this.is_prealert){
             this.sm_no = this.$route.params.inbound_number.toString()
             this.scanSm();
+          } else {
+            this.handleClearSm();
+            await this.loadSmFromStorage();
+            this.refresh();
           }
         },
     },
     async mounted() {
-      await this.loadSmFromStorage();
-      this.refresh();
-      this.getParamRoute();
+      await this.getParamRoute();
         
       if (!this.isSmFilled && this.$refs.formInputParentSm) {
           this.$refs.formInputParentSm.$el.querySelector("input").focus();
