@@ -492,6 +492,7 @@ export default {
                 },
                 this.Helper.header())
               this.getTableDataReceivingLog();
+              this.getSmDetails();
               this.openNotification('success', null, "Success", res?.data?.message ?? "Success Confirm Inbound");
           } catch (err) {
               this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
@@ -499,9 +500,8 @@ export default {
               this.loading = false
               this.is_auto_sj = false
               this.closeProgress();
-              this.handlerClearForm();
-              this.handleClearSm();
               this.refresh();
+              this.handleClearSm();
           }
         },
         async handleUpload(files) {
