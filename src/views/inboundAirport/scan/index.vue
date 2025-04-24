@@ -264,6 +264,13 @@ export default {
             return pattern.test(this.$route.fullPath);
         }
     },
+    watch: {
+        is_prealert(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.refresh();
+            }
+        }
+    },
     methods: {
         refresh(){
           this.getTableData()
@@ -434,6 +441,12 @@ export default {
               this.dataTableReceivingLog.map(item => JSON.stringify(item))
             );
 
+            if (this.is_prealert) {
+              this.list_receiving_log = [{
+                item_number: "",
+                sm_no: this.sm_no
+              }];
+            }
             for (const { sm_no, item_number } of this.list_receiving_log) {
               if (!sm_no && !item_number) continue;
 
@@ -492,6 +505,7 @@ export default {
                 },
                 this.Helper.header())
               this.getTableDataReceivingLog();
+              this.getSmDetails();
               this.openNotification('success', null, "Success", res?.data?.message ?? "Success Confirm Inbound");
           } catch (err) {
               this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
@@ -499,9 +513,8 @@ export default {
               this.loading = false
               this.is_auto_sj = false
               this.closeProgress();
-              this.handlerClearForm();
-              this.handleClearSm();
               this.refresh();
+              this.handleClearSm();
           }
         },
         async handleUpload(files) {
@@ -618,17 +631,19 @@ export default {
         listenDisabled() {
           return this.disabledSwitch || false
         },
-        getParamRoute() {
+        async getParamRoute() {
           if (this.is_prealert){
             this.sm_no = this.$route.params.inbound_number.toString()
             this.scanSm();
+          } else {
+            this.handleClearSm();
+            await this.loadSmFromStorage();
+            this.refresh();
           }
         },
     },
     async mounted() {
-      await this.loadSmFromStorage();
-      this.refresh();
-      this.getParamRoute();
+      await this.getParamRoute();
         
       if (!this.isSmFilled && this.$refs.formInputParentSm) {
           this.$refs.formInputParentSm.$el.querySelector("input").focus();
