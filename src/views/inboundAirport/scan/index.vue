@@ -264,6 +264,13 @@ export default {
             return pattern.test(this.$route.fullPath);
         }
     },
+    watch: {
+        is_prealert(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.refresh();
+            }
+        }
+    },
     methods: {
         refresh(){
           this.getTableData()
@@ -434,6 +441,12 @@ export default {
               this.dataTableReceivingLog.map(item => JSON.stringify(item))
             );
 
+            if (this.is_prealert) {
+              this.list_receiving_log = [{
+                item_number: "",
+                sm_no: this.sm_no
+              }];
+            }
             for (const { sm_no, item_number } of this.list_receiving_log) {
               if (!sm_no && !item_number) continue;
 
