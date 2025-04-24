@@ -55,6 +55,11 @@ export default {
           width: "xs",
         },
         {
+          label: "Status",
+          key: "status",
+          width: "auto",
+        },
+        {
           label: "IM Numbers",
           key: "im_numbers",
           width: "xs",
@@ -143,11 +148,6 @@ export default {
           label: "Departed",
           key: "departed_at",
           width: "xs",
-        },
-        {
-          label: "Status",
-          key: "status",
-          width: "auto",
         },
         {
           label: "Received At",
