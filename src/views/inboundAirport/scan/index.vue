@@ -504,8 +504,8 @@ export default {
                   is_auto_sj: this.is_auto_sj
                 },
                 this.Helper.header())
-              this.getTableDataReceivingLog();
-              this.getSmDetails();
+                this.getSmDetails();
+                this.getTableDataReceivingLog();
               this.openNotification('success', null, "Success", res?.data?.message ?? "Success Confirm Inbound");
           } catch (err) {
               this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
@@ -603,7 +603,7 @@ export default {
             
             this.clearSmFromStorage();
             
-            this.$refs.formInputParentSm.$el.querySelector("input").focus();
+            this.$refs.formInputParentSm?.$el?.querySelector("input")?.focus();
             this.handlerClearForm();
         },
         onCameraScannerGetData(data) {
