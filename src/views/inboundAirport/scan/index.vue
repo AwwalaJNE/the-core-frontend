@@ -638,12 +638,12 @@ export default {
           } else {
             this.handleClearSm();
             await this.loadSmFromStorage();
-            this.refresh();
           }
         },
     },
     async mounted() {
       await this.getParamRoute();
+      this.refresh();
         
       if (!this.isSmFilled && this.$refs.formInputParentSm) {
           this.$refs.formInputParentSm.$el.querySelector("input").focus();
