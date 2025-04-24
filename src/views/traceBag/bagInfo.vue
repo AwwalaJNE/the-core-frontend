@@ -54,6 +54,18 @@
                                     <i :class="`bx bx-${bag_additional_info[info.value] ? 'check' : 'x'}`"></i>
                                 </vs-button>
                             </template>
+                            <template v-else-if="info.type === 'hasLinked'">
+                                <p
+                                    v-if="bag_additional_info[info.value] && bag_additional_info[info.value] !== '-'"
+                                    class="clickable text-link"
+                                    @click="openDialog(bag_additional_info[info.value])"
+                                >
+                                    {{ bag_additional_info[info.value] }}
+                                </p>
+                                <p v-else>
+                                    -
+                                </p>
+                            </template>
                             <template v-else>
                                 <p>{{ bag_additional_info[info.value] || '-' }}</p>
                             </template>
@@ -75,6 +87,14 @@
                 />
             </vs-col>
         </vs-row>
+
+        <dialogCreateManifest
+            title="Manifest Info"
+            :active="dialogManifestList"
+            :closeDialog="closeDialog"
+            :isReadOnly="true"
+            :sm_number="sm_number"
+        />
     </div>
 </template>
 
@@ -83,11 +103,14 @@ import master from "@/mixins/master";
 import TableMaster from "@/components/table/tableMaster";
 import axios from 'axios';
 
+import DialogCreateManifest from "@/views/transport/manifestNew/dialogCreateEditManifest"
+
 export default {
     name: "bag-info",
     mixins: [master],
     components: {
         TableMaster,
+        "dialogCreateManifest": DialogCreateManifest,
     },
     props: {
         bagNumber: String
@@ -151,7 +174,8 @@ export default {
                 },
                 { 
                     label: 'Surat Muatan', 
-                    value: 'surat_muatan' 
+                    value: 'surat_muatan' ,
+                    type: 'hasLinked'
                 },
                 { 
                     label: 'Surat Jalan', 
@@ -222,7 +246,9 @@ export default {
                     key: "created_at", 
                     width: "sm" 
                 }
-            ]
+            ],
+            sm_number: "",
+            dialogManifestList:false,
         };
     },
     methods: {
@@ -319,7 +345,16 @@ export default {
             } catch (err) {
                 this.openNotification('danger', err.response?.data.code ?? '', 'Failed', err?.response?.data?.message ?? 'Something went wrong');
             }
-        }
+        },
+        async openDialog(val) {
+            if (val) {
+                this.sm_number = val;
+                this.dialogManifestList = true;
+            }
+        },
+        closeDialog() {
+            this.dialogManifestList = false
+        },
     },
     mounted() {
         this.getBagDetail();
@@ -363,5 +398,10 @@ export default {
 
 .info-row:last-child {
     border-bottom: none;
+}
+
+.clickable {
+    cursor: pointer;
+    color: rgb(53, 92, 255) !important;
 }
 </style>

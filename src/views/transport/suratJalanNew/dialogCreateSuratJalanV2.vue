@@ -305,6 +305,8 @@ export default {
             this.dataTable = val.detail;
             this.is_penerusan = val.is_penerusan === "1";
 
+            this.isDestinationEnabled = val.node_id_destination === null;
+
             this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
             this.isDisabledPrint = val.status === 'CANCELED';
             this.isDisabledApprove = val.status !== 'READY' || val.is_orion === "1";
@@ -546,6 +548,7 @@ export default {
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan
                     };
+                    this.isDestinationEnabled = data.node_id_destination === null;
                     await this.getSuratJalanDetail();
                 }
 
@@ -705,20 +708,15 @@ export default {
                             arr.push(obj);
                         });
 
-                        this.nodeDestination = arr
-                        if (!this.manifest_do_number || this.dataItem.node_id_destination) {
-                            this.$store.dispatch(
-                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                                arr.length > 0 ? arr : null
-                            );
-                        }
+                        this.$store.dispatch(
+                            "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
+                            arr.length > 0 ? arr : null
+                        );
                     } else {
-                        if (!this.manifest_do_number || this.dataItem.node_id_destination) {
-                            this.$store.dispatch(
-                                "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
-                                null
-                            );
-                        }
+                        this.$store.dispatch(
+                            "SET_SURAT_JALAN_DESTINATION_ID_ArrData",
+                            null
+                        );
                     }
                 })
                 .catch((err) => {

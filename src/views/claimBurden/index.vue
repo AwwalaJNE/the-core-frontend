@@ -36,7 +36,7 @@ import SelectSearchBy from "@/components/search/selectSearchBy";
 import claimTable from "@/views/claimBurden/claim/index";
 
 export default {
-    name: "Claim and Burden",
+    name: "Claim and Charge",
     components: {
         "search-input": SearchInput,
         "breadcrumb": Breadcrumb,
@@ -45,7 +45,7 @@ export default {
     },
     data() {
         return {
-            title: "Claim and Burden",
+            title: "Claim and Charge",
             tempSearch: "",
             dialogActiveStock: false,
             searchPlaceholderCalimAndBurden: "Connote",

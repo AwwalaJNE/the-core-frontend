@@ -144,17 +144,17 @@ export default {
                     width: "xxxs"
                 },
                 {
-                    label: "Burden (%)",
+                    label: "Charge (%)",
                     key: "percentage_array",
                     width: "xxxs"
                 },
                 {
-                    label: "Burden PIC",
+                    label: "Charge PIC",
                     key: "pic_array",
                     width: "sm"
                 },
                 {
-                    label: "Burden Value (Rp)",
+                    label: "Charge Value (Rp)",
                     key: "value_array",
                     width: "md" 
                 },
@@ -221,7 +221,7 @@ export default {
                     value: 'OPEN'
                 }
             ],
-            title: "Claim and Burden",
+            title: "Claim and Charge",
             tempSearch: "",
             dialogActiveStock: false,
             searchPlaceholderCalimAndBurden: "Connote",

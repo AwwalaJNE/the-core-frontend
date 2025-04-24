@@ -1361,11 +1361,11 @@ const routes = [
       },
       {
         path: "/claim-and-burden",
-        name: "Claim and Burden",
+        name: "Claim and Charge",
         component: ClaimAndBurden,
         meta: {
           requiresAuth: true,
-          breadCrumb: "Claim And Burden",
+          breadCrumb: "Claim And Charge",
           resource_type: resourceLookup["CLAIM_AND_BURDEN"].resource_type,
           resource_code: resourceLookup["CLAIM_AND_BURDEN"].resource_code,
           resource_name: resourceLookup["CLAIM_AND_BURDEN"].resource_name,

@@ -29,6 +29,7 @@
                                                     icon-after
                                                     v-uppercase
                                                     ref="formInputInbound"
+                                                    :disabled="processing"
                                                     @keyup.enter.native="updateValue('item_no')"
                                                     @click-icon="$refs.cameraScanner.open('formInputInbound')"
                                                 >
@@ -81,6 +82,7 @@
                                         icon-after
                                         v-uppercase
                                         ref="formInputChildInbound"
+                                        :disabled="processing"
                                         @keyup.enter.native="updateValue('child_no')"
                                         @click-icon="$refs.cameraScanner.open('formInputChildInbound')"
                                     >
@@ -219,7 +221,8 @@ export default {
                 page: 1
             },
             receivingLogs: [],
-            inboundNumber: ''
+            inboundNumber: '',
+            processing: false
         }
     },
     methods: {
@@ -289,6 +292,7 @@ export default {
             }
         },
         async processInbond() {
+            this.processing = true;
             this.openProgress(null, "Processing", `${this.form.item_no ? this.form.item_no : 'Item' } is in process`);
             
 
@@ -305,10 +309,12 @@ export default {
                 if (!this.is_prealert && !this.parent_no) {
                     this.handleClearTableInfo();
                 }
+                this.processing = false;
             } finally {
                 this.refresh();
                 this.closeProgress();
                 this.handlerClearForm();
+                this.processing = false;
             }
         },
         async getTableData() {
