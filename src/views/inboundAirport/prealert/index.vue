@@ -26,6 +26,7 @@
                             :valueData="originArr"
                             :selectedValue="origin"
                             :isMultiple="false"
+                            :hasClearButton="true"
                             @updateValue="updateValue" 
                         />
                     </div>
@@ -40,6 +41,7 @@
                             :valueData="destinationArr"
                             :selectedValue="destination"
                             :isMultiple="false"
+                            :hasClearButton="true"
                             @updateValue="updateValue" 
                         />
                     </div>

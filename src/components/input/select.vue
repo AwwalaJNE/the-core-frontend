@@ -89,6 +89,7 @@
                       :disabled="listenIsDisabled"
                       @change="updateValue"
                       @focus="inputFocus"
+                      :clearable="listenHasClearButton"
                       :loading="loadingActive"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                             <el-option
@@ -141,7 +142,8 @@ export default {
         hiddenTitle: Boolean,
         collapseTags: Boolean,
         isAllowCreate: Boolean,
-        customBind: String
+        customBind: String,
+        hasClearButton: Boolean,
     },
     data() {
         return {
@@ -182,6 +184,9 @@ export default {
         },
         listenAllowCreate() {
             return this.isAllowCreate ? this.isAllowCreate : false
+        },
+        listenHasClearButton() {
+            return this.hasClearButton || false;
         }
     },
     watch: {
