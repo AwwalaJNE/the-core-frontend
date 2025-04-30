@@ -193,7 +193,9 @@ export default {
 
                 }).catch(err => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate employee list', err)
+                    const errorMessage = err.response?.data?.message || 'Unknown error';
+                    const errorCode = err.response?.data?.code || '';
+                    this.openNotification('danger', errorCode, 'Failed to populate employee list', errorMessage);
                 })
         },
         async getDataVehicle() {
