@@ -520,7 +520,7 @@ const Master = {
                 .toLowerCase()
                 .replace(/\b\w/g, match => match.toUpperCase());
         },
-        getOrionType(orion_number) {
+        getOrionDocumentType(orion_number) {
             if (!orion_number || typeof orion_number !== 'string') return null;
             
             const parts = orion_number.split('/');

@@ -102,8 +102,8 @@ export default {
           width: "xs",
         },
         {
-          label: "Orion Type",
-          key: "orion_type",
+          label: "Document Type",
+          key: "document_type",
           width: "xxxs",
         },
         // {
@@ -347,7 +347,7 @@ export default {
               : null;
             item["driver_name"] = item.pic ? item.pic.employee_name : null;
             item["orion_number"] = item.mts || item.do || item.hbag || "";
-            item["orion_type"] = this.getOrionType(item["orion_number"]);
+            item["document_type"] = this.getOrionDocumentType(item["orion_number"]);
             item["approved"] = item.is_approve === 1 ? true : false;
 
             item["total_masterbag"] = item.total_masterbag === 0 ? '0' : item.total_masterbag;
