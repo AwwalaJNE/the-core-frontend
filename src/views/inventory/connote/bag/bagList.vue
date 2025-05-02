@@ -182,6 +182,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Document Type",
+                    key: "document_type",
+                    width: "xs"
+                },
+                {
                     label: "Date #",
                     key: "created_at",
                     width: "xs"
@@ -400,6 +405,9 @@ export default {
                         el.with_courier = el.courier ? el.courier.employee_name : ""
                         el.approved = el.is_approve === 1 ? true : false
                         el.status_irregularity_description = el.irregularity_status_description || ""
+
+                        let data = el.hvo || el.do || el.pra_number || el.hacb || "";
+                        el.document_type = this.getOrionDocumentType(data);
                         
                         if (this.listenNodeId === el.origin_node_id) {
                             el.source = 'CREATE'

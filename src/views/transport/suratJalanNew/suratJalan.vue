@@ -101,6 +101,11 @@ export default {
           key: "orion_number",
           width: "xs",
         },
+        {
+          label: "Document Type",
+          key: "document_type",
+          width: "xxxs",
+        },
         // {
         //   label: "Vehicle Type",
         //   key: "vehicle_type_name",
@@ -109,7 +114,7 @@ export default {
         {
           label: "Vehicle",
           key: "formatted_vehicle",
-          width: "xs",
+          width: "sm",
         },
         {
           label: "Driver",
@@ -341,7 +346,8 @@ export default {
               ? parseInt(item.pic_employee_id)
               : null;
             item["driver_name"] = item.pic ? item.pic.employee_name : null;
-            item["orion_number"] = item.mts || item.do || "";
+            item["orion_number"] = item.mts || item.do || item.hbag || "";
+            item["document_type"] = this.getOrionDocumentType(item["orion_number"]);
             item["approved"] = item.is_approve === 1 ? true : false;
 
             item["total_masterbag"] = item.total_masterbag === 0 ? '0' : item.total_masterbag;
