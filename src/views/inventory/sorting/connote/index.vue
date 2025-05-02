@@ -56,7 +56,7 @@
                     </div>
                 </vs-col>
                 <vs-col w="12">
-                    <div class="box view" v-if="destination === 'HUB_DELIVERY'">
+                    <div class="box view" v-if="destination === 'HUB_DELIVERY' || destination === 'SMART_POINT'">
                         <template v-if="type === 'initial'">
                             <img class="logo" :src="require('../../../../assets/img/bagging-placeholder.png')" alt="jne" width="300" align="center">
                             <h3>Scan barcode connote untuk melakukan sorting</h3>
@@ -77,7 +77,7 @@
                                 
                                 <vs-row justify="center" class="mb-2" style="gap: 0.5em">
                                     <vs-col w="12">
-                                        <label>NODE DESTINATION</label>
+                                        <label>{{ destination === 'HUB_DELIVERY' ? 'HUB DESTINATION' : 'SMART POINT DESTINATION'}}</label>
                                         <h1 class="destination">{{ sort_info.information.destination }}</h1>
                                     </vs-col>
                                     <vs-col xs="12" md="8" lg="6" :class="listenSLAType(sort_info.information.sla_minutes_remains) + ' sla'">
@@ -309,6 +309,10 @@ export default {
                 {
                     "label": "Delivery Area",
                     "value": "DELIVERY_AREA"
+                },
+                {
+                    "label": "Smart Point",
+                    "value": "SMART_POINT"
                 }
             ],
             loading: false,
@@ -405,7 +409,7 @@ export default {
 
                 this.loading = true;
                 try {
-                    const res = await axios.post(`${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
+                    const res = await axios.post(`${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}&is_smartpoint=${this.destination === 'SMART_POINT'}`, JSON.stringify(this.form), this.Helper.header());                
 
                     this.sort_info = res.data;
                     this.type = 'success';
