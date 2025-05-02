@@ -406,7 +406,7 @@ export default {
                         el.approved = el.is_approve === 1 ? true : false
                         el.status_irregularity_description = el.irregularity_status_description || ""
 
-                        let data = el.hvo || el.do || el.pra_number || el.hacb || "";
+                        let data = el.hvo || el.om || el.pra_number || el.hacb || "";
                         el.document_type = this.getOrionDocumentType(data);
                         
                         if (this.listenNodeId === el.origin_node_id) {
