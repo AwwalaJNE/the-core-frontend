@@ -2471,6 +2471,17 @@ export default {
       valueData: null,
       value: [],
     },
+    is_smartpoint: {
+      titleLabel: "Smart Point",
+      label: "True|False",
+      key: "is_smartpoint",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true,
+      isDisabled: false,
+    },
     is_active: {
       label: "Active|Unactive",
       key: "is_active",

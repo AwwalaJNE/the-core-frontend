@@ -4596,6 +4596,13 @@ export default {
     state.destination_sorting_lov.is_active.valueData = payload
   },
 
+  SET_DESTINATION_SORTING_LOV_IS_SMARTPOINT(state, payload) {
+    state.destination_sorting_lov.is_smartpoint.value = payload
+  },
+  SET_DESTINATION_SORTING_LOV_IS_SMARTPOINT_ValueData(state, payload) {
+    state.destination_sorting_lov.is_smartpoint.valueData = payload
+  },
+
 
   //====== END DESTINATION SORTING LOV ======//
 

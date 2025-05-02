@@ -56,7 +56,7 @@
                     </div>
                 </vs-col>
                 <vs-col w="12">
-                    <div class="box view" v-if="destination === 'HUB_DELIVERY' || destination === 'SMART_POINT'">
+                    <div class="box view" v-if="destination === 'HUB_DELIVERY' || destination === 'SMARTPOINT'">
                         <template v-if="type === 'initial'">
                             <img class="logo" :src="require('../../../../assets/img/bagging-placeholder.png')" alt="jne" width="300" align="center">
                             <h3>Scan barcode connote untuk melakukan sorting</h3>
@@ -312,7 +312,7 @@ export default {
                 },
                 {
                     "label": "Smart Point",
-                    "value": "SMART_POINT"
+                    "value": "SMARTPOINT"
                 }
             ],
             loading: false,
@@ -410,7 +410,7 @@ export default {
 
                 this.loading = true;
                 try {
-                    const res = await axios.post(`${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}&is_smartpoint=${this.destination === 'SMART_POINT'}`, JSON.stringify(this.form), this.Helper.header());                
+                    const res = await axios.post(`${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());                
 
                     this.sort_info = res.data;
                     this.type = 'success';
