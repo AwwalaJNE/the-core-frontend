@@ -375,6 +375,7 @@ export default {
         updateValue(key, val, info){
             switch(key) {
                 case "destination":
+                    this.handleClearForm();
                     this.destination = val;
             }
         },
@@ -395,7 +396,7 @@ export default {
         handleClearForm(){
             this.form = {};
             this.item_number = '';
-            this.destination = '';
+            this.destination = 'HUB_DELIVERY';
             this.type = 'initial';
             this.sort_info = {};
         },
