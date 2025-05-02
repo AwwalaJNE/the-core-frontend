@@ -56,7 +56,7 @@
                     </div>
                 </vs-col>
                 <vs-col w="12">
-                    <div class="box view" v-if="destination === 'HUB_DELIVERY'">
+                    <div class="box view" v-if="destination === 'HUB_DELIVERY' || destination === 'SMARTPOINT'">
                         <template v-if="type === 'initial'">
                             <img class="logo" :src="require('../../../../assets/img/bagging-placeholder.png')" alt="jne" width="300" align="center">
                             <h3>Scan barcode connote untuk melakukan sorting</h3>
@@ -77,7 +77,7 @@
                                 
                                 <vs-row justify="center" class="mb-2" style="gap: 0.5em">
                                     <vs-col w="12">
-                                        <label>NODE DESTINATION</label>
+                                        <label>{{ destination === 'HUB_DELIVERY' ? 'HUB DESTINATION' : 'SMART POINT DESTINATION'}}</label>
                                         <h1 class="destination">{{ sort_info.information.destination }}</h1>
                                     </vs-col>
                                     <vs-col xs="12" md="8" lg="6" :class="listenSLAType(sort_info.information.sla_minutes_remains) + ' sla'">
@@ -309,6 +309,10 @@ export default {
                 {
                     "label": "Delivery Area",
                     "value": "DELIVERY_AREA"
+                },
+                {
+                    "label": "Smart Point",
+                    "value": "SMARTPOINT"
                 }
             ],
             loading: false,
@@ -371,6 +375,7 @@ export default {
         updateValue(key, val, info){
             switch(key) {
                 case "destination":
+                    this.handleClearForm();
                     this.destination = val;
             }
         },
@@ -391,7 +396,7 @@ export default {
         handleClearForm(){
             this.form = {};
             this.item_number = '';
-            this.destination = '';
+            this.destination = 'HUB_DELIVERY';
             this.type = 'initial';
             this.sort_info = {};
         },
