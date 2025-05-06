@@ -307,7 +307,7 @@ export default {
                     "value": "HUB_DELIVERY"
                 },
                 {
-                    "label": "Delivery Area",
+                    "label": "Courier Area",
                     "value": "DELIVERY_AREA"
                 },
                 {
