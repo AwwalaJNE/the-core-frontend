@@ -408,8 +408,8 @@ export default {
 
                         let data = el.hvo || el.om || el.pra_number || el.hacb || "";
                         el.document_type = this.getOrionDocumentType(data);
-                        
-                        if (this.listenNodeId === el.origin_node_id) {
+
+                        if (this.listenNodeId === parseInt(el.origin_node_id)) {
                             el.source = 'CREATE'
                         }
                         else {
