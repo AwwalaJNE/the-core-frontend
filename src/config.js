@@ -402,4 +402,8 @@ export default {
 
     // Column List
     column_list: api + 'column-list',
+
+    // insert remark
+    insert_remark: api + 'remark-inbound-confirm',
+    inbound_remark: api + 'inbound-remark',
 }

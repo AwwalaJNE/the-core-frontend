@@ -130,7 +130,23 @@
                         </div>
                     </div>
                     <div class="box information" style="padding-top: 1px !important;margin-top: 10px !important;">
-                        <h4 align="left">Inbound Detail</h4>
+                       <div class="flex justify-between items-center mb-3">
+                            <h4 align="left">Inbound Detail</h4>
+                            <div style="display: flex; justify-content: flex-end;">
+                                  <template v-if="dataTableProp.length > 0">
+                                    <vs-button @click="openDialog">
+                                     Insert Remark &nbsp;<i class="bx bx-pencil mr-1"></i> 
+                                    </vs-button>
+
+                                    <dialog-insert-remark
+                                        :actived="showDialog"
+                                        :loading="false"
+                                        :closeDialog="closeDialog"
+                                        :inbound_number="inbound_number"
+                                    />
+                                    </template>
+                            </div>
+                        </div>
                         <div class="nav-box">
                             <template>
                                 <transition name="slide-fade">
@@ -173,6 +189,7 @@ import InboundInformation from "@/views/inbound/scan/inboundInformation"
 import InboundDetail from "@/views/inbound/scan/inboundDetail"
 import InboundReceivingLog from "@/views/inbound/scan/inboundReceivingLog"
 import CameraScanner from "@/components/scanner/camera.vue";
+import dialogInsertRemark from "@/views/inbound/scan/dialogInsertRemark.vue";
 
 
 export default {
@@ -185,6 +202,7 @@ export default {
         "InboundDetail": InboundDetail,
         "ReceivingLog": InboundReceivingLog,
         CameraScanner,
+        dialogInsertRemark
     },
     computed: {
         is_prealert() {
@@ -222,7 +240,8 @@ export default {
             },
             receivingLogs: [],
             inboundNumber: '',
-            processing: false
+            processing: false,
+            showDialog: false
         }
     },
     methods: {
@@ -455,6 +474,12 @@ export default {
             this.page = val
             this.refresh()
         },
+        openDialog() {
+        this.showDialog = true;
+        },
+        closeDialog() {
+        this.showDialog = false;
+        }
     },
     async mounted() {
         await this.loadInboundFromStorage();

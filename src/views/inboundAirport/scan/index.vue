@@ -157,7 +157,23 @@
                 </div>
               </div>
               <div class="box information" style="padding-top: 1px !important;margin-top: 10px !important;">
-                  <h4 align="left">Inbound Detail</h4>
+                  <div class="flex justify-between items-center mb-3">
+                            <h4 align="left">Inbound Detail</h4>
+                            <div style="display: flex; justify-content: flex-end;">
+                                  <template v-if="itemDataTableProp.length > 0">
+                                    <vs-button @click="openDialog">
+                                      <i class="bx bx-pencil mr-1"></i> Insert Remark
+                                    </vs-button>
+
+                                    <dialog-insert-remark
+                                      :actived="showDialog"
+                                      :loading="false"
+                                      :closeDialog="closeDialog"
+                                      :inbound_number="sm_no"
+                                    />
+                                  </template>
+                            </div>
+                        </div>
                   <div class="nav-box">
                       <template>
                           <transition name="slide-fade">
@@ -214,6 +230,7 @@ import smDetail from "@/views/inboundAirport/scan/smDetail"
 import CameraScanner from "@/components/scanner/camera.vue";
 import FloatingActionButton from "@/components/buttonCustom/floatingActionButton"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
+import dialogInsertRemark from "@/views/inbound/scan/dialogInsertRemark.vue";
 
 export default {
     name:"inbound-airport-scan",
@@ -227,7 +244,8 @@ export default {
         "floating-action-button": FloatingActionButton,
         "dialog-confirm": DialogConfirm,
         "ReceivingLog": InboundReceivingLog,
-        "switchNih": Switch
+        "switchNih": Switch,
+        dialogInsertRemark
     },
     data() {
         return {
@@ -253,6 +271,8 @@ export default {
             is_auto_sj: false,
             list_receiving_log: [],
             receivingLogs: [],
+            processing: false,
+            showDialog: false
         }
     },
     computed: {
@@ -640,6 +660,12 @@ export default {
             await this.loadSmFromStorage();
           }
         },
+        openDialog() {
+          this.showDialog = true;
+        },
+        closeDialog() {
+          this.showDialog = false;
+        }
     },
     async mounted() {
       await this.getParamRoute();
