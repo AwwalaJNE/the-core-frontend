@@ -128,8 +128,8 @@ export default {
 
         this.remarkList = (res.data.data || []).map((item) => ({
           remark: item.remarks,
-          user: item.user_login,
-          node_code: item.node_code,
+          user: item.user_login ? item.user_login : '-',
+          node_code: item.node_code  ? item.node_code : '-',
           created_at: item.created_at,
         }));
       } catch (err) {

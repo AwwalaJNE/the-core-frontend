@@ -130,22 +130,20 @@
                         </div>
                     </div>
                     <div class="box information" style="padding-top: 1px !important;margin-top: 10px !important;">
-                       <div class="flex justify-between items-center mb-3">
-                            <h4 align="left">Inbound Detail</h4>
-                            <div style="display: flex; justify-content: flex-end;">
-                                  <template v-if="dataTableProp.length > 0">
-                                    <vs-button @click="openDialog">
-                                     Insert Remark &nbsp;<i class="bx bx-pencil mr-1"></i> 
-                                    </vs-button>
+                        <div class="header-remark-bar mb-3">
+                            <h4 class="title">Inbound Detail</h4>
+                            <template v-if="dataTableProp.length > 0">
+                                 <vs-button class="insert-remark-btn" @click="openDialog">
+                                    <i class="bx bx-pencil mr-1"></i> Insert Remark
+                                 </vs-button>
 
-                                    <dialog-insert-remark
-                                        :actived="showDialog"
-                                        :loading="false"
-                                        :closeDialog="closeDialog"
-                                        :inbound_number="inbound_number"
-                                    />
-                                    </template>
-                            </div>
+                                <dialog-insert-remark
+                                :actived="showDialog"
+                                :loading="false"
+                                :closeDialog="closeDialog"
+                                :inbound_number="inbound_number"
+                                />
+                            </template>
                         </div>
                         <div class="nav-box">
                             <template>
@@ -494,3 +492,21 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .header-remark-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-remark-bar .title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.insert-remark-btn {
+  margin-top: 5px; /* ✅ Turunkan tombol sedikit */
+}
+</style>
