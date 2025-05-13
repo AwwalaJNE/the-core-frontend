@@ -25,17 +25,21 @@
         <vs-col xs="12" class="mt-4">
           <vs-table :data="remarkList">
             <template v-slot:thead>
-              <vs-th>No</vs-th>
-              <vs-th>Remark</vs-th>
-              <vs-th>Created At</vs-th>
+                <vs-th style="width: 50px; text-align: center;">No</vs-th>
+                <vs-th>Remark</vs-th>
+                <vs-th>User</vs-th>
+                <vs-th>Node Code</vs-th>
+                <vs-th>Created At</vs-th>
             </template>
 
             <template v-slot:tbody>
-              <vs-tr v-for="(item, index) in remarkList" :key="index">
-                <vs-td>{{ index + 1 }}</vs-td>
-                <vs-td>{{ item.remark }}</vs-td>
-                <vs-td>{{ item.created_at }}</vs-td>
-              </vs-tr>
+                <vs-tr v-for="(item, index) in remarkList" :key="index">
+                    <vs-td style="text-align: center;">{{ index + 1 }}</vs-td>
+                    <vs-td>{{ item.remark }}</vs-td>
+                    <vs-td>{{ item.user }}</vs-td>
+                    <vs-td>{{ item.node_code }}</vs-td>
+                    <vs-td>{{ item.created_at }}</vs-td>
+                </vs-tr>
             </template>
           </vs-table>
         </vs-col>
@@ -124,6 +128,8 @@ export default {
 
         this.remarkList = (res.data.data || []).map((item) => ({
           remark: item.remarks,
+          user: item.user_login,
+          node_code: item.node_code,
           created_at: item.created_at,
         }));
       } catch (err) {
