@@ -1894,6 +1894,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.vs-table-content > .vs-table > table {
+  min-width: 100% !important;
+}
 .vs-table {
   table {
     width: max-content;
