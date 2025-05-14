@@ -130,7 +130,21 @@
                         </div>
                     </div>
                     <div class="box information" style="padding-top: 1px !important;margin-top: 10px !important;">
-                        <h4 align="left">Inbound Detail</h4>
+                        <div class="header-remark-bar mb-3">
+                            <h4 class="title">Inbound Detail</h4>
+                            <template v-if="dataTableProp.length > 0">
+                                 <vs-button class="insert-remark-btn" @click="openDialog">
+                                    <i class="bx bx-pencil mr-1"></i> Insert Remark
+                                 </vs-button>
+
+                                <dialog-insert-remark
+                                :actived="showDialog"
+                                :loading="false"
+                                :closeDialog="closeDialog"
+                                :inbound_number="inbound_number"
+                                />
+                            </template>
+                        </div>
                         <div class="nav-box">
                             <template>
                                 <transition name="slide-fade">
@@ -173,6 +187,7 @@ import InboundInformation from "@/views/inbound/scan/inboundInformation"
 import InboundDetail from "@/views/inbound/scan/inboundDetail"
 import InboundReceivingLog from "@/views/inbound/scan/inboundReceivingLog"
 import CameraScanner from "@/components/scanner/camera.vue";
+import dialogInsertRemark from "@/views/inbound/scan/dialogInsertRemark.vue";
 
 
 export default {
@@ -185,6 +200,7 @@ export default {
         "InboundDetail": InboundDetail,
         "ReceivingLog": InboundReceivingLog,
         CameraScanner,
+        dialogInsertRemark
     },
     computed: {
         is_prealert() {
@@ -222,7 +238,8 @@ export default {
             },
             receivingLogs: [],
             inboundNumber: '',
-            processing: false
+            processing: false,
+            showDialog: false
         }
     },
     methods: {
@@ -455,6 +472,12 @@ export default {
             this.page = val
             this.refresh()
         },
+        openDialog() {
+        this.showDialog = true;
+        },
+        closeDialog() {
+        this.showDialog = false;
+        }
     },
     async mounted() {
         await this.loadInboundFromStorage();
@@ -469,3 +492,21 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .header-remark-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-remark-bar .title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.insert-remark-btn {
+  margin-top: 5px; /* ✅ Turunkan tombol sedikit */
+}
+</style>
