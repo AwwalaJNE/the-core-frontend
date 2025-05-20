@@ -103,7 +103,7 @@
                                 <form @submit.prevent="submitSuratJalan">
                                     <input-general
                                         icon-after
-                                        name="Scan Surat Muatan / Masterbag / Bag"
+                                        name="Scan Surat Muatan / Masterbag / Bag / Koli"
                                         rules=""
                                         formKey="scanBag"
                                         :valueData="item_number"
