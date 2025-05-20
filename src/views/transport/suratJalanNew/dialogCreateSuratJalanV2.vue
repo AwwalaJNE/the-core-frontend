@@ -288,7 +288,7 @@ export default {
             if (val == true) {
                 this.getDestination2();
                 this.getNoModeAngkutan();
-                this.getLov();
+                // this.getLov();
                 this.getDriver();
             }
         },
