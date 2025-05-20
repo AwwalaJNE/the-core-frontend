@@ -225,8 +225,12 @@ export default {
             filterStatusBy: "",
             filterStatus: [
                 {
-                    label: 'READY',
-                    value: 'READY'
+                    label: 'UNAPPROVED',
+                    value: 'UNAPPROVED'
+                },
+                {
+                    label: 'APPROVED',
+                    value: 'APPROVED'
                 },
                 {
                     label: 'CANCELED',
