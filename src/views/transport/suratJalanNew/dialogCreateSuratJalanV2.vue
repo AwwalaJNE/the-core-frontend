@@ -87,18 +87,12 @@
                         />
                     </div>
 
-                    <div class="destination-container">
-                        <label class="destination-label">Enable Destination</label>
-                        <vs-switch v-model="isDestinationEnabled" class="custom-switch"/>
-                    </div>
-
                     <!-- Form Utama -->
                     <form-input-controller
                         ref="formSuratJalan"
                         typeForm="surat_jalan"
                         :dataItem="editData"
                         :isDisabled="isDisabled"
-                        :partialDisabled="(key) => partialDisabled(key)"
                         @formData="formData"
                         @onChangeCustom="onChangeCustom"
                     />
@@ -346,12 +340,6 @@ export default {
                 item_no: val.item_number,
                 is_penerusan: val.is_penerusan
             };
-        },
-        partialDisabled(key) {
-            if (key === "destination_id") {
-                return !this.isDestinationEnabled; // Jika switch aktif, destination enabled, sebaliknya disabled
-            }
-            return false; // Field lain tetap aktif
         },
         // JANGAN DIHAPUS TAKUT NANTI DIPAKE LAGI
         // getDestination(node_id_destination) {
