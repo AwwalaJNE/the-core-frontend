@@ -535,12 +535,6 @@ export default {
         });
         localStorage.removeItem("InboundFilters")
       },
-      handleSearch() {
-          this.$nextTick(() => {
-              this.refresh();
-              this.$refs.searchInput.clear();
-          });
-      }
     },
 
     mounted() {
