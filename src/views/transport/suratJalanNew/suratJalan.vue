@@ -376,9 +376,7 @@ export default {
                     cancel: true,
                   };
                 } else if (
-                  str.includes("depart") ||
-                  str.includes("receive") ||
-                  str.includes("received")
+                  str.includes("receive")
                 ) {
                   buttonStatus = {
                     print: true,
@@ -400,9 +398,7 @@ export default {
                     cancel: true,
                   };
                 } else if (
-                  str.includes("depart") ||
-                  str.includes("receive") ||
-                  str.includes("received")
+                  str.includes("receive")
                 ) {
                   buttonStatus = {
                     print: true,
