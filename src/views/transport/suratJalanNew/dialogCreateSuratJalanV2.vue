@@ -301,9 +301,9 @@ export default {
 
             this.isDestinationEnabled = val.node_id_destination === null;
 
-            this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
+            this.isDisabled = val.status !== 'UNAPPROVED' || val.is_orion === "1" || val.is_approve === 1;
             this.isDisabledPrint = val.status === 'CANCELED';
-            this.isDisabledApprove = val.status !== 'READY' || val.is_orion === "1";
+            this.isDisabledApprove = val.status !== 'UNAPPROVED' || val.is_orion === "1";
 
             this.is_approve = val.is_approve;
 
@@ -312,7 +312,7 @@ export default {
                 item.node_code_destination = item?.bag?.destination?.node_code || item?.manifest?.destination?.branch_code || '';
                 item.node_name_destination = item?.bag?.destination?.node_name || '';
 
-                if (val.status !== "READY" || val.is_approve === 1) {
+                if (val.status !== "UNAPPROVED" || val.is_approve === 1) {
                     item.button_status = { remove: false };
                 }
 

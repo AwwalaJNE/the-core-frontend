@@ -379,7 +379,7 @@ export default {
                   str.includes("depart") ||
                   str.includes("info") ||
                   str.includes("receive") ||
-                  str.includes("complete")
+                  str.includes("received")
                 ) {
                   buttonStatus = {
                     print: true,
@@ -404,7 +404,7 @@ export default {
                   str.includes("depart") ||
                   str.includes("info") ||
                   str.includes("receive") ||
-                  str.includes("complete")
+                  str.includes("received")
                 ) {
                   buttonStatus = {
                     print: true,
