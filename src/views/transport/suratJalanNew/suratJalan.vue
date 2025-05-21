@@ -369,7 +369,7 @@ export default {
             if (item.hasOwnProperty("status") && item["status"] !== null) {
               let str = item["status"].toLowerCase();
               if (item.is_approve === 1) {
-                if (str.includes("ready")) {
+                if (str.includes("approved")) {
                   buttonStatus = {
                     print: false,
                     depart: true,
@@ -391,7 +391,7 @@ export default {
                   };
                 }
               } else {
-                if (str.includes("ready")) {
+                if (str.includes("approved")) {
                   buttonStatus = {
                     print: false,
                     depart: false,
