@@ -377,7 +377,6 @@ export default {
                   };
                 } else if (
                   str.includes("depart") ||
-                  str.includes("info") ||
                   str.includes("receive") ||
                   str.includes("received")
                 ) {
@@ -402,7 +401,6 @@ export default {
                   };
                 } else if (
                   str.includes("depart") ||
-                  str.includes("info") ||
                   str.includes("receive") ||
                   str.includes("received")
                 ) {
