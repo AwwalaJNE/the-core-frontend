@@ -225,25 +225,25 @@ export default {
             filterStatusBy: "",
             filterStatus: [
                 {
-                    label: 'READY',
-                    value: 'READY'
+                    label: 'UNAPPROVED',
+                    value: 'UNAPPROVED'
+                },
+                {
+                    label: 'APPROVED',
+                    value: 'APPROVED'
                 },
                 {
                     label: 'CANCELED',
                     value: 'CANCELED'
                 },
                 {
-                    label: 'DEPARTED',
-                    value: 'DEPARTED'
+                    label: 'UNRECEIVED',
+                    value: 'UNRECEIVED'
                 },
                 {
                     label: 'RECEIVED',
                     value: 'RECEIVED'
                 },
-                {
-                    label: 'INFO',
-                    value: 'INFO'
-                }
             ],
         };
     },

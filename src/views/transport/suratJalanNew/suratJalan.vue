@@ -376,10 +376,7 @@ export default {
                     cancel: true,
                   };
                 } else if (
-                  str.includes("depart") ||
-                  str.includes("info") ||
-                  str.includes("receive") ||
-                  str.includes("complete")
+                  str.includes("receive")
                 ) {
                   buttonStatus = {
                     print: true,
@@ -401,10 +398,7 @@ export default {
                     cancel: true,
                   };
                 } else if (
-                  str.includes("depart") ||
-                  str.includes("info") ||
-                  str.includes("receive") ||
-                  str.includes("complete")
+                  str.includes("receive")
                 ) {
                   buttonStatus = {
                     print: true,
