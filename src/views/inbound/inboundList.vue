@@ -494,8 +494,8 @@ export default {
         this.node_type,
         this.statusReceived,
         this.prealertFilter,
-        this.startDate,
-        this.endDate,
+        this.tempDate[0],
+        this.tempDate[1],
         this.searchBy,
         this.filterDateBy
       );
@@ -514,19 +514,6 @@ export default {
   },
   mounted() {
     this.refresh();
-    this.getTableData(
-          this.pagination.limit,
-          this.pagination.page,
-          this.tempSearch,
-          this.nodeOrigin,
-          this.node_type,
-          this.statusReceived,
-          this.prealertFilter,
-          this.tempDate[0],
-          this.tempDate[1],
-          this.searchBy,
-          this.filterDateBy
-        );
   },
 };
 </script>
