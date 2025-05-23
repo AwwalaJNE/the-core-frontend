@@ -55,10 +55,10 @@ export default {
               label: "Partial Opened Bag",
               value: "1",
             },
-            {
-              label: "Fully Opened Bag",
-              value: "fullyOpened",
-            },
+            // {
+            //   label: "Fully Opened Bag",
+            //   value: "fullyOpened",
+            // },
             {
               label: "Unopened Bag",
               value: "0",

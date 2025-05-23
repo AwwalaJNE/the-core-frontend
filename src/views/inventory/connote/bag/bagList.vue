@@ -53,7 +53,7 @@ export default {
         bagStatus: String,
         bagIrreg: String,
         bagSource: String,
-        isMasterbag: Boolean,
+        isMasterbag: String,
         isArchive: Boolean,
     },
     components: {
@@ -312,7 +312,7 @@ export default {
             bagOriginFilter: this.bagOrigin ? this.bagOrigin : "",
             routingFilter: this.bagRouting ? this.bagRouting : "",
             tipeBagFilter: this.bagTipe ? this.bagTipe : "",
-            statusBagFilter: this.bagStatus ? this.bagStatus : "",
+            statusBagFilter: this.bagStatus ? this.bagStatus : "-",
             statusBagIrreg: this.bagIrreg ? this.bagIrreg : "",
             bagSourceFilter: this.bagSource ? this.bagSource : "",
             filterDateBy: this.searchDateBy ? this.searchDateBy : "",
@@ -363,7 +363,7 @@ export default {
             if(bagTipe !== undefined && bagTipe !== '-') {
               bagTipee = bagTipe
             }
-            if(bagStatus !== undefined && bagStatus !== '-') {
+            if(bagStatus !== undefined) {
                 bagStat = bagStatus
             }
             if(bagIrreg && bagIrreg !== '-') {
@@ -381,8 +381,7 @@ export default {
                 isMasterbagFilter = isMasterbag === "1" ? "1" : "0";
             }
             let url = this.URL.bag_inventory + `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}`
-
-            console.log("INII", isArchive);
+            
             if (!isArchive) {
                 url += `&is_consolidated=${isMasterbagFilter}`;
             } else {

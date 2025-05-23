@@ -288,7 +288,7 @@ export default {
             bagOrigin: "",
             bagRouting:"",
             bagTipe:"",
-            bagStatus: "",
+            bagStatus: "-",
             bagIrreg: "",
             bagSource: "",
         }
