@@ -290,7 +290,7 @@ export default {
           if (item.hasOwnProperty("status") && item["status"] !== null) {
             let strStatus = item["status"].toLowerCase();
             if (item.is_approve === 1) { // Jika sudah di-approve
-              if (strStatus.includes("ready")) {
+              if (strStatus.includes("unapproved")) {
                 buttonStatus.print = true; // Bisa print
                 buttonStatus.depart = true; // Bisa depart
                 buttonStatus.cancel = true; // Bisa cancel
@@ -306,7 +306,7 @@ export default {
                 // Semua aksi dinonaktifkan jika status cancel
               }
             } else { // Jika belum di-approve
-              if (strStatus.includes("ready") || strStatus.includes("unreceived")) {
+              if (strStatus.includes("unapproved") || strStatus.includes("unreceived")) {
                 buttonStatus.print = true; // Bisa print
                 // Depart tidak bisa jika belum di-approve
                 buttonStatus.cancel = true; // Bisa cancel
