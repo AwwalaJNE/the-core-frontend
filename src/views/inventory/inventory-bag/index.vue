@@ -82,7 +82,7 @@
                                     @updateBagTipe="updateBagTipe" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" lg="3">
+                            <vs-col vs-align="center" xs="6" sm="4" lg="3" v-if="navActive !== 'k-ARCHIVE'">
                                 <select-bag-status
                                     ref="bag_status"
                                     :selectedValue="bagStatus"
@@ -139,13 +139,14 @@
                                 :bagOrigin="bagOrigin" 
                                 :bagRouting="bagRouting" 
                                 :bagSource="bagSource" 
-                                :bagStatus="bagStatus" 
+                                :bagStatus="navActive === 'k-ARCHIVE' ? 'fullyOpened' : bagStatus" 
                                 :bagTipe="bagTipe" 
                                 :dateFilter="tempDate" 
                                 :query="tempSearch" 
                                 :searchDateBy="filterDateBy" 
                                 :searchBy="searchByBag"
                                 :isMasterbag="navActive === 'k-BAG' ? '0' : '1'"
+                                :isArchive="navActive === 'k-ARCHIVE'"
                             />
                         </transition>
                     </template>
@@ -205,6 +206,11 @@ export default {
                     label: "MASTERBAG",
                     key: "k-MASTERBAG",
                     title: "Master Bag List"
+                },
+                {
+                    label: "ARCHIVE",
+                    key: "k-ARCHIVE",
+                    title: "Archive List"
                 }
             ],
             navActive: "k-BAG",
