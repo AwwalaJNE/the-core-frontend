@@ -257,6 +257,8 @@ export default {
     // Surat Muatan Revamp
     revamp_surat_muatan: api + 'revamp/manifest',
 
+    depart_surat_muatan: api + 'manifest',
+
     // Delivery Revamp
     revamp_delivery: api + 'revamp/delivery',
 
