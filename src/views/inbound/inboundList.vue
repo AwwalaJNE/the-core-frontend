@@ -125,13 +125,18 @@ export default {
           width: "auto"
         },
         {
-          label: "PIC",
+          label: "Driver",
           key: "carrier_employee_name",
           width: "xs",
         },
         {
-          label: "Created",
+          label: "Created ",
           key: "created_orion",
+          width: "xs",
+        },
+        {
+          label: "Created By",
+          key: "created_by_user_name",
           width: "xs",
         },
         {
