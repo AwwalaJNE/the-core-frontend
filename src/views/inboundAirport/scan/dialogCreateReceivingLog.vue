@@ -232,7 +232,7 @@ export default {
 
             inbound_number: '',  
             item_number: '',  
-            status: 'NF1', 
+            status: '', 
             remark: '',
 
             loadingStatus: false,
@@ -245,7 +245,7 @@ export default {
 
             fileList: [],
             maxFiles: 5,
-            receivingLogId: ''
+            receivingLogId: '',
         }
     },
     methods: {
@@ -277,8 +277,20 @@ export default {
             }
         },
         updateValue(key, val, info){
-            if (key === "remark") {
-                this.remark = val;
+             switch(key) {
+                case "status":
+                    let obj = this.status_arr.filter(item => item.value == val)[0]
+
+                    if (Object.keys(obj).length > 0) {
+                        if (obj.hasOwnProperty('item')) {
+                            this.status = obj.item.status_code || ''
+                        }
+                    }
+                    break;
+                case "remark":
+                    this.remark= val
+                    break;
+                default:
             }
         },
         
@@ -330,7 +342,7 @@ export default {
         handleClearForm(){
             this.inbound_number = '',  
             this.item_number = '',  
-            // this.status = '', 
+            this.status = '', 
             this.remark = '',
             this.fileList = [];
         },
@@ -398,6 +410,12 @@ export default {
                     const resData = res.data.data;
                     this.receivingLogId = resData.receiving_log_id;
                     this.remark = resData.remark;
+                    this.status = resData.status;
+                    this.fileList = (resData.attachment || []).map(item => ({
+                        name: '',
+                        attachment_id: item.attachment_id,
+                        url: item.url,
+                    }));
                 }
                 this.loading = false;
             } catch (error) {
