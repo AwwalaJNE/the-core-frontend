@@ -26,7 +26,7 @@
                                             <select-search-by-cnote :isMultiple="false" :border="true" @updateSearchBy="updateSearchByCnote"  :selectedValue="searchByCnote" />
                                         </vs-col>
                                         <vs-col vs-align="center" w="6">
-                                            <search-input ref="searchInput" @handleSearch="handleSearch" @searchValue="searchValue" :placeholder="searchPlaceholderCnote" class="search-input" :isNumeric="searchByDataTypeCnote"/>
+                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholderCnote" class="search-input" :isNumeric="searchByDataTypeCnote"/>
                                         </vs-col>
                                     </vs-row>
                                 </template>
@@ -36,7 +36,7 @@
                                             <select-search-by-connote :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy"  :selectedValue="searchBy"/>
                                         </vs-col>
                                         <vs-col vs-align="center" w="6">
-                                            <search-input ref="searchInput" @handleSearch="handleSearch" @searchValue="searchValue" :placeholder="searchPlaceholder" class="search-input" :isNumeric="searchByDataType"/>
+                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" class="search-input" :isNumeric="searchByDataType"/>
                                         </vs-col>
                                     </vs-row>
                                 </template>
@@ -46,7 +46,7 @@
                                             <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchByBag"  :selectedValue="searchByBag" :valueData="searchParamsBag"/>
                                         </vs-col>
                                         <vs-col vs-align="center" w="6">
-                                            <search-input ref="searchInput" @handleSearch="handleSearch" @searchValue="searchValue" :placeholder="searchPlaceholderBag" class="search-input"/>
+                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholderBag" class="search-input"/>
                                         </vs-col>
                                     </vs-row>
                                 </template>
@@ -447,12 +447,6 @@ export default {
         },
         actionPagination(val) {
             this.pagination.page = val
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh();
-                this.$refs.searchInput.clear();
-            });
         }
     },
 }

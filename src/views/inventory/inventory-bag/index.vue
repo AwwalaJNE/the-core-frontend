@@ -35,8 +35,7 @@
                                     <vs-col vs-align="center" w="6">
                                         <search-input 
                                             ref="searchInput" 
-                                            :placeholder="searchPlaceholderBag" 
-                                            @handleSearch="handleSearch" 
+                                            :placeholder="searchPlaceholderBag"
                                             @searchValue="searchValue" 
                                             
                                         />
@@ -370,12 +369,6 @@ export default {
         },
         actionPagination(val) {
             this.pagination.page = val
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh();
-                this.$refs.searchInput.clear();
-            });
         }
     },
 }
