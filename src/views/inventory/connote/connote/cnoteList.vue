@@ -312,7 +312,6 @@ export default {
     },
     mounted() {
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
-        this.pollData()
     },
     beforeDestroy () {
         clearInterval(this.loadInterval) // prevent memory leaks
