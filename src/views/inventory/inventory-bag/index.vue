@@ -48,7 +48,7 @@
 
                     <template>
                         <vs-row align="center">
-                            <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 3 : 4">
                                 <select-bag-origin
                                     ref="bag_origin"
                                     :isMultiple="false"
@@ -56,7 +56,7 @@
                                     @updateBagOrigin="updateBagOrigin" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 3 : 4">
                                 <select-bag-destination
                                     ref="bag_destination"
                                     :isMultiple="false"
@@ -64,7 +64,7 @@
                                     @updateBagDestination="updateBagDestination" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="6" lg="3">
+                            <vs-col vs-align="center" xs="6" sm="6"  :lg="navActive !== 'k-BAG' ? 3 : 4">
                                 <select-bag-routing
                                     ref="bag_routing"
                                     :selectedValue="bagRouting"
@@ -73,7 +73,7 @@
                                     @updateBagRouting="updateBagRouting" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" lg="3" v-if="navActive === 'k-BAG'">
+                            <vs-col vs-align="center" xs="6" sm="4"  :lg="navActive !== 'k-BAG' ? 3 : 4" v-if="navActive === 'k-BAG'">
                                 <select-bag-tipe
                                     ref="bag_tipe"
                                     :selectedValue="bagTipe"
@@ -82,7 +82,7 @@
                                     @updateBagTipe="updateBagTipe" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" lg="3" v-if="navActive !== 'k-ARCHIVE'">
+                            <vs-col vs-align="center" xs="6" sm="4"  :lg="navActive !== 'k-BAG' ? 3 : 4" v-if="navActive !== 'k-ARCHIVE'">
                                 <select-bag-status
                                     ref="bag_status"
                                     :selectedValue="bagStatus"
@@ -91,7 +91,7 @@
                                     @updateBagStatus="updateBagStatus" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" lg="3">
+                            <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 3 : 4">
                                 <select-bag-irreg
                                     ref="bag_irreg"
                                     :selectedValue="bagIrreg"
@@ -100,7 +100,7 @@
                                     @updateBagIrreg="updateBagIrreg" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" lg="3">
+                            <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 3 : 4">
                                 <select-bag-source
                                     ref="bag_source"
                                     :selectedValue="bagSource"
@@ -109,7 +109,7 @@
                                     @updateBagSource="updateBagSource" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 3 : 4">
                                 <select-search-by 
                                     :border="true" 
                                     :isMultiple="false" 
@@ -118,7 +118,7 @@
                                     @updateSearchBy="updateFilterDateBy" 
                                 />
                             </vs-col>
-                            <vs-col xs="12" sm="6" lg="3">
+                            <vs-col xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 3 : 4">
                                 <date-time
                                     :name="''"
                                     :rules="''"
