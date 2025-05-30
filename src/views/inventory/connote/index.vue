@@ -108,7 +108,7 @@
                         </template>
                         <template v-if="navActive === 'k-BAG'">
                             <vs-row align="center">
-                               <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                               <vs-col vs-align="center" xs="12" sm="6" lg="6">
                                     <select-bag-origin
                                         ref="bag_origin"
                                         :isMultiple="false"
@@ -116,7 +116,7 @@
                                         @updateBagOrigin="updateBagOrigin" 
                                     />
                                 </vs-col>
-                                <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                                <vs-col vs-align="center" xs="12" sm="6" lg="6">
                                     <select-bag-destination
                                         ref="bag_destination"
                                         :isMultiple="false"
@@ -162,7 +162,7 @@
                                 <vs-col vs-align="center" xs="12" sm="6" lg="3">
                                     <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
                                 </vs-col>
-                                <vs-col xs="12" sm="6" lg="3">
+                                <vs-col xs="12" sm="6" lg="6">
                                     <date-time
                                         :name="''"
                                         :rules="''"
