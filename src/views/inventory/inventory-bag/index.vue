@@ -48,7 +48,7 @@
 
                     <template>
                         <vs-row align="center">
-                            <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 3 : 6">
                                 <select-bag-origin
                                     ref="bag_origin"
                                     :isMultiple="false"
@@ -56,7 +56,7 @@
                                     @updateBagOrigin="updateBagOrigin" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="12" sm="6" lg="3">
+                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 3 : 6">
                                 <select-bag-destination
                                     ref="bag_destination"
                                     :isMultiple="false"
@@ -118,7 +118,7 @@
                                     @updateSearchBy="updateFilterDateBy" 
                                 />
                             </vs-col>
-                            <vs-col xs="12" sm="6" lg="3">
+                            <vs-col xs="12" sm="6" :lg="navActive !== 'k-MASTERBAG' ? 6 : 3">
                                 <date-time
                                     :name="''"
                                     :rules="''"
