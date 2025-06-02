@@ -211,6 +211,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Created By",
+                    key: "created_by",
+                    width: "xs"
+                },
+                {
                     label: "Total Bag",
                     key: "total_bag",
                     width: "xs"

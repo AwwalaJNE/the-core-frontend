@@ -135,6 +135,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Created By",
+                    key: "created_by_user_name",
+                    width: "xs"
+                },
+                {
                     label: "Receiving Date",
                     key: "received_at",
                     width: "xs"
