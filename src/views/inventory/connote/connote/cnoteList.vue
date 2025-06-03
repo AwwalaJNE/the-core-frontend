@@ -181,6 +181,11 @@ export default {
                     label: "Created At",
                     key: "created_at",
                     width: "xs"
+                },  
+                {
+                    label: "Created By",
+                    key: "created_by_user_name",
+                    width: "xs"
                 },                
                 {
                     label: "Cancel",

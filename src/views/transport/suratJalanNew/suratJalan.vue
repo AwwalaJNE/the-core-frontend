@@ -106,11 +106,11 @@ export default {
           key: "document_type",
           width: "xxxs",
         },
-        // {
-        //   label: "Vehicle Type",
-        //   key: "vehicle_type_name",
-        //   width: "xs",
-        // },
+        {
+          label: "Created By",
+          key: "created_by_user_name",
+          width: "xs",
+        },
         {
           label: "Vehicle",
           key: "formatted_vehicle",

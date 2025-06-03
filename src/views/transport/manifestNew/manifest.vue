@@ -95,6 +95,11 @@ export default {
           width: "xs",
         },
         {
+          label: "Created By",
+          key: "created_by_user_name",
+          width: "xs",
+        },
+        {
           label: "Vehicle",
           key: "formatted_vehicle",
           width: "xs",
