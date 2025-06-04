@@ -620,9 +620,17 @@ export default {
             this.openNotification('success', null, 'Success', 'Add Bagging is success')
             this.refresh()
           }).catch(err => {
-            this.loading = false
-            this.handleClearForm()
-            this.openNotification('danger', err.response ? err.response.data.code : '', err.response ? err.response.data.message : 'something went wrong')
+              this.loading = false;
+              this.handleClearForm();
+
+              const errorCode = err.response ? err.response.data.code : '';
+              const errorMessage = err.response ? err.response.data.message : 'something went wrong';
+
+              if (errorCode === 'CORE-1135') {
+                  this.openNotificationCenter('danger', errorCode, "FAILED", errorMessage);
+              } else {
+                  this.openNotification('danger', errorCode, "FAILED", errorMessage);
+              }
           })
     },
 
