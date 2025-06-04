@@ -75,7 +75,7 @@ export default {
           width: "xs",
         },
         {
-          label: "#SM /SJ /PICKUP",
+          label: "Inbound Type",
           key: "inbound_type",
           width: "xs",
         },
