@@ -87,18 +87,12 @@
                         />
                     </div>
 
-                    <div class="destination-container">
-                        <label class="destination-label">Enable Destination</label>
-                        <vs-switch v-model="isDestinationEnabled" class="custom-switch"/>
-                    </div>
-
                     <!-- Form Utama -->
                     <form-input-controller
                         ref="formSuratJalan"
                         typeForm="surat_jalan"
                         :dataItem="editData"
                         :isDisabled="isDisabled"
-                        :partialDisabled="(key) => partialDisabled(key)"
                         @formData="formData"
                         @onChangeCustom="onChangeCustom"
                     />
@@ -109,7 +103,7 @@
                                 <form @submit.prevent="submitSuratJalan">
                                     <input-general
                                         icon-after
-                                        name="Scan Surat Muatan / Masterbag / Bag"
+                                        name="Scan Surat Muatan / Masterbag / Bag / Koli"
                                         rules=""
                                         formKey="scanBag"
                                         :valueData="item_number"
@@ -294,7 +288,7 @@ export default {
             if (val == true) {
                 this.getDestination2();
                 this.getNoModeAngkutan();
-                this.getLov();
+                // this.getLov();
                 this.getDriver();
             }
         },
@@ -307,9 +301,9 @@ export default {
 
             this.isDestinationEnabled = val.node_id_destination === null;
 
-            this.isDisabled = val.status !== 'READY' || val.is_orion === "1" || val.is_approve === 1;
+            this.isDisabled = val.status !== 'UNAPPROVED' || val.is_orion === "1" || val.is_approve === 1;
             this.isDisabledPrint = val.status === 'CANCELED';
-            this.isDisabledApprove = val.status !== 'READY' || val.is_orion === "1";
+            this.isDisabledApprove = val.status !== 'UNAPPROVED' || val.is_orion === "1";
 
             this.is_approve = val.is_approve;
 
@@ -318,7 +312,7 @@ export default {
                 item.node_code_destination = item?.bag?.destination?.node_code || item?.manifest?.destination?.branch_code || '';
                 item.node_name_destination = item?.bag?.destination?.node_name || '';
 
-                if (val.status !== "READY" || val.is_approve === 1) {
+                if (val.status !== "UNAPPROVED" || val.is_approve === 1) {
                     item.button_status = { remove: false };
                 }
 
@@ -346,12 +340,6 @@ export default {
                 item_no: val.item_number,
                 is_penerusan: val.is_penerusan
             };
-        },
-        partialDisabled(key) {
-            if (key === "destination_id") {
-                return !this.isDestinationEnabled; // Jika switch aktif, destination enabled, sebaliknya disabled
-            }
-            return false; // Field lain tetap aktif
         },
         // JANGAN DIHAPUS TAKUT NANTI DIPAKE LAGI
         // getDestination(node_id_destination) {

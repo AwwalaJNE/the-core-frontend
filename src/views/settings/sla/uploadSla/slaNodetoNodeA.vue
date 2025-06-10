@@ -54,6 +54,7 @@
                                     drag
                                     action=""
                                     :before-upload="beforeUpload"
+                                    :http-request="dummyUploader"
                                     accept=".xls,.xlsx"
                                     >
                                     <i class="el-icon-upload"></i>
@@ -186,6 +187,9 @@ export default {
         }
     },
     methods: {
+        dummyUploader() {
+            // intentionally empty: block upload request before process button clicked
+        },
         async handleUpload() {
             if (!this.validateData()) {
                 return

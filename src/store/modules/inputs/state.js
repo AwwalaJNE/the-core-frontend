@@ -2471,6 +2471,17 @@ export default {
       valueData: null,
       value: [],
     },
+    is_smartpoint: {
+      titleLabel: "Smart Point",
+      label: "True|False",
+      key: "is_smartpoint",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true,
+      isDisabled: false,
+    },
     is_active: {
       label: "Active|Unactive",
       key: "is_active",
@@ -4082,32 +4093,32 @@ export default {
       rule:"required",
       typeInput: "select",
       typeData: "String",
-      width: "6",
+      width: "12",
       arrData: [],
       valueData: null,
       value: '',
       isDisabled: false
     },
-    manifest_lov: {
-      label: "LOV",
-      key: "manifest_lov",
-      rule: "required",
-      typeInput: "select",
-      typeData: "String",
-      width: "6",
-      arrData: [
-        {
-          label: 'ALL',
-          value: 'ALL'
-        },
-        {
-          label: 'SAME DESTINATION',
-          value: 'SAME DESTINATION'
-        },
-      ],
-      valueData: null,
-      value: '',
-    },
+    // manifest_lov: {
+    //   label: "LOV",
+    //   key: "manifest_lov",
+    //   rule: "required",
+    //   typeInput: "select",
+    //   typeData: "String",
+    //   width: "6",
+    //   arrData: [
+    //     {
+    //       label: 'ALL',
+    //       value: 'ALL'
+    //     },
+    //     {
+    //       label: 'SAME DESTINATION',
+    //       value: 'SAME DESTINATION'
+    //     },
+    //   ],
+    //   valueData: null,
+    //   value: '',
+    // },
     etd: {
       label: "ETD",
       key: "etd",

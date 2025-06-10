@@ -181,6 +181,11 @@ export default {
                     label: "Created At",
                     key: "created_at",
                     width: "xs"
+                },  
+                {
+                    label: "Created By",
+                    key: "created_by_user_name",
+                    width: "xs"
                 },                
                 {
                     label: "Cancel",
@@ -312,7 +317,6 @@ export default {
     },
     mounted() {
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
-        this.pollData()
     },
     beforeDestroy () {
         clearInterval(this.loadInterval) // prevent memory leaks

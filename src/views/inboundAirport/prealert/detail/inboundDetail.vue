@@ -41,6 +41,11 @@ export default {
                     width: "xxs"
                 },
                 {
+                    label: "Irregularity Status",
+                    key: "irregularity_status",
+                    width: "xxs"
+                },
+                {
                     label: "Status receiving",
                     key: "is_received",
                     type: 'status',

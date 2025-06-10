@@ -4191,6 +4191,13 @@ export default {
     commit('SET_DESTINATION_SORTING_LOV_IS_ACTIVE_ValueData', payload)
   },
 
+  SET_DESTINATION_SORTING_LOV_IS_SMARTPOINT({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_IS_SMARTPOINT', payload)
+  },
+  SET_DESTINATION_SORTING_LOV_IS_SMARTPOINT_ValueData({ commit }, payload) {
+    commit('SET_DESTINATION_SORTING_LOV_IS_SMARTPOINT_ValueData', payload)
+  },
+
   //====== END DESTINATION SORTING LOV ======//
 
 

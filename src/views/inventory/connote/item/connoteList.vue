@@ -135,6 +135,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Created By",
+                    key: "created_by_user_name",
+                    width: "xs"
+                },
+                {
                     label: "Receiving Date",
                     key: "received_at",
                     width: "xs"
@@ -326,7 +331,6 @@ export default {
     },
     mounted() {
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
-        this.pollData()
     },
     beforeDestroy () {
         clearInterval(this.loadInterval) // prevent memory leaks

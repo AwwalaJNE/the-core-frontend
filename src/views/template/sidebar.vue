@@ -488,7 +488,7 @@ export default {
               label: "Connote Cancel",
               url: "/connote-adjustment/connote-cancel",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-cancel",
               meta: {
                 resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_type,
                 resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_code,
@@ -499,7 +499,7 @@ export default {
               label: "Connote Cancel History",
               url: "/connote-adjustment/connote-cancel-history",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-cancel",
               meta: {
                 resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_type,
                 resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_code,
@@ -510,7 +510,7 @@ export default {
               label: "Connote Forward",
               url: "/connote-adjustment/connote-forward",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-forward",
               meta: {
                 resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_type,
                 resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_code,
@@ -521,7 +521,7 @@ export default {
               label: "Connote Return",
               url: "/connote-adjustment/connote-return",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-return",
               meta: {
                 resource_type: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_type,
                 resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_code,
@@ -534,6 +534,7 @@ export default {
           label: "WUS",
           url: null,
           icon: "bx bx-store-alt",
+          permission: "read-wus",
           children: [
             {
               label: "Receiving & Inventory",
@@ -690,7 +691,7 @@ export default {
           label: "Claim and Burden",
           url: "/claim-and-burden",
           icon: "bx-dollar",
-          permission: "",
+          permission: "read-claim-burden",
           children: [],
           meta: {
             resource_type: resourceLookup["CLAIM_AND_BURDEN"].resource_type,

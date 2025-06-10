@@ -115,6 +115,10 @@ export default {
 </script>
 <style lang="scss">
     .custom_datePicker{
+        .el-date-editor.el-range-editor {
+            width: 100%;
+            display: flex;
+        }
         .el-date-editor.el-input {
             width: 100% !important;
         }

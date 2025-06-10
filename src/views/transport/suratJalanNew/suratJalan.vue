@@ -101,15 +101,20 @@ export default {
           key: "orion_number",
           width: "xs",
         },
-        // {
-        //   label: "Vehicle Type",
-        //   key: "vehicle_type_name",
-        //   width: "xs",
-        // },
+        {
+          label: "Document Type",
+          key: "document_type",
+          width: "xxxs",
+        },
+        {
+          label: "Created By",
+          key: "created_by_user_name",
+          width: "xs",
+        },
         {
           label: "Vehicle",
           key: "formatted_vehicle",
-          width: "xs",
+          width: "sm",
         },
         {
           label: "Driver",
@@ -341,7 +346,8 @@ export default {
               ? parseInt(item.pic_employee_id)
               : null;
             item["driver_name"] = item.pic ? item.pic.employee_name : null;
-            item["orion_number"] = item.mts || item.do || "";
+            item["orion_number"] = item.mts || item.do || item.hbag || "";
+            item["document_type"] = this.getOrionDocumentType(item["orion_number"]);
             item["approved"] = item.is_approve === 1 ? true : false;
 
             item["total_masterbag"] = item.total_masterbag === 0 ? '0' : item.total_masterbag;
@@ -363,17 +369,14 @@ export default {
             if (item.hasOwnProperty("status") && item["status"] !== null) {
               let str = item["status"].toLowerCase();
               if (item.is_approve === 1) {
-                if (str.includes("ready")) {
+                if (str.includes("approved")) {
                   buttonStatus = {
                     print: false,
                     depart: true,
                     cancel: true,
                   };
                 } else if (
-                  str.includes("depart") ||
-                  str.includes("info") ||
-                  str.includes("receive") ||
-                  str.includes("complete")
+                  str.includes("receive")
                 ) {
                   buttonStatus = {
                     print: true,
@@ -388,17 +391,14 @@ export default {
                   };
                 }
               } else {
-                if (str.includes("ready")) {
+                if (str.includes("approved")) {
                   buttonStatus = {
                     print: false,
                     depart: false,
                     cancel: true,
                   };
                 } else if (
-                  str.includes("depart") ||
-                  str.includes("info") ||
-                  str.includes("receive") ||
-                  str.includes("complete")
+                  str.includes("receive")
                 ) {
                   buttonStatus = {
                     print: true,

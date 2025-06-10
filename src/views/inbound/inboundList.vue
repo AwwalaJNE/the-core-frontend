@@ -55,6 +55,11 @@ export default {
           width: "xs",
         },
         {
+          label: "Status",
+          key: "status",
+          width: "auto",
+        },
+        {
           label: "IM Numbers",
           key: "im_numbers",
           width: "xs",
@@ -70,7 +75,7 @@ export default {
           width: "xs",
         },
         {
-          label: "#SM /SJ /PICKUP",
+          label: "Inbound Type",
           key: "inbound_type",
           width: "xs",
         },
@@ -120,13 +125,18 @@ export default {
           width: "auto"
         },
         {
-          label: "PIC",
+          label: "Driver",
           key: "carrier_employee_name",
           width: "xs",
         },
         {
-          label: "Created",
+          label: "Created ",
           key: "created_orion",
+          width: "xs",
+        },
+        {
+          label: "Created By",
+          key: "created_by_user_name",
           width: "xs",
         },
         {
@@ -143,11 +153,6 @@ export default {
           label: "Departed",
           key: "departed_at",
           width: "xs",
-        },
-        {
-          label: "Status",
-          key: "status",
-          width: "auto",
         },
         {
           label: "Received At",
@@ -197,8 +202,8 @@ export default {
             this.node_type,
             this.statusReceived,
             this.prealertFilter,
-            this.startDate,
-            this.endDate,
+            this.tempDate[0],
+            this.tempDate[1],
             this.searchBy,
             this.filterDateBy
           );
@@ -218,8 +223,8 @@ export default {
             val,
             this.statusReceived,
             this.prealertFilter,
-            this.startDate,
-            this.endDate,
+            this.tempDate[0],
+            this.tempDate[1],
             this.searchBy,
             this.filterDateBy
           );
@@ -239,8 +244,8 @@ export default {
             this.node_type,
             val,
             this.prealertFilter,
-            this.startDate,
-            this.endDate,
+            this.tempDate[0],
+            this.tempDate[1],
             this.searchBy,
             this.filterDateBy
           );
@@ -260,8 +265,8 @@ export default {
             this.node_type,
             this.statusReceived,
             this.prealertFilter,
-            this.startDate,
-            this.endDate,
+            this.tempDate[0],
+            this.tempDate[1],
             this.searchBy,
             this.filterDateBy
           );
@@ -281,8 +286,8 @@ export default {
             this.node_type,
             this.statusReceived,
             val,
-            this.startDate,
-            this.endDate,
+            this.tempDate[0],
+            this.tempDate[1],
             this.searchBy,
             this.filterDateBy
           );
@@ -307,8 +312,8 @@ export default {
             this.node_type,
             this.statusReceived,
             this.prealertFilter,
-            this.startDate,
-            this.endDate,
+            this.tempDate[0],
+            this.tempDate[1],
             this.searchBy,
             this.filterDateBy
           );
@@ -327,8 +332,8 @@ export default {
             this.node_type,
             this.statusReceived,
             this.prealertFilter,
-            this.startDate,
-            this.endDate,
+            this.tempDate[0],
+            this.tempDate[1],
             val,
             this.filterDateBy
           );
@@ -347,8 +352,8 @@ export default {
             this.node_type,
             this.statusReceived,
             this.prealertFilter,
-            this.startDate,
-            this.endDate,
+            this.tempDate[0],
+            this.tempDate[1],
             this.searchBy,
             val || savedFilters
           );
@@ -494,8 +499,8 @@ export default {
         this.node_type,
         this.statusReceived,
         this.prealertFilter,
-        this.startDate,
-        this.endDate,
+        this.tempDate[0],
+        this.tempDate[1],
         this.searchBy,
         this.filterDateBy
       );
@@ -514,19 +519,6 @@ export default {
   },
   mounted() {
     this.refresh();
-    this.getTableData(
-          this.pagination.limit,
-          this.pagination.page,
-          this.tempSearch,
-          this.nodeOrigin,
-          this.node_type,
-          this.statusReceived,
-          this.prealertFilter,
-          this.tempDate[0],
-          this.tempDate[1],
-          this.searchBy,
-          this.filterDateBy
-        );
   },
 };
 </script>

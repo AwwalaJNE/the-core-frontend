@@ -257,6 +257,8 @@ export default {
     // Surat Muatan Revamp
     revamp_surat_muatan: api + 'revamp/manifest',
 
+    depart_surat_muatan: api + 'manifest',
+
     // Delivery Revamp
     revamp_delivery: api + 'revamp/delivery',
 
@@ -402,4 +404,8 @@ export default {
 
     // Column List
     column_list: api + 'column-list',
+
+    // insert remark
+    insert_remark: api + 'remark-inbound-confirm',
+    inbound_remark: api + 'inbound-remark',
 }

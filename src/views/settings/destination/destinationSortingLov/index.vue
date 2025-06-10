@@ -151,6 +151,12 @@ export default {
                     width: "xs",
                     type: "boolean|disabled",
                 },
+                {
+                    label: "Smart Point",
+                    key: "is_smartpoint",
+                    width: "xs",
+                    type: "boolean|disabled",
+                },
             ],
             loading: false,
             dataItem: {},
@@ -238,6 +244,7 @@ export default {
                     let arr = res.data.data;
                     arr.map(item => {
                         item["is_active"] = item.is_active === "1" ? true : false;
+                        item["is_smartpoint"] = item.is_smartpoint === "1" ? true : false;
                         item["destination_node_code_list"] = item.destination_node_code
                             .map(itm => `- ${itm}`)
                             .join("\n");

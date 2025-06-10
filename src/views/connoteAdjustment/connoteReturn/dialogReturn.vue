@@ -2,6 +2,7 @@
     <dialog-master 
     :actived="listenActive" 
     :closeDialog="cancel"
+    :loading="listenLoading"
     width="xl">
 
         <template v-slot:header>
@@ -148,6 +149,9 @@ export default {
         listenActive(){
             return this.active
         },
+        listenLoading(){
+          return this.loading
+        },
     },
     watch: {
         active: function (val) {
@@ -211,13 +215,14 @@ export default {
             
         },
         async addData() {
+            this.loading = true;
             await axios
                 .post(
                     this.URL.return + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
-
+                    this.loading = false;
                     this.handleClearForm()
                     this.closeDialog()
                     this.refresh()
@@ -271,6 +276,7 @@ export default {
             }
         },
         async scanConnote(){
+            this.loading = true;
             await axios
                 .get(this.URL.return + 
                 `/${this.connote_number}/scan?n=${this.listenNodeId}`, 
