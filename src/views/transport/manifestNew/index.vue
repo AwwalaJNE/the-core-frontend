@@ -224,6 +224,10 @@ export default {
                     value: 'RECEIVED'
                 },
                 {
+                    label: 'MISSROUTE RECEIVED',
+                    value: 'MISSROUTE RECEIVED'
+                },
+                {
                     label: 'INFO',
                     value: 'INFO'
                 }
