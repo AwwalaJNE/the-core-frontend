@@ -217,6 +217,7 @@ export default {
                 {
                     label: "Received",
                     key: "received_status",
+                    is_missroute: "is_missroute",
                     type: "status",
                     width: "sm",
                 },
@@ -261,7 +262,8 @@ export default {
                 page: 1,
             },
             editData: {},
-            destination_name_code: ''
+            destination_name_code: '',
+            is_missroute:false
         };
     },
     computed: {
@@ -306,6 +308,7 @@ export default {
             this.isDisabledApprove = val.status !== 'UNAPPROVED' || val.is_orion === "1";
 
             this.is_approve = val.is_approve;
+            this.is_missroute = val.is_missroute === true ? 1 : 0
 
             this.dataTable.forEach(item => {
                 item.destination = item.bag?.destination?.node_tariff_code || item.koli?.connote?.connote_receiver_tariff_code || item.manifest?.destination?.node_tariff_code || '';
@@ -317,6 +320,7 @@ export default {
                 }
 
                 item.received_status = item.received_at ? 1 : 0;
+                item.is_missroute = this.is_missroute
             });
 
             this.total_weight = val.total_weight;
@@ -580,7 +584,8 @@ export default {
                         ...item,
                         received_status: item.received_at ? 1 : 0,
                         destination: item.item_destination,
-                        node_code_destination: item.node_code_destination
+                        node_code_destination: item.node_code_destination,
+                        is_missroute: item.is_missroute
                     }));
 
                     this.dataTable = arr;
