@@ -187,6 +187,11 @@ export default {
           key: "total_connote",
           width: "xs",
         },
+        {
+          label: "Total Item",
+          key: "total_item",
+          width: "xs",
+        },
       ],
       customActionList: [
         {
