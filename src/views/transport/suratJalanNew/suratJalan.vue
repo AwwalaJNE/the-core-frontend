@@ -92,6 +92,16 @@ export default {
           width: "xs",
         },
         {
+          label: "Status",
+          key: "status",
+          width: "xxs",
+        },
+        {
+          label: "Total Item",
+          key: "total_item",
+          width: "auto",
+        },
+        {
           label:"Type",
           key: "sj_type",
           width: "auto",
@@ -156,11 +166,6 @@ export default {
           key: "live_actual_weight",
           width: "auto",
         },
-        // {
-        //   label: "Total Item",
-        //   key: "total_detail_items",
-        //   width: "auto",
-        // },
         {
           label: "ETD",
           key: "etd",
@@ -180,11 +185,6 @@ export default {
           label: "Approved",
           key: "approved",
           type: "status",
-          width: "xxs",
-        },
-        {
-          label: "Status",
-          key: "status",
           width: "xxs",
         },
         {

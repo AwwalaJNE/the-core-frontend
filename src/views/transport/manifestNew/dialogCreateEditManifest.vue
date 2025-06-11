@@ -1,120 +1,129 @@
 <template>
-    <dialog-master
-        width="xl"
-        :actived="listenActive"
-        :loading="listenLoading"
-        :closeDialog="cancel"
-        class="manifest-dialog"
-    >
-        <template v-slot:header>
-            <div class="button-helper">
-                <div class="title-helper">
-                    {{ listenTitle }}
-                </div>
-                
-                <template v-if="!listenIsReadOnly">
-                    <template v-if="is_approve === 1">
-                        <vs-button 
-                            :disabled="isDisabledPrint"
-                            @click="print"
-                        >
-                            Print
-                        </vs-button>
-                    </template>
-                    <template v-if="listenUserRoleName === 'HELPDESK'">
-                        <vs-button  
-                            :danger="is_approve === 1"
-                            :disabled="isDisabledApprove"
-                            @click="approve" 
-                        >
-                            {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
-                        </vs-button>
-                    </template>
-                    <template v-else>
-                        <vs-button
-                            :disabled="is_approve === 1 || isDisabledApprove"
-                            @click="approve" 
-                        >
-                            {{ is_approve === 1 ? 'Approved' : 'Approve' }}
-                        </vs-button>
-                    </template>
-                </template>
-            </div>
-        </template>
-
-        <template v-slot:content>
-            <camera-scanner 
-                ref="cameraScanner" 
-                @data="onCameraScannerGetData" 
-            />
-
-            <vs-row>
-                <vs-col lg="5" sm="5">
-                    <div>
-                        <form-input-controller
-                            v-if="!listenIsReadOnly || !loadingSuratMuatan"
-                            ref="formSuratMuatanController"
-                            typeForm="surat_muatan"
-                            :dataItem="listenIsReadOnly ? listenGetByApi : listenDataItem"
-                            :isDisabled="isDisabled"
-                            :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
-                            :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
-                            :querySearch="querySearch"
-                            @formData="formData"
-                            @inputFocus="inputFocus"
-                            @onChangeCustom="onChangeCustom"
-                        />
+    <div>
+        <dialog-master
+            width="xl"
+            :actived="listenActive"
+            :loading="listenLoading"
+            :closeDialog="cancel"
+            class="manifest-dialog"
+        >
+            <template v-slot:header>
+                <div class="button-helper">
+                    <div class="title-helper">
+                        {{ listenTitle }}
                     </div>
-                </vs-col>
-                <vs-col lg="7" sm="7">
-                    <vs-row v-if="!listenIsReadOnly">
-                        <vs-col>
-                            <vs-input
-                                border
-                                icon-after
-                                label-placeholder="Masukkan nomor bag"
-                                ref="formInputItemManifest"
-                                type="text"
-                                v-model="item_number"
-                                v-on:keyup.enter="updateValue"
-                                v-uppercase
-                                :autofocus="true"
-                                :disabled="isDisabled"
-                                @click-icon="handleIconClick"
+                    
+                    <template v-if="!listenIsReadOnly">
+                        <template v-if="is_approve === 1">
+                            <vs-button 
+                                :disabled="isDisabledPrint"
+                                @click="print"
                             >
-                                <template #icon>
-                                    <i class="bx bx-barcode-reader"></i>
-                                </template>
-                            </vs-input>
-                        </vs-col>
-                    </vs-row>
+                                Print
+                            </vs-button>
+                        </template>
+                        <template v-if="listenUserRoleName === 'HELPDESK'">
+                            <vs-button  
+                                :danger="is_approve === 1"
+                                :disabled="isDisabledApprove"
+                                @click="approve" 
+                            >
+                                {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
+                            </vs-button>
+                        </template>
+                        <template v-else>
+                            <vs-button
+                                :disabled="is_approve === 1 || isDisabledApprove"
+                                @click="approve" 
+                            >
+                                {{ is_approve === 1 ? 'Approved' : 'Approve' }}
+                            </vs-button>
+                        </template>
+                    </template>
+                </div>
+            </template>
 
-                    <vs-row>
-                        <vs-col style="overflow: auto;">
-                            <div v-if="!loadingDetail && !loading">
-                                <table-master 
-                                    hideColumnKey="dialog-surat-muatan"
-                                    :dataTable="dataTable"
-                                    :dataColumn="datacolumn"
-                                    :tableLoading="loadingDetail"
-                                    :pageSize="pagination.page_size"
-                                    :page="pagination.page"
-                                    :limit="pagination.limit"
-                                    :hasAction="false"
-                                    :hasPagination="true"
-                                    :customAction="!listenIsReadOnly"
-                                    :customActionList="!listenIsReadOnly ? customActionList : null"
-                                    @actionUpdate="actionUpdate"
-                                    @actionLimit="actionLimit"
-                                    @actionPagination="actionPagination"
-                                />
-                            </div>
-                        </vs-col>
-                    </vs-row>
-                </vs-col>
-            </vs-row>
-        </template>
-    </dialog-master>
+            <template v-slot:content>
+                <camera-scanner 
+                    ref="cameraScanner" 
+                    @data="onCameraScannerGetData" 
+                />
+
+                <vs-row>
+                    <vs-col lg="5" sm="5">
+                        <div>
+                            <form-input-controller
+                                v-if="!listenIsReadOnly || !loadingSuratMuatan"
+                                ref="formSuratMuatanController"
+                                typeForm="surat_muatan"
+                                :dataItem="listenIsReadOnly ? listenGetByApi : listenDataItem"
+                                :isDisabled="isDisabled"
+                                :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
+                                :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
+                                :querySearch="querySearch"
+                                @formData="formData"
+                                @inputFocus="inputFocus"
+                                @onChangeCustom="onChangeCustom"
+                            />
+                        </div>
+                    </vs-col>
+                    <vs-col lg="7" sm="7">
+                        <vs-row v-if="!listenIsReadOnly">
+                            <vs-col>
+                                <vs-input
+                                    border
+                                    icon-after
+                                    label-placeholder="Masukkan nomor bag"
+                                    ref="formInputItemManifest"
+                                    type="text"
+                                    v-model="item_number"
+                                    v-on:keyup.enter="updateValue"
+                                    v-uppercase
+                                    :autofocus="true"
+                                    :disabled="isDisabled"
+                                    @click-icon="handleIconClick"
+                                >
+                                    <template #icon>
+                                        <i class="bx bx-barcode-reader"></i>
+                                    </template>
+                                </vs-input>
+                            </vs-col>
+                        </vs-row>
+
+                        <vs-row>
+                            <vs-col style="overflow: auto;">
+                                <div v-if="!loadingDetail && !loading">
+                                    <table-master 
+                                        hideColumnKey="dialog-surat-muatan"
+                                        :dataTable="dataTable"
+                                        :dataColumn="datacolumn"
+                                        :tableLoading="loadingDetail"
+                                        :pageSize="pagination.page_size"
+                                        :page="pagination.page"
+                                        :limit="pagination.limit"
+                                        :hasAction="false"
+                                        :hasPagination="true"
+                                        :customAction="!listenIsReadOnly"
+                                        :customActionList="!listenIsReadOnly ? customActionList : null"
+                                        @actionUpdate="actionUpdate"
+                                        @actionLimit="actionLimit"
+                                        @actionPagination="actionPagination"
+                                    />
+                                </div>
+                            </vs-col>
+                        </vs-row>
+                    </vs-col>
+                </vs-row>
+            </template>
+        </dialog-master>
+
+        <dialog-trace-bag
+            title="Trace Bag Activity"
+            :active="dialogTraceBag"
+            :closeDialog="() => dialogTraceBag = false"
+            :bag_number="selectedBagNumber"
+        />
+    </div>
 </template>
 
 <script>
@@ -126,6 +135,7 @@ import CameraScanner from "@/components/scanner/camera";
 import DialogMaster from "@/components/dialog/dialogMaster";
 import FormInputController from "@/components/form/formInputController";
 import TableMaster from "@/components/table/tableMaster.vue";
+import DialogTraceBag from "@/views/transport/manifestNew/dialogTraceBag"
 
 export default {
     name: "transport-surat-muatan-dialog-new",
@@ -134,7 +144,8 @@ export default {
         CameraScanner,
         "dialog-master": DialogMaster,
         "form-input-controller": FormInputController,
-        "table-master": TableMaster
+        "table-master": TableMaster,
+        "dialog-trace-bag": DialogTraceBag
     },
     props: {
         active: Boolean,
@@ -213,6 +224,11 @@ export default {
                     label: 'Remove',
                     key: 'remove',
                     attribute: 'danger',
+                },
+                {
+                    label: 'Trace Bag',
+                    key: 'trace_bag',
+                    attribute: 'primary',
                 }
             ],
             loading: false,
@@ -243,7 +259,9 @@ export default {
             master_form: {},
             dataByApi: {},
             loadingSuratMuatan: false,
-            isMissroute: false
+            isMissroute: false,
+            dialogTraceBag: false,
+            selectedBagNumber: "",
         };
     },
     computed: {
@@ -477,6 +495,10 @@ export default {
                 case "remove":
                     this.item_remove = val.item_number;
                     this.removeSuratMuatanDetail();
+                    break;
+                case "trace_bag":
+                    this.selectedBagNumber = val.item_number;
+                    this.dialogTraceBag = true;
                     break;
                 default:
             }
@@ -989,6 +1011,9 @@ export default {
         },
         refreshDetail() {
             this.getSuratMuatanDetail();
+        },
+        openTraceBagDialog() {
+            this.dialogTraceBag = true;
         }
     },
     mounted() {
