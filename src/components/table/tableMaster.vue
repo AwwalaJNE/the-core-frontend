@@ -619,6 +619,20 @@
                           : ""
                       }}
                     </template>
+                 
+                    <template v-if="textDanger !== undefined &&
+                                  column.key !== undefined &&
+                                  item[textDanger] &&
+                                  column.key === 'koli_number'">
+                        <span
+                          class="tooltip-wrapper text-danger"
+                          @click="handleEdit(item)"
+                        >
+                          {{ item[column.key] ? item[column.key] : "" }}
+                          <span class="tooltip-text">Priority Delivery</span>
+                        </span>
+                    </template>
+
                     <template
                       v-else-if="
                         hasLinked !== undefined &&
@@ -1481,6 +1495,7 @@ export default {
     hasPagination: Boolean,
     expandable: Boolean,
     hasLinkedDanger: String,
+    textDanger: String,
     hasLinked: Array,
     hasLinked2: Array,
     hasLinked3: Array,
@@ -2081,4 +2096,33 @@ span.text-danger {
   display: none;
 }
 
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip-wrapper .tooltip-text {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 8px;
+  position: absolute;
+  z-index: 100;
+  bottom: 40%; /* tampil di atas */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  margin-bottom: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-wrapper:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
 </style>
