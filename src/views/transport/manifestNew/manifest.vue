@@ -85,18 +85,18 @@ export default {
           width: "xs",
         },
         {
-          label: "Date#",
-          key: "created_at",
-          width: "sm",
+          label: "Status",
+          key: "status",
+          width: "xs",
+        },
+        {
+          label: "Total Item",
+          key: "total_item",
+          width: "xs",
         },
         {
           label: "Type SM",
           key: "manifest_type_name",
-          width: "xs",
-        },
-        {
-          label: "Created By",
-          key: "created_by_user_name",
           width: "xs",
         },
         {
@@ -156,11 +156,6 @@ export default {
           width: "xs",
         },
         {
-          label: "Status",
-          key: "status",
-          width: "xs",
-        },
-        {
           label: "Received At",
           key: "latest_node_receiver",
           width: "xs",
@@ -188,8 +183,13 @@ export default {
           width: "xs",
         },
         {
-          label: "Total Item",
-          key: "total_item",
+          label: "Created Date",
+          key: "created_at",
+          width: "sm",
+        },
+        {
+          label: "Created By",
+          key: "created_by_user_name",
           width: "xs",
         },
       ],
