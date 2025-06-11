@@ -157,8 +157,7 @@ export default {
 
 <style scoped>
 .title-helper {
-    width: 60%;
-    align-content: center;
+    width: 100%;
 }
 
 .button-helper {
