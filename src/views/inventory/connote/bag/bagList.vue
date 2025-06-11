@@ -18,14 +18,12 @@
         :hasAction="false"
         :hasLinked="['bag_number']"
         :hasLinkedDanger="'status_irregularity_description'"
-        :printAction="true"
         :actionSize="'xxs'"
         :hasPagination="true"
         :onRowClickCallback="updateSelected"
         :customAction="true"
         :customActionList="customActionList"
         @handleEdit="actionDetail"
-        @actionPrint="actionPrint"
         @actionLimit="actionLimit"
         @actionUpdate="actionUpdate"
         @actionPagination="actionPagination"
@@ -351,6 +349,11 @@ export default {
                     label:'Trace Bag',
                     key:'trace_bag',
                     attribute: 'primary',
+                },
+                {
+                    label:'Print',
+                    key:'print',
+                    attribute: 'primary',
                 }
             ]
         }
@@ -479,7 +482,7 @@ export default {
             this.$router.push('/bagging-detail/'+bag)
             this.setRoutePageHistory(this.$route.meta, false);
         },
-        actionPrint(val){
+        print(val){
             let routeData = this.$router.resolve({ 
                 name: 'printGeneral', 
                 params: { 
@@ -503,6 +506,9 @@ export default {
                 case "trace_bag":
                     this.selectedBagNumber = val.bag_number;
                     this.dialogTraceBag = true;
+                    break;
+                case "print":
+                    this.print(val)
                     break;
                 default:
             }
