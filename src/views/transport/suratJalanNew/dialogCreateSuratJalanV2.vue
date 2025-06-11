@@ -1,144 +1,144 @@
 <template>
-    <dialog-master
-        width="lg"
-        :actived="listenActive"
-        :loading="listenLoading"
-        :closeDialog="cancel"
-    >
-        <template v-slot:header>
-            <template v-if="Object.keys(editData).length === 0">
-                <div>
-                    {{ listenTitle }}
-                </div>
-            </template>
-            <template v-else>
-                <vs-row justify="flex-end">
-                    <vs-col w="6">
+    <div>
+        <dialog-master
+            width="lg"
+            :actived="listenActive"
+            :loading="listenLoading"
+            :closeDialog="cancel"
+        >
+            <template v-slot:header>
+                <template v-if="Object.keys(editData).length === 0">
+                    <div>
                         {{ listenTitle }}
-                    </vs-col>
-                    <vs-col w="3" justify="flex-end" style="display: flex;">
-                        <!-- <template v-if="is_approve === 1">
-                            <vs-button
-                                class="button-item"
-                                :disabled="isDisabledPrint"
-                                @click="print"
-                            >
-                                Print
-                            </vs-button>
-                        </template> -->
-                        <template v-if="listenUserRoleName === 'HELPDESK'">
-                            <vs-button  
-                                class="button-item"
-                                :danger="is_approve === 1"
-                                :disabled="isDisabledApprove"
-                                @click="approve" 
-                            >
-                                {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
-                            </vs-button>
-                        </template>
-                        <template v-else>
-                            <vs-button
-                                class="button-item"
-                                :disabled="is_approve === 1 || isDisabledApprove"
-                                @click="approve" 
-                            >
-                                {{ is_approve === 1 ? 'Approved' : 'Approve' }}
-                            </vs-button>
-                        </template>
-                    </vs-col>
-                </vs-row>
-            </template>
-        </template>
-
-        <template v-slot:content>
-            <template v-if="Object.keys(editData).length === 0">
-                <vs-col xs="12" sm="6" lg="6">
-                    <form @submit.prevent="createSuratJalan">
-                        <input-general
-                            icon-after
-                            name="Scan Surat Muatan / Masterbag / Bag"
-                            rules=""
-                            formKey="scanBag"
-                            :valueData="item_number"
-                            :typeInput="`text`"
-                            @click-icon="handleIconClick"
-                            @updateValue="updateValue"
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader"></i>
+                    </div>
+                </template>
+                <template v-else>
+                    <vs-row justify="flex-end">
+                        <vs-col w="6">
+                            {{ listenTitle }}
+                        </vs-col>
+                        <vs-col w="3" justify="flex-end" style="display: flex;">
+                            <template v-if="listenUserRoleName === 'HELPDESK'">
+                                <vs-button  
+                                    class="button-item"
+                                    :danger="is_approve === 1"
+                                    :disabled="isDisabledApprove"
+                                    @click="approve" 
+                                >
+                                    {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
+                                </vs-button>
                             </template>
-                        </input-general>
-                    </form>
-                </vs-col>
+                            <template v-else>
+                                <vs-button
+                                    class="button-item"
+                                    :disabled="is_approve === 1 || isDisabledApprove"
+                                    @click="approve" 
+                                >
+                                    {{ is_approve === 1 ? 'Approved' : 'Approve' }}
+                                </vs-button>
+                            </template>
+                        </vs-col>
+                    </vs-row>
+                </template>
             </template>
-            <template v-else>
-                <div>
-                    <camera-scanner 
-                        ref="cameraScanner" 
-                        @data="onCameraScannerGetData" 
-                    />
 
-                    <div class="nomor-sj" v-if="manifest_do_number">
-                        <input-general
-                            name="No Surat Jalan"
-                            :valueData="manifest_do_number"
-                            :typeInput="`text`"
-                            :disabled="true"
+            <template v-slot:content>
+                <template v-if="Object.keys(editData).length === 0">
+                    <vs-col xs="12" sm="6" lg="6">
+                        <form @submit.prevent="createSuratJalan">
+                            <input-general
+                                icon-after
+                                name="Scan Surat Muatan / Masterbag / Bag"
+                                rules=""
+                                formKey="scanBag"
+                                :valueData="item_number"
+                                :typeInput="`text`"
+                                @click-icon="handleIconClick"
+                                @updateValue="updateValue"
+                            >
+                                <template #icon>
+                                    <i class="bx bx-barcode-reader"></i>
+                                </template>
+                            </input-general>
+                        </form>
+                    </vs-col>
+                </template>
+                <template v-else>
+                    <div>
+                        <camera-scanner 
+                            ref="cameraScanner" 
+                            @data="onCameraScannerGetData" 
                         />
-                    </div>
 
-                    <!-- Form Utama -->
-                    <form-input-controller
-                        ref="formSuratJalan"
-                        typeForm="surat_jalan"
-                        :dataItem="editData"
-                        :isDisabled="isDisabled"
-                        @formData="formData"
-                        @onChangeCustom="onChangeCustom"
-                    />
+                        <div class="nomor-sj" v-if="manifest_do_number">
+                            <input-general
+                                name="No Surat Jalan"
+                                :valueData="manifest_do_number"
+                                :typeInput="`text`"
+                                :disabled="true"
+                            />
+                        </div>
 
-                    <div class="mt-2 mb-2">
-                        <vs-row align="center">
-                            <vs-col xs="6" sm="3" lg="3">
-                                <form @submit.prevent="submitSuratJalan">
-                                    <input-general
-                                        icon-after
-                                        name="Scan Surat Muatan / Masterbag / Bag / Koli"
-                                        rules=""
-                                        formKey="scanBag"
-                                        :valueData="item_number"
-                                        :typeInput="`text`"
-                                        :disabled="isDisabled"
-                                        @click-icon="handleIconClick"
-                                        @updateValue="updateValue"
-                                    >
-                                        <template #icon>
-                                            <i class="bx bx-barcode-reader"></i>
-                                        </template>
-                                    </input-general>
-                                </form>
-                            </vs-col>
-                        </vs-row>
-                        <table-master 
-                            hideColumnKey="dialog-surat-jalan"
-                            :dataTable="dataTable"
-                            :dataColumn="datacolumn"
-                            :pageSize="pagination.page_size"
-                            :page="pagination.page"
-                            :limit="pagination.limit"
-                            :hasAction="false"
-                            :hasPagination="true"
-                            :customAction="true"
-                            :customActionList="customActionList"
-                            @actionUpdate="actionUpdate"
-                            @actionLimit="actionLimit"
-                            @actionPagination="actionPagination"
+                        <!-- Form Utama -->
+                        <form-input-controller
+                            ref="formSuratJalan"
+                            typeForm="surat_jalan"
+                            :dataItem="editData"
+                            :isDisabled="isDisabled"
+                            @formData="formData"
+                            @onChangeCustom="onChangeCustom"
                         />
+
+                        <div class="mt-2 mb-2">
+                            <vs-row align="center">
+                                <vs-col xs="6" sm="3" lg="3">
+                                    <form @submit.prevent="submitSuratJalan">
+                                        <input-general
+                                            icon-after
+                                            name="Scan Surat Muatan / Masterbag / Bag / Koli"
+                                            rules=""
+                                            formKey="scanBag"
+                                            :valueData="item_number"
+                                            :typeInput="`text`"
+                                            :disabled="isDisabled"
+                                            @click-icon="handleIconClick"
+                                            @updateValue="updateValue"
+                                        >
+                                            <template #icon>
+                                                <i class="bx bx-barcode-reader"></i>
+                                            </template>
+                                        </input-general>
+                                    </form>
+                                </vs-col>
+                            </vs-row>
+                            <table-master 
+                                hideColumnKey="dialog-surat-jalan"
+                                :dataTable="dataTable"
+                                :dataColumn="datacolumn"
+                                :pageSize="pagination.page_size"
+                                :page="pagination.page"
+                                :limit="pagination.limit"
+                                :hasAction="false"
+                                :hasPagination="true"
+                                :customAction="true"
+                                :customActionList="customActionList"
+                                @actionUpdate="actionUpdate"
+                                @actionLimit="actionLimit"
+                                @actionPagination="actionPagination"
+                            />
+                        </div>
                     </div>
-                </div>
-            </template> 
-        </template>
-    </dialog-master>
+                </template> 
+            </template>
+        </dialog-master>
+
+        <dialog-trace-bag 
+            title="Trace Bag Activity"
+            :active="dialogTraceBag"
+            :closeDialog="() => dialogTraceBag = false"
+            :bag_number="selectedBagNumber"
+        />
+    </div>
 </template>
 <script>
 import axios from "axios";
@@ -151,6 +151,7 @@ import FormInputController from "@/components/form/formInputController";
 import InputGeneral from "@/components/input/general";
 import TableMaster from "@/components/table/tableMaster";
 import Switch from "@/components/input/switch"
+import DialogTraceBag from "@/views/transport/suratJalanNew/dialogTraceBag"
 
 export default {
     name: "transport-surat-jalan-dialog-new",
@@ -162,6 +163,7 @@ export default {
         "form-input-controller": FormInputController,
         CameraScanner,
         "destination-switch": Switch,
+        "dialog-trace-bag": DialogTraceBag,
     },
     props: {
         active: Boolean,
@@ -227,6 +229,11 @@ export default {
                     key: "remove",
                     attribute: "",
                 },
+                {
+                    label: "Trace Bag",
+                    key: "trace_bag",
+                    attribute: "primary",
+                }
             ],
             item_number: "",
             vehicle_max_weight: 0,
@@ -261,7 +268,9 @@ export default {
                 page: 1,
             },
             editData: {},
-            destination_name_code: ''
+            destination_name_code: '',
+            dialogTraceBag: false,
+            selectedBagNumber: "",
         };
     },
     computed: {
@@ -454,6 +463,10 @@ export default {
                 case "remove":
                     this.item_remove = val.item_number;
                     this.removeSuratJalanDetail();
+                    break;
+                case "trace_bag":
+                    this.selectedBagNumber = val.item_number;
+                    this.dialogTraceBag = true;
                     break;
                 default:
             }
@@ -781,6 +794,9 @@ export default {
         },
         refreshDetail() {
             this.getSuratJalanDetail();
+        },
+        openTraceBagDialog() {
+            this.dialogTraceBag = true;
         },
     },
     mounted() {
