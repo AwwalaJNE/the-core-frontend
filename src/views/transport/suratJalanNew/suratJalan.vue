@@ -1,61 +1,61 @@
 <template>
   <div>
     <table-master 
-      hideColumnKey="surat-jalan"
-      :dataTable="dataTable"
-      :dataColumn="datacolumn"
-      :tableLoading="loading"
-      :pageSize="pagination.page_size"
-      :page="pagination.page"
-      :limit="pagination.limit"
-      :hasPagination="true"
-      :hasLinked="['manifest_do_number']"
-      :customAction="true"
-      :customActionList="customActionList"
-      @actionLimit="actionLimit"
-      @actionPagination="actionPagination"
-      @actionUpdate="actionUpdate"
-      @handleEdit="handleEdit"
+    hideColumnKey="surat-jalan"
+    :dataTable="dataTable"
+    :dataColumn="datacolumn"
+    :tableLoading="loading"
+    :pageSize="pagination.page_size"
+    :page="pagination.page"
+    :limit="pagination.limit"
+    :hasPagination="true"
+    :hasLinked="['manifest_do_number']"
+    :customAction="true"
+    :customActionList="customActionList"
+    @actionLimit="actionLimit"
+    @actionPagination="actionPagination"
+    @actionUpdate="actionUpdate"
+    @handleEdit="handleEdit"
     />
-
+    
     <div v-if="true">
       <dialogCreateSuratJalanV2
-        btnBlue="Edit"
-        title="Edit Transport Surat Jalan"
-        :active="dialogSuratJalan"
-        :closeDialog="closeDialogSuratJalan"
-        :dataItem="dataItem"
-        @refresh="refresh"
+      btnBlue="Edit"
+      title="Edit Transport Surat Jalan"
+      :active="dialogSuratJalan"
+      :closeDialog="closeDialogSuratJalan"
+      :dataItem="dataItem"
+      @refresh="refresh"
       />
     </div>
     <div v-else>
       <dialogCreateSuratJalan
-        btnBlue="Edit"
-        title="Edit Transport Surat Jalan"
-        :active="dialogSuratJalan"
-        :closeDialog="closeDialogSuratJalan"
-        :dataItem="dataItem"
-        @refresh="refresh"
+      btnBlue="Edit"
+      title="Edit Transport Surat Jalan"
+      :active="dialogSuratJalan"
+      :closeDialog="closeDialogSuratJalan"
+      :dataItem="dataItem"
+      @refresh="refresh"
       />
     </div>
-
+    
     <dialog-confirm
-      title="Cancel Surat Jalan"
-      :message="
-        `Are you sure you want to cancel this surat jalan with number ${this.id}?`
-      "
-      :active="activeDialogConfirmCancel"
-      :loading="loadingConfirmCancel"
-      :closeDialog="closeDialogConfirmCancel"
-      @confirm="confirmCancel"
-      @cancel="closeDialogConfirmCancel"
+    title="Cancel Surat Jalan"
+    :message="
+    `Are you sure you want to cancel this surat jalan with number ${this.id}?`
+    "
+    :active="activeDialogConfirmCancel"
+    :loading="loadingConfirmCancel"
+    :closeDialog="closeDialogConfirmCancel"
+    @confirm="confirmCancel"
+    @cancel="closeDialogConfirmCancel"
     />
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import master from "@/mixins/master";
+import axios from "axios";
 
 import DialogConfirm from "@/components/dialog/dialogConfirm";
 import TableMaster from "@/components/table/tableMaster";
@@ -76,7 +76,7 @@ export default {
   components: {
     "table-master": TableMaster,
     "dialog-confirm": DialogConfirm,
-
+    
     dialogCreateSuratJalan: DialogCreateSuratJalan,
     dialogCreateSuratJalanV2: DialogCreateSuratJalanV2,
   },
@@ -86,146 +86,147 @@ export default {
       dataTable: [],
       dialogSuratJalan: false,
       datacolumn: [
-        {
-          label: "Surat Jalan",
-          key: "manifest_do_number",
-          width: "xs",
-        },
-        {
-          label: "Status",
-          key: "status",
-          width: "xxs",
-        },
-        {
-          label: "Total Item",
-          key: "total_item",
-          width: "auto",
-        },
-        {
-          label:"Type",
-          key: "sj_type",
-          width: "auto",
-        },
-        {
-          label: "Orion Number",
-          key: "orion_number",
-          width: "xs",
-        },
-        {
-          label: "Document Type",
-          key: "document_type",
-          width: "xxxs",
-        },
-        {
-          label: "Created By",
-          key: "created_by_user_name",
-          width: "xs",
-        },
-        {
-          label: "Vehicle",
-          key: "formatted_vehicle",
-          width: "sm",
-        },
-        {
-          label: "Driver",
-          key: "driver_name",
-          width: "xs",
-        },
-        {
-          label: "Mode",
-          key: "vehicle_mode_name",
-          width: "auto",
-        },
-        {
-          label: "Origin",
-          key: "node_id_origin_name",
-          width: "sm",
-        },
-        {
-          label: "Destination",
-          key: "node_id_destination_name",
-          width: "sm",
-        },
-        {
-          label: "Fix Cost Weight",
-          key: "fix_cost_weight",
-          width: "auto",
-        },
-        {
-          label: "Live Cost Weight",
-          key: "live_cost_weight",
-          width: "auto",
-        },
-        {
-          label: "Fix Actual Weight",
-          key: "fix_actual_weight",
-          width: "auto",
-        },
-        {
-          label: "Live Actual Weight",
-          key: "live_actual_weight",
-          width: "auto",
-        },
-        {
-          label: "ETD",
-          key: "etd",
-          width: "xs",
-        },
-        {
-          label: "ETA",
-          key: "eta",
-          width: "xs",
-        },
-        {
-          label: "Departed Time",
-          key: "departed_time",
-          width: "xs",
-        },
-        {
-          label: "Approved",
-          key: "approved",
-          type: "status",
-          width: "xxs",
-        },
-        {
-          label: "Latest Node Receiver",
-          key: "latest_node_code_receiver",
-          width: "xs",
-        },
-        {
-          label: "Total Master Bag",
-          key: "total_masterbag",
-          width: "xs",
-        },
-        {
-          label: "Total Bag",
-          key: "total_bag",
-          width: "xs",
-        },
-        {
-          label: "Total Connote",
-          key: "total_connote",
-          width: "xs",
-        },
+      {
+        label: "No Surat Jalan",
+        key: "manifest_do_number",
+        width: "xxxs",
+      },
+      {
+        label: "Status",
+        key: "status",
+        width: "xxxxs",
+      },
+      {
+        label: "Total Item (Koli)",
+        key: "total_item",
+        width: "xxxs",
+      },
+      {
+        label: "Total Master Bag",
+        key: "total_masterbag",
+        width: "xxxs",
+      },
+      {
+        label: "Total Bag",
+        key: "total_bag",
+        width: "xxxs",
+      },
+      {
+        label: "Total Connote",
+        key: "total_connote",
+        width: "xxxs",
+      },
+      {
+        label:"Type",
+        key: "sj_type",
+        width: "auto",
+      },
+      {
+        label: "Document Type",
+        key: "document_type",
+        width: "xxxs",
+      },
+      {
+        label: "Created By",
+        key: "created_by_user_name",
+        width: "xxxxs",
+      },
+      {
+        label: "Vehicle",
+        key: "formatted_vehicle",
+        width: "sm",
+      },
+      {
+        label: "Driver",
+        key: "driver_name",
+        width: "auto",
+      },
+      {
+        label: "Mode",
+        key: "vehicle_mode_name",
+        width: "auto",
+      },
+      
+      {
+        label: "Origin",
+        key: "node_id_origin_name",
+        width: "xxxs",
+      },
+      {
+        label: "Destination",
+        key: "node_id_destination_name",
+        width: "xxxs",
+      },
+      {
+        label: "Fix Cost Weight",
+        key: "fix_cost_weight",
+        width: "auto",
+      },
+      {
+        label: "Live Cost Weight",
+        key: "live_cost_weight",
+        width: "auto",
+      },
+      {
+        label: "Fix Actual Weight",
+        key: "fix_actual_weight",
+        width: "auto",
+      },
+      {
+        label: "Live Actual Weight",
+        key: "live_actual_weight",
+        width: "auto",
+      },
+      {
+        label: "ETD",
+        key: "etd",
+        width: "xxxs",
+      },
+      {
+        label: "ETA",
+        key: "eta",
+        width: "xxxs",
+      },
+      {
+        label: "Departed Time",
+        key: "departed_time",
+        width: "xxxs",
+      },
+      {
+        label: "Approved",
+        key: "approved",
+        type: "status",
+        width: "auto",
+      },
+      {
+        label: "Latest Node Receiver",
+        key: "latest_node_code_receiver",
+        width: "xs",
+      },
+      {
+        label: "Orion Number",
+        key: "orion_number",
+        width: "xxxs",
+      },
       ],
       customActionList: [
-        {
-          label: "Print",
-          key: "print",
-          attribute: "",
-        },
-        {
-          label: "Depart",
-          key: "depart",
-          attribute: "",
-        },
-        {
-          label: "Cancel",
-          key: "cancel",
-          attribute: "danger",
-        },
+      {
+        label: "Print",
+        key: "print",
+        attribute: "",
+      },
+      {
+        label: "Depart",
+        key: "depart",
+        attribute: "",
+      },
+      {
+        label: "Cancel",
+        key: "cancel",
+        attribute: "danger",
+      },
       ],
-
+      
       loading: false,
       dataItem: {},
       tempSearch: "",
@@ -254,12 +255,12 @@ export default {
         if (this.tempSearch !== old) {
           this.pagination.page = 1
           this.getTableData(
-            this.pagination.limit,
-            this.pagination.page,
-            val,
-            this.startDate,
-            this.endDate,
-            this.filterDateBy
+          this.pagination.limit,
+          this.pagination.page,
+          val,
+          this.startDate,
+          this.endDate,
+          this.filterDateBy
           );
         }
       }
@@ -268,12 +269,12 @@ export default {
       if (val !== undefined) {
         if (val !== old) {
           this.getTableData(
-            this.pagination.limit,
-            this.pagination.page,
-            this.tempSearch,
-            this.startDate,
-            this.endDate,
-            val
+          this.pagination.limit,
+          this.pagination.page,
+          this.tempSearch,
+          this.startDate,
+          this.endDate,
+          val
           );
         }
       }
@@ -286,12 +287,12 @@ export default {
           this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
         }
         this.getTableData(
-          this.pagination.limit,
-          this.pagination.page,
-          this.tempSearch,
-          this.startDate,
-          this.endDate,
-          this.filterDateBy
+        this.pagination.limit,
+        this.pagination.page,
+        this.tempSearch,
+        this.startDate,
+        this.endDate,
+        this.filterDateBy
         );
       }
     },
@@ -317,157 +318,157 @@ export default {
         queryDate = qDate;
       }
       await axios
-        .get(
-          this.URL.manifest_delivery_order +
-            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}`,
-          this.Helper.header()
-        )
-        .then((res) => {
-          let arr = res.data.data;
-          let buttonStatus = {
-            print: true,
-            depart: true,
-            cancel: true,
-          };
-
-          arr.map((item) => {
-            item["pickup_courier_employee_name"] = item.employee_courier
-              ? item.employee_courier.employee_name
-              : null;
-            item["node_id_origin_name"] = item.origin
-              ? item.manifest_do_number?.startsWith("SJA")
-                ? `${item.origin.node_name} (AIRPORT)`
-                : `${item.origin.node_code ? item.origin.node_code : "null"} - ${item.origin.node_name}`
-    : null; 
-            item["node_id_destination_name"] = item.destination
-              ? `${item.destination.node_code ? item.destination.node_code : "null"} - ${item.destination.node_name}`
-              : item.facility_code_destination;
-            item["driver_id"] = item.pic_employee_id
-              ? parseInt(item.pic_employee_id)
-              : null;
-            item["driver_name"] = item.pic ? item.pic.employee_name : null;
-            item["orion_number"] = item.mts || item.do || item.hbag || "";
-            item["document_type"] = this.getOrionDocumentType(item["orion_number"]);
-            item["approved"] = item.is_approve === 1 ? true : false;
-
-            item["total_masterbag"] = item.total_masterbag === 0 ? '0' : item.total_masterbag;
-            item["total_bag"] = item.total_bag === 0 ? '0' : item.total_bag;
-            item["total_connote"] = item.total_connote === 0 ? '0' : item.total_connote;
-            
-            if (
-                  (item.manifest_do_number?.startsWith("SJA") ||
-                  item.manifest_do_number?.startsWith("BM")) &&
-                  item['driver_name'] === null &&
-                  item['vehicle_mode_name'] === null
-                ) {
-                  item['orion_number'] = 'Auto By System';
-                  item['vehicle_type_name'] = 'Auto By System';
-                  item['driver_name'] = 'Auto By System';
-                  item['vehicle_mode_name'] = 'Auto By System';
-                }
-
-            if (item.hasOwnProperty("status") && item["status"] !== null) {
-              let str = item["status"].toLowerCase();
-              if (item.is_approve === 1) {
-                if (str.includes("approved")) {
-                  buttonStatus = {
-                    print: false,
-                    depart: true,
-                    cancel: true,
-                  };
-                } else if (
-                  str.includes("receive")
-                ) {
-                  buttonStatus = {
-                    print: true,
-                    depart: false,
-                    cancel: false,
-                  };
-                } else if (str.includes("cancel")) {
-                  buttonStatus = {
-                    print: false,
-                    depart: false,
-                    cancel: false,
-                  };
-                }
-              } else {
-                if (str.includes("approved")) {
-                  buttonStatus = {
-                    print: false,
-                    depart: false,
-                    cancel: true,
-                  };
-                } else if (
-                  str.includes("receive")
-                ) {
-                  buttonStatus = {
-                    print: true,
-                    depart: false,
-                    cancel: false,
-                  };
-                } else if (str.includes("cancel")) {
-                  buttonStatus = {
-                    print: false,
-                    depart: false,
-                    cancel: false,
-                  };
-                }
-              }
-
-              item["button_status"] = buttonStatus;
-            }
-
-            if (item.is_orion == "1") {
-              item["button_status"] = {
-                print: true,
-                depart: false,
-                cancel: false,
-              };
-            }
-          });
-
-          this.dataTable = arr;
-          this.pagination.page = res.data.meta.current_page;
-          this.pagination.limit = parseInt(res.data.meta.per_page);
-          this.pagination.page_size = res.data.meta.last_page;
-          if (res.data.data.length > 0) {
-          } else {
-            // this.openNotification('warn', null, 'Surat Jalan data is empty!', ' Please create a new Surat Jalan data')
+      .get(
+      this.URL.manifest_delivery_order +
+      `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}`,
+      this.Helper.header()
+      )
+      .then((res) => {
+        let arr = res.data.data;
+        let buttonStatus = {
+          print: true,
+          depart: true,
+          cancel: true,
+        };
+        
+        arr.map((item) => {
+          item["pickup_courier_employee_name"] = item.employee_courier
+          ? item.employee_courier.employee_name
+          : null;
+          item["node_id_origin_name"] = item.origin
+          ? item.manifest_do_number?.startsWith("SJA")
+          ? `${item.origin.node_name} (AIRPORT)`
+          : `${item.origin.node_code ? item.origin.node_code : "null"} - ${item.origin.node_name}`
+          : null; 
+          item["node_id_destination_name"] = item.destination
+          ? `${item.destination.node_code ? item.destination.node_code : "null"} - ${item.destination.node_name}`
+          : item.facility_code_destination;
+          item["driver_id"] = item.pic_employee_id
+          ? parseInt(item.pic_employee_id)
+          : null;
+          item["driver_name"] = item.pic ? item.pic.employee_name : null;
+          item["orion_number"] = item.mts || item.do || item.hbag || "";
+          item["document_type"] = this.getOrionDocumentType(item["orion_number"]);
+          item["approved"] = item.is_approve === 1 ? true : false;
+          
+          item["total_masterbag"] = item.total_masterbag === 0 ? '0' : item.total_masterbag;
+          item["total_bag"] = item.total_bag === 0 ? '0' : item.total_bag;
+          item["total_connote"] = item.total_connote === 0 ? '0' : item.total_connote;
+          
+          if (
+          (item.manifest_do_number?.startsWith("SJA") ||
+          item.manifest_do_number?.startsWith("BM")) &&
+          item['driver_name'] === null &&
+          item['vehicle_mode_name'] === null
+          ) {
+            item['orion_number'] = 'Auto By System';
+            item['vehicle_type_name'] = 'Auto By System';
+            item['driver_name'] = 'Auto By System';
+            item['vehicle_mode_name'] = 'Auto By System';
           }
-
-          this.loading = false;
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.openNotification(
-            "danger",
-            err.response ? err.response.data.code : "",
-            "Failed to populate Surat Jalan data",
-            err
-          );
+          
+          if (item.hasOwnProperty("status") && item["status"] !== null) {
+            let str = item["status"].toLowerCase();
+            if (item.is_approve === 1) {
+              if (str.includes("approved")) {
+                buttonStatus = {
+                  print: false,
+                  depart: true,
+                  cancel: true,
+                };
+              } else if (
+              str.includes("receive")
+              ) {
+                buttonStatus = {
+                  print: true,
+                  depart: false,
+                  cancel: false,
+                };
+              } else if (str.includes("cancel")) {
+                buttonStatus = {
+                  print: false,
+                  depart: false,
+                  cancel: false,
+                };
+              }
+            } else {
+              if (str.includes("approved")) {
+                buttonStatus = {
+                  print: false,
+                  depart: false,
+                  cancel: true,
+                };
+              } else if (
+              str.includes("receive")
+              ) {
+                buttonStatus = {
+                  print: true,
+                  depart: false,
+                  cancel: false,
+                };
+              } else if (str.includes("cancel")) {
+                buttonStatus = {
+                  print: false,
+                  depart: false,
+                  cancel: false,
+                };
+              }
+            }
+            
+            item["button_status"] = buttonStatus;
+          }
+          
+          if (item.is_orion == "1") {
+            item["button_status"] = {
+              print: true,
+              depart: false,
+              cancel: false,
+            };
+          }
         });
+        
+        this.dataTable = arr;
+        this.pagination.page = res.data.meta.current_page;
+        this.pagination.limit = parseInt(res.data.meta.per_page);
+        this.pagination.page_size = res.data.meta.last_page;
+        if (res.data.data.length > 0) {
+        } else {
+          // this.openNotification('warn', null, 'Surat Jalan data is empty!', ' Please create a new Surat Jalan data')
+        }
+        
+        this.loading = false;
+      })
+      .catch((err) => {
+        this.loading = false;
+        this.openNotification(
+        "danger",
+        err.response ? err.response.data.code : "",
+        "Failed to populate Surat Jalan data",
+        err
+        );
+      });
     },
-
+    
     closeDialogConfirm() {
       this.confirmDialog = false;
       this.refresh();
     },
-
+    
     actionUpdate(val, key) {
       switch (key) {
         case "print":
-          this.manifest_do_number = val.manifest_do_number;
-          this.print();
-          break;
+        this.manifest_do_number = val.manifest_do_number;
+        this.print();
+        break;
         case "depart":
-          this.manifest_do_number = val.manifest_do_number;
-          this.depart();
-          break;
+        this.manifest_do_number = val.manifest_do_number;
+        this.depart();
+        break;
         case "cancel":
-          this.manifest_do_number = val.manifest_do_number;
-          this.id = val.manifest_do_number;
-          this.activeDialogConfirmCancel = true;
-          break;
+        this.manifest_do_number = val.manifest_do_number;
+        this.id = val.manifest_do_number;
+        this.activeDialogConfirmCancel = true;
+        break;
         default:
       }
     },
@@ -475,31 +476,31 @@ export default {
       if (this.dataTable.length > 0) {
         this.dataItem = val;
         this.dataItem["destination_id"] = val.node_id_destination
-          ? val.node_id_destination
-          : "";
+        ? val.node_id_destination
+        : "";
         this.dataItem["moda_angkutan_id"] = val.vehicle_mode_id
-          ? parseInt(val.vehicle_mode_id)
-          : "";
+        ? parseInt(val.vehicle_mode_id)
+        : "";
         this.dataItem["no_moda_angkutan_id"] = val.vehicle_id
-          ? parseInt(val.vehicle_id)
-          : "";
+        ? parseInt(val.vehicle_id)
+        : "";
         this.dataItem["manifest_do_item"] = val.detail ? val.detail : "";
         this.dataItem["driver_id"] = val.pic_employee_id
-          ? parseInt(val.pic_employee_id)
-          : "";
+        ? parseInt(val.pic_employee_id)
+        : "";
         this.dataItem["max_weight"] = val.max_weight;
         this.dataItem["driver_id"] = val.driver_id
-          ? parseInt(val.driver_id)
-          : "";
+        ? parseInt(val.driver_id)
+        : "";
         this.dataItem["vehicle_type_id"] = val.vehicle_type_id
-          ? parseInt(val.vehicle_type_id)
-          : "";
+        ? parseInt(val.vehicle_type_id)
+        : "";
         this.$nextTick(() => {
           this.dialogSuratJalan = true;
         });
       }
     },
-
+    
     actionLimit(val) {
       this.pagination.limit = val;
       this.pagination.page = 1;
@@ -511,12 +512,12 @@ export default {
     },
     refresh() {
       this.getTableData(
-        this.pagination.limit,
-        this.pagination.page,
-        this.tempSearch,
-        this.startDate,
-        this.endDate,
-        this.filterDateBy
+      this.pagination.limit,
+      this.pagination.page,
+      this.tempSearch,
+      this.startDate,
+      this.endDate,
+      this.filterDateBy
       );
     },
     print() {
@@ -528,9 +529,9 @@ export default {
           node_id: this.listenNodeId,
         },
       });
-
+      
       const printWindow = window.open(routeData.href, "_blank", "noopener");
-
+      
       if (printWindow) {
         printWindow.onload = function() {
           printWindow.print();
@@ -540,26 +541,26 @@ export default {
     },
     async depart() {
       this.loading = true;
-
+      
       try {
         const res = await axios.patch(
-          `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/depart?n=${this.listenNodeId}&is_departed=1`,
-          {},
-          this.Helper.header()
+        `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/depart?n=${this.listenNodeId}&is_departed=1`,
+        {},
+        this.Helper.header()
         );
         this.print();
         this.openNotification(
-          "success",
-          null,
-          "Success",
-          "Update surat jalan success"
+        "success",
+        null,
+        "Success",
+        "Update surat jalan success"
         );
       } catch (err) {
         this.openNotification(
-          "danger",
-          err?.response?.data?.code ?? "",
-          "Update surat jalan failed",
-          err?.response?.data?.message ?? "something went wrong"
+        "danger",
+        err?.response?.data?.code ?? "",
+        "Update surat jalan failed",
+        err?.response?.data?.message ?? "something went wrong"
         );
       } finally {
         this.loading = false;
@@ -577,21 +578,21 @@ export default {
     async cancel() {
       try {
         const res = await axios.delete(
-          `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}?n=${this.listenNodeId}`,
-          this.Helper.header()
+        `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}?n=${this.listenNodeId}`,
+        this.Helper.header()
         );
         this.openNotification(
-          "success",
-          null,
-          "Success",
-          "Cancel surat jalan success"
+        "success",
+        null,
+        "Success",
+        "Cancel surat jalan success"
         );
       } catch (err) {
         this.openNotification(
-          "danger",
-          err?.response?.data?.code ?? "",
-          "Failed",
-          err?.response?.data?.message ?? "Something went wrong"
+        "danger",
+        err?.response?.data?.code ?? "",
+        "Failed",
+        err?.response?.data?.message ?? "Something went wrong"
         );
       } finally {
         this.closeDialogConfirmCancel();

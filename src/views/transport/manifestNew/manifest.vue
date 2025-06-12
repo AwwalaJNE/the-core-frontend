@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import master from "@/mixins/master";
+import axios from "axios";
 
 import DialogConfirm from "@/components/dialog/dialogConfirm";
 import TableMaster from "@/components/table/tableMaster.vue";
@@ -90,7 +90,7 @@ export default {
           width: "xs",
         },
         {
-          label: "Total Item",
+          label: "Total Item (Koli)",
           key: "total_item",
           width: "xs",
         },
