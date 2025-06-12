@@ -18,16 +18,23 @@
         :hasAction="false"
         :hasLinked="['bag_number']"
         :hasLinkedDanger="'status_irregularity_description'"
-        :printAction="true"
         :actionSize="'xxs'"
         :hasPagination="true"
         :onRowClickCallback="updateSelected"
+        :customAction="true"
+        :customActionList="customActionList"
         @handleEdit="actionDetail"
-        @actionPrint="actionPrint"
         @actionLimit="actionLimit"
+        @actionUpdate="actionUpdate"
         @actionPagination="actionPagination"
         />
 
+        <dialog-trace-bag
+            title="Trace Bag Activity"
+            :active="dialogTraceBag"
+            :closeDialog="() => dialogTraceBag = false"
+            :bag_number="selectedBagNumber"
+        />
     </div>
 </template>
 <script>
@@ -38,6 +45,7 @@ import SelectSearchBy from "@/components/search/selectSearchBy"
 import SearchInput from "@/components/search/searchInput"
 import DateTime from "@/components/input/dateTime"
 import moment from "moment"
+import DialogTraceBag from "@/views/inventory/connote/bag/dialogTraceBag.vue"
 export default {
     name:"Role-list",
     mixins: [master],
@@ -60,7 +68,8 @@ export default {
         "table-master" : TableMaster,
         "select-search-by": SelectSearchBy,
         "search-input": SearchInput,
-        "date-time": DateTime
+        "date-time": DateTime,
+        "dialog-trace-bag": DialogTraceBag
     },
     watch: {
         query: function(val, old) {
@@ -332,7 +341,21 @@ export default {
             startDate: "",
             endDate: "",
             dateRange: [],
-            selectedRow: []
+            selectedRow: [],
+            dialogTraceBag: false,
+            selectedBagNumber: "",
+            customActionList: [
+                {
+                    label:'Trace Bag',
+                    key:'trace_bag',
+                    attribute: 'primary',
+                },
+                {
+                    label:'Print',
+                    key:'print',
+                    attribute: 'primary',
+                }
+            ]
         }
     },
     methods: {
@@ -459,7 +482,7 @@ export default {
             this.$router.push('/bagging-detail/'+bag)
             this.setRoutePageHistory(this.$route.meta, false);
         },
-        actionPrint(val){
+        print(val){
             let routeData = this.$router.resolve({ 
                 name: 'printGeneral', 
                 params: { 
@@ -476,6 +499,18 @@ export default {
                     printWindow.print();
                     printWindow.onafterprint = () => printWindow.close();
                 };
+            }
+        },
+        actionUpdate(val, key) {
+            switch (key) {
+                case "trace_bag":
+                    this.selectedBagNumber = val.bag_number;
+                    this.dialogTraceBag = true;
+                    break;
+                case "print":
+                    this.print(val)
+                    break;
+                default:
             }
         },
         actionPrintSelected(){
@@ -521,6 +556,9 @@ export default {
         updateSelected(_event, _item, selected) {
             this.selectedRow = selected.filter(bag => bag.is_approve !== 0).map(bag => bag.bag_number);
         },
+        openTraceBagDialog() {
+            this.dialogTraceBag = true;
+        }
     },
     mounted() {
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter)

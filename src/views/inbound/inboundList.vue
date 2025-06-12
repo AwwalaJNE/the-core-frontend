@@ -60,6 +60,11 @@ export default {
           width: "auto",
         },
         {
+          label: "Total Bag",
+          key: "total_item",
+          width: "auto",
+        },
+        {
           label: "IM Numbers",
           key: "im_numbers",
           width: "xs",
