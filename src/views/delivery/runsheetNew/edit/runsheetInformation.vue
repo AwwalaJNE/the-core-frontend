@@ -21,6 +21,7 @@
         @inputFocus="onClickClear"
         @actionPopup="actionPopup"
         @actionRunsheetProofAction="actionRunsheetProofAction"
+        textDanger="is_priority"
       />
       <dialog-warning-runsheet
         title="Warning Info"

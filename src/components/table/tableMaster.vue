@@ -578,23 +578,44 @@
                 <template
                   v-else-if="
                     column.type !== undefined &&
-                      column.type.toLowerCase() === 'status'
+                    column.type.toLowerCase() === 'status'
                   "
                 >
                   <vs-td :key="key" :class="column.width ? column.width : ''">
-                    <template v-if="item[column.key] !== undefined">
+                    
+                    <!-- ✅ Missroute -->
+                    <template
+                      v-if="
+                        item[column.is_missroute] !== undefined &&
+                        item[column.is_missroute] === 1
+                      "
+                    >
+                      <div class="tooltip-container">
+                        <!-- <vs-button
+                          class="status-missroute"
+                          circle
+                          icon
+                          disabled
+                          :active="false"
+                        >
+                      </vs-button> -->
+                        <i class="bx bx-help-circle missroute-icon"></i>
+                        <span class="tooltip-text">Missroute Received</span>
+                      </div>
+                    </template>
+
+                    <!-- ✅ Normal status -->
+                    <template v-else-if="item[column.key] !== undefined && item[column.is_missroute] !== 1">
                       <vs-button
                         circle
                         icon
                         border
                         disabled
-                        :danger="item[column.key] == false ? true : false"
+                        :danger="item[column.key] === false"
                         :active="false"
                       >
                         <i
-                          :class="
-                            `bx bx-${item[column.key] == false ? 'x' : 'check'}`
-                          "
+                          :class="`bx bx-${item[column.key] === false ? 'x' : 'check'}`"
                         ></i>
                       </vs-button>
                     </template>
@@ -619,6 +640,20 @@
                           : ""
                       }}
                     </template>
+                 
+                    <template v-if="textDanger !== undefined &&
+                                  column.key !== undefined &&
+                                  item[textDanger] &&
+                                  column.key === 'koli_number'">
+                        <span
+                          class="tooltip-wrapper text-danger"
+                          @click="handleEdit(item)"
+                        >
+                          {{ item[column.key] ? item[column.key] : "" }}
+                          <span class="tooltip-text">Priority Delivery</span>
+                        </span>
+                    </template>
+
                     <template
                       v-else-if="
                         hasLinked !== undefined &&
@@ -1494,6 +1529,7 @@ export default {
     hasPagination: Boolean,
     expandable: Boolean,
     hasLinkedDanger: String,
+    textDanger: String,
     hasLinked: Array,
     hasLinked2: Array,
     hasLinked3: Array,
@@ -2094,4 +2130,70 @@ span.text-danger {
   display: none;
 }
 
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip-wrapper .tooltip-text {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 8px;
+  position: absolute;
+  z-index: 100;
+  bottom: 40%; /* tampil di atas */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  margin-bottom: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-wrapper:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+</style>
+<style scoped>
+  .missroute-icon {
+    color: #fbe99d;
+    font-size: 30px;
+    cursor: default;
+  }
+
+  .tooltip-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .tooltip-container .tooltip-text {
+    visibility: hidden;
+    width: max-content;
+    background-color: #111;
+    color: #fff;
+    text-align: center;
+    padding: 5px 8px;
+    border-radius: 6px;
+
+    position: absolute;
+    z-index: 100;
+    bottom: 125%; /* posisi di atas elemen */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+  }
+
+  .tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
 </style>
