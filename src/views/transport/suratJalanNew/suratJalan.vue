@@ -184,7 +184,7 @@ export default {
         },
         {
           label: "Status",
-          key: "status",
+          key: "status_with_tooltip",
           width: "xxs",
         },
         {
@@ -365,6 +365,10 @@ export default {
                   item['driver_name'] = 'Auto By System';
                   item['vehicle_mode_name'] = 'Auto By System';
                 }
+
+            item["status_with_tooltip"] = item.is_transit === 1
+              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-help-circle"></i></span>`
+              : item.status;
 
             if (item.hasOwnProperty("status") && item["status"] !== null) {
               let str = item["status"].toLowerCase();
@@ -608,3 +612,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.status-tooltip {
+  margin-left: 5px;
+  font-weight: bold;
+  color: #666;
+  cursor: help;
+}
+</style>
