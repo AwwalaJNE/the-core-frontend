@@ -722,13 +722,26 @@
                       >
                       <span v-else>{{ item[column.key] }}</span>
                     </template>
+                    <template v-else-if="column.key === 'status_with_tooltip'">
+                      <span v-html="item[column.key]"></span>
+                    </template>
                     <template v-else>
-                      {{ item[column.key] 
-                          ?  column.type_amount 
-                              ? Intl.NumberFormat('en-GB').format(item[column.key])
-                              : item[column.key]
-                          : "" 
-                      }}
+                      <span>
+                        {{ item[column.key] 
+                            ? column.type_amount 
+                                ? Intl.NumberFormat('en-GB').format(item[column.key])
+                                : item[column.key]
+                            : "" 
+                        }}
+                        <span v-if="column.hasTooltip" style="margin-left: 5px; font-weight: bold; color: #666; cursor: help;">
+                          <vs-tooltip bottom>
+                            ?
+                            <template #tooltip>
+                              {{ column.tooltip }}
+                            </template>
+                          </vs-tooltip>
+                        </span>
+                      </span>
                     </template>
                   </vs-td>
                 </template>
