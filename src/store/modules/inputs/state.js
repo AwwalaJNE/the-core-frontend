@@ -3904,6 +3904,7 @@ export default {
       valueData: null,
       value: '',
       isDisabled: false,
+      width: "6",
     },
     max_weight: {
       label: "Max Weight",
@@ -3912,7 +3913,8 @@ export default {
       typeInput: "number",
       typeData: "Number",
       valueData: null,
-      value: null
+      value: null,
+      width: "6"
     },
     manifest_method_id: {
       label: "Moda",
@@ -3922,7 +3924,8 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      width: "12"
     },
     flight_number: {
       label: "Flight Number",
@@ -3932,7 +3935,8 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      width: "6"
     },
     flight_schedule: {
       label: "Flight Schedule",
@@ -3942,7 +3946,8 @@ export default {
       typeInput: "datetime",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      width: "6"
     },
     node_id_origin: {
       label: "Origin",
@@ -3952,7 +3957,8 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      width: "12"
     },
     dynamicinputcomponent_node_id_transit: {
       label: "Transit",
@@ -3972,7 +3978,8 @@ export default {
       ],
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      width: "12"
     },
     node_id_transit: {
       label: "Transit",
@@ -4013,7 +4020,8 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      width: "12"
     },
     vehicle_type_id: {
       label: "Tipe",
@@ -4023,7 +4031,8 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      width: "6"
     },
     // manifest_type_id: {
     //   label: "Jenis Kiriman",
@@ -4044,7 +4053,8 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      width: "6"
     },
     pic_employee_id: {
       label: "Driver",
@@ -4055,7 +4065,8 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      width: "6"
     },
     etd: {
       label: "ETD",
@@ -4064,7 +4075,8 @@ export default {
       typeInput: "datetime",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      width: "6"
     },
     eta: {
       label: "ETA",
@@ -4073,7 +4085,8 @@ export default {
       typeInput: "datetime",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      width: "6"
     },
     auto_depart: {
       label: "Auto Depart",
@@ -4084,6 +4097,7 @@ export default {
       valueData: true,
       value: true,
       isDisabled: false,
+      width: "12"
     },
   },
   surat_jalan:{

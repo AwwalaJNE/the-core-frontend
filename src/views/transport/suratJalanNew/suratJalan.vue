@@ -1,61 +1,61 @@
 <template>
   <div>
     <table-master 
-      hideColumnKey="surat-jalan"
-      :dataTable="dataTable"
-      :dataColumn="datacolumn"
-      :tableLoading="loading"
-      :pageSize="pagination.page_size"
-      :page="pagination.page"
-      :limit="pagination.limit"
-      :hasPagination="true"
-      :hasLinked="['manifest_do_number']"
-      :customAction="true"
-      :customActionList="customActionList"
-      @actionLimit="actionLimit"
-      @actionPagination="actionPagination"
-      @actionUpdate="actionUpdate"
-      @handleEdit="handleEdit"
+    hideColumnKey="surat-jalan"
+    :dataTable="dataTable"
+    :dataColumn="datacolumn"
+    :tableLoading="loading"
+    :pageSize="pagination.page_size"
+    :page="pagination.page"
+    :limit="pagination.limit"
+    :hasPagination="true"
+    :hasLinked="['manifest_do_number']"
+    :customAction="true"
+    :customActionList="customActionList"
+    @actionLimit="actionLimit"
+    @actionPagination="actionPagination"
+    @actionUpdate="actionUpdate"
+    @handleEdit="handleEdit"
     />
-
+    
     <div v-if="true">
       <dialogCreateSuratJalanV2
-        btnBlue="Edit"
-        title="Edit Transport Surat Jalan"
-        :active="dialogSuratJalan"
-        :closeDialog="closeDialogSuratJalan"
-        :dataItem="dataItem"
-        @refresh="refresh"
+      btnBlue="Edit"
+      title="Edit Transport Surat Jalan"
+      :active="dialogSuratJalan"
+      :closeDialog="closeDialogSuratJalan"
+      :dataItem="dataItem"
+      @refresh="refresh"
       />
     </div>
     <div v-else>
       <dialogCreateSuratJalan
-        btnBlue="Edit"
-        title="Edit Transport Surat Jalan"
-        :active="dialogSuratJalan"
-        :closeDialog="closeDialogSuratJalan"
-        :dataItem="dataItem"
-        @refresh="refresh"
+      btnBlue="Edit"
+      title="Edit Transport Surat Jalan"
+      :active="dialogSuratJalan"
+      :closeDialog="closeDialogSuratJalan"
+      :dataItem="dataItem"
+      @refresh="refresh"
       />
     </div>
-
+    
     <dialog-confirm
-      title="Cancel Surat Jalan"
-      :message="
-        `Are you sure you want to cancel this surat jalan with number ${this.id}?`
-      "
-      :active="activeDialogConfirmCancel"
-      :loading="loadingConfirmCancel"
-      :closeDialog="closeDialogConfirmCancel"
-      @confirm="confirmCancel"
-      @cancel="closeDialogConfirmCancel"
+    title="Cancel Surat Jalan"
+    :message="
+    `Are you sure you want to cancel this surat jalan with number ${this.id}?`
+    "
+    :active="activeDialogConfirmCancel"
+    :loading="loadingConfirmCancel"
+    :closeDialog="closeDialogConfirmCancel"
+    @confirm="confirmCancel"
+    @cancel="closeDialogConfirmCancel"
     />
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import master from "@/mixins/master";
+import axios from "axios";
 
 import DialogConfirm from "@/components/dialog/dialogConfirm";
 import TableMaster from "@/components/table/tableMaster";
@@ -76,7 +76,7 @@ export default {
   components: {
     "table-master": TableMaster,
     "dialog-confirm": DialogConfirm,
-
+    
     dialogCreateSuratJalan: DialogCreateSuratJalan,
     dialogCreateSuratJalanV2: DialogCreateSuratJalanV2,
   },
@@ -87,19 +87,19 @@ export default {
       dialogSuratJalan: false,
       datacolumn: [
         {
-          label: "Surat Jalan",
+          label: "No Surat Jalan",
           key: "manifest_do_number",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Status",
-          key: "status",
-          width: "xxs",
+          key: "status_with_tooltip",
+          width: "xxxs",
         },
         {
           label: "Total Item",
           key: "total_item",
-          width: "auto",
+          width: "xxxs",
         },
         {
           label:"Type",
@@ -109,7 +109,7 @@ export default {
         {
           label: "Orion Number",
           key: "orion_number",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Document Type",
@@ -119,17 +119,17 @@ export default {
         {
           label: "Created By",
           key: "created_by_user_name",
-          width: "xs",
+          width: "auto",
         },
         {
           label: "Vehicle",
           key: "formatted_vehicle",
-          width: "sm",
+          width: "xxs",
         },
         {
           label: "Driver",
           key: "driver_name",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Mode",
@@ -139,12 +139,12 @@ export default {
         {
           label: "Origin",
           key: "node_id_origin_name",
-          width: "sm",
+          width: "xxs",
         },
         {
           label: "Destination",
           key: "node_id_destination_name",
-          width: "sm",
+          width: "xxs",
         },
         {
           label: "Fix Cost Weight",
@@ -169,63 +169,63 @@ export default {
         {
           label: "ETD",
           key: "etd",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "ETA",
           key: "eta",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Departed Time",
           key: "departed_time",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Approved",
           key: "approved",
           type: "status",
-          width: "xxs",
+          width: "xxxxs",
         },
         {
           label: "Latest Node Receiver",
           key: "latest_node_code_receiver",
-          width: "xs",
+          width: "xxxxs",
         },
         {
           label: "Total Master Bag",
           key: "total_masterbag",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Total Bag",
           key: "total_bag",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Total Connote",
           key: "total_connote",
-          width: "xs",
+          width: "xxxs",
         },
       ],
       customActionList: [
-        {
-          label: "Print",
-          key: "print",
-          attribute: "",
-        },
-        {
-          label: "Depart",
-          key: "depart",
-          attribute: "",
-        },
-        {
-          label: "Cancel",
-          key: "cancel",
-          attribute: "danger",
-        },
+      {
+        label: "Print",
+        key: "print",
+        attribute: "",
+      },
+      {
+        label: "Depart",
+        key: "depart",
+        attribute: "",
+      },
+      {
+        label: "Cancel",
+        key: "cancel",
+        attribute: "danger",
+      },
       ],
-
+      
       loading: false,
       dataItem: {},
       tempSearch: "",
@@ -254,12 +254,12 @@ export default {
         if (this.tempSearch !== old) {
           this.pagination.page = 1
           this.getTableData(
-            this.pagination.limit,
-            this.pagination.page,
-            val,
-            this.startDate,
-            this.endDate,
-            this.filterDateBy
+          this.pagination.limit,
+          this.pagination.page,
+          val,
+          this.startDate,
+          this.endDate,
+          this.filterDateBy
           );
         }
       }
@@ -268,12 +268,12 @@ export default {
       if (val !== undefined) {
         if (val !== old) {
           this.getTableData(
-            this.pagination.limit,
-            this.pagination.page,
-            this.tempSearch,
-            this.startDate,
-            this.endDate,
-            val
+          this.pagination.limit,
+          this.pagination.page,
+          this.tempSearch,
+          this.startDate,
+          this.endDate,
+          val
           );
         }
       }
@@ -286,12 +286,12 @@ export default {
           this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
         }
         this.getTableData(
-          this.pagination.limit,
-          this.pagination.page,
-          this.tempSearch,
-          this.startDate,
-          this.endDate,
-          this.filterDateBy
+        this.pagination.limit,
+        this.pagination.page,
+        this.tempSearch,
+        this.startDate,
+        this.endDate,
+        this.filterDateBy
         );
       }
     },
@@ -365,6 +365,10 @@ export default {
                   item['driver_name'] = 'Auto By System';
                   item['vehicle_mode_name'] = 'Auto By System';
                 }
+
+            item["status_with_tooltip"] = item.is_transit === 1
+              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-help-circle"></i></span>`
+              : item.status;
 
             if (item.hasOwnProperty("status") && item["status"] !== null) {
               let str = item["status"].toLowerCase();
@@ -447,27 +451,27 @@ export default {
           );
         });
     },
-
+    
     closeDialogConfirm() {
       this.confirmDialog = false;
       this.refresh();
     },
-
+    
     actionUpdate(val, key) {
       switch (key) {
         case "print":
-          this.manifest_do_number = val.manifest_do_number;
-          this.print();
-          break;
+        this.manifest_do_number = val.manifest_do_number;
+        this.print();
+        break;
         case "depart":
-          this.manifest_do_number = val.manifest_do_number;
-          this.depart();
-          break;
+        this.manifest_do_number = val.manifest_do_number;
+        this.depart();
+        break;
         case "cancel":
-          this.manifest_do_number = val.manifest_do_number;
-          this.id = val.manifest_do_number;
-          this.activeDialogConfirmCancel = true;
-          break;
+        this.manifest_do_number = val.manifest_do_number;
+        this.id = val.manifest_do_number;
+        this.activeDialogConfirmCancel = true;
+        break;
         default:
       }
     },
@@ -475,31 +479,31 @@ export default {
       if (this.dataTable.length > 0) {
         this.dataItem = val;
         this.dataItem["destination_id"] = val.node_id_destination
-          ? val.node_id_destination
-          : "";
+        ? val.node_id_destination
+        : "";
         this.dataItem["moda_angkutan_id"] = val.vehicle_mode_id
-          ? parseInt(val.vehicle_mode_id)
-          : "";
+        ? parseInt(val.vehicle_mode_id)
+        : "";
         this.dataItem["no_moda_angkutan_id"] = val.vehicle_id
-          ? parseInt(val.vehicle_id)
-          : "";
+        ? parseInt(val.vehicle_id)
+        : "";
         this.dataItem["manifest_do_item"] = val.detail ? val.detail : "";
         this.dataItem["driver_id"] = val.pic_employee_id
-          ? parseInt(val.pic_employee_id)
-          : "";
+        ? parseInt(val.pic_employee_id)
+        : "";
         this.dataItem["max_weight"] = val.max_weight;
         this.dataItem["driver_id"] = val.driver_id
-          ? parseInt(val.driver_id)
-          : "";
+        ? parseInt(val.driver_id)
+        : "";
         this.dataItem["vehicle_type_id"] = val.vehicle_type_id
-          ? parseInt(val.vehicle_type_id)
-          : "";
+        ? parseInt(val.vehicle_type_id)
+        : "";
         this.$nextTick(() => {
           this.dialogSuratJalan = true;
         });
       }
     },
-
+    
     actionLimit(val) {
       this.pagination.limit = val;
       this.pagination.page = 1;
@@ -511,12 +515,12 @@ export default {
     },
     refresh() {
       this.getTableData(
-        this.pagination.limit,
-        this.pagination.page,
-        this.tempSearch,
-        this.startDate,
-        this.endDate,
-        this.filterDateBy
+      this.pagination.limit,
+      this.pagination.page,
+      this.tempSearch,
+      this.startDate,
+      this.endDate,
+      this.filterDateBy
       );
     },
     print() {
@@ -528,9 +532,9 @@ export default {
           node_id: this.listenNodeId,
         },
       });
-
+      
       const printWindow = window.open(routeData.href, "_blank", "noopener");
-
+      
       if (printWindow) {
         printWindow.onload = function() {
           printWindow.print();
@@ -540,26 +544,26 @@ export default {
     },
     async depart() {
       this.loading = true;
-
+      
       try {
         const res = await axios.patch(
-          `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/depart?n=${this.listenNodeId}&is_departed=1`,
-          {},
-          this.Helper.header()
+        `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/depart?n=${this.listenNodeId}&is_departed=1`,
+        {},
+        this.Helper.header()
         );
         this.print();
         this.openNotification(
-          "success",
-          null,
-          "Success",
-          "Update surat jalan success"
+        "success",
+        null,
+        "Success",
+        "Update surat jalan success"
         );
       } catch (err) {
         this.openNotification(
-          "danger",
-          err?.response?.data?.code ?? "",
-          "Update surat jalan failed",
-          err?.response?.data?.message ?? "something went wrong"
+        "danger",
+        err?.response?.data?.code ?? "",
+        "Update surat jalan failed",
+        err?.response?.data?.message ?? "something went wrong"
         );
       } finally {
         this.loading = false;
@@ -577,21 +581,21 @@ export default {
     async cancel() {
       try {
         const res = await axios.delete(
-          `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}?n=${this.listenNodeId}`,
-          this.Helper.header()
+        `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}?n=${this.listenNodeId}`,
+        this.Helper.header()
         );
         this.openNotification(
-          "success",
-          null,
-          "Success",
-          "Cancel surat jalan success"
+        "success",
+        null,
+        "Success",
+        "Cancel surat jalan success"
         );
       } catch (err) {
         this.openNotification(
-          "danger",
-          err?.response?.data?.code ?? "",
-          "Failed",
-          err?.response?.data?.message ?? "Something went wrong"
+        "danger",
+        err?.response?.data?.code ?? "",
+        "Failed",
+        err?.response?.data?.message ?? "Something went wrong"
         );
       } finally {
         this.closeDialogConfirmCancel();
@@ -608,3 +612,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.status-tooltip {
+  margin-left: 5px;
+  font-weight: bold;
+  color: #666;
+  cursor: help;
+}
+</style>

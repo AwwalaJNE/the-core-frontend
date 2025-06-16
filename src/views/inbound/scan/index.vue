@@ -352,7 +352,6 @@ export default {
                         total_received: item.total_received.toString(),
                         total_unreceived: item.total_unreceived.toString()
                     }));
-
                     this.dataTable = arr;
                     this.dataTableProp = res.data.detail;
                     this.dataTableProp.forEach(item => {

@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import master from "@/mixins/master";
+import axios from "axios";
 
 import DialogConfirm from "@/components/dialog/dialogConfirm";
 import TableMaster from "@/components/table/tableMaster.vue";
@@ -82,42 +82,42 @@ export default {
         {
           label: "No Surat Muatan",
           key: "manifest_number",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Status",
-          key: "status",
-          width: "xs",
+          key: "status_with_tooltip",
+          width: "xxxxs",
         },
         {
-          label: "Total Item",
+          label: "Total Item (Koli)",
           key: "total_item",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Type SM",
           key: "manifest_type_name",
-          width: "xs",
+          width: "xxxxs",
         },
         {
           label: "Vehicle",
           key: "formatted_vehicle",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Jenis Kiriman",
           key: "jenis_kiriman",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Origin",
           key: "origin_name",
-          width: "sm",
+          width: "xxs",
         },
         {
           label: "Destination",
           key: "destination_name",
-          width: "sm",
+          width: "xxs",
         },
         {
           label: "Fix Cost Weight",
@@ -142,55 +142,55 @@ export default {
         {
           label: "ETD",
           key: "etd",
-          width: "sm",
+          width: "xxxs",
         },
         {
           label: "ETA",
           key: "eta",
-          width: "sm",
+          width: "xxxs",
         },
         {
           label: "Approved",
           key: "approved",
           type: "status",
-          width: "xs",
+          width: "auto",
         },
         {
           label: "Received At",
           key: "latest_node_receiver",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Total Irregularity",
           key: "total_irregularity",
-          width: "xs",
+          width: "xxxs",
           textAlign: "center",
           textColor: "red",
         },
         {
           label: "Total Master Bag",
           key: "total_masterbag",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Total Bag",
           key: "total_bag",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Total Connote",
           key: "total_connote",
-          width: "xs",
+          width: "xxxs",
         },
         {
           label: "Created Date",
           key: "created_at",
-          width: "sm",
+          width: "xxxs",
         },
         {
           label: "Created By",
           key: "created_by_user_name",
-          width: "xs",
+          width: "xxxxs",
         },
       ],
       customActionList: [
@@ -347,6 +347,9 @@ export default {
             total_connote: item.koli_count === 0 ? "0" : item.koli_count,
             created_at: this.dateConvert(item.created_at),
             approved: item.is_approve === 1 ? true : false,
+            status_with_tooltip: item.is_transit === 1
+              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-help-circle"></i></span>`
+              : item.status,
             // `isDisabled` tidak lagi diperlukan karena `button_status` menangani ini
             latest_node_receiver:
               item.latest_node_name_receiver && item.latest_node_code_receiver
@@ -551,3 +554,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.status-tooltip {
+  margin-left: 5px;
+  font-weight: bold;
+  color: #666;
+  cursor: help;
+}
+</style>
