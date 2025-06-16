@@ -584,28 +584,20 @@
                   <vs-td :key="key" :class="column.width ? column.width : ''">
                     
                     <!-- ✅ Missroute -->
-                    <template
+                    <!-- <template
                       v-if="
                         item[column.is_missroute] !== undefined &&
                         item[column.is_missroute] === 1
                       "
                     >
                       <div class="tooltip-container">
-                        <!-- <vs-button
-                          class="status-missroute"
-                          circle
-                          icon
-                          disabled
-                          :active="false"
-                        >
-                      </vs-button> -->
                         <i class="bx bx-help-circle missroute-icon"></i>
                         <span class="tooltip-text">Missroute Received</span>
                       </div>
-                    </template>
+                    </template> -->
 
                     <!-- ✅ Normal status -->
-                    <template v-else-if="item[column.key] !== undefined && item[column.is_missroute] !== 1">
+                    <template v-if="item[column.key] !== undefined">
                       <vs-button
                         circle
                         icon
@@ -2161,7 +2153,7 @@ span.text-danger {
 }
 
 </style>
-<style scoped>
+<!-- <style scoped>
   .missroute-icon {
     color: #fbe99d;
     font-size: 30px;
@@ -2196,4 +2188,4 @@ span.text-danger {
     visibility: visible;
     opacity: 1;
   }
-</style>
+</style> -->

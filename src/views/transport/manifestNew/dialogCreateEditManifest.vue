@@ -218,7 +218,6 @@ export default {
                 {
                     label: "Received",
                     key: "received_status",
-                    is_missroute: "is_missroute",
                     type: "status",
                     width: "xs",
                 },
@@ -347,7 +346,6 @@ export default {
 
             this.vehicle_mode_id = val.vehicle_mode_id;
             this.vehicle_type_id = val?.vehicle_type_id ?? null;
-            this.is_missroute = val.is_missroute === true ? 1 : 0
 
             if (this.vehicle_mode_id) {
                 this.getDataVehicleType();
@@ -401,11 +399,6 @@ export default {
 
                 this.dataTable = arr;
             }
-
-            console.log('dataTable', this.dataTable);
-            this.dataTable.forEach(item => {
-                item.is_missroute = this.is_missroute
-            })
 
             this.master_form = {
                 manifest_number: val.manifest_number,
@@ -781,8 +774,7 @@ export default {
                     arr = arr.map(item => ({
                         ...item,
                         received_status: item.received_at ? 1 : 0,
-                        destination_name: item.item_destination,
-                        is_missroute: item.is_missroute
+                        destination_name: item.item_destination
                     }));
 
                     this.dataTable = arr;

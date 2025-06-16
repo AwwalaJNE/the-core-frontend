@@ -239,8 +239,7 @@ export default {
             receivingLogs: [],
             inboundNumber: '',
             processing: false,
-            showDialog: false,
-            is_missroute: false
+            showDialog: false
         }
     },
     methods: {
@@ -351,20 +350,14 @@ export default {
                     arr = arr.map(item => ({
                         ...item,
                         total_received: item.total_received.toString(),
-                        total_unreceived: item.total_unreceived.toString(),
-                        is_missroute: item.is_missroute == true ? 1 : 0
+                        total_unreceived: item.total_unreceived.toString()
                     }));
                     this.dataTable = arr;
-                    this.dataTable.forEach(item => {
-                        this.is_missroute = item.is_missroute
-                    })
                     this.dataTableProp = res.data.detail;
                     this.dataTableProp.forEach(item => {
                         if (item.is_masterbag === '1') {
                             item.item_type = 'MASTERBAG';
                         }
-
-                        item.is_missroute = this.is_missroute
                     });
                     this.dataTableProp.map(item => {
                       item,
