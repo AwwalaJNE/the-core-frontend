@@ -79,8 +79,7 @@ export default {
                   label: "Status receiving",
                   key: "is_received",
                   type: 'status',
-                  width: "sm",
-                  is_missroute: "is_missroute"
+                  width: "sm"
                 },
             ],
             customActionList: [
