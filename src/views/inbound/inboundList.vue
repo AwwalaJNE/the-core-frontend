@@ -60,7 +60,7 @@ export default {
         width: "auto",
       },
       {
-        label: "Total Item (Koli)",
+        label: "Total Bag",
         key: "total_item",
         width: "xxxs",
       },
@@ -155,9 +155,9 @@ export default {
         width: "xxxs",
       },
       {
-        label: "Departed",
+        label: "Handover to Transport",
         key: "departed_at",
-        width: "xxxs",
+        width: "xxs",
       },
       {
         label: "Received At",

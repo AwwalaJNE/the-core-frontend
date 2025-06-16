@@ -90,7 +90,7 @@ export default {
           width: "xxxxs",
         },
         {
-          label: "Total Item (Koli)",
+          label: "Total Bag",
           key: "total_item",
           width: "xxxs",
         },
