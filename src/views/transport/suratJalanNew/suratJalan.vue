@@ -97,7 +97,7 @@ export default {
           width: "xxxs",
         },
         {
-          label: "Total Item",
+          label: "Total Bag",
           key: "total_item",
           width: "xxxs",
         },
@@ -177,7 +177,7 @@ export default {
           width: "xxxs",
         },
         {
-          label: "Departed Time",
+          label: "Handover to Transport",
           key: "departed_time",
           width: "xxxs",
         },
