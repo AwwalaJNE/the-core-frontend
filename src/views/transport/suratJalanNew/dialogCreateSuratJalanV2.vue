@@ -224,6 +224,7 @@ export default {
                 {
                     label: "Received",
                     key: "received_status",
+                    is_missroute: "is_missroute",
                     type: "status",
                     width: "sm",
                 },
@@ -274,6 +275,7 @@ export default {
             },
             editData: {},
             destination_name_code: '',
+            is_missroute:false,
             dialogTraceBag: false,
             selectedBagNumber: "",
         };
@@ -332,6 +334,7 @@ export default {
                 }
 
                 item.received_status = item.received_at ? 1 : 0;
+                item.is_missroute = item.is_missroute === true ? 1 : 0
             });
 
             this.total_weight = val.total_weight;
@@ -600,7 +603,8 @@ export default {
                         received_status: item.received_at ? 1 : 0,
                         destination: item.item_destination,
                         node_code_destination: item.node_code_destination,
-                        status_trip: (item?.bag?.status_trip || '') + ' ' + (res.data?.latest_node_name_receiver || '')
+                        status_trip: (item?.bag?.status_trip || '') + ' ' + (res.data?.latest_node_name_receiver || ''),
+                        is_missroute: item.is_missroute
                     }));
 
                     this.dataTable = arr;
