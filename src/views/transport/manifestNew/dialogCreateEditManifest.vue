@@ -49,27 +49,29 @@
                     @data="onCameraScannerGetData" 
                 />
 
-                <vs-row>
-                    <vs-col lg="5" sm="5">
-                        <div>
-                            <form-input-controller
-                                v-if="!listenIsReadOnly || !loadingSuratMuatan"
-                                ref="formSuratMuatanController"
-                                typeForm="surat_muatan"
-                                :dataItem="listenIsReadOnly ? listenGetByApi : listenDataItem"
-                                :isDisabled="isDisabled"
-                                :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
-                                :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
-                                :querySearch="querySearch"
-                                @formData="formData"
-                                @inputFocus="inputFocus"
-                                @onChangeCustom="onChangeCustom"
-                            />
-                        </div>
-                    </vs-col>
-                    <vs-col lg="7" sm="7">
-                        <vs-row v-if="!listenIsReadOnly">
-                            <vs-col>
+                <div>
+                    <!-- Form Section -->
+                    <form-input-controller
+                        v-if="!listenIsReadOnly || !loadingSuratMuatan"
+                        ref="formSuratMuatanController"
+                        typeForm="surat_muatan"
+                        :dataItem="listenIsReadOnly ? listenGetByApi : listenDataItem"
+                        :isDisabled="isDisabled"
+                        :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
+                        :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
+                        :querySearch="querySearch"
+                        @formData="formData"
+                        @inputFocus="inputFocus"
+                        @onChangeCustom="onChangeCustom"
+                    />
+
+                    <!-- Divider -->
+                    <vs-divider />
+
+                    <!-- Input Bag Section -->
+                    <div class="mt-2 mb-2">
+                        <vs-row align="center" v-if="!listenIsReadOnly">
+                            <vs-col xs="6" sm="3" lg="3">
                                 <vs-input
                                     border
                                     icon-after
@@ -90,30 +92,27 @@
                             </vs-col>
                         </vs-row>
 
-                        <vs-row>
-                            <vs-col style="overflow: auto;">
-                                <div v-if="!loadingDetail && !loading">
-                                    <table-master 
-                                        hideColumnKey="dialog-surat-muatan"
-                                        :dataTable="dataTable"
-                                        :dataColumn="datacolumn"
-                                        :tableLoading="loadingDetail"
-                                        :pageSize="pagination.page_size"
-                                        :page="pagination.page"
-                                        :limit="pagination.limit"
-                                        :hasAction="false"
-                                        :hasPagination="true"
-                                        :customAction="!listenIsReadOnly"
-                                        :customActionList="!listenIsReadOnly ? customActionList : null"
-                                        @actionUpdate="actionUpdate"
-                                        @actionLimit="actionLimit"
-                                        @actionPagination="actionPagination"
-                                    />
-                                </div>
-                            </vs-col>
-                        </vs-row>
-                    </vs-col>
-                </vs-row>
+                        <!-- Table Section -->
+                        <div v-if="!loadingDetail && !loading">
+                            <table-master 
+                                hideColumnKey="dialog-surat-muatan"
+                                :dataTable="dataTable"
+                                :dataColumn="datacolumn"
+                                :tableLoading="loadingDetail"
+                                :pageSize="pagination.page_size"
+                                :page="pagination.page"
+                                :limit="pagination.limit"
+                                :hasAction="false"
+                                :hasPagination="true"
+                                :customAction="!listenIsReadOnly"
+                                :customActionList="!listenIsReadOnly ? customActionList : null"
+                                @actionUpdate="actionUpdate"
+                                @actionLimit="actionLimit"
+                                @actionPagination="actionPagination"
+                            />
+                        </div>
+                    </div>
+                </div>
             </template>
         </dialog-master>
 
@@ -170,6 +169,11 @@ export default {
                 {
                     label: "Item No",
                     key: "item_number",
+                    width: "sm",
+                },
+                {
+                    label: "Trip Status",
+                    key: "status_trip",
                     width: "sm",
                 },
                 {
@@ -321,6 +325,17 @@ export default {
                 this.getDataVehicleMode();
                 this.originNode()
                 this.getDataEmployee();
+                
+                // Initialize field widths based on current state
+                if (this.dataItem && this.dataItem.manifest_method_id) {
+                    if (this.dataItem.manifest_method_id === 1) {
+                        this.adjustFieldWidths('flight');
+                    } else if (this.dataItem.manifest_method_id === 2) {
+                        this.adjustFieldWidths('road-with-driver');
+                    } else {
+                        this.adjustFieldWidths('road-no-driver');
+                    }
+                }
             }
         },
     },
@@ -365,6 +380,7 @@ export default {
                         data.total_inner = data.bag_detail_count || '';
                         data.total_connote_of_bag = data.total_connote_of_bag || '';
                         data.destination_name = data.bag?.destination?.node_tariff_code || '';
+                        data.status_trip = data?.bag?.status_trip || '';
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'
                         } else {
@@ -469,6 +485,7 @@ export default {
                         data.actual_weight = data.bag?.bag_actual_weight || '0';
                         data.total_inner = data.bag_detail_count || '0';
                         data.destination_name = data.bag?.destination?.node_tariff_code || '';
+                        data.status_trip = data?.bag?.status_trip || '';
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'
                         } else {
@@ -886,6 +903,8 @@ export default {
                         this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
                         this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true);
                         this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", true);
+                        // Adjust widths for flight mode
+                        this.adjustFieldWidths('flight');
                     } else if (type == "manifest_method_id" && val != 1) {
                         
                         this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
@@ -894,6 +913,12 @@ export default {
                         if (val == 2) {
                             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true);   
                             this.getDataEmployee();
+                            // Adjust widths for road mode with driver
+                            this.adjustFieldWidths('road-with-driver');
+                        } else {
+                            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
+                            // Adjust widths for road mode without driver
+                            this.adjustFieldWidths('road-no-driver');
                         }
                     }
 
@@ -1012,6 +1037,49 @@ export default {
         refreshDetail() {
             this.getSuratMuatanDetail();
         },
+        adjustFieldWidths(mode) {
+            // Dynamically adjust field widths based on visibility
+            const state = this.$store.state.inputs.surat_muatan;
+            
+            // Reset all to default first
+            if (state.manifest_number) state.manifest_number.width = "6";
+            if (state.max_weight) state.max_weight.width = "6";
+            if (state.manifest_method_id) state.manifest_method_id.width = "12";
+            if (state.node_id_origin) state.node_id_origin.width = "12";
+            if (state.node_id_destination) state.node_id_destination.width = "12";
+            if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
+            if (state.vehicle_id) state.vehicle_id.width = "6";
+            if (state.etd) state.etd.width = "6";
+            if (state.eta) state.eta.width = "6";
+            if (state.auto_depart) state.auto_depart.width = "12";
+            
+            switch(mode) {
+                case 'flight':
+                    // Flight mode layout
+                    if (state.flight_number) state.flight_number.width = "6";
+                    if (state.flight_schedule) state.flight_schedule.width = "6";
+                    // Vehicle fields in one row
+                    if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
+                    if (state.vehicle_id) state.vehicle_id.width = "6";
+                    break;
+                    
+                case 'road-with-driver':
+                    // Road mode with driver layout
+                    if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
+                    if (state.vehicle_id) state.vehicle_id.width = "6";
+                    if (state.pic_employee_id) state.pic_employee_id.width = "12";
+                    break;
+                    
+                case 'road-no-driver':
+                    // Road mode without driver layout
+                    if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
+                    if (state.vehicle_id) state.vehicle_id.width = "6";
+                    break;
+            }
+            
+            // Force re-render of form
+            this.$forceUpdate();
+        },
         openTraceBagDialog() {
             this.dialogTraceBag = true;
         }
@@ -1049,6 +1117,47 @@ button {
 .manifest-dialog table {
     width: 100%;
     min-width: 1200px; /* Pastikan tabel cukup lebar */
+}
+
+.mt-2 {
+    margin-top: 1rem;
+}
+
+.mb-2 {
+    margin-bottom: 1rem;
+}
+
+/* Form field spacing improvements */
+.manifest-dialog >>> .vs-input-parent {
+    margin-bottom: 0.5rem;
+}
+
+.manifest-dialog >>> .vs-select {
+    margin-bottom: 0.5rem;
+}
+
+.manifest-dialog >>> .form-master {
+    padding: 0.5rem;
+}
+
+/* Group related fields visually */
+.manifest-dialog >>> .vs-row {
+    margin-bottom: 0.75rem;
+}
+
+/* Ensure consistent field heights */
+.manifest-dialog >>> .vs-input,
+.manifest-dialog >>> .vs-select__input {
+    min-height: 40px;
+}
+
+/* Better label alignment */
+.manifest-dialog >>> .vs-input__label,
+.manifest-dialog >>> .vs-select__label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 0.25rem;
 }
 
 </style>

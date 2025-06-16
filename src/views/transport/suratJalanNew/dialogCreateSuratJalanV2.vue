@@ -187,6 +187,11 @@ export default {
                     width: "sm",
                 },
                 {
+                    label: "Trip Status",
+                    key: "status_trip",
+                    width: "sm",
+                },
+                {
                     label: "Actual Weight (Kg)",
                     key: "actual_weight",
                     width: "sm",
@@ -323,6 +328,7 @@ export default {
                 item.destination = item.bag?.destination?.node_tariff_code || item.koli?.connote?.connote_receiver_tariff_code || item.manifest?.destination?.node_tariff_code || '';
                 item.node_code_destination = item?.bag?.destination?.node_code || item?.manifest?.destination?.branch_code || '';
                 item.node_name_destination = item?.bag?.destination?.node_name || '';
+                item.status_trip = item?.bag?.status_trip || '';
 
                 if (val.status !== "UNAPPROVED" || val.is_approve === 1) {
                     item.button_status = { remove: false };
