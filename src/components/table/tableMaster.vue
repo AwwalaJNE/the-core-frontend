@@ -611,11 +611,11 @@
                         icon
                         border
                         disabled
-                        :danger="item[column.key] === false"
+                        :danger="item[column.key] == false ? true : false"
                         :active="false"
                       >
                         <i
-                          :class="`bx bx-${item[column.key] === false ? 'x' : 'check'}`"
+                          :class="`bx bx-${item[column.key] == false ? 'x' : 'check'}`"
                         ></i>
                       </vs-button>
                     </template>
