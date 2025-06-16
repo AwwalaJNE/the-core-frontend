@@ -380,7 +380,7 @@ export default {
                         data.total_inner = data.bag_detail_count || '';
                         data.total_connote_of_bag = data.total_connote_of_bag || '';
                         data.destination_name = data.bag?.destination?.node_tariff_code || '';
-                        data.status_trip = data?.bag?.status_trip || '';
+                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (val?.latest_node_name_receiver || '');
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'
                         } else {
@@ -485,7 +485,7 @@ export default {
                         data.actual_weight = data.bag?.bag_actual_weight || '0';
                         data.total_inner = data.bag_detail_count || '0';
                         data.destination_name = data.bag?.destination?.node_tariff_code || '';
-                        data.status_trip = data?.bag?.status_trip || '';
+                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (val?.latest_node_name_receiver || '');
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'
                         } else {
