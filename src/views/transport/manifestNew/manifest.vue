@@ -86,7 +86,7 @@ export default {
         },
         {
           label: "Status",
-          key: "status",
+          key: "status_with_tooltip",
           width: "xxxxs",
         },
         {
@@ -347,6 +347,9 @@ export default {
             total_connote: item.koli_count === 0 ? "0" : item.koli_count,
             created_at: this.dateConvert(item.created_at),
             approved: item.is_approve === 1 ? true : false,
+            status_with_tooltip: item.is_transit === 1
+              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-help-circle"></i></span>`
+              : item.status,
             // `isDisabled` tidak lagi diperlukan karena `button_status` menangani ini
             latest_node_receiver:
               item.latest_node_name_receiver && item.latest_node_code_receiver
@@ -551,3 +554,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.status-tooltip {
+  margin-left: 5px;
+  font-weight: bold;
+  color: #666;
+  cursor: help;
+}
+</style>
