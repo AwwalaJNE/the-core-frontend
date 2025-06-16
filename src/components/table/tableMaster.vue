@@ -584,20 +584,31 @@
                   <vs-td :key="key" :class="column.width ? column.width : ''">
                     
                     <!-- ✅ Missroute -->
-                    <!-- <template
+                    <template
                       v-if="
                         item[column.is_missroute] !== undefined &&
                         item[column.is_missroute] === 1
                       "
                     >
                       <div class="tooltip-container">
-                        <i class="bx bx-help-circle missroute-icon"></i>
+                        <!-- <vs-button
+                          class="status-missroute"
+                          circle
+                          icon
+                          disabled
+                          :active="false"
+                        >
+                      </vs-button> -->
+                        <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.295 10.585L8.705 8L8 8.705L10.585 11.29L11.295 10.585ZM13.25 8L14.27 9.02L8 15.295L8.705 16L14.98 9.73L16 10.75V8H13.25ZM12.71 13.41L13.415 12.705L14.98 14.27L16 13.25V16H13.25L14.275 14.975L12.71 13.41Z" fill="#eddb34"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z" fill="#eddb34"/>
+                        </svg>
                         <span class="tooltip-text">Missroute Received</span>
                       </div>
-                    </template> -->
+                    </template>
 
                     <!-- ✅ Normal status -->
-                    <template v-if="item[column.key] !== undefined">
+                    <template v-else-if="item[column.key] !== undefined && item[column.is_missroute] !== 1">
                       <vs-button
                         circle
                         icon
@@ -2153,7 +2164,7 @@ span.text-danger {
 }
 
 </style>
-<!-- <style scoped>
+<style scoped>
   .missroute-icon {
     color: #fbe99d;
     font-size: 30px;
@@ -2188,4 +2199,4 @@ span.text-danger {
     visibility: visible;
     opacity: 1;
   }
-</style> -->
+</style>
