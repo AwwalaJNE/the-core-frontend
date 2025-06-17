@@ -408,4 +408,7 @@ export default {
     // insert remark
     insert_remark: api + 'remark-inbound-confirm',
     inbound_remark: api + 'inbound-remark',
+
+    // Setting SM Schedule
+    sm_schedule: api + 'schedule'
 }

@@ -1,22 +1,26 @@
 <template>
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
-            <div :class="`vs-input-content vs-input-content--has-label custom_datePicker ${props.err !== undefined && props.err !== '' ?'danger':''}`">
-                <label class="vs-input__label vs-input__label--placeholder vs-input__label--label">{{name}}</label>
-                <el-date-picker
-                    v-model="value"
-                    :type="type"
-                    :placeholder="`Select date ${typeInput.toLowerCase().includes('time') ? 'and time' : ''}`"
-                    range-separator="To"
-                    :value-format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd HH:mm:ss'"
-                    :format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : null"
-                    start-placeholder="Start date"
-                    end-placeholder="End date"
-                    :picker-options="isETDnETA ? pickerOptions : null"
-                    :default-time="isETDnETA ? null : ['00:00:00', '23:59:59']"
-                    :disabled="listenIsDisabled"
-                    @change="updateValue">
-                </el-date-picker>
+            <div :class="`custom_datePicker ${props.err !== undefined && props.err !== '' ?'danger':''}`">
+                <template v-if="listenName">
+                    <span class="c-label">{{name}}</span>
+                </template>
+                <template>
+                    <el-date-picker
+                        v-model="value"
+                        :type="type"
+                        :placeholder="`Select date ${typeInput.toLowerCase().includes('time') ? 'and time' : ''}`"
+                        range-separator="To"
+                        :value-format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd HH:mm:ss'"
+                        :format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : null"
+                        start-placeholder="Start date"
+                        end-placeholder="End date"
+                        :picker-options="isETDnETA ? pickerOptions : null"
+                        :default-time="isETDnETA ? null : ['00:00:00', '23:59:59']"
+                        :disabled="listenIsDisabled"
+                        @change="updateValue">
+                    </el-date-picker>
+                </template>
             </div>
         </template>
     </inputan>
@@ -54,6 +58,9 @@ export default {
         }
     },
     computed: {
+        listenName() {
+            return this.name ? this.name : false
+        },
         listenFormKey(){
             return this.formKey
         },
@@ -114,6 +121,15 @@ export default {
 }
 </script>
 <style lang="scss">
+.c-label{
+            font-size: 0.75rem;
+            /* left: 0px; */
+            position: relative;
+            align-content: start;
+            display: block;
+            padding: 4px 7px;
+            text-align: left;
+        }
     .custom_datePicker{
         .el-date-editor.el-range-editor {
             width: 100%;

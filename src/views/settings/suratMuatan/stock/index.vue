@@ -27,6 +27,17 @@
                         </div>
                     </vs-col>
                     <vs-col xs="6" sm="3" lg="2">
+                        <div class="select-surat-muatan-stock">
+                            <selector 
+                                formKey="filter_source"
+                                :valueData="filterSource"
+                                :selectedValue="filterSourceBy"
+                                :isMultiple="false"
+                                @updateValue="updateValue" 
+                            />
+                        </div>
+                    </vs-col>
+                    <vs-col xs="6" sm="3" lg="2">
                         <select-search-by 
                             :border="true"
                             :isMultiple="false" 
@@ -35,7 +46,7 @@
                             @updateSearchBy="updateFilterDateBy"
                         />
                     </vs-col>
-                    <vs-col xs="12" sm="6" lg="6">
+                    <vs-col xs="12" sm="6" lg="4">
                         <date-time 
                             formKey="date_range"
                             :name="''" 
@@ -135,8 +146,23 @@ export default {
                     width: "sm"
                 },
                 {
-                    label: "Surat Muatan",
-                    key: "no_sm",
+                    label: "Manifest Number",
+                    key: "manifest_number",
+                    width: "sm"
+                },
+                {
+                    label: "Origin",
+                    key: "node_code_origin",
+                    width: "sm"
+                },
+                {
+                    label: "Destination",
+                    key: "node_code_destination",
+                    width: "sm"
+                },
+                {
+                    label: "Driver",
+                    key: "employee_driver_name",
                     width: "sm"
                 },
                 {
@@ -153,6 +179,12 @@ export default {
                     label: "Created At",
                     key: "created_at",
                     width: "sm"
+                },
+                {
+                    label: "Via Schedule",
+                    key: "schedule_id",
+                    type: "status",
+                    width: "xxxxs"
                 },
                 {
                     label: "Active",
@@ -205,6 +237,21 @@ export default {
                     value: '0'
                 }
             ],
+            filterSourceBy: "all",
+            filterSource: [
+                {
+                    label: 'All Creation Source',
+                    value: 'all'
+                },
+                {
+                    label: 'Schedule',
+                    value: 'schedule'
+                },
+                {
+                    label: 'Manual',
+                    value: 'manual'
+                }
+            ],
         }
     },
     computed: {
@@ -242,6 +289,10 @@ export default {
                     this.filterStatusBy = this.filterStatus.find(item => item.value == val)?.value;
                     this.refresh();
                     break;
+                case "filter_source":
+                    this.filterSourceBy = this.filterSource.find(item => item.value == val)?.value;
+                    this.refresh();
+                    break;
                 case "date_range":
                     this.dateRange = val
                     this.startDate = this.dateRange[0];
@@ -263,13 +314,16 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.sm_stock}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}&vehicle_mode=${this.filterVehicleModeBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.sm_stock}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}&creation_source=${this.filterSourceBy}&vehicle_mode=${this.filterVehicleModeBy}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
                     arr.map(item => {
                         item,
                         item["is_active"] = item.is_active === "1" ? true : false;
+                        item["schedule_id"] = item.schedule_id ? true : false;
+                        item["etd"] = item?.etd + " " + item?.etd_timezone;
+                        item["eta"] = item?.eta + " " + item?.eta_timezone;
                     })
                     
                     this.dataTable = arr

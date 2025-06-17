@@ -4205,6 +4205,22 @@ export default {
 
   //====== SURAT MUATAN STOCK ======//
 
+  SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER', payload)
+  },
+  SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_ValueData', payload)
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_SCHEDULE_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_SCHEDULE_ID', payload)
+  },
+  SET_SURAT_MUATAN_STOCK_SCHEDULE_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_SCHEDULE_ID_ValueData', payload)
+  },
+  
+  
   SET_SURAT_MUATAN_STOCK_VEHICLE_ID({ commit }, payload) {
     commit('SET_SURAT_MUATAN_STOCK_VEHICLE_ID', payload)
   },
@@ -4216,22 +4232,55 @@ export default {
   },
 
 
-  SET_SURAT_MUATAN_STOCK_NO_SM({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_STOCK_NO_SM', payload)
+  SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID', payload)
   },
-  SET_SURAT_MUATAN_STOCK_NO_SM_ValueData({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_STOCK_NO_SM_ValueData', payload)
+  SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID_ValueData', payload)
   },
-  SET_SURAT_MUATAN_STOCK_NO_SM_ArrData({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_STOCK_NO_SM_ArrData', payload)
+  SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID_ArrData', payload)
   },
 
-  
+
+  SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN', payload)
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ArrData', payload)
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION', payload)
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ArrData', payload)
+  },
+
+
   SET_SURAT_MUATAN_STOCK_ETD({ commit }, payload) {
     commit('SET_SURAT_MUATAN_STOCK_ETD', payload)
   },
   SET_SURAT_MUATAN_STOCK_ETD_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_STOCK_ETD_ValueData', payload)
+  },
+
+  
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE', payload)
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ArrData', payload)
   },
 
 
@@ -4240,6 +4289,16 @@ export default {
   },
   SET_SURAT_MUATAN_STOCK_ETA_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_STOCK_ETA_ValueData', payload)
+  },
+
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE', payload)
+  },
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ArrData', payload)
   },
 
 

@@ -4610,6 +4610,22 @@ export default {
 
   //====== SURAT MUATAN STOCK ======//
 
+  SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER(state, payload) {
+    state.surat_muatan_stock.manifest_number.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_ValueData(state, payload) {
+    state.surat_muatan_stock.manifest_number.valueData = payload
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_SCHEDULE_ID(state, payload) {
+    state.surat_muatan_stock.schedule_id.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_SCHEDULE_ID_ValueData(state, payload) {
+    state.surat_muatan_stock.schedule_id.valueData = payload
+  },
+
+
   SET_SURAT_MUATAN_STOCK_VEHICLE_ID(state, payload) {
     state.surat_muatan_stock.vehicle_id.value = payload
   },
@@ -4621,18 +4637,44 @@ export default {
     state.surat_muatan_stock.vehicle_id.arrData = payload :
     state.surat_muatan_stock.vehicle_id.arrData = []
   },
-  
-  
-  SET_SURAT_MUATAN_STOCK_NO_SM(state, payload) {
-    state.surat_muatan_stock.no_sm.value = payload
+
+
+  SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID(state, payload) {
+    state.surat_muatan_stock.employee_driver_id.value = payload
   },
-  SET_SURAT_MUATAN_STOCK_NO_SM_ValueData(state, payload) {
-    state.surat_muatan_stock.no_sm.valueData = payload
+  SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID_ValueData(state, payload) {
+    state.surat_muatan_stock.employee_driver_id.valueData = payload
   },
-  SET_SURAT_MUATAN_STOCK_NO_SM_ArrData(state, payload) {
-    state.surat_muatan_stock.no_sm.hasOwnProperty('arrData') ?
-    state.surat_muatan_stock.no_sm.arrData = payload :
-    state.surat_muatan_stock.no_sm.arrData = []
+  SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID_ArrData(state, payload) {
+    state.surat_muatan_stock.employee_driver_id.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.employee_driver_id.arrData = payload :
+    state.surat_muatan_stock.employee_driver_id.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN(state, payload) {
+    state.surat_muatan_stock.node_id_origin.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ValueData(state, payload) {
+    state.surat_muatan_stock.node_id_origin.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ArrData(state, payload) {
+    state.surat_muatan_stock.node_id_origin.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.node_id_origin.arrData = payload :
+    state.surat_muatan_stock.node_id_origin.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION(state, payload) {
+    state.surat_muatan_stock.node_id_destination.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ValueData(state, payload) {
+    state.surat_muatan_stock.node_id_destination.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ArrData(state, payload) {
+    state.surat_muatan_stock.node_id_destination.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.node_id_destination.arrData = payload :
+    state.surat_muatan_stock.node_id_destination.arrData = []
   },
 
 
@@ -4644,11 +4686,37 @@ export default {
   },
 
 
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE(state, payload) {
+    state.surat_muatan_stock.eta_timezone.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_ValueData(state, payload) {
+    state.surat_muatan_stock.eta_timezone.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_ArrData(state, payload) {
+    state.surat_muatan_stock.eta_timezone.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.eta_timezone.arrData = payload :
+    state.surat_muatan_stock.eta_timezone.arrData = []
+  },
+
+
   SET_SURAT_MUATAN_STOCK_ETD(state, payload) {
     state.surat_muatan_stock.etd.value = payload
   },
   SET_SURAT_MUATAN_STOCK_ETD_ValueData(state, payload) {
     state.surat_muatan_stock.etd.valueData = payload
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE(state, payload) {
+    state.surat_muatan_stock.etd_timezone.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ValueData(state, payload) {
+    state.surat_muatan_stock.etd_timezone.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ArrData(state, payload) {
+    state.surat_muatan_stock.etd_timezone.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.etd_timezone.arrData = payload :
+    state.surat_muatan_stock.etd_timezone.arrData = []
   },
 
 
