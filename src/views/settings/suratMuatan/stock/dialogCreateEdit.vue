@@ -11,7 +11,7 @@
 
         <template v-slot:content>
             <div>
-                <vs-row>
+                <vs-row align="center">
                     <vs-col xs="12" sm="6" lg="4">
                         <select-search-by
                             key="searchBy"
@@ -22,7 +22,7 @@
                             @updateSearchBy="updateSearchBy" 
                         />
                     </vs-col>
-                    <vs-col xs="12" sm="6" lg="4">
+                    <vs-col xs="12" sm="6" lg="8">
                         <search-input 
                             class="search-input"
                             key="searchInput"
@@ -62,15 +62,13 @@
                     <!-- </div> -->
                 </div>
 
-                <div>
-                    <form-input-controller
-                        ref="formDataController" 
-                        typeForm="surat_muatan_stock"
-                        :dataItem="dataItem"
-                        :querySearch="querySearch"
-                        @formData="formData"
-                    />
-                </div>
+                <form-input-controller
+                    ref="formDataController" 
+                    typeForm="surat_muatan_stock"
+                    :dataItem="dataItem"
+                    :querySearch="querySearch"
+                    @formData="formData"
+                />
             </div>
         </template>
 
