@@ -90,7 +90,7 @@ export default {
           width: "xxxxs",
         },
         {
-          label: "Total Item (Koli)",
+          label: "Total Bag",
           key: "total_item",
           width: "xxxs",
         },
@@ -348,7 +348,7 @@ export default {
             created_at: this.dateConvert(item.created_at),
             approved: item.is_approve === 1 ? true : false,
             status_with_tooltip: item.is_transit === 1
-              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-help-circle"></i></span>`
+              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-truck" style="font-size: 0.8rem; vertical-align: middle; border: 1px solid; border-radius: 50%; padding: 3px;"></i></span>`
               : item.status,
             // `isDisabled` tidak lagi diperlukan karena `button_status` menangani ini
             latest_node_receiver:
@@ -561,5 +561,11 @@ export default {
   font-weight: bold;
   color: #666;
   cursor: help;
+}
+
+.status-tooltip i.bx.bxs-truck {
+  font-size: 1.5rem;
+  vertical-align: middle;
+  display: inline-block;
 }
 </style>

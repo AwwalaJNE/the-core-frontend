@@ -97,7 +97,7 @@ export default {
           width: "xxxs",
         },
         {
-          label: "Total Item",
+          label: "Total Bag",
           key: "total_item",
           width: "xxxs",
         },
@@ -177,7 +177,7 @@ export default {
           width: "xxxs",
         },
         {
-          label: "Departed Time",
+          label: "Handover to Transport",
           key: "departed_time",
           width: "xxxs",
         },
@@ -367,7 +367,7 @@ export default {
                 }
 
             item["status_with_tooltip"] = item.is_transit === 1
-              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-help-circle"></i></span>`
+              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-truck" style="font-size: 0.8rem; vertical-align: middle; border: 1px solid; border-radius: 50%; padding: 3px;"></i></span>`
               : item.status;
 
             if (item.hasOwnProperty("status") && item["status"] !== null) {

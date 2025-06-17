@@ -355,16 +355,12 @@ export default {
                         is_missroute: item.is_missroute == true ? 1 : 0
                     }));
                     this.dataTable = arr;
-                    this.dataTable.forEach(item => {
-                        this.is_missroute = item.is_missroute
-                    })
                     this.dataTableProp = res.data.detail;
                     this.dataTableProp.forEach(item => {
                         if (item.is_masterbag === '1') {
                             item.item_type = 'MASTERBAG';
                         }
-
-                        item.is_missroute = this.is_missroute
+                        item.is_missroute = item.is_missroute == true ? 1 : 0
                     });
                     this.dataTableProp.map(item => {
                       item,
