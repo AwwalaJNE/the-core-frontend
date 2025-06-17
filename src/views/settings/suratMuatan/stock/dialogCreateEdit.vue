@@ -222,6 +222,7 @@ export default {
                 page_size: 1,
                 page: 1
             },
+            edit_data: {},
         }
     },
     computed: {
@@ -303,14 +304,16 @@ export default {
             }
         },
         async getDataDetail(val) {
-            console.log("VALL", val)
-            val.node_id_origin = val.node_code_origin.toString()
-            val.node_id_destination = val.node_id_destination.toString()
+            this.edit_data = val;
             this.id = val.id;
-            
 
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN", val.node_id_origin);
-            // this.getNode(val.node_id_origin);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN", val.node_id_origin.toString());
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION", val.node_id_destination.toString());
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ValueData", val.node_id_origin.toString());
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ValueData", val.node_id_destination.toString());
+
+            val.node_id_origin = "haiii"; // TODO: ADJUST LATER to val.node_name_origin
+            val.node_id_destination = "haloo"; // TODO: ADJUST LATER to val.node_name_destinatio
         },
         getDataDetailFromSchedule(val) {
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER", val?.manifest_number);
@@ -365,9 +368,16 @@ export default {
             .catch(error => console.log("error", error));
         },
         formData(form){
-            console.log("PP", form)
             const { id, ...formWithoutId } = form;
             
+            if (this.edit_data.node_id_destination !== form?.node_id_destination) {
+                formWithoutId.node_id_destination = form?.node_id_destination;
+            }
+
+            if (this.edit_data.node_id_origin !== form?.node_id_origin) {
+                formWithoutId.node_id_origin = form?.node_id_origin;
+            }
+
             formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
 
             this.form = formWithoutId;
@@ -400,27 +410,6 @@ export default {
                 } else {
                     this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", "");
                     this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ArrData", []);
-                }
-            } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loading = false;
-            }
-        },
-        async getNode(node_id) {
-            this.loading = true;
-            try {
-                const res = await axios.get(`${this.URL.node_list}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&s=${node_id}`, this.Helper.header());
-
-                const data = res.data.data;
-
-                console.log("test", data);
-                if (res.data.data.length > 0) {
-                    const arr = data.map(item => ({
-                        label: item.node_name,
-                        value: item.node_id,
-                        data: item
-                    }));
                 }
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
