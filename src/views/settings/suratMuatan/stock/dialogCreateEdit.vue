@@ -52,13 +52,9 @@
                             :dataColumn="datacolumn" 
                             :tableLoading="loadingTableData"
                             :onRowClickSelected="onRowClickSelected"
+                            :isSingleSelect="true"
                         />
                 </div>
-                <!-- <div class="container-clear-item" @click="handleClearAll">
-                    <div v-if="!isDisabled && dataTable.length !== 0" class="clear-item" @click="handleClearAll">
-                        Reset Inputs
-                    </div>
-                </div> -->
 
                 <div class="parent-container">
                     <div class="container-clear-item" @click="handleClearAll">

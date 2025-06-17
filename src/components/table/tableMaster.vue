@@ -49,7 +49,7 @@
 -->
 <template>
   <div>
-    <vs-table ref="tablee" v-model="selected" :class="{ 'scrollableAndStaticHeader': scrollableAndStaticHeader }">
+    <vs-table ref="tablee" v-model="selected" :isSingleSelect="listenIsSingleSelect" :class="{ 'scrollableAndStaticHeader': scrollableAndStaticHeader }">
       <template #header>
         <template v-if="listenIsSearchAble">
           <vs-input v-model="search" border placeholder="Search" />
@@ -1607,6 +1607,10 @@ export default {
       type: Function,
       default: undefined,
     },
+    isSingleSelect: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -1674,6 +1678,9 @@ export default {
     },
     listenHasChildStatus() {
       return this.hasChildStatus;
+    },
+    listenIsSingleSelect() {
+      return this.isSingleSelect || false;
     }
   },
   watch: {
@@ -1889,11 +1896,13 @@ export default {
     },
 
     onRowClick(event, item) {
-      // eslint-disable-next-line quotes
       if (event.target?.tagName === "TD") {
-        // eslint-disable-next-line quotes
         if (typeof this.onRowClickCallback === "function") {
           this.onRowClickCallback(event, item, this.selected);
+        }
+
+        if (this.listenIsSingleSelect) {
+          this.selected = [item];
         }
 
         if (typeof this.onRowClickSelected === "function") {
