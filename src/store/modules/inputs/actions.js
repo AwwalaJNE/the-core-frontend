@@ -4300,6 +4300,35 @@ SET_SURAT_MUATAN_SCHEDULE_REGISTRATION_NUMBER({ commit }, payload) {
 },
 //====== END SURAT MUATAN SCHEDULE ======//
 
+
+// ====== SYNC SURAT MUATAN ====== //
+SET_SYNC_SURAT_MUATAN_TRANSPORT_TYPE({ commit }, payload) {
+  commit("SET_SYNC_SURAT_MUATAN_TRANSPORT_TYPE", payload);
+},
+SET_SYNC_SURAT_MUATAN_FLIGHT_STATUS({ commit }, payload) {
+  commit("SET_SYNC_SURAT_MUATAN_FLIGHT_STATUS", payload);
+},
+SET_SYNC_SURAT_MUATAN_FLIGHT_DATE({ commit }, payload) {
+  commit("SET_SYNC_SURAT_MUATAN_FLIGHT_DATE", payload);
+},
+SET_SYNC_SURAT_MUATAN_DEPARTURE_AIRPORT({ commit }, payload) {
+  commit("SET_SYNC_SURAT_MUATAN_DEPARTURE_AIRPORT", payload);
+},
+SET_SYNC_SURAT_MUATAN_ARRIVAL_AIRPORT({ commit }, payload) {
+  commit("SET_SYNC_SURAT_MUATAN_ARRIVAL_AIRPORT", payload);
+},
+SET_SYNC_SURAT_MUATAN_AIRLINE_NAME({ commit }, payload) {
+  commit("SET_SYNC_SURAT_MUATAN_AIRLINE_NAME", payload);
+},
+SET_SYNC_SURAT_MUATAN_AIRLINE_CODE({ commit }, payload) {
+  commit("SET_SYNC_SURAT_MUATAN_AIRLINE_CODE", payload);
+},
+SET_SYNC_SURAT_MUATAN_FLIGHT_NUMBER({ commit }, payload) {
+  commit("SET_SYNC_SURAT_MUATAN_FLIGHT_NUMBER", payload);
+},
+// ====== END SYNC SURAT MUATAN ====== //
+
+
   //====== START OF RECEIVING LOG ======//
   SET_RECEIVING_LOG_INBOUND_NUMBER({ commit }, payload) {
     commit('SET_RECEIVING_LOG_INBOUND_NUMBER', payload)

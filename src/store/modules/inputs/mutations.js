@@ -4781,6 +4781,41 @@ export default {
   },
   //====== END SURAT MUATAN SCHEDULE ======//
 
+  // ====== SYNC SURAT MUATAN ====== //
+SET_SYNC_SURAT_MUATAN_TRANSPORT_TYPE(state, payload) {
+  state.sync_surat_muatan.transport_type.value = payload;
+},
+
+SET_SYNC_SURAT_MUATAN_FLIGHT_STATUS(state, payload) {
+  state.sync_surat_muatan.flight_status.value = payload;
+},
+
+SET_SYNC_SURAT_MUATAN_FLIGHT_DATE(state, payload) {
+  state.sync_surat_muatan.flight_date.value = payload;
+},
+
+SET_SYNC_SURAT_MUATAN_DEPARTURE_AIRPORT(state, payload) {
+  state.sync_surat_muatan.departure_airport.value = payload;
+},
+
+SET_SYNC_SURAT_MUATAN_ARRIVAL_AIRPORT(state, payload) {
+  state.sync_surat_muatan.arrival_airport.value = payload;
+},
+
+SET_SYNC_SURAT_MUATAN_AIRLINE_NAME(state, payload) {
+  state.sync_surat_muatan.airline_name.value = payload;
+},
+
+SET_SYNC_SURAT_MUATAN_AIRLINE_CODE(state, payload) {
+  state.sync_surat_muatan.airline_code.value = payload;
+},
+
+SET_SYNC_SURAT_MUATAN_FLIGHT_NUMBER(state, payload) {
+  state.sync_surat_muatan.flight_number.value = payload;
+},
+// ====== END SYNC SURAT MUATAN ====== //
+
+
 
     //====== START RECEIVING LOG ======//
     SET_RECEIVING_LOG_INBOUND_NUMBER(state, payload) {

@@ -410,4 +410,5 @@ export default {
     inbound_remark: api + 'inbound-remark',
 
     schedule: api + 'schedule',
+    sync_flight: api + 'schedule/flight',
 }

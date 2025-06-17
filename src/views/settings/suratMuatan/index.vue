@@ -22,7 +22,17 @@
                         </div>
                       </template>
                     <template v-else-if="navActive === 'k-SCHEDULE'">
-                         <div style="width: 100px;padding-right: 5px;">
+                        <div style="width: 100px;padding-right: 5px;">
+                            <vs-button
+                                flat
+                                block
+                                :active="true"
+                                @click="openSyncDialog"
+                            > 
+                                Sync API
+                            </vs-button>
+                        </div>
+                        <div style="width: 100px;padding-right: 5px;">
                             <vs-button
                                 flat
                                 block
@@ -98,6 +108,12 @@
             :closeDialog="closeDialog"
             @refresh="refresh"
         />
+        <dialog-sync-filter
+        title="Sync Filter"
+        :actived="dialogSyncActive"
+        :closeDialog="closeSyncDialog"
+         @refresh="refresh"
+        />
     </div>
 </template>
 <script>
@@ -112,6 +128,7 @@ import StockTable from "@/views/settings/suratMuatan/stock/index";
 
 
 import DialogCreateEditSchedule from "@/views/settings/suratMuatan/schedule/dialogCreateEdit";
+import DialogSync from "@/views/settings/suratMuatan/schedule/dialogSync";
 import ScheduleTable from "@/views/settings/suratMuatan/schedule/index";
 
 export default {
@@ -124,6 +141,7 @@ export default {
         "dialog-create-edit-stock": DialogCreateEditStock,
         "schedule-table": ScheduleTable,
         "dialog-create-edit-schedule": DialogCreateEditSchedule,
+        "dialog-sync-filter": DialogSync,
         "select-search-by": SelectSearchBy,
     },
     data() {
@@ -160,7 +178,8 @@ export default {
                     value: "vehicle_mode"
                 }
             ],
-            dialogActiveSchedule:false
+            dialogActiveSchedule:false,
+            dialogSyncActive: false
         }
     },
     methods: {
@@ -194,6 +213,18 @@ export default {
                 default:
             }
             this.refreshInject = this.navActive
+        },
+        openSyncDialog() {
+            console.log('buka');
+            this.dialogSyncActive = true
+        },
+        closeSyncDialog() {
+            console.log('keluar');
+            this.dialogSyncActive = false
+        },
+        handleSyncData(payload) {
+        console.log("🔄 Sync filter payload:", payload);
+        // bisa lanjut call API di sini dengan payload
         },
         closeDialog() {
             switch(this.navActive) {

@@ -2904,6 +2904,93 @@ export default {
       value: '',
     },
   },
+
+  sync_surat_muatan: {
+  transport_type: {
+    label: "Transport Type",
+    key: "transport_type",
+    rule: "required",
+    typeInput: "radio",
+    typeData: "String",
+    value: "flight",
+    arrData: [
+      { label: "Flight", value: "flight" },
+      { label: "Train", value: "train" },
+      { label: "Cargo Ship", value: "cargo" }
+    ]
+  },
+  flight_status: {
+    label: "Flight Status",
+    key: "flight_status",
+    typeInput: "select",
+    typeData: "String",
+    rule: "",
+    value: '',
+    width:'6',
+    valueData: null,
+    arrData: [
+      { label: "Scheduled", value: "scheduled" },
+      { label: "Active", value: "active" },
+      { label: "Landed", value: "landed" },
+      { label: "Cancelled", value: "cancelled" },
+      { label: "Incident", value: "incident" },
+      { label: "Diverted", value: "diverted" }
+    ]
+  },
+  flight_date: {
+    label: "Flight Date",
+    key: "flight_date",
+    typeInput: "date",
+    typeData: "String",
+    rule: "",
+    width:'6',
+    value: ''
+  },
+  dep_iata: {
+    label: "Departure Airport (IATA)",
+    key: "dep_iata",
+    typeInput: "text",
+    typeData: "String",
+    rule: "",
+    width:'6',
+    value: ''
+  },
+  arr_iata: {
+    label: "Arrival Airport (IATA)",
+    key: "arr_iata",
+    typeInput: "text",
+    typeData: "String",
+    rule: "",
+    width:'6',
+    value: ''
+  },
+  airline_name: {
+    label: "Airline Name",
+    key: "airline_name",
+    typeInput: "text",
+    typeData: "String",
+    rule: "",
+    width:'6',
+    value: ''
+  },
+  airline_iata: {
+    label: "Airline Code (IATA)",
+    key: "airline_iata",
+    typeInput: "text",
+    typeData: "String",
+    rule: "",
+    width:'6',
+    value: ''
+  },
+  flight_iata: {
+    label: "Flight Number (IATA)",
+    key: "flight_iata",
+    typeInput: "text",
+    typeData: "String",
+    rule: "",
+    value: ''
+  }
+},
   
   runsheet_limit: {
     reference_to: {
