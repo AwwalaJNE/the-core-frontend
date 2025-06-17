@@ -24,8 +24,6 @@
                     </vs-col>
                     <vs-col xs="12" sm="8" lg="8">
                         <search-input 
-                            class="search-input"
-                            key="searchInput"
                             ref="searchInput"  
                             :placeholder="searchPlaceholder" 
                             @searchValue="searchValue"
@@ -47,13 +45,13 @@
 
                 <div style="margin-top: 10px;">
                     <table-master 
-                            hideColumnKey="dialog-surat-muatan-stock" 
-                            :dataTable="dataTable" 
-                            :dataColumn="datacolumn" 
-                            :tableLoading="loadingTableData"
-                            :onRowClickSelected="onRowClickSelected"
-                            :isSingleSelect="true"
-                        />
+                        hideColumnKey="dialog-surat-muatan-stock" 
+                        :dataTable="dataTable" 
+                        :dataColumn="datacolumn" 
+                        :tableLoading="loadingTableData"
+                        :onRowClickSelected="onRowClickSelected"
+                        :isSingleSelect="true"
+                    />
                 </div>
 
                 <div class="parent-container">
@@ -260,11 +258,14 @@ export default {
         },
     },
     methods: {
-        refresh(){
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.dateRange[0], this.dateRange[1], this.searchBy);
+        refresh() {
+            const isTempSearchEmpty = this.tempSearch === "";
+            const isDateRangeEmpty = !this.dateRange || this.dateRange.length === 0;
 
-            if (this.tempSearch === "" && this.dateRange.length === 0 && this.searchBy === "") {
+            if (isTempSearchEmpty && isDateRangeEmpty) {
                 this.dataTable = [];
+            } else {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.dateRange?.[0] || null, this.dateRange?.[1] || null, this.searchBy);
             }
         },
         async getDataTableByScheduleId(schedule_id) {
@@ -343,7 +344,6 @@ export default {
             val.node_id_destination = "haloo"; // TODO: ADJUST LATER to val.node_name_destinatio
         },
         getDataDetailFromSchedule(val) {
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER", val?.manifest_number);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_SCHEDULE_ID", val?.shipment_schedule_id);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", parseInt(val.vehicle_id));
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD", val?.etd);
@@ -467,7 +467,11 @@ export default {
             this.$emit("refresh");
         },
         cancel() {
+            this.dateRange = [];
+            this.dataTable = [];
+            this.clearSearch();
             this.handleClearForm();
+            this.handleClearAll();
             this.closeDialog();
         },
         searchValue (val) {
@@ -478,10 +482,18 @@ export default {
             this.searchBy = val;
             this.searchPlaceholder = key;
         },
+        clearSearch() {
+            this.$refs.searchInput.clear()
+        },
         handleClearAll() {
             this.$refs.formDataController.handleEmptyForm();
             this.form = {};
-            this.dataTable = [];
+            
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled", false);  
         },
         onRowClickSelected(item) {
             this.getDataDetailFromSchedule(item);
