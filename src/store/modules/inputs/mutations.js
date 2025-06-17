@@ -4662,6 +4662,126 @@ export default {
 
   //====== END SURAT MUATAN STOCK ======//
 
+  //====== SURAT MUATAN SCHEDULE ======//
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_TYPE_ID(state, payload) {
+  state.surat_muatan_schedule.vehicle_type_id.value = payload;
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_TYPE_ID_ValueData(state, payload) {
+    state.surat_muatan_schedule.vehicle_type_id.valueData = payload;
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_TYPE_ID_ArrData(state, payload) {
+    state.surat_muatan_schedule.vehicle_type_id.hasOwnProperty('arrData')
+      ? state.surat_muatan_schedule.vehicle_type_id.arrData = payload
+      : state.surat_muatan_schedule.vehicle_type_id.arrData = [];
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID(state, payload) {
+    state.surat_muatan_schedule.vehicle_id.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID_ValueData(state, payload) {
+    state.surat_muatan_schedule.vehicle_id.valueData = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID_ArrData(state, payload) {
+    state.surat_muatan_schedule.vehicle_id.hasOwnProperty('arrData') ?
+    state.surat_muatan_schedule.vehicle_id.arrData = payload :
+    state.surat_muatan_schedule.vehicle_id.arrData = []
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_SHIPMENT_NUMBER(state, payload) {
+    state.surat_muatan_schedule.shipment_number.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_SHIPMENT_NUMBER_ValueData(state, payload) {
+    state.surat_muatan_schedule.shipment_number.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME(state, payload) {
+    state.surat_muatan_schedule.origin_name.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ValueData(state, payload) {
+    state.surat_muatan_schedule.origin_name.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER(state, payload) {
+    state.surat_muatan_schedule.origin_identifier.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER_ValueData(state, payload) {
+    state.surat_muatan_schedule.origin_identifier.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT(state, payload) {
+    state.surat_muatan_schedule.origin_point.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT_ValueData(state, payload) {
+    state.surat_muatan_schedule.origin_point.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME(state, payload) {
+    state.surat_muatan_schedule.destination_name.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ValueData(state, payload) {
+    state.surat_muatan_schedule.destination_name.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER(state, payload) {
+    state.surat_muatan_schedule.destination_identifier.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER_ValueData(state, payload) {
+    state.surat_muatan_schedule.destination_identifier.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_POINT(state, payload) {
+    state.surat_muatan_schedule.destination_point.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_POINT_ValueData(state, payload) {
+    state.surat_muatan_schedule.destination_point.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ETD(state, payload) {
+    state.surat_muatan_schedule.etd.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ETD_ValueData(state, payload) {
+    state.surat_muatan_schedule.etd.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ETD_TIMEZONE(state, payload) {
+    state.surat_muatan_schedule.etd_timezone.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ETD_TIMEZONE_ValueData(state, payload) {
+    state.surat_muatan_schedule.etd_timezone.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ETA(state, payload) {
+    state.surat_muatan_schedule.eta.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ETA_ValueData(state, payload) {
+    state.surat_muatan_schedule.eta.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ETA_TIMEZONE(state, payload) {
+    state.surat_muatan_schedule.eta_timezone.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ETA_TIMEZONE_ValueData(state, payload) {
+    state.surat_muatan_schedule.eta_timezone.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_INFORMATION(state, payload) {
+    state.surat_muatan_schedule.vehicle_information.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_INFORMATION_ValueData(state, payload) {
+    state.surat_muatan_schedule.vehicle_information.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_REGISTRATION_NUMBER(state, payload) {
+    state.surat_muatan_schedule.registration_number.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_REGISTRATION_NUMBER_ValueData(state, payload) {
+    state.surat_muatan_schedule.registration_number.valueData = payload
+  },
+  //====== END SURAT MUATAN SCHEDULE ======//
+
+
     //====== START RECEIVING LOG ======//
     SET_RECEIVING_LOG_INBOUND_NUMBER(state, payload) {
       state.receiving_log.inbound_number.value = payload

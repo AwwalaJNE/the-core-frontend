@@ -9,16 +9,30 @@
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
                 <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
-                        <vs-button
-                            flat
-                            block
-                            :active="true"
-                            @click="openDialog"
-                        > 
-                            <i class="bx bx-plus"></i> New
-                        </vs-button>
-                    </div>
+                      <template v-if="navActive === 'Stock'">
+                         <div style="width: 100px;padding-right: 5px;">
+                            <vs-button
+                                flat
+                                block
+                                :active="true"
+                                @click="openDialog"
+                            > 
+                                <i class="bx bx-plus"></i> New
+                            </vs-button>
+                        </div>
+                      </template>
+                    <template v-else-if="navActive === 'k-SCHEDULE'">
+                         <div style="width: 100px;padding-right: 5px;">
+                            <vs-button
+                                flat
+                                block
+                                :active="true"
+                                @click="openDialog"
+                            > 
+                                <i class="bx bx-plus"></i> New
+                            </vs-button>
+                        </div>
+                      </template>
                 </div>
             </vs-col>
         </vs-row>
@@ -65,11 +79,22 @@
                         />
                     </transition>
                 </template>
+                <template v-else-if="navActive === 'k-SCHEDULE'">
+                    <transition name="slide-fade">
+                        <schedule-table :ref="navActive" :query="tempSearch"/>
+                    </transition>
+                </template>
             </div>
         </section>
         <dialog-create-edit-stock
             title="Create Surat Muatan Stock"
             :active="dialogActiveStock"
+            :closeDialog="closeDialog"
+            @refresh="refresh"
+        />
+        <dialog-create-edit-schedule
+            title="Create Surat Muatan Schedule"
+            :active="dialogActiveSchedule"
             :closeDialog="closeDialog"
             @refresh="refresh"
         />
@@ -85,6 +110,10 @@ import SelectSearchBy from "@/components/search/selectSearchBy";
 import DialogCreateEditStock from "@/views/settings/suratMuatan/stock/dialogCreateEdit";
 import StockTable from "@/views/settings/suratMuatan/stock/index";
 
+
+import DialogCreateEditSchedule from "@/views/settings/suratMuatan/schedule/dialogCreateEdit";
+import ScheduleTable from "@/views/settings/suratMuatan/schedule/index";
+
 export default {
     name:"surat-muatan-settings-index",
     components: {
@@ -93,6 +122,8 @@ export default {
         "search-input": SearchInput,
         "stock-table": StockTable,
         "dialog-create-edit-stock": DialogCreateEditStock,
+        "schedule-table": ScheduleTable,
+        "dialog-create-edit-schedule": DialogCreateEditSchedule,
         "select-search-by": SelectSearchBy,
     },
     data() {
@@ -102,6 +133,11 @@ export default {
                     label: "Stock",
                     key: "Stock",
                     title: "Stock"
+                },
+                {
+                    label: "Schedule",
+                    key: "k-SCHEDULE",
+                    title: "Schedule"
                 },
             ],
             title:"Stock",
@@ -123,7 +159,8 @@ export default {
                     label: "Vehicle Mode",
                     value: "vehicle_mode"
                 }
-            ]
+            ],
+            dialogActiveSchedule:false
         }
     },
     methods: {
@@ -151,6 +188,9 @@ export default {
                 case "Stock":
                     this.dialogActiveStock = true
                     break;
+                case "k-SCHEDULE":
+                    this.dialogActiveSchedule = true
+                    break;
                 default:
             }
             this.refreshInject = this.navActive
@@ -159,6 +199,9 @@ export default {
             switch(this.navActive) {
                 case "Stock":
                     this.dialogActiveStock = false
+                    break;
+                case "k-SCHEDULE":
+                    this.dialogActiveSchedule = false
                     break;
                 default:
             }
@@ -170,7 +213,11 @@ export default {
                     this.searchPlaceholderStock = key;
                     this.clearSearch()
                     break;
-                default:
+                case "k-SCHEDULE":
+                    this.searchBySchedule = val;
+                    this.searchPlaceholderSchedule = key;
+                    this.clearSearch()
+                default:         
             }
         },
     },

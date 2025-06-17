@@ -2709,6 +2709,201 @@ export default {
       isDisabled: false,
     },
   },
+
+  surat_muatan_schedule: {
+     vehicle_type_id: {
+      label: "Vehicle Type",
+      key: "vehicle_type_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+         {
+          "label": "AIR",
+          "value": "1"
+        },
+        {
+          "label": "DARAT TRUK",
+          "value": "2"
+        },
+        {
+          "label": "UDARA",
+          "value": "1053"
+        },
+        {
+          "label": "DARAT KA LOG",
+          "value": "1055"
+        }
+      ],
+      valueData: null,
+      value: ''
+    },
+    vehicle_id: {
+      label: "Vehicle",
+      key: "vehicle_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      arrData: [],
+    },
+    shipment_number: {
+      label: "Shipment Number",
+      key: "shipment_number",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    origin_name: {
+      label: "Origin Name",
+      key: "origin_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+     origin_identifier: {
+      label: "Origin Identifier",
+      key: "origin_identifier",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+     origin_point: {
+      label: "Origin Point",
+      key: "origin_point",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+    destination_name: {
+      label: "Destination Name",
+      key: "destination_name",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+    destination_identifier: {
+      label: "Destination Identifier",
+      key: "destination_identifier",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+    destination_point: {
+      label: "Destination Point",
+      key: "destination_point",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+    etd: {
+      label: "ETD",
+      key: "etd",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+    etd_timezone: {
+      label: "ETD Timezone",
+      key: "etd_timezone",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '2',
+      arrData: [
+         {
+          "label": "WIB",
+          "value": "WIB"
+        },
+        {
+          "label": "WIT",
+          "value": "WIT"
+        },
+        {
+          "label": "WITA",
+          "value": "WITA"
+        }
+      ],
+    },
+    eta: {
+      label: "ETA",
+      key: "eta",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4',
+    },
+     eta_timezone: {
+      label: "ETA Timezone",
+      key: "eta_timezone",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '2',
+      arrData: [
+         {
+          "label": "WIB",
+          "value": "WIB"
+        },
+        {
+          "label": "WIT",
+          "value": "WIT"
+        },
+        {
+          "label": "WITA",
+          "value": "WITA"
+        }
+      ],
+    },
+    vehicle_information: {
+      label: "Vehcile Information",
+      key: "vehicle_information",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    registration_number: {
+      label: "Registration Number",
+      key: "registration_number",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+  },
   
   runsheet_limit: {
     reference_to: {
