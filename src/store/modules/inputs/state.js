@@ -2728,7 +2728,7 @@ export default {
       width: '6'
     },
     etd: {
-      label: "ETD*",
+      label: "ETD",
       key: "etd",
       rule: "required",
       typeInput: "datetime",
@@ -2764,7 +2764,7 @@ export default {
       isDisabled: false,
     },
     eta: {
-      label: "ETA*",
+      label: "ETA",
       key: "eta",
       rule: "required",
       typeInput: "datetime",
