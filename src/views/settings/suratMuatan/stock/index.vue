@@ -182,7 +182,7 @@ export default {
                 },
                 {
                     label: "Via Schedule",
-                    key: "schedule_id",
+                    key: "schedule_id_value",
                     type: "status",
                     width: "xxxxs"
                 },
@@ -321,7 +321,7 @@ export default {
                     arr.map(item => {
                         item,
                         item["is_active"] = item.is_active === "1" ? true : false;
-                        item["schedule_id"] = item.schedule_id ? true : false;
+                        item["schedule_id_value"] = item.schedule_id ? true : false;
                         item["etd"] = item?.etd + " " + item?.etd_timezone;
                         item["eta"] = item?.eta + " " + item?.eta_timezone;
                     })

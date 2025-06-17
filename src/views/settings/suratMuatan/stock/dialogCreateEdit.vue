@@ -68,9 +68,7 @@
                         typeForm="surat_muatan_stock"
                         :dataItem="dataItem"
                         :querySearch="querySearch"
-                        @inputFocus="inputFocus"
                         @formData="formData"
-                        @onChangeCustom="onChangeCustom"
                     />
                 </div>
             </div>
@@ -144,7 +142,6 @@ export default {
             form: {},
             id: "",
             loading: false,
-            vehicle_id: '',
             tempSearch: "",
             dateRange: [],
             searchBy: "vehicle",
@@ -229,6 +226,10 @@ export default {
     },
     computed: {
         listenActive(){
+            if (this.active) {
+                this.getEmployeeDriver();
+                this.getVehicle();
+            }
             return this.active;
         },
         listenTitle(){
@@ -242,19 +243,9 @@ export default {
         }
     },
     watch: {
-        active: function (val) {
-            if (val && !this.dataItem) {
-                this.getEmployeeDriver();
-            }
-        },
         dataItem: function (val) {
             if(val !== undefined) {
                 this.getDataDetail(val);
-            }
-        },
-        vehicle_id (newVal, oldVal) {
-            if (newVal !== undefined && newVal !== oldVal) {
-                this.$store.dispatch("SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER", '');
             }
         },
         query: function(val, old) {
@@ -291,7 +282,6 @@ export default {
                         item,
                         item["origin"] = item?.origin_name + "\n" + item?.origin_identifier + "\n" + item?.origin_point;
                         item["destination"] = item?.destination_name + "\n" + item?.destination_identifier + "\n" + item?.destination_point;
-                        item["schedule_id"] = item.schedule_id ? true : false;
                         item["etd_formatted"] = item?.etd + " " + item?.etd_timezone;
                         item["eta_formatted"] = item?.eta + " " + item?.eta_timezone;
                     })
@@ -313,19 +303,16 @@ export default {
             }
         },
         async getDataDetail(val) {
-            console.log("PP", val)
+            console.log("VALL", val)
+            val.node_id_origin = val.node_code_origin.toString()
+            val.node_id_destination = val.node_id_destination.toString()
             this.id = val.id;
-
-            await this.getVehicle();
-            await this.getNode(val.node_code_origin);
-            // this.vehicle_id = parseInt(val.vehicle_id);
-            // this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", this.vehicle_id);
-        },
-        async getDataDetailFromSchedule(val) {
-            // this.loading = true;
-            console.log("PP", val)
-            await this.getVehicle();
             
+
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN", val.node_id_origin);
+            // this.getNode(val.node_id_origin);
+        },
+        getDataDetailFromSchedule(val) {
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER", val?.manifest_number);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_SCHEDULE_ID", val?.shipment_number);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", parseInt(val.vehicle_id));
@@ -333,7 +320,6 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE", val?.etd_timezone);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA", val?.eta);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE", val?.eta_timezone);
-            // this.loading = false;
         },
         async getEmployeeDriver() {
             this.loading = true;
@@ -362,43 +348,30 @@ export default {
                 this.loading = false;
             }
         },
-        inputFocus(obj, val, info){
-            this.autoCompleteUrl = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=20&page=1';
-            this.input_value = "node_id";
-            this.input_label = "node_name";
-        },
         querySearch(queryString, cb){
-            axios.get(this.autoCompleteUrl +`&s=${queryString}`,
-                this.Helper.header()
-            )
+            axios.get(this.URL.node +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
                 let suggestions = [];
                 result.length > 0 && result.map(item => {
+
                     suggestions.push({
-                        value: item[this.input_label],
-                        data: String(item[this.input_value])
+                        value: item['node_name'],
+                        data: item['node_id']
                     });
                 });
                 cb(suggestions);
                 })
-            .catch();
+            .catch(error => console.log("error", error));
         },
         formData(form){
+            console.log("PP", form)
             const { id, ...formWithoutId } = form;
             
             formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
 
             this.form = formWithoutId;
             this.handleSubmitData();
-        },
-        onChangeCustom(type, val, obj) {
-            switch (type) {
-                case "vehicle_id":
-                    this.vehicle_id = val;
-                    break;
-                default:
-            }
         },
         updateValue(key, val, info){
             switch(key) {
@@ -441,19 +414,13 @@ export default {
 
                 const data = res.data.data;
 
-                console.log("PPx1", data, node_id, this.$store.getters.getInputs.surat_muatan_stock)
+                console.log("test", data);
                 if (res.data.data.length > 0) {
                     const arr = data.map(item => ({
                         label: item.node_name,
                         value: item.node_id,
                         data: item
                     }));
-
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ArrData", arr.length > 0 ? arr : null);
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN", parseInt(arr[0]?.value) || "");
-                } else {
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN", "");
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ArrData", []);
                 }
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
@@ -480,7 +447,6 @@ export default {
             this.$refs.formDataController.handleClearForm();
             this.form = {};
             this.id = "";
-            this.vehicle_id = '';
             this.$emit("handleClearInput");
             this.$emit("refresh");
         },
@@ -501,8 +467,8 @@ export default {
             this.form = {};
             this.dataTable = [];
         },
-        async onRowClickSelected(item) {
-            await this.getDataDetailFromSchedule(item);
+        onRowClickSelected(item) {
+            this.getDataDetailFromSchedule(item);
         },
     },
     mounted() {
