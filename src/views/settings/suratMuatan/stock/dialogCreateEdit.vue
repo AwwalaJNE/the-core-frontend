@@ -12,7 +12,7 @@
         <template v-slot:content>
             <div>
                 <vs-row align="center">
-                    <vs-col xs="12" sm="6" lg="4">
+                    <vs-col xs="12" sm="4" lg="4">
                         <select-search-by
                             key="searchBy"
                             :border="true"
@@ -22,7 +22,7 @@
                             @updateSearchBy="updateSearchBy" 
                         />
                     </vs-col>
-                    <vs-col xs="12" sm="6" lg="8">
+                    <vs-col xs="12" sm="8" lg="8">
                         <search-input 
                             class="search-input"
                             key="searchInput"
@@ -44,23 +44,28 @@
                         />
                     </vs-col>
                 </vs-row>
-                <vs-row>
-                    <vs-col xs="12" sm="12" lg="12">
-                        <table-master 
+
+                <div style="margin-top: 10px;">
+                    <table-master 
                             hideColumnKey="dialog-surat-muatan-stock" 
                             :dataTable="dataTable" 
                             :dataColumn="datacolumn" 
                             :tableLoading="loadingTableData"
                             :onRowClickSelected="onRowClickSelected"
                         />
-                    </vs-col>
-                </vs-row>
-
-                <div class="container-clear-item" @click="handleClearAll">
-                    <!-- <div v-if="!isDisabled && dataTable.length !== 0" class="clear-item" @click="handleClearAll"> -->
-                        Reset Inputs
-                    <!-- </div> -->
                 </div>
+                <!-- <div class="container-clear-item" @click="handleClearAll">
+                    <div v-if="!isDisabled && dataTable.length !== 0" class="clear-item" @click="handleClearAll">
+                        Reset Inputs
+                    </div>
+                </div> -->
+
+                <div class="parent-container">
+                    <div class="container-clear-item" @click="handleClearAll">
+                        Reset Inputs
+                    </div>
+                </div>
+
 
                 <form-input-controller
                     ref="formDataController" 
@@ -245,6 +250,7 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.getDataDetail(val);
+                this.getDataTableByScheduleId(val.schedule_id);
             }
         },
         query: function(val, old) {
@@ -263,6 +269,33 @@ export default {
 
             if (this.tempSearch === "" && this.dateRange.length === 0 && this.searchBy === "") {
                 this.dataTable = [];
+            }
+        },
+        async getDataTableByScheduleId(schedule_id) {
+            this.loadingTableData = true;
+
+            try {
+                const res = await axios.get(`${this.URL.sm_schedule}/9bb2f97d-95b6-4781-9696-2382175bf372?n=${this.listenNodeId}`, this.Helper.header());
+
+                if (res.data.data) {
+                    let arr = [res.data.data];
+                    arr.map(item => {
+                        item,
+                        item["origin"] = item?.origin_name + "\n" + item?.origin_identifier + "\n" + item?.origin_point;
+                        item["destination"] = item?.destination_name + "\n" + item?.destination_identifier + "\n" + item?.destination_point;
+                        item["etd_formatted"] = item?.etd + " " + item?.etd_timezone;
+                        item["eta_formatted"] = item?.eta + " " + item?.eta_timezone;
+                    })
+                    
+                    this.dataTable = arr
+                } else {
+                    this.dataTable = [];
+                }
+            } catch (err) {
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+                console.log("ASAS", err)
+            } finally {
+                this.loadingTableData = false;
             }
         },
         async getTableData(limit, page, q, from, to, searchBy) {
@@ -315,7 +348,7 @@ export default {
         },
         getDataDetailFromSchedule(val) {
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER", val?.manifest_number);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_SCHEDULE_ID", val?.shipment_number);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_SCHEDULE_ID", val?.shipment_schedule_id);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", parseInt(val.vehicle_id));
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD", val?.etd);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE", val?.etd_timezone);
@@ -456,10 +489,14 @@ export default {
         },
         onRowClickSelected(item) {
             this.getDataDetailFromSchedule(item);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled", true);  
         },
     },
     mounted() {
-        this.refresh();
         this.handleSubmitShortcut(this.handleSubmit)
     },
 }
@@ -476,4 +513,14 @@ export default {
   color: red;
   margin: 10px 0;
 }
+.parent-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.container-clear-item {
+  cursor: pointer;
+  color: #007bff;
+}
+
 </style>

@@ -97,7 +97,7 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
-                                            :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
+                                            :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                             @updateValue="updateValue" />
                                         </div>
                                     </template>
@@ -113,7 +113,7 @@
                                         :formKey="InputObject[item].key"
                                         :valueData="InputObject[item].value"
                                         :typeInput="InputObject[item].typeInput"
-                                        :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
+                                        :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                         @updateValue="updateValue" />
                                     </div>
                                 </template>

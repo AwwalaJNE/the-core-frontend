@@ -4637,6 +4637,9 @@ export default {
     state.surat_muatan_stock.vehicle_id.arrData = payload :
     state.surat_muatan_stock.vehicle_id.arrData = []
   },
+  SET_SURAT_MUATAN_STOCK_VEHICLE_ID_isDisabled(state, payload) {
+    state.surat_muatan_stock.vehicle_id.isDisabled = payload
+  },
 
 
   SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID(state, payload) {
@@ -4684,6 +4687,9 @@ export default {
   SET_SURAT_MUATAN_STOCK_ETA_ValueData(state, payload) {
     state.surat_muatan_stock.eta.valueData = payload
   },
+  SET_SURAT_MUATAN_STOCK_ETA_isDisabled(state, payload) {
+    state.surat_muatan_stock.eta.isDisabled = payload
+  },
 
 
   SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE(state, payload) {
@@ -4697,6 +4703,9 @@ export default {
     state.surat_muatan_stock.eta_timezone.arrData = payload :
     state.surat_muatan_stock.eta_timezone.arrData = []
   },
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled(state, payload) {
+    state.surat_muatan_stock.eta_timezone.isDisabled = payload
+  },
 
 
   SET_SURAT_MUATAN_STOCK_ETD(state, payload) {
@@ -4704,6 +4713,9 @@ export default {
   },
   SET_SURAT_MUATAN_STOCK_ETD_ValueData(state, payload) {
     state.surat_muatan_stock.etd.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_isDisabled(state, payload) {
+    state.surat_muatan_stock.etd.isDisabled = payload
   },
 
 
@@ -4717,6 +4729,9 @@ export default {
     state.surat_muatan_stock.etd_timezone.hasOwnProperty('arrData') ?
     state.surat_muatan_stock.etd_timezone.arrData = payload :
     state.surat_muatan_stock.etd_timezone.arrData = []
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_isDisabled(state, payload) {
+    state.surat_muatan_stock.etd_timezone.isDisabled = payload
   },
 
 

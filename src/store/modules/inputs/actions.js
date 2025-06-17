@@ -4230,6 +4230,9 @@ export default {
   SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ArrData', payload)
   },
+  SET_SURAT_MUATAN_STOCK_VEHICLE_ID_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_VEHICLE_ID_isDisabled', payload)
+  },
 
 
   SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID({ commit }, payload) {
@@ -4271,6 +4274,9 @@ export default {
   SET_SURAT_MUATAN_STOCK_ETD_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_STOCK_ETD_ValueData', payload)
   },
+  SET_SURAT_MUATAN_STOCK_ETD_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_ETD_isDisabled', payload)
+  },
 
   
   SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE({ commit }, payload) {
@@ -4282,6 +4288,9 @@ export default {
   SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ArrData', payload)
   },
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_isDisabled', payload)
+  },
 
 
   SET_SURAT_MUATAN_STOCK_ETA({ commit }, payload) {
@@ -4290,6 +4299,10 @@ export default {
   SET_SURAT_MUATAN_STOCK_ETA_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_STOCK_ETA_ValueData', payload)
   },
+  SET_SURAT_MUATAN_STOCK_ETA_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_ETA_isDisabled', payload)
+  },
+
 
   SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE({ commit }, payload) {
     commit('SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE', payload)
@@ -4297,8 +4310,11 @@ export default {
   SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_ValueData', payload)
   },
-  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ArrData({ commit }, payload) {
-    commit('SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ArrData', payload)
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_ArrData', payload)
+  },
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled', payload)
   },
 
 

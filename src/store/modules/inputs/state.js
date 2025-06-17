@@ -2691,7 +2691,8 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      width: '6'
+      width: '6',
+      isDisabled: false,
     },
     employee_driver_id: {
       label: "Driver",
@@ -2734,7 +2735,8 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-      width: '4'
+      width: '4',
+      isDisabled: false,
     },
     etd_timezone: {
       label: "ETD Timezone*",
@@ -2758,7 +2760,8 @@ export default {
         },
       ],
       value: '',
-      width: '2'
+      width: '2',
+      isDisabled: false,
     },
     eta: {
       label: "ETA*",
@@ -2768,7 +2771,8 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-      width: '4'
+      width: '4',
+      isDisabled: false,
     },
     eta_timezone: {
       label: "ETA Timezone*",
@@ -2792,7 +2796,8 @@ export default {
         },
       ],
       value: '',
-      width: '2'
+      width: '2',
+      isDisabled: false,
     },
     is_active: {
       label: "Active|Unactive",
