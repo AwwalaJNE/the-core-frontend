@@ -343,8 +343,8 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ValueData", val.node_id_origin.toString());
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ValueData", val.node_id_destination.toString());
 
-            val.node_id_origin = "haiii"; // TODO: ADJUST LATER to val.node_name_origin
-            val.node_id_destination = "haloo"; // TODO: ADJUST LATER to val.node_name_destinatio
+            val.node_id_origin = val.node_name_origin;
+            val.node_id_destination = val.node_name_destination;
         },
         async getEmployeeDriver() {
             this.loading = true;
