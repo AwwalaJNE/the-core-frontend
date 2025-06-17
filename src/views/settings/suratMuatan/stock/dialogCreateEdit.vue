@@ -51,6 +51,7 @@
                         :tableLoading="loadingTableData"
                         :onRowClickSelected="onRowClickSelected"
                         :isSingleSelect="true"
+                        :selectedData="selectedData"
                     />
                 </div>
 
@@ -220,6 +221,7 @@ export default {
                 page: 1
             },
             edit_data: {},
+            selectedData: [],
         }
     },
     computed: {
@@ -285,12 +287,13 @@ export default {
                     })
                     
                     this.dataTable = arr
+                    this.selectedData = arr
+                    this.onRowClickSelected(res.data.data)
                 } else {
                     this.dataTable = [];
                 }
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-                console.log("ASAS", err)
             } finally {
                 this.loadingTableData = false;
             }
@@ -342,14 +345,6 @@ export default {
 
             val.node_id_origin = "haiii"; // TODO: ADJUST LATER to val.node_name_origin
             val.node_id_destination = "haloo"; // TODO: ADJUST LATER to val.node_name_destinatio
-        },
-        getDataDetailFromSchedule(val) {
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_SCHEDULE_ID", val?.shipment_schedule_id);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", parseInt(val.vehicle_id));
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD", val?.etd);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE", val?.etd_timezone);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA", val?.eta);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE", val?.eta_timezone);
         },
         async getEmployeeDriver() {
             this.loading = true;
@@ -486,6 +481,7 @@ export default {
             this.$refs.searchInput.clear()
         },
         handleClearAll() {
+            this.selectedData = [];
             this.$refs.formDataController.handleEmptyForm();
             this.form = {};
             
@@ -496,7 +492,13 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled", false);  
         },
         onRowClickSelected(item) {
-            this.getDataDetailFromSchedule(item);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_SCHEDULE_ID", item?.shipment_schedule_id);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", parseInt(item.vehicle_id));
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD", item?.etd);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE", item?.etd_timezone);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA", item?.eta);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE", item?.eta_timezone);
+            
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_isDisabled", true);
