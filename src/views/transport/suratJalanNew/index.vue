@@ -244,16 +244,12 @@ export default {
     },
     methods: {
         setSearchParams() {
-            if (this.listenBreadcrumbTitle !== 'Surat Jalan') {
-                this.searchPlaceholder = `Search ${this.listenBreadcrumbTitle}`;
-                this.searchBy = 'do_number';
-            }
             
             this.searchParams = [
-                ...(this.listenBreadcrumbTitle !== 'Surat Jalan' ? [{
+                {
                     label: 'Surat Jalan',
                     value: 'manifest do number'
-                }] : []),
+                },
                 {
                     label: `No ${this.listenBreadcrumbTitle}`,
                     value: 'do_number'
