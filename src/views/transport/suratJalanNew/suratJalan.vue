@@ -75,6 +75,7 @@ export default {
     searchBy: String,
     status: [Array, String],
     title: String,
+    sj_type: String,
   },
   components: {
     "table-master": TableMaster,
@@ -276,7 +277,8 @@ export default {
           val,
           this.startDate,
           this.endDate,
-          this.filterDateBy
+          this.filterDateBy,
+          this.sj_type
           );
         }
       }
@@ -290,7 +292,8 @@ export default {
           this.tempSearch,
           this.startDate,
           this.endDate,
-          val
+          val,
+          this.sj_type
           );
         }
       }
@@ -308,8 +311,24 @@ export default {
         this.tempSearch,
         this.startDate,
         this.endDate,
-        this.filterDateBy
+        this.filterDateBy,
+        this.sj_type
         );
+      }
+    },
+    sj_type: function(val, old) {
+      if (val !== undefined) {
+        if (val !== old) {
+          this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.startDate,
+            this.endDate,
+            this.filterDateBy,
+            val
+          );
+        }
       }
     },
   },
@@ -440,12 +459,14 @@ export default {
       ]
     },
 
-    async getTableData(limit, page, q, from, to, qDate) {
+    async getTableData(limit, page, q, from, to, qDate, sj_type) {
       this.loading = true;
       let query = "";
       let startDate = "";
       let endDate = "";
       let queryDate = "";
+      let sjType = "";
+
       if (q !== undefined) {
         query = q;
         if (q.includes("/")) {
@@ -459,10 +480,15 @@ export default {
       if (qDate !== undefined) {
         queryDate = qDate;
       }
+
+      if (sj_type !== undefined) {
+        sjType = sj_type;
+      }
+
       await axios
         .get(
           this.URL.manifest_delivery_order +
-            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}`,
+            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}&sj_type=${sjType}`,
           this.Helper.header()
         )
         .then((res) => {
@@ -663,7 +689,8 @@ export default {
       this.tempSearch,
       this.startDate,
       this.endDate,
-      this.filterDateBy
+      this.filterDateBy,
+      this.sj_type
       );
     },
     print() {

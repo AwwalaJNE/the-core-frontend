@@ -1244,6 +1244,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Handover Bag",
+              breadCrumbCode: "HBAG",
               resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
               resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
               resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
@@ -1258,6 +1259,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Manifest Transit Subagent",
+              breadCrumbCode: "MTS",
               resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
               resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
               resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
@@ -1272,6 +1274,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Delivery Order",
+              breadCrumbCode: "DO",
               resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
               resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
               resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,

@@ -103,6 +103,7 @@
                             :dateFilter="tempDate"
                             :query="tempSearch"
                             :searchBy="searchBy"
+                            :sj_type="listenBreadcrumbCode"
                             :filterDateBy="filterDateBy"
                             :status="filterStatusBy"
                             :title="listenBreadcrumbTitle"
@@ -219,7 +220,10 @@ export default {
     computed: {
         listenBreadcrumbTitle() {
             return this.$route.meta.breadCrumb;
-        }
+        },
+        listenBreadcrumbCode() {
+            return this.$route.meta.breadCrumbCode || "";
+        },
     },
     watch: {
         searchBy(old, val) {
