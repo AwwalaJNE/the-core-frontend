@@ -4277,28 +4277,7 @@ export default {
     }
   },
   //surat muatan
-  surat_muatan:{
-    manifest_number: {
-      label: "No Surat Muatan",
-      key: "manifest_number",
-      rule: "",
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: '',
-      isDisabled: false,
-      width: "6",
-    },
-    max_weight: {
-      label: "Max Weight",
-      key: "max_weight",
-      rule: "",
-      typeInput: "number",
-      typeData: "Number",
-      valueData: null,
-      value: null,
-      width: "6"
-    },
+  surat_muatan: {
     manifest_method_id: {
       label: "Moda",
       key: "manifest_method_id",
@@ -4309,6 +4288,38 @@ export default {
       valueData: null,
       value: '',
       width: "12"
+    },
+    manifest_prefix: {
+      label: "Prefix",
+      key: "manifest_prefix",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      isDisabled: true,
+      width: "1",
+    },
+    manifest_number: {
+      label: "No Surat Muatan",
+      key: "manifest_number",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      isDisabled: false,
+      width: "5",
+    },
+    max_weight: {
+      label: "Max Weight",
+      key: "max_weight",
+      rule: "",
+      typeInput: "number",
+      typeData: "Number",
+      valueData: null,
+      value: null,
+      width: "6"
     },
     flight_number: {
       label: "Flight Number",
