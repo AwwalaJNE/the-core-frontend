@@ -377,7 +377,7 @@ export default {
                         data.actual_weight = data.bag?.bag_actual_weight || '0';
                         data.total_inner = data.bag_detail_count || '';
                         data.total_connote_of_bag = data.total_connote_of_bag || '';
-                        data.destination_name = data.bag?.destination?.node_tariff_code || '';
+                        data.destination_name = (data.bag?.destination?.node_code || '') + ' - ' + (data.bag?.destination?.node_name || '');
                         data.status_trip = (data?.bag?.status_trip || '') + ' ' + (val?.latest_node_name_receiver || '');
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'
@@ -477,7 +477,7 @@ export default {
                         data.cost_weight = data.cost_weight || '0';
                         data.actual_weight = data.bag?.bag_actual_weight || '0';
                         data.total_inner = data.bag_detail_count || '0';
-                        data.destination_name = data.bag?.destination?.node_tariff_code || '';
+                        data.destination_name = (data.bag?.destination?.node_code || '') + ' - ' + (data.bag?.destination?.node_name || '');
                         data.status_trip = (data?.bag?.status_trip || '') + ' ' + (val?.latest_node_name_receiver || '');
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'

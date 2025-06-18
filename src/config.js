@@ -409,6 +409,7 @@ export default {
     insert_remark: api + 'remark-inbound-confirm',
     inbound_remark: api + 'inbound-remark',
 
-    // Setting SM Schedule
-    sm_schedule: api + 'schedule'
+    // Setting Surat Muatan
+    schedule: api + 'schedule',
+    sync_flight: api + 'schedule/flight',
 }
