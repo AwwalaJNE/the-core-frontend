@@ -4877,24 +4877,24 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_DATE(state, payload) {
   state.sync_surat_muatan.flight_date.value = payload;
 },
 
-SET_SYNC_SURAT_MUATAN_DEPARTURE_AIRPORT(state, payload) {
-  state.sync_surat_muatan.departure_airport.value = payload;
+SET_SYNC_SURAT_MUATAN_DEP_IATA(state, payload) {
+  state.sync_surat_muatan.dep_iata.value = payload;
 },
 
-SET_SYNC_SURAT_MUATAN_ARRIVAL_AIRPORT(state, payload) {
-  state.sync_surat_muatan.arrival_airport.value = payload;
+SET_SYNC_SURAT_MUATAN_ARR_IATA(state, payload) {
+  state.sync_surat_muatan.arr_iata.value = payload;
 },
 
 SET_SYNC_SURAT_MUATAN_AIRLINE_NAME(state, payload) {
   state.sync_surat_muatan.airline_name.value = payload;
 },
 
-SET_SYNC_SURAT_MUATAN_AIRLINE_CODE(state, payload) {
-  state.sync_surat_muatan.airline_code.value = payload;
+SET_SYNC_SURAT_MUATAN_AIRLINE_IATA(state, payload) {
+  state.sync_surat_muatan.airline_iata.value = payload;
 },
 
-SET_SYNC_SURAT_MUATAN_FLIGHT_NUMBER(state, payload) {
-  state.sync_surat_muatan.flight_number.value = payload;
+SET_SYNC_SURAT_MUATAN_FLIGHT_IATA(state, payload) {
+  state.sync_surat_muatan.flight_iata.value = payload;
 },
 // ====== END SYNC SURAT MUATAN ====== //
 

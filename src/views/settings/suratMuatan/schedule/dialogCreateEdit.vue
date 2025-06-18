@@ -114,16 +114,26 @@ export default {
         },
     },
     methods: {
-        async getDataDetail(val) {
-            this.id = val.id;
+       async getDataDetail(val) {
+            if (!val || typeof val !== 'object') {
+                console.error('getDataDetail error: parameter tidak valid', val);
+                return;
+            }
 
-            const vehicle_id = parseInt(val.vehicle_id);
-            this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID", vehicle_id);
+            try {
+                this.id = val.id;
 
-            const arrData = this.$store.state.surat_muatan_schedule.vehicle_id.arrData || [];
-            const selected = arrData.find(item => parseInt(item.value) === parseInt(val.vehicle_id));
-            if (selected) {
-            this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID_ValueData", selected);
+                const vehicle_id = parseInt(val.vehicle_id);
+                this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID", vehicle_id);
+
+                const arrData = this.$store.state.surat_muatan_schedule.vehicle_id.arrData || [];
+                const selected = arrData.find(item => parseInt(item.value) === vehicle_id);
+
+                if (selected) {
+                this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID_ValueData", selected);
+                }
+            } catch (err) {
+                console.error("getDataDetail failed:", err);
             }
         },
        formData(form){
@@ -141,7 +151,7 @@ export default {
         onChangeCustom(type, val, obj) {
             switch (type) {
                 case "vehicle_id":
-                    this.vehicle_id = val;
+                    this.vehicle_id = parseInt(val);
                     break;
                 case "vehicle_type_id":
                     this.form.vehicle_type_id = parseInt(val);
@@ -233,6 +243,7 @@ export default {
             this.$refs.formDataController.handleSubmit();
         },
         handleClearForm(){
+            console.log('salah 1');
             this.$refs.formDataController.handleClearForm();
             this.form = {};
             this.id = "";

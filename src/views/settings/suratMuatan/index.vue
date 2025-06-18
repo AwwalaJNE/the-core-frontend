@@ -195,7 +195,6 @@ export default {
         },
         activeTab(val) {
             this.navActive = val
-            this.clearSearch()
 
             let item = this.navItemm.filter(item => {
                 return item.key == val
@@ -215,16 +214,10 @@ export default {
             this.refreshInject = this.navActive
         },
         openSyncDialog() {
-            console.log('buka');
             this.dialogSyncActive = true
         },
         closeSyncDialog() {
-            console.log('keluar');
             this.dialogSyncActive = false
-        },
-        handleSyncData(payload) {
-        console.log("🔄 Sync filter payload:", payload);
-        // bisa lanjut call API di sini dengan payload
         },
         closeDialog() {
             switch(this.navActive) {
