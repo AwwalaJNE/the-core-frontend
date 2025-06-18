@@ -21,7 +21,8 @@
     <div v-if="true">
       <dialogCreateSuratJalanV2
       btnBlue="Edit"
-      title="Edit Transport Surat Jalan"
+      :title="`Edit Transport ${listenBreadcrumbTitle}`"
+      :breadcrumb="`${listenBreadcrumbTitle}`"
       :active="dialogSuratJalan"
       :closeDialog="closeDialogSuratJalan"
       :dataItem="dataItem"
@@ -31,7 +32,8 @@
     <div v-else>
       <dialogCreateSuratJalan
       btnBlue="Edit"
-      title="Edit Transport Surat Jalan"
+      :title="`Edit Transport ${listenBreadcrumbTitle}`"
+      :breadcrumb="`${listenBreadcrumbTitle}`"
       :active="dialogSuratJalan"
       :closeDialog="closeDialogSuratJalan"
       :dataItem="dataItem"
@@ -72,6 +74,7 @@ export default {
     query: String,
     searchBy: String,
     status: [Array, String],
+    title: String,
   },
   components: {
     "table-master": TableMaster,
@@ -85,9 +88,236 @@ export default {
       form: {},
       dataTable: [],
       dialogSuratJalan: false,
-      datacolumn: [
+      datacolumn: [],
+      // datacolumn: [
+      //   {
+      //     label: "No Surat Jalan",
+      //     key: "manifest_do_number",
+      //     width: "xxxs",
+      //   },
+      //   {
+      //     label: "Status",
+      //     key: "status_with_tooltip",
+      //     width: "xxxs",
+      //   },
+      //   {
+      //     label: "Total Bag",
+      //     key: "total_item",
+      //     width: "xxxs",
+      //   },
+      //   {
+      //     label:"Type",
+      //     key: "sj_type",
+      //     width: "auto",
+      //   },
+      //   {
+      //     label: "Orion Number",
+      //     key: "orion_number",
+      //     width: "xxxs",
+      //   },
+      //   {
+      //     label: "Document Type",
+      //     key: "document_type",
+      //     width: "xxxs",
+      //   },
+      //   {
+      //     label: "Created By",
+      //     key: "created_by_user_name",
+      //     width: "auto",
+      //   },
+      //   {
+      //     label: "Vehicle",
+      //     key: "formatted_vehicle",
+      //     width: "xxs",
+      //   },
+      //   {
+      //     label: "Driver",
+      //     key: "driver_name",
+      //     width: "xxxs",
+      //   },
+      //   {
+      //     label: "Mode",
+      //     key: "vehicle_mode_name",
+      //     width: "auto",
+      //   },
+      //   {
+      //     label: "Origin",
+      //     key: "node_id_origin_name",
+      //     width: "xxs",
+      //   },
+      //   {
+      //     label: "Destination",
+      //     key: "node_id_destination_name",
+      //     width: "xxs",
+      //   },
+      //   {
+      //     label: "Fix Cost Weight",
+      //     key: "fix_cost_weight",
+      //     width: "auto",
+      //   },
+      //   {
+      //     label: "Live Cost Weight",
+      //     key: "live_cost_weight",
+      //     width: "auto",
+      //   },
+      //   {
+      //     label: "Fix Actual Weight",
+      //     key: "fix_actual_weight",
+      //     width: "auto",
+      //   },
+      //   {
+      //     label: "Live Actual Weight",
+      //     key: "live_actual_weight",
+      //     width: "auto",
+      //   },
+      //   {
+      //     label: "ETD",
+      //     key: "etd",
+      //     width: "xxxs",
+      //   },
+      //   {
+      //     label: "ETA",
+      //     key: "eta",
+      //     width: "xxxs",
+      //   },
+      //   {
+      //     label: "Handover to Transport",
+      //     key: "departed_time",
+      //     width: "xxxs",
+      //   },
+      //   {
+      //     label: "Approved",
+      //     key: "approved",
+      //     type: "status",
+      //     width: "xxxxs",
+      //   },
+      //   {
+      //     label: "Latest Node Receiver",
+      //     key: "latest_node_code_receiver",
+      //     width: "xxxxs",
+      //   },
+      //   {
+      //     label: "Total Master Bag",
+      //     key: "total_masterbag",
+      //     width: "xxxs",
+      //   },
+      //   {
+      //     label: "Total Bag",
+      //     key: "total_bag",
+      //     width: "xxxs",
+      //   },
+      //   {
+      //     label: "Total Connote",
+      //     key: "total_connote",
+      //     width: "xxxs",
+      //   },
+      // ],
+      customActionList: [
+      {
+        label: "Print",
+        key: "print",
+        attribute: "",
+      },
+      {
+        label: "Depart",
+        key: "depart",
+        attribute: "",
+      },
+      {
+        label: "Cancel",
+        key: "cancel",
+        attribute: "danger",
+      },
+      ],
+      
+      loading: false,
+      dataItem: {},
+      tempSearch: "",
+      tempDate: [],
+      startDate: "",
+      endDate: "",
+      dialogTariff: false,
+      pagination: {
+        limit: 20,
+        page_size: 1,
+        page: 1,
+      },
+      activeDialogCancel: false,
+      activeLoadingCancel: false,
+      pickupData: {},
+      manifest_do_number: "",
+      id: "",
+      activeDialogConfirmCancel: false,
+      loadingConfirmCancel: false,
+    };
+  },
+  computed: {
+    listenBreadcrumbTitle() {
+      return this.title;
+    }
+  },
+  watch: {
+    listenBreadcrumbTitle: {
+      handler(val, oldVal) {
+        if (val !== oldVal && val !== undefined) {
+          this.setDatacolumn();
+        }
+      },
+      immediate: true
+    },
+    query: function(val, old) {
+      if (val !== undefined) {
+        this.tempSearch = val;
+        if (this.tempSearch !== old) {
+          this.pagination.page = 1
+          this.getTableData(
+          this.pagination.limit,
+          this.pagination.page,
+          val,
+          this.startDate,
+          this.endDate,
+          this.filterDateBy
+          );
+        }
+      }
+    },
+    filterDateBy: function(val, old) {
+      if (val !== undefined) {
+        if (val !== old) {
+          this.getTableData(
+          this.pagination.limit,
+          this.pagination.page,
+          this.tempSearch,
+          this.startDate,
+          this.endDate,
+          val
+          );
+        }
+      }
+    },
+    dateFilter: function(val, old) {
+      if (val !== undefined) {
+        this.tempDate = val;
+        if (this.tempDate !== old) {
+          this.startDate = this.tempDate !== null ? this.tempDate[0] : "";
+          this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
+        }
+        this.getTableData(
+        this.pagination.limit,
+        this.pagination.page,
+        this.tempSearch,
+        this.startDate,
+        this.endDate,
+        this.filterDateBy
+        );
+      }
+    },
+  },
+  methods: {
+    setDatacolumn() {
+      this.datacolumn = [
         {
-          label: "No Surat Jalan",
+          label: `No ${this.listenBreadcrumbTitle}`,
           key: "manifest_do_number",
           width: "xxxs",
         },
@@ -207,96 +437,9 @@ export default {
           key: "total_connote",
           width: "xxxs",
         },
-      ],
-      customActionList: [
-      {
-        label: "Print",
-        key: "print",
-        attribute: "",
-      },
-      {
-        label: "Depart",
-        key: "depart",
-        attribute: "",
-      },
-      {
-        label: "Cancel",
-        key: "cancel",
-        attribute: "danger",
-      },
-      ],
-      
-      loading: false,
-      dataItem: {},
-      tempSearch: "",
-      tempDate: [],
-      startDate: "",
-      endDate: "",
-      dialogTariff: false,
-      pagination: {
-        limit: 20,
-        page_size: 1,
-        page: 1,
-      },
-      activeDialogCancel: false,
-      activeLoadingCancel: false,
-      pickupData: {},
-      manifest_do_number: "",
-      id: "",
-      activeDialogConfirmCancel: false,
-      loadingConfirmCancel: false,
-    };
-  },
-  watch: {
-    query: function(val, old) {
-      if (val !== undefined) {
-        this.tempSearch = val;
-        if (this.tempSearch !== old) {
-          this.pagination.page = 1
-          this.getTableData(
-          this.pagination.limit,
-          this.pagination.page,
-          val,
-          this.startDate,
-          this.endDate,
-          this.filterDateBy
-          );
-        }
-      }
+      ]
     },
-    filterDateBy: function(val, old) {
-      if (val !== undefined) {
-        if (val !== old) {
-          this.getTableData(
-          this.pagination.limit,
-          this.pagination.page,
-          this.tempSearch,
-          this.startDate,
-          this.endDate,
-          val
-          );
-        }
-      }
-    },
-    dateFilter: function(val, old) {
-      if (val !== undefined) {
-        this.tempDate = val;
-        if (this.tempDate !== old) {
-          this.startDate = this.tempDate !== null ? this.tempDate[0] : "";
-          this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
-        }
-        this.getTableData(
-        this.pagination.limit,
-        this.pagination.page,
-        this.tempSearch,
-        this.startDate,
-        this.endDate,
-        this.filterDateBy
-        );
-      }
-    },
-  },
-  methods: {
+
     async getTableData(limit, page, q, from, to, qDate) {
       this.loading = true;
       let query = "";
@@ -608,6 +751,7 @@ export default {
     },
   },
   mounted() {
+    console.log("PPx", this.listenBreadcrumbTitle)
     this.refresh();
   },
 };

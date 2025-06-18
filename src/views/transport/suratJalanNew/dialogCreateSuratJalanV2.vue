@@ -72,7 +72,7 @@
 
                         <div class="nomor-sj" v-if="manifest_do_number">
                             <input-general
-                                name="No Surat Jalan"
+                                :name="`No ${listenBreadcrumbTitle}`"
                                 :valueData="manifest_do_number"
                                 :typeInput="`text`"
                                 :disabled="true"
@@ -167,6 +167,7 @@ export default {
     },
     props: {
         active: Boolean,
+        breadcrumb: String,
         btnRed: String,
         btnBlue: String,
         closeDialog: Function,        
@@ -292,6 +293,9 @@ export default {
         },
         listenDisableSwitch() {
             return this.manifest_do_number ? true : false
+        },
+        listenBreadcrumbTitle() {
+            return this.breadcrumb
         }
     },
     watch: {
