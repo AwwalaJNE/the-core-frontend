@@ -274,7 +274,7 @@ export default {
             this.loadingTableData = true;
 
             try {
-                const res = await axios.get(`${this.URL.sm_schedule}/9bb2f97d-95b6-4781-9696-2382175bf372?n=${this.listenNodeId}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.schedule}/9bb2f97d-95b6-4781-9696-2382175bf372?n=${this.listenNodeId}`, this.Helper.header());
 
                 if (res.data.data) {
                     let arr = [res.data.data];
@@ -306,7 +306,7 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.sm_schedule}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=etd&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.schedule}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=etd&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
