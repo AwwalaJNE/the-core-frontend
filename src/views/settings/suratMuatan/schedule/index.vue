@@ -329,6 +329,7 @@ export default {
                     this.dataTable = [];
                 }  
             } catch (err) {
+                console.log('wrong 1')
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
@@ -374,37 +375,16 @@ export default {
                 const res = await axios.delete(`${this.URL.schedule}/${this.selected_id}?n=${this.listenNodeId}`, this.Helper.header());
                 this.openNotification('success', null, "Success", res?.data?.message || "Remove data success");
             } catch (err) {
+                  console.log('wrong 2')
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loadingRemove = false;
                 this.closeDialog('dialog_remove');
             }
         },
-        async getVehicleMode() {
-            this.loadingVehicleMode = true;
-            try {
-                const res = await axios.get(`${this.URL.vehicle_mode_list_v2}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header());
-
-                const data = res.data.data;
-
-                if (data.length > 0) {
-                    const arr = data.map(item => ({
-                        label: item.vehicle_mode_name,
-                        value: item.vehicle_mode_id
-                    }));
-
-                    this.filterVehicleMode = [...this.filterVehicleMode, ...arr];
-                }
-            } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loadingVehicleMode = false;
-            }
-        },
     },
     mounted() {
         this.refresh();
-        this.getVehicleMode();
     },
 }
 </script>

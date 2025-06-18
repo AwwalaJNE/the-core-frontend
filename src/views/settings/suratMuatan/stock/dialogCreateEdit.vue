@@ -518,7 +518,7 @@ export default {
 }
 .clear-item {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   cursor: pointer;
   color: red;
   margin: 10px 0;
