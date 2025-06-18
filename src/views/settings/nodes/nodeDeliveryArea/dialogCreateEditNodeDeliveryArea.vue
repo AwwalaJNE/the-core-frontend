@@ -151,7 +151,7 @@ export default {
             let url = ""
             this.autoComplateUrl = url
             switch(key) {
-                case "node_code":
+                case "node_id_destination":
                     url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
                     this.autoComplateUrl = url
                     this.flag = "node_name"

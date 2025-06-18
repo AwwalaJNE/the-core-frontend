@@ -2661,24 +2661,71 @@ export default {
   },
 
   surat_muatan_stock: {
+    manifest_number: {
+      label: "Surat Muatan*",
+      key: "manifest_number",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '6'
+    },
+    schedule_id: {
+      label: "Schedule",
+      key: "schedule_id",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '6',
+      isDisabled: true,
+    },
     vehicle_id: {
-      label: "Vehicle Name",
+      label: "Vehicle*",
       key: "vehicle_id",
       rule:"required",
       typeInput: "select",
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      width: '6',
+      isDisabled: false,
     },
-    no_sm: {
-      label: "Surat Muatan",
-      key: "no_sm",
-      rule: "required",
-      typeInput: "text",
+    employee_driver_id: {
+      label: "Driver",
+      key: "employee_driver_id",
+      rule:"",
+      typeInput: "select",
       typeData: "String",
+      arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      width: '6'
+    },
+    node_id_origin: {
+      label: "Origin*",
+      key: "node_id_origin",
+      rule:"required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: '6'
+    },
+    node_id_destination: {
+      label: "Destination*",
+      key: "node_id_destination",
+      rule:"required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: '6'
     },
     etd: {
       label: "ETD",
@@ -2687,7 +2734,34 @@ export default {
       typeInput: "datetime",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      width: '4',
+      isDisabled: false,
+    },
+    etd_timezone: {
+      label: "ETD Timezone*",
+      key: "etd_timezone",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      valueData: null,
+      arrData: [
+        {
+          "label": "WIB",
+          "value": "WIB"
+        },
+        {
+          "label": "WITA",
+          "value": "WITA"
+        },
+        {
+          "label": "WIT",
+          "value": "WIT"
+        },
+      ],
+      value: '',
+      width: '2',
+      isDisabled: false,
     },
     eta: {
       label: "ETA",
@@ -2696,7 +2770,34 @@ export default {
       typeInput: "datetime",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      width: '4',
+      isDisabled: false,
+    },
+    eta_timezone: {
+      label: "ETA Timezone*",
+      key: "eta_timezone",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      valueData: null,
+      arrData: [
+        {
+          "label": "WIB",
+          "value": "WIB"
+        },
+        {
+          "label": "WITA",
+          "value": "WITA"
+        },
+        {
+          "label": "WIT",
+          "value": "WIT"
+        },
+      ],
+      value: '',
+      width: '2',
+      isDisabled: false,
     },
     is_active: {
       label: "Active|Unactive",
