@@ -29,7 +29,7 @@
 
     <!-- Kondisi jika loading -->
     <div v-else class="custom-spinner">
-      Memuat...
+      Loading...
     </div>
   </template>
 
@@ -152,22 +152,22 @@ export default {
 
       const payload = {
         data: this.dataTableSelected.map((item) => ({
-          vehicle_id: item.vehicle_id,
-          vehicle_type_id: item.vehicle_type_id,
-          shipment_number: item.shipment_number,
-          origin_name: item.origin_name,
-          origin_identifier: item.origin_identifier || null,
-          origin_point: item.origin_point || null,
-          destination_name: item.destination_name,
-          destination_identifier: item.destination_identifier || null,
-          destination_point: item.destination_point || null,
-          etd: item.etd || "2025-06-17 17:30:00",
-          etd_timezone: item.etd_timezone || "WIB",
-          eta: item.eta || "2025-06-17 19:30:00",
-          eta_timezone: item.eta_timezone || "WIB",
-          vehicle_information: item.vehicle_information || "null",
-          registration_number: item.registration_number || "null",
-          is_external_source: item.is_external_source || "N",
+          vehicle_id: item.vehicle_id,                                        //Mandatory
+          vehicle_type_id: item.vehicle_type_id,                              //Mandatory
+          shipment_number: item.shipment_number,                              //Mandatory
+          origin_name: item.origin_name,                                      //Mandatory
+          origin_identifier: item.origin_identifier || null,                  //--Optional--
+          origin_point: item.origin_point || null,                            //--Optional--
+          destination_name: item.destination_name,                            //Mandatory
+          destination_identifier: item.destination_identifier || null,        //--Optional--  
+          destination_point: item.destination_point || null,                  //--Optional--
+          etd: item.etd || "2025-06-17 17:30:00",                             //Mandatory
+          etd_timezone: item.etd_timezone || "WIB",                           //Mandatory
+          eta: item.eta || "2025-06-17 19:30:00",                             //Mandatory
+          eta_timezone: item.eta_timezone || "WIB",                           //Mandatory
+          vehicle_information: item.vehicle_information || "null",            //--Optional--
+          registration_number: item.registration_number || "null",            //--Optional--
+          is_external_source: item.is_external_source || "Y",
         }),
         ),
       };
