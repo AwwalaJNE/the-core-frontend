@@ -113,6 +113,7 @@
         :actived="dialogSyncActive"
         :closeDialog="closeSyncDialog"
          @refresh="refresh"
+         @dataSyncCompleted="handleDataSyncCompleted"
         />
     </div>
 </template>
@@ -179,13 +180,18 @@ export default {
                 }
             ],
             dialogActiveSchedule:false,
-            dialogSyncActive: false
+            dialogSyncActive: false,
+            refreshInject: ""
         }
     },
     methods: {
-        refresh(){
-            let el = this.refreshInject
-            this.$refs[el].refresh()
+         refresh(){
+            let el = this.refreshInject; // Dapatkan ref yang akan direfresh
+            if (this.$refs[el] && typeof this.$refs[el].refresh === 'function') {
+                this.$refs[el].refresh();
+            } else {
+                console.warn(`[index.vue refresh] Ref '${el}' not found or refresh method is not available. Current navActive: ${this.navActive}`);
+            }
         },
         searchValue (val) {
             this.tempSearch = val
@@ -214,7 +220,8 @@ export default {
             this.refreshInject = this.navActive
         },
         openSyncDialog() {
-            this.dialogSyncActive = true
+            this.dialogSyncActive = true;
+            this.refreshInject = 'k-SCHEDULE';
         },
         closeSyncDialog() {
             this.dialogSyncActive = false
@@ -244,6 +251,16 @@ export default {
                 default:         
             }
         },
+        handleDataSyncCompleted() {
+            console.log('Data Sync berhasil di DialogSync. Memicu refresh tabel jadwal.');
+            // Pastikan tab Schedule aktif dan referensi ada sebelum merefresh
+            if (this.navActive === 'k-SCHEDULE') { // Hanya refresh jika tab schedule aktif
+                this.refreshInject = 'k-SCHEDULE'; // Pastikan refreshInject diatur
+                this.refresh(); // Memanggil metode refresh yang akan memicu refresh pada ScheduleTable
+            } else {
+                console.warn("Sync completed but Schedule tab is not active. Not refreshing table.");
+            }
+        }
     },
 }
 </script>

@@ -19,6 +19,7 @@
           @formData="formData"
           @onChangeCustom="onChangeCustom"
         />
+        <p class="notes">Notes : Singel or multiple filters can be used</p>
       </template>
 
       <template v-slot:footer>
@@ -44,6 +45,7 @@
       :actived="dialogSyncResultActive"
       :form="form"
       :closeDialog="closeDialogResult"
+      @dataSubmitted="handleSyncResultDataSubmitted"
     />
 
   </div> 
@@ -117,7 +119,23 @@ export default {
         return;
         }
         this.dialogSyncResultActive = true;
+    },
+    handleSyncResultDataSubmitted() {
+
+      this.closeDialogResult();
+      this.closeDialog(); 
+      this.$emit('dataSyncCompleted'); 
     }
   }
 };
 </script>
+<style scoped>
+
+.notes{
+  text-align: left; 
+  font-size: 0.8em; 
+  margin-left: 10px; 
+  margin-top: 0px;
+}
+
+</style>

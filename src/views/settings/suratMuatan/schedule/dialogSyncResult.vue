@@ -38,7 +38,7 @@
     </template>
 
     <template v-slot:footer>
-      <vs-row justify="flex-end">
+      <vs-row justify="flex-end" style="margin-top: 20px;">
         <vs-col w="3">
           <vs-button
             block
@@ -91,8 +91,6 @@ export default {
   data() {
     return {
       resultData: [], // Ini akan menyimpan data yang diambil per halaman
-      // dataTableSelected: [], // Ini akan melacak semua item yang terpilih dari semua halaman
-      // isAllChecked: false, // Akan menjadi computed property
       loading: false,
       dataColumn: [
         { label: "Vehicle", key: "vehicle_name", width: "sm" },
@@ -105,14 +103,12 @@ export default {
         { label: "Vehicle Info", key: "vehicle_information", width: "sm" },
         { label: "Reg No", key: "registration_number", width: "sm" },
       ],
-      // Mengikuti pola pagination dari module lain
       pagination: {
-        limit: 10, // items per page
-        page_size: 1, // total pages (last_page)
-        page: 1, // current page
+        limit: 20, 
+        page_size: 1,
+        page: 1, 
       },
       dataTableSelected: [], // Mempertahankan seleksi global
-      // Note: isAllChecked akan menjadi computed property untuk menghindari mutasi prop
     };
   },
   computed: {
@@ -136,22 +132,19 @@ export default {
   watch: {
     actived(val) {
       if (val) {
-        // Reset state pagination dan selection saat dialog dibuka
         this.pagination.page = 1;
-        this.pagination.limit = 20; // Atur default limit jika perlu
+        this.pagination.limit = 20;
         this.pagination.page_size = 1;
         this.resultData = [];
-        this.dataTableSelected = []; // Reset juga selection saat buka dialog baru
+        this.dataTableSelected = []; 
         this.fetchData();
       } else {
-        // Reset data dan selection saat dialog ditutup
         this.resultData = [];
         this.dataTableSelected = [];
       }
     },
   },
   methods: {
-    // Metode yang dipanggil ketika pagination limit (items per page) berubah
     actionLimit(val) {
       this.pagination.limit = val;
       this.pagination.page = 1; // Reset ke halaman 1 ketika limit berubah
@@ -169,24 +162,14 @@ export default {
           params: {
             ...this.form,
             n: this.listenNodeId,
-            limit: this.pagination.limit, // Gunakan limit dari pagination state
-            page: this.pagination.page,   // Gunakan page dari pagination state
-            // Anda bisa menambahkan parameter sort, search, filter lainnya di sini
-            // jika API Anda mendukungnya, seperti di pola module lain
-            // s: this.searchValue,
-            // search_by: this.searchBy,
-            // filter_date_by: this.filterDateBy,
-            // start_date: this.dateRange[0],
-            // end_date: this.dateRange[1],
-            // vehicle_type_id: this.filterVehicleTypeBy !== "ALL" ? this.filterVehicleTypeBy : undefined
+            limit: this.pagination.limit, 
+            page: this.pagination.page,   
           },
           headers: this.Helper.header().headers,
         });
 
-        // Asumsi API mengembalikan data per halaman dan meta pagination
         if (res.data && res.data.data) {
-          this.resultData = res.data.data; // Data untuk halaman saat ini
-          // Perbarui state pagination dari meta API response
+          this.resultData = res.data.data; 
           this.pagination = {
             page: res.data.meta.current_page || 1,
             limit: parseInt(res.data.meta.per_page, 10) || 20,
@@ -196,14 +179,6 @@ export default {
           this.resultData = [];
           this.pagination = { limit: 20, page_size: 1, page: 1 };
         }
-
-        // Opsional: Jika Anda ingin semua data di halaman pertama terpilih secara default saat dimuat
-        // Anda bisa menambahkan logika di sini, tetapi itu akan mempengaruhi `isAllChecked`
-        // dan `dataTableSelected` perlu diupdate dengan hati-hati.
-        // Untuk saat ini, `dataTableSelected` hanya akan diupdate oleh interaksi user (checkbox).
-        // this.dataTableSelected = [...this.resultData]; // Ini akan SALAH jika `dataTableSelected` melacak semua halaman
-        // this.isAllChecked = true; // Ini juga akan SALAH
-
         this.openNotification("success", "", "Berhasil", "Data berhasil diambil");
       } catch (err) {
         this.openNotification("danger", "", "Gagal", err?.response?.data?.message || "Gagal mengambil data");
@@ -213,87 +188,65 @@ export default {
         this.loading = false;
       }
     },
-    // Metode ini dipanggil oleh `table-master` ketika seleksi berubah
     updateSelected(val) {
-      // `val` dari `table-master` diharapkan adalah array item yang terpilih di halaman saat ini.
-      // Kita perlu memperbarui `dataTableSelected` yang global dengan mempertimbangkan halaman yang berbeda.
+      const currentSelectedSet = new Set(this.dataTableSelected.map(item => item.shipment_number)); 
 
-      // 1. Buat Set dari `dataTableSelected` yang ada untuk efisiensi penambahan/penghapusan.
-      const currentSelectedSet = new Set(this.dataTableSelected.map(item => item.shipment_number)); // Asumsi shipment_number unik
-
-      // 2. Hapus semua item dari `resultData` (halaman saat ini) dari `currentSelectedSet`.
-      // Ini dilakukan karena kita akan menambahkan kembali hanya item yang saat ini dipilih di `val`.
       this.resultData.forEach(item => {
         if (currentSelectedSet.has(item.shipment_number)) {
           currentSelectedSet.delete(item.shipment_number);
         }
       });
 
-      // 3. Tambahkan kembali item yang benar-benar terpilih di halaman saat ini (`val`).
       val.forEach(item => {
         currentSelectedSet.add(item.shipment_number);
       });
 
-      // 4. Konversi kembali Set ke Array, dan cari objek lengkapnya dari `resultData` atau dari cache jika ada
-      // Agar dataTableSelected menyimpan objek penuh, bukan hanya ID
+      
       this.dataTableSelected = [];
-      // Iterasi seluruh data yang mungkin terpilih (bisa dari cache global jika ada, atau dari resultData saat ini)
-      // Untuk implementasi ini, kita akan asumsikan data yang terpilih dari halaman lain tetap ada di dataTableSelected
-      // dan hanya data di halaman saat ini yang diupdate.
+      
       const allPossibleItems = new Map();
       this.resultData.forEach(item => allPossibleItems.set(item.shipment_number, item));
       this.dataTableSelected.forEach(item => allPossibleItems.set(item.shipment_number, item)); // Tambahkan juga yang sudah terpilih sebelumnya
 
-      // Bangun ulang dataTableSelected dengan objek lengkap
       this.dataTableSelected = Array.from(currentSelectedSet).map(shipment_number => {
-        // Cari objek lengkapnya. Pertama di `val` (yang baru terpilih di halaman ini)
         const foundInVal = val.find(item => item.shipment_number === shipment_number);
         if (foundInVal) return foundInVal;
-        // Jika tidak ditemukan di `val`, cari di `resultData` (data halaman saat ini yang mungkin tidak diubah)
+
         const foundInResultData = this.resultData.find(item => item.shipment_number === shipment_number);
         if (foundInResultData) return foundInResultData;
-        // Terakhir, cari di `dataTableSelected` yang lama (jika ada item terpilih dari halaman lain)
+
         const foundInOldSelected = this.dataTableSelected.find(item => item.shipment_number === shipment_number);
         if (foundInOldSelected) return foundInOldSelected;
         
-        // Ini adalah fallback. Idealnya, semua objek lengkap sudah ada di salah satu sumber.
-        // Jika tidak ditemukan, artinya ada inkonsistensi. Anda bisa return objek placeholder atau log error.
-        return { shipment_number: shipment_number }; // Placeholder jika objek lengkap tidak ditemukan
+        
+        return { shipment_number: shipment_number }; 
       }).filter(item => item.shipment_number !== undefined); // Hapus placeholder jika ada
       
-      // REVISI LOGIC updateSelected agar lebih jelas dan robust:
-      // 1. Buat set dari `shipment_number` yang sudah terpilih secara global
+     
       const selectedShipmentNumbers = new Set(this.dataTableSelected.map(item => item.shipment_number));
 
-      // 2. Hapus `shipment_number` dari item-item yang ada di halaman saat ini (resultData) dari set tersebut.
-      // Ini karena kita akan mengganti status seleksi untuk item di halaman ini.
+     
       this.resultData.forEach(item => {
           if (selectedShipmentNumbers.has(item.shipment_number)) {
               selectedShipmentNumbers.delete(item.shipment_number);
           }
       });
 
-      // 3. Tambahkan `shipment_number` dari item-item yang BARU terpilih di halaman saat ini (val) ke set.
       val.forEach(item => {
           selectedShipmentNumbers.add(item.shipment_number);
       });
 
-      // 4. Rekonstruksi dataTableSelected dengan objek penuh.
-      // Ini adalah bagian krusial. Anda perlu cara untuk mendapatkan objek penuh dari shipment_number.
-      // Cara paling aman adalah menggabungkan semua item yang mungkin terpilih
-      // (dari `resultData` saat ini dan `dataTableSelected` yang lama) dan kemudian memfilter.
-      const allKnownItemsMap = new Map(); // Map dari shipment_number ke objek item penuh
+  
+      const allKnownItemsMap = new Map(); 
       this.resultData.forEach(item => allKnownItemsMap.set(item.shipment_number, item));
-      // Tambahkan juga item yang sebelumnya terpilih (dari halaman lain) ke map
       this.dataTableSelected.forEach(item => allKnownItemsMap.set(item.shipment_number, item));
 
       this.dataTableSelected = Array.from(selectedShipmentNumbers).map(shipment_number => {
           return allKnownItemsMap.get(shipment_number);
-      }).filter(item => item !== undefined); // Pastikan tidak ada undefined jika shipment_number tidak ditemukan
+      }).filter(item => item !== undefined); 
 
     },
     onAllCheckedCallback(val) {
-      // Dipanggil ketika checkbox "Select All" di `table-master` di halaman ini diklik
       if (val) {
         // Jika "Select All" dicentang, tambahkan semua item dari `resultData` (halaman ini) ke `dataTableSelected`
         // Gunakan Set sementara untuk menghindari duplikasi dan efisiensi
@@ -305,7 +258,7 @@ export default {
         this.dataTableSelected = Array.from(currentSelectedSet).map(shipment_number => {
             return this.resultData.find(item => item.shipment_number === shipment_number) || // Dari halaman saat ini
                    this.dataTableSelected.find(item => item.shipment_number === shipment_number); // Atau dari selection lama
-        }).filter(item => item !== undefined); // Filter out undefined if item not found (shouldn't happen if logic is correct)
+        }).filter(item => item !== undefined); 
 
       } else {
         // Jika "Select All" di-uncheck, hapus semua item dari `resultData` (halaman ini) dari `dataTableSelected`
@@ -349,6 +302,9 @@ export default {
       try {
         const res = await axios.post(`${this.URL.schedule}?n=${this.listenNodeId}`, payload, this.Helper.header());
         this.openNotification("success", "", "Berhasil", res?.data?.message || "Data berhasil disimpan");
+         // PENTING: Emit event sebelum menutup dialog
+        this.$emit('dataSubmitted'); 
+        
         this.closeDialog();
       } catch (err) {
         this.openNotification(
