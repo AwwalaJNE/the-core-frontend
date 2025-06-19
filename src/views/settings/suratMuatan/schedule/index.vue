@@ -329,7 +329,6 @@ export default {
                     this.dataTable = [];
                 }  
             } catch (err) {
-                console.log('wrong 1')
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
@@ -375,7 +374,6 @@ export default {
                 const res = await axios.delete(`${this.URL.schedule}/${this.selected_id}?n=${this.listenNodeId}`, this.Helper.header());
                 this.openNotification('success', null, "Success", res?.data?.message || "Remove data success");
             } catch (err) {
-                  console.log('wrong 2')
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loadingRemove = false;
