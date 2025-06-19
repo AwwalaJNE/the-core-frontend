@@ -327,7 +327,7 @@ export default {
                 item.destination = item.bag?.destination?.node_tariff_code || item.koli?.connote?.connote_receiver_tariff_code || item.manifest?.destination?.node_tariff_code || '';
                 item.node_code_destination = item?.bag?.destination?.node_code || item?.manifest?.destination?.branch_code || '';
                 item.node_name_destination = item?.bag?.destination?.node_name || '';
-                item.status_trip = (item?.bag?.status_trip || '') + ' ' + (val?.latest_node_name_receiver || '');
+                item.status_trip = (item?.bag?.status_trip || '') + ' ' + (item?.bag?.current_node_name || '');
 
                 if (val.status !== "UNAPPROVED" || val.is_approve === 1) {
                     item.button_status = { remove: false };
@@ -603,7 +603,7 @@ export default {
                         received_status: item.received_at ? 1 : 0,
                         destination: item.item_destination,
                         node_code_destination: item.node_code_destination,
-                        status_trip: (item?.bag?.status_trip || '') + ' ' + (res.data?.latest_node_name_receiver || ''),
+                        status_trip: (item?.bag?.status_trip || '') + ' ' + (item?.bag?.current_node_name || ''),
                         is_missroute: item.is_missroute
                     }));
 

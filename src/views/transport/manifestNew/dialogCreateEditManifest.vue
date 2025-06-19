@@ -402,7 +402,7 @@ export default {
                         data.total_inner = data.bag_detail_count || '';
                         data.total_connote_of_bag = data.total_connote_of_bag || '';
                         data.destination_name = (data.bag?.destination?.node_code || '') + ' - ' + (data.bag?.destination?.node_name || '');
-                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (val?.latest_node_name_receiver || '');
+                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (data?.bag?.current_node.node_name || '');
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'
                         } else {
@@ -502,7 +502,7 @@ export default {
                         data.actual_weight = data.bag?.bag_actual_weight || '0';
                         data.total_inner = data.bag_detail_count || '0';
                         data.destination_name = (data.bag?.destination?.node_code || '') + ' - ' + (data.bag?.destination?.node_name || '');
-                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (val?.latest_node_name_receiver || '');
+                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (data?.bag?.current_node.node_name || '');
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'
                         } else {
@@ -1074,9 +1074,13 @@ export default {
             // Dynamically adjust field widths based on visibility
             const state = this.$store.state.inputs.surat_muatan;
             
-            // Reset all to default first
-            if (state.manifest_number) state.manifest_number.width = "6";
+            // Reset all to default first, but preserve the widths for manifest_prefix, manifest_number, and max_weight
+            // to ensure they stay in one row
+            if (state.manifest_prefix) state.manifest_prefix.width = "1";
+            if (state.manifest_number) state.manifest_number.width = "5";
             if (state.max_weight) state.max_weight.width = "6";
+            
+            // Reset other fields to their default widths
             if (state.manifest_method_id) state.manifest_method_id.width = "12";
             if (state.node_id_origin) state.node_id_origin.width = "12";
             if (state.node_id_destination) state.node_id_destination.width = "12";
