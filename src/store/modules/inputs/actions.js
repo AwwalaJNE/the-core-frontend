@@ -2140,6 +2140,19 @@ export default {
     commit('SET_SURAT_MUATAN_AUTO_DEPART_ArrData', payload)
   },
 
+  SET_SURAT_MUATAN_MANIFEST_PREFIX({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_PREFIX', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_value({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_PREFIX_value', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_PREFIX_isDisabled', payload)
+  },
+
   /* End Suart Muatan */
 
   /* SURAT JALAN */
@@ -3220,6 +3233,7 @@ export default {
     commit('SET_SLA_NODE_TO_NODE_B_SLA_ArrValueData', payload)
   },
   //====== END SLA NODE TO NODE A ======//
+
 
 
   // ===== START OF SLA BAG ===== //

@@ -334,6 +334,18 @@ export default {
                     } else {
                         this.adjustFieldWidths('road-no-driver');
                     }
+                    
+                    setTimeout(() => {
+                        const vehicleModes = this.$store.getters["getInputs"]["surat_muatan"]["manifest_method_id"]["arrData"];
+                        if (vehicleModes && vehicleModes.length > 0) {
+                            const selectedMode = vehicleModes.find(mode => mode.value === this.dataItem.manifest_method_id);
+                            if (selectedMode && selectedMode.data && selectedMode.data.vehicle_prefix) {
+                                console.log("Setting initial prefix:", selectedMode.data.vehicle_prefix);
+                                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", selectedMode.data.vehicle_prefix);
+                                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_value", selectedMode.data.vehicle_prefix);
+                            }
+                        }
+                    }, 500);
                 }
             }
         },
@@ -353,6 +365,18 @@ export default {
 
             if (this.vehicle_type_id) {
                 this.getDataVehicle();
+            }
+            
+            if (val.manifest_number && val.manifest_number.includes('-')) {
+                const parts = val.manifest_number.split('-');
+                if (parts.length === 2) {
+                    this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", parts[0].trim());
+                    this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", parts[1].trim());
+                } else {
+                    this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", val.manifest_number);
+                }
+            } else {
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", val.manifest_number);
             }
             
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", true);
@@ -569,6 +593,10 @@ export default {
                 }
             }
 
+            if (form.manifest_prefix && form.manifest_number) {
+                form.manifest_number = `${form.manifest_prefix}${form.manifest_number}`;
+            }
+
             this.form = form;
 
             if (this.form.eta > this.form.etd) {
@@ -601,16 +629,20 @@ export default {
         },
         async getDataVehicleMode() {
             try {
-                const res = await axios.get(`${this.URL.vehicle_mode}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header());
+                const res = await axios.get(`${this.URL.vehicle_mode_list_v2}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header());
 
                 const data = res.data.data;
+                console.log("Vehicle mode data:", data);
 
                 if (data.length > 0) {
-                    const arr = data.map(item => ({
-                        label: item.vehicle_mode_name,
-                        value: item.vehicle_mode_id,
-                        data: item
-                    }));
+                    const arr = data.map(item => {
+                        console.log("Vehicle mode item:", item);
+                        return {
+                            label: item.vehicle_mode_name,
+                            value: item.vehicle_mode_id,
+                            data: item
+                        };
+                    });
 
                     this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ArrData", arr.length > 0 ? arr : null);
                 }
@@ -886,6 +918,9 @@ export default {
                 case "manifest_number":
                     updateMasterForm("manifest_number", val);
                     break;
+                case "manifest_prefix":
+                    updateMasterForm("manifest_prefix", val);
+                    break;
                 case "max_weight":
                     updateMasterForm("max_weight", val);
                     break;
@@ -918,6 +953,12 @@ export default {
 
                     if (info?.data) {
                         this.vehicle_mode_id = info.data.vehicle_mode_id || "";
+                        
+                        if (info.data.vehicle_prefix) {
+                            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", info.data.vehicle_prefix);
+                            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_value", info.data.vehicle_prefix);
+                        }
+                        
                         this.autoComplateUrl = `${this.URL.node}/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`;
                         this.getDataVehicleType();
                     }
