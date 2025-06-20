@@ -44,7 +44,7 @@
                         :active="true"
                         @click="handleSubmit"
                     >
-                        {{btnBlue='Save Changes' || 'Add'}}
+                        Save Changes
                     </vs-button>
                 </vs-col>
             </vs-row>                

@@ -4446,18 +4446,41 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_STATUS({ commit }, payload) {
 SET_SYNC_SURAT_MUATAN_FLIGHT_DATE({ commit }, payload) {
   commit("SET_SYNC_SURAT_MUATAN_FLIGHT_DATE", payload);
 },
+
 SET_SYNC_SURAT_MUATAN_DEP_IATA({ commit }, payload) {
   commit("SET_SYNC_SURAT_MUATAN_DEP_IATA", payload);
 },
+SET_SYNC_SURAT_MUATAN_DEP_IATA_ValueData({ commit }, payload) {
+  commit('SET_SYNC_SURAT_MUATAN_DEP_IATA_ValueData', payload)
+},
+SET_SYNC_SURAT_MUATAN_DEP_IATA_ArrData({ commit }, payload) {
+  commit('SET_SYNC_SURAT_MUATAN_DEP_IATA_ArrData', payload)
+},
+
+
 SET_SYNC_SURAT_MUATAN_ARR_IATA({ commit }, payload) {
   commit("SET_SYNC_SURAT_MUATAN_ARR_IATA", payload);
 },
-SET_SYNC_SURAT_MUATAN_AIRLINE_NAME({ commit }, payload) {
-  commit("SET_SYNC_SURAT_MUATAN_AIRLINE_NAME", payload);
+SET_SYNC_SURAT_MUATAN_ARR_IATA_ValueData({ commit }, payload) {
+  commit('SET_SYNC_SURAT_MUATAN_ARR_IATA_ValueData', payload)
 },
+SET_SYNC_SURAT_MUATAN_ARR_IATA_ArrData({ commit }, payload) {
+  commit('SET_SYNC_SURAT_MUATAN_ARR_IATA_ArrData', payload)
+},
+
+
+
 SET_SYNC_SURAT_MUATAN_AIRLINE_IATA({ commit }, payload) {
   commit("SET_SYNC_SURAT_MUATAN_AIRLINE_IATA", payload);
 },
+SET_SYNC_SURAT_MUATAN_AIRLINE_IATA_ValueData({ commit }, payload) {
+  commit('SET_SYNC_SURAT_MUATAN_AIRLINE_IATA_ValueData', payload)
+},
+SET_SYNC_SURAT_MUATAN_AIRLINE_IATA_ArrData({ commit }, payload) {
+  commit('SET_SYNC_SURAT_MUATAN_AIRLINE_IATA_ArrData', payload)
+},
+
+
 SET_SYNC_SURAT_MUATAN_FLIGHT_IATA({ commit }, payload) {
   commit("SET_SYNC_SURAT_MUATAN_FLIGHT_IATA", payload);
 },

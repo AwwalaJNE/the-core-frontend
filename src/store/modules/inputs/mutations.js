@@ -4880,17 +4880,38 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_DATE(state, payload) {
 SET_SYNC_SURAT_MUATAN_DEP_IATA(state, payload) {
   state.sync_surat_muatan.dep_iata.value = payload;
 },
+SET_SYNC_SURAT_MUATAN_DEP_IATA_ValueData(state, payload) {
+  state.sync_surat_muatan.dep_iata.valueData = payload
+},
+SET_SYNC_SURAT_MUATAN_DEP_IATA_ArrData(state, payload) {
+  state.sync_surat_muatan.dep_iata.hasOwnProperty('arrData') ?
+  state.sync_surat_muatan.dep_iata.arrData = payload :
+  state.sync_surat_muatan.dep_iata.arrData = []
+},
 
 SET_SYNC_SURAT_MUATAN_ARR_IATA(state, payload) {
   state.sync_surat_muatan.arr_iata.value = payload;
 },
-
-SET_SYNC_SURAT_MUATAN_AIRLINE_NAME(state, payload) {
-  state.sync_surat_muatan.airline_name.value = payload;
+SET_SYNC_SURAT_MUATAN_ARR_IATA_ValueData(state, payload) {
+  state.sync_surat_muatan.arr_iata.valueData = payload
 },
+SET_SYNC_SURAT_MUATAN_ARR_IATA_ArrData(state, payload) {
+  state.sync_surat_muatan.arr_iata.hasOwnProperty('arrData') ?
+  state.sync_surat_muatan.arr_iata.arrData = payload :
+  state.sync_surat_muatan.arr_iata.arrData = []
+},
+
 
 SET_SYNC_SURAT_MUATAN_AIRLINE_IATA(state, payload) {
   state.sync_surat_muatan.airline_iata.value = payload;
+},
+SET_SYNC_SURAT_MUATAN_AIRLINE_IATA_ValueData(state, payload) {
+  state.sync_surat_muatan.airline_iata.valueData = payload
+},
+SET_SYNC_SURAT_MUATAN_AIRLINE_IATA_ArrData(state, payload) {
+  state.sync_surat_muatan.airline_iata.hasOwnProperty('arrData') ?
+  state.sync_surat_muatan.airline_iata.arrData = payload :
+  state.sync_surat_muatan.airline_iata.arrData = []
 },
 
 SET_SYNC_SURAT_MUATAN_FLIGHT_IATA(state, payload) {

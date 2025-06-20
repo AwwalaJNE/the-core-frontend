@@ -158,6 +158,7 @@ export default {
     async fetchData() {
       this.loading = true;
       try {
+        console.log("📤 Sending request to sync flight:");
         const res = await axios.get(`${this.URL.sync_flight}`, {
           params: {
             ...this.form,
@@ -167,7 +168,6 @@ export default {
           },
           headers: this.Helper.header().headers,
         });
-
         if (res.data && res.data.data) {
           this.resultData = res.data.data; 
           this.pagination = {

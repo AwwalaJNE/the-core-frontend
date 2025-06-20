@@ -18,6 +18,8 @@
           :dataItem="dataItem"
           @formData="formData"
           @onChangeCustom="onChangeCustom"
+          @inputFocus="inputFocus"
+          :querySearch="querySearch"
         />
         <p class="notes">Notes : Singel or multiple filters can be used</p>
       </template>
@@ -32,7 +34,7 @@
           <vs-col w="3">
             <vs-button
               block flat transparent type="submit" :active="true"
-              @click="submitAndOpenDialogSyncResult"
+              @click="handleSubmit"
             >
               Sync
             </vs-button>
@@ -104,8 +106,7 @@ export default {
     },
     formData(form) {
       this.form = form;
-
-      this.handleSubmit();
+      this.submitAndOpenDialogSyncResult();
     },
      handleSubmit(){
         this.$refs.formDataController.handleSubmit();
@@ -122,11 +123,68 @@ export default {
     },
     handleSyncResultDataSubmitted() {
 
-      this.closeDialogResult();
-      this.closeDialog(); 
-      this.$emit('dataSyncCompleted'); 
+        this.closeDialogResult();
+        this.closeDialog();
+        this.$nextTick(() => { // Gunakan nextTick untuk memastikan DOM diperbarui sebelum memicu penyegaran
+            this.$emit('dataSyncCompleted');
+        });
+
+  },   
+  inputFocus(obj) {
+        if (['dep_iata', 'arr_iata', 'airline_iata'].includes(obj.key)) {
+            switch (obj.key) {
+                case 'dep_iata':
+                case 'arr_iata':
+                    this.autoCompleteUrl = this.URL.schedule + '/airport-lov';
+                    this.input_value = "iata";
+                    this.input_label = "label";
+                    break;
+                case 'airline_iata':
+                    this.autoCompleteUrl = this.URL.schedule + '/airlines-lov-name';
+                    this.input_value = "iata";
+                    this.input_label = "label";
+                    break;
+                default:
+            }
+        }
+    },
+    querySearch(queryString, cb) {
+        clearTimeout(this.airportSearchTimeout);
+            this.airportSearchTimeout = setTimeout(() => {
+                if (!queryString || queryString.length < 2 || !this.autoCompleteUrl) {
+                cb([]);
+                return;
+                }
+                axios
+                .get(`${this.autoCompleteUrl}?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
+                .then(res => {
+                    let result = res.data.data || [];
+                    let suggestions = [];
+
+                    result.length > 0 && result.map(item => {
+                    suggestions.push({
+                        value: item.label,     // akan ditampilkan ke user
+                        data: item.value       // akan disimpan ke form (misalnya "DPS")
+                    });
+                    });
+
+                    cb(suggestions);
+                })
+                .catch(error => {
+                    console.error("Error searching airports:", error);
+                    this.$vs.notification({
+                    title: 'Error',
+                    text: 'Gagal memuat data bandara.',
+                    color: 'danger'
+                    });
+                    cb([]);
+                });
+            }, 500);
     }
-  }
+
+
+}
+
 };
 </script>
 <style scoped>
