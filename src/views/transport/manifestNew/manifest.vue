@@ -305,6 +305,7 @@ export default {
                 buttonStatus.depart = true; // Bisa depart
                 buttonStatus.cancel = true; // Bisa cancel
               } else if (
+                strStatus.includes("approved") ||
                 strStatus.includes("depart") ||
                 strStatus.includes("transit") || // Menambahkan 'transit'
                 strStatus.includes("receive") ||
