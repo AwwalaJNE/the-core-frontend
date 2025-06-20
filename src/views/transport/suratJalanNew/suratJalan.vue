@@ -658,7 +658,6 @@ export default {
     },
   },
   mounted() {
-    console.log("PPx", this.listenBreadcrumbTitle)
     this.refresh();
   },
 };
