@@ -131,6 +131,7 @@ export default {
 
   },   
   inputFocus(obj) {
+     this.activeInputKey = obj.key;
         if (['dep_iata', 'arr_iata', 'airline_iata'].includes(obj.key)) {
             switch (obj.key) {
                 case 'dep_iata':
@@ -162,10 +163,17 @@ export default {
                     let suggestions = [];
 
                     result.length > 0 && result.map(item => {
-                    suggestions.push({
-                        value: item.label,     // akan ditampilkan ke user
-                        data: item.value       // akan disimpan ke form (misalnya "DPS")
-                    });
+                    let label = item.label;
+                    let value = item.value;
+
+                    if (this.activeInputKey === 'airline_iata') {
+                        label = `${item.label} - ${item.value}`;
+                    }
+
+                        suggestions.push({
+                            value: label,  // tampil di dropdown
+                            data: value    // nilai yang disimpan
+                        });
                     });
 
                     cb(suggestions);
