@@ -48,7 +48,7 @@
                         <form @submit.prevent="createSuratJalan">
                             <input-general
                                 icon-after
-                                name="Scan Surat Muatan / Masterbag / Bag"
+                                :name="getScanLabel"
                                 rules=""
                                 formKey="scanBag"
                                 :valueData="item_number"
@@ -300,6 +300,20 @@ export default {
         },
         listenSjType() {
             return this.sj_type
+        },
+        getScanLabel() {
+            switch (this.sj_type) {
+                case 'SJ':
+                    return 'Scan Surat Muatan / Masterbag / Bag / Koli';
+                case 'HBAG':
+                    return 'Scan Masterbag / Bag';
+                case 'MTS':
+                    return 'Scan Koli';
+                case 'DO':
+                    return 'Scan Masterbag / Bag';
+                default:
+                    return 'Scan Item';
+            }
         }
     },
     watch: {
