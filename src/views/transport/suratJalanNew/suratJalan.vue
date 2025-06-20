@@ -90,129 +90,6 @@ export default {
       dataTable: [],
       dialogSuratJalan: false,
       datacolumn: [],
-      // datacolumn: [
-      //   {
-      //     label: "No Surat Jalan",
-      //     key: "manifest_do_number",
-      //     width: "xxxs",
-      //   },
-      //   {
-      //     label: "Status",
-      //     key: "status_with_tooltip",
-      //     width: "xxxs",
-      //   },
-      //   {
-      //     label: "Total Bag",
-      //     key: "total_item",
-      //     width: "xxxs",
-      //   },
-      //   {
-      //     label:"Type",
-      //     key: "sj_type",
-      //     width: "auto",
-      //   },
-      //   {
-      //     label: "Orion Number",
-      //     key: "orion_number",
-      //     width: "xxxs",
-      //   },
-      //   {
-      //     label: "Document Type",
-      //     key: "document_type",
-      //     width: "xxxs",
-      //   },
-      //   {
-      //     label: "Created By",
-      //     key: "created_by_user_name",
-      //     width: "auto",
-      //   },
-      //   {
-      //     label: "Vehicle",
-      //     key: "formatted_vehicle",
-      //     width: "xxs",
-      //   },
-      //   {
-      //     label: "Driver",
-      //     key: "driver_name",
-      //     width: "xxxs",
-      //   },
-      //   {
-      //     label: "Mode",
-      //     key: "vehicle_mode_name",
-      //     width: "auto",
-      //   },
-      //   {
-      //     label: "Origin",
-      //     key: "node_id_origin_name",
-      //     width: "xxs",
-      //   },
-      //   {
-      //     label: "Destination",
-      //     key: "node_id_destination_name",
-      //     width: "xxs",
-      //   },
-      //   {
-      //     label: "Fix Cost Weight",
-      //     key: "fix_cost_weight",
-      //     width: "auto",
-      //   },
-      //   {
-      //     label: "Live Cost Weight",
-      //     key: "live_cost_weight",
-      //     width: "auto",
-      //   },
-      //   {
-      //     label: "Fix Actual Weight",
-      //     key: "fix_actual_weight",
-      //     width: "auto",
-      //   },
-      //   {
-      //     label: "Live Actual Weight",
-      //     key: "live_actual_weight",
-      //     width: "auto",
-      //   },
-      //   {
-      //     label: "ETD",
-      //     key: "etd",
-      //     width: "xxxs",
-      //   },
-      //   {
-      //     label: "ETA",
-      //     key: "eta",
-      //     width: "xxxs",
-      //   },
-      //   {
-      //     label: "Handover to Transport",
-      //     key: "departed_time",
-      //     width: "xxxs",
-      //   },
-      //   {
-      //     label: "Approved",
-      //     key: "approved",
-      //     type: "status",
-      //     width: "xxxxs",
-      //   },
-      //   {
-      //     label: "Latest Node Receiver",
-      //     key: "latest_node_code_receiver",
-      //     width: "xxxxs",
-      //   },
-      //   {
-      //     label: "Total Master Bag",
-      //     key: "total_masterbag",
-      //     width: "xxxs",
-      //   },
-      //   {
-      //     label: "Total Bag",
-      //     key: "total_bag",
-      //     width: "xxxs",
-      //   },
-      //   {
-      //     label: "Total Connote",
-      //     key: "total_connote",
-      //     width: "xxxs",
-      //   },
-      // ],
       customActionList: [
       {
         label: "Print",
@@ -255,7 +132,10 @@ export default {
   computed: {
     listenBreadcrumbTitle() {
       return this.title;
-    }
+    },
+    listenBreadcrumbCode() {
+      return this.sj_type;
+    },
   },
   watch: {
     listenBreadcrumbTitle: {
@@ -336,7 +216,7 @@ export default {
     setDatacolumn() {
       this.datacolumn = [
         {
-          label: `No ${this.listenBreadcrumbTitle}`,
+          label: `No ${this.listenBreadcrumbCode}`,
           key: "manifest_do_number",
           width: "xxxs",
         },

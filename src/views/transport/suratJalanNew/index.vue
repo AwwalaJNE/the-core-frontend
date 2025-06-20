@@ -248,11 +248,11 @@ export default {
             
             this.searchParams = [
                 {
-                    label: 'Surat Jalan',
+                    label: `No ${this.listenBreadcrumbTitle}`,
                     value: 'manifest do number'
                 },
                 {
-                    label: `No ${this.listenBreadcrumbTitle}`,
+                    label: 'Orion Number',
                     value: 'do_number'
                 },
                 {

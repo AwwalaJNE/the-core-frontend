@@ -1230,6 +1230,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Surat Jalan",
+              breadCrumbCode: "SJ",
               resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
               resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
               resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
