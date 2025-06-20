@@ -173,6 +173,7 @@ export default {
         closeDialog: Function,        
         dataItem: Object,
         refresh: Function,
+        sj_type: String, 
         title: String,
     },
     data() {
@@ -296,6 +297,9 @@ export default {
         },
         listenBreadcrumbTitle() {
             return this.breadcrumb
+        },
+        listenSjType() {
+            return this.sj_type
         }
     },
     watch: {
@@ -529,10 +533,11 @@ export default {
             this.loading = true;
             let form = {
                 item_no: this.item_number,
-                is_penerusan: this.is_penerusan
+                is_penerusan: this.is_penerusan,
+                sj_type: this.listenSjType
             }
             try {
-                const res = await axios.post(`${this.URL.revamp_surat_jalan_v2}?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
+                const res = await axios.post(`${this.URL.revamp_surat_jalan_v3}?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
 
                 let data = res.data.data;
                 if (data) {

@@ -120,6 +120,7 @@
                 :breadcrumb="`${listenBreadcrumbTitle}`"
                 :active="dialogSuratJalan"
                 :closeDialog="closeDialogSuratJalan"
+                :sj_type="listenBreadcrumbCode"
                 @refresh="refresh"
             />
         </div>
