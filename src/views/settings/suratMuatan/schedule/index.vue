@@ -38,11 +38,16 @@
             <vs-col xs="12" sm="12" lg="6">
                 <vs-row justify="end">
                     <vs-col xs="6" sm="8" lg="4">
-                        <select-search-by :isMultiple="false" :border="true" @updateValue="updateValue"
-                            :valueData="searchParamsSchedule" :selectedValue="searchBySchedule" />
+                        <select-search-by 
+                        :isMultiple="false" 
+                        :border="true" 
+                        :selectedValue="searchBySchedule" 
+                        :valueData="searchParamsSchedule" 
+                        @updateValue="updateSearchBy"
+                        />
                     </vs-col>
                     <vs-col xs="6" sm="4" lg="4">
-                        <search-input ref="searchInput" @searchValue="searchValue" />
+                        <search-input ref="searchInput" @searchValue="searchValueHandler" />
                     </vs-col>
                 </vs-row>
             </vs-col>
@@ -267,6 +272,14 @@ export default {
         },
     },
     methods: {
+       updateSearchBy(key, val) {
+            this.searchBySchedule = val;
+            this.refresh(); // refresh data setelah ganti kolom pencarian
+        },
+        searchValueHandler(val) {
+            this.searchValue = val;
+            this.refresh();
+        },
         refresh(){
             this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.dateRange[0], this.dateRange[1], this.searchBy)
         },
@@ -292,49 +305,48 @@ export default {
             this.refresh();
         },
         async getTableData(limit, page, q, from, to, searchBy) {
-            this.loading = true
+        this.loading = true;
 
-            let query = q || '';            
-            let startDate = from || "";
-            let endDate = to || "";
-            
-            try {
-                const res = await axios.get(this.URL.schedule, {
-                ...this.Helper.header(), // <- spread headers seperti biasa
-                params: {
-                    n: this.listenNodeId,
-                    sort_order: "desc",
-                    limit,
-                    page,
-                    s: query,
-                    filter_date_by: this.filterDateBy,
-                    start_date: startDate,
-                    end_date: endDate,
-                    search_by: searchBy,
-                    vehicle_type_id: this.filterVehicleTypeBy !== "ALL" ? this.filterVehicleTypeBy : undefined
-                }
-                });
-                if(res.data.data.length > 0) {
-                    let arr = res.data.data;
-                    arr.map(item => {
-                        item,
-                        item["is_active"] = item.is_active === "1" ? true : false;
-                    })
-                    
-                    this.dataTable = arr
-                    this.pagination = {
-                        page: res.data.meta.current_page,
-                        limit: parseInt(res.data.meta.per_page, 10),
-                        page_size: res.data.meta.last_page,
-                    };
-                } else {
-                    this.dataTable = [];
-                }  
-            } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loading = false;
+        const query = q || this.searchValue || '';
+        const startDate = from || (this.dateRange.length > 0 ? this.dateRange[0] : '');
+        const endDate = to || (this.dateRange.length > 0 ? this.dateRange[1] : '');
+       const searchColumn = searchBy !== undefined ? searchBy : this.searchBySchedule;
+          console.log("search_by param:", searchColumn); // 🧪 debug
+
+        try {
+            const res = await axios.get(this.URL.schedule, {
+            ...this.Helper.header(),
+            params: {
+                n: this.listenNodeId,
+                sort_order: "desc",
+                limit,
+                page,
+                s: query,
+                filter_date_by: this.filterDateBy,
+                start_date: startDate,
+                end_date: endDate,
+                search_by: searchColumn,
+                vehicle_type_id: this.filterVehicleTypeBy !== "ALL" ? this.filterVehicleTypeBy : undefined
             }
+            });
+
+            const arr = res.data.data || [];
+            arr.forEach(item => {
+            item["is_active"] = item.is_active === "1";
+            });
+
+            this.dataTable = arr;
+            this.pagination = {
+            page: res.data.meta.current_page,
+            limit: parseInt(res.data.meta.per_page, 10),
+            page_size: res.data.meta.last_page,
+            };
+
+        } catch (err) {
+            this.openNotification('danger',err?.response?.data?.code || '','Failed',err?.response?.data?.message || 'Something went wrong');
+        } finally {
+            this.loading = false;
+        }
         },
         actionUpdate(val){
             this.dataItem = val;
