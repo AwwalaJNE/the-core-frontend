@@ -284,11 +284,9 @@ export default {
             this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.dateRange[0], this.dateRange[1], this.searchBy)
         },
        updateValue(key, val, info){
-        console.log(key,'key apa ini')
             switch(key) {
                 case "filter_status":
                 this.filterVehicleTypeBy = val;
-                console.log("Filtered vehicle_type_id:", val);
                 this.refresh();
                 break;
                 case "date_range":
@@ -310,8 +308,7 @@ export default {
         const query = q || this.searchValue || '';
         const startDate = from || (this.dateRange.length > 0 ? this.dateRange[0] : '');
         const endDate = to || (this.dateRange.length > 0 ? this.dateRange[1] : '');
-       const searchColumn = searchBy !== undefined ? searchBy : this.searchBySchedule;
-          console.log("search_by param:", searchColumn); // 🧪 debug
+        const searchColumn = searchBy !== undefined ? searchBy : this.searchBySchedule;
 
         try {
             const res = await axios.get(this.URL.schedule, {
