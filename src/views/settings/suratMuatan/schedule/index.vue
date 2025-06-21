@@ -7,8 +7,8 @@
                         <div class="select-surat-muatan-schedule">
                             <selector 
                                 formKey="filter_status"
-                                :valueData="filterStatus"
-                                :selectedValue="filterStatusBy"
+                                :valueData="filterVehicleTypeOptions"
+                                :selectedValue="filterVehicleTypeBy"
                                 :isMultiple="false"
                                 @updateValue="updateValue" 
                             />
@@ -197,8 +197,8 @@ export default {
                 }
             ],
             loadingVehicleMode: false,
-            filterStatusBy: "ALL",
-            filterStatus: [
+            filterVehicleTypeBy: "ALL",
+            filterVehicleTypeOptions: [
                 {
                     label: 'All Type',
                     value: 'ALL'
@@ -270,18 +270,20 @@ export default {
         refresh(){
             this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.dateRange[0], this.dateRange[1], this.searchBy)
         },
-        updateValue(key, val, info){
+       updateValue(key, val, info){
+        console.log(key,'key apa ini')
             switch(key) {
-                case "filter_vehicle_type":
-                    this.filterVehicleTypeBy = val;
-                    this.refresh();
-                    break;
+                case "filter_status":
+                this.filterVehicleTypeBy = val;
+                console.log("Filtered vehicle_type_id:", val);
+                this.refresh();
+                break;
                 case "date_range":
-                    this.dateRange = val
-                    this.startDate = this.dateRange[0];
-                    this.endDate = this.dateRange[1];
-                    this.refresh()
-                    break;
+                this.dateRange = val;
+                this.startDate = this.dateRange[0];
+                this.endDate = this.dateRange[1];
+                this.refresh();
+                break;
                 default:
             }
         },
