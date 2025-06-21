@@ -286,14 +286,14 @@ export default {
        updateValue(key, val, info){
             switch(key) {
                 case "filter_status":
-                this.filterVehicleTypeBy = val;
-                this.refresh();
+                    this.filterVehicleTypeBy = val;
+                    this.refresh();
                 break;
                 case "date_range":
-                this.dateRange = val;
-                this.startDate = this.dateRange[0];
-                this.endDate = this.dateRange[1];
-                this.refresh();
+                    this.dateRange = Array.isArray(val) ? val : [];
+                    this.startDate = this.dateRange.length > 0 ? this.dateRange[0] : '';
+                    this.endDate = this.dateRange.length > 1 ? this.dateRange[1] : '';
+                    this.refresh();
                 break;
                 default:
             }
@@ -306,8 +306,8 @@ export default {
         this.loading = true;
 
         const query = q || this.searchValue || '';
-        const startDate = from || (this.dateRange.length > 0 ? this.dateRange[0] : '');
-        const endDate = to || (this.dateRange.length > 0 ? this.dateRange[1] : '');
+        const startDate = from || this.startDate || '';
+        const endDate = to || this.endDate || '';
         const searchColumn = searchBy !== undefined ? searchBy : this.searchBySchedule;
 
         try {
