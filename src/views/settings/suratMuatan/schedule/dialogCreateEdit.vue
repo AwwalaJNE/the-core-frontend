@@ -79,7 +79,9 @@ export default {
     },
     data() {
         return {
-            form: {},
+            form: {
+                vehicle_mode_id: null
+            },
             id: "",
             loading: false,
             loadingVehicleId: false,
@@ -108,19 +110,24 @@ export default {
             return this.dataItem;
         }
     },
-        watch: {
+    watch: {
        active(val) {
             if (val && !this.dataItem) {
                 this.getVehicle(); 
                 this.getVehicleModes();
+                this.updateInputTypesByVehicleMode(0);
             }
         },
        dataItem: async function(val) {
             if (val !== undefined) {
                 try {
-                    await this.getVehicle(); // Pastikan arrData sudah tersedia dulu
-                    await this.getVehicleModes(); // Get vehicle types
-                    this.getDataDetail(val); // Baru isi value + valueData
+                    await this.getVehicle();
+                    await this.getVehicleModes();
+                    this.getDataDetail(val);
+                    
+                    if (val.vehicle_type_id) {
+                        this.updateInputTypesByVehicleMode(val.vehicle_type_id);
+                    }
                 } catch (err) {
                     console.error("Error in dataItem watch:", err);
                 }
@@ -159,6 +166,9 @@ export default {
                         if (selected_mode) {
                             this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ValueData", selected_mode);
                         }
+                        
+                        // Update input types based on vehicle mode
+                        this.updateInputTypesByVehicleMode(vehicle_mode_id);
                     }
                 }
             } catch (err) {
@@ -172,15 +182,28 @@ export default {
                 ...formWithoutId,
                 vehicle_id: parseInt(formWithoutId.vehicle_id),
                 vehicle_mode_id: parseInt(formWithoutId.vehicle_mode_id),
-                is_external_source: 'N'
+                is_external_source: 'N',
             };
+
+            const isAirMode = this.form.vehicle_mode_id === 1;
+            
+            if (!isAirMode) {
+                if (!this.form.origin_name) {
+                    this.form.origin_name = this.form.origin_point ? `${this.form.origin_point} (Origin)` : '';
+                }
+                
+                if (!this.form.destination_name) {
+                    this.form.destination_name = this.form.destination_point ? `${this.form.destination_point} (Destination)` : '';
+                }
+            }
+            
             this.handleSubmitData();
         },
         onChangeCustom(type, val, obj) {
+            
             switch (type) {
                 case "vehicle_id":
                     this.vehicle_id = parseInt(val);
-                    // Get the vehicle data and set the vehicle_mode_id
                     const selectedVehicle = this.$store.state.surat_muatan_schedule.vehicle_id.arrData.find(
                         item => parseInt(item.value) === parseInt(val)
                     );
@@ -196,21 +219,42 @@ export default {
                         const selected_mode = vehicle_mode_arr.find(item => parseInt(item.value) === vehicle_mode_id);
                         if (selected_mode) {
                             this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ValueData", selected_mode);
+                            
+                            this.$store.commit("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID", selected_mode.label);
                         }
+                        
+                        this.updateInputTypesByVehicleMode(vehicle_mode_id);
                     }
                     break;
                 case "vehicle_mode_id":
                     const mode_id = parseInt(val);
                     this.form.vehicle_mode_id = mode_id;
                     
-                    // Dispatch to store
-                    this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID", mode_id);
-                    
-                    // Set vehicle_mode_id value data
                     const mode_arr = this.$store.state.surat_muatan_schedule.vehicle_mode_id.arrData || [];
                     const selected_mode = mode_arr.find(item => parseInt(item.value) === mode_id);
+                    
                     if (selected_mode) {
+                        this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID", selected_mode.label);
+                        
                         this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ValueData", selected_mode);
+                    } else {
+                        this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID", mode_id);
+                    }
+                    
+                    this.updateInputTypesByVehicleMode(mode_id);
+                    break;
+                case "origin_name":
+                    if (this.form.vehicle_mode_id === 1) {
+                        if (obj && obj.data) {
+                            this.handleSelect({value: val, data: obj.data}, 'origin_name');
+                        }
+                    }
+                    break;
+                case "destination_name":
+                    if (this.form.vehicle_mode_id === 1) {
+                        if (obj && obj.data) {
+                            this.handleSelect({value: val, data: obj.data}, 'destination_name');
+                        }
                     }
                     break;
                 default:
@@ -292,15 +336,25 @@ export default {
             }
         },
         async handleSubmitData() {
-           const selectedVehicle = this.$store.state.surat_muatan_schedule.vehicle_id.arrData.find(
-                    item => parseInt(item.value) === parseInt(this.form.vehicle_id)
-                    );
+            const vehicleIdArrData = this.$store.state.surat_muatan_schedule?.vehicle_id?.arrData || [];
             
-           if (selectedVehicle && selectedVehicle.data) {
+            const selectedVehicle = vehicleIdArrData.find(
+                item => parseInt(item.value) === parseInt(this.form.vehicle_id)
+            );
+            
+            if (selectedVehicle && selectedVehicle.data) {
                 // Use vehicle_type_id from vehicle data as vehicle_mode_id
                 this.form.vehicle_mode_id = parseInt(selectedVehicle.data.vehicle_type_id);
                 this.form.vehicle_mode_name = selectedVehicle.data.vehicle_type_name;
                 this.form.vehicle_name = selectedVehicle.label;
+            }
+
+            if (!this.form.origin_name || this.form.origin_name === 'null' || this.form.origin_name === null) {
+                this.form.origin_name = this.form.origin_point || 'Origin';
+            }
+            
+            if (!this.form.destination_name || this.form.destination_name === 'null' || this.form.destination_name === null) {
+                this.form.destination_name = this.form.destination_point || 'Destination';
             }
 
             if (
@@ -308,7 +362,7 @@ export default {
                 this.form.vehicle_mode_id === null ||
                 this.form.vehicle_mode_id === '' ||
                 isNaN(Number(this.form.vehicle_mode_id))
-                ) {
+            ) {
                 this.openNotification("danger", "", "Validation Error", "Vehicle Mode wajib dipilih.");
                 this.loading = false;
                 return;
@@ -316,9 +370,11 @@ export default {
 
             this.loading = true;
             try {
+                const formToSubmit = { ...this.form };
+                
                 const res = this.id
-                    ? await axios.put(`${this.URL.schedule}/${this.id}?n=${this.listenNodeId}`, this.form, this.Helper.header())
-                    : await axios.post(`${this.URL.schedule}?n=${this.listenNodeId}`, { data: [this.form] }, this.Helper.header());
+                    ? await axios.put(`${this.URL.schedule}/${this.id}?n=${this.listenNodeId}`, formToSubmit, this.Helper.header())
+                    : await axios.post(`${this.URL.schedule}?n=${this.listenNodeId}`, { data: [formToSubmit] }, this.Helper.header());
 
                 this.openNotification('success', null, "Success", res?.data?.message || (this.id ? "Success Update Data" : "Success Create Data"));
             } catch (err) {
@@ -333,7 +389,9 @@ export default {
         },
         handleClearForm(){
             this.$refs.formDataController.handleClearForm();
-            this.form = {};
+            this.form = {
+                vehicle_mode_id: null
+            };
             this.id = "";
             this.vehicle_mode_arr = [];
             this.vehicle_mode = '';
@@ -353,6 +411,14 @@ export default {
             }
         },
         querySearch(queryString, cb) {
+            const vehicle_mode_id = this.form?.vehicle_mode_id;
+            const isAirMode = vehicle_mode_id === 1 || vehicle_mode_id === '1';
+            
+            if (!isAirMode) {
+                cb([]);
+                return;
+            }
+            
             if (!queryString || queryString.length < 2) {
                 cb([]);
                 return;
@@ -369,10 +435,30 @@ export default {
                 this.Helper.header()
             ).then(res => {
                 const data = res.data.data || [];
-                const results = data.map(item => ({
-                    value: item.label,
-                    data: item
-                }));
+                
+                // Transform the data based on the actual API response format
+                const results = data.map(item => {
+                    // For debugging
+                    
+                    return {
+                        // Display the full label in the dropdown
+                        value: item.label || `${item.location_code} - ${item.location_name}`,
+                        // Store the FULL airport data for selection
+                        data: {
+                            // The most important fields with fallbacks
+                            name: item.location_name || '',
+                            code: item.location_code || item.value || '',
+                            identifier: item.location_code || item.value || '',
+                            point: item.location_code || item.value || '',
+                            // Additional fields
+                            city: item.city || '',
+                            country: item.country || '',
+                            label: item.label || '',
+                            // Store the original item
+                            original: item
+                        }
+                    };
+                });
                 
                 cb(results);
                 
@@ -392,9 +478,79 @@ export default {
                 }
             });
         },
+        updateInputTypesByVehicleMode(vehicle_mode_id) {
+            if (vehicle_mode_id === null || vehicle_mode_id === undefined) {
+                vehicle_mode_id = 0;
+            }
+            
+            const isAirMode = vehicle_mode_id === 1 || vehicle_mode_id === '1';
+            
+            const originField = this.$store.state.surat_muatan_schedule.origin_name;
+            if (originField) {
+                if (isAirMode) {
+                    originField.typeInput = "autoComplete";
+                    this.originUrl = this.URL.airports_list;
+                } else {
+                    originField.typeInput = "text";
+                }
+                this.$store.commit("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME", originField.value);
+            }
+            
+            const destinationField = this.$store.state.surat_muatan_schedule.destination_name;
+            if (destinationField) {
+                if (isAirMode) {
+                    destinationField.typeInput = "autoComplete";
+                    this.destinationUrl = this.URL.airports_list;
+                } else {
+                    destinationField.typeInput = "text";
+                }
+                this.$store.commit("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME", destinationField.value);
+            }
+            
+            if (this.$refs.formDataController) {
+                this.$refs.formDataController.$forceUpdate();
+            }
+        },
+        handleSelect(item, type) {
+            
+            if (!item || !item.data) {
+                console.error(`Invalid airport data for ${type}`);
+                return;
+            }
+            
+            const airportData = item.data;
+            
+            if (type === 'origin_name') {
+                this.form.origin_name = airportData.name;
+                this.form.origin_point = airportData.code;
+                this.form.origin_identifier = airportData.code;
+                
+                this.$store.commit("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME", this.form.origin_name);
+                this.$store.commit("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT", this.form.origin_point);
+                this.$store.commit("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER", this.form.origin_identifier);
+
+            } else if (type === 'destination_name') {
+                this.form.destination_name = airportData.name;
+                this.form.destination_point = airportData.code;
+                this.form.destination_identifier = airportData.code;
+                
+                this.$store.commit("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME", this.form.destination_name);
+                this.$store.commit("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_POINT", this.form.destination_point);
+                this.$store.commit("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER", this.form.destination_identifier);
+
+            }
+        },
     },
     mounted() {
-        this.handleSubmitShortcut(this.handleSubmit)
+        if (!this.form) {
+            this.form = {
+                vehicle_mode_id: null
+            };
+        }
+        
+        this.updateInputTypesByVehicleMode(this.form.vehicle_mode_id);
+        
+        this.handleSubmitShortcut(this.handleSubmit);
     },
 }
 </script>
