@@ -766,7 +766,7 @@
                     <template v-else>
                       <span>
                         <span 
-                          :style="column.isTransitTag && item[column.isTransitTag] === '1' ? { borderBottom: '1px solid #666' }  : {}"
+                          :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666' }  : {}"
                         >
                           {{ item[column.key] 
                               ? column.type_amount 
@@ -784,7 +784,7 @@
                           </vs-tooltip>
                         </span>
                         <span
-                          v-if="column.isTransitTag && item[column.isTransitTag] === '1'"
+                          v-if="column.isTransitTag && item[column.isTransitTag] === 1"
                           style="display: ruby; font-weight: bold; font-style: italic; font-size: 10px"
                         >
                           TRANSIT
