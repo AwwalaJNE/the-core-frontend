@@ -158,6 +158,7 @@ export default {
     async fetchData() {
       this.loading = true;
       try {
+        console.log("📤 Sending request to sync flight:");
         const res = await axios.get(`${this.URL.sync_flight}`, {
           params: {
             ...this.form,
@@ -167,7 +168,6 @@ export default {
           },
           headers: this.Helper.header().headers,
         });
-
         if (res.data && res.data.data) {
           this.resultData = res.data.data; 
           this.pagination = {
@@ -283,18 +283,18 @@ export default {
           vehicle_type_id: item.vehicle_type_id,                              //Mandatory
           shipment_number: item.shipment_number,                              //Mandatory
           origin_name: item.origin_name,                                      //Mandatory
-          origin_identifier: item.origin_identifier || "null",                  //--Optional--
-          origin_point: item.origin_point || "null",                            //--Optional--
-          destination_name: item.destination_name,                            //Mandatory
-          destination_identifier: item.destination_identifier || "null",        //--Optional--  
-          destination_point: item.destination_point || "null",                  //--Optional--
-          etd: item.etd || "2025-06-17 17:30:00",                             //Mandatory
-          etd_timezone: item.etd_timezone || "WIB",                           //Mandatory
-          eta: item.eta || "2025-06-17 19:30:00",                             //Mandatory
-          eta_timezone: item.eta_timezone || "WIB",                           //Mandatory
-          vehicle_information: item.vehicle_information || "null",            //--Optional--
-          registration_number: item.registration_number || "null",            //--Optional--
-          is_external_source: item.is_external_source || "Y",
+          origin_identifier: item.origin_identifier,                  //--Optional--
+          origin_point: item.origin_point,                            //--Optional--
+          destination_name: item.destination_name,                    //Mandatory
+          destination_identifier: item.destination_identifier,        //--Optional--  
+          destination_point: item.destination_point,                  //--Optional--
+          etd: item.etd,                                              //Mandatory
+          etd_timezone: item.etd_timezone,                           //Mandatory
+          eta: item.eta,                                             //Mandatory
+          eta_timezone: item.eta_timezone,                           //Mandatory
+          vehicle_information: item.vehicle_information,            //--Optional--
+          registration_number: item.registration_number,            //--Optional--
+          is_external_source: "Y",
         }),
         ),
       };
