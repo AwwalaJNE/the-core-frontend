@@ -13,7 +13,7 @@
                         {{ listenTitle }}
                     </div>
                     
-                    <template v-if="!listenIsReadOnly">
+                    <div class="button-group" v-if="!listenIsReadOnly">
                         <template v-if="is_approve === 1">
                             <vs-button 
                                 :disabled="isDisabledPrint"
@@ -39,7 +39,7 @@
                                 {{ is_approve === 1 ? 'Approved' : 'Approve' }}
                             </vs-button>
                         </template>
-                    </template>
+                    </div>
                 </div>
             </template>
 
@@ -1127,14 +1127,24 @@ export default {
 };
 </script>
 <style scoped>
-.title-helper {
-    width: 60%;
-    align-content: center;
+.button-helper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 10px 0;
 }
 
-.button-helper {
-    display: flex; 
-    justify-content: flex-end;
+.title-helper {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
 }
 
 button {
