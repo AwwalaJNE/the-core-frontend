@@ -3033,38 +3033,35 @@ export default {
   dep_iata: {
     label: "Departure Airport (IATA)",
     key: "dep_iata",
-    typeInput: "text",
+    typeInput: "autocomplete",
     typeData: "String",
+    arrData: [],
+    valueData: null,
+    value: '',
     rule: "",
     width:'6',
-    value: ''
   },
   arr_iata: {
     label: "Arrival Airport (IATA)",
     key: "arr_iata",
-    typeInput: "text",
+    typeInput: "autocomplete",
     typeData: "String",
+    arrData: [],
+    valueData: null,
+    value: '',
     rule: "",
     width:'6',
-    value: ''
-  },
-  airline_name: {
-    label: "Airline Name",
-    key: "airline_name",
-    typeInput: "text",
-    typeData: "String",
-    rule: "",
-    width:'6',
-    value: ''
   },
   airline_iata: {
-    label: "Airline Code (IATA)",
+    label: "Airline Name (IATA)",
     key: "airline_iata",
-    typeInput: "text",
+    typeInput: "autocomplete",
     typeData: "String",
+    arrData: [],
+    valueData: null,
+    value: '',
     rule: "",
-    width:'6',
-    value: ''
+    width:'6'
   },
   flight_iata: {
     label: "Flight Number (IATA)",
@@ -3072,7 +3069,8 @@ export default {
     typeInput: "text",
     typeData: "String",
     rule: "",
-    value: ''
+    value: '',
+    width:'6'
   }
 },
   

@@ -322,6 +322,17 @@ export default {
               },
             },
             {
+              label: "Surat Muatan",
+              url: "/transport/manifest",
+              icon: "bx bxs-checkbox",
+              permission: "read-manifest",
+              meta: {
+                resource_type: resourceLookup["TRANSPORT_MANIFEST"].resource_type,
+                resource_code: resourceLookup["TRANSPORT_MANIFEST"].resource_code,
+                resource_name: resourceLookup["TRANSPORT_MANIFEST"].resource_name
+              },
+            },
+            {
               label: "Surat Jalan",
               url: "/transport/manifest-jalan",
               icon: "bx bxs-checkbox",
@@ -333,14 +344,36 @@ export default {
               },
             },
             {
-              label: "Surat Muatan",
-              url: "/transport/manifest",
+              label: "HBAG",
+              url: "/transport/hbag",
               icon: "bx bxs-checkbox",
-              permission: "read-manifest",
+              permission: "read-manifest-delivery-order",
               meta: {
-                resource_type: resourceLookup["TRANSPORT_MANIFEST"].resource_type,
-                resource_code: resourceLookup["TRANSPORT_MANIFEST"].resource_code,
-                resource_name: resourceLookup["TRANSPORT_MANIFEST"].resource_name
+                resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+                resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+                resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name
+              },
+            },
+            {
+              label: "MTS",
+              url: "/transport/mts",
+              icon: "bx bxs-checkbox",
+              permission: "read-manifest-delivery-order",
+              meta: {
+                resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+                resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+                resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name
+              },
+            },
+            {
+              label: "DO",
+              url: "/transport/do",
+              icon: "bx bxs-checkbox",
+              permission: "read-manifest-delivery-order",
+              meta: {
+                resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+                resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+                resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name
               },
             },
           ],

@@ -1230,6 +1230,52 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Surat Jalan",
+              breadCrumbCode: "SJ",
+              resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-delivery-order',
+            }
+          },
+          {
+            path: "hbag",
+            name: "SuratJalan",
+            component: TransportSuratJalan,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Handover Bag",
+              breadCrumbCode: "HBAG",
+              resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-delivery-order',
+            }
+          },
+          {
+            path: "mts",
+            name: "SuratJalan",
+            component: TransportSuratJalan,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Manifest Transit Subagent",
+              breadCrumbCode: "MTS",
+              resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-delivery-order',
+            }
+          },
+          {
+            path: "do",
+            name: "SuratJalan",
+            component: TransportSuratJalan,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Delivery Order",
+              breadCrumbCode: "DO",
               resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
               resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
               resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
