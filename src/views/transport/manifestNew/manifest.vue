@@ -87,7 +87,7 @@ export default {
         {
           label: "Status",
           key: "status_with_tooltip",
-          width: "xxxxs",
+          width: "xxs",
         },
         {
           label: "Total Bag",

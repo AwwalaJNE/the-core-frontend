@@ -57,7 +57,7 @@ export default {
       {
         label: "Status",
         key: "status",
-        width: "auto",
+        width: "xxs",
       },
       {
         label: "Total Bag",
