@@ -17,6 +17,8 @@
                     :dataItem="dataItem"
                     @formData="formData"
                     @onChangeCustom="onChangeCustom"
+                    @inputFocus="inputFocus"
+                    :querySearch="querySearch"
                 />
             </div>
         </template>
@@ -81,9 +83,15 @@ export default {
             id: "",
             loading: false,
             loadingVehicleId: false,
+            loadingVehicleMode: false,
+            loadingOrigin: false,
+            loadingDestination: false,
             vehicle_mode_arr: [],
             vehicle_mode: '',
-            vehicle_id: ''
+            vehicle_id: '',
+            originUrl: this.URL.airports_list,
+            destinationUrl: this.URL.airports_list,
+            currentField: null
         }
     },
     computed: {
@@ -94,22 +102,28 @@ export default {
             return this.title;
         },
         listenLoading() {
-            return this.loading || this.loadingVehicleId ;
+            return this.loading || this.loadingVehicleId || this.loadingVehicleMode || this.loadingOrigin || this.loadingDestination;
         },
         listenDataItem() {
             return this.dataItem;
         }
     },
-    watch: {
+        watch: {
        active(val) {
             if (val && !this.dataItem) {
-            this.getVehicle(); 
+                this.getVehicle(); 
+                this.getVehicleModes();
             }
         },
        dataItem: async function(val) {
             if (val !== undefined) {
-            await this.getVehicle(); // Pastikan arrData sudah tersedia dulu
-            this.getDataDetail(val); // Baru isi value + valueData
+                try {
+                    await this.getVehicle(); // Pastikan arrData sudah tersedia dulu
+                    await this.getVehicleModes(); // Get vehicle types
+                    this.getDataDetail(val); // Baru isi value + valueData
+                } catch (err) {
+                    console.error("Error in dataItem watch:", err);
+                }
             }
         },
     },
@@ -123,6 +137,7 @@ export default {
             try {
                 this.id = val.id;
 
+                // Set vehicle_id
                 const vehicle_id = parseInt(val.vehicle_id);
                 this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID", vehicle_id);
 
@@ -130,7 +145,21 @@ export default {
                 const selected = arrData.find(item => parseInt(item.value) === vehicle_id);
 
                 if (selected) {
-                this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID_ValueData", selected);
+                    this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID_ValueData", selected);
+                    
+                    // Set vehicle_mode_id if it exists in the selected vehicle data
+                    if (selected.data && selected.data.vehicle_type_id) {
+                        const vehicle_mode_id = parseInt(selected.data.vehicle_type_id);
+                        this.form.vehicle_mode_id = vehicle_mode_id;
+                        this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID", vehicle_mode_id);
+                        
+                        // Set vehicle_mode_id value data
+                        const vehicle_mode_arr = this.$store.state.surat_muatan_schedule.vehicle_mode_id.arrData || [];
+                        const selected_mode = vehicle_mode_arr.find(item => parseInt(item.value) === vehicle_mode_id);
+                        if (selected_mode) {
+                            this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ValueData", selected_mode);
+                        }
+                    }
                 }
             } catch (err) {
                 console.error("getDataDetail failed:", err);
@@ -139,29 +168,57 @@ export default {
        formData(form){
             const { id, ...formWithoutId } = form;
           
-            
-              this.form = {
+            this.form = {
                 ...formWithoutId,
                 vehicle_id: parseInt(formWithoutId.vehicle_id),
-                vehicle_type_id: parseInt(formWithoutId.vehicle_type_id || this.vehicle_type_id),
+                vehicle_mode_id: parseInt(formWithoutId.vehicle_mode_id),
                 is_external_source: 'N'
             };
-            this.handleSubmitData(); // pindahkan ke sini kembali
+            this.handleSubmitData();
         },
         onChangeCustom(type, val, obj) {
             switch (type) {
                 case "vehicle_id":
                     this.vehicle_id = parseInt(val);
+                    // Get the vehicle data and set the vehicle_mode_id
+                    const selectedVehicle = this.$store.state.surat_muatan_schedule.vehicle_id.arrData.find(
+                        item => parseInt(item.value) === parseInt(val)
+                    );
+                    if (selectedVehicle && selectedVehicle.data) {
+                        const vehicle_mode_id = parseInt(selectedVehicle.data.vehicle_type_id);
+                        this.form.vehicle_mode_id = vehicle_mode_id;
+                        
+                        // Dispatch to store
+                        this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID", vehicle_mode_id);
+                        
+                        // Set vehicle_mode_id value data
+                        const vehicle_mode_arr = this.$store.state.surat_muatan_schedule.vehicle_mode_id.arrData || [];
+                        const selected_mode = vehicle_mode_arr.find(item => parseInt(item.value) === vehicle_mode_id);
+                        if (selected_mode) {
+                            this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ValueData", selected_mode);
+                        }
+                    }
                     break;
-                case "vehicle_type_id":
-                    this.form.vehicle_type_id = parseInt(val);
+                case "vehicle_mode_id":
+                    const mode_id = parseInt(val);
+                    this.form.vehicle_mode_id = mode_id;
+                    
+                    // Dispatch to store
+                    this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID", mode_id);
+                    
+                    // Set vehicle_mode_id value data
+                    const mode_arr = this.$store.state.surat_muatan_schedule.vehicle_mode_id.arrData || [];
+                    const selected_mode = mode_arr.find(item => parseInt(item.value) === mode_id);
+                    if (selected_mode) {
+                        this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ValueData", selected_mode);
+                    }
                     break;
                 default:
             }
         },
         updateValue(key, val, info){
-            if (key === 'vehicle_type_id') {
-                this.form.vehicle_type_id = parseInt(val); // ⬅️ pastikan tipe number
+            if (key === 'vehicle_mode_id') {
+                this.form.vehicle_mode_id = parseInt(val); // ⬅️ pastikan tipe number
             }
 
             if (key === 'vehicle_id') {
@@ -170,6 +227,39 @@ export default {
 
             if (key === 'vehicle_mode') {
                 this.vehicle_mode = this.vehicle_mode_arr.find(item => item.value == val)?.value;
+            }
+        },
+        async getVehicleModes() {
+            this.loadingVehicleMode = true;
+            try {
+                const res = await axios.get(
+                    `${this.URL.vehicle_mode_list_v2}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                    this.Helper.header()
+                );
+                
+                const data = res.data.data || [];
+                
+                if (!data || !Array.isArray(data)) {
+                    console.error("Invalid data format received:", data);
+                    throw new Error("Invalid data format received");
+                }
+                
+                const arr = data.map(item => ({
+                    label: item.vehicle_mode_name,
+                    value: item.vehicle_mode_id.toString(),
+                    data: {
+                        vehicle_prefix: item.vehicle_prefix,
+                        vehicle_mode_name: item.vehicle_mode_name
+                    }
+                }));
+                
+                this.$store.commit("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData", arr);
+                this.vehicle_mode_arr = arr;
+            } catch (err) {
+                console.error("Error fetching vehicle modes:", err);
+                this.openNotification('danger', '', 'Failed', 'Gagal mengambil data mode kendaraan: ' + (err.message || 'Unknown error'));
+            } finally {
+                this.loadingVehicleMode = false;
             }
         },
         async getVehicle() {
@@ -181,6 +271,12 @@ export default {
                 );
 
                 const data = res.data.data || [];
+                
+                if (!data || !Array.isArray(data)) {
+                    console.error("Invalid vehicle data format received:", data);
+                    throw new Error("Invalid vehicle data format received");
+                }
+                
                 const arr = data.map(item => ({
                 label: item.vehicle_name,
                 value: item.vehicle_id,
@@ -189,38 +285,31 @@ export default {
 
                 this.$store.commit("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID_ArrData", arr);
             } catch (err) {
-                this.openNotification('danger', '', 'Failed', 'Gagal mengambil data kendaraan');
+                console.error("Error fetching vehicles:", err);
+                this.openNotification('danger', '', 'Failed', 'Gagal mengambil data kendaraan: ' + (err.message || 'Unknown error'));
             } finally {
                 this.loadingVehicleId = false;
             }
         },
         async handleSubmitData() {
-           const selectedVehicle = this.vehicle_mode_arr.find(
+           const selectedVehicle = this.$store.state.surat_muatan_schedule.vehicle_id.arrData.find(
                     item => parseInt(item.value) === parseInt(this.form.vehicle_id)
                     );
             
-           if (!selectedVehicle || !selectedVehicle.data) {
-                const vehicle = this.vehicle_mode_arr.find(item => item.value == this.form.vehicle_id);
-                if (vehicle && vehicle.data) {
-                this.form.vehicle_type_id = vehicle.data.vehicle_type_id;
-                this.form.vehicle_type_name = vehicle.data.vehicle_type_name;
-                this.form.vehicle_name = vehicle.label;
-                }
-            } else {
-                // tetap set jika selectedVehicle ditemukan
-                this.form.vehicle_type_id = selectedVehicle.data.vehicle_type_id;
-                this.form.vehicle_type_name = selectedVehicle.data.vehicle_type_name;
+           if (selectedVehicle && selectedVehicle.data) {
+                // Use vehicle_type_id from vehicle data as vehicle_mode_id
+                this.form.vehicle_mode_id = parseInt(selectedVehicle.data.vehicle_type_id);
+                this.form.vehicle_mode_name = selectedVehicle.data.vehicle_type_name;
                 this.form.vehicle_name = selectedVehicle.label;
             }
 
-
             if (
-                this.form.vehicle_type_id === undefined ||
-                this.form.vehicle_type_id === null ||
-                this.form.vehicle_type_id === '' ||
-                isNaN(Number(this.form.vehicle_type_id))
+                this.form.vehicle_mode_id === undefined ||
+                this.form.vehicle_mode_id === null ||
+                this.form.vehicle_mode_id === '' ||
+                isNaN(Number(this.form.vehicle_mode_id))
                 ) {
-                this.openNotification("danger", "", "Validation Error", "Vehicle Type wajib dipilih.");
+                this.openNotification("danger", "", "Validation Error", "Vehicle Mode wajib dipilih.");
                 this.loading = false;
                 return;
             }
@@ -243,7 +332,6 @@ export default {
             this.$refs.formDataController.handleSubmit();
         },
         handleClearForm(){
-            console.log('salah 1');
             this.$refs.formDataController.handleClearForm();
             this.form = {};
             this.id = "";
@@ -256,6 +344,53 @@ export default {
         cancel() {
             this.handleClearForm();
             this.closeDialog();
+        },
+        inputFocus(info) {
+            if (info.key === 'origin_name') {
+                this.currentField = 'origin_name';
+            } else if (info.key === 'destination_name') {
+                this.currentField = 'destination_name';
+            }
+        },
+        querySearch(queryString, cb) {
+            if (!queryString || queryString.length < 2) {
+                cb([]);
+                return;
+            }
+            
+            if (this.currentField === 'origin_name') {
+                this.loadingOrigin = true;
+            } else if (this.currentField === 'destination_name') {
+                this.loadingDestination = true;
+            }
+            
+            axios.get(
+                `${this.URL.airports_list}?n=${this.listenNodeId}&limit=10&s=${queryString}`,
+                this.Helper.header()
+            ).then(res => {
+                const data = res.data.data || [];
+                const results = data.map(item => ({
+                    value: item.label,
+                    data: item
+                }));
+                
+                cb(results);
+                
+                if (this.currentField === 'origin_name') {
+                    this.loadingOrigin = false;
+                } else if (this.currentField === 'destination_name') {
+                    this.loadingDestination = false;
+                }
+            }).catch(err => {
+                console.error("Error fetching airports:", err);
+                cb([]);
+                
+                if (this.currentField === 'origin_name') {
+                    this.loadingOrigin = false;
+                } else if (this.currentField === 'destination_name') {
+                    this.loadingDestination = false;
+                }
+            });
         },
     },
     mounted() {

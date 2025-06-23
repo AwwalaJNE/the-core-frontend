@@ -44,6 +44,8 @@
 import axios from "axios";
 import master from "@/mixins/master"
 import Inputan from "@/components/input/inputan"
+import _ from 'lodash'
+
 export default {
     name: "asynchronous-select",
     mixins: [master],
@@ -92,7 +94,12 @@ export default {
             loading: false,
             query: '',
             limit: 10,
+            debouncedAsynchronousSelect: null
         }
+    },
+    created() {
+        // Create a debounced version of the asynchronousSelect method
+        this.debouncedAsynchronousSelect = _.debounce(this.asynchronousSelectImpl, 400)
     },
     watch: {
         selectedValue: function (val) {
@@ -113,9 +120,15 @@ export default {
     },
     methods: {
         asynchronousSelect(queryString) {
-            this.loading = true
             this.query = queryString
-
+            if (queryString && queryString.length > 2) {
+                this.loading = true
+                this.debouncedAsynchronousSelect(queryString)
+            } else {
+                this.options = []
+            }
+        },
+        asynchronousSelectImpl(queryString) {
             queryString != '' && axios.get(this.listenUrl +`&s=${queryString}` + `${this.limit ? `&limit=${this.limit}` : ''}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
@@ -172,7 +185,6 @@ export default {
             })
             .catch(error => {
                 this.loading = false
-
             });
         },
         updateOption(arr) {

@@ -129,8 +129,8 @@ export default {
                     width: "sm"
                 },
                 {
-                    label: "Type",
-                    key: "vehicle_type_name",
+                    label: "Mode",
+                    key: "vehicle_mode_name",
                     width: "sm"
                 },
                 {
