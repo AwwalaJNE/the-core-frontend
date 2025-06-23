@@ -327,14 +327,6 @@ export default {
                 
                 // Initialize field widths based on current state
                 if (this.dataItem && this.dataItem.manifest_method_id) {
-                    if (this.dataItem.manifest_method_id === 1) {
-                        this.adjustFieldWidths('flight');
-                    } else if (this.dataItem.manifest_method_id === 2) {
-                        this.adjustFieldWidths('road-with-driver');
-                    } else {
-                        this.adjustFieldWidths('road-no-driver');
-                    }
-                    
                     setTimeout(() => {
                         const vehicleModes = this.$store.getters["getInputs"]["surat_muatan"]["manifest_method_id"]["arrData"];
                         if (vehicleModes && vehicleModes.length > 0) {
@@ -930,8 +922,6 @@ export default {
                         this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
                         this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true);
                         this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", true);
-                        // Adjust widths for flight mode
-                        this.adjustFieldWidths('flight');
                     } else if (type == "manifest_method_id" && val != 1) {
                         
                         this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
@@ -940,12 +930,8 @@ export default {
                         if (val == 2) {
                             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true);   
                             this.getDataEmployee();
-                            // Adjust widths for road mode with driver
-                            this.adjustFieldWidths('road-with-driver');
                         } else {
                             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
-                            // Adjust widths for road mode without driver
-                            this.adjustFieldWidths('road-no-driver');
                         }
                     }
 
@@ -1069,53 +1055,6 @@ export default {
         },
         refreshDetail() {
             this.getSuratMuatanDetail();
-        },
-        adjustFieldWidths(mode) {
-            // Dynamically adjust field widths based on visibility
-            const state = this.$store.state.inputs.surat_muatan;
-            
-            // Reset all to default first, but preserve the widths for manifest_prefix, manifest_number, and max_weight
-            // to ensure they stay in one row
-            if (state.manifest_prefix) state.manifest_prefix.width = "1";
-            if (state.manifest_number) state.manifest_number.width = "5";
-            if (state.max_weight) state.max_weight.width = "6";
-            
-            // Reset other fields to their default widths
-            if (state.manifest_method_id) state.manifest_method_id.width = "12";
-            if (state.node_id_origin) state.node_id_origin.width = "12";
-            if (state.node_id_destination) state.node_id_destination.width = "12";
-            if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
-            if (state.vehicle_id) state.vehicle_id.width = "6";
-            if (state.etd) state.etd.width = "6";
-            if (state.eta) state.eta.width = "6";
-            if (state.auto_depart) state.auto_depart.width = "12";
-            
-            switch(mode) {
-                case 'flight':
-                    // Flight mode layout
-                    if (state.flight_number) state.flight_number.width = "6";
-                    if (state.flight_schedule) state.flight_schedule.width = "6";
-                    // Vehicle fields in one row
-                    if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
-                    if (state.vehicle_id) state.vehicle_id.width = "6";
-                    break;
-                    
-                case 'road-with-driver':
-                    // Road mode with driver layout
-                    if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
-                    if (state.vehicle_id) state.vehicle_id.width = "6";
-                    if (state.pic_employee_id) state.pic_employee_id.width = "12";
-                    break;
-                    
-                case 'road-no-driver':
-                    // Road mode without driver layout
-                    if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
-                    if (state.vehicle_id) state.vehicle_id.width = "6";
-                    break;
-            }
-            
-            // Force re-render of form
-            this.$forceUpdate();
         },
         openTraceBagDialog() {
             this.dialogTraceBag = true;
