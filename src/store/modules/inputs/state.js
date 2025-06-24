@@ -4458,7 +4458,7 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      width: "6"
+      width: "12"
     },
     etd: {
       label: "ETD",
