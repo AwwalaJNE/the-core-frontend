@@ -43,7 +43,7 @@
                         :border="true" 
                         :selectedValue="searchBySchedule" 
                         :valueData="searchParamsSchedule" 
-                        @updateValue="updateSearchBy"
+                        @updateSearchBy="updateSearchBy"
                         />
                     </vs-col>
                     <vs-col xs="6" sm="4" lg="4">
@@ -199,6 +199,14 @@ export default {
                 {
                     label: 'Created Date',
                     value: 'create'
+                },
+                {
+                    label: 'ETA',
+                    value: 'eta'
+                },
+                {
+                    label: 'ETD',
+                    value: 'etd'
                 }
             ],
             loadingVehicleMode: false,
@@ -233,11 +241,11 @@ export default {
                 },
                 {
                     label: "Origin",
-                    value: "origin_name",
+                    value: "origin",
                 },
                 {
                     label: "Destination",
-                    value: "destination_name",
+                    value: "destination",
                 },
                 {
                     label: "Vehicle Info",
@@ -274,14 +282,13 @@ export default {
     methods: {
        updateSearchBy(key, val) {
             this.searchBySchedule = val;
-            this.refresh(); // refresh data setelah ganti kolom pencarian
         },
         searchValueHandler(val) {
             this.searchValue = val;
             this.refresh();
         },
         refresh(){
-            this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.dateRange[0], this.dateRange[1], this.searchBy)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.dateRange[0], this.dateRange[1], this.searchBySchedule)
         },
        updateValue(key, val, info){
             switch(key) {
@@ -323,14 +330,11 @@ export default {
                 start_date: startDate,
                 end_date: endDate,
                 search_by: searchColumn,
-                vehicle_type_id: this.filterVehicleTypeBy !== "ALL" ? this.filterVehicleTypeBy : undefined
+                vehicle_type: this.filterVehicleTypeBy !== "ALL" ? this.filterVehicleTypeBy : undefined
             }
             });
 
             const arr = res.data.data || [];
-            arr.forEach(item => {
-            item["is_active"] = item.is_active === "1";
-            });
 
             this.dataTable = arr;
             this.pagination = {
