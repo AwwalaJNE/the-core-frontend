@@ -315,7 +315,12 @@ export default {
                     label: "Status Irregularity",
                     key: "status_irregularity_description",
                     width: "xxxxs",
-                }
+                },
+                {
+                    label: "Status",
+                    key: "is_confirmed",
+                    width: "auto"
+                },
             ],
             loading: false,
             dataItem: {},
@@ -428,6 +433,7 @@ export default {
                     }
 
                     res.data.data.forEach(el => {
+                        el.is_confirmed = el.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         el.surat_muatan = []
                         el.surat_jalan = []
                         
