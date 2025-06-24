@@ -415,4 +415,7 @@ export default {
     // Setting Surat Muatan
     schedule: api + 'schedule',
     sync_flight: api + 'schedule/flight',
+
+    // Airports List
+    airports_list: api + 'schedule/airport-lov',
 }

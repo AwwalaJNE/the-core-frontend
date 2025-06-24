@@ -4366,9 +4366,12 @@ SET_SURAT_MUATAN_SCHEDULE_SHIPMENT_NUMBER_ValueData({ commit }, payload) {
 SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME({ commit }, payload) {
   commit('SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME', payload)
 },
-SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ValueData({ commit }, payload) {
-  commit('SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ValueData', payload)
-},
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ArrData', payload)
+  },
 
 SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER({ commit }, payload) {
   commit('SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER', payload)
@@ -4387,9 +4390,12 @@ SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT_ValueData({ commit }, payload) {
 SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME({ commit }, payload) {
   commit('SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME', payload)
 },
-SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ValueData({ commit }, payload) {
-  commit('SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ValueData', payload)
-},
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ArrData', payload)
+  },
 
 SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER({ commit }, payload) {
   commit('SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER', payload)
@@ -4528,5 +4534,19 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA({ commit }, payload) {
   },
   SET_RECEIVING_LOG_REMARK_ValueData({ commit }, payload) {
     commit('SET_RECEIVING_LOG_REMARK_ValueData', payload)
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
+  commit('SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData', payload)
+},
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID', payload)
+  },
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData', payload)
   },
 }

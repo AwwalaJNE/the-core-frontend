@@ -2812,30 +2812,13 @@ export default {
   },
 
   surat_muatan_schedule: {
-     vehicle_type_id: {
-      label: "Vehicle Type",
-      key: "vehicle_type_id",
+     vehicle_mode_id: {
+      label: "Vehicle Mode",
+      key: "vehicle_mode_id",
       rule:"required",
       typeInput: "select",
       typeData: "String",
-      arrData: [
-         {
-          "label": "AIR",
-          "value": "1"
-        },
-        {
-          "label": "DARAT TRUK",
-          "value": "2"
-        },
-        {
-          "label": "UDARA",
-          "value": "1053"
-        },
-        {
-          "label": "DARAT KA LOG",
-          "value": "1055"
-        }
-      ],
+      arrData: [],
       valueData: null,
       value: ''
     },
@@ -2862,7 +2845,7 @@ export default {
       label: "Origin Name",
       key: "origin_name",
       rule: "required",
-      typeInput: "text",
+      typeInput: "autoComplete",
       typeData: "String",
       valueData: null,
       value: '',
@@ -2892,7 +2875,7 @@ export default {
       label: "Destination Name",
       key: "destination_name",
       rule: "required",
-      typeInput: "text",
+      typeInput: "autoComplete",
       typeData: "String",
       valueData: null,
       value: '',
@@ -2987,7 +2970,7 @@ export default {
       ],
     },
     vehicle_information: {
-      label: "Vehcile Information",
+      label: "Vehicle Information",
       key: "vehicle_information",
       rule: "required",
       typeInput: "text",
