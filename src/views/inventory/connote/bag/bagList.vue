@@ -427,7 +427,7 @@ export default {
             if(isMasterbag !== undefined && isMasterbag !== null) {
                 isMasterbagFilter = isMasterbag === "1" ? "1" : "0";
             }
-            let url = this.URL.bag_inventory + `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}&is_confirmed=${bagStatusInventory}`
+            let url = this.URL.bag_inventory + `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}&is_confirmed=${bagStatusInventoryFilter}`
             
             if (!isArchive) {
                 url += `&is_consolidated=${isMasterbagFilter}`;
