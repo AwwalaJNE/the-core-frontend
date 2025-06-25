@@ -365,8 +365,13 @@ export default {
                     ];
                     dataInformation = [
                         {
+                            key : 'Routing Type',
+                            value: response.routing_type || "-",
+                            width: 6
+                        },
+                        {
                             key : 'Deskripsi barang',
-                            value: response.description,
+                            value: response.description || "-",
                             width: 6
                         },
                         {
