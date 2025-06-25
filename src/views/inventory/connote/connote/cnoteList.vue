@@ -156,6 +156,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Routing Type",
+                    key: "routing_type",
+                    width: "xs"
+                },  
+                {
                     label: "Service",
                     key: "connote_service_code",
                     width: "xs"

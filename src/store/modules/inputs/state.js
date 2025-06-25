@@ -4291,6 +4291,7 @@ export default {
       value: '',
       isDisabled: false,
       width: "5",
+      showIcon: true
     },
     max_weight: {
       label: "Max Weight",
@@ -4398,17 +4399,17 @@ export default {
       value: '',
       width: "12"
     },
-    vehicle_type_id: {
-      label: "Tipe",
-      key: "vehicle_type_id",
-      rule:"",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: "6"
-    },
+    // vehicle_type_id: {
+    //   label: "Tipe",
+    //   key: "vehicle_type_id",
+    //   rule:"",
+    //   typeInput: "select",
+    //   typeData: "String",
+    //   arrData: [],
+    //   valueData: null,
+    //   value: '',
+    //   width: "6"
+    // },
     // manifest_type_id: {
     //   label: "Jenis Kiriman",
     //   key: "manifest_type_id",
@@ -4421,15 +4422,15 @@ export default {
     //   value: ''
     // },
     vehicle_id: {
-      label: "Nama",
+      label: "Vehicle",
       key: "vehicle_id",
       rule:"",
-      typeInput: "select",
+      typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
       valueData: null,
       value: '',
-      width: "6"
+      width: "12"
     },
     pic_employee_id: {
       label: "Driver",
