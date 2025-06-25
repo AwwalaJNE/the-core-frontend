@@ -97,7 +97,11 @@
                                     </vs-col>
                                     <vs-col xs="4" sm="4" lg="4" class="details-row-center">
                                         <label>ROUTING TYPE</label>
-                                        <h4>{{ sort_info.information.routing_type || "-" }}</h4>
+                                        <h4
+                                            :style="getRoutingStyle(sort_info.information.routing_type)"
+                                        >
+                                            {{ sort_info.information.routing_type || "-" }}
+                                        </h4>
                                     </vs-col>
                                     <vs-col xs="4" sm="4" lg="4" class="details-row-left">
                                         <label>SLA DATE</label>
@@ -190,7 +194,11 @@
                                     </vs-col>
                                     <vs-col xs="4" sm="4" lg="4" class="details-row-center">
                                         <label>ROUTING TYPE</label>
-                                        <h4>{{ sort_info.information.routing_type || "-" }}</h4>
+                                        <h4
+                                            :style="getRoutingStyle(sort_info.information.routing_type)"
+                                        >
+                                            {{ sort_info.information.routing_type || "-" }}
+                                        </h4>
                                     </vs-col>
                                     <vs-col xs="4" sm="4" lg="4" class="details-row-left">
                                         <label>SLA DATE</label>
@@ -377,6 +385,30 @@ export default {
         },
     },
     methods: {
+        getRoutingStyle(type) {
+            if (!type) return {};
+
+            const colorMap = {
+                INTRACITY: '#2196F3',       // Blue
+                INTERCITY: '#795548',       // Brown
+                DOMESTIC: '#FF9800',        // Orange
+                INTERNATIONAL: '#9C27B0',   // Purple
+            };
+
+            const bgColor = colorMap[type.toUpperCase()] || '#9E9E9E'; // Default gray
+
+            return {
+                color: '#fff',
+                backgroundColor: bgColor,
+                padding: '8px',
+                borderRadius: '8px',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                fontSize: '14px',
+                minWidth: '120px',
+                placeSelf: 'center'
+            };
+        },
         handleAutoOpenBag(val) {
             this.is_auto_open_bag = val.target.checked;
         },
