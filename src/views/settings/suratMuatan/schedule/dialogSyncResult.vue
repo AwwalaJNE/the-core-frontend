@@ -16,13 +16,14 @@
           :dataColumn="dataColumn"
           :tableLoading="loading"
           :hasAction="false"
-          :hasPagination="true" :isSearchAble="false"
+          :hasPagination="true"
+          :isSearchAble="false"
           :isMultipleSelectWithIndex="true"
-          :selectedData="dataTableSelected"
+          :selectedData="selected"
           :isAllChecked="isAllChecked"
           :onRowClickCallback="() => {}"
           :isAllCheckedCheckCallback="onAllCheckedCallback"
-          @updateSelected2="updateSelected"
+          @updateSelected2="updateSelected2"
           
           :pageSize="pagination.page_size"
           :page="pagination.page"
@@ -94,7 +95,7 @@ export default {
       loading: false,
       dataColumn: [
         { label: "Vehicle", key: "vehicle_name", width: "sm" },
-        { label: "Type", key: "vehicle_type_name", width: "sm" },
+        { label: "Mode", key: "vehicle_mode_name", width: "sm" },
         { label: "SHP No", key: "shipment_number", width: "sm" },
         { label: "Origin", key: "origin_name", width: "sm" },
         { label: "Destination", key: "destination_name", width: "sm" },
@@ -108,7 +109,8 @@ export default {
         page_size: 1,
         page: 1, 
       },
-      dataTableSelected: [], // Mempertahankan seleksi global
+      selected: [],
+      isAllChecked: false,
     };
   },
   computed: {
@@ -118,16 +120,6 @@ export default {
     listenLoading() {
       return this.loading;
     },
-    // Computed property untuk isAllChecked
-    // Ini akan mengindikasikan apakah semua item di halaman SAAT INI terpilih
-    isAllChecked() {
-      if (this.resultData.length === 0) return false;
-      // Memastikan setiap item di `resultData` (data halaman saat ini) ada di `dataTableSelected` (data terpilih global)
-      // Asumsi ada properti unik seperti `shipment_number` atau `id` untuk membandingkan item
-      return this.resultData.every(item =>
-        this.dataTableSelected.some(selectedItem => selectedItem.shipment_number === item.shipment_number)
-      );
-    },
   },
   watch: {
     actived(val) {
@@ -136,11 +128,13 @@ export default {
         this.pagination.limit = 20;
         this.pagination.page_size = 1;
         this.resultData = [];
-        this.dataTableSelected = []; 
+        this.selected = []; 
+        this.isAllChecked = false;
         this.fetchData();
       } else {
         this.resultData = [];
-        this.dataTableSelected = [];
+        this.selected = [];
+        this.isAllChecked = false;
       }
     },
   },
@@ -169,7 +163,19 @@ export default {
           headers: this.Helper.header().headers,
         });
         if (res.data && res.data.data) {
-          this.resultData = res.data.data; 
+          // Ensure vehicle_mode_id is properly set for each item
+          this.resultData = res.data.data.map(item => {
+            // Convert vehicle_type_id to vehicle_mode_id if needed
+            if (!item.vehicle_mode_id && item.vehicle_type_id) {
+              item.vehicle_mode_id = parseInt(item.vehicle_type_id);
+            }
+            // Convert vehicle_type_name to vehicle_mode_name if needed
+            if (!item.vehicle_mode_name && item.vehicle_type_name) {
+              item.vehicle_mode_name = item.vehicle_type_name;
+            }
+            return item;
+          });
+          
           this.pagination = {
             page: res.data.meta.current_page || 1,
             limit: parseInt(res.data.meta.per_page, 10) || 20,
@@ -188,125 +194,73 @@ export default {
         this.loading = false;
       }
     },
-    updateSelected(val) {
-      const currentSelectedSet = new Set(this.dataTableSelected.map(item => item.shipment_number)); 
-
-      this.resultData.forEach(item => {
-        if (currentSelectedSet.has(item.shipment_number)) {
-          currentSelectedSet.delete(item.shipment_number);
-        }
-      });
-
-      val.forEach(item => {
-        currentSelectedSet.add(item.shipment_number);
-      });
-
-      
-      this.dataTableSelected = [];
-      
-      const allPossibleItems = new Map();
-      this.resultData.forEach(item => allPossibleItems.set(item.shipment_number, item));
-      this.dataTableSelected.forEach(item => allPossibleItems.set(item.shipment_number, item)); // Tambahkan juga yang sudah terpilih sebelumnya
-
-      this.dataTableSelected = Array.from(currentSelectedSet).map(shipment_number => {
-        const foundInVal = val.find(item => item.shipment_number === shipment_number);
-        if (foundInVal) return foundInVal;
-
-        const foundInResultData = this.resultData.find(item => item.shipment_number === shipment_number);
-        if (foundInResultData) return foundInResultData;
-
-        const foundInOldSelected = this.dataTableSelected.find(item => item.shipment_number === shipment_number);
-        if (foundInOldSelected) return foundInOldSelected;
-        
-        
-        return { shipment_number: shipment_number }; 
-      }).filter(item => item.shipment_number !== undefined); // Hapus placeholder jika ada
-      
-     
-      const selectedShipmentNumbers = new Set(this.dataTableSelected.map(item => item.shipment_number));
-
-     
-      this.resultData.forEach(item => {
-          if (selectedShipmentNumbers.has(item.shipment_number)) {
-              selectedShipmentNumbers.delete(item.shipment_number);
-          }
-      });
-
-      val.forEach(item => {
-          selectedShipmentNumbers.add(item.shipment_number);
-      });
-
-  
-      const allKnownItemsMap = new Map(); 
-      this.resultData.forEach(item => allKnownItemsMap.set(item.shipment_number, item));
-      this.dataTableSelected.forEach(item => allKnownItemsMap.set(item.shipment_number, item));
-
-      this.dataTableSelected = Array.from(selectedShipmentNumbers).map(shipment_number => {
-          return allKnownItemsMap.get(shipment_number);
-      }).filter(item => item !== undefined); 
-
+    updateSelected2(item) {
+      console.log("Selected item:", item);
     },
     onAllCheckedCallback(val) {
-      if (val) {
-        // Jika "Select All" dicentang, tambahkan semua item dari `resultData` (halaman ini) ke `dataTableSelected`
-        // Gunakan Set sementara untuk menghindari duplikasi dan efisiensi
-        const currentSelectedSet = new Set(this.dataTableSelected.map(item => item.shipment_number));
-        this.resultData.forEach(item => {
-          currentSelectedSet.add(item.shipment_number);
-        });
-        // Konversi kembali Set ke Array, mengambil objek penuh dari map jika perlu
-        this.dataTableSelected = Array.from(currentSelectedSet).map(shipment_number => {
-            return this.resultData.find(item => item.shipment_number === shipment_number) || // Dari halaman saat ini
-                   this.dataTableSelected.find(item => item.shipment_number === shipment_number); // Atau dari selection lama
-        }).filter(item => item !== undefined); 
-
-      } else {
-        // Jika "Select All" di-uncheck, hapus semua item dari `resultData` (halaman ini) dari `dataTableSelected`
-        const newSelected = this.dataTableSelected.filter(selectedItem =>
-          !this.resultData.some(pageItem => pageItem.shipment_number === selectedItem.shipment_number)
-        );
-        this.dataTableSelected = newSelected;
-      }
+      console.log("All checked:", val);
+      this.isAllChecked = val;
     },
     cancel() {
       this.closeDialog();
     },
     async submit() {
-      if (!Array.isArray(this.dataTableSelected) || this.dataTableSelected.length === 0) {
+      if (!Array.isArray(this.selected) || this.selected.length === 0) {
         this.openNotification("danger", "", "Validasi", "Pilih minimal 1 data untuk disubmit");
         return;
       }
 
-      const payload = {
-        data: this.dataTableSelected.map((item) => ({
-          vehicle_id: item.vehicle_id,                                        //Mandatory
-          vehicle_type_id: item.vehicle_type_id,                              //Mandatory
-          shipment_number: item.shipment_number,                              //Mandatory
-          origin_name: item.origin_name,                                      //Mandatory
-          origin_identifier: item.origin_identifier,                  //--Optional--
-          origin_point: item.origin_point,                            //--Optional--
-          destination_name: item.destination_name,                    //Mandatory
-          destination_identifier: item.destination_identifier,        //--Optional--  
-          destination_point: item.destination_point,                  //--Optional--
-          etd: item.etd,                                              //Mandatory
-          etd_timezone: item.etd_timezone,                           //Mandatory
-          eta: item.eta,                                             //Mandatory
-          eta_timezone: item.eta_timezone,                           //Mandatory
-          vehicle_information: item.vehicle_information,            //--Optional--
-          registration_number: item.registration_number,            //--Optional--
-          is_external_source: "Y",
-        }),
-        ),
-      };
-
       try {
+        const payload = {
+          data: this.selected.map((item) => {
+            let vehicle_mode_id = null;
+            if (item.vehicle_mode_id) {
+              vehicle_mode_id = parseInt(item.vehicle_mode_id);
+            } else if (item.vehicle_type_id) {
+              vehicle_mode_id = parseInt(item.vehicle_type_id);
+            }
+            
+            if (isNaN(vehicle_mode_id)) {
+              vehicle_mode_id = null;
+            }
+            
+            let vehicle_id = null;
+            if (item.vehicle_id) {
+              vehicle_id = parseInt(item.vehicle_id);
+              if (isNaN(vehicle_id)) {
+                vehicle_id = null;
+              }
+            }
+            
+            return {
+              vehicle_id: vehicle_id,
+              vehicle_mode_id: vehicle_mode_id,
+              vehicle_mode_name: item.vehicle_mode_name || item.vehicle_type_name || "",
+              shipment_number: item.shipment_number || "",
+              origin_name: item.origin_name || "",
+              origin_identifier: item.origin_identifier || "",
+              origin_point: item.origin_point || "",
+              destination_name: item.destination_name || "",
+              destination_identifier: item.destination_identifier || "",
+              destination_point: item.destination_point || "",
+              etd: item.etd || "",
+              etd_timezone: item.etd_timezone || "",
+              eta: item.eta || "",
+              eta_timezone: item.eta_timezone || "",
+              vehicle_information: item.vehicle_information || "",
+              registration_number: item.registration_number || "",
+              is_external_source: "Y",
+            };
+          }),
+        };
+
         const res = await axios.post(`${this.URL.schedule}?n=${this.listenNodeId}`, payload, this.Helper.header());
         this.openNotification("success", "", "Berhasil", res?.data?.message || "Data berhasil disimpan");
-         // PENTING: Emit event sebelum menutup dialog
         this.$emit('dataSubmitted'); 
         
         this.closeDialog();
       } catch (err) {
+        console.error("Submit error:", err);
         this.openNotification(
           "danger",
           err?.response?.data?.code || "",
