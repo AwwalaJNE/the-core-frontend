@@ -163,7 +163,12 @@ export default {
                     label: "Weight(Kg)",
                     key: "connote_chargeable_weight",
                     width: "auto"
-                },                
+                },      
+                {
+                    label: "Routing Type",
+                    key: "routing_type",
+                    width: "auto"
+                },          
                 {
                     label: "Service",
                     key: "connote_service_code",
