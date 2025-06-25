@@ -287,7 +287,6 @@ export default {
                     })
                     
                     this.dataTable = arr
-                    this.selectedData = arr
                     this.onRowClickSelected(res.data.data)
                 } else {
                     this.dataTable = [];
@@ -492,6 +491,7 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled", false);  
         },
         onRowClickSelected(item) {
+            this.selectedData = [item];
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_SCHEDULE_ID", item?.shipment_schedule_id);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", parseInt(item.vehicle_id));
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD", item?.etd);
