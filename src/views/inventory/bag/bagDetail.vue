@@ -18,7 +18,7 @@
         <template v-if="listenUserRoleName === 'HELPDESK'">
           <vs-button
             @click="approveAction(true)"
-            :disabled="!isAllowed || is_orion"
+            :disabled="!isAllowed"
             style="width: 6rem;"
             v-if="!disabledApprove"
           >
@@ -29,7 +29,7 @@
           <vs-button
             @click="approveAction(false)"
             danger
-            :disabled="!isAllowed || is_orion"
+            :disabled="!isAllowed"
             style="width: 6rem;"
             v-if="disabledApprove"
           >
@@ -41,7 +41,7 @@
         <template v-else>
           <vs-button
             @click="approveAction(true)"
-            :disabled="disabledApprove || is_orion"
+            :disabled="disabledApprove"
             style="width: 6rem;"
           >
             <span>
@@ -59,7 +59,7 @@
       </div>
     </vs-row>
 
-    <template v-if="!disabledApprove && !is_orion && !loading && !is_masterbag">
+    <template v-if="!disabledApprove && !loading && !is_masterbag">
       <div class="center in-get-bag">
         <vs-row class="mb-2 mt-2" align="center">
           <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
@@ -139,7 +139,7 @@
     <section class="bagging">
       <vs-row justify="space-between">
         <vs-col xs="12" sm="2" lg="2">
-          <template v-if="!disabledApprove && !is_orion && !loading">
+          <template v-if="!disabledApprove && !loading">
             <!-- <div v-if="radio_option === 'connote'" class="center in-get-bag">
               <vs-input 
                 border 
@@ -294,7 +294,7 @@
                          placeholder="Weight"
                          v-on:keyup.enter="updateValue"
                          ref="formInputBagging" icon-after
-                         :disabled="(disabledApprove || is_orion) && !loading"
+                         :disabled="(disabledApprove) && !loading"
                          >
                  <template #icon>Kg</template>
                </vs-input>
