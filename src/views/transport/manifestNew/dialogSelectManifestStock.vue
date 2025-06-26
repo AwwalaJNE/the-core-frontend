@@ -4,7 +4,12 @@
     <template v-slot:content>
       <vs-row class="mb-4" align="center">
         <vs-col w="10">
-          <vs-input v-model="tempSearch" placeholder="Manifest Number" block />
+          <vs-input
+            v-model="tempSearch"
+            placeholder="Manifest Number"
+            block
+            @keyup.enter="handleSearch"
+          />
         </vs-col>
         <vs-col w="2">
           <vs-button block @click="handleSearch">
