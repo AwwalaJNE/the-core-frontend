@@ -268,10 +268,11 @@ const Master = {
             return new Date(date).defaultTime()
         },
         checkAuth(res) {
+            // This method is kept for backward compatibility and manual auth checks
             if(res.status === 401) {
                 localStorage.clear();
                 this.$router.push('/login')
-            } else if(res.data.reason) {
+            } else if(res.data && res.data.reason) {
                 let reason = res.data.reason.toLowerCase()
                 switch(true) {
                     case reason.includes("unauthenticated"):
@@ -281,11 +282,10 @@ const Master = {
                     default:
                         // code block
                 }
+            } else if(res.data && res.data.type === "AuthenticationException") {
+                localStorage.clear();
+                this.$router.push('/login')
             }
-            // if(res == 401) {
-            //     localStorage.clear();
-            //     this.$router.go()
-            // }
         },
         async checkAuthRequest() {
             // 

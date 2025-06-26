@@ -11,9 +11,44 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import axios from 'axios'
 
-// import VueMoment from 'vue-moment'
-// import moment from 'moment-timezone'
+axios.interceptors.response.use(
+  (response) => {
+    // Return successful responses as-is
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      const status = error.response.status;
+      const responseData = error.response.data;
+      
+      if (status === 401) {
+        localStorage.clear();
+        router.push('/login');
+        return Promise.reject(error);
+      }
+      
+      if (responseData && responseData.reason) {
+        const reason = responseData.reason.toLowerCase();
+        if (reason.includes("unauthenticated")) {
+          localStorage.clear();
+          router.push('/login');
+          return Promise.reject(error);
+        }
+      }
+      
+      if (responseData && responseData.type === "AuthenticationException") {
+        localStorage.clear();
+        router.push('/login');
+        return Promise.reject(error);
+      }
+    }
+    
+    // Return other errors as-is
+    return Promise.reject(error);
+  }
+);
 
 locale.use(lang)
 
