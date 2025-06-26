@@ -246,9 +246,11 @@ export default {
             switch(this.navActive) {
                 case "Stock":
                     this.dialogActiveStock = false
+                    this.clearSearch();
                     break;
                 case "k-SCHEDULE":
                     this.dialogActiveSchedule = false
+                    this.clearSearch();
                     break;
                 default:
             }

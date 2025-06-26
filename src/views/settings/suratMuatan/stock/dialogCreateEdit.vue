@@ -52,6 +52,12 @@
                         :onRowClickSelected="onRowClickSelected"
                         :isSingleSelect="true"
                         :selectedData="selectedData"
+                        :hasPagination="true"
+                        :pageSize="pagination.page_size"
+                        :page="pagination.page"
+                        :limit="pagination.limit"
+                        @actionLimit="actionLimit"
+                        @actionPagination="actionPagination"
                     />
                 </div>
 
@@ -216,7 +222,7 @@ export default {
                 },
             ],
             pagination: {
-                limit: 20,
+                limit: 3,
                 page_size: 1,
                 page: 1
             },
@@ -227,7 +233,6 @@ export default {
     computed: {
         listenActive(){
             if (this.active) {
-                this.getEmployeeDriver();
                 this.getVehicle();
             }
             return this.active;
@@ -269,6 +274,15 @@ export default {
             } else {
                 this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.dateRange?.[0] || null, this.dateRange?.[1] || null, this.searchBy);
             }
+        },
+        actionLimit(val){
+            this.pagination.limit = val
+            this.pagination.page = 1
+            this.refresh()
+        },
+        actionPagination(val) {
+            this.pagination.page = val
+            this.refresh()
         },
         async getDataTableByScheduleId(schedule_id) {
             this.loadingTableData = true;
@@ -344,33 +358,6 @@ export default {
 
             val.node_id_origin = val.node_name_origin;
             val.node_id_destination = val.node_name_destination;
-        },
-        async getEmployeeDriver() {
-            this.loading = true;
-
-            try {
-                const res = await axios.get(`${this.URL.courier_delivery}/list?n=${this.listenNodeId}`, this.Helper.header());
-
-                if (res.data.data.length > 0) {
-                    let arr = res.data.data;
-
-                    arr = arr.map(item => ({
-                        label: item.employee_name + ' ( ' + item.employee_code + ' ) ',
-                        value: item.employee_id,
-                        item: item
-                    }));
-
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID_ArrData", arr)
-                } else {
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID", "");
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID_ArrData", []);
-                    this.openNotification('warn', null, 'Driver data is empty!', ' Please create a new driver')
-                }
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loading = false;
-            }
         },
         querySearch(queryString, cb){
             axios.get(this.URL.node +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
@@ -492,7 +479,6 @@ export default {
         },
         onRowClickSelected(item) {
             this.selectedData = [item];
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_SCHEDULE_ID", item?.shipment_schedule_id);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", parseInt(item.vehicle_id));
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD", item?.etd);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE", item?.etd_timezone);
@@ -524,6 +510,7 @@ export default {
   margin: 10px 0;
 }
 .parent-container {
+  padding-top: 30px;
   display: flex;
   justify-content: flex-end;
 }

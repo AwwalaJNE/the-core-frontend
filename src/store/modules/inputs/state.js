@@ -2671,17 +2671,6 @@ export default {
       value: '',
       width: '6'
     },
-    schedule_id: {
-      label: "Schedule",
-      key: "schedule_id",
-      rule: "",
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: '',
-      width: '6',
-      isDisabled: true,
-    },
     vehicle_id: {
       label: "Vehicle*",
       key: "vehicle_id",
@@ -2693,17 +2682,6 @@ export default {
       value: '',
       width: '6',
       isDisabled: false,
-    },
-    employee_driver_id: {
-      label: "Driver",
-      key: "employee_driver_id",
-      rule:"",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: '6'
     },
     node_id_origin: {
       label: "Origin*",
