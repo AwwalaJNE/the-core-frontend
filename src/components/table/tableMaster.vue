@@ -1489,7 +1489,7 @@
               Export
             </vs-button>
         </vs-col>
-        <vs-col w="8">
+        <vs-col w="10">
           <pagination-master
             :page="pagination.page"
             :limit="pagination.limit"
