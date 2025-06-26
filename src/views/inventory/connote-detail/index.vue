@@ -114,6 +114,16 @@
                             </vs-col>
                           </vs-row>
                         </template>
+                        <template v-if="navActive === 'k-RUNSHEET-HISTORY'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                <runsheet-history 
+                                    :connoteNumber="connote_number"
+                                    :koliNumber="koli_number"
+                                />
+                            </vs-col>
+                          </vs-row>
+                        </template>
                     </div>
                 </vs-col>
                 
@@ -133,6 +143,7 @@ import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectI
 import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
 import connoteCustomerView from "@/views/inventory/connote-detail/connote/connoteCustomerView.vue";
 import claimAndBurden from "@/views/inventory/connote-detail/connote/claimBurden.vue";
+import RunsheetHistory from "@/views/inventory/connote-detail/connote/runsheetHistory.vue";
 
 
 export default {
@@ -143,6 +154,7 @@ export default {
         "breadcrumb": Breadcrumb,
         "connote-customer-view": connoteCustomerView,
         "claim-and-burden": claimAndBurden,
+        "runsheet-history": RunsheetHistory,
         "search-input": SearchInput,
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
@@ -176,6 +188,11 @@ export default {
                     label: "CLAIM CHARGE",
                     key: "k-CALIM-BURDEN",
                     title: "Claim and Charge"
+                },
+                {
+                    label: "RUNSHEET HISTORY",
+                    key: "k-RUNSHEET-HISTORY",
+                    title: "Runsheet History"
                 }
             ],
             navActive: "k-INFO",
