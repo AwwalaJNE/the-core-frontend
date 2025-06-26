@@ -525,7 +525,16 @@ const Master = {
             
             const parts = orion_number.split('/');
             return parts[1] ?? null;
-        }          
+        },
+        formatElapsedTime(rawMinutes) {
+            const totalMinutes = Math.round(rawMinutes);
+
+            const days = Math.floor(totalMinutes / 1440);
+            const hours = Math.floor((totalMinutes % 1440) / 60);
+            const minutes = totalMinutes % 60;
+
+            return `${days} day(s) ${hours} hour(s) ${minutes} minute(s)`;
+        }
     },
     mounted() {
         this.checkIfMobile();

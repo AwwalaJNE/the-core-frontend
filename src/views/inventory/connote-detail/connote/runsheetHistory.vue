@@ -54,32 +54,32 @@ export default {
                 {
                     label: "Courier Code",
                     key: "courier_code",
-                    width: "sm"
+                    width: "xs"
                 },
                 {
                     label: "Courier Name",
                     key: "courier_name",
-                    width: "sm"
+                    width: "xs"
                 },
                 {
                     label: "Elapsed Time",
-                    key: "activity_code",
+                    key: "elapsed_time",
                     width: "md"
                 },
                 {
                     label: "Status POD",
                     key: "status",
-                    width: "xs"
+                    width: "xxxs"
                 },
                 {
                     label: "Receiver Name",
                     key: "receiver_name",
-                    width: "sm"
+                    width: "xs"
                 },
                 {
                     label: "Remarks",
                     key: "remarks",
-                    width: "sm"
+                    width: "xs"
                 },
                 
             ]
@@ -92,11 +92,9 @@ export default {
                 const res = await axios.get(`${this.URL.delivery}/history/${this.listenKoliNumber}?n=${this.listenNodeId}`, this.Helper.header());
 
                 let arr = res.data.data;
-                arr.map((item, index) => {
-                    item["counter"] = index + 1;
-                    item["node_name"] = item["node_name"];
-                    item["user_name"] = item["employee_name"] ?? item["user_name"];
-                })
+                arr.map(item => {
+                    item['elapsed_time'] = this.formatElapsedTime(item.elapsed_time_minutes)
+                });
 
                 this.dataTable = arr;
             } catch (err) {
