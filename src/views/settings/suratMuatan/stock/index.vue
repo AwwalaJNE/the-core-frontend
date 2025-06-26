@@ -161,11 +161,6 @@ export default {
                     width: "sm"
                 },
                 {
-                    label: "Driver",
-                    key: "employee_driver_name",
-                    width: "sm"
-                },
-                {
                     label: "ETD",
                     key: "etd",
                     width: "sm"
