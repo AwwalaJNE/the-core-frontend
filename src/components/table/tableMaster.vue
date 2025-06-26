@@ -498,6 +498,22 @@
                       </template>
                     </template>
                     <template
+                      v-else-if="
+                        column.typeInput !== undefined &&
+                          column.typeInput
+                            .toLowerCase()
+                            .includes('button_text')
+                      "
+                    >
+                    <span 
+                      v-if="item[column.key]" 
+                      style="cursor: pointer; color: rgb(53, 92, 255);"
+                      @click="actionPopup2(item)"
+                    >
+                      {{ item[column.key] }}
+                    </span>
+                    </template>
+                    <template
                       v-if="
                         column.typeInput !== undefined &&
                           column.typeInput.toLowerCase() === 'multi-select-by'
@@ -1777,6 +1793,9 @@ export default {
     },
     actionPopup(val, key) {
       this.$emit("actionPopup", val, key);
+    },
+    actionPopup2(item) {
+      this.$emit("actionPopup2", item);
     },
     actionCollect(val) {
       this.$emit("actionCollect", val);
