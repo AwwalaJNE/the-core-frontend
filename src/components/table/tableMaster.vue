@@ -87,6 +87,11 @@
             </vs-th>
           </template>
 
+          <template v-if="isActionFirst == true">
+              <vs-th class="action">
+                Action
+              </vs-th>
+            </template>
           <template v-if="listenColumn.length > 0">
             <template v-if="hasId == true">
               <vs-th class="automation-id" v-bind:data-kt-table="'ID'">
@@ -185,6 +190,24 @@
             :is-selected="!!selected.includes(item)"
             @click="onRowClick($event, item)"
           >
+            <template v-if="isActionFirst == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      size="small"
+                      flat
+                      :active="true"
+                      type="submit"
+                      @click="actionSelect(item)"
+                    >
+                      <span>Select</span>
+                    </vs-button>
+                  </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
             <template v-if="listenIsMultipleSelect">
               <vs-td checkbox class="xs">
                 <vs-checkbox
@@ -1567,6 +1590,7 @@ export default {
     hasLinkedCustomValidation: Array,
     hasLinkedChild: Array,
     hasId: Boolean,
+    isActionFirst: Boolean,
     editOnly: Boolean,
     removeOnly: Boolean,
     searchPreviewAction: Boolean,
@@ -1806,6 +1830,9 @@ export default {
     actionRemove(val) {
       this.$emit("actionRemove", val);
     },
+    actionSelect(val) {
+      this.$emit("actionSelect", val);
+    },
     actionSearchPreview(val) {
       this.$emit("actionSearchPreview", val);
     },
@@ -2025,7 +2052,7 @@ export default {
       &.vs-table__th {
         position: relative;
         width: 280px !important;
-        min-width: 280px;
+        min-width: 140px;
         max-width: 300px;
         .vs-table__th__content {
           float: right;
