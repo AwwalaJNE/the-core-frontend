@@ -228,6 +228,7 @@ export default {
             },
             edit_data: {},
             selectedData: [],
+            schedule_id: "",
         }
     },
     computed: {
@@ -251,7 +252,10 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.getDataDetail(val);
-                this.getDataTableByScheduleId(val.schedule_id);
+
+                if (val.schedule_id) {
+                    this.getDataTableByScheduleId(val.schedule_id);
+                }
             }
         },
         query: function(val, old) {
@@ -288,7 +292,7 @@ export default {
             this.loadingTableData = true;
 
             try {
-                const res = await axios.get(`${this.URL.schedule}/9bb2f97d-95b6-4781-9696-2382175bf372?n=${this.listenNodeId}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.schedule}/${schedule_id}?n=${this.listenNodeId}`, this.Helper.header());
 
                 if (res.data.data) {
                     let arr = [res.data.data];
@@ -387,6 +391,7 @@ export default {
             }
 
             formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
+            formWithoutId.schedule_id = this.schedule_id;
 
             this.form = formWithoutId;
             this.handleSubmitData();
@@ -467,6 +472,7 @@ export default {
             this.$refs.searchInput.clear()
         },
         handleClearAll() {
+            this.schedule_id = "";
             this.selectedData = [];
             this.$refs.formDataController.handleEmptyForm();
             this.form = {};
@@ -479,6 +485,7 @@ export default {
         },
         onRowClickSelected(item) {
             this.selectedData = [item];
+            this.schedule_id = item.shipment_schedule_id;
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", parseInt(item.vehicle_id));
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD", item?.etd);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE", item?.etd_timezone);

@@ -1974,6 +1974,9 @@ export default {
   SET_SURAT_MUATAN_NODE_ID_ORIGIN_FLAG({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_FLAG', payload)
   },
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_visible', payload)
+  },
   // type select perlu data array
   SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData', payload)

@@ -1,5 +1,5 @@
 <template>
-  <dialog-master :actived="active" :closeDialog="close" width="lg">
+  <dialog-master :actived="active" :closeDialog="close" width="lg" :loading="listenLoading">
     <template v-slot:header>Select Manifest Stock</template>
     <template v-slot:content>
       <vs-row class="mb-4" align="center">
@@ -67,19 +67,22 @@ export default {
       },
       datacolumn: [
         { label: "Vehicle Mode", key: "vehicle_mode_name", width: 'xs' },
-        { label: "Vehicle Name", key: "vehicle_name", width: 'sm' },
+        { label: "Vehicle Name", key: "vehicle_name", width: 'xs' },
         { label: "Manifest Number", key: "manifest_number", width: 'sm' },
+        { label: "Shipment Number", key: "shipment_number", width: 'xxs' },
         { label: "Origin", key: "node_code_origin", width: 'xxs' },
         { label: "Destination", key: "node_code_destination", width: 'xxs' },
-        { label: "Driver", key: "employee_driver_name", width: 'xxs' },
-        { label: "ETD", key: "etd", width: 'sm' },
-        { label: "ETA", key: "eta", width: 'sm' },
+        { label: "ETD", key: "etd_formatted", width: 'sm' },
+        { label: "ETA", key: "eta_formatted", width: 'sm' },
       ]
     }
   },
   computed: {
     listenActive() {
       return this.active
+    },
+    listenLoading() {
+      return this.loading;
     }
   },
   methods: {
@@ -96,8 +99,8 @@ export default {
           ...item,
           is_active: item.is_active === '1',
           schedule_id_value: !!item.schedule_id,
-          etd: `${item?.etd} ${item?.etd_timezone}`,
-          eta: `${item?.eta} ${item?.eta_timezone}`,
+          etd_formatted: `${item?.etd} ${item?.etd_timezone}`,
+          eta_formatted: `${item?.eta} ${item?.eta_timezone}`,
         }))
 
         this.dataTable = arr
