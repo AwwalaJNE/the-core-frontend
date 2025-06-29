@@ -248,13 +248,6 @@ export default {
                 page_size: 1,
                 page: 1,
             },
-            vehicle_mode_id: "",
-            vehicle_type_id: "",
-            node_id_origin: "",
-            vehicle_id: "",
-            manifest_method_id: "",
-            flight_number: "",
-            flight_schedule: "",
             autoComplateUrl: "",
             itterateUrlAutoComplete: "",
             itterateFlagAutoComplete: "node_name",
@@ -268,18 +261,9 @@ export default {
             master_form: {},
             dataByApi: {},
             loadingSuratMuatan: false,
-            isMissroute: false,
             dialogTraceBag: false,
             showSelectStockModal: false,
             selectedBagNumber: "",
-            selectedManifest: null,
-            vehicleTypeIds: [],
-            selectedDestNodeId: null,
-            selectedDestNodeName: null,
-            selectedOriginNodeId: null,
-            selectedOriginNodeName: null,
-            selectedVehicleId: null,
-            selectedVehicleName: null,
             vehicle_type_id: ""
         };
     },
@@ -644,6 +628,7 @@ export default {
         handleClearForm() {
             this.$refs.formSuratMuatanController.handleClearForm();
             this.vehicle_type_id = "";
+            this.node_id_origin = "";
             this.form = {};
             this.item_number = "";
             this.manifest_number = "";
