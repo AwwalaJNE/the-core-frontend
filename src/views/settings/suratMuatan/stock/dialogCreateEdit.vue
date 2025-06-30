@@ -355,16 +355,14 @@ export default {
             this.edit_data = val;
             this.id = val.id;
 
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN", val.node_id_origin.toString());
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION", val.node_id_destination.toString());
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ValueData", val.node_id_origin.toString());
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ValueData", val.node_id_destination.toString());
 
-            val.node_id_origin = val.node_name_origin;
-            val.node_id_destination = val.node_name_destination;
+            val.node_id_origin = val.node_name_origin + " (" + val.node_code_origin + ")";
+            val.node_id_destination = val.node_name_destination + " (" + val.node_code_destination + ")";
         },
         querySearch(queryString, cb){
-            axios.get(this.URL.node +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
+            axios.get(this.URL.node_list +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
                 let suggestions = [];
