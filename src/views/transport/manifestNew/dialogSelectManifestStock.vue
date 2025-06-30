@@ -1,10 +1,15 @@
 <template>
-  <dialog-master :actived="active" :closeDialog="close" width="5xl">
+  <dialog-master :actived="active" :closeDialog="close" width="lg" :loading="listenLoading">
     <template v-slot:header>Select Manifest Stock</template>
     <template v-slot:content>
       <vs-row class="mb-4" align="center">
-        <vs-col w="8">
-          <vs-input v-model="tempSearch" placeholder="Manifest Number" block />
+        <vs-col w="10">
+          <vs-input
+            v-model="tempSearch"
+            placeholder="Manifest Number"
+            block
+            @keyup.enter="handleSearch"
+          />
         </vs-col>
         <vs-col w="2">
           <vs-button block @click="handleSearch">
@@ -22,11 +27,10 @@
         :pageSize="pagination.page_size"
         :page="pagination.page"
         :limit="pagination.limit"
+        :isActionFirst="true"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
-        :customAction="true"
-        :customActionList="customActionList"
-        @actionUpdate="selectItem"
+        @actionSelect="actionSelect"
       />
     </template>
   </dialog-master>
@@ -62,23 +66,23 @@ export default {
         page_size: 1
       },
       datacolumn: [
-        { label: "Vehicle Mode", key: "vehicle_mode_name" },
-        { label: "Vehicle Name", key: "vehicle_name" },
-        { label: "Manifest Number", key: "manifest_number" },
-        { label: "Origin", key: "node_code_origin" },
-        { label: "Destination", key: "node_code_destination" },
-        { label: "Driver", key: "employee_driver_name" },
-        { label: "ETD", key: "etd" },
-        { label: "ETA", key: "eta" }
-      ],
-      customActionList: [
-        { label: 'Select', key: 'select', attribute: '' }
+        { label: "Vehicle Mode", key: "vehicle_mode_name", width: 'xs' },
+        { label: "Vehicle Name", key: "vehicle_name", width: 'xs' },
+        { label: "Manifest Number", key: "manifest_number", width: 'sm' },
+        { label: "Shipment Number", key: "shipment_number", width: 'xxs' },
+        { label: "Origin", key: "node_code_origin", width: 'xxs' },
+        { label: "Destination", key: "node_code_destination", width: 'xxs' },
+        { label: "ETD", key: "etd_formatted", width: 'sm' },
+        { label: "ETA", key: "eta_formatted", width: 'sm' },
       ]
     }
   },
   computed: {
     listenActive() {
       return this.active
+    },
+    listenLoading() {
+      return this.loading;
     }
   },
   methods: {
@@ -95,8 +99,8 @@ export default {
           ...item,
           is_active: item.is_active === '1',
           schedule_id_value: !!item.schedule_id,
-          etd: `${item?.etd} ${item?.etd_timezone}`,
-          eta: `${item?.eta} ${item?.eta_timezone}`,
+          etd_formatted: `${item?.etd} ${item?.etd_timezone}`,
+          eta_formatted: `${item?.eta} ${item?.eta_timezone}`,
         }))
 
         this.dataTable = arr
@@ -125,7 +129,7 @@ export default {
     refresh(){
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
     },
-    selectItem(item) {
+    actionSelect(item) {
       this.$emit('selectManifest', item)
       this.close()
     }
@@ -156,6 +160,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-</style>

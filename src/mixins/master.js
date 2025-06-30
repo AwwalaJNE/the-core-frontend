@@ -534,6 +534,9 @@ const Master = {
             const minutes = totalMinutes % 60;
 
             return `${days} day(s) ${hours} hour(s) ${minutes} minute(s)`;
+        },
+        formatElapsedDay(days) {
+            return `${days} day(s)`;
         }
     },
     mounted() {
