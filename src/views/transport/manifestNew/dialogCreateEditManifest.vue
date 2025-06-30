@@ -903,11 +903,9 @@ export default {
         },
         onChangeCustom(type, val, info = {}) {
             const updateMasterForm = (key, value) => {
-                if (this.is_approve !== undefined) {
-                    if (this.manifest_number && this.master_form?.[key] !== value) {
-                        this.master_form = { ...this.master_form, [key]: value };
-                        this.updateSuratMuatan();
-                    }   
+                if (this.manifest_number && this.master_form?.[key] !== value) {
+                    this.master_form = { ...this.master_form, [key]: value };
+                    this.updateSuratMuatan();
                 }
             };
 
@@ -918,9 +916,6 @@ export default {
             switch (type) {
                 case "manifest_number":
                     updateMasterForm("manifest_number", val);
-                    break;
-                case "manifest_prefix":
-                    updateMasterForm("manifest_prefix", val);
                     break;
                 case "max_weight":
                     updateMasterForm("max_weight", val);
