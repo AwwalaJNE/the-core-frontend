@@ -362,7 +362,6 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", val.vehicle_prefix_name);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", val.manifest_number);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID", parseInt(val.vehicle_mode_id));
-            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID", parseInt(val?.employee_driver_id));
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", val.node_name_origin);
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", val.node_name_destination);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", val.vehicle_name);
@@ -376,7 +375,25 @@ export default {
             if (val.vehicle_mode_id === '1') {
                 this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER", val.shipment_number);
                 this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE", val.etd);
+
+                this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_isDisabled", true);
+                if (val.shipment_number) {
+                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_isDisabled", true);
+                }  
+            } else if (val.vehicle_mode_id === '2') {
+                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID", parseInt(val?.employee_driver_id));
+
+                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled", true);
             }
+
+            // Notes: Disabled field for SM Stock
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", true);
         },
         openSelectStockModal() {
             this.showSelectStockModal = true;
@@ -993,6 +1010,18 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
             this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
+
+            // Notes: Disabled field for SM Stock
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", false);
         },
         handleEta(dateTime, amount) {
             if (dateTime && amount) {
