@@ -447,8 +447,8 @@ export default {
             };
 
             val.manifest_prefix = val?.manifest_method?.prefix_name;
-            val.node_id_destination = val?.destination?.node_name;
-            val.node_id_origin = val?.origin?.node_name;
+            val.node_id_origin = val?.origin?.node_name + " (" + val?.origin?.node_code + ")";
+            val.node_id_destination = val?.destination?.node_name + " (" + val?.destination?.node_code + ")";
             val.vehicle_id = val?.vehicle?.vehicle_name;
             val.pic_employee_id = val?.employee_pic?.employee_name;
             
@@ -975,7 +975,7 @@ export default {
         originNode(){
             if (this.listenNode.length > 0) {
                 this.node_id_origin = this.listenCurrentNode.node_id;
-                this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN', this.listenCurrentNode.node_name);
+                this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN', this.listenCurrentNode.node_name + " (" + this.listenCurrentNode.node_code + ")");
             }
         },
         resetForm() {
