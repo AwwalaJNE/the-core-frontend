@@ -323,7 +323,6 @@ export default {
                 
                 this.getDataVehicleMode();
                 this.originNode()
-                this.getDataEmployee();
             }
         }
     },
@@ -377,13 +376,17 @@ export default {
                 this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE", val.etd);
 
                 this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_isDisabled", true);
-                if (val.shipment_number) {
+                if (val?.shipment_number) {
                     this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_isDisabled", true);
                 }  
             } else if (val.vehicle_mode_id === '2') {
+                this.getDataEmployee();
+                
                 this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID", parseInt(val?.employee_driver_id));
 
-                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled", true);
+                if (val?.employee_driver_id) {
+                    this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled", true);
+                }
             }
 
             // Notes: Disabled field for SM Stock
@@ -938,6 +941,7 @@ export default {
                     }
                     updateMasterForm("manifest_method_id", val);
                     updateMasterForm("vehicle_mode_id", val);
+                    if (val === 2) this.getDataEmployee();
                     break;
                 case "flight_number":
                     updateMasterForm("flight_number", val);
