@@ -361,8 +361,8 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", val.vehicle_prefix_name);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", val.manifest_number);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID", parseInt(val.vehicle_mode_id));
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", val.node_name_origin);
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", val.node_name_destination);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", val?.node_name_origin + " (" + val?.node_code_origin + ")");
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", val?.node_name_destination + " (" + val?.node_code_destination + ")");
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", val.vehicle_name);
             this.$store.dispatch("SET_SURAT_MUATAN_ETD", val.etd);
             this.$store.dispatch("SET_SURAT_MUATAN_ETA", val.eta);
