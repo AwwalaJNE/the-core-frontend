@@ -112,6 +112,7 @@
                                 <vs-col w="8">
                                     <daterange-filter 
                                         size="small" 
+                                        :valueData="tempDate"
                                         @searchDate="searchDate" 
                                     />
                                 </vs-col>

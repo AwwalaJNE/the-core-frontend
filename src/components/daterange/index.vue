@@ -39,6 +39,7 @@ export default {
       type: String,
       default: () => "default",
     },
+    valueData: Array
   },
   data() {
     return {
@@ -73,7 +74,7 @@ export default {
           },
         ],
       },
-      value: [],
+      value: this.valueData || [],
     };
   },
   methods: {
