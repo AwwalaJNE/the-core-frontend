@@ -1961,6 +1961,9 @@ export default {
   SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ArrData', payload)
   },
+  SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled', payload)
+  },
 
   SET_SURAT_MUATAN_NODE_ID_ORIGIN({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN', payload)
@@ -1973,6 +1976,12 @@ export default {
   },
   SET_SURAT_MUATAN_NODE_ID_ORIGIN_FLAG({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_FLAG', payload)
+  },
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_visible', payload)
+  },
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled', payload)
   },
   // type select perlu data array
   SET_SURAT_MUATAN_NODE_ID_ORIGIN_ArrData({ commit }, payload) {
@@ -2035,6 +2044,9 @@ export default {
   SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible({ commit }, payload) {
     commit('SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible', payload)
   },
+  SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled', payload)
+  },
 
   SET_SURAT_MUATAN_VEHICLE_TYPE_ID({ commit }, payload) {
     commit('SET_SURAT_MUATAN_VEHICLE_TYPE_ID', payload)
@@ -2073,6 +2085,9 @@ export default {
   SET_SURAT_MUATAN_VEHICLE_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_VEHICLE_ID_ArrData', payload)
   },
+  SET_SURAT_MUATAN_VEHICLE_ID_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ID_isDisabled', payload)
+  },
 
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID({ commit }, payload) {
     commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID', payload)
@@ -2089,6 +2104,9 @@ export default {
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData', payload)
   },
+  SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled', payload)
+  },
 
   SET_SURAT_MUATAN_FLIGHT_NUMBER({ commit }, payload) {
     commit('SET_SURAT_MUATAN_FLIGHT_NUMBER', payload)
@@ -2100,6 +2118,9 @@ export default {
 
   SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_FLIGHT_NUMBER_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_FLIGHT_NUMBER_isDisabled', payload)
   },
 
   SET_SURAT_MUATAN_FLIGHT_SCHEDULE({ commit }, payload) {
@@ -2114,11 +2135,18 @@ export default {
     commit('SET_SURAT_MUATAN_FLIGHT_SCHEDULE_ValueData', payload)
   },
 
+  SET_SURAT_MUATAN_FLIGHT_SCHEDULE_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_FLIGHT_SCHEDULE_isDisabled', payload)
+  },
+
   SET_SURAT_MUATAN_ETD({ commit }, payload) {
     commit('SET_SURAT_MUATAN_ETD', payload)
   },
   SET_SURAT_MUATAN_ETD_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_ETD_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_ETD_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_ETD_isDisabled', payload)
   },
 
   SET_SURAT_MUATAN_ETA({ commit }, payload) {
@@ -2126,6 +2154,9 @@ export default {
   },
   SET_SURAT_MUATAN_ETA_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_ETA_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_ETA_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_ETA_isDisabled', payload)
   },
 
 
@@ -2138,6 +2169,19 @@ export default {
   // type select perlu data array
   SET_SURAT_MUATAN_AUTO_DEPART_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_AUTO_DEPART_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_MANIFEST_PREFIX({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_PREFIX', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_value({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_PREFIX_value', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_PREFIX_isDisabled', payload)
   },
 
   /* End Suart Muatan */
@@ -3220,6 +3264,7 @@ export default {
     commit('SET_SLA_NODE_TO_NODE_B_SLA_ArrValueData', payload)
   },
   //====== END SLA NODE TO NODE A ======//
+
 
 
   // ===== START OF SLA BAG ===== //
@@ -4352,9 +4397,12 @@ SET_SURAT_MUATAN_SCHEDULE_SHIPMENT_NUMBER_ValueData({ commit }, payload) {
 SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME({ commit }, payload) {
   commit('SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME', payload)
 },
-SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ValueData({ commit }, payload) {
-  commit('SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ValueData', payload)
-},
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ArrData', payload)
+  },
 
 SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER({ commit }, payload) {
   commit('SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER', payload)
@@ -4373,9 +4421,12 @@ SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT_ValueData({ commit }, payload) {
 SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME({ commit }, payload) {
   commit('SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME', payload)
 },
-SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ValueData({ commit }, payload) {
-  commit('SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ValueData', payload)
-},
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ArrData', payload)
+  },
 
 SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER({ commit }, payload) {
   commit('SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER', payload)
@@ -4514,5 +4565,19 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA({ commit }, payload) {
   },
   SET_RECEIVING_LOG_REMARK_ValueData({ commit }, payload) {
     commit('SET_RECEIVING_LOG_REMARK_ValueData', payload)
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
+  commit('SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData', payload)
+},
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID', payload)
+  },
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData', payload)
   },
 }

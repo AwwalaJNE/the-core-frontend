@@ -871,6 +871,10 @@ export default {
                 item.employee_name = data.employee_name;
                 item.employee_code = data.employee_code;
                 item.warning_koli_record_id = item?.warning_koli_record_id
+
+                if (item?.days_elapsed != null) {
+                    item.days_elapsed = this.formatElapsedDay(item.days_elapsed);
+                } 
             });
 
             return delivery;

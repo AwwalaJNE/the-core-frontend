@@ -87,6 +87,11 @@
             </vs-th>
           </template>
 
+          <template v-if="isActionFirst == true">
+              <vs-th class="action">
+                Action
+              </vs-th>
+            </template>
           <template v-if="listenColumn.length > 0">
             <template v-if="hasId == true">
               <vs-th class="automation-id" v-bind:data-kt-table="'ID'">
@@ -185,6 +190,24 @@
             :is-selected="!!selected.includes(item)"
             @click="onRowClick($event, item)"
           >
+            <template v-if="isActionFirst == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      size="small"
+                      flat
+                      :active="true"
+                      type="submit"
+                      @click="actionSelect(item)"
+                    >
+                      <span>Select</span>
+                    </vs-button>
+                  </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
             <template v-if="listenIsMultipleSelect">
               <vs-td checkbox class="xs">
                 <vs-checkbox
@@ -498,6 +521,22 @@
                       </template>
                     </template>
                     <template
+                      v-else-if="
+                        column.typeInput !== undefined &&
+                          column.typeInput
+                            .toLowerCase()
+                            .includes('button_text')
+                      "
+                    >
+                    <span 
+                      v-if="item[column.key]" 
+                      style="cursor: pointer; color: rgb(53, 92, 255);"
+                      @click="actionPopup2(item)"
+                    >
+                      {{ item[column.key] }}
+                    </span>
+                    </template>
+                    <template
                       v-if="
                         column.typeInput !== undefined &&
                           column.typeInput.toLowerCase() === 'multi-select-by'
@@ -765,12 +804,16 @@
                     </template>
                     <template v-else>
                       <span>
-                        {{ item[column.key] 
-                            ? column.type_amount 
-                                ? Intl.NumberFormat('en-GB').format(item[column.key])
-                                : item[column.key]
-                            : "" 
-                        }}
+                        <span 
+                          :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666' }  : {}"
+                        >
+                          {{ item[column.key] 
+                              ? column.type_amount 
+                                  ? Intl.NumberFormat('en-GB').format(item[column.key])
+                                  : item[column.key]
+                              : "" 
+                          }}
+                        </span>
                         <span v-if="column.hasTooltip" style="margin-left: 5px; font-weight: bold; color: #666; cursor: help;">
                           <vs-tooltip bottom>
                             ?
@@ -778,6 +821,12 @@
                               {{ column.tooltip }}
                             </template>
                           </vs-tooltip>
+                        </span>
+                        <span
+                          v-if="column.isTransitTag && item[column.isTransitTag] === 1"
+                          style="display: ruby; font-weight: bold; font-style: italic; font-size: 10px"
+                        >
+                          TRANSIT
                         </span>
                       </span>
                     </template>
@@ -1479,7 +1528,7 @@
               Export
             </vs-button>
         </vs-col>
-        <vs-col w="8">
+        <vs-col w="10">
           <pagination-master
             :page="pagination.page"
             :limit="pagination.limit"
@@ -1541,6 +1590,7 @@ export default {
     hasLinkedCustomValidation: Array,
     hasLinkedChild: Array,
     hasId: Boolean,
+    isActionFirst: Boolean,
     editOnly: Boolean,
     removeOnly: Boolean,
     searchPreviewAction: Boolean,
@@ -1768,6 +1818,9 @@ export default {
     actionPopup(val, key) {
       this.$emit("actionPopup", val, key);
     },
+    actionPopup2(item) {
+      this.$emit("actionPopup2", item);
+    },
     actionCollect(val) {
       this.$emit("actionCollect", val);
     },
@@ -1776,6 +1829,9 @@ export default {
     },
     actionRemove(val) {
       this.$emit("actionRemove", val);
+    },
+    actionSelect(val) {
+      this.$emit("actionSelect", val);
     },
     actionSearchPreview(val) {
       this.$emit("actionSearchPreview", val);
@@ -1996,7 +2052,7 @@ export default {
       &.vs-table__th {
         position: relative;
         width: 280px !important;
-        min-width: 280px;
+        min-width: 140px;
         max-width: 300px;
         .vs-table__th__content {
           float: right;

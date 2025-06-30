@@ -11,6 +11,7 @@
                                     <template v-if="InputObject[item]['visible'] == true">
                                         <div>
                                             <input-general 
+                                            :icon-after="InputObject[item].showIcon === true"
                                             :name="InputObject[item].label"
                                             :rules="InputObject[item].rule"
                                             :formKey="InputObject[item].key"
@@ -18,7 +19,12 @@
                                             :typeInput="InputObject[item].typeInput"
                                             :disabled="listenIsDisabled || InputObject[item].isDisabled"
                                             @updateValue="updateValue" 
-                                            @inputFocus="onfocuslah"/>
+                                            @inputFocus="onfocuslah"
+                                            @click-icon="handleIconClick">
+                                                <template v-if="InputObject[item].showIcon === true" #icon>
+                                                    <i class="bx bx-search"></i>
+                                                </template>
+                                            </input-general>
                                         </div>
                                     </template>
                                     <template v-else>
@@ -26,7 +32,8 @@
                                     </template>
                                 </template>
                                 <template v-else>
-                                    <input-general 
+                                    <input-general
+                                    :icon-after="InputObject[item].showIcon === true"
                                     :name="InputObject[item].label"
                                     :rules="InputObject[item].rule"
                                     :formKey="InputObject[item].key"
@@ -35,7 +42,12 @@
                                     :placeholder="InputObject[item].placeholder"
                                     :disabled="listenIsDisabled || InputObject[item].isDisabled"
                                     @updateValue="updateValue" 
-                                    @inputFocus="onfocuslah"/>
+                                    @inputFocus="onfocuslah"
+                                    @click-icon="handleIconClick">
+                                        <template v-if="InputObject[item].showIcon === true" #icon>
+                                            <i class="bx bx-search"></i>
+                                        </template>
+                                    </input-general>
                                 </template>
                                 <template v-if="InputObject[item].hasOwnProperty('visible') && InputObject[item]['visible'] == true">
                                     
@@ -519,6 +531,9 @@ export default {
                     this.Keys = []
                     this.InputObject = {}
                 }
+        },
+        handleIconClick() {
+            this.$emit('handleIconClick')
         },
         initializeDataItem() {
             this.iterateInputWait = true

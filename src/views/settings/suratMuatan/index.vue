@@ -54,7 +54,7 @@
                             <nav-item :navItem="navItemm" @activeTab="activeTab" />
                         </vs-col>
                         <vs-col xs="12" sm="6" lg="4">
-                            <template v-if="navActive === 'Stock'">
+                            <template v-if="navActive === 'Stock' && !loading">
                                 <vs-row>
                                     <vs-col vs-align="center" w="6">
                                         <select-search-by
@@ -80,20 +80,20 @@
                         </vs-col>
                     </vs-row>
                 </div>
-                <template v-if="navActive === 'Stock'">
-                    <transition name="slide-fade">
-                        <stock-table
-                            :ref="navActive" 
-                            :query="tempSearch" 
-                            :searchBy="searchByStock"
-                        />
-                    </transition>
-                </template>
-                <template v-else-if="navActive === 'k-SCHEDULE'">
-                    <transition name="slide-fade">
-                        <schedule-table :ref="navActive" :query="tempSearch"/>
-                    </transition>
-                </template>
+                    <template v-if="navActive === 'Stock'">
+                        <transition name="slide-fade">
+                            <stock-table
+                                :ref="navActive" 
+                                :query="tempSearch" 
+                                :searchBy="searchByStock"
+                            />
+                        </transition>
+                    </template>
+                    <template v-else-if="navActive === 'k-SCHEDULE'">
+                        <transition name="slide-fade">
+                            <schedule-table :ref="navActive" :query="tempSearch"/>
+                        </transition>
+                    </template>
             </div>
         </section>
         <dialog-create-edit-stock
@@ -132,8 +132,11 @@ import DialogCreateEditSchedule from "@/views/settings/suratMuatan/schedule/dial
 import DialogSync from "@/views/settings/suratMuatan/schedule/dialogSync";
 import ScheduleTable from "@/views/settings/suratMuatan/schedule/index";
 
+import master from "@/mixins/master";
+
 export default {
     name:"surat-muatan-settings-index",
+    mixins: [master],
     components: {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
@@ -161,6 +164,7 @@ export default {
             ],
             title:"Stock",
             navActive: "Stock",
+            loading: false,
             tempSearch: "",
             dialogActiveStock: false,
             searchPlaceholderStock: "Search Surat Muatan",
@@ -197,15 +201,27 @@ export default {
             this.tempSearch = val
         },
         clearSearch() {
-            this.$refs.searchInput.clear()
+            this.tempSearch = "";
+            if (this.$refs.searchInput) {
+                this.$refs.searchInput.clear();
+            }
         },
         activeTab(val) {
-            this.navActive = val
+            this.loading = true;
+            this.navActive = val;
+            this.clearSearch();
 
             let item = this.navItemm.filter(item => {
                 return item.key == val
             })
-            this.title = item[0].title
+            this.title = item[0].title;
+            
+            this.$nextTick(() => {
+                setTimeout(() => {
+                    this.loading = false;
+                    
+                }, 300);
+            });
         },
         openDialog(){
             switch(this.navActive) {
@@ -230,9 +246,11 @@ export default {
             switch(this.navActive) {
                 case "Stock":
                     this.dialogActiveStock = false
+                    this.clearSearch();
                     break;
                 case "k-SCHEDULE":
                     this.dialogActiveSchedule = false
+                    this.clearSearch();
                     break;
                 default:
             }

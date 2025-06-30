@@ -163,6 +163,16 @@
                             </vs-col>
                           </vs-row>
                         </template>
+                        <template v-if="navActive === 'k-RUNSHEET-HISTORY'">
+                          <vs-row >
+                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                <runsheet-history
+                                    :connoteNumber="connote_number"
+                                    :koliNumber="koli_number"
+                                />
+                            </vs-col>
+                          </vs-row>
+                        </template>
                     </div>
                     <div class="box view" v-else-if="(koli_number && !connote_found && !loading) || (koli_number !== '' && !connote_found && !loading)">
                         <div style="margin-top: 2.5em;">
@@ -190,6 +200,7 @@ import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectI
 import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
 import connoteCustomerView from "@/views/inventory/connote-detail/connote/connoteCustomerView.vue";
 import claimAndBurden from "@/views/inventory/connote-detail/connote/claimBurden.vue";
+import RunsheetHistroy from "@/views/inventory/connote-detail/connote/runsheetHistory.vue";
 import Selector from "@/components/input/select";
 
 export default {
@@ -200,6 +211,7 @@ export default {
         "breadcrumb": Breadcrumb,
         "connote-customer-view": connoteCustomerView,
         "claim-and-burden": claimAndBurden,
+        "runsheet-history": RunsheetHistroy,
         "search-input": SearchInput,
         "selector-origin": selectorDetailVue,
         "selector-detail": selectorDetailVue,
@@ -239,6 +251,11 @@ export default {
             label: "CLAIM CHARGE",
             key: "k-CALIM-BURDEN",
             title: "Claim and Burden"
+          },
+          {
+            label: "RUNSHEET HISTORY",
+            key: "k-RUNSHEET-HISTORY",
+            title: "Runsheet History"
           }
         ],
         navActive: "k-INFO",
@@ -433,8 +450,13 @@ export default {
                         ];
                         dataInformation = [
                             {
+                                key : 'Routing Type',
+                                value: response.routing_type || "-",
+                                width: 6
+                            },
+                            {
                                 key : 'Deskripsi barang',
-                                value: response.description,
+                                value: response.description || "-",
                                 width: 6
                             },
                             {

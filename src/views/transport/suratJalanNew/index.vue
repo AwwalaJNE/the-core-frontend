@@ -4,7 +4,7 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{ title }}</h2>
+                    <h2>{{ listenBreadcrumbTitle }}</h2>
                 </div>
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
@@ -31,6 +31,7 @@
                             <vs-row justify="end">
                                 <vs-col xs="6" sm="8" lg="4">
                                     <select-search-by 
+                                        :key="listenBreadcrumbTitle"
                                         :isMultiple="false" 
                                         :border="true" 
                                         :valueData="searchParams" 
@@ -102,8 +103,10 @@
                             :dateFilter="tempDate"
                             :query="tempSearch"
                             :searchBy="searchBy"
+                            :sj_type="listenBreadcrumbCode"
                             :filterDateBy="filterDateBy"
                             :status="filterStatusBy"
+                            :title="listenBreadcrumbTitle"
                         />
                     </transition>
                 </template>
@@ -113,16 +116,18 @@
         <div v-if="true">
             <dialogCreateSuratJalanV2
                 btnBlue="Approve"
-                title="Transport Surat Jalan"
+                :title="`Transport ${listenBreadcrumbTitle}`"
+                :breadcrumb="`${listenBreadcrumbTitle}`"
                 :active="dialogSuratJalan"
                 :closeDialog="closeDialogSuratJalan"
+                :sj_type="listenBreadcrumbCode"
                 @refresh="refresh"
             />
         </div>
         <div v-else>
             <dialogCreateSuratJalan
                 btnBlue="Approve"
-                title="Transport Surat Jalan"
+                :title="`Transport ${listenBreadcrumbTitle}`"
                 :active="dialogSuratJalan"
                 :closeDialog="closeDialogSuratJalan"
                 @refresh="refresh"
@@ -160,48 +165,10 @@ export default {
     data() {
         return {
             dialogSuratJalan: false,
-            title: "Surat Jalan",
             tempSearch: "",            
             searchPlaceholder: "Search Surat Jalan",
             searchBy:"manifest do number",
-            searchParams: [
-                {
-                    label: 'Surat Jalan',
-                    value: 'manifest do number'
-                },
-                {
-                    label: 'Orion Number',
-                    value: 'do_number'
-                },
-                {
-                    label: 'Vehicle Type',
-                    value: 'vehicle_type'
-                },
-                {
-                    label: 'Driver',
-                    value: 'pic'
-                },
-                {
-                    label: 'Mode',
-                    value: 'mode'
-                },
-                {
-                    label: 'Origin',
-                    value: 'origin'
-                },
-                {
-                    label: 'Destination',
-                    value: 'destination'
-                },
-                {
-                    label: 'Weight',
-                    value: 'weight'
-                },
-                {
-                    label: 'Status',
-                    value: 'status'
-                }
-            ],
+            searchParams: [],
             filterDateBy:"create",
             tempDate: [],
             dateParams: [
@@ -251,6 +218,14 @@ export default {
             ],
         };
     },
+    computed: {
+        listenBreadcrumbTitle() {
+            return this.$route.meta.breadCrumb;
+        },
+        listenBreadcrumbCode() {
+            return this.$route.meta.breadCrumbCode || "";
+        },
+    },
     watch: {
         searchBy(old, val) {
             if (old !== val) {
@@ -259,8 +234,57 @@ export default {
                 });
             }
         },
+        listenBreadcrumbTitle: {
+            handler(val, oldVal) {
+                if (val !== oldVal && val !== undefined) {
+                    this.setSearchParams();
+                }
+            },
+            immediate: true
+        },
     },
     methods: {
+        setSearchParams() {
+            
+            this.searchParams = [
+                {
+                    label: `No ${this.listenBreadcrumbTitle}`,
+                    value: 'manifest do number'
+                },
+                {
+                    label: 'Orion Number',
+                    value: 'do_number'
+                },
+                {
+                    label: 'Vehicle Type',
+                    value: 'vehicle_type'
+                },
+                {
+                    label: 'Driver',
+                    value: 'pic'
+                },
+                {
+                    label: 'Mode',
+                    value: 'mode'
+                },
+                {
+                    label: 'Origin',
+                    value: 'origin'
+                },
+                {
+                    label: 'Destination',
+                    value: 'destination'
+                },
+                {
+                    label: 'Weight',
+                    value: 'weight'
+                },
+                {
+                    label: 'Status',
+                    value: 'status'
+                }
+            ]
+        },
         refresh() {
             this.$refs.SuratJalan.refresh();
         },

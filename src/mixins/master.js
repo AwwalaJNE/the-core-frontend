@@ -268,10 +268,11 @@ const Master = {
             return new Date(date).defaultTime()
         },
         checkAuth(res) {
+            // This method is kept for backward compatibility and manual auth checks
             if(res.status === 401) {
                 localStorage.clear();
                 this.$router.push('/login')
-            } else if(res.data.reason) {
+            } else if(res.data && res.data.reason) {
                 let reason = res.data.reason.toLowerCase()
                 switch(true) {
                     case reason.includes("unauthenticated"):
@@ -281,11 +282,10 @@ const Master = {
                     default:
                         // code block
                 }
+            } else if(res.data && res.data.type === "AuthenticationException") {
+                localStorage.clear();
+                this.$router.push('/login')
             }
-            // if(res == 401) {
-            //     localStorage.clear();
-            //     this.$router.go()
-            // }
         },
         async checkAuthRequest() {
             // 
@@ -525,7 +525,19 @@ const Master = {
             
             const parts = orion_number.split('/');
             return parts[1] ?? null;
-        }          
+        },
+        formatElapsedTime(rawMinutes) {
+            const totalMinutes = Math.round(rawMinutes);
+
+            const days = Math.floor(totalMinutes / 1440);
+            const hours = Math.floor((totalMinutes % 1440) / 60);
+            const minutes = totalMinutes % 60;
+
+            return `${days} day(s) ${hours} hour(s) ${minutes} minute(s)`;
+        },
+        formatElapsedDay(days) {
+            return `${days} day(s)`;
+        }
     },
     mounted() {
         this.checkIfMobile();

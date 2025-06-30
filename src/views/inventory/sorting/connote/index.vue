@@ -91,11 +91,19 @@
                                 </vs-row>
 
                                 <vs-row class="details-row">
-                                    <vs-col xs="6" sm="6" lg="6">
+                                    <vs-col xs="4" sm="4" lg="4">
                                         <label>ZIP CODE RECEIVER</label>
                                         <h4>{{ sort_info.information.zip_code_receiver }}</h4>
                                     </vs-col>
-                                    <vs-col xs="6" sm="6" lg="6" class="details-row-left">
+                                    <vs-col xs="4" sm="4" lg="4" class="details-row-center">
+                                        <label>ROUTING TYPE</label>
+                                        <h4
+                                            :style="getRoutingStyle(sort_info.information.routing_type)"
+                                        >
+                                            {{ sort_info.information.routing_type || "-" }}
+                                        </h4>
+                                    </vs-col>
+                                    <vs-col xs="4" sm="4" lg="4" class="details-row-left">
                                         <label>SLA DATE</label>
                                         <h4>{{ this.formatDateTime(sort_info.information.sla_date) }}</h4>
                                     </vs-col>
@@ -180,11 +188,19 @@
                                 </vs-row>
 
                                 <vs-row class="details-row">
-                                    <vs-col xs="6" sm="6" lg="6">
+                                    <vs-col xs="4" sm="4" lg="4">
                                         <label>DESTINATION CODE</label>
                                         <h4>{{ sort_info.information.destination_code }}</h4>
                                     </vs-col>
-                                    <vs-col xs="6" sm="6" lg="6" class="details-row-left">
+                                    <vs-col xs="4" sm="4" lg="4" class="details-row-center">
+                                        <label>ROUTING TYPE</label>
+                                        <h4
+                                            :style="getRoutingStyle(sort_info.information.routing_type)"
+                                        >
+                                            {{ sort_info.information.routing_type || "-" }}
+                                        </h4>
+                                    </vs-col>
+                                    <vs-col xs="4" sm="4" lg="4" class="details-row-left">
                                         <label>SLA DATE</label>
                                         <h4>{{ this.formatDateTime(sort_info.information.sla_date) }}</h4>
                                     </vs-col>
@@ -369,6 +385,30 @@ export default {
         },
     },
     methods: {
+        getRoutingStyle(type) {
+            if (!type) return {};
+
+            const colorMap = {
+                INTRACITY: '#2196F3',       // Blue
+                INTERCITY: '#795548',       // Brown
+                DOMESTIC: '#FF9800',        // Orange
+                INTERNATIONAL: '#9C27B0',   // Purple
+            };
+
+            const bgColor = colorMap[type.toUpperCase()] || '#9E9E9E'; // Default gray
+
+            return {
+                color: '#fff',
+                backgroundColor: bgColor,
+                padding: '8px',
+                borderRadius: '8px',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                fontSize: '14px',
+                minWidth: '120px',
+                placeSelf: 'center'
+            };
+        },
         handleAutoOpenBag(val) {
             this.is_auto_open_bag = val.target.checked;
         },
@@ -522,6 +562,10 @@ export default {
     justify-content: space-between;
     text-align: left;
     margin-top: 1rem;
+}
+
+.details-row-center {
+    text-align: center;
 }
 
 .details-row-left {

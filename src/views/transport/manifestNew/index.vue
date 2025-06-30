@@ -75,6 +75,30 @@
                                 </vs-select>
                             </template>
                         </vs-col>
+                        <vs-col xs="6" sm="4" lg="3">
+                            <template>
+                                <vs-select
+                                    class="m-select"
+                                    filter
+                                    placeholder="Select Route"
+                                    v-model="filterIsTransitBy"
+                                    :border="true"
+                                    :multiple="true"
+                                    @change="updateFilterIsTransit"
+                                >
+                                    <template>
+                                        <vs-option
+                                            v-for="(item,key) in filterIsTransit"
+                                            :key="key"
+                                            :label="item.label"
+                                            :value="item.value"
+                                        >
+                                            {{item.label}}
+                                        </vs-option>
+                                    </template>
+                                </vs-select>
+                            </template>
+                        </vs-col>
                         <vs-col xs="12" sm="12" lg="6" >
                             <vs-row>
                                 <vs-col w="4">
@@ -107,6 +131,7 @@
                             :query="tempSearch"
                             :searchBy="searchBy"
                             :status="filterStatusBy"
+                            :isTransit="filterIsTransitBy"
                         />
                     </transition>
                 </template>
@@ -232,6 +257,17 @@ export default {
                     value: 'INFO'
                 }
             ],
+            filterIsTransitBy: "",
+            filterIsTransit: [
+                {
+                    label: 'TRANSIT',
+                    value: '1'
+                },
+                {
+                    label: 'DIRECT',
+                    value: '0'
+                },
+            ],
         };
     },
     watch: {
@@ -273,6 +309,9 @@ export default {
             this.filterDateBy = val;
         },
         updateFilterStatus(key){
+            this.refresh()
+        },
+        updateFilterIsTransit(key){
             this.refresh()
         },
         createNewShortcut() {

@@ -66,6 +66,7 @@ export default {
     query: String,
     searchBy: String,
     status: [Array, String],
+    isTransit: [Array, String]
   },
   components: {
     "table-master": TableMaster,
@@ -87,7 +88,7 @@ export default {
         {
           label: "Status",
           key: "status_with_tooltip",
-          width: "xxxxs",
+          width: "xxs",
         },
         {
           label: "Total Bag",
@@ -107,6 +108,7 @@ export default {
         {
           label: "Jenis Kiriman",
           key: "jenis_kiriman",
+          isTransitTag: "isTransitTag",
           width: "xxxs",
         },
         {
@@ -285,7 +287,7 @@ export default {
 
       try {
         const res = await axios.get(
-          `${this.URL.surat_muatan}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}`,
+          `${this.URL.surat_muatan}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}&is_sm_transit=${this.isTransit}`,
           this.Helper.header()
         );
 
@@ -305,6 +307,7 @@ export default {
                 buttonStatus.depart = true; // Bisa depart
                 buttonStatus.cancel = true; // Bisa cancel
               } else if (
+                strStatus.includes("approved") ||
                 strStatus.includes("depart") ||
                 strStatus.includes("transit") || // Menambahkan 'transit'
                 strStatus.includes("receive") ||
@@ -338,6 +341,7 @@ export default {
             pickup_courier_employee_name: item.employee_courier?.employee_name || null,
             manifest_type_name: item.manifest_method?.vehicle_mode_name || null,
             jenis_kiriman: item.vehicle_type?.vehicle_type_name || "-",
+            isTransitTag: item?.is_sm_transit || "",
             origin_name: `${item.origin_code || "null"} - ${item.origin_name || "-"}`,
             destination_name: `${item.destination_code || "null"} - ${item.destination_name || "-"}`,
             eta: this.dateConvert(item.eta),

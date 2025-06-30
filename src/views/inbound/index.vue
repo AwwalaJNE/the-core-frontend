@@ -87,7 +87,7 @@
                       <vs-col xs="12" sm="4" lg="4">
                         <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
                       </vs-col>
-                      <search-input ref="searchInput" @handleSearch="handleSearch" @searchValue="searchValue" :placeholder="searchPlaceholder" :isNumeric="searchByNumeric" />
+                      <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" :isNumeric="searchByNumeric" />
                     </vs-row>
                   </vs-col>
                 </vs-row>

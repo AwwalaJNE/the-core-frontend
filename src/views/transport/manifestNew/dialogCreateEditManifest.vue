@@ -1,7 +1,7 @@
 <template>
     <div>
         <dialog-master
-            width="xl"
+            width="lg"
             :actived="listenActive"
             :loading="listenLoading"
             :closeDialog="cancel"
@@ -13,7 +13,7 @@
                         {{ listenTitle }}
                     </div>
                     
-                    <template v-if="!listenIsReadOnly">
+                    <div class="button-group" v-if="!listenIsReadOnly">
                         <template v-if="is_approve === 1">
                             <vs-button 
                                 :disabled="isDisabledPrint"
@@ -39,7 +39,7 @@
                                 {{ is_approve === 1 ? 'Approved' : 'Approve' }}
                             </vs-button>
                         </template>
-                    </template>
+                    </div>
                 </div>
             </template>
 
@@ -55,7 +55,7 @@
                         v-if="!listenIsReadOnly || !loadingSuratMuatan"
                         ref="formSuratMuatanController"
                         typeForm="surat_muatan"
-                        :dataItem="listenIsReadOnly ? listenGetByApi : listenDataItem"
+                        :dataItem="listenIsReadOnly ? listenGetByApi : editData"
                         :isDisabled="isDisabled"
                         :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
                         :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
@@ -63,10 +63,8 @@
                         @formData="formData"
                         @inputFocus="inputFocus"
                         @onChangeCustom="onChangeCustom"
+                        @handleIconClick="openSelectStockModal"
                     />
-
-                    <!-- Divider -->
-                    <vs-divider />
 
                     <!-- Input Bag Section -->
                     <div class="mt-2 mb-2">
@@ -122,6 +120,13 @@
             :closeDialog="() => dialogTraceBag = false"
             :bag_number="selectedBagNumber"
         />
+
+        <dialog-select-manifest-stock
+            title="Pilih Stock"
+            :active="showSelectStockModal"
+            :close="() => showSelectStockModal = false"
+            @selectManifest="handleSelectManifest"
+        />
     </div>
 </template>
 
@@ -134,7 +139,8 @@ import CameraScanner from "@/components/scanner/camera";
 import DialogMaster from "@/components/dialog/dialogMaster";
 import FormInputController from "@/components/form/formInputController";
 import TableMaster from "@/components/table/tableMaster.vue";
-import DialogTraceBag from "@/views/transport/manifestNew/dialogTraceBag"
+import DialogTraceBag from "@/views/transport/manifestNew/dialogTraceBag";
+import dialogSelectManifestStock from "./dialogSelectManifestStock.vue";
 
 export default {
     name: "transport-surat-muatan-dialog-new",
@@ -144,7 +150,8 @@ export default {
         "dialog-master": DialogMaster,
         "form-input-controller": FormInputController,
         "table-master": TableMaster,
-        "dialog-trace-bag": DialogTraceBag
+        "dialog-trace-bag": DialogTraceBag,
+        "dialog-select-manifest-stock": dialogSelectManifestStock
     },
     props: {
         active: Boolean,
@@ -159,9 +166,8 @@ export default {
     },
     data() {
         return {
+            editData: {},
             form: {},
-            node_id: "",
-
             manifest_number: "",
             item_number: "",
             dataTable: [],
@@ -245,10 +251,6 @@ export default {
             vehicle_mode_id: "",
             vehicle_type_id: "",
             node_id_origin: "",
-            vehicle_id: "",
-            manifest_method_id: "",
-            flight_number: "",
-            flight_schedule: "",
             autoComplateUrl: "",
             itterateUrlAutoComplete: "",
             itterateFlagAutoComplete: "node_name",
@@ -262,9 +264,9 @@ export default {
             master_form: {},
             dataByApi: {},
             loadingSuratMuatan: false,
-            isMissroute: false,
             dialogTraceBag: false,
-            selectedBagNumber: "",
+            showSelectStockModal: false,
+            selectedBagNumber: ""
         };
     },
     computed: {
@@ -304,8 +306,6 @@ export default {
                 this.isDisabled = (val.status !== 'UNAPPROVED' && val.status !== 'UNRECEIVED') || val.is_approve === 1;
                 this.isDisabledPrint = val.status === 'CANCELED';
                 this.isDisabledApprove = (val.status !== 'UNAPPROVED' && val.status !== 'UNRECEIVED') ;
-
-                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
             }
         },
         dataByApi: function(val) {
@@ -323,45 +323,94 @@ export default {
                 
                 this.getDataVehicleMode();
                 this.originNode()
-                this.getDataEmployee();
-                
-                // Initialize field widths based on current state
-                if (this.dataItem && this.dataItem.manifest_method_id) {
-                    if (this.dataItem.manifest_method_id === 1) {
-                        this.adjustFieldWidths('flight');
-                    } else if (this.dataItem.manifest_method_id === 2) {
-                        this.adjustFieldWidths('road-with-driver');
-                    } else {
-                        this.adjustFieldWidths('road-no-driver');
-                    }
-                }
             }
-        },
+        }
     },
     methods: {
+        checkManifestMethod(moda) {
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_visible", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", true);
+
+            switch(moda){
+                case 1:
+                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true);
+                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", true);
+                    this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
+                    break;
+                case 2:
+                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true);
+                    break;
+                case 3:
+                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
+                    break;
+                case 4:
+                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
+                    break;
+            }
+        },
+        handleSelectManifest(val) {
+            this.checkManifestMethod(parseInt(val.vehicle_mode_id));
+
+            this.vehicle_type_id = val.vehicle_type_id;
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", val.vehicle_prefix_name);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", val.manifest_number);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID", parseInt(val.vehicle_mode_id));
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", val?.node_name_origin + " (" + val?.node_code_origin + ")");
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", val?.node_name_destination + " (" + val?.node_code_destination + ")");
+            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", val.vehicle_name);
+            this.$store.dispatch("SET_SURAT_MUATAN_ETD", val.etd);
+            this.$store.dispatch("SET_SURAT_MUATAN_ETA", val.eta);
+
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", val.node_id_origin);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", val.node_id_destination);
+            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ValueData", val.vehicle_id);
+
+            if (val.vehicle_mode_id === '1') {
+                this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER", val.shipment_number);
+                this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE", val.etd);
+
+                this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_isDisabled", true);
+                if (val?.shipment_number) {
+                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_isDisabled", true);
+                }  
+            } else if (val.vehicle_mode_id === '2') {
+                this.getDataEmployee();
+                
+                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID", parseInt(val?.employee_driver_id));
+
+                if (val?.employee_driver_id) {
+                    this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled", true);
+                }
+            }
+
+            // Notes: Disabled field for SM Stock
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", true);
+        },
+        openSelectStockModal() {
+            this.showSelectStockModal = true;
+        },
+        closeSelectStockModal() {
+            this.showSelectStockModal = false;
+        },
         getEditData(val) {
-            this.node_id = val.node_id;
+            this.checkManifestMethod(parseInt(val.vehicle_mode_id));
+
             this.manifest_number = val.manifest_number;            
             this.is_approve = val.is_approve;
 
-            this.vehicle_mode_id = val.vehicle_mode_id;
-            this.vehicle_type_id = val?.vehicle_type_id ?? null;
-
-            if (this.vehicle_mode_id) {
-                this.getDataVehicleType();
-            }
-
-            if (this.vehicle_type_id) {
-                this.getDataVehicle();
-            }
-            
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", true);
-
-            if (val.manifest_method_id === 2) {
-                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true);
-            } else {
-                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
-            }
+            this.vehicle_type_id = val.vehicle_type_id;
 
             if (val?.detail) {
                 let arr = [];
@@ -378,7 +427,7 @@ export default {
                         data.total_inner = data.bag_detail_count || '';
                         data.total_connote_of_bag = data.total_connote_of_bag || '';
                         data.destination_name = (data.bag?.destination?.node_code || '') + ' - ' + (data.bag?.destination?.node_name || '');
-                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (val?.latest_node_name_receiver || '');
+                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (data?.bag?.current_node.node_name || '');
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'
                         } else {
@@ -416,8 +465,17 @@ export default {
                 eta: val.eta,
                 auto_depart: val.auto_depart
             };
+
+            val.manifest_prefix = val?.manifest_method?.prefix_name;
+            val.node_id_origin = val?.origin?.node_name + " (" + val?.origin?.node_code + ")";
+            val.node_id_destination = val?.destination?.node_name + " (" + val?.destination?.node_code + ")";
+            val.vehicle_id = val?.vehicle?.vehicle_name;
+            val.pic_employee_id = val?.employee_pic?.employee_name;
+            
+            this.editData = val;
         },
         async getEditDataByApi() {
+            console.log('getEditDataByApi')
             this.loadingSuratMuatan = true;
             try {
                 const res = await axios.get(`${this.URL.surat_muatan}/${this.listenSMNumber}?n=${this.listenNodeId}`, this.Helper.header());
@@ -445,24 +503,12 @@ export default {
             }
         },
         getDataPreview(val) {
+            this.checkManifestMethod(parseInt(val.vehicle_mode_id));
+
             this.vehicle_mode_id = val.vehicle_mode_id;
             this.vehicle_type_id = val?.vehicle_type_id ?? null;
 
-            if (this.vehicle_mode_id) {
-                this.getDataVehicleType();
-            }
-
-            if (this.vehicle_type_id) {
-                this.getDataVehicle();
-            }
-            
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", true);
-
-            if (val.manifest_method_id === 2) {
-                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true);
-            } else {
-                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
-            }
+            this.getDataVehicle();
 
             if (val?.detail) {
                 let arr = [];
@@ -478,7 +524,7 @@ export default {
                         data.actual_weight = data.bag?.bag_actual_weight || '0';
                         data.total_inner = data.bag_detail_count || '0';
                         data.destination_name = (data.bag?.destination?.node_code || '') + ' - ' + (data.bag?.destination?.node_name || '');
-                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (val?.latest_node_name_receiver || '');
+                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (data?.bag?.current_node.node_name || '');
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'
                         } else {
@@ -531,6 +577,9 @@ export default {
 
                         this.autoComplateUrl = `${this.URL.node}/${nodeId}/destination-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`;
                         break;
+                    case "vehicle_id":
+                        this.autoComplateUrl = `${this.URL.vehicle}?n=${this.listenNodeId}&search_by=vehicle_name&sort_order=desc&limit=15&page=1`;
+                        break;
                     default:
                         break;
                 }
@@ -552,6 +601,12 @@ export default {
                                     data: item,
                                 });
                             }
+                            if (item.hasOwnProperty("vehicle_name")) {
+                                suggestions.push({
+                                    value: `${item.vehicle_name}`,
+                                    data: item,
+                                });
+                            }
                         });
 
                     cb(suggestions);
@@ -559,9 +614,10 @@ export default {
                 .catch((error) => console.log("error", error));
         },
         formData(form) {
-            let node_id = form.node_id_origin?.node_id || this.listenCurrentNode.node_id;
-            form.node_id_origin = node_id;
-            form.node_id_destination = form.node_id_destination?.node_id;
+            form.node_id_origin = form.node_id_origin?.node_id || form.node_id_origin || this.listenCurrentNode.node_id;
+            form.node_id_destination = form.node_id_destination?.node_id || form.node_id_destination;
+            form.vehicle_type_id = form?.vehicle_id?.vehicle_type_id || this.vehicle_type_id;
+            form.vehicle_id = form?.vehicle_id?.vehicle_id || form?.vehicle_id;
 
             if (form?.dynamicinputcomponent_node_id_transit?.length > 0) {
                 for (let i = 0; i < 3; i++) {
@@ -569,8 +625,11 @@ export default {
                 }
             }
 
+            if (form.manifest_prefix && form.manifest_number) {
+                form.manifest_number = `${form.manifest_prefix}-${form.manifest_number}`;
+            }
+            
             this.form = form;
-
             if (this.form.eta > this.form.etd) {
                 if (this.manifest_number !== undefined && this.manifest_number !== "") {
                     this.form.manifest_number = this.manifest_number;
@@ -578,8 +637,7 @@ export default {
                     this.form.eta = moment(this.form.eta).format("YYYY-MM-DD HH:mm:ss");
                     this.addSuratMuatanDetail();
                 } else {
-                    this.node_id = this.listenNodeId;
-                    this.form.pickup_node_id_requestor = this.node_id;
+                    this.form.pickup_node_id_requestor = this.listenNodeId;
                     this.form.manifest_item = {
                         bag_number: this.item_number
                     };
@@ -589,67 +647,38 @@ export default {
                 this.openNotification("warning", "Wrong Input in ETA/ETD field", "ETA must more than ETD");
             }
         },
-        handleSubmit() {
-            this.$refs.formSuratMuatanController.handleSubmit();
-        },
         handleClearForm() {
             this.$refs.formSuratMuatanController.handleClearForm();
+            this.vehicle_type_id = "";
+            this.node_id_origin = "";
+            this.editData = {};
             this.form = {};
             this.item_number = "";
             this.manifest_number = "";
             this.dataTable = [];
         },
         async getDataVehicleMode() {
+            this.loading = true;
             try {
-                const res = await axios.get(`${this.URL.vehicle_mode}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header());
+                const { data } = await axios.get(`${this.URL.vehicle_mode_list_v2}?n=${this.listenNodeId}`, this.Helper.header() );
 
-                const data = res.data.data;
+                const options = data.data.map(item => ({
+                    value: item.vehicle_mode_id,
+                    label: item.vehicle_mode_name,
+                    data: item
+                }));
 
-                if (data.length > 0) {
-                    const arr = data.map(item => ({
-                        label: item.vehicle_mode_name,
-                        value: item.vehicle_mode_id,
-                        data: item
-                    }));
-
-                    this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ArrData", arr.length > 0 ? arr : null);
-                }
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ArrData", options);
             } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to collect vehicle mode list', err?.response?.data?.message ?? 'Something went wrong');
+                console.error('Failed to load vehicle modes:', err);
+            } finally {
+                this.loading = false;
             }
-        },
-        async getDataVehicleType() {
-            await axios
-                .get(
-                    this.URL.vehicle_type +
-                        `?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=1000&page=1`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    let arr = [];
-                    if (res.data.data.length > 0) {
-                        res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = item.vehicle_type_name;
-                            obj["value"] = item.vehicle_type_id;
-                            obj["data"] = item;
-
-                            arr.push(obj);
-                        });
-                    } else {
-                        arr = [{ label: null, value: null, data: {} }];
-                    }
-                    this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ArrData", arr);
-                })
-                .catch((err) => {
-                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to collect role list', err?.response?.data?.message ?? 'something went wrong')
-                });
         },
         async getDataVehicle() {
             await axios
                 .get(
-                    this.URL.vehicle +
-                        `?n=${this.listenNodeId}&vehicle_type_id=${this.vehicle_type_id}&sort_order=desc&limit=1000&page=1`,
+                    `${this.URL.vehicle}?n=${this.listenNodeId}&sort_order=desc&limit=10000&page=1`,
                     this.Helper.header()
                 )
                 .then((res) => {
@@ -659,7 +688,6 @@ export default {
                             let obj = {};
                             obj["label"] = `${item.vehicle_name} (${item.vehicle_police_no})`;
                             obj["value"] = item.vehicle_id;
-
                             arr.push(obj);
                         });
                         this.$store.dispatch(
@@ -682,6 +710,7 @@ export default {
                 });
         },
         async getDataEmployee() {
+            this.loading = true;
             await axios
                 .get(this.URL.employee + `/driver?n=${this.listenNodeId}`, this.Helper.header())
                 .then((res) => {
@@ -703,9 +732,11 @@ export default {
                             []
                         );
                     }
+                    this.loading = false;
                 })
                 .catch((err) => {
                     this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to collect role list', err?.response?.data?.message ?? 'something went wrong')
+                    this.loading = false;
                 });
         },
         async createSuratMuatan() {
@@ -868,13 +899,15 @@ export default {
             this.dataTable = [];
         },
         updateValue() {
-            this.handleSubmit();
+            this.$refs.formSuratMuatanController.handleSubmit();
         },
         onChangeCustom(type, val, info = {}) {
             const updateMasterForm = (key, value) => {
-                if (this.manifest_number && this.master_form?.[key] !== value) {
-                    this.master_form = { ...this.master_form, [key]: value };
-                    this.updateSuratMuatan();
+                if (this.is_approve !== undefined) {
+                    if (this.manifest_number && this.master_form?.[key] !== value) {
+                        this.master_form = { ...this.master_form, [key]: value };
+                        this.updateSuratMuatan();
+                    }   
                 }
             };
 
@@ -886,43 +919,29 @@ export default {
                 case "manifest_number":
                     updateMasterForm("manifest_number", val);
                     break;
+                case "manifest_prefix":
+                    updateMasterForm("manifest_prefix", val);
+                    break;
                 case "max_weight":
                     updateMasterForm("max_weight", val);
                     break;
                 case "manifest_method_id":
-                    this.manifest_method_id = val;
-                    if (type == "manifest_method_id" && val == 1) {
-                        this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
-                        this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true);
-                        this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", true);
-                        // Adjust widths for flight mode
-                        this.adjustFieldWidths('flight');
-                    } else if (type == "manifest_method_id" && val != 1) {
-                        
-                        this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
-                        this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
-
-                        if (val == 2) {
-                            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true);   
-                            this.getDataEmployee();
-                            // Adjust widths for road mode with driver
-                            this.adjustFieldWidths('road-with-driver');
-                        } else {
-                            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
-                            // Adjust widths for road mode without driver
-                            this.adjustFieldWidths('road-no-driver');
-                        }
-                    }
-
-                    this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", true);
+                    this.checkManifestMethod(parseInt(val));
+                    this.manifest_method_id = Number(val);
 
                     if (info?.data) {
                         this.vehicle_mode_id = info.data.vehicle_mode_id || "";
+                        
+                        if (info.data.vehicle_prefix) {
+                            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", info.data.vehicle_prefix);
+                            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_value", info.data.vehicle_prefix);
+                        }
+                        
                         this.autoComplateUrl = `${this.URL.node}/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`;
-                        this.getDataVehicleType();
                     }
                     updateMasterForm("manifest_method_id", val);
                     updateMasterForm("vehicle_mode_id", val);
+                    if (val === 2) this.getDataEmployee();
                     break;
                 case "flight_number":
                     updateMasterForm("flight_number", val);
@@ -944,15 +963,7 @@ export default {
                         updateMasterForm("node_id_destination", info?.data?.node_id);
                     }
                     break;
-                case "vehicle_type_id":
-                    if (info?.data) {
-                        this.vehicle_type_id = info.data.vehicle_type_id || "";
-                        this.getDataVehicle();
-                    }
-                    updateMasterForm("vehicle_type_id", val);
-                    break;
                 case "vehicle_id":
-                    this.vehicle_id = val;
                     updateMasterForm("vehicle_id", val);
                     break;
                 case "pic_employee_id":
@@ -984,10 +995,8 @@ export default {
         },
         originNode(){
             if (this.listenNode.length > 0) {
-                const nodeName = this.listenCurrentNode.node_name;
-                const nodeId = this.listenCurrentNode.node_id;
-                this.node_id_origin = nodeId;
-                this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN', nodeName);
+                this.node_id_origin = this.listenCurrentNode.node_id;
+                this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN', this.listenCurrentNode.node_name + " (" + this.listenCurrentNode.node_code + ")");
             }
         },
         resetForm() {
@@ -995,10 +1004,28 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", "");
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", {});
             this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", []);
-            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_TYPE_ID", "");
-            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_TYPE_ID_ArrData", []);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "");
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", []);
+            this.$store.dispatch("SET_SURAT_MUATAN_ETD", "");
+            this.$store.dispatch("SET_SURAT_MUATAN_ETA", "");
+
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_visible", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
+
+            // Notes: Disabled field for SM Stock
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", false);
         },
         handleEta(dateTime, amount) {
             if (dateTime && amount) {
@@ -1029,49 +1056,6 @@ export default {
         refreshDetail() {
             this.getSuratMuatanDetail();
         },
-        adjustFieldWidths(mode) {
-            // Dynamically adjust field widths based on visibility
-            const state = this.$store.state.inputs.surat_muatan;
-            
-            // Reset all to default first
-            if (state.manifest_number) state.manifest_number.width = "6";
-            if (state.max_weight) state.max_weight.width = "6";
-            if (state.manifest_method_id) state.manifest_method_id.width = "12";
-            if (state.node_id_origin) state.node_id_origin.width = "12";
-            if (state.node_id_destination) state.node_id_destination.width = "12";
-            if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
-            if (state.vehicle_id) state.vehicle_id.width = "6";
-            if (state.etd) state.etd.width = "6";
-            if (state.eta) state.eta.width = "6";
-            if (state.auto_depart) state.auto_depart.width = "12";
-            
-            switch(mode) {
-                case 'flight':
-                    // Flight mode layout
-                    if (state.flight_number) state.flight_number.width = "6";
-                    if (state.flight_schedule) state.flight_schedule.width = "6";
-                    // Vehicle fields in one row
-                    if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
-                    if (state.vehicle_id) state.vehicle_id.width = "6";
-                    break;
-                    
-                case 'road-with-driver':
-                    // Road mode with driver layout
-                    if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
-                    if (state.vehicle_id) state.vehicle_id.width = "6";
-                    if (state.pic_employee_id) state.pic_employee_id.width = "12";
-                    break;
-                    
-                case 'road-no-driver':
-                    // Road mode without driver layout
-                    if (state.vehicle_type_id) state.vehicle_type_id.width = "6";
-                    if (state.vehicle_id) state.vehicle_id.width = "6";
-                    break;
-            }
-            
-            // Force re-render of form
-            this.$forceUpdate();
-        },
         openTraceBagDialog() {
             this.dialogTraceBag = true;
         }
@@ -1082,14 +1066,24 @@ export default {
 };
 </script>
 <style scoped>
-.title-helper {
-    width: 60%;
-    align-content: center;
+.button-helper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 10px 0;
 }
 
-.button-helper {
-    display: flex; 
-    justify-content: flex-end;
+.title-helper {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
 }
 
 button {
