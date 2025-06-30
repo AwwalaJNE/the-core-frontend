@@ -23,10 +23,11 @@ export default {
     props: {
         placeholder: String,
         isNumeric: Boolean,
+        valueData: String
     },
     data() {
         return {
-            value: ""
+            value: this.valueData || ""
         }
     },
     computed: {

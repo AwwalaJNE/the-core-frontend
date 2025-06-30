@@ -42,6 +42,7 @@
                                 <vs-col xs="6" sm="4" lg="4">
                                     <search-input 
                                         ref="searchInput" 
+                                        :valueData="tempSearch"
                                         :placeholder="searchPlaceholder"
                                         @searchValue="searchValue"
                                     />
