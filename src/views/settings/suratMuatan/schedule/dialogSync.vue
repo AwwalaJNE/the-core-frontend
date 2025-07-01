@@ -111,9 +111,35 @@ export default {
      handleSubmit(){
         this.$refs.formDataController.handleSubmit();
     },
-    onChangeCustom(key, value, object) {
-      this.form[key] = value;
-    },
+    onChangeCustom(type, val, obj) {
+    switch (type) {
+      case "airline_iata":
+        this.$store.commit("SET_SYNC_SURAT_MUATAN_AIRLINE_IATA", val || '');
+        this.$store.commit("SET_SYNC_SURAT_MUATAN_AIRLINE_IATA_ValueData", obj?.data || '');
+        this.$store.commit("SET_SYNC_SURAT_MUATAN_AIRLINE_IATA_ArrData", obj?.arrData || '');
+        break;
+
+      case "dep_iata":
+        this.$store.commit("SET_SYNC_SURAT_MUATAN_DEP_IATA", val || '');
+        this.$store.commit("SET_SYNC_SURAT_MUATAN_DEP_IATA_ValueData", obj?.data || '');
+        this.$store.commit("SET_SYNC_SURAT_MUATAN_DEP_IATA_ArrData", obj?.arrData || '');
+        break;
+
+      case "arr_iata":
+        this.$store.commit("SET_SYNC_SURAT_MUATAN_ARR_IATA", val || '');
+        this.$store.commit("SET_SYNC_SURAT_MUATAN_ARR_IATA_ValueData", obj?.data || '');
+        this.$store.commit("SET_SYNC_SURAT_MUATAN_ARR_IATA_ArrData", obj?.arrData || '');
+        break;
+
+      default:
+        if (val === null || val === '' || typeof val === 'undefined') {
+          this.$delete(this.form, type);
+        } else {
+          this.$set(this.form, type, val);
+        }
+        break;
+    }
+  },
    submitAndOpenDialogSyncResult() {
         if (Object.keys(this.form).length === 0) {
         this.openNotification("danger", "", "Gagal", "Form filter kosong");
