@@ -217,20 +217,20 @@ export default {
                     value: 'ALL'
                 },
                 {
-                    label: 'AIR',
+                    label: 'UDARA',
                     value: '1'
                 },
                 {
-                    label: 'DARAT TRUK',
+                    label: 'DARAT',
                     value: '2'
                 },
                 {
-                    label: 'UDARA',
-                    value: '1053'
+                    label: 'KERETA',
+                    value: '3'
                 },
                 {
-                    label: 'DARAT KA LOG',
-                    value: '1055'
+                    label: 'LAUT',
+                    value: '4'
                 }
             ],
             searchBySchedule: "vehicle_name",
@@ -249,7 +249,7 @@ export default {
                 },
                 {
                     label: "Vehicle Info",
-                    value: "vehicle_information",
+                    value: "vehicle_info",
                 },
                 {
                     label: "Reg No",
