@@ -92,7 +92,7 @@ export default {
       {
         label: "Node Origin",
         key: "inbound_node_name_origin",
-        width: "xxs",
+        width: "md",
       },
       {
         label: "Branch Origin",
@@ -446,7 +446,7 @@ export default {
           }
           if (item["vehicle_name"] != null) {
             item["vehicle"] =
-            item["vehicle"] + "(" + item["vehicle_police_no"] + ")";
+            item["vehicle"] + " (" + item["vehicle_police_no"] + ")";
           }
           if (item["manifest_do_items"].length > 0) {
             item["manifest_do_items"].map((el) => {
