@@ -90,14 +90,14 @@ export default {
         width: "xxxs",
       },
       {
-        label: "Node Origin",
-        key: "inbound_node_name_origin",
-        width: "md",
-      },
-      {
         label: "Branch Origin",
         key: "inbound_branch_code_origin",
         width: "xxxxs",
+      },
+      {
+        label: "Node Origin",
+        key: "inbound_node_name_origin",
+        width: "md",
       },
       {
         label: "Inbound Type",
