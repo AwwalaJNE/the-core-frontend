@@ -90,8 +90,13 @@ export default {
         width: "xxxs",
       },
       {
-        label: "From",
+        label: "Node Origin",
         key: "inbound_node_name_origin",
+        width: "xxs",
+      },
+      {
+        label: "Branch Origin",
+        key: "inbound_branch_code_origin",
         width: "xxs",
       },
       {
