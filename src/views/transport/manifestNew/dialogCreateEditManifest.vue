@@ -66,6 +66,12 @@
                         @handleIconClick="openSelectStockModal"
                     />
 
+                    <div style="justify-content: flex-end; display: flex;">
+                        <div class="container-clear-item" @click="handleClearForm(); resetForm()">
+                            Reset Inputs
+                        </div>
+                    </div>
+
                     <!-- Input Bag Section -->
                     <div class="mt-2 mb-2">
                         <vs-row align="center" v-if="!listenIsReadOnly">
