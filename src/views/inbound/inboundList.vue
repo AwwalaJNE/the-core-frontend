@@ -97,7 +97,7 @@ export default {
       {
         label: "Branch Origin",
         key: "inbound_branch_code_origin",
-        width: "xxs",
+        width: "xxxxs",
       },
       {
         label: "Inbound Type",
