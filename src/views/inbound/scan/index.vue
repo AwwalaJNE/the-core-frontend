@@ -240,7 +240,8 @@ export default {
             inboundNumber: '',
             processing: false,
             showDialog: false,
-            is_missroute: false
+            is_missroute: false,
+            is_plain: false
         }
     },
     methods: {
@@ -347,6 +348,9 @@ export default {
                     let arr = [res.data.data];
                     this.receivingLogs = res.data.data.receiving_log;
                     this.inboundNumber = res.data.data.inbound_number;
+                    if (res.data.data.inbound_type === 'RECEIVING CONNOTE' || res.data.data.inbound_type === 'RECEIVING BAG') {
+                        this.is_plain = true
+                    }
 
                     arr = arr.map(item => ({
                         ...item,
@@ -354,7 +358,11 @@ export default {
                         total_unreceived: item.total_unreceived.toString(),
                         is_missroute: item.is_missroute == true ? 1 : 0
                     }));
-                    this.dataTable = arr;
+                    if (!this.is_plain) {
+                        this.dataTable = arr;
+                    } else {
+                        this.dataTable = [];
+                    }
                     this.dataTableProp = res.data.detail;
                     this.dataTableProp.forEach(item => {
                         if (item.is_masterbag === '1') {
