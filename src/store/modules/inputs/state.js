@@ -2671,17 +2671,6 @@ export default {
       value: '',
       width: '6'
     },
-    schedule_id: {
-      label: "Schedule",
-      key: "schedule_id",
-      rule: "",
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: '',
-      width: '6',
-      isDisabled: true,
-    },
     vehicle_id: {
       label: "Vehicle*",
       key: "vehicle_id",
@@ -2693,17 +2682,6 @@ export default {
       value: '',
       width: '6',
       isDisabled: false,
-    },
-    employee_driver_id: {
-      label: "Driver",
-      key: "employee_driver_id",
-      rule:"",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: '6'
     },
     node_id_origin: {
       label: "Origin*",
@@ -4279,7 +4257,7 @@ export default {
       valueData: null,
       value: '',
       isDisabled: true,
-      width: "1",
+      width: "2",
     },
     manifest_number: {
       label: "No Surat Muatan",
@@ -4290,7 +4268,7 @@ export default {
       valueData: null,
       value: '',
       isDisabled: false,
-      width: "5",
+      width: "4",
       showIcon: true
     },
     max_weight: {
@@ -4303,38 +4281,29 @@ export default {
       value: null,
       width: "6"
     },
-    flight_number: {
-      label: "Flight Number",
-      key: "flight_number",
-      rule: "required",
-      visible: false,
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: '',
-      width: "6"
-    },
-    flight_schedule: {
-      label: "Flight Schedule",
-      key: "flight_schedule",
-      rule: "required",
-      visible: false,
-      typeInput: "datetime",
-      typeData: "String",
-      valueData: null,
-      value: '',
-      width: "6"
-    },
     node_id_origin: {
       label: "Origin",
       key: "node_id_origin",
       rule: "required",
+      visible: false,
       typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
       valueData: null,
       value: '',
-      width: "12"
+      width: "6"
+    },
+    node_id_destination: {
+      label: "Destination",
+      key: "node_id_destination",
+      rule:"required",
+      visible: false,
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "6"
     },
     dynamicinputcomponent_node_id_transit: {
       label: "Transit",
@@ -4387,18 +4356,6 @@ export default {
     //   valueData: null,
     //   value: ''
     // },
-    node_id_destination: {
-      label: "Destination",
-      key: "node_id_destination",
-      rule:"",
-      visible: false,
-      typeInput: "autocomplete",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: "12"
-    },
     // vehicle_type_id: {
     //   label: "Tipe",
     //   key: "vehicle_type_id",
@@ -4421,6 +4378,28 @@ export default {
     //   valueData: null,
     //   value: ''
     // },
+    flight_number: {
+      label: "Flight Number",
+      key: "flight_number",
+      rule: "required",
+      visible: false,
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: "6"
+    },
+    flight_schedule: {
+      label: "Flight Schedule",
+      key: "flight_schedule",
+      rule: "required",
+      visible: false,
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: "6"
+    },
     vehicle_id: {
       label: "Vehicle",
       key: "vehicle_id",

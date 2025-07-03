@@ -2104,6 +2104,9 @@ export default {
   SET_SURAT_MUATAN_FLIGHT_NUMBER_visible(state, payload) {
     state.surat_muatan.flight_number.visible = payload
   },
+  SET_SURAT_MUATAN_FLIGHT_NUMBER_isDisabled(state, payload) {
+    state.surat_muatan.flight_number.isDisabled = payload
+  },
 
   SET_SURAT_MUATAN_FLIGHT_SCHEDULE(state, payload) {
     state.surat_muatan.flight_schedule.value = payload
@@ -2113,6 +2116,9 @@ export default {
   },
   SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible(state, payload) {
     state.surat_muatan.flight_schedule.visible = payload
+  },
+  SET_SURAT_MUATAN_FLIGHT_SCHEDULE_isDisabled(state, payload) {
+    state.surat_muatan.flight_schedule.isDisabled = payload
   },
 
   SET_SURAT_MUATAN_MAX_WEIGHT(state, payload) {
@@ -2133,6 +2139,9 @@ export default {
       state.surat_muatan.manifest_method_id.arrData = payload :
       state.surat_muatan.manifest_method_id.arrData = []
   },
+  SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled(state, payload) {
+    state.surat_muatan.manifest_method_id.isDisabled = payload
+  },
 
   SET_SURAT_MUATAN_NODE_ID_ORIGIN(state, payload) {
     state.surat_muatan.node_id_origin.value = payload
@@ -2150,6 +2159,12 @@ export default {
     state.surat_muatan.node_id_origin.hasOwnProperty('arrData') ?
       state.surat_muatan.node_id_origin.arrData = payload :
       state.surat_muatan.node_id_origin.arrData = []
+  },
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN_visible(state, payload) {
+    state.surat_muatan.node_id_origin.visible = payload
+  },
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled(state, payload) {
+    state.surat_muatan.node_id_origin.isDisabled = payload
   },
 
   SET_SURAT_MUATAN_NODE_ID_TRANSIT(state, payload) {
@@ -2244,6 +2259,9 @@ export default {
   SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible(state, payload) {
     state.surat_muatan.node_id_destination.visible = payload
   },
+  SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled(state, payload) {
+    state.surat_muatan.node_id_destination.isDisabled = payload
+  },
 
   SET_SURAT_MUATAN_VEHICLE_TYPE_ID(state, payload) {
     state.surat_muatan.vehicle_type_id.value = payload
@@ -2283,6 +2301,9 @@ export default {
       state.surat_muatan.vehicle_id.arrData = payload :
       state.surat_muatan.vehicle_id.arrData = []
   },
+  SET_SURAT_MUATAN_VEHICLE_ID_isDisabled(state, payload) {
+    state.surat_muatan.vehicle_id.isDisabled = payload
+  },
 
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID(state, payload) {
     state.surat_muatan.pic_employee_id.value = payload
@@ -2298,6 +2319,9 @@ export default {
       state.surat_muatan.pic_employee_id.arrData = payload :
       state.surat_muatan.pic_employee_id.arrData = []
   },
+  SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled(state, payload) {
+    state.surat_muatan.pic_employee_id.isDisabled = payload
+  },
 
   SET_SURAT_MUATAN_ETD(state, payload) {
     state.surat_muatan.etd.value = payload
@@ -2305,12 +2329,18 @@ export default {
   SET_SURAT_MUATAN_ETD_ValueData(state, payload) {
     state.surat_muatan.etd.valueData = payload
   },
+  SET_SURAT_MUATAN_ETD_isDisabled(state, payload) {
+    state.surat_muatan.etd.isDisabled = payload
+  },
 
   SET_SURAT_MUATAN_ETA(state, payload) {
     state.surat_muatan.eta.value = payload
   },
   SET_SURAT_MUATAN_ETA_ValueData(state, payload) {
     state.surat_muatan.eta.valueData = payload
+  },
+  SET_SURAT_MUATAN_ETA_isDisabled(state, payload) {
+    state.surat_muatan.eta.isDisabled = payload
   },
 
   SET_SURAT_MUATAN_AUTO_DEPART(state, payload) {

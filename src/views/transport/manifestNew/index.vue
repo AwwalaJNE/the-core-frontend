@@ -42,9 +42,9 @@
                                 <vs-col xs="6" sm="4" lg="4">
                                     <search-input 
                                         ref="searchInput" 
+                                        :valueData="tempSearch"
                                         :placeholder="searchPlaceholder"
-                                        @searchValue="searchValue" 
-                                        @handleSearch="handleSearch"
+                                        @searchValue="searchValue"
                                     />
                                 </vs-col>
                             </vs-row>
@@ -113,6 +113,7 @@
                                 <vs-col w="8">
                                     <daterange-filter 
                                         size="small" 
+                                        :valueData="tempDate"
                                         @searchDate="searchDate" 
                                     />
                                 </vs-col>
@@ -171,8 +172,8 @@ export default {
     data() {
         return {
             title: "Surat Muatan",
-            tempSearch: "",
-            tempDate: [],
+            tempSearch: this.$ls.get('manifestFilter')?.tempSearch || "",
+            tempDate: this.$ls.get('manifestFilter')?.tempDate || [],
             dialogSuratMuatan: false,
             DataNode: [],
             DataStatus: [
@@ -183,9 +184,9 @@ export default {
             ],
             node_request: "",
             status_pickup: "",
-            searchBy:"manifest_number",
-            filterDateBy:"create",
-            searchPlaceholder: "Search Manifest Number",
+            searchBy: this.$ls.get('manifestFilter')?.searchBy || "manifest_number",
+            filterDateBy: this.$ls.get('manifestFilter')?.filterDateBy || "create",
+            searchPlaceholder: this.$ls.get('manifestFilter')?.searchPlaceholder || "Search Manifest Number",
             searchParams: [
                 {
                     label: 'Manifest Number',
@@ -230,7 +231,7 @@ export default {
                     value: 'eta'
                 }
             ],
-            filterStatusBy: "",
+            filterStatusBy: this.$ls.get('manifestFilter')?.filterStatusBy || "",
             filterStatus: [
                 {
                     label: 'READY',
@@ -257,7 +258,7 @@ export default {
                     value: 'INFO'
                 }
             ],
-            filterIsTransitBy: "",
+            filterIsTransitBy: this.$ls.get('manifestFilter')?.filterIsTransitBy || "",
             filterIsTransit: [
                 {
                     label: 'TRANSIT',
@@ -280,14 +281,27 @@ export default {
         },
     },
     methods: {
+        updateLocalStorage() {
+            this.$ls.set('manifestFilter', {
+                filterDateBy: this.filterDateBy,
+                tempDate: this.tempDate,
+                tempSearch: this.tempSearch,
+                filterIsTransitBy: this.filterIsTransitBy,
+                searchBy: this.searchBy,
+                searchPlaceholder: this.searchPlaceholder,
+                filterStatusBy: this.filterStatusBy,
+            });
+        },
         refresh() {
             this.$refs.SuratMuatan.refresh();
         },
         searchValue(val) {
             this.tempSearch = val;
+            this.updateLocalStorage();
         },
         searchDate(val) {
             this.tempDate = val;
+            this.updateLocalStorage();
         },
         closeDialog() {
             this.dialogSuratMuatan = false;
@@ -304,14 +318,18 @@ export default {
             val = val.replaceAll(" ", "_");
             this.searchBy = val;
             this.searchPlaceholder = key;
+            this.updateLocalStorage();
         },
         updateFilterDateBy(key,val) {
             this.filterDateBy = val;
+            this.updateLocalStorage();
         },
         updateFilterStatus(key){
+            this.updateLocalStorage();
             this.refresh()
         },
         updateFilterIsTransit(key){
+            this.updateLocalStorage();
             this.refresh()
         },
         createNewShortcut() {
@@ -333,12 +351,6 @@ export default {
                 keysPressed[e.key.toLowerCase()] = false;
             });
         },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh();
-                this.$refs.searchInput.clear();
-            });
-        }
     },
     mounted() {
         this.createNewShortcut()

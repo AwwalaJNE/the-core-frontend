@@ -20,6 +20,7 @@
         @updateSelected="updateSelected"
         @inputFocus="onClickClear"
         @actionPopup="actionPopup"
+        @actionPopup2="actionPopup2"
         @actionRunsheetProofAction="actionRunsheetProofAction"
         textDanger="is_priority"
       />
@@ -28,6 +29,12 @@
         :warning_id="warning_id"
         :active="openDialogWarning"
         :closeDialog="closeActionPopup"
+      />
+      <dialog-runsheet-history
+        title="Runsheet History"
+        :koli_number="koli_number"
+        :active="openDialogRunsheetHistory"
+        :closeDialog="closeActionPopup2"
       />
       <dialog-proof-runsheet
         title="Proof Image"
@@ -46,12 +53,14 @@ import master from "@/mixins/master";
 import TableMaster from "@/components/table/tableMaster.vue";
 
 import DialogWarningRunsheet from "@/views/delivery/runsheetNew/edit/dialogWarningRunsheet"
+import DialogRunsheetHistory from "@/views/delivery/runsheetNew/edit/dialogRunsheetHistory"
 import DialogProofRunsheet from "./dialogProofRunsheet.vue";
 
 export default {
   name: "InboundIncoming",
   components: {
     "table-master": TableMaster,
+    "dialog-runsheet-history": DialogRunsheetHistory,
     "dialog-warning-runsheet": DialogWarningRunsheet,
     "dialog-proof-runsheet": DialogProofRunsheet
   },
@@ -161,6 +170,14 @@ export default {
           key: "status_delivery_description",
           width: "auto",
         },
+        {
+          label: "Elapsed",
+          key: "days_elapsed",
+          type: "inputan",
+          typeInput: "button_text",
+          tooltip_desc: "Durasi dari runsheet hingga pengiriman berhasil atau waktu saat ini",
+          width: "auto",
+        },
       ],
       employee_id: "",
       delivery_runsheet_number: null,
@@ -171,7 +188,9 @@ export default {
       },
       openDialogWarning: false,
       openDialogRunsheetProofAction: false,
+      openDialogRunsheetHistory: false,
       warning_id: '',
+      koli_number: '',
       dataItem: {}
     };
   },
@@ -285,6 +304,13 @@ export default {
     },
     closeActionPopup() {
       this.openDialogWarning = false;
+    },
+    actionPopup2(item) {
+      this.koli_number = item.koli_number;
+      this.openDialogRunsheetHistory = true;
+    },
+    closeActionPopup2() {
+      this.openDialogRunsheetHistory = false;
     },
     actionRunsheetProofAction(val) {
       this.dataItem = val;

@@ -770,8 +770,11 @@ export default {
         async getStatus() {
             await axios
                 .get(
-                    `${this.URL.status}?status_type=DELIVERY&n=${this.listenNodeId}&limit=-1`,
+                    `${this.URL.status}?n=${this.listenNodeId}&limit=-1`,
                     this.Helper.header()
+                    // filter untuk semua type
+                    // `${this.URL.status}?status_type=DELIVERY&n=${this.listenNodeId}&limit=-1`,
+                    // this.Helper.header()
                 )
                 .then((res) => {
                     const statusObj = {};
@@ -835,11 +838,13 @@ export default {
                 item.is_disabled_input = false;
                 
                 if (item.hasOwnProperty("koli_number")) {
-                    if (item.koli_number.toLowerCase().includes("rt")) {
-                        item.status_delivery = [...status.rt, ...status.all];
-                    } else {
-                        item.status_delivery = [...status.normal, ...status.all];
-                    }
+                    // filter untuk all status 
+                    // if (item.koli_number.toLowerCase().includes("rt")) {
+                    //     item.status_delivery = [...status.rt, ...status.all];
+                    // } else {
+                    //     item.status_delivery = [...status.normal, ...status.all];
+                    // }
+                     item.status_delivery = [...status.all];
                 }
                 if (item.hasOwnProperty("remarks")) {
                     if (item["status_code"] == null) {
@@ -871,6 +876,10 @@ export default {
                 item.employee_name = data.employee_name;
                 item.employee_code = data.employee_code;
                 item.warning_koli_record_id = item?.warning_koli_record_id
+
+                if (item?.days_elapsed != null) {
+                    item.days_elapsed = this.formatElapsedDay(item.days_elapsed);
+                } 
             });
 
             return delivery;
