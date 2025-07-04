@@ -632,7 +632,7 @@ export default {
             }
 
             if (form.manifest_prefix && form.manifest_number) {
-                form.manifest_number = `${form.manifest_prefix}-${form.manifest_number}`;
+                form.manifest_number = `${form.manifest_prefix}${form.manifest_number}`;
             }
             
             this.form = form;
