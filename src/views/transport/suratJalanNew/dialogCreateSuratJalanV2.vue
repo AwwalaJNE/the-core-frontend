@@ -95,7 +95,7 @@
                                     <form @submit.prevent="submitSuratJalan">
                                         <input-general
                                             icon-after
-                                            name="Scan Surat Muatan / Masterbag / Bag / Koli"
+                                            name="Scan Masterbag / Bag / Koli"
                                             rules=""
                                             formKey="scanBag"
                                             :valueData="item_number"
@@ -304,7 +304,7 @@ export default {
         getScanLabel() {
             switch (this.sj_type) {
                 case 'SJ':
-                    return 'Scan Surat Muatan / Masterbag / Bag / Koli';
+                    return 'Scan Masterbag / Bag / Koli';
                 case 'HBAG':
                     return 'Scan Masterbag / Bag';
                 case 'MTS':

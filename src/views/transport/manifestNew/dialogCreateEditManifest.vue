@@ -66,7 +66,7 @@
                         @handleIconClick="openSelectStockModal"
                     />
 
-                    <div style="justify-content: flex-end; display: flex;">
+                    <div v-if="!isDisabled" style="justify-content: flex-end; display: flex;">
                         <div class="container-clear-item" @click="handleClearForm(); resetForm()">
                             Reset Inputs
                         </div>
@@ -364,7 +364,7 @@ export default {
             this.checkManifestMethod(parseInt(val.vehicle_mode_id));
 
             this.vehicle_type_id = val.vehicle_type_id;
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", val.vehicle_prefix_name);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", val.vehicle_prefix_name + "-");
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", val.manifest_number);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID", parseInt(val.vehicle_mode_id));
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", val?.node_name_origin + " (" + val?.node_code_origin + ")");
@@ -373,6 +373,7 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_ETD", val.etd);
             this.$store.dispatch("SET_SURAT_MUATAN_ETA", val.eta);
 
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData", val.vehicle_prefix_name + "-");
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", val.node_id_origin);
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", val.node_id_destination);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ValueData", val.vehicle_id);
@@ -632,7 +633,7 @@ export default {
             }
 
             if (form.manifest_prefix && form.manifest_number) {
-                form.manifest_number = `${form.manifest_prefix}-${form.manifest_number}`;
+                form.manifest_number = `${form.manifest_prefix}${form.manifest_number}`;
             }
             
             this.form = form;
