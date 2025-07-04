@@ -91,8 +91,8 @@ export default {
       },
       {
         label: "Branch Origin",
-        key: "inbound_branch_code_origin",
-        width: "xxxxs",
+        key: "inbound_branch",
+        width: "xs",
       },
       {
         label: "Node Origin",
@@ -431,6 +431,7 @@ export default {
         this.dataTable = res.data.data;
         this.dataTable.map((item) => {
           let im = [];
+          item['inbound_branch'] = item?.inbound_branch_name_origin ? item?.inbound_branch_code_origin + ' - ' + item?.inbound_branch_name_origin : item?.inbound_branch_code_origin;
           item['created_orion'] = item['created_orion'] == null ? this.dateConvert(item['created_at']) : this.dateConvert(item['created_orion']);
           item["inbound_eta"] = this.dateConvert(item["inbound_eta"]);
           item["inbound_etd"] = this.dateConvert(item["inbound_etd"]);
