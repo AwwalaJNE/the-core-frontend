@@ -128,6 +128,7 @@
                         :limit="pagination.limit"
                         :hasPagination="true"
                         :hasLinked="['koli_number']"
+                        :icon_tooltip="'Contains Undelivered Koli'"
                         @handleEdit="showData"
                         @actionPagination="actionPagination"
                         @actionLimit="actionLimit"
@@ -196,6 +197,13 @@ export default {
             dateRange: [],
             dataTable: [],
             datacolumn: [
+                {
+                    label: "",
+                    key: "is_contains_undelivered",
+                    type: "inputan",
+                    typeInput: "icon",
+                    width: "auto"
+                },
                 {
                     label: "Connote",
                     key: "koli_number",

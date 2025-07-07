@@ -13,6 +13,7 @@
         :hasPagination="true"
         :expandable="true"
         :hasChildStatus="true"
+        :icon_tooltip="'Contains Undelivered Koli'"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEditLinkedChild="actionDetail"
@@ -43,6 +44,13 @@ export default {
         return {
             dataTable: [],
             datacolumn: [
+                {
+                    label: "",
+                    key: "is_contains_undelivered",
+                    type: "inputan",
+                    typeInput: "icon",
+                    width: "auto"
+                },
                 {
                     label: "Courier Code",
                     key: "employee_code",

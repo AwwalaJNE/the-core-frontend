@@ -514,10 +514,23 @@
                       "
                     >
                       <template v-if="item[column.key]">
-                        <i 
-                          class='bx bxs-error-circle icon-warning' 
-                          @click="actionPopup(item[column.key])"
-                        ></i>
+                        <template v-if="icon_tooltip">
+                          <vs-tooltip bottom>
+                            <i 
+                              class="bx bxs-error-circle icon-warning"
+                              @click="actionPopup(item[column.key])"
+                            ></i>
+                            <template #tooltip>
+                              {{ icon_tooltip }}
+                            </template>
+                          </vs-tooltip>
+                        </template>
+                        <template v-else>
+                          <i 
+                            class="bx bxs-error-circle icon-warning"
+                            @click="actionPopup(item[column.key])"
+                          ></i>
+                        </template>
                       </template>
                     </template>
                     <template
@@ -1660,7 +1673,8 @@ export default {
     isSingleSelect: {
       type: Boolean,
       default: false
-    }
+    },
+    icon_tooltip: String
   },
   data() {
     return {
