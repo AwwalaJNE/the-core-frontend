@@ -45,13 +45,6 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "",
-                    key: "is_contains_undelivered",
-                    type: "inputan",
-                    typeInput: "icon",
-                    width: "auto"
-                },
-                {
                     label: "Courier Code",
                     key: "employee_code",
                     width: "xs"
@@ -160,6 +153,7 @@ export default {
                     let arr = res.data.data
                     arr.map((item) => {
                         let children = {}
+                        let is_contains_undelivered = []
                         let delivery_runsheet_number = []
                         let dri = []
                         let hrs = []
@@ -170,6 +164,7 @@ export default {
                         let total_undelivered = []
                         let total_undelivery_received = []
                         item['children_width'] = {
+                            'Priority': 'auto',
                             'Runsheet #': 'md',
                             'DRI Number': 'sm',
                             'HRS Number': 'sm',
@@ -181,7 +176,15 @@ export default {
                             'Undelivered Received': 'xs',
                             'HRS': 'xxxxs'
                         }
+                        item['children_hide_label'] = ['Priority']
+                        item['children_type'] = {
+                            'Priority': 'icon-warning'
+                        }
+                        item['children_icon_tooltip'] = {
+                            'Priority': 'Contains Undelivered Koli'
+                        }
                         item.delivery.map((el) => {
+                            is_contains_undelivered.push(el.is_contains_undelivered)
                             delivery_runsheet_number.push(el.delivery_runsheet_number)
                             dri.push(el.dri ?? "-")
                             hrs.push(el.hrs ?? "-")
@@ -192,6 +195,7 @@ export default {
                             total_undelivered.push(el.total_undelivered)
                             total_undelivery_received.push(el.total_undelivery_received)
                         })
+                        children['Priority'] = is_contains_undelivered
                         children['Runsheet #'] = delivery_runsheet_number
                         children['DRI Number'] = dri
                         children['HRS Number'] = hrs
@@ -204,6 +208,7 @@ export default {
                         item['children'] = children
                     })
                     this.dataTable = arr
+                    console.log("PP", this.dataTable)
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page

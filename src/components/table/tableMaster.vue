@@ -1428,7 +1428,9 @@
                         :class="item.hasOwnProperty('children_width') ? item['children_width'][c_item] : ''"
                         style="font-size: 0.85em; padding-left: 0.75em"
                       >
-                        {{ c_item.replace(/[&\/\\#,+$~%._'":*?<>{}]/g, " ") }}
+                        <template v-if="item.children_hide_label && !item.children_hide_label.includes(c_item)">
+                          {{ c_item.replace(/[&\/\\#,+$~%._'":*?<>{}]/g, " ") }}
+                        </template>
                       </th>
                     </tr>
                     <tr>
@@ -1455,6 +1457,27 @@
                                   </template>
                                 </template>
                                 <template v-else-if="typeof itm === 'boolean'">
+                                  <vs-tooltip v-if="item.children_icon_tooltip.hasOwnProperty(c_item)" bottom>
+                                    <i class="bx bxs-error-circle icon-warning"></i>
+                                      <template #tooltip>
+                                        {{ item.children_icon_tooltip && item.children_icon_tooltip.hasOwnProperty(c_item) ? item.children_icon_tooltip[c_item] : '' }}
+                                      </template>
+                                  </vs-tooltip>
+                                  <vs-button
+                                    v-else
+                                    circle
+                                    icon
+                                    border
+                                    disabled
+                                    :danger="itm == false ? true : false"
+                                    :active="false"
+                                  >
+                                    <i
+                                      :class="
+                                        `bx bx-${itm == false ? 'x' : 'check'}`
+                                      "
+                                    ></i>
+                                  </vs-button>
                                   <vs-button
                                     circle
                                     icon
@@ -1462,6 +1485,7 @@
                                     disabled
                                     :danger="itm == false ? true : false"
                                     :active="false"
+                                    v-else
                                   >
                                     <i
                                       :class="
