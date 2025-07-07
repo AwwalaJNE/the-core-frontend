@@ -1443,7 +1443,7 @@
                               <li
                                 v-for="(itm, idx) in item.children[c_item]"
                                 :key="idx"
-                                :style="{ fontSize: '0.85em', height: listenHasChildStatus ? '2.5rem' : '' }"
+                                :style="{ margin: '1em 0', ontSize: '0.85em', height: listenHasChildStatus ? '2.5rem' : '' }"
                               >
                                 <template v-if="typeof itm === 'object'">
                                   <template
