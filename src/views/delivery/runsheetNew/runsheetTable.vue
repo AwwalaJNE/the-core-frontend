@@ -13,7 +13,6 @@
         :hasPagination="true"
         :expandable="true"
         :hasChildStatus="true"
-        :icon_tooltip="'Contains Undelivered Koli'"
         @actionLimit="actionLimit"
         @actionPagination="actionPagination"
         @handleEditLinkedChild="actionDetail"
@@ -208,7 +207,6 @@ export default {
                         item['children'] = children
                     })
                     this.dataTable = arr
-                    console.log("PP", this.dataTable)
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
