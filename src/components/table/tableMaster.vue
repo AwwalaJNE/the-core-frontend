@@ -1445,7 +1445,18 @@
                                 :key="idx"
                                 :style="{ margin: '1em 0', ontSize: '0.85em', height: listenHasChildStatus ? '2.5rem' : '' }"
                               >
-                                <template v-if="typeof itm === 'object'">
+                                <template v-if="item.children_type && item.children_type.hasOwnProperty(c_item)">
+                                  <template v-if="item.children_type[c_item] === 'icon-warning' && itm">
+                                    <vs-tooltip v-if="item.children_icon_tooltip.hasOwnProperty(c_item)" bottom>
+                                      <i class="bx bxs-error-circle icon-warning"></i>
+                                      <template #tooltip>
+                                        {{ item.children_icon_tooltip && item.children_icon_tooltip.hasOwnProperty(c_item) ? item.children_icon_tooltip[c_item] : '' }}
+                                      </template>
+                                    </vs-tooltip>
+                                  </template>
+                                  
+                                </template>
+                                <template v-else-if="typeof itm === 'object'">
                                   <template
                                     v-for="(itm_keys, itm_i) in Object.keys(
                                       itm
@@ -1457,27 +1468,6 @@
                                   </template>
                                 </template>
                                 <template v-else-if="typeof itm === 'boolean'">
-                                  <vs-tooltip v-if="item.children_icon_tooltip.hasOwnProperty(c_item)" bottom>
-                                    <i class="bx bxs-error-circle icon-warning"></i>
-                                      <template #tooltip>
-                                        {{ item.children_icon_tooltip && item.children_icon_tooltip.hasOwnProperty(c_item) ? item.children_icon_tooltip[c_item] : '' }}
-                                      </template>
-                                  </vs-tooltip>
-                                  <vs-button
-                                    v-else
-                                    circle
-                                    icon
-                                    border
-                                    disabled
-                                    :danger="itm == false ? true : false"
-                                    :active="false"
-                                  >
-                                    <i
-                                      :class="
-                                        `bx bx-${itm == false ? 'x' : 'check'}`
-                                      "
-                                    ></i>
-                                  </vs-button>
                                   <vs-button
                                     circle
                                     icon
@@ -1485,7 +1475,6 @@
                                     disabled
                                     :danger="itm == false ? true : false"
                                     :active="false"
-                                    v-else
                                   >
                                     <i
                                       :class="
