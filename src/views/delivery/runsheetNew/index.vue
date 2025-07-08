@@ -27,13 +27,25 @@
             <div class="box view">
                 <div class="nav-box">
                     <vs-row justify>
-                        <vs-col xs="6" sm="2" lg="2" class="mb-15">
+                        <vs-col xs="6" sm="2" lg="3" class="mb-15">
                             <vs-input 
                                 v-model="tempDate" 
                                 type="date" 
                             />
                         </vs-col>
-                        <vs-col    offset="4" xs="12" sm="12" lg="6">
+                        <vs-col xs="6" sm="2" lg="3">
+                            <div class="select-delivery">
+                                <selector 
+                                    formKey="filter_priority"
+                                    :valueData="filterPriority"
+                                    :selectedValue="filterPriorityBy"
+                                    :isMultiple="false"
+                                    :loading="loading"
+                                    @updateValue="updatefilterPriorityBy" 
+                                />
+                            </div>
+                        </vs-col>
+                        <vs-col xs="12" sm="12" lg="6">
                             <vs-row justify="end">
                                 <vs-col xs="6" sm="8" lg="4">
                                     <select-search-by 
@@ -65,6 +77,7 @@
                             :query="tempSearch"
                             :searchBy="searchBy"
                             :filterDateBy="filterDateBy"
+                            :filterPriorityBy="filterPriorityBy"
                         />
                     </transition>
                 </template>
@@ -89,6 +102,7 @@ import dateRange from "@/components/daterange/index";
 import NavItem from "@/components/navbar/navTab";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
+import Selector from "@/components/input/select";
 
 import DeliveryRunsheetTable from "@/views/delivery/runsheetNew/runsheetTable";
 import DialogCreateRunsheet from "@/views/delivery/runsheetNew/dialogCreateRunsheet";
@@ -103,7 +117,8 @@ export default {
         "daterange-filter": dateRange,
         "select-search-by" : SelectSearchBy,
         DeliveryRunsheetTable: DeliveryRunsheetTable,
-        "dialog-create-runsheet": DialogCreateRunsheet
+        "dialog-create-runsheet": DialogCreateRunsheet,
+        "selector": Selector,
     },
     data() {
         return {
@@ -146,6 +161,21 @@ export default {
                 },
             ],
             dialogCreateRunsheet: false,
+            filterPriorityBy: "ALL",
+            filterPriority: [
+                {
+                    label: 'All Priority',
+                    value: 'ALL'
+                },
+                {
+                    label: 'Priority Runsheet',
+                    value: '1'
+                },
+                {
+                    label: 'Non Priority Runsheet',
+                    value: '0'
+                },
+            ],
         };
     },
     watch: {
@@ -158,6 +188,9 @@ export default {
         },
     },
     methods: {
+        updatefilterPriorityBy(key, val) {
+            this.filterPriorityBy = val;
+        },
         refresh() {
             this.$refs.DeliveryRunsheetTable.refresh();
         },
@@ -222,3 +255,8 @@ export default {
     }
 };
 </script>
+<style scoped>
+.select-delivery {
+    margin-top: -10px !important;
+}
+</style>
