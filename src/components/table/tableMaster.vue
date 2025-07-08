@@ -1428,7 +1428,7 @@
                         :class="item.hasOwnProperty('children_width') ? item['children_width'][c_item] : ''"
                         style="font-size: 0.85em; padding-left: 0.75em"
                       >
-                        <template v-if="item.children_hide_label && !item.children_hide_label.includes(c_item)">
+                        <template v-if="(item.children_hide_label && !item.children_hide_label.includes(c_item)) || !item.children_hide_label">
                           {{ c_item.replace(/[&\/\\#,+$~%._'":*?<>{}]/g, " ") }}
                         </template>
                       </th>
