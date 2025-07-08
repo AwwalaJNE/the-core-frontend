@@ -134,7 +134,6 @@ export default {
         },
         filterPriorityBy: function(val, old) {
             if(val !== undefined) {
-                console.log("PP", val)
                 this.tempPriority = val
                 if(this.tempPriority !== old) {
                     this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, this.node_filter, val)
