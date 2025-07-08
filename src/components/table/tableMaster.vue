@@ -711,6 +711,9 @@
                           item[column.key] ? item[column.key] : ""
                         }}</span>
                       </template>
+                      <template v-else-if="column.key === 'koli_with_priority'">
+                        <span class="text-link priority-link" @click="handleEdit(item)" v-html="item[column.key]"></span>
+                      </template>
                       <template v-else>
                         <span class="text-link" @click="handleEdit(item)">{{
                           item[column.key] ? item[column.key] : ""
@@ -2263,5 +2266,14 @@ span.text-danger {
   .tooltip-container:hover .tooltip-text {
     visibility: visible;
     opacity: 1;
+  }
+
+  .priority-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.25;
+    vertical-align: middle;
+    cursor: pointer;
   }
 </style>
