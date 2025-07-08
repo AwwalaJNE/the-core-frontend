@@ -199,7 +199,7 @@ export default {
             datacolumn: [
                 {
                     label: "",
-                    key: "is_contains_undelivered",
+                    key: "has_undelivered_connote",
                     type: "inputan",
                     typeInput: "icon",
                     width: "auto"

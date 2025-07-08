@@ -153,7 +153,7 @@ export default {
                     let arr = res.data.data
                     arr.map((item) => {
                         let children = {}
-                        let is_contains_undelivered = []
+                        let has_undelivered_connote = []
                         let delivery_runsheet_number = []
                         let dri = []
                         let hrs = []
@@ -184,7 +184,7 @@ export default {
                             'Priority': 'Contains Undelivered Koli'
                         }
                         item.delivery.map((el) => {
-                            is_contains_undelivered.push(el.is_contains_undelivered)
+                            has_undelivered_connote.push(el.has_undelivered_connote)
                             delivery_runsheet_number.push(el.delivery_runsheet_number)
                             dri.push(el.dri ?? "-")
                             hrs.push(el.hrs ?? "-")
@@ -195,7 +195,7 @@ export default {
                             total_undelivered.push(el.total_undelivered)
                             total_undelivery_received.push(el.total_undelivery_received)
                         })
-                        children['Priority'] = is_contains_undelivered
+                        children['Priority'] = has_undelivered_connote
                         children['Runsheet #'] = delivery_runsheet_number
                         children['DRI Number'] = dri
                         children['HRS Number'] = hrs
