@@ -58,7 +58,6 @@
   
 <script>
 
-import axios from "axios";
 import master from "@/mixins/master";
 
 import Breadcrumb from "@/components/breadcrumb/index";
@@ -73,8 +72,6 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "flight-list": FlightList,
-    },
-    computed: {
     },
     data() {
         return {
@@ -111,7 +108,15 @@ export default {
             this.activeTab("k-FLIGHT-LIST");
             this.$router.push("/trace-flight");
             this.setRoutePageHistory(this.$route.meta, false);
-            this.$refs.formFlightNumber.$el.querySelector("input").focus();
+            this.focusFlightInput();
+        },
+        focusFlightInput() {
+            this.$nextTick(() => {
+                const input = this.$refs.formFlightNumber?.$el?.querySelector("input");
+                if (input && !input.disabled) {
+                    input.focus();
+                }
+            });
         }
     },
     mounted() {
