@@ -124,6 +124,19 @@ export default {
           },
         },
         {
+          label: "Trace Flights",
+          url: "/trace-flight",
+          icon: "bx-search-alt",
+          permission: "",
+          children: [],
+          showAll: true,
+          meta: {
+            resource_type: resourceLookup["TRACE_FLIGHT"].resource_type,
+            resource_code: resourceLookup["TRACE_FLIGHT"].resource_code,
+            resource_name: resourceLookup["TRACE_FLIGHT"].resource_name
+          },
+        },
+        {
           label: "Transaction",
           url: null,
           icon: "bx-list-ol",
