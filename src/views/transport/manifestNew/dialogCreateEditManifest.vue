@@ -482,24 +482,12 @@ export default {
             this.editData = val;
         },
         async getEditDataByApi() {
-            console.log('getEditDataByApi')
             this.loadingSuratMuatan = true;
             try {
                 const res = await axios.get(`${this.URL.surat_muatan}/${this.listenSMNumber}?n=${this.listenNodeId}`, this.Helper.header());
 
                 let data = res.data.data
                 if (data) {
-                    data["node_id_origin"] = data["origin"]["node_name"];
-                    data["node_id_destination"] = data["destination"]["node_name"];
-                    data['manifest_method_id'] = parseInt(data['manifest_method_id']);
-                    data['vehicle_id'] = parseInt(data['vehicle_id']);
-                    data['pic_employee_id'] = parseInt(data['pic_employee_id']);
-                    data['vehicle_type_id'] = parseInt(data['vehicle_type_id']);
-                    data['flight_number'] = data['flight_number'];
-                    data['flight_schedule'] = data['flight_schedule'];
-                    
-                    this.dataByApi = data;
-
                     this.getDataPreview(data);
                 }
 
@@ -512,11 +500,17 @@ export default {
         getDataPreview(val) {
             this.checkManifestMethod(parseInt(val.vehicle_mode_id));
 
-            this.vehicle_mode_id = val.vehicle_mode_id;
-            this.vehicle_type_id = val?.vehicle_type_id ?? null;
+            val.manifest_method_id = parseInt(val.manifest_method_id);
+            val.manifest_prefix = val?.manifest_method?.prefix_name;
+            val.node_id_origin = val?.origin?.node_name + " (" + val?.origin?.node_code + ")";
+            val.node_id_destination = val?.destination?.node_name + " (" + val?.destination?.node_code + ")";
+            val.vehicle_id = val?.vehicle?.vehicle_name;
+            val.pic_employee_id = val?.employee_pic?.employee_name;
+            val.flight_number = val?.flight_number;
+            val.flight_schedule = val?.flight_schedule;
 
-            this.getDataVehicle();
-
+            this.dataByApi = val;
+            
             if (val?.detail) {
                 let arr = [];
 
