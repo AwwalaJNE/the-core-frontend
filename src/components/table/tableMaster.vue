@@ -514,10 +514,23 @@
                       "
                     >
                       <template v-if="item[column.key]">
-                        <i 
-                          class='bx bxs-error-circle icon-warning' 
-                          @click="actionPopup(item[column.key])"
-                        ></i>
+                        <template v-if="icon_tooltip">
+                          <vs-tooltip bottom>
+                            <i 
+                              class="bx bxs-error-circle icon-warning"
+                              @click="actionPopup(item[column.key])"
+                            ></i>
+                            <template #tooltip>
+                              {{ icon_tooltip }}
+                            </template>
+                          </vs-tooltip>
+                        </template>
+                        <template v-else>
+                          <i 
+                            class="bx bxs-error-circle icon-warning"
+                            @click="actionPopup(item[column.key])"
+                          ></i>
+                        </template>
                       </template>
                     </template>
                     <template
@@ -1415,7 +1428,9 @@
                         :class="item.hasOwnProperty('children_width') ? item['children_width'][c_item] : ''"
                         style="font-size: 0.85em; padding-left: 0.75em"
                       >
-                        {{ c_item.replace(/[&\/\\#,+$~%._'":*?<>{}]/g, " ") }}
+                        <template v-if="(item.children_hide_label && !item.children_hide_label.includes(c_item)) || !item.children_hide_label">
+                          {{ c_item.replace(/[&\/\\#,+$~%._'":*?<>{}]/g, " ") }}
+                        </template>
                       </th>
                     </tr>
                     <tr>
@@ -1428,9 +1443,20 @@
                               <li
                                 v-for="(itm, idx) in item.children[c_item]"
                                 :key="idx"
-                                :style="{ fontSize: '0.85em', height: listenHasChildStatus ? '2.5rem' : '' }"
+                                :style="{ margin: '1em 0', ontSize: '0.85em', height: listenHasChildStatus ? '2.5rem' : '' }"
                               >
-                                <template v-if="typeof itm === 'object'">
+                                <template v-if="item.children_type && item.children_type.hasOwnProperty(c_item)">
+                                  <template v-if="item.children_type[c_item] === 'icon-warning' && itm">
+                                    <vs-tooltip v-if="item.children_icon_tooltip.hasOwnProperty(c_item)" bottom>
+                                      <i class="bx bxs-error-circle icon-warning"></i>
+                                      <template #tooltip>
+                                        {{ item.children_icon_tooltip && item.children_icon_tooltip.hasOwnProperty(c_item) ? item.children_icon_tooltip[c_item] : '' }}
+                                      </template>
+                                    </vs-tooltip>
+                                  </template>
+                                  
+                                </template>
+                                <template v-else-if="typeof itm === 'object'">
                                   <template
                                     v-for="(itm_keys, itm_i) in Object.keys(
                                       itm
@@ -1660,7 +1686,8 @@ export default {
     isSingleSelect: {
       type: Boolean,
       default: false
-    }
+    },
+    icon_tooltip: String
   },
   data() {
     return {
