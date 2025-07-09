@@ -101,6 +101,11 @@ export default {
           width: "xxxxs",
         },
         {
+          label: "Flight Number",
+          key: "flight_number",
+          width: "xxxxs",
+        },
+        {
           label: "Vehicle",
           key: "formatted_vehicle",
           width: "xxxs",
