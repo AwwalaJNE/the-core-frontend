@@ -126,7 +126,7 @@ export default {
         {
           label: "Trace Flights",
           url: "/trace-flight",
-          icon: "bx-search-alt",
+          icon: "bx-search-alt-2",
           permission: "",
           children: [],
           showAll: true,
