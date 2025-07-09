@@ -234,16 +234,16 @@ export default {
             filterStatusBy: this.$ls.get('manifestFilter')?.filterStatusBy || "",
             filterStatus: [
                 {
-                    label: 'READY',
-                    value: 'READY'
+                    label: 'UNAPPROVED',
+                    value: 'UNAPPROVED'
                 },
                 {
-                    label: 'CANCELED',
-                    value: 'CANCELED'
+                    label: 'OUTSTANDING',
+                    value: 'OUTSTANDING'
                 },
                 {
-                    label: 'DEPARTED',
-                    value: 'DEPARTED'
+                    label: 'UNRECEIVED',
+                    value: 'UNRECEIVED'
                 },
                 {
                     label: 'RECEIVED',
@@ -254,9 +254,9 @@ export default {
                     value: 'MISSROUTE RECEIVED'
                 },
                 {
-                    label: 'INFO',
-                    value: 'INFO'
-                }
+                    label: 'CANCELED',
+                    value: 'CANCELED'
+                },
             ],
             filterIsTransitBy: this.$ls.get('manifestFilter')?.filterIsTransitBy || "",
             filterIsTransit: [
