@@ -84,6 +84,9 @@ import TraceConnote from '@/views/traceConnote/index'
 // === Trace Bag ===
 import TraceBag from '@/views/traceBag/index'
 
+// === Trace Flight ===
+import TraceFlight from '@/views/traceFlight/index'
+
 // === Cash Register  ===
 import CashRegister from "@/views/cashRegister"
 
@@ -685,6 +688,21 @@ const routes = [
           resource_type: resourceLookup["TRACE_BAG"].resource_type,
           resource_code: resourceLookup["TRACE_BAG"].resource_code,
           resource_name: resourceLookup["TRACE_BAG"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
+        }
+      },
+      {
+        path: "trace-flight/:id?",
+        name: "trace-flight",
+        component: TraceFlight,
+        children: [],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Trace Flight",
+          resource_type: resourceLookup["TRACE_FLIGHT"].resource_type,
+          resource_code: resourceLookup["TRACE_FLIGHT"].resource_code,
+          resource_name: resourceLookup["TRACE_FLIGHT"].resource_name,
           isMaintenanceMode: false,
           permission: '',
         }
