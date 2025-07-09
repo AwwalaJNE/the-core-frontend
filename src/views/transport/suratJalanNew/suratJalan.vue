@@ -317,7 +317,7 @@ export default {
           width: "xxxxs",
         },
         {
-          label: "Latest Node Receiver",
+          label: "Latest Node",
           key: "latest_node_code_receiver",
           width: "xxxxs",
         },

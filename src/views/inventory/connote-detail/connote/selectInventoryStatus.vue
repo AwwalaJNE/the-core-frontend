@@ -70,7 +70,7 @@ export default {
                   width: "sm",
                 },
                 {
-                    label: "PIC",
+                    label: "User",
                     key: "user_name",
                     width: "xs"
                 },
