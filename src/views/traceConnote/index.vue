@@ -564,6 +564,7 @@ export default {
         }
     },
     mounted() {
+        this.removeConnoteNumber();
       this.getConnote();
       this.$refs.formInputConnoteOrion.$el.querySelector("input").focus();
     }

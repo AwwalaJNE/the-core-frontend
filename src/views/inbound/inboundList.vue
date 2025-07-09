@@ -85,6 +85,11 @@ export default {
         width: "xxxs",
       },
       {
+        label: "Flight Number",
+        key: "flight_number",
+        width: "xxxs",
+      },
+      {
         label: "Vehicle",
         key: "vehicle",
         width: "xxxs",
@@ -431,6 +436,7 @@ export default {
         this.dataTable = res.data.data;
         this.dataTable.map((item) => {
           let im = [];
+          item["flight_number"] = item?.manifest?.flight_number;
           item['inbound_branch'] = item?.inbound_branch_name_origin ? item?.inbound_branch_code_origin + ' - ' + item?.inbound_branch_name_origin : item?.inbound_branch_code_origin;
           item['created_orion'] = item['created_orion'] == null ? this.dateConvert(item['created_at']) : this.dateConvert(item['created_orion']);
           item["inbound_eta"] = this.dateConvert(item["inbound_eta"]);

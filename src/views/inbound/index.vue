@@ -250,16 +250,20 @@ export default {
                 value: '-'
               },
               {
-                label: 'Info',
-                value: 'INFO'
+                label: 'Outstanding',
+                value: 'OUTSTANDING'
+              },
+              {
+                label: 'Unreceived',
+                value: 'UNRECEIVED'
               },
               {
                 label: 'Received',
                 value: 'RECEIVED'
               },
               {
-                label: 'Outstanding',
-                value: 'OUTSTANDING'
+                label: 'Missroute Received',
+                value: 'MISSROUTE RECEIVED'
               }
             ],
             values: JSON.parse(localStorage.getItem("InboundFilters"))?.values || '-',

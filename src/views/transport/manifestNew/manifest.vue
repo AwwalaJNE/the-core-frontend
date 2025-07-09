@@ -101,12 +101,17 @@ export default {
           width: "xxxxs",
         },
         {
+          label: "Flight Number",
+          key: "flight_number",
+          width: "xxxxs",
+        },
+        {
           label: "Vehicle",
           key: "formatted_vehicle",
           width: "xxxs",
         },
         {
-          label: "Jenis Kiriman",
+          label: "Tipe Kiriman",
           key: "jenis_kiriman",
           isTransitTag: "isTransitTag",
           width: "xxxs",
