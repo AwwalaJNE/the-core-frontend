@@ -127,7 +127,7 @@
                         :page="pagination.page"
                         :limit="pagination.limit"
                         :hasPagination="true"
-                        :hasLinked="['koli_number']"
+                        :hasLinked="['koli_with_priority']"
                         @handleEdit="showData"
                         @actionPagination="actionPagination"
                         @actionLimit="actionLimit"
@@ -198,8 +198,8 @@ export default {
             datacolumn: [
                 {
                     label: "Connote",
-                    key: "koli_number",
-                    width: "xxs"
+                    key: "koli_with_priority",
+                    width: "sm"
                 },
                 {
                     label: "HRS",
@@ -360,6 +360,15 @@ export default {
                 const res = await axios.get(`${this.URL.revamp_tracing}?n=${this.listenNodeId}&status=${this.is_history ? "1" : "0"}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, this.Helper.header());
 
                 this.dataTable = res.data.data;
+                this.dataTable.forEach(item => {
+                    if (item.is_priority) {
+                        item.koli_with_priority = item.koli_with_priority = `${item.koli_number} <span class="status-tooltip" title="Priority (${item.count_undelivered}x Undelivered)."><span style="font-size:15px; margin-bottom:5px; display:inline-block;">⚠️</span></span>`;
+                    } else {
+                        item.koli_with_priority = item.koli_number;
+                    }
+
+                    return item;
+                })
                 this.pagination = {
                     page: res.data.meta.current_page,
                     limit: parseInt(res.data.meta.per_page, 10),
@@ -563,3 +572,17 @@ export default {
     }
 }
 </script>
+<style scoped>
+.status-tooltip {
+  margin-left: 5px;
+  font-weight: bold;
+  color: #666;
+  cursor: help;
+}
+
+.status-tooltip i.bx.bx-alert-triangle {
+  font-size: 1.5rem;
+  vertical-align: middle;
+  display: inline-block;
+}
+</style>
