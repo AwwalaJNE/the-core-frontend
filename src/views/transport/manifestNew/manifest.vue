@@ -106,7 +106,7 @@ export default {
           width: "xxxs",
         },
         {
-          label: "Jenis Kiriman",
+          label: "Tipe Kiriman",
           key: "jenis_kiriman",
           isTransitTag: "isTransitTag",
           width: "xxxs",
