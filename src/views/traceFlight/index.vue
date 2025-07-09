@@ -97,10 +97,14 @@ export default {
             this.title = item[0].title;
         },
         async processFlightNumber() {
+            if (!this.flightNumber || this.flightNumber.trim() === "") {
+                return;
+            }
+
             const url = `/trace-flight/${encodeURIComponent(this.flightNumber)}`;
             await this.$router.push(url); 
             this.setRoutePageHistory(this.$route.meta, false);
-            this.hasFlightNumber = true
+            this.hasFlightNumber = true;
         },
         clearInput() {
             this.hasFlightNumber = false;

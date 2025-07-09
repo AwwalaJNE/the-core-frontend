@@ -32,7 +32,7 @@ export default {
     },
     computed: {
         listenFlightNumber() {
-            return this.flightNumber;
+            return this.flightNumber || "";
         }
     },
     data() {
@@ -94,17 +94,15 @@ export default {
             transport_type: "flight",
             flight_status: "",
             flight_date: "",
-            flight_iata: "",
         }
     },
     methods: {
-        async getTableData(limit, page) {
+        async getTableData(limit, page, transport_type, flight_status, flight_date, flight_iata) {
             this.loading = true;
             try {
-                const res = await axios.get(`${this.URL.sync_flight}?n=${this.listenNodeId}&transport_type=${this.transport_type}&flight_status=${this.flight_status}&flight_date=${this.flight_date}&flight_iata=GA&limit=${limit}&page=${page}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.sync_flight}?n=${this.listenNodeId}&transport_type=${transport_type}&flight_status=${flight_status}&flight_date=${flight_date}&flight_iata=${flight_iata}&limit=${limit}&page=${page}`, this.Helper.header());
                 this.dataTable = res.data.data;
             } catch (err) {
-                console.log("PP", err)
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
@@ -120,7 +118,7 @@ export default {
             this.refresh();
         },
         refresh(){
-            this.getTableData(this.pagination.limit, this.pagination.page)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.transport_type, this.flight_status, this.flight_date, this.listenFlightNumber)
         },
     },
     mounted() {
