@@ -498,7 +498,7 @@ export default {
             }
         },
         getDataPreview(val) {
-            this.checkManifestMethod(parseInt(val.vehicle_mode_id));
+            this.checkManifestMethod(parseInt(val.manifest_method_id));
 
             val.manifest_method_id = parseInt(val.manifest_method_id);
             val.manifest_prefix = val?.manifest_method?.prefix_name;
