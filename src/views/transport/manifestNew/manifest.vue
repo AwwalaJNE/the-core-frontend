@@ -93,7 +93,7 @@ export default {
         {
           label: "Total Bag",
           key: "total_item",
-          width: "xxxs",
+          width: "auto",
         },
         {
           label: "Type SM",
@@ -224,7 +224,7 @@ export default {
       startDate: this.$ls.get('manifestFilter')?.tempDate[0] || "",
       endDate: this.$ls.get('manifestFilter')?.tempDate[1] || "",
       pagination: {
-        limit: 20,
+        limit: 2,
         page_size: 1,
         page: 1,
       },
@@ -347,8 +347,8 @@ export default {
             manifest_type_name: item.manifest_method?.vehicle_mode_name || null,
             jenis_kiriman: item.vehicle_type?.vehicle_type_name || "-",
             isTransitTag: item?.is_sm_transit || "",
-            origin_name: `${item.origin_code || "null"} - ${item.origin_name || "-"}`,
-            destination_name: `${item.destination_code || "null"} - ${item.destination_name || "-"}`,
+            origin_name: `${item.origin_branch_code || ""} - ${item.origin_branch_name || "-"}`,
+            destination_name: `${item.destination_branch_code || ""} - ${item.destination_branch_name || ""}`,
             eta: this.dateConvert(item.eta),
             etd: this.dateConvert(item.etd),
             total_masterbag: item.total_masterbag === 0 ? "0" : item.total_masterbag,

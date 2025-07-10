@@ -480,8 +480,15 @@ export default {
             };
 
             val.manifest_prefix = val?.manifest_method?.prefix_name;
-            val.node_id_origin = val?.origin?.node_name + " (" + val?.origin?.node_code + ")";
-            val.node_id_destination = val?.destination?.node_name + " (" + val?.destination?.node_code + ")";
+
+            // TODO: COMMENT IF WANNA USE NODE
+            // val.node_id_origin = val?.origin?.node_name + " (" + val?.origin?.node_code + ")";
+            // val.node_id_destination = val?.destination?.node_name + " (" + val?.destination?.node_code + ")";
+
+            // TODO: COMMENT IF DON'T WANNA USE BRANCH
+            val.node_id_origin = val?.origin_branch_name + " (" + val?.origin_branch_code + ")";
+            val.node_id_destination = val?.destination_branch_name + " (" + val?.destination_branch_code + ")";
+
             val.vehicle_id = val?.vehicle?.vehicle_name;
             val.pic_employee_id = val?.employee_pic?.employee_name;
             
@@ -508,8 +515,15 @@ export default {
 
             val.manifest_method_id = parseInt(val.manifest_method_id);
             val.manifest_prefix = val?.manifest_method?.prefix_name;
-            val.node_id_origin = val?.origin?.node_name + " (" + val?.origin?.node_code + ")";
-            val.node_id_destination = val?.destination?.node_name + " (" + val?.destination?.node_code + ")";
+            
+            // TODO: UNCOMMENT IF WANNA USE NODE
+            // val.node_id_origin = val?.origin?.node_name + " (" + val?.origin?.node_code + ")";
+            // val.node_id_destination = val?.destination?.node_name + " (" + val?.destination?.node_code + ")";
+            
+            // TODO: COMMENT IF DON'T WANNA USE BRANCH
+            val.node_id_origin = val?.origin_branch_name + " (" + val?.origin_branch_code + ")";
+            val.node_id_destination = val?.destination_branch_name + " (" + val?.destination_branch_code + ")";
+
             val.vehicle_id = val?.vehicle?.vehicle_name;
             val.pic_employee_id = val?.employee_pic?.employee_name;
             val.flight_number = val?.flight_number;
@@ -572,7 +586,11 @@ export default {
                 let url = "";
                 switch (info.key) {
                     case "node_id_origin":
-                        this.autoComplateUrl = `${this.URL.node}/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}`;
+                        // TODO: UNCOMMENT IF WANNA USE NODE
+                        // this.autoComplateUrl = `${this.URL.node}/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}`;
+
+                        // TODO: COMMENT IF DON'T WANNA USE BRANCH
+                        this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
                         break;
                     case "node_id_destination":
                         let transit = this.$store.getters["getInputs"]["surat_muatan"]["dynamicinputcomponent_node_id_transit"];
@@ -583,7 +601,11 @@ export default {
                             nodeId = arr[arr.length - 1].inputs[0].data.node_id || this.node_id_origin;
                         }
 
-                        this.autoComplateUrl = `${this.URL.node}/${nodeId}/destination-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`;
+                        // TODO: UNCOMMENT IF WANNA USE NODE
+                        // this.autoComplateUrl = `${this.URL.node}/${nodeId}/destination-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`;
+
+                        // TODO: COMMENT IF DON'T WANNA USE BRANCH
+                        this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
                         break;
                     case "vehicle_id":
                         this.autoComplateUrl = `${this.URL.vehicle}?n=${this.listenNodeId}&search_by=vehicle_name&sort_order=desc&limit=15&page=1`;
@@ -606,6 +628,12 @@ export default {
                             if (item.hasOwnProperty("node_name")) {
                                 suggestions.push({
                                     value: item["node_name"],
+                                    data: item,
+                                });
+                            }
+                            if (item.hasOwnProperty("branch_name")) {
+                                suggestions.push({
+                                    value: item["branch_name"],
                                     data: item,
                                 });
                             }
@@ -999,7 +1027,11 @@ export default {
         originNode(){
             if (this.listenNode.length > 0) {
                 this.node_id_origin = this.listenCurrentNode.node_id;
-                this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN', this.listenCurrentNode.node_name + " (" + this.listenCurrentNode.node_code + ")");
+                // TODO: UNCOMMENT IF WANNA USE NODE
+                // this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN', this.listenCurrentNode.node_name + " (" + this.listenCurrentNode.node_code + ")");
+
+                // TODO: COMMENT DON'T IF WANNA USE NODE
+                this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN', this.listenCurrentNode.branch_name);
             }
         },
         resetForm() {
