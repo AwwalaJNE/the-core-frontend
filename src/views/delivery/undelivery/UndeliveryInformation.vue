@@ -4,7 +4,7 @@
             hideColumnKey="undelivery" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
-            :tableLoading="loading"
+            :tableLoading="listenLoading"
             :pageSize="pagination.page_size"
             :page="pagination.page"
             :limit="pagination.limit"
@@ -25,6 +25,7 @@ export default {
     props: {
         query: String,
         employeeId: [String, Number],
+        loadingScan: Boolean,
     },
     components: {
         "table-master" : TableMaster
@@ -61,38 +62,40 @@ export default {
     computed: {
         listenEmployeeId() {
             return this.employeeId;
+        },
+        listenLoading() {
+            return this.loadingScan || this.loading;
         }
     },
     methods: {
-        async getTableData(limit,page) {
+        async getTableData(limit, page) {
             this.loading = true
+            try {
+                const res = await axios.get(`${this.URL.courier_delivery}/${this.listenEmployeeId}/undelivery?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}`, this.Helper.header());
+                
+                if (res.data.data.length > 0) {
+                    let arr = res.data.data
+                    arr.map((item, index) => {
+                        item["no"] = index + 1;
+                        item["koli_number"] = item.koli_number;
+                        item["delivery_runsheet_number"] = item.delivery_runsheet_number
+                        item["dri"] = item.dri
+                    })
+                    this.dataTable = arr;
 
-            await axios
-                .get(this.URL.courier_delivery + `/${this.listenEmployeeId}/undelivery?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}`,
-                this.Helper.header())
-                .then(res => {
-                    if (res.data.data.length > 0) {
-                        let arr = res.data.data
-                        arr.map((item, index) => {
-                            item["no"] = index + 1;
-                            item["koli_number"] = item.koli_number;
-                            item["delivery_runsheet_number"] = item.delivery_runsheet_number
-                            item["dri"] = item.dri
-                        })
-                        this.dataTable = arr;
+                    this.$emit('total-connote', res.data.data.length);
 
-                        this.$emit('total-connote', res.data.data.length);
-
-                        this.pagination.page = res.data.meta.current_page;
-                        this.pagination.limit = parseInt(res.data.meta.per_page);
-                        this.pagination.page_size = res.data.meta.last_page;
-                    } else {
-                        this.dataTable = []
-                    }
-                }).catch(err => {
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Undelivery list', err)
-                })
-            this.loading = false
+                    this.pagination.page = res.data.meta.current_page;
+                    this.pagination.limit = parseInt(res.data.meta.per_page);
+                    this.pagination.page_size = res.data.meta.last_page;
+                } else {
+                    this.dataTable = []
+                }
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
         },
         closeDialogConfirm(){
             this.confirmDialog = false
