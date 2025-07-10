@@ -362,7 +362,11 @@ export default {
             val.node_id_destination = val.node_name_destination + " (" + val.node_code_destination + ")";
         },
         querySearch(queryString, cb){
-            axios.get(this.URL.node_list +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
+            // TODO: UNCOMMENT IF WANNA USE NODE
+            // axios.get(this.URL.node_list +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
+
+            // TODO: COMMENT IF DON'T WANNA USE BRANCH
+            axios.get(this.URL.branch_list_v2 +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
                 let suggestions = [];

@@ -295,6 +295,8 @@ export default {
     // Branch List
     branch_list: api + 'branch-list',
 
+    branch_list_v2: api + 'branch-list-v2',
+
     // Origin List
     origin_list: api + 'origin-list',
 
