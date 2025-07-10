@@ -311,7 +311,6 @@ export default {
             this.dialogHelpdeskEditConnote = true;
         },
         actionDetail(row){
-            this.$router.push({ name: 'detailConnote', params: { id: 'b8ebb9f3-a30b-4bad-9ebc-72338816d034' } });
             this.setRoutePageHistory(this.$route.meta, false);
         },
 
