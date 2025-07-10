@@ -64,6 +64,7 @@
                                         <ConnoteRunsheetInformation 
                                             :ref="'ConnoteRunsheetInformation'"
                                             :employeeId="listenEmployeeId"
+                                            :loadingScan="loading"
                                         />
                                     </transition>
                                 </template>
@@ -88,6 +89,7 @@
                                         :ref="'undeliveryInformation'"
                                         :employeeId="listenEmployeeId" 
                                         v-on:total-connote="getTotal"
+                                        :loadingScan="loading"
                                     />
                                 </transition>
                             </template>
@@ -151,7 +153,8 @@ export default {
             isFinishReceivingButtonVisible: false,
             isFinishReceiving: false,
             employeeName: "",
-            employeeCode: ""
+            employeeCode: "",
+            loading: false,
         }
     },
     computed: {
@@ -182,30 +185,25 @@ export default {
             this.processUndelivery();
         },
         async processUndelivery() {
-            await axios
-                .post(this.URL.undelivery + `?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form),
-                    this.Helper.header())
-                .then(res => {
-                    this.$refs.undeliveryInformation.refresh()
-                    this.getButtonValue();
-                    this.handleClearFormKoli()
-                    this.openNotification(null, 'Success', res.data.message)
-                }).catch(err => {
-                    this.loading = false
-                    this.refresh()
-                    this.handleClearForm();
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Receiving is failed', err)
-                })
+            this.loading = true;
+            try {
+                const res = await axios.post(`${this.URL.undelivery}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());
+            } catch (err) {
+                this.refresh();
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.loading = false;
+                this.refresh();
+                this.handleClearForm();
+            }
         },
         async getButtonValue() {
-            await axios
-                .get(this.URL.courier_delivery + `/${this.listenEmployeeId}/hrs-status?n=${this.listenNodeId}`, this.Helper.header())
-                .then(res => {
-                    this.isFinishReceiving = res.data.data.ready_to_hrs;
-                }).catch(err => {
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to get button value', err.response ? err.response.data.message : "something went wrong")
-                })
+            try {
+                const res = await axios.get(`${this.URL.courier_delivery}/${this.listenEmployeeId}/hrs-status?n=${this.listenNodeId}`, this.Helper.header());
+                this.isFinishReceiving = res.data.data.ready_to_hrs;
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } 
         },
         back(){
             this.$router.push('/hrs')
@@ -215,9 +213,6 @@ export default {
             this.form = {}
             this.item_no = ""
             this.no_runsheet= ""
-        },
-        handleClearFormKoli(){
-            this.item_no = ""
         },
         finishReceiving(){
             this.activeDialogFinishReceiving = true
@@ -235,34 +230,32 @@ export default {
             let payload = {
                 courier_id: this.listenEmployeeId
             }
-            await axios
-                .post(this.URL.handover_runsheet + `?n=${this.listenNodeId}`,
-                    JSON.stringify(payload),
-                    this.Helper.header())
-                .then(res => {
-                    this.openNotification('success', null, "Success", res?.data?.message ?? 'Success Receiving Runsheet')
-                    this.activeDialogFinishReceiving = false
-                    this.activeLoadingFinishReceiving = false
-                    this.back()
-                }).catch(err => {
-                    let message = err.response.data ? err.response.data.message : 'Update Failed'
-                    this.activeDialogFinishReceiving = false
-                    this.activeLoadingFinishReceiving = false
-                    this.refresh()
-                    this.openNotification('danger', err.response ? err.response?.data?.code : '','Update Failed', message)
-                })
+
+            try {
+                const res = await axios.post(`${this.URL.handover_runsheet}?n=${this.listenNodeId}`, JSON.stringify(payload), this.Helper.header());
+
+                this.openNotification('success', null, "Success", res?.data?.message ?? 'Success Receiving Runsheet')
+
+                this.activeDialogFinishReceiving = false
+                this.activeLoadingFinishReceiving = false
+                this.back();
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.activeDialogFinishReceiving = false
+                this.activeLoadingFinishReceiving = false
+                this.refresh()
+            }
         },
         async getEmployeeData() {
-            await axios
-                .get(this.URL.employee + `/${this.listenEmployeeId}?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-                    this.employeeName = res.data.data.employee_name
-                    this.employeeCode = res.data.data.employee_code
-                }).catch(err => {
-                    this.openNotification('danger', err.response?.data?.code ?? '', err.response?.data?.message ?? 'Failed to Get Employee', err)
-                })
-        }
+            try {
+                const res = await axios.get(`${this.URL.employee}/${this.listenEmployeeId}?n=${this.listenNodeId}`, this.Helper.header());
+                
+                this.employeeName = res.data.data.employee_name
+                this.employeeCode = res.data.data.employee_code
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } 
+        },
     },
     mounted() {
         this.refresh()
