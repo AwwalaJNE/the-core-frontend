@@ -581,14 +581,14 @@ export default {
       this.form.item_number = this.item_code.replace(/\s+/g, '');
       this.form.is_pra_runsheet = this.is_pra_runsheet
       this.form.auto_open_bag = this.is_auto_open_bag,
-      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation
+      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation || false
       this.ProccessAddBagItem()
     },
     updateItemOnBagOrion() {
       this.form.item_number = (this.item_code_orion + "00").replace(/\s+/g, '');
       this.form.is_pra_runsheet = this.is_pra_runsheet
       this.form.auto_open_bag = this.is_auto_open_bag
-      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation
+      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation || false
       this.ProccessAddBagItem()
     },
     updateValue(){
