@@ -224,7 +224,7 @@ export default {
       startDate: this.$ls.get('manifestFilter')?.tempDate[0] || "",
       endDate: this.$ls.get('manifestFilter')?.tempDate[1] || "",
       pagination: {
-        limit: 2,
+        limit: 20,
         page_size: 1,
         page: 1,
       },
