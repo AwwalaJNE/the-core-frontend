@@ -454,7 +454,7 @@ export default {
       this.is_auto_open_bag = val.target.checked;
     },
     handleValidateHubDelivery(val) {
-      this.is_hub_delivery_validation = val.target.checked;
+      this.is_hub_delivery_validation = val.target.checked || false;
     },
     async getResponse(data, loading) {
       
@@ -573,18 +573,19 @@ export default {
           destination : this.listenDestination,
           service: this.listenServiceType,
           is_pra_runsheet: this.is_pra_runsheet,
-          auto_open_bag: this.is_auto_open_bag
+          auto_open_bag: this.is_auto_open_bag,
+          is_hub_delivery_validation: this.is_hub_delivery_validation || false
       }
     },
     updateItemOnBag() {
-      this.form.item_number = this.item_code
+      this.form.item_number = this.item_code.replace(/\s+/g, '');
       this.form.is_pra_runsheet = this.is_pra_runsheet
       this.form.auto_open_bag = this.is_auto_open_bag,
       this.form.is_hub_delivery_validation = this.is_hub_delivery_validation
       this.ProccessAddBagItem()
     },
     updateItemOnBagOrion() {
-      this.form.item_number = this.item_code_orion + "00"
+      this.form.item_number = (this.item_code_orion + "00").replace(/\s+/g, '');
       this.form.is_pra_runsheet = this.is_pra_runsheet
       this.form.auto_open_bag = this.is_auto_open_bag
       this.form.is_hub_delivery_validation = this.is_hub_delivery_validation
@@ -798,7 +799,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$store.getters.getInputs)
     this.getBagIdParam()
     this.getIsPraRunsheet()
     this.setInputFocus()
