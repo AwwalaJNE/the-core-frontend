@@ -469,6 +469,9 @@ export default {
                         el.with_courier = el.courier ? el.courier.employee_name : ""
                         el.approved = el.is_approve === 1 ? true : false
                         el.status_irregularity_description = el.irregularity_status_description || ""
+                        if (el.status_irregularity_description === "MISSROUTE RECEIVED") {
+                            el.status_irregularity_description = "MISSROUTE RECEIVED (MR1)"
+                        }
 
                         let data = el.hvo || el.om || el.pra_number || el.hacb || "";
                         el.document_type = this.getOrionDocumentType(data);
