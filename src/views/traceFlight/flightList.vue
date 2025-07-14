@@ -84,6 +84,11 @@ export default {
                     label: "Reg No",
                     key: "registration_number",
                     width: "sm"
+                },
+                {
+                    label: "Flight Status",
+                    key: "flight_status",
+                    width: "xs"
                 }
             ],
             pagination: {
