@@ -13,6 +13,7 @@
             :onRowClickCallback="onRowClickCallback"
             :isAllCheckedCheckCallback="onAllCheckCallback"
             :isAllChecked="isAllChecked"
+            :isHideFilterColumn="true"
             @updateSelected2="updateSelected"
             @updateValue="updateValue"
             @handleAddData="handleAddData"

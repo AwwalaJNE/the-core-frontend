@@ -50,7 +50,7 @@
 <template>
   <div>
     <template v-if="!listenHideIsFilterColumn">
-      <div class="column-toggle-wrapper">
+      <div ref="dropdownContainer" class="column-toggle-wrapper">
         <vs-button @click="toggleDropdown" icon>
           <i class="bx bx-slider"></i> Columns
         </vs-button>
@@ -2098,6 +2098,12 @@ export default {
     toggleDropdown() {
       this.showColumnDropdown = !this.showColumnDropdown;
     },
+    closeOnOutsideClick(e) {
+      const container = this.$refs.dropdownContainer;
+      if (this.showColumnDropdown && container && !container.contains(e.target)) {
+        this.showColumnDropdown = false;
+      }
+    },
     toggleAllColumns() {
       if (this.toggleAllVisible) {
         this.visibleKeys = this.validColumn?.map(col => col.key);
@@ -2107,7 +2113,11 @@ export default {
     }
   },
   mounted() {
+    document.addEventListener("click", this.closeOnOutsideClick);
     this.handleColumnsOrder();
+  },
+  beforeDestroy() {
+    document.removeEventListener("click", this.closeOnOutsideClick);
   },
 };
 </script>
