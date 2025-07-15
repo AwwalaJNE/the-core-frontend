@@ -70,8 +70,9 @@
           </div>
 
           <div class="footer-actions">
-            <vs-button size="small" @click="showAll">Show All</vs-button>
-            <vs-button size="small" @click="hideAll">Hide All</vs-button>
+            <vs-checkbox v-model="toggleAllVisible" @change="toggleAllColumns">
+              Show All Columns
+            </vs-checkbox>
           </div>
         </div>
       </div>
@@ -1744,7 +1745,8 @@ export default {
 
       columnSearch: '',
       showColumnDropdown: false,
-      visibleKeys: []
+      visibleKeys: [],
+      toggleAllVisible: true,
     };
   },
   computed: {
@@ -1851,6 +1853,13 @@ export default {
       },
       immediate: true,
       deep: true
+    },
+    visibleKeys(newVal, oldVal) {
+      if (newVal.length === this.validColumn.length) {
+        this.toggleAllVisible = true;
+      } else {
+        this.toggleAllVisible = false;
+      }
     }
   },
   methods: {
@@ -2089,12 +2098,13 @@ export default {
     toggleDropdown() {
       this.showColumnDropdown = !this.showColumnDropdown;
     },
-    showAll() {
-      this.visibleKeys = this.dataColumn.map(c => c.key);
-    },
-    hideAll() {
-      this.visibleKeys = [];
-    },
+    toggleAllColumns() {
+      if (this.toggleAllVisible) {
+        this.visibleKeys = this.validColumn?.map(col => col.key);
+      } else {
+        this.visibleKeys = [];
+      }
+    }
   },
   mounted() {
     this.handleColumnsOrder();
