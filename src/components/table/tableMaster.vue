@@ -49,6 +49,33 @@
 -->
 <template>
   <div>
+    <template v-if="!listenHideIsFilterColumn">
+      <div class="column-toggle-wrapper">
+        <vs-button @click="toggleDropdown" icon>
+          <i class="bx bx-slider"></i> Columns
+        </vs-button>
+
+        <div v-show="showColumnDropdown" class="column-dropdown-panel">
+          <vs-input v-model="columnSearch" placeholder="Search columns..." />
+
+          <div class="checkbox-scroll">
+            <vs-checkbox
+              v-for="col in validColumn"
+              :key="col.key"
+              v-model="visibleKeys"
+              :val="col.key"
+            >
+              {{ col.label }}
+            </vs-checkbox>
+          </div>
+
+          <div class="footer-actions">
+            <vs-button size="small" @click="showAll">Show All</vs-button>
+            <vs-button size="small" @click="hideAll">Hide All</vs-button>
+          </div>
+        </div>
+      </div>
+    </template>
     <vs-table ref="tablee" v-model="selected" :isSingleSelect="listenIsSingleSelect" :class="{ 'scrollableAndStaticHeader': scrollableAndStaticHeader }">
       <template #header>
         <template v-if="listenIsSearchAble">
@@ -1690,7 +1717,9 @@ export default {
       type: Boolean,
       default: false
     },
-    icon_tooltip: String
+    icon_tooltip: String,
+
+    isHideFilterColumn: Boolean,
   },
   data() {
     return {
@@ -1712,18 +1741,13 @@ export default {
       localmax: 1000,
       dialogImageUrl: "",
       dialogVisible: false,
+
+      columnSearch: '',
+      showColumnDropdown: false,
+      visibleKeys: []
     };
   },
   computed: {
-    listenColumn() {
-      if (this.hideColumnKey) {
-        const hiddenKeys = this.listenPermissions?.["core_data_table"]?.find(v => v.feature === this.hideColumnKey)?.filter?.["HIDDEN_COLUMN"] || [];
-        return this.dataColumn.filter(item => !hiddenKeys.includes(item.key));
-      } else {
-        return this.dataColumn;
-      }
-      
-    },
     listenDataTable() {
 
 
@@ -1750,6 +1774,9 @@ export default {
     listenIsSearchAble() {
       return this.isSearchAble;
     },
+    listenHideIsFilterColumn() {
+      return this.isHideFilterColumn;
+    },
     listenIsLocalPagination() {
       return this.isLocalPagination;
     },
@@ -1761,6 +1788,21 @@ export default {
     },
     listenIsSingleSelect() {
       return this.isSingleSelect || false;
+    },
+
+    listenHideColumn() {
+      return this.listenPermissions?.["core_data_table"]?.find(v => v.feature === this.hideColumnKey)?.filter?.["HIDDEN_COLUMN"] || [];
+    },
+    listenEnableColumn() {
+      return this.dataColumn.filter(col => !this.listenHideColumn.includes(col.key))?.map(col => col.key);
+    },
+    validColumn() {
+      return this.dataColumn
+        .filter(col => !this.listenHideColumn.includes(col.key))
+        .filter(col => col.label.toLowerCase().includes(this.columnSearch.toLowerCase()));
+    },
+    listenColumn() {
+      return this.dataColumn.filter(col => this.visibleKeys.includes(col.key));
     }
   },
   watch: {
@@ -1800,6 +1842,15 @@ export default {
       if (this.listenExpandable) {
         this.resetExpandedRows()
       }
+    },
+    dataColumn: {
+      handler(newVal) {
+        if (this.visibleKeys.length === 0 && newVal.length > 0) {
+          this.visibleKeys = this.listenEnableColumn;
+        }
+      },
+      immediate: true,
+      deep: true
     }
   },
   methods: {
@@ -2034,6 +2085,16 @@ export default {
             document.body.removeChild(link);
         }
     },
+
+    toggleDropdown() {
+      this.showColumnDropdown = !this.showColumnDropdown;
+    },
+    showAll() {
+      this.visibleKeys = this.dataColumn.map(c => c.key);
+    },
+    hideAll() {
+      this.visibleKeys = [];
+    },
   },
   mounted() {
     this.handleColumnsOrder();
@@ -2260,6 +2321,37 @@ span.text-danger {
 
 </style>
 <style scoped>
+  .column-toggle-wrapper {
+    position: relative;
+  }
+
+  .column-dropdown-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    width: 250px;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
+
+  .checkbox-scroll {
+    max-height: 250px;
+    overflow-y: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .footer-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+  }
+
   .missroute-icon {
     color: #fbe99d;
     font-size: 30px;
