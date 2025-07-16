@@ -411,7 +411,9 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", true);
         },
         openSelectStockModal() {
-            this.showSelectStockModal = true;
+            if (!this.isDisabled) {
+                this.showSelectStockModal = true;
+            }
         },
         closeSelectStockModal() {
             this.showSelectStockModal = false;
