@@ -66,7 +66,7 @@
                         @handleIconClick="openSelectStockModal"
                     />
 
-                    <div v-if="!isDisabled" style="justify-content: flex-end; display: flex;">
+                    <div v-if="!isDisabled && !manifest_number" style="justify-content: flex-end; display: flex;">
                         <div class="container-clear-item" @click="handleClearForm(); resetForm()">
                             Reset Inputs
                         </div>
@@ -411,12 +411,16 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", true);
         },
         openSelectStockModal() {
-            this.showSelectStockModal = true;
+            if (!this.isDisabled) {
+                this.showSelectStockModal = true;
+            }
         },
         closeSelectStockModal() {
             this.showSelectStockModal = false;
         },
         getEditData(val) {
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
             this.checkManifestMethod(parseInt(val.vehicle_mode_id));
 
             this.manifest_number = val.manifest_number;            
@@ -711,40 +715,6 @@ export default {
                 this.loading = false;
             }
         },
-        async getDataVehicle() {
-            await axios
-                .get(
-                    `${this.URL.vehicle}?n=${this.listenNodeId}&sort_order=desc&limit=10000&page=1`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.data.length > 0) {
-                        let arr = [];
-                        res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = `${item.vehicle_name} (${item.vehicle_police_no})`;
-                            obj["value"] = item.vehicle_id;
-                            arr.push(obj);
-                        });
-                        this.$store.dispatch(
-                            "SET_SURAT_MUATAN_VEHICLE_ID_ArrData",
-                            arr.length > 0 ? arr : null
-                        );
-                    } else {
-                        this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "");
-                        this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", []);
-
-                        this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID", "");
-                        this.$store.dispatch(
-                            "SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData",
-                            []
-                        );
-                    }
-                })
-                .catch((err) => {
-                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to collect role list', err?.response?.data?.message ?? 'something went wrong')
-                });
-        },
         async getDataEmployee() {
             this.loading = true;
             await axios
@@ -995,7 +965,10 @@ export default {
                     }
                     break;
                 case "vehicle_id":
-                    updateMasterForm("vehicle_id", val);
+                    if (info?.data) {
+                        updateMasterForm("vehicle_id", info?.data?.vehicle_id);
+                        updateMasterForm("vehicle_type_id", info?.data?.vehicle_type_id);
+                    }
                     break;
                 case "pic_employee_id":
                     updateMasterForm("pic_employee_id", val);
