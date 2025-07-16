@@ -66,7 +66,7 @@
                         @handleIconClick="openSelectStockModal"
                     />
 
-                    <div v-if="!isDisabled" style="justify-content: flex-end; display: flex;">
+                    <div v-if="!isDisabled && !manifest_number" style="justify-content: flex-end; display: flex;">
                         <div class="container-clear-item" @click="handleClearForm(); resetForm()">
                             Reset Inputs
                         </div>
@@ -419,6 +419,8 @@ export default {
             this.showSelectStockModal = false;
         },
         getEditData(val) {
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
             this.checkManifestMethod(parseInt(val.vehicle_mode_id));
 
             this.manifest_number = val.manifest_number;            
