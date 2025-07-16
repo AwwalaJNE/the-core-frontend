@@ -711,40 +711,6 @@ export default {
                 this.loading = false;
             }
         },
-        async getDataVehicle() {
-            await axios
-                .get(
-                    `${this.URL.vehicle}?n=${this.listenNodeId}&sort_order=desc&limit=10000&page=1`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.data.length > 0) {
-                        let arr = [];
-                        res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = `${item.vehicle_name} (${item.vehicle_police_no})`;
-                            obj["value"] = item.vehicle_id;
-                            arr.push(obj);
-                        });
-                        this.$store.dispatch(
-                            "SET_SURAT_MUATAN_VEHICLE_ID_ArrData",
-                            arr.length > 0 ? arr : null
-                        );
-                    } else {
-                        this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "");
-                        this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", []);
-
-                        this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID", "");
-                        this.$store.dispatch(
-                            "SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData",
-                            []
-                        );
-                    }
-                })
-                .catch((err) => {
-                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to collect role list', err?.response?.data?.message ?? 'something went wrong')
-                });
-        },
         async getDataEmployee() {
             this.loading = true;
             await axios
@@ -995,7 +961,10 @@ export default {
                     }
                     break;
                 case "vehicle_id":
-                    updateMasterForm("vehicle_id", val);
+                    if (info?.data) {
+                        updateMasterForm("vehicle_id", info?.data?.vehicle_id);
+                        updateMasterForm("vehicle_type_id", info?.data?.vehicle_type_id);
+                    }
                     break;
                 case "pic_employee_id":
                     updateMasterForm("pic_employee_id", val);
