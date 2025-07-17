@@ -56,6 +56,20 @@
                             @updateValue="updateValue" 
                         />
                     </vs-col>
+                    <vs-col xs="6" sm="3" lg="2">
+                            <select-bag-origin
+                                ref="bag_origin"
+                                :border="true"
+                                @updateBagOrigin="updateBagOrigin"
+                            />
+                    </vs-col>
+                    <vs-col xs="6" sm="3" lg="2">
+                            <select-bag-destination
+                                ref="bag_destination"
+                                :border="true"
+                                @updateBagDestination="updateBagDestination"
+                            />
+                    </vs-col>
                 </vs-row>
             </vs-col>
         </vs-row>
@@ -113,6 +127,8 @@ import SelectSearchBy from "@/components/search/selectSearchBy";
 import TableMaster from "@/components/table/tableMaster";
 
 import DialogCreateEdit from "@/views/settings/suratMuatan/stock/dialogCreateEdit";
+import SelectBagOrigin from "@/views/settings/suratMuatan/stock/selectBagOrigin.vue";
+import SelectBagDestination from "@/views/settings/suratMuatan/stock/selectBagDestination.vue";
 
 export default {
     name:"surat-muatan-settings-stock-data-table",
@@ -130,6 +146,8 @@ export default {
         "select-search-by": SelectSearchBy,
         "selector": Selector,
         "table-master" : TableMaster,
+        "select-bag-origin": SelectBagOrigin,
+        "select-bag-destination": SelectBagDestination,
     },
     data() {
         return {
@@ -202,6 +220,8 @@ export default {
             dialogRemoveActive: false,
             loadingRemove: false,
             loadingEdit: false,
+            bagDestination: "",
+            bagOrigin: "",
             filterDateBy:"create",
             dateParams: [
                 {
@@ -250,6 +270,9 @@ export default {
         }
     },
     computed: {
+        selectedBagOrigin() {
+            return this.bagOrigin || this.listenNodeId;
+        }
     },
     watch: {
         query: function(val, old) {
@@ -301,6 +324,14 @@ export default {
             this.filterDateBy = val;
             this.refresh();
         },
+        updateBagOrigin(key, val) {
+            this.bagOrigin = val;
+            this.refresh();
+        },
+        updateBagDestination(key, val) {
+            this.bagDestination = val;
+            this.refresh();
+        },
         async getTableData(limit, page, q, from, to, searchBy) {
             this.loading = true
 
@@ -309,7 +340,7 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.sm_stock}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}&creation_source=${this.filterSourceBy}&vehicle_mode=${this.filterVehicleModeBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.sm_stock}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}&creation_source=${this.filterSourceBy}&vehicle_mode=${this.filterVehicleModeBy}&node_origin=${this.selectedBagOrigin}&node_destination=${this.bagDestination}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
