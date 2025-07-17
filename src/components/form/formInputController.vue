@@ -577,10 +577,10 @@ export default {
                 let action = key.toUpperCase()
                 if(this.InputObject[key].hasOwnProperty('mapPicker')) {
                     if(this.InputObject[key]['typeInput'].toLowerCase().includes('latitude')){
-                        this.$store.dispatch(`SET_${prefix}_${action}`, item['latitude'])
+                        this.$store.dispatch(`SET_${prefix}_${action}`, String(item['latitude']))
                         // this.latitude = item['latitude']
                     } else if(this.InputObject[key]['typeInput'].toLowerCase().includes('longitude')){
-                        this.$store.dispatch(`SET_${prefix}_${action}`, item['longitude'])
+                        this.$store.dispatch(`SET_${prefix}_${action}`, String(item['longitude']))
                         // this.longitude = item['longitude']
                     }
                 }
