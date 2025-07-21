@@ -473,6 +473,10 @@ export default {
                             el.status_irregularity_description = "MISSROUTE RECEIVED (MR1)"
                         }
 
+                        if (el.irregularity_deleted_at !== null || el.irregularity_deleted_at !== undefined) {
+                            el.status_irregularity_description = ""
+                        }
+
                         let data = el.hvo || el.om || el.pra_number || el.hacb || "";
                         el.document_type = this.getOrionDocumentType(data);
 
