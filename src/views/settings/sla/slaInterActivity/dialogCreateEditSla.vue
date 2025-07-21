@@ -15,7 +15,6 @@
                     typeForm="sla_inter_activity"
                     @formData="formData"
                     :dataItem="listenDataItem"
-                    :querySearch="querySearch"
                     :querySearch1="getDataOrigin"
                     :querySearch2="getDataDestination"
                     :permissionCreateSelect="checkPermission('create-sla-inter-activity')"
@@ -169,7 +168,6 @@ export default {
             
             this.form = form
             if(this.sla_id !== undefined && this.sla_id !== '') {
-                this.form.node_code = this.dataItem.node_code
                 this.updateData()
             } else {
                 this.addData()
@@ -182,21 +180,6 @@ export default {
             this.$refs.formSlaController.handleClearForm()
             this.form = {}
             this.sla_id = ""
-        },    
-        querySearch(queryString, cb){
-            axios.get(this.URL.node +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
-            .then(res => {
-                let result = res.data.data
-                let suggestions = [];
-                result.length > 0 && result.map(item => {
-                    suggestions.push({
-                        value: item['node_name'] + " (" + item['node_code'] + ")",
-                        data: item.node_code
-                    });
-                });
-                cb(suggestions);
-                })
-            .catch(error => console.log("error", error));
         },
         getDataOrigin(queryOri, cb){
             this.loadingDataOrigin = true

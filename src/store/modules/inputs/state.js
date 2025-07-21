@@ -1708,17 +1708,17 @@ export default {
       valueData: null,
       value: ''
     },
-    node_code: {
-      label: "Node Code*",
-      key: "node_code",
-      rule: "required",
-      typeInput: "autocomplete",
-      typeData: "String",
-      width: '12',
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
+    // node_code: {
+    //   label: "Node Code*",
+    //   key: "node_code",
+    //   rule: "required",
+    //   typeInput: "autocomplete",
+    //   typeData: "String",
+    //   width: '12',
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
     previous_activity: {
       label: "Current Activity*",
       key: "previous_activity",
