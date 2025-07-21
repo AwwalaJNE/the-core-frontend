@@ -150,11 +150,6 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "ID",
-                    key: "sla_id",
-                    width: "xs"
-                },
-                {
                     label: "Group Name",
                     key: "group_name",
                     width: "sm"
@@ -193,11 +188,6 @@ export default {
                     label: "Customer Name",
                     key: "customer_name",
                     width: "sm"
-                },
-                {
-                    label: "Node Code",
-                    key: "node_code",
-                    width: "auto"
                 },
                 {
                     label: "Current Activity",
