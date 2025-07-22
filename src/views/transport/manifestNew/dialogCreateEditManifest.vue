@@ -88,6 +88,7 @@
                                     :autofocus="true"
                                     :disabled="isDisabled"
                                     @click-icon="handleIconClick"
+                                    @input="sanitizeAlphanumeric('item_number')"
                                 >
                                     <template #icon>
                                         <i class="bx bx-barcode-reader"></i>

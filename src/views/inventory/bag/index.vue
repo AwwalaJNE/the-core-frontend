@@ -196,6 +196,7 @@
                   v-uppercase
                   @click-icon="$refs.cameraScanner.open('formInputBagging')"
                   v-bind:data-kt="'scan_input'"
+                  @input="sanitizeAlphanumeric('item_code')"
                   >
                   <template #icon>
                     <i class="bx bx-barcode-reader"></i>
