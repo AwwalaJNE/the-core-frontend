@@ -115,7 +115,7 @@
   }
   </script>
   
-  <style lang="scss">
+  <style lang="scss" scoped>
   .m-select {
     &.vs-select-content {
       max-width: unset;
