@@ -379,6 +379,10 @@ export default {
       info["typeInput"] = this.listenTypeInput;
       info["status"] = status;
 
+      const rawValue = event?.target?.value || '';
+      const cleaned = rawValue.replace(/[^a-zA-Z0-9_-]/g, '');
+      this.value = cleaned;
+
       // if(prevdata.toLowerCase() !== currentValue.toLowerCase()) {
       //   this.$emit("updateValue", this.listenFormKey, this.value, info, this.listenDataObj)
       // }

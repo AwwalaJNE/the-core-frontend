@@ -32,6 +32,7 @@
                                                     :disabled="processing"
                                                     @keyup.enter.native="updateValue('item_no')"
                                                     @click-icon="$refs.cameraScanner.open('formInputInbound')"
+                                                    @input="sanitizeAlphanumeric('item_no')"
                                                 >
                                                     <template #icon>
                                                         <i class="bx bx-barcode-reader"></i>
@@ -60,6 +61,7 @@
                                         :disabled="hasInboundNumber"
                                         @keyup.enter.native="updateValue('parent_no')"
                                         @click-icon="$refs.cameraScanner.open('formInputParentInbound')"
+                                        @input="sanitizeAlphanumeric('parent_no')"
                                     >
                                         <template #icon v-if="!hasInboundNumber">
                                             <i class="bx bx-barcode-reader"></i>
@@ -85,6 +87,7 @@
                                         :disabled="processing"
                                         @keyup.enter.native="updateValue('child_no')"
                                         @click-icon="$refs.cameraScanner.open('formInputChildInbound')"
+                                        @input="sanitizeAlphanumeric('child_no')"
                                     >
                                         <template #icon>
                                             <i class="bx bx-barcode-reader"></i>

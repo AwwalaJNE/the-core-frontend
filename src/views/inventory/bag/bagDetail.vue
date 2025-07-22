@@ -173,6 +173,7 @@
                 ref="formInputBaggingKoli"
                 @click-icon="$refs.cameraScanner.open('formInputBaggingKoli')"
                 v-bind:data-kt="'scan_input'"
+                @input="sanitizeAlphanumeric('item_code')"
               >
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
@@ -192,6 +193,7 @@
                 ref="formInputBaggingBag"
                 @click-icon="$refs.cameraScanner.open('formInputBaggingBag')"
                 v-bind:data-kt="'scan_input'"
+                @input="sanitizeAlphanumeric('item_code')"
               >
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>

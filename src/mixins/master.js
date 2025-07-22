@@ -537,6 +537,10 @@ const Master = {
         },
         formatElapsedDay(days) {
             return `${days} day(s)`;
+        },
+
+        sanitizeAlphanumeric(fieldName) {
+            this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_-]/g, '');
         }
     },
     mounted() {
