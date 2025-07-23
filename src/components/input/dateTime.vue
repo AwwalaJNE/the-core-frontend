@@ -7,6 +7,7 @@
                 </template>
                 <template>
                     <el-date-picker
+                        ref="customDateInput"
                         v-model="value"
                         :type="type"
                         :placeholder="`Select date ${typeInput.toLowerCase().includes('time') ? 'and time' : ''}`"
@@ -18,7 +19,9 @@
                         :picker-options="isETDnETA ? pickerOptions : null"
                         :default-time="isETDnETA ? null : ['00:00:00', '23:59:59']"
                         :disabled="listenIsDisabled"
-                        @change="updateValue">
+                        @change="updateValue"
+                        @focus="attachInputSanitizer"
+                    >
                     </el-date-picker>
                 </template>
             </div>
@@ -117,6 +120,17 @@ export default {
             info['status'] = status
           this.$emit("updateValue", this.listenFormKey, this.value, info)
         },
+        attachInputSanitizer() {
+            this.$nextTick(() => {
+                const inputs = this.$refs.customDateInput?.$el?.querySelectorAll('input');
+                inputs?.forEach(input => {
+                    input.oninput = () => {
+                        input.value = input.value.replace(/[^0-9:\- ]/g, '');
+                        this.value = input.value;
+                    };
+                });
+            });
+        }
     },
 }
 </script>
