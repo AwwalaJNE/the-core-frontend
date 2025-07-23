@@ -271,7 +271,7 @@ export default {
     },
     computed: {
         selectedBagOrigin() {
-            return this.bagOrigin || this.listenNodeId;
+            return this.bagOrigin || this.listenCurrentNode.branch_code;
         }
     },
     watch: {

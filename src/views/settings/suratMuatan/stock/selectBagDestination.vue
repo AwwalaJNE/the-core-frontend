@@ -84,14 +84,14 @@
   
         try {
           const res = await axios.get(
-            `${this.URL.node_list}?n=${this.listenNodeId}&s=${this.query}&limit=${this.limit}`,
+            `${this.URL.branch_list_v2}?n=${this.listenNodeId}&s=${this.query}&limit=${this.limit}`,
             this.Helper.header()
           );
   
           if (res.data.data.length > 0) {
             this.options = res.data.data.map(item => ({
               label: item.node_name,
-              value: item.node_id
+              value: item.branch_code
             }));
           }
         } catch (err) {
