@@ -369,19 +369,19 @@ export default {
         self.$emit("inputFocus", info);
       }, 200);
     },
-    updateValue() {
+    updateValue(event) {
       // let prevdata = this.valueData != undefined && this.valueData != null ? this.valueData.toString() : ""
       // let currentValue = this.value.toString()
+
+      if (event && typeof event === 'string') {
+        this.value = event.replace(/[^a-zA-Z0-9_-]/g, '');
+      }
 
       let info = {};
       info["name"] = this.name;
       info["key"] = this.listenFormKey;
       info["typeInput"] = this.listenTypeInput;
       info["status"] = status;
-
-      const rawValue = event?.target?.value || '';
-      const cleaned = rawValue.replace(/[^a-zA-Z0-9_-]/g, '');
-      this.value = cleaned;
 
       // if(prevdata.toLowerCase() !== currentValue.toLowerCase()) {
       //   this.$emit("updateValue", this.listenFormKey, this.value, info, this.listenDataObj)
