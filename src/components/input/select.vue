@@ -34,6 +34,7 @@
                     
                     <template v-if="listenIsMultiple == true">
                       <el-select 
+                      ref="filterInputRef"
                       v-model="arrValue" 
                       filterable
                       multiple
@@ -56,6 +57,7 @@
                     </template>
                     <template v-else-if="listenIsMultipleTags == true">
                         <el-select
+                            ref="filterInputRef"
                             v-model="arrValue"
                             multiple
                             filterable
@@ -81,6 +83,7 @@
                     </template>
                     <template v-else-if="listenIsMultiple == false">
                      <el-select
+                      ref="filterInputRef"
                       v-model="value" 
                       :allow-create="listenAllowCreate"
                       filterable
@@ -245,7 +248,22 @@ export default {
             return {
                 [this.customBind]: label
             };
-        }
+        },
+        setupSanitizeFilterInput() {
+            const input = this.$refs.filterInputRef?.$el?.querySelector('input.el-input__inner');
+            if (input) {
+                input.addEventListener('input', e => {
+                    const clean = e.target.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ]/g, '');
+                    if (e.target.value !== clean) {
+                        e.target.value = clean;
+                        e.target.dispatchEvent(new Event('input'));
+                    }
+                });
+            }
+        },
+    },
+    mounted() {
+        this.setupSanitizeFilterInput();
     },
 }
 </script>
