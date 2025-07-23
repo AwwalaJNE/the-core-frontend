@@ -88,7 +88,6 @@
             this.Helper.header()
           );
   
-          console.log(res.data);
           if (res.data.data.length > 0) {
             this.options = res.data.data.map(item => ({
               label: item.node_name,

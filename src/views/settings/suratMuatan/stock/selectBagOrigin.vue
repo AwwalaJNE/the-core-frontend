@@ -89,8 +89,7 @@
             `${this.URL.branch_list_v2}?n=${this.listenNodeId}&s=${this.query}&limit=${this.limit}`,
             this.Helper.header()
           );
-  
-          console.log("ORIGIN DATA", res.data);
+
           if (res.data.data.length > 0) {
             this.options = res.data.data.map(item => ({
               label: item.node_name,
