@@ -44,6 +44,7 @@
                       :disabled="listenIsDisabled"
                       :loading="loadingActive"
                       @change="updateValue"
+                      @visible-change="setupSanitizeFilterInput"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                           <el-option
                           v-for="(item,key) in DataArr"
@@ -70,6 +71,7 @@
                             :loading="loadingActive"
                             :is-Multiple-Tag="listenIsMultipleTags"
                             @change="updateValue"
+                            @visible-change="setupSanitizeFilterInput"
                             :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                         >
                             <el-option
@@ -92,6 +94,7 @@
                       :disabled="listenIsDisabled"
                       @change="updateValue"
                       @focus="inputFocus"
+                      @visible-change="setupSanitizeFilterInput"
                       :clearable="listenHasClearButton"
                       :loading="loadingActive"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
@@ -250,17 +253,20 @@ export default {
             };
         },
         setupSanitizeFilterInput() {
-            const input = this.$refs.filterInputRef?.$el?.querySelector('input.el-input__inner');
-            if (input) {
-                input.addEventListener('input', e => {
-                    const clean = e.target.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,]/g, '');
-                    if (e.target.value !== clean) {
-                        e.target.value = clean;
-                        e.target.dispatchEvent(new Event('input'));
-                    }
+            this.$nextTick(() => {
+                const inputEls = this.$el.querySelectorAll('input.el-input__inner');
+                inputEls.forEach(input => {
+                    input.addEventListener('input', e => {
+                        const clean = e.target.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,]/g, '');
+                        if (e.target.value !== clean) {
+                            e.target.value = clean;
+                            e.target.dispatchEvent(new Event('input'));
+                        }
+                    });
                 });
-            }
+            });
         },
+
     },
     mounted() {
         this.setupSanitizeFilterInput();
