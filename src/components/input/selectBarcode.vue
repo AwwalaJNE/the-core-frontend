@@ -15,6 +15,7 @@
                             <!-- Multi-select -->
                             <el-select
                                 v-if="listenIsMultiple"
+                                ref="selectInput"
                                 v-model="arrValue"
                                 filterable
                                 multiple
@@ -24,6 +25,8 @@
                                 :disabled="listenIsDisabled"
                                 :loading="loadingActive"
                                 @change="updateValue"
+                                @focus="inputFocus"
+                                @visible-change="onVisibleChange"
                                 :state="props.err ? 'danger' : 'gray'"
                             >
                                 <el-option
@@ -38,6 +41,7 @@
                             <!-- Multi-select with tags -->
                             <el-select
                                 v-else-if="listenIsMultipleTags"
+                                ref="selectInput"
                                 v-model="arrValue"
                                 multiple
                                 filterable
@@ -49,6 +53,8 @@
                                 :placeholder="placeholder"
                                 :loading="loadingActive"
                                 @change="updateValue"
+                                @focus="inputFocus"
+                                @visible-change="onVisibleChange"
                                 :state="props.err ? 'danger' : 'gray'"
                             >
                                 <el-option
@@ -63,6 +69,7 @@
                             <!-- Single-select -->
                             <el-select
                                 v-else
+                                ref="selectInput"
                                 v-model="value"
                                 :allow-create="listenAllowCreate"
                                 filterable
@@ -71,6 +78,7 @@
                                 :disabled="listenIsDisabled"
                                 @change="updateValue"
                                 @focus="inputFocus"
+                                @visible-change="onVisibleChange"
                                 :loading="loadingActive"
                                 :state="props.err ? 'danger' : 'gray'"
                             >
@@ -225,6 +233,24 @@ export default {
                 this.$emit("updateValue", this.listenFormKey, data.data.text, obj, this.dataObj)
             }
         },
+        onVisibleChange(visible) {
+            if (visible) {
+                this.$nextTick(() => {
+                    const inputEl = this.$refs.selectInput?.$el?.querySelector('input');
+                    if (inputEl) {
+                        inputEl.addEventListener('input', this.sanitizeInput);
+                    }
+                });
+            }
+        },
+        sanitizeInput(event) {
+            const input = event.target;
+            const sanitized = input.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,]/g, '');
+            if (sanitized !== input.value) {
+                input.value = sanitized;
+                this.value = sanitized;
+            }
+        }
     },
 }
 </script>
