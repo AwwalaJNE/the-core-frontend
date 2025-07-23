@@ -253,7 +253,7 @@ export default {
             const input = this.$refs.filterInputRef?.$el?.querySelector('input.el-input__inner');
             if (input) {
                 input.addEventListener('input', e => {
-                    const clean = e.target.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ]/g, '');
+                    const clean = e.target.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,]/g, '');
                     if (e.target.value !== clean) {
                         e.target.value = clean;
                         e.target.dispatchEvent(new Event('input'));
