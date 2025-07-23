@@ -369,9 +369,13 @@ export default {
         self.$emit("inputFocus", info);
       }, 200);
     },
-    updateValue() {
+    updateValue(event) {
       // let prevdata = this.valueData != undefined && this.valueData != null ? this.valueData.toString() : ""
       // let currentValue = this.value.toString()
+
+      if (event && typeof event === 'string') {
+        this.value = event.replace(/[^a-zA-Z0-9_-]/g, '');
+      }
 
       let info = {};
       info["name"] = this.name;
