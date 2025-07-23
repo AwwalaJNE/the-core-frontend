@@ -254,19 +254,23 @@ export default {
         },
         setupSanitizeFilterInput() {
             this.$nextTick(() => {
-                const inputEls = this.$el.querySelectorAll('input.el-input__inner');
+                const inputEls = this.$el.querySelectorAll('input.el-input__inner, input.el-select__input');
+
                 inputEls.forEach(input => {
+                    if (input._hasSanitizeListener) return;
+
                     input.addEventListener('input', e => {
                         const clean = e.target.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,]/g, '');
                         if (e.target.value !== clean) {
-                            e.target.value = clean;
-                            e.target.dispatchEvent(new Event('input'));
+                        e.target.value = clean;
+                        e.target.dispatchEvent(new Event('input'));
                         }
                     });
+
+                    input._hasSanitizeListener = true;
                 });
             });
-        },
-
+        }
     },
     mounted() {
         this.setupSanitizeFilterInput();
