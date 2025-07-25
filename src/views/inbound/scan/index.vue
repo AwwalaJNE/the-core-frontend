@@ -7,7 +7,7 @@
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
-            <template v-if="is_sm">
+            <template v-if="is_sm && !listenIsGateway">
                 <vs-col xs="6" sm="3" lg="3">
                     <div style="position:relative; display:flex; justify-content: flex-end;">
                         <div style="width: 100px;padding-right: 5px;">
