@@ -7,6 +7,23 @@
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
+            <template v-if="is_sm">
+                <vs-col xs="6" sm="3" lg="3">
+                    <div style="position:relative; display:flex; justify-content: flex-end;">
+                        <div style="width: 100px;padding-right: 5px;">
+                            <vs-button
+                                flat
+                                square
+                                block
+                                :active="true"
+                                @click="closePreAlert"
+                            > 
+                                Close SM
+                            </vs-button>
+                        </div>
+                    </div>
+                </vs-col>
+            </template>
         </vs-row>
 
         <section>
@@ -125,9 +142,7 @@
                         <div class="nav-box">
                             <template>
                                 <transition name="slide-fade">
-                                    <template v-if="loading == false">
-                                        <InboundInformation :ref="'inboundInformation'" :dataTableProp="dataTable" :loading="loading"/>
-                                    </template>
+                                    <InboundInformation :ref="'inboundInformation'" :dataTableProp="dataTable" :loading="loading"/>
                                 </transition>
                             </template>
                         </div>
@@ -244,7 +259,8 @@ export default {
             processing: false,
             showDialog: false,
             is_missroute: false,
-            is_plain: false
+            is_plain: false,
+            is_sm: false,
         }
     },
     methods: {
@@ -355,6 +371,10 @@ export default {
                         this.is_plain = true
                     }
 
+                    if (res.data.data.inbound_type === 'SM') {
+                        this.is_sm = true
+                    }
+
                     arr = arr.map(item => ({
                         ...item,
                         total_received: item.total_received.toString(),
@@ -447,6 +467,7 @@ export default {
             this.inbound_number = "";
         },
         removeInboundNumber() {
+            this.is_sm = false;
             this.parent_no = '';
             this.inbound_number = '';
             this.hasInboundNumber = false;
@@ -490,7 +511,20 @@ export default {
         },
         closeDialog() {
         this.showDialog = false;
-        }
+        },
+
+        async closePreAlert() {
+            this.loading = true;
+            try {
+                const res = await axios.post(`${this.URL.close_pre_alert_sm}/${this.inbound_number}?n=${this.listenNodeId}`, {}, this.Helper.header());
+                
+                this.openNotification("success", null, "Success", "Succes Close SM");
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
     },
     async mounted() {
         await this.loadInboundFromStorage();
