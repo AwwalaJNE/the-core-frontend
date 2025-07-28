@@ -1,7 +1,6 @@
 <template>
     <div>
-        <template v-if="listenLoading == false">
-            <table-master 
+        <table-master 
             hideColumnKey="receiving-master-info" 
             :dataTable="dataTable" 
             :dataColumn="datacolumn" 
@@ -11,8 +10,7 @@
             :hasPagination="false"
             
             @handleEdit="actionDetail"
-            />
-        </template>
+        />
     </div>
 </template>
 <script>

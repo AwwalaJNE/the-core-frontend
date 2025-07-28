@@ -420,4 +420,7 @@ export default {
 
     // Airports List
     airports_list: api + 'schedule/airport-lov',
+
+    // Close Pre Alert SM
+    close_pre_alert_sm: api + 'manifest/sm-close-user-check',
 }

@@ -49,6 +49,9 @@ const Master = {
         },
         listenUserRoleName() {
             return this.listenUserRole.find(item => item.app === 'CORE')?.app_role_name;
+        },
+        listenIsGateway() {
+            return this.listenCurrentNode.branch_code.slice(0, 3).includes('X') || false
         }
     },
     methods: {
