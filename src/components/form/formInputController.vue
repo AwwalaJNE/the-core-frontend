@@ -65,6 +65,7 @@
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
                                             :disabled="listenIsDisabled"
+                                            :onlyNumber="true"
                                             @updateValue="updateValue" 
                                             @inputFocus="onfocuslah"/>
                                         </div>
@@ -82,6 +83,7 @@
                                     :typeInput="InputObject[item].typeInput"
                                     :placeholder="InputObject[item].placeholder"
                                     :disabled="listenIsDisabled"
+                                    :onlyNumber="true"
                                     @updateValue="updateValue" 
                                     @inputFocus="onfocuslah"/>
                                 </template>
