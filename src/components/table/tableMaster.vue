@@ -51,9 +51,13 @@
   <div>
     <template v-if="!listenHideIsFilterColumn">
       <div ref="dropdownContainer" class="column-toggle-wrapper">
-        <vs-button @click="toggleDropdown" icon>
-          <i class="bx bx-slider"></i> Columns
-        </vs-button>
+        <!-- Header Row: Button + Total -->
+        <div class="column-toggle-header" style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+          <vs-button @click="toggleDropdown" icon>
+            <i class="bx bx-slider"></i> Columns
+          </vs-button>
+          <p v-if="!listenTotalPerPage" class="columns-label" style="margin: 0;">Total: {{ dataTable.length }}</p>
+        </div>
 
         <div v-show="showColumnDropdown" class="column-dropdown-panel">
           <vs-input v-model="columnSearch" placeholder="Search columns..." />
@@ -1721,6 +1725,7 @@ export default {
     icon_tooltip: String,
 
     isHideFilterColumn: Boolean,
+    isHideTotalPerPage: Boolean,
   },
   data() {
     return {
@@ -1778,6 +1783,9 @@ export default {
     },
     listenHideIsFilterColumn() {
       return this.isHideFilterColumn;
+    },
+    listenTotalPerPage() {
+      return this.isHideTotalPerPage;
     },
     listenIsLocalPagination() {
       return this.isLocalPagination;
@@ -2414,5 +2422,9 @@ span.text-danger {
     line-height: 1.25;
     vertical-align: middle;
     cursor: pointer;
+  }
+  .columns-label {
+    font-weight: bold; 
+    color: #333;
   }
 </style>
