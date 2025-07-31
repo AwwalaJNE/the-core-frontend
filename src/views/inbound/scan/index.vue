@@ -7,7 +7,7 @@
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
-            <template v-if="is_sm && !listenIsGateway">
+            <template v-if="is_sm && !listenIsGateway && !is_user_check">
                 <vs-col xs="6" sm="3" lg="3">
                     <div style="position:relative; display:flex; justify-content: flex-end;">
                         <div style="width: 100px;padding-right: 5px;">
@@ -261,6 +261,7 @@ export default {
             is_missroute: false,
             is_plain: false,
             is_sm: false,
+            is_user_check: false
         }
     },
     methods: {
@@ -373,6 +374,7 @@ export default {
 
                     if (res.data.data.inbound_type === 'SM') {
                         this.is_sm = true
+                        this.is_user_check = res.data.data.is_user_check === "1";
                     }
 
                     arr = arr.map(item => ({
@@ -468,6 +470,7 @@ export default {
         },
         removeInboundNumber() {
             this.is_sm = false;
+            this.is_user_check = false;
             this.parent_no = '';
             this.inbound_number = '';
             this.hasInboundNumber = false;
@@ -523,6 +526,7 @@ export default {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
                 this.loading = false;
+                this.refresh();
             }
         },
     },
