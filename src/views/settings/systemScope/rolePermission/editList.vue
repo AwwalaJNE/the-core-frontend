@@ -14,6 +14,7 @@
             :isAllCheckedCheckCallback="onAllCheckCallback"
             :isAllChecked="isAllChecked"
             :isHideFilterColumn="true"
+            :isHideTotalPerPage="true"
             @updateSelected2="updateSelected"
             @updateValue="updateValue"
             @handleAddData="handleAddData"
