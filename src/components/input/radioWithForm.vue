@@ -71,50 +71,25 @@ export default {
     }, 
     props: {
         name: String,
-        rules: String,
         valueData: Array,
         selectedValue: [String, Number],
-        formKey: String,
-        typeInput: String,
-        border: Boolean,
-        vertical: Boolean,
-        width: [String, Number],
         disabled: Boolean
     },
     data() {
         return {
             DataArr: this.valueData || [],
-            value: this.selectedValue || "",
         }
     },
     computed: {
-        listenFormKey(){
-            return this.formKey || ''
-        },
-        listenIsMultiple(){
-            return this.isMultiple ? this.isMultiple : false
-        },
         listenIsDisabled(){
             return this.disabled || false
         },
-    },
-    watch: {
-        valueData: function (val) {
-            if (val != undefined) {
-                this.DataArr = val
-            }
-        },
-        selectedValue: function (val) {
-            if (val != undefined) {
-                this.value = val
-            }
-        },
-        value: function(n, o) {
-            if (n !== o) {
-                const found = this.DataArr.find(item => item.key === n);
-                if (found) {
-                    this.$emit("updateValue", this.listenFormKey, n, found);
-                }
+        value: {
+            get() {
+                return this.selectedValue;
+            },
+            set(newVal) {
+                this.$emit('updateValue', newVal);
             }
         }
     },
