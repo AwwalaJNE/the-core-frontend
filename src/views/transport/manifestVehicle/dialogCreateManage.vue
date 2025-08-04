@@ -144,16 +144,6 @@ export default {
             return this.selected_manifest_vehicle || ''
         }
     },
-    watch: {
-        selected_manifest_vehicle: function (val, old) {
-            if (val != undefined) {
-                if (val !== old) {
-                    this.selected_manifest_vehicle = val
-                }
-                
-            }
-        },
-    },
     methods: {
         setDialogActive() {
             this.getManifestVehicle();
@@ -191,7 +181,7 @@ export default {
             form.employee_driver_id = form?.employee_driver_id?.employee_id || "";
 
             this.form = form;
-            this.createManifestVehilce()
+            this.createManifestVehicle()
         },
         handleSubmit(){
             this.$refs.formSuratMuatanVehicleController.handleSubmit();
@@ -274,7 +264,7 @@ export default {
                 this.loading = false;
             }
         },
-        async createManifestVehilce() {
+        async createManifestVehicle() {
             this.loading = true;
             try {
                 const res = await axios.post(`${this.URL.manifest_vehicle}/${this.listenManifestNumber}?n=${this.listenNodeId}`, this.form, this.Helper.header());

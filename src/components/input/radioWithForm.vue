@@ -73,6 +73,7 @@ export default {
         name: String,
         valueData: Array,
         selectedValue: [String, Number],
+        rules: String,
         disabled: Boolean
     },
     data() {
