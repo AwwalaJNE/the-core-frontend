@@ -68,7 +68,7 @@
 
                     <div v-if="is_sm_created || is_sm_edit" style="justify-content: flex-end; display: flex;">
                         <vs-button @click="openDialogManageVehicleManifest">
-                            Vehicle
+                            + Vehicle
                         </vs-button>
                     </div>
 
