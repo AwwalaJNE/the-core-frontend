@@ -141,6 +141,9 @@ import InboundIncomingDetail from "@/views/inboundAirport/prealert/detail"
 // === Transport Manifest ===
 import TransportManifest from "@/views/transport/manifestNew"
 
+// === Transport Manifest ===
+import TransportManifestVehicle from "@/views/transport/manifestVehicle"
+
 // === Delivery Runsheet ===
 import DeliveryRunsheet from "@/views/delivery/runsheetNew"
 
@@ -1213,6 +1216,20 @@ const routes = [
         name: "transport",
         component: ContentChild,
         children: [
+          {
+            path: "manifest-vehicle/:id?",
+            name: "transport-manifest-vehicle",
+            component: TransportManifestVehicle,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Manifest Vehicle",
+              resource_type: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-vehicle',
+            }
+          },
           {
             path: "manifest",
             name: "transport-manifest",
