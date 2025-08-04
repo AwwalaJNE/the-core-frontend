@@ -66,6 +66,12 @@
                         @handleIconClick="openSelectStockModal"
                     />
 
+                    <div v-if="is_sm_created || is_sm_edit" style="justify-content: flex-end; display: flex;">
+                        <vs-button @click="openDialogManageVehicleManifest">
+                            + Vehicle
+                        </vs-button>
+                    </div>
+
                     <div v-if="!isDisabled && !manifest_number" style="justify-content: flex-end; display: flex;">
                         <div class="container-clear-item" @click="handleClearForm(); resetForm()">
                             Reset Inputs
@@ -134,6 +140,14 @@
             :close="() => showSelectStockModal = false"
             @selectManifest="handleSelectManifest"
         />
+
+        <dialog-manage-vehicle-manifest
+            title="Manifest Vehicle"
+            :manifest_number="manifest_number"
+            :manifest_method="manifest_method_id"
+            :active="dialogManageVehicleManifest"
+            :closeDialog="closeDialogManageVehicleManifest"
+        />
     </div>
 </template>
 
@@ -149,6 +163,8 @@ import TableMaster from "@/components/table/tableMaster.vue";
 import DialogTraceBag from "@/views/transport/manifestNew/dialogTraceBag";
 import dialogSelectManifestStock from "./dialogSelectManifestStock.vue";
 
+import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
+
 export default {
     name: "transport-surat-muatan-dialog-new",
     mixins: [master],
@@ -158,7 +174,8 @@ export default {
         "form-input-controller": FormInputController,
         "table-master": TableMaster,
         "dialog-trace-bag": DialogTraceBag,
-        "dialog-select-manifest-stock": dialogSelectManifestStock
+        "dialog-select-manifest-stock": dialogSelectManifestStock,
+        "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
     },
     props: {
         active: Boolean,
@@ -176,6 +193,7 @@ export default {
             editData: {},
             form: {},
             manifest_number: "",
+            manifest_method_id: 0,
             item_number: "",
             dataTable: [],
             datacolumn: [
@@ -278,7 +296,10 @@ export default {
             loadingSuratMuatan: false,
             dialogTraceBag: false,
             showSelectStockModal: false,
-            selectedBagNumber: ""
+            selectedBagNumber: "",
+            dialogManageVehicleManifest: false,
+            is_sm_created: false,
+            is_sm_edit: false,
         };
     },
     computed: {
@@ -420,6 +441,8 @@ export default {
             this.showSelectStockModal = false;
         },
         getEditData(val) {
+            this.is_sm_edit = true;
+
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
             this.checkManifestMethod(parseInt(val.vehicle_mode_id));
@@ -752,6 +775,7 @@ export default {
                 const res = await axios.post(`${this.URL.revamp_surat_muatan}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());
                 const data = res.data.data;
                 if (data) {
+                    this.is_sm_created = true;
                     this.manifest_number = data.manifest_number;
                     this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
                     this.master_form = {
@@ -904,6 +928,9 @@ export default {
             this.handleClearForm();
             this.closeDialog();
             this.dataTable = [];
+
+            this.is_sm_created = false;
+            this.is_sm_edit = false;
         },
         updateValue() {
             this.$refs.formSuratMuatanController.handleSubmit();
@@ -1067,7 +1094,13 @@ export default {
         },
         openTraceBagDialog() {
             this.dialogTraceBag = true;
-        }
+        },
+        openDialogManageVehicleManifest() {
+            this.dialogManageVehicleManifest = true;
+        },
+        closeDialogManageVehicleManifest() {
+            this.dialogManageVehicleManifest = false;
+        },
     },
     mounted() {
         this.handlePrintShortcut(this.print)

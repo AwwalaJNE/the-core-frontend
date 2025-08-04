@@ -4580,4 +4580,103 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA({ commit }, payload) {
   SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData', payload)
   },
+
+
+
+  // ====== SURAT MUATAN VEHICLE ====== //
+  SET_SURAT_MUATAN_VEHICLE_MANIFEST_NUMBER({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_MANIFEST_NUMBER', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_MANIFEST_NUMBER_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_MANIFEST_NUMBER_isDisabled', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_MANIFEST_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_MANIFEST_NUMBER_ValueData', payload)
+  },
+  
+
+  SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ArrData', payload)
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ArrData', payload)
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID_ArrData', payload)
+  },
+
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_ArrData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_ArrData', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible', payload)
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible', payload)
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_ValueData', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible', payload)
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_ETD({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ETD', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_ETD_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ETD_ValueData', payload)
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_ETA({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ETA', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_ETA_ValueData({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ETA_ValueData', payload)
+  },
+
+  // ====== END SURAT MUATAN VEHICLE ====== //
 }

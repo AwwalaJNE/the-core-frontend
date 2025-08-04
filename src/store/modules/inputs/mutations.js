@@ -5025,4 +5025,102 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA(state, payload) {
       state.surat_muatan_schedule.vehicle_mode_id.arrData = payload :
       state.surat_muatan_schedule.vehicle_mode_id.arrData = []
   },
+
+
+
+  // ====== SURAT MUATAN VEHICLE ====== //
+  SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE(state, payload) {
+    state.surat_muatan_vehicle.origin_branch_code.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ValueData(state, payload) {
+    state.surat_muatan_vehicle.origin_branch_code.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ArrData(state, payload) {
+    state.surat_muatan_vehicle.origin_branch_code.hasOwnProperty('arrData') ?
+      state.surat_muatan_vehicle.origin_branch_code.arrData = payload :
+      state.surat_muatan_vehicle.origin_branch_code.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE(state, payload) {
+    state.surat_muatan_vehicle.destination_branch_code.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ValueData(state, payload) {
+    state.surat_muatan_vehicle.destination_branch_code.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ArrData(state, payload) {
+    state.surat_muatan_vehicle.destination_branch_code.hasOwnProperty('arrData') ?
+      state.surat_muatan_vehicle.destination_branch_code.arrData = payload :
+      state.surat_muatan_vehicle.destination_branch_code.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID(state, payload) {
+    state.surat_muatan_vehicle.vehicle_id.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID_ValueData(state, payload) {
+    state.surat_muatan_vehicle.vehicle_id.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID_ArrData(state, payload) {
+    state.surat_muatan_vehicle.vehicle_id.hasOwnProperty('arrData') ?
+      state.surat_muatan_vehicle.vehicle_id.arrData = payload :
+      state.surat_muatan_vehicle.vehicle_id.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID(state, payload) {
+    state.surat_muatan_vehicle.employee_driver_id.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible(state, payload) {
+    state.surat_muatan_vehicle.employee_driver_id.visible = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_ValueData(state, payload) {
+    state.surat_muatan_vehicle.employee_driver_id.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_ArrData(state, payload) {
+    state.surat_muatan_vehicle.employee_driver_id.hasOwnProperty('arrData') ?
+      state.surat_muatan_vehicle.employee_driver_id.arrData = payload :
+      state.surat_muatan_vehicle.employee_driver_id.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER(state, payload) {
+    state.surat_muatan_vehicle.flight_number.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_ValueData(state, payload) {
+    state.surat_muatan_vehicle.flight_number.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible(state, payload) {
+    state.surat_muatan_vehicle.flight_number.visible = payload
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE(state, payload) {
+    state.surat_muatan_vehicle.flight_schedule.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_ValueData(state, payload) {
+    state.surat_muatan_vehicle.flight_schedule.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible(state, payload) {
+    state.surat_muatan_vehicle.flight_schedule.visible = payload
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_ETD(state, payload) {
+    state.surat_muatan_vehicle.etd.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_ETD_ValueData(state, payload) {
+    state.surat_muatan_vehicle.etd.valueData = payload
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_ETA(state, payload) {
+    state.surat_muatan_vehicle.eta.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_ETA_ValueData(state, payload) {
+    state.surat_muatan_vehicle.eta.valueData = payload
+  },
+
+
+  // ====== END SURAT MUATAN VEHICLE ====== //
 }

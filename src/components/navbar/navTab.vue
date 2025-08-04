@@ -18,46 +18,73 @@
 
 <template>
     <div class="left">
-        <vs-navbar right-collapsed v-model="active" @input="activeTab" >
+        <vs-navbar
+            right-collapsed
+            :value="currentActive"
+            @input="activeTab"
+            style="z-index: 9;"
+        >
             <template #left>
                 <vs-navbar-item 
-                v-for="(item,key) in listenNavItem"
-                :key="key"
-                :active="active == item.key" 
-                :id="item.key"
-                :class="item.key"
+                    v-for="(item, key) in listenNavItem"
+                    :key="key"
+                    :active="currentActive === item.key"
+                    :id="item.key"
+                    :class="item.key"
                 >
-                {{item.label}}
+                    {{ item.label }}
                 </vs-navbar-item>
             </template>
         </vs-navbar>
     </div>
 </template>
+
 <script>
 export default {
-    name:"navbarTab",
+    name: "navbarTab",
     props: {
-        navItem: Array
-    },
-    computed: {
-        listenNavItem() {
-            return this.navItem
+        navItem: {
+            type: Array,
+            required: true
+        },
+        value: {
+            type: String,
+            default: null
         }
     },
     data() {
         return {
-            active: this.navItem[0].key
+            internalActive: this.navItem?.[0]?.key ?? null
+        };
+    },
+    computed: {
+        listenNavItem() {
+            return this.navItem;
+        },
+        currentActive: {
+            get() {
+                return this.value !== null ? this.value : this.internalActive;
+            },
+            set(val) {
+                if (this.value !== null) {
+                    this.$emit("input", val);
+                } else {
+                    this.internalActive = val;
+                }
+            }
         }
     },
     methods: {
-        activeTab(val){
+        activeTab(val) {
+            this.currentActive = val;
             this.$emit("activeTab", val);
         }
-    },
-}
+    }
+};
 </script>
+
 <style lang="scss">
-    .vs-navbar-content{
+    .vs-navbar-content {
         position: relative !important;
         margin-bottom: 1.5em;
     }
