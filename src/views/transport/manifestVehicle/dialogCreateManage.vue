@@ -331,7 +331,9 @@ export default {
             }
         },
         handleClearForm() {
-            this.$refs.formSuratMuatanVehicleController.handleClearForm();
+            if (this.navActive === 'k-NEW' && this.$refs.formSuratMuatanVehicleController) {
+                this.$refs.formSuratMuatanVehicleController.handleClearForm();
+            }
         },
         cancel() {
             this.handleClearForm();
