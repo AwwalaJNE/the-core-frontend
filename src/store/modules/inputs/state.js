@@ -4235,6 +4235,95 @@ export default {
       value: ''
     }
   },
+  surat_muatan_vehicle: {
+    origin_branch_code: {
+      label: "Origin*",
+      key: "origin_branch_code",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    destination_branch_code: {
+      label: "Destination*",
+      key: "destination_branch_code",
+      rule:"required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    employee_driver_id: {
+      label: "Driver",
+      key: "employee_driver_id",
+      rule:"",
+      visible: false,
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    flight_number: {
+      label: "Flight Number",
+      key: "flight_number",
+      rule: "",
+      visible: false,
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    flight_schedule: {
+      label: "Flight Schedule",
+      key: "flight_schedule",
+      rule: "",
+      visible: false,
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    vehicle_id: {
+      label: "Vehicle*",
+      key: "vehicle_id",
+      rule:"required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    etd: {
+      label: "ETD",
+      key: "etd",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    eta: {
+      label: "ETA",
+      key: "eta",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+  },
   //surat muatan
   surat_muatan: {
     manifest_method_id: {

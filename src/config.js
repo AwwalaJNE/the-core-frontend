@@ -262,6 +262,9 @@ export default {
 
     depart_surat_muatan: api + 'manifest',
 
+    // Manifest Vehicle
+    manifest_vehicle: api + 'manifest-vehicle',
+
     // Delivery Revamp
     revamp_delivery: api + 'revamp/delivery',
 

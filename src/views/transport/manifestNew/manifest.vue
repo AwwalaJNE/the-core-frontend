@@ -26,6 +26,14 @@
       @refresh="refresh"
     />
 
+    <dialog-manage-vehicle-manifest
+      title="Manifest Vehicle"
+      :manifest_number="manifest_number"
+      :manifest_method="manifest_method"
+      :active="dialogManageVehicleManifest"
+      :closeDialog="closeDialogManageVehicleManifest"
+    />
+
     <dialog-confirm
       title="Cancel Surat Muatan"
       :message="`Anda yakin ingin membatalkan Surat Muatan dengan nomor ${manifest_number} ini?`"
@@ -56,6 +64,7 @@ import DialogConfirm from "@/components/dialog/dialogConfirm";
 import TableMaster from "@/components/table/tableMaster.vue";
 
 import DialogCreateManifest from "@/views/transport/manifestNew/dialogCreateEditManifest";
+import DialogManageVehicleManifest from "@/views/transport/manifestNew/dialogManageVehicleManifest.vue";
 
 export default {
   name: "transport-surat-muatan-table-new",
@@ -71,6 +80,7 @@ export default {
   components: {
     "table-master": TableMaster,
     dialogCreateManifest: DialogCreateManifest,
+    "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
     "dialog-confirm": DialogConfirm,
   },
   data() {
@@ -79,6 +89,7 @@ export default {
       activeLoadingCancel: false,
       dataTable: [],
       dialogManifestList: false,
+      dialogManageVehicleManifest: false,
       datacolumn: [
         {
           label: "No Surat Muatan",
@@ -202,6 +213,11 @@ export default {
       ],
       customActionList: [
         {
+          label: "Vehicle",
+          key: "vehicle",
+          attribute: "",
+        },
+        {
           label: "Print",
           key: "print",
           attribute: "",
@@ -229,6 +245,7 @@ export default {
         page: 1,
       },
       manifest_number: "", // Untuk menyimpan nomor manifes yang sedang dioperasikan
+      manifest_method: 0,
       activeDialogConfirmDepart: false,
       loadingConfirmDepart: false,
     };
@@ -298,6 +315,7 @@ export default {
 
         const arr = res.data.data.map((item) => {
           const buttonStatus = {
+            vehicle: false,
             print: false,
             depart: false,
             cancel: false,
@@ -308,6 +326,7 @@ export default {
             let strStatus = item["status"].toLowerCase();
             if (item.is_approve === 1) { // Jika sudah di-approve
               if (strStatus.includes("unapproved")) {
+                buttonStatus.vehicle = true; // Bisa edit vehicle
                 buttonStatus.print = true; // Bisa print
                 buttonStatus.depart = true; // Bisa depart
                 buttonStatus.cancel = true; // Bisa cancel
@@ -318,6 +337,7 @@ export default {
                 strStatus.includes("receive") ||
                 strStatus.includes("complete")
               ) {
+                buttonStatus.vehicle = true; // Bisa edit vehicle
                 buttonStatus.print = true; // Bisa print
                 // Depart tidak bisa dilakukan jika sudah depart/receive/complete
               } else if (strStatus.includes("cancel")) {
@@ -325,6 +345,7 @@ export default {
               }
             } else { // Jika belum di-approve
               if (strStatus.includes("unapproved") || strStatus.includes("unreceived")) {
+                buttonStatus.vehicle = true; // Bisa edit vehicle
                 buttonStatus.print = true; // Bisa print
                 // Depart tidak bisa jika belum di-approve
                 buttonStatus.cancel = true; // Bisa cancel
@@ -334,6 +355,7 @@ export default {
                 strStatus.includes("receive") ||
                 strStatus.includes("complete")
               ) {
+                buttonStatus.vehicle = true; // Bisa edit vehicle
                 buttonStatus.print = true; // Bisa print
               } else if (strStatus.includes("cancel")) {
                 // Semua aksi dinonaktifkan jika status cancel
@@ -416,6 +438,11 @@ export default {
     actionUpdate(val, key) {
       // `val` adalah data item, `key` adalah kunci tindakan (print, depart, cancel)
       switch (key) {
+        case "vehicle":
+          this.dialogManageVehicleManifest = true;
+          this.manifest_number = val.manifest_number;
+          this.manifest_method = parseInt(val.manifest_method_id);
+          break;
         case "print":
           this.manifest_number = val.manifest_number;
           this.print();
@@ -519,6 +546,10 @@ export default {
         this.closeDialogConfirmDepart();
         this.refresh();
       }
+    },
+    closeDialogManageVehicleManifest() {
+      this.dialogManageVehicleManifest = false;
+      this.refresh();
     },
     closeDialogConfirmDepart() {
       this.activeDialogConfirmDepart = false;
