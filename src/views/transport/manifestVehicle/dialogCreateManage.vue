@@ -25,7 +25,7 @@
                             :name="'list_manifest_vehicle'"
                             :formKey="'list_manifest_vehicle'"
                             :valueData="list_manifest_vehicle"
-                            :selectedValue="defaultManifestVehicle"
+                            :selectedValue="listenSelectedManifestVehicle"
                             @updateValue="updateValue"
                             @removeRow="removeRow"
                         />
@@ -79,7 +79,6 @@
 
 <script>
 import axios from "axios";
-import moment from "moment";
 
 import master from "@/mixins/master";
 
@@ -120,6 +119,7 @@ export default {
             ],
             loading: false,
             list_manifest_vehicle: [],
+            selected_manifest_vehicle: "",
         };
     },
     computed: {
@@ -141,8 +141,8 @@ export default {
         listenManifestMethod() {
             return this.manifest_method;
         },
-        defaultManifestVehicle() {
-            return this.list_manifest_vehicle.length ? this.list_manifest_vehicle[0].key : ''
+        listenSelectedManifestVehicle() {
+            return this.selected_manifest_vehicle || ''
         }
     },
     methods: {
@@ -176,10 +176,10 @@ export default {
             this.navActive = val;
         },
         formData(form){
-            form.origin_branch_code = form.origin_branch_code?.branch_code;
-            form.destination_branch_code = form.destination_branch_code?.branch_code;
-            form.employee_driver_id = form.employee_driver_id?.employee_id;
+            form.origin_branch_code = form.origin_branch_code?.value;
+            form.destination_branch_code = form.destination_branch_code?.value;
             form.vehicle_id = form?.vehicle_id?.vehicle_id;
+            form.employee_driver_id = form?.employee_driver_id?.employee_id || "";
 
             this.form = form;
             this.createManifestVehilce()
@@ -197,6 +197,13 @@ export default {
                 const revamp_arr = arr.map(item => ({
                     key: item.manifest_vehicle_log_id,
                     state: [
+                        {
+                            label: '',
+                            key: 'label',
+                            value: item.status_flight,
+                            typeInput: 'badge',
+                            width: "12"
+                        },
                         {
                             label: 'Origin*',
                             key: 'origin',
@@ -249,6 +256,8 @@ export default {
                     ]
                 }));
 
+                this.selected_manifest_vehicle = arr.find(item => item.status === 'ACTIVE')?.manifest_vehicle_log_id || null;
+
                 this.list_manifest_vehicle = revamp_arr;
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
@@ -271,7 +280,7 @@ export default {
         async chooseManifestVehicle(log_id) {
             this.loading = true;
             try {
-                const res = await axios.put(`${this.URL.manifest_vehicle}/${log_id}/active?n=${this.listenNodeId}`, null, this.Helper.header());
+                const res = await axios.patch(`${this.URL.manifest_vehicle}/${log_id}/active?n=${this.listenNodeId}`, null, this.Helper.header());
                 this.openNotification('success', null, "Success", "Update manifest vehicle success");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
@@ -290,21 +299,22 @@ export default {
                 this.loading = false;
             }
         },
-        updateValue(key, value, itemData) {
-            this.chooseManifestVehicle(value);
+        async updateValue(key, value, itemData) {
+            await this.chooseManifestVehicle(value);
+            await this.getManifestVehicle();
         },
-        removeRow(row_id) {
-            this.removeManifestVehicle(row_id);
-            this.getManifestVehicle();
+        async removeRow(row_id) {
+            await this.removeManifestVehicle(row_id);
+            await this.getManifestVehicle();
         },
         inputFocus(info) {
             if (info?.key) {
                 switch (info.key) {
                     case "origin_branch_code":
-                        this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
+                        this.autoComplateUrl = `${this.URL.airports_list}?n=${this.listenNodeId}`;
                         break;
                     case "destination_branch_code":
-                        this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
+                        this.autoComplateUrl = `${this.URL.airports_list}?n=${this.listenNodeId}`;
                         break;
                     case "employee_driver_id":
                         this.autoComplateUrl = `${this.URL.employee}/driver?n=${this.listenNodeId}`;
@@ -322,7 +332,7 @@ export default {
                 const res = await axios.get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header());
                 const result = res.data.data || [];
                 const suggestions = result.map(item => {
-                    const value = item.node_name || item.vehicle_name || item.employee_name || '';
+                    const value = item.label || item.vehicle_name || item.employee_name || '';
                     return { value, data: item };
                 });
                 cb(suggestions);
