@@ -32,12 +32,12 @@
             </vs-col>
         </vs-row>
 
-        <vs-row>
+        <vs-row :style="{ alignItems: 'stretch' }">
             <vs-col w="6">
                 <div class="box view" :style="{
-                    minHeight: hasManifestNumber ? '240px' : null,
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    height: '93%'
                 }">
                     <h3 class="title">SCAN MANIFEST</h3>
                     <div class="input">
