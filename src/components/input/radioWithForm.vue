@@ -5,43 +5,54 @@
                 <vs-col
                     v-for="(item, key) in DataArr" 
                     :key="key"
+                    class="radio-wrapper"
                 >
-                    <vs-radio 
-                        v-model="value" 
-                        :key="key"
-                        :val="item.key" 
-                        :disabled="listenIsDisabled"
-                        :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
-                    >
-                        <div class="radio-with-form overlay-wrapper">
-                            <vs-row>
-                                <vs-col
-                                    v-for="(stateItem, stateIndex) in item.state"
-                                    :key="stateIndex"
-                                    :w="stateItem.width"
-                                >
-                                    <input-general
-                                        :disabled="true"
-                                        :formKey="stateItem.key"
-                                        :name="stateItem.label"
-                                        :readonly="true"
-                                        :typeInput="stateItem.typeInput"
-                                        :valueData="stateItem.value"
-                                    />
-                                </vs-col>
-                            </vs-row>
+                    <div class="overlay-wrapper">
 
-                            <div 
-                                v-if="DataArr.length > 1 && value !== item.key"
-                                class="overlay-button" 
-                                @click="removeRow(item.key)"
-                            >
-                                <i class='bx bx-trash'></i>
-                            </div>
-
-                            <div class="radio-overlay"></div>
+                        <div 
+                            v-if="DataArr.length > 1 && value !== item.key"
+                            class="overlay-button" 
+                            @click.stop="removeRow(item.key)"
+                        >
+                            <i class='bx bx-trash'></i>
                         </div>
-                    </vs-radio>
+
+                        <vs-radio 
+                            v-model="value"
+                            :val="item.key"
+                            :disabled="listenIsDisabled"
+                            :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+                        >
+                            <div class="radio-with-form">
+                                <vs-row>
+                                    <vs-col
+                                        v-for="(stateItem, stateIndex) in item.state"
+                                        :key="stateIndex"
+                                        :w="stateItem.width"
+                                    >
+                                        <template v-if="stateItem.typeInput === 'text'">
+                                            <input-general
+                                                :disabled="true"
+                                                :formKey="stateItem.key"
+                                                :name="stateItem.label"
+                                                :readonly="true"
+                                                :typeInput="stateItem.typeInput"
+                                                :valueData="stateItem.value"
+                                            />
+                                        </template>
+                                        <template v-else-if="stateItem.typeInput === 'badge'">
+                                            <div v-if="stateItem.value" style="height: 3em;">
+                                                <h4 :style="getRoutingStyle(stateItem.value)">
+                                                    {{ stateItem.value }}
+                                                </h4>
+                                            </div>
+                                        </template>
+                                    </vs-col>
+                                </vs-row>
+                                <div class="radio-overlay"></div>
+                            </div>
+                        </vs-radio>
+                    </div>
                 </vs-col>
             </div>
         </template>
@@ -100,15 +111,46 @@ export default {
         },
         value: function(n, o) {
             if (n !== o) {
-                let data = this.DataArr.filter(item => item.value == n)
-                this.$emit("updateValue", this.listenFormKey, n, data[0])
+                const found = this.DataArr.find(item => item.key === n);
+                if (found) {
+                    this.$emit("updateValue", this.listenFormKey, n, found);
+                }
             }
         }
     },
     methods: {
         removeRow(row_id) {
             this.$emit("removeRow", row_id);
-        }
+        },
+        getRoutingStyle(type) {
+            if (!type) return {};
+
+            const colorMap = {
+                CANCELLED: '#f44336',   // Red
+                DIVERTED: '#ff9800',    // Orange
+                ARRIVED: '#4caf50',     // Green
+                IN_FLIGHT: '#2196f3',   // Blue
+                SCHEDULED: '#673ab7',   // Purple
+            };
+
+            const bgColor = colorMap[type.toUpperCase()] || '#9E9E9E'; // Default gray
+
+           return {
+                color: '#fff',
+                backgroundColor: bgColor,
+                padding: '4px 10px',
+                borderRadius: '999px',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                fontSize: '12px',
+                minWidth: '100px',
+                textAlign: 'center',
+                position: 'absolute',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                zIndex: 1,
+                margin: 0
+            };
+        },
     },
 }
 </script>
@@ -150,15 +192,20 @@ export default {
     z-index: 10;
 }
 
+::v-deep .radio-wrapper {
+    position: relative;
+}
+
 ::v-deep .overlay-button {
     color: red;
     position: absolute;
     top: 6px;
     right: 6px;
     font-size: 20px;
-    z-index: 11;
+    z-index: 20;
     cursor: pointer;
     transition: color 0.2s ease;
+    padding: 0 10px;
 }
 
 ::v-deep .overlay-button:hover {
