@@ -64,7 +64,7 @@ import DialogConfirm from "@/components/dialog/dialogConfirm";
 import TableMaster from "@/components/table/tableMaster.vue";
 
 import DialogCreateManifest from "@/views/transport/manifestNew/dialogCreateEditManifest";
-import DialogManageVehicleManifest from "@/views/transport/manifestNew/dialogManageVehicleManifest.vue";
+import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
 
 export default {
   name: "transport-surat-muatan-table-new",

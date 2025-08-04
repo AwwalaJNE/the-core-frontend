@@ -163,7 +163,7 @@ import TableMaster from "@/components/table/tableMaster.vue";
 import DialogTraceBag from "@/views/transport/manifestNew/dialogTraceBag";
 import dialogSelectManifestStock from "./dialogSelectManifestStock.vue";
 
-import DialogManageVehicleManifest from "@/views/transport/manifestNew/dialogManageVehicleManifest.vue";
+import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
 
 export default {
     name: "transport-surat-muatan-dialog-new",

@@ -334,13 +334,13 @@ export default {
             this.$refs.formSuratMuatanVehicleController.handleClearForm();
         },
         cancel() {
-            this.navActive = 'k-MANAGE';
+            this.handleClearForm();
 
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible", false);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible", false);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible", false);
 
-            this.handleClearForm();
+            this.navActive = 'k-MANAGE';
             this.closeDialog();
         },
         moveTab() {
