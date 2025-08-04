@@ -1,33 +1,29 @@
 <template>
     <div>
         <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
+            <vs-col xs="6" sm="6" lg="6">
                 <div class="titlePage">
                     <breadcrumb />
                     <h2>Manifest Vehicle</h2>
                 </div>
             </vs-col>
-            <vs-col xs="6" sm="3" lg="3" v-if="hasManifestNumber">
+            <vs-col xs="6" sm="6" lg="6" v-if="hasManifestNumber">
                 <vs-row justify="flex-end">
-                    <vs-col w="3">
-                        <vs-button
-                            flat
-                            :active="true"
-                            @click="openDialog"
-                        >
-                            Vehicle
-                        </vs-button>
-                    </vs-col>
-                    <vs-col w="3">
-                        <vs-button
-                            flat
-                            type="submit"
-                            :active="true"
-                            @click="print"
-                        >
-                            Print
-                        </vs-button>
-                    </vs-col>
+                    <vs-button
+                        flat
+                        :active="true"
+                        @click="openDialog"
+                    >
+                        Vehicle
+                    </vs-button>
+                    <vs-button
+                        flat
+                        type="submit"
+                        :active="true"
+                        @click="print"
+                    >
+                        Print
+                    </vs-button>
                 </vs-row>
             </vs-col>
         </vs-row>
