@@ -309,10 +309,6 @@ export default {
         },
         openDialog() {
             this.dialogSuratMuatan = true;
-            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
         },        
         updateSearchBy(key, val) {
             val = val.replaceAll(" ", "_");

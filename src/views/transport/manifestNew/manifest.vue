@@ -476,19 +476,6 @@ export default {
 
         this.dataItem = val;
 
-        // Logika untuk menampilkan/menyembunyikan flight number/schedule
-        if (parseInt(val["manifest_method_id"]) === 1) { 
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true);
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", true);
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData", val["origin"]);
-        } else {
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData", val["origin"]);
-        }
-        this.$store.dispatch(`SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData`, val["origin"]);
-        this.$store.dispatch(`SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData`, val["destination"]);
-
         this.$nextTick(() => {
           this.dialogManifestList = true;
         });

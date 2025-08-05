@@ -23,7 +23,6 @@
                         <p class="notes"><b>Notes</b>: *Your changes are being autosaved</p>
                         <radio
                             :name="'list_manifest_vehicle'"
-                            :formKey="'list_manifest_vehicle'"
                             :valueData="list_manifest_vehicle"
                             :selectedValue="listenSelectedManifestVehicle"
                             @updateValue="updateValue"
@@ -182,7 +181,7 @@ export default {
             form.employee_driver_id = form?.employee_driver_id?.employee_id || "";
 
             this.form = form;
-            this.createManifestVehilce()
+            this.createManifestVehicle()
         },
         handleSubmit(){
             this.$refs.formSuratMuatanVehicleController.handleSubmit();
@@ -265,7 +264,7 @@ export default {
                 this.loading = false;
             }
         },
-        async createManifestVehilce() {
+        async createManifestVehicle() {
             this.loading = true;
             try {
                 const res = await axios.post(`${this.URL.manifest_vehicle}/${this.listenManifestNumber}?n=${this.listenNodeId}`, this.form, this.Helper.header());
@@ -282,6 +281,8 @@ export default {
             try {
                 const res = await axios.patch(`${this.URL.manifest_vehicle}/${log_id}/active?n=${this.listenNodeId}`, null, this.Helper.header());
                 this.openNotification('success', null, "Success", "Update manifest vehicle success");
+
+                await this.getManifestVehicle();
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -299,9 +300,8 @@ export default {
                 this.loading = false;
             }
         },
-        async updateValue(key, value, itemData) {
+        async updateValue(value) {
             await this.chooseManifestVehicle(value);
-            await this.getManifestVehicle();
         },
         async removeRow(row_id) {
             await this.removeManifestVehicle(row_id);
