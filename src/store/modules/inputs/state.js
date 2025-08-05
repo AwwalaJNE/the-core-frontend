@@ -4326,6 +4326,17 @@ export default {
   },
   //surat muatan
   surat_muatan: {
+    auto_depart: {
+      label: "Auto Depart",
+      key: "auto_depart",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true,
+      isDisabled: false,
+      width: "12"
+    },
     manifest_method_id: {
       label: "Moda",
       key: "manifest_method_id",
@@ -4374,7 +4385,6 @@ export default {
       label: "Origin",
       key: "node_id_origin",
       rule: "required",
-      visible: false,
       typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
@@ -4386,131 +4396,12 @@ export default {
       label: "Destination",
       key: "node_id_destination",
       rule:"required",
-      visible: false,
       typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
       valueData: null,
       value: '',
       width: "6"
-    },
-    dynamicinputcomponent_node_id_transit: {
-      label: "Transit",
-      key: "dynamicinputcomponent_node_id_transit",
-      rule:"",
-      typeInput: "dynamicinputcomponent",
-      typeData: "Array",
-      max: 3,
-      inputs: [ // template input yg di render tiap row
-        {
-          key: "node_id_transit",
-          typeInput: "autocomplete",
-          value: 'meong1',
-          query: "",
-          width: "12",
-        },
-      ],
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: "12"
-    },
-    node_id_transit: {
-      label: "Transit",
-      key: "node_id_transit",
-      rule:"",
-      typeInput: "null",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    // node_id_transit_2: {
-    //   label: "Transit",
-    //   key: "node_id_transit_2",
-    //   rule:"",
-    //   typeInput: "null",
-    //   typeData: "String",
-    //   arrData: [],
-    //   valueData: null,
-    //   value: ''
-    // },
-    // node_id_transit_3: {
-    //   label: "Transit",
-    //   key: "node_id_transit_3",
-    //   rule:"",
-    //   typeInput: "null",
-    //   typeData: "String",
-    //   arrData: [],
-    //   valueData: null,
-    //   value: ''
-    // },
-    // vehicle_type_id: {
-    //   label: "Tipe",
-    //   key: "vehicle_type_id",
-    //   rule:"",
-    //   typeInput: "select",
-    //   typeData: "String",
-    //   arrData: [],
-    //   valueData: null,
-    //   value: '',
-    //   width: "6"
-    // },
-    // manifest_type_id: {
-    //   label: "Jenis Kiriman",
-    //   key: "manifest_type_id",
-    //   rule:"",
-    //   typeInput: "select",
-    //   typeData: "String",
-    //   arrData: [],
-    //   visible: false,
-    //   valueData: null,
-    //   value: ''
-    // },
-    flight_number: {
-      label: "Flight Number",
-      key: "flight_number",
-      rule: "required",
-      visible: false,
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: '',
-      width: "6"
-    },
-    flight_schedule: {
-      label: "Flight Schedule",
-      key: "flight_schedule",
-      rule: "required",
-      visible: false,
-      typeInput: "datetime",
-      typeData: "String",
-      valueData: null,
-      value: '',
-      width: "6"
-    },
-    vehicle_id: {
-      label: "Vehicle",
-      key: "vehicle_id",
-      rule:"",
-      typeInput: "autocomplete",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: "12"
-    },
-    pic_employee_id: {
-      label: "Driver",
-      key: "pic_employee_id",
-      rule:"",
-      visible: true,
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: "12"
     },
     etd: {
       label: "ETD",
@@ -4531,17 +4422,6 @@ export default {
       valueData: null,
       value: '',
       width: "6"
-    },
-    auto_depart: {
-      label: "Auto Depart",
-      key: "auto_depart",
-      rule: "",
-      typeInput: "Boolean",
-      typeData: "Boolean",
-      valueData: true,
-      value: true,
-      isDisabled: false,
-      width: "12"
     },
   },
   surat_jalan:{

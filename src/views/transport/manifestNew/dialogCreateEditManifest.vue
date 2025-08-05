@@ -66,11 +66,46 @@
                         @handleIconClick="openSelectStockModal"
                     />
 
-                    <div v-if="is_sm_created || is_sm_edit" style="justify-content: flex-end; display: flex;">
-                        <vs-button @click="openDialogManageVehicleManifest">
-                            + Vehicle
-                        </vs-button>
+                    <div v-if="listenInitVehicle && Object.keys(listenInitVehicle).length !== 0">
+                        <vs-row justify="space-between">
+                            <vs-col w="6">
+                                <h3 class="title">Current Vehicle</h3>
+                            </vs-col>
+                            <vs-col w="6">
+                                <vs-row justify="flex-end" v-if="!is_sm_created && !is_sm_edit">
+                                    <vs-button
+                                        shadow
+                                        :active="false"
+                                        @click="openDialogCreateVehicleManifest"
+                                    >
+                                        <i class='bx bx-edit'></i> Vehicle
+                                    </vs-button>
+                                </vs-row>
+                                <vs-row justify="flex-end" v-else-if="is_sm_created || is_sm_edit">
+                                    <!-- <vs-button @click="openDialogManageVehicleManifest">
+                                        <i class='bx bx-cog'></i> Manage
+                                    </vs-button> -->
+                                    <vs-button
+                                        shadow
+                                        :active="false"
+                                        @click="openDialogManageVehicleManifest"
+                                    >
+                                        <i class='bx bx-cog'></i> Manage
+                                    </vs-button>
+                                </vs-row>
+                            </vs-col>
+                        </vs-row>
+                        <vehicle-card title="Current Vehicle" :data="listenInitVehicle"/>
                     </div>
+
+                    <vs-button
+                        v-if="Object.keys(listenInitVehicle).length === 0"
+                        shadow
+                        :active="false"
+                        @click="openDialogCreateVehicleManifest"
+                    >
+                        <i class='bx bx-plus'></i> Vehicle
+                    </vs-button>
 
                     <div v-if="!isDisabled && !manifest_number" style="justify-content: flex-end; display: flex;">
                         <div class="container-clear-item" @click="handleClearForm(); resetForm()">
@@ -148,6 +183,14 @@
             :active="dialogManageVehicleManifest"
             :closeDialog="closeDialogManageVehicleManifest"
         />
+
+        <dialog-create-vehicle-manifest
+            title="Manifest Vehicle"
+            :manifest_method="manifest_method_id"
+            :active="dialogCreateVehicleManifest"
+            :closeDialog="closeDialogCreateVehicleManifest"
+            @updateVehicleValue="updateVehicleValue"
+        />
     </div>
 </template>
 
@@ -164,6 +207,8 @@ import DialogTraceBag from "@/views/transport/manifestNew/dialogTraceBag";
 import dialogSelectManifestStock from "./dialogSelectManifestStock.vue";
 
 import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
+import DialogCreateVehicleManifest from "@/views/transport/manifestNew/dialogCreateVehicleManifest";
+import VehicleCard from "@/views/transport/manifestNew/vehicleCard";
 
 export default {
     name: "transport-surat-muatan-dialog-new",
@@ -176,6 +221,8 @@ export default {
         "dialog-trace-bag": DialogTraceBag,
         "dialog-select-manifest-stock": dialogSelectManifestStock,
         "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
+        "dialog-create-vehicle-manifest": DialogCreateVehicleManifest,
+        "vehicle-card": VehicleCard
     },
     props: {
         active: Boolean,
@@ -297,9 +344,12 @@ export default {
             dialogTraceBag: false,
             showSelectStockModal: false,
             selectedBagNumber: "",
+            dialogCreateVehicleManifest: false,
             dialogManageVehicleManifest: false,
             is_sm_created: false,
             is_sm_edit: false,
+            initVehicle: {},
+            vehicle_form: {}
         };
     },
     computed: {
@@ -329,6 +379,9 @@ export default {
         },
         listenSMNumber() {
             return this.sm_number;
+        },
+        listenInitVehicle() {
+            return this.initVehicle || {}
         }
     },
     watch: {
@@ -360,68 +413,19 @@ export default {
         }
     },
     methods: {
-        checkManifestMethod(moda) {
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_visible", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", true);
-
-            switch(moda){
-                case 1:
-                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true);
-                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", true);
-                    this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
-                    break;
-                case 2:
-                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
-                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
-                    this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", true);
-                    break;
-                case 3:
-                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
-                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
-                    this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
-                    break;
-                case 4:
-                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
-                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
-                    this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
-                    break;
-            }
-        },
         handleSelectManifest(val) {
-            this.checkManifestMethod(parseInt(val.vehicle_mode_id));
-
             this.vehicle_type_id = val.vehicle_type_id;
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", val.vehicle_prefix_name + "-");
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", val.manifest_number);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID", parseInt(val.vehicle_mode_id));
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", val?.node_name_origin + " (" + val?.node_code_origin + ")");
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", val?.node_name_destination + " (" + val?.node_code_destination + ")");
-            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", val.vehicle_name);
             this.$store.dispatch("SET_SURAT_MUATAN_ETD", val.etd);
             this.$store.dispatch("SET_SURAT_MUATAN_ETA", val.eta);
 
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData", val.vehicle_prefix_name + "-");
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", val.node_id_origin);
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", val.node_id_destination);
-            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ValueData", val.vehicle_id);
-
-            if (val.vehicle_mode_id === '1') {
-                this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER", val.shipment_number);
-                this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE", val.etd);
-
-                this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_isDisabled", true);
-                if (val?.shipment_number) {
-                    this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_isDisabled", true);
-                }  
-            } else if (val.vehicle_mode_id === '2') {
-                this.getDataEmployee();
-                
-                this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID", parseInt(val?.employee_driver_id));
-
-                if (val?.employee_driver_id) {
-                    this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled", true);
-                }
-            }
 
             // Notes: Disabled field for SM Stock
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
@@ -445,7 +449,6 @@ export default {
 
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
-            this.checkManifestMethod(parseInt(val.vehicle_mode_id));
 
             this.manifest_number = val.manifest_number;            
             this.is_approve = val.is_approve;
@@ -507,6 +510,17 @@ export default {
                 auto_depart: val.auto_depart
             };
 
+            this.initVehicle = {
+                origin_vehicle: val?.origin_vehicle?.label || "",
+                destination_vehicle: val?.destination_vehicle?.label || "",
+                vehicle_id: val?.vehicle?.vehicle_name || "",
+                pic_employee_id: val?.employee_pic?.employee_name || "",
+                flight_number: val?.flight_number || "",
+                flight_schedule: val?.flight_schedule || "",
+                etd_vehicle: val?.etd_vehicle || "",
+                eta_vehicle: val?.eta_vehicle || "",
+            };
+
             val.manifest_prefix = val?.manifest_method?.prefix_name;
 
             // TODO: COMMENT IF WANNA USE NODE
@@ -539,7 +553,6 @@ export default {
             }
         },
         getDataPreview(val) {
-            this.checkManifestMethod(parseInt(val.manifest_method_id));
 
             val.manifest_method_id = parseInt(val.manifest_method_id);
             val.manifest_prefix = val?.manifest_method?.prefix_name;
@@ -621,73 +634,44 @@ export default {
                         this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
                         break;
                     case "node_id_destination":
-                        let transit = this.$store.getters["getInputs"]["surat_muatan"]["dynamicinputcomponent_node_id_transit"];
-                        let arr = transit?.arrData || [];
-                        let nodeId = this.node_id_origin;
-
-                        if (arr.length > 0 && arr[arr.length - 1]?.inputs?.[0]?.data?.node_id) {
-                            nodeId = arr[arr.length - 1].inputs[0].data.node_id || this.node_id_origin;
-                        }
-
                         // TODO: UNCOMMENT IF WANNA USE NODE
                         // this.autoComplateUrl = `${this.URL.node}/${nodeId}/destination-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`;
 
                         // TODO: COMMENT IF DON'T WANNA USE BRANCH
                         this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
                         break;
-                    case "vehicle_id":
-                        this.autoComplateUrl = `${this.URL.vehicle}?n=${this.listenNodeId}&search_by=vehicle_name&sort_order=desc&limit=15&page=1`;
-                        break;
                     default:
                         break;
                 }
             }
         },
-        querySearch(queryString, cb) {
-            axios
-                .get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header())
-                .then((res) => {
-                    let result = res.data.data;
- 
-                    let suggestions = [];
-
-                    result.length > 0 &&
-                        result.map((item) => {
-                            if (item.hasOwnProperty("node_name")) {
-                                suggestions.push({
-                                    value: item["node_name"],
-                                    data: item,
-                                });
-                            }
-                            if (item.hasOwnProperty("branch_name")) {
-                                suggestions.push({
-                                    value: item["branch_name"],
-                                    data: item,
-                                });
-                            }
-                            if (item.hasOwnProperty("vehicle_name")) {
-                                suggestions.push({
-                                    value: `${item.vehicle_name}`,
-                                    data: item,
-                                });
-                            }
-                        });
-
-                    cb(suggestions);
-                })
-                .catch((error) => console.log("error", error));
+        async querySearch(queryString, cb) {
+            try {
+                const res = await axios.get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header());
+                const result = res.data.data || [];
+                const suggestions = result.map(item => {
+                    const value = item.node_name || item.branch_name || item.vehicle_name || item.employee_name || '';
+                    return { value, data: item };
+                });
+                cb(suggestions);
+            } catch (error) {
+                console.error("error", error);
+            }
         },
         formData(form) {
             form.node_id_origin = form.node_id_origin?.node_id || form.node_id_origin || this.listenCurrentNode.node_id;
             form.node_id_destination = form.node_id_destination?.node_id || form.node_id_destination;
-            form.vehicle_type_id = form?.vehicle_id?.vehicle_type_id || this.vehicle_type_id;
-            form.vehicle_id = form?.vehicle_id?.vehicle_id || form?.vehicle_id;
 
-            if (form?.dynamicinputcomponent_node_id_transit?.length > 0) {
-                for (let i = 0; i < 3; i++) {
-                    form[`node_id_transit_${i + 1}`] = form.dynamicinputcomponent_node_id_transit[i]?.inputs?.[0]?.data?.node_id || "";
-                }
-            }
+            form.vehicle_id = this.vehicle_form?.vehicle_id;
+            form.vehicle_type_id = this.vehicle_form?.vehicle_type_id;
+            form.vehicle_mode_id = this.vehicle_form?.vehicle_mode_id;
+            form.pic_employee_id = this.vehicle_form?.pic_employee_id;
+            form.flight_number = this.vehicle_form?.flight_number;
+            form.flight_schedule = this.vehicle_form?.flight_schedule;
+            form.etd_vehicle = this.vehicle_form?.etd_vehicle;
+            form.eta_vehicle = this.vehicle_form?.eta_vehicle;
+            form.origin_vehicle = this.vehicle_form?.origin_vehicle;
+            form.destination_vehicle = this.vehicle_form?.destination_vehicle;
 
             if (form.manifest_prefix && form.manifest_number) {
                 form.manifest_number = `${form.manifest_prefix}${form.manifest_number}`;
@@ -738,36 +722,6 @@ export default {
             } finally {
                 this.loading = false;
             }
-        },
-        async getDataEmployee() {
-            this.loading = true;
-            await axios
-                .get(this.URL.employee + `/driver?n=${this.listenNodeId}`, this.Helper.header())
-                .then((res) => {
-                    if (res.data.data.length > 0) {
-                        let arr = [];
-                        res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = item.employee_name;
-                            obj["value"] = item.employee_id;
-
-                            arr.push(obj);
-                        });
-
-                        this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", arr.length > 0 ? arr : null);
-                    } else {
-                        this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID", "");
-                        this.$store.dispatch(
-                            "SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData",
-                            []
-                        );
-                    }
-                    this.loading = false;
-                })
-                .catch((err) => {
-                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed to collect role list', err?.response?.data?.message ?? 'something went wrong')
-                    this.loading = false;
-                });
         },
         async createSuratMuatan() {
             this.loading = true;
@@ -943,7 +897,7 @@ export default {
                 }
             };
 
-            if (this.manifest_method_id !== "" && type == "manifest_method_id") {
+            if (this.manifest_method_id !== 0 && type == "manifest_method_id") {
                 this.manifest_method_id !== val && this.resetForm();
             }
 
@@ -955,7 +909,6 @@ export default {
                     updateMasterForm("max_weight", val);
                     break;
                 case "manifest_method_id":
-                    this.checkManifestMethod(parseInt(val));
                     this.manifest_method_id = Number(val);
 
                     if (info?.data) {
@@ -968,15 +921,11 @@ export default {
                         
                         this.autoComplateUrl = `${this.URL.node}/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`;
                     }
+
+                    this.initVehicle = {};
                     updateMasterForm("manifest_method_id", val);
                     updateMasterForm("vehicle_mode_id", val);
-                    if (val === 2) this.getDataEmployee();
                     break;
-                case "flight_number":
-                    updateMasterForm("flight_number", val);
-                    break;
-                case "flight_schedule":
-                    updateMasterForm("flight_schedule", val);
                     break;
                 case "node_id_origin":
                     if (info?.data) {
@@ -991,15 +940,6 @@ export default {
                         this.handleEta(this.etd, this.estimated_time_in_hour);
                         updateMasterForm("node_id_destination", info?.data?.node_id);
                     }
-                    break;
-                case "vehicle_id":
-                    if (info?.data) {
-                        updateMasterForm("vehicle_id", info?.data?.vehicle_id);
-                        updateMasterForm("vehicle_type_id", info?.data?.vehicle_type_id);
-                    }
-                    break;
-                case "pic_employee_id":
-                    updateMasterForm("pic_employee_id", val);
                     break;
                 case "etd":
                     this.etd = val;
@@ -1036,30 +976,15 @@ export default {
             }
         },
         resetForm() {
-            this.$store.dispatch("SET_SURAT_MUATAN_DYNAMICINPUTCOMPONENT_NODE_ID_TRANSIT", []);
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", "");
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", {});
-            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_ArrData", []);
-            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID", "");
-            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_ArrData", []);
             this.$store.dispatch("SET_SURAT_MUATAN_ETD", "");
             this.$store.dispatch("SET_SURAT_MUATAN_ETA", "");
 
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_visible", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
-
-            // Notes: Disabled field for SM Stock
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", false);
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled", false);
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_isDisabled", false);
             this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", false);
             this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", false);
         },
@@ -1094,6 +1019,41 @@ export default {
         },
         openTraceBagDialog() {
             this.dialogTraceBag = true;
+        },
+        openDialogCreateVehicleManifest() {
+            if (this.manifest_method_id === 0) {
+                this.openNotification("warn", null, "Failed", 'Please choose manifest mode first');
+            } else {
+                this.dialogCreateVehicleManifest = true;
+            }
+        },
+        closeDialogCreateVehicleManifest() {
+            this.dialogCreateVehicleManifest = false;
+        },
+        updateVehicleValue(form) {
+            this.initVehicle = {
+                origin_vehicle: form.origin_vehicle?.label,
+                destination_vehicle: form.destination_vehicle?.label,
+                vehicle_id: form.vehicle_id?.vehicle_name,
+                pic_employee_id: form.pic_employee_id?.employee_name,
+                flight_number: form.flight_number,
+                flight_schedule: form.flight_schedule,
+                etd_vehicle: form.etd_vehicle,
+                eta_vehicle: form.eta_vehicle
+            };
+
+            this.vehicle_form = {
+                vehicle_id: form?.vehicle_id?.vehicle_id || "",
+                vehicle_type_id: form?.vehicle_id?.vehicle_type_id || "",
+                vehicle_mode_id: form?.vehicle_id?.vehicle_mode_id || "",
+                pic_employee_id: form?.pic_employee_id?.employee_id || "",
+                flight_number: form?.flight_number || "",
+                flight_schedule: form?.flight_schedule || "",
+                etd_vehicle: form?.etd_vehicle || "",
+                eta_vehicle: form?.eta_vehicle || "",
+                origin_vehicle: form?.origin_vehicle?.value || "",
+                destination_vehicle: form?.destination_vehicle?.value || "",
+            }
         },
         openDialogManageVehicleManifest() {
             this.dialogManageVehicleManifest = true;
@@ -1188,4 +1148,26 @@ button {
     margin-bottom: 0.25rem;
 }
 
+.title {
+    margin-bottom: 15px;
+    text-transform: capitalize;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: #7f8c8d;
+  margin-bottom: 0.2rem;
+  text-align: left;
+}
+
+.value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2d3436;
+  text-align: left;
+}
 </style>
