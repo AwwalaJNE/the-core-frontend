@@ -718,6 +718,9 @@ export default {
             this.item_number = "";
             this.manifest_number = "";
             this.dataTable = [];
+
+            this.initVehicle = {};
+            this.vehicle_form = {};
         },
         async getDataVehicleMode() {
             this.loading = true;

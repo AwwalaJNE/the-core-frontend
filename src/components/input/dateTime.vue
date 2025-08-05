@@ -16,7 +16,7 @@
                         :format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : null"
                         start-placeholder="Start date"
                         end-placeholder="End date"
-                        :picker-options="isETDnETA ? pickerOptions : null"
+                        :picker-options="pickerOptions"
                         :default-time="isETDnETA ? null : ['00:00:00', '23:59:59']"
                         :disabled="listenIsDisabled"
                         @change="updateValue"
@@ -47,7 +47,7 @@ export default {
     },
     data() {
         return {
-            value: this.valueData,
+            value: this.valueData || '',
             type: this.typeInput || 'date',
             pickerOptions: {
                 disabledDate(time) {
@@ -97,7 +97,7 @@ export default {
     watch: {
         valueData: function(val){
             if(val !== undefined) {
-                this.value = val
+                this.value = val || ''
                 this.updateValue()
             }
         }
